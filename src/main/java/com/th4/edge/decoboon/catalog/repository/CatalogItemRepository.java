@@ -20,6 +20,9 @@ public interface CatalogItemRepository extends JpaRepository<CatalogItem, Long>,
 
     Optional<CatalogItem> findByItemIdAndCompany_ComId(Long itemId, Long comId);
 
+    /** 取该企业该类型下编码最大的一条，用于自动生成下一个编号。 */
+    Optional<CatalogItem> findFirstByCompany_ComIdAndTypeOrderByCodeDesc(Long comId, ItemType type);
+
     @Query("""
             select distinct item.category, item.brand, item.spec
             from CatalogItem item

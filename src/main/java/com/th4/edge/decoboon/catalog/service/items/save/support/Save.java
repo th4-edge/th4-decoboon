@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.catalog.service.items.save.support;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
+import com.th4.edge.decoboon.catalog.context.CatalogCodeContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -52,11 +53,14 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
     @User private Employee employee;
 
     private final CatalogItemRepository repository;
+    private final CatalogCodeContext codeContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
 
-    public Save(CatalogItemRepository repository, CatalogContext context, CatalogDetailContext detailContext) {
+    public Save(CatalogItemRepository repository, CatalogCodeContext codeContext,
+                CatalogContext context, CatalogDetailContext detailContext) {
         this.repository = repository;
+        this.codeContext = codeContext;
         this.context = context;
         this.detailContext = detailContext;
     }
@@ -67,15 +71,18 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
         CatalogItem item = new CatalogItem();
         item.setCompany(current.getCompany());
         item.setMaintainer(current);
-        apply(item);
+        apply(item, current.getCompany().getComId());
         CatalogItem saved = repository.save(item);
         detailContext.sync(saved);
         return saved;
     }
 
-    private void apply(CatalogItem item) {
+    private void apply(CatalogItem item, Long comId) {
         item.setType(type);
-        item.setCode(code);
+        // 前端可不传编号：为空时由后端按「类型前缀 + 企业内序号」自动生成；传了则尊重企业自定义命名
+        item.setCode(code == null || code.isBlank()
+                ? codeContext.nextCode(comId, type)
+                : code.trim());
         item.setCategory(category);
         item.setBrand(brand);
         item.setSeries(series);
