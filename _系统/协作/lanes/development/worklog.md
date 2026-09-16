@@ -599,3 +599,12 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 覆盖范围：经营驾驶舱、老板/财务工作台统计卡、财务总览累计利润、项目利润/毛利率列、项目结算资源表。
 - 验证：Web type-check/build PASS；App `verify:mp-weixin` PASS。
 - 提交：App `88f5809`、Web `4018b6a`。
+
+## 2026-09-17 人员绩效、我的分组与关于装得清
+
+- 人员绩效：定位 `statistic/performance/report` 员工摘要误带出 store/team 循环归属图，原始响应 230KB+ 且无法解析；裁剪员工为 `empId/name/role` 后真实响应降至 1.6KB，3 条绩效数据正常。
+- 我的页面：功能导航按“账号与企业、组织与权限、经营工具、我的业务、服务与支持”分组，增加分组标题和说明，降低长列表识别成本。
+- 关于装得清：新增独立营销页面，基于产品白皮书表达“报价即预算、项目可追溯、经营可复制”，展示行业问题、核心模块、业务链路和适用客群。
+- 客服咨询：关于页提供微信在线客服 `open-type=contact`、复制官方客服邮箱、复制包含当前用户/角色/企业/版本的问题反馈模板；未编造微信号或电话。
+- 验证：后端 98 tests / 0 failures；App `verify:mp-weixin` PASS。
+- 提交：后端 `d7e43df`、App `b180274`。
