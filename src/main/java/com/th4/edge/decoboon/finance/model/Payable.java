@@ -12,6 +12,7 @@ import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.supply.model.Partner;
+import com.th4.edge.decoboon.finance.configure.SettlementMode;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
 import com.th4.edge.framework.data.jpa.annotation.Model;
@@ -131,6 +132,15 @@ public class Payable extends AuditModel {
     @Column(precision = 14, scale = 2, nullable = false)
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
+    @Note("收货日（账期起算）")
+    @Column(name = "receipt_date")
+    private LocalDate receiptDate;
+
+    @Note("账期模式快照（下单时固化，避免供应商后续改规则影响历史应付）")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "settlement_mode", length = 16)
+    private SettlementMode settlementMode;
+
     @Note("约定付款日")
     @Column(nullable = false)
     private LocalDate dueDate;
@@ -187,6 +197,11 @@ public class Payable extends AuditModel {
     public void setAmount(BigDecimal amount) { this.amount = amount; }
     public BigDecimal getPaidAmount() { return paidAmount; }
     public void setPaidAmount(BigDecimal paidAmount) { this.paidAmount = paidAmount; }
+    public LocalDate getReceiptDate() { return receiptDate; }
+    public void setReceiptDate(LocalDate receiptDate) { this.receiptDate = receiptDate; }
+    public SettlementMode getSettlementMode() { return settlementMode; }
+    public void setSettlementMode(SettlementMode settlementMode) { this.settlementMode = settlementMode; }
+
     public LocalDate getDueDate() { return dueDate; }
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
     public PayableStatus getStatus() { return status; }

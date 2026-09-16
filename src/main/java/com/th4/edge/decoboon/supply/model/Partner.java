@@ -4,6 +4,7 @@ import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.supply.configure.PartnerStatus;
 import com.th4.edge.decoboon.supply.configure.PartnerType;
+import com.th4.edge.decoboon.finance.configure.SettlementMode;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jpa.annotation.Model;
 import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
@@ -32,6 +33,19 @@ public class Partner extends AuditModel {
     @Column(length = 64) @Note("税号") private String taxNo;
     @Column(length = 256) @Note("地址") private String addr;
     @Column(length = 64) @Note("结算方式") private String settlementTerms;
+
+    @Note("账期模式：收货日加账期天数 / 对账月结日")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "settlement_mode", length = 16)
+    private SettlementMode settlementMode;
+
+    @Note("账期天数")
+    @Column(name = "settlement_days")
+    private Integer settlementDays;
+
+    @Note("对账截账日（每月几号）")
+    @Column(name = "cutoff_day")
+    private Integer cutoffDay;
     @Column(length = 64) @Note("开户行") private String bankName;
     @Column(length = 64) @Note("银行账号") private String bankAccount;
     @Enumerated(EnumType.STRING) @Column(length = 16, nullable = false) @Note("状态") private PartnerStatus status = PartnerStatus.Active;
@@ -57,6 +71,13 @@ public class Partner extends AuditModel {
     public void setTaxNo(String taxNo) { this.taxNo = taxNo; }
     public String getAddr() { return addr; }
     public void setAddr(String addr) { this.addr = addr; }
+    public SettlementMode getSettlementMode() { return settlementMode; }
+    public void setSettlementMode(SettlementMode settlementMode) { this.settlementMode = settlementMode; }
+    public Integer getSettlementDays() { return settlementDays; }
+    public void setSettlementDays(Integer settlementDays) { this.settlementDays = settlementDays; }
+    public Integer getCutoffDay() { return cutoffDay; }
+    public void setCutoffDay(Integer cutoffDay) { this.cutoffDay = cutoffDay; }
+
     public String getSettlementTerms() { return settlementTerms; }
     public void setSettlementTerms(String settlementTerms) { this.settlementTerms = settlementTerms; }
     public String getBankName() { return bankName; }
