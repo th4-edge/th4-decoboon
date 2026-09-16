@@ -1,0 +1,71 @@
+# 环境配置
+
+# 数据库参数配置
+spring:
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  profiles:
+    active: dev
+# 数据库连接池配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  jpa:
+    show-sql: true
+  jackson:
+    default-property-inclusion: non_null
+  data:
+    # redis配置
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: 123456
+      database: 0
+      timeout: 1000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+# 服务器配置
+server:
+  address: 0.0.0.0
+  port: 8090
+
+# 日志配置
+logging:
+  file:
+    path: logs/
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: INFO
+
+# th4 框架配置 默认配置
+th4:
+  edge:
+    framework:
+      upload-dir: /Users/zhangwei/MineFiles/th4/th4-boot/
+      security:
+        sso: true
+    admin:
+      # 系统配置
+      system:
+        # 系统初始化数据平台索引
+        dev-ops-id-key: dev-ops
+        # 系统初始化数据平台名称
+        dev-ops-name: 开发运维
+        # 系统初始化数据平台角色
+        role-id-key: admin
+
