@@ -1,0 +1,22 @@
+[Unit]
+Description=Decoboon backend service
+After=network-online.target mysqld.service redis.service
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/opt/decoboon/th4-decoboon/run/decoboon.pid
+User=decoboon
+Group=decoboon
+WorkingDirectory=/opt/decoboon/th4-decoboon
+Environment=JAVA_HOME=/opt/java/jdk-22.0.2+9
+Environment=DECOBOON_ENV_FILE=/etc/decoboon/th4-decoboon.env
+ExecStart=/opt/decoboon/th4-decoboon/bin/cmd.sh start
+ExecStop=/opt/decoboon/th4-decoboon/bin/cmd.sh stop
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=40
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

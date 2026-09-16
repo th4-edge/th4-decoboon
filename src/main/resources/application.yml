@@ -26,11 +26,11 @@ spring:
   data:
     # redis配置
     redis:
-      host: 127.0.0.1
-      port: 6379
-      password: 123456
-      database: 0
-      timeout: 1000
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+      timeout: ${REDIS_TIMEOUT_MS:1000}
       lettuce:
         pool:
           max-active: 8
@@ -56,16 +56,56 @@ logging:
 th4:
   edge:
     framework:
-      upload-dir: /Users/zhangwei/MineFiles/th4/th4-boot/
+      upload-dir: ${TH4_FILE_UPLOAD_DIR:./data/upload/}
+      public-dir: ${TH4_FILE_PUBLIC_DIR:./data/public/}
+      file-signature-secret: ${TH4_FILE_SIGNATURE_SECRET:}
+      file-signature-ttl-seconds: ${TH4_FILE_SIGNATURE_TTL_SECONDS:300}
       security:
         sso: true
-    admin:
-      # 系统配置
-      system:
-        # 系统初始化数据平台索引
-        dev-ops-id-key: dev-ops
-        # 系统初始化数据平台名称
-        dev-ops-name: 开发运维
-        # 系统初始化数据平台角色
-        role-id-key: admin
+        password:
+          bootstrap-token: ${TH4_PASSWORD_BOOTSTRAP_TOKEN:}
+          max-failed-attempts: ${TH4_PASSWORD_MAX_FAILED_ATTEMPTS:5}
+          lock-minutes: ${TH4_PASSWORD_LOCK_MINUTES:15}
+    components:
+      storage:
+        # local 仅用于开发/测试；生产必须使用 oss 并通过环境变量注入密钥
+        provider: ${TH4_STORAGE_PROVIDER:local}
+        endpoint: ${ALIYUN_OSS_ENDPOINT:}
+        bucket: ${ALIYUN_OSS_BUCKET:decoboon}
+        access-key-id: ${ALIYUN_OSS_ACCESS_KEY_ID:}
+        access-key-secret: ${ALIYUN_OSS_ACCESS_KEY_SECRET:}
+        presign-ttl-seconds: ${ALIYUN_OSS_PRESIGN_TTL_SECONDS:300}
+        max-file-size-bytes: ${ALIYUN_OSS_MAX_FILE_SIZE_BYTES:524288000}
+        key-prefix: ${ALIYUN_OSS_KEY_PREFIX:}
+      wechat:
+        mini-program:
+          enabled: ${WECHAT_MINI_ENABLED:true}
+          app-id: ${WECHAT_MINI_APP_ID:wxe5cc5fec9e50a9a9}
+          app-secret: ${WECHAT_MINI_APP_SECRET:}
+          connect-timeout-ms: 3000
+          read-timeout-ms: 5000
+        pay:
+          # 微信支付 API v3；商户私钥、API v3 密钥和回调地址只允许通过环境变量注入
+          enabled: ${WECHAT_PAY_ENABLED:false}
+          app-id: ${WECHAT_PAY_APP_ID:${WECHAT_MINI_APP_ID:}}
+          mch-id: ${WECHAT_PAY_MCH_ID:}
+          mch-serial-no: ${WECHAT_PAY_MCH_SERIAL_NO:}
+          private-key: ${WECHAT_PAY_PRIVATE_KEY:}
+          private-key-path: ${WECHAT_PAY_PRIVATE_KEY_PATH:}
+          api-v3-key: ${WECHAT_PAY_API_V3_KEY:}
+          notify-url: ${WECHAT_PAY_NOTIFY_URL:}
+          platform-public-key-id: ${WECHAT_PAY_PLATFORM_PUBLIC_KEY_ID:}
+          platform-public-key: ${WECHAT_PAY_PLATFORM_PUBLIC_KEY:}
+          platform-public-key-path: ${WECHAT_PAY_PLATFORM_PUBLIC_KEY_PATH:}
+          connect-timeout-ms: ${WECHAT_PAY_CONNECT_TIMEOUT_MS:3000}
+          read-timeout-ms: ${WECHAT_PAY_READ_TIMEOUT_MS:8000}
 
+# 平台运营管理端首次初始化；默认关闭，创建完成后应移除或关闭环境变量。
+decoboon:
+  platform:
+    bootstrap:
+      enabled: ${PLATFORM_BOOTSTRAP_ENABLED:false}
+      company-title: ${PLATFORM_BOOTSTRAP_COMPANY_TITLE:装得清平台运营中心}
+      company-name: ${PLATFORM_BOOTSTRAP_COMPANY_NAME:平台运营}
+      phone: ${PLATFORM_BOOTSTRAP_PHONE:}
+      password: ${PLATFORM_BOOTSTRAP_PASSWORD:}

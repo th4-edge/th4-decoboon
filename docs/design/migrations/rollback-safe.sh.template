@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+# 安全恢复模板：恢复到新的数据库和新的文件目录，不改写或删除当前生产目录。
+set -Eeuo pipefail
+
+: "${MYSQL_CNF:?必须提供 MYSQL_CNF}"
+: "${SOURCE_DATABASE:?必须提供 SOURCE_DATABASE}"
+: "${RESTORE_DATABASE:?必须提供 RESTORE_DATABASE}"
+: "${BACKUP_DIR:?必须提供 BACKUP_DIR}"
+: "${RESTORE_ROOT:?必须提供 RESTORE_ROOT}"
+: "${RELEASE_ID:?必须提供 RELEASE_ID}"
+
+canonical_path() {
+  local path="$1"
+  if command -v realpath >/dev/null 2>&1; then
+    realpath -m -- "$path" 2>/dev/null && return 0
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$path"
+    return 0
+  fi
+  echo "无法规范化路径（需要 realpath 或 python3）: $path" >&2
+  exit 2
+}
+
+reject_dangerous_root() {
+  local path="$1"
+  local label="$2"
+  case "$path" in
+    /|/bin|/boot|/dev|/etc|/home|/lib|/lib64|/opt|/proc|/root|/sbin|/sys|/tmp|/usr|/var|/Users|/private|/private/etc|/private/tmp|/private/var|/System|/Library|/Applications|/Volumes)
+      echo "拒绝使用危险根路径（${label}）: $path" >&2
+      exit 2
+      ;;
+  esac
+}
+
+[[ "$SOURCE_DATABASE" =~ ^[A-Za-z0-9_]+$ ]] || { echo "SOURCE_DATABASE 格式非法"; exit 2; }
+[[ "$RESTORE_DATABASE" =~ ^[A-Za-z0-9_]+$ ]] || { echo "RESTORE_DATABASE 格式非法"; exit 2; }
+[[ "$SOURCE_DATABASE" != "$RESTORE_DATABASE" ]] || { echo "恢复库不能等于当前生产库"; exit 2; }
+[[ "$RELEASE_ID" =~ ^[A-Za-z0-9._-]+$ && "$RELEASE_ID" != "." && "$RELEASE_ID" != ".." ]] || {
+  echo "RELEASE_ID 格式非法，不能使用 . 或 .."; exit 2;
+}
+
+MYSQL_CNF="$(canonical_path "$MYSQL_CNF")"
+BACKUP_DIR="$(canonical_path "$BACKUP_DIR")"
+RESTORE_ROOT="$(canonical_path "$RESTORE_ROOT")"
+
+[[ "$MYSQL_CNF" = /* && -r "$MYSQL_CNF" ]] || { echo "MYSQL_CNF 必须是可读绝对路径"; exit 2; }
+[[ "$BACKUP_DIR" = /* && -d "$BACKUP_DIR" ]] || { echo "BACKUP_DIR 必须是存在的绝对目录"; exit 2; }
+[[ "$RESTORE_ROOT" = /* && -d "$RESTORE_ROOT" ]] || { echo "RESTORE_ROOT 必须是存在的绝对目录"; exit 2; }
+reject_dangerous_root "$BACKUP_DIR" "备份目录"
+reject_dangerous_root "$RESTORE_ROOT" "恢复根目录"
+
+RESTORE_DIR="$(canonical_path "$RESTORE_ROOT/$RELEASE_ID")"
+[[ "$RESTORE_DIR" == "$RESTORE_ROOT"/* ]] || { echo "恢复目录越界: $RESTORE_DIR"; exit 2; }
+[[ "$RESTORE_DIR" != "$RESTORE_ROOT" ]] || { echo "恢复目录不能等于恢复根目录"; exit 2; }
+[[ ! -e "$RESTORE_DIR" ]] || { echo "恢复目录已存在，拒绝覆盖: $RESTORE_DIR"; exit 3; }
+
+DB_DUMP="$BACKUP_DIR/database.sql.gz"
+UPLOAD_ARCHIVE="$BACKUP_DIR/upload-dir.tar.gz"
+PUBLIC_ARCHIVE="$BACKUP_DIR/public-dir.tar.gz"
+CHECKSUMS="$BACKUP_DIR/SHA256SUMS"
+for file in "$DB_DUMP" "$UPLOAD_ARCHIVE" "$PUBLIC_ARCHIVE" "$CHECKSUMS"; do
+  [[ -f "$file" ]] || { echo "备份文件不存在: $file"; exit 3; }
+done
+
+verify_checksums() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum -c SHA256SUMS
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 -c SHA256SUMS
+  else
+    echo "缺少 SHA-256 校验工具（需要 sha256sum 或 shasum）" >&2
+    exit 2
+  fi
+}
+
+(
+  cd "$BACKUP_DIR"
+  verify_checksums
+)
+
+mkdir -p "$RESTORE_DIR/upload" "$RESTORE_DIR/public"
+
+mysql_admin() {
+  mysql --defaults-extra-file="$MYSQL_CNF" --batch --skip-column-names "$@"
+}
+
+EXISTS="$(mysql_admin -e "SELECT COUNT(*) FROM information_schema.schemata WHERE schema_name='${RESTORE_DATABASE}'")"
+if [[ "$EXISTS" != "0" ]]; then
+  TABLES="$(mysql_admin -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${RESTORE_DATABASE}'")"
+  [[ "$TABLES" == "0" ]] || { echo "恢复库非空，拒绝覆盖"; exit 4; }
+else
+  mysql_admin -e "CREATE DATABASE \`${RESTORE_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci"
+fi
+
+gunzip -c "$DB_DUMP" | mysql --defaults-extra-file="$MYSQL_CNF" "$RESTORE_DATABASE"
+tar -xzf "$UPLOAD_ARCHIVE" -C "$RESTORE_DIR/upload"
+tar -xzf "$PUBLIC_ARCHIVE" -C "$RESTORE_DIR/public"
+
+echo "RESTORE_PREPARED database=$RESTORE_DATABASE"
+echo "TH4_FILE_UPLOAD_DIR=$RESTORE_DIR/upload"
+echo "TH4_FILE_PUBLIC_DIR=$RESTORE_DIR/public"
+echo "下一步：使用新恢复路径和恢复库执行只读冒烟，再由发布负责人切换流量；旧目录和旧库不得在本脚本中删除。"

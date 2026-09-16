@@ -1,0 +1,226 @@
+{
+  "collectedAt": "2026-09-15T21:24:41.800857+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-09-16/20260916-052441",
+  "counts": {
+    "code_bug": 2,
+    "expected": 32,
+    "unknown": 2
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20260916-22c1108268",
+      "signature": "auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#<hex>] - no session",
+      "signatureHash": "22c1108268",
+      "classification": "code_bug",
+      "severity": "critical",
+      "status": "open",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:14:57.806",
+      "lastSeen": "2026-09-16 05:15:18.762",
+      "samples": [
+        "[2026-09-16 05:14:57.806] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session",
+        "[2026-09-16 05:15:18.762] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-052441"
+      ]
+    },
+    {
+      "incidentId": "INC-20260916-1afef940a5",
+      "signature": ".env处理失败:找不到对应的处理服务:.env",
+      "signatureHash": "1afef940a5",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:12:34.506",
+      "lastSeen": "2026-09-16T05:12:34.506+08:00",
+      "samples": [
+        "[2026-09-16 05:12:34.506] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "1027:2026-09-16T05:12:34.506+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-0c87ae190f",
+      "signature": "auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "0c87ae190f",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 12,
+      "firstSeen": "2026-09-16 04:15:46.392",
+      "lastSeen": "2026-09-16T05:24:41.757+08:00",
+      "samples": [
+        "[2026-09-16 04:15:46.392] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-16 04:16:05.698] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-16 04:18:02.274] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-16 05:14:04.738] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-16 05:24:41.230] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-ce936f5518",
+      "signature": "auth/session/login处理失败:首次登录请授权手机号",
+      "signatureHash": "ce936f5518",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:14:08.348",
+      "lastSeen": "2026-09-16T05:14:08.348+08:00",
+      "samples": [
+        "[2026-09-16 05:14:08.348] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "1637:2026-09-16T05:14:08.348+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-65c92ad615",
+      "signature": "auth/session/password-login处理失败:手机号或密码错误",
+      "signatureHash": "65c92ad615",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 04:41:46.593",
+      "lastSeen": "2026-09-16T04:41:46.593+08:00",
+      "samples": [
+        "[2026-09-16 04:41:46.593] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "941:2026-09-16T04:41:46.593+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-33f7378842",
+      "signature": "auth/session/register处理失败:当前用户已有在职企业",
+      "signatureHash": "33f7378842",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:15:10.714",
+      "lastSeen": "2026-09-16T05:15:10.714+08:00",
+      "samples": [
+        "[2026-09-16 05:15:10.714] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/register处理失败:当前用户已有在职企业",
+        "1858:2026-09-16T05:15:10.714+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:当前用户已有在职企业"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-8b5c303e21",
+      "signature": "collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "8b5c303e21",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:14:04.710",
+      "lastSeen": "2026-09-16T05:14:04.710+08:00",
+      "samples": [
+        "[2026-09-16 05:14:04.710] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "1231:2026-09-16T05:14:04.710+08:00 ERROR 31014 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-e3f4febf79",
+      "signature": "no session",
+      "signatureHash": "e3f4febf79",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "count": 2,
+      "firstSeen": "2026-09-16T05:14:57.806+08:00",
+      "lastSeen": "2026-09-16T05:15:18.762+08:00",
+      "samples": [
+        "1752:2026-09-16T05:14:57.806+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session",
+        "1973:2026-09-16T05:15:18.762+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-052441"
+      ]
+    },
+    {
+      "incidentId": "INC-20260916-7117b43ebe",
+      "signature": "order/callback处理失败:微信支付回调原始报文不存在",
+      "signatureHash": "7117b43ebe",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 04:18:02.349",
+      "lastSeen": "2026-09-16T04:18:02.349+08:00",
+      "samples": [
+        "[2026-09-16 04:18:02.349] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - order/callback处理失败:微信支付回调原始报文不存在",
+        "835:2026-09-16T04:18:02.349+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : order/callback处理失败:微信支付回调原始报文不存在"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-747db5ced6",
+      "signature": "order/callback处理失败:微信支付回调签名缺失",
+      "signatureHash": "747db5ced6",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 04:16:05.848",
+      "lastSeen": "2026-09-16T04:16:05.848+08:00",
+      "samples": [
+        "[2026-09-16 04:16:05.848] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - order/callback处理失败:微信支付回调签名缺失",
+        "630:2026-09-16T04:16:05.848+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : order/callback处理失败:微信支付回调签名缺失"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-fe0bc48878",
+      "signature": "project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "fe0bc48878",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:14:04.708",
+      "lastSeen": "2026-09-16T05:14:04.708+08:00",
+      "samples": [
+        "[2026-09-16 05:14:04.708] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "1134:2026-09-16T05:14:04.708+08:00 ERROR 31014 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-64b95a2293",
+      "signature": "statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "64b95a2293",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:14:04.714",
+      "lastSeen": "2026-09-16T05:14:04.714+08:00",
+      "samples": [
+        "[2026-09-16 05:14:04.714] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "1334:2026-09-16T05:14:04.714+08:00 ERROR 31014 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260916-942cc239df",
+      "signature": "statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "942cc239df",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "count": 2,
+      "firstSeen": "2026-09-16 05:14:04.720",
+      "lastSeen": "2026-09-16T05:14:04.720+08:00",
+      "samples": [
+        "[2026-09-16 05:14:04.720] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "1433:2026-09-16T05:14:04.720+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

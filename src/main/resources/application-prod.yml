@@ -1,16 +1,96 @@
 
-# 数据库配置
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
   datasource:
-    #url: jdbc:mysql://121.43.102.188:3306/th4-dr?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&autoReconnect=true&serverTimezone=GMT%2B8
-    url: jdbc:mysql://127.0.0.1:3306/zqsmart?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&autoReconnect=true&serverTimezone=GMT%2B8
-    username: root
-    password: mysqladmin
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  # jpa配置
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT_MS:30000}
+      idle-timeout: ${DB_IDLE_TIMEOUT_MS:30000}
+      max-lifetime: ${DB_MAX_LIFETIME_MS:1800000}
   jpa:
-    show-sql: true
+    show-sql: false
+    open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Shanghai
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+      database: ${REDIS_DATABASE:0}
+      timeout: ${REDIS_TIMEOUT_MS:2000}
+      lettuce:
+        pool:
+          max-active: ${REDIS_POOL_MAX_ACTIVE:16}
+          max-idle: ${REDIS_POOL_MAX_IDLE:8}
+          min-idle: ${REDIS_POOL_MIN_IDLE:2}
+
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${SERVER_PORT:8090}
+  shutdown: graceful
+  forward-headers-strategy: framework
+  compression:
+    enabled: true
+    min-response-size: 2KB
+    mime-types: application/json,text/html,text/plain,text/css,application/javascript,image/svg+xml
+
+logging:
+  file:
+    path: ${LOG_PATH:/var/log/th4-decoboon}
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: WARN
+
+th4:
+  edge:
+    framework:
+      upload-dir: ${TH4_FILE_UPLOAD_DIR}
+      public-dir: ${TH4_FILE_PUBLIC_DIR}
+      file-signature-secret: ${TH4_FILE_SIGNATURE_SECRET}
+      file-signature-ttl-seconds: ${TH4_FILE_SIGNATURE_TTL_SECONDS:300}
+      security:
+        password:
+          bootstrap-token: ${TH4_PASSWORD_BOOTSTRAP_TOKEN:}
+          max-failed-attempts: ${TH4_PASSWORD_MAX_FAILED_ATTEMPTS:5}
+          lock-minutes: ${TH4_PASSWORD_LOCK_MINUTES:15}
+    components:
+      storage:
+        provider: ${TH4_STORAGE_PROVIDER:oss}
+        endpoint: ${ALIYUN_OSS_ENDPOINT}
+        bucket: ${ALIYUN_OSS_BUCKET:decoboon}
+        access-key-id: ${ALIYUN_OSS_ACCESS_KEY_ID}
+        access-key-secret: ${ALIYUN_OSS_ACCESS_KEY_SECRET}
+        presign-ttl-seconds: ${ALIYUN_OSS_PRESIGN_TTL_SECONDS:300}
+        max-file-size-bytes: ${ALIYUN_OSS_MAX_FILE_SIZE_BYTES:524288000}
+        key-prefix: ${ALIYUN_OSS_KEY_PREFIX:}
+      wechat:
+        mini-program:
+          enabled: ${WECHAT_MINI_ENABLED}
+          app-id: ${WECHAT_MINI_APP_ID}
+          app-secret: ${WECHAT_MINI_APP_SECRET}
+        pay:
+          enabled: ${WECHAT_PAY_ENABLED:false}
+          app-id: ${WECHAT_PAY_APP_ID:}
+          mch-id: ${WECHAT_PAY_MCH_ID:}
+          mch-serial-no: ${WECHAT_PAY_MCH_SERIAL_NO:}
+          private-key: ${WECHAT_PAY_PRIVATE_KEY:}
+          private-key-path: ${WECHAT_PAY_PRIVATE_KEY_PATH:}
+          api-v3-key: ${WECHAT_PAY_API_V3_KEY:}
+          notify-url: ${WECHAT_PAY_NOTIFY_URL:}
+          platform-public-key-id: ${WECHAT_PAY_PLATFORM_PUBLIC_KEY_ID:}
+          platform-public-key: ${WECHAT_PAY_PLATFORM_PUBLIC_KEY:}
+          platform-public-key-path: ${WECHAT_PAY_PLATFORM_PUBLIC_KEY_PATH:}

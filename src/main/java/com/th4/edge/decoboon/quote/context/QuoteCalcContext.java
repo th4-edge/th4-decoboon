@@ -1,0 +1,123 @@
+package com.th4.edge.decoboon.quote.context;
+
+import com.th4.edge.decoboon.design.model.DesignItem;
+import com.th4.edge.decoboon.catalog.configure.PricingMethod;
+import com.th4.edge.decoboon.quote.configure.QuoteComponentType;
+import com.th4.edge.decoboon.quote.model.QuoteComponent;
+import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+
+/** 设计分项统一计价上下文。 */
+@Note("设计报价计算")
+@Component
+public class QuoteCalcContext {
+
+    /** 根据材料、人工、数量和计价公式计算含税前的分项金额。 */
+    public BigDecimal amount(PricingMethod mode, BigDecimal quantity,
+                             BigDecimal materialPrice, BigDecimal manualPrice) {
+        BigDecimal qty = positive(quantity);
+        BigDecimal material = zero(materialPrice);
+        BigDecimal manual = zero(manualPrice);
+        BigDecimal unit = switch (mode == null ? PricingMethod.MaterialAndManual : mode) {
+            case MaterialAndManual -> material.add(manual);
+            case MaterialOnly -> material;
+            case ManualOnly -> manual;
+            case FixedTotal -> BigDecimal.ZERO;
+        };
+        if (mode == PricingMethod.FixedTotal) {
+            return money(material.add(manual));
+        }
+        return money(unit.multiply(qty));
+    }
+
+    /** 成本统一按成本单价乘工程量计算。 */
+    public BigDecimal cost(BigDecimal quantity, BigDecimal costPrice) {
+        return money(positive(quantity).multiply(zero(costPrice)));
+    }
+
+    /** 将计算结果写回设计分项，避免前端直接指定金额。 */
+    public DesignItem calculate(DesignItem item) {
+        if (item == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "设计分项不能为空"));
+        }
+        item.setQuantity(positive(item.getQuantity()));
+        item.setAmount(amount(item.getPricingMode(), item.getQuantity(),
+                item.getMaterialPrice(), item.getManualPrice()));
+        item.setCost(cost(item.getQuantity(), item.getCostPrice()));
+        return item;
+    }
+
+    public java.util.List<QuoteComponent> components(PricingMethod method, BigDecimal quantityValue,
+                                                     BigDecimal materialPrice, BigDecimal manualPrice,
+                                                     BigDecimal costValue, String formula) {
+        java.util.List<QuoteComponent> result = new ArrayList<>();
+        BigDecimal quantity = positive(quantityValue);
+        BigDecimal material = zero(materialPrice);
+        BigDecimal manual = zero(manualPrice);
+        PricingMethod mode = method == null ? PricingMethod.MaterialAndManual : method;
+        if (mode == PricingMethod.FixedTotal) {
+            QuoteComponent total = new QuoteComponent();
+            total.setType(QuoteComponentType.Other);
+            total.setName("固定总价");
+            total.setSaleAmount(money(material.add(manual)));
+            total.setCostAmount(zero(costValue));
+            total.setFormula(formula);
+            result.add(total);
+            return result;
+        }
+        if (mode != PricingMethod.ManualOnly && material.signum() > 0) {
+            QuoteComponent value = new QuoteComponent();
+            value.setType(QuoteComponentType.Material);
+            value.setName("材料");
+            value.setSaleAmount(money(material.multiply(quantity)));
+            value.setFormula("材料单价 × 工程量");
+            value.setSort(result.size());
+            result.add(value);
+        }
+        if (mode != PricingMethod.MaterialOnly && manual.signum() > 0) {
+            QuoteComponent value = new QuoteComponent();
+            value.setType(QuoteComponentType.Labor);
+            value.setName("人工");
+            value.setSaleAmount(money(manual.multiply(quantity)));
+            value.setFormula("人工单价 × 工程量");
+            value.setSort(result.size());
+            result.add(value);
+        }
+        QuoteComponent cost = new QuoteComponent();
+        cost.setType(QuoteComponentType.Other);
+        cost.setName("成本");
+        cost.setSaleAmount(BigDecimal.ZERO);
+        cost.setCostAmount(zero(costValue));
+        cost.setSort(result.size());
+        result.add(cost);
+        return result;
+    }
+
+    public BigDecimal unitPrice(PricingMethod mode, BigDecimal quantity,
+                                BigDecimal materialPrice, BigDecimal manualPrice) {
+        BigDecimal qty = positive(quantity);
+        BigDecimal total = amount(mode, qty, materialPrice, manualPrice);
+        return total.divide(qty, 2, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal positive(BigDecimal value) {
+        if (value == null || value.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于零"));
+        }
+        return value;
+    }
+
+    private BigDecimal zero(BigDecimal value) {
+        return value == null ? BigDecimal.ZERO : value;
+    }
+
+    private BigDecimal money(BigDecimal value) {
+        return value.setScale(2, RoundingMode.HALF_UP);
+    }
+}

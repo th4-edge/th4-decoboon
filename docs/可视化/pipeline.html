@@ -1,0 +1,89 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;font-family:'PingFang SC','Roboto','Segoe UI',Arial,sans-serif;color:#1A1B1C;line-height:1.5;--accent:#9EACEA;max-width:880px;margin:0 auto;">
+  <div style="font-size:15px;font-weight:600;margin:16px 0 4px;">AI 出片流水线与线索状态机</div>
+  <div style="font-size:12px;color:#6B7280;margin-bottom:14px;">出片采用确定性状态机编排 + Agent 只产出高价值内容（文案/字幕），全链路异步、可断点重试；线索登记自动关联来源视频实现归因。</div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+    <div style="flex:1 1 170px;min-width:0;padding:8px 10px;background:linear-gradient(135deg,rgba(82,196,26,0.10),rgba(82,196,26,0.2));border-radius:10px;box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;color:#237804;">P1 已实测通过</div>
+      <div style="font-size:11px;color:#6B7280;margin-top:2px;">DeepSeek 在线文案 + 真实 TTS + FFmpeg 出片，成片 52.4s 含中文字幕轨</div>
+    </div>
+    <div style="flex:1 1 170px;min-width:0;padding:8px 10px;border:1px solid rgba(0,0,0,0.08);border-radius:10px;box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;">AgentScope + DeepSeek</div>
+      <div style="font-size:11px;color:#6B7280;margin-top:2px;">Writing 阶段 HarnessAgent 在线生成文案，经 Tool 落盘草稿</div>
+    </div>
+    <div style="flex:1 1 170px;min-width:0;padding:8px 10px;background:linear-gradient(135deg,rgba(82,196,26,0.08),rgba(82,196,26,0.16));border-radius:10px;box-sizing:border-box;">
+      <div style="font-size:12px;font-weight:600;color:#237804;">媒体层已真实化</div>
+      <div style="font-size:11px;color:#6B7280;margin-top:2px;">Dubbing=系统TTS、Subtitling=SRT、Rendering/EndCaring=FFmpeg 合片+尾卡</div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;color:#6B7280;font-weight:600;margin:8px 0 6px;">① 视频生成任务 VideoTask（约 30 秒出片）</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;">
+    <div style="flex:1 1 130px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">Created 已创建</div>
+      <div style="font-size:11.5px;color:#6B7280;">校验模板/素材，异步启动</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 130px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;background:linear-gradient(135deg,rgba(158,172,234,0.12),rgba(158,172,234,0.22));box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">Writing AI写文案</div>
+      <div style="font-size:11.5px;color:#6B7280;">HarnessAgent + DeepSeek 生成口播/字幕/发布文案</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 130px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">Dubbing 配音</div>
+      <div style="font-size:11.5px;color:#6B7280;">系统 TTS(Tingting) 真实 mp3</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 130px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">Subtitling 字幕</div>
+      <div style="font-size:11.5px;color:#6B7280;">SRT 按配音时长生成；overlay 硬字幕烧录入画</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 130px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">Rendering 合成</div>
+      <div style="font-size:11.5px;color:#6B7280;">FFmpeg 素材轮播+配音+字幕轨</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 130px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">EndCaring 尾卡</div>
+      <div style="font-size:11.5px;color:#6B7280;">AWT 生成尾卡 PNG + 追加成片</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 130px;min-width:0;border-radius:10px;padding:8px 10px;background:linear-gradient(135deg,rgba(82,196,26,0.10),rgba(82,196,26,0.2));box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;color:#237804;">Done 完成</div>
+      <div style="font-size:11.5px;color:#6B7280;">Video + VideoCopy 落库，可下载发布</div>
+    </div>
+  </div>
+  <div style="font-size:11.5px;color:#EA6668;margin:6px 2px 0;">任一步失败 → Failed：记录 failReason + 告警，支持重试（断点续跑）。</div>
+
+  <div style="font-size:12px;color:#6B7280;font-weight:600;margin:16px 0 6px;">② 线索生命周期 Lead（登记即归因 · 离职一键交接）</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;">
+    <div style="flex:1 1 120px;min-width:0;border-radius:10px;padding:8px 10px;background:linear-gradient(135deg,rgba(158,172,234,0.10),rgba(158,172,234,0.2));box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">待联系 PendingContact</div>
+      <div style="font-size:11.5px;color:#6B7280;">登记自动关联来源视频</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 120px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">待量房 PendingMeasure</div>
+      <div style="font-size:11.5px;color:#6B7280;">超 3 天未跟进触发老板提醒</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 120px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;">已量房 Measured</div>
+      <div style="font-size:11.5px;color:#6B7280;">留下量房记录</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">→</div>
+    <div style="flex:1 1 120px;min-width:0;border-radius:10px;padding:8px 10px;background:linear-gradient(135deg,rgba(82,196,26,0.10),rgba(82,196,26,0.2));box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;color:#237804;">已签约 Signed</div>
+      <div style="font-size:11.5px;color:#6B7280;">记 signedValue，计入 ROI</div>
+    </div>
+    <div style="align-self:center;color:#9EACEA;font-size:13px;">↘</div>
+    <div style="flex:1 1 120px;min-width:0;border:1px solid rgba(234,102,104,0.35);border-radius:10px;padding:8px 10px;box-sizing:border-box;">
+      <div style="font-size:13px;font-weight:600;color:#A8071A;">已流失 Abandoned</div>
+      <div style="font-size:11.5px;color:#6B7280;">任意阶段可标记流失</div>
+    </div>
+  </div>
+  <div style="font-size:11.5px;color:#6B7280;margin:6px 2px 0;">跟进动作写入 LeadFollow；员工离职时 LeadTransferProvider 将线索批量转交新业务员，客户资产不丢失。</div>
+</div>
+</html>

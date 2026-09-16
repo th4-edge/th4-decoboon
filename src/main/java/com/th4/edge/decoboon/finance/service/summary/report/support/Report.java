@@ -1,0 +1,59 @@
+package com.th4.edge.decoboon.finance.service.summary.report.support;
+
+import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.finance.context.FinanceReportContext;
+import com.th4.edge.decoboon.finance.model.FinanceSummary;
+import com.th4.edge.decoboon.finance.model.Ledger;
+import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.Receivable;
+import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.framework.core.ScopeTypes;
+import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+/** 财务工作台汇总实现。 */
+@Note("财务工作台汇总")
+@Properties(allow = {
+        @AllowProperties(model = FinanceSummary.class,
+                properties = {"projectCount", "activeProjectCount", "contractAmount", "receivableAmount", "receivedAmount",
+                        "outstandingAmount", "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount",
+                        "materialPayableAmount", "salaryPayableAmount", "projectPayableAmount", "otherPayableAmount",
+                        "monthIncome", "monthExpense", "cashBalance", "profitAmount", "collectionRate",
+                        "urgentReceivables", "urgentPayables", "recentLedgers"}),
+        @AllowProperties(model = Receivable.class,
+                properties = {"receivableId", "project", "property", "customer", "name", "stageName", "type", "amount",
+                        "receivedAmount", "dueDate", "status"}),
+        @AllowProperties(model = Payable.class,
+                properties = {"payableId", "project", "name", "type", "payeeEmployee", "payeeName", "period",
+                        "amount", "paidAmount", "dueDate", "status", "urgent", "property" }),
+        @AllowProperties(model = Ledger.class,
+                properties = {"ledgerId", "project", "direction", "category", "source", "amount", "account",
+                        "occurredAt", "counterparty", "summary"}),
+        @AllowProperties(model = Project.class,
+                properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
+        @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
+@Service("finance/summary/report")
+@Scope(ScopeTypes.PROTOTYPE)
+public class Report implements com.th4.edge.decoboon.finance.service.summary.report.Report {
+
+    @User
+    private Employee employee;
+
+    private final FinanceReportContext reportContext;
+
+    public Report(FinanceReportContext reportContext) {
+        this.reportContext = reportContext;
+    }
+
+    @Override
+    public FinanceSummary call(Project request) {
+        return reportContext.summary(employee);
+    }
+}

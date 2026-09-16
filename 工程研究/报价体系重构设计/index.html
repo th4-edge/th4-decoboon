@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装得清报价体系重构设计方案</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2316A394'/%3E%3Cpath d='M7 12.5l3 3 7-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --brand:#16A394; --brand-dark:#0e7a6f; --brand-bg:#e6f5f3;
+    --ink:#1f2937; --sub:#6b7280; --line:#e5e7eb; --bg:#f7f8fa;
+    --amber:#d97706; --amber-bg:#fef3c7; --red:#dc2626; --red-bg:#fee2e2;
+    --blue:#2563eb; --blue-bg:#dbeafe; --purple:#7c3aed; --purple-bg:#ede9fe;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;font-size:15px;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  header.hero{background:linear-gradient(135deg,#0f766e 0%,#16A394 55%,#2dd4bf 100%);color:#fff;padding:64px 0 56px;}
+  .hero .tag{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 14px;font-size:13px;letter-spacing:2px;margin-bottom:18px;}
+  .hero h1{font-size:34px;font-weight:800;letter-spacing:1px;margin-bottom:12px;}
+  .hero p.sub{font-size:16px;opacity:.92;max-width:820px;}
+  .hero .meta{margin-top:22px;display:flex;gap:26px;flex-wrap:wrap;font-size:13px;opacity:.9;}
+  .hero .meta b{font-size:15px;display:block;}
+  nav.toc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 22px;margin:26px 0 40px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;}
+  nav.toc a{color:var(--brand-dark);text-decoration:none;font-weight:600;}
+  nav.toc a:hover{text-decoration:underline;}
+  section{margin-bottom:52px;}
+  h2{font-size:24px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+  h2 .no{background:var(--brand);color:#fff;border-radius:8px;min-width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;font-size:16px;}
+  .lead{color:var(--sub);margin-bottom:20px;font-size:14.5px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin-bottom:16px;}
+  h3{font-size:17px;font-weight:700;margin:22px 0 10px;}
+  h3:first-child{margin-top:0;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;background:#fff;}
+  th{background:#f3f4f6;font-weight:700;text-align:left;}
+  th,td{border:1px solid var(--line);padding:9px 12px;vertical-align:top;}
+  code{background:#f1f5f9;border:1px solid #e2e8f0;border-radius:4px;padding:1px 6px;font-size:12.5px;font-family:'SF Mono',Menlo,Consolas,monospace;color:#0e7490;word-break:break-word;overflow-wrap:anywhere;}
+  .pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:600;}
+  .pill.g{background:#d1fae5;color:#065f46;} .pill.r{background:#fee2e2;color:#991b1b;}
+  .pill.b{background:var(--blue-bg);color:#1e40af;} .pill.a{background:var(--amber-bg);color:#92400e;}
+  .pill.p{background:var(--purple-bg);color:#5b21b6;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+  @media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr;}}
+  .formula{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:14px 18px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:13.5px;line-height:2;margin:10px 0;overflow-x:auto;}
+  .formula .c{color:#fbbf24;} .formula .m{color:#93c5fd;} .formula .o{color:#94a3b8;}
+  .flow{display:flex;flex-direction:column;gap:0;margin:14px 0;}
+  .step{display:flex;gap:14px;position:relative;padding-bottom:22px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{content:'';position:absolute;left:15px;top:32px;bottom:2px;width:2px;background:var(--line);}
+  .step:last-child::before{display:none;}
+  .dot{flex:none;width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;z-index:1;}
+  .step .body{flex:1;}
+  .step .body b{display:block;font-size:15px;}
+  .step .body span{font-size:13.5px;color:var(--sub);}
+  .note{background:var(--brand-bg);border-left:4px solid var(--brand);border-radius:6px;padding:12px 16px;font-size:13.5px;margin:12px 0;}
+  .warn{background:var(--red-bg);border-left:4px solid var(--red);border-radius:6px;padding:12px 16px;font-size:13.5px;margin:12px 0;}
+  .arch{display:flex;flex-direction:column;gap:12px;margin:16px 0;}
+  .arch .layer{border-radius:10px;padding:16px 20px;border:1px solid;position:relative;}
+  .arch .layer .lname{font-weight:800;font-size:15px;margin-bottom:8px;}
+  .arch .l1{background:#eef4ff;border-color:#bfdbfe;} .arch .l1 .lname{color:#1e40af;}
+  .arch .l2{background:#f0fdf4;border-color:#bbf7d0;} .arch .l2 .lname{color:#14532d;}
+  .arch .l3{background:#fffbeb;border-color:#fde68a;} .arch .l3 .lname{color:#92400e;}
+  .arch .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .arch .chip{background:#fff;border:1px solid #d1d5db;border-radius:6px;padding:5px 12px;font-size:13px;}
+  .arch .arrow{text-align:center;color:var(--sub);font-size:20px;line-height:1;}
+  .badge{display:inline-block;background:var(--brand);color:#fff;border-radius:4px;padding:1px 8px;font-size:12px;font-weight:700;margin-right:6px;}
+  .timeline{display:grid;grid-template-columns:110px 24px 1fr;gap:0 12px;margin:16px 0;}
+  .timeline .t-date{font-weight:700;font-size:13.5px;color:var(--brand-dark);text-align:right;padding-top:4px;}
+  .timeline .t-dot{position:relative;}
+  .timeline .t-dot::after{content:'';position:absolute;top:10px;bottom:-10px;left:11px;width:2px;background:var(--line);}
+  .timeline .t-item:last-child .t-dot::after{display:none;}
+  .timeline .t-dot span{display:block;width:10px;height:10px;border-radius:50%;background:var(--brand);margin-top:6px;margin-left:8px;}
+  .timeline .t-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:13.5px;margin-bottom:14px;}
+  .timeline .t-card b{font-size:14.5px;}
+  .tagline{font-size:15px;font-weight:600;color:var(--brand-dark);}
+  footer{margin:60px 0 30px;text-align:center;color:var(--sub);font-size:12.5px;}
+  a{color:var(--brand-dark);}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">TH4-DECOBOON · 后端重构方案</span>
+    <h1>装得清报价体系重构设计方案</h1>
+    <p class="sub">以「企业主数据为基石、套餐与自定义双报价路线、报价为不可变快照」为目标的完整重构方案——解决材料、施工、设计方案与报价业务重叠问题，消除业务展现歧义。</p>
+    <div class="meta">
+      <div><b>目标形态</b>单基石 · 双路线 · 单快照</div>
+      <div><b>业务基石</b>施工 / 主材 / 软装 / 电器 / 综合 / 全屋定制</div>
+      <div><b>版本</b>v1.0 设计稿</div>
+      <div><b>日期</b>2026-09-13</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<nav class="toc">
+  <a href="#s1">01 背景与问题</a>
+  <a href="#s2">02 目标架构</a>
+  <a href="#s3">03 实体模型</a>
+  <a href="#s4">04 套餐报价路线</a>
+  <a href="#s5">05 自定义报价路线</a>
+  <a href="#s6">06 计算规则</a>
+  <a href="#s7">07 状态与权限</a>
+  <a href="#s8">08 落地分期</a>
+  <a href="#s9">09 存量迁移</a>
+  <a href="#s10">10 决策点</a>
+</nav>
+
+<!-- ===== 01 背景与问题 ===== -->
+<section id="s1">
+  <h2><span class="no">01</span> 重构背景与问题定义</h2>
+  <p class="lead">当前 decoboon 工程中，材料、施工主数据、设计方案与报价业务存在成体系的重叠（6 组重复），且新增的 dr.design 报价体系与旧体系并行，工程结构已影响后续开发。</p>
+  <div class="card">
+    <table>
+      <tr><th style="width:120px">重叠点</th><th>重复双方</th><th style="width:200px">后果</th></tr>
+      <tr><td><span class="pill r">R1 枚举双轨</span></td><td><code>CatalogType</code>(bim) ↔ <code>QuoteItemType</code>(trade)，枚举值 1:1 重复，需双向 mapping 桥接</td><td>改一个忘一个，桥接代码膨胀</td></tr>
+      <tr><td><span class="pill r">R2 计价双轨</span></td><td><code>Price/PriceType/PriceContext</code> ↔ <code>PricingMode/QuoteCalcContext</code>，两套计价引擎</td><td>计价口径分叉风险</td></tr>
+      <tr><td><span class="pill r">R3 明细同构</span></td><td><code>DesignItem</code> ↔ <code>QuoteItem</code>，近 30 字段逐字段复制，已出现字段漂移（costPrice）</td><td>每加字段同步两处</td></tr>
+      <tr><td><span class="pill r">R4 主数据双轨</span></td><td><code>Construction/Material</code>(旧) ↔ <code>CatalogItem</code>(新统一库)</td><td>迁移桥接 fromXxx 持续维护</td></tr>
+      <tr><td><span class="pill r">R5 分类四套</span></td><td><code>Modular</code> / <code>Category</code> / <code>GiftGroup</code> / 字符串分类</td><td>分类语义各说各话</td></tr>
+      <tr><td><span class="pill r">R6 报价双入口</span></td><td><code>QuoteContext.create(Design)</code> ↔ <code>create(GiftPack)</code>，QuoteItem 挂 5 路来源</td><td>前端需判断分项来源，展现歧义</td></tr>
+    </table>
+    <div class="note"><b>重构目标：</b>保留「套餐报价」与「自定义报价」两条业务路线（这是家装行业的真实业务需求），但让两条路线都建立在同一份企业主数据基石之上；报价单采用装修行业真实结构（套餐 + 主材 + 施工 − 扣减 + 其他 + 设计费 + 管理费 + 税金），输出统一、无歧义。</div>
+  </div>
+</section>
+
+<!-- ===== 02 目标架构 ===== -->
+<section id="s2">
+  <h2><span class="no">02</span> 目标架构：单基石 · 双路线 · 单快照</h2>
+  <p class="lead">三层架构：基石层唯一可信源；组合层承载两条报价路线；快照层输出统一报价单。任何报价明细的价格、名称、数量均从基石复制为不可变快照。</p>
+  <div class="card">
+    <div class="arch">
+      <div class="layer l3">
+        <div class="lname">③ 快照层 · 报价单（不可变，输出统一结构）</div>
+        <div class="chips">
+          <span class="chip">Quotation 报价单（8 类金额分列）</span>
+          <span class="chip">PackQuote 套餐报价</span>
+          <span class="chip">PackItemDeductQuote 扣减</span>
+          <span class="chip">ConstructionQuote 施工报价</span>
+          <span class="chip">MaterialQuote 主材报价</span>
+          <span class="chip">UpgradeQuote 增值报价</span>
+        </div>
+      </div>
+      <div class="arrow">▲ 生成快照 ▲</div>
+      <div class="layer l2">
+        <div class="lname">② 组合层 · 两条报价路线（引用基石分项 + 数量）</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:240px;background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;">
+            <b style="color:#14532d;font-size:13.5px;">路线 B · 套餐报价</b>
+            <div style="font-size:12.5px;color:#374151;margin-top:4px;">GiftPack 套餐模板 = GiftGroup 分组 + GiftItem 分项（引用基石 + 标准量 + 差项公式），企业一次维护</div>
+          </div>
+          <div style="flex:1;min-width:240px;background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:10px 12px;">
+            <b style="color:#14532d;font-size:13.5px;">路线 A · 自定义报价</b>
+            <div style="font-size:12.5px;color:#374151;margin-top:4px;">Scheme 方案 = Building + spaces，设计分项 = 基石引用 + 空间 + 数量，设计师按需组合</div>
+          </div>
+        </div>
+      </div>
+      <div class="arrow">▲ 引用 ▲</div>
+      <div class="layer l1">
+        <div class="lname">① 基石层 · 企业主数据（唯一可信源）</div>
+        <div class="chips">
+          <span class="chip">CatalogItem 统一主数据</span>
+          <span class="chip">六类：施工 / 主材 / 软装 / 电器 / 综合 / 全屋定制</span>
+          <span class="chip">价格模型 materialPrice / manualPrice / costPrice + PricingMode</span>
+          <span class="chip">分类：字符串 + CatalogTree</span>
+          <span class="chip">Unit / SpaceType 公共枚举</span>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>消除歧义的关键：</b>所有组合（设计分项、套餐分项）只引用 <code>CatalogItem</code> 一个来源；所有报价明细只保存复制下来的快照字段；前端展示无需再判断「分项从哪来、价格信谁」。</div>
+  </div>
+</section>
+<!-- ===== 03 实体模型 ===== -->
+<section id="s3">
+  <h2><span class="no">03</span> 实体模型设计（四层）</h2>
+  <p class="lead">以 dr.design 报价模型为蓝图、CatalogItem 统一库为基石，合并两套体系后的目标实体模型。</p>
+  <div class="card">
+    <h3>① 基石层（bim 域）</h3>
+    <table>
+      <tr><th>实体</th><th>说明</th><th>关键字段 / 调整</th></tr>
+      <tr><td><code>CatalogItem</code></td><td>企业统一主数据，覆盖六类分项</td><td><code>type</code>(CatalogType) / category / brand / spec / unit / <code>pricingMode</code> / materialPrice / manualPrice / costPrice / formula / craft；<b>收编</b>旧 construction/material 的 const_id/mat_id 溯源列</td></tr>
+      <tr><td><code>Upgrade</code></td><td>增值项主数据（套餐/自定义报价的升级加价项）</td><td>名称 / 计价方式 / 价格（从 dr.account.cost 并入 bim）</td></tr>
+      <tr><td><code>CatalogTree</code></td><td>分类树视图（非实体）</td><td>由 category 字符串 + type 聚合生成</td></tr>
+      <tr><td><span class="pill r">下线</span></td><td>Construction / Material / Modular / Category / GiftGroup(旧) / Price / PriceType / UpgradeMethod/Mode/Type</td><td>仅作迁移期读源，新代码不再引用</td></tr>
+    </table>
+
+    <h3>② 套餐组合层（bim.pack 域重构）</h3>
+    <table>
+      <tr><th>实体</th><th>说明</th><th>关键字段 / 调整</th></tr>
+      <tr><td><code>GiftPack</code></td><td>套餐模板</td><td><code>price</code> 定价 / <code>discount</code> 折扣 / 参考面积 / 状态</td></tr>
+      <tr><td><code>GiftGroup</code></td><td>套餐分组（空间维度展示）</td><td>name / icon / spaceTypes / priority（从旧分类语义剥离，专用于套餐分组）</td></tr>
+      <tr><td><code>GiftItem</code></td><td>套餐分项（<b>改引 CatalogItem</b>）</td><td>引用 <code>CatalogItem</code> + <code>standard</code> 标准量 + unit；删除 <code>Map&lt;Construction, measure&gt;</code> / <code>Map&lt;Material, measure&gt;</code> 双路引用</td></tr>
+      <tr><td><code>GiftFormula</code></td><td>差项计价公式</td><td>standard（标准量）/ price（差项单价）/ remark——套餐超出标准部分按此计价</td></tr>
+    </table>
+
+    <h3>③ 设计组合层（design 域重构）</h3>
+    <table>
+      <tr><th>实体</th><th>说明</th><th>关键字段 / 调整</th></tr>
+      <tr><td><code>Scheme</code></td><td>设计方案（替代旧 Design）</td><td>building + designer + spaces + cupboard + cads + vr + tips</td></tr>
+      <tr><td><code>SchemeItem</code></td><td>设计分项（替代旧 DesignItem）</td><td>引用 <code>CatalogItem</code> + space + quantity；<b>删除</b> construction/material 直连与 QuoteItemType 依赖，类型统一用 CatalogType</td></tr>
+      <tr><td><code>Space</code></td><td>方案区域</td><td>type(SpaceType) / name / length / width / area / perimeter</td></tr>
+    </table>
+
+    <h3>④ 报价快照层（quotation 域，新 dr.design 蓝图）</h3>
+    <table>
+      <tr><th>实体</th><th>说明</th><th>关键字段</th></tr>
+      <tr><td><code>Quotation</code></td><td>报价单主档</td><td>building / scheme / giftPack(可空) + <b>8 类金额分列</b> + cost + rmb + sign + designer</td></tr>
+      <tr><td><code>PackQuote</code></td><td>套餐报价快照</td><td>giftPack + packAmount + measureAmount(差项合价) + deductAmount + amount + measureItems(Map&lt;GiftPackItem, PackMeasureQuote&gt;)</td></tr>
+      <tr><td><code>PackMeasureQuote</code></td><td>差项计价结果</td><td>price / standard / calculated / measure / amount / tip</td></tr>
+      <tr><td><code>PackItemDeductQuote</code></td><td>套餐分项扣减快照</td><td>giftPack + giftGroup + giftItem + 引用 CatalogItem 明细 + 金额</td></tr>
+      <tr><td><code>ConstructionQuote</code></td><td>施工报价快照</td><td>引用 CatalogItem(type=施工) + unit + price 快照 + measure + amount + upgradeQuotes</td></tr>
+      <tr><td><code>MaterialQuote</code></td><td>主材报价快照</td><td>同上（type=主材）</td></tr>
+      <tr><td><code>QuoteTemplate</code></td><td>设计师自定义报价模板</td><td>常用分项组合（GiftGroup × CatalogItem），快速生成自定义报价</td></tr>
+    </table>
+    <div class="note"><b>快照原则：</b>报价明细的 name/brand/spec/unit/price 全部在报价生成时从 CatalogItem 复制落库；之后基石改价不追溯既有报价。所有金额字段为 <code>@LogicField</code>，由计算器服务端重算。</div>
+  </div>
+</section>
+
+<!-- ===== 04 套餐报价路线 ===== -->
+<section id="s4">
+  <h2><span class="no">04</span> 业务路线 B · 套餐报价（企业预置 → 客户套餐）</h2>
+  <p class="lead">企业先维护套餐模板；客户量房后，按方案实际面积对套餐分项计价（差项/扣减/增项），最终输出统一报价单。</p>
+  <div class="card">
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="body"><b>企业维护套餐模板</b><span>GiftPack（定价/折扣）+ GiftGroup（分组）+ GiftItem（引用 CatalogItem + 标准量 + 差项公式）——基石分项被套餐引用，价格口径唯一</span></div></div>
+      <div class="step"><div class="dot">2</div><div class="body"><b>客户量房 → 创建方案 Scheme</b><span>记录 Building 各空间（类型 + 面积），作为套餐差项计价的依据</span></div></div>
+      <div class="step"><div class="dot">3</div><div class="body"><b>创建报价单 Quotation</b><span>选择 building + scheme + giftPack；预置套餐定价，其余金额归零</span></div></div>
+      <div class="step"><div class="dot">4</div><div class="body"><b>生成套餐报价 PackQuote（自动）</b><span>packAmount = 套餐定价；遍历差项公式，按 spaceTypes 匹配区域、按 Unit.Area/Count 计算实际量，<b>超出 standard 部分计价</b>；人工可修正差项实际量</span></div></div>
+      <div class="step"><div class="dot">5</div><div class="body"><b>套餐扣减</b><span>客户不要某分项 → PackItemDeductQuote：按分项标准量 × 折扣计算扣减金额；可调整单施工/主材项的扣减量（差价更新）</span></div></div>
+      <div class="step"><div class="dot">6</div><div class="body"><b>套餐外增项</b><span>添加施工/主材报价（从 CatalogItem 选）→ ConstructionQuote / MaterialQuote：复制主数据价格快照，唯一性校验（同报价单同分组同分项唯一）</span></div></div>
+      <div class="step"><div class="dot">7</div><div class="body"><b>整单重算（事件驱动）</b><span>套餐变化 → PackQuoteEvent → QuotationCalculator 整单重算；报价单金额 = 套餐 + 主材 + 施工 − 扣减 + 其他 + 设计费(5%) + 管理费(8%) + 税金</span></div></div>
+      <div class="step"><div class="dot">8</div><div class="body"><b>输出与签约</b><span>报价单展示 8 类金额分列 + 大写金额 + 成本；客户确认 → sign 签约 → 转项目</span></div></div>
+    </div>
+  </div>
+</section>
+<!-- ===== 05 自定义报价路线 ===== -->
+<section id="s5">
+  <h2><span class="no">05</span> 业务路线 A · 自定义报价（设计师按需组合）</h2>
+  <p class="lead">设计师从企业基石直接组合分项形成方案，方案确认后自动落为报价明细——适合非套餐客户的个性化报价。</p>
+  <div class="card">
+    <div class="flow">
+      <div class="step"><div class="dot">1</div><div class="body"><b>从基石选分项</b><span>设计师从 CatalogItem 统一库按类型/分类/品牌筛选，选择施工、主材、软装、电器、综合或全屋定制分项；价格/公式/工艺全部来自基石，不落自定义价</span></div></div>
+      <div class="step"><div class="dot">2</div><div class="body"><b>组装方案 Scheme</b><span>分项归属空间（区域）并指定数量 → 设计分项 SchemeItem；可关联图纸、效果图、橱柜面积</span></div></div>
+      <div class="step"><div class="dot">3</div><div class="body"><b>创建报价单 Quotation</b><span>选择 building + scheme（不选套餐）</span></div></div>
+      <div class="step"><div class="dot">4</div><div class="body"><b>分项自动落明细</b><span>方案分项按 type 自动生成 ConstructionQuote（施工）或 MaterialQuote（主材）等明细，复制基石价格快照</span></div></div>
+      <div class="step"><div class="dot">5</div><div class="body"><b>补充费用与增项</b><span>添加其他费用、税金；可随时从基石补加分项</span></div></div>
+      <div class="step"><div class="dot">6</div><div class="body"><b>整单重算与输出</b><span>QuotationCalculator 重算：施工/主材明细金额 + 设计费 + 管理费 + 税金 → 统一报价单</span></div></div>
+      <div class="step"><div class="dot">7</div><div class="body"><b>签约转项目</b><span>客户确认 → sign → 转项目履约</span></div></div>
+    </div>
+    <div class="note"><b>两条路线关系：</b>自定义报价可先基于 <code>QuoteTemplate</code>（设计师常用分项组合模板）快速生成，再增删调整；套餐报价的「增项」本质就是自定义报价能力，两条路线在同一报价单上可叠加。</div>
+  </div>
+</section>
+
+<!-- ===== 06 计算规则 ===== -->
+<section id="s6">
+  <h2><span class="no">06</span> 金额计算规则（统一口径）</h2>
+  <p class="lead">全链路唯一计价引擎：明细计算器 + 套餐计算器 + 整单计算器；报价金额永远由服务端计算，前端只读。</p>
+  <div class="card">
+    <div class="formula">
+      <span class="m">明细金额</span> = <span class="c">measureAmount</span>（<span class="m">按计价方式算工程量</span>） + <span class="c">upgradeAmount</span>（增值项）<br>
+      <span class="m">measureAmount</span> = <span class="c">calculate</span>(price, pricingMode, measure) —— 材料+人工 / 仅材料 / 仅人工 / 固定总价<br>
+      <span class="m">套餐差项</span> = Σ [ <span class="c">(实际量 − standard) × 差项单价</span> ]，非面积项金额不为负<br>
+      <span class="m">套餐报价</span> = <span class="c">套餐定价</span> + <span class="c">差项合价</span> − <span class="c">扣减合价</span><br>
+      <span class="m">扣减金额</span> = Σ [ <span class="c">分项标准量 × 单价 × 折扣</span> ]（施工 + 主材）<br>
+      <span class="m">报价总额</span> = <span class="c">套餐报价 + 主材报价 + 施工报价 − 扣减 + 其他费用 + 设计费 + 管理费 + 税金</span><br>
+      <span class="m">设计费 / 管理费</span> = <span class="c">(基础合计) × designRate(默认5%) / manageRate(默认8%)</span>（可配置）<br>
+      <span class="m">成本</span> = Σ costPrice × 数量（套餐部分 + 明细部分 − 扣减部分）
+    </div>
+    <table>
+      <tr><th>环节</th><th>触发方式</th><th>说明</th></tr>
+      <tr><td>明细计价</td><td>quote 保存时</td><td>从 CatalogItem 复制 price 快照后立即计算 measureAmount</td></tr>
+      <tr><td>套餐计价</td><td>PackQuote 保存 / 差项调整</td><td>packAmount + measureAmount − deductAmount，发 PackQuoteEvent</td></tr>
+      <tr><td>整单重算</td><td>ResponseFilter 收口</td><td>所有返回 Quotation 的 Provider 响应前自动调用 QuotationCalculator</td></tr>
+      <tr><td>事件联动</td><td>PackQuoteEvent → 监听</td><td>套餐变化自动重算整单，金额一致性由服务端保证</td></tr>
+    </table>
+  </div>
+</section>
+<!-- ===== 07 状态与权限 ===== -->
+<section id="s7">
+  <h2><span class="no">07</span> 状态机与权限模型</h2>
+  <p class="lead">报价单状态收敛为一条主线；权限沿用 th4 四级数据权限，报价按设计师归属审计。</p>
+  <div class="card">
+    <h3>报价单状态机</h3>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;margin:10px 0;">
+      <span class="pill b">拟稿 Draft</span><span style="color:var(--sub)">→</span>
+      <span class="pill b">已提交 Submitted</span><span style="color:var(--sub)">→</span>
+      <span class="pill b">已接受 Accepted（客户同步签约）</span><span style="color:var(--sub)">→</span>
+      <span class="pill b">已转项目 Converted</span>
+      <span style="color:var(--sub);margin:0 6px;">｜</span>
+      <span class="pill r">驳回 Rejected（可回到拟稿）</span>
+    </div>
+    <ul style="font-size:13.5px;color:#374151;padding-left:20px;margin:10px 0;">
+      <li>拟稿/编辑：设计师本人（auditField = designer）</li>
+      <li>提交/接受：企业内按角色（BOSS/店长/团队/本人四级）</li>
+      <li>已接受报价锁定明细，不可再增删分项；已转项目后报价只读</li>
+    </ul>
+    <h3>权限设计</h3>
+    <table>
+      <tr><th>对象</th><th>权限机制</th></tr>
+      <tr><td>Quotation / Scheme / 各明细</td><td>实现 <code>Record&lt;Employee&gt;</code>，auditor = designer；查询走 <code>@DataPermission</code>（company/store/team/designer 维度），自定义 Provider 用 <code>DataScopeSpecification</code>，禁止 findById 裸查</td></tr>
+      <tr><td>CatalogItem / GiftPack</td><td>企业级主数据：BOSS 可维护，员工只读引用；修改走通用 <code>service/update</code> + <code>@ModelUpdateInject</code> 归属保护</td></tr>
+      <tr><td>金额字段</td><td>全部 <code>@LogicField</code>，前端传入被忽略；保存/更新 Provider 只接受数量与费用类输入</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 08 落地分期 ===== -->
+<section id="s8">
+  <h2><span class="no">08</span> 落地分期计划</h2>
+  <p class="lead">按「先立基石、再建双路、后迁存量、终清旧轨」的顺序推进，每期可独立上线。</p>
+  <div class="card">
+    <div class="timeline">
+      <div class="t-item"><div class="t-date">P0 基建</div><div class="t-dot"><span></span></div><div class="t-card"><b>包结构规范 + 依赖就位</b><br>统一包名与目录（消除 dr 目录/包名不一致）；决策主数据域归属；公共枚举（CatalogType/PricingMode/Unit/SpaceType）迁入 bim.configure，删除 QuoteItemType 及双向 mapping 桥接</div></div>
+      <div class="t-item"><div class="t-date">P1 基石统一</div><div class="t-dot"><span></span></div><div class="t-card"><b>主数据并轨</b><br>CatalogItem 为唯一主数据；Construction/Material/Modular/Category 存量幂等迁移（沿用 const_id/mat_id 溯源），旧实体置只读；价格体系统一为 PricingMode + materialPrice/manualPrice/costPrice，废弃 Price/PriceType/PriceContext</div></div>
+      <div class="t-item"><div class="t-date">P2 套餐重构</div><div class="t-dot"><span></span></div><div class="t-card"><b>套餐模板落基</b><br>GiftItem 改引 CatalogItem（删除 Map&lt;Construction/Material, measure&gt;）；GiftGroup 收敛为套餐分组语义；差项公式 GiftFormula 标准化</div></div>
+      <div class="t-item"><div class="t-date">P3 报价落地</div><div class="t-dot"><span></span></div><div class="t-card"><b>新报价模型上线</b><br>Quotation + 四类明细实体 + 计算器/事件/ResponseFilter 收口；新增 dr/design/quotation 系列路由；Scheme/SchemeItem 替代旧 Design/DesignItem；前端切换新接口</div></div>
+      <div class="t-item"><div class="t-date">P4 旧轨下线</div><div class="t-dot"><span></span></div><div class="t-card"><b>存量迁移与删除</b><br>存量 Quote/QuoteItem 按来源分拆为 Quotation 明细；旧 trade/quote、DesignItem 双来源、QuoteItem 五路关联下线；数据校验与对账后删除旧表</div></div>
+    </div>
+    <div class="note"><b>上线原则：</b>P1–P3 期间新旧接口并存（新写旧读），P4 一次性切换；每一期结束都保证「报表口径一致、金额可对账」。</div>
+  </div>
+</section>
+
+<!-- ===== 09 存量迁移 ===== -->
+<section id="s9">
+  <h2><span class="no">09</span> 存量数据迁移映射</h2>
+  <p class="lead">旧表 → 新表的一对多/多对一映射关系（迁移脚本按此实现）。</p>
+  <div class="card">
+    <table>
+      <tr><th>旧（decoboon）</th><th>迁移目标（新）</th><th>迁移逻辑</th></tr>
+      <tr><td><code>Design</code> / <code>DesignItem</code></td><td><code>Scheme</code> / <code>SchemeItem</code></td><td>方案字段映射；分项按 catalogItem/construction/material 来源归一为 CatalogItem 引用 + 数量</td></tr>
+      <tr><td><code>Quote</code>（设计报价）</td><td><code>Quotation</code> + <code>ConstructionQuote</code>/<code>MaterialQuote</code></td><td>QuoteItem 按 type 拆分为施工/主材明细；金额重新按计算器口径核算</td></tr>
+      <tr><td><code>Quote</code>（套餐报价）</td><td><code>Quotation</code> + <code>PackQuote</code></td><td>giftPack 引用保留；按新差项逻辑重算 measureAmount</td></tr>
+      <tr><td><code>QuoteItem</code>（giftItem 来源）</td><td><code>PackItemDeductQuote</code> / 套餐明细</td><td>套餐内项归 PackQuote，扣减项归 Deduct</td></tr>
+      <tr><td><code>Construction</code>/<code>Material</code></td><td><code>CatalogItem</code></td><td>已存在 ensureLegacyCatalog 幂等迁移，补全 type/价格模型转换（Price → PricingMode + 价格字段）</td></tr>
+      <tr><td><code>GiftPack</code> 旧套餐</td><td><code>GiftPack</code> 新套餐</td><td>GiftItem 的 Map&lt;主数据, measure&gt; 转为 CatalogItem 引用 + standard</td></tr>
+      <tr><td><code>Modular</code>/<code>Category</code>/<code>GiftGroup</code>(旧)</td><td>分类字符串 + CatalogTree</td><td>分类树重建；GiftGroup 仅保留套餐分组语义</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 10 决策点 ===== -->
+<section id="s10">
+  <h2><span class="no">10</span> 待确认决策点</h2>
+  <p class="lead">以下决策直接影响落地细节，确认后输出逐实体字段级改动清单。</p>
+  <div class="card">
+    <table>
+      <tr><th style="width:60px">#</th><th>决策点</th><th>建议</th></tr>
+      <tr><td>D1</td><td>主数据基石归属：dr 版 Construction/Material 还是 decoboon CatalogItem？</td><td><span class="pill g">建议 CatalogItem</span>（已统一六类，带迁移溯源），dr.bim 仅作参考实现</td></tr>
+      <tr><td>D2</td><td>计价引擎以哪套为准？</td><td><span class="pill g">建议 PricingMode + materialPrice/manualPrice/costPrice</span>；Upgrade 增值项作为独立主数据保留</td></tr>
+      <tr><td>D3</td><td>报价明细是否保留 dr.design 四类实体分表？</td><td><span class="pill g">建议保留</span>（施工/主材/套餐/扣减分表，贴合报价单结构，利于对账）</td></tr>
+      <tr><td>D4</td><td>套餐「增项」是否复用自定义报价明细（ConstructionQuote/MaterialQuote）？</td><td><span class="pill g">建议复用</span>，两条路线在同一报价单叠加</td></tr>
+      <tr><td>D5</td><td>旧 Quote/QuoteItem 是否允许直接删除，还是保留只读快照表？</td><td>建议：P4 迁移核对后删除，仅留审计日志</td></tr>
+      <tr><td>D6</td><td>新报价域包路径：放 <code>com.th4.edge.decoboon.quotation</code> 还是独立顶层包？</td><td>建议按 decoboon 现有顶层域平级新建 <code>quotation</code> 域，避免历史包袱</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  装得清报价体系重构设计方案 v1.0 · 基于 th4-decoboon 代码分析与 dr.design 新体系蓝图整理 · 2026-09-13
+</footer>
+</div>
+</body>
+</html>

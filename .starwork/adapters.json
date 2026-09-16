@@ -1,0 +1,38 @@
+{
+  "schema": "starwork.adapters.state.v0.1",
+  "updated_at": "2026-09-15T12:49:30.092Z",
+  "adapters": {
+    "codex": {
+      "enabled": true,
+      "rules_entry": "AGENTS.md",
+      "rules_entry_status": "active",
+      "draft_entry": ".starwork/drafts/merged/adapter.codex.proposed.md",
+      "profile_version": "0.1",
+      "installed_by": "starwork adapt codex",
+      "installed_at": "2026-09-15T12:49:30.092Z",
+      "updated_at": "2026-09-15T12:50:00.000Z",
+      "capabilities": {
+        "rules.entry_file": "AGENTS.md",
+        "skills.discovery": "partial",
+        "sessions.detect_current": "partial",
+        "sessions.read": "supported",
+        "sessions.continue": "supported",
+        "sessions.send_message": "supported",
+        "sessions.create": "supported",
+        "memory.transcript_read": "partial"
+      },
+      "skill_mount_dirs": [
+        ".agents/skills/"
+      ],
+      "last_probe": {
+        "status": "not_run",
+        "observed_at": "2026-09-15T12:49:30.092Z",
+        "facts": [],
+        "warnings": []
+      },
+      "generated_entries": [
+        ".starwork/drafts/merged/adapter.codex.proposed.md"
+      ]
+    }
+  }
+}

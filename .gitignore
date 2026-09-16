@@ -1,4 +1,8 @@
 target/
+.env.oss.local
+.env.wechat-pay.local
+.env.prod.local
+config/wechat-pay/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -36,3 +40,10 @@ build/
 
 ### Mac OS ###
 .DS_Store
+config/wechat-pay/
+config/application-dev.yml
+.env.dev.local
+logs/
+data/
+__pycache__/
+*.pyc

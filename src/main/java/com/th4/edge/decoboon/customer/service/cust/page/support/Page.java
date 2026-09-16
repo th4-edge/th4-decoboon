@@ -1,0 +1,109 @@
+package com.th4.edge.decoboon.customer.service.cust.page.support;
+
+import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.framework.core.ScopeTypes;
+import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.access.DataScope;
+import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.DataScopeType;
+import com.th4.edge.tenant.user.context.TenantContext;
+import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * 客户分页（显式实现，支持门店维度）。
+ *
+ * <p>数据范围与 {@code DataScopeRequestFilter} 口径保持一致：企业负责人=全公司、
+ * 门店店长=本门店、团队负责人=本团队、普通员工=本人负责客户；
+ * 在此基础上支持 {@code storeId} 再按门店收窄（非企业负责人忽略前端传值，固定本门店）。</p>
+ */
+@Note("客户分页")
+@Properties(allow = {
+        @AllowProperties(model = Customer.class,
+                properties = {"custId", "name", "telNo", "gender", "source", "community", "addr", "area",
+                        "budget", "status", "owner", "wechatAdded", "wechatNo", "wechatAddedAt", "visitCount", "lastVisitAt", "lastFollowAt",
+                        "nextFollowAt", "pendingMeasureAt", "measureAt", "measureRequestedAt", "handedOffAt", "designer", "createTime"}),
+        @AllowProperties(model = Employee.class,
+                properties = {"empId", "name"})
+})
+@Service("customer/customer/page")
+@Scope(ScopeTypes.PROTOTYPE)
+public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Page {
+
+    @User
+    private Employee employee;
+
+    @AutoInject
+    private Integer current;
+
+    @AutoInject
+    private Integer size;
+
+    /** 门店维度筛选；为空表示不按门店收窄。 */
+    @AutoInject
+    private Long storeId;
+
+    private final TenantContext tenantContext;
+    private final DataScopeContext dataScopeContext;
+    private final CustomerRepository customerRepository;
+
+    public Page(TenantContext tenantContext,
+                DataScopeContext dataScopeContext,
+                CustomerRepository customerRepository) {
+        this.tenantContext = tenantContext;
+        this.dataScopeContext = dataScopeContext;
+        this.customerRepository = customerRepository;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<Customer> call(Customer request) {
+        Employee currentEmployee = tenantContext.requireEmployee(employee);
+        DataScope scope = dataScopeContext.requireScope(currentEmployee);
+        List<Customer> all = scoped(scope);
+        Long effectiveStoreId = resolveStoreId(scope, storeId);
+        if (effectiveStoreId != null) {
+            all = all.stream()
+                    .filter(item -> item.getStore() != null && effectiveStoreId.equals(item.getStore().getStoreId()))
+                    .toList();
+        }
+        int page = current == null || current < 1 ? 0 : current - 1;
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
+        int from = Math.min(page * pageSize, all.size());
+        int to = Math.min(from + pageSize, all.size());
+        return new PageImpl<>(all.subList(from, to), PageRequest.of(page, pageSize), all.size());
+    }
+
+    /** 与数据权限过滤器一致的角色数据范围。 */
+    private List<Customer> scoped(DataScope scope) {
+        Long comId = scope.comId();
+        return switch (scope.type()) {
+            case Company -> customerRepository.findByCompany_ComId(comId);
+            case Store -> customerRepository.findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(comId, scope.storeId());
+            case Team -> customerRepository.findByCompany_ComIdAndTeam_TeamIdOrderByCustIdDesc(comId, scope.teamId());
+            case Self -> customerRepository.findByCompany_ComIdAndOwner_EmpId(comId, scope.empId());
+        };
+    }
+
+    /** 门店维度：企业负责人可跨门店，其他角色固定本门店，避免越权。 */
+    private Long resolveStoreId(DataScope scope, Long requested) {
+        if (requested == null) {
+            return null;
+        }
+        if (scope.type() != DataScopeType.Company) {
+            return scope.storeId();
+        }
+        return requested;
+    }
+}

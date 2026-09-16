@@ -1,0 +1,2 @@
+name: backend-prod-sentinel
+description: Monitor the th4-decoboon production backend, archive incidents, and perform guarded code-fix releases for confirmed safe bugs.

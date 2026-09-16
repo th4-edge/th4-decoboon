@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装得清双端工程研究 · th4-decoboon × th4-decoboon-app</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316A394'/%3E%3Cpath d='M9 16h14M16 9v14' stroke='%23fff' stroke-width='3.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --brand:#16A394; --brand-dk:#0E8A7D; --brand-deep:#096C64; --brand-soft:#E8F7F5;
+    --ink:#17212B; --ink-2:#465260; --ink-3:#778390; --ink-4:#AEB8C2;
+    --line:#E3E9ED; --line-2:#EEF2F4; --bg:#F4F7F8; --card:#FFFFFF;
+    --ok:#07A35A; --warn:#E67E22; --danger:#E5484D; --purple:#6958C8; --blue:#3568C7;
+    --radius:14px; --radius-lg:20px;
+    --shadow:0 2px 10px rgba(15,23,42,.05), 0 10px 30px rgba(15,23,42,.06);
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  ::selection{background:var(--brand-soft)}
+  a{color:var(--brand-dk);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+  /* ===== 顶部导航 ===== */
+  .topnav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-2)}
+  .topnav .wrap{display:flex;align-items:center;gap:18px;height:56px;overflow-x:auto;white-space:nowrap}
+  .topnav .logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:var(--ink);flex-shrink:0}
+  .topnav .logo i{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#1FB5A8,#0B786F);display:inline-block;position:relative}
+  .topnav .logo i::before{content:'';position:absolute;left:50%;top:50%;width:12px;height:12px;border:2px solid #fff;border-radius:50%;transform:translate(-50%,-50%)}
+  .topnav nav{display:flex;gap:2px}
+  .topnav nav a{color:var(--ink-2);font-size:13.5px;padding:6px 11px;border-radius:8px;flex-shrink:0}
+  .topnav nav a:hover{background:var(--brand-soft);color:var(--brand-dk);text-decoration:none}
+
+  /* ===== Hero ===== */
+  .hero{padding:64px 0 46px;background:radial-gradient(1200px 420px at 20% -10%,rgba(22,163,148,.14),transparent 60%),radial-gradient(900px 360px at 90% 0%,rgba(53,104,199,.08),transparent 55%)}
+  .hero .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--brand-dk);background:var(--brand-soft);border:1px solid rgba(22,163,148,.25);padding:5px 12px;border-radius:999px;letter-spacing:.5px}
+  .hero h1{font-size:clamp(28px,4.4vw,44px);line-height:1.22;font-weight:800;margin:18px 0 12px;letter-spacing:-.5px}
+  .hero h1 em{font-style:normal;color:var(--brand-dk)}
+  .hero p.sub{color:var(--ink-2);font-size:15.5px;max-width:760px}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .badge{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:132px;box-shadow:var(--shadow)}
+  .badge b{display:block;font-size:19px;color:var(--brand-dk);font-weight:800}
+  .badge span{font-size:12px;color:var(--ink-3)}
+
+  /* ===== 章节 ===== */
+  section{padding:52px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .sec-no{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--brand);background:var(--brand-soft);padding:4px 10px;border-radius:8px;flex-shrink:0}
+  h2{font-size:24px;font-weight:800;letter-spacing:-.3px}
+  .sec-sub{color:var(--ink-3);font-size:13.5px;margin:6px 0 22px}
+  h3{font-size:17.5px;font-weight:700;margin:30px 0 12px;padding-left:11px;border-left:4px solid var(--brand);line-height:1.4}
+  h4{font-size:15px;font-weight:700;margin:20px 0 8px}
+  p{margin:8px 0;color:var(--ink-2)}
+  p.lead{color:var(--ink);font-size:15.5px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;margin:16px 0;box-shadow:var(--shadow)}
+  .card.tight{padding:18px 20px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+
+  /* ===== 表格 ===== */
+  .tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+  table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13.5px}
+  th{background:#FAFCFC;font-weight:700;text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--ink);font-size:13px}
+  td{padding:9px 14px;border-bottom:1px solid var(--line-2);color:var(--ink-2);vertical-align:top;word-break:break-word}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#FBFDFD}
+  code{font-family:var(--mono);font-size:12.3px;background:#F0F4F4;border:1px solid var(--line-2);border-radius:5px;padding:1.5px 5px;color:#0B6B60}
+  code.k{background:var(--brand-soft);border-color:rgba(22,163,148,.25);color:var(--brand-deep)}
+
+  /* ===== 列表 ===== */
+  ul.clean{list-style:none;margin:8px 0}
+  ul.clean li{padding:5px 0 5px 22px;position:relative;color:var(--ink-2)}
+  ul.clean li::before{content:'';position:absolute;left:4px;top:14px;width:7px;height:7px;border-radius:50%;background:var(--brand)}
+  ul.clean li b{color:var(--ink)}
+  .tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;margin-right:4px}
+  .tag.g{background:#EAF8F0;color:var(--ok)} .tag.o{background:#FFF4E8;color:var(--warn)} .tag.p{background:#F0EEFC;color:var(--purple)} .tag.b{background:#EEF3FC;color:var(--blue)} .tag.d{background:#FDECEC;color:var(--danger)} .tag.t{background:var(--brand-soft);color:var(--brand-dk)}
+
+  /* ===== 图表容器 ===== */
+  .chart{width:100%;height:340px}
+  .chart.tall{height:430px}
+  .chart-note{font-size:12px;color:var(--ink-4);margin-top:2px}
+
+  /* ===== SVG 架构图 ===== */
+  .arch{width:100%;height:auto;display:block;margin:10px 0}
+  .arch text{font-size:12.5px}
+  .arch .box{fill:#fff;stroke:#C9DBD8;stroke-width:1.2;rx:10}
+  .arch .box.hl{fill:var(--brand-soft);stroke:var(--brand)}
+  .arch .box.tn{fill:#F6FAFA;stroke:var(--line)}
+  .arch .lbl{fill:var(--ink);font-weight:600}
+  .arch .lbl2{fill:var(--ink-3);font-size:11.5px}
+  .arch .edge{stroke:#9DB8B3;stroke-width:1.4;fill:none}
+  .arch .edge-arr{stroke:#9DB8B3;stroke-width:1.4;fill:#9DB8B3}
+  .arch .hl-text{fill:var(--brand-dk);font-weight:700}
+
+  /* ===== 状态机 ===== */
+  .sm{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:14px 0}
+  .sm-item{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--card)}
+  .sm-item .sm-name{font-weight:700;font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .sm-item .sm-name i{width:9px;height:9px;border-radius:3px;display:inline-block}
+  .sm-item .flow{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font-size:12px;color:var(--ink-2)}
+  .sm-item .st{background:#F0F4F4;border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-family:var(--mono);font-size:11.5px}
+  .sm-item .st.hot{background:var(--brand-soft);border-color:rgba(22,163,148,.35);color:var(--brand-deep);font-weight:600}
+  .sm-item .ar{color:var(--ink-4)}
+  .sm-item .alt{width:100%;font-size:11px;color:var(--warn);margin-top:2px}
+
+  /* ===== callout ===== */
+  .callout{border-radius:12px;padding:15px 18px;margin:16px 0;font-size:14px;border:1px solid}
+  .callout.t{background:var(--brand-soft);border-color:rgba(22,163,148,.3);color:#0B5B52}
+  .callout.w{background:#FFF9F0;border-color:rgba(230,126,34,.3);color:#8A4B0E}
+  .callout.d{background:#FDF2F2;border-color:rgba(229,72,77,.3);color:#8E2A2E}
+  .callout b{font-weight:700}
+  .callout code{background:rgba(255,255,255,.75)}
+
+  /* ===== 代码块 ===== */
+  pre{background:#0F1D1B;color:#DDEBE8;border-radius:12px;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.3px;line-height:1.65;margin:12px 0}
+  pre .c{color:#6E8B86} pre .s{color:#A8D8C0} pre .k{color:#6FD3C2} pre .t{color:#E8C77D}
+
+  /* ===== 底部 ===== */
+  footer{margin-top:70px;border-top:1px solid var(--line);padding:26px 0 40px;color:var(--ink-4);font-size:12.5px}
+  .backtop{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:12px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 8px 20px rgba(14,138,125,.35);opacity:0;pointer-events:none;transition:.25s}
+  .backtop.show{opacity:1;pointer-events:auto}
+  @media(max-width:760px){.hero{padding:44px 0 32px}.topnav nav a{padding:6px 8px;font-size:12.5px}}
+
+  /* 移动端图表容器高度 */
+  @media(max-width:760px){.chart{height:300px}}
+</style>
+</head>
+<body>
+
+<header class="topnav">
+  <div class="wrap">
+    <span class="logo"><i></i>装得清 · 双端工程研究</span>
+    <nav>
+      <a href="#s1">总览</a><a href="#s2">总体架构</a><a href="#s3">后端核心</a>
+      <a href="#s4">App 前端</a><a href="#s5">双端协作</a><a href="#s6">规范速查</a><a href="#s7">心智模型</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="kicker">工程代码研究 · 2026-09-13</span>
+    <h1>装得清双端工程研究<br><em>th4-decoboon</em> × <em>th4-decoboon-app</em></h1>
+    <p class="sub">以「领域模型驱动」为内核的家装企业 SaaS：后端以 th4 Provider 替代 Controller、无 DTO、对象关联建模；小程序端以项目工地履约为中心、按领域分包、按角色开放工作台。本报告系统梳理两个工程的设计思路、实现规范与双端协作约定。</p>
+    <div class="badges">
+      <div class="badge"><b>461</b><span>后端 Java 文件 · 3.1 万行</span></div>
+      <div class="badge"><b>110</b><span>App 源码文件 · 1.5 万行</span></div>
+      <div class="badge"><b>506</b><span>th4-framework 框架文件</span></div>
+      <div class="badge"><b>15</b><span>App 业务领域 · 50 页面</span></div>
+      <div class="badge"><b>10+1</b><span>员工岗位 + 业主角色</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 1 工程总览 ================= -->
+<section id="s1">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">01</span><h2>工程总览</h2></div>
+    <p class="sec-sub">安徽昭青「装得清 / 装得清」：面向中小家装企业的 SaaS 平台，客户转化 → 设计报价 → 项目施工履约 → 验收结算全链路。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>后端 th4-decoboon</h4>
+        <ul class="clean">
+          <li><b>技术栈：</b>Java 22 · Spring Boot 3.4 · th4-framework（自研框架）· JPA · MySQL · Redisson · POI · AgentScope</li>
+          <li><b>定位：</b>业务与租户体系，<code>com.th4.edge</code> 下分 <code>components</code>（通用组件）/ <code>tenant</code>（租户·用户·订阅）/ <code>decoboon</code>（业务域）</li>
+          <li><b>核心心智：</b>Provider 替代 Controller，<b>不存在 DTO/VO</b>；入参 = 实体、响应 = 实体、关联 = 对象关联</li>
+          <li><b>权威规范：</b><code>rules.md</code>（57KB 代码生成规范）+ <code>docs/design/</code>（10+ 份领域设计）+ AGENTS.md</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>App th4-decoboon-app</h4>
+        <ul class="clean">
+          <li><b>技术栈：</b>uni-app（Vue 3.4 + TypeScript 5.4 + Vite 5）→ 微信小程序 / H5</li>
+          <li><b>定位：</b>装企协同小程序，以「项目/工地履约」为业务枢纽，角色化工作台</li>
+          <li><b>核心心智：</b>无 DTO 心智（页面直接消费领域实体）；权限先于渲染；状态机在后端；路由集中管理；品牌 token 统一</li>
+          <li><b>权威规范：</b>AGENTS.md + <code>docs/</code>（9 份业务/交互/视觉文档）+ 后端 rules.md 第 9 章联动</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>代码规模分布</h4>
+      <div id="chartScale" class="chart"></div>
+      <p class="chart-note">来源：两仓库实际统计（不含 node_modules / target）。后端另有 docs/design 领域设计 10+ 份、租户·用户体系设计 2 份；App 另有 docs 9 份。</p>
+    </div>
+
+    <div class="card">
+      <h4>业务链路总览（后端强业务闭环）</h4>
+      <svg class="arch" viewBox="0 0 1120 190" role="img" aria-label="业务链路">
+        <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9DB8B3"/></marker></defs>
+        <g font-family="inherit">
+          <rect x="10" y="60" width="130" height="70" class="box tn"/><text x="75" y="86" text-anchor="middle" class="lbl">BIM 主数据</text><text x="75" y="104" text-anchor="middle" class="lbl2">工程·材料·套餐</text><text x="75" y="119" text-anchor="middle" class="lbl2">(按企业复制)</text>
+          <line x1="140" y1="95" x2="180" y2="95" class="edge" marker-end="url(#ar1)"/>
+          <rect x="182" y="60" width="132" height="70" class="box tn"/><text x="248" y="82" text-anchor="middle" class="lbl">统一材料库</text><text x="248" y="100" text-anchor="middle" class="lbl2">企业维护价格/公式</text><text x="248" y="115" text-anchor="middle" class="lbl2">设计师只能选库</text>
+          <line x1="314" y1="95" x2="354" y2="95" class="edge" marker-end="url(#ar1)"/>
+          <rect x="356" y="60" width="132" height="70" class="box"/><text x="422" y="82" text-anchor="middle" class="lbl">诉求→设计方案</text><text x="422" y="100" text-anchor="middle" class="lbl2">区域尺寸→分项</text><text x="422" y="115" text-anchor="middle" class="lbl2">设计报价(服务端汇算)</text>
+          <line x1="488" y1="95" x2="528" y2="95" class="edge" marker-end="url(#ar1)"/>
+          <rect x="530" y="60" width="126" height="70" class="box"/><text x="593" y="82" text-anchor="middle" class="lbl">谈单 PPT</text><text x="593" y="100" text-anchor="middle" class="lbl2">方案讲解 20 章节</text><text x="593" y="115" text-anchor="middle" class="lbl2">客户确认报价</text>
+          <line x1="656" y1="95" x2="696" y2="95" class="edge" marker-end="url(#ar1)"/>
+          <rect x="698" y="60" width="120" height="70" class="box hl"/><text x="758" y="86" text-anchor="middle" class="lbl hl-text">Project 项目</text><text x="758" y="104" text-anchor="middle" class="lbl2">报价接受后生成</text>
+          <line x1="818" y1="95" x2="858" y2="95" class="edge" marker-end="url(#ar1)"/>
+          <rect x="860" y="60" width="120" height="70" class="box"/><text x="920" y="82" text-anchor="middle" class="lbl">阶段/任务/材料</text><text x="920" y="100" text-anchor="middle" class="lbl2">按套餐施工项展开</text><text x="920" y="115" text-anchor="middle" class="lbl2">任务推进+材料到场</text>
+          <line x1="980" y1="95" x2="1020" y2="95" class="edge" marker-end="url(#ar1)"/>
+          <rect x="1022" y="60" width="92" height="70" class="box hl"/><text x="1068" y="86" text-anchor="middle" class="lbl hl-text">验收闭环</text><text x="1068" y="104" text-anchor="middle" class="lbl2">阶段/项目验收</text><text x="1068" y="119" text-anchor="middle" class="lbl2">状态自动刷新</text>
+        </g>
+      </svg>
+      <p class="chart-note">全链路状态变化由后端 Context（如 <code>ProjectContext</code>）统一收敛推进，实体只承载数据；App 端只提交业务动作后重新拉取。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2 总体架构 ================= -->
+<section id="s2">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">02</span><h2>总体架构设计思路</h2></div>
+    <p class="sec-sub">一条主线：后端以「领域模型驱动」替代 MVC 的「接口翻译」；App 以「领域分包 + 角色开放」消费后端 Provider，状态机与权限永远在后端。</p>
+
+    <h3>2.1 后端：th4 领域模型驱动的五条铁律</h3>
+    <div class="card">
+      <table>
+        <colgroup><col style="width:22%"><col style="width:38%"><col style="width:40%"></colgroup>
+        <thead><tr><th>铁律</th><th>传统 MVC</th><th>th4 领域模型驱动</th></tr></thead>
+        <tbody>
+          <tr><td><b>入口</b></td><td>Controller + @RequestMapping</td><td><code class="k">Provider</code>（框架自动扫描 @Service 注册路由，无 Controller）</td></tr>
+          <tr><td><b>入参</b></td><td>DTO / VO / Query 对象</td><td><b>领域模型实体</b>（Customer、Quote…），工程中不存在 DTO</td></tr>
+          <tr><td><b>字段获取</b></td><td>@RequestBody DTO + getter</td><td>Provider 成员变量 + <code class="k">@AutoInject</code> + 校验注解</td></tr>
+          <tr><td><b>响应</b></td><td>VO / Result 包装</td><td>实体对象（<code>Customer</code>、<code>Page&lt;Customer&gt;</code>）</td></tr>
+          <tr><td><b>实体关联</b></td><td>裸外键 Long id</td><td><b>对象关联</b>：<code>Employee emp</code> + <code>@ManyToOne(LAZY)</code></td></tr>
+          <tr><td><b>序列化控制</b></td><td>@JsonIgnore / 手写 VO</td><td>具体 Provider 用 <code class="k">@Properties</code>；通用 ModelService 用 <code class="k">@ServiceProperties</code></td></tr>
+          <tr><td><b>权限</b></td><td>登录后即可访问</td><td><code class="k">@DataPermission</code> 四级数据范围，每次查询服务端强约束</td></tr>
+        </tbody>
+      </table>
+      <div class="callout t"><b>一句话记忆：</b>服务 = 为实体服务；入参 = 实体；字段 = AutoInject；响应 = 实体；关联 = ManyToOne；具体 Provider 序列化 = @Properties。</div>
+    </div>
+
+    <h3>2.2 后端三层包结构（components / tenant / decoboon）</h3>
+    <svg class="arch" viewBox="0 0 1120 420" role="img" aria-label="后端分层架构">
+      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9DB8B3"/></marker></defs>
+      <!-- 第一层：请求入口 -->
+      <text x="20" y="28" class="lbl" font-size="13.5">请求入口</text>
+      <rect x="20" y="40" width="1070" height="52" rx="10" class="box"/>
+      <text x="40" y="63" class="lbl2">HTTP JSON / multipart</text>
+      <text x="40" y="81" class="lbl2">→ CustomUrlHandlerMapping（@Controller + Provider 的 bean 注册为 URI）</text>
+      <text x="860" y="81" class="lbl2">→ ApiHttpProcessor</text>
+      <line x1="555" y1="92" x2="555" y2="118" class="edge" marker-end="url(#ar2)"/>
+
+      <!-- 第二层：Provider 调用链 -->
+      <text x="20" y="136" class="lbl" font-size="13.5">Provider 调用链（ProviderAspect 拦截 Provider.call）</text>
+      <rect x="20" y="148" width="1070" height="86" rx="10" class="box"/>
+      <g font-size="12">
+        <rect x="40" y="166" width="200" height="50" rx="8" class="box hl"/>
+        <text x="140" y="186" text-anchor="middle" class="lbl">RequestFilter 链</text>
+        <text x="140" y="203" text-anchor="middle" class="lbl2" font-size="11">AutoInject → 校验 → Security/@User</text>
+        <text x="140" y="163" text-anchor="middle" class="lbl2" font-size="11">Criteria 构建 → DataScope 权限追加</text>
+        <line x1="240" y1="191" x2="262" y2="191" class="edge" marker-end="url(#ar2)"/>
+        <rect x="266" y="166" width="210" height="50" rx="8" class="box"/>
+        <text x="371" y="186" text-anchor="middle" class="lbl">Provider.call(request)</text>
+        <text x="371" y="203" text-anchor="middle" class="lbl2" font-size="11">@ModelSaveInject/@ModelUpdateInject 装配</text>
+        <line x1="476" y1="191" x2="498" y2="191" class="edge" marker-end="url(#ar2)"/>
+        <rect x="502" y="166" width="210" height="50" rx="8" class="box"/>
+        <text x="607" y="186" text-anchor="middle" class="lbl">Repository / EntityManager</text>
+        <text x="607" y="203" text-anchor="middle" class="lbl2" font-size="11">JPA · 事务 · DataScopeSpecification</text>
+        <line x1="712" y1="191" x2="734" y2="191" class="edge" marker-end="url(#ar2)"/>
+        <rect x="738" y="166" width="200" height="50" rx="8" class="box hl"/>
+        <text x="838" y="186" text-anchor="middle" class="lbl">ResponseFilter 链</text>
+        <text x="838" y="203" text-anchor="middle" class="lbl2" font-size="11">@Properties / @ServiceProperties 裁剪</text>
+        <text x="838" y="163" text-anchor="middle" class="lbl2" font-size="11">统一响应信封</text>
+      </g>
+      <line x1="555" y1="234" x2="555" y2="262" class="edge" marker-end="url(#ar2)"/>
+
+      <!-- 第三层：业务域 -->
+      <text x="20" y="282" class="lbl" font-size="13.5">业务域（com.th4.edge）</text>
+      <g font-size="12">
+        <rect x="20" y="294" width="330" height="104" rx="10" class="box tn"/>
+        <text x="36" y="314" class="lbl">components 通用组件层</text>
+        <text x="36" y="334" class="lbl2" font-size="11">sms(阿里云 DYPNS) · oss · payment · lock(Redisson)</text>
+        <text x="36" y="352" class="lbl2" font-size="11">agent(AgentScope) · data</text>
+        <text x="36" y="378" class="lbl2" font-size="11" fill="#8A4B0E">只放能力接口 + sdk.{厂商} 实现；禁止 Provider/@AutoInject/业务枚举</text>
+
+        <rect x="372" y="294" width="350" height="104" rx="10" class="box tn"/>
+        <text x="388" y="314" class="lbl">tenant 租户体系</text>
+        <text x="388" y="334" class="lbl2" font-size="11">user：Company/Store/Team/Employee/Credentials/Invite</text>
+        <text x="388" y="352" class="lbl2" font-size="11">access：@DataPermission + DataScopeContext/Criteria/Specification</text>
+        <text x="388" y="370" class="lbl2" font-size="11">+ RequestFilter/CrudAspect</text>
+        <text x="388" y="390" class="lbl2" font-size="11">billing：Plan/Subscription/Order/BalanceLedger</text>
+
+        <rect x="744" y="294" width="346" height="104" rx="10" class="box hl"/>
+        <text x="760" y="314" class="lbl hl-text">decoboon 业务域</text>
+        <text x="760" y="334" class="lbl2" font-size="11">bim(工艺/材料/套餐) · customer · trade(quote)</text>
+        <text x="760" y="352" class="lbl2" font-size="11">project(施工闭环) · design(设计转化) · finance</text>
+        <text x="760" y="370" class="lbl2" font-size="11">statistic(唯一允许自定义 Request 的域) · collab</text>
+        <text x="760" y="390" class="lbl2" font-size="11" fill="#8A4B0E">Provider 路由 = {域}/{对象}/{能力}，不带前缀</text>
+      </g>
+      <line x1="555" y1="398" x2="555" y2="410" class="edge"/>
+    </svg>
+    <p class="chart-note">边界一句话：<b>components 决定「怎么发」，业务领域决定「何时发、发给谁、发完后做什么」</b>；tenant.access 承载全部数据权限公共能力，业务域只声明与编排。</p>
+
+    <h3>2.3 App 端：领域分包 + 角色开放</h3>
+    <svg class="arch" viewBox="0 0 1120 330" role="img" aria-label="App 架构">
+      <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9DB8B3"/></marker></defs>
+      <g font-size="12">
+        <!-- 页面层 -->
+        <text x="20" y="26" class="lbl" font-size="13.5">页面层 pages（50 页）</text>
+        <rect x="20" y="36" width="340" height="120" rx="10" class="box"/>
+        <text x="36" y="58" class="lbl2">project/detail · customer/list · task/edit</text>
+        <text x="36" y="76" class="lbl2">stage/detail · accept/edit · design/talk</text>
+        <text x="36" y="94" class="lbl2">finance/* · quote/* · index(角色工作台)…</text>
+        <text x="36" y="122" class="lbl2" fill="#8A4B0E">只调领域 API；onShow 重拉；不维护本地状态机</text>
+        <text x="36" y="141" class="lbl2" fill="#8A4B0E">路由统一 P.* 常量；UI 只用 $jzb-* token</text>
+        <line x1="360" y1="96" x2="392" y2="96" class="edge" marker-end="url(#ar3)"/>
+
+        <!-- 角色层 -->
+        <text x="398" y="26" class="lbl" font-size="13.5">角色与权限 roles</text>
+        <rect x="398" y="36" width="320" height="120" rx="10" class="box tn"/>
+        <text x="414" y="58" class="lbl2">catalog.ts：ROLE_META / ROLE_TABS / ROLE_ACTIONS</text>
+        <text x="414" y="76" class="lbl2">permission.ts：Capability 矩阵（view:/edit:/act:）</text>
+        <text x="414" y="94" class="lbl2">guard.ts：路由守卫</text>
+        <text x="414" y="122" class="lbl2" fill="#8A4B0E">前端矩阵只管可见性，服务端仍强校验数据归属</text>
+        <line x1="718" y1="96" x2="750" y2="96" class="edge" marker-end="url(#ar3)"/>
+
+        <!-- 领域层 -->
+        <text x="756" y="26" class="lbl" font-size="13.5">领域层 domains（15 域）</text>
+        <rect x="756" y="36" width="344" height="120" rx="10" class="box hl"/>
+        <text x="772" y="58" class="lbl2">identity · crm · trade · project · schedule · site</text>
+        <text x="772" y="76" class="lbl2">acceptance · material · finance · collab · statistic</text>
+        <text x="772" y="94" class="lbl2">design · catalog · base · common</text>
+        <text x="772" y="122" class="lbl2" fill="#8A4B0E">每域 model.ts + api.ts + meta.ts（+scope.ts）</text>
+        <text x="772" y="141" class="lbl2" fill="#8A4B0E">api.ts 封装 Provider 路由 + normalize 适配</text>
+        <line x1="756" y1="96" x2="728" y2="96" class="edge" marker-end="url(#ar3)"/>
+      </g>
+      <!-- 汇聚到 http -->
+      <rect x="20" y="190" width="1070" height="58" rx="10" class="box tn"/>
+      <text x="40" y="213" class="lbl">跨领域技术能力 core / config / composables</text>
+      <text x="40" y="233" class="lbl2">http.ts（POST + Provider 信封 {success,data,errorCode} + listOf 解包）· format.ts · config（apiBase/tokenKey/P.*）</text>
+      <line x1="555" y1="156" x2="555" y2="188" class="edge" marker-end="url(#ar3)" stroke-dasharray="4 3"/>
+      <line x1="555" y1="248" x2="555" y2="276" class="edge" marker-end="url(#ar3)"/>
+      <!-- 后端 -->
+      <rect x="240" y="278" width="630" height="42" rx="10" class="box hl"/>
+      <text x="555" y="303" text-anchor="middle" class="lbl hl-text">th4 后端 Provider（/api/{域}/{对象}/{能力}）→ 数据权限 → JPA</text>
+    </svg>
+    <p class="chart-note">依赖方向单一：pages → domains/*/api + roles/permission → core/http → 后端 Provider。禁止页面直接 uni.request 或拼接路由。</p>
+  </div>
+</section>
+
+<!-- ================= 3 后端核心设计 ================= -->
+<section id="s3">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">03</span><h2>后端核心设计</h2></div>
+    <p class="sec-sub">从 Provider 的「为谁服务」出发，逐层展开服务声明、注解体系、数据权限闭环、实体规范与序列化控制。</p>
+
+    <h3>3.1 Provider 模式：服务 = 为实体服务</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>声明（接口）</h4>
+        <pre><span class="c">// customer/service/cust/save/Save.java（接口）</span>
+<span class="k">public interface</span> Save <span class="k">extends</span> Provider&lt;Customer, Customer&gt;, Security {
+}</pre>
+        <p class="chart-note">Request 直接是实体类型（无 DTO）；需要登录的接口继承 <code>Security</code>。</p>
+      </div>
+      <div class="card">
+        <h4>实现（support 包）</h4>
+        <pre><span class="c">// customer/service/cust/save/support/Save.java</span>
+@<span class="k">Service</span>(<span class="s">"customer/customer/save"</span>)   <span class="c">// 路由</span>
+@Scope(ScopeTypes.PROTOTYPE)
+<span class="k">public class</span> Save <span class="k">implements</span> ...Save {
+    @<span class="k">User</span> <span class="k">private</span> Employee employee;   <span class="c">// 登录员工</span>
+    @<span class="k">AutoInject</span> @<span class="k">NotEmpty</span> <span class="k">private</span> String name;
+    @<span class="k">AutoInject</span> <span class="k">private</span> Long ownerId;
+    <span class="k">public</span> Customer call(@<span class="k">ModelSaveInject</span> Customer request) {
+        Employee current = tenantContext.requireEmployee(employee);
+        Employee owner = customerContext.resolveOwner(current, ownerId, current);
+        customerContext.applyOwnership(request, owner);
+        request.setStatus(CustStatus.New);   <span class="c">// 服务端覆盖安全字段</span>
+        <span class="k">return</span> customerRepository.save(request);
+    }
+}</pre>
+      </div>
+    </div>
+
+    <h4>Provider 注解体系</h4>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:18%"><col style="width:42%"><col style="width:40%"></colgroup>
+        <thead><tr><th>注解</th><th>职责</th><th>要点</th></tr></thead>
+        <tbody>
+          <tr><td><code class="k">@Service("域/对象/能力")</code></td><td>注册 Provider 路由（框架扫描 Spring @Service + Provider 接口的 bean）</td><td>不用 @Component；路由不再带 decoboon/ 前缀</td></tr>
+          <tr><td><code class="k">@AutoInject</code></td><td>把请求 JSON 展开的同名变量注入 Provider 成员变量</td><td>支持别名、对象封装、集合/枚举/日期；前端字段一律走它</td></tr>
+          <tr><td><code class="k">@ModelSaveInject</code> / <code>@ModelUpdateInject</code></td><td>按请求变量组装/合并模型对象（标注在 call 参数上）</td><td><b>不落库、不做数据权限</b>；save/persist 与归属覆盖由 Provider/切面完成</td></tr>
+          <tr><td><code class="k">@User</code></td><td>注入当前登录 Employee（框架校验合法性）</td><td>Request=Employee 用参数注入；其他 Request 用字段注入；禁止与 @AutoInject 混用</td></tr>
+          <tr><td><code class="k">@NotNull/@NotEmpty/@Length</code></td><td>调用前声明式校验</td><td>禁止在 call() 里手写 if null throw</td></tr>
+          <tr><td><code class="k">@ServiceName</code></td><td>声明通用 ModelService 能力名（page/save/…）</td><td>仅框架通用 CRUD 使用；自定义业务 Provider 禁用</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout t"><b>通用 CRUD 优先走框架 ModelService：</b>URL 约定 <code>{model}-service</code>（如 user-save、user-update），覆盖 build/save/update/delete/info/page/list/tree/enums/count/unique/report；只有通用能力覆盖不了的业务动作才写自定义 Provider。</div>
+
+    <h3>3.2 数据权限体系（最高优先级约束）</h3>
+    <p class="lead">装得清的权限不是菜单权限，而是<b>每次访问业务数据时服务端重新计算的强约束</b>。四级数据范围与角色显式绑定：</p>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:20%"><col style="width:20%"><col style="width:28%"><col style="width:32%"></colgroup>
+        <thead><tr><th>数据范围</th><th>角色</th><th>查询条件</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>Company</code></td><td>BOSS</td><td><code>com_id = ?</code></td><td>当前企业全量</td></tr>
+          <tr><td><code>Store</code></td><td>门店店长</td><td><code>com_id + store_id</code></td><td>当前企业 + 当前门店</td></tr>
+          <tr><td><code>Team</code></td><td>团队负责人</td><td><code>com_id + team_id</code></td><td>当前企业 + 当前团队</td></tr>
+          <tr><td><code>Self</code></td><td>普通员工</td><td><code>com_id + emp_id</code></td><td>当前企业 + 本人负责</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>运行时组件闭环</h4>
+    <svg class="arch" viewBox="0 0 1120 300" role="img" aria-label="数据权限闭环">
+      <defs><marker id="ar4" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9DB8B3"/></marker></defs>
+      <g font-size="12">
+        <rect x="20" y="30" width="330" height="120" rx="10" class="box tn"/>
+        <text x="36" y="52" class="lbl">声明</text>
+        <text x="36" y="74" class="lbl2">实体 <code>@DataPermission</code> 声明归属字段</text>
+        <text x="36" y="94" class="lbl2">company / store / team / owner 对象关联</text>
+        <text x="36" y="114" class="lbl2">四级联合索引，com_id 永远最左</text>
+        <text x="36" y="134" class="lbl2">EmployeeRole → DataScopeType 集中绑定</text>
+
+        <rect x="395" y="30" width="330" height="120" rx="10" class="box"/>
+        <text x="411" y="52" class="lbl">查询闭环（page/list/count）</text>
+        <text x="411" y="74" class="lbl2">Provider 实现 CriteriaQueryAware（AbstractPage）</text>
+        <text x="411" y="94" class="lbl2">DataScopeRequestFilter(pri=155)：Criteria 构建后</text>
+        <text x="411" y="114" class="lbl2">自动认证 + DataScopeCriteria 追加范围条件</text>
+        <text x="411" y="134" class="lbl2">与业务条件 AND，前端参数只能收窄不能扩大</text>
+
+        <rect x="770" y="30" width="330" height="120" rx="10" class="box hl"/>
+        <text x="786" y="52" class="lbl hl-text">写闭环（save/update/delete/info）</text>
+        <text x="786" y="74" class="lbl2">通用路由：DataPermissionCrudAspect + CrudContext</text>
+        <text x="786" y="94" class="lbl2">save：AccessDataPermissionSaveRequestFilter 覆盖归属</text>
+        <text x="786" y="114" class="lbl2">update：按范围加载旧实体 + 归属保护</text>
+        <text x="786" y="134" class="lbl2">info/delete：DataScopeSpecification 一次加载</text>
+      </g>
+      <g>
+        <line x1="350" y1="90" x2="393" y2="90" class="edge" marker-end="url(#ar4)"/>
+        <line x1="725" y1="90" x2="768" y2="90" class="edge" marker-end="url(#ar4)"/>
+      </g>
+      <rect x="20" y="180" width="1080" height="96" rx="10" class="box tn"/>
+      <text x="36" y="202" class="lbl">自定义 Provider 的硬性规则</text>
+      <text x="36" y="224" class="lbl2">info/update/delete/跨域读取：<code>DataScopeContext.requireScope → DataScopeSpecification.visible + 业务主键</code> 同一次查询完成</text>
+      <text x="36" y="244" class="lbl2">save：company 固定取登录员工企业；非 BOSS 的 owner 强制为当前员工；BOSS 指定负责人须校验属于当前企业，并复制 store/team 快照</text>
+      <text x="36" y="262" class="lbl2" fill="#8A4B0E">禁止 findById 后补权限判断；禁止信任前端 companyId/empId/ownerId；禁止角色 if/else 散落各 Provider</text>
+    </svg>
+
+    <div class="grid3">
+      <div class="card tight"><b>索引规范</b><br><code>(com_id, 业务主键)</code><br><code>(com_id, store_id, 主键)</code><br><code>(com_id, team_id, 主键)</code><br><code>(com_id, emp_id, 主键)</code><br><span class="chart-note">com_id 最左；纯企业级主数据只建企业索引，不虚构 owner</span></div>
+      <div class="card tight"><b>越权处理</b><br>无命中统一返回 404「不存在或无权访问」，不泄露数据存在性。<br>覆盖四角色、跨企业、伪造参数、越权 info/update/delete 测试。</div>
+      <div class="card tight"><b>归属快照</b><br>customer.store/team 是转交快照；转交在同一事务内同步 owner/store/team；不查询时用 employee.store 临时推导。</div>
+    </div>
+
+    <h3>3.3 实体规范：对象关联建模</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>实体骨架</h4>
+        <pre>@<span class="k">Note</span>(<span class="s">"客户"</span>) @<span class="k">Description</span>(<span class="s">"…"</span>) @<span class="k">Model</span> @<span class="k">Entity</span>
+@<span class="k">DataPermission</span>
+@Table(name = <span class="s">"cust_customer"</span>, indexes = {…四级联合索引…})
+<span class="k">public class</span> Customer <span class="k">extends</span> AuditModel {
+  @Id @GeneratedValue(strategy = IDENTITY)
+  <span class="k">private</span> Long custId;               <span class="c">// 主键简洁</span>
+
+  @ManyToOne(fetch = LAZY) @JoinColumn(name=<span class="s">"com_id"</span>, nullable=false)
+  <span class="k">private</span> Company company;            <span class="c">// 对象关联，禁止裸外键</span>
+
+  @<span class="k">Keyword</span> @Column(length=32, nullable=false)
+  <span class="k">private</span> String name;                <span class="c">// 全局搜索可命中</span>
+}</pre>
+      </div>
+      <div class="card">
+        <h4>关键规则</h4>
+        <ul class="clean">
+          <li><b>关联 = 对象 + @ManyToOne(LAZY)</b>：<code>Employee emp</code>，数据库列由 @JoinColumn 显式指定</li>
+          <li><b>时间字段按用途选择</b>：参与年/月/季度统计的用框架 <code>DateTime</code>（@Embedded + @AttributeOverrides）；纯日期标记用 <code>LocalDateTime/LocalDate</code>；审计时间 <code>@CreateTime/@UpdateTime + DateTime</code>；纯流水（如 BalanceLedger.createTime）用 LocalDateTime</li>
+          <li><b>枚举实现 <code>Enumerable&lt;T&gt;</code></b> 放 configure 包，命名简洁（SubStatus 而非 SubscriptionStatus）</li>
+          <li><b>可搜索字段加 <code>@Keyword</code></b>：前端全局搜索（Ctrl+K）对 @Keyword 的 String 字段做 OR 模糊匹配，跨关联递归</li>
+          <li><b>禁止</b>：实体写业务逻辑、@JsonIgnore、裸 Long 外键、统计时间用 LocalDateTime</li>
+          <li><b>金额/大小</b>用 <code>@Unit("万元")</code> 标注</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>3.4 序列化控制：@Properties 与 @ServiceProperties 边界</h3>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:22%"><col style="width:44%"><col style="width:34%"></colgroup>
+        <thead><tr><th>场景</th><th>机制</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td>具体自定义 Provider</td><td>类上直接 <code class="k">@Properties</code>（ignore 敏感字段 / allow 白名单）</td><td><code>@Properties(allow=@AllowProperties(model=Customer.class, properties={"custId","name","owner"}))</code></td></tr>
+          <tr><td>框架通用 {model}-{service} 路由（无自定义 Provider）</td><td>模型或统一配置上 <code class="k">@ServiceProperties(uris=…, properties=@Properties(…))</code></td><td><code>@ServiceProperties(uris={"user-save","user-update"}, properties=@Properties(ignore=…password,salt))</code></td></tr>
+          <tr><td>关联对象裁剪</td><td><code class="k">@AllowProperties</code> 白名单最小字段</td><td>Employee 只允许 empId/name，不透传完整归属树</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout w"><b>轻量化响应原则（强制）：</b>page/list 只返回列表展示、筛选、跳转字段；info 返回详情页实际字段；save/update 返回前端更新本地状态的最小实体。关联对象只有在页面确实展示时才返回——列表与详情不得复用同一套「大而全」配置。<b>@ServiceProperties 只管返回什么，管不了查得到什么</b>，权限由 @DataPermission 体系负责。</div>
+
+    <h3>3.5 租户、用户与订阅</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>组织模型</h4>
+        <ul class="clean">
+          <li>租户 = <code>Company</code>；<code>Employee</code>（员工，实现框架 User）归属 <code>company + store + team</code>，角色 <code>EmployeeRole</code></li>
+          <li>注册只创建一家<b>默认总店</b>（<code>Store.defaultStore=true</code>），前端默认不展示门店维度；多门店是套餐权益（<code>Plan.maxStores</code> 控制）</li>
+          <li>登录链路：<code>user/sms/send</code>（阿里云 DYPNS 验证码）→ <code>user/login</code> / <code>user/register</code> / <code>user/invite</code> / <code>user/accept</code></li>
+          <li>登录主体通过 JPQL 构造为普通 Employee 实体（非 Hibernate 代理）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>订阅约定</h4>
+        <ul class="clean">
+          <li>主体 <code>Subscription</code>，主键 <code>subId</code>，状态 <code>SubStatus</code>（Trial 起步）</li>
+          <li><b>剩余可用天数不落库</b>：<code>serviceEndTime - now</code> 动态计算；禁止 balanceDays 字段与每日递减</li>
+          <li>续费/试用只维护 <code>serviceEndTime / plan / status / trialActivated</code>；<code>BalanceLedger</code> 保留变动天数与快照供审计（createTime 用 LocalDateTime）</li>
+          <li>平台订阅账务与项目账务（finance 域）严格分离</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>3.6 业务域地图与状态机</h3>
+    <div class="card">
+      <h4>各领域代码规模</h4>
+      <div id="chartDomains" class="chart"></div>
+      <p class="chart-note">Java 文件数（含接口/实现/模型/仓储/枚举）。bim 覆盖工艺(10)/材料(17)/目录(13)/价格(8)/套餐(25)/配置(2)。</p>
+    </div>
+
+    <h4>核心状态机（后端统一推进）</h4>
+    <div class="sm">
+      <div class="sm-item"><div class="sm-name"><i style="background:#3568C7"></i>Quote 报价</div>
+        <div class="flow"><span class="st">Draft</span><span class="ar">→</span><span class="st">Submitted</span><span class="ar">→</span><span class="st hot">Accepted</span><span class="ar">→</span><span class="st">Converted</span><div class="alt">Submitted → Rejected</div></div></div>
+      <div class="sm-item"><div class="sm-name"><i style="background:#16A394"></i>Project 项目</div>
+        <div class="flow"><span class="st">Preparing</span><span class="ar">→</span><span class="st">Ongoing</span><span class="ar">→</span><span class="st">Accepting</span><span class="ar">→</span><span class="st">Finished</span><span class="ar">→</span><span class="st">Settled</span><div class="alt">Ongoing → Suspended</div></div></div>
+      <div class="sm-item"><div class="sm-name"><i style="background:#E67E22"></i>Stage / Task</div>
+        <div class="flow"><span class="st">Todo</span><span class="ar">→</span><span class="st">Doing</span><span class="ar">→</span><span class="st">Accepting</span><span class="ar">→</span><span class="st hot">Done</span></div></div>
+      <div class="sm-item"><div class="sm-name"><i style="background:#6958C8"></i>MaterialPlan 材料计划</div>
+        <div class="flow"><span class="st">Planned</span><span class="ar">→</span><span class="st">Requested</span><span class="ar">→</span><span class="st">Ordered</span><span class="ar">→</span><span class="st">Arrived</span><span class="ar">→</span><span class="st">Closed</span></div></div>
+      <div class="sm-item"><div class="sm-name"><i style="background:#07A35A"></i>Acceptance 验收</div>
+        <div class="flow"><span class="st">Pending</span><span class="ar">→</span><span class="st hot">Confirmed</span><div class="alt">Pending → Rejected（驳回回到 Doing）</div></div></div>
+      <div class="sm-item"><div class="sm-name"><i style="background:#E5484D"></i>Customer 客户</div>
+        <div class="flow"><span class="st">New</span><span class="ar">→…</span><span class="st">Serving</span><span class="ar">→</span><span class="st">Finished</span><div class="alt">状态驱动跟进/量房/转交流程</div></div></div>
+    </div>
+    <p class="chart-note">示例：报价 Accepted 后 <code>ProjectContext.createFromQuote</code> 在单事务内展开 Project → Stage（按工程分类）→ Task（按施工项）→ MaterialPlan（按套餐材料），并同步刷新进度/成本；Task 推进、材料到场、验收确认都会触发 <code>refreshProject</code> 重新计算阶段权重进度与项目状态。</p>
+
+    <h3>3.7 组件层边界（components）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:20%"><col style="width:42%"><col style="width:38%"></colgroup>
+        <thead><tr><th>层次</th><th>位置</th><th>禁止</th></tr></thead>
+        <tbody>
+          <tr><td>组件契约层</td><td><code>components.{组件}.service</code>：能力接口（Sender/Validator）、抽象、异常</td><td>Provider、@AutoInject、前端路由、业务枚举</td></tr>
+          <tr><td>组件实现层</td><td><code>components.{组件}.sdk.{厂商}</code>：阿里云 DYPNS 发送/校验实现</td><td>业务落库、业务路由、AccessKey 泄漏到业务层</td></tr>
+          <tr><td>业务编排层</td><td><code>{业务域}.service.{对象}.{能力}</code>：注册/登录 Provider 注入 Sender/Validator</td><td>厂商签名、Redis Key、HTTP 协议处理</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="chart-note">已实现：sms（阿里云 DYPNS + Redis 验证码仓储 + 发送限流）、oss、payment、lock（Redisson 分布式锁）、agent（AgentScope 文案 Agent）、data。</p>
+  </div>
+</section>
+
+<!-- ================= 4 App 前端核心设计 ================= -->
+<section id="s4">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">04</span><h2>App 前端核心设计</h2></div>
+    <p class="sec-sub">uni-app（Vue3 + TS + Vite）微信小程序端：领域分包消费后端 Provider，角色驱动可见域，页面不承载任何持久化与状态机。</p>
+
+    <h3>4.1 领域分包：每域 model / api / meta</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>标准结构</h4>
+        <pre>src/domains/project/
+├── model.ts   <span class="c">// 前端领域实体（对象关联保持形态）</span>
+├── api.ts     <span class="c">// 封装 Provider 路由 + normalize 适配</span>
+└── meta.ts    <span class="c">// 状态/枚举元信息（标签、颜色）</span></pre>
+        <p class="chart-note">有状态/复合行为时增加 <code>scope.ts</code>（如 project/scope.ts 的 visibleProjects 数据域）。页面只依赖领域公开 API，禁止直接 <code>uni.request</code>。</p>
+      </div>
+      <div class="card">
+        <h4>15 个领域</h4>
+        <ul class="clean">
+          <li><b>身份与协作：</b>identity（会话/员工/邀请）、collab（通知）、common（Page 协议）</li>
+          <li><b>转化：</b>crm（客户/跟进）、design（诉求/方案/谈单）、trade（报价）、catalog、base</li>
+          <li><b>履约：</b>project（项目/阶段/成员/范围）、schedule（排期/任务/节点）、site（汇报）、acceptance（验收）、material</li>
+          <li><b>经营：</b>finance（应收/收付/台账）、statistic（工作台/看板）</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>4.2 HTTP 协议与适配层</h3>
+    <div class="card">
+      <pre><span class="c">// src/core/http.ts 核心协议</span>
+<span class="k">export interface</span> ProviderEnvelope&lt;T&gt; {
+  success: boolean;  data: T;
+  errorCode?: { code: string; message: string };
+}
+<span class="c">// POST {apiBase}{uri}，header 带 token</span>
+<span class="c">// 成功(200~299 && success) → resolve(data)</span>
+<span class="c">// 401 → logout + 重登；500 → 服务不可用；业务错误 → reject(message)</span>
+
+<span class="c">// 列表统一解包：Page&lt;T&gt; → T[]</span>
+<span class="k">export function</span> listOf&lt;T&gt;(result: PageResult&lt;T&gt; | T[]): T[]</pre>
+      <p class="chart-note">后端业务异常统一 HTTP 200 + <code>{success:false,errorCode}</code>，页面必须在异步边界 try/catch 并用 toastError 展示后端 message；列表初始化也不能漏 catch。</p>
+    </div>
+    <div class="card">
+      <h4>normalize 适配：后端实体 → 前端语义模型</h4>
+      <pre><span class="c">// domains/project/api.ts 片段</span>
+<span class="k">const</span> PROJECT_STATUS: Record&lt;string, Project['status']&gt; = {
+  Preparing: 'preparing', Ongoing: 'ongoing', Suspended: 'suspended',
+  Accepting: 'accepting', Finished: 'finished', Settled: 'settled' };
+<span class="k">export function</span> normalizeProject(raw: RawRecord): Project {
+  <span class="k">return</span> { ...raw, id: String(raw.id ?? raw.projectId ?? ''),
+    address: raw.address ?? raw.siteAddr ?? '',
+    status: PROJECT_STATUS[enumValue(raw.status)] || 'preparing',
+    customer: raw.customer ? normalizeCustomer(raw.customer) : undefined, … };
+}</pre>
+      <p class="chart-note">适配层只做字段协议映射（projectId→id、siteAddr→address、枚举对象→字符串），<b>不在页面创建 VO/DTO</b>；后端 Provider 应逐步对齐目标字段。</p>
+    </div>
+
+    <h3>4.3 角色与权限（roles 层）</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>角色目录 catalog.ts</h4>
+        <ul class="clean">
+          <li><code>ROLE_META</code>：10 员工岗位 + 业主客户（角色名/短名/品牌色/描述）</li>
+          <li><code>ROLE_TABS</code>：同一套页面按角色返回不同 Tab（marketer 见客户，pm 见履约，finance 见财务）</li>
+          <li><code>ROLE_ACTIONS</code>：工作台快捷入口按角色声明，页面不再堆叠角色判断</li>
+          <li>新增角色只需改 <code>EmployeeRole + ROLE_META + ROLE_TABS + ROLE_ACTIONS + permission 矩阵</code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>能力矩阵 permission.ts</h4>
+        <p class="chart-note">Capability 语义：<code>view:</code> 查看 / <code>edit:</code> 编辑 / <code>act:</code> 动作。如 <code>view:finance</code>、<code>edit:plan</code>、<code>act:acceptConfirm</code>。boss 拥有全量能力，customer 仅有 view:myProjects / view:contract / act:acceptConfirm / view:notice。</p>
+        <div class="callout w"><b>前端矩阵只管可见性。</b>AGENTS.md 与后端约定一致：列表先过 <code>visibleProjects()</code>，服务端仍必须按 Company / ProjectMember / 数据归属强制过滤——前端隐藏菜单不构成权限。</div>
+      </div>
+    </div>
+
+    <h3>4.4 会话与会话驱动</h3>
+    <div class="card">
+      <pre><span class="c">// domains/identity/session.ts</span>
+<span class="k">export interface</span> SessionState {
+  token; company; role: RoleKey | null; emp: Employee | null;
+  customer: CustomerIdentity | null; agreed: boolean; }
+<span class="k">export const</span> session = reactive&lt;SessionState&gt;(restore())  <span class="c">// uni 本地存储恢复</span>
+loginAsEmployee(employee, token)   <span class="c">// 员工登录：role = employee.role</span>
+loginAsCustomer(customer, token)   <span class="c">// 业主登录：role = 'customer'</span>
+logout() / isLoggedIn() / hasEmployeeRole(role)</pre>
+      <p class="chart-note">会话只放 <code>domains/identity/session.ts</code>，其他领域不得反向依赖页面；角色决定工作台 Tab 与可见入口。</p>
+    </div>
+
+    <h3>4.5 页面模式与设计系统</h3>
+    <div class="grid2">
+      <div class="card">
+        <h4>页面约定</h4>
+        <ul class="clean">
+          <li>onShow 重新拉取 Provider 数据，不依赖本地缓存状态；下拉刷新 / 返回均重新获取</li>
+          <li>页面只提交业务对象或调用领域能力（如 <code>scheduleApi.confirmNode</code>），状态流转交给后端后重新拉取</li>
+          <li>跳转统一 <code>P.*</code> 路由常量（<code>src/config/index.ts</code>），禁止魔法字符串</li>
+          <li>表单/汇报/上传组件只收集输入后调用领域 API，不在组件内维护业务状态</li>
+          <li>正式 UI 禁止 emoji / 字符箭头 / 字符加号，统一用 <code>JzIcon.vue</code> 线性图标</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>品牌 Token（uni.scss）</h4>
+        <ul class="clean">
+          <li>主色 <code>$jzb-primary: #16A394</code>，深色 <code>#0E8A7D</code>；语义色 success/warning/danger 各带 soft 底色</li>
+          <li>文字四档 <code>$jzb-text-1~4</code>、边框、页面底色、阴影、圆角、间距全套 token</li>
+          <li>页面只组合 <code>src/styles/base.scss</code> 与 <code>src/components</code>（JzButton/JzCard/JzTag/JzProgress/JzAvatar/JzEmpty/JzReportCard/JzIcon…），禁止散落自造颜色</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5 双端协作规范 ================= -->
+<section id="s5">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">05</span><h2>双端协作规范</h2></div>
+    <p class="sec-sub">App 按后端 Provider 路由调用，字段协议在 api.ts normalize 层适配；目标路由按设计书推进，过渡期可做路由别名但不长期保留两套实现。</p>
+
+    <h3>5.1 Provider 路由对照（已落地）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:34%"><col style="width:36%"><col style="width:30%"></colgroup>
+        <thead><tr><th>后端 Provider 路由</th><th>能力</th><th>App 消费方</th></tr></thead>
+        <tbody>
+          <tr><td><code>user/sms/send · user/login · user/info · user/register · user/invite · user/accept</code></td><td>用户、企业注册、员工邀请</td><td>identity</td></tr>
+          <tr><td><code>customer/customer/{page,info,save,update}</code> · <code>customer/customer-follow/{page,save}</code></td><td>客户 CRUD 与跟进时间线</td><td>crm</td></tr>
+          <tr><td><code>project/project/{page,info,save,update}</code> · <code>project/stage/{page,info}</code> · <code>project/task/{page,info,update}</code> · <code>project/acceptance/{page,save,update}</code> · <code>project/material-plan/{page,update}</code></td><td>项目主档、阶段、任务推进、验收、材料计划</td><td>project / schedule / acceptance / material</td></tr>
+          <tr><td><code>trade/quote/{page,info,save,update}</code> · <code>trade/quote-item/page</code></td><td>报价与明细</td><td>trade</td></tr>
+          <tr><td><code>bim/…</code>（工艺/材料/目录/套餐只读 Provider）</td><td>BIM 主数据</td><td>catalog / base</td></tr>
+          <tr><td><code>statistic/{designer,marketer,pm,store,teamleader}/report</code></td><td>角色经营报告</td><td>statistic / index 工作台</td></tr>
+          <tr><td><code>design/requirements/{page,save}</code> · <code>design/schemes/{build,page,info,save,update}</code> · <code>design/spaces/{save,delete}</code> · <code>design/talks/{build,page,info}</code> · <code>design/items/{save,delete}</code></td><td>设计转化与谈单 PPT</td><td>design</td></tr>
+          <tr><td><code>collab/notices/{page,update,count}</code> · <code>finance/*</code> · <code>project/report/*</code></td><td>通知、财务、汇报</td><td>collab / finance / site</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.2 字段协议映射（App ↔ 后端目标）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:24%"><col style="width:38%"><col style="width:38%"></colgroup>
+        <thead><tr><th>App 字段</th><th>后端目标</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>Project.id</code></td><td><code>projectId</code></td><td>由 API 边界 / 序列化层统一</td></tr>
+          <tr><td><code>Project.address / community</code></td><td><code>Site.address / community</code></td><td>字段语义对齐</td></tr>
+          <tr><td><code>Project.contractAmount</code></td><td><code>Contract + ContractChange</code> 派生</td><td>合同体系落地后派生</td></tr>
+          <tr><td><code>Project.paidAmount</code></td><td><code>Receipt / ReceiptAllocation</code> 派生</td><td>财务域落地后派生</td></tr>
+          <tr><td><code>ProjectStage.projectId</code></td><td><code>ProjectStage.project.projectId</code> 扁平化</td><td>对象关联序列化扁平</td></tr>
+          <tr><td><code>Task.craft/spec/unit/quantity</code></td><td><code>WorkItem</code> 快照 + <code>Task</code> 实例</td><td>施工项主数据快照</td></tr>
+          <tr><td><code>Task.nodes</code></td><td><code>TaskNode + TaskMedia</code> 聚合</td><td>三节点留证</td></tr>
+          <tr><td><code>Acceptance.customerStatus</code></td><td><code>Acceptance.status + AcceptanceConfirm</code> 聚合</td><td>客户确认语义独立建模</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.3 业务动作边界</h3>
+    <div class="callout t"><b>状态机只存在于后端：</b>业务动作优先保存对应实体（如客户确认验收保存 AcceptanceConfirm），由后端监听器/Context 推进状态（验收确认 → 阶段 Done → 项目状态刷新），App 只重新拉取。禁止在前端直接改下一阶段状态，也禁止页面维护本地状态机。</div>
+    <div class="callout d"><b>错误约定：</b>后端业务异常统一 <code>HTTP 200 + {success:false, errorCode:{code,message}}</code>；App 的 http.ts 将其转为 Promise reject，页面用 try/catch + toastError 展示后端 message；401 统一登出重登。接口越权统一 404「不存在或无权访问」。</div>
+  </div>
+</section>
+
+<!-- ================= 6 代码规范速查 ================= -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">06</span><h2>代码规范速查</h2></div>
+    <p class="sec-sub">新增/修改代码前对照以下速查表；完整自检清单见后端 <code>rules.md §8</code>。</p>
+
+    <h3>6.1 命名速查</h3>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:20%"><col style="width:40%"><col style="width:40%"></colgroup>
+        <thead><tr><th>元素</th><th>规范</th><th>反例 / 说明</th></tr></thead>
+        <tbody>
+          <tr><td>服务接口 / 实现</td><td><code>{能力名}</code> 单单词（Page/List/Save/Info/Build/Update/Delete/Count/Enums/Tree/Report/Unique），实现放 <code>support</code> 包</td><td>XxxController / XxxService 均为旧习惯</td></tr>
+          <tr><td>路由</td><td><code>@Service("{业务域}/{业务对象}/{能力}")</code></td><td>不再含 decoboon/ 或 clue/ 前缀；勿用 @Component</td></tr>
+          <tr><td>实体</td><td>继承 AbstractModel，<code>@Model + @Note + @Entity + @Table</code></td><td>主键 <code>Long xxxId</code>（subId 而非 subscriptionId）</td></tr>
+          <tr><td>关联字段</td><td>对象语义名（emp/company/video）+ <code>@ManyToOne(LAZY)</code></td><td>禁止裸 <code>Long empId</code> 外键</td></tr>
+          <tr><td>枚举</td><td>实现 <code>Enumerable&lt;T&gt;</code>，放 configure 包</td><td>SubStatus / CustStatus / ProjectStatus…</td></tr>
+          <tr><td>context</td><td>横切/领域上下文以 <code>Context</code> 结尾</td><td>TenantContext / ProjectContext，不命名 XxxService</td></tr>
+          <tr><td>登录保护</td><td>接口继承 <code>Security</code>；员工注入 <code>@User</code></td><td>注册/登录/短信/邀请等公开接口不继承</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6.2 数据权限测试矩阵（每个有权限领域必测）</h3>
+    <div class="tbl-wrap">
+      <table>
+        <colgroup><col style="width:28%"><col style="width:72%"></colgroup>
+        <thead><tr><th>场景</th><th>必须验证</th></tr></thead>
+        <tbody>
+          <tr><td>BOSS</td><td>只能查看当前企业全量，不返回其他企业</td></tr>
+          <tr><td>门店店长 / 团队负责人</td><td>只返回当前企业 + 当前门店 / 当前团队</td></tr>
+          <tr><td>普通员工</td><td>只返回当前企业 + 本人负责</td></tr>
+          <tr><td>伪造参数</td><td>前端伪造 company/store/team/owner 不能扩大范围</td></tr>
+          <tr><td>越权访问</td><td>越权 info/update/delete 返回 404；跨域读取未命中当前范围时拒绝</td></tr>
+          <tr><td>组织变更</td><td>调店、调团队、转交后的归属快照符合领域规则且有测试</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6.3 高频红线</h3>
+    <div class="grid3">
+      <div class="card tight"><b>后端</b><br>× Controller / DTO / VO / @JsonIgnore<br>× findById 后补权限判断<br>× 手写 if null throw<br>× 实体写业务逻辑</div>
+      <div class="card tight"><b>权限</b><br>× 前端隐藏菜单当权限<br>× 信任前端 companyId/ownerId<br>× 角色 if/else 散落 Provider<br>× 登录成功 = 权限通过</div>
+      <div class="card tight"><b>App</b><br>× 页面直接 uni.request<br>× 页面维护本地状态机<br>× 魔法字符串路由<br>× 散落自造品牌色 / emoji 图标</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 7 心智模型总结 ================= -->
+<section id="s7">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-no">07</span><h2>心智模型总结</h2></div>
+    <p class="sec-sub">把整套工程浓缩为可迁移的设计原则，新功能开发前先过一遍。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>后端：五条铁律 + 权限先行</h4>
+        <ul class="clean">
+          <li><b>服务 = 为实体服务</b>：Request/Response 都是实体，杜绝翻译层</li>
+          <li><b>字段 = AutoInject</b>：声明式校验，不在 call() 里做空值判断</li>
+          <li><b>关联 = 对象</b>：@ManyToOne(LAZY)，序列化用 @Properties 裁剪</li>
+          <li><b>权限 = 服务端强约束</b>：@DataPermission + 统一过滤器/切面，四级范围与角色集中绑定</li>
+          <li><b>状态机 = Context 收敛</b>：实体只承载数据，业务状态变化统一由领域 Context 推进（如 ProjectContext）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>App：五条铁律对齐</h4>
+        <ul class="clean">
+          <li><b>无 DTO 心智</b>：直接消费领域实体，normalize 只做字段协议适配</li>
+          <li><b>权限先于渲染</b>：角色决定可见域，服务端仍强制校验</li>
+          <li><b>状态机在后端</b>：页面只提交动作后重拉</li>
+          <li><b>路由集中管理</b>：P.* 常量，禁止魔法字符串</li>
+          <li><b>品牌统一</b>：$jzb-* token，页面不散落自造样式</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout t">
+      <b>一句话贯穿全工程：</b>「后端决定<b>查得到什么</b>（@DataPermission 数据权限）与<b>返回什么</b>（@Properties 序列化），App 决定<b>看得到什么</b>（角色/能力矩阵）与<b>操作什么</b>（领域 API）；两层永远不互相替代。」
+    </div>
+
+    <div class="card">
+      <h4>工程事实清单（研究依据）</h4>
+      <ul class="clean">
+        <li>后端权威规范：<code>rules.md</code>（五条铁律、Provider 规范、实体规范、序列化边界、自检清单）+ <code>AGENTS.md</code>；框架 API 与 th4-framework 源码逐一核对</li>
+        <li>设计文档：<code>docs/design/00~10</code>（实施总览/工程工艺/材料/套餐报价/项目施工/saas同步/客户/数据权限/财务/项目经理/设计转化）+ 根目录业务设计说明书</li>
+        <li>权限实现组件全部位于 <code>tenant/user/access</code>：注解、DataScopeContext/Criteria/Specification、DataScopeRequestFilter、AccessDataPermissionSave/UpdateRequestFilter、DataPermissionCrudAspect、DataPermissionCrudContext</li>
+        <li>App 规范：<code>AGENTS.md</code> + <code>docs/00~09</code>；结构约定 <code>model.ts/api.ts/meta.ts</code>；构建检查 <code>npm run type-check</code> / <code>build:mp-weixin</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    装得清双端工程研究 · th4-decoboon（后端）× th4-decoboon-app（uni-app 小程序）· 2026-09-13 基于源码与规范文档实际阅读整理<br>
+    数据来源：两仓库目录/文件统计、rules.md、AGENTS.md、docs/design/*、th4-framework 源码。
+  </div>
+</footer>
+
+<a class="backtop" id="backtop" href="#" title="返回顶部">↑</a>
+
+<script>
+  // ===== 代码规模 =====
+  var chartScale = echarts.init(document.getElementById('chartScale'));
+  chartScale.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: { left: 64, right: 24, top: 30, bottom: 28 },
+    xAxis: { type: 'category', data: ['后端 Java', 'App Vue', 'App TS', '框架 Java', '后端测试'], axisLabel: { color: '#778390', fontSize: 11 } },
+    yAxis: { type: 'value', name: '文件数', nameTextStyle: { color: '#778390' }, axisLabel: { color: '#778390' }, splitLine: { lineStyle: { color: '#EEF2F4' } } },
+    series: [{
+      type: 'bar', data: [461, 62, 48, 506, 13], barWidth: 42,
+      itemStyle: { color: '#16A394', borderRadius: [6, 6, 0, 0] },
+      label: { show: true, position: 'top', color: '#0E8A7D', fontWeight: 600 }
+    }]
+  });
+
+  // ===== 领域分布 =====
+  var chartDomains = echarts.init(document.getElementById('chartDomains'));
+  chartDomains.setOption({
+    tooltip: { trigger: 'axis' },
+    grid: { left: 90, right: 30, top: 20, bottom: 24 },
+    xAxis: { type: 'value', axisLabel: { color: '#778390' }, splitLine: { lineStyle: { color: '#EEF2F4' } } },
+    yAxis: { type: 'category', data: ['project 项目', 'bim 工程主数据', 'finance 财务', 'design 设计转化', 'tenant/user 用户', 'customer 客户', 'trade 报价', 'statistic 统计', 'collab 协同', 'tenant/billing 订阅', 'common'], axisLabel: { color: '#465260', fontSize: 11.5 } },
+    series: [{
+      type: 'bar', data: [83, 76, 60, 51, 54, 33, 21, 17, 10, 13, 2], barWidth: 14,
+      itemStyle: { color: function (p) { return p.dataIndex === 0 ? '#0E8A7D' : '#16A394'; }, borderRadius: [0, 5, 5, 0] },
+      label: { show: true, position: 'right', color: '#0E8A7D', fontWeight: 600 }
+    }]
+  });
+
+  // ===== 返回顶部 =====
+  var bt = document.getElementById('backtop');
+  window.addEventListener('scroll', function () {
+    bt.classList.toggle('show', window.scrollY > 600);
+  });
+  bt.addEventListener('click', function (e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // 响应式重绘
+  window.addEventListener('resize', function () {
+    chartScale.resize(); chartDomains.resize();
+  });
+</script>
+</body>
+</html>

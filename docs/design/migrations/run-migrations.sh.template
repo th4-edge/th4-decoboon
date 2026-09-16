@@ -1,0 +1,275 @@
+#!/usr/bin/env bash
+# 生产迁移模板：不自动执行备份、升级、DDL 回滚或数据修复。
+# baseline: 只允许新空库执行 00-迁移账本.sql + 01-空库基线.sql
+# adopt:    已有库必须先完成 DBA 结构审计，再登记经过审计的版本
+# upgrade:  已禁用；存量库不得自动执行不完整的增量链
+set -Eeuo pipefail
+
+MODE="${1:-}"
+ADOPT_VERSIONS="${2:-}"
+MYSQL_BIN="${MYSQL_BIN:-mysql}"
+
+usage() {
+  echo "用法: $0 baseline|adopt [版本列表]"
+  echo "  baseline 仅支持新空库，只执行 00-迁移账本.sql 和 01-空库基线.sql"
+  echo "  adopt    仅用于 DBA 审计后的已有库，需同时设置 DBA_AUDIT_ID；版本示例 10,11,12,17"
+  echo "  upgrade  已禁用，避免误跑不完整的存量库升级链"
+}
+
+case "$MODE" in
+  baseline|adopt|upgrade) ;;
+  *)
+    usage
+    exit 2
+    ;;
+esac
+
+if [[ "$MODE" == "upgrade" ]]; then
+  echo "UPGRADE_DISABLED: 存量库必须先做 DBA 结构审计，并使用 adopt 登记；差异迁移必须单独设计、评审和执行。"
+  exit 9
+fi
+
+: "${MYSQL_CNF:?必须提供 MYSQL_CNF}"
+: "${MYSQL_DATABASE:?必须提供 MYSQL_DATABASE}"
+: "${MIGRATION_ACTOR:?必须提供 MIGRATION_ACTOR}"
+
+if [[ "$MODE" == "adopt" ]]; then
+  : "${DBA_AUDIT_ID:?adopt 模式必须提供 DBA_AUDIT_ID}"
+fi
+
+MIGRATIONS_DIR="${MIGRATIONS_DIR:-$(cd "$(dirname "$0")" && pwd)}"
+LOCK_DIR="${MIGRATION_LOCK_DIR:-/var/lock/th4-decoboon-migration.lock}"
+
+canonical_path() {
+  local path="$1"
+  if command -v realpath >/dev/null 2>&1; then
+    realpath -m -- "$path" 2>/dev/null && return 0
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$path"
+    return 0
+  fi
+  echo "无法规范化路径（需要 realpath 或 python3）: $path" >&2
+  exit 2
+}
+
+reject_dangerous_root() {
+  local path="$1"
+  local label="$2"
+  case "$path" in
+    /|/bin|/boot|/dev|/etc|/home|/lib|/lib64|/opt|/proc|/root|/sbin|/sys|/tmp|/usr|/var|/Users|/private|/private/etc|/private/tmp|/private/var|/System|/Library|/Applications|/Volumes)
+      echo "拒绝使用危险根路径（${label}）: $path" >&2
+      exit 2
+      ;;
+  esac
+}
+
+MYSQL_CNF="$(canonical_path "$MYSQL_CNF")"
+MIGRATIONS_DIR="$(canonical_path "$MIGRATIONS_DIR")"
+LOCK_DIR="$(canonical_path "$LOCK_DIR")"
+
+[[ "$MYSQL_CNF" = /* && -r "$MYSQL_CNF" ]] || { echo "MYSQL_CNF 必须是可读绝对路径"; exit 2; }
+[[ "$MIGRATIONS_DIR" = /* && -d "$MIGRATIONS_DIR" ]] || { echo "MIGRATIONS_DIR 必须是绝对目录"; exit 2; }
+[[ "$LOCK_DIR" = /* ]] || { echo "MIGRATION_LOCK_DIR 必须是绝对路径"; exit 2; }
+reject_dangerous_root "$LOCK_DIR" "迁移锁目录"
+[[ "$MYSQL_DATABASE" =~ ^[A-Za-z0-9_]+$ ]] || { echo "数据库名只允许字母、数字和下划线"; exit 2; }
+[[ "$MIGRATION_ACTOR" =~ ^[A-Za-z0-9._@-]{1,128}$ ]] || { echo "迁移执行人格式非法"; exit 2; }
+if [[ -n "${DBA_AUDIT_ID:-}" ]]; then
+  [[ "$DBA_AUDIT_ID" =~ ^[A-Za-z0-9._:@-]{1,128}$ ]] || { echo "DBA_AUDIT_ID 格式非法"; exit 2; }
+fi
+
+mysql_cmd() {
+  "$MYSQL_BIN" --defaults-extra-file="$MYSQL_CNF" --batch --skip-column-names "$MYSQL_DATABASE" "$@"
+}
+
+checksum() {
+  local file="$1"
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$file" | awk '{print $1}'
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$file" | awk '{print $1}'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 "$file" | awk '{print $NF}'
+  else
+    echo "缺少 SHA-256 工具（需要 sha256sum、shasum 或 openssl）: $file" >&2
+    return 2
+  fi
+}
+
+require_file() {
+  local file="$MIGRATIONS_DIR/$1"
+  [[ -f "$file" ]] || { echo "缺少迁移文件: $file"; exit 3; }
+  printf '%s' "$file"
+}
+
+ledger_row() {
+  local version="$1"
+  mysql_cmd -e "SELECT CONCAT(status,'|',checksum) FROM db_schema_migration WHERE version='${version}' LIMIT 1" \
+    | tr -d '\r' | sed -n '1p'
+}
+
+ensure_checksum() {
+  local version="$1" file="$2" row status recorded current
+  row="$(ledger_row "$version")"
+  [[ -n "$row" ]] || return 0
+  status="${row%%|*}"
+  recorded="${row#*|}"
+  current="$(checksum "$file")"
+  if [[ "$recorded" != "$current" ]]; then
+    echo "CHECKSUM_DRIFT version=$version recorded=$recorded current=$current file=$file" >&2
+    exit 8
+  fi
+  case "$status" in
+    RUNNING|FAILED)
+      echo "MIGRATION_${status} version=$version 需要人工处理，拒绝自动重跑" >&2
+      exit 8
+      ;;
+    SUCCESS|BASELINE|ADOPTED) return 0 ;;
+    *)
+      echo "未知迁移状态 version=$version status=$status" >&2
+      exit 8
+      ;;
+  esac
+}
+
+mark_ledger_failed() {
+  local version="$1" attempt
+  for attempt in 1 2 3; do
+    if mysql_cmd -e "UPDATE db_schema_migration SET status='FAILED',finished_at=NOW(6),error_message='migration execution failed; manual recovery required' WHERE version='${version}' AND status='RUNNING'"; then
+      return 0
+    fi
+    if [[ "$attempt" -lt 3 ]]; then
+      sleep 1
+    fi
+  done
+  return 1
+}
+
+record_version() {
+  local version="$1" description="$2" file="$3" status="$4" message="${5:-}"
+  local row existing_status recorded current sha
+  row="$(ledger_row "$version")"
+  if [[ -n "$row" ]]; then
+    existing_status="${row%%|*}"
+    recorded="${row#*|}"
+    current="$(checksum "$file")"
+    if [[ "$recorded" != "$current" ]]; then
+      echo "CHECKSUM_DRIFT version=$version recorded=$recorded current=$current file=$file" >&2
+      exit 8
+    fi
+    case "$existing_status" in
+      RUNNING|FAILED)
+        echo "MIGRATION_${existing_status} version=$version 需要人工处理，拒绝覆盖账本" >&2
+        exit 8
+        ;;
+      SUCCESS|BASELINE|ADOPTED)
+        echo "SKIP $version $description ($existing_status)"
+        return 0
+        ;;
+      *)
+        echo "未知迁移状态 version=$version status=$existing_status" >&2
+        exit 8
+        ;;
+    esac
+  fi
+
+  sha="$(checksum "$file")"
+  case "$status" in
+    BASELINE)
+      mysql_cmd -e "INSERT INTO db_schema_migration(version,description,checksum,status,started_at,finished_at,applied_by,error_message) VALUES('${version}','${description}','${sha}','BASELINE',NOW(6),NOW(6),'${MIGRATION_ACTOR}','included in 01 empty-database baseline')"
+      echo "BASELINE $version $description"
+      ;;
+    ADOPTED)
+      mysql_cmd -e "INSERT INTO db_schema_migration(version,description,checksum,status,started_at,finished_at,applied_by,error_message) VALUES('${version}','${description}','${sha}','ADOPTED',NOW(6),NOW(6),'${MIGRATION_ACTOR}','${message}')"
+      echo "ADOPTED $version $description"
+      ;;
+    *)
+      echo "不支持的账本状态: $status" >&2
+      exit 8
+      ;;
+  esac
+}
+
+mkdir "$LOCK_DIR" 2>/dev/null || { echo "迁移锁已存在: $LOCK_DIR"; exit 5; }
+RUNNING_VERSION=""
+cleanup() {
+  local rc=$?
+  if [[ -n "$RUNNING_VERSION" && "$rc" -ne 0 ]]; then
+    if ! mark_ledger_failed "$RUNNING_VERSION"; then
+      echo "CRITICAL: 无法把迁移 ${RUNNING_VERSION} 从 RUNNING 更新为 FAILED，请立即人工修复账本。" >&2
+    fi
+  fi
+  rmdir "$LOCK_DIR" 2>/dev/null || true
+  return 0
+}
+trap cleanup EXIT INT TERM
+
+LEDGER="$(require_file '00-迁移账本.sql')"
+BASELINE="$(require_file '01-空库基线.sql')"
+M10="$(require_file '10-设计转化域迁移.sql')"
+M11="$(require_file '11-租户归属列命名迁移.sql')"
+M12="$(require_file '12-租户简称扩展.sql')"
+M17="$(require_file '17-业主闭环.sql')"
+M21="$(require_file '21-用户密码登录.sql')"
+
+if [[ "$MODE" == "baseline" ]]; then
+  mysql_cmd < "$LEDGER"
+  row="$(ledger_row '01')"
+  if [[ -n "$row" ]]; then
+    ensure_checksum '01' "$BASELINE"
+    echo "SKIP 01 空库基线 (already recorded)"
+  else
+    TABLES="$(mysql_cmd -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${MYSQL_DATABASE}' AND table_name <> 'db_schema_migration'")"
+    [[ "$TABLES" == "0" ]] || { echo "目标库非空，拒绝 baseline"; exit 6; }
+    BASELINE_SHA="$(checksum "$BASELINE")"
+    mysql_cmd -e "INSERT INTO db_schema_migration(version,description,checksum,status,started_at,applied_by) VALUES('01','空库基线','${BASELINE_SHA}','RUNNING',NOW(6),'${MIGRATION_ACTOR}')"
+    RUNNING_VERSION="01"
+    if mysql_cmd < "$BASELINE"; then
+      if mysql_cmd -e "UPDATE db_schema_migration SET status='BASELINE',finished_at=NOW(6),error_message=NULL WHERE version='01' AND status='RUNNING'"; then
+        RUNNING_VERSION=""
+        echo "BASELINE 01 空库基线"
+      else
+        if ! mark_ledger_failed '01'; then
+          echo "CRITICAL: 空库基线已完成，但账本无法更新，且无法写入 FAILED。" >&2
+          exit 10
+        fi
+        RUNNING_VERSION=""
+        echo "FAILED 01 空库基线（账本收尾失败，需人工恢复）" >&2
+        exit 4
+      fi
+    else
+      if mark_ledger_failed '01'; then
+        RUNNING_VERSION=""
+        echo "FAILED 01 空库基线" >&2
+        exit 4
+      fi
+      echo "CRITICAL: 空库基线失败，且账本无法写入 FAILED，请立即人工修复。" >&2
+      exit 10
+    fi
+  fi
+
+  record_version 10 '设计转化域迁移' "$M10" BASELINE
+  record_version 11 '租户归属列命名迁移' "$M11" BASELINE
+  record_version 12 '租户简称扩展' "$M12" BASELINE
+  record_version 17 '业主闭环' "$M17" BASELINE
+  record_version 21 '用户密码登录' "$M21" BASELINE
+  echo "MIGRATION_COMPLETE mode=$MODE actor=$MIGRATION_ACTOR"
+  exit 0
+fi
+
+# adopt 只登记 DBA 已审计的结构，不执行任何 DDL 文件。
+[[ -n "$ADOPT_VERSIONS" ]] || { echo "adopt 模式必须提供版本列表，如 10,11,12,17"; exit 7; }
+mysql_cmd < "$LEDGER"
+IFS=',' read -r -a versions <<< "$ADOPT_VERSIONS"
+for version in "${versions[@]}"; do
+  case "$version" in
+    10) record_version 10 '设计转化域迁移' "$M10" ADOPTED "adopted after DBA schema audit:${DBA_AUDIT_ID}" ;;
+    11) record_version 11 '租户归属列命名迁移' "$M11" ADOPTED "adopted after DBA schema audit:${DBA_AUDIT_ID}" ;;
+    12) record_version 12 '租户简称扩展' "$M12" ADOPTED "adopted after DBA schema audit:${DBA_AUDIT_ID}" ;;
+    17) record_version 17 '业主闭环' "$M17" ADOPTED "adopted after DBA schema audit:${DBA_AUDIT_ID}" ;;
+    21) record_version 21 '用户密码登录' "$M21" ADOPTED "adopted after DBA schema audit:${DBA_AUDIT_ID}" ;;
+    *) echo "不支持 adopt 版本: $version"; exit 7 ;;
+  esac
+done
+
+echo "MIGRATION_COMPLETE mode=$MODE actor=$MIGRATION_ACTOR audit=$DBA_AUDIT_ID"

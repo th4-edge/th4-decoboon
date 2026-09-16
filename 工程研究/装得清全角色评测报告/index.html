@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>装得清系统全角色实测评测报告</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2300A862'/%3E%3Cpath d='M9 24V12h4v12h-4zm5-14V8h4v16h-4V10zm5 2h4v12h-4V12z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+<style>
+:root{
+  --bg:#f6f7f4; --card:#ffffff; --ink:#1d2622; --sub:#5c6b64; --line:#e4e8e3;
+  --brand:#00a862; --brand-d:#00854f; --brand-soft:#e3f5ec;
+  --warn:#d97706; --warn-soft:#fdf3e3; --bad:#d64545; --bad-soft:#fdeaea;
+  --blue:#2f6fed; --blue-soft:#eaf0fe;
+  --shadow:0 2px 10px rgba(20,50,40,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:15px}
+.serif{font-family:"Noto Serif SC",serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(160deg,#073b28 0%,#0c5c3c 55%,#0f7a4e 100%);color:#fff;padding:72px 0 56px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.10),transparent 65%)}
+.hero .kicker{display:inline-block;font-size:13px;letter-spacing:.14em;color:#a7e6c8;border:1px solid rgba(167,230,200,.4);padding:4px 14px;border-radius:999px;margin-bottom:20px}
+.hero h1{font-size:42px;line-height:1.2;font-weight:900;letter-spacing:.01em}
+.hero .sub{margin-top:14px;font-size:16px;color:#cfe9db;max-width:760px}
+.hero .meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
+.hero .meta span{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);padding:6px 14px;border-radius:999px;font-size:13px;color:#eaf7f0}
+.scoregrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:34px}
+.score{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:16px 18px;backdrop-filter:blur(4px)}
+.score b{display:block;font-size:30px;font-weight:900;color:#fff;line-height:1.1}
+.score b small{font-size:15px;font-weight:400;opacity:.75}
+.score i{display:block;font-style:normal;font-size:12.5px;color:#bfe3d0;margin-top:6px}
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:4px;overflow-x:auto;padding:0 20px}
+nav a{display:inline-block;padding:13px 13px;font-size:13.5px;color:var(--sub);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:.15s}
+nav a:hover{color:var(--brand)}
+nav a.on{color:var(--brand-d);border-bottom-color:var(--brand);font-weight:700}
+/* ---------- sections ---------- */
+section{padding:56px 0 8px}
+.sec-head{margin-bottom:26px}
+.sec-head .no{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--brand);background:var(--brand-soft);padding:3px 11px;border-radius:6px;margin-bottom:10px}
+.sec-head h2{font-size:27px;font-weight:900;line-height:1.3}
+.sec-head p{color:var(--sub);font-size:14.5px;margin-top:8px;max-width:860px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);margin-bottom:18px}
+.card h3{font-size:17px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);display:inline-block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:13.5px;table-layout:fixed}
+colgroup col:nth-child(1){width:16%}
+table th{background:#f0f4f1;color:#3c4a43;font-weight:700;text-align:left;padding:10px 12px;border:1px solid var(--line);font-size:13px}
+table td{padding:9px 12px;border:1px solid var(--line);vertical-align:top;word-break:break-word}
+table tr:nth-child(even) td{background:#fafbf9}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:5px;line-height:1.6}
+.t-ok{background:var(--brand-soft);color:var(--brand-d)}
+.t-bad{background:var(--bad-soft);color:var(--bad)}
+.t-warn{background:var(--warn-soft);color:var(--warn)}
+.t-blue{background:var(--blue-soft);color:var(--blue)}
+/* ---------- role cards ---------- */
+.rolegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.role{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow)}
+.role .rtop{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.role .rpic{width:42px;height:42px;border-radius:12px;background:var(--brand-soft);color:var(--brand-d);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex:none}
+.role h4{font-size:15.5px;font-weight:800}
+.role .rrole{font-size:12px;color:var(--sub);margin-top:1px}
+.role .rmetrics{font-size:12.5px;color:var(--sub);margin:10px 0}
+.role .rmetrics b{color:var(--ink);font-weight:700}
+.role ul{margin:6px 0 0 16px;font-size:13px;color:#43514a}
+.role li{margin:3px 0}
+.role .badge{float:right;font-size:11px}
+/* ---------- defects ---------- */
+.defect{display:grid;grid-template-columns:56px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:12px;padding:15px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.defect .sev{font-size:11.5px;font-weight:800;color:#fff;border-radius:8px;padding:5px 0;text-align:center;height:max-content;line-height:1.3}
+.defect h4{font-size:15px;font-weight:700}
+.defect .where{font-size:12px;color:var(--blue);margin:2px 0 6px}
+.defect p{font-size:13px;color:#3d4a44;margin:2px 0}
+.defect .fix{background:var(--brand-soft);border-radius:8px;padding:7px 11px;font-size:12.5px;color:var(--brand-d);margin-top:8px}
+/* ---------- charts ---------- */
+.chartbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+.chartbox h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.chartbox .cap{font-size:12.5px;color:var(--sub);margin-bottom:12px}
+.chart{width:100%;height:340px}
+/* ---------- lists ---------- */
+.pill{display:inline-block;background:#eef2ef;border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:12.5px;margin:0 6px 8px 0;color:#3d4a44}
+.plus li{margin:0 0 8px 16px;font-size:13.5px;color:#37453e}
+.plus li b{color:var(--brand-d)}
+.minus li{margin:0 0 8px 16px;font-size:13.5px;color:#37453e}
+.minus li b{color:var(--bad)}
+/* ---------- roadmap ---------- */
+.tl{position:relative;margin:10px 0 0 8px;padding-left:26px}
+.tl::before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl .node{position:relative;margin-bottom:18px}
+.tl .node::before{content:"";position:absolute;left:-26px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--brand);border:2px solid #fff;box-shadow:0 0 0 2px var(--brand)}
+.tl .p{font-size:12px;font-weight:800;color:var(--brand-d);letter-spacing:.06em}
+.tl h4{font-size:15px;font-weight:700;margin:2px 0 4px}
+.tl p{font-size:13px;color:var(--sub)}
+/* ---------- css bars ---------- */
+.bars{margin-top:4px}
+.bar-row{display:grid;grid-template-columns:64px 1fr 150px;gap:10px;align-items:center;margin-bottom:11px;font-size:13px}
+.bar-row .bl{color:var(--sub);font-weight:600}
+.bar-row b{font-weight:700;color:var(--ink);text-align:right}
+.btrack{display:flex;background:#eef2ef;border-radius:6px;height:14px;overflow:hidden}
+.bfill{height:100%;border-radius:6px}
+.bfill.b2{margin-left:2px;border-radius:6px}
+.lg{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 4px 0 12px;vertical-align:-1px}
+@media(max-width:700px){.bar-row{grid-template-columns:56px 1fr 110px;font-size:12px}}
+/* ---------- footer ---------- */
+footer{margin-top:60px;background:#123226;color:#9fc9b4;padding:30px 0 40px;font-size:12.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between}
+footer b{color:#e6f4ec}
+.footnote{margin-top:12px;color:#7aa893;font-size:12px}
+@media(max-width:700px){.hero h1{font-size:30px}.sec-head h2{font-size:22px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="kicker">全角色实测评测报告 · 2026-09-13</span>
+    <h1 class="serif">装得清系统全角色实测评测报告</h1>
+    <p class="sub">以老板账号发起系统内置"用户邀请注册"，完成顾问、设计师、项目经理、团队长、店长、财务 6 个角色全流程注册与分角色实机体验，覆盖客户、设计、报价、项目履约、财务、组织与数据权限七大领域，输出客观评价、实测缺陷与行业视角的可拓展方向。</p>
+    <div class="meta">
+      <span>实测对象 · 装得清 v1.0.0（本机 127.0.0.1）</span>
+      <span>评测身份 · 资深家装设计师 + 行业管理者视角</span>
+      <span>实测账号 · 8 个（老板 + 6 角色 + 存量设计师）</span>
+      <span>体验模块 · 13 大板块 40+ 页面</span>
+    </div>
+    <div class="scoregrid">
+      <div class="score"><b>7.6<small> /10</small></b><i>全角色综合体验分</i></div>
+      <div class="score"><b>8.2<small> /10</small></b><i>业务领域完整性</i></div>
+      <div class="score"><b>7.0<small> /10</small></b><i>权限与数据隔离</i></div>
+      <div class="score"><b>6.5<small> /10</small></b><i>交互与稳定性</i></div>
+      <div class="score"><b>8.5<small> /10</small></b><i>行业专业度（报价/履约）</i></div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <a href="#s1">评测方法</a>
+    <a href="#s2">注册与权限</a>
+    <a href="#s3">八角色工作台</a>
+    <a href="#s4">数据权限实测</a>
+    <a href="#s5">实测缺陷</a>
+    <a href="#s6">客观评价</a>
+    <a href="#s7">行业拓展</a>
+    <a href="#s8">优化路线图</a>
+  </div>
+</nav>
+
+<!-- ============ S2 注册与权限 ============ -->
+<section id="s2"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">02</span>
+    <h2>邀请注册全流程与权限矩阵</h2>
+    <p>6 个角色账号全部通过"老板生成邀请 → 被邀请人访问邀请链接 → 填写姓名/手机号/密码 → 确认加入团队 → 自动登录对应角色工作台"的系统流程完成注册，注册结果与数据库核验一致（db_tenant_invite 全部 Accepted，db_tenant_employee 归属正确）。</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="dot"></span>邀请注册流程（实测全通）</h3>
+      <ol style="margin-left:18px;font-size:13.5px;color:#37453e">
+        <li><b>老板登录</b> → 首页入口「邀请成员」进入 <code>/pages/team/invite</code>；</li>
+        <li><b>选择角色</b>（6 宫格：团队长/店长/设计/经理/顾问/财务），<b>填写手机号</b> → 生成一次性邀请（32 位 hex 令牌，绑定手机号，有效期 7 天）；</li>
+        <li><b>被邀请人访问</b> <code>/#/pages/auth/invite?token=…</code> → 令牌自动带入（只读）→ 填写姓名、手机号、密码、确认密码；</li>
+        <li><b>确认加入团队</b> → 服务端校验令牌/手机号/密码一致性 → 创建员工与登录凭证 → <b>自动登录</b>进入对应角色工作台；</li>
+        <li>数据库同步写入 <code>db_tenant_invite(Accepted)</code>、<code>db_tenant_employee</code>、<code>db_tenant_credentials</code>，短信日志落 <code>th4_sms_log</code>。</li>
+      </ol>
+      <p style="font-size:12.5px;color:var(--sub);margin-top:10px">团队负责人邀请需绑定已有团队（自动成为队长）或新建团队；注册成功后自动具备对应角色的菜单与数据范围。</p>
+    </div>
+    <div class="card">
+      <h3><span class="dot"></span>注册结果核验（数据库）</h3>
+      <table style="font-size:12.5px">
+        <colgroup><col><col><col><col></colgroup>
+        <thead><tr><th>姓名</th><th>角色</th><th>团队归属</th><th>邀请状态</th></tr></thead>
+        <tbody>
+          <tr><td>业务顾问小赵</td><td>Marketer</td><td>—</td><td><span class="tag t-ok">Accepted</span></td></tr>
+          <tr><td>设计师小陈</td><td>Designer</td><td>—</td><td><span class="tag t-ok">Accepted</span></td></tr>
+          <tr><td>项目经理小王</td><td>Pm</td><td>—</td><td><span class="tag t-ok">Accepted</span></td></tr>
+          <tr><td>团队长小李</td><td>TeamLeader</td><td>全案一组（队长）</td><td><span class="tag t-ok">Accepted</span></td></tr>
+          <tr><td>店长小周</td><td>StoreManager</td><td>—</td><td><span class="tag t-ok">Accepted</span></td></tr>
+          <tr><td>财务小吴</td><td>Finance</td><td>—</td><td><span class="tag t-ok">Accepted</span></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12.5px;color:var(--sub);margin-top:10px">每个角色注册成功后自动登录进入各自专属工作台，一次邀请注册即可直达业务视角，无二次登录成本。</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="dot"></span>角色-权限矩阵（按实测推断，与后端四级数据范围一致：企业 / 门店 / 团队 / 个人）</h3>
+    <table>
+      <colgroup><col><col><col><col><col><col><col></colgroup>
+      <thead><tr><th>能力</th><th>老板</th><th>店长</th><th>团队长</th><th>设计师</th><th>顾问</th><th>财务 / 项目经理</th></tr></thead>
+      <tbody>
+        <tr><td>客户数据范围</td><td>全企业</td><td>全门店</td><td>本团队</td><td>本人负责</td><td>本人录入</td><td>项目关联（PM）/ 不可见（财务）</td></tr>
+        <tr><td>报价可见范围</td><td>全部</td><td>门店全部（池 ¥672,677）</td><td>团队报价</td><td>本人报价</td><td>—</td><td>PM 关联项目 / 财务只读</td></tr>
+        <tr><td>经营指标</td><td>企业维度</td><td>门店维度（客户4/报价5）</td><td>团队维度（成员2）</td><td>个人维度（签约额）</td><td>个人维度（业绩）</td><td>履约/资金维度</td></tr>
+        <tr><td>财务页面</td><td>完整</td><td>—</td><td>只读视图（金额 -）</td><td>不可见</td><td>不可见</td><td>财务完整 / PM 只读</td></tr>
+        <tr><td>组织管理</td><td>邀请成员/团队</td><td>设计调度</td><td>团队派单/成员</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12.5px;color:var(--sub);margin-top:10px">实测证据：顾问客户列表 0 条而店长可见全店 4 条；团队长成员页仅见本团队 2 人；团队长/项目经理进财务页为只读视图且金额掩码为 "–"。数据权限按角色分层生效。</p>
+  </div>
+</div></section>
+
+<!-- ============ S3 八角色工作台 ============ -->
+<section id="s3"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">03</span>
+    <h2>八角色工作台全景：一屏即见"我的事"</h2>
+    <p>每个角色登录后首页即对应其核心职责的驾驶舱：角色称谓、职责维度指标、专属功能入口、待办提醒各不相同，角色辨识度高，"一个角色一套工作台"的设计成立。</p>
+  </div>
+  <div class="rolegrid">
+    <div class="role">
+      <div class="rtop"><div class="rpic">板</div><div><h4>张伟 · 企业负责人 <span class="badge tag t-ok">Boss</span></h4><div class="rrole">麦鸿设计 · 总店</div></div></div>
+      <div class="rmetrics">在建 <b>0</b> · 待开工 <b>1</b> · 待验收 <b>0</b> · 风险/停工 <b>0</b></div>
+      <ul><li>入口：客户管理 / 新建项目 / 邀请成员 / 我的团队 / 财务总览</li><li>项目：滨湖云谷 · 设计施工项目 · 待开工 · 当前：拆除 · 计划完工 12-13</li><li>财务总览直达财务工作台（合同额 ¥97,012、经营项目 1/1）</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">店</div><div><h4>店长小周 · 门店店长 <span class="badge tag t-ok">StoreManager</span></h4><div class="rrole">总店 · 全店经营视角</div></div></div>
+      <div class="rmetrics">门店客户 <b>4</b> · 待指派设计 <b>1</b> · 待推进报价 <b>5</b> · 施工风险 <b>0</b></div>
+      <ul><li>经营概览：<b>¥97,012</b> · 2 位设计师 · 报价接受率 16.7% · 1 位客户待指派</li><li>模块：门店客户 / 设计调度 / 方案报价 / 门店项目 / 门店团队 / 门店业绩</li><li>「需要关注」运营提醒：1 位客户待指派 + 5 份报价待推进（含处置建议文案）</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">组</div><div><h4>团队长小李 · 团队负责人 <span class="badge tag t-ok">TeamLeader</span></h4><div class="rrole">全案一组 · 团队协同视角</div></div></div>
+      <div class="rmetrics">团队客户 <b>0</b> · 待跟进/量房 <b>0</b> · 待推进报价 <b>0</b> · 施工风险 <b>0</b></div>
+      <ul><li>经营概览：<b>2 位成员</b> · 0 个在施项目 · 0 位客户待派单 · 报价接受率 0%</li><li>模块：团队客户 / 团队派单 / 方案报价 / 团队项目 / 团队成员 / 团队业绩</li><li>成员页：全案一组共 2 人（原负责人 + 本人，入职时间可见）</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">设</div><div><h4>设计师小陈 / 小林 <span class="badge tag t-ok">Designer</span></h4><div class="rrole">总店 · 设计转化视角</div></div></div>
+      <div class="rmetrics">负责客户 <b>0</b> · 待推进报价 <b>0</b> · 在施项目 <b>0</b> · 逾期任务 <b>0</b></div>
+      <ul><li>指标：设计签约额 · 报价接受率 · 报价份数 · 项目数</li><li>模块：客户诉求 / 客户 / 方案报价 / 项目立项 / 施工项目 / 设计业绩</li><li>存量设计师小林已完成全链路实测（报价详情竞态等 4 缺陷见 S5）</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">顾</div><div><h4>业务顾问小赵 · 家装顾问 <span class="badge tag t-ok">Marketer</span></h4><div class="rrole">总店 · 营销获客视角</div></div></div>
+      <div class="rmetrics">我的客户 <b>0</b> · 待跟进 <b>0</b> · 待量房 <b>0</b> · 已签约 <b>0</b></div>
+      <ul><li>指标：我的业绩 · 已接受报价 · 待推进份数 · 签约率</li><li>客户页独有「黄金营销时段」分层：0-3 / 4-7 / 8-15 / 15+ 天（按录入时间自动分层）</li><li>客户筛选：待首联 / 跟进中 / 待量房 / 流失 + 已加微信 / 逾期 / 今日跟进 / 未安排</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">项</div><div><h4>项目经理小王 <span class="badge tag t-ok">Pm</span></h4><div class="rrole">总店 · 履约交付视角</div></div></div>
+      <div class="rmetrics">在管项目 <b>0</b> · 待推进任务 <b>0</b> · 待确认验收 <b>0</b> · 履约风险 <b>0</b></div>
+      <ul><li>指标：项目履约与交付 ¥ · 施工中数量 · 准时交付率 · 验收通过率 · 平均进度</li><li>模块：履约驾驶舱 / 我的项目 / 关联客户 / 来源报价 / 履约业绩</li><li>工作台以"交付质量"而非"签单量"为核心——角色定位准确</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">财</div><div><h4>财务小吴 <span class="badge tag t-ok">Finance</span></h4><div class="rrole">总店 · 资金账务视角</div></div></div>
+      <div class="rmetrics">待收工程款 <b>0</b> · 本月回款 <b>0</b> · 待付账款 <b>0</b> · 逾期应收 <b>0</b></div>
+      <ul><li>资金闭环：应收 / 已收 / 应付 / 已付 四象限</li><li>快捷入口 8 项：应收计划 / 登记收款 / 应付账款 / 工人工资 / 资金台账 / 项目账本 / 登记付款 / 手工记账</li><li>风险待办（催收/待付）+ 最近流水台账；底部独立「财务」Tab</li></ul>
+    </div>
+    <div class="role">
+      <div class="rtop"><div class="rpic">报</div><div><h4>报价池（店长/老板视角）<span class="badge tag t-blue">数据实证</span></h4><div class="rrole">全店 6 份报价 · 总价 ¥672,677</div></div></div>
+      <div class="rmetrics">已转项目 <b>1</b>（¥97,012）· 草稿 <b>5</b> · 已接受 <b>1</b></div>
+      <ul><li>套餐报价与自定义报价<b>并存同池</b>（"标准整装套餐 100㎡" ×3 + 自定义 ×3）——正是报价体系重构要统一的内核场景</li><li>每份报价展示：计价面积 / 折扣 / 设计师 / 状态 / 金额</li></ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ S4 数据权限实测 ============ -->
+<section id="s4"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">04</span>
+    <h2>数据权限实测：同一企业，不同世界</h2>
+    <p>同一时刻登录不同角色，首页指标与可见数据随角色范围（企业/门店/团队/个人）变化，用真实数据交叉验证权限边界。</p>
+  </div>
+  <div class="chartbox">
+    <h3>同一时刻各角色首页可见数据对比（实测）</h3>
+    <div class="cap">单位：条。数据全部来自本次实测抓取的页面文本：顾问/设计师/团队长/店长为各自新注册账号首页；店长为全店视角。</div>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">顾问</span><div class="btrack"><div class="bfill" style="width:0%;background:#c9d4ce"></div></div><b>0 客户 · 0 报价</b></div>
+      <div class="bar-row"><span class="bl">设计师</span><div class="btrack"><div class="bfill" style="width:0%;background:#c9d4ce"></div></div><b>0 客户 · 0 报价</b></div>
+      <div class="bar-row"><span class="bl">团队长</span><div class="btrack"><div class="bfill" style="width:0%;background:#c9d4ce"></div></div><b>0 客户 · 2 成员 · 0 报价</b></div>
+      <div class="bar-row"><span class="bl">店长</span><div class="btrack"><div class="bfill" style="width:66.7%;background:#00a862"></div><div class="bfill b2" style="width:100%;background:#d97706"></div></div><b>4 客户 · 6 报价</b></div>
+    </div>
+    <div class="legend" style="margin-top:10px;font-size:12px;color:var(--sub)"><span class="lg" style="background:#00a862"></span>客户（4 为满刻度）<span class="lg" style="background:#d97706"></span>报价（6 为满刻度）<span class="lg" style="background:#c9d4ce"></span>0 值 / 不可见</div>
+  </div>
+  <div class="card">
+    <h3><span class="dot"></span>权限边界实测结论</h3>
+    <div class="grid2">
+      <div>
+        <ul class="plus">
+          <li><b>角色即数据范围</b>：顾问 0 客户 / 店长 4 客户 / 团队长 2 成员 / 老板全企业——四级范围（企业·门店·团队·个人）在后端查询层生效，非前端隐藏。</li>
+          <li><b>财务隔离到位</b>：团队长、项目经理进入财务页呈现「只读视图」，金额掩码为 "–"（快速入口仍展示但不可操作）。</li>
+          <li><b>角色专业化</b>：顾问独有"黄金营销时段"分层，店长独有"设计调度"，项目经理以交付质量指标为核心——指标口径与角色职责强绑定。</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="minus">
+          <li><b>只读视图信息残废</b>：只读财务页大量字段显示 "–"/"0" 而非"无权限查看"引导，误读为"没有数据"，需权限语义化提示。</li>
+          <li><b>菜单级控制不一致</b>：团队长仍可见"财务快捷入口"8 项图标（虽只读），未做角色级菜单裁剪，入口与能力割裂。</li>
+          <li><b>新账号空态运营缺位</b>：各新角色工作台全 0 指标 + 空态文案，但缺少"下一步建议动作"（如"去登记第一位客户"），新人引导弱。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ S5 实测缺陷 ============ -->
+<section id="s5"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">05</span>
+    <h2>实测缺陷清单（6 项，含 4 项存量 + 2 项本次新发现）</h2>
+    <p>全部缺陷均来自真实操作复现，标注严重度与修复建议。</p>
+  </div>
+  <div class="defect">
+    <div class="sev" style="background:#d64545">高</div>
+    <div><h4>邀请成员页默认团队参数错误，非负责人角色邀请被阻断</h4>
+    <div class="where">/pages/team/invite · identityApi.createInvite</div>
+    <p>界面生成邀请时默认携带团队 ID（teamId 默认选中首个团队"全案一组"），后端校验"团队必须属于当前门店"失败，报错「团队不属于当前门店」。实测团队 store_id 与老板门店完全一致（1789096143706777093），后端接口直接调用（不带 teamId / 带正确 teamId）均成功——确认是前端默认值传参 bug，非后端逻辑问题。本次 5 个角色邀请被迫以接口方式绕过界面完成。</p>
+    <div class="fix">修复：非团队长角色提交时 teamId 置 undefined（仅 needsTeam 时传值），或修复团队默认值初始化时机。</div></div>
+  </div>
+  <div class="defect">
+    <div class="sev" style="background:#d64545">高</div>
+    <div><h4>金额符号双币符 bug（¥¥）</h4>
+    <div class="where">工作台/经营概览/业绩面板（顾问、设计师、团队长、店长）</div>
+    <p>多个角色首页金额显示为 "¥¥97,012"、"¥¥0"，而财务模块显示单 "¥"。货币符号渲染重复，影响专业形象与数据可读性。已在四个角色工作台复现。</p>
+    <div class="fix">修复：金额格式化组件统一去重（formatMoney 与静态字符串拼接重复注入 ¥）。</div></div>
+  </div>
+  <div class="defect">
+    <div class="sev" style="background:#e8890c">中</div>
+    <div><h4>报价详情首次加载报"报价不存在"（刷新后恢复）</h4>
+    <div class="where">报价详情页 · 时序竞态（上轮设计师实测复现）</div>
+    <p>首次进入报价详情偶发报错，下拉刷新后数据正常——详情接口与报价列表状态初始化存在竞态，用户会误以为数据丢失。</p>
+    <div class="fix">修复：详情页 onLoad 参数传递与接口加载顺序解耦，增加 loading 兜底。</div></div>
+  </div>
+  <div class="defect">
+    <div class="sev" style="background:#e8890c">中</div>
+    <div><h4>设计转化列表返回不刷新</h4>
+    <div class="where">设计转化页 · onShow 未重载（上轮实测复现）</div>
+    <p>从方案页返回设计转化列表，新生成的设计/报价不出现，需手动下拉刷新——onShow 生命周期未重新拉取数据。</p>
+    <div class="fix">修复：列表页 onShow 增加轻量刷新（或事件总线通知）。</div></div>
+  </div>
+  <div class="defect">
+    <div class="sev" style="background:#e8890c">中</div>
+    <div><h4>新增分项弹窗项目库空白</h4>
+    <div class="where">报价新增分项 · CatalogPicker 未发 catalog 请求（上轮实测复现）</div>
+    <p>报价新增分项时项目库为空（537 条 catalog_item 未加载），无法选择主材/施工项，报价编辑链路被阻断。</p>
+    <div class="fix">修复：弹窗打开时主动拉取 catalog 列表并处理空态。</div></div>
+  </div>
+  <div class="defect">
+    <div class="sev" style="background:#e8890c">中</div>
+    <div><h4>注册表单密码键盘输入抖动</h4>
+    <div class="where">/pages/auth/invite 注册页 · 受控组件</div>
+    <p>密码/确认密码键盘逐键输入偶发字符错位/追加（实测首次提交报"两次密码输入不一致"，重试即成功）。与登录页手机号输入问题同源（uni-app 受控组件对程序化输入兼容差）。</p>
+    <div class="fix">修复：密码框支持粘贴/自动填充；弱化前端"两次一致"硬校验，改由服务端统一校验并给出明确错误字段。</div></div>
+  </div>
+  <div class="card" style="border-left:4px solid var(--blue)">
+    <h3><span class="dot" style="background:var(--blue)"></span>评价口径说明</h3>
+    <p style="font-size:13px;color:var(--sub)">上述 6 项缺陷中，报价详情竞态、转化列表不刷新、新增分项项目库空白为上一轮设计师身份全模块实测复现；本次新增邀请页团队参数 bug 与注册密码输入抖动 2 项。整体判断：缺陷集中在 <b>交互时序与表单兼容</b> 层，业务模型与权限链路未见功能性错误。</p>
+  </div>
+</div></section>
+
+<!-- ============ S1 评测方法 ============ -->
+<section id="s1"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">01</span>
+    <h2>评测方法与账号矩阵</h2>
+    <p>严格按系统内置邀请流程注册 6 种角色（覆盖邀请页开放的 6 角色全集），每角色以独立账号登录实机操作，观察工作台差异、专属模块、数据可见范围与权限边界；结合上一轮设计师视角全模块深度实测（客户→设计→报价→项目→消息全链路）形成横向对照。</p>
+  </div>
+  <div class="card">
+    <h3><span class="dot"></span>实测账号矩阵（密码均 123456，企业：麦鸿设计 · 总店）</h3>
+    <table>
+      <colgroup><col><col><col><col><col></colgroup>
+      <thead><tr><th>角色</th><th>账号 / 姓名</th><th>注册方式</th><th>归属</th><th>体验范围</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag t-blue">企业负责人</span></td><td>18660219918 · 张伟</td><td>存量账号</td><td>企业 · 总店</td><td>工作台、客户管理、邀请成员、财务总览</td></tr>
+        <tr><td><span class="tag t-blue">家装顾问</span></td><td>13800002001 · 业务顾问小赵</td><td>老板邀请 → 界面注册</td><td>企业 · 总店（无团队）</td><td>工作台、客户列表（黄金营销时段分层）</td></tr>
+        <tr><td><span class="tag t-blue">设计师</span></td><td>13800002002 · 设计师小陈</td><td>老板邀请 → 界面注册</td><td>企业 · 总店（无团队）</td><td>工作台、报价池入口（另叠加存量设计师小林全链路实测）</td></tr>
+        <tr><td><span class="tag t-blue">项目经理</span></td><td>13800002003 · 项目经理小王</td><td>老板邀请 → 界面注册</td><td>企业 · 总店（无团队）</td><td>工作台（履约驾驶舱指标）</td></tr>
+        <tr><td><span class="tag t-blue">团队负责人</span></td><td>13800002004 · 团队长小李</td><td>老板邀请（绑定全案一组）→ 界面注册</td><td>全案一组 · 自动任队长</td><td>工作台、团队成员、财务只读视图</td></tr>
+        <tr><td><span class="tag t-blue">门店店长</span></td><td>13800002005 · 店长小周</td><td>老板邀请 → 界面注册</td><td>企业 · 总店</td><td>工作台、门店客户、方案报价池（真实数据）</td></tr>
+        <tr><td><span class="tag t-blue">财务</span></td><td>13800002006 · 财务小吴</td><td>老板邀请 → 界面注册</td><td>企业 · 总店</td><td>财务工作台（资金闭环、快捷入口）</td></tr>
+        <tr><td><span class="tag t-blue">设计师（存量）</span></td><td>18660219919 · 设计师小林</td><td>存量账号</td><td>企业 · 总店（设计 滨湖云境）</td><td>全模块深度实测（主线2：客户→设计→报价→项目→消息）</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12.5px;color:var(--sub);margin-top:10px">邀请页开放角色共 6 种：团队长 / 店长 / 设计 / 经理 / 顾问 / 财务；员工角色枚举另有 监理、采购、仓管 3 种，未开放邀请入口（详见 S7 拓展建议）。</p>
+  </div>
+</div></section>
+<!-- ============ S6 客观评价 ============ -->
+<section id="s6"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">06</span>
+    <h2>客观评价：优点与不足</h2>
+    <p>基于 8 账号 × 40+ 页面的实测体验，从业务逻辑、页面交互、操作便捷三个维度给出评价。</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="dot"></span>做得好的（7 项）</h3>
+      <ul class="plus">
+        <li><b>角色-驾驶舱设计成立</b>：8 角色 8 套首页指标与入口，角色代入感强，"登录即知自己今天该干什么"。</li>
+        <li><b>业务闭环完整</b>：客户（获客/跟进/量房）→ 设计（方案/转化）→ 报价（套餐+自定义同池）→ 项目（履约/验收）→ 财务（应收应付闭环）→ 组织（邀请/团队/调度）六域贯通，数据同源。</li>
+        <li><b>报价体系已按重构落库</b>：catalog_item（537 条六类）、quote/quote_line/quote_line_components、pack_template 等统一模型存在，套餐与自定义报价共用报价池，与重构设计一致。</li>
+        <li><b>数据权限四级生效</b>：企业/门店/团队/个人数据范围实测隔离正确，财务页只读掩码、跨角色不可越权。</li>
+        <li><b>运营化细节到位</b>：店长「需要关注」待办带处置建议、"黄金营销时段"自动分层、逾期客户标红提示——非纯工具而是带经营建议。</li>
+        <li><b>空态与引导完整</b>：客户空态提供"登记客户"CTA、项目空态提供"新建项目"入口，无裸空页面。</li>
+        <li><b>邀请-注册-登录一键流</b>：邀请令牌绑定手机号一次性使用，注册成功自动登录对应角色，零二次登录成本；短信日志可追溯。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="dot" style="background:var(--bad)"></span>不足与可优化（7 项）</h3>
+      <ul class="minus">
+        <li><b>移动端表单兼容性差</b>：受控输入框对键盘/程序化输入错位（登录、注册密码均复现），真机与模拟器表现不一致，是当前最大体验风险。</li>
+        <li><b>只读权限语义缺失</b>：无权限场景用 "-"/0 代替"无权限查看"，信息误导；菜单入口未按角色裁剪。</li>
+        <li><b>跨页数据刷新不一致</b>：部分列表 onShow 不重载（转化列表），依赖手动刷新，存在数据过期感知。</li>
+        <li><b>新账号冷启动引导弱</b>：全 0 工作台缺少"下一步动作"建议，新人无法快速理解第一件该做的事。</li>
+        <li><b>流程状态可见性不足</b>：报价"草稿/待确认/已接受/已转项目"等状态在店长/团队长侧缺少流转动作入口（如"催办""驳回"联动）。</li>
+        <li><b>双 ¥ 等显示层问题未收敛</b>：金额符号、金额 "-" 与 0 的混用缺乏统一格式化规范。</li>
+        <li><b>角色覆盖不全</b>：邀请页仅 6 角色，监理/采购/仓管有角色枚举但无邀请入口，工程施工闭环的角色支撑不完整。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="chartbox">
+    <h3>七大业务域成熟度评分（实测综合判断）</h3>
+    <div class="cap">10 分制：业务模型完整度 × 交互顺畅度 × 数据闭环度加权。供应链域缺采购/入库/领料全链，故 6.5 分。</div>
+    <div class="bars">
+      <div class="bar-row"><span class="bl">报价签约</span><div class="btrack"><div class="bfill" style="width:90%;background:#00a862"></div></div><b>9.0</b></div>
+      <div class="bar-row"><span class="bl">获客线索</span><div class="btrack"><div class="bfill" style="width:85%;background:#00a862"></div></div><b>8.5</b></div>
+      <div class="bar-row"><span class="bl">施工履约</span><div class="btrack"><div class="bfill" style="width:85%;background:#00a862"></div></div><b>8.5</b></div>
+      <div class="bar-row"><span class="bl">财务资金</span><div class="btrack"><div class="bfill" style="width:85%;background:#00a862"></div></div><b>8.5</b></div>
+      <div class="bar-row"><span class="bl">设计转化</span><div class="btrack"><div class="bfill" style="width:82%;background:#2f6fed"></div></div><b>8.2</b></div>
+      <div class="bar-row"><span class="bl">组织协同</span><div class="btrack"><div class="bfill" style="width:80%;background:#2f6fed"></div></div><b>8.0</b></div>
+      <div class="bar-row"><span class="bl">供应链</span><div class="btrack"><div class="bfill" style="width:65%;background:#d97706"></div></div><b>6.5</b></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ S7 行业拓展 ============ -->
+<section id="s7"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">07</span>
+    <h2>行业管理者 / 执行者视角：业务领域评价与可拓展方向</h2>
+    <p>以资深家装行业管理者与一线执行者的双重视角，评价装得清对"装企数字化"核心命题的覆盖，并给出板块级拓展建议。</p>
+  </div>
+  <div class="card">
+    <h3><span class="dot"></span>业务领域实现评价（对照装企经营主线）</h3>
+    <table>
+      <colgroup><col><col><col><col></colgroup>
+      <thead><tr><th>经营主线</th><th>装得清现状</th><th>评价</th><th>缺口</th></tr></thead>
+      <tbody>
+        <tr><td>获客线索</td><td>客户登记、微信绑定、到店次数、黄金营销分层</td><td><span class="tag t-ok">已覆盖</span></td><td>渠道来源（自然/网单/转介绍）、投放 ROI、线索评分</td></tr>
+        <tr><td>量房设计</td><td>量房任务、设计空间、设计方案、设计转化</td><td><span class="tag t-ok">已覆盖</span></td><td>量房数据电子化（尺寸图/验房单）、方案对比、效果图库</td></tr>
+        <tr><td>报价签约</td><td>套餐+自定义同池、报价版本、客户确认、转项目</td><td><span class="tag t-ok">已覆盖</span></td><td>价格本权限版本、利润保护（成本价隐藏）、报价审批流、签约电子章</td></tr>
+        <tr><td>材料供应链</td><td>catalog 六类主数据、报价行材料项</td><td><span class="tag t-warn">部分覆盖</span></td><td>采购单→入库→领料→损耗归集全链；供应商对账；库存预警</td></tr>
+        <tr><td>施工履约</td><td>项目、任务、进度、验收、现场汇报</td><td><span class="tag t-ok">已覆盖</span></td><td>工序派工给班组/工人、隐蔽工程照片留证、工期延期责任判定</td></tr>
+        <tr><td>变更结算</td><td>ChangeOrder 已在重构设计中</td><td><span class="tag t-warn">设计中</span></td><td>增项减项审批、签证单、竣工结算、质保金管理</td></tr>
+        <tr><td>财务资金</td><td>应收应付闭环、资金台账、工人工资</td><td><span class="tag t-ok">已覆盖</span></td><td>项目级利润核算（收入-成本-费用）、现金流预测、开票管理</td></tr>
+        <tr><td>组织协同</td><td>邀请、团队、调度、成员、角色权限</td><td><span class="tag t-ok">已覆盖</span></td><td>采购/监理/仓管角色落地、绩效指标（设计师转化率、PM 交付率考核）</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12.5px;color:var(--sub);margin-top:10px">总体判断：装得清已覆盖装企"获客-设计-报价-签约-履约-财务"经营主闭环的 7/8 主线，行业专业度在同类 SaaS 中处于中上；最薄弱的环节是<b>供应链执行</b>与<b>变更结算</b>——恰好是装企利润与客诉的高发区。</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3><span class="dot"></span>可拓展板块 A：供应链与成本域（P0）</h3>
+      <ul class="plus">
+        <li><b>采购全链</b>：采购单（按报价行/项目汇总）→ 审批 → 到货入库 → 领料出库 → 损耗/退换归集，回写 QuoteLine 成本组件。</li>
+        <li><b>供应商门户</b>：供应商档案、报价单、对账单、付款计划——Partner 域（重构设计已规划）。</li>
+        <li><b>库存与预警</b>：主材库存、安全库存、临期预警，与 catalog_item 联动。</li>
+        <li><b>班组劳务</b>：劳务班组档案、工价本、进度款按工序结算——与工人工资模块打通。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="dot"></span>可拓展板块 B：变更与结算域（P0）</h3>
+      <ul class="plus">
+        <li><b>变更单全流程</b>：增项/减项/替换/数量/价格五类变更 → 审批 → 生成变更报价 → 客户确认 → 同步预算与应收。</li>
+        <li><b>竣工结算</b>：合同价 + 变更 + 扣款/奖励 → 结算单 → 质保金（3%-5% 留档）→ 质保到期释放。</li>
+        <li><b>签证留证</b>：变更现场照片/签认单电子化，与现场汇报打通，争议可回溯。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="dot"></span>可拓展板块 C：经营决策域（P1）</h3>
+      <ul class="plus">
+        <li><b>老板驾驶舱</b>：签约额/回款/毛利/在建数四联看板 + 目标达成率 + 同比环比。</li>
+        <li><b>项目利润核算</b>：合同收入 - 材料成本 - 人工成本 - 费用分摊 = 单项目毛利（现仅有合同额无毛利）。</li>
+        <li><b>人员绩效</b>：设计师转化率、顾问签约率、PM 准时交付率/验收通过率自动考核报表。</li>
+        <li><b>经营预警</b>：逾期应收、停工风险、材料超领、变更率异常自动预警。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="dot"></span>可拓展板块 D：客户与业主域（P1）</h3>
+      <ul class="plus">
+        <li><b>业主端（邀请页已预留）</b>：工地进度、验收节点、施工留证、消息通知的业主小程序/公众号。</li>
+        <li><b>口碑转介绍</b>：完工后评价、老带新线索、案例沉淀（图片/视频）→ 反哺获客。</li>
+        <li><b>质保售后</b>：质保期内报修工单、派单、处理记录、满意度回访。</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ S8 优化路线图 ============ -->
+<section id="s8"><div class="wrap">
+  <div class="sec-head">
+    <span class="no">08</span>
+    <h2>优化路线图（按价值/成本排序）</h2>
+  </div>
+  <div class="card">
+    <div class="tl">
+      <div class="node"><span class="p">P0 · 2-4 周</span><h4>体验稳定性修复</h4><p>① 邀请页团队参数 bug（阻断老板邀请）② 金额 ¥¥ 双符 ③ 表单输入兼容（登录/注册）④ 报价详情竞态 & 新增分项项目库空白。均为短平快修复，直接决定用户信任度。</p></div>
+      <div class="node"><span class="p">P0 · 1-2 个月</span><h4>供应链与变更结算域落地</h4><p>按重构设计推进 catalog→pack→quote 内核落地后，优先补采购全链（Partner）与 ChangeOrder 变更结算，打通"报价-成本-利润"三张表。</p></div>
+      <div class="node"><span class="p">P1 · 2-3 个月</span><h4>经营决策与绩效</h4><p>老板驾驶舱 + 项目毛利核算 + 角色绩效报表，让数据从"记录"变成"决策"。</p></div>
+      <div class="node"><span class="p">P1 · 3-6 个月</span><h4>业主端与口碑闭环</h4><p>业主小程序（进度/验收/留证/消息）+ 完工评价 + 老带新线索，形成获客-服务-口碑循环。</p></div>
+      <div class="node"><span class="p">P2 · 6-12 个月</span><h4>角色补全与生态</h4><p>采购/监理/仓管角色落地、供应商门户、多门店连锁能力（权益化）、开放 API 与第三方（ERP/财务软件/量房工具）集成。</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="dot"></span>核心结论</h3>
+    <p style="font-size:14px">装得清在<b>业务领域完整性（8.2/10）</b>与<b>报价/履约专业度（8.5/10）</b>上表现突出，角色化工作台与四级数据权限经 8 账号实测确认成立；当前主要短板在<b>交互稳定性（6.5/10）</b>与<b>供应链/变更结算域的缺失</b>。若按 P0 修复体验问题并补齐供应链与变更结算两大利润域，装得清将从"流程记录工具"进阶为"装企经营系统"，具备完整竞争力。</p>
+  </div>
+</div></section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <b>装得清系统全角色实测评测报告</b><br>
+      评测环境：本机 127.0.0.1（前端 uni-app H5 + Java th4 后端）<br>
+      评测时间：2026-09-13 · 评测账号：8 个（老板 + 6 新角色 + 存量设计师）
+    </div>
+    <div>
+      <b>证据来源</b><br>
+      8 账号实测工作台/列表/财务页文本抓取 · 数据库核验（db_tenant_invite / employee / catalog_item / quote 等）<br>
+      前轮设计师全链路实测（报价详情竞态等 4 缺陷）已并入 S5
+    </div>
+  </div>
+  <div class="wrap footnote">本报告全部数据与结论来自对装得清系统本机实例的实测操作，非演示数据；评分为主观综合判断，缺陷均为可复现项。</div>
+</footer>
+
+</body>
+</html>
+

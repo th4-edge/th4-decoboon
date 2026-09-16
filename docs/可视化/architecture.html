@@ -1,0 +1,62 @@
+<html style="margin:0;padding:0;">
+<div style="background-color:transparent;box-sizing:border-box;font-family:'PingFang SC','Roboto','Segoe UI',Arial,sans-serif;color:#1A1B1C;line-height:1.5;--accent:#8BC8EA;max-width:880px;margin:0 auto;">
+  <div style="font-size:15px;font-weight:600;margin:16px 0 4px;">装得清后端分层架构（JPA 核心 · 无 Controller · AgentScope Harness + DeepSeek）</div>
+  <div style="font-size:12px;color:#6B7280;margin-bottom:14px;">数据访问以 Spring Data JPA 为核心；Web 入口统一走 th4-framework Provider，由 HttpProcessor 自动路由；智能体层基于 agentscope-harness 的 HarnessAgent。</div>
+
+  <!-- 客户端层 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div style="flex:1 1 240px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 12px;background:linear-gradient(135deg,rgba(139,200,234,0.12),rgba(139,200,234,0.22));box-sizing:border-box;">
+      <div style="font-size:11px;color:#6B7280;font-weight:600;margin-bottom:2px;">客户端层</div>
+      <div style="font-size:13px;">业务员 Web：选模板 → 传图 → 生成/预览/下载 → 登记线索</div>
+      <div style="font-size:13px;">老板后台：本月看板（ROI）· 线索列表 · 业务员排行</div>
+    </div>
+  </div>
+  <div style="text-align:center;color:#8BC8EA;font-size:14px;line-height:1;">▼</div>
+
+  <!-- HTTP 层 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div style="flex:1 1 240px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 12px;box-sizing:border-box;">
+      <div style="font-size:11px;color:#6B7280;font-weight:600;margin-bottom:2px;">HTTP 层 · th4-framework HttpProcessor（自动探测 Provider，无 Controller）</div>
+      <div style="font-size:12.5px;color:#374151;">JSON/Multipart 解码 · JWT 安全 · 参数校验 · 分页/关键字/谓词自动装配</div>
+    </div>
+  </div>
+  <div style="text-align:center;color:#8BC8EA;font-size:14px;line-height:1;">▼</div>
+
+  <!-- 应用层 Provider -->
+  <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 12px;box-sizing:border-box;">
+    <div style="font-size:11px;color:#6B7280;font-weight:600;margin-bottom:6px;">应用层 Provider（业务用例入口，替代 Controller）</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:12.5px;">
+      <span style="border-radius:8px;padding:4px 10px;background:rgba(139,200,234,0.14);">clue.video 生成/发布</span>
+      <span style="border-radius:8px;padding:4px 10px;background:rgba(139,200,234,0.14);">clue.asset 素材</span>
+      <span style="border-radius:8px;padding:4px 10px;background:rgba(139,200,234,0.14);">clue.lead 线索</span>
+      <span style="border-radius:8px;padding:4px 10px;background:rgba(139,200,234,0.14);">clue.company 账号</span>
+      <span style="border-radius:8px;padding:4px 10px;background:rgba(139,200,234,0.14);">clue.statistic 看板</span>
+    </div>
+  </div>
+  <div style="text-align:center;color:#8BC8EA;font-size:14px;line-height:1;">▼</div>
+
+  <!-- 领域+智能体 双列 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div style="flex:1 1 300px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 12px;box-sizing:border-box;">
+      <div style="font-size:11px;color:#6B7280;font-weight:600;margin-bottom:4px;">领域层 · JPA（Entity + Repository）</div>
+      <div style="font-size:12.5px;color:#374151;">Template/Video/VideoTask · Asset · Lead/LeadFollow · Company/Employee · Statistic</div>
+      <div style="font-size:12.5px;color:#374151;margin-top:2px;">事件/监听驱动流水线 · 多租户 Env 隔离</div>
+    </div>
+    <div style="flex:1 1 300px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 12px;background:linear-gradient(135deg,rgba(139,200,234,0.10),rgba(139,200,234,0.18));box-sizing:border-box;">
+      <div style="font-size:11px;color:#6B7280;font-weight:600;margin-bottom:4px;">智能体层 · AgentScope Harness + DeepSeek</div>
+      <div style="font-size:12.5px;color:#374151;">HarnessAgent（workspace / 双层记忆 / 压缩 / 会话持久）</div>
+      <div style="font-size:12.5px;color:#374151;">DeepSeekChatModel（deepseek-chat / reasoner）</div>
+      <div style="font-size:12.5px;color:#374151;">@Tool：ScriptTool · LeadAnalysisTool · FollowRemindTool · StatisticTool</div>
+    </div>
+  </div>
+  <div style="text-align:center;color:#8BC8EA;font-size:14px;line-height:1;">▼</div>
+
+  <!-- 数据层 -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div style="flex:1 1 240px;min-width:0;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 12px;box-sizing:border-box;">
+      <div style="font-size:11px;color:#6B7280;font-weight:600;margin-bottom:2px;">数据层</div>
+      <div style="font-size:13px;">MySQL（JPA 自动建表 ddl-auto:update）· Redis · Agent 工作区 .agentscope/workspace</div>
+    </div>
+  </div>
+</div>
+</html>

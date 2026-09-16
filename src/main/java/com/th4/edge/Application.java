@@ -12,6 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableEdgeFramework
 public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(Application.class, args);
     }
 }

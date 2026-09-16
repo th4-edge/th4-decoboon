@@ -1,0 +1,38 @@
+{
+  "schema": "starwork.agent_docs_plan.v0.1",
+  "generated_at": "2026-09-15T12:49:30.092Z",
+  "target": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon",
+  "context": "adapt",
+  "status": "draft_required",
+  "entries": [
+    {
+      "kind": "agent_rules",
+      "target_path": "AGENTS.md",
+      "target_exists": true,
+      "draft_path": ".starwork/drafts/AGENTS.proposed.md",
+      "action": "merge_required",
+      "reason": "Existing AGENTS.md must be preserved and semantically integrated.",
+      "required_topics": [
+        "StarWork read-first files",
+        "workspace write boundaries",
+        "project Skill directories",
+        "MultiAgent lane workflow"
+      ]
+    },
+    {
+      "kind": "agent_rules",
+      "host": "codex",
+      "target_path": "AGENTS.md",
+      "target_exists": true,
+      "draft_path": ".starwork/drafts/adapter.codex.proposed.md",
+      "action": "merge_required",
+      "reason": "Existing AGENTS.md must be preserved and semantically integrated.",
+      "required_topics": [
+        "StarWork read-first files",
+        "workspace write boundaries",
+        "project Skill directories",
+        "MultiAgent lane workflow"
+      ]
+    }
+  ]
+}

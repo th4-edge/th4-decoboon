@@ -1,0 +1,349 @@
+{
+  "version": 1,
+  "lanes": {
+    "product-planning": {
+      "host": "codex",
+      "current_session": "codex:01a0a51f-cab9-7c02-8709-7cf6c9d28648",
+      "thread_id": "01a0a51f-cab9-7c02-8709-7cf6c9d28648",
+      "session_id": "01a0a51f-cab9-7c02-8709-7cf6c9d28648",
+      "session_name": "产品规划 Agent",
+      "pinned": false,
+      "created_by": "starwork multiagent bind",
+      "created_at": "2026-09-15T12:52:09.038Z"
+    },
+    "development": {
+      "host": "codex",
+      "current_session": "codex:01a0a51f-cf38-7e23-bc39-54516fab56ec",
+      "thread_id": "01a0a51f-cf38-7e23-bc39-54516fab56ec",
+      "session_id": "01a0a51f-cf38-7e23-bc39-54516fab56ec",
+      "session_name": "开发 Agent",
+      "pinned": false,
+      "created_by": "starwork multiagent bind",
+      "created_at": "2026-09-15T12:52:09.088Z"
+    },
+    "acceptance": {
+      "host": "codex",
+      "current_session": "codex:01a0a51f-d47a-71d1-817e-dc719276654c",
+      "thread_id": "01a0a51f-d47a-71d1-817e-dc719276654c",
+      "session_id": "01a0a51f-d47a-71d1-817e-dc719276654c",
+      "session_name": "验收 Agent",
+      "pinned": false,
+      "created_by": "starwork multiagent bind",
+      "created_at": "2026-09-15T12:52:09.133Z"
+    }
+  },
+  "requests": [
+    {
+      "id": "REQ-20260915-PRELAUNCH-PLAN",
+      "from": "user",
+      "to": "product-planning",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-MATERIAL-INVENTORY",
+      "from": "user",
+      "to": "material",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-OWNER-CLOSURE",
+      "from": "product-planning",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-OWNER-CLOSURE",
+      "from": "product-planning",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-TOPIC-PRELAUNCH",
+      "from": "material",
+      "to": "topic-selection",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-EXEC-OWNER",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-WRITE-BATCH1",
+      "from": "topic-selection",
+      "to": "content-writing",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-T05",
+      "from": "product-planning",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DESIGN-BATCH1",
+      "from": "content-writing",
+      "to": "design",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-FIX-FILE-AUTH",
+      "from": "acceptance",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-RECHECK-FILE",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-P05-P07",
+      "from": "product-planning",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ANALYTICS-FRAMEWORK",
+      "from": "topic-selection",
+      "to": "data-review",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-P05-P07",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-P06",
+      "from": "product-planning",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-FIX-P05",
+      "from": "acceptance",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-P06",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-FIX-P06",
+      "from": "acceptance",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-RECHECK-P05-P06",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-DEV-FIX-P05-FINAL",
+      "from": "acceptance",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-P05-FINAL",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-WEB-PLAN",
+      "from": "user",
+      "to": "product-planning",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-WEB-BUILD-1",
+      "from": "user",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-WEB-PHASE1",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-WEB-FIX-1",
+      "from": "acceptance",
+      "to": "development",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260915-ACCEPT-WEB-PHASE1-RECHECK",
+      "from": "development",
+      "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    }
+  ]
+}

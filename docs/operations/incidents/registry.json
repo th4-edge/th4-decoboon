@@ -1,0 +1,119 @@
+{
+  "schema": "th4-decoboon.incidents.v1",
+  "incidents": [
+    {
+      "incidentId": "INC-20260916-a1233597b0",
+      "signature": "LazyInitializationException: Could not initialize proxy - no session",
+      "signatureHash": "a1233597b0",
+      "classification": "code_bug",
+      "severity": "critical",
+      "status": "fixed",
+      "count": 132,
+      "firstSeen": "2026-09-16 05:14:57.806",
+      "lastSeen": "2026-09-16 06:04:02.211",
+      "samples": [
+        "[2026-09-16 05:14:57.806] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session",
+        "[2026-09-16 05:15:18.762] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session",
+        "1752:2026-09-16T05:14:57.806+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session",
+        "1973:2026-09-16T05:15:18.762+08:00 ERROR 31014 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session",
+        "[2026-09-16 05:14:57.806] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:Could not initialize proxy [com.th4.edge.tenant.user.model.Employee#1789506897394275742] - no session"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-052441",
+        "2026-09-16/20260916-052935",
+        "2026-09-16/20260916-053302",
+        "2026-09-16/20260916-053521",
+        "2026-09-16/20260916-064010",
+        "2026-09-16/20260916-065327",
+        "2026-09-16/20260916-070010",
+        "2026-09-16/20260916-130232"
+      ],
+      "actionable": false,
+      "fixedAt": "2026-09-16 06:53:34",
+      "fixedRelease": "/opt/decoboon/releases/20260916-065204",
+      "fixSummary": "根因：生产 open-in-view=false，SubscriptionAccessRequestFilter 在事务外经 SubscriptionContext.requireModule -> effectiveVersion -> getPlanVersion().getModules() 访问未初始化代理。修复：SubscriptionRepository.findByCompany_ComId 增加 @EntityGraph(planVersion,plan,company)。回归测试 SubscriptionLazyLoadingRegressionTest（OSIV=false）修复前3失败/修复后3通过。发版后10分钟窗口无新增指纹。"
+    },
+    {
+      "incidentId": "INC-20260916-cddd8368fa",
+      "signature": "找不到对应的处理服务:config",
+      "signatureHash": "cddd8368fa",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 5,
+      "firstSeen": "2026-09-16 06:33:46.274",
+      "lastSeen": "2026-09-16 06:33:46.274",
+      "samples": [
+        "[2026-09-16 06:33:46.274] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config处理失败:找不到对应的处理服务:config",
+        "3117:2026-09-16T06:33:46.274+08:00 ERROR 31996 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config",
+        "[2026-09-16 06:33:46.274] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config处理失败:找不到对应的处理服务:config",
+        "[2026-09-16 06:33:46.274] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config处理失败:找不到对应的处理服务:config",
+        "[2026-09-16 06:33:46.274] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config处理失败:找不到对应的处理服务:config"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-064010",
+        "2026-09-16/20260916-065327",
+        "2026-09-16/20260916-070010",
+        "2026-09-16/20260916-130232"
+      ]
+    },
+    {
+      "incidentId": "INC-20260916-a8b87027fc",
+      "signature": "<id>:Caused by: org.hibernate.PropertyValueException: not-null property references a null or transient value: com.th4.edge.tenant.user.model.Invite.telNo",
+      "signatureHash": "a8b87027fc",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "2023:Caused by: org.hibernate.PropertyValueException: not-null property references a null or transient value: com.th4.edge.tenant.user.model.Invite.telNo"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-130232"
+      ]
+    },
+    {
+      "incidentId": "INC-20260916-cd863ee0f9",
+      "signature": "not-null property references a null or transient value: com.th4.edge.tenant.user.model.Invite.telNo",
+      "signatureHash": "cd863ee0f9",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-16 12:30:13.247",
+      "lastSeen": "2026-09-16T12:30:13.247+08:00",
+      "samples": [
+        "[2026-09-16 12:30:13.247] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/save处理失败:not-null property references a null or transient value: com.th4.edge.tenant.user.model.Invite.telNo",
+        "2074:2026-09-16T12:30:13.247+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:not-null property references a null or transient value: com.th4.edge.tenant.user.model.Invite.telNo"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-130232"
+      ]
+    },
+    {
+      "incidentId": "INC-20260916-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-16 12:29:27.868",
+      "lastSeen": "2026-09-16T12:29:27.868+08:00",
+      "samples": [
+        "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": [
+        "2026-09-16/20260916-130232"
+      ]
+    }
+  ],
+  "updatedAt": "2026-09-16T05:02:32.900502+00:00"
+}

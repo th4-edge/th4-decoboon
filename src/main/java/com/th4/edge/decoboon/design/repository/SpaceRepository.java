@@ -1,0 +1,16 @@
+package com.th4.edge.decoboon.design.repository;
+
+import com.th4.edge.decoboon.design.model.Space;
+import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.List;
+
+/** 方案区域仓储。 */
+public interface SpaceRepository extends JpaRepository<Space, Long>,
+        JpaSpecificationExecutor<Space> {
+
+    List<Space> findByDesign_DesignIdOrderBySortAsc(Long designId);
+
+    long deleteByDesign_DesignId(Long designId);
+}
