@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.catalog.service.items.page.support;
 
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
+import com.th4.edge.decoboon.catalog.context.CatalogCostContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -61,10 +62,12 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
     private Employee employee;
 
     private final CatalogItemRepository repository;
+    private final CatalogCostContext costContext;
     private final CatalogContext context;
 
-    public Page(CatalogItemRepository repository, CatalogContext context) {
+    public Page(CatalogItemRepository repository, CatalogCostContext costContext, CatalogContext context) {
         this.repository = repository;
+        this.costContext = costContext;
         this.context = context;
     }
 
@@ -102,7 +105,7 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
         };
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 30 : Math.min(size, 100);
-        return repository.findAll(specification,
-                PageRequest.of(page, pageSize, Sort.by("category", "brand", "series", "name")));
+        return costContext.mask(repository.findAll(specification,
+                PageRequest.of(page, pageSize, Sort.by("category", "brand", "series", "name"))), employee);
     }
 }

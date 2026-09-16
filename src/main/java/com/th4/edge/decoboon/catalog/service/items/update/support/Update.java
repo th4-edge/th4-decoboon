@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
 import com.th4.edge.decoboon.catalog.context.PinyinContext;
+import com.th4.edge.decoboon.catalog.context.CatalogCostContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -65,12 +66,14 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
     @User private Employee employee;
 
     private final CatalogItemRepository repository;
+    private final CatalogCostContext costContext;
     private final PinyinContext pinyinContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
 
-    public Update(CatalogItemRepository repository, PinyinContext pinyinContext, CatalogContext context, CatalogDetailContext detailContext) {
+    public Update(CatalogItemRepository repository, CatalogCostContext costContext, PinyinContext pinyinContext, CatalogContext context, CatalogDetailContext detailContext) {
         this.repository = repository;
+        this.costContext = costContext;
         this.pinyinContext = pinyinContext;
         this.context = context;
         this.detailContext = detailContext;
@@ -104,7 +107,7 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
         item.setMaintainer(current);
         CatalogItem saved = repository.save(item);
         detailContext.sync(saved);
-        return saved;
+        return costContext.mask(saved, employee);
     }
 
     private BigDecimal zero(BigDecimal value) {

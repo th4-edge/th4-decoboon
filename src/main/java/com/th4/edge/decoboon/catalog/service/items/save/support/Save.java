@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
 import com.th4.edge.decoboon.catalog.context.CatalogCodeContext;
 import com.th4.edge.decoboon.catalog.context.PinyinContext;
+import com.th4.edge.decoboon.catalog.context.CatalogCostContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -62,14 +63,16 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
     @User private Employee employee;
 
     private final CatalogItemRepository repository;
+    private final CatalogCostContext costContext;
     private final PinyinContext pinyinContext;
     private final CatalogCodeContext codeContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
 
-    public Save(CatalogItemRepository repository, PinyinContext pinyinContext, CatalogCodeContext codeContext,
+    public Save(CatalogItemRepository repository, CatalogCostContext costContext, PinyinContext pinyinContext, CatalogCodeContext codeContext,
                 CatalogContext context, CatalogDetailContext detailContext) {
         this.repository = repository;
+        this.costContext = costContext;
         this.pinyinContext = pinyinContext;
         this.codeContext = codeContext;
         this.context = context;
@@ -86,7 +89,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
         applyDetails(item);
         CatalogItem saved = repository.save(item);
         detailContext.sync(saved);
-        return saved;
+        return costContext.mask(saved, current);
     }
 
     private void apply(CatalogItem item, Long comId) {
