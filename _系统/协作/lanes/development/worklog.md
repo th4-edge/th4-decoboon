@@ -573,3 +573,11 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 验证：后端 `mvn -q test` 96 tests / 0 failures / 0 errors；Web build + verify:system PASS；App `verify:mp-weixin` PASS。真实 MySQL 麦鸿回归：`ZC-0001` 采购价 68→75→68 时，项目估算/实际成本 8160→9000→8160，成本缺失时利润保持 `null`。
 - 错误集：新增 ECD-002 成本缺失伪利润、ECD-003 采购与领料重复累计、ECD-004 敏感成本裁剪上下文错误，并同步 `rules.md`、`AGENTS.md`。
 - 提交：后端 `5355378`、Web `b0bfb16`、App `11ce7d4`。
+
+## 2026-09-17 首页金额格式与工地详情报错修复
+
+- Boss/财务首页金额卡改用统一 `JzMoney` 口径：金额 `>= 10000` 显示万元，`< 10000` 显示元，单位颜色区分；90242.83 显示 `9.02万`，9800 显示 `¥9,800元`。
+- 阶段详情：定位为 `project/stage/info` 误序列化 `project.property` 的循环归属图，真实响应达 240KB+ 且嵌套数百层；裁剪 Project 白名单后降至 462B。
+- 任务详情：同步裁剪 Project 的深层 `property/designer/manager`，真实响应降至 1.4KB。
+- 前端容错：阶段详情的项目、任务、日报、验收改为独立容错；任务详情的项目/阶段/日报失败不再覆盖已加载的任务主数据。
+- 回归：新增 `ProjectDetailSerializationContractTest`；App `verify:mp-weixin` PASS；后端全量测试通过。

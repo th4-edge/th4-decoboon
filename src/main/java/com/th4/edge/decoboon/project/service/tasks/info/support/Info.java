@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
                 properties = {"taskId", "project", "stage", "catalogItem", "owner", "creator", "name",
                         "zone", "craft", "spec", "quantity", "unit", "status", "progress", "priority", "conceal",
                         "remark", "plannedStart", "plannedEnd", "actualStart", "actualEnd", "evidenceUrls", "nodes", "createTime"}),
-        @AllowProperties(model = Project.class, properties = {"projectId", "name", "siteAddr", "designer", "manager", "property" }),
+        @AllowProperties(model = Project.class, properties = {"projectId", "name", "siteAddr" }),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status"}),
         @AllowProperties(model = CatalogItem.class, properties = {"itemId", "code", "type", "name", "unit", "craft", "criterion"}),
         @AllowProperties(model = TaskNode.class,
