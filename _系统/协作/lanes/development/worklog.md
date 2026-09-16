@@ -591,3 +591,11 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 最新动态修复：Boss 首页此前刷新时直接执行 `reports=[]`，而同频动态页单独调用 `siteApi.allReports()`，因此出现“首页为空、点击全部有数据”。首页现直接加载同一全量动态接口后再按首页项目范围筛选。
 - 验证：Boss 动态接口真实返回 5 条、首条“阶段开工 · 油漆”；App `verify:mp-weixin` PASS。
 - 提交：App `e823963`。
+
+## 2026-09-17 动态卡片与成本未完整图标统一
+
+- 动态卡片：统一优化头像、作者/角色、时间、类型标签、正文、图片宫格、类型强调条和按压反馈；单图全宽、多图双列，动态类型色贯穿卡片。
+- 成本未完整：Web 新增统一 `CostIncompleteValue`，展示为“-? 🙂/问号笑图标”，鼠标悬浮提示“成本未完整”。
+- 覆盖范围：经营驾驶舱、老板/财务工作台统计卡、财务总览累计利润、项目利润/毛利率列、项目结算资源表。
+- 验证：Web type-check/build PASS；App `verify:mp-weixin` PASS。
+- 提交：App `88f5809`、Web `4018b6a`。
