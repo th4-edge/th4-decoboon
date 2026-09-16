@@ -78,9 +78,9 @@ public class PayableSettlement extends AuditModel {
     private Payable payable;
 
     @Note("核销金额")
-    @Unit("分")
-    @Column(nullable = false)
-    private Long amount = 0L;
+    @Unit("元")
+    @Column(precision = 14, scale = 2, nullable = false)
+    private java.math.BigDecimal amount = java.math.BigDecimal.ZERO;
 
     @Note("备注")
     @Column(length = 255)
@@ -100,8 +100,8 @@ public class PayableSettlement extends AuditModel {
     public void setPayment(Payment payment) { this.payment = payment; }
     public Payable getPayable() { return payable; }
     public void setPayable(Payable payable) { this.payable = payable; }
-    public Long getAmount() { return amount; }
-    public void setAmount(Long amount) { this.amount = amount; }
+    public java.math.BigDecimal getAmount() { return amount; }
+    public void setAmount(java.math.BigDecimal amount) { this.amount = amount; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
 }

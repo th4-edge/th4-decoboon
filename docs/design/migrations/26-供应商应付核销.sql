@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS db_decoboon_finance_payable_settlement (
   owner_id      BIGINT       NULL COMMENT '负责人',
   payment_id    BIGINT       NOT NULL COMMENT '付款单',
   payable_id    BIGINT       NOT NULL COMMENT '应付单',
-  amount        BIGINT       NOT NULL DEFAULT 0 COMMENT '核销金额（分）',
+  amount        DECIMAL(14,2) NOT NULL DEFAULT 0 COMMENT '核销金额（元）',
   remark        VARCHAR(255) NULL COMMENT '备注',
   create_date        INT      NULL,
   create_date_time   BIGINT   NULL,

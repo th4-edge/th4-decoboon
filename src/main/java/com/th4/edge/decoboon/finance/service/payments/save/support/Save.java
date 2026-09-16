@@ -6,7 +6,9 @@ import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.PayableSettlement;
 import com.th4.edge.decoboon.finance.model.Payment;
+import com.th4.edge.decoboon.finance.repository.PayableSettlementRepository;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.PaymentRepository;
 import com.th4.edge.decoboon.project.model.Project;
@@ -46,9 +48,13 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
 
     @User
     private Employee employee;
+    /** 单张应付付款（与 payableIds 二选一）。 */
     @AutoInject
-    @NotNull
     private Long payableId;
+
+    /** 多应付核销：一笔付款冲抵同一供应商的多张应付单，按到期日先后自动分摊。 */
+    @AutoInject
+    private java.util.List<Long> payableIds;
     @AutoInject
     @NotNull
     private BigDecimal amount;
@@ -68,13 +74,16 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
 
     private final PaymentRepository paymentRepository;
     private final PayableRepository payableRepository;
+    private final PayableSettlementRepository payableSettlementRepository;
     private final FinanceAccessContext accessContext;
 
     public Save(PaymentRepository paymentRepository,
                 PayableRepository payableRepository,
+                PayableSettlementRepository payableSettlementRepository,
                 FinanceAccessContext accessContext) {
         this.paymentRepository = paymentRepository;
         this.payableRepository = payableRepository;
+        this.payableSettlementRepository = payableSettlementRepository;
         this.accessContext = accessContext;
     }
 
@@ -82,6 +91,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
     @Transactional
     public Payment call(Payment request) {
         Employee current = accessContext.requireEditor(employee);
+        if (payableIds != null && !payableIds.isEmpty()) {
+            return settleMultiple(request, current, payableIds);
+        }
         Payable payable = payableRepository.findById(payableId)
                 .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问")));
@@ -118,6 +130,78 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 payable.getType().getName(), LedgerSource.Payment, saved.getPaymentId(), paid,
                 saved.getAccount(), paidAt, saved.getPayeeName(),
                 "付款 · " + payable.getName(), remark);
+        return saved;
+    }
+
+    /**
+     * 一笔付款冲抵多张应付单：按到期日先后自动分摊，写入核销明细并回写应付状态。
+     */
+    private Payment settleMultiple(Payment request, Employee current, java.util.List<Long> ids) {
+        BigDecimal paid = accessContext.value(amount);
+        if (paid.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "付款金额必须大于 0"));
+        }
+        Long comId = current.getCompany().getComId();
+        java.util.List<Payable> payables = payableRepository.findAllById(ids).stream()
+                .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
+                .sorted(java.util.Comparator.comparing(Payable::getDueDate,
+                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())))
+                .toList();
+        if (payables.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问"));
+        }
+        BigDecimal total = payables.stream()
+                .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (paid.compareTo(total) > 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "付款金额不能超过所选应付单的待付合计"));
+        }
+        Payable primary = payables.get(0);
+        Project project = primary.getProject();
+        if (project != null) {
+            accessContext.resolveProject(current, project.getProjectId());
+        }
+        request.setProject(project);
+        request.setPayable(primary);
+        request.setPartner(primary.getPayeePartner());
+        request.setAmount(paid);
+        request.setAccount(account == null ? FundAccount.CompanyBank : account);
+        request.setPaidAt(paidAt);
+        request.setPayeeName(payeeName == null || payeeName.isBlank() ? primary.getPayeeName() : payeeName);
+        request.setTransactionNo(transactionNo);
+        request.setVoucherUrl(voucherUrl);
+        request.setRemark(remark);
+        request.setCreatedBy(current);
+        accessContext.applyOwnership(request, current, project);
+        Payment saved = paymentRepository.save(request);
+
+        BigDecimal remaining = paid;
+        for (Payable payable : payables) {
+            if (remaining.signum() <= 0) {
+                break;
+            }
+            BigDecimal outstanding = accessContext.outstanding(payable.getAmount(), payable.getPaidAmount());
+            BigDecimal allocate = remaining.min(outstanding);
+            PayableSettlement settlement = new PayableSettlement();
+            settlement.setCompany(current.getCompany());
+            settlement.setStore(current.getStore());
+            settlement.setTeam(current.getTeam());
+            settlement.setOwner(current);
+            settlement.setPayment(saved);
+            settlement.setPayable(payable);
+            settlement.setAmount(allocate);
+            settlement.setRemark(remark);
+            payableSettlementRepository.save(settlement);
+
+            payable.setPaidAmount(accessContext.value(payable.getPaidAmount()).add(allocate));
+            accessContext.refreshPayableStatus(payable);
+            payableRepository.save(payable);
+            remaining = remaining.subtract(allocate);
+        }
+        accessContext.recordLedger(current, project, LedgerDirection.Expense,
+                primary.getType().getName(), LedgerSource.Payment, saved.getPaymentId(), paid,
+                saved.getAccount(), paidAt, saved.getPayeeName(),
+                "付款 · " + primary.getName() + "（核销 " + payables.size() + " 张应付）", remark);
         return saved;
     }
 }
