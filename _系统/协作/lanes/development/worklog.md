@@ -581,3 +581,4 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 任务详情：同步裁剪 Project 的深层 `property/designer/manager`，真实响应降至 1.4KB。
 - 前端容错：阶段详情的项目、任务、日报、验收改为独立容错；任务详情的项目/阶段/日报失败不再覆盖已加载的任务主数据。
 - 回归：新增 `ProjectDetailSerializationContractTest`；App `verify:mp-weixin` PASS；后端全量测试通过。
+- 提交：后端 `b42dd58`、App `1aa0e65`。
