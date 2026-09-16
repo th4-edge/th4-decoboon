@@ -608,3 +608,13 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 客服咨询：关于页提供微信在线客服 `open-type=contact`、复制官方客服邮箱、复制包含当前用户/角色/企业/版本的问题反馈模板；未编造微信号或电话。
 - 验证：后端 98 tests / 0 failures；App `verify:mp-weixin` PASS。
 - 提交：后端 `d7e43df`、App `b180274`。
+
+## 2026-09-17 三端品牌 Logo 统一
+
+- 以 `logo-export/logo-mark-white@2x.png` 和同套 `logo-mark-color@2x.png` 为唯一母版，生成 256px 运行时资源并校验 SHA-256。
+- App：新增 `JzBrandLogo`，登录、邀请和关于页改用统一 Logo；资源位于 `src/static/brand/`。
+- Web：新增 `BrandLogo`，登录、工作台和移动登录标题改用统一 Logo，同时设置 favicon；资源位于 `public/brand/`。
+- Admin：新增 `BrandLogo`，登录和工作台侧边栏改用统一 Logo，同时设置 favicon；admin 当前无独立 Git 仓库，文件已在工作区更新。
+- 规范：`rules.md` §12 和 `AGENTS.md` 已写入资源路径、明暗背景变体、SHA-256 和同步验收要求。
+- 验证：App `verify:mp-weixin`、Web build、Admin build 全部 PASS。
+- 提交：App `9e166c5`、Web `a280220`、规范 `b7121b4`。
