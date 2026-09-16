@@ -45,7 +45,7 @@ public class CatalogCodeContext {
         Optional<CatalogItem> latest =
                 repository.findFirstByCompany_ComIdAndTypeOrderByCodeDesc(comId, type);
         int next = latest.map(item -> sequence(item.getCode(), prefix) + 1).orElse(1);
-        return "%s-%0" + WIDTH + "d".formatted(prefix, next);
+        return String.format("%s-%0" + WIDTH + "d", prefix, next);
     }
 
     /** 解析既有编号中的序号；无法解析（含用户自定义编号）时回退为 0。 */
