@@ -26,7 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
                         "customerCount", "signedCustomerCount", "marketerSignRate", "deliveredProjectCount",
                         "onTimeProjectCount", "pmOnTimeDeliveryRate", "acceptanceCount", "acceptedAcceptanceCount",
                         "pmAcceptancePassRate"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role", "store", "team"})
+        // 绩效列表只需要员工身份摘要；store/team 会带出 company/leader 循环归属图。
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("statistic/performance/report")
 @Scope(ScopeTypes.PROTOTYPE)
