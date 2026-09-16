@@ -369,3 +369,18 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 新增 `docs/product/装得清运营管理端用户组织与权限设计.md`，覆盖组织层级、岗位、权限矩阵、数据范围、职责分离、账号生命周期和 Phase 2 平台岗位模型。
 - 新增账号初始化和实时后端对接运维文档。
 - 验证：前端 `verify:real-api` + `type-check` + `build` PASS；后端编译和平台/Provider 安全测试 PASS。
+
+## 2026-09-16 本地版本提交 1.0.1（后端 + 前端双仓库）
+
+- 后端仓库 `后端代码/th4-decoboon`（根目录正确）：
+  - `00ba624 chore(release): 本地版本提交 1.0.1`（首提交，44 文件）
+  - `f5a0c57 chore(release): 补全 1.0.1 本地版本（源码/文档/示例配置）`（补全 995 文件，含 src/main、src/test、docs、_系统、.agents 与 `.env.*.example` 模板）
+  - 提交前补充 `.gitignore`：`logs/`、`data/`、`__pycache__/`、`*.pyc`；清理已暂存的 `scripts/__pycache__`
+  - 安全核验：`.env.dev.local`、`.env.oss.local`、`.env.wechat-pay.local`、`config/application-dev.yml`、`config/wechat-pay/*.pem` 全部 IGNORED；提交的 `.env.*.example` 为模板且不含真实密钥
+  - 最终工作区：干净（0 未提交）
+- 前端仓库 `前端代码/th4-decoboon-app`：
+  - 首次确认时该目录**没有 `.git`**，`git rev-parse --show-toplevel` 指向 `/Users/zhangwei` 主目录仓库（存在误提交主目录的高风险）；随后确认已具备独立 `.git`（根目录校验通过）后执行首次提交
+  - `6b30de8 chore(release): 初始化前端工程并提交 1.0.1`（232 文件），工作区干净
+  - `.gitignore` 已忽略 `node_modules`、`dist`、`unpackage`、`*.local`、`.env.local`；敏感内容扫描（appsecret / access-key / private-key）无命中
+  - 版本号：`src/manifest.json` → `versionName 1.0.1` / `versionCode 101`
+- 状态：**仅本地提交，未发版**（用户要求先完成企业负责人功能梳理）

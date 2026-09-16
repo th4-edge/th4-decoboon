@@ -11,20 +11,22 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** 平台操作审计仓储。 */
+/** 平台独立操作审计仓储。 */
 public interface PlatformOperationLogRepository extends JpaRepository<PlatformOperationLog, Long> {
 
-    @EntityGraph(attributePaths = {"company", "operator"})
+    @EntityGraph(attributePaths = {"org", "operator", "operator.department"})
     @Query("""
             select log from PlatformOperationLog log
-            where (:companyId is null or log.company.comId = :companyId)
+            where log.org.orgId = :orgId
+              and (:companyId is null or log.targetComId = :companyId)
               and (:action is null or log.action = :action)
             order by log.logId desc
             """)
-    Page<PlatformOperationLog> pageLogs(@Param("companyId") Long companyId,
+    Page<PlatformOperationLog> pageLogs(@Param("orgId") Long orgId,
+                                        @Param("companyId") Long companyId,
                                         @Param("action") PlatformAction action,
                                         Pageable pageable);
 
-    @EntityGraph(attributePaths = {"company", "operator"})
-    List<PlatformOperationLog> findTop20ByOrderByLogIdDesc();
+    @EntityGraph(attributePaths = {"org", "operator", "operator.department"})
+    List<PlatformOperationLog> findTop20ByOrg_OrgIdOrderByLogIdDesc(Long orgId);
 }

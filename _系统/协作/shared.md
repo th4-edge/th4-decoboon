@@ -51,6 +51,7 @@
 | development | 客户列表门店维度（显式 Provider，B 方案） | 后端 customer/cust/page + 前端 customer/list.vue | acceptance,user | built_pending_upload | 2026-09-16 |
 | development | 金额万元/元自适应 + 财务模块品牌色/表单对齐统一 | 前端 format.ts、JzMoney.vue、finance.scss 等 13 文件 | acceptance,user | built_pending_upload | 2026-09-16 |
 | development | 财务配色与表单对齐二次修复（含开发者工具实测） | 前端 finance.scss、project.vue、base.scss | acceptance,user | verified_in_devtools | 2026-09-16 |
+| development | 本地版本提交 1.0.1（后端 f5a0c57 / 前端 6b30de8） | 后端+前端仓库 | acceptance,user | committed_not_released | 2026-09-16 |
 ## Cross-Lane Requests
 
 | id | from | to | request | status | host_delivery | link | updated |
