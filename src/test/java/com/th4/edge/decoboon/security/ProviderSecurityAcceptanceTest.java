@@ -52,7 +52,8 @@ class ProviderSecurityAcceptanceTest {
             "invite/invitation/info",
             "invite/invitation/reject",
             "order/callback",
-            "file/private/download"
+            "file/private/download",
+            "platform/auth/login"
     );
 
     @Autowired private ApplicationContext applicationContext;
@@ -83,10 +84,10 @@ class ProviderSecurityAcceptanceTest {
 
         assertThat(ProviderSecurityValidator.PUBLIC_ROUTES).containsExactlyInAnyOrderElementsOf(EXPECTED_PUBLIC_ROUTES);
         assertThat(routes.keySet()).containsAll(EXPECTED_PUBLIC_ROUTES);
-        // 2026-09-16 同步：新增平台运营 7 条受保护 Provider 后路由总数为 205（public 11 + protected 194）
-        assertThat(routes).hasSize(205);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(194);
-        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(11);
+        // 2026-09-17 同步：新增 finance/partner-ledger/report 后路由总数为 209（public 12 + protected 197）
+        assertThat(routes).hasSize(209);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(197);
+        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
     }
 
     @Test
@@ -96,6 +97,7 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("identity/customer-invite/save");
         assertUnauthorized("file/private/grant");
         assertUnauthorized("finance/receivable/page");
+        assertUnauthorized("platform/tenant/page");
     }
 
     @Test

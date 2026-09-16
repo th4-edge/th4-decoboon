@@ -4,6 +4,7 @@ import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.context.PayableDueDateContext;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
@@ -64,6 +65,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
     private final GoodsReceiptRepository receiptRepository;
     private final MaterialPlanRepository materialPlanRepository;
     private final PayableRepository payableRepository;
+    private final PayableDueDateContext dueDateContext;
     private final ProjectAccessContext accessContext;
     private final InventoryContext inventoryContext;
     private final ModelIdentityContext modelIdentityContext;
@@ -73,6 +75,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
                 GoodsReceiptRepository receiptRepository,
                 MaterialPlanRepository materialPlanRepository,
                 PayableRepository payableRepository,
+                PayableDueDateContext dueDateContext,
                 ProjectAccessContext accessContext,
                 InventoryContext inventoryContext,
                 ModelIdentityContext modelIdentityContext,
@@ -81,6 +84,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         this.receiptRepository = receiptRepository;
         this.materialPlanRepository = materialPlanRepository;
         this.payableRepository = payableRepository;
+        this.dueDateContext = dueDateContext;
         this.accessContext = accessContext;
         this.inventoryContext = inventoryContext;
         this.modelIdentityContext = modelIdentityContext;
@@ -150,8 +154,11 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         payable.setPayeeName(purchase.getSupplierName());
         payable.setAmount(receivedNow.multiply(purchase.getUnitPrice()));
         payable.setPaidAmount(BigDecimal.ZERO);
-        payable.setDueDate(LocalDate.now().plusDays(purchase.getSupplier() == null
-                ? 30 : supplierDays(purchase)));
+        // 账期规则：按供应商配置的 ReceiptDays / MonthlyCutoff 计算到期日，并固化模式快照
+        LocalDate receiptDate = LocalDate.now();
+        payable.setReceiptDate(receiptDate);
+        payable.setSettlementMode(purchase.getSupplier() == null ? null : purchase.getSupplier().getSettlementMode());
+        payable.setDueDate(dueDateContext.dueDate(purchase.getSupplier(), receiptDate));
         payable.setStatus(PayableStatus.Pending);
         payable.setUrgent(false);
         payable.setSourceNo(purchase.getNo());

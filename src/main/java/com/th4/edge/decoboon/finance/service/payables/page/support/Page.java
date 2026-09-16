@@ -53,6 +53,10 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
     private String status;
     @AutoInject
     private Boolean urgent;
+
+    /** 按供应商筛选（供应链台账联动）。 */
+    @AutoInject
+    private Long partnerId;
     @AutoInject
     private String keyword;
 
@@ -74,6 +78,8 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
                 .filter(item -> type == null || type.isBlank() || item.getType().name().equalsIgnoreCase(type))
                 .filter(item -> status == null || status.isBlank() || item.getStatus().name().equalsIgnoreCase(status))
                 .filter(item -> urgent == null || urgent.equals(item.getUrgent()))
+                .filter(item -> partnerId == null
+                        || (item.getPayeePartner() != null && partnerId.equals(item.getPayeePartner().getPartnerId())))
                 .filter(item -> kw.isBlank()
                         || item.getName().toLowerCase().contains(kw)
                         || (item.getPayeeName() != null && item.getPayeeName().toLowerCase().contains(kw))
