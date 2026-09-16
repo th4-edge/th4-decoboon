@@ -196,6 +196,7 @@ Provider 已通过 `TenantContext` 校验并加载 `currentEmployee`，但响应
 - 任务详情同样不得带出 `Property` 完整归属图。
 - 日报、任务列表、验收单等辅助数据使用独立 `catch`，主详情已加载时必须继续展示。
 - 回归：`ProjectDetailSerializationContractTest`；真实麦鸿响应由 240KB+ 降至 462B，任务详情 1.4KB。
+- 2026-09-17 扩展修复：人员绩效 Employee->store/team、报价详情 createdBy/Property 员工关联、验收详情 Project.property 均补齐最小白名单；新增 `PerformanceReportSerializationContractTest`、`DetailResponseWhitelistContractTest`。报价详情由 286KB 不可解析降至 41KB。
 
 ---
 

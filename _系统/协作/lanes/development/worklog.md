@@ -618,3 +618,15 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 规范：`rules.md` §12 和 `AGENTS.md` 已写入资源路径、明暗背景变体、SHA-256 和同步验收要求。
 - 验证：App `verify:mp-weixin`、Web build、Admin build 全部 PASS。
 - 提交：App `9e166c5`、Web `a280220`、规范 `b7121b4`。
+
+## 2026-09-17 店长数据范围、详情响应与品牌色修复
+
+- 店长首页：后端最新动态分页原先缺少 `StoreManager` 分支，导致门店项目有数据但动态为 0；补齐店长、团队长、财务和履约角色项目范围后，店长真实动态返回 5 条。
+- 首页项目：店长项目接口有 1 条，前端增加门店业绩 `recentProjects` 回退，避免列表异常时“门店项目”空白。
+- 报价详情：定位 `createdBy/Property.salesman/designer` 未配置 Employee 摘要白名单，响应 286KB 且不可解析；限制为 `empId/name/role` 后报价详情 41KB 且可正常解析。
+- 全量详情审计：递归扫描所有 `info/support` Provider 的关联字段，补齐验收详情的 Property 白名单；新增详情白名单契约测试与店长动态范围回归测试。
+- 门店业绩：补齐新增/跟进客户、报价状态、项目状态、待办、已完工、未读消息、最近客户、最近报价及设计师全部经营指标。
+- 视觉：首页统计、动态、报价池和门店业绩统一品牌色；全局状态筛选按钮改为品牌浅底/渐变选中态，修复方案报价状态筛选样式。
+- 我的页面：退出登录改为明确的品牌描边按钮，避免底部弱文本不可见。
+- 验证：后端 101 tests / 0 failures；App `verify:mp-weixin` PASS。
+- 提交：后端 `d8f1947`、App `4987eb9`。
