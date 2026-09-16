@@ -1,0 +1,1265 @@
+{
+  "projectId": "226054084552032256",
+  "contractId": "226054084019355648",
+  "employee": {
+    "designer": "1789585000000000002",
+    "pm": "1789585000000000003",
+    "finance": "1789585000000000004",
+    "support": "1789585000000000005"
+  },
+  "steps": [
+    {
+      "at": "2026-09-16T19:03:55.992Z",
+      "step": "履约专员维护供应商",
+      "data": {
+        "supplierId": "1789585435970987563",
+        "name": "马可波罗瓷砖合肥供应商"
+      }
+    },
+    {
+      "at": "2026-09-16T19:05:11.367Z",
+      "step": "创建采购单",
+      "data": {
+        "purchaseId": "1789585511345815207",
+        "no": "PO1789585511345",
+        "amount": 8160,
+        "status": {
+          "name": "待审批",
+          "key": "Submitted"
+        }
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:24.577Z",
+      "step": "财务审批采购单",
+      "data": {
+        "purchaseId": "1789585511345815207",
+        "status": "Approved"
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:24.692Z",
+      "step": "履约专员下达采购单",
+      "data": {
+        "purchaseId": "1789585511345815207",
+        "status": {
+          "name": "已下单",
+          "key": "Ordered"
+        }
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:24.821Z",
+      "step": "材料到场验收入库",
+      "data": {
+        "receiptId": "1789585584734803781",
+        "quantity": 120
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:24.924Z",
+      "step": "读取自动生成应付",
+      "data": {
+        "count": 1,
+        "payableId": "1789585584774013808",
+        "amount": 8160
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:24.987Z",
+      "step": "供应商付款并核销应付",
+      "data": {
+        "paymentId": "226056145314250752",
+        "amount": 8160
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:25.047Z",
+      "step": "登记客户首笔回款",
+      "data": {
+        "receiptId": "226056145553326080",
+        "amount": 27072.85
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:25.124Z",
+      "step": "读取财务汇总",
+      "data": {
+        "projectCount": 1,
+        "activeProjectCount": 1,
+        "contractAmount": 90242.83,
+        "receivableAmount": 90242.83,
+        "receivedAmount": 27072.85,
+        "outstandingAmount": 63169.98,
+        "overdueAmount": 0,
+        "payableAmount": 8160,
+        "paidAmount": 8160,
+        "unpaidAmount": 0,
+        "materialPayableAmount": 8160,
+        "salaryPayableAmount": 0,
+        "projectPayableAmount": 0,
+        "otherPayableAmount": 0,
+        "monthIncome": 0,
+        "monthExpense": 0,
+        "cashBalance": 18912.85,
+        "profitAmount": 82082.83,
+        "collectionRate": 30,
+        "urgentReceivables": [
+          {
+            "receivableId": "226054085176983553",
+            "project": {
+              "projectId": "226054084552032256",
+              "no": "P1789585093639",
+              "name": "李明新居 · 滨湖世纪城3栋1201",
+              "customer": {
+                "custId": "226052581317672960",
+                "name": "李明",
+                "telNo": "13800008888"
+              },
+              "property": {
+                "createTime": {
+                  "dateTime": "2026-09-17 02:52:15"
+                },
+                "updateTime": {
+                  "dateTime": "2026-09-17 02:58:13"
+                },
+                "propertyId": "226052581862932480",
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "store": {
+                  "storeId": "1789584128906159355",
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "安徽省合肥市",
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "team": {
+                  "teamId": "1789584583712264979",
+                  "name": "家装交付一部",
+                  "leader": {
+                    "empId": "1789585000000000007",
+                    "name": "孙团队",
+                    "role": {
+                      "name": "团队负责人",
+                      "value": "TeamLeader",
+                      "key": "TeamLeader"
+                    }
+                  },
+                  "color": "#2F54EB",
+                  "store": {
+                    "storeId": "1789584128906159355",
+                    "company": {
+                      "comId": "1789584128898787348",
+                      "title": "安徽麦鸿装饰工程有限公司",
+                      "name": "麦鸿装饰",
+                      "size": {
+                        "name": "10人以下",
+                        "value": "A",
+                        "key": "A"
+                      },
+                      "addr": "安徽省合肥市",
+                      "setting": {
+                        "enableStore": false
+                      },
+                      "createTime": {
+                        "dateTime": "2026-09-17 02:42:08"
+                      }
+                    },
+                    "name": "总店",
+                    "defaultStore": true,
+                    "addr": "安徽省合肥市",
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:49:43"
+                  }
+                },
+                "owner": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "customer": {
+                  "custId": "226052581317672960",
+                  "name": "李明",
+                  "telNo": "13800008888"
+                },
+                "propertyNo": "H1789584735369",
+                "community": "滨湖世纪城",
+                "building": "3栋",
+                "roomNo": "1201",
+                "address": "滨湖世纪城 3栋 1201",
+                "area": 120,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1789585000000000006",
+                  "name": "周业务",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-18 10:00:00",
+                "remark": "南北通透，主卧带飘窗，厨房需重排"
+              },
+              "contractAmount": 90242.83,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "property": {
+              "createTime": {
+                "dateTime": "2026-09-17 02:52:15"
+              },
+              "updateTime": {
+                "dateTime": "2026-09-17 02:58:13"
+              },
+              "propertyId": "226052581862932480",
+              "company": {
+                "comId": "1789584128898787348",
+                "title": "安徽麦鸿装饰工程有限公司",
+                "name": "麦鸿装饰",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "addr": "安徽省合肥市",
+                "setting": {
+                  "enableStore": false
+                },
+                "createTime": {
+                  "dateTime": "2026-09-17 02:42:08"
+                }
+              },
+              "store": {
+                "storeId": "1789584128906159355",
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "addr": "安徽省合肥市",
+                "createTime": {
+                  "dateTime": "2026-09-17 02:42:08"
+                }
+              },
+              "team": {
+                "teamId": "1789584583712264979",
+                "name": "家装交付一部",
+                "leader": {
+                  "empId": "1789585000000000007",
+                  "name": "孙团队",
+                  "role": {
+                    "name": "团队负责人",
+                    "value": "TeamLeader",
+                    "key": "TeamLeader"
+                  }
+                },
+                "color": "#2F54EB",
+                "store": {
+                  "storeId": "1789584128906159355",
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "安徽省合肥市",
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "createTime": {
+                  "dateTime": "2026-09-17 02:49:43"
+                }
+              },
+              "owner": {
+                "empId": "1789585000000000002",
+                "name": "李设计",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "customer": {
+                "custId": "226052581317672960",
+                "name": "李明",
+                "telNo": "13800008888"
+              },
+              "propertyNo": "H1789584735369",
+              "community": "滨湖世纪城",
+              "building": "3栋",
+              "roomNo": "1201",
+              "address": "滨湖世纪城 3栋 1201",
+              "area": 120,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "1789585000000000006",
+                "name": "周业务",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "1789585000000000002",
+                "name": "李设计",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "latestMeasureAt": "2026-09-18 10:00:00",
+              "remark": "南北通透，主卧带飘窗，厨房需重排"
+            },
+            "customer": {
+              "custId": "226052581317672960",
+              "name": "李明",
+              "telNo": "13800008888"
+            },
+            "name": "项目开工款",
+            "stageName": "项目开工",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 36097.13,
+            "receivedAmount": 0,
+            "dueDate": "2026-10-08",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            }
+          },
+          {
+            "receivableId": "226054085176983554",
+            "project": {
+              "projectId": "226054084552032256",
+              "no": "P1789585093639",
+              "name": "李明新居 · 滨湖世纪城3栋1201",
+              "customer": {
+                "custId": "226052581317672960",
+                "name": "李明",
+                "telNo": "13800008888"
+              },
+              "property": {
+                "createTime": {
+                  "dateTime": "2026-09-17 02:52:15"
+                },
+                "updateTime": {
+                  "dateTime": "2026-09-17 02:58:13"
+                },
+                "propertyId": "226052581862932480",
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "store": {
+                  "storeId": "1789584128906159355",
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "安徽省合肥市",
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "team": {
+                  "teamId": "1789584583712264979",
+                  "name": "家装交付一部",
+                  "leader": {
+                    "empId": "1789585000000000007",
+                    "name": "孙团队",
+                    "role": {
+                      "name": "团队负责人",
+                      "value": "TeamLeader",
+                      "key": "TeamLeader"
+                    }
+                  },
+                  "color": "#2F54EB",
+                  "store": {
+                    "storeId": "1789584128906159355",
+                    "company": {
+                      "comId": "1789584128898787348",
+                      "title": "安徽麦鸿装饰工程有限公司",
+                      "name": "麦鸿装饰",
+                      "size": {
+                        "name": "10人以下",
+                        "value": "A",
+                        "key": "A"
+                      },
+                      "addr": "安徽省合肥市",
+                      "setting": {
+                        "enableStore": false
+                      },
+                      "createTime": {
+                        "dateTime": "2026-09-17 02:42:08"
+                      }
+                    },
+                    "name": "总店",
+                    "defaultStore": true,
+                    "addr": "安徽省合肥市",
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:49:43"
+                  }
+                },
+                "owner": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "customer": {
+                  "custId": "226052581317672960",
+                  "name": "李明",
+                  "telNo": "13800008888"
+                },
+                "propertyNo": "H1789584735369",
+                "community": "滨湖世纪城",
+                "building": "3栋",
+                "roomNo": "1201",
+                "address": "滨湖世纪城 3栋 1201",
+                "area": 120,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1789585000000000006",
+                  "name": "周业务",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-18 10:00:00",
+                "remark": "南北通透，主卧带飘窗，厨房需重排"
+              },
+              "contractAmount": 90242.83,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "property": {
+              "createTime": {
+                "dateTime": "2026-09-17 02:52:15"
+              },
+              "updateTime": {
+                "dateTime": "2026-09-17 02:58:13"
+              },
+              "propertyId": "226052581862932480",
+              "company": {
+                "comId": "1789584128898787348",
+                "title": "安徽麦鸿装饰工程有限公司",
+                "name": "麦鸿装饰",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "addr": "安徽省合肥市",
+                "setting": {
+                  "enableStore": false
+                },
+                "createTime": {
+                  "dateTime": "2026-09-17 02:42:08"
+                }
+              },
+              "store": {
+                "storeId": "1789584128906159355",
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "addr": "安徽省合肥市",
+                "createTime": {
+                  "dateTime": "2026-09-17 02:42:08"
+                }
+              },
+              "team": {
+                "teamId": "1789584583712264979",
+                "name": "家装交付一部",
+                "leader": {
+                  "empId": "1789585000000000007",
+                  "name": "孙团队",
+                  "role": {
+                    "name": "团队负责人",
+                    "value": "TeamLeader",
+                    "key": "TeamLeader"
+                  }
+                },
+                "color": "#2F54EB",
+                "store": {
+                  "storeId": "1789584128906159355",
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "安徽省合肥市",
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "createTime": {
+                  "dateTime": "2026-09-17 02:49:43"
+                }
+              },
+              "owner": {
+                "empId": "1789585000000000002",
+                "name": "李设计",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "customer": {
+                "custId": "226052581317672960",
+                "name": "李明",
+                "telNo": "13800008888"
+              },
+              "propertyNo": "H1789584735369",
+              "community": "滨湖世纪城",
+              "building": "3栋",
+              "roomNo": "1201",
+              "address": "滨湖世纪城 3栋 1201",
+              "area": 120,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "1789585000000000006",
+                "name": "周业务",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "1789585000000000002",
+                "name": "李设计",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "latestMeasureAt": "2026-09-18 10:00:00",
+              "remark": "南北通透，主卧带飘窗，厨房需重排"
+            },
+            "customer": {
+              "custId": "226052581317672960",
+              "name": "李明",
+              "telNo": "13800008888"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工尾",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 27072.85,
+            "receivedAmount": 0,
+            "dueDate": "2027-01-08",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            }
+          }
+        ],
+        "urgentPayables": [],
+        "recentLedgers": [
+          {
+            "ledgerId": "226056145318445056",
+            "project": {
+              "projectId": "226054084552032256",
+              "no": "P1789585093639",
+              "name": "李明新居 · 滨湖世纪城3栋1201",
+              "customer": {
+                "custId": "226052581317672960",
+                "name": "李明",
+                "telNo": "13800008888"
+              },
+              "property": {
+                "createTime": {
+                  "dateTime": "2026-09-17 02:52:15"
+                },
+                "updateTime": {
+                  "dateTime": "2026-09-17 02:58:13"
+                },
+                "propertyId": "226052581862932480",
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "store": {
+                  "storeId": "1789584128906159355",
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "安徽省合肥市",
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "team": {
+                  "teamId": "1789584583712264979",
+                  "name": "家装交付一部",
+                  "leader": {
+                    "empId": "1789585000000000007",
+                    "name": "孙团队",
+                    "role": {
+                      "name": "团队负责人",
+                      "value": "TeamLeader",
+                      "key": "TeamLeader"
+                    }
+                  },
+                  "color": "#2F54EB",
+                  "store": {
+                    "storeId": "1789584128906159355",
+                    "company": {
+                      "comId": "1789584128898787348",
+                      "title": "安徽麦鸿装饰工程有限公司",
+                      "name": "麦鸿装饰",
+                      "size": {
+                        "name": "10人以下",
+                        "value": "A",
+                        "key": "A"
+                      },
+                      "addr": "安徽省合肥市",
+                      "setting": {
+                        "enableStore": false
+                      },
+                      "createTime": {
+                        "dateTime": "2026-09-17 02:42:08"
+                      }
+                    },
+                    "name": "总店",
+                    "defaultStore": true,
+                    "addr": "安徽省合肥市",
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:49:43"
+                  }
+                },
+                "owner": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "customer": {
+                  "custId": "226052581317672960",
+                  "name": "李明",
+                  "telNo": "13800008888"
+                },
+                "propertyNo": "H1789584735369",
+                "community": "滨湖世纪城",
+                "building": "3栋",
+                "roomNo": "1201",
+                "address": "滨湖世纪城 3栋 1201",
+                "area": 120,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1789585000000000006",
+                  "name": "周业务",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-18 10:00:00",
+                "remark": "南北通透，主卧带飘窗，厨房需重排"
+              },
+              "contractAmount": 90242.83,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "direction": {
+              "name": "支出",
+              "key": "Expense"
+            },
+            "category": "材料款",
+            "source": {
+              "name": "业务付款",
+              "key": "Payment"
+            },
+            "amount": 8160,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "occurredAt": "2026-11-11",
+            "counterparty": "马可波罗瓷砖合肥供应商",
+            "summary": "付款 · 采购到货 · 马可波罗瓷砖合肥供应商"
+          },
+          {
+            "ledgerId": "226056145557520384",
+            "project": {
+              "projectId": "226054084552032256",
+              "no": "P1789585093639",
+              "name": "李明新居 · 滨湖世纪城3栋1201",
+              "customer": {
+                "custId": "226052581317672960",
+                "name": "李明",
+                "telNo": "13800008888"
+              },
+              "property": {
+                "createTime": {
+                  "dateTime": "2026-09-17 02:52:15"
+                },
+                "updateTime": {
+                  "dateTime": "2026-09-17 02:58:13"
+                },
+                "propertyId": "226052581862932480",
+                "company": {
+                  "comId": "1789584128898787348",
+                  "title": "安徽麦鸿装饰工程有限公司",
+                  "name": "麦鸿装饰",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "安徽省合肥市",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "store": {
+                  "storeId": "1789584128906159355",
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "安徽省合肥市",
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:42:08"
+                  }
+                },
+                "team": {
+                  "teamId": "1789584583712264979",
+                  "name": "家装交付一部",
+                  "leader": {
+                    "empId": "1789585000000000007",
+                    "name": "孙团队",
+                    "role": {
+                      "name": "团队负责人",
+                      "value": "TeamLeader",
+                      "key": "TeamLeader"
+                    }
+                  },
+                  "color": "#2F54EB",
+                  "store": {
+                    "storeId": "1789584128906159355",
+                    "company": {
+                      "comId": "1789584128898787348",
+                      "title": "安徽麦鸿装饰工程有限公司",
+                      "name": "麦鸿装饰",
+                      "size": {
+                        "name": "10人以下",
+                        "value": "A",
+                        "key": "A"
+                      },
+                      "addr": "安徽省合肥市",
+                      "setting": {
+                        "enableStore": false
+                      },
+                      "createTime": {
+                        "dateTime": "2026-09-17 02:42:08"
+                      }
+                    },
+                    "name": "总店",
+                    "defaultStore": true,
+                    "addr": "安徽省合肥市",
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "company": {
+                    "comId": "1789584128898787348",
+                    "title": "安徽麦鸿装饰工程有限公司",
+                    "name": "麦鸿装饰",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "安徽省合肥市",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-17 02:42:08"
+                    }
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-17 02:49:43"
+                  }
+                },
+                "owner": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "customer": {
+                  "custId": "226052581317672960",
+                  "name": "李明",
+                  "telNo": "13800008888"
+                },
+                "propertyNo": "H1789584735369",
+                "community": "滨湖世纪城",
+                "building": "3栋",
+                "roomNo": "1201",
+                "address": "滨湖世纪城 3栋 1201",
+                "area": 120,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1789585000000000006",
+                  "name": "周业务",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1789585000000000002",
+                  "name": "李设计",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-18 10:00:00",
+                "remark": "南北通透，主卧带飘窗，厨房需重排"
+              },
+              "contractAmount": 90242.83,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "direction": {
+              "name": "收入",
+              "key": "Income"
+            },
+            "category": "首期款",
+            "source": {
+              "name": "客户收款",
+              "key": "Receipt"
+            },
+            "amount": 27072.85,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "occurredAt": "2026-10-08",
+            "counterparty": "李明",
+            "summary": "收款 · 合同签约款"
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-09-16T19:06:25.150Z",
+      "step": "读取采购后库存",
+      "data": {
+        "count": 1,
+        "first": {
+          "stockId": "1789585584763200004",
+          "store": {
+            "storeId": "1789584128906159355",
+            "company": {
+              "comId": "1789584128898787348",
+              "title": "安徽麦鸿装饰工程有限公司",
+              "name": "麦鸿装饰",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "addr": "安徽省合肥市",
+              "setting": {
+                "enableStore": false
+              },
+              "createTime": {
+                "dateTime": "2026-09-17 02:42:08"
+              }
+            },
+            "name": "总店",
+            "defaultStore": true,
+            "addr": "安徽省合肥市",
+            "createTime": {
+              "dateTime": "2026-09-17 02:42:08"
+            }
+          },
+          "item": {
+            "itemId": "226051363535060992",
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "code": "ZC-0001",
+            "brand": "马可波罗瓷砖",
+            "series": "瓷砖",
+            "name": "马可波罗800*800（展厅款）",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            }
+          },
+          "batchNo": "MBL-20261012-01",
+          "quantity": 120,
+          "lockedQuantity": 0,
+          "unitCost": 68,
+          "safetyStock": 5,
+          "lastInAt": "2026-09-17 03:06:24",
+          "availableQuantity": 120
+        }
+      }
+    }
+  ],
+  "supplierId": "1789585435970987563",
+  "purchaseId": "1789585511345815207",
+  "receiptId": "1789585584734803781",
+  "payableId": "1789585584774013808",
+  "paymentId": "226056145314250752",
+  "receiptPaymentId": "226056145553326080"
+}
