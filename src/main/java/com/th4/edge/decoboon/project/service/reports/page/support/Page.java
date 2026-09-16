@@ -73,9 +73,18 @@ public class Page implements com.th4.edge.decoboon.project.service.reports.page.
             Long comId = currentEmployee.getCompany().getComId();
             Long empId = currentEmployee.getEmpId();
             var visibleProjects = switch (currentEmployee.getRole()) {
-                case Boss -> projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
+                case Boss, Finance -> projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
+                case StoreManager -> currentEmployee.getStore() == null || currentEmployee.getStore().getStoreId() == null
+                        ? java.util.List.<com.th4.edge.decoboon.project.model.Project>of()
+                        : projectRepository.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(
+                                comId, currentEmployee.getStore().getStoreId());
+                case TeamLeader -> currentEmployee.getTeam() == null || currentEmployee.getTeam().getTeamId() == null
+                        ? java.util.List.<com.th4.edge.decoboon.project.model.Project>of()
+                        : projectRepository.findByCompany_ComIdAndCustomer_Team_TeamIdOrderByProjectIdDesc(
+                                comId, currentEmployee.getTeam().getTeamId());
                 case Designer -> projectRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByProjectIdDesc(comId, empId);
                 case Pm -> projectRepository.findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(comId, empId);
+                case ProjectSupport -> projectRepository.findByCompany_ComIdAndSupport_EmpIdOrderByProjectIdDesc(comId, empId);
                 case Marketer -> projectRepository.findByCompany_ComIdAndQuote_CreatedBy_EmpIdOrderByProjectIdDesc(comId, empId);
                 default -> java.util.List.<com.th4.edge.decoboon.project.model.Project>of();
             };
