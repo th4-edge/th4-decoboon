@@ -40,9 +40,8 @@ import java.util.List;
 @Note("材料到场入库")
 @Properties(allow = {
         @AllowProperties(model = GoodsReceipt.class,
-                properties = {"receiptId", "property", "project", "purchase", "materialPlan",
-                        "warehouse", "quantity", "batchNo", "expiryDate", "unit", "arrivedAt",
-                        "inspector", "images", "remark", "createTime"}),
+                properties = {"receiptId", "quantity", "batchNo", "expiryDate", "unit", "arrivedAt",
+                        "images", "remark", "createTime"}),
         @AllowProperties(model = PurchaseOrder.class,
                 properties = {"purchaseId", "no", "supplier", "supplierName", "quantity", "unitPrice",
                         "amount", "receivedQuantity", "status", "warehouse"}),

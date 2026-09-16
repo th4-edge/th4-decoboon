@@ -67,9 +67,21 @@ public class DesignContext {
         DataScope scope = dataScopeContext.requireScope(principal);
         Specification<Customer> byId = (root, query, builder) ->
                 builder.equal(root.get("custId"), customerId);
-        return customerRepository.findOne(byId.and(DataScopeSpecification.visible(Customer.class, scope)))
-                .orElseThrow(() -> new DefinedException(
-                        new DefaultErrorCode("404", "客户不存在或无权访问")));
+        Customer customer = customerRepository.findOne(
+                        byId.and(DataScopeSpecification.visible(Customer.class, scope)))
+                .orElse(null);
+        if (customer == null && principal != null) {
+            customer = customerRepository.findByCompany_ComIdAndDesigner_EmpId(
+                            scope.comId(), principal.getEmpId())
+                    .stream()
+                    .filter(item -> item.getCustId().equals(customerId))
+                    .findFirst()
+                    .orElse(null);
+        }
+        if (customer == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问"));
+        }
+        return customer;
     }
 
     public Design requireDesign(Long designId, Employee principal) {

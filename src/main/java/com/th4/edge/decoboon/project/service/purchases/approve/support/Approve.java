@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 /** 采购单审批。 */
 @Note("采购单审批")
 @Properties(allow = @AllowProperties(model = PurchaseOrder.class,
-        properties = {"purchaseId", "no", "status", "approvedBy", "approvedAt", "approvalRemark", "createTime"}))
+        properties = {"purchaseId", "no", "status", "approvedAt", "approvalRemark", "createTime"}))
 @Service("project/purchase/approve")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Approve implements com.th4.edge.decoboon.project.service.purchases.approve.Approve {

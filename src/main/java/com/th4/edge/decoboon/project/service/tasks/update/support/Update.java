@@ -20,6 +20,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
@@ -99,6 +100,9 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
                 throw new DefinedException(new DefaultErrorCode("400", "隐蔽任务请先通过节点留证确认"));
             }
         } else if (target == TaskStatus.Done) {
+            if (evidenceUrls == null || evidenceUrls.isEmpty()) {
+                throw new DefinedException(new DefaultErrorCode("400", "任务验收前必须上传现场照片或视频"));
+            }
             task.setProgress(100);
             task.setActualEnd(LocalDate.now());
         } else if (target == TaskStatus.Todo) {
@@ -109,7 +113,25 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
         }
         ProjectTask saved = taskRepository.save(task);
         projectContext.refreshProject(task.getProject());
-        return saved;
+        return safeCopy(saved);
+    }
+
+    /** 返回安全副本，避免负责人/创建人完整实体图递归序列化。 */
+    private ProjectTask safeCopy(ProjectTask source) {
+        ProjectTask copy = new ProjectTask();
+        BeanUtils.copyProperties(source, copy, "owner", "creator");
+        copy.setOwner(minimalEmployee(source.getOwner()));
+        copy.setCreator(minimalEmployee(source.getCreator()));
+        return copy;
+    }
+
+    private Employee minimalEmployee(Employee source) {
+        if (source == null) return null;
+        Employee employee = new Employee();
+        employee.setEmpId(source.getEmpId());
+        employee.setName(source.getName());
+        employee.setRole(source.getRole());
+        return employee;
     }
 
     private TaskStatus statusOf(String value) {

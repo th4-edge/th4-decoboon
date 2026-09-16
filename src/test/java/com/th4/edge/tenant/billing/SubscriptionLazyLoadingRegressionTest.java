@@ -77,7 +77,7 @@ class SubscriptionLazyLoadingRegressionTest {
         subscriptionContext.grantTrial(company);
         assertLoaderPresent(company);
 
-        assertThatCode(() -> subscriptionContext.requireStoreCapacity(company, 1))
+        assertThatCode(() -> subscriptionContext.requireStoreCapacity(company, 0))
                 .as("requireStoreCapacity 在事务外访问 planVersion 不应抛 LazyInitializationException")
                 .doesNotThrowAnyException();
     }

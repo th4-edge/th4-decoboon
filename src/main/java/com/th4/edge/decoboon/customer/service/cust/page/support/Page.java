@@ -11,6 +11,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.configure.DataScopeType;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -72,6 +73,14 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
         Employee currentEmployee = tenantContext.requireEmployee(employee);
         DataScope scope = dataScopeContext.requireScope(currentEmployee);
         List<Customer> all = scoped(scope);
+        if (currentEmployee.getRole() == EmployeeRole.Designer) {
+            var assigned = customerRepository.findByCompany_ComIdAndDesigner_EmpId(
+                    currentEmployee.getCompany().getComId(), currentEmployee.getEmpId());
+            java.util.LinkedHashMap<Long, Customer> merged = new java.util.LinkedHashMap<>();
+            all.forEach(item -> merged.put(item.getCustId(), item));
+            assigned.forEach(item -> merged.put(item.getCustId(), item));
+            all = new java.util.ArrayList<>(merged.values());
+        }
         Long effectiveStoreId = resolveStoreId(scope, storeId);
         if (effectiveStoreId != null) {
             all = all.stream()

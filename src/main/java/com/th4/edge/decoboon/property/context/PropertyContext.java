@@ -7,11 +7,9 @@ import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
-import com.th4.edge.tenant.user.access.DataScope;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.model.Employee;
-import org.springframework.data.jpa.domain.Specification;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -51,28 +49,51 @@ public class PropertyContext {
     }
 
     public Property require(Long propertyId, Employee principal) {
-        DataScope scope = dataScopeContext.requireScope(principal);
-        Specification<Property> byId = (root, query, builder) ->
-                builder.equal(root.get("propertyId"), propertyId);
-        return propertyRepository.findOne(
-                        byId.and(DataScopeSpecification.visible(Property.class, scope)))
+        Employee current = dataScopeContext.requireEmployee(principal);
+        Property property = propertyRepository.findById(propertyId)
+                .filter(item -> item.getCompany() != null
+                        && current.getCompany() != null
+                        && item.getCompany().getComId().equals(current.getCompany().getComId()))
+                .filter(item -> canView(item, current))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "房屋不存在或无权访问")));
+        return property;
     }
 
     public Property resolve(Long propertyId, Customer customer, Employee owner) {
         if (propertyId == null) {
             return ensureForCustomer(customer, owner);
         }
-        DataScope scope = dataScopeContext.requireScope(owner);
-        Specification<Property> byId = (root, query, builder) ->
-                builder.equal(root.get("propertyId"), propertyId);
-        Property property = propertyRepository.findOne(
-                        byId.and(DataScopeSpecification.visible(Property.class, scope)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "房屋不存在或无权访问")));
+        Property property = require(propertyId, owner);
         if (!property.getCustomer().getCustId().equals(customer.getCustId())) {
             throw new DefinedException(new DefaultErrorCode("400", "房屋与客户不匹配"));
         }
         return property;
+    }
+
+    /** 业务员、设计师和各级管理者按职责共同可见同一房屋。 */
+    public boolean canView(Property property, Employee current) {
+        if (property == null || current == null || property.getCompany() == null || current.getCompany() == null
+                || !property.getCompany().getComId().equals(current.getCompany().getComId())) {
+            return false;
+        }
+        if (current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance) {
+            return true;
+        }
+        if (current.getRole() == EmployeeRole.StoreManager) {
+            return current.getStore() != null && property.getStore() != null
+                    && current.getStore().getStoreId().equals(property.getStore().getStoreId());
+        }
+        if (current.getRole() == EmployeeRole.TeamLeader) {
+            return current.getTeam() != null && property.getTeam() != null
+                    && current.getTeam().getTeamId().equals(property.getTeam().getTeamId());
+        }
+        if (sameEmployee(property.getOwner(), current)) return true;
+        if (current.getRole() == EmployeeRole.Marketer && sameEmployee(property.getSalesman(), current)) return true;
+        return current.getRole() == EmployeeRole.Designer && sameEmployee(property.getDesigner(), current);
+    }
+
+    private boolean sameEmployee(Employee target, Employee current) {
+        return target != null && target.getEmpId() != null && target.getEmpId().equals(current.getEmpId());
     }
 
     public Property assignDesigner(Property property, Employee designer) {

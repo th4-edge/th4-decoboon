@@ -33,8 +33,8 @@ import java.time.LocalDate;
 @Note("业务付款创建")
 @Properties(allow = {
         @AllowProperties(model = Payment.class,
-                properties = {"paymentId", "project", "payable", "amount", "account", "paidAt", "payeeName",
-                        "transactionNo", "voucherUrl", "remark", "createdBy", "createTime"}),
+                properties = {"paymentId", "amount", "account", "paidAt", "payeeName", "transactionNo",
+                        "voucherUrl", "remark", "createTime"}),
         @AllowProperties(model = Payable.class,
                 properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status", "payeeName", "property" }),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),

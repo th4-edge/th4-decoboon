@@ -40,10 +40,9 @@ import java.time.LocalDate;
 @Note("采购订单创建")
 @Properties(allow = {
         @AllowProperties(model = PurchaseOrder.class,
-                properties = {"purchaseId", "no", "property", "project", "contract", "materialPlan",
-                        "supplier", "supplierName", "quoteLine", "warehouse", "quantity", "unit",
-                        "unitPrice", "amount", "receivedQuantity", "status", "expectedAt", "orderedAt",
-                        "createdBy", "approvedBy", "approvedAt", "approvalRemark", "remark", "createTime"}),
+                properties = {"purchaseId", "no", "supplierName", "quantity", "unit", "unitPrice", "amount",
+                        "receivedQuantity", "status", "expectedAt", "orderedAt", "approvedAt", "approvalRemark",
+                        "remark", "createTime"}),
         @AllowProperties(model = Partner.class,
                 properties = {"partnerId", "type", "name", "contactName", "telNo", "status"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),

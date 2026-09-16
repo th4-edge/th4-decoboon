@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.property.service.properties.page.support;
 
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -39,10 +40,12 @@ public class Page implements com.th4.edge.decoboon.property.service.properties.p
 
     private final PropertyRepository propertyRepository;
     private final TenantContext tenantContext;
+    private final PropertyContext propertyContext;
 
-    public Page(PropertyRepository propertyRepository, TenantContext tenantContext) {
+    public Page(PropertyRepository propertyRepository, TenantContext tenantContext, PropertyContext propertyContext) {
         this.propertyRepository = propertyRepository;
         this.tenantContext = tenantContext;
+        this.propertyContext = propertyContext;
     }
 
     @Override
@@ -52,7 +55,8 @@ public class Page implements com.th4.edge.decoboon.property.service.properties.p
         Long empId = current.getEmpId();
         List<Property> list;
         if (customerId != null) {
-            list = propertyRepository.findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(comId, customerId);
+            list = propertyRepository.findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(comId, customerId)
+                    .stream().filter(item -> propertyContext.canView(item, current)).toList();
         } else {
             list = switch (current.getRole()) {
                 case Boss, Finance -> propertyRepository.findAll().stream()
@@ -63,6 +67,8 @@ public class Page implements com.th4.edge.decoboon.property.service.properties.p
                 case TeamLeader -> current.getTeam() == null ? List.of()
                         : propertyRepository.findByCompany_ComIdAndTeam_TeamIdOrderByPropertyIdDesc(
                                 comId, current.getTeam().getTeamId());
+                case Designer -> propertyRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(comId, empId);
+                case Marketer -> propertyRepository.findByCompany_ComIdAndSalesman_EmpIdOrderByPropertyIdDesc(comId, empId);
                 default -> propertyRepository.findByCompany_ComIdAndOwner_EmpIdOrderByPropertyIdDesc(comId, empId);
             };
         }

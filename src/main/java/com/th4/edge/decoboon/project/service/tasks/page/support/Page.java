@@ -13,6 +13,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ import java.util.List;
         @AllowProperties(model = com.th4.edge.decoboon.project.model.ProjectStage.class,
                 properties = {"stageId", "name"}),
         @AllowProperties(model = com.th4.edge.decoboon.catalog.model.CatalogItem.class,
-                properties = {"itemId", "code", "type", "name", "unit", "craft", "spec"})
+                properties = {"itemId", "code", "type", "name", "unit", "craft", "spec"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("project/task/page")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -66,7 +68,26 @@ public class Page implements com.th4.edge.decoboon.project.service.tasks.page.Pa
         List<ProjectTask> tasks = taskRepository.findByProject(project).stream()
                 .filter(task -> stageId == null || task.getStage().getStageId().equals(stageId))
                 .sorted(Comparator.comparing(ProjectTask::getTaskId))
+                .map(this::safeCopy)
                 .toList();
         return new PageImpl<>(tasks);
+    }
+
+    /** 页面返回安全副本，关联人员仅保留最小字段，避免实体图递归序列化。 */
+    private ProjectTask safeCopy(ProjectTask source) {
+        ProjectTask copy = new ProjectTask();
+        BeanUtils.copyProperties(source, copy, "owner", "creator");
+        copy.setOwner(minimalEmployee(source.getOwner()));
+        copy.setCreator(minimalEmployee(source.getCreator()));
+        return copy;
+    }
+
+    private Employee minimalEmployee(Employee source) {
+        if (source == null) return null;
+        Employee employee = new Employee();
+        employee.setEmpId(source.getEmpId());
+        employee.setName(source.getName());
+        employee.setRole(source.getRole());
+        return employee;
     }
 }
