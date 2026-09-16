@@ -61,7 +61,11 @@ public class WechatPaySdk implements WechatPayClient {
 
     public WechatPaySdk(WechatPayConfigure configure, ObjectMapper objectMapper) {
         this.configure = configure;
-        this.objectMapper = objectMapper;
+        // 微信支付 API 要求 amount.total 为 int64（JSON 数字）；而项目全局 ObjectMapper 由
+        // JacksonLongConfigure 注册了 Long→String 序列化器（防雪花 ID 精度丢失），
+        // 会把 total 发成 "1198000" 字符串导致微信报 PARAM_ERROR。
+        // 因此这里使用独立的标准 ObjectMapper，不受全局 Long→String 策略影响。
+        this.objectMapper = new ObjectMapper();
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofMillis(configure.getConnectTimeoutMs()))
                 .build();
@@ -98,7 +102,13 @@ public class WechatPaySdk implements WechatPayClient {
         body.put("out_trade_no", order.outTradeNo());
         body.put("time_expire", formatExpireTime(order.expireTime()));
         body.put("notify_url", configure.getNotifyUrl());
-        body.put("amount", Map.of("total", order.amount(), "currency", "CNY"));
+        long totalFen = order.amount();
+        if (totalFen <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "支付金额不合法（" + totalFen + " 分），请重新下单"));
+        }
+        // 微信 v3 要求 amount.total 为 int64（单位：分），显式装箱为 Long 避免被序列化成浮点/字符串
+        body.put("amount", Map.of("total", Long.valueOf(totalFen), "currency", "CNY"));
         body.put("payer", Map.of("openid", order.openId()));
 
         JsonNode result = request("POST", "/v3/pay/transactions/jsapi", body);
