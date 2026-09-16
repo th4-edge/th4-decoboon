@@ -92,7 +92,10 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
                         builder.like(builder.lower(root.get("code")), like),
                         builder.like(builder.lower(root.get("category")), like),
                         builder.like(builder.lower(root.get("brand")), like),
-                        builder.like(builder.lower(root.get("spec")), like)
+                        builder.like(builder.lower(root.get("series")), like),
+                        builder.like(builder.lower(root.get("spec")), like),
+                        // 拼音首字母检索：输入 QGLG 可命中「轻钢龙骨石膏板吊平顶」
+                        builder.like(builder.lower(root.get("nameInitials")), like)
                 ));
             }
             return builder.and(predicates.toArray(Predicate[]::new));

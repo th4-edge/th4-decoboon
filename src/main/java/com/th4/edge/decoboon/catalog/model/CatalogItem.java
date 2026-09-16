@@ -103,6 +103,11 @@ public class CatalogItem extends AbstractModel {
     @Column(length = 256, nullable = false)
     private String name;
 
+    @Note("名称拼音首字母")
+    @Keyword
+    @Column(length = 32)
+    private String nameInitials;
+
     @Note("计量单位")
     @Enumerated(EnumType.STRING)
     @Column(length = 32, nullable = false)
@@ -178,6 +183,9 @@ public class CatalogItem extends AbstractModel {
     public void setSpec(String spec) { this.spec = spec; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public String getNameInitials() { return nameInitials; }
+    public void setNameInitials(String nameInitials) { this.nameInitials = nameInitials; }
     public Unit getUnit() { return unit; }
     public void setUnit(Unit unit) { this.unit = unit; }
     public PricingMethod getPricingMode() { return pricingMode; }

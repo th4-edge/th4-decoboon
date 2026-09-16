@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.catalog.service.items.update.support;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
+import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -56,11 +57,13 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
     @User private Employee employee;
 
     private final CatalogItemRepository repository;
+    private final PinyinContext pinyinContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
 
-    public Update(CatalogItemRepository repository, CatalogContext context, CatalogDetailContext detailContext) {
+    public Update(CatalogItemRepository repository, PinyinContext pinyinContext, CatalogContext context, CatalogDetailContext detailContext) {
         this.repository = repository;
+        this.pinyinContext = pinyinContext;
         this.context = context;
         this.detailContext = detailContext;
     }
@@ -77,6 +80,7 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
         item.setSeries(series);
         item.setSpec(spec);
         item.setName(name);
+        item.setNameInitials(pinyinContext.initials(name));
         item.setUnit(unit);
         item.setPricingMode(pricingMode);
         item.setMaterialPrice(zero(materialPrice));

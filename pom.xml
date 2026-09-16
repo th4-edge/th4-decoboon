@@ -20,6 +20,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <dependencies>
+        <!-- 中文拼音：用于报价项目名称拼音首字母生成与拼音检索 -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.1</version>
+        </dependency>
         <dependency>
             <groupId>com.th4.edge</groupId>
             <artifactId>th4-framework</artifactId>

@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
 import com.th4.edge.decoboon.catalog.context.CatalogCodeContext;
+import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -53,13 +54,15 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
     @User private Employee employee;
 
     private final CatalogItemRepository repository;
+    private final PinyinContext pinyinContext;
     private final CatalogCodeContext codeContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
 
-    public Save(CatalogItemRepository repository, CatalogCodeContext codeContext,
+    public Save(CatalogItemRepository repository, PinyinContext pinyinContext, CatalogCodeContext codeContext,
                 CatalogContext context, CatalogDetailContext detailContext) {
         this.repository = repository;
+        this.pinyinContext = pinyinContext;
         this.codeContext = codeContext;
         this.context = context;
         this.detailContext = detailContext;
@@ -88,6 +91,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
         item.setSeries(series);
         item.setSpec(spec);
         item.setName(name);
+        item.setNameInitials(pinyinContext.initials(name));
         item.setUnit(unit);
         item.setPricingMode(pricingMode);
         item.setMaterialPrice(zero(materialPrice));
