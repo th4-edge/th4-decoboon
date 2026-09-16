@@ -5,7 +5,7 @@
 --
 -- 1) 字段与索引（com_id 最左）
 ALTER TABLE catalog_item
-  ADD COLUMN name_initials VARCHAR(32) NULL COMMENT '名称拼音首字母，如 QGLGSGBDDP' AFTER name;
+  ADD COLUMN name_initials VARCHAR(64) NULL COMMENT '名称拼音首字母，如 QGLGSGBDPD' AFTER name;
 
 ALTER TABLE catalog_item
   ADD KEY idx_catalog_item_initials (com_id, name_initials);

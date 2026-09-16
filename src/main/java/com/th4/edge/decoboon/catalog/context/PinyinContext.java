@@ -6,11 +6,13 @@ import org.springframework.stereotype.Component;
 /**
  * 中文拼音首字母生成。
  *
- * <p>用于报价项目名称的拼音检索：如「轻钢龙骨石膏板吊平顶」→ {@code QGLGSGBDDP}，
+ * <p>用于报价项目名称的拼音检索：如「轻钢龙骨石膏板吊平顶」→ {@code QGLGSGBDPD}，
  * 使不熟悉完整名称的录入者可直接按首字母搜索。</p>
  */
 @Component
 public class PinyinContext {
+
+    private static final int MAX_INITIALS = 64;
 
     /** 生成名称的拼音首字母串；非中文字符保留字母数字（大写），其余忽略。 */
     public String initials(String text) {
@@ -26,6 +28,12 @@ public class PinyinContext {
                 buffer.append(Character.toUpperCase(ch));
             }
         }
-        return buffer.isEmpty() ? null : buffer.toString();
+        if (buffer.isEmpty()) {
+            return null;
+        }
+        if (buffer.length() > MAX_INITIALS) {
+            buffer.setLength(MAX_INITIALS);
+        }
+        return buffer.toString();
     }
 }

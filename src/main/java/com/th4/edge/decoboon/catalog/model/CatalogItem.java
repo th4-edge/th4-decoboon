@@ -106,7 +106,7 @@ public class CatalogItem extends AbstractModel {
 
     @Note("名称拼音首字母")
     @Keyword
-    @Column(length = 32)
+    @Column(length = 64)
     private String nameInitials;
 
     // ---------- 类型特有明细（仅传输用，落库到对应明细表）----------
