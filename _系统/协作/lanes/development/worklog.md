@@ -572,3 +572,4 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 数据迁移：`docs/design/migrations/28-成本完整性结算快照.sql`，允许结算利润/毛利率为空。
 - 验证：后端 `mvn -q test` 96 tests / 0 failures / 0 errors；Web build + verify:system PASS；App `verify:mp-weixin` PASS。真实 MySQL 麦鸿回归：`ZC-0001` 采购价 68→75→68 时，项目估算/实际成本 8160→9000→8160，成本缺失时利润保持 `null`。
 - 错误集：新增 ECD-002 成本缺失伪利润、ECD-003 采购与领料重复累计、ECD-004 敏感成本裁剪上下文错误，并同步 `rules.md`、`AGENTS.md`。
+- 提交：后端 `5355378`、Web `b0bfb16`、App `11ce7d4`。
