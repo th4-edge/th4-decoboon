@@ -150,6 +150,13 @@
 - 实际材料成本只在采购入库时累计；领料、损耗只流转库存，退换货按退货类型冲减，禁止重复累计采购金额。
 - 成本错误集见 `_系统/协作/lanes/development/workspace/code-error-catalog.md` 的 ECD-002～ECD-004。
 
+## 品牌 Logo 统一（强制）
+
+- 品牌 Logo 只能使用 `logo-export` 导出的同一套 Mark，不得用“清/装”文字方块或通用 building 图标代替。
+- 深色背景用白色版，浅色背景用彩色版。
+- App 只通过 `JzBrandLogo`，Web/Admin 只通过 `BrandLogo` 使用 Logo；禁止页面内另存图片或复制路径。
+- 完整资源路径、校验值、同步与验收要求见 `rules.md` §12。
+
 ## 完整规范
 
 全部细节（含逐段代码示例、命名速查表、代码生成自检清单）见工程根目录 **`rules.md`**，两者冲突时以 `rules.md` 为准并同步修订本文件。

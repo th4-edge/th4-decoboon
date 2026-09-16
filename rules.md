@@ -1070,3 +1070,32 @@ public class MarketerViewConfigure { }
 - `BalanceLedger.createTime` 属于纯流水记录时间，使用 `java.time.LocalDateTime`，不参与年/月/季度多维统计，不使用 `DateTime`。
 - **门店默认不体现**：每家企业注册时只创建一家默认总店（`Store.defaultStore=true`），前端默认不展示门店维度。
 - **多门店是套餐/权益能力**：`Plan.maxStores` 控制最大门店数；`maxStores=1` 表示仅默认总店，`maxStores>1` 才允许启用多门店；`Company.setting.enableStore` 控制前端是否展示门店维度。
+
+---
+
+## 12. 装得清品牌 Logo 统一规范（强制）
+
+### 12.1 唯一品牌母版
+
+装得清只允许使用 `th4-decoboon-app/logo-export/` 导出的同一套 Logo，不允许手写文字 Logo、不能用“清/装”单字方块、不能用通用 building/briefcase 图标冒充品牌 Logo。
+
+- 深色或品牌色背景：使用 `logo-mark-white@2x.png` 的白色版。
+- 浅色或白色背景：使用 `logo-mark-color@2x.png` 的彩色版。
+- 单色印刷/特殊限制场景：才允许 `logo-mark-black@2x.png`，界面代码默认不使用。
+
+### 12.2 各端统一资源
+
+| 端 | 统一组件 | 运行时资源 |
+| --- | --- | --- |
+| App | `src/components/JzBrandLogo.vue` | `src/static/brand/logo-mark-white.png`、`src/static/brand/logo-mark-color.png` |
+| Web | `src/components/BrandLogo.vue` | `public/brand/logo-mark-white.png`、`public/brand/logo-mark-color.png` |
+| Admin | `src/components/BrandLogo.vue` | `public/brand/logo-mark-white.png`、`public/brand/logo-mark-color.png` |
+
+> 页面不得直接新增 Logo 文件或写死图片路径；必须使用上述组件，并通过 `variant="white|color"` 选择背景适配版本。
+
+### 12.3 资源校验
+
+- `logo-mark-white.png` SHA-256：`12ade1524dfe4cd4b11d06593beff4ead19179a0288cb5f8765f08c3d2ffc997`
+- `logo-mark-color.png` SHA-256：`1115517a138f1998c54cc71619b74bb7aa84af1193b0eb791c08d5db6bc75577`
+
+更新 Logo 时必须在三端同时替换、更新组件资源和本节校验值，并执行 `type-check`、Web/Admin 构建、App `verify:mp-weixin`。
