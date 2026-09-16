@@ -30,6 +30,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -108,6 +109,35 @@ public class CatalogItem extends AbstractModel {
     @Column(length = 32)
     private String nameInitials;
 
+    // ---------- 类型特有明细（仅传输用，落库到对应明细表）----------
+    @Note("施工工期(天)")
+    @Transient
+    private Integer durationDays;
+
+    @Note("主材损耗率(%)")
+    @Transient
+    private BigDecimal lossRate;
+
+    @Note("起订量")
+    @Transient
+    private BigDecimal minimumOrder;
+
+    @Note("交期(天)")
+    @Transient
+    private Integer leadTimeDays;
+
+    @Note("保修月数")
+    @Transient
+    private Integer warrantyMonths;
+
+    @Note("柜体板材")
+    @Transient
+    private String board;
+
+    @Note("台面")
+    @Transient
+    private String countertop;
+
     @Note("计量单位")
     @Enumerated(EnumType.STRING)
     @Column(length = 32, nullable = false)
@@ -185,6 +215,21 @@ public class CatalogItem extends AbstractModel {
     public void setName(String name) { this.name = name; }
 
     public String getNameInitials() { return nameInitials; }
+    public Integer getDurationDays() { return durationDays; }
+    public void setDurationDays(Integer durationDays) { this.durationDays = durationDays; }
+    public BigDecimal getLossRate() { return lossRate; }
+    public void setLossRate(BigDecimal lossRate) { this.lossRate = lossRate; }
+    public BigDecimal getMinimumOrder() { return minimumOrder; }
+    public void setMinimumOrder(BigDecimal minimumOrder) { this.minimumOrder = minimumOrder; }
+    public Integer getLeadTimeDays() { return leadTimeDays; }
+    public void setLeadTimeDays(Integer leadTimeDays) { this.leadTimeDays = leadTimeDays; }
+    public Integer getWarrantyMonths() { return warrantyMonths; }
+    public void setWarrantyMonths(Integer warrantyMonths) { this.warrantyMonths = warrantyMonths; }
+    public String getBoard() { return board; }
+    public void setBoard(String board) { this.board = board; }
+    public String getCountertop() { return countertop; }
+    public void setCountertop(String countertop) { this.countertop = countertop; }
+
     public void setNameInitials(String nameInitials) { this.nameInitials = nameInitials; }
     public Unit getUnit() { return unit; }
     public void setUnit(Unit unit) { this.unit = unit; }

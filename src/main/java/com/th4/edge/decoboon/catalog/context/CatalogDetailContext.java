@@ -67,6 +67,7 @@ public class CatalogDetailContext {
         detail.setCraft(item.getCraft());
         detail.setCriterion(item.getCriterion());
         detail.setConcealed(text(item).contains("隐蔽") || text(item).contains("防水") || text(item).contains("水电"));
+        if (item.getDurationDays() != null) detail.setDurationDays(item.getDurationDays());
         constructionRepository.save(detail);
     }
 
@@ -75,8 +76,8 @@ public class CatalogDetailContext {
         detail.setCompany(item.getCompany());
         detail.setItem(item);
         detail.setModel(item.getSpec());
-        detail.setLossRate(BigDecimal.ZERO);
-        detail.setMinimumOrder(BigDecimal.ONE);
+        detail.setLossRate(item.getLossRate() == null ? BigDecimal.ZERO : item.getLossRate());
+        detail.setMinimumOrder(item.getMinimumOrder() == null ? BigDecimal.ONE : item.getMinimumOrder());
         materialRepository.save(detail);
     }
 
@@ -85,6 +86,7 @@ public class CatalogDetailContext {
         detail.setCompany(item.getCompany());
         detail.setItem(item);
         detail.setDimensions(item.getSpec());
+        if (item.getLeadTimeDays() != null) detail.setLeadTimeDays(item.getLeadTimeDays());
         softRepository.save(detail);
     }
 
@@ -94,6 +96,8 @@ public class CatalogDetailContext {
         detail.setItem(item);
         detail.setCabinetType(item.getCategory());
         detail.setParametricFormula(item.getFormula());
+        if (item.getBoard() != null) detail.setBoard(item.getBoard());
+        if (item.getCountertop() != null) detail.setCountertop(item.getCountertop());
         customRepository.save(detail);
     }
 
@@ -102,6 +106,7 @@ public class CatalogDetailContext {
         detail.setCompany(item.getCompany());
         detail.setItem(item);
         detail.setModel(item.getSpec());
+        if (item.getWarrantyMonths() != null) detail.setWarrantyMonths(item.getWarrantyMonths());
         applianceRepository.save(detail);
     }
 

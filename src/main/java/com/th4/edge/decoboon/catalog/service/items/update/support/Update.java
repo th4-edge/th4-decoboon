@@ -54,6 +54,14 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
     @AutoInject private List<String> images;
     @AutoInject private Boolean active;
     @AutoInject private Integer sort;
+    @AutoInject private Integer durationDays;
+    @AutoInject private BigDecimal lossRate;
+    @AutoInject private BigDecimal minimumOrder;
+    @AutoInject private Integer leadTimeDays;
+    @AutoInject private Integer warrantyMonths;
+    @AutoInject private String board;
+    @AutoInject private String countertop;
+
     @User private Employee employee;
 
     private final CatalogItemRepository repository;
@@ -101,5 +109,16 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
 
     private BigDecimal zero(BigDecimal value) {
         return value == null ? BigDecimal.ZERO : value;
+    }
+
+    /** 类型特有明细字段：仅传输，落库由 CatalogDetailContext 完成。 */
+    private void applyDetails(CatalogItem item) {
+        item.setDurationDays(durationDays);
+        item.setLossRate(lossRate);
+        item.setMinimumOrder(minimumOrder);
+        item.setLeadTimeDays(leadTimeDays);
+        item.setWarrantyMonths(warrantyMonths);
+        item.setBoard(board);
+        item.setCountertop(countertop);
     }
 }
