@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.supply.service.partnerprice.save.support;
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
+import com.th4.edge.decoboon.supply.context.PartnerPriceContext;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.supply.model.PartnerPrice;
 import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
@@ -41,6 +42,7 @@ import java.time.LocalDate;
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.save.Save {
     @User private Employee employee;
+    @AutoInject private Long partnerPriceId;
     @AutoInject @NotNull private Long partnerId;
     @AutoInject @NotNull private Long itemId;
     @AutoInject private BigDecimal purchasePrice;
@@ -50,28 +52,32 @@ public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.s
     @AutoInject private Integer settlementDays;
     @AutoInject private LocalDate effectiveFrom;
     @AutoInject private LocalDate effectiveTo;
+    @AutoInject private Boolean active;
     @AutoInject private String remark;
     private final TenantContext tenantContext;
     private final PartnerRepository partnerRepository;
     private final CatalogItemRepository itemRepository;
     private final PartnerPriceRepository priceRepository;
     private final ModelIdentityContext modelIdentityContext;
+    private final PartnerPriceContext partnerPriceContext;
 
     public Save(TenantContext tenantContext, PartnerRepository partnerRepository,
                 CatalogItemRepository itemRepository, PartnerPriceRepository priceRepository,
-                ModelIdentityContext modelIdentityContext) {
+                ModelIdentityContext modelIdentityContext,
+                PartnerPriceContext partnerPriceContext) {
         this.tenantContext = tenantContext;
         this.partnerRepository = partnerRepository;
         this.itemRepository = itemRepository;
         this.priceRepository = priceRepository;
         this.modelIdentityContext = modelIdentityContext;
+        this.partnerPriceContext = partnerPriceContext;
     }
 
     @Override
     @Transactional
     public PartnerPrice call(PartnerPrice request) {
         Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss,
-                EmployeeRole.ProjectSupport, EmployeeRole.Finance);
+                EmployeeRole.StoreManager, EmployeeRole.Finance);
         Long comId = current.getCompany().getComId();
         Partner partner = partnerRepository.findById(partnerId)
                 .filter(item -> item.getCompany().getComId().equals(comId))
@@ -79,19 +85,32 @@ public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.s
         CatalogItem item = itemRepository.findById(itemId)
                 .filter(value -> value.getCompany().getComId().equals(comId))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目库项目不存在")));
-        request.setCompany(current.getCompany());
-        request.setPartner(partner);
-        request.setItem(item);
-        request.setPurchasePrice(value(purchasePrice));
-        request.setLaborPrice(value(laborPrice));
-        request.setMinimumOrder(minimumOrder == null ? BigDecimal.ONE : minimumOrder);
-        request.setLeadTimeDays(leadTimeDays == null ? 0 : leadTimeDays);
-        request.setSettlementDays(settlementDays == null ? 0 : settlementDays);
-        request.setEffectiveFrom(effectiveFrom);
-        request.setEffectiveTo(effectiveTo);
-        request.setActive(true);
-        request.setRemark(remark);
-        return priceRepository.save(modelIdentityContext.prepare(request));
+        PartnerPrice price = partnerPriceId == null ? new PartnerPrice()
+                : priceRepository.findById(partnerPriceId)
+                .filter(value -> value.getCompany().getComId().equals(comId))
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "采购价记录不存在")));
+        if (value(purchasePrice).signum() < 0 || value(laborPrice).signum() < 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "采购价和人工价不能为负数"));
+        }
+        CatalogItem previousItem = price.getPartnerPriceId() == null ? null : price.getItem();
+        price.setCompany(current.getCompany());
+        price.setPartner(partner);
+        price.setItem(item);
+        price.setPurchasePrice(value(purchasePrice));
+        price.setLaborPrice(value(laborPrice));
+        price.setMinimumOrder(minimumOrder == null ? BigDecimal.ONE : minimumOrder);
+        price.setLeadTimeDays(leadTimeDays == null ? 0 : leadTimeDays);
+        price.setSettlementDays(settlementDays == null ? 0 : settlementDays);
+        price.setEffectiveFrom(effectiveFrom);
+        price.setEffectiveTo(effectiveTo);
+        price.setActive(active == null || active);
+        price.setRemark(remark);
+        PartnerPrice saved = priceRepository.save(modelIdentityContext.prepare(price));
+        partnerPriceContext.refreshCatalogCost(item);
+        if (previousItem != null && !previousItem.getItemId().equals(item.getItemId())) {
+            partnerPriceContext.refreshCatalogCost(previousItem);
+        }
+        return saved;
     }
 
     private BigDecimal value(BigDecimal value) {

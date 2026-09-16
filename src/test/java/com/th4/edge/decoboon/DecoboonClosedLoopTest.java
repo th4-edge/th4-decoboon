@@ -178,6 +178,8 @@ class DecoboonClosedLoopTest {
         List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
         List<MaterialPlan> materialPlans = materialPlanRepository.findByProject(project);
         assertThat(stages).isNotEmpty();
+        assertThat(stages.get(0).getPlannedStart()).isEqualTo(project.getStartDate());
+        assertThat(stages.get(stages.size() - 1).getPlannedEnd()).isEqualTo(project.getPlanEndDate());
         assertThat(materialPlans).isNotEmpty();
         Company otherCompany = new Company();
         otherCompany.setTitle("其他闭环企业");
@@ -201,7 +203,7 @@ class DecoboonClosedLoopTest {
             }
         }
         assertThat(project.getProgress()).isEqualTo(100);
-        assertThat(project.getStatus()).isEqualTo(ProjectStatus.Finished);
+        assertThat(project.getStatus()).isEqualTo(ProjectStatus.Accepting);
 
         ProjectStage firstStage = stages.get(0);
         Acceptance acceptance = projectContext.submitAcceptance(
@@ -210,6 +212,7 @@ class DecoboonClosedLoopTest {
         Acceptance confirmed = projectContext.confirmAcceptance(acceptance.getAcceptanceId(), company.getComId(), true, "客户确认");
         assertThat(confirmed.getStatus().name()).isEqualTo("Confirmed");
         assertThat(stageRepository.findById(firstStage.getStageId()).orElseThrow().getStatus().name()).isEqualTo("Done");
+        assertThat(project.getStatus()).isEqualTo(ProjectStatus.Finished);
     }
 
     private CatalogItem catalogItem(Company company, Employee employee, ItemType type,

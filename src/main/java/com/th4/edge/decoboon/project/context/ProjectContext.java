@@ -48,6 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -79,6 +80,7 @@ public class ProjectContext {
     private final ProjectPermissionContext permissionContext;
     private final UserIdentityContext userIdentityContext;
     private final NoticeContext noticeContext;
+    private final ProjectCostContext projectCostContext;
 
     public ProjectContext(QuoteRepository quoteRepository,
                           QuoteLineRepository quoteItemRepository,
@@ -95,7 +97,8 @@ public class ProjectContext {
                           ProjectContractRepository projectContractRepository,
                           ContractLineRepository contractLineRepository,
                           UserIdentityContext userIdentityContext,
-                          NoticeContext noticeContext) {
+                          NoticeContext noticeContext,
+                          ProjectCostContext projectCostContext) {
         this.quoteRepository = quoteRepository;
         this.quoteItemRepository = quoteItemRepository;
         this.projectRepository = projectRepository;
@@ -112,6 +115,7 @@ public class ProjectContext {
         this.contractLineRepository = contractLineRepository;
         this.userIdentityContext = userIdentityContext;
         this.noticeContext = noticeContext;
+        this.projectCostContext = projectCostContext;
     }
 
     /**
@@ -183,7 +187,7 @@ public class ProjectContext {
         project.setDesigner(draft.getDesigner() == null ? quote.getCreatedBy() : draft.getDesigner());
         project.setManager(draft.getManager());
         project.setSiteAddr(draft.getSiteAddr());
-        project.setArea(quote.getArea());
+        project.setArea(property.getArea() == null || property.getArea().signum() == 0 ? quote.getArea() : property.getArea());
         project.setContractAmount(quote.getAmount());
         project.setCost(quote.getCost());
         project.setStartDate(draft.getStartDate());
@@ -194,6 +198,7 @@ public class ProjectContext {
 
         List<ContractLine> contractLines = contractLineRepository.findByContractOrderBySortAsc(contract);
         generateFromContract(project, contractLines);
+        scheduleStages(project);
         refreshProject(project);
         Quote converted = quote;
         converted.setStatus(QuoteStatus.Converted);
@@ -223,6 +228,9 @@ public class ProjectContext {
         } else if (TaskStatus.Accepting.equals(status)) {
             task.setProgress(90);
         } else if (TaskStatus.Done.equals(status)) {
+            if (evidenceUrls == null || evidenceUrls.isEmpty()) {
+                throw new DefinedException(new DefaultErrorCode("400", "任务验收前必须上传现场照片或视频"));
+            }
             task.setProgress(100);
             task.setActualEnd(LocalDate.now());
         } else if (TaskStatus.Todo.equals(status)) {
@@ -262,6 +270,13 @@ public class ProjectContext {
     @Transactional
     public Acceptance submitAcceptance(Long companyId, Long projectId, Long stageId, Employee employee,
                                        String conclusion, List<String> issues, List<String> evidenceUrls) {
+        return submitAcceptance(companyId, projectId, stageId, employee, conclusion, issues, evidenceUrls, null, null);
+    }
+
+    @Transactional
+    public Acceptance submitAcceptance(Long companyId, Long projectId, Long stageId, Employee employee,
+                                       String conclusion, List<String> issues, List<String> evidenceUrls,
+                                       Employee rectificationOwner, LocalDate rectificationDueDate) {
         ProjectStage stage = stageRepository.findById(stageId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目阶段不存在")));
         requireTenant(stage.getCompany(), companyId);
@@ -276,6 +291,9 @@ public class ProjectContext {
         if (acceptanceRepository.existsByStageAndStatus(stage, AcceptStatus.Pending)) {
             throw new DefinedException(new DefaultErrorCode("400", "该阶段已有待确认验收单"));
         }
+        if (evidenceUrls == null || evidenceUrls.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400", "提交阶段验收前必须上传现场照片或视频"));
+        }
 
         Acceptance acceptance = new Acceptance();
         acceptance.setCompany(stage.getProject().getCompany());
@@ -288,6 +306,8 @@ public class ProjectContext {
         acceptance.setConclusion(conclusion);
         acceptance.setIssues(issues == null ? null : new ArrayList<>(issues));
         acceptance.setEvidenceUrls(evidenceUrls == null ? null : new ArrayList<>(evidenceUrls));
+        acceptance.setRectificationOwner(rectificationOwner);
+        acceptance.setRectificationDueDate(rectificationDueDate);
         stage.setStatus(StageStatus.Accepting);
         stageRepository.save(stage);
         stage.getProject().setStatus(ProjectStatus.Accepting);
@@ -349,6 +369,54 @@ public class ProjectContext {
     }
 
     /**
+     * 按阶段权重将项目总工期拆分到各施工阶段。
+     */
+    @Transactional
+    public void scheduleStages(Project project) {
+        if (project == null || project.getStartDate() == null || project.getPlanEndDate() == null) {
+            return;
+        }
+        if (project.getPlanEndDate().isBefore(project.getStartDate())) {
+            throw new DefinedException(new DefaultErrorCode("400", "计划完工日期不能早于开工日期"));
+        }
+        List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
+        if (stages.isEmpty()) {
+            return;
+        }
+        long totalDays = ChronoUnit.DAYS.between(project.getStartDate(), project.getPlanEndDate()) + 1;
+        if (totalDays < stages.size()) {
+            throw new DefinedException(new DefaultErrorCode("400", "项目总工期不能少于施工阶段数量"));
+        }
+        BigDecimal totalWeight = stages.stream()
+                .map(ProjectStage::getWeight)
+                .filter(weight -> weight != null && weight.signum() > 0)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        LocalDate cursor = project.getStartDate();
+        long allocated = 0;
+        for (int index = 0; index < stages.size(); index++) {
+            ProjectStage stage = stages.get(index);
+            long stageDays;
+            if (index == stages.size() - 1) {
+                stageDays = Math.max(1, totalDays - allocated);
+            } else if (totalWeight.signum() > 0 && stage.getWeight() != null && stage.getWeight().signum() > 0) {
+                stageDays = Math.max(1, Math.round(totalDays * stage.getWeight().doubleValue() / totalWeight.doubleValue()));
+            } else {
+                stageDays = Math.max(1, totalDays / stages.size());
+            }
+            long remainingStages = stages.size() - index - 1;
+            long availableDays = totalDays - allocated;
+            long cappedDays = index == stages.size() - 1
+                    ? availableDays
+                    : Math.max(1, Math.min(stageDays, availableDays - remainingStages));
+            stage.setPlannedStart(cursor);
+            stage.setPlannedEnd(cursor.plusDays(cappedDays - 1));
+            allocated += cappedDays;
+            cursor = stage.getPlannedEnd().plusDays(1);
+            stageRepository.save(stage);
+        }
+    }
+
+    /**
      * 刷新阶段和项目进度、成本及汇总状态。
      */
     @Transactional
@@ -373,9 +441,12 @@ public class ProjectContext {
                 anyAccepting = true;
             } else if (AcceptStatus.Rejected == acceptanceStatus) {
                 stage.setStatus(StageStatus.Doing);
-            } else if (progress == 100 && !tasks.isEmpty()) {
+            } else if (AcceptStatus.Confirmed == acceptanceStatus) {
                 stage.setStatus(StageStatus.Done);
                 stage.setActualEnd(stage.getActualEnd() == null ? LocalDate.now() : stage.getActualEnd());
+            } else if (progress == 100 && !tasks.isEmpty()) {
+                stage.setStatus(StageStatus.Accepting);
+                anyAccepting = true;
             } else if (progress > 0) {
                 stage.setStatus(StageStatus.Doing);
                 stage.setActualStart(stage.getActualStart() == null ? LocalDate.now() : stage.getActualStart());
@@ -651,17 +722,7 @@ public class ProjectContext {
     }
 
     private BigDecimal calculateProjectCost(Project project) {
-        BigDecimal taskCost = taskRepository.findByProject(project).stream()
-                .filter(task -> task.getStatus() != TaskStatus.Cancelled)
-                .map(ProjectTask::getCost)
-                .filter(value -> value != null)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal materialCost = materialPlanRepository.findByProject(project).stream()
-                .filter(plan -> plan.getStatus() != MaterialPlanStatus.Closed)
-                .map(MaterialPlan::getCost)
-                .filter(value -> value != null)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return taskCost.add(materialCost).setScale(2, RoundingMode.HALF_UP);
+        return projectCostContext.summarize(project).actualCost();
     }
 
     private void requireTenant(com.th4.edge.tenant.user.model.Company company, Long companyId) {

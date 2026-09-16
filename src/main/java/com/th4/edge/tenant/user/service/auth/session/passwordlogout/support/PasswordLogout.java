@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("退出登录")
 @Properties(allow = {
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role", "store", "team", "company", "status", "avatarUrl", "joinedAt", "createTime"}),
-        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "platform", "setting"}),
+        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "setting"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore"}),
         @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"})
 })

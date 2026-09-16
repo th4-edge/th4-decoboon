@@ -2,12 +2,12 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20260916-a1233597b0",
+      "incidentId": "INC-20260917-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
       "severity": "critical",
-      "status": "fixed",
+      "status": "open",
       "count": 132,
       "firstSeen": "2026-09-16 05:14:57.806",
       "lastSeen": "2026-09-16 06:04:02.211",
@@ -103,17 +103,21 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-09-16T12:29:27.868+08:00",
+      "lastSeen": "2026-09-17 01:39:15.650",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
-        "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。"
+        "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-09-17 01:39:15.650] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-09-17 01:39:15.650] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。"
       ],
       "reportPaths": [
-        "2026-09-16/20260916-130232"
+        "2026-09-16/20260916-130232",
+        "2026-09-17/20260917-014433",
+        "2026-09-17/20260917-014449"
       ]
     }
   ],
-  "updatedAt": "2026-09-16T05:02:32.900502+00:00"
+  "updatedAt": "2026-09-16T17:44:50.432791+00:00"
 }

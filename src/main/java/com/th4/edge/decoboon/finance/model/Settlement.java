@@ -28,6 +28,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -165,13 +166,29 @@ public class Settlement extends AuditModel {
 
     @Note("项目毛利")
     @Unit("元")
-    @Column(precision = 14, scale = 2, nullable = false)
-    private BigDecimal profitAmount = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2)
+    private BigDecimal profitAmount;
 
     @Note("毛利率")
     @Unit("%")
-    @Column(precision = 8, scale = 2, nullable = false)
-    private BigDecimal grossMargin = BigDecimal.ZERO;
+    @Column(precision = 8, scale = 2)
+    private BigDecimal grossMargin;
+
+    @Transient
+    @Note("估算成本")
+    private BigDecimal estimatedCost = BigDecimal.ZERO;
+
+    @Transient
+    @Note("实际成本")
+    private BigDecimal actualCost = BigDecimal.ZERO;
+
+    @Transient
+    @Note("成本是否完整")
+    private Boolean costComplete = Boolean.TRUE;
+
+    @Transient
+    @Note("成本缺失项数")
+    private Integer costIncompleteCount = 0;
 
     @Note("结算状态")
     @Enumerated(EnumType.STRING)
@@ -262,4 +279,12 @@ public class Settlement extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
+    public BigDecimal getEstimatedCost() { return estimatedCost; }
+    public void setEstimatedCost(BigDecimal estimatedCost) { this.estimatedCost = estimatedCost; }
+    public BigDecimal getActualCost() { return actualCost; }
+    public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
+    public Boolean getCostComplete() { return costComplete; }
+    public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
+    public Integer getCostIncompleteCount() { return costIncompleteCount; }
+    public void setCostIncompleteCount(Integer costIncompleteCount) { this.costIncompleteCount = costIncompleteCount; }
 }

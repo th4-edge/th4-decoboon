@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.customer.service.cust.page.support;
 
+import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 客户分页（显式实现，支持门店维度）。
@@ -55,6 +57,14 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
     @AutoInject
     private Long storeId;
 
+    /** 客户姓名、手机号、小区或地址关键词。 */
+    @AutoInject
+    private String keyword;
+
+    /** 客户生命周期阶段。 */
+    @AutoInject
+    private CustStatus status;
+
     private final TenantContext tenantContext;
     private final DataScopeContext dataScopeContext;
     private final CustomerRepository customerRepository;
@@ -87,11 +97,29 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
                     .filter(item -> item.getStore() != null && effectiveStoreId.equals(item.getStore().getStoreId()))
                     .toList();
         }
+        String normalizedKeyword = keyword == null ? "" : keyword.trim().toLowerCase(Locale.ROOT);
+        if (status != null || !normalizedKeyword.isEmpty()) {
+            all = all.stream()
+                    .filter(item -> status == null || item.getStatus() == status)
+                    .filter(item -> normalizedKeyword.isEmpty() || matchesKeyword(item, normalizedKeyword))
+                    .toList();
+        }
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
         int from = Math.min(page * pageSize, all.size());
         int to = Math.min(from + pageSize, all.size());
         return new PageImpl<>(all.subList(from, to), PageRequest.of(page, pageSize), all.size());
+    }
+
+    private boolean matchesKeyword(Customer customer, String keyword) {
+        return contains(customer.getName(), keyword)
+                || contains(customer.getTelNo(), keyword)
+                || contains(customer.getCommunity(), keyword)
+                || contains(customer.getAddr(), keyword);
+    }
+
+    private boolean contains(String value, String keyword) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }
 
     /** 与数据权限过滤器一致的角色数据范围。 */

@@ -18,6 +18,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = Acceptance.class,
                 properties = {"acceptanceId", "project", "stage", "submittedBy", "status", "conclusion",
-                        "issues", "evidenceUrls", "confirmedAt", "createTime"}),
+                        "issues", "evidenceUrls", "rectificationOwner", "rectificationDueDate", "confirmedAt", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role"})
@@ -56,19 +57,28 @@ public class Save implements com.th4.edge.decoboon.project.service.acceptances.s
     @AutoInject
     private List<String> images;
 
+    @AutoInject
+    private Long rectificationOwnerId;
+
+    @AutoInject
+    private java.time.LocalDate rectificationDueDate;
+
     @User
     private Employee employee;
 
     private final ProjectStageRepository stageRepository;
     private final ProjectContext projectContext;
     private final ProjectAccessContext accessContext;
+    private final EmployeeRepository employeeRepository;
 
     public Save(ProjectStageRepository stageRepository,
                 ProjectContext projectContext,
-                ProjectAccessContext accessContext) {
+                ProjectAccessContext accessContext,
+                EmployeeRepository employeeRepository) {
         this.stageRepository = stageRepository;
         this.projectContext = projectContext;
         this.accessContext = accessContext;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -86,7 +96,15 @@ public class Save implements com.th4.edge.decoboon.project.service.acceptances.s
         }
         String conclusion = content == null || content.isBlank()
                 ? ("pass".equalsIgnoreCase(result) ? "验收通过" : "提交验收") : content;
+        Employee rectificationOwner = rectificationOwnerId == null ? null
+                : employeeRepository.findByEmpIdAndCompany_ComId(rectificationOwnerId, current.getCompany().getComId());
+        if (rectificationOwnerId != null && rectificationOwner == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "整改责任人不存在或不属于当前企业"));
+        }
+        if (issues != null && !issues.isEmpty() && (rectificationOwner == null || rectificationDueDate == null)) {
+            throw new DefinedException(new DefaultErrorCode("400", "存在整改问题时必须指定责任人和截止日期"));
+        }
         return projectContext.submitAcceptance(current.getCompany().getComId(), stage.getProject().getProjectId(),
-                stageId, current, conclusion, issues, images);
+                stageId, current, conclusion, issues, images, rectificationOwner, rectificationDueDate);
     }
 }

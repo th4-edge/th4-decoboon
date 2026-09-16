@@ -44,18 +44,20 @@ class InventoryContextTest {
     }
 
     @Test
-    void shouldIssueMaterialAndWriteBackQuoteLineCost() {
+    void shouldIssueMaterialWithoutDoubleCountingProcurementCost() {
         InventoryStock stock = stock();
         QuoteLine line = new QuoteLine();
-        line.setActualMaterialCost(BigDecimal.ZERO);
+        line.setActualMaterialCost(new BigDecimal("60"));
         line.setActualLaborCost(BigDecimal.ZERO);
         line.setActualOtherCost(BigDecimal.ZERO);
+        line.setActualCost(new BigDecimal("60"));
 
         StockMovement movement = context.issue(stock, new Project(), line, null,
                 new BigDecimal("3"), null, "OUT-1", List.of("photo.jpg"), "现场领料");
 
         assertThat(stock.getQuantity()).isEqualByComparingTo("7");
         assertThat(movement.getAmount()).isEqualByComparingTo("60");
+        // 实际材料成本已在采购入库时入账，领料只流转库存，不得重复累计。
         assertThat(line.getActualMaterialCost()).isEqualByComparingTo("60");
         assertThat(line.getActualCost()).isEqualByComparingTo("60");
     }

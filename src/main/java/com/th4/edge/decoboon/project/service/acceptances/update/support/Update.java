@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = Acceptance.class,
                 properties = {"acceptanceId", "project", "stage", "submittedBy", "status", "conclusion",
-                        "issues", "evidenceUrls", "confirmedAt", "createTime"}),
+                        "issues", "evidenceUrls", "rectificationOwner", "rectificationDueDate", "confirmedAt", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role"})

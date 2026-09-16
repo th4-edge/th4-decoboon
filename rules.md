@@ -84,8 +84,10 @@ th4 是一套区别于传统 MVC 的**领域模型驱动设计**架构，任何�
 **平台运营管理端例外（强制）：**
 
 - 仅 `com.th4.edge.platform` 平台域允许跨企业读取和人工订阅管控；普通业务域禁止复制该模式。
-- 平台账号必须同时满足：所属企业 `Company.platform=true`，员工角色为 `BOSS`，且 Provider 继承 `Security`。
-- 跨企业范围校验必须集中在 `PlatformAdminContext.requireAdmin`，禁止散落推断。
+- 平台账号必须来自独立 `PlatformUser`，所属 `PlatformOrg` 和岗位状态有效，Provider 必须继承 `Security`。
+- 跨企业范围校验必须集中在 `PlatformAccessContext`，禁止散落推断。
+- 平台组织、部门、用户、审计表不得引用租户 `Company/Employee/Credentials`。
+- 租户数据必须通过 `TenantDataAdapter` 转为平台标量快照，平台实体不得持有租户实体。
 - 人工订阅调整必须使用悲观锁、服务端校验套餐/状态/有效期，并写入 `PlatformOperationLog`。
 - 平台查询不得返回员工凭证、密码、密钥、连接串和客户隐私正文。
 - 平台域只读接口不得替租户业务绕过数据权限；租户侧 `Company/Store/Team/Self` 规则保持不变。
@@ -1048,7 +1050,18 @@ public class MarketerViewConfigure { }
 
 ---
 
-## 10. 租户订阅与流水特殊约定
+## 10. 成本、利润与套餐边界（强制）
+
+- **销售价与成本价分离**：`CatalogItem.materialPrice/manualPrice`、`DesignItem`、`QuoteLine` 只表达销售口径；标准成本只能由有效 `PartnerPrice.purchasePrice + PartnerPrice.laborPrice` 形成。报价项目 save/update 禁止接收并直接写入 `costPrice`。
+- **采购价范围**：采购价必须按企业、供应商、报价项目维护，并支持生效/失效日期、起交期、账期和启停。仅 `Boss`、`StoreManager`、`Finance` 可读取与维护；材料员只可见销售价，响应中不得出现成本字段。
+- **成本回算**：`ProjectCostContext` 是项目估算成本、实际成本和完整性唯一口径。报价快照存在时作为估算基线；实际成本优先采购入库等实际发生值，没有实际值时按当前有效采购价回算，采购价变化必须能重新影响毛利。
+- **利润可靠性**：所有应计成本项都有成本时才允许计算利润。存在缺失项时必须返回 `costComplete=false`、利润/毛利率为 `null`，前端显示“成本未完整”，禁止把缺失成本当作 0 计算或显示可靠利润。
+- **实际成本累计**：采购入库累计实际材料成本；领料、损耗不得再次累计；退换货按方向冲减。成本完整性缺失项数量必须可追踪到报价行。
+- **套餐功能边界**：免费版、基础版、专业版、旗舰版均提供完整业务模块；版本差异只允许是门店数和席位数，不得通过 `PlanModule` 关闭供应链、财务、经营分析等功能。
+
+---
+
+## 11. 租户订阅与流水特殊约定
 
 - 订阅主体命名为 `Subscription`，主键为 `subId`，状态枚举为 `SubStatus`。
 - **剩余可用天数不落库**：由 `serviceEndTime - 当前时间` 动态计算，禁止在实体中保存 `balanceDays`，也禁止每日定时递减订阅天数。

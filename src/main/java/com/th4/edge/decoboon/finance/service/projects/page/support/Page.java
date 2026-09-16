@@ -29,7 +29,8 @@ import java.util.List;
                 properties = {"project", "contractAmount", "contractRevenue", "receivableAmount", "receivedAmount", "outstandingAmount",
                         "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount", "materialAmount", "materialCost", "salaryAmount",
                         "laborCost", "projectPaymentAmount", "projectCost", "otherPayableAmount", "expenseAllocation",
-                        "totalCost", "profitAmount", "grossProfit", "grossMargin", "collectionRate", "paymentRate",
+                        "estimatedCost", "actualCost", "totalCost", "profitAmount", "costComplete", "costIncompleteCount",
+                        "grossProfit", "grossMargin", "collectionRate", "paymentRate",
                         "receivableCleared", "payableCleared", "settlement"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status", "progress" }),
@@ -37,7 +38,7 @@ import java.util.List;
         @AllowProperties(model = Payable.class, properties = {"payableId", "property" }),
         @AllowProperties(model = Ledger.class, properties = {"ledgerId"}),
         @AllowProperties(model = Settlement.class,
-                properties = {"settlementId", "status", "expenseAmount", "totalCost", "profitAmount", "grossMargin", "confirmedAt", "closedAt"}),
+                properties = {"settlementId", "status", "expenseAmount", "totalCost", "estimatedCost", "actualCost", "profitAmount", "costComplete", "costIncompleteCount", "grossMargin", "confirmedAt", "closedAt"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })

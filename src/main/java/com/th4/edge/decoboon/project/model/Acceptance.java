@@ -30,6 +30,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.th4.edge.tenant.user.model.Company;
@@ -123,6 +124,14 @@ public class Acceptance extends AuditModel implements ProjectOwned {
     @Column(name = "url", length = 512)
     private List<String> evidenceUrls;
 
+    @Note("整改责任人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rectification_owner_id")
+    private Employee rectificationOwner;
+
+    @Note("整改截止日期")
+    private LocalDate rectificationDueDate;
+
     @Note("确认时间")
     private LocalDateTime confirmedAt;
 
@@ -193,6 +202,22 @@ public class Acceptance extends AuditModel implements ProjectOwned {
 
     public void setEvidenceUrls(List<String> evidenceUrls) {
         this.evidenceUrls = evidenceUrls;
+    }
+
+    public Employee getRectificationOwner() {
+        return rectificationOwner;
+    }
+
+    public void setRectificationOwner(Employee rectificationOwner) {
+        this.rectificationOwner = rectificationOwner;
+    }
+
+    public LocalDate getRectificationDueDate() {
+        return rectificationDueDate;
+    }
+
+    public void setRectificationDueDate(LocalDate rectificationDueDate) {
+        this.rectificationDueDate = rectificationDueDate;
     }
 
     public LocalDateTime getConfirmedAt() {

@@ -106,6 +106,6 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 30 : Math.min(size, 100);
         return costContext.mask(repository.findAll(specification,
-                PageRequest.of(page, pageSize, Sort.by("category", "brand", "series", "name"))), employee);
+                PageRequest.of(page, pageSize, Sort.by("category", "brand", "series", "name"))), currentEmployee);
     }
 }

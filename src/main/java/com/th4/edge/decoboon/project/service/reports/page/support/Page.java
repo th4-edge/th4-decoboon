@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.project.service.reports.page.support;
 
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.model.ProjectReport;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -45,6 +46,9 @@ public class Page implements com.th4.edge.decoboon.project.service.reports.page.
     @AutoInject
     private Integer size;
 
+    @AutoInject
+    private ReportType type;
+
     @User
     private Employee employee;
 
@@ -79,14 +83,26 @@ public class Page implements com.th4.edge.decoboon.project.service.reports.page.
                     .map(com.th4.edge.decoboon.project.model.Project::getProjectId).toList();
             var all = reportRepository.findByCompany_ComIdOrderByCreateTime_DateTimeDesc(
                     comId, PageRequest.of(0, 500)).getContent().stream()
-                    .filter(report -> visibleIds.contains(report.getProject().getProjectId())).toList();
+                    .filter(report -> visibleIds.contains(report.getProject().getProjectId()))
+                    .filter(report -> type == null || report.getType() == type)
+                    .toList();
             int from = Math.min(page * pageSize, all.size());
             int to = Math.min(from + pageSize, all.size());
             return new org.springframework.data.domain.PageImpl<>(all.subList(from, to),
                     PageRequest.of(page, pageSize), all.size());
         }
-        var project = accessContext.requireProject(projectId, currentEmployee);
-        return reportRepository.findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
-                currentEmployee.getCompany().getComId(), projectId, PageRequest.of(page, pageSize));
+        accessContext.requireProject(projectId, currentEmployee);
+        if (type == null) {
+            return reportRepository.findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
+                    currentEmployee.getCompany().getComId(), projectId, PageRequest.of(page, pageSize));
+        }
+        var all = reportRepository.findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
+                currentEmployee.getCompany().getComId(), projectId, PageRequest.of(0, 500)).getContent().stream()
+                .filter(report -> report.getType() == type)
+                .toList();
+        int from = Math.min(page * pageSize, all.size());
+        int to = Math.min(from + pageSize, all.size());
+        return new org.springframework.data.domain.PageImpl<>(all.subList(from, to),
+                PageRequest.of(page, pageSize), all.size());
     }
 }

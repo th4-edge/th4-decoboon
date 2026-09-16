@@ -47,3 +47,7 @@ logs/
 data/
 __pycache__/
 *.pyc
+
+### Local IDE platform run configurations (may contain local bootstrap credentials)
+.run/平台运营*.xml
+.idea/runConfigurations/平台运营*.xml

@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.statistic.context.BossDashboardContext;
@@ -39,7 +40,8 @@ class BossDashboardContextTest {
         ReceiptRepository receipts = mock(ReceiptRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
         BusinessTargetRepository targets = mock(BusinessTargetRepository.class);
-        BossDashboardContext context = new BossDashboardContext(tenant, projects, contracts, receipts, payables, targets);
+        ProjectCostContext costs = mock(ProjectCostContext.class);
+        BossDashboardContext context = new BossDashboardContext(tenant, projects, contracts, receipts, payables, targets, costs);
 
         LocalDate month = LocalDate.of(2026, 9, 1);
         LocalDate previousMonth = month.minusMonths(1);
@@ -66,6 +68,10 @@ class BossDashboardContextTest {
         when(receipts.findByCompany_ComIdOrderByReceivedAtDesc(10L)).thenReturn(List.of(currentReceipt, previousReceipt));
         when(payables.findByCompany_ComIdOrderByDueDateAsc(10L)).thenReturn(List.of(currentCost, previousCost));
         when(targets.findByCompany_ComIdAndTargetMonth(10L, month)).thenReturn(Optional.of(target));
+        when(costs.summarize(currentProject)).thenReturn(
+                new ProjectCostContext.CostSummary(new BigDecimal("4000.00"), new BigDecimal("4000.00"), 0));
+        when(costs.summarize(previousProject)).thenReturn(
+                new ProjectCostContext.CostSummary(new BigDecimal("1000.00"), new BigDecimal("1000.00"), 0));
 
         BossDashboardQuery query = new BossDashboardQuery();
         query.setMonth(month);

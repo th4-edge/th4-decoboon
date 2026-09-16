@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
+import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
@@ -36,19 +37,22 @@ public class BossDashboardContext {
     private final ReceiptRepository receiptRepository;
     private final PayableRepository payableRepository;
     private final BusinessTargetRepository targetRepository;
+    private final ProjectCostContext projectCostContext;
 
     public BossDashboardContext(TenantContext tenantContext,
                                 ProjectRepository projectRepository,
                                 ProjectContractRepository contractRepository,
                                 ReceiptRepository receiptRepository,
                                 PayableRepository payableRepository,
-                                BusinessTargetRepository targetRepository) {
+                                BusinessTargetRepository targetRepository,
+                                ProjectCostContext projectCostContext) {
         this.tenantContext = tenantContext;
         this.projectRepository = projectRepository;
         this.contractRepository = contractRepository;
         this.receiptRepository = receiptRepository;
         this.payableRepository = payableRepository;
         this.targetRepository = targetRepository;
+        this.projectCostContext = projectCostContext;
     }
 
     public BossDashboard dashboard(Employee principal, BossDashboardQuery query) {
@@ -81,9 +85,9 @@ public class BossDashboardContext {
         BigDecimal received = receivedAmount(receipts, month);
         BigDecimal previousMonthReceived = receivedAmount(receipts, previousMonth);
         BigDecimal previousYearReceived = receivedAmount(receipts, previousYear);
-        BigDecimal profit = grossProfit(contracts, payables, month);
-        BigDecimal previousMonthProfit = grossProfit(contracts, payables, previousMonth);
-        BigDecimal previousYearProfit = grossProfit(contracts, payables, previousYear);
+        ProfitResult profit = grossProfit(contracts, payables, month);
+        ProfitResult previousMonthProfit = grossProfit(contracts, payables, previousMonth);
+        ProfitResult previousYearProfit = grossProfit(contracts, payables, previousYear);
         BigDecimal active = activeProjectCount(projects, contracts, month);
         BigDecimal previousMonthActive = activeProjectCount(projects, contracts, previousMonth);
         BigDecimal previousYearActive = activeProjectCount(projects, contracts, previousYear);
@@ -92,7 +96,17 @@ public class BossDashboardContext {
         dashboard.setMonth(month);
         dashboard.setSignedAmount(metric(signed, target.getSignedAmount(), previousMonthSigned, previousYearSigned));
         dashboard.setReceivedAmount(metric(received, target.getReceivedAmount(), previousMonthReceived, previousYearReceived));
-        dashboard.setGrossProfit(metric(profit, target.getGrossProfit(), previousMonthProfit, previousYearProfit));
+        DashboardMetric profitMetric = metric(profit.value(), target.getGrossProfit(),
+                previousMonthProfit.value(), previousYearProfit.value());
+        profitMetric.setComplete(profit.complete());
+        profitMetric.setWarning(profit.warning());
+        if (!profit.complete()) {
+            profitMetric.setValue(null);
+            profitMetric.setAchievementRate(BigDecimal.ZERO);
+            profitMetric.setMonthOverMonthRate(BigDecimal.ZERO);
+            profitMetric.setYearOverYearRate(BigDecimal.ZERO);
+        }
+        dashboard.setGrossProfit(profitMetric);
         dashboard.setActiveProjectCount(metric(active, BigDecimal.valueOf(value(target.getActiveProjectCount())),
                 previousMonthActive, previousYearActive));
         return dashboard;
@@ -125,7 +139,7 @@ public class BossDashboardContext {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private BigDecimal grossProfit(List<ProjectContract> contracts, List<Payable> payables, LocalDate month) {
+    private ProfitResult grossProfit(List<ProjectContract> contracts, List<Payable> payables, LocalDate month) {
         Map<Long, BigDecimal> costByProject = new HashMap<>();
         for (Payable payable : payables) {
             if (payable.getProject() == null || payable.getProject().getProjectId() == null) {
@@ -133,18 +147,30 @@ public class BossDashboardContext {
             }
             costByProject.merge(payable.getProject().getProjectId(), value(payable.getAmount()), BigDecimal::add);
         }
-        return contracts.stream()
-                .filter(contract -> sameMonth(contract.getSignedAt(), month))
-                .map(contract -> {
-                    Project project = contract.getProject();
-                    BigDecimal payableCost = project == null ? BigDecimal.ZERO
-                            : costByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
-                    BigDecimal cost = payableCost.signum() > 0 ? payableCost
-                            : (project == null ? BigDecimal.ZERO : value(project.getCost()));
-                    return contractRevenue(contract).subtract(cost);
-                })
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal profit = BigDecimal.ZERO;
+        int incomplete = 0;
+        for (ProjectContract contract : contracts) {
+            if (!sameMonth(contract.getSignedAt(), month)) {
+                continue;
+            }
+            Project project = contract.getProject();
+            BigDecimal payableCost = project == null ? BigDecimal.ZERO
+                    : costByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
+            ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
+            BigDecimal cost = costSummary.actualCost().max(payableCost);
+            if (!costSummary.complete()) {
+                incomplete++;
+                continue;
+            }
+            profit = profit.add(contractRevenue(contract).subtract(cost));
+        }
+        if (incomplete > 0) {
+            return new ProfitResult(null, false, incomplete + " 个项目的成本未完整，暂不展示可靠毛利");
+        }
+        return new ProfitResult(profit, true, null);
     }
+
+    private record ProfitResult(BigDecimal value, boolean complete, String warning) {}
 
     private BigDecimal activeProjectCount(List<Project> projects, List<ProjectContract> contracts, LocalDate month) {
         LocalDate end = YearMonth.from(month).atEndOfMonth();

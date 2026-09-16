@@ -2,6 +2,10 @@ package com.th4.edge.platform;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.th4.edge.platform.model.PlatformRole;
+import com.th4.edge.platform.model.PlatformUser;
+import com.th4.edge.platform.repository.PlatformOrgRepository;
+import com.th4.edge.platform.repository.PlatformUserRepository;
 import com.th4.edge.tenant.billing.context.SubscriptionContext;
 import com.th4.edge.tenant.billing.model.Subscription;
 import com.th4.edge.tenant.user.configure.CredType;
@@ -18,6 +22,8 @@ import com.th4.edge.tenant.user.repository.CompanyRepository;
 import com.th4.edge.tenant.user.repository.CredentialsRepository;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import com.th4.edge.tenant.user.repository.StoreRepository;
+import jakarta.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,11 +33,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDateTime;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-/** 平台运营管理端权限、订阅调整、审计和监控独立验收。 */
+/** 平台独立组织、认证、租户适配、订阅调整、审计和监控验收。 */
 @SpringBootTest(properties = {
         "spring.datasource.url=jdbc:h2:mem:platform-admin;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1",
         "spring.datasource.driver-class-name=org.h2.Driver",
@@ -42,9 +52,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         "spring.jpa.show-sql=false",
         "spring.jpa.open-in-view=false",
         "decoboon.platform.bootstrap.enabled=true",
-        "decoboon.platform.bootstrap.company-title=装得清平台运营中心",
-        "decoboon.platform.bootstrap.company-name=平台运营",
+        "decoboon.platform.bootstrap.org-code=DECOBOON",
+        "decoboon.platform.bootstrap.org-name=装得清平台运营中心",
+        "decoboon.platform.bootstrap.department-code=PLATFORM",
+        "decoboon.platform.bootstrap.department-name=平台运营中心",
         "decoboon.platform.bootstrap.phone=13900000001",
+        "decoboon.platform.bootstrap.username=平台超级管理员",
         "decoboon.platform.bootstrap.password=AdminPass123",
         "th4.edge.components.lock.enabled=false",
         "th4.edge.components.wechat.pay.enabled=false",
@@ -61,21 +74,36 @@ class PlatformAdminAcceptanceTest {
     @Autowired private CredentialsRepository credentialsRepository;
     @Autowired private PasswordContext passwordContext;
     @Autowired private SubscriptionContext subscriptionContext;
+    @Autowired private PlatformUserRepository platformUserRepository;
+    @Autowired private PlatformOrgRepository platformOrgRepository;
+    @Autowired private DataSource dataSource;
+    @Autowired private EntityManagerFactory entityManagerFactory;
 
     @Test
-    void platformAdminMustQueryAllTenantsAdjustSubscriptionAndLeaveAudit() throws Exception {
-        Employee tenantBoss = employee(false, "13900000002", "普通企业负责人");
+    void platformIdentityMustStayIsolatedAndOperateTenantThroughScalarAdapter() throws Exception {
+        Employee tenantBoss = employee("13900000002", "普通企业负责人");
         credential(tenantBoss, "TenantPass123");
         Company tenant = tenantBoss.getCompany();
         Subscription subscription = subscriptionContext.grantTrial(tenant);
 
-        String adminToken = login("13900000001", "AdminPass123");
+        assertThat(platformUserRepository.findByPhone("13900000001").getRole()).isEqualTo(PlatformRole.SuperAdmin);
+        assertThat(platformOrgRepository.findByCode("DECOBOON")).isNotNull();
+        assertThat(employeeRepository.findByTelNo("13900000001")).isNull();
+
+        String adminToken = platformLogin("13900000001", "AdminPass123");
+        JsonNode platformIdentity = call("platform/auth/info", "{}", adminToken);
+        assertThat(platformIdentity.path("success").asBoolean()).isTrue();
+        assertThat(platformIdentity.path("data").path("role").path("value").asText()).isEqualTo("SuperAdmin");
+        assertThat(platformIdentity.path("data").path("org").path("code").asText()).isEqualTo("DECOBOON");
+        assertThat(platformIdentity.toString()).doesNotContain("passwordHash", "password_hash");
+
         JsonNode tenants = call("platform/tenant/page", """
                 {"current":1,"size":20,"keyword":"普通企业"}
                 """, adminToken);
         assertThat(tenants.path("success").asBoolean()).isTrue();
         assertThat(tenants.path("data").path("content").size()).isEqualTo(1);
         assertThat(tenants.path("data").path("content").get(0).path("title").asText()).isEqualTo("普通企业");
+        assertThat(tenants.path("data").path("content").get(0).has("platform")).isFalse();
 
         JsonNode adjusted = call("platform/subscription/update", """
                 {"subId":%d,"days":30,"extraSeats":2,"extraStores":1,"reason":"客户成功人工续费并扩容"}
@@ -90,8 +118,11 @@ class PlatformAdminAcceptanceTest {
                 """.formatted(tenant.getComId()), adminToken);
         assertThat(audit.path("success").asBoolean()).isTrue();
         assertThat(audit.path("data").path("content").size()).isEqualTo(1);
-        assertThat(audit.path("data").path("content").get(0).path("reason").asText())
-                .isEqualTo("客户成功人工续费并扩容");
+        JsonNode log = audit.path("data").path("content").get(0);
+        assertThat(log.path("targetComId").asLong()).isEqualTo(tenant.getComId());
+        assertThat(log.path("targetCompanyTitle").asText()).isEqualTo("普通企业");
+        assertThat(log.path("operator").path("userId").asLong()).isEqualTo(platformUserRepository.findByPhone("13900000001").getUserId());
+        assertThat(log.has("company")).isFalse();
 
         JsonNode dashboard = call("platform/dashboard/info", "{}", adminToken);
         assertThat(dashboard.path("success").asBoolean()).isTrue();
@@ -101,18 +132,47 @@ class PlatformAdminAcceptanceTest {
         assertThat(system.path("success").asBoolean()).isTrue();
         assertThat(system.path("data").path("services").size()).isGreaterThanOrEqualTo(3);
 
-        String tenantToken = login("13900000002", "TenantPass123");
+        String tenantToken = tenantLogin("13900000002", "TenantPass123");
         JsonNode forbidden = call("platform/tenant/page", "{}", tenantToken);
         assertThat(forbidden.path("success").asBoolean()).isFalse();
-        assertThat(forbidden.path("errorCode").path("code").asText()).isEqualTo("403");
+        assertThat(forbidden.path("errorCode").path("code").asText()).isIn("401", "403", "userOfTokenNotMatch");
 
         JsonNode anonymous = call("platform/tenant/page", "{}", null);
         assertThat(anonymous.path("success").asBoolean()).isFalse();
         assertThat(anonymous.path("errorCode").path("code").asText())
                 .isIn("401", "tokenIsUndefined", "tokenInvalid", "tokenExpired");
+
+        JsonNode logout = call("platform/auth/logout", "{}", adminToken);
+        assertThat(logout.path("success").asBoolean()).isTrue();
+        JsonNode afterLogout = call("platform/auth/info", "{}", adminToken);
+        assertThat(afterLogout.path("success").asBoolean()).isFalse();
     }
 
-    private String login(String phone, String password) throws Exception {
+    @Test
+    void platformTablesMustNotReferenceTenantTables() throws Exception {
+        Set<String> referencedTables = new LinkedHashSet<>();
+        try (Connection connection = dataSource.getConnection()) {
+            for (String table : new String[]{"db_platform_org", "db_platform_department", "db_platform_user", "db_platform_operation_log"}) {
+                try (ResultSet keys = connection.getMetaData().getImportedKeys(null, null, table)) {
+                    while (keys.next()) referencedTables.add(keys.getString("PKTABLE_NAME").toLowerCase());
+                }
+            }
+        }
+        assertThat(referencedTables).allMatch(table -> table.startsWith("db_platform_"));
+        assertThat(referencedTables).doesNotContain("db_tenant_company", "db_tenant_employee", "db_tenant_credentials");
+        assertThat(entityManagerFactory.getMetamodel().entity(Company.class).getAttributes())
+                .extracting(attribute -> attribute.getName()).doesNotContain("platform");
+    }
+
+    private String platformLogin(String phone, String password) throws Exception {
+        JsonNode response = call("platform/auth/login", """
+                {"phone":"%s","password":"%s"}
+                """.formatted(phone, password), null);
+        assertThat(response.path("success").asBoolean()).isTrue();
+        return response.path("data").path("token").asText();
+    }
+
+    private String tenantLogin(String phone, String password) throws Exception {
         JsonNode response = call("auth/session/password-login", """
                 {"phone":"%s","password":"%s"}
                 """.formatted(phone, password), null);
@@ -132,16 +192,15 @@ class PlatformAdminAcceptanceTest {
                 ? objectMapper.createObjectNode() : objectMapper.readTree(content);
     }
 
-    private Employee employee(boolean platform, String phone, String name) {
+    private Employee employee(String phone, String name) {
         Company company = new Company();
-        company.setTitle(platform ? "装得清平台运营中心" : "普通企业");
-        company.setName(platform ? "平台运营" : "普通企业");
-        company.setSize(platform ? Size.A : Size.B);
-        company.setPlatform(platform);
+        company.setTitle("普通企业");
+        company.setName("普通企业");
+        company.setSize(Size.B);
         company = companyRepository.save(company);
         Store store = new Store();
         store.setCompany(company);
-        store.setName(platform ? "平台总店" : "企业总店");
+        store.setName("企业总店");
         store.setDefaultStore(true);
         store = storeRepository.save(store);
         Employee employee = new Employee();

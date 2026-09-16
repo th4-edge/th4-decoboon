@@ -153,18 +153,18 @@ public class InventoryContext {
         movement.setImages(images);
         movement.setRemark(remark);
         movement = movementRepository.save(modelIdentityContext.prepare(movement));
-        if (quoteLine != null && type != StockMovementType.Inbound) {
-            applyQuoteLineCost(quoteLine, type, amount);
+        if (quoteLine != null) {
+            applyQuoteLineActualCost(quoteLine, type, amount);
         }
         return movement;
     }
 
-    private void applyQuoteLineCost(QuoteLine line, StockMovementType type, BigDecimal amount) {
+    private void applyQuoteLineActualCost(QuoteLine line, StockMovementType type, BigDecimal amount) {
         BigDecimal actual = value(line.getActualMaterialCost());
-        if (type == StockMovementType.ReturnIn || type == StockMovementType.ReturnOut) {
-            actual = actual.subtract(amount).max(BigDecimal.ZERO);
-        } else {
+        if (type == StockMovementType.Inbound) {
             actual = actual.add(amount);
+        } else if (type == StockMovementType.ReturnIn || type == StockMovementType.ReturnOut) {
+            actual = actual.subtract(amount).max(BigDecimal.ZERO);
         }
         line.setActualMaterialCost(actual);
         line.setActualCost(actual

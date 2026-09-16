@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.GoodsReceipt;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
@@ -69,6 +70,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
     private final InventoryContext inventoryContext;
     private final ModelIdentityContext modelIdentityContext;
     private final ProjectPermissionContext permissionContext;
+    private final ProjectContext projectContext;
 
     public Save(PurchaseOrderRepository purchaseRepository,
                 GoodsReceiptRepository receiptRepository,
@@ -78,7 +80,8 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
                 ProjectAccessContext accessContext,
                 InventoryContext inventoryContext,
                 ModelIdentityContext modelIdentityContext,
-                ProjectPermissionContext permissionContext) {
+                ProjectPermissionContext permissionContext,
+                ProjectContext projectContext) {
         this.purchaseRepository = purchaseRepository;
         this.receiptRepository = receiptRepository;
         this.materialPlanRepository = materialPlanRepository;
@@ -88,6 +91,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         this.inventoryContext = inventoryContext;
         this.modelIdentityContext = modelIdentityContext;
         this.permissionContext = permissionContext;
+        this.projectContext = projectContext;
     }
 
     @Override
@@ -137,6 +141,11 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         var plan = purchase.getMaterialPlan();
         plan.setStatus(nowReceived.compareTo(total) >= 0 ? MaterialPlanStatus.Arrived : MaterialPlanStatus.PartiallyArrived);
         plan.setArrivedAt(LocalDate.now());
+        BigDecimal actualReceivedCost = receiptRepository.findByPurchaseOrderByReceiptIdDesc(purchase).stream()
+                .map(item -> value(item.getQuantity()).multiply(value(purchase.getUnitPrice())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        plan.setUnitPrice(purchase.getUnitPrice());
+        plan.setCost(actualReceivedCost);
         materialPlanRepository.save(plan);
 
         Payable payable = new Payable();
@@ -164,6 +173,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         payable.setRemark("材料到场自动生成应付");
         payable.setCreatedBy(current);
         payableRepository.save(modelIdentityContext.prepare(payable));
+        projectContext.refreshProject(purchase.getProject());
         return saved;
     }
 

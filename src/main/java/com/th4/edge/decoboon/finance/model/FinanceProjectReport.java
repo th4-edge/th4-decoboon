@@ -28,8 +28,12 @@ public class FinanceProjectReport {
     private BigDecimal projectCost = BigDecimal.ZERO;
     private BigDecimal otherPayableAmount = BigDecimal.ZERO;
     private BigDecimal expenseAllocation = BigDecimal.ZERO;
+    private BigDecimal estimatedCost = BigDecimal.ZERO;
+    private BigDecimal actualCost = BigDecimal.ZERO;
     private BigDecimal totalCost = BigDecimal.ZERO;
-    private BigDecimal profitAmount = BigDecimal.ZERO;
+    private BigDecimal profitAmount;
+    private Boolean costComplete = Boolean.TRUE;
+    private Integer costIncompleteCount = 0;
     private BigDecimal grossProfit = BigDecimal.ZERO;
     private BigDecimal grossMargin = BigDecimal.ZERO;
     private BigDecimal collectionRate = BigDecimal.ZERO;
@@ -79,6 +83,14 @@ public class FinanceProjectReport {
     public void setExpenseAllocation(BigDecimal expenseAllocation) { this.expenseAllocation = expenseAllocation; }
     public BigDecimal getTotalCost() { return totalCost; }
     public void setTotalCost(BigDecimal totalCost) { this.totalCost = totalCost; }
+    public BigDecimal getEstimatedCost() { return estimatedCost; }
+    public void setEstimatedCost(BigDecimal estimatedCost) { this.estimatedCost = estimatedCost; }
+    public BigDecimal getActualCost() { return actualCost; }
+    public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
+    public Boolean getCostComplete() { return costComplete; }
+    public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
+    public Integer getCostIncompleteCount() { return costIncompleteCount; }
+    public void setCostIncompleteCount(Integer costIncompleteCount) { this.costIncompleteCount = costIncompleteCount; }
     public BigDecimal getProfitAmount() { return profitAmount; }
     public void setProfitAmount(BigDecimal profitAmount) { this.profitAmount = profitAmount; }
     public BigDecimal getGrossProfit() { return grossProfit; }

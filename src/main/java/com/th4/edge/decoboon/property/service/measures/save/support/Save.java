@@ -30,7 +30,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = Measure.class,
                 properties = {"measureId", "customer", "property", "designer", "measureTime", "status", "sitePhotos",
-                        "originalStructure", "dimensions", "customerRequirements", "designerConclusion", "createTime"}),
+                        "originalStructure", "structureImages", "attachments", "dimensions", "customerRequirements", "designerConclusion", "createTime"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
@@ -44,6 +44,8 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
     @AutoInject private LocalDateTime measureTime;
     @AutoInject private MeasureStatus status;
     @AutoInject private List<String> sitePhotos;
+    @AutoInject private List<String> structureImages;
+    @AutoInject private List<String> attachments;
     @AutoInject private String originalStructure;
     @AutoInject private String dimensions;
     @AutoInject private String customerRequirements;
@@ -64,22 +66,28 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
     @Transactional
     public Measure call(Measure request) {
         Property property = propertyContext.require(propertyId, employee);
-        request.setCompany(property.getCompany());
-        request.setStore(property.getStore());
-        request.setTeam(property.getTeam());
-        request.setOwner(property.getOwner());
-        request.setCustomer(property.getCustomer());
-        request.setProperty(property);
-        request.setDesigner(property.getDesigner() == null ? employee : property.getDesigner());
-        request.setMeasureTime(measureTime == null ? LocalDateTime.now() : measureTime);
+        Measure target = measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
+                .filter(item -> item.getStatus() == MeasureStatus.Scheduled)
+                .findFirst()
+                .orElse(request);
+        target.setCompany(property.getCompany());
+        target.setStore(property.getStore());
+        target.setTeam(property.getTeam());
+        target.setOwner(property.getOwner());
+        target.setCustomer(property.getCustomer());
+        target.setProperty(property);
+        target.setDesigner(property.getDesigner() == null ? employee : property.getDesigner());
+        target.setMeasureTime(measureTime == null ? LocalDateTime.now() : measureTime);
         MeasureStatus measureStatus = status == null ? MeasureStatus.Completed : status;
-        request.setStatus(measureStatus);
-        request.setSitePhotos(sitePhotos);
-        request.setOriginalStructure(originalStructure);
-        request.setDimensions(dimensions);
-        request.setCustomerRequirements(customerRequirements);
-        request.setDesignerConclusion(designerConclusion);
-        Measure saved = measureRepository.save(request);
+        target.setStatus(measureStatus);
+        target.setSitePhotos(sitePhotos);
+        target.setStructureImages(structureImages);
+        target.setAttachments(attachments);
+        target.setOriginalStructure(originalStructure);
+        target.setDimensions(dimensions);
+        target.setCustomerRequirements(customerRequirements);
+        target.setDesignerConclusion(designerConclusion);
+        Measure saved = measureRepository.save(target);
         if (measureStatus == MeasureStatus.Completed) {
             if (property.getStatus() == PropertyStatus.PendingMeasure
                     || property.getStatus() == PropertyStatus.Measuring) {

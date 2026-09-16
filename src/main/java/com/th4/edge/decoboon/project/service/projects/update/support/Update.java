@@ -5,7 +5,9 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -16,6 +18,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,20 +50,45 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
     private Long projectId;
 
     @AutoInject
+    private String name;
+
+    @AutoInject
+    private String siteAddr;
+
+    @AutoInject
     private LocalDate startDate;
 
     @AutoInject
     private LocalDate planEndDate;
+
+    @AutoInject
+    private Long designerId;
+
+    @AutoInject
+    private Long managerId;
+
+    @AutoInject
+    private Long supportId;
 
     @User
     private Employee employee;
 
     private final ProjectRepository projectRepository;
     private final ProjectAccessContext accessContext;
+    private final EmployeeRepository employeeRepository;
+    private final ProjectContractRepository contractRepository;
+    private final ProjectContext projectContext;
 
-    public Update(ProjectRepository projectRepository, ProjectAccessContext accessContext) {
+    public Update(ProjectRepository projectRepository,
+                  ProjectAccessContext accessContext,
+                  EmployeeRepository employeeRepository,
+                  ProjectContractRepository contractRepository,
+                  ProjectContext projectContext) {
         this.projectRepository = projectRepository;
         this.accessContext = accessContext;
+        this.employeeRepository = employeeRepository;
+        this.contractRepository = contractRepository;
+        this.projectContext = projectContext;
     }
 
     @Override
@@ -71,8 +99,45 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
         if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
             throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以调整项目状态"));
         }
+        if (name != null && !name.isBlank()) project.setName(name.trim());
+        if (siteAddr != null && !siteAddr.isBlank()) project.setSiteAddr(siteAddr.trim());
         if (startDate != null) project.setStartDate(startDate);
         if (planEndDate != null) project.setPlanEndDate(planEndDate);
-        return projectRepository.save(project);
+        if (project.getStartDate() != null && project.getPlanEndDate() != null
+                && project.getPlanEndDate().isBefore(project.getStartDate())) {
+            throw new DefinedException(new DefaultErrorCode("400", "计划完工日期不能早于开工日期"));
+        }
+        Long comId = current.getCompany().getComId();
+        if (designerId != null) {
+            Employee designer = employeeRepository.findByEmpIdAndCompany_ComId(designerId, comId);
+            if (designer == null || (designer.getRole() != EmployeeRole.Designer && designer.getRole() != EmployeeRole.Boss)) {
+                throw new DefinedException(new DefaultErrorCode("400", "项目设计师必须为设计师或老板"));
+            }
+            project.setDesigner(designer);
+        }
+        if (managerId != null) {
+            Employee manager = employeeRepository.findByEmpIdAndCompany_ComId(managerId, comId);
+            if (manager == null || (manager.getRole() != EmployeeRole.Pm && manager.getRole() != EmployeeRole.Boss)) {
+                throw new DefinedException(new DefaultErrorCode("400", "项目经理必须为项目经理或老板"));
+            }
+            project.setManager(manager);
+        }
+        if (supportId != null) {
+            Employee support = employeeRepository.findByEmpIdAndCompany_ComId(supportId, comId);
+            if (support == null || (support.getRole() != EmployeeRole.ProjectSupport && support.getRole() != EmployeeRole.Boss)) {
+                throw new DefinedException(new DefaultErrorCode("400", "履约专员必须为履约专员或老板"));
+            }
+            project.setSupport(support);
+        }
+        Project saved = projectRepository.save(project);
+        projectContext.scheduleStages(saved);
+        saved = projectContext.refreshProject(saved);
+        contractRepository.findByProject_ProjectIdAndCompany_ComId(saved.getProjectId(), comId)
+                .ifPresent(contract -> {
+                    if (startDate != null) contract.setStartDate(startDate);
+                    if (planEndDate != null) contract.setPlanEndDate(planEndDate);
+                    contractRepository.save(contract);
+                });
+        return saved;
     }
 }

@@ -21,23 +21,17 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     boolean existsByTitle(String title);
 
-    List<Company> findByPlatformFalseOrderByComIdDesc();
-
-    long countByPlatformFalse();
-
-    long countByPlatformFalseAndCreateTime_DateTimeGreaterThanEqual(com.th4.edge.framework.data.date.model.DateTime time);
 
     @Query("""
             select c from Company c
-            where c.platform = false
-              and (:keyword is null
+            where (:keyword is null
                    or lower(c.title) like lower(concat('%', :keyword, '%'))
                    or lower(c.name) like lower(concat('%', :keyword, '%')))
               and (:status is null
                    or exists (select s from Subscription s where s.company = c and s.status = :status))
             order by c.comId desc
             """)
-    Page<Company> pagePlatformTenants(@Param("keyword") String keyword,
-                                      @Param("status") SubStatus status,
-                                      Pageable pageable);
+    Page<Company> pageTenants(@Param("keyword") String keyword,
+                              @Param("status") SubStatus status,
+                              Pageable pageable);
 }

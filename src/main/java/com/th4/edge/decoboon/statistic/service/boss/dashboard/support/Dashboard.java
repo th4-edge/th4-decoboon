@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
                 properties = {"month", "signedAmount", "receivedAmount", "grossProfit", "activeProjectCount"}),
         @AllowProperties(model = DashboardMetric.class,
                 properties = {"value", "target", "achievementRate", "previousMonthValue", "previousYearValue",
-                        "monthOverMonthRate", "yearOverYearRate"})
+                        "monthOverMonthRate", "yearOverYearRate", "complete", "warning"})
 })
 @Service("statistic/boss/dashboard")
 @Scope(ScopeTypes.PROTOTYPE)

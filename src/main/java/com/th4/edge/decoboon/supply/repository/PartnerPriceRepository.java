@@ -12,4 +12,5 @@ public interface PartnerPriceRepository extends JpaRepository<PartnerPrice, Long
     List<PartnerPrice> findByCompany_ComIdOrderByPartnerPriceIdDesc(Long comId);
     List<PartnerPrice> findByPartnerOrderByPartnerPriceIdDesc(Partner partner);
     PartnerPrice findFirstByPartnerAndItemAndActiveTrueOrderByPartnerPriceIdDesc(Partner partner, CatalogItem item);
+    List<PartnerPrice> findByCompany_ComIdAndItem_ItemIdOrderByPartnerPriceIdDesc(Long comId, Long itemId);
 }

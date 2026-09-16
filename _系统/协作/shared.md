@@ -15,6 +15,13 @@
 | acceptance | Web端第一阶段验收报告 | docs/acceptance/Web端第一阶段验收报告.md | product-planning,development,user | ready | 2026-09-15 |
 | development | 小程序密码设置闭环开发交接 | _系统/协作/lanes/development/workspace/miniapp-password-closure-handoff.md | acceptance,user | ready_pending_acceptance | 2026-09-15 |
 | development | Web v2 全业务体系 | ../../前端代码/th4-decoboon-web/ | product-planning,acceptance,user | built_pending_acceptance | 2026-09-16 |
+| development | Web v2 业务交互升级 | ../../前端代码/th4-decoboon-web/ | acceptance,user | built_pending_acceptance | 2026-09-16 |
+| development | Web 表单弹窗改抽屉 | ../../前端代码/th4-decoboon-web/ | acceptance,user | built_pending_acceptance | 2026-09-17 |
+| development | Web 真实业务全链路走查与缺陷清单 | _系统/协作/lanes/development/workspace/web-real-business-walkthrough-2026-09-17.md | product-planning,acceptance,user | fixes_implemented_pending_acceptance | 2026-09-17 |
+| development | Web 真实业务全链路第二轮复验 | _系统/协作/lanes/development/workspace/web-real-business-recheck-2026-09-17.md | product-planning,acceptance,user | recheck_passed_with_remaining_risks | 2026-09-17 |
+| development | 排期、验收证据与角色待办中心 | ../../前端代码/th4-decoboon-web/ | acceptance,user | built_pending_acceptance | 2026-09-17 |
+| development | 业务对象树形选择器 | ../../前端代码/th4-decoboon-web/ | acceptance,user | built_pending_acceptance | 2026-09-17 |
+| development | 供应商采购价与可靠毛利闭环 | 后端 `docs/design/migrations/28-成本完整性结算快照.sql`、Web `src/resources/index.ts`、App `src/subpackages/supply/pages/**` | acceptance,user | built_pending_release | 2026-09-17 |
 | development | Web v2 开发交接 | _系统/协作/lanes/development/workspace/web-v2-full-business-handoff.md | acceptance,user | ready_pending_acceptance | 2026-09-16 |
 | development | 阿里云 OSS 对象存储 | docs/design/migrations/22-OSS对象存储部署说明.md | acceptance,运维,development | configured_pending_acceptance | 2026-09-16 |
 | development | OSS 存储开发交接 | _系统/协作/lanes/development/workspace/aliyun-oss-storage-handoff.md | acceptance,运维,user | ready_pending_acceptance | 2026-09-16 |
@@ -23,8 +30,9 @@
 | development | 生产发版包与配置 | _系统/协作/lanes/development/workspace/production-release-config-handoff.md | acceptance,运维,product-planning | deployed_pending_acceptance | 2026-09-16 |
 | development | 生产后端哨兵与首个代码缺陷修复 | `_系统/协作/lanes/development/workspace/backend-prod-sentinel-handoff.md` | acceptance,运维,development | deployed_fixed_first_incident | 2026-09-16 |
 | development | Web 设计/报价/增减项高频录入闭环 | _系统/协作/lanes/development/workspace/web-design-quote-change-workbench-handoff.md | product-planning,acceptance,user | browser_verified_pending_acceptance | 2026-09-16 |
-| development | 装得清运营管理端（真实后端模式） | ../../前端代码/th4-decoboon-admin/ | product-planning,acceptance,运维,user | real_backend_built_pending_acceptance | 2026-09-16 |
-| development | 运营管理端用户组织与权限设计 | docs/product/装得清运营管理端用户组织与权限设计.md | product-planning,acceptance,运维,user | ready_pending_implementation | 2026-09-16 |
+| development | 装得清运营管理端（独立平台域） | ../../前端代码/th4-decoboon-admin/ | product-planning,acceptance,运维,user | platform_isolated_built_pending_acceptance | 2026-09-16 |
+| development | 独立平台组织与用户体系设计 | docs/product/装得清运营管理端用户组织与权限设计.md | product-planning,acceptance,运维,user | implemented_pending_acceptance | 2026-09-16 |
+| development | IDEA 平台运营启动与本地数据同步 | docs/operations/2026-09-16-IDEA平台运营启动与本地数据同步.md | user,运维,acceptance | local_running_verified | 2026-09-16 |
 
 | acceptance | 小程序企业负责人全链路闭环验收报告 | docs/acceptance/小程序企业负责人全链路闭环验收报告.md | development,product-planning,user | pass_with_defects | 2026-09-16 |
 | acceptance | 小程序全链路回归规范（含根因反思） | docs/acceptance/小程序全链路回归规范.md | development,product-planning,acceptance | ready | 2026-09-16 |

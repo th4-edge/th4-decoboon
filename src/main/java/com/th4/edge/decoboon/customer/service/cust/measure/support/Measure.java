@@ -4,7 +4,10 @@ import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.context.PropertyContext;
+import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -42,15 +45,18 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
     private final DataScopeContext dataScopeContext;
     private final NoticeContext noticeContext;
     private final PropertyContext propertyContext;
+    private final MeasureRepository measureRepository;
 
     public Measure(CustomerRepository customerRepository,
                    DataScopeContext dataScopeContext,
                    NoticeContext noticeContext,
-                   PropertyContext propertyContext) {
+                   PropertyContext propertyContext,
+                   MeasureRepository measureRepository) {
         this.customerRepository = customerRepository;
         this.dataScopeContext = dataScopeContext;
         this.noticeContext = noticeContext;
         this.propertyContext = propertyContext;
+        this.measureRepository = measureRepository;
     }
 
     @Override
@@ -80,11 +86,26 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         if (customer.getPendingMeasureAt() == null) customer.setPendingMeasureAt(LocalDateTime.now());
         customer.setMeasureRequestedAt(LocalDateTime.now());
         Customer saved = customerRepository.save(customer);
-        if (propertyId == null) {
-            propertyContext.ensureForCustomer(saved, current);
-        } else {
-            propertyContext.resolve(propertyId, saved, current);
-        }
+        Property property = propertyId == null
+                ? propertyContext.ensureForCustomer(saved, current)
+                : propertyContext.resolve(propertyId, saved, current);
+
+        com.th4.edge.decoboon.property.model.Measure scheduled = measureRepository
+                .findByPropertyOrderByMeasureTimeDesc(property).stream()
+                .filter(item -> item.getStatus() == MeasureStatus.Scheduled)
+                .findFirst()
+                .orElseGet(com.th4.edge.decoboon.property.model.Measure::new);
+        scheduled.setCompany(property.getCompany());
+        scheduled.setStore(property.getStore());
+        scheduled.setTeam(property.getTeam());
+        scheduled.setOwner(property.getOwner() == null ? current : property.getOwner());
+        scheduled.setCustomer(saved);
+        scheduled.setProperty(property);
+        scheduled.setDesigner(saved.getDesigner() == null ? current : saved.getDesigner());
+        scheduled.setMeasureTime(measureAt);
+        scheduled.setStatus(MeasureStatus.Scheduled);
+        measureRepository.save(scheduled);
+
         noticeContext.measureRequested(saved, current);
         return saved;
     }

@@ -72,7 +72,7 @@
 - 客户域基准：客户包含 `company/store/team/owner` 对象归属，并建立 `(com_id, cust_id)`、`(com_id, store_id, cust_id)`、`(com_id, team_id, cust_id)`、`(com_id, emp_id, cust_id)` 联合索引。
 - 完整的数据权限代码生成决策树、实体模板、通用 CRUD 模板、自定义 Provider 模板和测试模板见 `docs/design/07-数据权限设计规范.md`。
 
-**平台运营例外：** 仅 `com.th4.edge.platform` 平台域允许跨企业只读和人工订阅管控，必须同时满足 `Company.platform=true + EmployeeRole.Boss + Security`，并集中在 `PlatformAdminContext` 校验；所有人工写操作必须写 `PlatformOperationLog`。普通业务域禁止复制该模式。
+**平台运营例外：** 仅 `com.th4.edge.platform` 平台域允许跨企业只读和人工订阅管控。平台使用独立 `PlatformOrg/PlatformDepartment/PlatformUser/PlatformRole/PlatformPermission`，认证不得复用租户 `Company/Employee/Credentials`；权限集中在 `PlatformAccessContext` 校验。平台表与租户表禁止建立外键或实体关联，租户数据只能通过显式适配器以标量快照读取。所有人工写操作必须写 `PlatformOperationLog`。普通业务域禁止复制该模式。
 
 ## Provider 命名规范
 
@@ -138,6 +138,16 @@
 - 订阅主体为 `Subscription`，主键 `subId`，状态枚举 `SubStatus`。
 - 剩余可用天数不落库：由 `serviceEndTime - 当前时间` 动态计算，禁止保存 `balanceDays`，禁止每日递减订阅天数。
 - 门店默认不体现：注册仅创建默认总店；多门店是套餐/权益能力，由 `Plan.maxStores` 控制，`Company.setting.enableStore` 控制前端是否展示。
+- 免费版、基础版、专业版和旗舰版均提供全部业务模块；版本差异只允许体现在门店数和席位数，禁止以供应链、财务、经营分析等模块功能作为版本门槛。
+
+## 成本与利润口径（强制）
+
+- 销售价与成本价分离维护：报价库表单只维护 `materialPrice/manualPrice` 等销售价；标准成本由有效 `PartnerPrice` 的采购价与人工/班组价形成，业务代码禁止接受前端直接覆盖 `CatalogItem.costPrice`。
+- 采购价按企业、供应商、报价项目和有效期管理；BOSS、店长、财务可维护，材料员等角色不得读取采购成本字段。
+- 项目成本统一由 `ProjectCostContext` 汇总：`estimatedCost` 使用报价成本快照，缺少快照时按当前标准采购成本回算；`actualCost` 优先采购入库等实际成本，缺少实际值时按当前采购价回算，采购价变化必须反映到毛利。
+- 任一应计成本缺失时，`costComplete=false`，利润和毛利率必须返回 `null`，结算持久化字段允许为空；前端统一显示“成本未完整”，禁止以 0 成本计算或展示伪利润。
+- 实际材料成本只在采购入库时累计；领料、损耗只流转库存，退换货按退货类型冲减，禁止重复累计采购金额。
+- 成本错误集见 `_系统/协作/lanes/development/workspace/code-error-catalog.md` 的 ECD-002～ECD-004。
 
 ## 完整规范
 

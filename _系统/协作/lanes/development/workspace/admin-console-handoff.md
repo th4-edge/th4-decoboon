@@ -3,8 +3,10 @@
 ## 输入依据
 
 - 用户要求：构建 `th4-decoboon-admin`，支持全平台企业查询、人工订阅续费/套餐/席位/门店管控、营销推广运营支持、系统负载与异常监控。
+- 架构约束：运营业务领域必须与多租户装企业务体系彻底隔绝，平台表与租户表不得存在外键或实体关联。
 - 工程规范：`AGENTS.md`、`rules.md`、`docs/product/00-装得清产品与定价白皮书.md`。
-- 现有模型：`Company`、`Employee`、`Subscription`、`Plan`、`PlanVersion`、`Order`、`Credentials`。
+- 租户模型：`Company`、`Employee`、`Subscription`、`Plan`、`PlanVersion`、`Order`、`Credentials`，仅供 `TenantDataAdapter` 使用。
+- 平台模型：`PlatformOrg`、`PlatformDepartment`、`PlatformUser`、`PlatformRole`、`PlatformPermission`、`PlatformOperationLog`。
 
 ## Output Paths
 
@@ -16,7 +18,13 @@
 
 ### 后端
 
-- `src/main/java/com/th4/edge/platform/context/PlatformAdminContext.java`
+- `src/main/java/com/th4/edge/platform/context/PlatformAccessContext.java`
+- `src/main/java/com/th4/edge/platform/model/PlatformOrg.java`
+- `src/main/java/com/th4/edge/platform/model/PlatformDepartment.java`
+- `src/main/java/com/th4/edge/platform/model/PlatformUser.java`
+- `src/main/java/com/th4/edge/platform/model/PlatformOperationLog.java`
+- `src/main/java/com/th4/edge/platform/integration/tenant/TenantDataAdapter.java`
+- `src/main/java/com/th4/edge/platform/service/auth/**`
 - `src/main/java/com/th4/edge/platform/context/SystemMonitorContext.java`
 - `src/main/java/com/th4/edge/platform/model/**`
 - `src/main/java/com/th4/edge/platform/repository/PlatformOperationLogRepository.java`
@@ -33,7 +41,9 @@
 
 ## Changed Capabilities
 
-- 平台权限：`Company.platform=true` + `EmployeeRole.Boss` 才允许访问 `platform/*`。
+- 平台权限：独立 `PlatformUser + PlatformOrg + PlatformRole + PlatformPermission`，不使用租户 Employee/Company。
+- 租户隔阂：平台表与租户表无外键，租户数据经 `TenantDataAdapter` 转标量快照。
+- 平台独立认证：`platform/auth/login`、`platform/auth/info`、`platform/auth/logout`。
 - 全企业查询：`platform/tenant/page`、`platform/tenant/info`。
 - 运营总览：企业、订阅、回款、风险、漏斗、套餐分布。
 - 人工订阅调整：续费、套餐、席位、门店、状态。
@@ -46,18 +56,18 @@
 - `th4-decoboon-admin/npm run verify:real-api`：PASS。
 - `th4-decoboon-admin/npm run type-check`：PASS。
 - `th4-decoboon-admin/npm run build`：PASS。
-- 浏览器：登录后 7 个路由全部渲染，无 error/warning console log；订阅调整对话框和真实 Provider 提交链路已验证。
-- `th4-decoboon/mvn -o -q clean test`：29 suites / 84 tests / 0 failures / 0 errors。
+- 独立平台认证重构后尚未执行真实账号浏览器验收；此前页面路由和交互巡检仅作为前端构建验证。
+- `th4-decoboon/mvn -o -q clean test`：29 suites / 85 tests / 0 failures / 0 errors。
 - `PlatformAdminAcceptanceTest`：PASS。
-- `ProviderSecurityAcceptanceTest`：PASS，路由总数 205（public 11 + protected 194）。
+- `ProviderSecurityAcceptanceTest`：PASS，路由总数 208（public 12 + protected 196）。
 
 ## Risks
 
-- 生产 `ddl-auto=validate`，上线前必须先执行迁移 `24-运营管理端基础.sql` 并将平台运营企业 `platform` 设置为 true。
+- 生产 `ddl-auto=validate`，上线前必须先执行迁移 `24-运营管理端基础.sql`；若测试库执行过旧融合版预发布迁移，必须先导出旧审计并删除 `db_tenant_company.platform` 和旧平台审计表。
 - 当前管理端是独立静态工程，不依赖 th4-admin 菜单注册表。
 - 系统状态是即时采样，不替代 Prometheus/云监控历史数据。
-- 当前版本平台账号为单一 Boss 超级管理员；多岗位组织设计见 `docs/product/装得清运营管理端用户组织与权限设计.md`。
-- 首次初始化通过默认关闭的 `PlatformAdminBootstrap` 完成，必须显式提供环境变量。
+- 当前初始化器创建独立 SuperAdmin；其他岗位模型已落地，用户/部门管理 Provider 待后续实现。
+- 首次初始化通过默认关闭的 `PlatformBootstrap` 完成，必须显式提供环境变量。
 - 管理端人工履约不生成支付订单，线下回款仍需财务登记。
 - 尚未在生产环境创建平台运营账号或执行真实浏览器验收。
 
@@ -69,7 +79,7 @@
 
 ## Acceptance Needed
 
-- 平台运营 Boss 正常访问。
-- 普通企业 Boss 与匿名请求均被拒绝。
+- 独立 PlatformUser/SuperAdmin 正常登录和访问。
+- 租户 Employee token、普通企业账号与匿名请求均被拒绝。
 - 续费、套餐、席位、门店和状态操作正确落库并产生审计。
 - 系统指标和依赖健康状态可展示。

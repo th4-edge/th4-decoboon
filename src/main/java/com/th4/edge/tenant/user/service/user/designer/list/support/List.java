@@ -33,15 +33,16 @@ public class List implements com.th4.edge.tenant.user.service.user.designer.list
     @Override
     public java.util.List<Employee> call(Employee request) {
         Employee current = tenantContext.requireEmployee(employee);
+        java.util.Collection<EmployeeRole> roles = java.util.List.of(EmployeeRole.Designer, EmployeeRole.Boss);
         if (current.getRole() == EmployeeRole.StoreManager && current.getStore() != null) {
-            return employeeRepository.findByCompany_ComIdAndStore_StoreIdAndRoleOrderByName(
-                    current.getCompany().getComId(), current.getStore().getStoreId(), EmployeeRole.Designer);
+            return employeeRepository.findByCompany_ComIdAndStore_StoreIdAndRoleInOrderByName(
+                    current.getCompany().getComId(), current.getStore().getStoreId(), roles);
         }
         if (current.getRole() == EmployeeRole.TeamLeader && current.getTeam() != null) {
-            return employeeRepository.findByCompany_ComIdAndTeam_TeamIdAndRoleOrderByName(
-                    current.getCompany().getComId(), current.getTeam().getTeamId(), EmployeeRole.Designer);
+            return employeeRepository.findByCompany_ComIdAndTeam_TeamIdAndRoleInOrderByName(
+                    current.getCompany().getComId(), current.getTeam().getTeamId(), roles);
         }
-        return employeeRepository.findByCompany_ComIdAndRoleOrderByName(
-                current.getCompany().getComId(), EmployeeRole.Designer);
+        return employeeRepository.findByCompany_ComIdAndRoleInOrderByName(
+                current.getCompany().getComId(), roles);
     }
 }

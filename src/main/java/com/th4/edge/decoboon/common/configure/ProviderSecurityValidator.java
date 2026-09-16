@@ -30,7 +30,8 @@ public class ProviderSecurityValidator implements ApplicationRunner {
             "invite/invitation/info",
             "invite/invitation/reject",
             "order/callback",
-            "file/private/download"
+            "file/private/download",
+            "platform/auth/login"
     );
 
     private final ApplicationContext applicationContext;
@@ -45,7 +46,8 @@ public class ProviderSecurityValidator implements ApplicationRunner {
         for (Provider<?, ?> provider : applicationContext.getBeansOfType(Provider.class).values()) {
             Class<?> target = AopUtils.getTargetClass(provider);
             if (!target.getName().startsWith("com.th4.edge.decoboon")
-                    && !target.getName().startsWith("com.th4.edge.tenant")) {
+                    && !target.getName().startsWith("com.th4.edge.tenant")
+                    && !target.getName().startsWith("com.th4.edge.platform")) {
                 continue;
             }
             Service service = AnnotationUtils.findAnnotation(target, Service.class);

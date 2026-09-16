@@ -104,6 +104,13 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
             return contractContext.enrich(contractRepository.save(contract));
         }
         if (status == ContractStatus.Effective) {
+            if (contract.getProject() != null) {
+                Project existingProject = contract.getProject();
+                if (startDate != null) existingProject.setStartDate(startDate);
+                if (planEndDate != null) existingProject.setPlanEndDate(planEndDate);
+                projectContext.refreshProject(existingProject);
+                return contractContext.enrich(contractRepository.save(contract));
+            }
             if (contract.getStatus() != ContractStatus.Signed || contract.getSignedAt() == null) {
                 throw new DefinedException(new DefaultErrorCode("400", "合同签约后才能生效"));
             }

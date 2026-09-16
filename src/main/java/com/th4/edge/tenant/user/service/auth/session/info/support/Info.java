@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Credentials.class,
                 properties = {"creId", "phone", "status", "lastTime", "passwordSet", "mustChangePassword", "employee", "sessionType", "customerAccesses"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role", "store", "team", "company", "status", "avatarUrl", "joinedAt", "resignedAt", "resignReason", "createTime"}),
-        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "platform", "setting"}),
+        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "setting"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore"}),
         @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"}),
         @AllowProperties(model = CustomerAccess.class,

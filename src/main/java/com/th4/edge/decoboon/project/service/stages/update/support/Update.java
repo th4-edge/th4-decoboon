@@ -13,6 +13,8 @@ import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
+import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
@@ -59,17 +61,20 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
     private final ProjectReportRepository reportRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
+    private final MeasureRepository measureRepository;
 
     public Update(ProjectStageRepository stageRepository,
                   ProjectRepository projectRepository,
                   ProjectReportRepository reportRepository,
                   ProjectAccessContext accessContext,
-                  ProjectPermissionContext permissionContext) {
+                  ProjectPermissionContext permissionContext,
+                  MeasureRepository measureRepository) {
         this.stageRepository = stageRepository;
         this.projectRepository = projectRepository;
         this.reportRepository = reportRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
+        this.measureRepository = measureRepository;
     }
 
     @Override
@@ -85,6 +90,27 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         StageStatus target = status == null ? StageStatus.Doing : status;
         if (target != StageStatus.Doing || stage.getStatus() != StageStatus.Todo) {
             throw new DefinedException(new DefaultErrorCode("400", "只有待开始阶段可以开工"));
+        }
+        if (stage.getProject().getManager() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "请先指定项目经理再开工"));
+        }
+        if (stage.getProject().getStartDate() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "请先确认项目开工日期"));
+        }
+        if (stage.getProject().getPlanEndDate() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "请先确认项目计划完工日期"));
+        }
+        if (stage.getProject().getPlanEndDate().isBefore(stage.getProject().getStartDate())) {
+            throw new DefinedException(new DefaultErrorCode("400", "计划完工日期不能早于开工日期"));
+        }
+        var property = stage.getProject().getProperty();
+        boolean measured = property != null && property.getLatestMeasureAt() != null;
+        if (!measured && property != null) {
+            measured = measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
+                    .anyMatch(item -> item.getStatus() == MeasureStatus.Completed);
+        }
+        if (!measured) {
+            throw new DefinedException(new DefaultErrorCode("400", "请先完成量房并录入量房结论再开工"));
         }
         stage.setStatus(StageStatus.Doing);
         stage.setActualStart(LocalDate.now());

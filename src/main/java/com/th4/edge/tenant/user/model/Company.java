@@ -48,45 +48,9 @@ public class Company extends AbstractModel {
     @Column(length = 256)
     private String addr;
 
-    @Note("平台运营企业")
-    @Column(nullable = false)
-    private Boolean platform = Boolean.FALSE;
-
     @Note("配置")
     @Embedded
     private Setting setting;
-
-    @Transient
-    @Note("当前套餐名称")
-    private String planName;
-
-    @Transient
-    @Note("订阅状态")
-    private String subscriptionStatus;
-
-    @Transient
-    @Note("服务到期时间")
-    private DateTime serviceEndTime;
-
-    @Transient
-    @Note("剩余天数")
-    private Integer remainingDays;
-
-    @Transient
-    @Note("已用席位")
-    private Long usedSeats;
-
-    @Transient
-    @Note("生效最大席位")
-    private Integer effectiveMaxSeats;
-
-    @Transient
-    @Note("已用门店")
-    private Long usedStores;
-
-    @Transient
-    @Note("生效最大门店")
-    private Integer effectiveMaxStores;
 
     @Note("创建时间")
     @CreateTime
@@ -161,14 +125,6 @@ public class Company extends AbstractModel {
         this.addr = addr;
     }
 
-    public Boolean getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(Boolean platform) {
-        this.platform = platform;
-    }
-
     public Setting getSetting() {
         return setting;
     }
@@ -176,23 +132,6 @@ public class Company extends AbstractModel {
     public void setSetting(Setting setting) {
         this.setting = setting;
     }
-
-    public String getPlanName() { return planName; }
-    public void setPlanName(String planName) { this.planName = planName; }
-    public String getSubscriptionStatus() { return subscriptionStatus; }
-    public void setSubscriptionStatus(String subscriptionStatus) { this.subscriptionStatus = subscriptionStatus; }
-    public DateTime getServiceEndTime() { return serviceEndTime; }
-    public void setServiceEndTime(DateTime serviceEndTime) { this.serviceEndTime = serviceEndTime; }
-    public Integer getRemainingDays() { return remainingDays; }
-    public void setRemainingDays(Integer remainingDays) { this.remainingDays = remainingDays; }
-    public Long getUsedSeats() { return usedSeats; }
-    public void setUsedSeats(Long usedSeats) { this.usedSeats = usedSeats; }
-    public Integer getEffectiveMaxSeats() { return effectiveMaxSeats; }
-    public void setEffectiveMaxSeats(Integer effectiveMaxSeats) { this.effectiveMaxSeats = effectiveMaxSeats; }
-    public Long getUsedStores() { return usedStores; }
-    public void setUsedStores(Long usedStores) { this.usedStores = usedStores; }
-    public Integer getEffectiveMaxStores() { return effectiveMaxStores; }
-    public void setEffectiveMaxStores(Integer effectiveMaxStores) { this.effectiveMaxStores = effectiveMaxStores; }
 
     public DateTime getCreateTime() {
         return createTime;

@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
+import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -34,8 +35,10 @@ class FinanceProfitAccountingTest {
         PayableRepository payableRepository = mock(PayableRepository.class);
         LedgerRepository ledgerRepository = mock(LedgerRepository.class);
         SettlementRepository settlementRepository = mock(SettlementRepository.class);
+        ProjectCostContext projectCostContext = mock(ProjectCostContext.class);
         FinanceReportContext context = new FinanceReportContext(access, projectRepository,
-                receivableRepository, payableRepository, ledgerRepository, settlementRepository);
+                receivableRepository, payableRepository, ledgerRepository, settlementRepository,
+                projectCostContext);
 
         Company company = new Company();
         company.setComId(1L);
@@ -68,6 +71,8 @@ class FinanceProfitAccountingTest {
         when(ledgerRepository.findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(1L, 3L))
                 .thenReturn(List.of());
         when(settlementRepository.findByProject_ProjectIdAndCompany_ComId(3L, 1L)).thenReturn(java.util.Optional.empty());
+        when(projectCostContext.summarize(project)).thenReturn(
+                new ProjectCostContext.CostSummary(new BigDecimal("6500.00"), new BigDecimal("6500.00"), 0));
 
         FinanceProjectReport report = context.project(boss, 3L);
 
@@ -79,6 +84,50 @@ class FinanceProfitAccountingTest {
         assertThat(report.getTotalCost()).isEqualByComparingTo("6500.00");
         assertThat(report.getGrossProfit()).isEqualByComparingTo("3500.00");
         assertThat(report.getGrossMargin()).isEqualByComparingTo("35.0");
+    }
+
+    @Test
+    void shouldNotReturnReliableProfitWhenCostIsIncomplete() {
+        FinanceAccessContext access = mock(FinanceAccessContext.class);
+        ProjectRepository projectRepository = mock(ProjectRepository.class);
+        ReceivableRepository receivableRepository = mock(ReceivableRepository.class);
+        PayableRepository payableRepository = mock(PayableRepository.class);
+        LedgerRepository ledgerRepository = mock(LedgerRepository.class);
+        SettlementRepository settlementRepository = mock(SettlementRepository.class);
+        ProjectCostContext projectCostContext = mock(ProjectCostContext.class);
+        FinanceReportContext context = new FinanceReportContext(access, projectRepository,
+                receivableRepository, payableRepository, ledgerRepository, settlementRepository,
+                projectCostContext);
+
+        Company company = new Company();
+        company.setComId(1L);
+        Employee boss = new Employee();
+        boss.setRole(EmployeeRole.Boss);
+        boss.setCompany(company);
+        Project project = new Project();
+        project.setProjectId(3L);
+        project.setCompany(company);
+        project.setContractAmount(new BigDecimal("10000.00"));
+
+        when(access.requireReader(boss)).thenReturn(boss);
+        when(access.resolveProject(boss, 3L)).thenReturn(project);
+        when(access.value(any())).thenAnswer(invocation -> invocation.getArgument(0) == null
+                ? BigDecimal.ZERO : invocation.getArgument(0));
+        when(access.outstanding(any(), any())).thenReturn(BigDecimal.ZERO);
+        when(receivableRepository.findByProjectOrderByDueDateAsc(project)).thenReturn(List.of());
+        when(payableRepository.findByProjectOrderByDueDateAsc(project)).thenReturn(List.of());
+        when(ledgerRepository.findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(1L, 3L))
+                .thenReturn(List.of());
+        when(projectCostContext.summarize(project)).thenReturn(
+                new ProjectCostContext.CostSummary(new BigDecimal("6800.00"), new BigDecimal("5100.00"), 2));
+
+        FinanceProjectReport report = context.project(boss, 3L);
+
+        assertThat(report.getCostComplete()).isFalse();
+        assertThat(report.getCostIncompleteCount()).isEqualTo(2);
+        assertThat(report.getProfitAmount()).isNull();
+        assertThat(report.getGrossProfit()).isNull();
+        assertThat(report.getGrossMargin()).isNull();
     }
 
     private Payable payable(Project project, PayableType type, String amount) {

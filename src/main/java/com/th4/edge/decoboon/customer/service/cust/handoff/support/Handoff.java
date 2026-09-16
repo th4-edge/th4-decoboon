@@ -4,7 +4,9 @@ import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.context.PropertyContext;
+import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -45,17 +47,20 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
     private final DataScopeContext dataScopeContext;
     private final NoticeContext noticeContext;
     private final PropertyContext propertyContext;
+    private final MeasureRepository measureRepository;
 
     public Handoff(CustomerRepository customerRepository,
                    EmployeeRepository employeeRepository,
                    DataScopeContext dataScopeContext,
                    NoticeContext noticeContext,
-                   PropertyContext propertyContext) {
+                   PropertyContext propertyContext,
+                   MeasureRepository measureRepository) {
         this.customerRepository = customerRepository;
         this.employeeRepository = employeeRepository;
         this.dataScopeContext = dataScopeContext;
         this.noticeContext = noticeContext;
         this.propertyContext = propertyContext;
+        this.measureRepository = measureRepository;
     }
 
     @Override
@@ -83,8 +88,8 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
         }
         Employee designer = employeeRepository.findByEmpIdAndCompany_ComId(
                 designerId, current.getCompany().getComId());
-        if (designer == null || designer.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("400", "请选择本企业设计师"));
+        if (designer == null || (designer.getRole() != EmployeeRole.Designer && designer.getRole() != EmployeeRole.Boss)) {
+            throw new DefinedException(new DefaultErrorCode("400", "请选择本企业设计师或老板本人"));
         }
         if (current.getRole() == EmployeeRole.StoreManager
                 && (designer.getStore() == null || current.getStore() == null
@@ -103,6 +108,13 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
                 ? propertyContext.ensureForCustomer(saved, current)
                 : propertyContext.resolve(propertyId, saved, current);
         propertyContext.assignDesigner(property, designer);
+        measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
+                .filter(item -> item.getStatus() == MeasureStatus.Scheduled)
+                .findFirst()
+                .ifPresent(item -> {
+                    item.setDesigner(designer);
+                    measureRepository.save(item);
+                });
         noticeContext.designerSubmitted(saved, current, designer);
         return saved;
     }

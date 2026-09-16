@@ -316,7 +316,7 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 已回退的方案：注解 + 过滤器的通用门店拦截（`@StoreScope` + `StoreScopeCriteria` + `StoreScopeRequestFilter`）在启用后触发 `ApplicationContext` 加载异常（`dataScopeContext` Lookup method resolution failed / `FileAuthorizationContext$Authorization` NoClassDefFoundError，clean 重编译后仍复现），为保持代码库可发布状态已回退，未留半成品。
 - 验证：`mvn -o -q clean test` → 84 tests / 0 failures / 0 errors；前端 `type-check`、`build:mp-weixin` 均 PASS。
 
-## 2026-09-16 装得清运营管理端
+## 2026-09-16 装得清运营管理端（历史方案，已被独立平台组织重构取代）
 
 - 输入：用户要求构建 `th4-decoboon-admin`，覆盖全平台企业运营、订阅人工管控、营销推广支持和系统运维监控。
 - 前端：完成 Vite + Vue 3 + TypeScript + Element Plus 工程，含运营总览、客户企业、订阅续费、增长运营、套餐策略、系统运维、操作审计 7 个模块。
@@ -365,8 +365,8 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 
 - 移除 `VITE_DEMO_MODE`、mock Provider、演示账号和断网回退。
 - 新增 `npm run verify:real-api` 构建门禁，校验 7 个平台 Provider 和真实 API 配置。
-- 新增默认关闭的 `PlatformAdminBootstrap`：显式提供 `PLATFORM_BOOTSTRAP_*` 时创建平台运营企业、默认门店、Boss 员工和 BCrypt 凭证。
-- 新增 `docs/product/装得清运营管理端用户组织与权限设计.md`，覆盖组织层级、岗位、权限矩阵、数据范围、职责分离、账号生命周期和 Phase 2 平台岗位模型。
+- 新增默认关闭的 `PlatformBootstrap`：显式提供 `PLATFORM_BOOTSTRAP_*` 时创建独立平台组织、部门和 SuperAdmin，不使用租户 Employee/Company。
+- 新增 `docs/product/装得清运营管理端用户组织与权限设计.md`，覆盖独立组织、岗位、权限矩阵、数据范围、职责分离和账号生命周期。
 - 新增账号初始化和实时后端对接运维文档。
 - 验证：前端 `verify:real-api` + `type-check` + `build` PASS；后端编译和平台/Provider 安全测试 PASS。
 
@@ -384,3 +384,191 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
   - `.gitignore` 已忽略 `node_modules`、`dist`、`unpackage`、`*.local`、`.env.local`；敏感内容扫描（appsecret / access-key / private-key）无命中
   - 版本号：`src/manifest.json` → `versionName 1.0.1` / `versionCode 101`
 - 状态：**仅本地提交，未发版**（用户要求先完成企业负责人功能梳理）
+
+## 2026-09-16 运营管理端独立平台组织重构（架构修正）
+
+- 用户要求：运营业务领域必须与多租户装企业务体系彻底隔绝，数据不得交织和关联。
+- 平台认证：改为独立 `platform/auth/login|info|logout`，token audience 为 `PlatformUser`；租户 Employee token 不再能承载平台身份。
+- 平台组织：新增独立 `PlatformOrg`、`PlatformDepartment`、`PlatformUser`、`PlatformRole`、`PlatformPermission` 和平台独立 BCrypt 密码。
+- 数据隔离：删除 `Company.platform`；平台表不建立指向 `db_tenant_company`、`db_tenant_employee`、`db_tenant_credentials` 的外键。
+- 审计隔离：`PlatformOperationLog` 只引用平台组织和平台用户；租户企业ID、企业名称和订阅ID仅保存标量快照。
+- 跨域边界：租户业务只允许由 `TenantDataAdapter` 转换为 `PlatformTenant/PlatformSubscription/PlatformPlan` 快照，平台实体不持有租户实体。
+- 初始化：`PlatformBootstrap` 只创建平台独立组织、部门、SuperAdmin 和 BCrypt 密码。
+- 验证：`mvn -o -q clean test` = 29 suites / 85 tests / 0 failures / 0 errors；`PlatformAdminAcceptanceTest` 验证平台表无租户外键；Provider Security = 208 routes（public 12 + protected 196）。
+
+## 2026-09-16 订阅中心：订单记录操作按钮降级
+
+- 反馈：订单与续费记录下的「查询结果 / 继续支付」按钮突兀。
+- 根因：每笔待支付订单都渲染一个 `jz-btn--primary`（主色实心）按钮，导致页面出现多个主 CTA（违反 `AGENTS.md §5.4` 单页主色实心按钮 ≤ 1），且与订单金额挤在同一行、`gap:10rpx` 非 8 倍数。
+- 修复（`subpackages/subscription/pages/index.vue`）：
+  - 「继续支付」→ `jz-btn--ghost`（描边，次要）；
+  - 「查询结果」→ `jz-btn--text`（纯文字，最轻）；
+  - 操作区间距 `10rpx → 16rpx`，新增 `flex-shrink: 0` 防止被金额挤压；
+  - 订单卡片的层级恢复为「套餐/订单号/状态 → 明细 → 金额+时间 → 操作」。
+- 验证：`npm run type-check` PASS；`npm run build:mp-weixin` PASS；dev 产物 `index.wxml` 已含 `subscription__order-query` 与 `jz-btn--ghost`。
+- 备注：支付相关后端修复见提交 `a004f15`（微信支付 amount.total 被 JacksonLongConfigure 序列化为字符串的根因）。
+
+## 2026-09-16 订阅中心：hero 卡片与头部间距/配色层次
+
+- 反馈：当前订阅卡片与头部没有间距，且颜色与头部显得突兀。
+- 根因（`subpackages/subscription/pages/index.vue`）：
+  1. `.subscription__content { padding: 0 $jzb-page-pad; }` 上下无内边距 → hero 卡片紧贴 `JzPageHeader` 的渐变头部；
+  2. hero 背景 `linear-gradient(135deg, #0E766E, #16A394, #52BFAF)` 与头部 `linear-gradient(135deg, #169C90, #16A394, #0C776E)` 同为深绿渐变 → 两块深绿直接相接，视觉上像被切开。
+- 修复：
+  - `.subscription__content` 顶部内边距 `0 → 24rpx`（8 的倍数），卡片与头部之间露出页面底色；
+  - hero 渐变改为**更亮的中绿** `#12A08F → #2BC4B4 → #6FD3C6`，与深绿头部形成「深→浅」层次；阴影由 `0 20rpx 50rpx rgba(14,118,110,.20)` 调整为 `0 16rpx 36rpx rgba(14,138,125,.16)`，避免与头部阴影叠加显得厚重。
+- 保留：卡片圆角、`hero-glow` 装饰、白字与内部结构（用户反馈卡片设计本身没问题）。
+- 验证：`npm run type-check` PASS；`npm run build:mp-weixin` PASS；dev 产物 `index.wxss` 已含新 padding 与新渐变、旧深绿 `#0E766E` 计数为 0。
+
+## 2026-09-16 IDEA 平台运营启动与本地数据同步
+
+- IDEA：新增并选择 `平台运营开发环境` Spring Boot 配置；首次账号创建使用 `平台运营初始化` 配置。
+- 数据：清理本地旧 `db_tenant_company.platform` 和融合审计表，执行独立 `db_platform_*` 迁移；清理前备份到 `/private/tmp/decoboon-before-platform-sync.sql`。
+- 账号：创建独立 `PlatformOrg / PlatformDepartment / PlatformUser`，手机号 `18660219918`，岗位 `SuperAdmin`，密码只保存在本地 IDEA 配置且已 Git 忽略。
+- 验证：IDEA 中后端运行、`platform/auth/login` 成功、管理端真实登录成功、租户列表显示本地“麦鸿设计”、系统运维加载 MySQL/Redis/应用进程；平台到租户外键数 0。
+- 文档：`docs/operations/2026-09-16-IDEA平台运营启动与本地数据同步.md`。
+
+## 2026-09-16 报价项目库 P0：编号后端自动生成
+
+- 规则：`{类型前缀}-{企业内 4 位序号}`（施工 SG / 主材 ZC / 软装 RZ / 电器 DQ / 综合 ZH / 定制 DZ），序号按「企业 + 类型」独立递增。
+- 后端：
+  - 新增 `catalog/context/CatalogCodeContext`：`nextCode(comId, type)` 取同企业同类型最大编号 +1；非本前缀的自定义编号回退序号 0 后 +1；
+  - `CatalogItemRepository` 增加 `findFirstByCompany_ComIdAndTypeOrderByCodeDesc`；
+  - `catalog/item/save` 的 Save Provider：**code 为空/空白时后端生成**，前端传入则保留（兼容企业自定义命名）；
+  - 迁移脚本 `docs/design/migrations/24-报价项目编号自动生成.sql`：空串规范为 NULL + `(com_id, type, code)` 唯一约束，并附历史重复数据自查 SQL。
+- 前端：app `catalog/manage.vue` 编号占位文案改为「编码（留空自动生成）」；web `resources/index.ts` 表单字段 label 同步为「编码（留空自动生成）」。
+- 验证：后端 `mvn -o -q compile` PASS；`DecoboonClosedLoopTest` 1 test 0 failures；app / web `type-check` 均 PASS。
+- 提交：后端 `e58c82b`；app 单独提交（web 因无独立仓库未提交，见仓库结构说明）。
+- 下一步：报价库 P1（拼音缩写 + 拼音检索）。
+
+## 2026-09-16 报价项目库 P1：拼音首字母与拼音检索
+
+- 依赖：引入 `pinyin4j 2.5.1`（pom.xml）。
+- 数据模型：`catalog_item.name_initials VARCHAR(32)`（@Keyword）+ 索引 `idx_catalog_item_initials (com_id, name_initials)`。
+- 后端：
+  - 新增 `catalog/context/PinyinContext`：中文取拼音首字母（「轻钢龙骨石膏板吊平顶」→ `QGLGSGBDDP`），字母数字保留大写；
+  - `catalog/item/save` 与 `catalog/item/update` 均在写入 name 后自动刷新 `nameInitials`；
+  - `catalog/item/page` 的 keyword 检索由 5 字段扩展为 7 字段 OR：新增 `nameInitials`（拼音检索）与 `series`（原先遗漏），大小写不敏感。
+- 迁移：`docs/design/migrations/25-报价项目拼音检索.sql`（加列 + 索引 + 存量回填说明，拼音需应用层回填）。
+- 验证：`mvn -o -q compile` PASS；`DecoboonClosedLoopTest` 1 test / 0 failures。
+- 提交：后端 `feat(catalog): 报价项目拼音首字母与拼音检索（P1）`。
+- 仓库治理：Web 工程已完成独立化（`fb70802` 首次提交，170 文件，node_modules/dist 已忽略）。
+- 下一步：报价库 P2（分类明细动态渲染）。
+
+## 2026-09-16 Web v2 业务交互升级
+
+- 目标：将 Web 从通用资源表格升级为面向业务人员的工作台，参考 App 客户详情和经营链路，减少技术 ID、错误枚举和无效筛选。
+- 新增：`src/resources/options.ts`（业务实体选择器数据源）、`src/resources/dictionaries.ts`（统一业务字典）。
+- 重构：资源页支持 entity 选择器、依赖字段联动、URL 上下文继承、业务衔接提示、条件空态和业务动作标签；客户详情改为销售阶段 + 房屋工作台 + 下一步动作。
+- 修正：客户/项目/现场动态分页 Provider 的业务筛选；任务取消状态、材料计划状态、量房字段、客户预算单位、消息类型、订阅订单、业绩角色、项目/报价状态映射。
+- 验证：Web type-check/verify:system/build PASS；后端 Maven 29 suites / 85 tests / 0 failures / 0 errors。
+- 下一步：部署前由 acceptance 在真实后端账号下验证客户详情、实体选择器交互、查询条件和跨角色数据范围。
+
+## 2026-09-17 报价项目库 P3/P4 完成
+
+- P3 成本价角色保护（后端 `23399c1` / app `90dfa5f`）：
+  - 新增 `CatalogCostContext`：仅 Boss / StoreManager / Finance 可见成本价；
+  - `catalog/item/page|save|update` 返回前统一裁剪，无权角色 `costPrice` 置空 →
+    配合 `non_null` 序列化策略，**响应中不出现该字段**（服务端裁剪，非前端隐藏）；
+  - app 端成本价从三连输入行拆出为独立敏感区块（锁图标 + 仅管理层可见 + 橙色警示底 + 说明文案），无权限角色不渲染。
+- P4 价格模式展示（app，前端）：
+  - 新增 `pricePreview`：按 `pricingMode` 即时展示对外报价口径
+    （`材料 ¥120 + 人工 ¥45 = ¥165/㎡` / `材料 ¥120/㎡` / `人工 ¥45/㎡` / `固定总价 ¥1,200（不按工程量折算）`）；
+  - 在材料/人工价输入下方展示「报价展示」预览行。
+- 验证：后端 `mvn -o -q compile` PASS；app `type-check` + `build:mp-weixin` PASS。
+- 待办：Web 端 P2（条件字段组）+ P4（价格展示列）需先扩展通用资源页 `ResourceListView` 的字段能力；
+  之后进入供应链 P0（供应商应付台账）。
+
+## 2026-09-17 Web 端报价项目库 P2/P4 补齐
+
+- `ResourceListView`（通用资源页）扩展：支持 `form.fieldsByValue` —— 按表单中某个键的当前值（如
+  `type`）动态追加该类型专属字段组；未声明 `fieldsByValue` 的资源页行为完全不变（不影响现有 30+ 页面）。
+- 报价项目库（`src/resources/index.ts`）：
+  - 表单按类型追加明细：施工=施工工期；主材=损耗率+起订量；软装=交期；电器=保修月数；定制=柜体板材+台面；
+  - 补充材料单价 / 人工单价表单字段；
+  - 列表新增「报价展示」列，使用既有 `ResourceColumn.formatter` 能力（无需改模板）：
+    材料+人工 / 仅材料 / 仅人工 / 固定总价四种口径自动组合。
+- 验证：Web `type-check` PASS；`npm run build` PASS（ResourceListView chunk 56.78 kB）。
+- 提交：Web `1bde9b9`。
+- 差异说明：Web 端明细字段当前为「按类型追加到表单末尾」，**尚未做折叠 + 记忆展开状态**（小程序端已实现折叠与记忆）；
+  如需两端完全一致，需在 ResourceListView 表单区引入 `el-collapse` 并持久化展开状态，作为后续小优化项。
+- 报价库 P0–P4 至此**后端 + 小程序 + Web 三端齐备**（P4 Web 通过 formatter 实现）；下一步进入供应链 P0（供应商应付台账）。
+
+## 2026-09-17 Web 表单弹窗改抽屉
+
+- 反馈：弹窗缺少合理的边框和间距，长表单体验差。
+- 新增 `BusinessDrawer.vue`，统一右侧抽屉标题、说明、滚动正文和粘性底部操作区。
+- 资源表单、客户跟进/房屋/量房/设计师指派、设计区域表单全部由 `el-dialog` 改为 `BusinessDrawer`。
+- 统一遮罩、抽屉边框/圆角/阴影、表单间距、输入高度、下拉浮层和 `ElMessageBox` 样式。
+- 验证：type-check、verify:system、build PASS。
+
+## 2026-09-17 供应链 P0（供应商应付台账）后端 + 小程序完成
+
+- **P0-1 数据模型**（`0a041c5`）：新增 `PayableSettlement`（付款×应付多对多核销明细，刻意区别于项目结算 `Settlement`）；`Payment` 增加 `partner`；迁移 `26-供应商应付核销.sql`。
+- **P0-2 账期规则**（`afde8fa`）：`SettlementMode`（ReceiptDays / MonthlyCutoff）；`Partner` 增加 settlementMode/settlementDays/cutoffDay；`Payable` 增加 receiptDate + 账期快照；`PayableDueDateContext` 统一算到期日；迁移 `27-供应商账期规则.sql`。
+- **P0-3 多应付核销**（`715a28c`）：`finance/payment/save` 支持 `payableIds[]`（与单张二选一）；按到期日先后分摊、写核销明细、回写应付状态；`PayableSettlement.amount` 统一为 BigDecimal（元）。
+- **P0-4 账期接入 + 台账报表**（`f02b3aa`）：收货生成应付改由 `PayableDueDateContext` 计算（替代原 supplierDays 硬编码）；`finance/payable/page` 支持 `partnerId`；新增 `finance/partner-ledger/report`（供应商 × 应付/已付/待付/逾期/未结清笔数/最近到期日，按待付倒序，支持 overdueOnly）。
+- **P0-5 小程序前端**（`cd40fe6`）：财务首页新增「供应商往来」入口；新增 `subpackages/finance/pages/partners`（待付/逾期汇总 + 全部/仅看逾期筛选 + 账期文案 + 卡片进入应付明细）；分包页 53 → 54。
+- 与并行开发的交集：`ProviderSecurityAcceptanceTest` 已被平台会话更新为 208 条路由；本次基于最新值同步为 **209**（protected 197），未覆盖对方改动。
+- 待办：Web 端供应商往来页面（报表型页面，通用资源页不适用，需专用页面）；应付列表页承接 `partnerId` 参数筛选；两条迁移脚本待生产执行。
+
+## 2026-09-17 Web 真实业务全链路走查
+
+- 使用本地 Boss 账号完成客户接入、跟进、房屋、量房、设计、报价、签约、立项、开工、任务、验收和应收联动的实际业务走查。
+- 记录开发环境 API、量房日期、量房模型分裂、Boss 兼任设计师、任务验收缺失、开工前置校验、伪编辑入口、项目指挥台缺失等缺陷。
+- 报告：`_系统/协作/lanes/development/workspace/web-real-business-walkthrough-2026-09-17.md`。
+- 状态：`built_pending_fix_acceptance`，开发侧记录不代替 acceptance 结论。
+
+
+## 2026-09-17 Web 全业务缺陷修复与工作台升级
+
+- P0：修复量房模型分裂、日期序列化、任务验收缺失、开工前置校验、伪编辑入口。
+- 工作台：新增量房工作台、合同履约台、验收闭环工作台，并将项目详情升级为项目指挥台。
+- 一致性：统一 API 日期时间、消息文案和量房时间格式；设计分项继承区域；Boss 支持兼任设计与项目负责人。
+- 验证：Web type-check/build/verify:system PASS；Maven 29 suites / 85 tests / 0 failures / 0 errors；本地 8091 实例完成量房模型和项目配置接口冒烟。
+
+## 2026-09-17 Web 真实业务全链路第二轮复验
+
+- 结果：客户接入、跟进、预约量房、完成量房、Boss 兼任设计师、设计、报价、签约、立项、项目配置、阶段开工、任务验收、阶段验收、业主确认完整跑通。
+- 修复：项目提前完工、量房状态刷新、合同/项目工期同步、已生效合同编辑、项目面积误用报价面积、客户详情量房完成门禁。
+- 报告：`_系统/协作/lanes/development/workspace/web-real-business-recheck-2026-09-17.md`。
+- 剩余重点：阶段排期、验收证据、整改闭环、量房附件、完整多岗位模型、统一待办中心。
+
+## 2026-09-17 Web 全链路第二轮复验结果
+
+- 新增断言：任务全部完成后项目保持 Accepting，必须业主确认后才进入 Finished。
+- 实际复验通过：客户接入、跟进、预约量房、完成量房、Boss 兼任设计师、设计、报价、签约、立项、项目配置、开工、任务验收、阶段验收、业主确认。
+- 追加修复：项目/合同日期双向同步、已生效合同编辑、项目面积、客户详情量房完成门禁、量房状态刷新和收款状态字典。
+- 报告：`_系统/协作/lanes/development/workspace/web-real-business-recheck-2026-09-17.md`。
+
+## 2026-09-17 排期、验收证据与角色待办中心
+
+- 阶段排期：项目确认开工/完工日期后按阶段权重自动拆分 plannedStart/plannedEnd；总工期不得短于阶段数，最后阶段锁定项目计划完工日。
+- 验收证据：任务 Done 前强制上传照片/视频；阶段验收强制影像，支持问题清单、整改责任人和整改截止日期。
+- 量房附件：现场照片、结构图/原始图纸、其他附件均进入 Measure 实体和文件授权体系。
+- 待办中心：新增 `/todo`，聚合客户跟进、量房、任务验收、阶段验收和逾期/临期回款。
+- 数据迁移：`docs/design/migrations/25-阶段排期与验收证据.sql`。
+- 验证：Maven 29 suites / 85 tests / 0 failures / 0 errors；Web type-check/verify:system/build PASS。
+
+## 2026-09-17 业务对象树形选择器
+
+- 新增 `BusinessObjectPickerDrawer`：左侧树形分类、右侧搜索列表、业务摘要和单选确认。
+- 客户选择：按客户阶段分组、按负责人二级分组。
+- 项目工地选择：按项目状态分组、按项目经理二级分组。
+- 报价项目库选择：按项目类型和分类二级分组。
+- 资源页所有 entity 筛选和表单不再使用下拉，统一打开业务对象选择抽屉；依赖对象仍保留上下游联动。
+- 量房、合同和验收工作台的客户/项目入口同步替换。
+- 设计分项报价库改为选择器，双击结果可直接确认并回填项目价格。
+- 验证：Web type-check/verify:system/build PASS；Maven 29 suites / 85 tests / 0 failures / 0 errors。
+
+## 2026-09-17 供应商采购价与可靠毛利闭环
+
+- 供应商采购价：主材、全屋定制、软装、电器、施工等报价项目统一按供应商维护采购价、人工/班组价、起订量、交期、账期、有效期和启停状态；有效采购价自动形成报价库标准成本。
+- 权限边界：采购价和成本字段仅 BOSS、店长、财务可见/可维护；材料员响应中不返回 `costPrice`，访问采购价接口返回 403。App 供应链页按角色隐藏采购价页签，Web 端补齐采购价查询、新增和编辑。
+- 销售价与成本价分离：报价库新增/更新不再接受前端直接提交 `costPrice`；标准成本只由供应商采购价刷新。
+- 成本完整性：新增 `ProjectCostContext` 统一估算成本、实际成本和缺失项数；结算、项目财务、财务汇总和经营驾驶舱在成本缺失时返回 `null` 利润并标记 `costComplete=false`，App/Web 统一显示“成本未完整”。
+- 成本回算：实际成本优先采购入库等实际发生值；缺少实际值时按当前有效采购价回算。实际材料成本只在到货入库累计，领料/损耗不再重复累计。
+- 套餐边界：免费版、基础版、专业版、旗舰版统一开放全部业务模块，版本差异只保留门店数和席位数。
+- 数据迁移：`docs/design/migrations/28-成本完整性结算快照.sql`，允许结算利润/毛利率为空。
+- 验证：后端 `mvn -q test` 96 tests / 0 failures / 0 errors；Web build + verify:system PASS；App `verify:mp-weixin` PASS。真实 MySQL 麦鸿回归：`ZC-0001` 采购价 68→75→68 时，项目估算/实际成本 8160→9000→8160，成本缺失时利润保持 `null`。
+- 错误集：新增 ECD-002 成本缺失伪利润、ECD-003 采购与领料重复累计、ECD-004 敏感成本裁剪上下文错误，并同步 `rules.md`、`AGENTS.md`。

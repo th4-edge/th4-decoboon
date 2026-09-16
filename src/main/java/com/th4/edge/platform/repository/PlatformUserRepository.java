@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 
 /** 平台用户仓储。 */
 public interface PlatformUserRepository extends JpaRepository<PlatformUser, Long> {
+    @EntityGraph(attributePaths = {"org", "department", "department.parent"})
     PlatformUser findByPhone(String phone);
 
     @EntityGraph(attributePaths = {"org", "department", "department.parent"})

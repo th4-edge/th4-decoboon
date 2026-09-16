@@ -105,7 +105,10 @@ decoboon:
   platform:
     bootstrap:
       enabled: ${PLATFORM_BOOTSTRAP_ENABLED:false}
-      company-title: ${PLATFORM_BOOTSTRAP_COMPANY_TITLE:装得清平台运营中心}
-      company-name: ${PLATFORM_BOOTSTRAP_COMPANY_NAME:平台运营}
+      org-code: ${PLATFORM_BOOTSTRAP_ORG_CODE:DECOBOON}
+      org-name: ${PLATFORM_BOOTSTRAP_ORG_NAME:装得清平台运营中心}
+      department-code: ${PLATFORM_BOOTSTRAP_DEPARTMENT_CODE:PLATFORM}
+      department-name: ${PLATFORM_BOOTSTRAP_DEPARTMENT_NAME:平台运营中心}
       phone: ${PLATFORM_BOOTSTRAP_PHONE:}
+      username: ${PLATFORM_BOOTSTRAP_USERNAME:平台超级管理员}
       password: ${PLATFORM_BOOTSTRAP_PASSWORD:}

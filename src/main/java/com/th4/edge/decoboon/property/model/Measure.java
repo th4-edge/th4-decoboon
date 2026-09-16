@@ -98,6 +98,18 @@ public class Measure extends AuditModel {
     @Note("现场照片")
     private List<String> sitePhotos;
 
+    @ElementCollection
+    @CollectionTable(name = "db_decoboon_measure_structure_images", joinColumns = @JoinColumn(name = "measure_id"))
+    @Column(name = "url", length = 512)
+    @Note("结构图纸")
+    private List<String> structureImages;
+
+    @ElementCollection
+    @CollectionTable(name = "db_decoboon_measure_attachments", joinColumns = @JoinColumn(name = "measure_id"))
+    @Column(name = "url", length = 512)
+    @Note("量房附件")
+    private List<String> attachments;
+
     @Lob
     @Column
     @Note("原始结构说明")
@@ -140,6 +152,10 @@ public class Measure extends AuditModel {
     public void setStatus(MeasureStatus status) { this.status = status; }
     public List<String> getSitePhotos() { return sitePhotos; }
     public void setSitePhotos(List<String> sitePhotos) { this.sitePhotos = sitePhotos; }
+    public List<String> getStructureImages() { return structureImages; }
+    public void setStructureImages(List<String> structureImages) { this.structureImages = structureImages; }
+    public List<String> getAttachments() { return attachments; }
+    public void setAttachments(List<String> attachments) { this.attachments = attachments; }
     public String getOriginalStructure() { return originalStructure; }
     public void setOriginalStructure(String originalStructure) { this.originalStructure = originalStructure; }
     public String getDimensions() { return dimensions; }

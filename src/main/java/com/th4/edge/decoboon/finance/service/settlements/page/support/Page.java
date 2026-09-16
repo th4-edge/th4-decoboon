@@ -26,7 +26,7 @@ import java.util.List;
         @AllowProperties(model = Settlement.class,
                 properties = {"settlementId", "project", "contractAmount", "changeAmount", "deductionAmount", "rewardAmount", "finalAmount", "retentionRate", "retentionAmount", "retentionReleaseAt", "retentionReleasedAt", "receivableAmount", "receivedAmount",
                         "payableAmount", "paidAmount", "materialAmount", "salaryAmount", "projectAmount", "expenseAmount", "totalCost",
-                        "profitAmount", "grossMargin", "status", "confirmedBy", "confirmedAt", "closedAt", "remark", "createdBy", "createTime"}),
+                        "estimatedCost", "actualCost", "profitAmount", "costComplete", "costIncompleteCount", "grossMargin", "status", "confirmedBy", "confirmedAt", "closedAt", "remark", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status" }),
         @AllowProperties(model = Customer.class,

@@ -1,11 +1,11 @@
 package com.th4.edge.platform.model;
 
-import com.th4.edge.framework.core.Attribute;
+import com.th4.edge.framework.data.enums.Enumerable;
 import com.th4.edge.framework.core.annotation.Note;
 
 /** 平台人工运营动作。 */
 @Note("平台操作动作")
-public enum PlatformAction implements Attribute<String> {
+public enum PlatformAction implements Enumerable<String> {
     Renew("人工续费"),
     PlanChange("调整套餐"),
     SeatAdjust("调整席位"),

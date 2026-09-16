@@ -15,6 +15,7 @@ import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
+import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -39,19 +40,22 @@ public class FinanceReportContext {
     private final PayableRepository payableRepository;
     private final LedgerRepository ledgerRepository;
     private final SettlementRepository settlementRepository;
+    private final ProjectCostContext projectCostContext;
 
     public FinanceReportContext(FinanceAccessContext accessContext,
                                 ProjectRepository projectRepository,
                                 ReceivableRepository receivableRepository,
                                 PayableRepository payableRepository,
                                 LedgerRepository ledgerRepository,
-                                SettlementRepository settlementRepository) {
+                                SettlementRepository settlementRepository,
+                                ProjectCostContext projectCostContext) {
         this.accessContext = accessContext;
         this.projectRepository = projectRepository;
         this.receivableRepository = receivableRepository;
         this.payableRepository = payableRepository;
         this.ledgerRepository = ledgerRepository;
         this.settlementRepository = settlementRepository;
+        this.projectCostContext = projectCostContext;
     }
 
     public FinanceSummary summary(Employee principal) {
@@ -103,7 +107,26 @@ public class FinanceReportContext {
                 .map(item -> item.getDirection() == LedgerDirection.Income
                         ? accessContext.value(item.getAmount()) : accessContext.value(item.getAmount()).negate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        summary.setProfitAmount(summary.getContractAmount().subtract(summary.getPayableAmount()));
+        List<ProjectCostContext.CostSummary> costSummaries = projects.stream()
+                .map(projectCostContext::summarize)
+                .toList();
+        BigDecimal estimatedCost = costSummaries.stream()
+                .map(ProjectCostContext.CostSummary::estimatedCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal actualCost = costSummaries.stream()
+                .map(ProjectCostContext.CostSummary::actualCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        int incompleteProjects = (int) costSummaries.stream().filter(item -> !item.complete()).count();
+        int incompleteItems = costSummaries.stream()
+                .mapToInt(ProjectCostContext.CostSummary::incompleteItemCount).sum();
+        boolean costComplete = incompleteProjects == 0;
+        summary.setEstimatedCost(estimatedCost);
+        summary.setActualCost(actualCost.max(summary.getPayableAmount()));
+        summary.setCostComplete(costComplete);
+        summary.setCostIncompleteProjectCount(incompleteProjects);
+        summary.setCostIncompleteItemCount(incompleteItems);
+        summary.setProfitAmount(costComplete
+                ? summary.getContractAmount().subtract(summary.getActualCost()) : null);
         summary.setCollectionRate(rate(summary.getReceivedAmount(), summary.getReceivableAmount()));
 
         summary.setUrgentReceivables(receivables.stream()
@@ -168,10 +191,11 @@ public class FinanceReportContext {
                         && item.getType() != PayableType.Project)
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAllocation);
-        // 项目立项时会冻结报价成本；尚未拆分应付单时，预计利润仍必须扣减该基线成本。
-        BigDecimal totalCost = payableCost.signum() > 0
-                ? payableCost : accessContext.value(project.getCost());
-        BigDecimal grossProfit = report.getContractAmount().subtract(totalCost);
+        ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
+        BigDecimal totalCost = costSummary.actualCost().max(payableCost);
+        boolean costComplete = costSummary.complete();
+        BigDecimal grossProfit = costComplete
+                ? report.getContractAmount().subtract(totalCost) : null;
         report.setContractRevenue(report.getContractAmount());
         report.setMaterialAmount(materialCost);
         report.setMaterialCost(materialCost);
@@ -181,10 +205,14 @@ public class FinanceReportContext {
         report.setProjectCost(projectCost);
         report.setOtherPayableAmount(expenseAllocation);
         report.setExpenseAllocation(expenseAllocation);
+        report.setEstimatedCost(costSummary.estimatedCost());
+        report.setActualCost(costSummary.actualCost());
+        report.setCostComplete(costComplete);
+        report.setCostIncompleteCount(costSummary.incompleteItemCount());
         report.setTotalCost(totalCost);
         report.setProfitAmount(grossProfit);
         report.setGrossProfit(grossProfit);
-        report.setGrossMargin(rate(grossProfit, report.getContractAmount()));
+        report.setGrossMargin(grossProfit == null ? null : rate(grossProfit, report.getContractAmount()));
         report.setCollectionRate(rate(report.getReceivedAmount(), report.getReceivableAmount()));
         report.setPaymentRate(rate(report.getPaidAmount(), report.getPayableAmount()));
         report.setReceivableCleared(!receivables.isEmpty() && receivables.stream()
@@ -219,15 +247,22 @@ public class FinanceReportContext {
                         && item.getType() != PayableType.Salary
                         && item.getType() != PayableType.Project)
                 .map(Payable::getAmount));
-        BigDecimal totalCost = materialCost.add(laborCost).add(projectCost).add(expenseAmount);
-        BigDecimal grossProfit = settlement.getContractAmount().subtract(totalCost);
+        BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAmount);
+        ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
+        BigDecimal totalCost = costSummary.actualCost().max(payableCost);
+        BigDecimal grossProfit = costSummary.complete()
+                ? settlement.getContractAmount().subtract(totalCost) : null;
+        settlement.setEstimatedCost(costSummary.estimatedCost());
+        settlement.setActualCost(costSummary.actualCost());
+        settlement.setCostComplete(costSummary.complete());
+        settlement.setCostIncompleteCount(costSummary.incompleteItemCount());
         settlement.setMaterialAmount(materialCost);
         settlement.setSalaryAmount(laborCost);
         settlement.setProjectAmount(projectCost);
         settlement.setExpenseAmount(expenseAmount);
         settlement.setTotalCost(totalCost);
         settlement.setProfitAmount(grossProfit);
-        settlement.setGrossMargin(rate(grossProfit, settlement.getContractAmount()));
+        settlement.setGrossMargin(grossProfit == null ? null : rate(grossProfit, settlement.getContractAmount()));
         if (settlement.getCreatedBy() == null) {
             settlement.setCreatedBy(operator);
         }

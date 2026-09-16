@@ -49,7 +49,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     List<Employee> findByCompany_ComIdAndRoleOrderByName(Long comId, EmployeeRole role);
 
+    List<Employee> findByCompany_ComIdAndRoleInOrderByName(Long comId, java.util.Collection<EmployeeRole> roles);
+
     List<Employee> findByCompany_ComIdAndStore_StoreIdAndRoleOrderByName(Long comId, Long storeId, EmployeeRole role);
 
+    List<Employee> findByCompany_ComIdAndStore_StoreIdAndRoleInOrderByName(Long comId, Long storeId, java.util.Collection<EmployeeRole> roles);
+
     List<Employee> findByCompany_ComIdAndTeam_TeamIdAndRoleOrderByName(Long comId, Long teamId, EmployeeRole role);
+
+    List<Employee> findByCompany_ComIdAndTeam_TeamIdAndRoleInOrderByName(Long comId, Long teamId, java.util.Collection<EmployeeRole> roles);
 }

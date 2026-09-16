@@ -26,7 +26,12 @@ public class FinanceSummary {
     private BigDecimal monthIncome = BigDecimal.ZERO;
     private BigDecimal monthExpense = BigDecimal.ZERO;
     private BigDecimal cashBalance = BigDecimal.ZERO;
-    private BigDecimal profitAmount = BigDecimal.ZERO;
+    private BigDecimal estimatedCost = BigDecimal.ZERO;
+    private BigDecimal actualCost = BigDecimal.ZERO;
+    private BigDecimal profitAmount;
+    private Boolean costComplete = Boolean.TRUE;
+    private Integer costIncompleteProjectCount = 0;
+    private Integer costIncompleteItemCount = 0;
     private BigDecimal collectionRate = BigDecimal.ZERO;
     private List<Receivable> urgentReceivables = List.of();
     private List<Payable> urgentPayables = List.of();
@@ -68,6 +73,16 @@ public class FinanceSummary {
     public void setCashBalance(BigDecimal cashBalance) { this.cashBalance = cashBalance; }
     public BigDecimal getProfitAmount() { return profitAmount; }
     public void setProfitAmount(BigDecimal profitAmount) { this.profitAmount = profitAmount; }
+    public BigDecimal getEstimatedCost() { return estimatedCost; }
+    public void setEstimatedCost(BigDecimal estimatedCost) { this.estimatedCost = estimatedCost; }
+    public BigDecimal getActualCost() { return actualCost; }
+    public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
+    public Boolean getCostComplete() { return costComplete; }
+    public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
+    public Integer getCostIncompleteProjectCount() { return costIncompleteProjectCount; }
+    public void setCostIncompleteProjectCount(Integer costIncompleteProjectCount) { this.costIncompleteProjectCount = costIncompleteProjectCount; }
+    public Integer getCostIncompleteItemCount() { return costIncompleteItemCount; }
+    public void setCostIncompleteItemCount(Integer costIncompleteItemCount) { this.costIncompleteItemCount = costIncompleteItemCount; }
     public BigDecimal getCollectionRate() { return collectionRate; }
     public void setCollectionRate(BigDecimal collectionRate) { this.collectionRate = collectionRate; }
     public List<Receivable> getUrgentReceivables() { return urgentReceivables; }

@@ -15,6 +15,8 @@ public class DashboardMetric {
     private BigDecimal previousYearValue = BigDecimal.ZERO;
     private BigDecimal monthOverMonthRate = BigDecimal.ZERO;
     private BigDecimal yearOverYearRate = BigDecimal.ZERO;
+    private Boolean complete = Boolean.TRUE;
+    private String warning;
 
     public BigDecimal getValue() { return value; }
     public void setValue(BigDecimal value) { this.value = value; }
@@ -30,4 +32,8 @@ public class DashboardMetric {
     public void setMonthOverMonthRate(BigDecimal monthOverMonthRate) { this.monthOverMonthRate = monthOverMonthRate; }
     public BigDecimal getYearOverYearRate() { return yearOverYearRate; }
     public void setYearOverYearRate(BigDecimal yearOverYearRate) { this.yearOverYearRate = yearOverYearRate; }
+    public Boolean getComplete() { return complete; }
+    public void setComplete(Boolean complete) { this.complete = complete; }
+    public String getWarning() { return warning; }
+    public void setWarning(String warning) { this.warning = warning; }
 }

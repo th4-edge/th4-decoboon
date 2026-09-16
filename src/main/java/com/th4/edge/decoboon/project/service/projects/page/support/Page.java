@@ -38,7 +38,7 @@ import java.util.List;
                 properties = {"quoteId", "no", "createdBy", "amount", "cost", "discount", "status", "property"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
-                        "area", "layout", "status", "salesman", "designer"}),
+                        "area", "layout", "status", "salesman", "designer", "latestMeasureAt"}),
         @AllowProperties(model = Employee.class,
                 properties = {"empId", "name", "telNo", "role"})
 })

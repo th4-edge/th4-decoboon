@@ -3,6 +3,7 @@ package com.th4.edge.tenant.billing;
 import com.th4.edge.tenant.billing.configure.OrderItemType;
 import com.th4.edge.tenant.billing.configure.OrderStatus;
 import com.th4.edge.tenant.billing.configure.PayChannel;
+import com.th4.edge.tenant.billing.configure.PlanModule;
 import com.th4.edge.tenant.billing.configure.SubStatus;
 import com.th4.edge.tenant.billing.context.SubscriptionContext;
 import com.th4.edge.tenant.billing.model.Order;
@@ -80,6 +81,8 @@ class SubscriptionBillingClosedLoopTest {
         assertThat(trial.getTrialActivated()).isTrue();
         assertThat(trial.getPlan().getCode()).isEqualTo("annual-basic");
         assertThat(trial.getPlanVersion().getPrice()).isEqualTo(598000L);
+        assertThat(trial.getPlanVersion().getModules())
+                .contains(PlanModule.Supply.name(), PlanModule.Finance.name(), PlanModule.Analytics.name());
         assertThat(subscriptionContext.remainingDays(trial)).isBetween(13, 14);
 
         LocalDateTime expiredAt = LocalDateTime.now().minusDays(1).withNano(0);

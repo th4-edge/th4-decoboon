@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,6 +34,8 @@ import java.util.Map;
 @Note("业务通知生成上下文")
 @Component
 public class NoticeContext {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private final CustomerRepository customerRepository;
     private final ProjectRepository projectRepository;
@@ -66,7 +69,7 @@ public class NoticeContext {
         }
         for (Employee manager : managers) {
             upsert(manager, null, customer, null, "measure:" + customer.getCustId(), NoticeType.Project,
-                    "待指定设计师", customer.getName() + " · 约定 " + customer.getMeasureAt()
+                    "待指定设计师", customer.getName() + " · 约定 " + formatTime(customer.getMeasureAt())
                             + " · 业务员 " + marketer.getName());
         }
     }
@@ -74,14 +77,14 @@ public class NoticeContext {
     @Transactional
     public void designerSubmitted(Customer customer, Employee marketer, Employee designer) {
         upsert(designer, null, customer, null, "assign-designer:" + customer.getCustId(), NoticeType.Customer,
-                "新客户已分配", customer.getName() + " · 约定量房 " + customer.getMeasureAt()
+                "新客户已分配", customer.getName() + " · 约定量房 " + formatTime(customer.getMeasureAt())
                         + " · 业务员 " + marketer.getName());
         if (customer.getOwner() != null
                 && !customer.getOwner().getEmpId().equals(designer.getEmpId())) {
             upsert(customer.getOwner(), null, customer, null, "designer-assigned:" + customer.getCustId(),
-                    NoticeType.Customer, "店长已指定设计师",
+                    NoticeType.Customer, marketer.getRole().getName() + "已指定设计师",
                     customer.getName() + " · 设计师 " + designer.getName()
-                            + " · 约定量房 " + customer.getMeasureAt());
+                            + " · 约定量房 " + formatTime(customer.getMeasureAt()));
         }
     }
 
@@ -326,5 +329,9 @@ public class NoticeContext {
             notice.setRead(false);
         }
         noticeRepository.save(notice);
+    }
+
+    private String formatTime(LocalDateTime value) {
+        return value == null ? "待确认" : DATE_TIME_FORMATTER.format(value);
     }
 }

@@ -731,8 +731,8 @@ public class SubscriptionContext {
 
         static PlanDefinition free() {
             return new PlanDefinition(FREE_CODE, "免费报价版", 0, 0L,
-                    1, 2, modulesOf(PlanModule.Crm, PlanModule.Quote), 0,
-                    "1 家门店、2 个席位、2 个并发项目，仅开放基础报价能力",
+                    1, 2, modulesOf(PlanModule.values()), 0,
+                    "1 家门店、2 个席位，全功能能力",
                     "低门槛启用装企数字化",
                     "基础客户与报价能力;适合个人工作室首次上线;无需支付年费",
                     "体验版", false);
@@ -740,8 +740,8 @@ public class SubscriptionContext {
 
         static PlanDefinition basic() {
             return new PlanDefinition(BASIC_CODE, "基础版年费", 365, 598000L,
-                    1, 5, modulesOf(PlanModule.Crm, PlanModule.Design, PlanModule.Quote, PlanModule.Project),
-                    10, "单店起步，包含报价、合同、变更、项目和基础台账",
+                    1, 5, modulesOf(PlanModule.values()),
+                    10, "单店起步，全功能经营，限制为 1 家门店和 5 个席位",
                     "单店经营全流程，一次开通全年可用",
                     "注册赠送 14 天免费试用;客户到签约经营闭环;设计、报价、项目管理;5 个员工席位",
                     "单店首选", false);
@@ -749,8 +749,7 @@ public class SubscriptionContext {
 
         static PlanDefinition pro() {
             return new PlanDefinition(PRO_CODE, "专业版年费", 365, 1198000L,
-                    3, 15, modulesOf(PlanModule.Crm, PlanModule.Design, PlanModule.Quote,
-                            PlanModule.Project, PlanModule.Supply, PlanModule.Finance, PlanModule.Analytics),
+                    3, 15, modulesOf(PlanModule.values()),
                     20, "成长型多店装企，包含完整经营、财务和供应链闭环",
                     "从增长到盈利，一套系统管全店",
                     "3 家门店、15 个席位;供应链与财务结算;经营分析看板;适合成长型多店装企",

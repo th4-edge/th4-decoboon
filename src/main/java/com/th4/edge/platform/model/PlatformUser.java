@@ -38,6 +38,7 @@ public class PlatformUser extends AbstractModel implements User<Long> {
     @Note("岗位") @Enumerated(EnumType.STRING) @Column(length = 32, nullable = false) private PlatformRole role = PlatformRole.CustomerSuccess;
     @Note("状态") @Enumerated(EnumType.STRING) @Column(length = 16, nullable = false) private PlatformUserStatus status = PlatformUserStatus.Active;
     @Note("最近登录时间") @Column(name = "last_login_at") private LocalDateTime lastLoginAt;
+    @Note("当前岗位能力；仅响应使用") @Transient private java.util.Set<PlatformPermission> permissions;
     @Note("创建时间")
     @CreateTime @Embedded
     @AttributeOverrides({
@@ -71,8 +72,6 @@ public class PlatformUser extends AbstractModel implements User<Long> {
 
     @Override public Long getUserId() { return userId; }
     @Override public void setUserId(Long userId) { this.userId = userId; }
-    public Long getPlatformId() { return userId; }
-    public void setPlatformId(Long platformId) { this.userId = platformId; }
     public PlatformOrg getOrg() { return org; }
     public void setOrg(PlatformOrg org) { this.org = org; }
     public PlatformDepartment getDepartment() { return department; }
@@ -88,6 +87,8 @@ public class PlatformUser extends AbstractModel implements User<Long> {
     public PlatformUserStatus getStatus() { return status; }
     public void setStatus(PlatformUserStatus status) { this.status = status; }
     public LocalDateTime getLastLoginAt() { return lastLoginAt; }
+    public java.util.Set<PlatformPermission> getPermissions() { return permissions; }
+    public void setPermissions(java.util.Set<PlatformPermission> permissions) { this.permissions = permissions; }
     public void setLastLoginAt(LocalDateTime lastLoginAt) { this.lastLoginAt = lastLoginAt; }
     public DateTime getCreateTime() { return createTime; }
     public void setCreateTime(DateTime createTime) { this.createTime = createTime; }
