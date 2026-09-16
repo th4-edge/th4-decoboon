@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.supply.service.partner.update.support;
 import com.th4.edge.decoboon.supply.configure.PartnerStatus;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.supply.repository.PartnerRepository;
+import com.th4.edge.decoboon.finance.configure.SettlementMode;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -22,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("更新合作方")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "bankName", "bankAccount", "status", "remark", "createTime"}))
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "createTime"}))
 @Service("partner/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.decoboon.supply.service.partner.update.Update {
@@ -34,6 +35,9 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
     @AutoInject private String taxNo;
     @AutoInject private String addr;
     @AutoInject private String settlementTerms;
+    @AutoInject private SettlementMode settlementMode;
+    @AutoInject private Integer settlementDays;
+    @AutoInject private Integer cutoffDay;
     @AutoInject private String bankName;
     @AutoInject private String bankAccount;
     @AutoInject private PartnerStatus status;
@@ -59,6 +63,9 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
         if (taxNo != null) partner.setTaxNo(taxNo);
         if (addr != null) partner.setAddr(addr);
         if (settlementTerms != null) partner.setSettlementTerms(settlementTerms);
+        if (settlementMode != null) partner.setSettlementMode(settlementMode);
+        if (settlementDays != null) partner.setSettlementDays(settlementDays);
+        if (cutoffDay != null) partner.setCutoffDay(cutoffDay);
         if (bankName != null) partner.setBankName(bankName);
         if (bankAccount != null) partner.setBankAccount(bankAccount);
         if (status != null) partner.setStatus(status);

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Note("合作方分页")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "bankName", "bankAccount", "status", "remark", "createTime"}))
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "createTime"}))
 @Service("partner/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.supply.service.partner.page.Page {

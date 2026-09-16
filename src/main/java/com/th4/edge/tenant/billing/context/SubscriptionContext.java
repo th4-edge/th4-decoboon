@@ -95,12 +95,12 @@ public class SubscriptionContext {
     }
 
     /**
-     * 注册企业发放 14 天专业版试用。试用不创建订单，但使用专业版版本快照。
+     * 注册企业发放 14 天基础版试用。试用不创建订单，但使用基础版版本快照。
      */
     @Transactional
     public Subscription grantTrial(Company company) {
         initializePlans();
-        PlanVersion version = requireVersion(PlanDefinition.PRO_CODE);
+        PlanVersion version = requireVersion(PlanDefinition.BASIC_CODE);
 
         Subscription subscription = subscriptionRepository.findByCompany_ComId(company.getComId());
         if (subscription == null) {
@@ -121,7 +121,7 @@ public class SubscriptionContext {
         subscriptionRepository.save(modelIdentityContext.prepare(subscription));
 
         writeLedger(company, null, LedgerBizType.TrialGrant, TRIAL_DAYS,
-                remainingDays(subscription), "注册赠送 14 天专业版试用");
+                remainingDays(subscription), "注册赠送 14 天基础版试用");
         return subscription;
     }
 
@@ -743,7 +743,7 @@ public class SubscriptionContext {
                     1, 5, modulesOf(PlanModule.Crm, PlanModule.Design, PlanModule.Quote, PlanModule.Project),
                     10, "单店起步，包含报价、合同、变更、项目和基础台账",
                     "单店经营全流程，一次开通全年可用",
-                    "客户到签约经营闭环;设计、报价、项目管理;5 个员工席位;1 家门店",
+                    "注册赠送 14 天免费试用;客户到签约经营闭环;设计、报价、项目管理;5 个员工席位",
                     "单店首选", false);
         }
 
@@ -753,7 +753,7 @@ public class SubscriptionContext {
                             PlanModule.Project, PlanModule.Supply, PlanModule.Finance, PlanModule.Analytics),
                     20, "成长型多店装企，包含完整经营、财务和供应链闭环",
                     "从增长到盈利，一套系统管全店",
-                    "3 家门店、15 个席位;供应链与财务结算;经营分析看板;14 天专业版试用可无缝续费",
+                    "3 家门店、15 个席位;供应链与财务结算;经营分析看板;适合成长型多店装企",
                     "最受欢迎", true);
         }
 

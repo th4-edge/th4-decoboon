@@ -78,6 +78,8 @@ class SubscriptionBillingClosedLoopTest {
         Subscription trial = subscriptionContext.grantTrial(company);
         assertThat(trial.getStatus()).isEqualTo(SubStatus.Trial);
         assertThat(trial.getTrialActivated()).isTrue();
+        assertThat(trial.getPlan().getCode()).isEqualTo("annual-basic");
+        assertThat(trial.getPlanVersion().getPrice()).isEqualTo(598000L);
         assertThat(subscriptionContext.remainingDays(trial)).isBetween(13, 14);
 
         LocalDateTime expiredAt = LocalDateTime.now().minusDays(1).withNano(0);

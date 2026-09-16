@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.supply.configure.PartnerStatus;
 import com.th4.edge.decoboon.supply.configure.PartnerType;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.supply.repository.PartnerRepository;
+import com.th4.edge.decoboon.finance.configure.SettlementMode;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("新增合作方")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "bankName", "bankAccount", "status", "remark", "createTime"}))
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "createTime"}))
 @Service("partner/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.supply.service.partner.save.Save {
@@ -39,6 +40,9 @@ public class Save implements com.th4.edge.decoboon.supply.service.partner.save.S
     @AutoInject @Length(max = 64) private String taxNo;
     @AutoInject @Length(max = 256) private String addr;
     @AutoInject @Length(max = 64) private String settlementTerms;
+    @AutoInject private SettlementMode settlementMode;
+    @AutoInject private Integer settlementDays;
+    @AutoInject private Integer cutoffDay;
     @AutoInject @Length(max = 64) private String bankName;
     @AutoInject @Length(max = 64) private String bankAccount;
     @AutoInject @Length(max = 500) private String remark;
@@ -67,6 +71,12 @@ public class Save implements com.th4.edge.decoboon.supply.service.partner.save.S
         request.setTaxNo(taxNo);
         request.setAddr(addr);
         request.setSettlementTerms(settlementTerms);
+        SettlementMode mode = settlementMode == null ? SettlementMode.ReceiptDays : settlementMode;
+        request.setSettlementMode(mode);
+        request.setSettlementDays(settlementDays == null
+                ? (mode == SettlementMode.ReceiptDays ? 30 : 0)
+                : settlementDays);
+        request.setCutoffDay(cutoffDay == null ? 25 : cutoffDay);
         request.setBankName(bankName);
         request.setBankAccount(bankAccount);
         request.setStatus(PartnerStatus.Active);
