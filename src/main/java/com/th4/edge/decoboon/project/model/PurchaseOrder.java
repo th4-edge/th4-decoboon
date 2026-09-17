@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.model;
 import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.common.model.AuditModel;
+import com.th4.edge.decoboon.project.configure.DeliveryMode;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.supply.model.Partner;
@@ -63,6 +64,7 @@ public class PurchaseOrder extends AuditModel implements ProjectOwned {
     @Column(length=128,nullable=false) @Note("供应商名称") private String supplierName;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="supplier_id") @Note("供应商") private Partner supplier;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="quote_line_id") @Note("来源报价行") private QuoteLine quoteLine;
+    @Enumerated(EnumType.STRING) @Column(name="delivery_mode", length=16, nullable=false) @Note("交付方式") private DeliveryMode deliveryMode=DeliveryMode.Direct;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="warehouse_id") @Note("入库仓库") private Store warehouse;
     @Column(precision=12,scale=3,nullable=false) @Note("采购数量") private BigDecimal quantity=BigDecimal.ZERO;
     @Enumerated(EnumType.STRING) @Column(length=32,nullable=false) @Note("单位") private Unit unit=Unit.Area;
@@ -87,6 +89,7 @@ public class PurchaseOrder extends AuditModel implements ProjectOwned {
     public String getSupplierName(){return supplierName;} public void setSupplierName(String v){supplierName=v;}
     public Partner getSupplier(){return supplier;} public void setSupplier(Partner v){supplier=v;}
     public QuoteLine getQuoteLine(){return quoteLine;} public void setQuoteLine(QuoteLine v){quoteLine=v;}
+    public DeliveryMode getDeliveryMode(){return deliveryMode;} public void setDeliveryMode(DeliveryMode v){deliveryMode=v;}
     public Store getWarehouse(){return warehouse;} public void setWarehouse(Store v){warehouse=v;}
     public BigDecimal getQuantity(){return quantity;} public void setQuantity(BigDecimal v){quantity=v;}
     public Unit getUnit(){return unit;} public void setUnit(Unit v){unit=v;}

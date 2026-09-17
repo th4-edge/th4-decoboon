@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.project.service.purchases.save.support;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.decoboon.project.configure.DeliveryMode;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
@@ -25,6 +26,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.StoreRepository;
@@ -36,12 +38,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** 采购单创建，提交后进入审批。 */
+/** 采购单创建；企业负责人和财务直接确认，其他角色提交后进入审批。 */
 @Note("采购订单创建")
 @Properties(allow = {
         @AllowProperties(model = PurchaseOrder.class,
                 properties = {"purchaseId", "no", "supplierName", "quantity", "unit", "unitPrice", "amount",
-                        "receivedQuantity", "status", "expectedAt", "orderedAt", "approvedAt", "approvalRemark",
+                        "receivedQuantity", "status", "deliveryMode", "expectedAt", "orderedAt", "approvedAt", "approvalRemark",
                         "remark", "createTime"}),
         @AllowProperties(model = Partner.class,
                 properties = {"partnerId", "type", "name", "contactName", "telNo", "status"}),
@@ -57,6 +59,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
     @AutoInject private String supplierName;
     @AutoInject @NotNull private BigDecimal quantity;
     @AutoInject @NotNull private BigDecimal unitPrice;
+    @AutoInject private DeliveryMode deliveryMode;
     @AutoInject private Long warehouseId;
     @AutoInject private LocalDate expectedAt;
     @AutoInject private String remark;
@@ -108,7 +111,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         ProjectContract contract = contractRepository.findByProject(project)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("400", "材料采购必须来源已生效合同")));
         Partner supplier = resolveSupplier(current, supplierId, supplierName);
-        Store warehouse = resolveWarehouse(current, warehouseId);
+        DeliveryMode resolvedDeliveryMode = deliveryMode == null ? DeliveryMode.Direct : deliveryMode;
+        Store warehouse = resolveWarehouse(current, resolvedDeliveryMode, warehouseId);
 
         request.setCompany(project.getCompany());
         request.setProperty(project.getProperty());
@@ -119,6 +123,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         request.setQuoteLine(plan.getQuoteItem());
         request.setSupplier(supplier);
         request.setSupplierName(supplier.getName());
+        request.setDeliveryMode(resolvedDeliveryMode);
         request.setWarehouse(warehouse);
         request.setNo("PO" + System.currentTimeMillis());
         request.setQuantity(quantity);
@@ -126,7 +131,11 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         request.setUnitPrice(unitPrice);
         request.setAmount(quantity.multiply(unitPrice));
         request.setReceivedQuantity(BigDecimal.ZERO);
-        request.setStatus(PurchaseStatus.Submitted);
+        boolean autoApproved = current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance;
+        request.setStatus(autoApproved ? PurchaseStatus.Approved : PurchaseStatus.Submitted);
+        request.setApprovedBy(autoApproved ? current : null);
+        request.setApprovedAt(autoApproved ? java.time.LocalDateTime.now() : null);
+        request.setApprovalRemark(autoApproved ? "企业负责人/财务直接确认" : null);
         request.setExpectedAt(expectedAt);
         request.setCreatedBy(current);
         request.setRemark(remark);
@@ -153,7 +162,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         return partnerRepository.save(modelIdentityContext.prepare(partner));
     }
 
-    private Store resolveWarehouse(Employee current, Long warehouseId) {
+    private Store resolveWarehouse(Employee current, DeliveryMode deliveryMode, Long warehouseId) {
+        if (!deliveryMode.maintainsInventory()) return null;
         if (warehouseId == null) return current.getStore();
         return storeRepository.findById(warehouseId)
                 .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))

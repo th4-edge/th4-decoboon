@@ -45,7 +45,7 @@ import java.util.List;
                         "images", "remark", "createTime"}),
         @AllowProperties(model = PurchaseOrder.class,
                 properties = {"purchaseId", "no", "supplier", "supplierName", "quantity", "unitPrice",
-                        "amount", "receivedQuantity", "status", "warehouse"}),
+                        "amount", "receivedQuantity", "status", "deliveryMode", "warehouse"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("project/goods-receipt/save")
@@ -130,9 +130,11 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         request.setRemark(remark);
         GoodsReceipt saved = receiptRepository.save(modelIdentityContext.prepare(request));
 
-        inventoryContext.receive(purchase.getCompany(), purchase.getWarehouse(), purchase.getMaterialPlan().getCatalogItem(),
-                batchNo, receivedNow, purchase.getUnitPrice(), safetyStock, expiryDate, purchase,
-                purchase.getMaterialPlan(), current, purchase.getNo(), images, remark);
+        if (purchase.getDeliveryMode() != null && purchase.getDeliveryMode().maintainsInventory()) {
+            inventoryContext.receive(purchase.getCompany(), purchase.getWarehouse(), purchase.getMaterialPlan().getCatalogItem(),
+                    batchNo, receivedNow, purchase.getUnitPrice(), safetyStock, expiryDate, purchase,
+                    purchase.getMaterialPlan(), current, purchase.getNo(), images, remark);
+        }
 
         BigDecimal nowReceived = received.add(receivedNow);
         purchase.setReceivedQuantity(nowReceived);
@@ -177,9 +179,6 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         return saved;
     }
 
-    private int supplierDays(PurchaseOrder purchase) {
-        return purchase.getSupplier() == null ? 30 : 30;
-    }
 
     private BigDecimal value(BigDecimal value) {
         return value == null ? BigDecimal.ZERO : value;

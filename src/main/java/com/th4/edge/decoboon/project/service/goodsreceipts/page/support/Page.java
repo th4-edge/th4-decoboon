@@ -1,4 +1,5 @@
 package com.th4.edge.decoboon.project.service.goodsreceipts.page.support;
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.*;
 import com.th4.edge.decoboon.project.repository.*;
@@ -17,8 +18,9 @@ import org.springframework.stereotype.Service;
 @Note("材料到场分页")
 @Properties(allow={
  @AllowProperties(model=GoodsReceipt.class,properties={"receiptId","property","project","purchase","materialPlan","quantity","unit","arrivedAt","inspector","images","remark","createTime"}),
- @AllowProperties(model=PurchaseOrder.class,properties={"purchaseId","no","supplierName","quantity","unitPrice","amount","receivedQuantity","status"}),
- @AllowProperties(model=MaterialPlan.class,properties={"planId","name","quantity","unit","status"}),
+ @AllowProperties(model=PurchaseOrder.class,properties={"purchaseId","no","supplierName","quantity","unitPrice","amount","receivedQuantity","status","deliveryMode","warehouse"}),
+ @AllowProperties(model=MaterialPlan.class,properties={"planId","catalogItem","quantity","unit","status"}),
+ @AllowProperties(model=CatalogItem.class,properties={"itemId","name","unit","brand","spec","type"}),
  @AllowProperties(model=Property.class,properties={"propertyId","propertyNo","address","status"}),
  @AllowProperties(model=Project.class,properties={"projectId","no","name","status"}),
  @AllowProperties(model=Employee.class,properties={"empId","name","role"})})
