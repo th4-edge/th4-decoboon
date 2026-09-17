@@ -678,3 +678,15 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - Web `catalog` 资源：恢复只读标准采购成本字段与“维护采购价”行操作；增加 capability 过滤，非财务权限角色不显示成本列、字段和入口。
 - 根因是成本来源迁移只删旧输入未补新链路，不是后端成本模型丢失。新增 ECD-006 硬性禁则。
 - 验证：App `verify:mp-weixin` PASS；Web `type-check + build` PASS；微信开发者工具 BOSS 账号实测报价库列表显示“成本未维护”，采购价维护页预选 `单口变压器35W` 成功。
+
+## 2026-09-18 供应商协作 P0（直送工地优先）
+
+- 先从中小装企真实场景出发完成《供应商协作业务设计与操作手册》，明确询价、项目下单、到货、月结、退换货和定制/劳务六类场景。
+- 后端 `PurchaseOrder` 新增 `DeliveryMode`，默认 `Direct` 直送工地；`GoodsReceipt.Save` 仅对 `Warehouse` 采购写入库存，直送直接形成项目实际成本和应付。
+- BOSS/财务创建采购单自动确认，项目经理/材料员提交后走审批；采购分页支持按当前数据范围跨项目查看，并补齐材料、供应商摘要。
+- App 将“供应链与库存”改为“供应商协作”，项目采购设为默认入口，新增采购单和到货确认页面。
+- Web 新增项目采购、材料到货资源及角色能力过滤，供应商列表补充应付、已付、未付余额；材料计划可直接进入采购。
+- 迁移：`docs/design/migrations/29-采购交付方式.sql`；本地测试库已执行。
+- 规范：`AGENTS.md`、`rules.md` 新增“实际业务场景先行”；错误集新增 ECD-007，禁止按完整 ERP 平铺中小装企主流程。
+- 验证：后端 `mvn -q test` PASS；App `npm run verify:mp-weixin` PASS；Web `npm run build`、`npm run verify:system` PASS。
+- 提交：后端 `9bbbefb`、App `caa32f7`、Web `e0eebca`。
