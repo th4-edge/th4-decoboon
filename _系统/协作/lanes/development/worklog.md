@@ -690,3 +690,15 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 规范：`AGENTS.md`、`rules.md` 新增“实际业务场景先行”；错误集新增 ECD-007，禁止按完整 ERP 平铺中小装企主流程。
 - 验证：后端 `mvn -q test` PASS；App `npm run verify:mp-weixin` PASS；Web `npm run build`、`npm run verify:system` PASS。
 - 提交：后端 `9bbbefb`、App `caa32f7`、Web `e0eebca`。
+
+## 2026-09-18 供应商协作三角色实际验收
+
+- 在微信开发者工具中按真实密码登录令牌完成 BOSS、项目经理、材料员三角色切换和协作闭环。
+- 流程：BOSS 维护采购价 → PM 从材料计划创建采购 → BOSS 确认采购 → PM 确认下单 → 材料员确认到货 → BOSS 查看自动应付。
+- 实测数据：采购单 `PO1789668147033`，10 个，单价 160 元，直送工地；到货后应付 1,600 元，到期日 2026-10-18；库存和库存流水均为 0。
+- 发现并修复 DEF-SUP-001 P0：材料计划分页携带 `Property -> Store/Team/Leader` 循环归属图，导致材料计划显示 0；响应由异常膨胀降至约 650B，并新增白名单契约测试。
+- 发现并修复 DEF-SUP-002 P2：`Count` 等技术单位改为中文展示。
+- 新增仅开发环境生效的 `devToken` 员工会话切换入口，使用真实服务端登录令牌解决微信开发者工具多角色联调问题。
+- 明确“采购执行价”可向采购执行角色展示，但“标准采购成本/供应商报价历史/项目毛利”仍仅管理层和财务可见。
+- 验收报告：`docs/acceptance/小程序供应商协作三角色验收报告.md`。
+- 提交：后端 `539e79e`、App `e5ea5e1`。
