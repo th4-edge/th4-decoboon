@@ -669,3 +669,12 @@ Web 修复验证：`WebPasswordSessionAcceptanceTest` 5/5 通过；Provider 扫�
 - 履约业绩卡片移除暖黄色，改为白色到品牌浅底渐变；金额、查看详情和客户头像统一品牌色，并补充卡片按压反馈。
 - 验证：`npm run verify:mp-weixin` PASS；微信开发者工具使用项目经理账号进入履约驾驶舱，实际核对 Hero、指标卡、快捷入口、Tab 和项目卡片背景及尺寸正常。
 - 提交：App `67ca1cf`。
+
+## 2026-09-18 报价项目库成本维护入口回归修复
+
+- `REQ-20260918-CATALOG-COST-ENTRY`：定位供应商采购价改造后报价库成本概念缺失。
+- App `catalog/manage.vue`：恢复只读标准采购成本区块，BOSS/店长/财务可见；新增“维护供应商采购价”入口，携带目录项 ID 和类型跳转并预选项目。
+- App `CatalogPicker.vue`：管理列表为有权限角色展示“成本 ¥x / 成本未维护”。
+- Web `catalog` 资源：恢复只读标准采购成本字段与“维护采购价”行操作；增加 capability 过滤，非财务权限角色不显示成本列、字段和入口。
+- 根因是成本来源迁移只删旧输入未补新链路，不是后端成本模型丢失。新增 ECD-006 硬性禁则。
+- 验证：App `verify:mp-weixin` PASS；Web `type-check + build` PASS；微信开发者工具 BOSS 账号实测报价库列表显示“成本未维护”，采购价维护页预选 `单口变压器35W` 成功。
