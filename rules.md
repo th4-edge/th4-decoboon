@@ -1055,6 +1055,7 @@ public class MarketerViewConfigure { }
 
 - **销售价与成本价分离**：`CatalogItem.materialPrice/manualPrice`、`DesignItem`、`QuoteLine` 只表达销售口径；标准成本只能由有效 `PartnerPrice.purchasePrice + PartnerPrice.laborPrice` 形成。报价项目 save/update 禁止接收并直接写入 `costPrice`。
 - **采购价范围**：采购价必须按企业、供应商、报价项目维护，并支持生效/失效日期、起交期、账期和启停。仅 `Boss`、`StoreManager`、`Finance` 可读取与维护；材料员只可见销售价，响应中不得出现成本字段。
+- **报价库成本入口**：报价项目库必须为 `Boss`、`StoreManager`、`Finance` 保留只读“标准采购成本”和进入供应商采购价维护的入口；切换成本来源时不得只删除旧成本区块而不补替代链路。
 - **成本回算**：`ProjectCostContext` 是项目估算成本、实际成本和完整性唯一口径。报价快照存在时作为估算基线；实际成本优先采购入库等实际发生值，没有实际值时按当前有效采购价回算，采购价变化必须能重新影响毛利。
 - **利润可靠性**：所有应计成本项都有成本时才允许计算利润。存在缺失项时必须返回 `costComplete=false`、利润/毛利率为 `null`，前端显示“成本未完整”，禁止把缺失成本当作 0 计算或显示可靠利润。
 - **实际成本累计**：采购入库累计实际材料成本；领料、损耗不得再次累计；退换货按方向冲减。成本完整性缺失项数量必须可追踪到报价行。
