@@ -200,6 +200,31 @@ Provider 已通过 `TenantContext` 校验并加载 `currentEmployee`，但响应
 
 ---
 
+## ECD-005A 材料计划分页重复展开循环归属图（ECD-005 等价复发）
+
+**级别**：P0/critical
+**首次发生**：2026-09-18 供应商协作三角色实测
+**现象**：企业负责人打开供应商协作后材料计划显示为 0 条，后端响应因 `Property -> Store/Team/Leader -> Store` 循环归属图异常膨胀。
+
+### 根因
+
+`project/material-plan/page` 的 `MaterialPlan` 白名单保留了 `property`，`Project` 白名单也保留了 `property`，重复触发 ECD-005 同类问题。
+
+### 禁则
+
+1. ❌ 禁止分页/列表为了“字段可能有用”返回完整 `Property/Store/Team/Employee` 归属树。
+2. ❌ 禁止只在详情响应修白名单，列表链路必须同步审计。
+3. ❌ 禁止以接口 `success=true` 作为通过依据，必须检查响应大小和前端解析。
+
+### 必须写法
+
+- 材料计划列表只返回 `Project` 摘要，不展开 `Property`。
+- 报价项目只返回 `itemId/name/unit/brand/spec` 摘要。
+- 回归：`DetailResponseWhitelistContractTest#materialPlanPageMustNotExposeRecursivePropertyGraph`。
+- 实测修复后材料计划响应由异常膨胀降至约 650B，并在 BOSS、PM、材料员三角色正常加载。
+
+---
+
 ## ECD-006 报价库成本概念被替换但未保留可见与维护入口
 
 **级别**：P1/high

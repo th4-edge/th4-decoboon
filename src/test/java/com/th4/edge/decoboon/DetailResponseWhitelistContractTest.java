@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon;
 
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.model.Acceptance;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -27,6 +29,24 @@ class DetailResponseWhitelistContractTest {
         assertThat(properties.allow()).anySatisfy(item -> {
             assertThat(item.model()).isEqualTo(Employee.class);
             assertThat(Arrays.asList(item.properties())).containsExactly("empId", "name", "role");
+        });
+    }
+
+    @Test
+    void materialPlanPageMustNotExposeRecursivePropertyGraph() {
+        Properties properties = com.th4.edge.decoboon.project.service.materialplans.page.support.Page.class
+                .getAnnotation(Properties.class);
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(MaterialPlan.class);
+            assertThat(Arrays.asList(item.properties())).doesNotContain("property");
+        });
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(Project.class);
+            assertThat(Arrays.asList(item.properties())).doesNotContain("property");
+        });
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(CatalogItem.class);
+            assertThat(Arrays.asList(item.properties())).contains("itemId", "name", "unit");
         });
     }
 
