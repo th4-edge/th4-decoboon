@@ -60,6 +60,14 @@
 | development | 金额万元/元自适应 + 财务模块品牌色/表单对齐统一 | 前端 format.ts、JzMoney.vue、finance.scss 等 13 文件 | acceptance,user | built_pending_upload | 2026-09-16 |
 | development | 财务配色与表单对齐二次修复（含开发者工具实测） | 前端 finance.scss、project.vue、base.scss | acceptance,user | verified_in_devtools | 2026-09-16 |
 | development | 本地版本提交 1.0.1（后端 f5a0c57 / 前端 6b30de8） | 后端+前端仓库 | acceptance,user | committed_not_released | 2026-09-16 |
+| development | 生产后端监控 2026-09-17 18:41（exit 20） | docs/operations/incidents/2026-09-17/20260917-184110/triage.md | 运维,development,user | open_needs_manual_triage | 2026-09-17 |
+
+| product-planning | 客户标签/画像/分级实施规格（用户已冻结） | docs/plan/2026-09-18-客户标签画像与分级实施规格.md | development,acceptance,user | spec_frozen_pending_acceptance | 2026-09-18 |
+| product-planning | 客户标签/画像/分级 P0 前端实施方案（App+Web） | docs/plan/2026-09-18-客户标签画像与分级-P0前端实施方案.md | development,acceptance,user | plan_ready_pending_dev | 2026-09-18 |
+| development | Web 客户营销 P0-a（系统标签/提醒/客户360排版） | _系统/协作/lanes/development/workspace/web-customer-marketing-p0a-handoff.md | acceptance,product-planning,user | implementation_done_pending_independent_acceptance | 2026-09-18 |
+| product-planning | 客户标签/画像/分级 P0-b 后端字段与 Provider 契约 | docs/plan/2026-09-18-客户标签画像与分级-P0b后端契约.md | development,acceptance,user | contract_ready_pending_backend | 2026-09-18 |
+| development | 研发任务单：客户标签/画像/分级 P0-b | _系统/协作/lanes/development/workspace/p0b-customer-tag-portrait-dev-task.md | acceptance,product-planning,user | b1_b6_and_web_ui_done_b7_pending | 2026-09-18 |
+
 ## Cross-Lane Requests
 
 | id | from | to | request | status | host_delivery | link | updated |
@@ -101,6 +109,22 @@
 | REQ-20260916-DEV-FIX-MP-BOSS | acceptance | development | 修复企业负责人小程序 4 项缺陷：001 设计师列表 Boss 角色分支调用店长接口、002 成员详情读权限被写保护拦截、003 已锁定方案洽谈页无法查看、004 页面加载异常无错误态。 | pending_fix | pending_fix | docs/acceptance/小程序企业负责人全链路闭环验收报告.md | 2026-09-16 |
 | REQ-20260916-ACCEPT-VERIFY-PROD-LAZY-FIX | development | acceptance | 独立复验生产 PlanVersion 懒加载修复：发版后窗口无新增指纹，并核对错误集/规范是否可执行。 | pending_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/code-error-catalog.md | 2026-09-16 |
 | development | 生产后端监控 2026-09-16 13:02（exit 20） | docs/operations/incidents/2026-09-16/20260916-130232/triage.md | 运维,development,user | open_needs_manual_fix | 2026-09-16 |
+
+| REQ-20260917-PROD-MONITOR-1841 | development | 运维,acceptance | 人工复核离职员工会话循环、registry 中 fixed 基线被改写和公网扫描探测；确认后再决定是否人工修复。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-17/20260917-184110/triage.md | 2026-09-17 |
+
+| REQ-20260918-PROD-MONITOR-1301 | development | 运维,acceptance | 生产监控 exit 20 仅归档；人工处理离职员工会话、授权过期分类、扫描路径拦截及 registry fixed 基线改写。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-18/20260918-130145/triage.md | 2026-09-18 |
+
+| REQ-20260918-ONBOARDING-DEFECT-001 | development | product-planning, acceptance | 首次入驻三件套状态契约与验收冻结；供应商可选且以“有效供应商 + 品牌关系”为完成谓词；App FIX-004 代码保持不改。 | product_spec_frozen_pending_independent_acceptance | pending_acceptance | 输出/草稿/装得清首次入驻三件套-20260918/07-系统内引导与验收清单.md | 2026-09-18 |
+| REQ-20260918-WEB-MAINLINE-V3 | development | acceptance, product-planning | Web A-E：导航/全局上下文、今日主线、专用客户经营、客户 360、项目阻塞、财务穿透、自学习隔离，以及报价项目品牌匹配、效果图 OSS 上传、目录多级筛选和首联手机号锁定。 | a_e_implementation_done_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/web-mainline-experience-v3-handoff.md | 2026-09-18 |
+| REQ-20260918-WEB-UI-SYSTEM-V1 | development | acceptance,product-planning | 静默经营台 Web UI 系统：Token、Element Plus 覆盖、工作台壳层、通用组件、资源页、登录页和响应式收口。 | implementation_done_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/web-ui-system-v1-handoff.md | 2026-09-18 |
+| REQ-20260918-SMB-P0-FIX | development | acceptance, product-planning, zhuangdeqing-smb-reviewer | 中小装企实机审查已裁决 P0 修复：量房角色分离、PM 量房可见性、阶段开工幂等、业主确认归位、收款幂等、财务成本完整性统一、合同写权限一致及 5 项依赖修复。含迁移 34。合同签约最终角色/线下代录/人工材料补录仍 BLOCKED。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix-handoff.md | 2026-09-18 |
+| REQ-20260918-SMB-P0-FIX-2 | development | acceptance, zhuangdeqing-smb-reviewer | 验收 BLOCK rework：量房执行人权限(A4)、预约/完成态与多房屋投影(I1/I2/I4)、并发开工幂等(C4)、readiness 文案(B2)、合同 403 语义与重复签约幂等(F2/F4)、FinanceSummary 毛利率(G1)。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix2-handoff.md | 2026-09-18 |
+| REQ-20260918-SMB-P0-FIX-3 | development | acceptance, zhuangdeqing-smb-reviewer | 量房重复 completion 幂等（不覆盖 measureTime/latestMeasureAt/executor/designer/status/附件）与 executor.role 响应串值修复（JWT 占位主体改为重新加载完整员工实体）。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix3-handoff.md | 2026-09-18 |
+| REQ-20260919-QUOTE-PACKAGE-CLOSURE | development | acceptance, product-planning | 收紧设计报价状态、套餐报价版本、驳回重报、App 报价上下文、套餐模板配置和套餐 Draft 调整。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/worklog.md | 2026-09-19 |
+
+| REQ-20260918-ACCEPT-ROUTE-COUNT-SYNC | development | acceptance | 新增 8 条 P0-b Provider 路由后同步路由断言 209→217、protected 197→205。验收 lane 会话不可达，经用户在本线程授权后由开发 lane 代为同步，**待验收 lane 复核**。 | synced_by_development_pending_acceptance_review | pending | src/test/java/com/th4/edge/decoboon/security/ProviderSecurityAcceptanceTest.java | 2026-09-18 |
+
+| REQ-20260920-PROD-MONITOR-1301 | development | 运维,acceptance | 生产监控 exit 20 仅归档；窗口内无新增异常，人工处理扫描路径、auth/signin 未知入口及 registry fixed 基线/ID 改写。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-20/20260920-130110/triage.md | 2026-09-20 |
 
 ## Shared Agreements
 

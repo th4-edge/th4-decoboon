@@ -46,7 +46,7 @@ import com.th4.edge.tenant.user.model.Team;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_material_plan",
+@Table(name = "db_material_plan",
         indexes = {
                 @Index(name = "idx_material_plan_company", columnList = "com_id, plan_id"),
                 @Index(name = "idx_material_plan_company_store", columnList = "com_id, store_id, plan_id"),

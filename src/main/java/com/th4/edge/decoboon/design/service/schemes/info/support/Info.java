@@ -26,8 +26,8 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "customer", "owner", "version", "style", "status", "area",
-                        "layout", "description", "coverUrl", "cadUrl", "originalPlanUrl", "demolitionUrl",
-                        "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "spaces", "items",
+                        "layout", "description", "coverUrl", "cadUrl", "cadPreviewUrl", "cadConvertStatus", "originalPlanUrl", "demolitionUrl",
+                        "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "originalPlanImages", "spaces", "items",
                         "requirements", "createTime", "updateTime", "property"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter",

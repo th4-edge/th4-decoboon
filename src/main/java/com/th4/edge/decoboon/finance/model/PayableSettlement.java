@@ -32,7 +32,7 @@ import jakarta.persistence.Table;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_finance_payable_settlement", indexes = {
+@Table(name = "db_finance_payable_settlement", indexes = {
         @Index(name = "idx_settle_company", columnList = "com_id, settlement_id"),
         @Index(name = "idx_settle_company_payment", columnList = "com_id, payment_id, settlement_id"),
         @Index(name = "idx_settle_company_payable", columnList = "com_id, payable_id, settlement_id"),

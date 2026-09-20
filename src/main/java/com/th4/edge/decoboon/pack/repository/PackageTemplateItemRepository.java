@@ -4,4 +4,6 @@ import com.th4.edge.decoboon.pack.model.PackageTemplateItem;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 
 public interface PackageTemplateItemRepository extends JpaRepository<PackageTemplateItem, Long> {
+
+    java.util.Optional<PackageTemplateItem> findByItemIdAndCompany_ComId(Long itemId, Long comId);
 }

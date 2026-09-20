@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
+import com.th4.edge.decoboon.property.configure.PropertyStatus;
 import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.EnumSet;
 
 @Note("约定量房")
 @Properties(allow = {
@@ -39,7 +41,7 @@ import java.time.LocalDateTime;
 public class Measure implements com.th4.edge.decoboon.customer.service.cust.measure.Measure {
     @User private Employee employee;
     @AutoInject @NotNull private Long customerId;
-    @AutoInject private Long propertyId;
+    @AutoInject @NotNull private Long propertyId;
     @AutoInject @NotNull private LocalDateTime measureAt;
     private final CustomerRepository customerRepository;
     private final DataScopeContext dataScopeContext;
@@ -69,14 +71,17 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         Customer customer = customerRepository.findOne(
                         byId.and(DataScopeSpecification.visible(Customer.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
-        if (customer.getAddr() == null || customer.getAddr().isBlank()) {
-            throw new DefinedException(new DefaultErrorCode("400", "请先补充房屋地址再约定量房"));
+        if (customer.getStatus() == CustStatus.New) {
+            throw new DefinedException(new DefaultErrorCode("400", "请先完成首次跟进，再约定量房"));
         }
-        if (customer.getStatus() == CustStatus.Lost
-                || customer.getStatus() == CustStatus.Signed
-                || customer.getStatus() == CustStatus.Serving
-                || customer.getStatus() == CustStatus.Finished) {
+        if (!EnumSet.of(CustStatus.Following, CustStatus.PendingMeasure).contains(customer.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "当前客户阶段不能重新约定量房"));
+        }
+        Property property = propertyContext.resolve(propertyId, customer, current);
+        if (property.getLatestMeasureAt() != null
+                || EnumSet.of(PropertyStatus.Measured, PropertyStatus.Designing, PropertyStatus.Quoted,
+                PropertyStatus.Contracted, PropertyStatus.Serving, PropertyStatus.Completed).contains(property.getStatus())) {
+            throw new DefinedException(new DefaultErrorCode("400", "该房屋已完成量房，不能重复预约"));
         }
         if (measureAt.isBefore(LocalDateTime.now())) {
             throw new DefinedException(new DefaultErrorCode("400", "约定量房时间不能早于当前时间"));
@@ -86,9 +91,6 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         if (customer.getPendingMeasureAt() == null) customer.setPendingMeasureAt(LocalDateTime.now());
         customer.setMeasureRequestedAt(LocalDateTime.now());
         Customer saved = customerRepository.save(customer);
-        Property property = propertyId == null
-                ? propertyContext.ensureForCustomer(saved, current)
-                : propertyContext.resolve(propertyId, saved, current);
 
         com.th4.edge.decoboon.property.model.Measure scheduled = measureRepository
                 .findByPropertyOrderByMeasureTimeDesc(property).stream()
@@ -101,7 +103,9 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         scheduled.setOwner(property.getOwner() == null ? current : property.getOwner());
         scheduled.setCustomer(saved);
         scheduled.setProperty(property);
-        scheduled.setDesigner(saved.getDesigner() == null ? current : saved.getDesigner());
+        // 量房设计师是设计责任事实：只接受已指派的设计师，未指派时保持为空，
+        // 绝不把当前操作人（业务员/设计师）无条件写成 Measure.designer。
+        scheduled.setDesigner(property.getDesigner() != null ? property.getDesigner() : saved.getDesigner());
         scheduled.setMeasureTime(measureAt);
         scheduled.setStatus(MeasureStatus.Scheduled);
         measureRepository.save(scheduled);

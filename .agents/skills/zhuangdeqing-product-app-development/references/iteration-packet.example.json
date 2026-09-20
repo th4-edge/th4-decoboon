@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "packet_id": "PKT-20260918-EXAMPLE-001",
+  "mode": "feature_iteration",
+  "status": "iterating",
+  "decision_owner": "user",
+  "scope": {
+    "goal": "让报价决策后沿合同与项目继续推进，并明确成本不完整时的账务事实",
+    "in_scope": ["报价决策", "合同基线", "项目立项", "成本完整性"],
+    "out_of_scope": ["生产发布", "市场营销发布"],
+    "fact_sources": ["BR-001", "BR-002", "GAP-003", "DEC-001"]
+  },
+  "tenant_profiles": [
+    {
+      "id": "T-A",
+      "type": "single_store_growth",
+      "scale": "12人，1店，在施5个项目",
+      "focus": "从报价决策到项目与财务事实一致"
+    },
+    {
+      "id": "T-B",
+      "type": "multi_store_growth",
+      "scale": "26人，3店，在施12个项目",
+      "focus": "跨店归属、转交和跨租户隔离"
+    },
+    {
+      "id": "T-C",
+      "type": "lean_team",
+      "scale": "6人，角色兼任，在施2个项目",
+      "focus": "缺数据、职责兼任和异常恢复"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "SCN-SYN-001",
+      "user": "设计师与客户",
+      "trigger": "客户接受最终报价版本",
+      "precondition": "客户、房屋、有效报价和企业数据范围均明确",
+      "action": "确认报价并进入合同签约",
+      "system_next": "形成合同基线并引导签约与生效",
+      "exception": "报价被拒、版本被替代或客户信息不完整时阻断并引导修复"
+    },
+    {
+      "id": "SCN-SYN-002",
+      "user": "财务与Boss",
+      "trigger": "项目存在合同基线但成本事实不完整",
+      "precondition": "合同已生效，项目已形成应收基线",
+      "action": "查看项目账务和经营利润",
+      "system_next": "显示成本未完整、利润为空，并列出缺失成本来源",
+      "exception": "不得把缺失成本按0计算，不得生成伪利润"
+    }
+  ],
+  "permission_cases": [
+    {
+      "id": "PERM-SYN-001",
+      "role": "Designer",
+      "scope": "Self/ProjectParticipation",
+      "action": "read",
+      "object": "Project",
+      "expected": "allow"
+    },
+    {
+      "id": "PERM-SYN-002",
+      "role": "Tenant-B-Employee",
+      "scope": "cross_tenant",
+      "action": "read",
+      "object": "Tenant-A-Project",
+      "expected": "deny"
+    }
+  ],
+  "money_cases": [
+    {
+      "id": "MONEY-SYN-001",
+      "source": "最终报价快照与合同签约基线",
+      "formula_or_snapshot": "合同基线保留签约调整依据，成本不完整时利润返回空值",
+      "missing_value_policy": "costComplete=false 时利润和毛利率为空",
+      "cross_page_expectation": "报价、合同、项目、财务对同一事实可追溯且不展示伪利润"
+    }
+  ],
+  "ux_cases": [
+    {
+      "id": "UX-SYN-001",
+      "platform": "Web",
+      "viewport": "1440x900",
+      "role": "Boss",
+      "path": "客户-房屋-报价-合同-项目账务",
+      "expected": "同一主链可连续推进，首屏显示状态、责任人和下一动作"
+    },
+    {
+      "id": "UX-SYN-002",
+      "platform": "App",
+      "viewport": "390 logical px",
+      "role": "Pm",
+      "path": "项目现场-变更-动态-验收",
+      "expected": "现场主操作唯一，安全区、金额和状态无遮挡"
+    }
+  ],
+  "acceptance": {
+    "positive": ["报价决策到合同/项目主链可复现", "账务事实跨页面一致"],
+    "negative": ["跨租户读取/更新失败", "成本不完整时不产生利润"],
+    "evidence": ["页面截图", "接口结果", "状态变化", "账务记录", "独立测试用例"],
+    "batch_policy": "与同批次3-5个需求集中独立验证"
+  },
+  "evidence_refs": ["BR-001", "BR-002", "GAP-003", "DEC-001"],
+  "business_questions": [
+    {
+      "question": "签约价调整后采用哪一层作为合同与项目成本基线？",
+      "impact": "影响合同、项目、财务和利润口径",
+      "candidate_answers": ["正式决策或知识卡口径", "未确认则保持GAP并阻断实现"]
+    }
+  ],
+  "affected_lanes": ["product-planning", "development", "acceptance"],
+  "marketing_evidence_boundary": {
+    "allowed": [],
+    "not_allowed": ["成本不完整项目的利润数字", "未验收页面"],
+    "conditions": ["营销 Lane 恢复且获用户授权后重新核对"]
+  }
+}

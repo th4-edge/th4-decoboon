@@ -84,9 +84,9 @@ class ProviderSecurityAcceptanceTest {
 
         assertThat(ProviderSecurityValidator.PUBLIC_ROUTES).containsExactlyInAnyOrderElementsOf(EXPECTED_PUBLIC_ROUTES);
         assertThat(routes.keySet()).containsAll(EXPECTED_PUBLIC_ROUTES);
-        // 2026-09-17 同步：新增 finance/partner-ledger/report 后路由总数为 209（public 12 + protected 197）
-        assertThat(routes).hasSize(209);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(197);
+        // 2026-09-20 同步：设计师工作台 3 条聚合路由和 2 条成本隐藏路由后总数为 231（public 12 + protected 219）
+        assertThat(routes).hasSize(231);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(219);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
     }
 
@@ -98,6 +98,21 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("file/private/grant");
         assertUnauthorized("finance/receivable/page");
         assertUnauthorized("platform/tenant/page");
+        // P0-b 客户标签 / 画像路由必须鉴权（未携带 token 一律 401）
+        assertUnauthorized("customer/customer-tag/page");
+        assertUnauthorized("customer/customer-tag/list");
+        assertUnauthorized("customer/customer-tag/save");
+        assertUnauthorized("customer/customer-tag/update");
+        assertUnauthorized("customer/customer-tag/delete");
+        assertUnauthorized("customer/customer-tag-link/save");
+        assertUnauthorized("customer/customer-tag-link/delete");
+        assertUnauthorized("customer/customer-portrait/save");
+        assertUnauthorized("design/scheme/delete");
+        assertUnauthorized("pack/section/save");
+        assertUnauthorized("pack/line/save");
+        assertUnauthorized("pack/template-item/save");
+        assertUnauthorized("quote/line/save");
+        assertUnauthorized("quote/line/delete");
     }
 
     @Test

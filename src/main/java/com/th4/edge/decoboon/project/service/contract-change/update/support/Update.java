@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
                         "evidenceImages", "signatureUrl", "requestedBy", "approvedBy", "conclusion",
                         "approvedAt", "createTime"}),
         @AllowProperties(model = ProjectContract.class,
-                properties = {"contractId", "no", "baselineAmount", "currentAmount", "status", "signedAt"}),
+                properties = {"contractId", "no", "baselineAmount", "signedAmount", "currentAmount", "status", "signedAt"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "contractAmount", "status", "property" }),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),

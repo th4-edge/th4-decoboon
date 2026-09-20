@@ -28,7 +28,9 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 财务汇总、项目财务全景与结算快照计算。 */
 @Component
@@ -107,26 +109,41 @@ public class FinanceReportContext {
                 .map(item -> item.getDirection() == LedgerDirection.Income
                         ? accessContext.value(item.getAmount()) : accessContext.value(item.getAmount()).negate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        List<ProjectCostContext.CostSummary> costSummaries = projects.stream()
-                .map(projectCostContext::summarize)
-                .toList();
-        BigDecimal estimatedCost = costSummaries.stream()
-                .map(ProjectCostContext.CostSummary::estimatedCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal actualCost = costSummaries.stream()
-                .map(ProjectCostContext.CostSummary::actualCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        int incompleteProjects = (int) costSummaries.stream().filter(item -> !item.complete()).count();
-        int incompleteItems = costSummaries.stream()
-                .mapToInt(ProjectCostContext.CostSummary::incompleteItemCount).sum();
+        // 汇总与项目行、结算快照统一使用 ProjectCostContext + 同一 totalCost 公式，
+        // 避免"汇总成本未完整、项目行却有利润"的口径冲突。
+        Map<Long, BigDecimal> payableCostByProject = new HashMap<>();
+        for (Payable payable : payables) {
+            if (payable.getProject() == null || payable.getProject().getProjectId() == null) {
+                continue;
+            }
+            payableCostByProject.merge(payable.getProject().getProjectId(),
+                    accessContext.value(payable.getAmount()), BigDecimal::add);
+        }
+        BigDecimal estimatedCost = BigDecimal.ZERO;
+        BigDecimal aggregatedTotalCost = BigDecimal.ZERO;
+        int incompleteProjects = 0;
+        int incompleteItems = 0;
+        for (Project project : projects) {
+            ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
+            BigDecimal payableCost = payableCostByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
+            estimatedCost = estimatedCost.add(costSummary.estimatedCost());
+            aggregatedTotalCost = aggregatedTotalCost.add(totalCost(costSummary, payableCost));
+            if (!costSummary.complete()) {
+                incompleteProjects++;
+            }
+            incompleteItems += costSummary.incompleteItemCount();
+        }
         boolean costComplete = incompleteProjects == 0;
         summary.setEstimatedCost(estimatedCost);
-        summary.setActualCost(actualCost.max(summary.getPayableAmount()));
+        summary.setActualCost(aggregatedTotalCost);
         summary.setCostComplete(costComplete);
         summary.setCostIncompleteProjectCount(incompleteProjects);
         summary.setCostIncompleteItemCount(incompleteItems);
         summary.setProfitAmount(costComplete
-                ? summary.getContractAmount().subtract(summary.getActualCost()) : null);
+                ? summary.getContractAmount().subtract(aggregatedTotalCost) : null);
+        // 与项目明细/结算同口径：成本不完整时毛利率同样为 null。
+        summary.setGrossMargin(costComplete
+                ? rate(summary.getProfitAmount(), summary.getContractAmount()) : null);
         summary.setCollectionRate(rate(summary.getReceivedAmount(), summary.getReceivableAmount()));
 
         summary.setUrgentReceivables(receivables.stream()
@@ -192,7 +209,7 @@ public class FinanceReportContext {
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAllocation);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-        BigDecimal totalCost = costSummary.actualCost().max(payableCost);
+        BigDecimal totalCost = totalCost(costSummary, payableCost);
         boolean costComplete = costSummary.complete();
         BigDecimal grossProfit = costComplete
                 ? report.getContractAmount().subtract(totalCost) : null;
@@ -249,7 +266,7 @@ public class FinanceReportContext {
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAmount);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-        BigDecimal totalCost = costSummary.actualCost().max(payableCost);
+        BigDecimal totalCost = totalCost(costSummary, payableCost);
         BigDecimal grossProfit = costSummary.complete()
                 ? settlement.getContractAmount().subtract(totalCost) : null;
         settlement.setEstimatedCost(costSummary.estimatedCost());
@@ -293,6 +310,13 @@ public class FinanceReportContext {
                     current.getCompany().getComId(), current.getStore().getStoreId());
         }
         return List.of();
+    }
+
+    /**
+     * 项目实际成本唯一口径：实际发生成本与应付成本取较高者；汇总、项目报告、结算共用。
+     */
+    private BigDecimal totalCost(ProjectCostContext.CostSummary costSummary, BigDecimal payableCost) {
+        return costSummary.actualCost().max(accessContext.value(payableCost));
     }
 
     private BigDecimal payableAmount(List<Payable> payables, PayableType type) {

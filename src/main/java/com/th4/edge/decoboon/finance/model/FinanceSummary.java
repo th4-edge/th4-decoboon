@@ -29,6 +29,8 @@ public class FinanceSummary {
     private BigDecimal estimatedCost = BigDecimal.ZERO;
     private BigDecimal actualCost = BigDecimal.ZERO;
     private BigDecimal profitAmount;
+    /** 汇总毛利率；成本不完整时为 null（不得用 0 代替）。 */
+    private BigDecimal grossMargin;
     private Boolean costComplete = Boolean.TRUE;
     private Integer costIncompleteProjectCount = 0;
     private Integer costIncompleteItemCount = 0;
@@ -73,6 +75,8 @@ public class FinanceSummary {
     public void setCashBalance(BigDecimal cashBalance) { this.cashBalance = cashBalance; }
     public BigDecimal getProfitAmount() { return profitAmount; }
     public void setProfitAmount(BigDecimal profitAmount) { this.profitAmount = profitAmount; }
+    public BigDecimal getGrossMargin() { return grossMargin; }
+    public void setGrossMargin(BigDecimal grossMargin) { this.grossMargin = grossMargin; }
     public BigDecimal getEstimatedCost() { return estimatedCost; }
     public void setEstimatedCost(BigDecimal estimatedCost) { this.estimatedCost = estimatedCost; }
     public BigDecimal getActualCost() { return actualCost; }

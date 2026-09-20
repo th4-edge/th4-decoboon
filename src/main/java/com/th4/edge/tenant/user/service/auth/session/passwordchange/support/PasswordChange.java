@@ -82,14 +82,10 @@ public class PasswordChange implements com.th4.edge.tenant.user.service.auth.ses
             throw new DefinedException(new DefaultErrorCode("400", "两次输入的新密码不一致"));
         }
         passwordContext.validate(replacement);
+        // 安全变更：App 端微信登录已验证身份，密码设置/修改均不要求原密码。
+        // 无论是否已有密码哈希，直接设置/覆盖密码；oldPassword 字段保留但不再校验（向后兼容）。
         if (credential.getPasswordHash() == null || credential.getPasswordHash().isBlank()) {
             return passwordAuthContext.setInitialPassword(credential, replacement);
-        }
-        if (!passwordContext.matches(required(oldPassword, "原密码"), credential.getPasswordHash())) {
-            userContext.log(credential, com.th4.edge.tenant.user.configure.SecurityAction.PasswordChange,
-                    com.th4.edge.tenant.user.configure.SecurityResult.Failure,
-                    employee, "原密码错误", null);
-            throw new DefinedException(new DefaultErrorCode("400", "原密码错误"));
         }
         return passwordAuthContext.changePassword(credential, replacement);
     }

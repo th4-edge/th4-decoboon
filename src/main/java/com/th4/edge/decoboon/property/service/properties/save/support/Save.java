@@ -94,6 +94,8 @@ public class Save implements com.th4.edge.decoboon.property.service.properties.s
         property.setSalesman(customer.getOwner());
         property.setDesigner(customer.getDesigner());
         property.setRemark(remark);
+        customer.setAddr(address.trim());
+        customerRepository.save(customer);
         return propertyRepository.save(property);
     }
 }

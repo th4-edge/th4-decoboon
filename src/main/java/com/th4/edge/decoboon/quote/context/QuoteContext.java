@@ -18,6 +18,7 @@ import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.configure.QuoteMode;
 import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
+import com.th4.edge.decoboon.quote.configure.QuoteDifferenceStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
@@ -78,8 +79,9 @@ public class QuoteContext {
         if (design == null || design.getDesignId() == null) {
             throw new DefinedException(new DefaultErrorCode("400", "设计方案不能为空"));
         }
-        if (DesignStatus.Archived.equals(design.getStatus())) {
-            throw new DefinedException(new DefaultErrorCode("400", "已归档方案不能生成报价"));
+        if (!List.of(DesignStatus.Ready, DesignStatus.Presented, DesignStatus.Selected)
+                .contains(design.getStatus())) {
+            throw new DefinedException(new DefaultErrorCode("400", "设计方案尚未完成，不能生成客户报价"));
         }
         Property designProperty = design.getProperty() == null
                 ? propertyContext.ensureForCustomer(design.getCustomer(), design.getOwner())
@@ -122,6 +124,7 @@ public class QuoteContext {
         quote.setTaxAmount(tax);
         quote.setAmount(money(discounted.add(tax)));
         quote.setCost(money(totalCost));
+        quote.setCostComplete(subtotal.signum() == 0 || totalCost.signum() > 0);
         quote.setStatus(QuoteStatus.Draft);
         quoteRepository.save(quote);
 
@@ -173,10 +176,15 @@ public class QuoteContext {
             throw new DefinedException(new DefaultErrorCode("400", "套餐报价必须绑定客户所属房屋"));
         }
         quote.setCompany(customer.getCompany());
+        quote.setStore(property.getStore() == null ? employee.getStore() : property.getStore());
+        quote.setTeam(property.getTeam() == null ? employee.getTeam() : property.getTeam());
         quote.setProperty(property);
         quote.setCustomer(customer);
         quote.setPackageTemplate(packageTemplate);
         quote.setCreatedBy(employee);
+        quote.setVersion((int) quoteRepository
+                .countByCompany_ComIdAndCustomer_CustIdAndPackageTemplate_TemplateId(
+                        customer.getCompany().getComId(), customer.getCustId(), packageTemplate.getTemplateId()) + 1);
         quote.setMode(QuoteMode.Package);
         quote.setArea(area.setScale(2, RoundingMode.HALF_UP));
         BigDecimal rate = discount != null
@@ -193,6 +201,7 @@ public class QuoteContext {
         quote.setTaxAmount(tax);
         quote.setAmount(money(discounted.add(tax)));
         quote.setCost(cost);
+        quote.setCostComplete(amount.signum() == 0 || cost.signum() > 0);
         quote.setStatus(QuoteStatus.Draft);
         quoteRepository.save(quote);
 
@@ -211,7 +220,13 @@ public class QuoteContext {
         if (!QuoteStatus.Draft.equals(quote.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "只有草稿报价可以提交"));
         }
+        boolean pendingDifference = quoteItemRepository.findByQuote(quote).stream()
+                .anyMatch(line -> QuoteDifferenceStatus.Pending.equals(line.getDifferenceStatus()));
+        if (pendingDifference) {
+            throw new DefinedException(new DefaultErrorCode("400", "存在待确认的设计差异，请先确认、忽略或调整后再提交"));
+        }
         quote.setStatus(QuoteStatus.Submitted);
+        quote.setSubmittedAt(java.time.LocalDateTime.now());
         return quoteRepository.save(quote);
     }
 
@@ -232,7 +247,8 @@ public class QuoteContext {
         quote.setProperty(property);
         quote.setCustomer(customer);
         quote.setStatus(QuoteStatus.Accepted);
-        customer.setStatus(CustStatus.Signed);
+        quote.setAcceptedAt(java.time.LocalDateTime.now());
+        customer.setStatus(CustStatus.Quoted);
         customerRepository.save(customer);
         return quoteRepository.save(quote);
     }
@@ -240,10 +256,11 @@ public class QuoteContext {
     @Transactional
     public Quote reject(Long quoteId) {
         Quote quote = requireQuote(quoteId);
-        if (QuoteStatus.Converted.equals(quote.getStatus())) {
-            throw new DefinedException(new DefaultErrorCode("400", "已转项目报价不能驳回"));
+        if (!QuoteStatus.Submitted.equals(quote.getStatus())) {
+            throw new DefinedException(new DefaultErrorCode("400", "只有已提交报价可以驳回"));
         }
         quote.setStatus(QuoteStatus.Rejected);
+        quote.setRejectedAt(java.time.LocalDateTime.now());
         return quoteRepository.save(quote);
     }
 
@@ -254,6 +271,7 @@ public class QuoteContext {
             throw new DefinedException(new DefaultErrorCode("400", "只有客户接受的报价可以转项目"));
         }
         quote.setStatus(QuoteStatus.Converted);
+        quote.setConvertedAt(java.time.LocalDateTime.now());
         return quoteRepository.save(quote);
     }
 

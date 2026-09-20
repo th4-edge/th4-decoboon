@@ -45,7 +45,7 @@ import java.time.LocalDateTime;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_design_requirement", indexes = {
+@Table(name = "db_design_requirement", indexes = {
         @Index(name = "idx_requirement_company", columnList = "com_id, requirement_id"),
         @Index(name = "idx_requirement_company_store", columnList = "com_id, store_id, requirement_id"),
         @Index(name = "idx_requirement_company_team", columnList = "com_id, team_id, requirement_id"),

@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.project.context;
 
+import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableType;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
@@ -41,6 +43,7 @@ public class ProjectContractContext {
     private final ContractLineRepository lineRepository;
     private final ReceivableRepository receivableRepository;
     private final ProjectRepository projectRepository;
+    private final CustomerRepository customerRepository;
     private final QuoteLineRepository quoteLineRepository;
     private final PropertyRepository propertyRepository;
     private final PropertyContext propertyContext;
@@ -54,6 +57,7 @@ public class ProjectContractContext {
                                   ContractLineRepository lineRepository,
                                   ReceivableRepository receivableRepository,
                                   ProjectRepository projectRepository,
+                                  CustomerRepository customerRepository,
                                   QuoteLineRepository quoteLineRepository,
                                   PropertyRepository propertyRepository,
                                   PropertyContext propertyContext,
@@ -66,6 +70,7 @@ public class ProjectContractContext {
         this.lineRepository = lineRepository;
         this.receivableRepository = receivableRepository;
         this.projectRepository = projectRepository;
+        this.customerRepository = customerRepository;
         this.quoteLineRepository = quoteLineRepository;
         this.propertyRepository = propertyRepository;
         this.propertyContext = propertyContext;
@@ -79,13 +84,22 @@ public class ProjectContractContext {
     @Transactional
     public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt,
                                            LocalDate startDate, LocalDate planEndDate, String remark) {
+        return createFromQuote(quote, employee, signedAt, quote == null ? null : quote.getAmount(),
+                startDate, planEndDate, remark);
+    }
+
+    /** 客户确认报价后先创建合同草稿/待签，不创建项目。 */
+    @Transactional
+    public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt, BigDecimal signedAmount,
+                                           LocalDate startDate, LocalDate planEndDate, String remark) {
         ProjectContract existing = contractRepository.findByQuote_QuoteId(quote.getQuoteId()).orElse(null);
         if (existing != null) {
             return existing;
         }
-        Property property = quote.getProperty() == null
-                ? propertyContext.ensureForCustomer(quote.getCustomer(), quote.getCreatedBy())
-                : quote.getProperty();
+        Property property = quote.getProperty();
+        if (property == null || property.getPropertyId() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "报价缺少客户房屋，请先建立并选择房屋档案"));
+        }
         Property locked = propertyRepository.findByPropertyIdAndCompany_ComId(
                         property.getPropertyId(), quote.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "房屋不存在或无权访问")));
@@ -101,8 +115,8 @@ public class ProjectContractContext {
             contract.setNo("C" + System.currentTimeMillis());
             contract.setBaselineAmount(quote.getAmount());
             contract.setCurrentAmount(quote.getAmount());
-            contract.setStatus(signedAt == null ? ContractStatus.PendingSign : ContractStatus.Signed);
-            contract.setSignedAt(signedAt);
+            contract.setStatus(ContractStatus.PendingSign);
+            contract.setSignedAt(null);
             contract.setStartDate(startDate);
             contract.setPlanEndDate(planEndDate);
             contract.setCreatedBy(employee);
@@ -110,16 +124,68 @@ public class ProjectContractContext {
             permissionContext.apply(contract, locked, quote.getCustomer());
             ProjectContract saved = contractRepository.save(contract);
             syncLines(saved, quoteLineRepository.findByQuote(quote));
-            propertyContext.updateStatus(locked, com.th4.edge.decoboon.property.configure.PropertyStatus.Contracted);
-            return saved;
+            return signedAt == null ? saved : markSigned(saved, signedAt, signedAmount);
         });
     }
 
     @Transactional
+    public ProjectContract markSigned(ProjectContract contract) {
+        return markSigned(contract, LocalDate.now(), contract == null ? null : contract.getBaselineAmount());
+    }
+
+    @Transactional
+    public ProjectContract markSigned(ProjectContract contract, LocalDate signedAt) {
+        return markSigned(contract, signedAt, contract == null ? null : contract.getBaselineAmount());
+    }
+
+    @Transactional
+    public ProjectContract markSigned(ProjectContract contract, LocalDate signedAt, BigDecimal signedAmount) {
+        if (contract == null || contract.getContractId() == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "合同不存在或无权访问"));
+        }
+        if (contract.getStatus() != ContractStatus.Draft && contract.getStatus() != ContractStatus.PendingSign) {
+            throw new DefinedException(new DefaultErrorCode("400", "只有草稿或待签约合同可以签约"));
+        }
+        BigDecimal finalSignedAmount = money(signedAmount);
+        if (finalSignedAmount.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "最终签约价格必须大于 0"));
+        }
+        snapshotSignedCost(contract);
+        contract.setSignedAmount(finalSignedAmount);
+        contract.setCurrentAmount(finalSignedAmount);
+        contract.setStatus(ContractStatus.Signed);
+        contract.setSignedAt(signedAt == null ? LocalDate.now() : signedAt);
+        markCustomerStatus(contract.getQuote(), CustStatus.Signed);
+        if (contract.getProperty() != null) {
+            propertyContext.updateStatus(contract.getProperty(),
+                    com.th4.edge.decoboon.property.configure.PropertyStatus.Contracted);
+        }
+        return contractRepository.save(contract);
+    }
+
+    @Transactional
     public ProjectContract markEffective(ProjectContract contract) {
+        if (contract == null || contract.getContractId() == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "合同不存在或无权访问"));
+        }
+        if (contract.getSignedAt() == null
+                || (contract.getStatus() != ContractStatus.Signed
+                && contract.getStatus() != ContractStatus.Effective
+                && contract.getStatus() != ContractStatus.Active)) {
+            throw new DefinedException(new DefaultErrorCode("400", "合同签约后才能生效"));
+        }
         contract.setStatus(ContractStatus.Effective);
         contract.setEffectiveAt(LocalDateTime.now());
+        markCustomerStatus(contract.getQuote(), CustStatus.Serving);
         return contractRepository.save(contract);
+    }
+
+    private void markCustomerStatus(Quote quote, CustStatus status) {
+        if (quote == null || quote.getCustomer() == null || quote.getCustomer().getCustId() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "合同缺少有效客户"));
+        }
+        quote.getCustomer().setStatus(status);
+        customerRepository.save(quote.getCustomer());
     }
 
     @Transactional
@@ -180,6 +246,18 @@ public class ProjectContractContext {
         contract.setPendingChangeCount((int) changeRepository.findByContractOrderByChangeIdDesc(contract).stream()
                 .filter(item -> item.getStatus() == ContractChangeStatus.Pending
                         || item.getStatus() == ContractChangeStatus.Approved).count());
+        List<ContractLine> lines = lineRepository.findByContractOrderBySortAsc(contract);
+        BigDecimal signedCost = BigDecimal.ZERO;
+        boolean complete = !lines.isEmpty();
+        for (ContractLine line : lines) {
+            BigDecimal lineCost = value(line.getCost());
+            signedCost = signedCost.add(lineCost);
+            if (requiresCost(line.getType()) && lineCost.signum() <= 0) {
+                complete = false;
+            }
+        }
+        contract.setSignedCost(money(signedCost));
+        contract.setCostComplete(complete);
         return contract;
     }
 
@@ -253,6 +331,42 @@ public class ProjectContractContext {
             return line;
         }).toList();
         lineRepository.saveAll(lines);
+    }
+
+    private boolean requiresCost(com.th4.edge.decoboon.catalog.configure.ItemType type) {
+        return type == com.th4.edge.decoboon.catalog.configure.ItemType.Construction
+                || type == com.th4.edge.decoboon.catalog.configure.ItemType.Material
+                || type == com.th4.edge.decoboon.catalog.configure.ItemType.Custom
+                || type == com.th4.edge.decoboon.catalog.configure.ItemType.Soft
+                || type == com.th4.edge.decoboon.catalog.configure.ItemType.Appliance;
+    }
+
+    private void snapshotSignedCost(ProjectContract contract) {
+        List<ContractLine> lines = lineRepository.findByContractOrderBySortAsc(contract);
+        for (ContractLine line : lines) {
+            QuoteLine source = line.getSourceQuoteLine();
+            BigDecimal lineCost = value(line.getCost());
+            if (lineCost.signum() <= 0 && source != null) {
+                lineCost = value(source.getCost());
+            }
+            if (lineCost.signum() <= 0) {
+                BigDecimal unitCost = source == null || source.getCatalogItem() == null
+                        || source.getCatalogItem().getCostPrice() == null
+                        ? BigDecimal.ZERO : source.getCatalogItem().getCostPrice();
+                BigDecimal quantity = value(line.getQuantity());
+                lineCost = line.getPricingMode() == com.th4.edge.decoboon.catalog.configure.PricingMethod.FixedTotal
+                        ? unitCost : unitCost.multiply(quantity);
+            }
+            // 签约时保留已有冻结成本；只有缺失时才落当前标准成本。
+            line.setCost(money(lineCost));
+        }
+        if (!lines.isEmpty()) {
+            lineRepository.saveAll(lines);
+        }
+    }
+
+    private BigDecimal money(BigDecimal value) {
+        return value(value).setScale(2, java.math.RoundingMode.HALF_UP);
     }
 
     private BigDecimal value(BigDecimal value) {

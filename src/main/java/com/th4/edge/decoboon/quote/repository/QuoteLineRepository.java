@@ -14,4 +14,6 @@ public interface QuoteLineRepository extends JpaRepository<QuoteLine, Long> {
     List<QuoteLine> findByQuote(Quote quote);
 
     boolean existsByDesignItem_ItemId(Long itemId);
+
+    boolean existsByPackageLine_ItemId(Long itemId);
 }

@@ -35,11 +35,12 @@ import java.util.List;
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_measure", indexes = {
+@Table(name = "db_measure", indexes = {
         @Index(name = "idx_measure_company", columnList = "com_id, measure_id"),
         @Index(name = "idx_measure_company_property", columnList = "com_id, property_id, measure_id"),
         @Index(name = "idx_measure_company_customer", columnList = "com_id, customer_id, measure_id"),
-        @Index(name = "idx_measure_company_designer", columnList = "com_id, designer_id, measure_id")
+        @Index(name = "idx_measure_company_designer", columnList = "com_id, designer_id, measure_id"),
+        @Index(name = "idx_measure_company_executor", columnList = "com_id, executor_id, measure_id")
 })
 @DataPermission
 public class Measure extends AuditModel {
@@ -80,9 +81,14 @@ public class Measure extends AuditModel {
     private Property property;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "designer_id", nullable = false)
-    @Note("量房设计师")
+    @JoinColumn(name = "designer_id")
+    @Note("量房设计师（设计责任人事实，未指派时为空）")
     private Employee designer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "executor_id")
+    @Note("量房执行人（实际上门执行量房的员工，与设计师事实分离）")
+    private Employee executor;
 
     @Note("量房时间")
     private LocalDateTime measureTime;
@@ -93,19 +99,19 @@ public class Measure extends AuditModel {
     private MeasureStatus status = MeasureStatus.Scheduled;
 
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_measure_site_photos", joinColumns = @JoinColumn(name = "measure_id"))
+    @CollectionTable(name = "db_measure_site_photos", joinColumns = @JoinColumn(name = "measure_id"))
     @Column(name = "url", length = 512)
     @Note("现场照片")
     private List<String> sitePhotos;
 
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_measure_structure_images", joinColumns = @JoinColumn(name = "measure_id"))
+    @CollectionTable(name = "db_measure_structure_images", joinColumns = @JoinColumn(name = "measure_id"))
     @Column(name = "url", length = 512)
     @Note("结构图纸")
     private List<String> structureImages;
 
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_measure_attachments", joinColumns = @JoinColumn(name = "measure_id"))
+    @CollectionTable(name = "db_measure_attachments", joinColumns = @JoinColumn(name = "measure_id"))
     @Column(name = "url", length = 512)
     @Note("量房附件")
     private List<String> attachments;
@@ -146,6 +152,8 @@ public class Measure extends AuditModel {
     public void setProperty(Property property) { this.property = property; }
     public Employee getDesigner() { return designer; }
     public void setDesigner(Employee designer) { this.designer = designer; }
+    public Employee getExecutor() { return executor; }
+    public void setExecutor(Employee executor) { this.executor = executor; }
     public LocalDateTime getMeasureTime() { return measureTime; }
     public void setMeasureTime(LocalDateTime measureTime) { this.measureTime = measureTime; }
     public MeasureStatus getStatus() { return status; }

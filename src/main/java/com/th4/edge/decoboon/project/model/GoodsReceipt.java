@@ -23,7 +23,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_goods_receipt", indexes = {
+@Table(name = "db_goods_receipt", indexes = {
         @Index(name="idx_goods_receipt_company", columnList="com_id, receipt_id"),
         @Index(name="idx_goods_receipt_purchase", columnList="com_id, purchase_id, receipt_id")
 ,
@@ -62,7 +62,7 @@ public class GoodsReceipt extends AuditModel implements ProjectOwned {
     @Enumerated(EnumType.STRING) @Column(length=32,nullable=false) @Note("单位") private Unit unit=Unit.Area;
     @Note("到场时间") private LocalDateTime arrivedAt;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="inspector_id",nullable=false) @Note("验收人") private Employee inspector;
-    @ElementCollection @CollectionTable(name="db_decoboon_goods_receipt_images",joinColumns=@JoinColumn(name="receipt_id")) @Column(name="url",length=512) private List<String> images;
+    @ElementCollection @CollectionTable(name="db_goods_receipt_images",joinColumns=@JoinColumn(name="receipt_id")) @Column(name="url",length=512) private List<String> images;
     @Column(length=500) @Note("备注") private String remark;
     public Long getReceiptId(){return receiptId;} public void setReceiptId(Long v){receiptId=v;}
     public Company getCompany(){return company;} public void setCompany(Company v){company=v;}

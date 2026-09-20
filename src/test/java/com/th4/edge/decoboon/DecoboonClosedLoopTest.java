@@ -11,6 +11,8 @@ import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
+import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.project.context.ProjectContractContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
@@ -26,6 +28,10 @@ import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
+import com.th4.edge.decoboon.project.configure.ContractStatus;
+import com.th4.edge.decoboon.property.configure.PropertyStatus;
+import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.decoboon.quote.context.QuoteContext;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
@@ -78,6 +84,8 @@ class DecoboonClosedLoopTest {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
+    private PropertyRepository propertyRepository;
+    @Autowired
     private PackageTemplateRepository giftPackRepository;
     @Autowired
     private PackageSectionRepository sectionRepository;
@@ -97,6 +105,8 @@ class DecoboonClosedLoopTest {
     private ProjectTaskRepository taskRepository;
     @Autowired
     private MaterialPlanRepository materialPlanRepository;
+    @Autowired
+    private ReceivableRepository receivableRepository;
 
     @Test
     void shouldCreateQuoteProjectAndCloseAcceptance() {
@@ -156,15 +166,38 @@ class DecoboonClosedLoopTest {
         customer.setOwner(employee);
         customer = customerRepository.save(customer);
 
-        Quote quote = quoteContext.create(customer, pack, new BigDecimal("120"), BigDecimal.ONE, employee);
+        Property property = new Property();
+        property.setCompany(company);
+        property.setStore(store);
+        property.setOwner(employee);
+        property.setCustomer(customer);
+        property.setPropertyNo("P" + seq);
+        property.setAddress(customer.getAddr());
+        property.setCommunity(customer.getCommunity());
+        property.setArea(customer.getArea());
+        property.setStatus(PropertyStatus.PendingMeasure);
+        property = propertyRepository.save(property);
+
+        Quote quote = quoteContext.create(customer, pack, property, new BigDecimal("120"), BigDecimal.ONE, employee);
         assertThat(quote.getAmount()).isPositive();
         assertThat(quoteItemRepository.findByQuote(quote)).isNotEmpty();
 
         quoteContext.submit(quote.getQuoteId());
         quoteContext.accept(quote.getQuoteId());
+        assertThat(customer.getStatus()).isEqualTo(CustStatus.Quoted);
+        BigDecimal finalSignedAmount = quote.getAmount().subtract(new BigDecimal("1000.00"));
         ProjectContract contract = projectContractContext.createFromQuote(
-                quote, employee, LocalDate.now(), LocalDate.now(), LocalDate.now().plusDays(90), "测试合同");
+                quote, employee, null, finalSignedAmount, LocalDate.now(), LocalDate.now().plusDays(90), "测试合同");
+        assertThat(contract.getStatus()).isEqualTo(ContractStatus.PendingSign);
+        assertThat(customer.getStatus()).isEqualTo(CustStatus.Quoted);
+        projectContractContext.markSigned(contract, LocalDate.now(), finalSignedAmount);
+        assertThat(contract.getSignedAmount()).isEqualByComparingTo(finalSignedAmount);
+        assertThat(contract.getCurrentAmount()).isEqualByComparingTo(finalSignedAmount);
+        assertThat(customer.getStatus()).isEqualTo(CustStatus.Signed);
+        assertThat(propertyRepository.findById(property.getPropertyId()).orElseThrow().getStatus())
+                .isEqualTo(PropertyStatus.Contracted);
         projectContractContext.markEffective(contract);
+        assertThat(customer.getStatus()).isEqualTo(CustStatus.Serving);
 
         Project draft = new Project();
         draft.setCompany(company);
@@ -174,6 +207,11 @@ class DecoboonClosedLoopTest {
         draft.setPlanEndDate(LocalDate.now().plusDays(90));
         draft.setManager(employee);
         Project project = projectContext.createFromEffectiveContract(contract, draft);
+
+        assertThat(project.getContractAmount()).isEqualByComparingTo(finalSignedAmount);
+        assertThat(receivableRepository.findByProjectOrderByDueDateAsc(project).stream()
+                .map(item -> item.getAmount() == null ? BigDecimal.ZERO : item.getAmount())
+                .reduce(BigDecimal.ZERO, BigDecimal::add)).isEqualByComparingTo(finalSignedAmount);
 
         List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
         List<MaterialPlan> materialPlans = materialPlanRepository.findByProject(project);

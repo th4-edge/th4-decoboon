@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("更新合作方")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "createTime"}))
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "brands", "createTime"}))
 @Service("partner/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.decoboon.supply.service.partner.update.Update {
@@ -42,6 +42,7 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
     @AutoInject private String bankAccount;
     @AutoInject private PartnerStatus status;
     @AutoInject private String remark;
+    @AutoInject private java.util.Set<String> brands;
     private final TenantContext tenantContext;
     private final PartnerRepository partnerRepository;
 
@@ -53,7 +54,7 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
     @Override
     @Transactional
     public Partner call(Partner request) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.ProjectSupport);
+        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.ProjectSupport, EmployeeRole.Finance);
         Partner partner = partnerRepository.findById(partnerId)
                 .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "合作方不存在")));
@@ -70,6 +71,16 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
         if (bankAccount != null) partner.setBankAccount(bankAccount);
         if (status != null) partner.setStatus(status);
         if (remark != null) partner.setRemark(remark);
+        if (brands != null) partner.setBrands(normalizeBrands(brands));
         return partnerRepository.save(partner);
+    }
+
+    private java.util.Set<String> normalizeBrands(java.util.Set<String> values) {
+        java.util.LinkedHashSet<String> result = new java.util.LinkedHashSet<>();
+        values.stream()
+                .filter(value -> value != null && !value.isBlank())
+                .map(String::trim)
+                .forEach(result::add);
+        return result;
     }
 }

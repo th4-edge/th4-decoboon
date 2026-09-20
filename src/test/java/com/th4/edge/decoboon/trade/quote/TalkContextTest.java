@@ -9,13 +9,11 @@ import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Talk;
 import com.th4.edge.decoboon.design.model.TalkSection;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
-import com.th4.edge.decoboon.design.repository.DesignRepository;
 import com.th4.edge.decoboon.design.repository.RequirementRepository;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.decoboon.design.repository.TalkRepository;
 import com.th4.edge.decoboon.design.repository.TalkSectionRepository;
 import com.th4.edge.decoboon.quote.model.Quote;
-import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.model.Company;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +21,6 @@ import org.mockito.ArgumentCaptor;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
@@ -35,33 +32,18 @@ class TalkContextTest {
 
     private final TalkRepository talkRepository = mock(TalkRepository.class);
     private final TalkSectionRepository sectionRepository = mock(TalkSectionRepository.class);
-    private final DesignRepository designRepository = mock(DesignRepository.class);
     private final DesignItemRepository itemRepository = mock(DesignItemRepository.class);
     private final SpaceRepository spaceRepository = mock(SpaceRepository.class);
     private final RequirementRepository requirementRepository = mock(RequirementRepository.class);
     private final DesignContext designContext = mock(DesignContext.class);
     private final TalkPptContext talkPptContext = mock(TalkPptContext.class);
     private final TalkContext context = new TalkContext(talkRepository, sectionRepository,
-            designRepository, itemRepository, spaceRepository, requirementRepository, designContext, talkPptContext);
+            itemRepository, spaceRepository, requirementRepository, designContext, talkPptContext);
 
     @Test
-    void shouldRequireAtLeastTwoTalkableDesigns() {
+    void shouldGenerateStructuredTalkSectionsForSingleTalkableDesign() {
         Design design = design(DesignStatus.Ready);
         Quote quote = quote(design);
-        when(designRepository.countByCompany_ComIdAndCustomer_CustIdAndStatusIn(anyLong(), anyLong(), any()))
-                .thenReturn(1L);
-
-        assertThatThrownBy(() -> context.build(new Talk(), design, quote))
-                .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("至少完成两套");
-    }
-
-    @Test
-    void shouldGenerateStructuredTalkSections() {
-        Design design = design(DesignStatus.Ready);
-        Quote quote = quote(design);
-        when(designRepository.countByCompany_ComIdAndCustomer_CustIdAndStatusIn(anyLong(), anyLong(), any()))
-                .thenReturn(2L);
         when(talkRepository.save(any(Talk.class))).thenAnswer(invocation -> {
             Talk talk = invocation.getArgument(0);
             talk.setTalkId(99L);

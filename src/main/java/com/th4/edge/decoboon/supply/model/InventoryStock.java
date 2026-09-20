@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_inventory_stock", indexes = {
+@Table(name = "db_inventory_stock", indexes = {
         @Index(name = "idx_stock_company", columnList = "com_id, stock_id"),
         @Index(name = "idx_stock_company_store", columnList = "com_id, store_id, stock_id"),
         @Index(name = "idx_stock_company_item", columnList = "com_id, item_id, stock_id")

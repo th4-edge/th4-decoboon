@@ -14,6 +14,10 @@ public class CatalogTree {
     private List<String> categories;
     private Map<String, List<String>> brands;
     private Map<String, List<String>> specs;
+    /** category -> brand -> series */
+    private Map<String, Map<String, List<String>>> seriesByBrand;
+    /** category -> brand -> series -> specs */
+    private Map<String, Map<String, Map<String, List<String>>>> specsBySeries;
     private long total;
 
     public ItemType getType() { return type; }
@@ -24,6 +28,10 @@ public class CatalogTree {
     public void setBrands(Map<String, List<String>> brands) { this.brands = brands; }
     public Map<String, List<String>> getSpecs() { return specs; }
     public void setSpecs(Map<String, List<String>> specs) { this.specs = specs; }
+    public Map<String, Map<String, List<String>>> getSeriesByBrand() { return seriesByBrand; }
+    public void setSeriesByBrand(Map<String, Map<String, List<String>>> seriesByBrand) { this.seriesByBrand = seriesByBrand; }
+    public Map<String, Map<String, Map<String, List<String>>>> getSpecsBySeries() { return specsBySeries; }
+    public void setSpecsBySeries(Map<String, Map<String, Map<String, List<String>>>> specsBySeries) { this.specsBySeries = specsBySeries; }
     public long getTotal() { return total; }
     public void setTotal(long total) { this.total = total; }
 }

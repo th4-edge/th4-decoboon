@@ -22,13 +22,14 @@ import java.math.BigDecimal;
 @Note("合作方分页")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "createTime",
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "brands", "createTime",
                 "payableAmount", "paidAmount", "outstandingAmount"}))
 @Service("partner/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.supply.service.partner.page.Page {
     @User private Employee employee;
     @AutoInject private PartnerType type;
+    @AutoInject private String brand;
     private final TenantContext tenantContext;
     private final PartnerRepository partnerRepository;
     private final PayableRepository payableRepository;
@@ -46,6 +47,8 @@ public class Page implements com.th4.edge.decoboon.supply.service.partner.page.P
         return new PageImpl<>(partnerRepository.findByCompany_ComIdOrderByPartnerIdDesc(current.getCompany().getComId())
                 .stream()
                 .filter(item -> type == null || item.getType() == type)
+                .filter(item -> brand == null || brand.isBlank()
+                        || item.getBrands().stream().anyMatch(value -> value.equalsIgnoreCase(brand.trim())))
                 .map(this::applyPayableSummary)
                 .toList());
     }

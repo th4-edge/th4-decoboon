@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("业主合同摘要")
 @Properties(allow = {
         @AllowProperties(model = ProjectContract.class,
-                properties = {"contractId", "project", "no", "currentAmount", "status", "signedAt", "startDate",
+                properties = {"contractId", "project", "no", "baselineAmount", "signedAmount", "currentAmount", "status", "signedAt", "startDate",
                         "planEndDate", "paymentTerms", "property", "customer"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name"}),
         @AllowProperties(model = Property.class, properties = {"propertyId", "propertyNo", "community", "roomNo", "address"}),

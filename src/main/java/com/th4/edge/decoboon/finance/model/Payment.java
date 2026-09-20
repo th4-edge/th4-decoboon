@@ -39,7 +39,7 @@ import java.time.LocalDate;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_finance_payment", indexes = {
+@Table(name = "db_finance_payment", indexes = {
         @Index(name = "idx_fin_payment_company", columnList = "com_id, payment_id"),
         @Index(name = "idx_fin_payment_project", columnList = "com_id, project_id, payment_id"),
         @Index(name = "idx_fin_payment_payable", columnList = "com_id, payable_id, payment_id"),

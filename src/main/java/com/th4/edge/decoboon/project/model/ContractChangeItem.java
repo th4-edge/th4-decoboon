@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_contract_change_item", indexes = {
+@Table(name = "db_contract_change_item", indexes = {
         @Index(name = "idx_change_item_company", columnList = "com_id, change_item_id"),
         @Index(name = "idx_change_item_change", columnList = "com_id, change_id, change_item_id")
 ,

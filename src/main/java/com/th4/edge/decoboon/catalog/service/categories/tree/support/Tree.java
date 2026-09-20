@@ -56,19 +56,35 @@ public class Tree implements com.th4.edge.decoboon.catalog.service.categories.tr
         Set<String> categories = new LinkedHashSet<>();
         Map<String, List<String>> brands = new LinkedHashMap<>();
         Map<String, List<String>> specs = new LinkedHashMap<>();
+        Map<String, Map<String, List<String>>> seriesByBrand = new LinkedHashMap<>();
+        Map<String, Map<String, Map<String, List<String>>>> specsBySeries = new LinkedHashMap<>();
         for (Object[] facet : facets) {
             String category = text((String) facet[0]);
+            String brand = text((String) facet[1]);
+            String series = text((String) facet[2]);
+            String spec = text((String) facet[3]);
             categories.add(category);
             brands.computeIfAbsent(category, ignored -> new ArrayList<>());
             specs.computeIfAbsent(category, ignored -> new ArrayList<>());
-            add(brands.get(category), (String) facet[1]);
-            add(specs.get(category), (String) facet[2]);
+            add(brands.get(category), brand);
+            add(specs.get(category), spec);
+            Map<String, List<String>> brandSeries = seriesByBrand.computeIfAbsent(category, ignored -> new LinkedHashMap<>());
+            add(brandSeries.computeIfAbsent(brand, ignored -> new ArrayList<>()), series);
+            Map<String, Map<String, List<String>>> brandSpecs = specsBySeries
+                    .computeIfAbsent(category, ignored -> new LinkedHashMap<>());
+            Map<String, List<String>> seriesSpecs = brandSpecs
+                    .computeIfAbsent(brand, ignored -> new LinkedHashMap<>());
+            List<String> specValues = seriesSpecs
+                    .computeIfAbsent(series, ignored -> new ArrayList<>());
+            add(specValues, spec);
         }
         CatalogTree tree = new CatalogTree();
         tree.setType(type);
         tree.setCategories(new ArrayList<>(categories));
         tree.setBrands(brands);
         tree.setSpecs(specs);
+        tree.setSeriesByBrand(seriesByBrand);
+        tree.setSpecsBySeries(specsBySeries);
         tree.setTotal(repository.countByCompany_ComIdAndTypeAndActiveTrue(comId, type));
         return tree;
     }

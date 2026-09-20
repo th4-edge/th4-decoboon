@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 /** 谈单 PPT 仓储。 */
 public interface TalkRepository extends JpaRepository<Talk, Long>,
         JpaSpecificationExecutor<Talk> {
+
+    boolean existsByDesign_DesignId(Long designId);
 }

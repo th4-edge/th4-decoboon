@@ -141,7 +141,14 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         purchase.setStatus(nowReceived.compareTo(total) >= 0 ? PurchaseStatus.Received : PurchaseStatus.PartiallyReceived);
         purchaseRepository.save(purchase);
         var plan = purchase.getMaterialPlan();
-        plan.setStatus(nowReceived.compareTo(total) >= 0 ? MaterialPlanStatus.Arrived : MaterialPlanStatus.PartiallyArrived);
+        BigDecimal planReceived = purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan).stream()
+                .filter(item -> item.getPurchaseId() == null
+                        || !item.getPurchaseId().equals(purchase.getPurchaseId()))
+                .map(item -> value(item.getReceivedQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .add(nowReceived);
+        plan.setStatus(planReceived.compareTo(value(plan.getQuantity())) >= 0
+                ? MaterialPlanStatus.Arrived : MaterialPlanStatus.PartiallyArrived);
         plan.setArrivedAt(LocalDate.now());
         BigDecimal actualReceivedCost = receiptRepository.findByPurchaseOrderByReceiptIdDesc(purchase).stream()
                 .map(item -> value(item.getQuantity()).multiply(value(purchase.getUnitPrice())))

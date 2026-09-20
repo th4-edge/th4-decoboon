@@ -22,6 +22,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
-                        "area", "subtotal", "amount", "cost", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
+                        "area", "subtotal", "amount", "cost", "costComplete", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
                         "items", "regionGroups", "constructionGroups", "materialGroups", "otherGroups", "createTime", "property"}),
         @AllowProperties(model = QuoteGroup.class,
                 properties = {"key", "name", "type", "category", "unit", "quantity", "amount", "cost", "items"}),
@@ -45,7 +46,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
                         "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "role",
-                        "included", "discountAmount", "components", "sort"}),
+                        "differenceType", "differenceStatus", "included", "discountAmount", "components", "sort"}),
         @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteComponent.class,
                 properties = {"type", "name", "saleAmount", "costAmount", "formula", "sort"}),
         @AllowProperties(model = com.th4.edge.decoboon.pack.model.PackageTemplate.class,
@@ -85,11 +86,21 @@ public class Info implements com.th4.edge.decoboon.quote.service.quotes.info.Inf
 
     @Override
     public Quote call(Quote request) {
-        DataScope scope = dataScopeContext.requireScope(employee);
-        org.springframework.data.jpa.domain.Specification<Quote> byId =
-                (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
-        Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        Employee current = dataScopeContext.requireEmployee(employee);
+        if (current.getRole() == EmployeeRole.Designer) {
+            throw new DefinedException(new DefaultErrorCode("403", "设计师请使用设计师报价详情服务"));
+        }
+        Quote quote;
+        if (current.getRole() == EmployeeRole.Marketer) {
+            quote = quoteRepository.findMarketerVisibleById(quoteId, current.getCompany().getComId(), current.getEmpId())
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        } else {
+            DataScope scope = dataScopeContext.resolve(current);
+            org.springframework.data.jpa.domain.Specification<Quote> byId =
+                    (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
+            quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        }
         return quoteViewContext.apply(quote, quoteItemRepository.findByQuote(quote));
     }
 }

@@ -13,12 +13,15 @@ import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /** 供应商、工厂、劳务班组等合作方。 */
 @Note("供应链合作方")
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_partner", indexes = {
+@Table(name = "db_partner", indexes = {
         @Index(name = "idx_partner_company", columnList = "com_id, partner_id"),
         @Index(name = "idx_partner_company_type", columnList = "com_id, type, partner_id")
 })
@@ -50,6 +53,11 @@ public class Partner extends AuditModel {
     @Column(length = 64) @Note("银行账号") private String bankAccount;
     @Enumerated(EnumType.STRING) @Column(length = 16, nullable = false) @Note("状态") private PartnerStatus status = PartnerStatus.Active;
     @Column(length = 500) @Note("备注") private String remark;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "db_partner_brand", joinColumns = @JoinColumn(name = "partner_id"))
+    @Column(name = "brand", length = 128, nullable = false)
+    @Note("可供应品牌")
+    private Set<String> brands = new LinkedHashSet<>();
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "creator_id", nullable = false) @Note("创建人") private Employee createdBy;
     @Transient @Note("应付总额") private java.math.BigDecimal payableAmount;
     @Transient @Note("已付总额") private java.math.BigDecimal paidAmount;
@@ -88,6 +96,8 @@ public class Partner extends AuditModel {
     public void setStatus(PartnerStatus status) { this.status = status; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
+    public Set<String> getBrands() { return brands; }
+    public void setBrands(Set<String> brands) { this.brands = brands == null ? new LinkedHashSet<>() : new LinkedHashSet<>(brands); }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
     public java.math.BigDecimal getPayableAmount() { return payableAmount; }

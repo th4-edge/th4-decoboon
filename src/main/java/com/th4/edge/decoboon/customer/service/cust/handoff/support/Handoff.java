@@ -4,7 +4,6 @@ import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
-import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -40,7 +39,7 @@ import java.time.LocalDateTime;
 public class Handoff implements com.th4.edge.decoboon.customer.service.cust.handoff.Handoff {
     @User private Employee employee;
     @AutoInject @NotNull private Long customerId;
-    @AutoInject private Long propertyId;
+    @AutoInject @NotNull private Long propertyId;
     @AutoInject @NotNull private Long designerId;
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
@@ -78,8 +77,11 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
                 && current.getRole() != EmployeeRole.TeamLeader) {
             throw new DefinedException(new DefaultErrorCode("403", "仅团队负责人、门店店长或企业负责人可以指定设计师"));
         }
-        if (customer.getStatus() != CustStatus.PendingMeasure || customer.getMeasureAt() == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "客户尚未约定量房，不能指定设计师"));
+        if (customer.getDesigner() != null) {
+            throw new DefinedException(new DefaultErrorCode("400", "客户已指定设计师，不能重复指定"));
+        }
+        if (customer.getStatus() == CustStatus.New || customer.getStatus() == CustStatus.Lost) {
+            throw new DefinedException(new DefaultErrorCode("400", "客户尚未跟进或已流失，不能指定设计师"));
         }
         if (current.getRole() == EmployeeRole.StoreManager
                 && (current.getStore() == null || customer.getStore() == null
@@ -101,17 +103,15 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
                 || !designer.getTeam().getTeamId().equals(current.getTeam().getTeamId()))) {
             throw new DefinedException(new DefaultErrorCode("400", "仅可指定本团队设计师"));
         }
+        var property = propertyContext.resolve(propertyId, customer, current);
         customer.setDesigner(designer);
         customer.setHandedOffAt(LocalDateTime.now());
         Customer saved = customerRepository.save(customer);
-        var property = propertyId == null
-                ? propertyContext.ensureForCustomer(saved, current)
-                : propertyContext.resolve(propertyId, saved, current);
         propertyContext.assignDesigner(property, designer);
+        // 量房设计师只在此处由管理者显式指定：补齐预约中以及历史遗留的未指派量房记录。
         measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
-                .filter(item -> item.getStatus() == MeasureStatus.Scheduled)
-                .findFirst()
-                .ifPresent(item -> {
+                .filter(item -> item.getDesigner() == null)
+                .forEach(item -> {
                     item.setDesigner(designer);
                     measureRepository.save(item);
                 });

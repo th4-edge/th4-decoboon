@@ -71,10 +71,9 @@ public class Update implements com.th4.edge.decoboon.project.service.acceptances
         Acceptance acceptance = acceptanceRepository.findOne(((Specification<Acceptance>) (root, query, builder) -> builder.equal(root.get("acceptanceId"), acceptanceId)).and(accessContext.visibleChild(employee, Acceptance.class, "project")))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "验收单不存在")));
         accessContext.requireVisible(acceptance.getProject(), current);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm
-                && current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "当前角色无权确认阶段验收"));
-        }
-        return projectContext.confirmAcceptance(acceptance, current, confirmed, conclusion);
+        // SCN-003：阶段验收由业主本人在授权会话中确认；员工只能提交验收与证据
+        // （project/acceptance/save），不得代表业主确认或驳回，线下代录仍为 BLOCKED。
+        throw new DefinedException(new DefaultErrorCode("403",
+                "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录"));
     }
 }

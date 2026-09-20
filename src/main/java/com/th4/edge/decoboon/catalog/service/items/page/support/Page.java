@@ -29,7 +29,7 @@ import java.util.List;
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
                         "pricingMode", "materialPrice", "manualPrice", "costPrice", "formula", "craft",
-                        "criterion", "description", "active", "sort", "maintainer", "createTime", "updateTime"}),
+                        "criterion", "description", "images", "active", "sort", "maintainer", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("catalog/item/page")
@@ -47,6 +47,9 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
     private String brand;
 
     @AutoInject
+    private String series;
+
+    @AutoInject
     private String spec;
 
     @AutoInject
@@ -57,6 +60,9 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
 
     @AutoInject
     private Integer size;
+
+    @AutoInject
+    private Boolean includeInactive;
 
     @User
     private Employee employee;
@@ -78,12 +84,17 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(builder.equal(root.get("company").get("comId"), currentEmployee.getCompany().getComId()));
             predicates.add(builder.equal(root.get("type"), type));
-            predicates.add(builder.isTrue(root.get("active")));
+            if (!Boolean.TRUE.equals(includeInactive)) {
+                predicates.add(builder.isTrue(root.get("active")));
+            }
             if (category != null && !category.isBlank()) {
                 predicates.add(builder.equal(root.get("category"), category.trim()));
             }
             if (brand != null && !brand.isBlank()) {
                 predicates.add(builder.equal(root.get("brand"), brand.trim()));
+            }
+            if (series != null && !series.isBlank()) {
+                predicates.add(builder.equal(root.get("series"), series.trim()));
             }
             if (spec != null && !spec.isBlank()) {
                 predicates.add(builder.equal(root.get("spec"), spec.trim()));

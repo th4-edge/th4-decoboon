@@ -2,6 +2,8 @@ package com.th4.edge.decoboon.project.context;
 
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
@@ -21,13 +23,16 @@ public class ProjectAccessContext {
     private final TenantContext tenantContext;
     private final DataScopeContext dataScopeContext;
     private final ProjectRepository projectRepository;
+    private final QuoteRepository quoteRepository;
 
     public ProjectAccessContext(TenantContext tenantContext,
                                 DataScopeContext dataScopeContext,
-                                ProjectRepository projectRepository) {
+                                ProjectRepository projectRepository,
+                                QuoteRepository quoteRepository) {
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
         this.projectRepository = projectRepository;
+        this.quoteRepository = quoteRepository;
     }
 
     public Employee requireEmployee(Employee employee) {
@@ -49,6 +54,39 @@ public class ProjectAccessContext {
     public <T> Specification<T> visibleEntity(Employee employee, Class<T> modelClass) {
         Employee current = requireEmployee(employee);
         return DataScopeSpecification.visible(modelClass, dataScopeContext.resolve(current));
+    }
+
+    /** 报价主键必须与当前员工数据范围在同一查询中命中。 */
+    public Quote requireQuote(Long quoteId, Employee employee) {
+        if (quoteId == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "报价索引不能为空"));
+        }
+        Employee current = requireEmployee(employee);
+        Specification<Quote> byId = (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
+        return quoteRepository.findOne(byId.and(visibleQuote(current)))
+                .orElseThrow(() -> new DefinedException(
+                        new DefaultErrorCode("404", "报价不存在或无权访问")));
+    }
+
+    /**
+     * 报价是否属于当前企业（不返回对象内容，仅用于无能力角色的 403/404 语义判定）：
+     * 同企业但无 contract:write 的能力拒绝返回 403，跨企业/不存在仍返回 404，避免对象存在性泄露。
+     */
+    public boolean sameCompanyQuote(Long quoteId, Employee employee) {
+        if (quoteId == null) {
+            return false;
+        }
+        Employee current = requireEmployee(employee);
+        if (current.getCompany() == null) {
+            return false;
+        }
+        return quoteRepository.existsByQuoteIdAndCompany_ComId(quoteId, current.getCompany().getComId());
+    }
+
+    /** 报价四级范围与负责人关系统一 Specification。 */
+    public Specification<Quote> visibleQuote(Employee employee) {
+        Employee current = requireEmployee(employee);
+        return DataScopeSpecification.visible(Quote.class, dataScopeContext.resolve(current));
     }
 
     /** 项目四级范围与显式参与关系的统一 Specification。 */
@@ -109,6 +147,31 @@ public class ProjectAccessContext {
                                 builder.equal(root.join("project", JoinType.LEFT).get("support").get("empId"), empId)));
         return scope.type() == com.th4.edge.tenant.user.configure.DataScopeType.Company
                 ? scoped : scoped.or(participant);
+    }
+
+    /**
+     * 项目参与人按显式参与关系只读房屋事实（量房 readiness、开工前置）。
+     * 不参与任何项目时统一 404，不泄露对象存在性。
+     */
+    public com.th4.edge.decoboon.property.model.Property requireParticipantProperty(Long propertyId, Employee employee) {
+        Employee current = requireEmployee(employee);
+        if (propertyId == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "房屋不存在或无权访问"));
+        }
+        Long empId = current.getEmpId();
+        Long comId = current.getCompany() == null ? null : current.getCompany().getComId();
+        Specification<Project> spec = (root, query, builder) -> builder.and(
+                builder.equal(root.get("company").get("comId"), comId),
+                builder.equal(root.get("property").get("propertyId"), propertyId),
+                builder.or(
+                        builder.equal(root.get("designer").get("empId"), empId),
+                        builder.equal(root.get("manager").get("empId"), empId),
+                        builder.equal(root.get("support").get("empId"), empId),
+                        builder.equal(root.get("quote").get("createdBy").get("empId"), empId)));
+        return projectRepository.findOne(spec)
+                .map(Project::getProperty)
+                .orElseThrow(() -> new DefinedException(
+                        new DefaultErrorCode("404", "房屋不存在或无权访问")));
     }
 
     public Project requireVisible(Project project, Employee employee) {

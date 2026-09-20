@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Note("量房记录详情")
 @Properties(allow = {
         @AllowProperties(model = Measure.class,
-                properties = {"measureId", "customer", "property", "designer", "measureTime", "status", "sitePhotos",
+                properties = {"measureId", "customer", "property", "designer", "executor", "measureTime", "status", "sitePhotos",
                         "originalStructure", "structureImages", "attachments", "dimensions", "customerRequirements", "designerConclusion", "createTime"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),

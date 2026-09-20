@@ -27,15 +27,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 /** 推进合同签署和生效，合同生效时生成唯一项目。 */
 @Note("合同签约与生效")
 @Properties(allow = {
         @AllowProperties(model = ProjectContract.class,
                 properties = {"contractId", "no", "project", "quote", "customer", "property", "baselineAmount",
-                        "currentAmount", "status", "signedAt", "startDate", "planEndDate", "effectiveAt",
+                        "signedAmount", "currentAmount", "status", "signedAt", "startDate", "planEndDate", "effectiveAt",
                         "paymentTerms", "createdBy", "remark", "receivableCount", "receivableAmount",
-                        "receivedAmount", "pendingChangeCount", "createTime"}),
+                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "customer", "property", "quote", "designer", "manager",
                         "siteAddr", "area", "contractAmount", "status", "progress", "startDate", "planEndDate" }),
@@ -55,6 +56,8 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
     @AutoInject private ContractStatus status;
     @AutoInject private LocalDate startDate;
     @AutoInject private LocalDate planEndDate;
+    @AutoInject private LocalDate signedAt;
+    @AutoInject private BigDecimal signedAmount;
     @AutoInject private String paymentTerms;
 
     @User private Employee employee;
@@ -80,30 +83,44 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
     @Transactional
     public ProjectContract call(ProjectContract request) {
         Employee current = tenantContext.requireEmployee(employee);
+        // 现行能力矩阵只有 Boss 拥有 contract:write；Designer 不因页面可点而获得签约/生效权。
+        // 合同签署/生效的最终角色矩阵仍为 BLOCKED，确认前按最小权限失败关闭。
+        // 权限判定先于数据加载：无能力角色统一 403，不用 404 掩盖语义（也不泄露对象存在性）。
+        if (current.getRole() != EmployeeRole.Boss) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以处理合同签约与生效"));
+        }
         Specification<ProjectContract> byId = (root, query, builder) ->
                 builder.equal(root.get("contractId"), contractId);
         ProjectContract contract = contractRepository.findOne(byId.and(accessContext.visibleContract(employee)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "合同不存在或无权访问")));
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有设计师或企业负责人可以处理签约"));
+        if (status == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "合同动作不能为空"));
+        }
+        // 幂等：合同已签约（含后续履约状态）时，重复提交 Signed 直接返回同一已签约事实，
+        // 不重复推进状态、不重复写数据。
+        if (status == ContractStatus.Signed && alreadySigned(contract)) {
+            return contractContext.enrich(contract);
         }
         if (startDate != null) contract.setStartDate(startDate);
         if (planEndDate != null) contract.setPlanEndDate(planEndDate);
         if (paymentTerms != null) contract.setPaymentTerms(paymentTerms);
 
-        if (status == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "合同动作不能为空"));
-        }
         if (status == ContractStatus.Signed) {
             if (contract.getStatus() != ContractStatus.Draft
                     && contract.getStatus() != ContractStatus.PendingSign) {
                 throw new DefinedException(new DefaultErrorCode("400", "只有草稿或待签约合同可以签约"));
             }
-            contract.setStatus(ContractStatus.Signed);
-            contract.setSignedAt(LocalDate.now());
-            return contractContext.enrich(contractRepository.save(contract));
+            if (signedAmount == null || signedAmount.signum() <= 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "签约时必须填写最终签约价格"));
+            }
+            return contractContext.enrich(contractContext.markSigned(contract, signedAt, signedAmount));
         }
         if (status == ContractStatus.Effective) {
+            if (contract.getProject() == null
+                    && (contract.getStatus() != ContractStatus.Signed || contract.getSignedAt() == null)) {
+                throw new DefinedException(new DefaultErrorCode("400", "合同签约后才能生效"));
+            }
+            contractContext.markEffective(contract);
             if (contract.getProject() != null) {
                 Project existingProject = contract.getProject();
                 if (startDate != null) existingProject.setStartDate(startDate);
@@ -111,10 +128,6 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
                 projectContext.refreshProject(existingProject);
                 return contractContext.enrich(contractRepository.save(contract));
             }
-            if (contract.getStatus() != ContractStatus.Signed || contract.getSignedAt() == null) {
-                throw new DefinedException(new DefaultErrorCode("400", "合同签约后才能生效"));
-            }
-            contractContext.markEffective(contract);
             Project draft = new Project();
             draft.setCompany(contract.getCompany());
             draft.setName(contract.getCustomer().getName() + " · "
@@ -128,5 +141,14 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
             return contractContext.enrich(contractRepository.save(contract));
         }
         throw new DefinedException(new DefaultErrorCode("400", "当前仅支持合同签约或生效"));
+    }
+
+    /** 合同是否已签约（Signed 及之后的履约状态，且存在签约日期）。 */
+    private boolean alreadySigned(ProjectContract contract) {
+        if (contract.getSignedAt() == null || contract.getStatus() == null) {
+            return false;
+        }
+        return contract.getStatus() != ContractStatus.Draft
+                && contract.getStatus() != ContractStatus.PendingSign;
     }
 }

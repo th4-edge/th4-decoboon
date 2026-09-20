@@ -46,6 +46,9 @@ public class Save implements com.th4.edge.decoboon.design.service.requirements.s
     private Long propertyId;
 
     @AutoInject
+    private Long requirementId;
+
+    @AutoInject
     private Long ownerId;
 
     @User
@@ -66,14 +69,43 @@ public class Save implements com.th4.edge.decoboon.design.service.requirements.s
     public Requirement call(@ModelSaveInject Requirement request) {
         Employee current = designContext.requireEmployee(employee);
         Customer customer = designContext.requireCustomer(customerId, employee);
+        Requirement target = resolveTarget(request, customer);
         Employee fallback = customer.getDesigner() == null ? current : customer.getDesigner();
         Employee owner = designContext.resolveOwner(current, ownerId, fallback);
         Property property = propertyContext.resolve(propertyId, customer, current);
         designContext.requirePropertyOpen(property);
-        designContext.apply(request, customer, owner);
-        request.setProperty(property);
-        request.setStatus(RequirementStatus.Pending);
-        request.setConfirmedAt(null);
-        return requirementRepository.save(request);
+        copyEditableFields(request, target);
+        designContext.apply(target, customer, owner);
+        target.setProperty(property);
+        target.setStatus(RequirementStatus.Pending);
+        target.setConfirmedAt(null);
+        return requirementRepository.save(target);
+    }
+
+    private Requirement resolveTarget(Requirement request, Customer customer) {
+        if (requirementId == null) {
+            return request;
+        }
+        Requirement target = requirementRepository.findById(requirementId)
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户诉求不存在或无权访问")));
+        if (target.getCompany() == null || customer.getCompany() == null
+                || !target.getCompany().getComId().equals(customer.getCompany().getComId())
+                || target.getCustomer() == null
+                || !target.getCustomer().getCustId().equals(customer.getCustId())) {
+            throw new DefinedException(new DefaultErrorCode("404", "客户诉求不存在或无权访问"));
+        }
+        return target;
+    }
+
+    private void copyEditableFields(Requirement source, Requirement target) {
+        target.setType(source.getType());
+        target.setSpaceName(source.getSpaceName());
+        target.setKind(source.getKind());
+        target.setCategory(source.getCategory());
+        target.setPriority(source.getPriority());
+        target.setTitle(source.getTitle());
+        target.setDetail(source.getDetail());
+        target.setResponse(source.getResponse());
+        target.setSource(source.getSource());
     }
 }

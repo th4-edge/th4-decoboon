@@ -38,7 +38,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_design_talk_section", indexes = {
+@Table(name = "db_design_talk_section", indexes = {
         @Index(name = "idx_talk_section_company", columnList = "com_id, section_id"),
         @Index(name = "idx_talk_section_company_store", columnList = "com_id, store_id, section_id"),
         @Index(name = "idx_talk_section_company_team", columnList = "com_id, team_id, section_id"),
@@ -96,7 +96,7 @@ public class TalkSection extends AuditModel {
 
     @Note("页面图片")
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_design_talk_section_images", joinColumns = @JoinColumn(name = "section_id"))
+    @CollectionTable(name = "db_design_talk_section_images", joinColumns = @JoinColumn(name = "section_id"))
     @Column(name = "url", length = 512)
     private List<String> images;
 

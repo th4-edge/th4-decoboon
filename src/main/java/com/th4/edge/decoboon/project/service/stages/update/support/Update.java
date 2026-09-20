@@ -3,13 +3,16 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
+import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
+import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectReport;
 import com.th4.edge.decoboon.project.model.ProjectStage;
+import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
@@ -62,48 +65,68 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
     private final MeasureRepository measureRepository;
+    private final ProjectContractRepository contractRepository;
 
     public Update(ProjectStageRepository stageRepository,
                   ProjectRepository projectRepository,
                   ProjectReportRepository reportRepository,
                   ProjectAccessContext accessContext,
                   ProjectPermissionContext permissionContext,
-                  MeasureRepository measureRepository) {
+                  MeasureRepository measureRepository,
+                  ProjectContractRepository contractRepository) {
         this.stageRepository = stageRepository;
         this.projectRepository = projectRepository;
         this.reportRepository = reportRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
         this.measureRepository = measureRepository;
+        this.contractRepository = contractRepository;
     }
 
     @Override
     @Transactional
     public ProjectStage call(ProjectStage request) {
         Employee current = accessContext.requireEmployee(employee);
-        ProjectStage stage = stageRepository.findOne(((Specification<ProjectStage>) (root, query, builder) -> builder.equal(root.get("stageId"), stageId)).and(accessContext.visibleChild(employee, ProjectStage.class, "project")))
+        // 行级排他锁把同一阶段的并发开工串行化：后到请求拿到锁后读到已提交状态，
+        // 走幂等分支返回同一事实，避免死锁与 undefinedErrorCode。
+        ProjectStage stage = stageRepository.findLockedByStageId(stageId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目阶段不存在")));
+        // 锁内统一做数据范围校验：不可见一律 404，不泄露对象存在性。
         accessContext.requireVisible(stage.getProject(), current);
         if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
             throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以开启施工阶段"));
         }
         StageStatus target = status == null ? StageStatus.Doing : status;
-        if (target != StageStatus.Doing || stage.getStatus() != StageStatus.Todo) {
+        if (target != StageStatus.Doing) {
             throw new DefinedException(new DefaultErrorCode("400", "只有待开始阶段可以开工"));
         }
-        if (stage.getProject().getManager() == null) {
+        // 幂等：重复开工返回同一最终事实，不再写动态、任务或覆盖实际开工时间。
+        if (stage.getStatus() == StageStatus.Doing) {
+            return snapshot(stage);
+        }
+        if (stage.getStatus() != StageStatus.Todo) {
+            throw new DefinedException(new DefaultErrorCode("400", "当前阶段状态不能开工"));
+        }
+        Project project = stage.getProject();
+        if (project.getStatus() == ProjectStatus.Finished || project.getStatus() == ProjectStatus.Settled) {
+            throw new DefinedException(new DefaultErrorCode("400", "项目已完工结算，不能再开启阶段"));
+        }
+        if (!effectiveContract(project)) {
+            throw new DefinedException(new DefaultErrorCode("400", "合同未生效，不能进入施工阶段"));
+        }
+        if (project.getManager() == null) {
             throw new DefinedException(new DefaultErrorCode("400", "请先指定项目经理再开工"));
         }
-        if (stage.getProject().getStartDate() == null) {
+        if (project.getStartDate() == null) {
             throw new DefinedException(new DefaultErrorCode("400", "请先确认项目开工日期"));
         }
-        if (stage.getProject().getPlanEndDate() == null) {
+        if (project.getPlanEndDate() == null) {
             throw new DefinedException(new DefaultErrorCode("400", "请先确认项目计划完工日期"));
         }
-        if (stage.getProject().getPlanEndDate().isBefore(stage.getProject().getStartDate())) {
+        if (project.getPlanEndDate().isBefore(project.getStartDate())) {
             throw new DefinedException(new DefaultErrorCode("400", "计划完工日期不能早于开工日期"));
         }
-        var property = stage.getProject().getProperty();
+        var property = project.getProperty();
         boolean measured = property != null && property.getLatestMeasureAt() != null;
         if (!measured && property != null) {
             measured = measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
@@ -112,25 +135,83 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         if (!measured) {
             throw new DefinedException(new DefaultErrorCode("400", "请先完成量房并录入量房结论再开工"));
         }
+
         stage.setStatus(StageStatus.Doing);
-        stage.setActualStart(LocalDate.now());
-        stage.getProject().setStatus(ProjectStatus.Ongoing);
-        projectRepository.save(stage.getProject());
+        stage.setActualStart(stage.getActualStart() == null ? LocalDate.now() : stage.getActualStart());
+        project.setStatus(ProjectStatus.Ongoing);
+        projectRepository.save(project);
         ProjectStage saved = stageRepository.save(stage);
 
-        ProjectReport report = new ProjectReport();
-        report.setCompany(saved.getCompany());
-        report.setProject(saved.getProject());
-        report.setProperty(saved.getProperty());
-        permissionContext.apply(report, saved.getProject());
-        report.setStage(saved);
-        report.setType(ReportType.StageOpen);
-        report.setTitle("阶段开工 · " + saved.getName());
-        report.setContent(content == null || content.isBlank() ? saved.getName() + "已正式开工" : content);
-        report.setAuthor(current);
-        report.setAuthorRole(current.getRole());
-        report.setVisibleToCustomer(true);
-        reportRepository.save(report);
-        return saved;
+        if (!hasStageOpenReport(saved)) {
+            ProjectReport report = new ProjectReport();
+            report.setCompany(saved.getCompany());
+            report.setProject(saved.getProject());
+            report.setProperty(saved.getProperty());
+            permissionContext.apply(report, saved.getProject());
+            report.setStage(saved);
+            report.setType(ReportType.StageOpen);
+            report.setTitle("阶段开工 · " + saved.getName());
+            report.setContent(content == null || content.isBlank() ? saved.getName() + "已正式开工" : content);
+            report.setAuthor(current);
+            report.setAuthorRole(current.getRole());
+            report.setVisibleToCustomer(true);
+            reportRepository.save(report);
+        }
+        return snapshot(saved);
+    }
+
+    /** 开工前置：项目必须绑定已生效合同（Effective 及之后的履约状态均视为已生效）。 */
+    private boolean effectiveContract(Project project) {
+        if (project == null || project.getProjectId() == null || project.getCompany() == null) {
+            return false;
+        }
+        ProjectContract contract = contractRepository
+                .findByProject_ProjectIdAndCompany_ComId(project.getProjectId(), project.getCompany().getComId())
+                .orElse(null);
+        if (contract == null || contract.getStatus() == null) {
+            return false;
+        }
+        return contract.getStatus() != ContractStatus.Draft
+                && contract.getStatus() != ContractStatus.PendingSign
+                && contract.getStatus() != ContractStatus.Signed;
+    }
+
+    /** 阶段开工动态是否已存在，防止重复写动态。 */
+    private boolean hasStageOpenReport(ProjectStage stage) {
+        if (stage.getStageId() == null) {
+            return false;
+        }
+        return reportRepository.count(((Specification<ProjectReport>) (root, query, builder) -> builder.and(
+                builder.equal(root.get("stage").get("stageId"), stage.getStageId()),
+                builder.equal(root.get("type"), ReportType.StageOpen)))) > 0;
+    }
+
+    /**
+     * 返回脱离持久化上下文的阶段快照，避免事务提交后序列化懒加载关联导致
+     * "数据库已提交但接口返回失败"的部分成功假象。
+     */
+    private ProjectStage snapshot(ProjectStage stage) {
+        ProjectStage view = new ProjectStage();
+        view.setStageId(stage.getStageId());
+        view.setName(stage.getName());
+        view.setSort(stage.getSort());
+        view.setWeight(stage.getWeight());
+        view.setStatus(stage.getStatus());
+        view.setProgress(stage.getProgress());
+        view.setPlannedStart(stage.getPlannedStart());
+        view.setPlannedEnd(stage.getPlannedEnd());
+        view.setActualStart(stage.getActualStart());
+        view.setActualEnd(stage.getActualEnd());
+        view.setCreateTime(stage.getCreateTime());
+        Project project = stage.getProject();
+        if (project != null) {
+            Project projectView = new Project();
+            projectView.setProjectId(project.getProjectId());
+            projectView.setNo(project.getNo());
+            projectView.setName(project.getName());
+            projectView.setSiteAddr(project.getSiteAddr());
+            view.setProject(projectView);
+        }
+        return view;
     }
 }

@@ -29,6 +29,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,13 +40,17 @@ import java.time.LocalDate;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_finance_receipt", indexes = {
+@Table(name = "db_finance_receipt", indexes = {
         @Index(name = "idx_fin_receipt_company", columnList = "com_id, receipt_id"),
         @Index(name = "idx_fin_receipt_project", columnList = "com_id, project_id, receipt_id"),
         @Index(name = "idx_fin_receipt_receivable", columnList = "com_id, receivable_id, receipt_id"),
         @Index(name = "idx_fin_receipt_store", columnList = "com_id, store_id, receipt_id"),
         @Index(name = "idx_fin_receipt_team", columnList = "com_id, team_id, receipt_id"),
-        @Index(name = "idx_fin_receipt_owner", columnList = "com_id, owner_id, receipt_id")
+        @Index(name = "idx_fin_receipt_owner", columnList = "com_id, owner_id, receipt_id"),
+        @Index(name = "idx_fin_receipt_idempotency", columnList = "com_id, idempotency_key")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uk_fin_receipt_company_idempotency",
+                columnNames = {"com_id", "idempotency_key"})
 })
 public class Receipt extends AuditModel {
 
@@ -120,6 +125,10 @@ public class Receipt extends AuditModel {
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee createdBy;
 
+    @Note("幂等键（客户端提交 + 服务端业务指纹，企业内唯一）")
+    @Column(name = "idempotency_key", length = 128)
+    private String idempotencyKey;
+
     public Long getReceiptId() { return receiptId; }
     public void setReceiptId(Long receiptId) { this.receiptId = receiptId; }
     public Company getCompany() { return company; }
@@ -148,6 +157,8 @@ public class Receipt extends AuditModel {
     public void setVoucherUrl(String voucherUrl) { this.voucherUrl = voucherUrl; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
+    public String getIdempotencyKey() { return idempotencyKey; }
+    public void setIdempotencyKey(String idempotencyKey) { this.idempotencyKey = idempotencyKey; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
 }

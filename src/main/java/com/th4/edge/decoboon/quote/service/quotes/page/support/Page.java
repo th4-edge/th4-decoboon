@@ -9,6 +9,8 @@ import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.context.TenantContext;
@@ -26,7 +28,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
-                        "area", "subtotal", "amount", "cost", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status", "createTime", "property"}),
+                        "area", "subtotal", "amount", "cost", "costComplete", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status", "createTime", "property"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "area", "budget", "status"}),
                 @AllowProperties(model = Design.class,
@@ -85,7 +87,8 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.page.Pag
                     ? List.of()
                     : quoteRepository.findByCompany_ComIdAndCustomer_Team_TeamIdOrderByQuoteIdDesc(
                             comId, currentEmployee.getTeam().getTeamId());
-            case Designer, Marketer -> quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId);
+            case Designer -> throw new DefinedException(new DefaultErrorCode("403", "设计师请使用设计师报价列表服务"));
+            case Marketer -> quoteRepository.findMarketerVisible(comId, empId);
             default -> List.of();
         };
         quotes = quotes.stream()

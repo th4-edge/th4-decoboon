@@ -42,7 +42,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_design_space", indexes = {
+@Table(name = "db_design_space", indexes = {
         @Index(name = "idx_design_space_company", columnList = "com_id, space_id"),
         @Index(name = "idx_design_space_company_store", columnList = "com_id, store_id, space_id"),
         @Index(name = "idx_design_space_company_team", columnList = "com_id, team_id, space_id"),
@@ -128,7 +128,7 @@ public class Space extends AuditModel implements Area {
 
     @Note("区域图片")
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_design_space_images", joinColumns = @JoinColumn(name = "space_id"))
+    @CollectionTable(name = "db_design_space_images", joinColumns = @JoinColumn(name = "space_id"))
     @Column(name = "url", length = 512)
     private List<String> images;
 

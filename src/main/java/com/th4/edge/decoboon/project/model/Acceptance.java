@@ -46,7 +46,7 @@ import com.th4.edge.tenant.user.model.Company;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_acceptance",
+@Table(name = "db_acceptance",
         indexes = {
                 @Index(name = "idx_acceptance_company", columnList = "com_id, acceptance_id"),
                 @Index(name = "idx_acceptance_company_store", columnList = "com_id, store_id, acceptance_id"),
@@ -114,13 +114,13 @@ public class Acceptance extends AuditModel implements ProjectOwned {
 
     @Note("问题清单")
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_acceptance_issue", joinColumns = @JoinColumn(name = "acceptance_id"))
+    @CollectionTable(name = "db_acceptance_issue", joinColumns = @JoinColumn(name = "acceptance_id"))
     @Column(name = "issue", length = 512)
     private List<String> issues;
 
     @Note("验收影像")
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_acceptance_evidence", joinColumns = @JoinColumn(name = "acceptance_id"))
+    @CollectionTable(name = "db_acceptance_evidence", joinColumns = @JoinColumn(name = "acceptance_id"))
     @Column(name = "url", length = 512)
     private List<String> evidenceUrls;
 

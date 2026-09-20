@@ -47,7 +47,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_design", indexes = {
+@Table(name = "db_design", indexes = {
         @Index(name = "idx_design_company", columnList = "com_id, design_id"),
         @Index(name = "idx_design_company_store", columnList = "com_id, store_id, design_id"),
         @Index(name = "idx_design_company_team", columnList = "com_id, team_id, design_id"),
@@ -137,6 +137,14 @@ public class Design extends AuditModel {
     @Column(length = 512)
     private String cadUrl;
 
+    @Note("CAD 预览图")
+    @Column(length = 512)
+    private String cadPreviewUrl;
+
+    @Note("CAD 转换状态")
+    @Column(length = 16)
+    private String cadConvertStatus;
+
     @Note("原始结构图")
     @Column(length = 512)
     private String originalPlanUrl;
@@ -153,15 +161,21 @@ public class Design extends AuditModel {
     @Column(length = 512)
     private String optimizationUrl;
 
+    @Note("原始结构图（多图）")
+    @ElementCollection
+    @CollectionTable(name = "db_design_original_plan_images", joinColumns = @JoinColumn(name = "design_id"))
+    @Column(name = "url", length = 512)
+    private List<String> originalPlanImages;
+
     @Note("现场照片")
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_design_site_photos", joinColumns = @JoinColumn(name = "design_id"))
+    @CollectionTable(name = "db_design_site_photos", joinColumns = @JoinColumn(name = "design_id"))
     @Column(name = "url", length = 512)
     private List<String> sitePhotos;
 
     @Note("量房照片")
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_design_survey_photos", joinColumns = @JoinColumn(name = "design_id"))
+    @CollectionTable(name = "db_design_survey_photos", joinColumns = @JoinColumn(name = "design_id"))
     @Column(name = "url", length = 512)
     private List<String> surveyPhotos;
 
@@ -209,6 +223,10 @@ public class Design extends AuditModel {
     public void setCoverUrl(String coverUrl) { this.coverUrl = coverUrl; }
     public String getCadUrl() { return cadUrl; }
     public void setCadUrl(String cadUrl) { this.cadUrl = cadUrl; }
+    public String getCadPreviewUrl() { return cadPreviewUrl; }
+    public void setCadPreviewUrl(String cadPreviewUrl) { this.cadPreviewUrl = cadPreviewUrl; }
+    public String getCadConvertStatus() { return cadConvertStatus; }
+    public void setCadConvertStatus(String cadConvertStatus) { this.cadConvertStatus = cadConvertStatus; }
     public String getOriginalPlanUrl() { return originalPlanUrl; }
     public void setOriginalPlanUrl(String originalPlanUrl) { this.originalPlanUrl = originalPlanUrl; }
     public String getDemolitionUrl() { return demolitionUrl; }
@@ -217,6 +235,9 @@ public class Design extends AuditModel {
     public void setMasonryUrl(String masonryUrl) { this.masonryUrl = masonryUrl; }
     public String getOptimizationUrl() { return optimizationUrl; }
     public void setOptimizationUrl(String optimizationUrl) { this.optimizationUrl = optimizationUrl; }
+    public List<String> getOriginalPlanImages() { return originalPlanImages; }
+    public void setOriginalPlanImages(List<String> originalPlanImages) { this.originalPlanImages = originalPlanImages; }
+
     public List<String> getSitePhotos() { return sitePhotos; }
     public void setSitePhotos(List<String> sitePhotos) { this.sitePhotos = sitePhotos; }
     public List<String> getSurveyPhotos() { return surveyPhotos; }

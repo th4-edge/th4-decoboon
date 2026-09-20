@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -30,7 +31,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
                         "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "role",
-                        "included", "discountAmount", "components", "sort"}),
+                        "differenceType", "differenceStatus", "included", "discountAmount", "components", "sort"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter"}),
         @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteComponent.class,
@@ -52,10 +53,17 @@ public class Page extends AbstractPage<QuoteLine> implements com.th4.edge.decobo
         if (quoteId == null) {
             throw new DefinedException(new DefaultErrorCode("400", "报价索引不能为空"));
         }
-        DataScope scope = dataScopeContext.requireScope(employee);
-        Specification<Quote> byId = (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
-        Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        Employee current = dataScopeContext.requireEmployee(employee);
+        Quote quote;
+        if (current.getRole() == EmployeeRole.Marketer) {
+            quote = quoteRepository.findMarketerVisibleById(quoteId, current.getCompany().getComId(), current.getEmpId())
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        } else {
+            DataScope scope = dataScopeContext.resolve(current);
+            Specification<Quote> byId = (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
+            quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        }
         request.setCompany(quote.getCompany());
         request.setQuote(quote);
         return super.call(request);

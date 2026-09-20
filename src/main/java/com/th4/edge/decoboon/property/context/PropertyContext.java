@@ -12,7 +12,6 @@ import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /** 客户房屋根模型上下文。 */
@@ -32,20 +31,26 @@ public class PropertyContext {
         if (customer == null || customer.getCustId() == null || customer.getCompany() == null) {
             throw new DefinedException(new DefaultErrorCode("400", "房屋必须关联有效客户"));
         }
-        Long comId = customer.getCompany().getComId();
-        Employee principal = owner == null ? customer.getOwner() : owner;
-        if (principal == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "房屋必须指定负责人"));
+        List<Property> properties = propertyRepository.findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(
+                customer.getCompany().getComId(), customer.getCustId());
+        if (properties.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400", "请先建立房屋档案"));
         }
-        String address = customer.getAddr() == null || customer.getAddr().isBlank()
-                ? customer.getCommunity() : customer.getAddr();
-        if (address == null || address.isBlank()) {
-            throw new DefinedException(new DefaultErrorCode("400", "请先补充房屋地址，再建立房屋档案"));
+        if (properties.size() > 1) {
+            throw new DefinedException(new DefaultErrorCode("400", "客户存在多套房屋，请明确选择房屋"));
         }
-        return propertyRepository.findFirstByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(
-                        comId, customer.getCustId())
-                .map(property -> refresh(property, customer, principal))
-                .orElseGet(() -> create(customer, principal, address));
+        return properties.get(0);
+    }
+
+    /**
+     * 重新加载完整员工实体。
+     *
+     * <p>JWT 主体是框架用 BeanUtils 新建的 Employee 占位对象（只有 empId，
+     * role 为字段默认值 Marketer、name 为空），因此业务归属与响应关联必须使用
+     * 数据库中的完整员工实体，禁止把占位对象直接写入实体关系或返回前端。</p>
+     */
+    public Employee requireEmployee(Employee principal) {
+        return dataScopeContext.requireEmployee(principal);
     }
 
     public Property require(Long propertyId, Employee principal) {
@@ -61,7 +66,7 @@ public class PropertyContext {
 
     public Property resolve(Long propertyId, Customer customer, Employee owner) {
         if (propertyId == null) {
-            return ensureForCustomer(customer, owner);
+            throw new DefinedException(new DefaultErrorCode("400", "请先选择客户房屋"));
         }
         Property property = require(propertyId, owner);
         if (!property.getCustomer().getCustId().equals(customer.getCustId())) {
@@ -117,46 +122,4 @@ public class PropertyContext {
         }
     }
 
-    private Property create(Customer customer, Employee owner, String address) {
-        Property property = new Property();
-        property.setCompany(customer.getCompany());
-        property.setStore(owner.getStore());
-        property.setTeam(owner.getTeam());
-        property.setOwner(owner);
-        property.setCustomer(customer);
-        property.setPropertyNo("H" + System.currentTimeMillis());
-        property.setCommunity(customer.getCommunity());
-        property.setAddress(address);
-        property.setArea(customer.getArea());
-        property.setStatus(PropertyStatus.PendingMeasure);
-        property.setSalesman(customer.getOwner());
-        property.setDesigner(customer.getDesigner());
-        return propertyRepository.save(property);
-    }
-
-    private Property refresh(Property property, Customer customer, Employee owner) {
-        boolean changed = false;
-        if ((property.getAddress() == null || property.getAddress().isBlank())
-                && customer.getAddr() != null && !customer.getAddr().isBlank()) {
-            property.setAddress(customer.getAddr());
-            changed = true;
-        }
-        if ((property.getCommunity() == null || property.getCommunity().isBlank())
-                && customer.getCommunity() != null) {
-            property.setCommunity(customer.getCommunity());
-            changed = true;
-        }
-        BigDecimal area = customer.getArea();
-        if ((property.getArea() == null || property.getArea().signum() == 0) && area != null) {
-            property.setArea(area);
-            changed = true;
-        }
-        if (property.getOwner() == null && owner != null) {
-            property.setOwner(owner);
-            property.setStore(owner.getStore());
-            property.setTeam(owner.getTeam());
-            changed = true;
-        }
-        return changed ? propertyRepository.save(property) : property;
-    }
 }

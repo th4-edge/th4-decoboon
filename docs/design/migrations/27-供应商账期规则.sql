@@ -6,13 +6,13 @@
 --                        否则计入次月，再顺延账期天数
 --
 -- 1) 供应商账期配置
-ALTER TABLE db_decoboon_partner
+ALTER TABLE db_partner
   ADD COLUMN settlement_mode VARCHAR(16) NULL COMMENT '账期模式：ReceiptDays/MonthlyCutoff' AFTER settlement_terms,
   ADD COLUMN settlement_days INT NULL COMMENT '账期天数' AFTER settlement_mode,
   ADD COLUMN cutoff_day INT NULL COMMENT '对账截账日（每月几号）' AFTER settlement_days;
 
 -- 2) 应付单：收货日（账期起算）+ 账期模式快照（固化，避免供应商改规则影响历史应付）
-ALTER TABLE db_decoboon_finance_payable
+ALTER TABLE db_finance_payable
   ADD COLUMN receipt_date DATE NULL COMMENT '收货日（账期起算）' AFTER paid_amount,
   ADD COLUMN settlement_mode VARCHAR(16) NULL COMMENT '账期模式快照' AFTER receipt_date;
 

@@ -29,7 +29,7 @@ cp docs/deploy/PRODUCTION.md "$RELEASE_DIR/"
 cp docs/design/migrations/19-生产发布基线.md "$RELEASE_DIR/"
 cp docs/design/migrations/22-OSS对象存储部署说明.md "$RELEASE_DIR/"
 cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
-for migration in docs/design/migrations/24-*.sql docs/design/migrations/25-*.sql docs/design/migrations/26-*.sql docs/design/migrations/27-*.sql docs/design/migrations/28-*.sql docs/design/migrations/29-*.sql; do
+for migration in docs/design/migrations/{24..40}-*.sql; do
   cp "$migration" "$RELEASE_DIR/"
 done
 

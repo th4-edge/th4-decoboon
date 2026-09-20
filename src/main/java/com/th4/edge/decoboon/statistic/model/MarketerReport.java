@@ -37,6 +37,21 @@ public class MarketerReport {
     private Integer goldenWarmCount = 0;
     private Integer goldenCoolingCount = 0;
     private Integer goldenRiskCount = 0;
+    private MarketerPeriodMetric customerInputDay = new MarketerPeriodMetric();
+    private MarketerPeriodMetric customerInputWeek = new MarketerPeriodMetric();
+    private MarketerPeriodMetric customerInputMonth = new MarketerPeriodMetric();
+    private MarketerPeriodMetric followDay = new MarketerPeriodMetric();
+    private MarketerPeriodMetric followWeek = new MarketerPeriodMetric();
+    private MarketerPeriodMetric followMonth = new MarketerPeriodMetric();
+    private MarketerRateMetric measureRateDay = new MarketerRateMetric();
+    private MarketerRateMetric measureRateWeek = new MarketerRateMetric();
+    private MarketerRateMetric measureRateMonth = new MarketerRateMetric();
+    private List<MarketerRankingItem> marketerRankings = List.of();
+    private List<MarketerRankingItem> storeRankings = List.of();
+    private Integer myMarketerRank = 0;
+    private Integer myStoreRank = 0;
+    private Integer companyMarketerCount = 0;
+    private Integer companyStoreCount = 0;
     private List<Customer> recentCustomers = List.of();
     private List<Project> recentProjects = List.of();
 
@@ -98,4 +113,34 @@ public class MarketerReport {
     public void setGoldenCoolingCount(Integer goldenCoolingCount) { this.goldenCoolingCount = goldenCoolingCount; }
     public Integer getGoldenRiskCount() { return goldenRiskCount; }
     public void setGoldenRiskCount(Integer goldenRiskCount) { this.goldenRiskCount = goldenRiskCount; }
+    public MarketerPeriodMetric getCustomerInputDay() { return customerInputDay; }
+    public void setCustomerInputDay(MarketerPeriodMetric customerInputDay) { this.customerInputDay = customerInputDay; }
+    public MarketerPeriodMetric getCustomerInputWeek() { return customerInputWeek; }
+    public void setCustomerInputWeek(MarketerPeriodMetric customerInputWeek) { this.customerInputWeek = customerInputWeek; }
+    public MarketerPeriodMetric getCustomerInputMonth() { return customerInputMonth; }
+    public void setCustomerInputMonth(MarketerPeriodMetric customerInputMonth) { this.customerInputMonth = customerInputMonth; }
+    public MarketerPeriodMetric getFollowDay() { return followDay; }
+    public void setFollowDay(MarketerPeriodMetric followDay) { this.followDay = followDay; }
+    public MarketerPeriodMetric getFollowWeek() { return followWeek; }
+    public void setFollowWeek(MarketerPeriodMetric followWeek) { this.followWeek = followWeek; }
+    public MarketerPeriodMetric getFollowMonth() { return followMonth; }
+    public void setFollowMonth(MarketerPeriodMetric followMonth) { this.followMonth = followMonth; }
+    public MarketerRateMetric getMeasureRateDay() { return measureRateDay; }
+    public void setMeasureRateDay(MarketerRateMetric measureRateDay) { this.measureRateDay = measureRateDay; }
+    public MarketerRateMetric getMeasureRateWeek() { return measureRateWeek; }
+    public void setMeasureRateWeek(MarketerRateMetric measureRateWeek) { this.measureRateWeek = measureRateWeek; }
+    public MarketerRateMetric getMeasureRateMonth() { return measureRateMonth; }
+    public void setMeasureRateMonth(MarketerRateMetric measureRateMonth) { this.measureRateMonth = measureRateMonth; }
+    public List<MarketerRankingItem> getMarketerRankings() { return marketerRankings; }
+    public void setMarketerRankings(List<MarketerRankingItem> marketerRankings) { this.marketerRankings = marketerRankings; }
+    public List<MarketerRankingItem> getStoreRankings() { return storeRankings; }
+    public void setStoreRankings(List<MarketerRankingItem> storeRankings) { this.storeRankings = storeRankings; }
+    public Integer getMyMarketerRank() { return myMarketerRank; }
+    public void setMyMarketerRank(Integer myMarketerRank) { this.myMarketerRank = myMarketerRank; }
+    public Integer getMyStoreRank() { return myStoreRank; }
+    public void setMyStoreRank(Integer myStoreRank) { this.myStoreRank = myStoreRank; }
+    public Integer getCompanyMarketerCount() { return companyMarketerCount; }
+    public void setCompanyMarketerCount(Integer companyMarketerCount) { this.companyMarketerCount = companyMarketerCount; }
+    public Integer getCompanyStoreCount() { return companyStoreCount; }
+    public void setCompanyStoreCount(Integer companyStoreCount) { this.companyStoreCount = companyStoreCount; }
 }

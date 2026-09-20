@@ -27,7 +27,7 @@ import jakarta.persistence.Table;
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_notice", indexes = {
+@Table(name = "db_notice", indexes = {
         @Index(name = "idx_notice_receiver_read", columnList = "receiver_id, read_flag"),
         @Index(name = "idx_notice_receiver_biz", columnList = "receiver_id, biz_key", unique = true)
 })

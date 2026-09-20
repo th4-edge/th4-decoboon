@@ -37,7 +37,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_task_node", indexes = {
+@Table(name = "db_task_node", indexes = {
         @Index(name = "idx_task_node_company", columnList = "com_id, node_id"),
         @Index(name = "idx_task_node_company_task", columnList = "com_id, task_id, node_id")
 ,
@@ -88,7 +88,7 @@ public class TaskNode extends AuditModel implements ProjectOwned {
     private String note;
 
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_task_node_media", joinColumns = @JoinColumn(name = "node_id"))
+    @CollectionTable(name = "db_task_node_media", joinColumns = @JoinColumn(name = "node_id"))
     @Column(name = "url", length = 512)
     @Note("影像证据")
     private List<String> medias;

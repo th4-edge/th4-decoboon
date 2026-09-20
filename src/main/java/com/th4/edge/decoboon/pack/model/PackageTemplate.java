@@ -62,9 +62,9 @@ public class PackageTemplate extends AbstractModel {
     @Column(nullable = false)
     private java.math.BigDecimal area;
 
-    @Note("套餐价格")
+    @Note("套餐牌价")
     @Unit("元")
-    @Description("折扣后一口价")
+    @Description("套餐标准面积对应的折前牌价；实际报价金额再应用 discount")
     @Column(nullable = false,precision = 10,scale = 2)
     private java.math.BigDecimal price;
 

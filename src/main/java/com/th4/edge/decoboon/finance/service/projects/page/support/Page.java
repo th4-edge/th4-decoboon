@@ -67,8 +67,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
     public org.springframework.data.domain.Page<FinanceProjectReport> call(Project request) {
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<FinanceProjectReport> items = reportContext.projectReports(employee).stream()
-                .filter(item -> status == null || status.isBlank()
-                        || item.getProject().getStatus().name().equalsIgnoreCase(status))
+                .filter(item -> status == null || status.isBlank() || matchesStatus(item, status.trim()))
                 .filter(item -> kw.isBlank()
                         || item.getProject().getName().toLowerCase().contains(kw)
                         || item.getProject().getNo().toLowerCase().contains(kw)
@@ -79,5 +78,20 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
         int from = Math.min(page * pageSize, items.size());
         int to = Math.min(from + pageSize, items.size());
         return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+    }
+
+    /**
+     * 过滤同时支持项目状态与结算状态：结算状态优先，避免"结算状态"筛选被项目状态吞掉。
+     */
+    private boolean matchesStatus(FinanceProjectReport item, String value) {
+        for (com.th4.edge.decoboon.finance.configure.SettlementStatus candidate
+                : com.th4.edge.decoboon.finance.configure.SettlementStatus.values()) {
+            if (candidate.name().equalsIgnoreCase(value)) {
+                Settlement settlement = item.getSettlement();
+                return settlement != null && settlement.getStatus() != null
+                        && settlement.getStatus().name().equalsIgnoreCase(value);
+            }
+        }
+        return item.getProject().getStatus().name().equalsIgnoreCase(value);
     }
 }

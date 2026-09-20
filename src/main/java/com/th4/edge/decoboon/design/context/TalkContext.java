@@ -11,7 +11,6 @@ import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.design.model.Talk;
 import com.th4.edge.decoboon.design.model.TalkSection;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
-import com.th4.edge.decoboon.design.repository.DesignRepository;
 import com.th4.edge.decoboon.design.repository.RequirementRepository;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.decoboon.design.repository.TalkRepository;
@@ -42,7 +41,6 @@ public class TalkContext {
 
     private final TalkRepository talkRepository;
     private final TalkSectionRepository sectionRepository;
-    private final DesignRepository designRepository;
     private final DesignItemRepository designItemRepository;
     private final SpaceRepository spaceRepository;
     private final RequirementRepository requirementRepository;
@@ -51,7 +49,6 @@ public class TalkContext {
 
     public TalkContext(TalkRepository talkRepository,
                        TalkSectionRepository sectionRepository,
-                       DesignRepository designRepository,
                        DesignItemRepository designItemRepository,
                        SpaceRepository spaceRepository,
                        RequirementRepository requirementRepository,
@@ -59,7 +56,6 @@ public class TalkContext {
                        TalkPptContext talkPptContext) {
         this.talkRepository = talkRepository;
         this.sectionRepository = sectionRepository;
-        this.designRepository = designRepository;
         this.designItemRepository = designItemRepository;
         this.spaceRepository = spaceRepository;
         this.requirementRepository = requirementRepository;
@@ -70,7 +66,7 @@ public class TalkContext {
     /**
      * 生成或重建谈单内容。
      *
-     * <p>同一客户至少有两套可讲方案，且必须有设计报价，避免在方案不足时提前白嫖设计。</p>
+     * <p>主推方案必须达到可谈单状态，且必须存在该方案的设计报价。</p>
      */
     @Transactional
     public Talk build(Talk talk, Design design, Quote quote) {
@@ -79,13 +75,6 @@ public class TalkContext {
         }
         if (!TALKABLE_STATUSES.contains(design.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "主推方案尚未达到可谈单状态"));
-        }
-        Long comId = design.getCompany().getComId();
-        Long customerId = design.getCustomer().getCustId();
-        long readyCount = designRepository.countByCompany_ComIdAndCustomer_CustIdAndStatusIn(
-                comId, customerId, TALKABLE_STATUSES);
-        if (readyCount < 2) {
-            throw new DefinedException(new DefaultErrorCode("400", "至少完成两套设计方案后才能生成谈单PPT"));
         }
         if (quote == null || quote.getQuoteId() == null || quote.getDesign() == null
                 || !design.getDesignId().equals(quote.getDesign().getDesignId())) {

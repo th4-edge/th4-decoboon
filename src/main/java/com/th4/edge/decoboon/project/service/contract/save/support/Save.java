@@ -1,13 +1,13 @@
 package com.th4.edge.decoboon.project.service.contract.save.support;
 
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContractContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
-import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -18,13 +18,14 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.context.TenantContext;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 /** 从客户确认报价创建合同草稿或待签合同。 */
 @Note("创建合同基线")
@@ -32,9 +33,9 @@ import java.time.LocalDate;
 @Properties(allow = {
         @AllowProperties(model = ProjectContract.class,
                 properties = {"contractId", "no", "project", "quote", "customer", "property", "baselineAmount",
-                        "currentAmount", "status", "signedAt", "startDate", "planEndDate", "effectiveAt",
+                        "signedAmount", "currentAmount", "status", "signedAt", "startDate", "planEndDate", "effectiveAt",
                         "paymentTerms", "createdBy", "remark", "receivableCount", "receivableAmount",
-                        "receivedAmount", "pendingChangeCount", "createTime"}),
+                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "status", "property" }),
         @AllowProperties(model = Quote.class, properties = {"quoteId", "no", "title", "amount", "status"}),
         @AllowProperties(model = Property.class,
@@ -50,34 +51,49 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
 
     @AutoInject @NotNull private Long quoteId;
     @AutoInject private LocalDate signedAt;
+    @AutoInject private BigDecimal signedAmount;
     @AutoInject private LocalDate startDate;
     @AutoInject private LocalDate planEndDate;
     @AutoInject private String paymentTerms;
     @AutoInject private String remark;
     @User private Employee employee;
 
-    private final QuoteRepository quoteRepository;
-    private final TenantContext tenantContext;
+    private final ProjectAccessContext accessContext;
     private final ProjectContractContext contractContext;
 
-    public Save(QuoteRepository quoteRepository, TenantContext tenantContext,
-                ProjectContractContext contractContext) {
-        this.quoteRepository = quoteRepository;
-        this.tenantContext = tenantContext;
+    public Save(ProjectAccessContext accessContext, ProjectContractContext contractContext) {
+        this.accessContext = accessContext;
         this.contractContext = contractContext;
     }
 
     @Override
     @Transactional
     public ProjectContract call(ProjectContract request) {
-        Employee current = tenantContext.requireEmployee(employee);
-        Quote quote = quoteRepository.findByQuoteIdAndCompany_ComId(quoteId, current.getCompany().getComId())
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        Employee current = accessContext.requireEmployee(employee);
+        // 现行能力矩阵只有 Boss 拥有 contract:write；Designer 不因页面可点而获得签约权。
+        // 合同签署/生效的最终角色矩阵仍为 BLOCKED，确认前按最小权限失败关闭。
+        Quote quote;
+        try {
+            quote = accessContext.requireQuote(quoteId, current);
+        } catch (DefinedException notVisible) {
+            // 同企业但超出数据范围：无 contract:write 的角色按能力语义返回 403（矩阵要求），
+            // 跨企业或不存在仍保持 404，避免泄露对象存在性。
+            if (current.getRole() != EmployeeRole.Boss && accessContext.sameCompanyQuote(quoteId, current)) {
+                throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以处理合同签约"));
+            }
+            throw notVisible;
+        }
+        if (current.getRole() != EmployeeRole.Boss) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以处理合同签约"));
+        }
         if (quote.getStatus() != QuoteStatus.Accepted) {
             throw new DefinedException(new DefaultErrorCode("400", "只有客户已确认的报价可以生成合同"));
         }
+        if (signedAt != null && (signedAmount == null || signedAmount.signum() <= 0)) {
+            throw new DefinedException(new DefaultErrorCode("400", "签约时必须填写最终签约价格"));
+        }
         ProjectContract contract = contractContext.createFromQuote(
-                quote, current, signedAt, startDate, planEndDate, remark);
+                quote, current, signedAt, signedAmount, startDate, planEndDate, remark);
         if (paymentTerms != null) {
             contract.setPaymentTerms(paymentTerms);
         }

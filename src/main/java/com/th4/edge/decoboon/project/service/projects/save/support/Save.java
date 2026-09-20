@@ -1,10 +1,10 @@
 package com.th4.edge.decoboon.project.service.projects.save.support;
 
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.quote.model.Quote;
-import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -17,7 +17,6 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
-import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
@@ -76,26 +75,22 @@ public class Save implements com.th4.edge.decoboon.project.service.projects.save
 
     private final ProjectContext projectContext;
     private final EmployeeRepository employeeRepository;
-    private final QuoteRepository quoteRepository;
-    private final TenantContext tenantContext;
+    private final ProjectAccessContext accessContext;
 
     public Save(ProjectContext projectContext,
                 EmployeeRepository employeeRepository,
-                QuoteRepository quoteRepository,
-                TenantContext tenantContext) {
+                ProjectAccessContext accessContext) {
         this.projectContext = projectContext;
         this.employeeRepository = employeeRepository;
-        this.quoteRepository = quoteRepository;
-        this.tenantContext = tenantContext;
+        this.accessContext = accessContext;
     }
 
     @Override
     @Transactional
     public Project call(Project request) {
-        Employee current = tenantContext.requireEmployee(employee);
+        Employee current = accessContext.requireEmployee(employee);
         Long comId = current.getCompany().getComId();
-        Quote quote = quoteRepository.findByQuoteIdAndCompany_ComId(quoteId, comId)
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
+        Quote quote = accessContext.requireQuote(quoteId, current);
 
         Employee designer = designerId == null ? quote.getCreatedBy()
                 : employeeRepository.findByEmpIdAndCompany_ComId(designerId, comId);
@@ -123,6 +118,6 @@ public class Save implements com.th4.edge.decoboon.project.service.projects.save
         draft.setDesigner(designer);
         draft.setManager(manager);
         draft.setSupport(support);
-        return projectContext.createFromQuote(quoteId, draft);
+        return projectContext.createFromQuote(quote, draft);
     }
 }

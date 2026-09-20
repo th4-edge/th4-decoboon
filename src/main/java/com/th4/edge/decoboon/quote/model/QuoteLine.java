@@ -15,6 +15,8 @@ import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
+import com.th4.edge.decoboon.quote.configure.QuoteDifferenceType;
+import com.th4.edge.decoboon.quote.configure.QuoteDifferenceStatus;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jpa.annotation.Model;
 import com.th4.edge.framework.data.jpa.keyword.annotation.Keyword;
@@ -116,6 +118,16 @@ public class QuoteLine extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
     private QuoteLineRole role = QuoteLineRole.Base;
+
+    @Note("设计差异类型")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 24, nullable = false)
+    private QuoteDifferenceType differenceType = QuoteDifferenceType.None;
+
+    @Note("设计差异状态")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, nullable = false)
+    private QuoteDifferenceStatus differenceStatus = QuoteDifferenceStatus.None;
 
     @Note("是否包含在基础报价中")
     @Column(nullable = false)
@@ -243,6 +255,10 @@ public class QuoteLine extends AuditModel {
     public void setPackageLine(PackageLine packageLine) { this.packageLine = packageLine; }
     public QuoteLineRole getRole() { return role; }
     public void setRole(QuoteLineRole role) { this.role = role; }
+    public QuoteDifferenceType getDifferenceType() { return differenceType; }
+    public void setDifferenceType(QuoteDifferenceType differenceType) { this.differenceType = differenceType; }
+    public QuoteDifferenceStatus getDifferenceStatus() { return differenceStatus; }
+    public void setDifferenceStatus(QuoteDifferenceStatus differenceStatus) { this.differenceStatus = differenceStatus; }
     public Boolean getIncluded() { return included; }
     public void setIncluded(Boolean included) { this.included = included; }
     public BigDecimal getDiscountAmount() { return discountAmount; }

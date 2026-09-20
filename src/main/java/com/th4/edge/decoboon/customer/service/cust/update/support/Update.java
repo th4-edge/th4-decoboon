@@ -120,6 +120,9 @@ public class Update implements com.th4.edge.decoboon.customer.service.cust.updat
             customer.setName(name);
         }
         if (telNo != null) {
+            if (customer.getLastFollowAt() != null && !telNo.equals(customer.getTelNo())) {
+                throw new DefinedException(new DefaultErrorCode("403", "客户已完成首联跟进，手机号不允许修改"));
+            }
             customer.setTelNo(telNo);
         }
         if (community != null) {

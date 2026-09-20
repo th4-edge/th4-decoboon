@@ -48,6 +48,7 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
     @AutoInject @NotNull private PricingMethod pricingMode;
     @AutoInject private BigDecimal materialPrice;
     @AutoInject private BigDecimal manualPrice;
+    @AutoInject private BigDecimal costPrice;
     @AutoInject private String craft;
     @AutoInject private String criterion;
     @AutoInject private String description;
@@ -95,6 +96,7 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
         item.setPricingMode(pricingMode);
         item.setMaterialPrice(zero(materialPrice));
         item.setManualPrice(zero(manualPrice));
+        item.setCostPrice(zero(costPrice));
         item.setFormula(context.formula(pricingMode));
         item.setCraft(craft);
         item.setCriterion(criterion);

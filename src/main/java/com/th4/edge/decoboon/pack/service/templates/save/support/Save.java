@@ -9,7 +9,10 @@ import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.framework.data.jpa.inject.annotation.ModelSaveInject;
 import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
+import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import com.th4.edge.tenant.user.context.TenantContext;
@@ -31,6 +34,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.pack.service.templates.save.Save {
 
+    @AutoInject
+    @NotEmpty
+    private String name;
+
+    @AutoInject
+    @NotNull
+    private java.math.BigDecimal area;
+
+    @AutoInject
+    @NotNull
+    private java.math.BigDecimal price;
+
+    @AutoInject
+    private java.math.BigDecimal discount;
+
     @User
     private Employee employee;
 
@@ -48,9 +66,13 @@ public class Save implements com.th4.edge.decoboon.pack.service.templates.save.S
 
     @Override
     @Transactional
-    public PackageTemplate call(PackageTemplate request) {
+    public PackageTemplate call(@ModelSaveInject PackageTemplate request) {
         Employee current = tenantContext.requireBoss(employee);
         request.setCompany(current.getCompany());
+        request.setName(name);
+        request.setArea(area);
+        request.setPrice(price);
+        request.setDiscount(discount == null ? java.math.BigDecimal.ONE : discount);
         request.setCost(giftPackContext.calculateCost(request));
         return giftPackRepository.save(request);
     }

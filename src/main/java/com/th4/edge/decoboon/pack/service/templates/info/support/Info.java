@@ -3,6 +3,11 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
+import com.th4.edge.decoboon.pack.model.PackageLine;
+import com.th4.edge.decoboon.pack.model.PackageSection;
+import com.th4.edge.decoboon.pack.model.PackageTemplateItem;
+import com.th4.edge.decoboon.pack.model.PackageRule;
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.pack.repository.PackageTemplateRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -15,6 +20,7 @@ import org.springframework.context.annotation.Scope;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 装修套餐详情 Provider。
@@ -22,7 +28,19 @@ import org.springframework.stereotype.Service;
 @Note("套餐详情")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount", "cost", "criterions", "createTime"})
+                properties = {"templateId", "name", "area", "price", "discount", "cost", "items", "measures",
+                        "criterions", "createTime", "updateTime"}),
+        @AllowProperties(model = PackageLine.class,
+                properties = {"itemId", "section", "item", "name", "brand", "spec", "unit", "quantity",
+                        "quantityFactor", "pricingMethod", "included", "deductible", "sort", "criterions"}),
+        @AllowProperties(model = PackageSection.class,
+                properties = {"groupId", "name", "spaceTypes", "maxDeleteNum", "priority"}),
+        @AllowProperties(model = PackageTemplateItem.class,
+                properties = {"itemId", "name", "unit", "spaceTypes", "priority"}),
+        @AllowProperties(model = PackageRule.class, properties = {"price", "standard", "remark"}),
+        @AllowProperties(model = CatalogItem.class,
+                properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",
+                        "pricingMode", "materialPrice", "manualPrice", "costPrice", "formula", "craft", "criterion"})
 })
 @Service("pack/template/info")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -44,6 +62,7 @@ public class Info implements com.th4.edge.decoboon.pack.service.templates.info.I
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PackageTemplate call(PackageTemplate request) {
         Employee current = tenantContext.requireEmployee(employee);
         return giftPackRepository.findByTemplateIdAndCompany_ComId(

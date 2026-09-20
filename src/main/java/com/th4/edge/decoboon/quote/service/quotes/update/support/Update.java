@@ -27,7 +27,8 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "mode", "status", "area", "subtotal", "discount",
-                        "taxRate", "taxAmount", "amount", "cost", "designFee", "managementFee", "updateTime", "property"}),
+                        "taxRate", "taxAmount", "amount", "designFee", "managementFee", "submittedAt", "rejectedAt",
+                        "acceptedAt", "convertedAt", "updateTime", "property"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),
@@ -62,14 +63,14 @@ public class Update implements com.th4.edge.decoboon.quote.service.quotes.update
     @Override
     public Quote call(Quote request) {
         Employee current = dataScopeContext.requireEmployee(employee);
+        if (current.getRole() == EmployeeRole.Marketer) {
+            throw new DefinedException(new DefaultErrorCode("403", "业务员不参与方案报价状态推进，仅可查看业务流转"));
+        }
         DataScope scope = dataScopeContext.resolve(current);
         org.springframework.data.jpa.domain.Specification<Quote> byId =
                 (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
         Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
-        if (current.getRole() == EmployeeRole.Marketer && status == QuoteStatus.Converted) {
-            throw new DefinedException(new DefaultErrorCode("403", "报价转项目需由设计师或企业负责人确认"));
-        }
         if (current.getRole() == EmployeeRole.TeamLeader && status == QuoteStatus.Converted) {
             throw new DefinedException(new DefaultErrorCode("403", "报价转项目需由设计师或企业负责人确认"));
         }

@@ -39,7 +39,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_contract_change", indexes = {
+@Table(name = "db_contract_change", indexes = {
         @Index(name = "idx_change_company", columnList = "com_id, change_id"),
         @Index(name = "idx_change_company_contract", columnList = "com_id, contract_id, change_id"),
         @Index(name = "idx_change_company_project", columnList = "com_id, project_id, change_id")
@@ -138,7 +138,7 @@ public class ContractChange extends AuditModel implements ProjectOwned {
     private LocalDateTime customerConfirmedAt;
 
     @ElementCollection
-    @CollectionTable(name = "db_decoboon_contract_change_image", joinColumns = @JoinColumn(name = "change_id"))
+    @CollectionTable(name = "db_contract_change_image", joinColumns = @JoinColumn(name = "change_id"))
     @Column(name = "url", length = 512)
     @Note("签证照片")
     private List<String> evidenceImages;

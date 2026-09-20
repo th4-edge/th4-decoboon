@@ -37,6 +37,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -157,6 +158,10 @@ public class Quote extends AuditModel {
     @Column(precision = 12, scale = 2, nullable = false)
     private BigDecimal cost = BigDecimal.ZERO;
 
+    @Note("成本是否完整")
+    @Column(nullable = false)
+    private Boolean costComplete = Boolean.FALSE;
+
     @Note("设计费")
     @Unit("元")
     @Column(precision = 12, scale = 2, nullable = false)
@@ -171,6 +176,18 @@ public class Quote extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(length = 16, nullable = false)
     private QuoteStatus status = QuoteStatus.Draft;
+
+    @Note("首次提交时间")
+    private LocalDateTime submittedAt;
+
+    @Note("客户驳回时间")
+    private LocalDateTime rejectedAt;
+
+    @Note("客户接受时间")
+    private LocalDateTime acceptedAt;
+
+    @Note("转项目时间")
+    private LocalDateTime convertedAt;
 
     @Note("报价明细")
     @Transient
@@ -230,12 +247,22 @@ public class Quote extends AuditModel {
     public void setAmount(BigDecimal amount) { this.amount = amount; }
     public BigDecimal getCost() { return cost; }
     public void setCost(BigDecimal cost) { this.cost = cost; }
+    public Boolean getCostComplete() { return costComplete; }
+    public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
     public BigDecimal getDesignFee() { return designFee; }
     public void setDesignFee(BigDecimal designFee) { this.designFee = designFee; }
     public BigDecimal getManagementFee() { return managementFee; }
     public void setManagementFee(BigDecimal managementFee) { this.managementFee = managementFee; }
     public QuoteStatus getStatus() { return status; }
     public void setStatus(QuoteStatus status) { this.status = status; }
+    public LocalDateTime getSubmittedAt() { return submittedAt; }
+    public void setSubmittedAt(LocalDateTime submittedAt) { this.submittedAt = submittedAt; }
+    public LocalDateTime getRejectedAt() { return rejectedAt; }
+    public void setRejectedAt(LocalDateTime rejectedAt) { this.rejectedAt = rejectedAt; }
+    public LocalDateTime getAcceptedAt() { return acceptedAt; }
+    public void setAcceptedAt(LocalDateTime acceptedAt) { this.acceptedAt = acceptedAt; }
+    public LocalDateTime getConvertedAt() { return convertedAt; }
+    public void setConvertedAt(LocalDateTime convertedAt) { this.convertedAt = convertedAt; }
     public List<QuoteLine> getItems() { return items; }
     public void setItems(List<QuoteLine> items) { this.items = items; }
     public List<QuoteGroup> getRegionGroups() { return regionGroups; }

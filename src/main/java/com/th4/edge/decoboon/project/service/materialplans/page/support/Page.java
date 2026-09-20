@@ -25,7 +25,7 @@ import java.util.List;
 @Note("材料计划分页")
 @Properties(allow = {
         @AllowProperties(model = MaterialPlan.class,
-                properties = {"planId", "project", "task", "catalogItem", "quantity", "unit", "unitPrice", "status",
+                properties = {"planId", "project", "task", "catalogItem", "quantity", "unit", "unitPrice", "cost", "status",
                         "requiredAt", "arrivedAt", "createTime" }),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr" }),
         @AllowProperties(model = ProjectTask.class, properties = {"taskId", "name", "status", "progress"}),

@@ -52,7 +52,7 @@ import java.time.LocalDate;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_project", uniqueConstraints = {
+@Table(name = "db_project", uniqueConstraints = {
         @UniqueConstraint(name = "uk_project_company_property", columnNames = {"com_id", "property_id"})
 }, indexes = {
         @Index(name = "idx_project_company_support", columnList = "com_id, support_id, project_id")

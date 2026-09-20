@@ -39,7 +39,7 @@ import java.time.LocalDate;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_project_contract",
+@Table(name = "db_project_contract",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_contract_project", columnNames = "project_id"),
                 @UniqueConstraint(name = "uk_contract_quote", columnNames = "quote_id"),
@@ -112,6 +112,11 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     private BigDecimal baselineAmount = BigDecimal.ZERO;
 
     @Unit("元")
+    @Column(precision = 14, scale = 2)
+    @Note("最终签约价格（签约时冻结，不随合同变更改写）")
+    private BigDecimal signedAmount;
+
+    @Unit("元")
     @Column(precision = 14, scale = 2, nullable = false)
     @Note("当前合同金额")
     private BigDecimal currentAmount = BigDecimal.ZERO;
@@ -164,6 +169,15 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     @Note("待审批变更数量")
     private Integer pendingChangeCount = 0;
 
+    @Transient
+    @Unit("元")
+    @Note("签约成本快照")
+    private BigDecimal signedCost;
+
+    @Transient
+    @Note("签约成本是否完整")
+    private Boolean costComplete;
+
     public Long getContractId() { return contractId; }
     public void setContractId(Long contractId) { this.contractId = contractId; }
     public Company getCompany() { return company; }
@@ -178,6 +192,8 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     public void setNo(String no) { this.no = no; }
     public BigDecimal getBaselineAmount() { return baselineAmount; }
     public void setBaselineAmount(BigDecimal baselineAmount) { this.baselineAmount = baselineAmount; }
+    public BigDecimal getSignedAmount() { return signedAmount; }
+    public void setSignedAmount(BigDecimal signedAmount) { this.signedAmount = signedAmount; }
     public BigDecimal getCurrentAmount() { return currentAmount; }
     public void setCurrentAmount(BigDecimal currentAmount) { this.currentAmount = currentAmount; }
     public ContractStatus getStatus() { return status; }
@@ -196,6 +212,10 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     public void setReceivedAmount(BigDecimal receivedAmount) { this.receivedAmount = receivedAmount; }
     public Integer getPendingChangeCount() { return pendingChangeCount; }
     public void setPendingChangeCount(Integer pendingChangeCount) { this.pendingChangeCount = pendingChangeCount; }
+    public BigDecimal getSignedCost() { return signedCost; }
+    public void setSignedCost(BigDecimal signedCost) { this.signedCost = signedCost; }
+    public Boolean getCostComplete() { return costComplete; }
+    public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

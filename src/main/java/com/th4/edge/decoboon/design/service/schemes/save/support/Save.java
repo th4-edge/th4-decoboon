@@ -5,8 +5,10 @@ import com.th4.edge.decoboon.design.configure.DesignStatus;
 import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.design.context.DesignContext;
+import com.th4.edge.decoboon.design.context.DesignCopyContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
+import com.th4.edge.decoboon.design.service.CadConvertService;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -24,8 +26,8 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "customer", "owner", "version", "style", "status", "area",
-                        "layout", "description", "coverUrl", "cadUrl", "originalPlanUrl", "demolitionUrl",
-                        "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "createTime", "property"}),
+                        "layout", "description", "coverUrl", "cadUrl", "cadPreviewUrl", "cadConvertStatus", "originalPlanUrl", "demolitionUrl",
+                        "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "originalPlanImages", "createTime", "property"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "community", "addr"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
@@ -46,22 +48,36 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
     @AutoInject
     private Long ownerId;
 
+    @AutoInject
+    private Long copyFromId;
+
     @User
     private Employee employee;
 
     private final DesignContext designContext;
+    private final DesignCopyContext designCopyContext;
     private final DesignRepository designRepository;
     private final PropertyContext propertyContext;
+    private final CadConvertService cadConvertService;
 
-    public Save(DesignContext designContext, DesignRepository designRepository, PropertyContext propertyContext) {
+    public Save(DesignContext designContext,
+                DesignCopyContext designCopyContext,
+                DesignRepository designRepository,
+                PropertyContext propertyContext,
+                CadConvertService cadConvertService) {
         this.designContext = designContext;
+        this.designCopyContext = designCopyContext;
         this.designRepository = designRepository;
         this.propertyContext = propertyContext;
+        this.cadConvertService = cadConvertService;
     }
 
     @Override
     public Design call(@ModelSaveInject Design request) {
         Employee current = designContext.requireEmployee(employee);
+        if (copyFromId != null) {
+            return designCopyContext.copy(copyFromId, employee, current);
+        }
         Customer customer = designContext.requireCustomer(customerId, employee);
         Employee fallback = customer.getDesigner() == null ? current : customer.getDesigner();
         Employee owner = designContext.resolveOwner(current, ownerId, fallback);
@@ -83,12 +99,17 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
         design.setOptimizationUrl(request.getOptimizationUrl());
         design.setSitePhotos(request.getSitePhotos());
         design.setSurveyPhotos(request.getSurveyPhotos());
+        design.setOriginalPlanImages(request.getOriginalPlanImages());
         design.setStatus(DesignStatus.Draft);
         design.setArea(request.getArea() == null || request.getArea().signum() <= 0
                 ? customer.getArea() : request.getArea());
         Property property = propertyContext.resolve(propertyId, customer, current);
         designContext.requirePropertyOpen(property);
         designContext.apply(design, customer, owner, property);
-        return designRepository.save(design);
+        Design saved = designRepository.save(design);
+        if (saved.getCadUrl() != null && !saved.getCadUrl().isBlank()) {
+            cadConvertService.convertAsync(saved.getDesignId(), saved.getCadUrl());
+        }
+        return saved;
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_stock_movement", indexes = {
+@Table(name = "db_stock_movement", indexes = {
         @Index(name = "idx_stock_movement_company", columnList = "com_id, movement_id"),
         @Index(name = "idx_stock_movement_project", columnList = "com_id, project_id, movement_id"),
         @Index(name = "idx_stock_movement_stock", columnList = "com_id, stock_id, movement_id")
@@ -51,7 +51,7 @@ public class StockMovement extends AuditModel {
     @Column(length = 64) @Note("来源单号") private String sourceNo;
     @Note("发生时间") private LocalDateTime occurredAt;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "operator_id", nullable = false) @Note("操作人") private Employee operator;
-    @ElementCollection @CollectionTable(name = "db_decoboon_stock_movement_image", joinColumns = @JoinColumn(name = "movement_id")) @Column(name = "url", length = 512) private List<String> images;
+    @ElementCollection @CollectionTable(name = "db_stock_movement_image", joinColumns = @JoinColumn(name = "movement_id")) @Column(name = "url", length = 512) private List<String> images;
     @Column(length = 500) @Note("备注") private String remark;
 
     public Long getMovementId() { return movementId; }

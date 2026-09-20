@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_business_target",
+@Table(name = "db_business_target",
         uniqueConstraints = @UniqueConstraint(name = "uk_business_target_company_month", columnNames = {"com_id", "target_month"}),
         indexes = {
                 @Index(name = "idx_business_target_company", columnList = "com_id, target_id"),

@@ -31,9 +31,11 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 客户实体。
@@ -170,6 +172,20 @@ public class Customer extends AuditModel {
     @Note("指定设计师时间")
     private LocalDateTime handedOffAt;
 
+    // ==== 以下为只读投影字段，不落库，由 Provider 按需装配（P0-b） ====
+
+    @Transient
+    @Note("标签（系统标签 + 人工标签）")
+    private List<CustomerTag> tags;
+
+    @Transient
+    @Note("客户画像")
+    private CustomerPortrait portrait;
+
+    @Transient
+    @Note("客户分级（派生值，只读）")
+    private CustomerGrade grade;
+
     public Long getCustId() { return custId; }
     public void setCustId(Long custId) { this.custId = custId; }
     public Company getCompany() { return company; }
@@ -224,4 +240,11 @@ public class Customer extends AuditModel {
     public void setMeasureRequestedAt(LocalDateTime measureRequestedAt) { this.measureRequestedAt = measureRequestedAt; }
     public LocalDateTime getHandedOffAt() { return handedOffAt; }
     public void setHandedOffAt(LocalDateTime handedOffAt) { this.handedOffAt = handedOffAt; }
+
+    public List<CustomerTag> getTags() { return tags; }
+    public void setTags(List<CustomerTag> tags) { this.tags = tags; }
+    public CustomerPortrait getPortrait() { return portrait; }
+    public void setPortrait(CustomerPortrait portrait) { this.portrait = portrait; }
+    public CustomerGrade getGrade() { return grade; }
+    public void setGrade(CustomerGrade grade) { this.grade = grade; }
 }

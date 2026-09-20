@@ -12,6 +12,8 @@ import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.quote.context.QuoteContext;
+import com.th4.edge.decoboon.quote.context.QuoteCopyContext;
+import com.th4.edge.decoboon.quote.context.HybridQuoteBuilder;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
@@ -46,16 +48,17 @@ import java.math.BigDecimal;
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode", "area",
-                        "subtotal", "amount", "cost", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
+                        "subtotal", "amount", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
+                        "submittedAt", "rejectedAt", "acceptedAt", "convertedAt",
                         "items", "regionGroups", "constructionGroups", "materialGroups", "otherGroups", "createTime", "property"}),
         @AllowProperties(model = QuoteGroup.class,
-                properties = {"key", "name", "type", "category", "unit", "quantity", "amount", "cost", "items"}),
+                properties = {"key", "name", "type", "category", "unit", "quantity", "amount", "items"}),
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
-                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "role",
-                        "included", "discountAmount", "components", "sort"}),
+                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "formula", "role",
+                        "differenceType", "differenceStatus", "included", "discountAmount", "components", "sort"}),
         @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteComponent.class,
-                properties = {"type", "name", "saleAmount", "costAmount", "formula", "sort"}),
+                properties = {"type", "name", "saleAmount", "formula", "sort"}),
         @AllowProperties(model = PackageTemplate.class, properties = {"templateId", "name", "area", "price", "discount"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout", "coverUrl"}),
@@ -89,6 +92,9 @@ public class Save implements com.th4.edge.decoboon.quote.service.quotes.save.Sav
     private Long designId;
 
     @AutoInject
+    private Long sourceQuoteId;
+
+    @AutoInject
     private BigDecimal area;
 
     @AutoInject
@@ -101,6 +107,8 @@ public class Save implements com.th4.edge.decoboon.quote.service.quotes.save.Sav
     private final PackageTemplateRepository giftPackRepository;
     private final EmployeeRepository employeeRepository;
     private final QuoteContext quoteContext;
+    private final QuoteCopyContext quoteCopyContext;
+    private final HybridQuoteBuilder hybridQuoteBuilder;
     private final DataScopeContext dataScopeContext;
     private final DesignContext designContext;
     private final PropertyContext propertyContext;
@@ -109,6 +117,8 @@ public class Save implements com.th4.edge.decoboon.quote.service.quotes.save.Sav
                 PackageTemplateRepository giftPackRepository,
                 EmployeeRepository employeeRepository,
                 QuoteContext quoteContext,
+                QuoteCopyContext quoteCopyContext,
+                HybridQuoteBuilder hybridQuoteBuilder,
                 DataScopeContext dataScopeContext,
                 DesignContext designContext,
                 PropertyContext propertyContext) {
@@ -116,6 +126,8 @@ public class Save implements com.th4.edge.decoboon.quote.service.quotes.save.Sav
         this.giftPackRepository = giftPackRepository;
         this.employeeRepository = employeeRepository;
         this.quoteContext = quoteContext;
+        this.quoteCopyContext = quoteCopyContext;
+        this.hybridQuoteBuilder = hybridQuoteBuilder;
         this.dataScopeContext = dataScopeContext;
         this.designContext = designContext;
         this.propertyContext = propertyContext;
@@ -124,13 +136,28 @@ public class Save implements com.th4.edge.decoboon.quote.service.quotes.save.Sav
     @Override
     public Quote call(Quote request) {
         Employee current = dataScopeContext.requireEmployee(employee);
+        if (current.getRole() == EmployeeRole.Marketer) {
+            throw new DefinedException(new DefaultErrorCode("403", "业务员不参与方案报价，客户交接后仅可查看业务流转"));
+        }
         DataScope scope = dataScopeContext.resolve(current);
         Long companyId = scope.comId();
+
+        if (sourceQuoteId != null) {
+            return quoteCopyContext.rebase(sourceQuoteId, employee);
+        }
 
         if (designId != null) {
             Design design = designContext.requireDesign(designId, employee);
             if (customerId != null && !customerId.equals(design.getCustomer().getCustId())) {
                 throw new DefinedException(new DefaultErrorCode("403", "方案与客户不匹配"));
+            }
+            if (templateId != null) {
+                PackageTemplate packageTemplate = giftPackRepository.findById(templateId)
+                        .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在")));
+                if (packageTemplate.getCompany() == null || !packageTemplate.getCompany().getComId().equals(companyId)) {
+                    throw new DefinedException(new DefaultErrorCode("403", "套餐不属于当前企业"));
+                }
+                return hybridQuoteBuilder.build(design, packageTemplate, discount);
             }
             return quoteContext.create(design, discount);
         }

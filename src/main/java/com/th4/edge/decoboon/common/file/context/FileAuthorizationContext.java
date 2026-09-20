@@ -156,8 +156,9 @@ public class FileAuthorizationContext {
                 Design design = designRepository.findOne(byId(Design.class, "designId", businessId)
                                 .and(DataScopeSpecification.visible(Design.class, scopeData)))
                         .orElseThrow(this::notFound);
-                add(allowed, design.getCoverUrl(), design.getCadUrl(), design.getOriginalPlanUrl(),
-                        design.getDemolitionUrl(), design.getMasonryUrl(), design.getOptimizationUrl());
+                add(allowed, design.getCoverUrl(), design.getCadUrl(), design.getCadPreviewUrl(),
+                        design.getOriginalPlanUrl(), design.getDemolitionUrl(), design.getMasonryUrl(),
+                        design.getOptimizationUrl());
                 add(allowed, design.getSitePhotos());
                 add(allowed, design.getSurveyPhotos());
                 for (Space space : spaceRepository.findByDesign_DesignIdOrderBySortAsc(businessId)) {

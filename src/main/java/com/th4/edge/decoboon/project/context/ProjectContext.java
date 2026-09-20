@@ -126,8 +126,11 @@ public class ProjectContext {
      * @return 已生成阶段、任务和材料计划的项目
      */
     @Transactional
-    public Project createFromQuote(Long quoteId, Project draft) {
-        ProjectContract contract = projectContractRepository.findByQuote_QuoteId(quoteId)
+    public Project createFromQuote(Quote quote, Project draft) {
+        if (quote == null || quote.getQuoteId() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "报价不能为空"));
+        }
+        ProjectContract contract = projectContractRepository.findByQuote_QuoteId(quote.getQuoteId())
                 .filter(item -> item.getStatus() == com.th4.edge.decoboon.project.configure.ContractStatus.Effective)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("400", "请先完成合同签约并生效，再创建项目")));
         return createFromEffectiveContract(contract, draft);
@@ -156,8 +159,8 @@ public class ProjectContext {
             throw new DefinedException(new DefaultErrorCode("400", "该报价已经生成项目"));
         }
         Property property = quote.getProperty();
-        if (property == null) {
-            property = propertyContext.ensureForCustomer(quote.getCustomer(), quote.getCreatedBy());
+        if (property == null || property.getPropertyId() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "报价缺少客户房屋，请先建立并选择房屋档案"));
         }
         property = propertyRepository.findByPropertyIdAndCompany_ComId(
                         property.getPropertyId(), quote.getCompany().getComId())
@@ -188,8 +191,13 @@ public class ProjectContext {
         project.setManager(draft.getManager());
         project.setSiteAddr(draft.getSiteAddr());
         project.setArea(property.getArea() == null || property.getArea().signum() == 0 ? quote.getArea() : property.getArea());
-        project.setContractAmount(quote.getAmount());
-        project.setCost(quote.getCost());
+        project.setContractAmount(contract.getCurrentAmount() == null
+                ? quote.getAmount() : contract.getCurrentAmount());
+        BigDecimal signedCost = BigDecimal.ZERO;
+        for (ContractLine line : contractLineRepository.findByContractOrderBySortAsc(contract)) {
+            signedCost = signedCost.add(line.getCost() == null ? BigDecimal.ZERO : line.getCost());
+        }
+        project.setCost(signedCost);
         project.setStartDate(draft.getStartDate());
         project.setPlanEndDate(draft.getPlanEndDate());
         project.setStatus(ProjectStatus.Preparing);
@@ -202,6 +210,7 @@ public class ProjectContext {
         refreshProject(project);
         Quote converted = quote;
         converted.setStatus(QuoteStatus.Converted);
+        converted.setConvertedAt(java.time.LocalDateTime.now());
         quoteRepository.save(converted);
         property.setStatus(com.th4.edge.decoboon.property.configure.PropertyStatus.Serving);
         propertyRepository.save(property);

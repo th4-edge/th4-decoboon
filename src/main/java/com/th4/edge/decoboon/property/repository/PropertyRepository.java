@@ -22,6 +22,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long>,
 
     List<Property> findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(Long comId, Long custId);
 
+    List<Property> findByCompany_ComIdAndCustomer_CustIdIn(Long comId, List<Long> customerIds);
+
     List<Property> findByCompany_ComIdAndStore_StoreIdOrderByPropertyIdDesc(Long comId, Long storeId);
 
     List<Property> findByCompany_ComIdAndTeam_TeamIdOrderByPropertyIdDesc(Long comId, Long teamId);

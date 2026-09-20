@@ -27,9 +27,9 @@ import java.util.List;
 @Note("合同基线查询")
 @Properties(allow = {
         @AllowProperties(model = ProjectContract.class,
-                properties = {"contractId", "no", "project", "quote", "customer", "baselineAmount", "currentAmount",
+                properties = {"contractId", "no", "project", "quote", "customer", "baselineAmount", "signedAmount", "currentAmount",
                         "status", "signedAt", "createdBy", "remark", "receivableCount", "receivableAmount",
-                        "receivedAmount", "pendingChangeCount", "createTime"}),
+                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "siteAddr", "contractAmount", "status", "property", "customer", "quote" }),
         @AllowProperties(model = Quote.class,

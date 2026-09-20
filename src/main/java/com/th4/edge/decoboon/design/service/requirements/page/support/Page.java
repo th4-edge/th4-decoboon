@@ -51,6 +51,9 @@ public class Page implements com.th4.edge.decoboon.design.service.requirements.p
     private Long customerId;
 
     @AutoInject
+    private Long propertyId;
+
+    @AutoInject
     private RequirementKind kind;
 
     @AutoInject
@@ -71,6 +74,9 @@ public class Page implements com.th4.edge.decoboon.design.service.requirements.p
             List<Predicate> predicates = new ArrayList<>();
             if (customerId != null) {
                 predicates.add(builder.equal(root.get("customer").get("custId"), customerId));
+            }
+            if (propertyId != null) {
+                predicates.add(builder.equal(root.get("property").get("propertyId"), propertyId));
             }
             if (kind != null) {
                 predicates.add(builder.equal(root.get("kind"), kind));

@@ -24,12 +24,14 @@ public class CatalogContext {
         return dataScopeContext.requireEmployee(principal);
     }
 
-    /** 只有企业负责人、材料员或仓库负责人可以维护统一目录。 */
+    /** 企业负责人、店长、材料员和财务可以维护报价项目库及标准成本。 */
     public Employee requireMaintainer(Employee principal) {
         Employee current = requireEmployee(principal);
         if (current.getRole() != EmployeeRole.Boss
-                && current.getRole() != EmployeeRole.ProjectSupport) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或材料员可以维护报价项目库"));
+                && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.ProjectSupport
+                && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号无权维护报价项目库"));
         }
         return current;
     }

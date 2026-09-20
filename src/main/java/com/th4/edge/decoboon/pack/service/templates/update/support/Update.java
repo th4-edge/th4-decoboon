@@ -11,7 +11,9 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.framework.data.jpa.inject.annotation.ModelSaveInject;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
+import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.security.annotation.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,21 @@ public class Update implements com.th4.edge.decoboon.pack.service.templates.upda
     @NotNull
     private Long templateId;
 
+    @AutoInject
+    @NotEmpty
+    private String name;
+
+    @AutoInject
+    @NotNull
+    private java.math.BigDecimal area;
+
+    @AutoInject
+    @NotNull
+    private java.math.BigDecimal price;
+
+    @AutoInject
+    private java.math.BigDecimal discount;
+
     private final PackageTemplateRepository giftPackRepository;
     private final PackageContext giftPackContext;
     private final TenantContext tenantContext;
@@ -54,18 +71,18 @@ public class Update implements com.th4.edge.decoboon.pack.service.templates.upda
 
     @Override
     @Transactional
-    public PackageTemplate call(PackageTemplate request) {
+    public PackageTemplate call(@ModelSaveInject PackageTemplate request) {
         Employee current = tenantContext.requireBoss(employee);
         PackageTemplate pack = giftPackRepository.findByTemplateIdAndCompany_ComId(
                         templateId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
-        pack.setName(request.getName());
-        pack.setArea(request.getArea());
-        pack.setPrice(request.getPrice());
-        pack.setDiscount(request.getDiscount());
-        pack.setItems(request.getItems());
-        pack.setMeasures(request.getMeasures());
-        pack.setCriterions(request.getCriterions());
+        pack.setName(name);
+        pack.setArea(area);
+        pack.setPrice(price);
+        pack.setDiscount(discount == null ? pack.getDiscount() : discount);
+        if (request.getItems() != null) pack.setItems(request.getItems());
+        if (request.getMeasures() != null) pack.setMeasures(request.getMeasures());
+        if (request.getCriterions() != null) pack.setCriterions(request.getCriterions());
         pack.setCost(giftPackContext.calculateCost(pack));
         return giftPackRepository.save(pack);
     }

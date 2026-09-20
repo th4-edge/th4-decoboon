@@ -11,6 +11,8 @@ import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
@@ -29,7 +31,7 @@ import java.util.List;
 @Description("确认客户-房屋绑定，保存尺寸、诉求、现场照片和设计师结论")
 @Properties(allow = {
         @AllowProperties(model = Measure.class,
-                properties = {"measureId", "customer", "property", "designer", "measureTime", "status", "sitePhotos",
+                properties = {"measureId", "customer", "property", "designer", "executor", "measureTime", "status", "sitePhotos",
                         "originalStructure", "structureImages", "attachments", "dimensions", "customerRequirements", "designerConclusion", "createTime"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
@@ -65,20 +67,53 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
     @Override
     @Transactional
     public Measure call(Measure request) {
-        Property property = propertyContext.require(propertyId, employee);
-        Measure target = measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
+        // JWT 主体是框架用 BeanUtils 新建的 Employee 占位对象（只有 empId，
+        // role 为字段默认值 Marketer、name 为空），因此执行人必须使用重新加载的完整员工实体，
+        // 否则响应中的 executor.role/name 会与数据库不一致。
+        Employee current = propertyContext.requireEmployee(employee);
+        Property property = propertyContext.require(propertyId, current);
+        MeasureStatus measureStatus = status == null ? MeasureStatus.Completed : status;
+        var existing = measureRepository.findByPropertyOrderByMeasureTimeDesc(property);
+        Measure scheduled = existing.stream()
                 .filter(item -> item.getStatus() == MeasureStatus.Scheduled)
                 .findFirst()
-                .orElse(request);
+                .orElse(null);
+        Measure completed = existing.stream()
+                .filter(item -> item.getStatus() == MeasureStatus.Completed)
+                .findFirst()
+                .orElse(null);
+
+        // 设计师是设计责任事实：只取已指派的设计师，绝不把当前操作人写成设计师。
+        Employee assignedDesigner = resolveDesigner(property, scheduled == null ? request : scheduled);
+        if (measureStatus == MeasureStatus.Completed) {
+            if (assignedDesigner == null) {
+                if (property.getCustomer() != null) {
+                    throw new DefinedException(new DefaultErrorCode("400",
+                            "请先由老板、店长或团队负责人指定设计师，再完成量房"));
+                }
+            } else if (current == null || !assignedDesigner.getEmpId().equals(current.getEmpId())) {
+                // SCN-001：已指派设计师后，量房完成只能由该指定设计师执行，
+                // 其他角色（业务员/其他设计师/管理者）不得代录，失败且不落库。
+                throw new DefinedException(new DefaultErrorCode("403",
+                        "该房屋已指定设计师，量房完成必须由指定设计师执行"));
+            }
+        }
+        // 幂等：房屋已有 Completed 量房事实且没有待完成的预约时，直接返回原记录，
+        // 不重写 measureTime / property.latestMeasureAt / executor / designer / status / 附件。
+        if (measureStatus == MeasureStatus.Completed && scheduled == null && completed != null) {
+            return completed;
+        }
+        Measure target = scheduled == null ? request : scheduled;
         target.setCompany(property.getCompany());
         target.setStore(property.getStore());
         target.setTeam(property.getTeam());
         target.setOwner(property.getOwner());
         target.setCustomer(property.getCustomer());
         target.setProperty(property);
-        target.setDesigner(property.getDesigner() == null ? employee : property.getDesigner());
+        target.setDesigner(assignedDesigner);
+        // 量房执行人单独记录在 executor，与设计师语义分离，并保持完整员工实体。
+        target.setExecutor(current);
         target.setMeasureTime(measureTime == null ? LocalDateTime.now() : measureTime);
-        MeasureStatus measureStatus = status == null ? MeasureStatus.Completed : status;
         target.setStatus(measureStatus);
         target.setSitePhotos(sitePhotos);
         target.setStructureImages(structureImages);
@@ -94,7 +129,7 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
                 property.setStatus(PropertyStatus.Measured);
             }
             property.setLatestMeasureAt(saved.getMeasureTime());
-            property.setDesigner(saved.getDesigner());
+            // 量房完成只更新房屋量房事实，不因为量房动作自动补齐设计师或完成设计节点。
             propertyRepository.save(property);
         } else if (measureStatus == MeasureStatus.Scheduled
                 && property.getStatus() == PropertyStatus.PendingMeasure) {
@@ -102,5 +137,16 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
             propertyRepository.save(property);
         }
         return saved;
+    }
+
+    /** 解析当前房屋已指派的设计师，未指派时保持为空。 */
+    private Employee resolveDesigner(Property property, Measure target) {
+        if (property.getDesigner() != null) {
+            return property.getDesigner();
+        }
+        if (target.getDesigner() != null) {
+            return target.getDesigner();
+        }
+        return property.getCustomer() == null ? null : property.getCustomer().getDesigner();
     }
 }

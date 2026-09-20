@@ -44,7 +44,7 @@ import java.util.List;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_decoboon_design_talk", indexes = {
+@Table(name = "db_design_talk", indexes = {
         @Index(name = "idx_talk_company", columnList = "com_id, talk_id"),
         @Index(name = "idx_talk_company_store", columnList = "com_id, store_id, talk_id"),
         @Index(name = "idx_talk_company_team", columnList = "com_id, team_id, talk_id"),

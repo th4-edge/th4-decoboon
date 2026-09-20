@@ -13,11 +13,10 @@ public interface DesignRepository extends JpaRepository<Design, Long>,
 
     List<Design> findByCompany_ComIdAndCustomer_CustIdOrderByVersionDesc(Long comId, Long customerId);
 
+    List<Design> findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(Long comId, Collection<Long> propertyIds);
+
     List<Design> findByCompany_ComIdAndCustomer_CustIdAndStatusInOrderByVersionDesc(
             Long comId, Long customerId, Collection<com.th4.edge.decoboon.design.configure.DesignStatus> statuses);
 
     long countByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
-
-    long countByCompany_ComIdAndCustomer_CustIdAndStatusIn(
-            Long comId, Long customerId, Collection<com.th4.edge.decoboon.design.configure.DesignStatus> statuses);
 }

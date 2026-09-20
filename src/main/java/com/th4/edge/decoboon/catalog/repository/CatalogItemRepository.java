@@ -24,10 +24,10 @@ public interface CatalogItemRepository extends JpaRepository<CatalogItem, Long>,
     Optional<CatalogItem> findFirstByCompany_ComIdAndTypeOrderByCodeDesc(Long comId, ItemType type);
 
     @Query("""
-            select distinct item.category, item.brand, item.spec
+            select distinct item.category, item.brand, item.series, item.spec
             from CatalogItem item
             where item.company.comId = :comId and item.type = :type and item.active = true
-            order by item.category, item.brand, item.spec
+            order by item.category, item.brand, item.series, item.spec
             """)
     List<Object[]> findFacetsByCompanyAndType(@Param("comId") Long comId, @Param("type") ItemType type);
 

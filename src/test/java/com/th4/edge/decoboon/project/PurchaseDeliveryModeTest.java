@@ -100,7 +100,33 @@ class PurchaseDeliveryModeTest {
         verify(inventoryContext).receive(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any());
     }
 
+    @Test
+    void materialPlanMustAggregateAllPurchaseReceipts() {
+        PurchaseOrder existing = new PurchaseOrder();
+        existing.setStatus(PurchaseStatus.Received);
+        existing.setQuantity(BigDecimal.ONE);
+        existing.setReceivedQuantity(BigDecimal.ONE);
+
+        PurchaseOrder current = confirmReceipt(DeliveryMode.Direct, "2", "1", "1", List.of(existing));
+
+        assertThat(current.getMaterialPlan().getStatus())
+                .isEqualTo(com.th4.edge.decoboon.project.configure.MaterialPlanStatus.Arrived);
+    }
+
+    @Test
+    void materialPlanMustRemainPartialWhenPurchasesDoNotCoverDemand() {
+        PurchaseOrder current = confirmReceipt(DeliveryMode.Direct, "2", "1", "1", List.of());
+
+        assertThat(current.getMaterialPlan().getStatus())
+                .isEqualTo(com.th4.edge.decoboon.project.configure.MaterialPlanStatus.PartiallyArrived);
+    }
+
     private PurchaseOrder confirmReceipt(DeliveryMode mode) {
+        return confirmReceipt(mode, "5", "5", "5", List.of());
+    }
+
+    private PurchaseOrder confirmReceipt(DeliveryMode mode, String planQuantity, String purchaseQuantity,
+                                         String receiptQuantity, List<PurchaseOrder> existingPurchases) {
         Company company = new Company();
         company.setComId(10L);
         Employee employee = new Employee();
@@ -115,6 +141,7 @@ class PurchaseDeliveryModeTest {
         plan.setProject(project);
         plan.setCatalogItem(new CatalogItem());
         plan.setUnit(Unit.Item);
+        plan.setQuantity(new BigDecimal(planQuantity));
         Partner supplier = new Partner();
         supplier.setPartnerId(50L);
         supplier.setCompany(company);
@@ -128,13 +155,15 @@ class PurchaseDeliveryModeTest {
         purchase.setSupplier(supplier);
         purchase.setSupplierName(supplier.getName());
         purchase.setDeliveryMode(mode);
-        purchase.setQuantity(new BigDecimal("5"));
+        purchase.setQuantity(new BigDecimal(purchaseQuantity));
         purchase.setReceivedQuantity(BigDecimal.ZERO);
         purchase.setUnitPrice(new BigDecimal("20"));
         purchase.setStatus(PurchaseStatus.Ordered);
 
         when(accessContext.requireEmployee(any())).thenReturn(employee);
         when(purchaseRepository.findOne(any(Specification.class))).thenReturn(Optional.of(purchase));
+        when(purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan)).thenReturn(existingPurchases);
+        ReflectionTestUtils.setField(save, "quantity", new BigDecimal(receiptQuantity));
         save.call(new GoodsReceipt());
         return purchase;
     }

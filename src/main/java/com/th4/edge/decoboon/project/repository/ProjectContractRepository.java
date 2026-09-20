@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
     Optional<ProjectContract> findByProject(Project project);
 
     Optional<ProjectContract> findByQuote_QuoteId(Long quoteId);
+
+    List<ProjectContract> findByQuote_QuoteIdIn(Collection<Long> quoteIds);
 
     Optional<ProjectContract> findByProject_ProjectIdAndCompany_ComId(Long projectId, Long comId);
 

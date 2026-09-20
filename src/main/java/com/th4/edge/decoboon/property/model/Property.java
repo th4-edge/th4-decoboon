@@ -36,7 +36,7 @@ import java.time.LocalDateTime;
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
-@Table(name = "db_decoboon_property", indexes = {
+@Table(name = "db_property", indexes = {
         @Index(name = "idx_property_company", columnList = "com_id, property_id"),
         @Index(name = "idx_property_company_customer", columnList = "com_id, customer_id, property_id"),
         @Index(name = "idx_property_company_store", columnList = "com_id, store_id, property_id"),

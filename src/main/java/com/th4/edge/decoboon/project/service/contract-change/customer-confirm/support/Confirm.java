@@ -40,7 +40,7 @@ import java.util.List;
         @AllowProperties(model = ContractLine.class,
                 properties = {"lineId", "type", "name", "quantity", "materialPrice", "manualPrice", "amount", "cost"}),
         @AllowProperties(model = ProjectContract.class,
-                properties = {"contractId", "no", "baselineAmount", "currentAmount", "status", "signedAt"}),
+                properties = {"contractId", "no", "baselineAmount", "signedAmount", "currentAmount", "status", "signedAt"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "status", "property"}),
         @AllowProperties(model = Property.class,
