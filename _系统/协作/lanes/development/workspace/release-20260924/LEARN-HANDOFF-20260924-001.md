@@ -19,7 +19,7 @@ sources:
 - ISSUE-ID：MH-OWNER-AUDIT-20260924 / BOSS-MEASURE-WORKSPACE-2
 - REQ-BIZ：REQ-BIZ-20260924-002（业主整改复验与主动发起边界）
 - GAP/DEC：GAP-010 / DEC-009 / BR-008 / SCN-010
-- 产品版本/commit：待本次 release candidate commit 写入
+- 产品版本/commit：backend `3b1488b`；App `8bf0b29`；RC tag `v20260924-rc1`
 
 ## 修复事实
 
@@ -38,7 +38,7 @@ sources:
 - 越权：ProviderSecurityAcceptanceTest 覆盖。
 - 幂等：迁移 56 临时 MySQL 连续执行两次 PASS。
 - 跨页面一致性：首页、详情、旅程三处修复；自动断言待补。
-- 重启/部署证据：本轮只完成 RC 构建，生产部署待执行。
+- 重启/部署证据：后端 release artifact `dist/releases/20260924-042911/th4-decoboon-1.0.0-build.tar.gz`，SHA256SUMS 校验 PASS；生产部署待执行。
 
 ## 学习要求
 
