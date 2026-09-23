@@ -4,8 +4,8 @@ import com.th4.edge.framework.core.annotation.Note;
 
 import java.time.LocalDate;
 
-/** 老板驾驶舱查询条件。 */
-@Note("老板驾驶舱查询")
+/** 企业负责人驾驶舱查询条件。 */
+@Note("企业负责人驾驶舱查询")
 public class BossDashboardQuery {
 
     @Note("统计月份，任意一天代表所在月，默认当前月")

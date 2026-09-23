@@ -35,7 +35,7 @@ import java.util.List;
 
 /** 一次事务保存一张包含多行增减项的合同变更单。 */
 @Note("批量发起合同变更")
-@Description("面向 Web 连续录入场景，一次提交多行增减项并汇总合同变更金额")
+@Description("面向连续录入场景，一次提交多行增减项并汇总合同变更金额")
 @Properties(allow = {
         @AllowProperties(model = ContractChange.class,
                 properties = {"changeId", "contract", "project", "no", "reason", "type",

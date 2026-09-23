@@ -31,7 +31,7 @@ import java.util.List;
 @Description("确认客户-房屋绑定，保存尺寸、诉求、现场照片和设计师结论")
 @Properties(allow = {
         @AllowProperties(model = Measure.class,
-                properties = {"measureId", "customer", "property", "designer", "executor", "measureTime", "status", "sitePhotos",
+                properties = {"measureId", "customer", "property", "designer", "executor", "scheduledAt", "completedAt", "measureTime", "status", "sitePhotos",
                         "originalStructure", "structureImages", "attachments", "dimensions", "customerRequirements", "designerConclusion", "createTime"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
@@ -43,6 +43,8 @@ import java.util.List;
 public class Save implements com.th4.edge.decoboon.property.service.measures.save.Save {
 
     @AutoInject @NotNull private Long propertyId;
+    @AutoInject private LocalDateTime scheduledAt;
+    @AutoInject private LocalDateTime completedAt;
     @AutoInject private LocalDateTime measureTime;
     @AutoInject private MeasureStatus status;
     @AutoInject private List<String> sitePhotos;
@@ -89,7 +91,7 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
             if (assignedDesigner == null) {
                 if (property.getCustomer() != null) {
                     throw new DefinedException(new DefaultErrorCode("400",
-                            "请先由老板、店长或团队负责人指定设计师，再完成量房"));
+                            "请先由企业负责人、店长或团队负责人指定设计师，再完成量房"));
                 }
             } else if (current == null || !assignedDesigner.getEmpId().equals(current.getEmpId())) {
                 // SCN-001：已指派设计师后，量房完成只能由该指定设计师执行，
@@ -113,7 +115,29 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
         target.setDesigner(assignedDesigner);
         // 量房执行人单独记录在 executor，与设计师语义分离，并保持完整员工实体。
         target.setExecutor(current);
-        target.setMeasureTime(measureTime == null ? LocalDateTime.now() : measureTime);
+        LocalDateTime legacyTime = measureTime;
+        if (measureStatus == MeasureStatus.Scheduled) {
+            LocalDateTime scheduledValue = scheduledAt != null ? scheduledAt : legacyTime;
+            target.setScheduledAt(scheduledValue == null ? LocalDateTime.now() : scheduledValue);
+            target.setCompletedAt(null);
+            target.setMeasureTime(target.getScheduledAt());
+        } else if (measureStatus == MeasureStatus.Completed) {
+            LocalDateTime scheduledValue = target.getScheduledAt() != null
+                    ? target.getScheduledAt() : (scheduledAt != null ? scheduledAt : legacyTime);
+            LocalDateTime completedValue = completedAt != null ? completedAt : legacyTime;
+            if (scheduledValue != null) {
+                target.setScheduledAt(scheduledValue);
+            }
+            target.setCompletedAt(completedValue == null ? LocalDateTime.now() : completedValue);
+            target.setMeasureTime(target.getCompletedAt());
+        } else {
+            LocalDateTime scheduledValue = target.getScheduledAt() != null
+                    ? target.getScheduledAt() : (scheduledAt != null ? scheduledAt : legacyTime);
+            if (scheduledValue != null) {
+                target.setScheduledAt(scheduledValue);
+                target.setMeasureTime(scheduledValue);
+            }
+        }
         target.setStatus(measureStatus);
         target.setSitePhotos(sitePhotos);
         target.setStructureImages(structureImages);
@@ -128,7 +152,7 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
                     || property.getStatus() == PropertyStatus.Measuring) {
                 property.setStatus(PropertyStatus.Measured);
             }
-            property.setLatestMeasureAt(saved.getMeasureTime());
+            property.setLatestMeasureAt(saved.getCompletedAt() == null ? saved.getMeasureTime() : saved.getCompletedAt());
             // 量房完成只更新房屋量房事实，不因为量房动作自动补齐设计师或完成设计节点。
             propertyRepository.save(property);
         } else if (measureStatus == MeasureStatus.Scheduled

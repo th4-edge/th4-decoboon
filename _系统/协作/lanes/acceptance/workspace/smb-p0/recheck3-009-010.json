@@ -1,0 +1,354 @@
+{
+  "before_info": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "量房记录不存在或无权访问",
+      "system": false
+    }
+  },
+  "sequential": [
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:51:13"
+        },
+        "measureId": "226701602042413056",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701441081802752",
+          "propertyNo": "H1789739435463",
+          "community": "验收小区",
+          "building": "1栋1单元",
+          "roomNo": "101",
+          "address": "验收小区1栋101",
+          "area": 88.0,
+          "layout": "两室一厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-19 00:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [],
+        "structureImages": [],
+        "attachments": []
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:51:13"
+        },
+        "measureId": "226701602042413056",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701441081802752",
+          "propertyNo": "H1789739435463",
+          "community": "验收小区",
+          "building": "1栋1单元",
+          "roomNo": "101",
+          "address": "验收小区1栋101",
+          "area": 88.0,
+          "layout": "两室一厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-19 00:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [],
+        "structureImages": [],
+        "attachments": []
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:51:13"
+        },
+        "measureId": "226701602042413056",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701441081802752",
+          "propertyNo": "H1789739435463",
+          "community": "验收小区",
+          "building": "1栋1单元",
+          "roomNo": "101",
+          "address": "验收小区1栋101",
+          "area": 88.0,
+          "layout": "两室一厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-19 00:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [],
+        "structureImages": [],
+        "attachments": []
+      },
+      "success": true
+    }
+  ],
+  "concurrent": [
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:51:13"
+        },
+        "measureId": "226701602042413056",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701441081802752",
+          "propertyNo": "H1789739435463",
+          "community": "验收小区",
+          "building": "1栋1单元",
+          "roomNo": "101",
+          "address": "验收小区1栋101",
+          "area": 88.0,
+          "layout": "两室一厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-19 00:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [],
+        "structureImages": [],
+        "attachments": []
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:51:13"
+        },
+        "measureId": "226701602042413056",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701441081802752",
+          "propertyNo": "H1789739435463",
+          "community": "验收小区",
+          "building": "1栋1单元",
+          "roomNo": "101",
+          "address": "验收小区1栋101",
+          "area": 88.0,
+          "layout": "两室一厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-19 00:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [],
+        "structureImages": [],
+        "attachments": []
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:51:13"
+        },
+        "measureId": "226701602042413056",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701441081802752",
+          "propertyNo": "H1789739435463",
+          "community": "验收小区",
+          "building": "1栋1单元",
+          "roomNo": "101",
+          "address": "验收小区1栋101",
+          "area": 88.0,
+          "layout": "两室一厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-19 00:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [],
+        "structureImages": [],
+        "attachments": []
+      },
+      "success": true
+    }
+  ],
+  "marketer_attempt": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "该房屋已指定设计师，量房完成必须由指定设计师执行",
+      "system": false
+    }
+  },
+  "after_info": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "量房记录不存在或无权访问",
+      "system": false
+    }
+  }
+}

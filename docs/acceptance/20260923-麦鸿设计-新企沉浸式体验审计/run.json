@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "run_id": "新企沉浸式体验审计",
+  "tenant": "麦鸿设计",
+  "environment": "本地开发环境-decoboon-dev-mp-weixin",
+  "created_at": "2026-09-23T05:00:04",
+  "status": "PARTIAL",
+  "source": "zhuangdeqing-miniapp-immersion-audit",
+  "notes": [
+    "Mini Program UI evidence is authoritative for experience findings.",
+    "Local test data was restored from repository operations records before the audit.",
+    "The dist/dev API base was corrected from 192.168.0.104 to 192.168.0.101 for this local audit.",
+    "Two identical follow records are intentional test writes and are not counted as a duplicate-submission defect.",
+    "Owner and real-device verification remain blocked until the user provides two independent WeChat test phone numbers and scans the preview QR on real devices."
+  ],
+  "completed_at": "2026-09-23T05:40:00+08:00",
+  "evidence_root": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/20260923-麦鸿设计-新企沉浸式体验审计/raw",
+  "summary": {
+    "roles_experienced": [
+      "boss",
+      "marketer",
+      "designer",
+      "pm",
+      "finance"
+    ],
+    "ui_write_actions": [
+      "customer_follow",
+      "project_manager_handoff"
+    ],
+    "database_check": "pass_for_observed_scope",
+    "blocked": [
+      "owner_wechat_login",
+      "device_camera_file",
+      "real_wechat_authorization",
+      "real_money",
+      "multi_wechat_concurrency"
+    ],
+    "finding_counts": {
+      "P0": 0,
+      "P1": 2,
+      "P2": 3,
+      "BLOCKED": 1
+    },
+    "fixed_and_verified_local": [
+      "XA-001",
+      "XA-002",
+      "XA-003",
+      "XA-004"
+    ],
+    "remaining_open": [
+      "XA-005"
+    ],
+    "supply_payment_chain": {
+      "status": "verified_local_simulated_customer_confirmation",
+      "purchaseAmount": 1470.0,
+      "receivedQuantity": 30,
+      "paymentAmount": 1470.0
+    },
+    "next_user_inputs": [
+      "employee_test_phone_for_device_upload",
+      "owner_test_phone_for_acceptance"
+    ]
+  }
+}

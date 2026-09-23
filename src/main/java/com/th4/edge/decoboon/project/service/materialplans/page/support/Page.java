@@ -84,7 +84,6 @@ public class Page implements com.th4.edge.decoboon.project.service.materialplans
                             comId, current.getTeam().getTeamId());
             case Designer -> projectRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByProjectIdDesc(comId, empId);
             case Pm -> projectRepository.findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(comId, empId);
-            case ProjectSupport -> projectRepository.findByCompany_ComIdAndSupport_EmpIdOrderByProjectIdDesc(comId, empId);
             case Marketer -> projectRepository.findByCompany_ComIdAndQuote_CreatedBy_EmpIdOrderByProjectIdDesc(comId, empId);
             default -> List.of();
         };

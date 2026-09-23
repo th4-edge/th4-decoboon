@@ -28,4 +28,6 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
     boolean existsByProperty_PropertyId(Long propertyId);
 
     List<ProjectContract> findByCompany_ComIdOrderByContractIdDesc(Long comId);
+
+    List<ProjectContract> findTop200ByCompany_ComIdOrderByContractIdDesc(Long comId);
 }

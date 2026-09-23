@@ -20,7 +20,7 @@ import java.util.List;
  * 平台用户身份。
  *
  * <p>微信凭证使用 idKey=openId、idSecret=unionId；小程序员工可在已登录状态下为
- * 当前凭证设置 Web 登录密码，Web 首次设密也可先创建 Password 凭证并以手机号
+ * 当前凭证设置登录密码，首次设密也可先创建 Password 凭证并以手机号
  * 作为 idKey，之后绑定微信时升级为 Wx 凭证。未加入企业时 employee 为空，
  * 加入后指向当前有效 Employee。</p>
  */

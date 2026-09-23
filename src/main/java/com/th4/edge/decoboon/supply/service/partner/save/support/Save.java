@@ -63,7 +63,7 @@ public class Save implements com.th4.edge.decoboon.supply.service.partner.save.S
     @Transactional
     public Partner call(Partner request) {
         Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss,
-                EmployeeRole.StoreManager, EmployeeRole.ProjectSupport, EmployeeRole.Finance);
+                EmployeeRole.StoreManager, EmployeeRole.Finance);
         request.setCompany(current.getCompany());
         request.setType(type == null ? PartnerType.Supplier : type);
         request.setName(name.trim());

@@ -54,7 +54,7 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
     @Override
     @Transactional
     public Partner call(Partner request) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.ProjectSupport, EmployeeRole.Finance);
+        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.Finance);
         Partner partner = partnerRepository.findById(partnerId)
                 .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "合作方不存在")));

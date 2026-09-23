@@ -55,9 +55,27 @@ class ContractChangeFulfillmentContextTest {
         when(stageRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(taskRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(materialPlanRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        var returnRepository = mock(com.th4.edge.decoboon.project.repository.MaterialReturnRepository.class);
+        var purchaseRepository = mock(com.th4.edge.decoboon.project.repository.PurchaseOrderRepository.class);
+        var payableRepository = mock(com.th4.edge.decoboon.finance.repository.PayableRepository.class);
+        when(returnRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(purchaseRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(payableRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(any())).thenReturn(List.of());
+        var purchaseItemRepository = mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class);
+        var partnerCreditRepository = mock(com.th4.edge.decoboon.finance.repository.PartnerCreditRepository.class);
+        when(partnerCreditRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        var planStatusContext = new MaterialPlanStatusContext(purchaseRepository, purchaseItemRepository);
+        var deductionContext = new MaterialDeductionContext(returnRepository, purchaseRepository,
+                purchaseItemRepository, materialPlanRepository, payableRepository, partnerCreditRepository,
+                planStatusContext, new ProjectPermissionContext(),
+                mock(com.th4.edge.components.data.context.ModelIdentityContext.class),
+                mock(com.th4.edge.decoboon.supply.context.InventoryContext.class),
+                mock(com.th4.edge.decoboon.supply.repository.InventoryStockRepository.class));
         context = new ContractChangeFulfillmentContext(itemRepository, stageRepository,
                 taskRepository, materialPlanRepository, reportRepository,
-                new ProjectPermissionContext());
+                new ProjectPermissionContext(), new MaterialPlanContext(), deductionContext,
+                mock(com.th4.edge.decoboon.material.context.MaterialCategoryContext.class));
     }
 
     @Test
@@ -108,7 +126,9 @@ class ContractChangeFulfillmentContextTest {
         context.apply(fixture.change(), fixture.operator());
 
         assertThat(task.getStatus()).isEqualTo(TaskStatus.Cancelled);
-        assertThat(plan.getStatus()).isEqualTo(MaterialPlanStatus.Closed);
+        // 减项走扣减流程：数量冲减为 0 后计划行取消（DEC-MP-02）
+        assertThat(plan.getQuantity()).isEqualByComparingTo("0");
+        assertThat(plan.getStatus()).isEqualTo(MaterialPlanStatus.Cancelled);
     }
 
     @Test

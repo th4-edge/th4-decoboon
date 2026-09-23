@@ -1,0 +1,53 @@
+{
+  "property": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:23:46"
+      },
+      "propertyId": "226709790712135680",
+      "customer": {
+        "custId": "226701371305361408",
+        "name": "验收客户王",
+        "telNo": "13800002222"
+      },
+      "propertyNo": "H1789741426169",
+      "community": "验收小区",
+      "building": "4栋1单元",
+      "roomNo": "404",
+      "address": "验收小区4栋1单元404",
+      "area": 102,
+      "layout": "三室两厅",
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "salesman": {
+        "empId": "1890000000000000204",
+        "name": "周业务",
+        "role": {
+          "name": "业务员",
+          "value": "Marketer",
+          "key": "Marketer"
+        }
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      }
+    },
+    "success": true
+  },
+  "measure": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "当前客户阶段不能重新约定量房",
+      "system": false
+    }
+  }
+}

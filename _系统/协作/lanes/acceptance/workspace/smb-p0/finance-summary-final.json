@@ -1,0 +1,18 @@
+{
+  "capturedAt": "2026-09-18T22:01:00+08:00",
+  "summary": {
+    "projectCount": 2,
+    "activeProjectCount": 1,
+    "estimatedCost": 13300.0,
+    "actualCost": 13300.0,
+    "costComplete": true,
+    "costIncompleteProjectCount": 0,
+    "costIncompleteItemCount": 0,
+    "profitAmount": 7889.0
+  },
+  "projectRows": [
+    {"projectId": "226702200000000003", "contractAmount": 10594.5, "estimatedCost": 6650.0, "actualCost": 6650.0, "costComplete": true, "profitAmount": 3944.5, "grossMargin": 37.2},
+    {"projectId": "226691387045707776", "contractAmount": 10594.5, "estimatedCost": 6650.0, "actualCost": 6650.0, "costComplete": true, "profitAmount": 3944.5, "grossMargin": 37.2}
+  ],
+  "projectReport": {"projectId": "226702200000000003", "contractAmount": 10594.5, "estimatedCost": 6650.0, "actualCost": 6650.0, "costComplete": true, "profitAmount": 3944.5, "grossMargin": 37.2}
+}

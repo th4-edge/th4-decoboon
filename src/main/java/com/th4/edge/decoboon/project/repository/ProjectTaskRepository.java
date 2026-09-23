@@ -17,4 +17,8 @@ public interface ProjectTaskRepository extends JpaRepository<ProjectTask, Long>,
     List<ProjectTask> findByStage(ProjectStage stage);
 
     List<ProjectTask> findByProject(Project project);
+
+    /** 同一项目 + 阶段 + 工艺条目下的全部任务，用于下发去重。 */
+    List<ProjectTask> findByProject_ProjectIdAndStage_StageIdAndCatalogItem_ItemId(
+            Long projectId, Long stageId, Long catalogItemId);
 }

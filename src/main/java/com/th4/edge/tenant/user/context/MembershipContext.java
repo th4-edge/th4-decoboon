@@ -526,7 +526,7 @@ public class MembershipContext {
             throw new DefinedException(new DefaultErrorCode("400", "不能邀请其他负责人"));
         }
         if (inviter.getRole() == EmployeeRole.StoreManager && inviteRole == EmployeeRole.StoreManager) {
-            throw new DefinedException(new DefaultErrorCode("403", "门店店长不能邀请其他店长"));
+            throw new DefinedException(new DefaultErrorCode("403", "店长不能邀请其他店长"));
         }
         if (inviter.getRole() == EmployeeRole.TeamLeader
                 && (inviteRole == EmployeeRole.StoreManager || inviteRole == EmployeeRole.TeamLeader)) {

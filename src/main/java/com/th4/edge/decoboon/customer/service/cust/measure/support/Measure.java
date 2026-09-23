@@ -42,6 +42,8 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
     @User private Employee employee;
     @AutoInject @NotNull private Long customerId;
     @AutoInject @NotNull private Long propertyId;
+
+    @AutoInject private Long targetPropertyId;
     @AutoInject @NotNull private LocalDateTime measureAt;
     private final CustomerRepository customerRepository;
     private final DataScopeContext dataScopeContext;
@@ -77,7 +79,8 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         if (!EnumSet.of(CustStatus.Following, CustStatus.PendingMeasure).contains(customer.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "当前客户阶段不能重新约定量房"));
         }
-        Property property = propertyContext.resolve(propertyId, customer, current);
+        Long resolvedPropertyId = targetPropertyId != null ? targetPropertyId : propertyId;
+        Property property = propertyContext.resolve(resolvedPropertyId, customer, current);
         if (property.getLatestMeasureAt() != null
                 || EnumSet.of(PropertyStatus.Measured, PropertyStatus.Designing, PropertyStatus.Quoted,
                 PropertyStatus.Contracted, PropertyStatus.Serving, PropertyStatus.Completed).contains(property.getStatus())) {
@@ -106,6 +109,8 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         // 量房设计师是设计责任事实：只接受已指派的设计师，未指派时保持为空，
         // 绝不把当前操作人（业务员/设计师）无条件写成 Measure.designer。
         scheduled.setDesigner(property.getDesigner() != null ? property.getDesigner() : saved.getDesigner());
+        scheduled.setScheduledAt(measureAt);
+        scheduled.setCompletedAt(null);
         scheduled.setMeasureTime(measureAt);
         scheduled.setStatus(MeasureStatus.Scheduled);
         measureRepository.save(scheduled);

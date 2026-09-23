@@ -12,6 +12,7 @@ import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
+import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.project.context.ProjectContractContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
@@ -209,13 +210,21 @@ class DecoboonClosedLoopTest {
         Project project = projectContext.createFromEffectiveContract(contract, draft);
 
         assertThat(project.getContractAmount()).isEqualByComparingTo(finalSignedAmount);
-        assertThat(receivableRepository.findByProjectOrderByDueDateAsc(project).stream()
+        List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
+        assertThat(receivables.stream()
                 .map(item -> item.getAmount() == null ? BigDecimal.ZERO : item.getAmount())
                 .reduce(BigDecimal.ZERO, BigDecimal::add)).isEqualByComparingTo(finalSignedAmount);
 
         List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
         List<MaterialPlan> materialPlans = materialPlanRepository.findByProject(project);
         assertThat(stages).isNotEmpty();
+        assertThat(stages).extracting(ProjectStage::getStageCode)
+                .containsExactly("PREPARE", "DEMOLITION", "WATER_ELECTRIC", "MASONRY",
+                        "CARPENTRY", "PAINTING", "INSTALL", "COMPLETION");
+        assertThat(receivables).hasSize(3);
+        assertThat(receivables.get(0).getTriggerType().name()).isEqualTo("ContractSigned");
+        assertThat(receivables.get(1).getStageCode()).isEqualTo("PREPARE");
+        assertThat(receivables.get(2).getTriggerType().name()).isEqualTo("ProjectFinished");
         assertThat(stages.get(0).getPlannedStart()).isEqualTo(project.getStartDate());
         assertThat(stages.get(stages.size() - 1).getPlannedEnd()).isEqualTo(project.getPlanEndDate());
         assertThat(materialPlans).isNotEmpty();
@@ -243,13 +252,14 @@ class DecoboonClosedLoopTest {
         assertThat(project.getProgress()).isEqualTo(100);
         assertThat(project.getStatus()).isEqualTo(ProjectStatus.Accepting);
 
-        ProjectStage firstStage = stages.get(0);
-        Acceptance acceptance = projectContext.submitAcceptance(
-                company.getComId(), project.getProjectId(), firstStage.getStageId(), employee,
-                "施工完成，申请确认", List.of(), List.of("https://example.com/accept.jpg"));
-        Acceptance confirmed = projectContext.confirmAcceptance(acceptance.getAcceptanceId(), company.getComId(), true, "客户确认");
-        assertThat(confirmed.getStatus().name()).isEqualTo("Confirmed");
-        assertThat(stageRepository.findById(firstStage.getStageId()).orElseThrow().getStatus().name()).isEqualTo("Done");
+        for (ProjectStage stage : stages) {
+            Acceptance acceptance = projectContext.submitAcceptance(
+                    company.getComId(), project.getProjectId(), stage.getStageId(), employee,
+                    "施工完成，申请确认", List.of(), List.of("https://example.com/accept.jpg"));
+            Acceptance confirmed = projectContext.confirmAcceptance(acceptance.getAcceptanceId(), company.getComId(), true, "客户确认");
+            assertThat(confirmed.getStatus().name()).isEqualTo("Confirmed");
+            assertThat(stageRepository.findById(stage.getStageId()).orElseThrow().getStatus().name()).isEqualTo("Done");
+        }
         assertThat(project.getStatus()).isEqualTo(ProjectStatus.Finished);
     }
 

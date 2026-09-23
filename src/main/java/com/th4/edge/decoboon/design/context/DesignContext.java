@@ -93,6 +93,34 @@ public class DesignContext {
                         new DefaultErrorCode("404", "设计方案不存在或无权访问")));
     }
 
+    /** 业务员对本客户设计方案的只读范围；不用于任何写操作。 */
+    public Specification<Design> visibleReadableDesign(Employee principal) {
+        Employee current = requireEmployee(principal);
+        if (current.getRole() != EmployeeRole.Marketer) {
+            return DataScopeSpecification.visible(Design.class, dataScopeContext.resolve(current));
+        }
+        Long comId = current.getCompany().getComId();
+        Long empId = current.getEmpId();
+        return (root, query, builder) -> builder.and(
+                builder.equal(root.get("company").get("comId"), comId),
+                builder.or(
+                        builder.equal(root.get("customer").get("owner").get("empId"), empId),
+                        builder.equal(root.get("property").get("salesman").get("empId"), empId)));
+    }
+
+    /** 只读加载业务员本客户设计方案，避免扩大写权限。 */
+    public Design requireReadableDesign(Long designId, Employee principal) {
+        Employee current = requireEmployee(principal);
+        if (current.getRole() != EmployeeRole.Marketer) {
+            return requireDesign(designId, current);
+        }
+        Specification<Design> byId = (root, query, builder) ->
+                builder.equal(root.get("designId"), designId);
+        return designRepository.findOne(byId.and(visibleReadableDesign(current)))
+                .orElseThrow(() -> new DefinedException(
+                        new DefaultErrorCode("404", "设计方案不存在或无权访问")));
+    }
+
     public Employee resolveOwner(Employee current, Long ownerId, Employee fallback) {
         if (current == null || current.getCompany() == null) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
@@ -129,13 +157,17 @@ public class DesignContext {
     }
 
     public void apply(Requirement requirement, Customer customer, Employee owner) {
+        apply(requirement, customer, owner, propertyContext.ensureForCustomer(customer, owner));
+    }
+
+    public void apply(Requirement requirement, Customer customer, Employee owner, Property property) {
         requireSameCompany(customer == null ? null : customer.getCompany(), owner == null ? null : owner.getCompany());
         requirement.setCompany(owner.getCompany());
         requirement.setStore(owner.getStore());
         requirement.setTeam(owner.getTeam());
         requirement.setOwner(owner);
         requirement.setCustomer(customer);
-        requirement.setProperty(propertyContext.ensureForCustomer(customer, owner));
+        requirement.setProperty(property);
     }
 
     public void apply(Space space, Design design) {

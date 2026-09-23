@@ -23,7 +23,7 @@ import java.util.Optional;
 /**
  * 平台用户识别上下文。
  *
- * <p>微信凭证使用 type=Wx、idKey=openId、idSecret=unionId；Web 密码凭证使用
+ * <p>微信凭证使用 type=Wx、idKey=openId、idSecret=unionId；密码凭证使用
  * type=Password、idKey=手机号，并在绑定微信时升级为 Wx。未加入企业时
  * employee 为空，加入企业后指向当前有效 Employee。</p>
  */

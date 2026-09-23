@@ -1,0 +1,248 @@
+{
+  "batch": "APP-BIZ-SIM-20260923",
+  "createdAt": "2026-09-23T01:38:11",
+  "projects": {
+    "227467763537412096": {
+      "projectName": "麦鸿演示项目 37",
+      "updatedAt": "2026-09-23T01:38:29",
+      "projectId": "227467763537412096",
+      "projectNo": 37,
+      "designerRole": "designerXie",
+      "designerName": "谢玲玲",
+      "customerName": "蔡颖（演示37）",
+      "propertyId": "227467760211329024",
+      "contractId": "227467763013124096",
+      "materialLineId": "227467763038289923",
+      "constructionLineId": "227467763038289920",
+      "materialPlanId": "227467763621298176",
+      "materialSupplierId": "1790098691720412107",
+      "selectionId": "228207070896193536",
+      "selectionStatus": "Confirmed",
+      "purchaseId": "1790098405771884180",
+      "purchaseStatus": "Received",
+      "addChange": {
+        "changeId": "1790098691771296966",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098691975382598",
+        "status": "CustomerConfirmed"
+      },
+      "quantityChange": null,
+      "pendingChange": null
+    },
+    "227467767987568640": {
+      "projectName": "麦鸿演示项目 38",
+      "updatedAt": "2026-09-23T01:38:30",
+      "projectId": "227467767987568640",
+      "projectNo": 38,
+      "designerRole": "designerDong",
+      "designerName": "董夏鹏",
+      "customerName": "余凡（演示38）",
+      "propertyId": "227467765034778624",
+      "contractId": "227467767572332544",
+      "materialLineId": "227467767584915459",
+      "constructionLineId": "227467767584915456",
+      "materialPlanId": "227467768029511681",
+      "materialSupplierId": "1790098692269993825",
+      "selectionId": "228208273461870592",
+      "selectionStatus": "Confirmed",
+      "purchaseId": "1790098692813672825",
+      "purchaseStatus": "Received",
+      "addChange": {
+        "changeId": "1790098692425113225",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098692619243593",
+        "status": "Approved"
+      },
+      "quantityChange": null,
+      "pendingChange": {
+        "changeId": "1790098692771064554",
+        "status": "Pending"
+      }
+    },
+    "227467771926020096": {
+      "projectName": "麦鸿演示项目 39",
+      "updatedAt": "2026-09-23T01:38:30",
+      "projectId": "227467771926020096",
+      "projectNo": 39,
+      "designerRole": "designerXie",
+      "designerName": "谢玲玲",
+      "customerName": "杜鹏（演示39）",
+      "propertyId": "227467769195528192",
+      "contractId": "227467771590475776",
+      "materialLineId": "227467771603058691",
+      "constructionLineId": "227467771603058688",
+      "materialPlanId": "227467772009906176",
+      "materialSupplierId": "1790098692980620796",
+      "selectionId": "228208276427243520",
+      "selectionStatus": "Confirmed",
+      "purchaseId": "1790098693397616551",
+      "purchaseStatus": "Received",
+      "addChange": {
+        "changeId": "1790098693083835525",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098693241409191",
+        "status": "CustomerConfirmed"
+      },
+      "quantityChange": null,
+      "pendingChange": null
+    },
+    "227467776497811456": {
+      "projectName": "麦鸿演示项目 40",
+      "updatedAt": "2026-09-23T01:38:30",
+      "projectId": "227467776497811456",
+      "projectNo": 40,
+      "designerRole": "designerDong",
+      "designerName": "董夏鹏",
+      "customerName": "叶青（演示40）",
+      "propertyId": "227467773234642944",
+      "contractId": "227467776090963968",
+      "materialLineId": "227467776116129795",
+      "constructionLineId": "227467776116129792",
+      "materialPlanId": "227467776539754496",
+      "materialSupplierId": "1790098693570589955",
+      "selectionId": "228208278914465792",
+      "selectionStatus": "Confirmed",
+      "purchaseId": "1790098693907939817",
+      "purchaseStatus": "Ordered",
+      "addChange": {
+        "changeId": "1790098693672238004",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098693829290366",
+        "status": "Approved"
+      },
+      "quantityChange": null,
+      "pendingChange": null
+    },
+    "227467813109891072": {
+      "projectName": "麦鸿演示项目 41",
+      "updatedAt": "2026-09-23T01:38:30",
+      "projectId": "227467813109891072",
+      "projectNo": 41,
+      "designerRole": "designerXie",
+      "designerName": "谢玲玲",
+      "customerName": "程曦（演示41）",
+      "propertyId": "227467809947385856",
+      "contractId": "227467812736598016",
+      "materialLineId": "227467812765958147",
+      "constructionLineId": "227467812765958144",
+      "materialPlanId": "227467813160222720",
+      "materialSupplierId": "1790098694049087941",
+      "selectionId": "228208280910954496",
+      "selectionStatus": "Confirmed",
+      "purchaseId": "1790098694428373568",
+      "purchaseStatus": "Ordered",
+      "addChange": {
+        "changeId": "1790098694141730253",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098694280147270",
+        "status": "CustomerConfirmed"
+      },
+      "quantityChange": null,
+      "pendingChange": null
+    },
+    "227467818331799552": {
+      "projectName": "麦鸿演示项目 42",
+      "updatedAt": "2026-09-23T01:38:31",
+      "projectId": "227467818331799552",
+      "projectNo": 42,
+      "designerRole": "designerDong",
+      "designerName": "董夏鹏",
+      "customerName": "苏杭（演示42）",
+      "propertyId": "227467815244791808",
+      "contractId": "227467817853648896",
+      "materialLineId": "227467817874620418",
+      "constructionLineId": "227467817870426112",
+      "materialPlanId": "227467818369548289",
+      "materialSupplierId": "1790098694576236485",
+      "selectionId": "228208283112964096",
+      "selectionStatus": "Confirmed",
+      "purchaseId": "1790098694931162121",
+      "purchaseStatus": "Ordered",
+      "addChange": {
+        "changeId": "1790098694673738255",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098694839964957",
+        "status": "Approved"
+      },
+      "quantityChange": null,
+      "pendingChange": null
+    },
+    "227467822953922560": {
+      "projectName": "麦鸿演示项目 43",
+      "updatedAt": "2026-09-23T01:38:31",
+      "projectId": "227467822953922560",
+      "projectNo": 43,
+      "designerRole": "designerXie",
+      "designerName": "谢玲玲",
+      "customerName": "吕萌（演示43）",
+      "propertyId": "227467820118573056",
+      "contractId": "227467822475771904",
+      "materialLineId": "227467822500937730",
+      "constructionLineId": "227467822496743424",
+      "materialPlanId": "227467823000059904",
+      "materialSupplierId": "1790098695088450057",
+      "selectionId": "228208285260447744",
+      "selectionStatus": "Confirmed",
+      "purchaseId": null,
+      "purchaseStatus": null,
+      "addChange": {
+        "changeId": "1790098695182958129",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098695320934924",
+        "status": "CustomerConfirmed"
+      },
+      "quantityChange": {
+        "changeId": "1790098695500158349",
+        "status": "CustomerConfirmed"
+      },
+      "pendingChange": null
+    },
+    "227467827844481024": {
+      "projectName": "麦鸿演示项目 44",
+      "updatedAt": "2026-09-23T01:38:31",
+      "projectId": "227467827844481024",
+      "projectNo": 44,
+      "designerRole": "designerDong",
+      "designerName": "董夏鹏",
+      "customerName": "沈悦（演示44）",
+      "propertyId": "227467824807804928",
+      "contractId": "227467827437633536",
+      "materialLineId": "227467827454410755",
+      "constructionLineId": "227467827454410752",
+      "materialPlanId": "227467827886424064",
+      "materialSupplierId": "1790098695709936262",
+      "selectionId": "228208287869304832",
+      "selectionStatus": "Confirmed",
+      "purchaseId": null,
+      "purchaseStatus": null,
+      "addChange": {
+        "changeId": "1790098695802827914",
+        "status": "CustomerConfirmed"
+      },
+      "removeChange": {
+        "changeId": "1790098695930709025",
+        "status": "Approved"
+      },
+      "quantityChange": {
+        "changeId": "1790098696045134248",
+        "status": "CustomerConfirmed"
+      },
+      "pendingChange": null
+    }
+  },
+  "failures": []
+}

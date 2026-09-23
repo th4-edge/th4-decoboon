@@ -1,0 +1,66 @@
+{
+  "request": "REQ-20260922-BOSS-MEASURE-WORKSPACE-2",
+  "acceptance_date": "2026-09-22",
+  "backend_probe": {
+    "command": "mvn -o -q -DforkCount=0 -Dtest=BossMeasureWorkspace2AcceptanceTest test",
+    "tests": 4,
+    "passed": 2,
+    "failed": 2,
+    "passed_cases": [
+      "seven derived states and dashboard facts",
+      "marketer self data scope"
+    ],
+    "failed_cases": [
+      {
+        "id": "today-scheduled-semantics",
+        "expected": "todayCount=2; today.scheduledCount=2",
+        "actual": "todayCount=1; today.scheduledCount=1",
+        "detail": "已完成的今日预约未计入 todayCount；未来时段的今日预约未计入 periods.today.scheduledCount"
+      },
+      {
+        "id": "signed-customer-enterprise-facts",
+        "expected": "Signed customer measure event retained in enterprise report and today window",
+        "actual": "customer/item/period facts absent",
+        "detail": "先按 ACTIVE_PRE_MEASURE 截断客户池再计算全企业日期事件"
+      }
+    ],
+    "full_suite": {
+      "suites": 80,
+      "tests": 247,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "note": "failures are the two confirmed acceptance assertions"
+    },
+    "regression_excluding_acceptance_probe": {
+      "suites": 79,
+      "tests": 243,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "static_contracts": {
+    "overdue_threshold_4h": "FAIL: measure-workbench.vue still uses 84 * 3600 * 1000",
+    "performance_month_store_propagation": "FAIL: assessment.vue calls workbenchApi.bossMeasure() without month/storeId",
+    "marketer_workbench_entry": "FAIL: marketer role action declares view:measure-workbench but permission matrix does not grant it",
+    "ui_return_overview": "PASS: suppressAutoFocus + exitWorkspaceFocus restores overview",
+    "period_grid": "PASS: 2x2 CSS grid",
+    "exception_grid": "PASS: 2x2 CSS grid",
+    "dashboard_metrics": "PASS: six required metrics present",
+    "forbidden_metrics_states": "PASS: no 已接单/上门中/准时率/接单率 in measure workbench",
+    "card_visual_hierarchy": "PASS: avatar/name/status, secondary contact row, property card, schedule chip, people tags, primary next area, right-aligned pill actions, light primary/ghost treatments, divider, gradient risk bar, current highlight"
+  },
+  "builds": {
+    "app_type_check": "PASS",
+    "app_release_build": "PASS",
+    "main_package_bytes": 616698,
+    "max_subpackage_bytes": 302211,
+    "total_bytes": 2068482,
+    "subpackages": 14,
+    "pages": 87
+  },
+  "blocked": [
+    "真实微信开发者工具/真机的点击、视觉、无横向滚动和底部遮挡验证"
+  ]
+}

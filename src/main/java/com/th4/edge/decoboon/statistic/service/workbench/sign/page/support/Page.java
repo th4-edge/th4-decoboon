@@ -15,6 +15,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -32,8 +33,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/** 设计师签约工作台实现，区分待签约与已签约生效。 */
-@Note("设计师签约工作台")
+/** 签约工作台实现，按角色数据范围区分待签约与已签约生效。 */
+@Note("签约工作台")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "version", "amount", "status", "acceptedAt", "convertedAt", "customer", "property"}),
@@ -42,9 +43,11 @@ import java.util.stream.Collectors;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "name", "no", "status"}),
         @AllowProperties(model = Customer.class,
-                properties = {"custId", "name", "telNo", "community", "addr", "area", "status"}),
+                properties = {"custId", "name", "telNo", "community", "addr", "area", "status", "designer"}),
         @AllowProperties(model = Property.class,
-                properties = {"propertyId", "propertyNo", "community", "address", "area"})
+                properties = {"propertyId", "propertyNo", "community", "address", "area", "designer"}),
+        @AllowProperties(model = Employee.class,
+                properties = {"empId", "name", "store"})
 })
 @Service("statistic/workbench/sign/page")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -74,8 +77,21 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.s
         Long comId = current.getCompany().getComId();
         Long empId = current.getEmpId();
 
-        List<Quote> quotes = quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
-                comId, empId, List.of(QuoteStatus.Accepted, QuoteStatus.Converted));
+        List<QuoteStatus> statuses = List.of(QuoteStatus.Accepted, QuoteStatus.Converted);
+        List<Quote> quotes = switch (current.getRole()) {
+            case Boss -> quoteRepository.findByCompany_ComIdAndStatusInOrderByQuoteIdDesc(comId, statuses);
+            case StoreManager -> current.getStore() == null || current.getStore().getStoreId() == null
+                    ? List.of()
+                    : quoteRepository.findByCompany_ComIdAndCustomer_Store_StoreIdAndStatusInOrderByQuoteIdDesc(
+                            comId, current.getStore().getStoreId(), statuses);
+            case TeamLeader -> current.getTeam() == null || current.getTeam().getTeamId() == null
+                    ? List.of()
+                    : quoteRepository.findByCompany_ComIdAndCustomer_Team_TeamIdAndStatusInOrderByQuoteIdDesc(
+                            comId, current.getTeam().getTeamId(), statuses);
+            case Designer, Marketer -> quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
+                    comId, empId, statuses);
+            default -> List.of();
+        };
         if (quotes.isEmpty()) {
             return List.of();
         }
@@ -109,6 +125,16 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.s
             item.setArea(property.getArea() == null ? customer.getArea() : property.getArea());
             item.setCustomerStatus(customer.getStatus().name());
             item.setCustomerStatusName(customer.getStatus().getName());
+            var designer = property.getDesigner() != null
+                    ? property.getDesigner()
+                    : customer.getDesigner() != null
+                    ? customer.getDesigner()
+                    : quote.getDesign() == null ? null : quote.getDesign().getOwner();
+            if (designer != null) {
+                item.setDesignerId(designer.getEmpId());
+                item.setDesignerName(designer.getName());
+                item.setDesignerStoreName(designer.getStore() == null ? null : designer.getStore().getName());
+            }
 
             item.setQuoteId(quote.getQuoteId());
             item.setQuoteNo(quote.getNo());
@@ -121,10 +147,13 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.s
                 item.setContractStatus(contract.getStatus().name());
                 item.setContractStatusName(contract.getStatus().getName());
                 item.setSignedAt(contract.getSignedAt());
+                item.setCurrentAmount(contract.getCurrentAmount());
             }
             if (project != null) {
                 item.setProjectId(project.getProjectId());
                 item.setProjectName(project.getName());
+                item.setProjectStatus(project.getStatus() == null ? null : project.getStatus().name());
+                item.setProjectStatusName(project.getStatus() == null ? null : project.getStatus().getName());
             }
 
             LocalDateTime stageStart = item.getAcceptedAt() == null ? now : item.getAcceptedAt();

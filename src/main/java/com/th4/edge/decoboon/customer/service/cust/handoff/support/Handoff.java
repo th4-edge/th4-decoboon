@@ -4,7 +4,15 @@ import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.design.model.Design;
+import com.th4.edge.decoboon.design.model.Requirement;
+import com.th4.edge.decoboon.design.repository.DesignRepository;
+import com.th4.edge.decoboon.design.repository.RequirementRepository;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.context.PropertyContext;
+import com.th4.edge.decoboon.property.model.Measure;
+import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -26,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Note("指定设计师")
 @Properties(allow = {
@@ -39,27 +48,36 @@ import java.time.LocalDateTime;
 public class Handoff implements com.th4.edge.decoboon.customer.service.cust.handoff.Handoff {
     @User private Employee employee;
     @AutoInject @NotNull private Long customerId;
-    @AutoInject @NotNull private Long propertyId;
+    @AutoInject private Long propertyId;
     @AutoInject @NotNull private Long designerId;
     private final CustomerRepository customerRepository;
     private final EmployeeRepository employeeRepository;
     private final DataScopeContext dataScopeContext;
     private final NoticeContext noticeContext;
     private final PropertyContext propertyContext;
+    private final PropertyRepository propertyRepository;
     private final MeasureRepository measureRepository;
+    private final DesignRepository designRepository;
+    private final RequirementRepository requirementRepository;
 
     public Handoff(CustomerRepository customerRepository,
                    EmployeeRepository employeeRepository,
                    DataScopeContext dataScopeContext,
                    NoticeContext noticeContext,
                    PropertyContext propertyContext,
-                   MeasureRepository measureRepository) {
+                   PropertyRepository propertyRepository,
+                   MeasureRepository measureRepository,
+                   DesignRepository designRepository,
+                   RequirementRepository requirementRepository) {
         this.customerRepository = customerRepository;
         this.employeeRepository = employeeRepository;
         this.dataScopeContext = dataScopeContext;
         this.noticeContext = noticeContext;
         this.propertyContext = propertyContext;
+        this.propertyRepository = propertyRepository;
         this.measureRepository = measureRepository;
+        this.designRepository = designRepository;
+        this.requirementRepository = requirementRepository;
     }
 
     @Override
@@ -75,10 +93,7 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
         if (current.getRole() != EmployeeRole.Boss
                 && current.getRole() != EmployeeRole.StoreManager
                 && current.getRole() != EmployeeRole.TeamLeader) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅团队负责人、门店店长或企业负责人可以指定设计师"));
-        }
-        if (customer.getDesigner() != null) {
-            throw new DefinedException(new DefaultErrorCode("400", "客户已指定设计师，不能重复指定"));
+            throw new DefinedException(new DefaultErrorCode("403", "仅团队负责人、店长或企业负责人可以指定设计师"));
         }
         if (customer.getStatus() == CustStatus.New || customer.getStatus() == CustStatus.Lost) {
             throw new DefinedException(new DefaultErrorCode("400", "客户尚未跟进或已流失，不能指定设计师"));
@@ -91,7 +106,7 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
         Employee designer = employeeRepository.findByEmpIdAndCompany_ComId(
                 designerId, current.getCompany().getComId());
         if (designer == null || (designer.getRole() != EmployeeRole.Designer && designer.getRole() != EmployeeRole.Boss)) {
-            throw new DefinedException(new DefaultErrorCode("400", "请选择本企业设计师或老板本人"));
+            throw new DefinedException(new DefaultErrorCode("400", "请选择本企业设计师或企业负责人本人"));
         }
         if (current.getRole() == EmployeeRole.StoreManager
                 && (designer.getStore() == null || current.getStore() == null
@@ -103,19 +118,49 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
                 || !designer.getTeam().getTeamId().equals(current.getTeam().getTeamId()))) {
             throw new DefinedException(new DefaultErrorCode("400", "仅可指定本团队设计师"));
         }
-        var property = propertyContext.resolve(propertyId, customer, current);
+        Employee previous = customer.getDesigner();
+        if (propertyId != null) {
+            propertyContext.resolve(propertyId, customer, current);
+        }
+        List<Property> properties = propertyRepository
+                .findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(current.getCompany().getComId(), customer.getCustId());
+        if (properties.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400", "客户尚未建立房屋档案，不能指定设计师"));
+        }
+        boolean changing = previous != null && !previous.getEmpId().equals(designer.getEmpId());
         customer.setDesigner(designer);
         customer.setHandedOffAt(LocalDateTime.now());
         Customer saved = customerRepository.save(customer);
-        propertyContext.assignDesigner(property, designer);
-        // 量房设计师只在此处由管理者显式指定：补齐预约中以及历史遗留的未指派量房记录。
-        measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
-                .filter(item -> item.getDesigner() == null)
-                .forEach(item -> {
-                    item.setDesigner(designer);
-                    measureRepository.save(item);
-                });
-        noticeContext.designerSubmitted(saved, current, designer);
+
+        for (Property property : properties) {
+            propertyContext.assignDesigner(property, designer);
+            for (Measure measure : measureRepository.findByPropertyOrderByMeasureTimeDesc(property)) {
+                if (measure.getDesigner() != null && !changing) continue;
+                if (changing && measure.getStatus() != MeasureStatus.Scheduled) continue;
+                measure.setDesigner(designer);
+                measureRepository.save(measure);
+            }
+        }
+
+        for (Design design : designRepository
+                .findByCompany_ComIdAndCustomer_CustIdOrderByVersionDesc(current.getCompany().getComId(), customer.getCustId())) {
+            if (design.getStatus() == com.th4.edge.decoboon.design.configure.DesignStatus.Archived) continue;
+            design.setOwner(designer);
+            design.setStore(designer.getStore());
+            design.setTeam(designer.getTeam());
+            designRepository.save(design);
+        }
+        for (Requirement requirement : requirementRepository
+                .findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(current.getCompany().getComId(), customer.getCustId())) {
+            requirement.setOwner(designer);
+            requirement.setStore(designer.getStore());
+            requirement.setTeam(designer.getTeam());
+            requirementRepository.save(requirement);
+        }
+
+        if (!designer.getEmpId().equals(previous == null ? null : previous.getEmpId())) {
+            noticeContext.designerSubmitted(saved, current, designer);
+        }
         return saved;
     }
 }

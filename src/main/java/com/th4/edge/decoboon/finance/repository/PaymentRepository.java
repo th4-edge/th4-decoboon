@@ -13,4 +13,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long>,
     List<Payment> findByCompany_ComIdAndProject_ProjectIdOrderByPaidAtDesc(Long comId, Long projectId);
 
     List<Payment> findByCompany_ComIdOrderByPaidAtDesc(Long comId);
+
+    List<Payment> findTop200ByCompany_ComIdOrderByPaidAtDesc(Long comId);
 }

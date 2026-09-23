@@ -11,6 +11,8 @@ import com.th4.edge.decoboon.finance.model.Payment;
 import com.th4.edge.decoboon.finance.repository.PayableSettlementRepository;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.PaymentRepository;
+import com.th4.edge.decoboon.labor.model.Worker;
+import com.th4.edge.decoboon.labor.repository.WorkerRepository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -33,13 +35,14 @@ import java.time.LocalDate;
 @Note("业务付款创建")
 @Properties(allow = {
         @AllowProperties(model = Payment.class,
-                properties = {"paymentId", "amount", "account", "paidAt", "payeeName", "transactionNo",
+                properties = {"paymentId", "amount", "account", "paidAt", "payeeName", "worker", "transactionNo",
                         "voucherUrl", "remark", "createTime"}),
         @AllowProperties(model = Payable.class,
                 properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status", "payeeName", "property" }),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
+        @AllowProperties(model = Worker.class, properties = {"workerId", "name", "trade", "phone"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/payment/save")
@@ -71,20 +74,33 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
     private String voucherUrl;
     @AutoInject
     private String remark;
+    /** 个人工人（工资发放付款时填写，用于生成个人工资凭证）。 */
+    @AutoInject
+    private Long workerId;
 
     private final PaymentRepository paymentRepository;
     private final PayableRepository payableRepository;
     private final PayableSettlementRepository payableSettlementRepository;
     private final FinanceAccessContext accessContext;
+    private final WorkerRepository workerRepository;
 
     public Save(PaymentRepository paymentRepository,
                 PayableRepository payableRepository,
                 PayableSettlementRepository payableSettlementRepository,
-                FinanceAccessContext accessContext) {
+                FinanceAccessContext accessContext,
+                WorkerRepository workerRepository) {
         this.paymentRepository = paymentRepository;
         this.payableRepository = payableRepository;
         this.payableSettlementRepository = payableSettlementRepository;
         this.accessContext = accessContext;
+        this.workerRepository = workerRepository;
+    }
+
+    /** 工人档案必须属于当前企业；未选择时返回空（非工资付款）。 */
+    private Worker resolveWorker(Employee current, String payeeFallback) {
+        if (workerId == null) return null;
+        return workerRepository.findByWorkerIdAndCompany_ComId(workerId, current.getCompany().getComId())
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "工人档案不存在或无权访问")));
     }
 
     @Override
@@ -115,7 +131,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         request.setAmount(paid);
         request.setAccount(account == null ? FundAccount.CompanyBank : account);
         request.setPaidAt(paidAt);
-        request.setPayeeName(payeeName == null || payeeName.isBlank() ? payable.getPayeeName() : payeeName);
+        Worker worker = resolveWorker(current, payable.getPayeeName());
+        request.setWorker(worker);
+        request.setPayeeName(resolvePayeeName(payeeName, worker, payable.getPayeeName()));
         request.setTransactionNo(transactionNo);
         request.setVoucherUrl(voucherUrl);
         request.setRemark(remark);
@@ -131,6 +149,13 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 saved.getAccount(), paidAt, saved.getPayeeName(),
                 "付款 · " + payable.getName(), remark);
         return saved;
+    }
+
+    /** 收款人姓名：显式传入 > 工人姓名 > 应付单收款方。 */
+    private String resolvePayeeName(String input, Worker worker, String fallback) {
+        if (input != null && !input.isBlank()) return input;
+        if (worker != null && worker.getName() != null && !worker.getName().isBlank()) return worker.getName();
+        return fallback;
     }
 
     /**
@@ -167,7 +192,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         request.setAmount(paid);
         request.setAccount(account == null ? FundAccount.CompanyBank : account);
         request.setPaidAt(paidAt);
-        request.setPayeeName(payeeName == null || payeeName.isBlank() ? primary.getPayeeName() : payeeName);
+        Worker worker = resolveWorker(current, primary.getPayeeName());
+        request.setWorker(worker);
+        request.setPayeeName(resolvePayeeName(payeeName, worker, primary.getPayeeName()));
         request.setTransactionNo(transactionNo);
         request.setVoucherUrl(voucherUrl);
         request.setRemark(remark);

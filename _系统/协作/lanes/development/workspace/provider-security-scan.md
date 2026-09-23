@@ -42,7 +42,6 @@ total=198 protected=187 public=11 violations=0
 - `user/user/info`
 - `user/user/update`
 
-Web 密码会话路由已拆分为明确 Provider：
 
 - 公开：`auth/session/password-login`、`auth/session/password-setup`
 - 受保护：`auth/session/password-change`、`auth/session/logout`

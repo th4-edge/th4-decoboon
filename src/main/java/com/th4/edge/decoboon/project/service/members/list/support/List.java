@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.project.service.members.list.support;
 
+import com.th4.edge.decoboon.common.support.DateTimeText;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Project;
@@ -69,7 +70,7 @@ public class List implements com.th4.edge.decoboon.project.service.members.list.
             member.setKind("employee");
             member.setRole(item.getRole());
             member.setLabel(item.getRole().getName());
-            member.setJoinedAt(project.getCreateTime() == null ? null : String.valueOf(project.getCreateTime().getDateTime()));
+            member.setJoinedAt(project.getCreateTime() == null ? null : DateTimeText.format(project.getCreateTime()));
             result.add(member);
         }
         if (project.getCustomer() != null) {
@@ -79,7 +80,7 @@ public class List implements com.th4.edge.decoboon.project.service.members.list.
             owner.setCustomer(project.getCustomer());
             owner.setKind("customer");
             owner.setLabel("业主");
-            owner.setJoinedAt(project.getCreateTime() == null ? null : String.valueOf(project.getCreateTime().getDateTime()));
+            owner.setJoinedAt(project.getCreateTime() == null ? null : DateTimeText.format(project.getCreateTime()));
             result.add(owner);
         }
         return result;

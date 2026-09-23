@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Note("项目阶段详情")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
-                properties = {"stageId", "project", "name", "sort", "weight", "status", "progress",
+                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status", "progress",
                         "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
         // 阶段页只需要项目摘要；property 会带出门店/团队/负责人循环对象，曾生成 240KB+ 非法 JSON。
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr" })

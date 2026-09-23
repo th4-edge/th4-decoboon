@@ -50,6 +50,34 @@ public class ProjectAccessContext {
                         new DefaultErrorCode("404", "项目不存在或无权访问")));
     }
 
+    /** 业务员对本客户项目的只读范围；不用于任何写操作。 */
+    public Specification<Project> visibleReadableProject(Employee employee) {
+        Employee current = requireEmployee(employee);
+        if (current.getRole() != EmployeeRole.Marketer) {
+            return visibleProject(current);
+        }
+        Long comId = current.getCompany().getComId();
+        Long empId = current.getEmpId();
+        return (root, query, builder) -> builder.and(
+                builder.equal(root.get("company").get("comId"), comId),
+                builder.or(
+                        builder.equal(root.get("owner").get("empId"), empId),
+                        builder.equal(root.get("customer").get("owner").get("empId"), empId),
+                        builder.equal(root.get("quote").get("createdBy").get("empId"), empId)));
+    }
+
+    /** 只读加载业务员本客户项目，避免扩大写权限。 */
+    public Project requireReadableProject(Long projectId, Employee employee) {
+        Employee current = requireEmployee(employee);
+        if (current.getRole() != EmployeeRole.Marketer) {
+            return requireProject(projectId, current);
+        }
+        Specification<Project> byId = (root, query, builder) -> builder.equal(root.get("projectId"), projectId);
+        return projectRepository.findOne(byId.and(visibleReadableProject(current)))
+                .orElseThrow(() -> new DefinedException(
+                        new DefaultErrorCode("404", "项目不存在或无权访问")));
+    }
+
     /** 直接按实体自身归属快照应用当前数据范围。 */
     public <T> Specification<T> visibleEntity(Employee employee, Class<T> modelClass) {
         Employee current = requireEmployee(employee);
@@ -180,6 +208,49 @@ public class ProjectAccessContext {
             throw new DefinedException(new DefaultErrorCode("404", "项目不存在或无权访问"));
         }
         return requireProject(project.getProjectId(), current);
+    }
+
+    /**
+     * 项目成员切换（设计师 / 项目经理 / 履约负责人）：企业负责人或本门店店长。
+     *
+     * <p>项目经理不得自行改派项目成员，避免出现「自行指派/自行接单」的权限扩张。</p>
+     */
+    public Project requireMemberEditor(Project project, Employee employee) {
+        Employee current = requireEmployee(employee);
+        requireVisible(project, current);
+        if (current.getRole() == EmployeeRole.Boss) {
+            return project;
+        }
+        if (current.getRole() == EmployeeRole.StoreManager && sameStore(project, current)) {
+            return project;
+        }
+        throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或本门店店长可以切换项目成员"));
+    }
+
+    /** 增减项发起：企业负责人、店长、项目经理或本项目设计师。 */
+    public Project requireChangeInitiator(Project project, Employee employee) {
+        Employee current = requireEmployee(employee);
+        requireVisible(project, current);
+        if (current.getRole() == EmployeeRole.Boss
+                || current.getRole() == EmployeeRole.Pm
+                || current.getRole() == EmployeeRole.StoreManager
+                || isEmployee(project.getDesigner(), current)) {
+            return project;
+        }
+        throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长、项目经理或项目设计师可以发起增减项"));
+    }
+
+    /** 项目是否属于当前店长的门店（优先取项目自身归属，回退客户门店）。 */
+    private boolean sameStore(Project project, Employee current) {
+        Long storeId = current.getStore() == null ? null : current.getStore().getStoreId();
+        if (storeId == null) {
+            return false;
+        }
+        Long projectStoreId = project.getStore() == null ? null : project.getStore().getStoreId();
+        if (projectStoreId == null && project.getCustomer() != null && project.getCustomer().getStore() != null) {
+            projectStoreId = project.getCustomer().getStore().getStoreId();
+        }
+        return storeId.equals(projectStoreId);
     }
 
     public Project requirePlanEditor(Project project, Employee employee) {

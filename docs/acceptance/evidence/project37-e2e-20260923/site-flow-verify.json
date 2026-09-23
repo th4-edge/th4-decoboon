@@ -1,0 +1,106 @@
+{
+  "dispatchFirst": {
+    "success": true,
+    "taskId": "228240103821017088"
+  },
+  "dispatchDuplicate": {
+    "success": false,
+    "code": "400",
+    "message": "该工艺任务已在「木作吊顶 · 客厅」下发过，请在原任务上调整数量，不要重复下发"
+  },
+  "dispatchOtherZone": {
+    "success": true,
+    "taskId": "228240104634712064"
+  },
+  "managerSwitch": {
+    "success": true,
+    "managerName": "张少康",
+    "managerRole": "Pm"
+  },
+  "steps": [
+    {
+      "route": "auth/session/password-login",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "auth/session/password-login",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/stage/page",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/task/page",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/task/save",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/task/save",
+      "status": 200,
+      "success": false,
+      "code": "400",
+      "message": "该工艺任务已在「木作吊顶 · 客厅」下发过，请在原任务上调整数量，不要重复下发"
+    },
+    {
+      "route": "project/task/save",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/member/save",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/project/info",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/member/save",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/task/delete",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    },
+    {
+      "route": "project/task/delete",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": ""
+    }
+  ]
+}

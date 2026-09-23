@@ -112,3 +112,9 @@ decoboon:
       phone: ${PLATFORM_BOOTSTRAP_PHONE:}
       username: ${PLATFORM_BOOTSTRAP_USERNAME:平台超级管理员}
       password: ${PLATFORM_BOOTSTRAP_PASSWORD:}
+  # CAD 图纸异步转换（A+ 方案：后端预渲染 PNG + 前端图片预览）
+  # 部署时需在服务器安装转换工具（libredwg + ezdxf/matplotlib 或 ODA File Converter），
+  # 并将 scripts/cad-convert.sh 部署到服务器，配置可执行权限。
+  cad:
+    convert-script: ${CAD_CONVERT_SCRIPT:/Users/zhangwei/cad-convert.sh}   # 转换脚本绝对路径，留空则跳过转换（标记为 failed）
+    temp-dir: ${CAD_TEMP_DIR:/tmp/cad-convert}

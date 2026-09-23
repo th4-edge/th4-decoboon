@@ -5,6 +5,10 @@ import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContractContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.plan.model.ContractConstructionPlan;
+import com.th4.edge.decoboon.plan.model.ContractConstructionStage;
+import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
+import com.th4.edge.decoboon.plan.model.ContractPaymentPlan;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -29,7 +33,18 @@ import java.util.List;
         @AllowProperties(model = ProjectContract.class,
                 properties = {"contractId", "no", "project", "quote", "customer", "baselineAmount", "signedAmount", "currentAmount",
                         "status", "signedAt", "createdBy", "remark", "receivableCount", "receivableAmount",
-                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "createTime"}),
+                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "paymentPlan",
+                        "constructionPlan", "createTime"}),
+        @AllowProperties(model = ContractPaymentPlan.class,
+                properties = {"planId", "sourceCode", "sourceVersion", "name", "totalAmount", "status", "nodes"}),
+        @AllowProperties(model = ContractPaymentNode.class,
+                properties = {"nodeId", "code", "name", "ratio", "amount", "type", "triggerType", "triggerStageCode",
+                        "triggerStageName", "offsetDays", "dueDate", "sort"}),
+        @AllowProperties(model = ContractConstructionPlan.class,
+                properties = {"planId", "sourceCode", "sourceVersion", "name", "startDate", "endDate", "status", "stages"}),
+        @AllowProperties(model = ContractConstructionStage.class,
+                properties = {"stageId", "code", "name", "sort", "defaultDays", "plannedStart", "plannedEnd",
+                        "acceptanceMode", "description"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "siteAddr", "contractAmount", "status", "property", "customer", "quote" }),
         @AllowProperties(model = Quote.class,

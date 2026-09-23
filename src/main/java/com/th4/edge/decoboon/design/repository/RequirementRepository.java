@@ -11,6 +11,8 @@ import java.util.List;
 public interface RequirementRepository extends JpaRepository<Requirement, Long>,
         JpaSpecificationExecutor<Requirement> {
 
+    List<Requirement> findByCompany_ComIdOrderByRequirementIdDesc(Long comId);
+
     List<Requirement> findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(Long comId, Long customerId);
 
     List<Requirement> findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(

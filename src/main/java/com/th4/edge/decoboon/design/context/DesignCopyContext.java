@@ -132,6 +132,7 @@ public class DesignCopyContext {
         copy.setCost(zero(source.getCost()));
         copy.setFormula(source.getFormula());
         copy.setCriterion(source.getCriterion());
+        copy.setCraft(source.getCraft());
         copy.setRemark(source.getRemark());
         copy.setSort(source.getSort());
         copy.setImages(copyList(source.getImages()));

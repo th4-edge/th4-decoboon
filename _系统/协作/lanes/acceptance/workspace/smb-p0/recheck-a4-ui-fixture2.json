@@ -1,0 +1,140 @@
+{
+  "customer": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:23:57"
+      },
+      "custId": "226709838162296832",
+      "name": "A4验收客户",
+      "telNo": "13800002223",
+      "gender": {
+        "name": "男",
+        "key": "M"
+      },
+      "source": {
+        "name": "自然到店",
+        "key": "WalkIn"
+      },
+      "community": "A4验收小区",
+      "addr": "A4验收小区1栋501",
+      "area": 90,
+      "budget": 15,
+      "status": {
+        "name": "新客户",
+        "key": "New"
+      },
+      "owner": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "wechatAdded": false,
+      "visitCount": 0
+    },
+    "success": true
+  },
+  "follow": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:23:57"
+      },
+      "followId": "226709838233600000",
+      "customer": {
+        "custId": "226709838162296832",
+        "name": "A4验收客户"
+      },
+      "emp": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "way": {
+        "name": "电话",
+        "key": "Phone"
+      },
+      "content": "A4独立验收首次跟进"
+    },
+    "success": true
+  },
+  "property": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:23:57"
+      },
+      "propertyId": "226709838300708864",
+      "customer": {
+        "custId": "226709838162296832",
+        "name": "A4验收客户",
+        "telNo": "13800002223"
+      },
+      "propertyNo": "H1789741437516",
+      "community": "A4验收小区",
+      "building": "1栋1单元",
+      "roomNo": "501",
+      "address": "A4验收小区1栋1单元501",
+      "area": 90,
+      "layout": "三室一厅",
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "salesman": {
+        "empId": "1890000000000000204",
+        "name": "周业务",
+        "role": {
+          "name": "业务员",
+          "value": "Marketer",
+          "key": "Marketer"
+        }
+      }
+    },
+    "success": true
+  },
+  "handoff": {
+    "data": {
+      "custId": "226709838162296832",
+      "name": "A4验收客户",
+      "telNo": "13800002223",
+      "community": "A4验收小区",
+      "addr": "A4验收小区1栋1单元501",
+      "status": {
+        "name": "跟进中",
+        "key": "Following"
+      },
+      "owner": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计"
+      },
+      "handedOffAt": "2026-09-18 22:23:57"
+    },
+    "success": true
+  },
+  "measure": {
+    "data": {
+      "custId": "226709838162296832",
+      "name": "A4验收客户",
+      "telNo": "13800002223",
+      "community": "A4验收小区",
+      "addr": "A4验收小区1栋1单元501",
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "owner": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计"
+      },
+      "pendingMeasureAt": "2026-09-18 22:23:57",
+      "measureAt": "2026-09-21 10:00:00",
+      "measureRequestedAt": "2026-09-18 22:23:57",
+      "handedOffAt": "2026-09-18 22:23:57"
+    },
+    "success": true
+  }
+}

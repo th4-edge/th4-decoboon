@@ -40,4 +40,4 @@ bash scripts/prod-monitor.sh mark-fixed <incident-id> \
 - `DECOBOON_PROD_SSH_KEY`
 - `DECOBOON_ENV_FILE`
 - `DECOBOON_SERVICE`
-- `DECOBOON_WEB_URL`
+- `DECOBOON_API_URL`

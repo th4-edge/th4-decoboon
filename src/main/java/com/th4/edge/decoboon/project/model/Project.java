@@ -8,6 +8,9 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.project.configure.ProjectContractStage;
+import com.th4.edge.decoboon.project.configure.ProjectRiskLevel;
+import com.th4.edge.decoboon.project.configure.ProjectRiskType;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.core.annotation.Description;
@@ -129,7 +132,7 @@ public class Project extends AuditModel implements ProjectOwned {
     @JoinColumn(name = "manager_id")
     private Employee manager;
 
-    @Note("履约专员")
+    @Note("履约负责人（财务）")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "support_id")
     private Employee support;
@@ -176,6 +179,67 @@ public class Project extends AuditModel implements ProjectOwned {
     @Transient
     @Note("当前施工阶段")
     private String currentStageName;
+
+    @Transient
+    @Note("只读投影：项目风险等级")
+    private ProjectRiskLevel riskLevel = ProjectRiskLevel.Normal;
+
+    @Transient
+    @Note("只读投影：命中经营预警条数")
+    private Integer riskCount = 0;
+
+    @Transient
+    @Note("只读投影：主要风险类型")
+    private ProjectRiskType mainRiskType = ProjectRiskType.None;
+
+    @Transient
+    @Note("只读投影：风险原因")
+    private String riskReason;
+
+    @Transient
+    @Note("只读投影：下一步动作")
+    private String nextAction;
+
+    @Transient
+    @Unit("元")
+    @Note("只读投影：已收工程款（来源于应收计划）")
+    private BigDecimal receivedAmount = BigDecimal.ZERO;
+
+    @Transient
+    @Unit("元")
+    @Note("只读投影：应收工程款合计（来源于应收计划）")
+    private BigDecimal receivableAmount = BigDecimal.ZERO;
+
+    @Transient
+    @Unit("元")
+    @Note("只读投影：动态毛利；成本不完整时为 null，禁止用 0 冒充")
+    private BigDecimal grossProfit;
+
+    @Transient
+    @Unit("%")
+    @Note("只读投影：动态毛利率（百分比）；成本不完整时为 null，禁止用 0 冒充")
+    private BigDecimal grossMargin;
+
+    @Transient
+    @Note("只读投影：应计成本是否完整")
+    private Boolean costComplete = Boolean.TRUE;
+
+    @Transient
+    @Note("只读投影：计划完工逾期天数")
+    private Integer overdueDays = 0;
+
+    @Transient
+    @Note("只读投影：逾期应收笔数")
+    private Integer overdueReceivableCount = 0;
+
+    @Transient
+    @Unit("元")
+    @Note("只读投影：实际成本（ProjectCostContext 口径）")
+    private BigDecimal actualCost = BigDecimal.ZERO;
+
+    @Transient
+    @Note("只读投影：合同履约阶段")
+    private ProjectContractStage contractStage = ProjectContractStage.Pending;
 
     public Long getProjectId() {
         return projectId;
@@ -323,6 +387,35 @@ public class Project extends AuditModel implements ProjectOwned {
 
     public String getCurrentStageName() { return currentStageName; }
     public void setCurrentStageName(String currentStageName) { this.currentStageName = currentStageName; }
+
+    public ProjectRiskLevel getRiskLevel() { return riskLevel; }
+    public void setRiskLevel(ProjectRiskLevel riskLevel) { this.riskLevel = riskLevel; }
+    public Integer getRiskCount() { return riskCount; }
+    public void setRiskCount(Integer riskCount) { this.riskCount = riskCount; }
+    public ProjectRiskType getMainRiskType() { return mainRiskType; }
+    public void setMainRiskType(ProjectRiskType mainRiskType) { this.mainRiskType = mainRiskType; }
+    public String getRiskReason() { return riskReason; }
+    public void setRiskReason(String riskReason) { this.riskReason = riskReason; }
+    public String getNextAction() { return nextAction; }
+    public void setNextAction(String nextAction) { this.nextAction = nextAction; }
+    public BigDecimal getReceivedAmount() { return receivedAmount; }
+    public void setReceivedAmount(BigDecimal receivedAmount) { this.receivedAmount = receivedAmount; }
+    public BigDecimal getReceivableAmount() { return receivableAmount; }
+    public void setReceivableAmount(BigDecimal receivableAmount) { this.receivableAmount = receivableAmount; }
+    public BigDecimal getGrossProfit() { return grossProfit; }
+    public void setGrossProfit(BigDecimal grossProfit) { this.grossProfit = grossProfit; }
+    public BigDecimal getGrossMargin() { return grossMargin; }
+    public void setGrossMargin(BigDecimal grossMargin) { this.grossMargin = grossMargin; }
+    public Boolean getCostComplete() { return costComplete; }
+    public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
+    public Integer getOverdueDays() { return overdueDays; }
+    public void setOverdueDays(Integer overdueDays) { this.overdueDays = overdueDays; }
+    public Integer getOverdueReceivableCount() { return overdueReceivableCount; }
+    public void setOverdueReceivableCount(Integer overdueReceivableCount) { this.overdueReceivableCount = overdueReceivableCount; }
+    public BigDecimal getActualCost() { return actualCost; }
+    public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
+    public ProjectContractStage getContractStage() { return contractStage; }
+    public void setContractStage(ProjectContractStage contractStage) { this.contractStage = contractStage; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

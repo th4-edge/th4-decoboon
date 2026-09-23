@@ -7,7 +7,7 @@ USER_NAME="${DECOBOON_PROD_USER:-root}"
 SSH_KEY="${DECOBOON_PROD_SSH_KEY:-$HOME/.ssh/id_ed25519}"
 ENV_FILE="${DECOBOON_ENV_FILE:-/etc/decoboon/th4-decoboon.env}"
 SERVICE="${DECOBOON_SERVICE:-decoboon}"
-WEB_URL="${DECOBOON_WEB_URL:-https://decoboon.joytsing.com}"
+API_URL="${DECOBOON_API_URL:-https://decoboon.joytsing.com}"
 RELEASE_DIR=""
 RELEASE_STAMP="${DECOBOON_RELEASE_STAMP:-$(date +%Y%m%d-%H%M%S)}"
 
@@ -62,7 +62,7 @@ scp -q -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o BatchMode=
 
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o BatchMode=yes \
     -o ConnectTimeout=15 -o PasswordAuthentication=no -i "$SSH_KEY" \
-    "$USER_NAME@$HOST" "NEW_RELEASE='$NEW_RELEASE' REMOTE_TMP='$REMOTE_TMP' ENV_FILE='$ENV_FILE' SERVICE='$SERVICE' WEB_URL='$WEB_URL' BACKUP_DIR='$BACKUP_DIR' bash -s" <<'REMOTE'
+    "$USER_NAME@$HOST" "NEW_RELEASE='$NEW_RELEASE' REMOTE_TMP='$REMOTE_TMP' ENV_FILE='$ENV_FILE' SERVICE='$SERVICE' API_URL='$API_URL' BACKUP_DIR='$BACKUP_DIR' bash -s" <<'REMOTE'
 set -euo pipefail
 
 current_link=/opt/decoboon/th4-decoboon
@@ -75,7 +75,7 @@ rollback() {
     ln -sfn "$previous" "$current_link"
     systemctl restart "$SERVICE" || true
     for _ in $(seq 1 180); do
-      rollback_code="$(curl -sS -o /tmp/decoboon-rollback-check.json -w '%{http_code}' "$WEB_URL/api/auth/session/info" 2>/dev/null || true)"
+      rollback_code="$(curl -sS -o /tmp/decoboon-rollback-check.json -w '%{http_code}' "$API_URL/api/auth/session/info" 2>/dev/null || true)"
       rollback_body="$(head -c 500 /tmp/decoboon-rollback-check.json 2>/dev/null || true)"
       if [ "$rollback_code" = 200 ] && printf '%s' "$rollback_body" | grep -q 'tokenIsUndefined'; then
         rm -f /tmp/decoboon-rollback-check.json
@@ -116,7 +116,7 @@ http_code=""
 health_body=""
 for _ in $(seq 1 180); do
   if systemctl is-active --quiet "$SERVICE"; then
-    http_code="$(curl -sS -o /tmp/decoboon-deploy-health.json -w '%{http_code}' "$WEB_URL/api/auth/session/info" 2>/dev/null || true)"
+    http_code="$(curl -sS -o /tmp/decoboon-deploy-health.json -w '%{http_code}' "$API_URL/api/auth/session/info" 2>/dev/null || true)"
     health_body="$(head -c 1000 /tmp/decoboon-deploy-health.json 2>/dev/null || true)"
     if [ "$http_code" = 200 ] && printf '%s' "$health_body" | grep -q 'tokenIsUndefined'; then
       ready=true

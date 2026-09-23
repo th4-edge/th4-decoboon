@@ -1,0 +1,27 @@
+### DEF-009/010 before（property 226701441081802752 的 Completed 量房事实）
+measure_id	measure_time	status	designer_id	executor_id	designer_conclusion	latest_measure_at	rows_per_property
+226701602042413056	2026-09-19 00:00:00.000000	Completed	1890000000000000205	1890000000000000205	NULL	2026-09-19 00:00:00.000000	1
+### DEF-010 正例：指定设计师重复 completion（仅 propertyId+status，无 measureTime）
+  success= True
+  measureId= 226701602042413056 measureTime= 2026-09-19 00:00:00
+  designer= {"empId": "1890000000000000205", "name": "李设计", "role": {"name": "设计师", "value": "Designer", "key": "Designer"}}
+  executor= {"empId": "1890000000000000205", "name": "李设计", "role": {"name": "设计师", "value": "Designer", "key": "Designer"}}
+  owner= null
+  status= {"name": "已完成", "key": "Completed"}
+### DEF-009 after（字段必须与 before 完全一致）
+measure_id	measure_time	status	designer_id	executor_id	designer_conclusion	latest_measure_at	rows_per_property
+226701602042413056	2026-09-19 00:00:00.000000	Completed	1890000000000000205	1890000000000000205	NULL	2026-09-19 00:00:00.000000	1
+### A4 回归：业务员重复 completion 必须 403 且不落库
+{"success":false,"errorCode":{"code":"403","message":"该房屋已指定设计师，量房完成必须由指定设计师执行","system":false}}
+### 首次完成路径未被破坏：新建房屋(303 的预约)由指定设计师完成（探针后回滚）
+property_id	status	latest_measure_at
+226704069090082816	Measured	2026-09-18 22:25:38.702560
+measure_id	status	measure_time
+226704069203329024	Completed	2026-09-18 22:25:38.702560
+### 并发重复 completion（同一 Completed 事实）
+  req1: success=True measureId=226701602042413056 measureTime=2026-09-19 00:00:00 executorRole={'name': '设计师', 'value': 'Designer', 'key': 'Designer'}
+  req2: success=True measureId=226701602042413056 measureTime=2026-09-19 00:00:00 executorRole={'name': '设计师', 'value': 'Designer', 'key': 'Designer'}
+  req3: success=True measureId=226701602042413056 measureTime=2026-09-19 00:00:00 executorRole={'name': '设计师', 'value': 'Designer', 'key': 'Designer'}
+### 事实未被修改/未新增
+measure_id	measure_time	status	designer_id	executor_id	latest_measure_at	rows_per_property
+226701602042413056	2026-09-19 00:00:00.000000	Completed	1890000000000000205	1890000000000000205	2026-09-19 00:00:00.000000	1

@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "space", "type", "category", "catalogItem", "name", "brand",
                         "spec", "unit", "quantity", "materialPrice", "manualPrice", "costPrice", "pricingMode",
-                        "amount", "cost", "formula", "criterion", "remark", "sort", "images"}),
+                        "amount", "cost", "formula", "criterion", "craft", "remark", "sort", "images"}),
         @AllowProperties(model = Requirement.class,
                 properties = {"requirementId", "type", "spaceName", "kind", "category", "priority", "status",
                         "title", "detail", "response", "source", "confirmedAt"}),
@@ -77,7 +77,7 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
 
     @Override
     public Design call(Design request) {
-        Design design = designContext.requireDesign(designId, employee);
+        Design design = designContext.requireReadableDesign(designId, employee);
         design.setSpaces(spaceRepository.findByDesign_DesignIdOrderBySortAsc(designId));
         design.setItems(itemRepository.findByDesign_DesignIdOrderBySortAsc(designId));
         design.setRequirements(requirementRepository.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(

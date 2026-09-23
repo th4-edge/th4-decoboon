@@ -1,0 +1,65 @@
+{
+  "request": "REQ-20260922-BOSS-MEASURE-WORKSPACE-2",
+  "results": [
+    {
+      "id": "only-marketer-grouping",
+      "status": "PASS",
+      "detail": "预约量房页只读取 marketerGroups，不读取来源/设计师分组"
+    },
+    {
+      "id": "buttons-and-routes",
+      "status": "PASS",
+      "detail": "主按钮、联系客户、立即派单和量房记录路径存在"
+    },
+    {
+      "id": "overdue-threshold",
+      "status": "FAIL",
+      "detail": "App 逾期筛选必须使用 4 小时阈值，不得保留 84 小时"
+    },
+    {
+      "id": "performance-filter-propagation",
+      "status": "FAIL",
+      "detail": "人员绩效页月份/门店筛选必须传入量房业绩数据源"
+    },
+    {
+      "id": "marketer-workbench-visible",
+      "status": "FAIL",
+      "detail": "业务员角色应能看到我的量房入口"
+    },
+    {
+      "id": "forbidden-facts",
+      "status": "PASS",
+      "detail": "P0 页面不得出现无事实支撑的状态或指标"
+    },
+    {
+      "id": "return-overview-focus-guard",
+      "status": "PASS",
+      "detail": "返回经营概览应恢复顶部统计并抑制内部滚动自动重新聚焦"
+    },
+    {
+      "id": "periods-two-by-two-grid",
+      "status": "PASS",
+      "detail": "日期维度使用 2×2 自适应宫格"
+    },
+    {
+      "id": "exceptions-two-by-two-grid",
+      "status": "PASS",
+      "detail": "异常待办使用 2×2 自适应宫格"
+    },
+    {
+      "id": "dashboard-metrics",
+      "status": "PASS",
+      "detail": "经营看板保留指定六项主指标"
+    },
+    {
+      "id": "card-visual-hierarchy",
+      "status": "PASS",
+      "detail": "客户卡片头像/身份、房屋卡、时间 chip、标签、下一步、操作层级、当前态和风险态均已接入"
+    },
+    {
+      "id": "boss-entry",
+      "status": "PASS",
+      "detail": "BOSS 首页入口为预约量房并使用 ruler 图标"
+    }
+  ]
+}

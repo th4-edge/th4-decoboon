@@ -1,0 +1,50 @@
+{
+  "taskId": "228238675270434816",
+  "ownerName": "王宏文",
+  "ownerRole": "StoreManager",
+  "zone": "客厅",
+  "steps": [
+    {
+      "route": "auth/session/password-login",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": null
+    },
+    {
+      "route": "project/stage/page",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": null
+    },
+    {
+      "route": "project/task/page",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": null
+    },
+    {
+      "route": "project/task/save",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": null
+    },
+    {
+      "route": "project/task/info",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": null
+    },
+    {
+      "route": "project/task/delete",
+      "status": 200,
+      "success": true,
+      "code": "",
+      "message": null
+    }
+  ]
+}

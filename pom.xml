@@ -42,7 +42,7 @@
             <version>2.4.240</version>
             <scope>test</scope>
         </dependency>
-        <!-- Web 员工密码登录：仅引入 BCrypt 所需的最小 Spring Security 组件 -->
+        <!-- 员工密码登录：仅引入 BCrypt 所需的最小 Spring Security 组件 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
@@ -68,6 +68,12 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>5.5.1</version>
+        </dependency>
+        <!-- 企业单据 PDF 渲染：报价、材料、财务和合同打印稿统一使用 -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.27</version>
         </dependency>
         <!-- Redisson 分布式锁 -->
         <dependency>
@@ -104,6 +110,17 @@
                     <include>*.xml</include>
                     <include>*.txt</include>
                     <include>*.properties</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+            <!-- 单据 PDF 渲染所需的可嵌入中文字体：二进制资源禁止过滤，否则字体文件会损坏 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.ttf</include>
+                    <include>**/*.otf</include>
+                    <include>fonts/*.txt</include>
                 </includes>
             </resource>
         </resources>

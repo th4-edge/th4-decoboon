@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.trade.quote;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.design.context.DesignLifecycleContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
 import com.th4.edge.decoboon.pack.context.PackageContext;
@@ -46,9 +47,10 @@ class QuoteContextBusinessRulesTest {
     private final ProjectRepository projectRepository = mock(ProjectRepository.class);
     private final PropertyContext propertyContext = mock(PropertyContext.class);
     private final PropertyRepository propertyRepository = mock(PropertyRepository.class);
+    private final DesignLifecycleContext designLifecycleContext = mock(DesignLifecycleContext.class);
     private final QuoteContext context = new QuoteContext(
             quoteRepository, lineRepository, packageContext, customerRepository, designItemRepository,
-            quoteCalcContext, projectRepository, propertyContext, propertyRepository);
+            designLifecycleContext, quoteCalcContext, projectRepository, propertyContext, propertyRepository);
 
     @Test
     void shouldRejectUnfinishedDesignQuote() {
@@ -119,5 +121,39 @@ class QuoteContextBusinessRulesTest {
         assertThatThrownBy(() -> context.submit(4L))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("存在待确认的设计差异");
+    }
+
+    @Test
+    void acceptingQuoteMustAdvanceLinkedDesignToSelected() {
+        Company company = new Company();
+        company.setComId(1L);
+        Customer customer = new Customer();
+        customer.setCustId(2L);
+        customer.setCompany(company);
+        Property property = new Property();
+        property.setPropertyId(3L);
+        property.setCompany(company);
+        property.setCustomer(customer);
+        Design design = new Design();
+        design.setDesignId(7L);
+        design.setStatus(DesignStatus.Ready);
+        Quote quote = new Quote();
+        quote.setQuoteId(4L);
+        quote.setStatus(QuoteStatus.Submitted);
+        quote.setCompany(company);
+        quote.setCustomer(customer);
+        quote.setProperty(property);
+        quote.setDesign(design);
+
+        when(quoteRepository.findById(4L)).thenReturn(Optional.of(quote));
+        when(propertyRepository.findByPropertyIdAndCompany_ComId(3L, 1L)).thenReturn(Optional.of(property));
+        when(customerRepository.findByCustIdAndCompany_ComId(2L, 1L)).thenReturn(Optional.of(customer));
+        when(quoteRepository.findByProperty_PropertyIdOrderByQuoteIdDesc(3L)).thenReturn(List.of());
+        when(quoteRepository.save(any(Quote.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        context.accept(4L);
+
+        verify(designLifecycleContext).markSelected(design);
+        assertThat(quote.getStatus()).isEqualTo(QuoteStatus.Accepted);
     }
 }

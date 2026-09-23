@@ -1,0 +1,34 @@
+{
+  "Pm": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+      "system": false
+    }
+  },
+  "Boss": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+      "system": false
+    }
+  },
+  "Designer": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+      "system": false
+    }
+  },
+  "employee_token_on_customer_endpoint": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "当前会话不是业主身份",
+      "system": false
+    }
+  }
+}

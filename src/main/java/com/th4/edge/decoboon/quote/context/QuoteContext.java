@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.quote.context;
 
+import com.th4.edge.decoboon.common.support.CraftText;
 import com.th4.edge.decoboon.pack.context.PackageContext;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
@@ -11,6 +12,7 @@ import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.design.context.DesignLifecycleContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
@@ -48,6 +50,7 @@ public class QuoteContext {
     private final PackageContext giftPackContext;
     private final CustomerRepository customerRepository;
     private final DesignItemRepository designItemRepository;
+    private final DesignLifecycleContext designLifecycleContext;
     private final QuoteCalcContext quoteCalcContext;
     private final ProjectRepository projectRepository;
     private final PropertyContext propertyContext;
@@ -58,6 +61,7 @@ public class QuoteContext {
                         PackageContext giftPackContext,
                         CustomerRepository customerRepository,
                         DesignItemRepository designItemRepository,
+                        DesignLifecycleContext designLifecycleContext,
                         QuoteCalcContext quoteCalcContext,
                         ProjectRepository projectRepository,
                         PropertyContext propertyContext,
@@ -67,6 +71,7 @@ public class QuoteContext {
         this.giftPackContext = giftPackContext;
         this.customerRepository = customerRepository;
         this.designItemRepository = designItemRepository;
+        this.designLifecycleContext = designLifecycleContext;
         this.quoteCalcContext = quoteCalcContext;
         this.projectRepository = projectRepository;
         this.propertyContext = propertyContext;
@@ -250,7 +255,10 @@ public class QuoteContext {
         quote.setAcceptedAt(java.time.LocalDateTime.now());
         customer.setStatus(CustStatus.Quoted);
         customerRepository.save(customer);
-        return quoteRepository.save(quote);
+        Quote accepted = quoteRepository.save(quote);
+        // 客户接受报价即代表主推方案被选中，推进设计方案状态，避免方案长期停留在待谈单。
+        designLifecycleContext.markSelected(accepted.getDesign());
+        return accepted;
     }
 
     @Transactional
@@ -346,6 +354,9 @@ public class QuoteContext {
         item.setComponents(quoteCalcContext.components(source.getPricingMode(), zero(source.getQuantity()),
                 zero(source.getMaterialPrice()), zero(source.getManualPrice()), zero(source.getCost()), source.getFormula()));
         item.setFormula(source.getFormula());
+        // 施工工艺按"设计分项快照 → 材料库主数据"冻结，签约后不随材料库改动回溯。
+        item.setCraft(CraftText.firstNonBlank(source.getCraft(),
+                source.getCatalogItem() == null ? null : source.getCatalogItem().getCraft()));
         item.setRole(QuoteLineRole.Base);
         item.setSort(source.getSort());
         item.setStore(quote.getStore());
@@ -380,6 +391,7 @@ public class QuoteContext {
             item.setQuote(quote);
             item.setPackageLine(packageLine);
             item.setCatalogItem(packageLine.getItem());
+            item.setCraft(packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
             item.setType(packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
             item.setCategory(packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
             item.setName(packageLine.getItem() == null ? packageLine.getName() : packageLine.getItem().getName());

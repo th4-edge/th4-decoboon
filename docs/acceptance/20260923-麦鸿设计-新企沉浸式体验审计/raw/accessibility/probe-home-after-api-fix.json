@@ -1,0 +1,97 @@
+{
+  "path": "pages/auth/login",
+  "query": {},
+  "data": {
+    "eO": "",
+    "uR": "",
+    "uRIF": "",
+    "uI": "",
+    "uT": "",
+    "uP": "",
+    "uS": [],
+    "a": "27,0,0",
+    "b": "27,1,0",
+    "c": "27,2,0",
+    "d": "27,3,0",
+    "e": true,
+    "f": "27,4,0",
+    "g": false,
+    "h": "e0_0e",
+    "l": false,
+    "n": "",
+    "o": "e1_bf",
+    "p": "e2_45",
+    "q": "e3_44",
+    "r": "1.0.0",
+    "s": "59px",
+    "$eS": {},
+    "$eA": {},
+    "r0": 1,
+    "__webviewId__": 10
+  },
+  "texts": [
+    "装得清装企数字化协同管理平台让项目进度、现场协作与验收确认始终同频项目经营现场留证验收闭环微信登录已绑定微信身份直接登录，首次使用再授权手机号微信登录我已阅读并同意《用户协议》与《隐私政策》装得清 v1.0.0",
+    "装得清装企数字化协同管理平台让项目进度、现场协作与验收确认始终同频项目经营现场留证验收闭环微信登录已绑定微信身份直接登录，首次使用再授权手机号微信登录我已阅读并同意《用户协议》与《隐私政策》装得清 v1.0.0",
+    "装得清装企数字化协同管理平台",
+    "装得清装企数字化协同管理平台",
+    "装得清",
+    "装企数字化协同管理平台",
+    "让项目进度、现场协作与验收确认始终同频项目经营现场留证验收闭环",
+    "让项目进度、现场协作与验收确认始终同频",
+    "项目经营现场留证验收闭环",
+    "项目经营",
+    "项目经营",
+    "现场留证",
+    "现场留证",
+    "验收闭环",
+    "验收闭环",
+    "微信登录已绑定微信身份直接登录，首次使用再授权手机号微信登录我已阅读并同意《用户协议》与《隐私政策》",
+    "微信登录已绑定微信身份直接登录，首次使用再授权手机号",
+    "微信登录",
+    "已绑定微信身份直接登录，首次使用再授权手机号",
+    "微信登录",
+    "微信登录",
+    "微信登录",
+    "我已阅读并同意《用户协议》与《隐私政策》",
+    "我已阅读并同意",
+    "《用户协议》",
+    "与",
+    "《隐私政策》",
+    "装得清 v1.0.0"
+  ],
+  "logs": [
+    {
+      "type": "info",
+      "args": [
+        "Lazy code loading is enabled. Only injecting required components."
+      ]
+    },
+    {
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "type": "info",
+      "args": [
+        "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+      ]
+    },
+    {
+      "type": "info",
+      "args": [
+        "preloadSubpackages: success"
+      ]
+    },
+    {
+      "type": "log",
+      "args": [
+        "[装得清] App Launch",
+        {
+          "role": null
+        }
+      ]
+    }
+  ]
+}

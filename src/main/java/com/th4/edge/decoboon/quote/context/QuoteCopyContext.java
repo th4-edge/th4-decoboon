@@ -152,6 +152,7 @@ public class QuoteCopyContext {
         copy.setActualOtherCost(zero(source.getActualOtherCost()));
         copy.setActualCost(zero(source.getActualCost()));
         copy.setFormula(source.getFormula());
+        copy.setCraft(source.getCraft());
         copy.setSort(source.getSort());
         return copy;
     }

@@ -48,7 +48,8 @@ import com.th4.edge.tenant.user.model.Team;
                 @Index(name = "idx_project_stage_company", columnList = "com_id, stage_id"),
                 @Index(name = "idx_project_stage_company_store", columnList = "com_id, store_id, stage_id"),
                 @Index(name = "idx_project_stage_company_team", columnList = "com_id, team_id, stage_id"),
-                @Index(name = "idx_project_stage_company_owner", columnList = "com_id, owner_id, stage_id")
+                @Index(name = "idx_project_stage_company_owner", columnList = "com_id, owner_id, stage_id"),
+                @Index(name = "idx_project_stage_company_code", columnList = "com_id, stage_code")
         }
 )
 public class ProjectStage extends AuditModel implements ProjectOwned {
@@ -93,6 +94,10 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
     @Note("阶段名称")
     @Column(length = 128, nullable = false)
     private String name;
+
+    @Note("稳定阶段编码")
+    @Column(name = "stage_code", length = 64)
+    private String stageCode;
 
     @Note("排序")
     @Column(nullable = false)
@@ -146,6 +151,14 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStageCode() {
+        return stageCode;
+    }
+
+    public void setStageCode(String stageCode) {
+        this.stageCode = stageCode;
     }
 
     public Integer getSort() {

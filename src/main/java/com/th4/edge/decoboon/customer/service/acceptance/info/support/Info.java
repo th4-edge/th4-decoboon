@@ -17,6 +17,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.User;
 import com.th4.edge.tenant.user.model.Credentials;
+import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = Acceptance.class,
                 properties = {"acceptanceId", "project", "property", "stage", "status", "conclusion", "issues",
-                        "evidenceUrls", "confirmedAt", "createTime"}),
-        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr"}),
+                        "evidenceUrls", "submittedBy", "rectificationOwner", "rectificationDueDate",
+                        "rectificationType", "rectificationIssueImages", "confirmedAt", "createTime"}),
+        @AllowProperties(model = Project.class,
+                properties = {"projectId", "no", "name", "siteAddr", "designer", "manager", "support"}),
         @AllowProperties(model = Property.class, properties = {"propertyId", "propertyNo", "community", "roomNo", "address"}),
-        @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status", "progress"})
+        @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status", "progress"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("customer/acceptance/info")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -71,7 +75,7 @@ public class Info implements com.th4.edge.decoboon.customer.service.acceptance.i
                             stageId, credential.getCreId(), CustomerAccessStatus.Active)
                     .orElseThrow(() -> new DefinedException(
                             new DefaultErrorCode("404", "阶段不存在或无权访问")));
-            return acceptanceRepository.findFirstByStageOrderByAcceptanceIdDesc(stage).orElse(null);
+            return acceptanceRepository.findFirstForCustomerByStage(stage).orElse(null);
         }
         throw new DefinedException(new DefaultErrorCode("404", "验收单不存在或无权访问"));
     }

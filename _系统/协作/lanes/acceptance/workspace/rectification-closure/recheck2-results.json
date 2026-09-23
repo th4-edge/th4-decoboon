@@ -1,0 +1,53 @@
+{
+  "request": "REQ-20260921-RECTIFICATION-CLOSURE",
+  "recheckDate": "2026-09-22",
+  "backend": {
+    "ownerAcceptance": {
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "fullSuite": {
+      "suites": 76,
+      "tests": 234,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "app": {
+    "releaseBuild": "PASS",
+    "mainPackageBytes": 596717,
+    "largestSubpackageBytes": 302211,
+    "totalBytes": 2013717,
+    "subpackages": 14,
+    "pages": 86,
+    "realDevice": "BLOCKED_EXTERNAL"
+  },
+  "mysqlMigration47": {
+    "engine": "MySQL 8.4 isolated temporary instance",
+    "executions": 3,
+    "legacyStatuses": ["Pending", "Rejected", "Confirmed"],
+    "rounds": 3,
+    "issues": 2,
+    "evidence": 3,
+    "duplicateRoundNumbers": 0,
+    "rejectedRound": {
+      "roundNo": 1,
+      "submittedAt": "2026-09-21 11:12:13",
+      "confirmedAt": "2026-09-21 11:22:33",
+      "rectificationOwnerId": 9,
+      "rectificationDueDate": "2026-09-25",
+      "issues": ["收口不平", "空鼓"],
+      "evidence": ["legacy-rejected.jpg"]
+    },
+    "targetEquivalentExecution": "BLOCKED"
+  },
+  "defects": {
+    "DEF-RECTIFY-001": "CLOSED_LOCAL_AND_MYSQL",
+    "DEF-RECTIFY-002": "CLOSED_LOCAL",
+    "DEF-RECTIFY-003": "CLOSED_LOCAL",
+    "DEF-RECTIFY-004": "CLOSED_CODE_BUILD_DEVICE_BLOCKED"
+  }
+}

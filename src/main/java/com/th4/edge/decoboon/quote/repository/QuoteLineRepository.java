@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.quote.repository;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import java.util.List;
 
@@ -11,6 +12,11 @@ import java.util.List;
  */
 public interface QuoteLineRepository extends JpaRepository<QuoteLine, Long> {
 
+    /**
+     * 报价行本身没有工艺字段，施工工艺来自 catalogItem.craft，
+     * 设计分项快照 designItem.criterion 兜底；两条关联一并预取，避免逐行懒加载。
+     */
+    @EntityGraph(attributePaths = {"catalogItem", "designItem"})
     List<QuoteLine> findByQuote(Quote quote);
 
     boolean existsByDesignItem_ItemId(Long itemId);

@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.repository;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -28,10 +29,17 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
 
     List<Acceptance> findByCompany_ComId(Long comId);
 
+    List<Acceptance> findTop200ByCompany_ComIdOrderByAcceptanceIdDesc(Long comId);
+
+    @EntityGraph(attributePaths = {"stage", "submittedBy"})
     List<Acceptance> findByProject_ProjectIdOrderByAcceptanceIdDesc(Long projectId);
 
     Optional<Acceptance> findByAcceptanceIdAndProject_ProjectId(Long acceptanceId, Long projectId);
 
+    @EntityGraph(attributePaths = {
+            "project", "property", "stage", "submittedBy",
+            "project.manager", "project.designer", "project.support"
+    })
     @Query("""
             select a from Acceptance a
             where a.acceptanceId = :acceptanceId
@@ -46,6 +54,13 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
             @Param("acceptanceId") Long acceptanceId,
             @Param("creId") Long creId,
             @Param("status") com.th4.edge.decoboon.customer.configure.CustomerAccessStatus status);
+
+    @EntityGraph(attributePaths = {
+            "project", "property", "stage", "submittedBy",
+            "project.manager", "project.designer", "project.support"
+    })
+    @Query("select a from Acceptance a where a.stage = :stage order by a.acceptanceId desc")
+    Optional<Acceptance> findFirstForCustomerByStage(@Param("stage") ProjectStage stage);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""

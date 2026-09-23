@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.common.file.configure.FileScope;
 import com.th4.edge.decoboon.customer.context.CustomerAccessContext;
+import com.th4.edge.decoboon.customer.model.CustomerFeedback;
+import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.model.Space;
@@ -14,6 +16,7 @@ import com.th4.edge.decoboon.design.repository.DesignRepository;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.decoboon.design.repository.TalkRepository;
 import com.th4.edge.decoboon.design.repository.TalkSectionRepository;
+import com.th4.edge.decoboon.property.model.Measure;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.ContractChange;
@@ -58,6 +61,7 @@ public class FileAuthorizationContext {
     private final CustomerAccessContext customerAccessContext;
     private final ProjectReportRepository reportRepository;
     private final AcceptanceRepository acceptanceRepository;
+    private final CustomerFeedbackRepository feedbackRepository;
     private final ContractChangeRepository changeRepository;
     private final DesignRepository designRepository;
     private final DesignItemRepository designItemRepository;
@@ -78,6 +82,7 @@ public class FileAuthorizationContext {
                                     CustomerAccessContext customerAccessContext,
                                     ProjectReportRepository reportRepository,
                                     AcceptanceRepository acceptanceRepository,
+                                    CustomerFeedbackRepository feedbackRepository,
                                     ContractChangeRepository changeRepository,
                                     DesignRepository designRepository,
                                     DesignItemRepository designItemRepository,
@@ -97,6 +102,7 @@ public class FileAuthorizationContext {
         this.customerAccessContext = customerAccessContext;
         this.reportRepository = reportRepository;
         this.acceptanceRepository = acceptanceRepository;
+        this.feedbackRepository = feedbackRepository;
         this.changeRepository = changeRepository;
         this.designRepository = designRepository;
         this.designItemRepository = designItemRepository;
@@ -140,7 +146,16 @@ public class FileAuthorizationContext {
                                         .and(projectAccessContext.visibleChild(employee, Acceptance.class, "project")))
                         .orElseThrow(this::notFound);
                 add(allowed, acceptance.getEvidenceUrls());
+                add(allowed, acceptance.getRectificationIssueImages());
                 projectId = acceptance.getProject().getProjectId();
+            }
+            case Feedback -> {
+                CustomerFeedback feedback = feedbackRepository.findOne(
+                                byId(CustomerFeedback.class, "feedbackId", businessId)
+                                        .and(projectAccessContext.visibleChild(employee, CustomerFeedback.class, "project")))
+                        .orElseThrow(this::notFound);
+                add(allowed, feedback.getImages());
+                projectId = feedback.getProject().getProjectId();
             }
             case ContractChange -> {
                 ContractChange change = changeRepository.findOne(
@@ -247,6 +262,46 @@ public class FileAuthorizationContext {
                 projectId = acceptance.getProject().getProjectId();
                 customerAccessContext.requireAccess(credential, projectId);
                 add(allowed, acceptance.getEvidenceUrls());
+                add(allowed, acceptance.getRectificationIssueImages());
+            }
+            case Measure -> {
+                Measure measure = measureRepository.findById(businessId).orElseThrow(this::notFound);
+                if (!ownerHasCustomerOrPropertyAccess(credential, measure.getCustomer(), measure.getProperty())) {
+                    throw notFound();
+                }
+                add(allowed, measure.getSitePhotos());
+                add(allowed, measure.getStructureImages());
+                add(allowed, measure.getAttachments());
+                projectId = null;
+            }
+            case Design -> {
+                Design design = designRepository.findById(businessId).orElseThrow(this::notFound);
+                if (!ownerHasCustomerOrPropertyAccess(credential, design.getCustomer(), design.getProperty())) {
+                    throw notFound();
+                }
+                add(allowed, design.getCoverUrl());
+                add(allowed, design.getCadUrl());
+                add(allowed, design.getCadPreviewUrl());
+                add(allowed, design.getOriginalPlanUrl());
+                add(allowed, design.getDemolitionUrl());
+                add(allowed, design.getMasonryUrl());
+                add(allowed, design.getOptimizationUrl());
+                add(allowed, design.getOriginalPlanImages());
+                add(allowed, design.getSitePhotos());
+                add(allowed, design.getSurveyPhotos());
+                for (Space space : spaceRepository.findByDesign_DesignIdOrderBySortAsc(businessId)) {
+                    add(allowed, space.getImages());
+                }
+                for (DesignItem item : designItemRepository.findByDesign_DesignIdOrderBySortAsc(businessId)) {
+                    add(allowed, item.getImages());
+                }
+                projectId = null;
+            }
+            case Feedback -> {
+                CustomerFeedback feedback = feedbackRepository.findById(businessId).orElseThrow(this::notFound);
+                projectId = feedback.getProject().getProjectId();
+                customerAccessContext.requireAccess(credential, projectId);
+                add(allowed, feedback.getImages());
             }
             case ContractChange -> {
                 ContractChange change = changeRepository.findById(businessId).orElseThrow(this::notFound);
@@ -265,6 +320,17 @@ public class FileAuthorizationContext {
             throw notFound();
         }
         return (root, query, builder) -> builder.equal(root.get(property), id);
+    }
+
+    private boolean ownerHasCustomerOrPropertyAccess(Credentials credential,
+                                                     com.th4.edge.decoboon.customer.model.Customer customer,
+                                                     com.th4.edge.decoboon.property.model.Property property) {
+        Long customerId = customer == null ? null : customer.getCustId();
+        Long propertyId = property == null ? null : property.getPropertyId();
+        return customerAccessContext.activeAccesses(credential).stream().anyMatch(access ->
+                (customerId != null && access.getCustomer() != null && customerId.equals(access.getCustomer().getCustId()))
+                        || (propertyId != null && access.getProject() != null && access.getProject().getProperty() != null
+                        && propertyId.equals(access.getProject().getProperty().getPropertyId())));
     }
 
     private Set<String> requested(Set<String> allowed, Set<String> requestedPaths) {

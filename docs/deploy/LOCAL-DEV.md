@@ -5,7 +5,7 @@
 
 ## 1. 为什么需要这份说明
 
-后端密钥通过**环境变量**注入（微信小程序 AppSecret、OSS、微信支付、文件签名、Web 首设 token）。
+后端密钥通过**环境变量**注入（微信小程序 AppSecret、OSS、微信支付、文件签名、员工首设 token）。
 历史做法是 `./run-dev.sh` 里 `source` `.env.*.local`，但：
 
 - **IDEA 直接运行 `com.th4.edge.Application` 不会加载任何 `.env` 文件**；
@@ -27,7 +27,7 @@ bash scripts/gen-local-dev-config.sh
 脚本行为：
 
 - 从 `.env.dev.local`、`.env.oss.local`、`.env.wechat-pay.local` 读取变量（后者覆盖前者）；
-- **只提取白名单**（微信小程序、OSS、微信支付、文件签名、Web 首设 token），
+- **只提取白名单**（微信小程序、OSS、微信支付、文件签名、员工首设 token），
   **绝不写入 `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` / `REDIS_*`**，避免本地误连生产库；
 - 生成 `config/application-dev.yml`，权限 `600`，且已在 `.gitignore` 中忽略；
 - 值不回显到终端。

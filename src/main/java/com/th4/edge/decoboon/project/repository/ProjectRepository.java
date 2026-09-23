@@ -26,6 +26,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
     List<Project> findByCompany_ComIdOrderByProjectIdDesc(Long comId);
 
     List<Project> findByCompany_ComIdAndDesigner_EmpIdOrderByProjectIdDesc(Long comId, Long empId);
+    List<Project> findByCompany_ComIdAndOwner_EmpIdOrderByProjectIdDesc(Long comId, Long empId);
 
     List<Project> findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(Long comId, Long empId);
 
@@ -38,4 +39,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
     List<Project> findByCompany_ComIdAndCustomer_Team_TeamIdOrderByProjectIdDesc(Long comId, Long teamId);
 
     Optional<Project> findByProjectIdAndCompany_ComId(Long projectId, Long comId);
+
+    Optional<Project> findFirstByCompany_ComIdAndQuote_QuoteIdOrderByProjectIdDesc(Long comId, Long quoteId);
 }

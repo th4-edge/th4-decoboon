@@ -1,0 +1,265 @@
+{
+  "project": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 21:10:38"
+      },
+      "projectId": "226713100000000003",
+      "no": "P-RECHECK3-B2",
+      "name": "SMB P0 第三轮 B2 回归项目",
+      "customer": {
+        "custId": "226701371305361408",
+        "name": "验收客户王",
+        "telNo": "13800002222",
+        "community": "验收小区",
+        "addr": "验收小区4栋1单元404",
+        "area": 88.0,
+        "budget": 12.0,
+        "status": {
+          "name": "履约中",
+          "key": "Serving"
+        },
+        "owner": {
+          "empId": "1890000000000000204",
+          "name": "周业务",
+          "telNo": "13910000004",
+          "role": {
+            "name": "业务员",
+            "value": "Marketer",
+            "key": "Marketer"
+          }
+        }
+      },
+      "property": {
+        "propertyId": "226712614586023936",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224",
+          "community": "幂等验收小区",
+          "addr": "幂等验收小区2栋1单元602",
+          "area": 98.0,
+          "budget": 16.0,
+          "status": {
+            "name": "待量房",
+            "key": "PendingMeasure"
+          },
+          "owner": {
+            "empId": "1890000000000000204",
+            "name": "周业务",
+            "telNo": "13910000004",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          }
+        },
+        "propertyNo": "H1789742099434",
+        "community": "幂等验收小区",
+        "building": "2栋1单元",
+        "roomNo": "602",
+        "address": "幂等验收小区2栋1单元602",
+        "area": 108.0,
+        "layout": "四室两厅",
+        "status": {
+          "name": "待量房",
+          "key": "PendingMeasure"
+        },
+        "salesman": {
+          "empId": "1890000000000000204",
+          "name": "周业务",
+          "telNo": "13910000004",
+          "role": {
+            "name": "业务员",
+            "value": "Marketer",
+            "key": "Marketer"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "telNo": "13910000005",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        }
+      },
+      "quote": {
+        "quoteId": "226713100000000001",
+        "no": "Q-RECHECK3-B2",
+        "property": {
+          "propertyId": "226712614586023936",
+          "customer": {
+            "custId": "226712569652445184",
+            "name": "量房幂等验收客户",
+            "telNo": "13800002224",
+            "community": "幂等验收小区",
+            "addr": "幂等验收小区2栋1单元602",
+            "area": 98.0,
+            "budget": 16.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务",
+              "telNo": "13910000004",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            }
+          },
+          "propertyNo": "H1789742099434",
+          "community": "幂等验收小区",
+          "building": "2栋1单元",
+          "roomNo": "602",
+          "address": "幂等验收小区2栋1单元602",
+          "area": 108.0,
+          "layout": "四室两厅",
+          "status": {
+            "name": "待量房",
+            "key": "PendingMeasure"
+          },
+          "salesman": {
+            "empId": "1890000000000000204",
+            "name": "周业务",
+            "telNo": "13910000004",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "1890000000000000205",
+            "name": "李设计",
+            "telNo": "13910000005",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "createdBy": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "telNo": "13910000005",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "discount": 1.0,
+        "amount": 10594.5,
+        "cost": 6650.0,
+        "status": {
+          "name": "客户接受",
+          "key": "Accepted"
+        }
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计",
+        "telNo": "13910000005",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      },
+      "manager": {
+        "empId": "1890000000000000206",
+        "name": "陈项目经理",
+        "telNo": "13910000006",
+        "role": {
+          "name": "项目经理",
+          "value": "Pm",
+          "key": "Pm"
+        }
+      },
+      "siteAddr": "幂等验收小区2栋1单元602",
+      "area": 118.0,
+      "contractAmount": 10594.5,
+      "cost": 6650.0,
+      "status": {
+        "name": "待开工",
+        "key": "Preparing"
+      },
+      "progress": 0,
+      "startDate": "2026-09-20",
+      "planEndDate": "2026-10-20",
+      "currentStageName": "B2 第三轮回归阶段"
+    },
+    "success": true
+  },
+  "measure": {
+    "data": {
+      "content": [
+        {
+          "createTime": {
+            "dateTime": "2026-09-18 22:34:59"
+          },
+          "measureId": "226712614770573312",
+          "customer": {
+            "custId": "226712569652445184",
+            "name": "量房幂等验收客户",
+            "telNo": "13800002224"
+          },
+          "property": {
+            "propertyId": "226712614586023936",
+            "propertyNo": "H1789742099434",
+            "community": "幂等验收小区",
+            "building": "2栋1单元",
+            "roomNo": "602",
+            "address": "幂等验收小区2栋1单元602",
+            "area": 108.0,
+            "layout": "四室两厅",
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            }
+          },
+          "designer": {
+            "empId": "1890000000000000205",
+            "name": "李设计",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "measureTime": "2026-09-23 10:00:00",
+          "status": {
+            "name": "已预约",
+            "key": "Scheduled"
+          },
+          "sitePhotos": [],
+          "structureImages": [],
+          "attachments": []
+        }
+      ],
+      "totalPages": 1,
+      "last": true,
+      "totalElements": "1",
+      "first": true,
+      "size": 1
+    },
+    "success": true
+  },
+  "open": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "请先完成量房并录入量房结论再开工",
+      "system": false
+    }
+  }
+}

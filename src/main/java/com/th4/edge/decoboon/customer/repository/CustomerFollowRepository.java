@@ -17,6 +17,8 @@ public interface CustomerFollowRepository extends JpaRepository<CustomerFollow, 
 
     List<CustomerFollow> findByCompany_ComId(Long comId);
 
+    List<CustomerFollow> findTop200ByCompany_ComIdOrderByFollowIdDesc(Long comId);
+
     List<CustomerFollow> findByCompany_ComIdAndEmp_EmpId(Long comId, Long empId);
 
     /** 批量统计客户跟进次数，供客户列表装配分级时避免 N+1。 */

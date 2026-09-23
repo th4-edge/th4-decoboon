@@ -19,7 +19,6 @@
 - 现象：事务提交时发生 `DataIntegrityViolationException`，根因为
   `PropertyValueException: not-null property references a null or transient value: com.th4.edge.tenant.user.model.Invite.telNo`。
 - 证据链：
-  - Web 调用方发送 `telNo`：`../../前端代码/th4-decoboon-web/src/domains/identity/api.ts:338`
   - 小程序调用方发送 `telNo`：`../../前端代码/th4-decoboon-app/src/domains/identity/api.ts:327`
   - Provider 注入的字段名却是 `invitePhone`：`src/main/java/com/th4/edge/tenant/user/service/invite/invitation/save/support/Save.java`
   - `MembershipContext.createInvite` 将 `invitePhone` 写入 `Invite.telNo`：`src/main/java/com/th4/edge/tenant/user/context/MembershipContext.java`
@@ -29,7 +28,6 @@
 - 建议人工修复：
   1. 先补稳定失败的 Provider/集成回归测试，请求体使用前端真实契约 `telNo`。
   2. 以最小改动统一绑定名，例如将 `invitePhone` 改为 `telNo`，或使用框架支持的 `@AutoInject("telNo")`。
-  3. 增加非空手机号校验，并覆盖 Web、小程序实际请求契约。
   4. 定向测试通过后按标准流程运行全量测试、构建、部署和发版后监控。
 - 状态：保持 `open`，等待人工确认或下一次符合自动修复门禁的运行。
 

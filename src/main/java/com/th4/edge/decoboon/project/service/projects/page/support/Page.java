@@ -64,6 +64,14 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
     @AutoInject
     private ProjectStatus status;
 
+    /** 状态集合：用于"在跑 / 已完工"这类分组筛选，与单值 status 互不冲突。 */
+    @AutoInject
+    private java.util.List<ProjectStatus> statuses;
+
+    /** 设计师筛选（empId），用于项目选择器快速定位。 */
+    @AutoInject
+    private Long designerId;
+
     private final ProjectRepository projectRepository;
     private final ProjectStageRepository stageRepository;
     private final ProjectAccessContext accessContext;
@@ -99,14 +107,16 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
             }
             case Designer -> projectRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByProjectIdDesc(comId, empId);
             case Pm -> projectRepository.findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(comId, empId);
-            case ProjectSupport -> projectRepository.findByCompany_ComIdAndSupport_EmpIdOrderByProjectIdDesc(comId, empId);
-            case Marketer -> projectRepository.findByCompany_ComIdAndQuote_CreatedBy_EmpIdOrderByProjectIdDesc(comId, empId);
+            case Marketer -> projectRepository.findByCompany_ComIdAndOwner_EmpIdOrderByProjectIdDesc(comId, empId);
             default -> List.of();
         };
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         projects = projects.stream()
                 .filter(project -> customerId == null || project.getCustomer().getCustId().equals(customerId))
                 .filter(project -> status == null || project.getStatus() == status)
+                .filter(project -> statuses == null || statuses.isEmpty() || statuses.contains(project.getStatus()))
+                .filter(project -> designerId == null
+                        || (project.getDesigner() != null && designerId.equals(project.getDesigner().getEmpId())))
                 .filter(project -> kw.isBlank()
                         || project.getName().toLowerCase().contains(kw)
                         || project.getNo().toLowerCase().contains(kw)

@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.design.service.schemes.page.support;
 
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -11,8 +12,6 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.access.DataScope;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
-import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
@@ -55,16 +54,15 @@ public class Page implements com.th4.edge.decoboon.design.service.schemes.page.P
     private DesignStatus status;
 
     private final DesignRepository designRepository;
-    private final DataScopeContext dataScopeContext;
+    private final DesignContext designContext;
 
-    public Page(DesignRepository designRepository, DataScopeContext dataScopeContext) {
+    public Page(DesignRepository designRepository, DesignContext designContext) {
         this.designRepository = designRepository;
-        this.dataScopeContext = dataScopeContext;
+        this.designContext = designContext;
     }
 
     @Override
     public org.springframework.data.domain.Page<Design> call(Design request) {
-        DataScope scope = dataScopeContext.requireScope(employee);
         Specification<Design> condition = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (customerId != null) {
@@ -78,7 +76,7 @@ public class Page implements com.th4.edge.decoboon.design.service.schemes.page.P
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 100 : Math.min(size, 200);
         return designRepository.findAll(
-                condition.and(DataScopeSpecification.visible(Design.class, scope)),
+                condition.and(designContext.visibleReadableDesign(employee)),
                 PageRequest.of(page, pageSize));
     }
 }

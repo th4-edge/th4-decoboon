@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.configure.CustomerSource;
+import com.th4.edge.decoboon.customer.configure.CustomerRiskLevel;
 import com.th4.edge.decoboon.customer.configure.Gender;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -186,6 +187,40 @@ public class Customer extends AuditModel {
     @Note("客户分级（派生值，只读）")
     private CustomerGrade grade;
 
+    @Transient
+    @Note("只读投影：停留天数")
+    private Integer idleDays = 0;
+
+    @Transient
+    @Note("只读投影：客户风险等级")
+    private CustomerRiskLevel riskLevel = CustomerRiskLevel.Normal;
+
+    @Transient
+    @Note("只读投影：风险原因")
+    private String riskReason;
+
+    @Transient
+    @Note("只读投影：下一步动作")
+    private String nextAction;
+
+    @Transient
+    @Unit("元")
+    @Note("只读投影：最近报价金额")
+    private BigDecimal quoteAmount;
+
+    @Transient
+    @Unit("元")
+    @Note("只读投影：合同签约金额")
+    private BigDecimal signedAmount;
+
+    @Transient
+    @Note("只读投影：项目名称")
+    private String projectName;
+
+    @Transient
+    @Note("只读投影：项目索引")
+    private Long projectId;
+
     public Long getCustId() { return custId; }
     public void setCustId(Long custId) { this.custId = custId; }
     public Company getCompany() { return company; }
@@ -247,4 +282,20 @@ public class Customer extends AuditModel {
     public void setPortrait(CustomerPortrait portrait) { this.portrait = portrait; }
     public CustomerGrade getGrade() { return grade; }
     public void setGrade(CustomerGrade grade) { this.grade = grade; }
+    public Integer getIdleDays() { return idleDays; }
+    public void setIdleDays(Integer idleDays) { this.idleDays = idleDays; }
+    public CustomerRiskLevel getRiskLevel() { return riskLevel; }
+    public void setRiskLevel(CustomerRiskLevel riskLevel) { this.riskLevel = riskLevel; }
+    public String getRiskReason() { return riskReason; }
+    public void setRiskReason(String riskReason) { this.riskReason = riskReason; }
+    public String getNextAction() { return nextAction; }
+    public void setNextAction(String nextAction) { this.nextAction = nextAction; }
+    public BigDecimal getQuoteAmount() { return quoteAmount; }
+    public void setQuoteAmount(BigDecimal quoteAmount) { this.quoteAmount = quoteAmount; }
+    public BigDecimal getSignedAmount() { return signedAmount; }
+    public void setSignedAmount(BigDecimal signedAmount) { this.signedAmount = signedAmount; }
+    public String getProjectName() { return projectName; }
+    public void setProjectName(String projectName) { this.projectName = projectName; }
+    public Long getProjectId() { return projectId; }
+    public void setProjectId(Long projectId) { this.projectId = projectId; }
 }

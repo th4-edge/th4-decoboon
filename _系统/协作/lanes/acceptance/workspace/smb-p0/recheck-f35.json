@@ -1,0 +1,18 @@
+{
+  "f3_existing": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "只有客户已确认的报价可以生成合同",
+      "system": false
+    }
+  },
+  "f5_submitted": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "只有客户已确认的报价可以生成合同",
+      "system": false
+    }
+  }
+}

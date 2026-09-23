@@ -127,6 +127,7 @@ public class QuoteAdjustmentContext {
                 zero(catalog.getMaterialPrice()), zero(catalog.getManualPrice()),
                 zero(catalog.getCostPrice()), catalog.getFormula()));
         target.setFormula(catalog.getFormula());
+        target.setCraft(catalog.getCraft());
         target.setSort(source.getSort() == null ? nextSort(quote) : source.getSort());
         QuoteLine saved = lineRepository.save(target);
         recalculate(quote);

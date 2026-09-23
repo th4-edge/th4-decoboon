@@ -1,0 +1,51 @@
+{
+  "taskStatus": "VOID_SUPERSEDED",
+  "note": "用户澄清该派单应落在预约量房工作台，本探针结论不作为客户页验收或缺陷定论。",
+  "request": "REQ-20260922-BOSS-CUSTOMER-WORKSPACE",
+  "probes": [
+    {
+      "id": "midnight-boundary",
+      "expected": "today=1, yesterday=0",
+      "actual": "today=1, yesterday=1",
+      "status": "FAIL",
+      "evidence": "probe.log"
+    },
+    {
+      "id": "store-metric-isolation",
+      "expected": "A store follow=0, signedCustomer=0",
+      "actual": "A store follow=1, signedCustomer=1 from B store facts",
+      "status": "FAIL",
+      "evidence": "probe.log"
+    },
+    {
+      "id": "owner-filter-pagination",
+      "expected": "owner total=2, page1 hasMore=true, page2 hasMore=false, unassigned isolated",
+      "actual": "PASS",
+      "status": "PASS",
+      "evidence": "probe.log"
+    },
+    {
+      "id": "combined-conditions",
+      "expected": "store + stage + keyword + owner + sort returns one matching customer",
+      "actual": "PASS",
+      "status": "PASS",
+      "evidence": "combo-probe.log"
+    }
+  ],
+  "fullSuite": {
+    "command": "mvn -o -q -DforkCount=0 test",
+    "suites": 80,
+    "tests": 241,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "appReleaseBuild": {
+    "status": "PASS",
+    "mainPackageBytes": 616502,
+    "largestSubpackageBytes": 302211,
+    "totalBytes": 2048887,
+    "subpackages": 14,
+    "pages": 87
+  }
+}

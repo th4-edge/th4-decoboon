@@ -4,8 +4,8 @@ import com.th4.edge.framework.core.annotation.Note;
 
 import java.time.LocalDate;
 
-/** 老板经营驾驶舱四联看板。 */
-@Note("老板经营驾驶舱")
+/** 企业负责人经营驾驶舱四联看板。 */
+@Note("企业负责人经营驾驶舱")
 public class BossDashboard {
 
     private LocalDate month;

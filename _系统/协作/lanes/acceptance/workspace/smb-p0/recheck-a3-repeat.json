@@ -1,0 +1,50 @@
+{
+  "data": {
+    "createTime": {
+      "dateTime": "2026-09-18 22:01:02"
+    },
+    "measureId": "226704069203329024",
+    "customer": {
+      "custId": "226701371305361408",
+      "name": "验收客户王",
+      "telNo": "13800002222"
+    },
+    "property": {
+      "propertyId": "226704069090082816",
+      "propertyNo": "H1789740062029",
+      "community": "验收小区",
+      "building": "3栋1单元",
+      "roomNo": "303",
+      "address": "验收小区3栋1单元303",
+      "area": 105.0,
+      "layout": "三室两厅",
+      "status": {
+        "name": "已量房",
+        "key": "Measured"
+      }
+    },
+    "designer": {
+      "empId": "1890000000000000205",
+      "name": "李设计",
+      "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+      }
+    },
+    "executor": {
+      "empId": "1890000000000000205",
+      "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+      }
+    },
+    "measureTime": "2026-09-18 22:25:38",
+    "status": {
+      "name": "已完成",
+      "key": "Completed"
+    }
+  },
+  "success": true
+}

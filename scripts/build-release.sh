@@ -26,11 +26,22 @@ mkdir -p "$RELEASE_DIR"
 cp "$ARCHIVE" "$RELEASE_DIR/"
 cp .env.prod.example "$RELEASE_DIR/"
 cp docs/deploy/PRODUCTION.md "$RELEASE_DIR/"
+cp docs/design/migrations/00-迁移账本.sql "$RELEASE_DIR/"
+cp docs/design/migrations/01-空库基线.sql "$RELEASE_DIR/"
 cp docs/design/migrations/19-生产发布基线.md "$RELEASE_DIR/"
 cp docs/design/migrations/22-OSS对象存储部署说明.md "$RELEASE_DIR/"
 cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
-for migration in docs/design/migrations/{24..40}-*.sql; do
-  cp "$migration" "$RELEASE_DIR/"
+# 增量迁移范围：新迁移必须同步上调 MIGRATION_END，否则 DBA 会拿不到待执行脚本。
+# 2026-09-24 修正：发布包必须覆盖 24-59，包含业主闭环、整改、意见、设计状态与 craft 快照。
+MIGRATION_START=24
+MIGRATION_END=59
+for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
+  matches=(docs/design/migrations/"${number}"-*.sql)
+  if [ ! -e "${matches[0]}" ]; then
+    echo "[release] missing migration ${number}" >&2
+    exit 1
+  fi
+  cp "${matches[@]}" "$RELEASE_DIR/"
 done
 
 (

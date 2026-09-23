@@ -90,15 +90,14 @@ systemctl status decoboon
 
 - `decoboon.joytsing.com` 必须解析到服务器。
 - `/api/` 反向代理到 `http://127.0.0.1:8090`。
-- Web 静态文件可放在 `/opt/decoboon-web/dist`，使用 SPA 回退 `try_files $uri $uri/ /index.html`。
 - `client_max_body_size` 必须不低于 500 MB。
 - 微信支付回调地址必须为 `https://decoboon.joytsing.com/api/order/callback`。
 
 ### 当前生产状态（2026-09-16 复核）
 
-- TLS 证书已安装到 `/etc/nginx/ssl/decoboon.joytsing.com/`，`nginx -t` 通过，HTTP 301 跳转 HTTPS，HTTPS 首页与静态资源返回 200。
+- TLS 证书已安装到 `/etc/nginx/ssl/decoboon.joytsing.com/`，`nginx -t` 通过，HTTP 301 跳转 HTTPS，HTTPS API 可达。
 - 当前证书有效期至 `2026-12-13 23:59:59 UTC`（北京时间约 `2026-12-14 07:59:59`），需提前配置续期和部署监控。
-- 后端与 Web 生产版本均为 `20260916-0415`；后端监听 `127.0.0.1:8090`，systemd `decoboon.service` 为 active/enabled。
+- 后端生产版本为 `20260916-0415`；后端监听 `127.0.0.1:8090`，systemd `decoboon.service` 为 active/enabled。
 - 生产库 `decoboon` 已完成空库基线，共 88 张表，`01/10/11/12/17/21` 均为 `BASELINE`。
 - `/api/auth/session/info` 在未携带 token 时返回 HTTP 200 和业务错误 `tokenIsUndefined`；`/api/order/callback` 空请求已进入微信支付回调 Provider。真实登录业务、首笔支付回调、备份恢复和回滚仍需 acceptance 验证。
 

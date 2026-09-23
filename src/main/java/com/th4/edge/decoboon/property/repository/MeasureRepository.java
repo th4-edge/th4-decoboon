@@ -26,4 +26,8 @@ public interface MeasureRepository extends JpaRepository<Measure, Long>,
     /** 指定客户集合内指定状态的量房事实（客户列表状态投影）。 */
     List<Measure> findByCompany_ComIdAndCustomer_CustIdInAndStatus(Long comId, Collection<Long> customerIds,
                                                                   MeasureStatus status);
+
+    /** 指定客户集合内的全部量房事实（客户经营指标使用）。 */
+    List<Measure> findByCompany_ComIdAndCustomer_CustIdInOrderByMeasureIdDesc(Long comId,
+                                                                              Collection<Long> customerIds);
 }

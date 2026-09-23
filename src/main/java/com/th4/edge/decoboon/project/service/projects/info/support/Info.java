@@ -62,7 +62,7 @@ public class Info implements com.th4.edge.decoboon.project.service.projects.info
 
     @Override
     public Project call(Project request) {
-        Project project = accessContext.requireProject(projectId, employee);
+        Project project = accessContext.requireReadableProject(projectId, employee);
         var stages = stageRepository.findByProjectOrderBySort(project);
         stages.stream()
                 .filter(stage -> stage.getStatus() == com.th4.edge.decoboon.project.configure.StageStatus.Doing

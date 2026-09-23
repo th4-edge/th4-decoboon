@@ -1,0 +1,444 @@
+{
+  "ids": {
+    "customerId": "226712569652445184",
+    "propertyId": "226712569912492032",
+    "measureId": "226712570227064832"
+  },
+  "setup": {
+    "follow": true,
+    "handoff": true,
+    "scheduled": true
+  },
+  "first": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:34:48"
+      },
+      "measureId": "226712570227064832",
+      "customer": {
+        "custId": "226712569652445184",
+        "name": "量房幂等验收客户",
+        "telNo": "13800002224"
+      },
+      "property": {
+        "propertyId": "226712569912492032",
+        "propertyNo": "H1789742088783",
+        "community": "幂等验收小区",
+        "building": "1栋1单元",
+        "roomNo": "601",
+        "address": "幂等验收小区1栋1单元601",
+        "area": 98.0,
+        "layout": "三室两厅",
+        "status": {
+          "name": "已量房",
+          "key": "Measured"
+        }
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      },
+      "executor": {
+        "empId": "1890000000000000205",
+        "name": "李设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      },
+      "measureTime": "2026-09-22 10:00:00",
+      "status": {
+        "name": "已完成",
+        "key": "Completed"
+      },
+      "sitePhotos": [
+        "acceptance/site-1.jpg"
+      ],
+      "structureImages": [
+        "acceptance/structure-1.jpg"
+      ],
+      "attachments": [
+        "acceptance/file-1.pdf"
+      ]
+    },
+    "success": true
+  },
+  "repeat": [
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 22:34:48"
+        },
+        "measureId": "226712570227064832",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224"
+        },
+        "property": {
+          "propertyId": "226712569912492032",
+          "propertyNo": "H1789742088783",
+          "community": "幂等验收小区",
+          "building": "1栋1单元",
+          "roomNo": "601",
+          "address": "幂等验收小区1栋1单元601",
+          "area": 98.0,
+          "layout": "三室两厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-22 10:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [
+          "acceptance/site-1.jpg"
+        ],
+        "structureImages": [
+          "acceptance/structure-1.jpg"
+        ],
+        "attachments": [
+          "acceptance/file-1.pdf"
+        ]
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 22:34:48"
+        },
+        "measureId": "226712570227064832",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224"
+        },
+        "property": {
+          "propertyId": "226712569912492032",
+          "propertyNo": "H1789742088783",
+          "community": "幂等验收小区",
+          "building": "1栋1单元",
+          "roomNo": "601",
+          "address": "幂等验收小区1栋1单元601",
+          "area": 98.0,
+          "layout": "三室两厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-22 10:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [
+          "acceptance/site-1.jpg"
+        ],
+        "structureImages": [
+          "acceptance/structure-1.jpg"
+        ],
+        "attachments": [
+          "acceptance/file-1.pdf"
+        ]
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 22:34:48"
+        },
+        "measureId": "226712570227064832",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224"
+        },
+        "property": {
+          "propertyId": "226712569912492032",
+          "propertyNo": "H1789742088783",
+          "community": "幂等验收小区",
+          "building": "1栋1单元",
+          "roomNo": "601",
+          "address": "幂等验收小区1栋1单元601",
+          "area": 98.0,
+          "layout": "三室两厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-22 10:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [
+          "acceptance/site-1.jpg"
+        ],
+        "structureImages": [
+          "acceptance/structure-1.jpg"
+        ],
+        "attachments": [
+          "acceptance/file-1.pdf"
+        ]
+      },
+      "success": true
+    }
+  ],
+  "concurrent": [
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 22:34:48"
+        },
+        "measureId": "226712570227064832",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224"
+        },
+        "property": {
+          "propertyId": "226712569912492032",
+          "propertyNo": "H1789742088783",
+          "community": "幂等验收小区",
+          "building": "1栋1单元",
+          "roomNo": "601",
+          "address": "幂等验收小区1栋1单元601",
+          "area": 98.0,
+          "layout": "三室两厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-22 10:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [
+          "acceptance/site-1.jpg"
+        ],
+        "structureImages": [
+          "acceptance/structure-1.jpg"
+        ],
+        "attachments": [
+          "acceptance/file-1.pdf"
+        ]
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 22:34:48"
+        },
+        "measureId": "226712570227064832",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224"
+        },
+        "property": {
+          "propertyId": "226712569912492032",
+          "propertyNo": "H1789742088783",
+          "community": "幂等验收小区",
+          "building": "1栋1单元",
+          "roomNo": "601",
+          "address": "幂等验收小区1栋1单元601",
+          "area": 98.0,
+          "layout": "三室两厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-22 10:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [
+          "acceptance/site-1.jpg"
+        ],
+        "structureImages": [
+          "acceptance/structure-1.jpg"
+        ],
+        "attachments": [
+          "acceptance/file-1.pdf"
+        ]
+      },
+      "success": true
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 22:34:48"
+        },
+        "measureId": "226712570227064832",
+        "customer": {
+          "custId": "226712569652445184",
+          "name": "量房幂等验收客户",
+          "telNo": "13800002224"
+        },
+        "property": {
+          "propertyId": "226712569912492032",
+          "propertyNo": "H1789742088783",
+          "community": "幂等验收小区",
+          "building": "1栋1单元",
+          "roomNo": "601",
+          "address": "幂等验收小区1栋1单元601",
+          "area": 98.0,
+          "layout": "三室两厅",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measureTime": "2026-09-22 10:00:00",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        },
+        "sitePhotos": [
+          "acceptance/site-1.jpg"
+        ],
+        "structureImages": [
+          "acceptance/structure-1.jpg"
+        ],
+        "attachments": [
+          "acceptance/file-1.pdf"
+        ]
+      },
+      "success": true
+    }
+  ],
+  "marketer": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "该房屋已指定设计师，量房完成必须由指定设计师执行",
+      "system": false
+    }
+  }
+}

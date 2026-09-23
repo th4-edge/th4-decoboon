@@ -91,8 +91,10 @@ public class Save implements com.th4.edge.decoboon.project.service.tasknodes.sav
         ProjectTask task = taskRepository.findOne(
                         byId.and(accessContext.visibleChild(employee, ProjectTask.class, "project")))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "施工任务不存在或无权访问")));
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以确认施工节点"));
+        // 施工节点留证：企业负责人 / 店长（限本门店数据范围）/ 项目经理
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm
+                && current.getRole() != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或项目经理可以确认施工节点"));
         }
         TaskNodeKey nodeKey = parseKey(key);
         if (nodeRepository.findByTaskAndNodeKey(task, nodeKey).isPresent()) {
@@ -162,9 +164,13 @@ public class Save implements com.th4.edge.decoboon.project.service.tasknodes.sav
     }
 
     private TaskNodeKey parseKey(String value) {
-        if (value == null) throw new DefinedException(new DefaultErrorCode("400", "节点类型不能为空"));
+        if (value == null || value.isBlank()) {
+            throw new DefinedException(new DefaultErrorCode("400", "节点类型不能为空"));
+        }
         for (TaskNodeKey item : TaskNodeKey.values()) {
-            if (item.getValue().equalsIgnoreCase(value) || item.name().equalsIgnoreCase(value)) return item;
+            // 先按枚举名匹配，再按稳定枚举值匹配；value.equalsIgnoreCase 对 null 安全，
+            // 避免枚举未实现 Enumerable#getValue() 时再次抛 NPE（DEF-PROJ37-001 回归保护）。
+            if (item.name().equalsIgnoreCase(value) || value.equalsIgnoreCase(item.getValue())) return item;
         }
         throw new DefinedException(new DefaultErrorCode("400", "不支持的施工节点"));
     }

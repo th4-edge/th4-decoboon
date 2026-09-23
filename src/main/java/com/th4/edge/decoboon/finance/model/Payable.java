@@ -10,6 +10,7 @@ import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
+import com.th4.edge.decoboon.project.model.PurchaseOrder;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.finance.configure.SettlementMode;
@@ -93,6 +94,11 @@ public class Payable extends AuditModel {
     @JoinColumn(name = "material_plan_id")
     private MaterialPlan materialPlan;
 
+    @Note("来源采购单（下单即形成应付）")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_order_id")
+    private PurchaseOrder purchaseOrder;
+
     @Note("应付名称")
     @Keyword
     @Column(length = 128, nullable = false)
@@ -141,8 +147,8 @@ public class Payable extends AuditModel {
     @Column(name = "settlement_mode", length = 16)
     private SettlementMode settlementMode;
 
-    @Note("约定付款日")
-    @Column(nullable = false)
+    @Note("约定付款日（到场确认后按供应商账期回填）")
+    @Column
     private LocalDate dueDate;
 
     @Note("应付状态")
@@ -181,6 +187,8 @@ public class Payable extends AuditModel {
     public void setProject(Project project) { this.project = project; }
     public MaterialPlan getMaterialPlan() { return materialPlan; }
     public void setMaterialPlan(MaterialPlan materialPlan) { this.materialPlan = materialPlan; }
+    public PurchaseOrder getPurchaseOrder() { return purchaseOrder; }
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) { this.purchaseOrder = purchaseOrder; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public PayableType getType() { return type; }

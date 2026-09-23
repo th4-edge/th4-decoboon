@@ -8,7 +8,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import java.math.BigDecimal;
 import java.util.List;
 
-/** 门店店长经营与履约全景报告。 */
+/** 店长经营与履约全景报告。 */
 @Note("门店经营报告")
 public class StoreManagerReport {
 

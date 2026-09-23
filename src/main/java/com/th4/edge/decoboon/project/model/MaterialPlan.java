@@ -8,9 +8,11 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.pack.model.PackageLine;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.configure.MaterialSourceType;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jpa.annotation.Model;
@@ -51,7 +53,9 @@ import com.th4.edge.tenant.user.model.Team;
                 @Index(name = "idx_material_plan_company", columnList = "com_id, plan_id"),
                 @Index(name = "idx_material_plan_company_store", columnList = "com_id, store_id, plan_id"),
                 @Index(name = "idx_material_plan_company_team", columnList = "com_id, team_id, plan_id"),
-                @Index(name = "idx_material_plan_company_owner", columnList = "com_id, owner_id, plan_id")
+                @Index(name = "idx_material_plan_company_owner", columnList = "com_id, owner_id, plan_id"),
+                @Index(name = "idx_material_plan_company_project", columnList = "com_id, project_id, plan_id"),
+                @Index(name = "idx_material_plan_company_material_key", columnList = "com_id, material_key, plan_id")
         }
 )
 public class MaterialPlan extends AuditModel implements ProjectOwned {
@@ -148,7 +152,7 @@ public class MaterialPlan extends AuditModel implements ProjectOwned {
 
     @Note("材料计划状态")
     @Enumerated(EnumType.STRING)
-    @Column(length = 16, nullable = false)
+    @Column(length = 24, nullable = false)
     private MaterialPlanStatus status = MaterialPlanStatus.Planned;
 
     @Note("要求到场日期")
@@ -156,6 +160,53 @@ public class MaterialPlan extends AuditModel implements ProjectOwned {
 
     @Note("实际到场日期")
     private LocalDate arrivedAt;
+
+    @Note("材料计划来源：合同选材确认/增减项新增/增减项扣减")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source_type", length = 24)
+    private MaterialSourceType sourceType;
+
+    @Note("确认后的选材结果版本")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "selection_id")
+    private MaterialSelection selection;
+
+    @Note("选材品牌（结构化，用于供应商匹配）")
+    @Column(name = "selected_brand", length = 128)
+    private String selectedBrand;
+
+    @Note("选材规格（结构化，用于供应商匹配）")
+    @Column(name = "selected_spec", length = 256)
+    private String selectedSpec;
+
+    @Note("选材型号（结构化，用于供应商匹配）")
+    @Column(name = "selected_model", length = 128)
+    private String selectedModel;
+
+    @Note("归一化材料标识（供应商匹配，不使用选材自由文本）")
+    @Column(name = "material_key", length = 512)
+    private String materialKey;
+
+    @Note("净用量（施工净需求，空值表示沿用计划数量）")
+    @Column(name = "net_quantity", precision = 12, scale = 2)
+    private BigDecimal netQuantity;
+
+    @Note("损耗率（来源主材分类，默认 0）")
+    @Column(name = "loss_rate", precision = 8, scale = 4)
+    private BigDecimal lossRate = BigDecimal.ZERO;
+
+    @Note("损耗量；计划数量 = 净用量 + 损耗量")
+    @Column(name = "loss_quantity", precision = 12, scale = 2)
+    private BigDecimal lossQuantity = BigDecimal.ZERO;
+
+    @Note("扣减行指向的被冲减原计划")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reduce_of_plan_id")
+    private MaterialPlan reduceOfPlan;
+
+    @Note("数量/价格调整原因")
+    @Column(length = 500)
+    private String remark;
 
     public Long getPlanId() {
         return planId;
@@ -289,5 +340,26 @@ public class MaterialPlan extends AuditModel implements ProjectOwned {
 
     public void setChangeItem(ContractChangeItem changeItem) { this.changeItem = changeItem; }
 
-
+    public MaterialSourceType getSourceType() { return sourceType; }
+    public void setSourceType(MaterialSourceType sourceType) { this.sourceType = sourceType; }
+    public MaterialSelection getSelection() { return selection; }
+    public void setSelection(MaterialSelection selection) { this.selection = selection; }
+    public String getSelectedBrand() { return selectedBrand; }
+    public void setSelectedBrand(String selectedBrand) { this.selectedBrand = selectedBrand; }
+    public String getSelectedSpec() { return selectedSpec; }
+    public void setSelectedSpec(String selectedSpec) { this.selectedSpec = selectedSpec; }
+    public String getSelectedModel() { return selectedModel; }
+    public void setSelectedModel(String selectedModel) { this.selectedModel = selectedModel; }
+    public String getMaterialKey() { return materialKey; }
+    public void setMaterialKey(String materialKey) { this.materialKey = materialKey; }
+    public BigDecimal getNetQuantity() { return netQuantity; }
+    public void setNetQuantity(BigDecimal netQuantity) { this.netQuantity = netQuantity; }
+    public BigDecimal getLossRate() { return lossRate; }
+    public void setLossRate(BigDecimal lossRate) { this.lossRate = lossRate; }
+    public BigDecimal getLossQuantity() { return lossQuantity; }
+    public void setLossQuantity(BigDecimal lossQuantity) { this.lossQuantity = lossQuantity; }
+    public MaterialPlan getReduceOfPlan() { return reduceOfPlan; }
+    public void setReduceOfPlan(MaterialPlan reduceOfPlan) { this.reduceOfPlan = reduceOfPlan; }
+    public String getRemark() { return remark; }
+    public void setRemark(String remark) { this.remark = remark; }
 }

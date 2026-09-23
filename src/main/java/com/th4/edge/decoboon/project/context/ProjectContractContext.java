@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.context;
 
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.design.context.DesignLifecycleContext;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableType;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
@@ -17,6 +18,7 @@ import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.decoboon.plan.context.ContractPlanContext;
 import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
@@ -51,6 +53,8 @@ public class ProjectContractContext {
     private final ProjectPermissionContext permissionContext;
     private final ContractChangeFulfillmentContext fulfillmentContext;
     private final ProjectContext projectContext;
+    private final ContractPlanContext contractPlanContext;
+    private final DesignLifecycleContext designLifecycleContext;
 
     public ProjectContractContext(ProjectContractRepository contractRepository,
                                   ContractChangeRepository changeRepository,
@@ -64,7 +68,9 @@ public class ProjectContractContext {
                                   FinanceAccessContext financeAccessContext,
                                   ProjectPermissionContext permissionContext,
                                   ContractChangeFulfillmentContext fulfillmentContext,
-                                  ProjectContext projectContext) {
+                                  ProjectContext projectContext,
+                                  ContractPlanContext contractPlanContext,
+                                  DesignLifecycleContext designLifecycleContext) {
         this.contractRepository = contractRepository;
         this.changeRepository = changeRepository;
         this.lineRepository = lineRepository;
@@ -78,6 +84,8 @@ public class ProjectContractContext {
         this.permissionContext = permissionContext;
         this.fulfillmentContext = fulfillmentContext;
         this.projectContext = projectContext;
+        this.contractPlanContext = contractPlanContext;
+        this.designLifecycleContext = designLifecycleContext;
     }
 
     /** 客户确认报价后先创建合同草稿/待签，不创建项目。 */
@@ -92,6 +100,13 @@ public class ProjectContractContext {
     @Transactional
     public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt, BigDecimal signedAmount,
                                            LocalDate startDate, LocalDate planEndDate, String remark) {
+        return createFromQuote(quote, employee, signedAt, signedAmount, startDate, planEndDate, remark, null, null);
+    }
+
+    @Transactional
+    public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt, BigDecimal signedAmount,
+                                           LocalDate startDate, LocalDate planEndDate, String remark,
+                                           String paymentPlanCode, String constructionPlanCode) {
         ProjectContract existing = contractRepository.findByQuote_QuoteId(quote.getQuoteId()).orElse(null);
         if (existing != null) {
             return existing;
@@ -124,6 +139,7 @@ public class ProjectContractContext {
             permissionContext.apply(contract, locked, quote.getCustomer());
             ProjectContract saved = contractRepository.save(contract);
             syncLines(saved, quoteLineRepository.findByQuote(quote));
+            contractPlanContext.select(saved, paymentPlanCode, constructionPlanCode);
             return signedAt == null ? saved : markSigned(saved, signedAt, signedAmount);
         });
     }
@@ -150,9 +166,11 @@ public class ProjectContractContext {
         if (finalSignedAmount.signum() <= 0) {
             throw new DefinedException(new DefaultErrorCode("400", "最终签约价格必须大于 0"));
         }
+        contractPlanContext.ensure(contract);
         snapshotSignedCost(contract);
         contract.setSignedAmount(finalSignedAmount);
         contract.setCurrentAmount(finalSignedAmount);
+        contractPlanContext.repricePaymentPlan(contract);
         contract.setStatus(ContractStatus.Signed);
         contract.setSignedAt(signedAt == null ? LocalDate.now() : signedAt);
         markCustomerStatus(contract.getQuote(), CustStatus.Signed);
@@ -160,7 +178,10 @@ public class ProjectContractContext {
             propertyContext.updateStatus(contract.getProperty(),
                     com.th4.edge.decoboon.property.configure.PropertyStatus.Contracted);
         }
-        return contractRepository.save(contract);
+        ProjectContract saved = contractRepository.save(contract);
+        // 合同签约即客户已经确定方案，补齐设计方案状态，防止历史或补录路径断链。
+        designLifecycleContext.markSelected(saved.getQuote() == null ? null : saved.getQuote().getDesign());
+        return saved;
     }
 
     @Transactional
@@ -174,10 +195,13 @@ public class ProjectContractContext {
                 && contract.getStatus() != ContractStatus.Active)) {
             throw new DefinedException(new DefaultErrorCode("400", "合同签约后才能生效"));
         }
+        contractPlanContext.ensure(contract);
         contract.setStatus(ContractStatus.Effective);
         contract.setEffectiveAt(LocalDateTime.now());
         markCustomerStatus(contract.getQuote(), CustStatus.Serving);
-        return contractRepository.save(contract);
+        ProjectContract saved = contractRepository.save(contract);
+        designLifecycleContext.markSelected(saved.getQuote() == null ? null : saved.getQuote().getDesign());
+        return saved;
     }
 
     private void markCustomerStatus(Quote quote, CustStatus status) {
@@ -258,6 +282,8 @@ public class ProjectContractContext {
         }
         contract.setSignedCost(money(signedCost));
         contract.setCostComplete(complete);
+        contract.setPaymentPlan(contractPlanContext.paymentPlan(contract));
+        contract.setConstructionPlan(contractPlanContext.constructionPlan(contract));
         return contract;
     }
 

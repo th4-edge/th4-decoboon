@@ -1,0 +1,289 @@
+{
+  "schema_version": "1.0",
+  "packet_id": "P0-BATCH-20260918-A",
+  "mode": "full_chain_simulation",
+  "status": "iterating",
+  "decision_owner": "user",
+  "scope": {
+    "goal": "让企业入驻、客户房屋、设计报价、合同签约和项目立项沿一条主链推进，同时修复跨范围权限、状态、价格、成本和跨端契约缺陷",
+    "in_scope": [
+      "企业入驻与建团",
+      "线索或客户",
+      "房屋与量房",
+      "设计与报价项目库",
+      "自定义销售价标记与报价快照",
+      "Excel导出",
+      "报价决策",
+      "合同签约价调整",
+      "项目立项",
+      "跨租户负向与多端体验检查"
+    ],
+    "out_of_scope": [
+      "合同后的完整施工、材料、付款、结算和整改",
+      "生产发布",
+      "营销内容发布"
+    ],
+    "fact_sources": [
+      "OBJ-001",
+      "BR-001",
+      "BR-002",
+      "SCN-001",
+      "SCN-002",
+      "DEC-001",
+      "GAP-003"
+    ]
+  },
+  "tenant_profiles": [
+    {
+      "id": "T-A",
+      "type": "single_store_growth",
+      "scale": "12人，1店，在施5个项目",
+      "focus": "从入驻到立项的正常链、角色交接和金额快照"
+    },
+    {
+      "id": "T-B",
+      "type": "multi_store_growth",
+      "scale": "26人，3店，2个团队，在施12个项目",
+      "focus": "多店邀请、归属快照、跨店和跨团队隔离"
+    },
+    {
+      "id": "T-C",
+      "type": "lean_team",
+      "scale": "6人，角色兼任，数据不完整",
+      "focus": "补建房屋、拒绝改版、成本不完整和异常恢复"
+    }
+  ],
+  "mainline": [
+    "lead",
+    "customer",
+    "property",
+    "measure",
+    "design",
+    "quote",
+    "contract",
+    "project",
+    "site",
+    "change",
+    "task",
+    "acceptance",
+    "rectification",
+    "finance",
+    "settlement"
+  ],
+  "scenarios": [
+    {
+      "id": "SCN-P0-01",
+      "user": "Boss与被邀请员工",
+      "trigger": "新企业首次入驻并组建团队",
+      "precondition": "微信身份、手机号、订阅和席位可用",
+      "action": "注册企业、设置默认总店、按角色邀请员工、员工接受邀请",
+      "system_next": "复制企业/门店/团队归属并生成对应工作台",
+      "exception": "邀请过期、手机号不一致、席位不足、已有企业切换、离职重入"
+    },
+    {
+      "id": "SCN-P0-02",
+      "user": "家装顾问、店长与设计师",
+      "trigger": "获得意向客户并需要推进到量房",
+      "precondition": "客户已登记，完成首次有效跟进，房屋档案已建立",
+      "action": "记录跟进、新增房屋、约定量房、录入现场结果",
+      "system_next": "推进房屋状态并引导指定设计师和创建设计方案",
+      "exception": "无房屋、重复量房、时间过期、非本人范围、跨客户房屋"
+    },
+    {
+      "id": "SCN-P0-03",
+      "user": "设计师与客户",
+      "trigger": "量房完成并需要形成设计方案和报价",
+      "precondition": "客户房屋、量房结果、项目库分项和标准成本有效",
+      "action": "选择项目库分项、填工程量、必要时调整销售价并填写原因、生成报价快照",
+      "system_next": "生成可导出的报价版本并登记客户接受、拒绝或改版",
+      "exception": "价格来源缺失、调价原因缺失、成本不完整、重复接受、其他报价已确认"
+    },
+    {
+      "id": "SCN-P0-04",
+      "user": "Boss、设计师与客户",
+      "trigger": "客户接受最终报价或确认线下直接签约",
+      "precondition": "报价已接受，客户房屋一致，签约价和付款条件明确",
+      "action": "生成合同、登记签约价调整及原因、签约、生效、生成项目",
+      "system_next": "生成唯一项目和应收基线，并把报价保持为历史快照",
+      "exception": "合同未生效、重复立项、签约价缺失、调整原因缺失、负金额"
+    }
+  ],
+  "permission_cases": [
+    {
+      "id": "PERM-P0-01",
+      "role": "Marketer",
+      "scope": "Self",
+      "action": "read",
+      "object": "Project",
+      "expected": "allow"
+    },
+    {
+      "id": "PERM-P0-02",
+      "role": "Marketer",
+      "scope": "CompanyButNotParticipant",
+      "action": "read_or_create",
+      "object": "BossProjectOrContract",
+      "expected": "deny"
+    },
+    {
+      "id": "PERM-P0-03",
+      "role": "TenantBEmployee",
+      "scope": "cross_tenant",
+      "action": "read_or_update",
+      "object": "TenantAProject",
+      "expected": "deny"
+    },
+    {
+      "id": "PERM-P0-04",
+      "role": "Finance",
+      "scope": "FinanceRead",
+      "action": "update",
+      "object": "ContractSigning",
+      "expected": "deny"
+    }
+  ],
+  "money_cases": [
+    {
+      "id": "MONEY-P0-01",
+      "source": "项目库标准销售价与设计分项自定义销售价",
+      "formula_or_snapshot": "报价行保留原标准价、自定义销售价、原因和来源，服务端重算金额；成本仍取标准成本",
+      "missing_value_policy": "调价原因缺失时不得保存；成本缺失时利润为空",
+      "cross_page_expectation": "设计、报价、合同和项目对同一版本金额可追溯"
+    },
+    {
+      "id": "MONEY-P0-02",
+      "source": "报价快照与合同签约价调整",
+      "formula_or_snapshot": "原报价金额 + 签约调整 = 最终签约金额；调整原因、操作人和时间必须留痕",
+      "missing_value_policy": "未填写调整原因时阻断签约价调整",
+      "cross_page_expectation": "报价详情、合同履约台、项目金额和应收基线一致"
+    },
+    {
+      "id": "MONEY-P0-03",
+      "source": "项目成本上下文",
+      "formula_or_snapshot": "成本不完整时利润和毛利率返回 null",
+      "missing_value_policy": "禁止按 0 成本生成伪利润",
+      "cross_page_expectation": "财务总览显示成本未完整，与项目账本一致"
+    }
+  ],
+  "ux_cases": [
+    {
+      "id": "UX-P0-01",
+      "platform": "",
+      "viewport": "1280x720",
+      "role": "Boss",
+      "path": "客户待首联到量房",
+      "expected": "首屏先显示写跟进，不显示量房主按钮"
+    },
+    {
+      "id": "UX-P0-02",
+      "platform": "",
+      "viewport": "1440x900",
+      "role": "Boss",
+      "path": "报价到合同签约价到项目",
+      "expected": "原报价、调整额、最终金额、原因和项目状态在一条主链可见"
+    },
+    {
+      "id": "UX-P0-03",
+      "platform": "App",
+      "viewport": "390 logical px",
+      "role": "Marketer",
+      "path": "客户跟进到量房预约",
+      "expected": "首屏仅显示当前阶段主行动和安全区内的 CTA"
+    }
+  ],
+  "acceptance": {
+    "positive": [
+      "企业入驻与建团闭环",
+      "客户房屋量房闭环",
+      "自定义销售价和报价快照闭环",
+      "报价接受合同签约价调整和项目立项闭环",
+      "直接签约基线报价闭环"
+    ],
+    "negative": [
+      "同企业跨范围合同/项目创建被拒绝",
+      "跨租户读取更新删除导出全部被拒绝",
+      "无房屋不能量房",
+      "待首联无跟进不能量房",
+      "报价未接受不能合同，合同未生效不能项目",
+      "成本不完整不能产生利润"
+    ],
+    "evidence": [
+      "页面截图",
+      "App 微信开发者工具截图",
+      "Provider 请求和响应",
+      "状态变化和金额快照",
+      "独立回归测试",
+      "审计/操作日志"
+    ],
+    "batch_policy": "同一批次最多 5 个需求完成后统一独立验收，P0 权限和伪利润问题立即阻断"
+  },
+  "evidence_refs": [
+    "OBJ-001",
+    "BR-001",
+    "BR-002",
+    "SCN-001",
+    "SCN-002",
+    "DEC-001",
+    "GAP-003",
+    "输出/草稿/P0应用开发第一批-20260918/evidence"
+  ],
+  "business_questions": [
+    {
+      "question": "线索是否作为独立Lead对象，还是继续使用Customer.New/待首联+来源？",
+      "impact": "影响客户域实体、转换关系、统计和跟进历史",
+      "candidate_answers": [
+        "独立Lead对象并在转换时生成Customer",
+        "继续复用Customer.New并用转换动作推进"
+      ]
+    },
+    {
+      "question": "自定义销售价由哪些角色修改、是否审批、是否整单调整，成本是否恒定不随售价改变？",
+      "impact": "影响DesignItem、QuoteLine、权限和金额快照",
+      "candidate_answers": [
+        "设计师可逐行调、店长/Boss可审批，成本不变",
+        "仅BOSS/店长可调并强制原因"
+      ]
+    },
+    {
+      "question": "合同签约价是整单调整还是逐行调整，允许0元和负调整的边界是什么？",
+      "impact": "影响合同行、合同金额、项目和应收基线",
+      "candidate_answers": [
+        "整单调整并保留原报价快照",
+        "必须落到合同行且不得低于0"
+      ]
+    },
+    {
+      "question": "报价接受后客户状态应使用现有Quoted/待签还是新增待签状态？量房前是否必须至少一次有效跟进？",
+      "impact": "影响客户状态机、下一动作和统计",
+      "candidate_answers": [
+        "沿用Quoted并增加待签语义，量房前必须跟进",
+        "新增PendingContract状态"
+      ]
+    },
+    {
+      "question": "多店邀请的目标门店、团队和角色如何组合，店长与团队长的邀请边界是什么？",
+      "impact": "影响组织归属、邀请权限和跨店协作",
+      "candidate_answers": [
+        "Boss可选任意门店，店长仅本店，团队长仅本团队",
+        "按角色能力矩阵配置目标门店"
+      ]
+    }
+  ],
+  "affected_lanes": [
+    "product-planning",
+    "development",
+    "acceptance"
+  ],
+  "marketing_evidence_boundary": {
+    "allowed": [],
+    "not_allowed": [
+      "伪利润",
+      "未完成的直接签约补录",
+      "未实现的自定义销售价能力",
+      "未验收的跨租户能力"
+    ],
+    "conditions": [
+      "营销Lane恢复且用户明确授权后才可重新核验"
+    ]
+  }
+}

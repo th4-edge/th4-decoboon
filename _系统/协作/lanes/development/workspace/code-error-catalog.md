@@ -282,9 +282,167 @@ Provider 已通过 `TenantContext` 校验并加载 `currentEmployee`，但响应
 
 ---
 
+## ECD-008 引导/进度状态硬编码且业务动作后不刷新
+
+**级别**：P1/high
+**首次发生**：2026-09-18 App 首次入驻引导
+**现象**：BOSS 已维护成本价格和供应商品牌关系，返回首页后引导仍显示未完成。
+
+### 根因
+
+- 供应商步骤在生产组件中写死 `done: false`，完成状态与领域数据断开。
+- 引导数据只在组件首次挂载时加载，Tab 页面从子页面返回时没有重新读取。
+- 需求只定义了展示和状态来源，没有定义每步完成谓词、必做/可选分母和刷新触发条件。
+
+### 为什么没拦住
+
+- 类型检查、构建检查和页面截图只能证明页面存在，不能证明业务动作后状态收敛。
+- 验收没有覆盖“动作成功 -> navigateBack/onShow -> 完成态刷新”的跨页面状态迁移。
+- 静态占位值没有被开发自检门禁识别。
+
+### 禁则
+
+1. ❌ 禁止引导、进度、待办、资料完整度等业务状态使用硬编码 `done: false/true`、演示数据或仅前端本地布尔值。
+2. ❌ 禁止只依赖组件首次挂载加载会随业务动作变化的数据；必须定义返回/重新显示时的刷新或缓存失效策略。
+3. ❌ 禁止在未冻结“必做/可选、完成谓词、计数来源、异常态”前，把引导页面视为完成。
+4. ❌ 禁止只用接口成功、页面可打开或 type-check 通过证明引导闭环完成。
+
+### 必须写法
+
+- 每个步骤定义并冻结：`key / label / required / source_provider / completion_predicate / count / refresh_triggers / next_action`。
+- 完成状态直接从当前企业真实领域对象派生；供应商品牌关系至少校验有效对象及关联关系。
+- 页面重新显示时刷新可变状态；子页面写入后回首页能看到最新结果。
+- 验收覆盖初始态、动作成功返回、动作失败、可选步骤完成、必做步骤未完成和重复进入。
+
+### 检测与回归要求
+
+- 扫描引导/进度组件中是否存在 `done: false`、静态 completion/status 字段。
+- 回归必须真实执行：维护报价项/成本/供应商/客户 -> 返回首页 -> 进度状态更新。
+- 可选步骤完成后分母不变；必做项未完成时下一步必须指向正确任务。
+
+## ECD-009 长文本列长度与迁移基线漂移导致保存截断
+
+**级别**：P1/high
+**首次发生**：2026-09-21 凭证模板保存（`db_document_template.field_config`）
+**现象**：App 横向模板配置页保存企业模板时报
+`Data truncation: Data too long for column 'field_config' at row 1`。
+
+### 触发链
+
+1. 实体 `DocumentTemplate.fieldConfig` 早期为普通 `String`，Hibernate 在开发库把列建成了 `varchar(255)`。
+2. 后续实体改为 `@Lob`（新库为 `longtext`），但 `spring.jpa.hibernate.ddl-auto: update` **不会修改既有列类型**。
+3. 迁移 `41-单据模板与PDF归档.sql` 已声明 `longtext`，但该库由 ddl-auto 建表，从未执行该迁移。
+4. 新增"常用凭证模板库"后字段 JSON 由约 160 字符涨到约 480 字符，超过 255 直接截断报错。
+
+### 为什么没拦住
+
+- H2 集成测试用 `ddl-auto: create-drop`，每次按实体最新定义建表，永远复现不出"存量列偏窄"。
+- 既有校验只覆盖业务规则与白名单，没有覆盖持久化层长文本容量。
+- 开发库列类型从未与迁移文件比对。
+
+### 禁则
+
+1. ❌ 禁止新增或扩展 JSON、快照、备注等长文本字段时只改实体不补迁移；必须同时提供可重复执行的 `alter table`。
+2. ❌ 禁止依赖 `ddl-auto: update` 修正既有列长度——它只加列，不修改列类型。
+3. ❌ 禁止在由 ddl-auto 建表的库上声称"迁移已覆盖"。
+
+### 必须写法
+
+- 长文本字段实体用 `@Lob`（新库 `longtext`），并为**既有库**提供 `alter table ... modify column ... longtext`。
+- 判断依据以 `show create table` 实测列类型为准，不以实体注解为准。
+
+### 检测方法
+
+- 对含 `@Lob` 的实体，核对对应迁移与存量库列类型是否为 `longtext`。
+- 出现同类截断报错时，先查列类型，再查业务长度。
+
+## ECD-010 并发清理 target/classes 与多构造器导致应用启动失败
+
+**级别**：P1/high  
+**首次发生**：2026-09-22 本地启动 `com.th4.edge.Application`
+
+### 现象
+
+启动日志先出现：
+
+```text
+Failed to parse configuration class [com.th4.edge.Application]
+Caused by: ClassNotFoundException: com.th4.edge.components.data.listener.SnowflakeEntityListener
+```
+
+类文件本身存在；干净重编译后又进一步暴露：
+
+```text
+Failed to instantiate [CustomerOverviewContext]: No default constructor found
+```
+
+### 根因
+
+1. 工作区多 Lane 并发时，Maven `clean` 会删除整个 `target/`；IDE 若在清理过程中启动，classpath 可能只看到部分类，表现为随机 `ClassNotFoundException`。
+2. `CustomerOverviewContext` 新增依赖后保留了旧、新两个构造器，未明确标注 `@Autowired`，Spring 在多个候选构造器中无法自动选择。
+
+### 禁则
+
+1. ❌ 禁止在 IDE 启动或 Maven 测试正在运行时由其他 Lane 执行 `mvn clean`。
+2. ❌ 禁止在一个 Spring Bean 中保留多个构造器却不明确注入入口；优先只保留一个构造器。
+3. ❌ 禁止仅凭 `target/classes` 中“看到某个 class”判断类路径完整；启动前必须干净编译并加载 Spring 上下文。
+
+### 必须写法
+
+- 本地启动前先执行 `mvn -o -q clean compile`，确认 `target/classes` 是完整产物。
+- Spring 组件优先使用单一构造器依赖注入；确需多个构造器时明确 `@Autowired` 主构造器。
+- 启动类路径问题至少用一条 `@SpringBootTest` 上下文测试验证，不能只看单元测试通过。
+
+### 检测方法
+
+- `test -f target/classes/com/th4/edge/components/data/listener/SnowflakeEntityListener.class`。
+- `mvn -o -q -Dtest=BossMeasureReportContextTest test` 能加载完整 Spring 上下文。
+- 搜索 `Context/ `Service` 类中构造器数量，多个构造器必须能解释为什么需要并存。
+
 ## 错误集维护规则
 
 1. 每个生产 `code_bug` 事故必须登记为 `ECD-NNN`，包含：现象、触发条件、事故链、为什么没拦住、禁则、必做写法、检测方法。
 2. 禁则必须同步写入 `rules.md`（代码生成事实源）与 `AGENTS.md`（AI 助手必读），否则视为未完成。
 3. 代码评审与 AI 代码生成都需逐条核对本文件；命中任一条禁则即打回重写。
 4. 已修复的错误集不得删除，只能标记状态；用于防止同类问题再次出现。
+
+## ECD-011 对外可见投影直出实体，派生字段未按领域事实推导
+
+**级别**：P1/high
+**首次发生**：2026-09-24 业主端沉浸式体验审计（一次抓到 3 处同源）
+**现象**：同一业主在「我的家」首页看到项目"待验收"、在项目旅程看到"施工中"；项目详情"当前： · 阶段 0/8"当前阶段为空，而其他 8 个页面显示"开工交底"。
+
+### 根因
+
+- `customer/project/info`（业主详情）**直接把实体返回**（`return accessContext.requireProject(...)`），完全没有组装投影；
+- `customer/project/page`（业主项目列表）同样直出，未推导 `currentStageName` 与业主可见状态；
+- `customer/project/journey/info` 修过一次（FIX-015）但只改了"当前阶段"，未改"项目状态"；
+- `Project.status` / `Project.currentStageName` 是**可回填的派生列**，只有 `project/project/page`、`project/project/overview` 会临时赋值 → **4 条业主可见路径出现 3 种口径**；
+- 前端用 `projectStageText()` 兜底后，页面从"空白"变成"显示项目状态"，**掩盖了后端未组装**，使缺陷更难发现。
+
+### 为什么没拦住
+
+- 类型检查、构建、单页截图都只能证明"这一页有内容"，证明不了**跨页面口径一致**；
+- 没有"同一字段在多个投影间必须相等"的断言测试；
+- 前端兜底让缺失看起来像"降级展示"，验收容易放过。
+
+### 禁则
+
+1. ❌ 禁止对外可见投影直接 `return entity;`（含 `return accessContext.requireProject(...)`）。
+2. ❌ 禁止直接返回 `status` / `currentStageName` 等**派生列**而不按领域事实校验/推导。
+3. ❌ 禁止同一派生字段在多个投影各写一套推导（发现第二处必须收敛为共享实现）。
+4. ❌ 禁止用前端兜底替代后端组装（兜底只能用于字段确实缺失时的降级）。
+5. ❌ 禁止以 OSIV/懒加载兜底关联读取。
+
+### 必须写法
+
+- 业主端四条投影（`customer/project/page`、`customer/project/info`、`customer/project/journey/info`、员工侧 `project/project/page|overview`）**共用同一套推导实现**；
+- 冻结口径：当前阶段 = `Doing/Accepting` 优先否则第一个阶段；业主可见状态 = 存在 `Pending` 验收单 ⇔ `Accepting`，否则已开工 ⇒ `Ongoing`，全 `Done` ⇒ `Finished`，无开工 ⇒ `Preparing`，`Suspended/Finished/Settled` 保留；
+- 详见 `rules.md` §5.6。
+
+### 检测与回归要求
+
+- 自检：`grep -rn "return accessContext.requireProject\|^\s*return project;" src/main/java/com/th4/edge/decoboon/customer` 应无命中；
+- 断言测试：同一项目在**我的家首页 / 项目详情 / 项目旅程**三处 `status` 与 `currentStageName` 相等；
+- 迁移回归：验收**驳回**后三处同时由"待验收"变"施工中"；重新提交验收后同时回到"待验收"；
+- 小程序内人工复验：三页同时截图，比对同一字段。

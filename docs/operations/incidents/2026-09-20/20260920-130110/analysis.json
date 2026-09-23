@@ -1,0 +1,446 @@
+{
+  "collectedAt": "2026-09-20T05:01:11.748800+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-09-20/20260920-130110",
+  "counts": {
+    "expected": 28,
+    "unknown": 62
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20260920-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 6,
+      "firstSeen": "2026-09-18T14:16:35.367+08:00",
+      "lastSeen": "2026-09-20T03:11:57.248+08:00",
+      "samples": [
+        "[2026-09-20 03:11:57.248] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "1791:2026-09-18T14:16:35.367+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "2307:2026-09-18T16:04:30.010+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "4592:2026-09-19T10:36:28.706+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "5108:2026-09-19T11:09:36.520+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-0cd74dd730",
+      "signature": "找不到对应的处理服务:auth/signin",
+      "signatureHash": "0cd74dd730",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 11,
+      "firstSeen": "2026-09-18T14:05:25.255+08:00",
+      "lastSeen": "2026-09-18T14:05:32.582+08:00",
+      "samples": [
+        "845:2026-09-18T14:05:25.255+08:00 ERROR 47233 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "931:2026-09-18T14:05:25.663+08:00 ERROR 47233 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1017:2026-09-18T14:05:26.110+08:00 ERROR 47233 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1103:2026-09-18T14:05:27.765+08:00 ERROR 47233 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1189:2026-09-18T14:05:28.032+08:00 ERROR 47233 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-5589e060f2",
+      "signature": "找不到对应的处理服务:chunkplayer/index.html",
+      "signatureHash": "5589e060f2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:00.649",
+      "lastSeen": "2026-09-20T04:20:00.649+08:00",
+      "samples": [
+        "[2026-09-20 04:20:00.649] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - chunkplayer/index.html处理失败:找不到对应的处理服务:chunkplayer/index.html",
+        "6484:2026-09-20T04:20:00.649+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : chunkplayer/index.html处理失败:找不到对应的处理服务:chunkplayer/index.html"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-cddd8368fa",
+      "signature": "找不到对应的处理服务:config",
+      "signatureHash": "cddd8368fa",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-19T11:50:39.008+08:00",
+      "lastSeen": "2026-09-19T11:50:39.008+08:00",
+      "samples": [
+        "5624:2026-09-19T11:50:39.008+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-c50a9523db",
+      "signature": "找不到对应的处理服务:dev/.env",
+      "signatureHash": "c50a9523db",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-18T14:16:58.578+08:00",
+      "lastSeen": "2026-09-19T11:09:42.617+08:00",
+      "samples": [
+        "2135:2026-09-18T14:16:58.578+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
+        "2651:2026-09-18T16:04:56.560+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
+        "4936:2026-09-19T10:36:34.539+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
+        "5452:2026-09-19T11:09:42.617+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-6f7f4c367b",
+      "signature": "找不到对应的处理服务:getServices",
+      "signatureHash": "6f7f4c367b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:14.851",
+      "lastSeen": "2026-09-20T04:20:14.851+08:00",
+      "samples": [
+        "[2026-09-20 04:20:14.851] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - getServices处理失败:找不到对应的处理服务:getServices",
+        "6742:2026-09-20T04:20:14.851+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : getServices处理失败:找不到对应的处理服务:getServices"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-8478b5fd37",
+      "signature": "找不到对应的处理服务:graphql",
+      "signatureHash": "8478b5fd37",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:12.168",
+      "lastSeen": "2026-09-20T04:20:12.168+08:00",
+      "samples": [
+        "[2026-09-20 04:20:12.168] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql",
+        "6656:2026-09-20T04:20:12.168+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-62ccf61446",
+      "signature": "找不到对应的处理服务:host.describe",
+      "signatureHash": "62ccf61446",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 03:51:23.343",
+      "lastSeen": "2026-09-20T03:51:23.343+08:00",
+      "samples": [
+        "[2026-09-20 03:51:23.343] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - host.describe处理失败:找不到对应的处理服务:host.describe",
+        "6226:2026-09-20T03:51:23.343+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : host.describe处理失败:找不到对应的处理服务:host.describe"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-1651161ec6",
+      "signature": "找不到对应的处理服务:jmreport/excelQueryByTemplate",
+      "signatureHash": "1651161ec6",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-19T14:05:41.204+08:00",
+      "lastSeen": "2026-09-19T14:05:41.204+08:00",
+      "samples": [
+        "5710:2026-09-19T14:05:41.204+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : jmreport/excelQueryByTemplate处理失败:找不到对应的处理服务:jmreport/excelQueryByTemplate"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-c2523033ac",
+      "signature": "找不到对应的处理服务:kconfig",
+      "signatureHash": "c2523033ac",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:19:53.110",
+      "lastSeen": "2026-09-20T04:19:53.110+08:00",
+      "samples": [
+        "[2026-09-20 04:19:53.110] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - kconfig处理失败:找不到对应的处理服务:kconfig",
+        "6398:2026-09-20T04:19:53.110+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : kconfig处理失败:找不到对应的处理服务:kconfig"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-09-18T18:38:40.318+08:00",
+      "lastSeen": "2026-09-20T02:46:23.741+08:00",
+      "samples": [
+        "[2026-09-20 02:26:19.563] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "[2026-09-20 02:46:23.741] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "2823:2026-09-18T18:38:40.318+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "2909:2026-09-18T20:04:07.556+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "5968:2026-09-20T02:26:19.563+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-e4bbca461d",
+      "signature": "找不到对应的处理服务:staging/.env",
+      "signatureHash": "e4bbca461d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-18T14:16:58.912+08:00",
+      "lastSeen": "2026-09-19T11:09:42.718+08:00",
+      "samples": [
+        "2221:2026-09-18T14:16:58.912+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
+        "2737:2026-09-18T16:04:57.073+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
+        "5022:2026-09-19T10:36:34.634+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
+        "5538:2026-09-19T11:09:42.718+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-70f3313722",
+      "signature": "找不到对应的处理服务:system/base/info",
+      "signatureHash": "70f3313722",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-19T16:20:31.781+08:00",
+      "lastSeen": "2026-09-19T16:20:31.781+08:00",
+      "samples": [
+        "5796:2026-09-19T16:20:31.781+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/base/info处理失败:找不到对应的处理服务:system/base/info"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-799faaa727",
+      "signature": "找不到对应的处理服务:system/setting",
+      "signatureHash": "799faaa727",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:50.738",
+      "lastSeen": "2026-09-20T04:20:50.738+08:00",
+      "samples": [
+        "[2026-09-20 04:20:50.738] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - system/setting处理失败:找不到对应的处理服务:system/setting",
+        "7000:2026-09-20T04:20:50.738+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/setting处理失败:找不到对应的处理服务:system/setting"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-1b79d9a2de",
+      "signature": "找不到对应的处理服务:user/current",
+      "signatureHash": "1b79d9a2de",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:39.009",
+      "lastSeen": "2026-09-20T04:20:39.009+08:00",
+      "samples": [
+        "[2026-09-20 04:20:39.009] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/current处理失败:找不到对应的处理服务:user/current",
+        "6914:2026-09-20T04:20:39.009+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/current处理失败:找不到对应的处理服务:user/current"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-90a4d9ff4b",
+      "signature": "找不到对应的处理服务:user/status",
+      "signatureHash": "90a4d9ff4b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:02.475",
+      "lastSeen": "2026-09-20T04:20:02.475+08:00",
+      "samples": [
+        "[2026-09-20 04:20:02.475] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/status处理失败:找不到对应的处理服务:user/status",
+        "6570:2026-09-20T04:20:02.475+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/status处理失败:找不到对应的处理服务:user/status"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-416878e316",
+      "signature": "找不到对应的处理服务:v1/.env",
+      "signatureHash": "416878e316",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-18T14:16:55.270+08:00",
+      "lastSeen": "2026-09-19T11:09:41.849+08:00",
+      "samples": [
+        "1877:2026-09-18T14:16:55.270+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "2393:2026-09-18T16:04:53.778+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "4678:2026-09-19T10:36:33.789+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "5194:2026-09-19T11:09:41.849+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-092b4d51d4",
+      "signature": "找不到对应的处理服务:v1/GetLicEndTime",
+      "signatureHash": "092b4d51d4",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:19:45.280",
+      "lastSeen": "2026-09-20T04:19:45.280+08:00",
+      "samples": [
+        "[2026-09-20 04:19:45.280] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/GetLicEndTime处理失败:找不到对应的处理服务:v1/GetLicEndTime",
+        "6312:2026-09-20T04:19:45.280+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/GetLicEndTime处理失败:找不到对应的处理服务:v1/GetLicEndTime"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-363c89fdc5",
+      "signature": "找不到对应的处理服务:v1/version",
+      "signatureHash": "363c89fdc5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 00:01:40.691",
+      "lastSeen": "2026-09-20T00:01:40.691+08:00",
+      "samples": [
+        "[2026-09-20 00:01:40.691] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/version处理失败:找不到对应的处理服务:v1/version",
+        "5882:2026-09-20T00:01:40.691+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/version处理失败:找不到对应的处理服务:v1/version"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-e359a7a32a",
+      "signature": "找不到对应的处理服务:v2/.env",
+      "signatureHash": "e359a7a32a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-18T14:16:55.523+08:00",
+      "lastSeen": "2026-09-19T11:09:41.948+08:00",
+      "samples": [
+        "1963:2026-09-18T14:16:55.523+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
+        "2479:2026-09-18T16:04:54.089+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
+        "4764:2026-09-19T10:36:33.886+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
+        "5280:2026-09-19T11:09:41.948+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-7cc2b644b1",
+      "signature": "找不到对应的处理服务:v3/.env",
+      "signatureHash": "7cc2b644b1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-18T14:16:57.953+08:00",
+      "lastSeen": "2026-09-19T11:09:42.519+08:00",
+      "samples": [
+        "2049:2026-09-18T14:16:57.953+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
+        "2565:2026-09-18T16:04:56.126+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
+        "4850:2026-09-19T10:36:34.438+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
+        "5366:2026-09-19T11:09:42.519+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260920-db7d2e0ae1",
+      "signature": "找不到对应的处理服务:x",
+      "signatureHash": "db7d2e0ae1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-20 04:20:15.045",
+      "lastSeen": "2026-09-20T04:20:15.045+08:00",
+      "samples": [
+        "[2026-09-20 04:20:15.045] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - x处理失败:找不到对应的处理服务:x",
+        "6828:2026-09-20T04:20:15.045+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : x处理失败:找不到对应的处理服务:x"
+      ],
+      "reportPaths": [
+        "2026-09-20/20260920-130110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260920-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 22,
+      "firstSeen": "2026-09-18T13:10:38.156+08:00",
+      "lastSeen": "2026-09-20T13:01:11.627+08:00",
+      "samples": [
+        "[2026-09-20 13:01:11.627] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "453:2026-09-18T13:10:38.156+08:00 ERROR 47233 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "555:2026-09-18T13:10:58.511+08:00 ERROR 47233 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "657:2026-09-18T13:11:30.405+08:00 ERROR 47233 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "759:2026-09-18T13:11:36.200+08:00 ERROR 47233 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

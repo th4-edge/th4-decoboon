@@ -23,7 +23,6 @@
 - 项目状态写入 `_系统/上下文/当前项目.md`，当前执行记录写入 `_系统/任务/当前工作.md`。
 - 产品规划产物放 `docs/product/**`、`docs/plan/**`；开发代码放 `src/main/**`；测试代码放 `src/test/**`；验收报告放 `docs/acceptance/**`。
 - 推广素材、选题、脚本、设计产物和数据分析分别放 `docs/marketing/material/**`、`docs/marketing/topics/**`、`docs/marketing/scripts/**`、`docs/marketing/design/**`、`docs/marketing/analytics/**`。
-- Web 端工程位于 `../../前端代码/th4-decoboon-web/**`，固定使用 Vite + Vue 3 + TypeScript + Element Plus；Web 登录使用后端手机号 + BCrypt 密码 Provider，不保存或返回明文密码。
 - Lane 的草稿、调研和中间产物放 `_系统/协作/lanes/<lane>/workspace/**`，不要把 lane workspace 当正式输出目录。
 - 跨 lane 可见的正式输出登记到 `_系统/协作/shared.md`；成熟产物再晋升到项目正式事实源 `输出/确认成果/` 或对应业务目录。
 - 每个 Agent 只主动修改自己 lane 的 `write_scope`；扩大范围前必须取得用户授权或登记共享请求。
@@ -57,7 +56,7 @@
 - 默认路径必须服务最高频场景；低频、专业或高风险字段必须按需展开，不能与主流程同时铺在首屏。
 - 禁止把大型装企 ERP 的完整模型直接变成中小装企的必填步骤。仓库、批次、税率、供应商门户、复杂审批等能力只有明确场景命中时才启用。
 - 功能设计必须遵循“谁在什么时间、用什么设备、为了让谁做下一步”来组织，不能只按数据表结构组织页面。
-- App 以现场快捷操作优先，Web 以批量维护、对账和经营分析优先；两端都必须围绕同一业务事实，不能各自形成不同口径。
+- App 以现场快捷操作优先；所有端口径必须围绕同一业务事实，不能形成不同口径。
 - 交付说明必须包含角色操作路径、状态流转、权限可见性、异常分支和验收场景。
 
 ## 可完成状态投影（强制）
@@ -85,7 +84,8 @@
 任何业务模型的功能体系设计必须先定义**企业归属、角色能力、数据范围、操作动作**；查询、保存、更新、删除都必须有服务端强权限管控，前端隐藏菜单或按钮不构成权限。
 
 - 登录 Provider 必须继承 `Security`，当前员工必须通过 `@User` 注入；当前企业、角色、门店只能从登录员工加载，禁止信任前端 `companyId/empId/ownerId`。
-- 默认权限矩阵为四级：`BOSS=Company`、门店店长=`Store`、团队负责人=`Team`、普通员工=`Self`。角色与数据范围必须显式关联，禁止隐式放宽。
+- 默认权限矩阵为四级：`BOSS=Company`、店长=`Store`、团队负责人=`Team`、普通员工=`Self`。角色与数据范围必须显式关联，禁止隐式放宽。
+- 装得清员工角色固定为 7 类：`Boss`、`StoreManager`、`Designer`、`Marketer`、`Pm`、`Finance`、`TeamLeader`。禁止新增“履约专员”“材料员”等重复角色；其履约、材料与采购职责统一并入 `Finance`。
 - th4 的对象领域查询只负责构建查询，不自动等于数据权限；有个人、门店或团队归属的实体必须用 `@DataPermission` 声明 `company/store/team/owner` 权限字段。
 - `@ServiceProperties` 只控制通用 `{model}-{service}` 路由的响应字段过滤，禁止用它声明或替代查询权限；`@DataPermission` 管“查得到什么”，`@ServiceProperties` 管“返回什么”。
 - 分页、列表、计数由 `DataScopeRequestFilter` 根据 `CriteriaQueryAware + @DataPermission` 在服务端统一追加条件，并由过滤器完成当前员工认证；具体业务 Provider 仍必须继承 `Security`，不能只依赖请求对象或前端查询参数。
@@ -134,6 +134,7 @@
 - 所有 JPA 业务主键必须使用 `@Id + @SnowflakeId`，并声明 `@EntityListeners(SnowflakeEntityListener.class)`；数据库禁止 `AUTO_INCREMENT`，禁止使用可预测的顺序主键。
 - `context` 包下的横切/领域上下文统一以 `Context` 结尾（如 `TenantContext`、`SubscriptionContext`），不命名为 `XxxService`。
 - **可搜索字符串字段加 `@Keyword`**（全局搜索 keyword 全字段 OR 匹配，详见 rules.md §4.3.1）。
+- **长文本字段（JSON/快照/备注）必须与迁移一致**：`ddl-auto: update` 不会修改既有列类型，扩展长文本时必须补 `alter table ... modify column ... longtext` 迁移（`ECD-009`）。
 - 业务实体必须按权限查询建立 `(com_id, 业务主键)` 和 `(com_id, emp_id, 业务主键)` 联合索引；其他范围维度按 `(com_id, 范围字段, 业务主键)` 扩展。
 - 禁止实体写业务逻辑；禁止 `@JsonIgnore`。
 
@@ -158,6 +159,13 @@
 - 详情响应的关联对象不得继续展开会形成 `Property -> Store -> Team -> Employee -> Store` 等循环的完整归属图；仅返回当前页面实际使用的摘要字段，并对序列化后 JSON 大小做回归检查。
 - 需要重视懒加载序列化带来的额外 SQL；响应白名单不得引用页面不需要的关联。`@Properties/@ServiceProperties` 只控制输出，不替代数据权限。
 
+### 对外可见投影必须显式组装（强制）
+
+- 任何给前端看的读取投影都不得直接返回实体；派生字段（`status`、`currentStageName`、计数、金额汇总等）必须按领域事实现场推导，不得信任可能漂移的回填列。
+- **业主详情 `customer/project/info` 明确纳入本规范**；它与 `customer/project/page`（我的家/进度 Tab）、`customer/project/journey/info`、员工侧 `project/project/page|overview` 的同源字段必须使用同一套冻结口径。
+- 前端兜底只允许用于字段确实缺失时的降级展示，不得用来掩盖后端未组装；禁止用 OSIV/懒加载兜底关联读取。
+- 完整口径、四投影对照表和回归要求见 `rules.md` §5.6；历史错误模式见 `_系统/协作/lanes/development/workspace/code-error-catalog.md` 的 `ECD-011`。
+
 ## 租户订阅约定
 
 - 订阅主体为 `Subscription`，主键 `subId`，状态枚举 `SubStatus`。
@@ -167,7 +175,7 @@
 
 ## 成本与利润口径（强制）
 
-- 销售价与成本价分离维护：报价项目库直接维护 `CatalogItem.materialPrice/manualPrice` 销售价和 `CatalogItem.costPrice` 标准成本价；成本价由 BOSS、店长、材料员和财务维护，设计师、业务员、项目经理默认不可见。
+- 销售价与成本价分离维护：报价项目库直接维护 `CatalogItem.materialPrice/manualPrice` 销售价和 `CatalogItem.costPrice` 标准成本价；成本价由企业负责人、店长和财务（含履约协同）维护，设计师、业务员、项目经理默认不可见。
 - 成本价不要求先建立供应商采购价，供应商可在报价项之后维护；供应商通过品牌关联支持材料采购匹配，不为每条报价项逐项绑定供应商价格。
 - 报价阶段使用当前成本作参考；合同签约时按当时 `CatalogItem.costPrice` 重新计算并冻结合同行和合同成本快照。签约后报价项目成本变化不得回溯已签约成本。
 - 项目成本统一由 `ProjectCostContext` 汇总：预计成本优先使用签约成本快照，实际成本优先采购到货/入库等实际发生值；`PartnerPrice` 仅保留历史价格、比价和采购参考，不再作为标准成本必需来源。
@@ -179,7 +187,7 @@
 
 - 品牌 Logo 只能使用 `logo-export` 导出的同一套 Mark，不得用“清/装”文字方块或通用 building 图标代替。
 - 深色背景用白色版，浅色背景用彩色版。
-- App 只通过 `JzBrandLogo`，Web/Admin 只通过 `BrandLogo` 使用 Logo；禁止页面内另存图片或复制路径。
+- App 只通过 `JzBrandLogo`，Admin 只通过 `BrandLogo` 使用 Logo；禁止页面内另存图片或复制路径。
 - 完整资源路径、校验值、同步与验收要求见 `rules.md` §12。
 
 ## 完整规范

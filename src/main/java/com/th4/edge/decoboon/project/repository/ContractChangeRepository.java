@@ -16,4 +16,6 @@ public interface ContractChangeRepository extends JpaRepository<ContractChange, 
     List<ContractChange> findByProject_ProjectIdAndCompany_ComIdOrderByChangeIdDesc(Long projectId, Long comId);
 
     List<ContractChange> findByCompany_ComIdOrderByChangeIdDesc(Long comId);
+
+    List<ContractChange> findTop200ByCompany_ComIdOrderByChangeIdDesc(Long comId);
 }

@@ -6,6 +6,7 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
@@ -35,14 +36,18 @@ public class List implements com.th4.edge.tenant.user.service.user.designer.list
         Employee current = tenantContext.requireEmployee(employee);
         java.util.Collection<EmployeeRole> roles = java.util.List.of(EmployeeRole.Designer, EmployeeRole.Boss);
         if (current.getRole() == EmployeeRole.StoreManager && current.getStore() != null) {
-            return employeeRepository.findByCompany_ComIdAndStore_StoreIdAndRoleInOrderByName(
-                    current.getCompany().getComId(), current.getStore().getStoreId(), roles);
+            return active(employeeRepository.findByCompany_ComIdAndStore_StoreIdAndRoleInOrderByName(
+                    current.getCompany().getComId(), current.getStore().getStoreId(), roles));
         }
         if (current.getRole() == EmployeeRole.TeamLeader && current.getTeam() != null) {
-            return employeeRepository.findByCompany_ComIdAndTeam_TeamIdAndRoleInOrderByName(
-                    current.getCompany().getComId(), current.getTeam().getTeamId(), roles);
+            return active(employeeRepository.findByCompany_ComIdAndTeam_TeamIdAndRoleInOrderByName(
+                    current.getCompany().getComId(), current.getTeam().getTeamId(), roles));
         }
-        return employeeRepository.findByCompany_ComIdAndRoleInOrderByName(
-                current.getCompany().getComId(), roles);
+        return active(employeeRepository.findByCompany_ComIdAndRoleInOrderByName(
+                current.getCompany().getComId(), roles));
+    }
+
+    private java.util.List<Employee> active(java.util.List<Employee> employees) {
+        return employees.stream().filter(employee -> employee.getStatus() == EmployeeStatus.Active).toList();
     }
 }

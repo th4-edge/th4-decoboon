@@ -90,7 +90,13 @@ public class Measure extends AuditModel {
     @Note("量房执行人（实际上门执行量房的员工，与设计师事实分离）")
     private Employee executor;
 
-    @Note("量房时间")
+    @Note("计划上门时间（房屋级预约事实）")
+    private LocalDateTime scheduledAt;
+
+    @Note("实际完成时间（量房完成事实）")
+    private LocalDateTime completedAt;
+
+    @Note("量房时间（兼容投影：Scheduled=scheduledAt，Completed=completedAt）")
     private LocalDateTime measureTime;
 
     @Enumerated(EnumType.STRING)
@@ -154,6 +160,10 @@ public class Measure extends AuditModel {
     public void setDesigner(Employee designer) { this.designer = designer; }
     public Employee getExecutor() { return executor; }
     public void setExecutor(Employee executor) { this.executor = executor; }
+    public LocalDateTime getScheduledAt() { return scheduledAt; }
+    public void setScheduledAt(LocalDateTime scheduledAt) { this.scheduledAt = scheduledAt; }
+    public LocalDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
     public LocalDateTime getMeasureTime() { return measureTime; }
     public void setMeasureTime(LocalDateTime measureTime) { this.measureTime = measureTime; }
     public MeasureStatus getStatus() { return status; }

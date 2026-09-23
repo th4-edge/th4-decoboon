@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.labor.model.Worker;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
@@ -107,6 +108,11 @@ public class Payment extends AuditModel {
     @JoinColumn(name = "partner_id")
     private Partner partner;
 
+    @Note("个人工人（工资发放时填写）")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "worker_id")
+    private Worker worker;
+
     @Note("转账流水号")
     @Column(length = 128)
     private String transactionNo;
@@ -146,6 +152,8 @@ public class Payment extends AuditModel {
     public void setPaidAt(LocalDate paidAt) { this.paidAt = paidAt; }
     public Partner getPartner() { return partner; }
     public void setPartner(Partner partner) { this.partner = partner; }
+    public Worker getWorker() { return worker; }
+    public void setWorker(Worker worker) { this.worker = worker; }
 
     public String getPayeeName() { return payeeName; }
     public void setPayeeName(String payeeName) { this.payeeName = payeeName; }

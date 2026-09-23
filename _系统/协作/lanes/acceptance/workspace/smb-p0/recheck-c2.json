@@ -1,0 +1,54 @@
+{
+  "repeat1": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 21:10:38"
+      },
+      "stageId": "226706000000000004",
+      "project": {
+        "projectId": "226706000000000003",
+        "no": "P-RECHECK2-SMB-P0",
+        "name": "SMB P0 第二轮复验项目",
+        "siteAddr": "验收小区3栋1单元303"
+      },
+      "name": "基础施工",
+      "sort": 0,
+      "weight": 100.0,
+      "status": {
+        "name": "施工中",
+        "key": "Doing"
+      },
+      "progress": 0,
+      "plannedStart": "2026-09-20",
+      "plannedEnd": "2026-10-20",
+      "actualStart": "2026-09-18"
+    },
+    "success": true
+  },
+  "repeat2": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 21:10:38"
+      },
+      "stageId": "226706000000000004",
+      "project": {
+        "projectId": "226706000000000003",
+        "no": "P-RECHECK2-SMB-P0",
+        "name": "SMB P0 第二轮复验项目",
+        "siteAddr": "验收小区3栋1单元303"
+      },
+      "name": "基础施工",
+      "sort": 0,
+      "weight": 100.0,
+      "status": {
+        "name": "施工中",
+        "key": "Doing"
+      },
+      "progress": 0,
+      "plannedStart": "2026-09-20",
+      "plannedEnd": "2026-10-20",
+      "actualStart": "2026-09-18"
+    },
+    "success": true
+  }
+}

@@ -32,6 +32,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -171,6 +172,10 @@ public class DesignItem extends AuditModel {
     @Column(length = 512)
     private String criterion;
 
+    @Note("施工工艺快照（来自材料库，签约口径以分项为准）")
+    @Lob
+    private String craft;
+
     @Note("备注")
     @Column(length = 512)
     private String remark;
@@ -231,6 +236,8 @@ public class DesignItem extends AuditModel {
     public void setFormula(String formula) { this.formula = formula; }
     public String getCriterion() { return criterion; }
     public void setCriterion(String criterion) { this.criterion = criterion; }
+    public String getCraft() { return craft; }
+    public void setCraft(String craft) { this.craft = craft; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
     public Integer getSort() { return sort; }

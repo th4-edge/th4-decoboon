@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Note("阶段分页")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
-                properties = {"stageId", "project", "name", "sort", "weight", "status",
+                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status",
                         "progress", "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
         @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class,
                 properties = {"projectId", "name", "siteAddr"}),
@@ -50,7 +50,7 @@ public class Page implements com.th4.edge.decoboon.project.service.stages.page.P
 
     @Override
     public org.springframework.data.domain.Page<ProjectStage> call(ProjectStage request) {
-        var project = accessContext.requireProject(projectId, employee);
+        var project = accessContext.requireReadableProject(projectId, employee);
         return new PageImpl<>(stageRepository.findByProjectOrderBySort(project));
     }
 }

@@ -1,0 +1,65 @@
+{
+  "rounds": {
+    "data": [
+      {
+        "createTime": {
+          "dateTime": "2026-09-21 04:48:13"
+        },
+        "roundId": "227531317888155648",
+        "roundNo": 2,
+        "result": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "rectificationNote": "已重新铺贴并复检",
+        "rectificationEvidenceUrls": [
+          "acceptance/r2-fix.jpg"
+        ],
+        "evidenceUrls": [
+          "acceptance/r2-site.jpg"
+        ],
+        "issues": [],
+        "conclusion": "整改完成复验",
+        "submittedBy": {
+          "empId": "1789903521009050562",
+          "name": "张伟",
+          "role": {
+            "name": "老板",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "submittedAt": "2026-09-21 04:48:13"
+      },
+      {
+        "createTime": {
+          "dateTime": "2026-09-21 04:39:45"
+        },
+        "roundId": "227529188179968000",
+        "roundNo": 1,
+        "result": {
+          "name": "已驳回",
+          "key": "Rejected"
+        },
+        "rectificationEvidenceUrls": [],
+        "evidenceUrls": [
+          "acceptance/concurrent-first.jpg"
+        ],
+        "issues": [],
+        "conclusion": "业主驳回：瓷砖空鼓",
+        "submittedBy": {
+          "empId": "1789903521009050562",
+          "name": "张伟",
+          "role": {
+            "name": "老板",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "submittedAt": "2026-09-21 04:39:45",
+        "confirmedAt": "2026-09-21 04:48:30"
+      }
+    ],
+    "success": true
+  }
+}

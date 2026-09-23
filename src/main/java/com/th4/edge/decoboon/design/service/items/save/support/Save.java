@@ -41,7 +41,7 @@ import java.util.ArrayList;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "design", "space", "type", "category", "catalogItem",
                         "name", "brand", "spec", "unit", "quantity", "materialPrice", "manualPrice",
-                        "costPrice", "pricingMode", "amount", "cost", "formula", "criterion", "remark", "sort",
+                        "costPrice", "pricingMode", "amount", "cost", "formula", "criterion", "craft", "remark", "sort",
                         "images", "createTime", "updateTime"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "status", "area", "layout"}),
@@ -130,6 +130,7 @@ public class Save implements com.th4.edge.decoboon.design.service.items.save.Sav
         target.setPricingMode(source.getPricingMode() == null ? PricingMethod.MaterialAndManual : source.getPricingMode());
         target.setFormula(source.getFormula());
         target.setCriterion(source.getCriterion());
+        target.setCraft(source.getCraft());
         target.setImages(source.getImages() == null ? null : new ArrayList<>(source.getImages()));
     }
 

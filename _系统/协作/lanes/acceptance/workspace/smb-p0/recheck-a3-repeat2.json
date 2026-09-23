@@ -1,0 +1,50 @@
+{
+  "data": {
+    "createTime": {
+      "dateTime": "2026-09-18 22:23:57"
+    },
+    "measureId": "226709838510424064",
+    "customer": {
+      "custId": "226709838162296832",
+      "name": "A4验收客户",
+      "telNo": "13800002223"
+    },
+    "property": {
+      "propertyId": "226709838300708864",
+      "propertyNo": "H1789741437516",
+      "community": "A4验收小区",
+      "building": "1栋1单元",
+      "roomNo": "501",
+      "address": "A4验收小区1栋1单元501",
+      "area": 90.0,
+      "layout": "三室一厅",
+      "status": {
+        "name": "已量房",
+        "key": "Measured"
+      }
+    },
+    "designer": {
+      "empId": "1890000000000000205",
+      "name": "李设计",
+      "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+      }
+    },
+    "executor": {
+      "empId": "1890000000000000205",
+      "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+      }
+    },
+    "measureTime": "2026-09-18 22:26:15",
+    "status": {
+      "name": "已完成",
+      "key": "Completed"
+    }
+  },
+  "success": true
+}

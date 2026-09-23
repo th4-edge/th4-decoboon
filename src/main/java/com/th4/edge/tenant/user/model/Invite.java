@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 /**
  * 员工邀请。
  *
- * <p>老板邀请业务员加入企业，邀请记录包含租户、门店、目标手机号和角色。
+ * <p>企业负责人邀请业务员加入企业，邀请记录包含租户、门店、目标手机号和角色。
  * 被邀请人通过 inviteId 与微信授权手机号完成校验。</p>
  */
 @Note("员工邀请")
-@Description("老板邀请业务员加入企业的凭证")
+@Description("企业负责人邀请业务员加入企业的凭证")
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity

@@ -59,7 +59,9 @@ class PurchaseCreationPolicyTest {
         ProjectPermissionContext permissionContext = mock(ProjectPermissionContext.class);
         save = new com.th4.edge.decoboon.project.service.purchases.save.support.Save(
                 planRepository, contractRepository, purchaseRepository, partnerRepository,
-                storeRepository, accessContext, identityContext, permissionContext);
+                storeRepository, accessContext, identityContext, permissionContext,
+                mock(com.th4.edge.decoboon.material.repository.MaterialSelectionRepository.class),
+                mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class));
         when(identityContext.prepare(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(purchaseRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(planRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -76,8 +78,15 @@ class PurchaseCreationPolicyTest {
     }
 
     @Test
-    void projectSupportCreationShouldWaitForApproval() {
-        PurchaseOrder result = create(EmployeeRole.ProjectSupport, DeliveryMode.Direct);
+    void financeCreationShouldBeDirectAndAutoApproved() {
+        PurchaseOrder result = create(EmployeeRole.Finance, DeliveryMode.Direct);
+        assertThat(result.getStatus()).isEqualTo(PurchaseStatus.Approved);
+        assertThat(result.getApprovedBy()).isNotNull();
+    }
+
+    @Test
+    void pmCreationShouldWaitForApproval() {
+        PurchaseOrder result = create(EmployeeRole.Pm, DeliveryMode.Direct);
         assertThat(result.getStatus()).isEqualTo(PurchaseStatus.Submitted);
         assertThat(result.getApprovedBy()).isNull();
     }

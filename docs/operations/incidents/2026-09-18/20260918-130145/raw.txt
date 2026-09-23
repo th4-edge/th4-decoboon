@@ -1,0 +1,362 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-09-18T13:01:45+08:00
+ 13:01:45 up 2 days, 11:49,  1 user,  load average: 0.04, 0.01, 0.00
+since=35 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=39976
+ExecMainStartTimestamp=Thu 2026-09-17 01:46:11 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20260917-013927
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/vda3         40901312 5886452  33124492      16% /
+/dev/vda3         40901312 5886452  33124492      16% /
+/dev/vda3         40901312 5886452  33124492      16% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        2220        2397         124        3237        5235
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-09-18 13:01:46.017] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-09-17 01:40:14.455] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-17 01:40:16.562] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-17 01:40:18.644] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-17 01:40:22.729] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:40:23.019] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:40:23.038] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:41:06.899] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-17 01:41:08.919] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-17 01:41:11.116] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-17 01:41:14.754] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:41:14.999] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:41:15.024] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:45:42.817] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-17 01:45:44.415] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-17 01:45:46.625] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-17 01:45:50.852] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:45:51.039] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:45:51.051] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:46:18.680] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-17 01:46:20.744] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-17 01:46:22.852] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-17 01:46:26.835] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:46:27.147] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-17 01:46:27.165] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+341:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+442:2026-09-17T01:40:36.929+08:00 ERROR 35703 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+794:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+895:2026-09-17T01:42:18.064+08:00 ERROR 36047 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+896:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+997:2026-09-17T01:44:34.632+08:00 ERROR 36047 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+998:com.th4.edge.framework.exception.DefinedException: 手机号或密码错误
+1103:2026-09-17T01:44:49.792+08:00 ERROR 36047 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误
+1104:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1205:2026-09-17T01:44:50.373+08:00 ERROR 36047 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1556:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1657:2026-09-17T01:46:04.224+08:00 ERROR 39701 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1658:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:graphql
+1743:2026-09-17T01:46:05.396+08:00 ERROR 39701 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql
+2097:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2198:2026-09-17T01:46:40.746+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2199:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2300:2026-09-17T01:46:50.943+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2301:com.th4.edge.framework.exception.DefinedException: 不能操作自己的员工记录
+2411:2026-09-17T01:50:01.179+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录
+2412:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+2497:2026-09-17T01:50:37.597+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+2498:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+2583:2026-09-17T04:35:54.972+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+2584:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:checkCleanIp
+2669:2026-09-17T05:25:47.118+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : checkCleanIp处理失败:找不到对应的处理服务:checkCleanIp
+2670:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+2775:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2856:2026-09-17T05:46:40.529+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。
+2873:2026-09-17T05:46:40.532+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2874:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2971:2026-09-17T05:46:40.551+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2972:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3072:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3149:2026-09-17T05:46:40.554+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3173:2026-09-17T05:46:40.556+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3174:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+3259:2026-09-17T07:38:04.577+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+3260:com.th4.edge.framework.exception.DefinedException: 找不到对应的实体处理服务[5d0f56892ac10116.env]
+3371:2026-09-17T07:38:05.182+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : zzcanary-5d0f56892ac10116.env处理失败:找不到对应的实体处理服务[5d0f56892ac10116.env]
+3372:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:config
+3457:2026-09-17T09:34:39.759+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config
+3458:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+3555:2026-09-17T11:11:59.791+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+3556:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3661:2026-09-17T11:11:59.802+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3662:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3759:2026-09-17T11:11:59.811+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3760:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3860:2026-09-17T11:11:59.813+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3861:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3961:2026-09-17T11:11:59.820+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3962:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+4047:2026-09-17T11:24:43.033+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+4048:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/.env
+4133:2026-09-17T11:25:05.462+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env
+4134:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v2/.env
+4219:2026-09-17T11:25:05.739+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env
+4220:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v3/.env
+4305:2026-09-17T11:25:07.690+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env
+4306:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:dev/.env
+4391:2026-09-17T11:25:08.128+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env
+4392:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:staging/.env
+4477:2026-09-17T11:25:08.425+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env
+4478:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+4583:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4663:2026-09-17T14:00:50.267+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。
+4681:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4706:2026-09-17T14:00:50.273+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4779:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4879:2026-09-17T14:00:50.279+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4880:2026-09-17T14:00:50.280+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4881:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4981:2026-09-17T14:00:50.283+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4982:com.th4.edge.framework.exception.DefinedException: 不能操作自己的员工记录
+5092:2026-09-17T14:01:10.550+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录
+5093:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5190:2026-09-17T14:22:50.920+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5191:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5296:2026-09-17T14:22:50.939+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5297:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5394:2026-09-17T14:22:50.949+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5395:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5492:2026-09-17T14:22:50.952+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5493:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+5593:2026-09-17T14:23:37.214+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:当前员工已离职或停用
+5594:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+5694:2026-09-17T14:23:40.188+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:当前员工已离职或停用
+5695:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+5795:2026-09-17T14:23:43.101+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:当前员工已离职或停用
+5796:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+5893:2026-09-17T14:24:19.014+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:当前员工已离职或停用
+5894:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+5999:2026-09-17T14:24:22.944+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+6000:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6105:2026-09-17T14:24:24.961+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+6106:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6203:2026-09-17T14:24:25.000+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+6204:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6301:2026-09-17T14:24:25.034+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+6302:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6399:2026-09-17T14:24:26.051+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+6400:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6497:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6518:2026-09-17T14:24:26.062+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+6603:2026-09-17T14:24:26.064+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+6604:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6709:2026-09-17T14:24:30.511+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+6710:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6807:2026-09-17T14:24:30.514+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+6808:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+6905:2026-09-17T14:24:30.519+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+6906:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7003:2026-09-17T14:24:42.081+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+7004:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7101:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7196:2026-09-17T14:24:42.094+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+7207:2026-09-17T14:24:42.095+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+7208:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7305:2026-09-17T14:24:54.583+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+7306:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7403:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7479:2026-09-17T14:24:54.597+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+7509:2026-09-17T14:24:54.599+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+7510:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7607:2026-09-17T14:25:03.963+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+7608:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7713:2026-09-17T14:25:03.974+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+7714:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7811:2026-09-17T14:25:03.977+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+7812:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+7909:2026-09-17T14:25:06.562+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+7910:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8015:2026-09-17T14:25:08.126+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+8016:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8121:2026-09-17T14:25:10.311+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+8122:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8227:2026-09-17T14:25:11.796+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+8228:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8325:2026-09-17T14:25:12.274+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+8326:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8423:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8424:2026-09-17T14:25:13.080+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+8521:2026-09-17T14:25:13.083+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+8522:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8627:2026-09-17T14:25:13.088+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+8628:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8733:2026-09-17T14:25:14.888+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/ledger/page处理失败:当前员工已离职或停用
+8734:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8831:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+8832:2026-09-17T14:25:17.672+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+8937:2026-09-17T14:25:17.679+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+8938:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9035:2026-09-17T14:25:17.688+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+9036:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9141:2026-09-17T14:25:20.439+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+9142:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9239:2026-09-17T14:25:23.710+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:当前员工已离职或停用
+9240:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9345:2026-09-17T14:25:24.085+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+9346:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9443:2026-09-17T14:25:24.904+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+9444:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9549:2026-09-17T14:25:25.504+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+9550:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9647:2026-09-17T14:25:29.381+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+9648:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9753:2026-09-17T14:25:29.386+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+9754:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9851:2026-09-17T14:25:29.388+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+9852:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+9949:2026-09-17T14:25:30.916+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+9950:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10055:2026-09-17T14:25:30.928+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+10056:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10153:2026-09-17T14:25:30.935+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+10154:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10251:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10253:2026-09-17T14:25:33.139+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+10357:2026-09-17T14:25:33.140+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+10358:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10455:2026-09-17T14:25:33.146+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+10456:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10553:2026-09-17T14:27:53.433+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:当前员工已离职或停用
+10554:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10659:2026-09-17T14:27:53.444+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+10660:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10757:2026-09-17T14:27:53.454+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+10758:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10855:2026-09-17T14:27:53.460+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+10856:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+10961:2026-09-17T14:27:56.315+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/receivable/page处理失败:当前员工已离职或停用
+10962:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11059:2026-09-17T14:28:04.163+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+11060:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11157:2026-09-17T14:28:04.170+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+11158:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11263:2026-09-17T14:28:04.172+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+11264:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11361:2026-09-17T14:28:06.110+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+11362:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11467:2026-09-17T14:28:06.452+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+11468:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11573:2026-09-17T14:28:15.194+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+11574:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11679:2026-09-17T14:28:15.873+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+11680:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11777:2026-09-17T14:28:38.415+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+11778:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11883:2026-09-17T14:28:39.984+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+11884:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+11989:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12086:2026-09-17T14:28:44.459+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+12087:2026-09-17T14:28:44.460+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+12088:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12185:2026-09-17T14:28:44.466+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+12186:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12283:2026-09-17T14:28:56.679+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:当前员工已离职或停用
+12284:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12389:2026-09-17T14:28:56.683+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+12390:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12487:2026-09-17T14:28:56.690+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+12488:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12585:2026-09-17T14:28:56.693+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+12586:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12683:2026-09-17T14:30:29.688+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:当前员工已离职或停用
+12684:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12789:2026-09-17T14:30:29.718+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:当前员工已离职或停用
+12790:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12887:2026-09-17T14:30:29.729+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:当前员工已离职或停用
+12888:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+12985:2026-09-17T14:30:29.737+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:当前员工已离职或停用
+12986:com.th4.edge.framework.exception.DefinedException: 当前员工已离职或停用
+13083:2026-09-17T14:30:41.963+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:当前员工已离职或停用
+13084:com.th4.edge.framework.exception.DefinedException: 退出企业后 30 天内不能加入新企业
+13202:2026-09-17T14:31:36.464+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:退出企业后 30 天内不能加入新企业
+13203:com.th4.edge.framework.exception.DefinedException: 退出企业后 30 天内不能加入新企业
+13321:2026-09-17T14:31:57.657+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:退出企业后 30 天内不能加入新企业
+13322:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+13419:2026-09-17T15:49:38.054+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+13420:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13525:2026-09-17T15:49:38.062+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13526:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13626:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13627:2026-09-17T15:49:38.065+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13724:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13824:2026-09-17T15:49:38.067+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13825:2026-09-17T15:49:38.067+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13826:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+13931:2026-09-17T16:06:15.360+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+13932:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+14037:2026-09-17T16:07:54.331+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+14038:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14135:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14240:2026-09-17T16:56:07.620+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14241:2026-09-17T16:56:07.622+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14242:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14342:2026-09-17T16:56:07.643+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14343:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14440:2026-09-17T16:56:07.697+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14441:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14541:2026-09-17T16:56:07.713+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14542:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14639:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14640:2026-09-17T16:56:28.683+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14745:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14842:2026-09-17T16:56:28.686+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14843:2026-09-17T16:56:28.688+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14844:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14944:2026-09-17T16:56:28.691+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14945:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15045:2026-09-17T16:56:28.699+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15046:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+15131:2026-09-17T17:49:39.098+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+15132:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15233:2026-09-17T18:41:11.507+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15234:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15331:2026-09-17T18:47:20.156+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15332:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15437:2026-09-17T18:47:20.168+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15438:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15535:2026-09-17T18:47:20.177+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15536:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15636:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15728:2026-09-17T18:47:20.182+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15737:2026-09-17T18:47:20.183+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15738:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+15835:2026-09-17T20:21:52.022+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+15836:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15933:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15934:2026-09-17T20:21:52.075+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16039:2026-09-17T20:21:52.078+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16040:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16140:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16199:2026-09-17T20:21:52.088+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16241:2026-09-17T20:21:52.088+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16242:com.th4.edge.framework.exception.DefinedException: 不能操作自己的员工记录
+16352:2026-09-17T20:22:20.714+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录
+16353:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+16438:2026-09-17T23:54:36.942+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+16439:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16540:2026-09-18T13:01:46.017+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+-- No entries --

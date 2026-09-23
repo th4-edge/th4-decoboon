@@ -1,0 +1,203 @@
+{
+  "contract_update_negative": {
+    "StoreManager": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约与生效",
+        "system": false
+      }
+    },
+    "Marketer": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约与生效",
+        "system": false
+      }
+    },
+    "Designer": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约与生效",
+        "system": false
+      }
+    },
+    "Pm": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约与生效",
+        "system": false
+      }
+    }
+  },
+  "contract_save_negative": {
+    "StoreManager": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约",
+        "system": false
+      }
+    },
+    "Marketer": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约",
+        "system": false
+      }
+    },
+    "Designer": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约",
+        "system": false
+      }
+    },
+    "Pm": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有企业负责人可以处理合同签约",
+        "system": false
+      }
+    }
+  },
+  "missing_quote_update": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "合同不存在或无权访问",
+      "system": false
+    }
+  },
+  "missing_quote_save": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "报价不存在或无权访问",
+      "system": false
+    }
+  },
+  "repeat_signed": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:04:51"
+      },
+      "contractId": "226705031624130560",
+      "project": {
+        "projectId": "226705031863205888",
+        "no": "P1789740291570",
+        "name": "验收客户王 · 验收小区2栋2单元202",
+        "customer": {
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222"
+        },
+        "property": {
+          "propertyId": "226701976031723520",
+          "propertyNo": "H1789739563005",
+          "community": "验收小区",
+          "building": "2栋2单元",
+          "roomNo": "202",
+          "address": "验收小区2栋2单元202",
+          "area": 96.0,
+          "layout": "三室一厅",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "quote": {
+          "quoteId": "226702200000000021",
+          "no": "Q-ACCEPT-SMB-P0-F3",
+          "title": "SMB P0 F3 正常合同链",
+          "amount": 10594.5,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        "designer": {
+          "empId": "1890000000000000205",
+          "name": "李设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "siteAddr": "验收小区2栋2单元202",
+        "area": 96.0,
+        "contractAmount": 10594.5,
+        "status": {
+          "name": "待开工",
+          "key": "Preparing"
+        },
+        "progress": 0,
+        "startDate": "2026-09-20",
+        "planEndDate": "2026-10-20"
+      },
+      "quote": {
+        "quoteId": "226702200000000021",
+        "no": "Q-ACCEPT-SMB-P0-F3",
+        "title": "SMB P0 F3 正常合同链",
+        "amount": 10594.5,
+        "status": {
+          "name": "已转项目",
+          "key": "Converted"
+        }
+      },
+      "customer": {
+        "custId": "226701371305361408",
+        "name": "验收客户王",
+        "telNo": "13800002222"
+      },
+      "property": {
+        "propertyId": "226701976031723520",
+        "propertyNo": "H1789739563005",
+        "community": "验收小区",
+        "building": "2栋2单元",
+        "roomNo": "202",
+        "address": "验收小区2栋2单元202",
+        "area": 96.0,
+        "layout": "三室一厅",
+        "status": {
+          "name": "施工中",
+          "key": "Serving"
+        }
+      },
+      "no": "C1789740291515",
+      "baselineAmount": 10594.5,
+      "currentAmount": 10594.5,
+      "status": {
+        "name": "已生效",
+        "key": "Effective"
+      },
+      "signedAt": "2026-09-18",
+      "startDate": "2026-09-20",
+      "planEndDate": "2026-10-20",
+      "effectiveAt": "2026-09-18 22:04:51",
+      "createdBy": {
+        "empId": "1890000000000000201",
+        "name": "李强",
+        "role": {
+          "name": "老板",
+          "value": "Boss",
+          "key": "Boss"
+        }
+      },
+      "receivableCount": 3,
+      "receivableAmount": 10594.5,
+      "receivedAmount": 0.0,
+      "pendingChangeCount": 0,
+      "signedCost": 0.0,
+      "costComplete": false
+    },
+    "success": true
+  }
+}

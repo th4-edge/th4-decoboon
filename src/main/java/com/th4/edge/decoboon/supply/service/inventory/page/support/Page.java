@@ -43,7 +43,7 @@ public class Page implements com.th4.edge.decoboon.supply.service.inventory.page
     @Override
     public org.springframework.data.domain.Page<InventoryStock> call(InventoryStock request) {
         Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.Finance,
-                EmployeeRole.ProjectSupport, EmployeeRole.StoreManager, EmployeeRole.Pm);
+                EmployeeRole.StoreManager, EmployeeRole.Pm);
         var list = stockRepository.findByCompany_ComIdOrderByStockIdDesc(current.getCompany().getComId());
         if (current.getRole() == EmployeeRole.StoreManager && current.getStore() != null) {
             list = list.stream().filter(item -> item.getStore() != null

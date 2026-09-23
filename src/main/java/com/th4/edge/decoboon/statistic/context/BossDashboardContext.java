@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** 老板驾驶舱指标计算。 */
+/** 企业负责人驾驶舱指标计算。 */
 @Component
 public class BossDashboardContext {
 

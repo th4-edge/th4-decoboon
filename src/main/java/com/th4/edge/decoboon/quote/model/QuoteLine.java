@@ -37,6 +37,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -229,6 +230,10 @@ public class QuoteLine extends AuditModel {
     @Column(length = 256)
     private String formula;
 
+    @Note("施工工艺快照（生成报价时从设计分项/材料库冻结）")
+    @Lob
+    private String craft;
+
     @Note("排序")
     @Column(nullable = false)
     private Integer sort = 0;
@@ -301,6 +306,8 @@ public class QuoteLine extends AuditModel {
     public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
+    public String getCraft() { return craft; }
+    public void setCraft(String craft) { this.craft = craft; }
     public Integer getSort() { return sort; }
     public void setSort(Integer sort) { this.sort = sort; }
 

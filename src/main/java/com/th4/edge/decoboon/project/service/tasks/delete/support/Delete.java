@@ -6,6 +6,7 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.ProjectTask;
 import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -47,10 +48,13 @@ public class Delete implements com.th4.edge.decoboon.project.service.tasks.delet
 
     private final ProjectTaskRepository taskRepository;
     private final ProjectAccessContext accessContext;
+    private final ProjectContext projectContext;
 
-    public Delete(ProjectTaskRepository taskRepository, ProjectAccessContext accessContext) {
+    public Delete(ProjectTaskRepository taskRepository, ProjectAccessContext accessContext,
+                  ProjectContext projectContext) {
         this.taskRepository = taskRepository;
         this.accessContext = accessContext;
+        this.projectContext = projectContext;
     }
 
     @Override
@@ -62,7 +66,10 @@ public class Delete implements com.th4.edge.decoboon.project.service.tasks.delet
         if (task.getProgress() != null && task.getProgress() > 0) {
             throw new DefinedException(new DefaultErrorCode("400", "已开工任务不能删除"));
         }
+        com.th4.edge.decoboon.project.model.Project project = task.getProject();
         taskRepository.delete(task);
+        // 删除排期任务后同样按剩余排期重算计划
+        projectContext.recalculatePlanFromSchedule(project);
         return task;
     }
 }

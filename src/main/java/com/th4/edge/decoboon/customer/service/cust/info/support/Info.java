@@ -25,6 +25,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
@@ -108,12 +109,22 @@ public class Info implements com.th4.edge.decoboon.customer.service.cust.info.In
     @Override
     @Transactional(readOnly = true)
     public Customer call(Customer request) {
-        DataScope scope = dataScopeContext.requireScope(employee);
-        Specification<Customer> byId = (root, query, builder) ->
-                builder.equal(root.get("custId"), customerId);
-        Customer customer = customerRepository.findOne(
-                        byId.and(DataScopeSpecification.visible(Customer.class, scope)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
+        Employee current = dataScopeContext.requireEmployee(employee);
+        DataScope scope = dataScopeContext.resolve(current);
+        Customer customer;
+        if (current.getRole() == EmployeeRole.Designer) {
+            customer = customerRepository.findByCustIdAndCompany_ComIdAndDesigner_EmpId(
+                            customerId, scope.comId(), current.getEmpId())
+                    .orElseThrow(() -> new DefinedException(
+                            new DefaultErrorCode("404", "客户不存在或无权访问")));
+        } else {
+            Specification<Customer> byId = (root, query, builder) ->
+                    builder.equal(root.get("custId"), customerId);
+            customer = customerRepository.findOne(
+                            byId.and(DataScopeSpecification.visible(Customer.class, scope)))
+                    .orElseThrow(() -> new DefinedException(
+                            new DefaultErrorCode("404", "客户不存在或无权访问")));
+        }
         assemble(customer);
         return customer;
     }

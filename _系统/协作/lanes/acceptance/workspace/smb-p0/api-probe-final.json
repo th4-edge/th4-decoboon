@@ -1,0 +1,156 @@
+{
+  "logins": {
+    "Boss": true,
+    "StoreManager": true,
+    "TeamLeader": true,
+    "Marketer": true,
+    "Designer": true,
+    "Pm": true,
+    "ProjectSupport": true,
+    "Finance": true
+  },
+  "employee_acceptance_negative": {
+    "Pm": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录"
+    },
+    "Boss": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录"
+    },
+    "Designer": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录"
+    }
+  },
+  "customer_acceptance_without_customer_token": {
+    "status": 200,
+    "success": false,
+    "code": "tokenIsUndefined",
+    "message": "访问受限，缺少授权标识，请先登录后再访问。"
+  },
+  "contract_update_negative": {
+    "Designer": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约与生效"
+    },
+    "StoreManager": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "合同不存在或无权访问"
+    },
+    "Marketer": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约与生效"
+    },
+    "TeamLeader": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约与生效"
+    },
+    "Finance": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约与生效"
+    },
+    "Pm": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约与生效"
+    }
+  },
+  "contract_update_boss": {
+    "status": 200,
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  "contract_save_negative": {
+    "Designer": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约"
+    },
+    "StoreManager": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "报价不存在或无权访问"
+    },
+    "Marketer": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "报价不存在或无权访问"
+    },
+    "TeamLeader": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约"
+    },
+    "Finance": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约"
+    },
+    "Pm": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "报价不存在或无权访问"
+    }
+  },
+  "pm_measure_page": {
+    "status": 200,
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  "project_finished": {
+    "status": 200,
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  "stage_repeat_on_done": {
+    "status": 200,
+    "success": false,
+    "code": "400",
+    "message": "当前阶段状态不能开工"
+  },
+  "finance_summary": {
+    "status": 200,
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  "finance_project_page": {
+    "status": 200,
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  "marketer_report": {
+    "status": 200,
+    "success": true,
+    "code": null,
+    "message": null
+  }
+}

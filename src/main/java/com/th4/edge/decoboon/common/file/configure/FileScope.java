@@ -9,6 +9,7 @@ public enum FileScope implements Enumerable<String> {
 
     Report("现场动态"),
     Acceptance("阶段验收"),
+    Feedback("业主意见投诉"),
     ContractChange("合同变更"),
     Design("设计方案"),
     Talk("谈单PPT"),
@@ -16,7 +17,8 @@ public enum FileScope implements Enumerable<String> {
     Task("施工任务"),
     GoodsReceipt("材料到场"),
     StockMovement("库存流水"),
-    Catalog("材料库");
+    Catalog("材料库"),
+    Document("单据归档");
 
     private final String name;
 

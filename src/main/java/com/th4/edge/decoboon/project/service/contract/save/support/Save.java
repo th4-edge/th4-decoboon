@@ -5,6 +5,10 @@ import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContractContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.plan.model.ContractConstructionPlan;
+import com.th4.edge.decoboon.plan.model.ContractConstructionStage;
+import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
+import com.th4.edge.decoboon.plan.model.ContractPaymentPlan;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -35,7 +39,18 @@ import java.math.BigDecimal;
                 properties = {"contractId", "no", "project", "quote", "customer", "property", "baselineAmount",
                         "signedAmount", "currentAmount", "status", "signedAt", "startDate", "planEndDate", "effectiveAt",
                         "paymentTerms", "createdBy", "remark", "receivableCount", "receivableAmount",
-                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "createTime"}),
+                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "paymentPlan",
+                        "constructionPlan", "createTime"}),
+        @AllowProperties(model = ContractPaymentPlan.class,
+                properties = {"planId", "sourceCode", "sourceVersion", "name", "totalAmount", "status", "nodes"}),
+        @AllowProperties(model = ContractPaymentNode.class,
+                properties = {"nodeId", "code", "name", "ratio", "amount", "type", "triggerType", "triggerStageCode",
+                        "triggerStageName", "offsetDays", "dueDate", "sort"}),
+        @AllowProperties(model = ContractConstructionPlan.class,
+                properties = {"planId", "sourceCode", "sourceVersion", "name", "startDate", "endDate", "status", "stages"}),
+        @AllowProperties(model = ContractConstructionStage.class,
+                properties = {"stageId", "code", "name", "sort", "defaultDays", "plannedStart", "plannedEnd",
+                        "acceptanceMode", "description"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "status", "property" }),
         @AllowProperties(model = Quote.class, properties = {"quoteId", "no", "title", "amount", "status"}),
         @AllowProperties(model = Property.class,
@@ -55,6 +70,8 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
     @AutoInject private LocalDate startDate;
     @AutoInject private LocalDate planEndDate;
     @AutoInject private String paymentTerms;
+    @AutoInject private String paymentPlanCode;
+    @AutoInject private String constructionPlanCode;
     @AutoInject private String remark;
     @User private Employee employee;
 
@@ -93,7 +110,8 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
             throw new DefinedException(new DefaultErrorCode("400", "签约时必须填写最终签约价格"));
         }
         ProjectContract contract = contractContext.createFromQuote(
-                quote, current, signedAt, signedAmount, startDate, planEndDate, remark);
+                quote, current, signedAt, signedAmount, startDate, planEndDate, remark,
+                paymentPlanCode, constructionPlanCode);
         if (paymentTerms != null) {
             contract.setPaymentTerms(paymentTerms);
         }

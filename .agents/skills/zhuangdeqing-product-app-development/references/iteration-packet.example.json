@@ -80,8 +80,8 @@
   "ux_cases": [
     {
       "id": "UX-SYN-001",
-      "platform": "Web",
-      "viewport": "1440x900",
+      "platform": "App",
+      "viewport": "390 logical px",
       "role": "Boss",
       "path": "客户-房屋-报价-合同-项目账务",
       "expected": "同一主链可连续推进，首屏显示状态、责任人和下一动作"

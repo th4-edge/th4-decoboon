@@ -82,11 +82,11 @@ public class Save implements com.th4.edge.decoboon.customer.service.tag.save.Sav
         return tagRepository.save(tag);
     }
 
-    /** 标签字典仅企业负责人与门店店长可维护。 */
+    /** 标签字典仅企业负责人与店长可维护。 */
     private void requireDictionaryMaintainer(Employee current) {
         EmployeeRole role = current.getRole();
         if (role != EmployeeRole.Boss && role != EmployeeRole.StoreManager) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人或门店店长可维护标签字典"));
+            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人或店长可维护标签字典"));
         }
     }
 }

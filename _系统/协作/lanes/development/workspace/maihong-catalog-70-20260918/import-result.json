@@ -1,0 +1,48 @@
+{
+  "request": "清空麦鸿报价项并导入《麦鸿装饰报价9.5.xlsx》，成本价默认售价70%",
+  "source": "/Users/zhangwei/Desktop/麦鸿装饰报价9.5.xlsx",
+  "target": {
+    "database": "decoboon",
+    "environment": "local development",
+    "company_id": "1789680913513045799",
+    "company_name": "麦鸿装饰",
+    "maintainer_id": "1789680913519913772",
+    "maintainer_name": "张伟"
+  },
+  "backup": "/private/tmp/decoboon-before-maihong-catalog-70-20260918.sql",
+  "deleted_before_import": 2,
+  "imported": 557,
+  "by_type": {
+    "Construction": 176,
+    "Material": 259,
+    "General": 14,
+    "Custom": 108
+  },
+  "sale_price_formula": "material_price + manual_price",
+  "cost_price_formula": "round((material_price + manual_price) * 0.70, 2)",
+  "sale_total": "188636.44",
+  "cost_total": "132045.50",
+  "cost_mismatch_count": 0,
+  "code_duplicate_count": 0,
+  "detail_counts": {
+    "construction": 176,
+    "material": 259,
+    "general": 14,
+    "custom": 108
+  },
+  "unit_fallbacks": [
+    {
+      "sheet": "综合项目报价清单",
+      "row": 15,
+      "source_unit": "车",
+      "mapped_unit": "Item",
+      "name": "垃圾外运"
+    }
+  ],
+  "notes": [
+    "重复名称保留为独立报价项，避免丢失品牌、规格或价格差异。",
+    "零价格、备注行、无材料/人工基价行未导入。",
+    "导入前两项无设计、报价、采购、库存等业务引用。",
+    "逐条成本按分四舍五入；合计成本与汇总后乘70%可能相差0.01元，这是四舍五入口径差异。"
+  ]
+}

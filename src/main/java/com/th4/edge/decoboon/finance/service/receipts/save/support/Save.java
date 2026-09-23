@@ -101,14 +101,12 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
         if (paid.signum() <= 0) {
             throw new DefinedException(new DefaultErrorCode("400", "收款金额必须大于 0"));
         }
-        BigDecimal outstanding = accessContext.outstanding(receivable.getAmount(), receivable.getReceivedAmount());
-        if (paid.compareTo(outstanding) > 0) {
-            throw new DefinedException(new DefaultErrorCode("400", "收款金额不能超过应收余额"));
-        }
         FundAccount targetAccount = account == null ? FundAccount.CompanyBank : account;
         String targetPayer = payerName == null || payerName.isBlank()
                 ? project.getCustomer().getName() : payerName;
         // 幂等键不替代金额、应收余额、企业/项目归属和权限校验，只用于同企业内业务事实去重。
+        // 但重复提交必须先命中幂等分支：余额校验放在其后，否则同一笔收款的网络重试会在
+        // 核销完成后被「收款金额不能超过应收余额」拦截，永远拿不到原收款记录（DEF-PROJ37-002）。
         String key = idempotencyKey(project, receivable, paid, targetAccount, receivedAt, targetPayer);
         Optional<Receipt> existing = receiptRepository
                 .findByCompany_ComIdAndIdempotencyKey(current.getCompany().getComId(), key);
@@ -119,6 +117,11 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
                 return found;
             }
             throw new DefinedException(new DefaultErrorCode("409", "该幂等键已被其他收款占用，请勿复用"));
+        }
+        // 非重复提交才校验应收余额，保证超额收款仍被阻断。
+        BigDecimal outstanding = accessContext.outstanding(receivable.getAmount(), receivable.getReceivedAmount());
+        if (paid.compareTo(outstanding) > 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "收款金额不能超过应收余额"));
         }
 
         request.setCompany(current.getCompany());

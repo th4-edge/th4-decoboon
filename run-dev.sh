@@ -10,6 +10,15 @@ set -e
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$PROJECT_DIR"
 
+if [ -f "$PROJECT_DIR/.env.dev.local" ]; then
+  # 本地开发基础配置（DB/Redis/微信小程序/存储等）。历史坑：此前只加载 oss 与 wechat-pay，
+  # 导致"单独重启后端"时微信小程序配置丢失 → 业主微信登录换码拿不到 openid → 误报"首次登录请授权手机号"。
+  set -a
+  # shellcheck disable=SC1091
+  . "$PROJECT_DIR/.env.dev.local"
+  set +a
+fi
+
 if [ -f "$PROJECT_DIR/.env.oss.local" ]; then
   # 本地 OSS 密钥文件不入库，存在时自动加载并启用 OSS。
   set -a

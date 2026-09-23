@@ -24,7 +24,7 @@ import java.util.List;
 @Note("应收计划分页")
 @Properties(allow = {
         @AllowProperties(model = Receivable.class,
-                properties = {"receivableId", "project", "property", "customer", "name", "stageName", "type", "amount",
+                properties = {"receivableId", "project", "property", "customer", "name", "stageName", "stageCode", "triggerType", "type", "amount",
                         "receivedAmount", "dueDate", "status", "invoiceRequired", "invoiceNo", "remark", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status" }),

@@ -1,0 +1,41 @@
+{
+  "request": "REQ-20260922-BOSS-MEASURE-WORKSPACE",
+  "probes": [
+    {
+      "id": "signed-customer-period-event",
+      "expected": "today scheduled=1, completed=1",
+      "actual": "today scheduled=0, completed=0",
+      "status": "FAIL",
+      "evidence": "probe.log"
+    },
+    {
+      "id": "designer-group-unassigned",
+      "expected": "designerGroups contains an unassigned group with the item",
+      "actual": "designerGroups is empty",
+      "status": "FAIL",
+      "evidence": "probe.log"
+    },
+    {
+      "id": "cross-month-exclusive-end",
+      "expected": "Aug31-Sep6 included, Sep7 00:00 excluded",
+      "actual": "PASS",
+      "status": "PASS",
+      "evidence": "probe.log"
+    }
+  ],
+  "frontendStaticDefect": {
+    "id": "overdue-filter-uses-84h",
+    "source": "../../前端代码/th4-decoboon-app/src/subpackages/customer/pages/measure-workbench.vue",
+    "expectedHours": 4,
+    "actualHours": 84,
+    "status": "FAIL"
+  },
+  "appBuild": {
+    "status": "PASS",
+    "mainPackageBytes": 616698,
+    "largestSubpackageBytes": 302211,
+    "totalBytes": 2056741,
+    "subpackages": 14,
+    "pages": 87
+  }
+}

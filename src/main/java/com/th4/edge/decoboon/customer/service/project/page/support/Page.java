@@ -46,9 +46,15 @@ public class Page implements com.th4.edge.decoboon.customer.service.project.page
     private Integer size;
 
     private final CustomerAccessContext accessContext;
+    private final com.th4.edge.decoboon.project.repository.ProjectStageRepository stageRepository;
+    private final com.th4.edge.decoboon.project.repository.AcceptanceRepository acceptanceRepository;
 
-    public Page(CustomerAccessContext accessContext) {
+    public Page(CustomerAccessContext accessContext,
+                com.th4.edge.decoboon.project.repository.ProjectStageRepository stageRepository,
+                com.th4.edge.decoboon.project.repository.AcceptanceRepository acceptanceRepository) {
         this.accessContext = accessContext;
+        this.stageRepository = stageRepository;
+        this.acceptanceRepository = acceptanceRepository;
     }
 
     @Override
@@ -58,11 +64,60 @@ public class Page implements com.th4.edge.decoboon.customer.service.project.page
                 .map(access -> access.getProject())
                 .distinct()
                 .sorted(Comparator.comparing(Project::getProjectId).reversed())
+                .peek(this::applyOwnerProjection)
                 .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 100);
         int from = Math.min(page * pageSize, projects.size());
         int to = Math.min(from + pageSize, projects.size());
         return new PageImpl<>(projects.subList(from, to), PageRequest.of(page, pageSize), projects.size());
+    }
+
+    /**
+     * 业主可见项目投影（XA-20260924-009）。
+     *
+     * <p>历史坑：本投影原先直接返回实体，`Project.status` / `currentStageName` 都是可能漂移的派生列，
+     * 导致同一个业主在「我的家」首页看到"待验收"、在项目详情/项目旅程看到"施工中"、当前阶段一边空白一边有值。
+     * 这里与 `customer/project/info`、业主旅程保持同一口径：</p>
+     * <ul>
+     *   <li>当前阶段：Doing/Accepting 优先，否则第一个阶段；</li>
+     *   <li>项目状态：存在 Pending 验收单 ⇔ 待验收；否则已开工 ⇒ 施工中；停工与终态保留。</li>
+     * </ul>
+     */
+    private void applyOwnerProjection(Project project) {
+        List<com.th4.edge.decoboon.project.model.ProjectStage> stages =
+                stageRepository.findByProjectOrderBySort(project);
+        stages.stream()
+                .filter(stage -> stage.getStatus() == com.th4.edge.decoboon.project.configure.StageStatus.Doing
+                        || stage.getStatus() == com.th4.edge.decoboon.project.configure.StageStatus.Accepting)
+                .findFirst()
+                .or(() -> stages.stream().findFirst())
+                .ifPresent(stage -> project.setCurrentStageName(stage.getName()));
+
+        com.th4.edge.decoboon.project.configure.ProjectStatus current =
+                project.getStatus() == null
+                        ? com.th4.edge.decoboon.project.configure.ProjectStatus.Preparing : project.getStatus();
+        if (current == com.th4.edge.decoboon.project.configure.ProjectStatus.Finished
+                || current == com.th4.edge.decoboon.project.configure.ProjectStatus.Settled
+                || current == com.th4.edge.decoboon.project.configure.ProjectStatus.Suspended) {
+            return;
+        }
+        boolean pendingAcceptance = acceptanceRepository
+                .findByProject_ProjectIdOrderByAcceptanceIdDesc(project.getProjectId()).stream()
+                .anyMatch(item -> item.getStatus() == com.th4.edge.decoboon.project.configure.AcceptStatus.Pending);
+        if (pendingAcceptance) {
+            project.setStatus(com.th4.edge.decoboon.project.configure.ProjectStatus.Accepting);
+            return;
+        }
+        boolean anyStarted = stages.stream().anyMatch(stage ->
+                stage.getStatus() == com.th4.edge.decoboon.project.configure.StageStatus.Doing
+                        || stage.getStatus() == com.th4.edge.decoboon.project.configure.StageStatus.Done);
+        boolean allDone = !stages.isEmpty() && stages.stream()
+                .allMatch(stage -> stage.getStatus() == com.th4.edge.decoboon.project.configure.StageStatus.Done);
+        project.setStatus(allDone
+                ? com.th4.edge.decoboon.project.configure.ProjectStatus.Finished
+                : anyStarted
+                        ? com.th4.edge.decoboon.project.configure.ProjectStatus.Ongoing
+                        : com.th4.edge.decoboon.project.configure.ProjectStatus.Preparing);
     }
 }

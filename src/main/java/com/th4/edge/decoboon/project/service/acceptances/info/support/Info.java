@@ -26,8 +26,10 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = Acceptance.class,
                 properties = {"acceptanceId", "project", "stage", "submittedBy", "status", "conclusion",
-                        "issues", "evidenceUrls", "rectificationOwner", "rectificationDueDate", "confirmedAt", "createTime"}),
-        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),
+                        "issues", "evidenceUrls", "rectificationOwner", "rectificationDueDate", "rectificationType",
+                        "rectificationIssueImages", "confirmedAt", "createTime"}),
+        @AllowProperties(model = Project.class,
+                properties = {"projectId", "no", "name", "siteAddr", "property", "designer", "manager", "support" }),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status"}),

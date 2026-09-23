@@ -1,0 +1,34 @@
+{
+  "request": "REQ-20260922-BOSS-MEASURE-WORKSPACE-CONVERGED",
+  "probes": [
+    {
+      "id": "signed-customer-enterprise-periods",
+      "expected": "today scheduled=1, completed=1",
+      "actual": "today scheduled=0, completed=0",
+      "status": "FAIL",
+      "evidence": "latest-probe.log"
+    },
+    {
+      "id": "marketer-group-summary-vs-items",
+      "status": "PASS",
+      "checks": ["itemCount", "scheduledCount", "completedCount", "unassignedCount"]
+    },
+    {
+      "id": "cross-month-period-window",
+      "status": "PASS",
+      "checks": ["Aug31-Sep6 included", "Sep7 00:00 excluded"]
+    }
+  ],
+  "staticFindings": [
+    {
+      "id": "assessment-page-measure-scope",
+      "status": "FAIL",
+      "detail": "人员绩效页的 month/storeId 只传给 statisticApi.performance，workbenchApi.bossMeasure() 未传 month/storeId，量房业绩不受当前页筛选控制"
+    },
+    {
+      "id": "app-overdue-threshold",
+      "status": "FAIL",
+      "detail": "measure-workbench.vue overdue() 仍使用 84 小时，应为 4 小时"
+    }
+  ]
+}

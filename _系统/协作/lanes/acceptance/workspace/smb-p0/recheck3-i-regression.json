@@ -1,0 +1,329 @@
+{
+  "property": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:34:59"
+      },
+      "propertyId": "226712614586023936",
+      "customer": {
+        "custId": "226712569652445184",
+        "name": "量房幂等验收客户",
+        "telNo": "13800002224"
+      },
+      "propertyNo": "H1789742099434",
+      "community": "幂等验收小区",
+      "building": "2栋1单元",
+      "roomNo": "602",
+      "address": "幂等验收小区2栋1单元602",
+      "area": 108,
+      "layout": "四室两厅",
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "salesman": {
+        "empId": "1890000000000000204",
+        "name": "周业务",
+        "role": {
+          "name": "业务员",
+          "value": "Marketer",
+          "key": "Marketer"
+        }
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      }
+    },
+    "success": true
+  },
+  "handoff": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "客户已指定设计师，不能重复指定",
+      "system": false
+    }
+  },
+  "scheduled": {
+    "data": {
+      "custId": "226712569652445184",
+      "name": "量房幂等验收客户",
+      "telNo": "13800002224",
+      "community": "幂等验收小区",
+      "addr": "幂等验收小区2栋1单元602",
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "owner": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计"
+      },
+      "pendingMeasureAt": "2026-09-18 22:34:48",
+      "measureAt": "2026-09-23 10:00:00",
+      "measureRequestedAt": "2026-09-18 22:34:59",
+      "handedOffAt": "2026-09-18 22:34:48"
+    },
+    "success": true
+  },
+  "measuredInfo": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:34:48"
+      },
+      "custId": "226712569652445184",
+      "name": "量房幂等验收客户",
+      "telNo": "13800002224",
+      "gender": {
+        "name": "男",
+        "key": "M"
+      },
+      "source": {
+        "name": "自然到店",
+        "key": "WalkIn"
+      },
+      "community": "幂等验收小区",
+      "addr": "幂等验收小区2栋1单元602",
+      "area": 98.0,
+      "budget": 16.0,
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "owner": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计"
+      },
+      "lastFollowAt": "2026-09-18 22:34:48",
+      "wechatAdded": false,
+      "visitCount": 0,
+      "pendingMeasureAt": "2026-09-18 22:34:48",
+      "measureAt": "2026-09-23 10:00:00",
+      "measureRequestedAt": "2026-09-18 22:34:59",
+      "handedOffAt": "2026-09-18 22:34:48",
+      "tags": [
+        {
+          "tagId": "-1",
+          "name": "自然到店",
+          "category": {
+            "name": "来源",
+            "key": "Source"
+          },
+          "scope": {
+            "name": "系统",
+            "key": "System"
+          },
+          "status": {
+            "name": "启用",
+            "key": "Enabled"
+          },
+          "sort": 0,
+          "key": "source:WalkIn"
+        },
+        {
+          "tagId": "-2",
+          "name": "已量房",
+          "category": {
+            "name": "行为",
+            "key": "Behavior"
+          },
+          "scope": {
+            "name": "系统",
+            "key": "System"
+          },
+          "status": {
+            "name": "启用",
+            "key": "Enabled"
+          },
+          "sort": 0,
+          "key": "measured"
+        }
+      ],
+      "grade": {
+        "level": {
+          "name": "C级",
+          "key": "C"
+        },
+        "score": 38,
+        "computedAt": "2026-09-18 22:34:59",
+        "breakdown": [
+          {
+            "dimension": "demand",
+            "label": "需求明确",
+            "weight": 30,
+            "score": 12,
+            "reason": "已完成量房；画像完成 0/5 项"
+          },
+          {
+            "dimension": "budget",
+            "label": "预算匹配",
+            "weight": 25,
+            "score": 10,
+            "reason": "预算 16，低于达标区间"
+          },
+          {
+            "dimension": "urgency",
+            "label": "时间紧迫",
+            "weight": 20,
+            "score": 0,
+            "reason": "未填写计划开工时间"
+          },
+          {
+            "dimension": "engagement",
+            "label": "互动深度",
+            "weight": 15,
+            "score": 6,
+            "reason": "到店 0 次；未加微信；已完成量房"
+          },
+          {
+            "dimension": "recency",
+            "label": "跟进时效",
+            "weight": 10,
+            "score": 10,
+            "reason": "最近跟进 0 天前；累计跟进 1 次"
+          }
+        ]
+      }
+    },
+    "success": true
+  },
+  "scheduledInfo": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-09-18 22:34:48"
+      },
+      "custId": "226712569652445184",
+      "name": "量房幂等验收客户",
+      "telNo": "13800002224",
+      "gender": {
+        "name": "男",
+        "key": "M"
+      },
+      "source": {
+        "name": "自然到店",
+        "key": "WalkIn"
+      },
+      "community": "幂等验收小区",
+      "addr": "幂等验收小区2栋1单元602",
+      "area": 98.0,
+      "budget": 16.0,
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "owner": {
+        "empId": "1890000000000000204",
+        "name": "周业务"
+      },
+      "designer": {
+        "empId": "1890000000000000205",
+        "name": "李设计"
+      },
+      "lastFollowAt": "2026-09-18 22:34:48",
+      "wechatAdded": false,
+      "visitCount": 0,
+      "pendingMeasureAt": "2026-09-18 22:34:48",
+      "measureAt": "2026-09-23 10:00:00",
+      "measureRequestedAt": "2026-09-18 22:34:59",
+      "handedOffAt": "2026-09-18 22:34:48",
+      "tags": [
+        {
+          "tagId": "-1",
+          "name": "自然到店",
+          "category": {
+            "name": "来源",
+            "key": "Source"
+          },
+          "scope": {
+            "name": "系统",
+            "key": "System"
+          },
+          "status": {
+            "name": "启用",
+            "key": "Enabled"
+          },
+          "sort": 0,
+          "key": "source:WalkIn"
+        },
+        {
+          "tagId": "-2",
+          "name": "已预约量房",
+          "category": {
+            "name": "行为",
+            "key": "Behavior"
+          },
+          "scope": {
+            "name": "系统",
+            "key": "System"
+          },
+          "status": {
+            "name": "启用",
+            "key": "Enabled"
+          },
+          "sort": 0,
+          "key": "measure:scheduled"
+        }
+      ],
+      "grade": {
+        "level": {
+          "name": "C级",
+          "key": "C"
+        },
+        "score": 20,
+        "computedAt": "2026-09-18 22:34:59",
+        "breakdown": [
+          {
+            "dimension": "demand",
+            "label": "需求明确",
+            "weight": 30,
+            "score": 0,
+            "reason": "画像完成 0/5 项"
+          },
+          {
+            "dimension": "budget",
+            "label": "预算匹配",
+            "weight": 25,
+            "score": 10,
+            "reason": "预算 16，低于达标区间"
+          },
+          {
+            "dimension": "urgency",
+            "label": "时间紧迫",
+            "weight": 20,
+            "score": 0,
+            "reason": "未填写计划开工时间"
+          },
+          {
+            "dimension": "engagement",
+            "label": "互动深度",
+            "weight": 15,
+            "score": 0,
+            "reason": "到店 0 次；未加微信；未量房"
+          },
+          {
+            "dimension": "recency",
+            "label": "跟进时效",
+            "weight": 10,
+            "score": 10,
+            "reason": "最近跟进 0 天前；累计跟进 1 次"
+          }
+        ]
+      }
+    },
+    "success": true
+  }
+}

@@ -10,8 +10,11 @@ import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableType;
+import com.th4.edge.decoboon.plan.configure.PaymentTriggerType;
+import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
 import com.th4.edge.framework.data.jpa.annotation.Model;
@@ -32,6 +35,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
@@ -86,6 +90,24 @@ public class Receivable extends AuditModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id")
     private ProjectContract contract;
+
+    @Note("关联施工阶段")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stage_id")
+    private ProjectStage stage;
+
+    @Note("稳定阶段编码")
+    @Column(name = "stage_code", length = 64)
+    private String stageCode;
+
+    @Note("付款触发类型")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trigger_type", length = 24)
+    private PaymentTriggerType triggerType;
+
+    @Note("来源付款节点快照")
+    @OneToOne(mappedBy = "receivable", fetch = FetchType.LAZY)
+    private ContractPaymentNode planNode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id", nullable = false)
@@ -189,4 +211,12 @@ public class Receivable extends AuditModel {
 
     public ProjectContract getContract() { return contract; }
     public void setContract(ProjectContract contract) { this.contract = contract; }
+    public ProjectStage getStage() { return stage; }
+    public void setStage(ProjectStage stage) { this.stage = stage; }
+    public String getStageCode() { return stageCode; }
+    public void setStageCode(String stageCode) { this.stageCode = stageCode; }
+    public PaymentTriggerType getTriggerType() { return triggerType; }
+    public void setTriggerType(PaymentTriggerType triggerType) { this.triggerType = triggerType; }
+    public ContractPaymentNode getPlanNode() { return planNode; }
+    public void setPlanNode(ContractPaymentNode planNode) { this.planNode = planNode; }
 }

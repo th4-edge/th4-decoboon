@@ -1,0 +1,248 @@
+{
+  "requests": [
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-21 04:39:45"
+        },
+        "acceptanceId": "227529188175773696",
+        "project": {
+          "projectId": "227490326401515520",
+          "no": "P1789927520371",
+          "name": "璟阳里5-804业主 · 璟阳里5-804",
+          "property": {
+            "createTime": {
+              "dateTime": "2026-09-21 02:05:15"
+            },
+            "updateTime": {
+              "dateTime": "2026-09-21 02:05:20"
+            },
+            "propertyId": "227490307980132352",
+            "company": {
+              "comId": "1789903520997907818",
+              "title": "麦鸿设计",
+              "name": "麦鸿设计",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "addr": "",
+              "setting": {
+                "enableStore": false
+              },
+              "createTime": {
+                "dateTime": "2026-09-20 19:25:21"
+              }
+            },
+            "store": {
+              "storeId": "1789903521001328357",
+              "company": {
+                "comId": "1789903520997907818",
+                "title": "麦鸿设计",
+                "name": "麦鸿设计",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "addr": "",
+                "setting": {
+                  "enableStore": false
+                },
+                "createTime": {
+                  "dateTime": "2026-09-20 19:25:21"
+                }
+              },
+              "name": "总店",
+              "defaultStore": true,
+              "addr": "",
+              "createTime": {
+                "dateTime": "2026-09-20 19:25:21"
+              }
+            },
+            "owner": {
+              "empId": "1789903521009050562",
+              "name": "张伟",
+              "telNo": "18660219918",
+              "role": {
+                "name": "老板",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            },
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-09-21 02:05:15"
+              },
+              "updateTime": {
+                "dateTime": "2026-09-21 02:05:20"
+              },
+              "custId": "227490307875274752",
+              "company": {
+                "comId": "1789903520997907818",
+                "title": "麦鸿设计",
+                "name": "麦鸿设计",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "addr": "",
+                "setting": {
+                  "enableStore": false
+                },
+                "createTime": {
+                  "dateTime": "2026-09-20 19:25:21"
+                }
+              },
+              "store": {
+                "storeId": "1789903521001328357",
+                "company": {
+                  "comId": "1789903520997907818",
+                  "title": "麦鸿设计",
+                  "name": "麦鸿设计",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-20 19:25:21"
+                  }
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "addr": "",
+                "createTime": {
+                  "dateTime": "2026-09-20 19:25:21"
+                }
+              },
+              "name": "璟阳里5-804业主",
+              "telNo": "19900000904",
+              "gender": {
+                "name": "男",
+                "key": "M"
+              },
+              "source": {
+                "name": "其他",
+                "key": "Other"
+              },
+              "community": "璟阳里",
+              "addr": "璟阳里5-804",
+              "area": 100.0,
+              "budget": 12.65,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "1789903521009050562",
+                "name": "张伟",
+                "telNo": "18660219918",
+                "role": {
+                  "name": "老板",
+                  "value": "Boss",
+                  "key": "Boss"
+                }
+              },
+              "designer": {
+                "empId": "1789903522000000003",
+                "name": "谢玲玲",
+                "telNo": "19900000003",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "remark": "来源《璟阳里5-804.xlsx》；已签约报价，客户姓名和真实手机号待补充。",
+              "lastFollowAt": "2026-09-21 02:05:16",
+              "wechatAdded": false,
+              "visitCount": 0,
+              "handedOffAt": "2026-09-21 02:05:16",
+              "idleDays": 0,
+              "riskLevel": {
+                "name": "正常",
+                "key": "Normal"
+              }
+            },
+            "propertyNo": "H1789927515988",
+            "community": "璟阳里",
+            "building": "5栋",
+            "roomNo": "804",
+            "address": "璟阳里5-804",
+            "area": 100.0,
+            "layout": "四室两厅一厨两卫一阳台",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "1789903521009050562",
+              "name": "张伟",
+              "telNo": "18660219918",
+              "role": {
+                "name": "老板",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            },
+            "designer": {
+              "empId": "1789903522000000003",
+              "name": "谢玲玲",
+              "telNo": "19900000003",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "remark": "依据报价表区域清单建立；Excel 未提供各房间长宽。"
+          },
+          "siteAddr": "璟阳里5-804"
+        },
+        "stage": {
+          "stageId": "227490326468624384",
+          "name": "开工交底",
+          "status": {
+            "name": "待验收",
+            "key": "Accepting"
+          }
+        },
+        "submittedBy": {
+          "empId": "1789903521009050562",
+          "name": "张伟",
+          "telNo": "18660219918",
+          "role": {
+            "name": "老板",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "status": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "conclusion": "并发首轮提交探针",
+        "issues": [],
+        "evidenceUrls": [
+          "acceptance/concurrent-first.jpg"
+        ]
+      },
+      "success": true
+    },
+    {
+      "success": false,
+      "errorCode": {
+        "code": "undefinedErrorCode",
+        "message": "未定义错误信息:{0}",
+        "system": false
+      }
+    }
+  ]
+}

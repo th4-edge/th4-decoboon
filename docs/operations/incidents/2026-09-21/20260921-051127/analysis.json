@@ -1,0 +1,160 @@
+{
+  "collectedAt": "2026-09-20T21:11:28.049465+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-09-21/20260921-051127",
+  "counts": {
+    "unknown": 8,
+    "external_dependency": 1,
+    "expected": 9
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20260921-f6d5bd8e64",
+      "signature": "找不到对应的处理服务:document/contract/build",
+      "signatureHash": "f6d5bd8e64",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-21 04:29:24.550",
+      "lastSeen": "2026-09-21 04:29:43.153",
+      "samples": [
+        "[2026-09-21 04:29:24.550] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - document/contract/build处理失败:找不到对应的处理服务:document/contract/build",
+        "[2026-09-21 04:29:43.153] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - document/contract/build处理失败:找不到对应的处理服务:document/contract/build"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-4a567b43df",
+      "signature": "找不到对应的处理服务:document/quote/build",
+      "signatureHash": "4a567b43df",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 04:29:43.241",
+      "lastSeen": "2026-09-21 04:29:43.241",
+      "samples": [
+        "[2026-09-21 04:29:43.241] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - document/quote/build处理失败:找不到对应的处理服务:document/quote/build"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-a97df7ac52",
+      "signature": "找不到对应的处理服务:material/selection/page",
+      "signatureHash": "a97df7ac52",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 04:29:42.974",
+      "lastSeen": "2026-09-21 04:29:42.974",
+      "samples": [
+        "[2026-09-21 04:29:42.974] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/selection/page处理失败:找不到对应的处理服务:material/selection/page"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 00:50:41.784",
+      "lastSeen": "2026-09-21 00:50:41.784",
+      "samples": [
+        "[2026-09-21 00:50:41.784] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-4d26bd91f8",
+      "signature": "找不到对应的处理服务:plan/payment-template/page",
+      "signatureHash": "4d26bd91f8",
+      "classification": "external_dependency",
+      "severity": "high",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 04:29:43.057",
+      "lastSeen": "2026-09-21 04:29:43.057",
+      "samples": [
+        "[2026-09-21 04:29:43.057] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - plan/payment-template/page处理失败:找不到对应的处理服务:plan/payment-template/page"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-cc330a02ba",
+      "signature": "找不到对应的处理服务:project/contract-line/page",
+      "signatureHash": "cc330a02ba",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 04:29:42.887",
+      "lastSeen": "2026-09-21 04:29:42.887",
+      "samples": [
+        "[2026-09-21 04:29:42.887] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract-line/page处理失败:找不到对应的处理服务:project/contract-line/page"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-37aad1816b",
+      "signature": "找不到对应的处理服务:project/contract/records",
+      "signatureHash": "37aad1816b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 04:29:42.733",
+      "lastSeen": "2026-09-21 04:29:42.733",
+      "samples": [
+        "[2026-09-21 04:29:42.733] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/records处理失败:找不到对应的处理服务:project/contract/records"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-92056cdfef",
+      "signature": "找不到对应的处理服务:project/project/overview",
+      "signatureHash": "92056cdfef",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21 04:29:42.663",
+      "lastSeen": "2026-09-21 04:29:42.663",
+      "samples": [
+        "[2026-09-21 04:29:42.663] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/overview处理失败:找不到对应的处理服务:project/project/overview"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260921-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 9,
+      "firstSeen": "2026-09-21 04:29:24.630",
+      "lastSeen": "2026-09-21T05:11:27.996+08:00",
+      "samples": [
+        "[2026-09-21 04:29:24.630] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-21 05:06:40.585] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-21 05:06:47.076] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-21 05:11:23.302] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-21 05:11:27.996] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.design.context.DesignLifecycleContext;
 import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
 import com.th4.edge.decoboon.project.model.ContractChange;
 import com.th4.edge.decoboon.project.model.Project;
@@ -14,6 +15,7 @@ import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.decoboon.plan.context.ContractPlanContext;
 import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
@@ -46,6 +48,7 @@ class ProjectContractContextTest {
     private CustomerRepository customerRepository;
     private PropertyRepository propertyRepository;
     private ContractChangeFulfillmentContext fulfillmentContext;
+    private DesignLifecycleContext designLifecycleContext;
     private ProjectContractContext context;
 
     @BeforeEach
@@ -64,6 +67,7 @@ class ProjectContractContextTest {
         when(customerRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(receivableRepository.findByProjectOrderByDueDateAsc(any())).thenReturn(List.of());
         fulfillmentContext = mock(ContractChangeFulfillmentContext.class);
+        designLifecycleContext = mock(DesignLifecycleContext.class);
         context = new ProjectContractContext(
                 contractRepository,
                 changeRepository,
@@ -77,7 +81,9 @@ class ProjectContractContextTest {
                 mock(FinanceAccessContext.class),
                 new ProjectPermissionContext(),
                 fulfillmentContext,
-                mock(ProjectContext.class));
+                mock(ProjectContext.class),
+                mock(ContractPlanContext.class),
+                designLifecycleContext);
     }
 
     @Test

@@ -58,7 +58,6 @@ companies/{comId}/files/{businessType}/{yyyy}/{MM}/generated-{uuid}.{ext}
 - `../../前端代码/th4-decoboon-app/src/subpackages/project/pages/report/edit.vue`
 - `../../前端代码/th4-decoboon-app/src/subpackages/project/pages/accept/edit.vue`
 - `../../前端代码/th4-decoboon-app/src/subpackages/project/pages/task/detail.vue`
-- `../../前端代码/th4-decoboon-web/src/domains/file/api.ts`
 - `docs/design/migrations/22-OSS对象存储部署说明.md`
 
 ## Verification
@@ -71,7 +70,6 @@ companies/{comId}/files/{businessType}/{yyyy}/{MM}/generated-{uuid}.{ext}
 - `mvn -o -q -DskipTests compile`：通过。
 - `OwnerFileExposureAcceptanceTest` + `TalkPptContextTest`：9/9 通过。
 - 小程序 `npm run verify:mp-weixin`：通过。
-- Web `npm run type-check`、`npm run build`：通过。
 
 ## Risks
 

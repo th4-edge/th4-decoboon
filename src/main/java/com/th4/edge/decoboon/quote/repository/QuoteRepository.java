@@ -17,10 +17,21 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
 
     List<Quote> findByCompany_ComIdOrderByQuoteIdDesc(Long comId);
 
+    List<Quote> findTop200ByCompany_ComIdOrderByQuoteIdDesc(Long comId);
+
     List<Quote> findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(Long comId, Long empId);
 
     List<Quote> findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
             Long comId, Long empId, Collection<QuoteStatus> statuses);
+
+    List<Quote> findByCompany_ComIdAndStatusInOrderByQuoteIdDesc(
+            Long comId, Collection<QuoteStatus> statuses);
+
+    List<Quote> findByCompany_ComIdAndCustomer_Store_StoreIdAndStatusInOrderByQuoteIdDesc(
+            Long comId, Long storeId, Collection<QuoteStatus> statuses);
+
+    List<Quote> findByCompany_ComIdAndCustomer_Team_TeamIdAndStatusInOrderByQuoteIdDesc(
+            Long comId, Long teamId, Collection<QuoteStatus> statuses);
 
     List<Quote> findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
             Long comId, Collection<Long> propertyIds, Collection<QuoteStatus> statuses);

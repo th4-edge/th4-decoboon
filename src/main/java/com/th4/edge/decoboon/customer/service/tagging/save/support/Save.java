@@ -113,7 +113,7 @@ public class Save implements com.th4.edge.decoboon.customer.service.tagging.save
         return customer;
     }
 
-    /** 允许打标签 / 维护画像的角色：老板、店长、团队负责人、业务员、设计师。 */
+    /** 允许打标签 / 维护画像的角色：企业负责人、店长、团队负责人、业务员、设计师。 */
     private void requireMarketingRole(Employee current) {
         EmployeeRole role = current.getRole();
         boolean allowed = role == EmployeeRole.Boss || role == EmployeeRole.StoreManager

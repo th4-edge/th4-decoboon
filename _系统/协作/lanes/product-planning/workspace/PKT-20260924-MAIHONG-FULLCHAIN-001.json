@@ -1,0 +1,197 @@
+{
+  "schema_version": "1.0",
+  "packet_id": "PKT-20260924-MAIHONG-FULLCHAIN-001",
+  "mode": "full_chain_simulation",
+  "status": "frozen",
+  "decision_owner": "user",
+  "scope": {
+    "goal": "以麦鸿设计真实夹具构建业务 App 全场景验收视图，覆盖主链、返工链与跨企业负向链，供 acceptance lane 分批评定",
+    "in_scope": [
+      "主链 15 段场景到页面/路由映射",
+      "角色账号与数据范围",
+      "返工链与跨企业负向链",
+      "账务事实链核对口径",
+      "验收批次划分与证据/缺陷模板"
+    ],
+    "out_of_scope": ["生产发布", "对市场营销表达", "新增业务口径", "直接修改生产代码"],
+    "fact_sources": [
+      "SCN-002", "SCN-003", "SCN-010", "BR-001", "BR-002", "BR-004", "BR-008",
+      "DEC-001", "DEC-002", "DEC-007", "MET-002",
+      "docs/acceptance/麦鸿演示项目37端到端实测报告.md",
+      "_系统/协作/lanes/development/workspace/app-full-chain-simulation-20260923/seed-manifest.json",
+      "docs/product/2026-09-23-签约后项目立项与三角色协作业务规则梳理.md"
+    ]
+  },
+  "tenant_profiles": [
+    {
+      "id": "T-A",
+      "type": "single_store_growth",
+      "scale": "麦鸿设计：单店总店，8 个在跑演示项目（37-44），7 个角色账号",
+      "focus": "线索到整改/账务全链贯通，App 现场操作与业主端可见性"
+    },
+    {
+      "id": "T-B",
+      "type": "multi_store_growth",
+      "scale": "20-30 人 / 2-3 店（边界样本，用于跨店与转交）",
+      "focus": "Company/Store/Team/Self 归属快照、跨店隔离与经营汇总"
+    },
+    {
+      "id": "T-C",
+      "type": "lean_team",
+      "scale": "3-8 人，角色兼任，数据不完整（边界样本）",
+      "focus": "缺失数据、职责兼任、异常恢复与低成本学习"
+    }
+  ],
+  "mainline": [
+    "lead", "customer", "property", "measure", "design", "quote", "contract",
+    "project", "site", "change", "task", "acceptance", "rectification", "finance", "settlement"
+  ],
+  "scenarios": [
+    {
+      "id": "MH-SCN-01",
+      "user": "业务员黄贤杰 + 店长王宏文",
+      "trigger": "新客户线索进入，需要判定是否值得上门量房",
+      "precondition": "麦鸿设计企业已入驻；业务员账号 19900000002 可登录；客户归属 Self",
+      "action": "App 录入客户与房屋 → 写跟进 → 约定量房",
+      "system_next": "客户卡给出阶段、停留、下一步；房屋卡显示已约定量与调整入口",
+      "exception": "无房屋档案不得约定量房；量房时间不得早于当前；越权客户拒绝"
+    },
+    {
+      "id": "MH-SCN-02",
+      "user": "设计师谢玲玲",
+      "trigger": "方案已完成，需要生成报价并与客户解释",
+      "precondition": "方案处于完成态；报价项目库已导入麦鸿报价 9.5（550 条）",
+      "action": "App 生成报价 → 处理混合报价差异 → 提交客户",
+      "system_next": "未处理完差异不得提交；客户驳回后生成新版本并保留旧版",
+      "exception": "未完成方案不得报价；成本价对设计师不可见；驳回覆盖旧版必须阻断"
+    },
+    {
+      "id": "MH-SCN-03",
+      "user": "项目经理徐勇 + 财务吴濛濛",
+      "trigger": "阶段任务完成，需要留证并申请业主验收",
+      "precondition": "合同生效、已指定项目经理、已量房、阶段日期齐备",
+      "action": "App 任务节点留证（施工进行/隐蔽/完成）→ 提交阶段验收 → 财务核销收款",
+      "system_next": "验收单 Pending 等业主确认；收款核销后应收变 Received 并回款进度更新",
+      "exception": "重复节点拒绝并给出原因；超额收款拒绝；重复收款幂等返回原事实"
+    },
+    {
+      "id": "MH-SCN-04",
+      "user": "业主",
+      "trigger": "验收单待确认，或对现场提出意见",
+      "precondition": "业主通过小程序授权会话绑定本人项目，且项目存在 Pending 验收单",
+      "action": "App 确认或驳回验收 → 驳回后进入整改轮次",
+      "system_next": "确认后阶段 Done 并推进项目进度；驳回后给出整改期限与复验入口",
+      "exception": "员工不得代业主确认（403）；无业主会话时该链路阻断为外部依赖，不得伪造绕过"
+    },
+    {
+      "id": "MH-SCN-05",
+      "user": "财务吴濛濛",
+      "trigger": "施工中发生增减项，需要审批并形成账务事实",
+      "precondition": "项目 38 存在待审批、待客户确认、已确认三种变更",
+      "action": "App 审批变更 → 客户确认 → 材料计划数量回写",
+      "system_next": "合同当前额、项目合同额、已确认变更额三者同步；材料计划数量由 30 调整为 27",
+      "exception": "未确认变更不得进入合同额；回写不得重复累计金额"
+    }
+  ],
+  "permission_cases": [
+    { "id": "MH-PERM-01", "role": "Marketer", "scope": "Self", "action": "read", "object": "Customer", "expected": "allow" },
+    { "id": "MH-PERM-02", "role": "Marketer", "scope": "Self", "action": "write", "object": "Quote/Contract", "expected": "deny" },
+    { "id": "MH-PERM-03", "role": "Designer", "scope": "ProjectParticipation", "action": "write", "object": "ContractAmount", "expected": "deny" },
+    { "id": "MH-PERM-04", "role": "Pm", "scope": "ProjectParticipation", "action": "write", "object": "DesignPrice", "expected": "deny" },
+    { "id": "MH-PERM-05", "role": "Customer", "scope": "SelfProject", "action": "read", "object": "InternalCost", "expected": "deny" },
+    { "id": "MH-PERM-06", "role": "Tenant-B-Employee", "scope": "cross_tenant", "action": "read", "object": "Tenant-A-Project", "expected": "deny" },
+    { "id": "MH-PERM-07", "role": "Tenant-B-Employee", "scope": "cross_tenant", "action": "update", "object": "Tenant-A-Contract", "expected": "deny" },
+    { "id": "MH-PERM-08", "role": "StoreManager", "scope": "cross_store", "action": "read", "object": "OtherStore-Customer", "expected": "deny" }
+  ],
+  "money_cases": [
+    {
+      "id": "MH-MONEY-01",
+      "source": "合同付款计划快照生成的应收节点 + 财务收款核销",
+      "formula_or_snapshot": "应收金额=合同基线金额按付款计划比例分摊；收款金额不得超应收余额，重复提交返回原收款",
+      "missing_value_policy": "无付款计划不生成应收节点；未到场采购不写应付到期日",
+      "cross_page_expectation": "合同履约档案、应收列表、业主付款计划(已付/待付)、资金台账金额一致"
+    },
+    {
+      "id": "MH-MONEY-02",
+      "source": "采购下单形成的应付 + 到场回填账期",
+      "formula_or_snapshot": "应付金额=采购金额；due_date 在到场确认后按供应商账期回填",
+      "missing_value_policy": "未到场时 due_date 为空，不参与逾期统计",
+      "cross_page_expectation": "采购单、应付列表、材料计划状态三者同步，金额一致"
+    },
+    {
+      "id": "MH-MONEY-03",
+      "source": "项目成本汇总（到货/入库实际成本）与结算利润",
+      "formula_or_snapshot": "利润=合同当前金额-实际成本；任一应计成本缺失则 costComplete=false",
+      "missing_value_policy": "costComplete=false 时利润与毛利率返回 null，页面显示“成本未完整”，禁止按 0 计算",
+      "cross_page_expectation": "项目财务、结算、老板看板对同一项目结论一致，不出现伪利润"
+    }
+  ],
+  "ux_cases": [
+    { "id": "MH-UX-01", "platform": "App", "viewport": "375 logical px", "role": "Marketer", "path": "客户列表 → 客户详情 → 跟进", "expected": "首屏给出阶段、停留、下一步；一个主行动；无横向溢出" },
+    { "id": "MH-UX-02", "platform": "App", "viewport": "390 logical px", "role": "Designer", "path": "设计方案 → 区域设计内容 → 报价", "expected": "区域全可见、明细默认收缩；施工工艺独立成块；金额≥1万显示“3.84万”" },
+    { "id": "MH-UX-03", "platform": "App", "viewport": "390 logical px", "role": "Pm", "path": "项目详情 → 任务 → 节点留证 → 提交验收", "expected": "现场主操作唯一；拍照/上传可用；阻断原因明确；安全区不被浮层遮挡" },
+    { "id": "MH-UX-04", "platform": "App", "viewport": "430 logical px", "role": "Finance", "path": "财务首页 → 应收 → 登记收款 → 结算", "expected": "金额等宽对齐；超额/重复反馈可读；长企业名与长金额不截断无提示" },
+    { "id": "MH-UX-05", "platform": "App", "viewport": "390 logical px", "role": "Customer", "path": "我的家 → 进度 → 计划/增减项/动态/建议", "expected": "五页签齐备；工地相册按“日期→阶段→记录”展示；不出现成本/利润字样" }
+  ],
+  "acceptance": {
+    "positive": [
+      "主链 15 段在麦鸿真实夹具上可连续推进并留下对象/状态/账务证据",
+      "同一业务事实在 App、合同、项目、财务页面口径一致"
+    ],
+    "negative": [
+      "跨租户读取/更新/删除全部被拒且无副作用",
+      "员工冒充业主确认被拒（403）",
+      "重复收款幂等返回原事实、超额收款被拒",
+      "成本不完整时利润为 null 而非 0"
+    ],
+    "evidence": [
+      "页面截图/录屏（含设备与逻辑像素）",
+      "接口请求响应与状态码",
+      "数据库对象/状态变化与账务记录",
+      "业主端真实会话证据（驳回→整改→复验→确认）"
+    ],
+    "batch_policy": "按 B1 主链贯通 → B2 账务一致 → B3 负向安全 → B4 业主端全页 → B5 多机型，分批评定；每批 3-5 个场景集中独立验证"
+  },
+  "known_gaps": [
+    { "id": "EXT-01", "content": "业主侧真实驳回→复验→确认需真实微信业主会话", "dependency": "真机+小程序授权", "acceptance_action": "接入后补跑 A-03/A-04/A-06 与 B4" },
+    { "id": "GAP-01", "content": "ProjectStage.acceptanceMode 未落库，阶段是否需要业主验收无字段", "dependency": "REQ-BIZ-20260923-001 G-01", "acceptance_action": "按“预期不通过”记录待裁决" },
+    { "id": "GAP-02", "content": "施工工艺未绑定默认阶段/区域白名单", "dependency": "REQ-BIZ-20260923-001 G-02", "acceptance_action": "同上" },
+    { "id": "GAP-03", "content": "阶段权重与工期口径未冻结（无施工行阶段是否计入加权）", "dependency": "REQ-BIZ-20260923-001 G-03", "acceptance_action": "同上，关联 DEF-PROJ37-003" },
+    { "id": "GAP-04", "content": "阶段重排不回写合同施工计划快照", "dependency": "REQ-BIZ-20260923-001 G-04", "acceptance_action": "同上" },
+    { "id": "GAP-05", "content": "阶段计划日期无单独维护入口", "dependency": "REQ-BIZ-20260923-001 G-05", "acceptance_action": "同上" },
+    { "id": "GAP-06", "content": "施工工艺最终以文本字段还是独立主数据承载", "dependency": "REQ-BIZ-20260923-001 G-06", "acceptance_action": "同上" },
+    { "id": "DEF-PROJ37-003", "content": "空任务阶段开工后被 refreshProject 回退为 Todo", "dependency": "G-03", "acceptance_action": "裁决后回归" },
+    { "id": "DEF-PROJ37-004", "content": "Cancelled 任务计入验收门禁、Cancelled→Done 无状态校验", "dependency": "G-07", "acceptance_action": "裁决后回归" },
+    { "id": "BOUND-01", "content": "Boss 张伟本地无密码凭证（仅微信）", "dependency": "微信会话或授权补凭证", "acceptance_action": "补齐后跑 B-01/B-02" },
+    { "id": "BOUND-02", "content": "8 条历史材料计划 source_type 为 NULL（迁移 51 前存量）", "dependency": "无", "acceptance_action": "不阻塞，App 走 selection_id 展示" },
+    { "id": "BOUND-03", "content": "BossMeasureWorkspace2AcceptanceTest 为历史既有失败", "dependency": "单独排期", "acceptance_action": "与本次范围无关" }
+  ],
+  "fixtures": {
+    "company": { "name": "麦鸿设计", "comId": "1789903520997907818", "storeId": "1789903521001328357" },
+    "accounts": [
+      { "role": "StoreManager", "name": "王宏文", "phone": "19900000001" },
+      { "role": "Marketer", "name": "黄贤杰", "phone": "19900000002" },
+      { "role": "Designer", "name": "谢玲玲", "phone": "19900000003" },
+      { "role": "Designer", "name": "董夏鹏", "phone": "19900000004" },
+      { "role": "Finance", "name": "吴濛濛", "phone": "19900000005" },
+      { "role": "Pm", "name": "徐勇", "phone": "19900000006" },
+      { "role": "Pm", "name": "张少康", "phone": "19900000007" }
+    ],
+    "localPassword": "Maihong2026",
+    "projects": "麦鸿演示项目 37-44（seed-manifest.json）",
+    "seedWorkspace": "_系统/协作/lanes/development/workspace/app-full-chain-simulation-20260923/"
+  },
+  "evidence_refs": [
+    "docs/acceptance/麦鸿演示项目37端到端实测报告.md",
+    "docs/product/2026-09-24-麦鸿设计业务App全场景验收视图.md",
+    "docs/product/consultations/REQ-BIZ-20260923-001-施工计划与阶段验收七项口径.md",
+    "_系统/协作/lanes/development/workspace/app-full-chain-simulation-20260923/verification.json"
+  ],
+  "business_questions": [],
+  "affected_lanes": ["product-planning", "development", "acceptance"],
+  "marketing_evidence_boundary": {
+    "allowed": [],
+    "not_allowed": ["未独立验收的主链结论", "成本不完整项目的利润数字", "业主端未跑通链路的能力宣称"],
+    "conditions": ["营销 Lane 恢复且获用户授权后，按业务智能体签发 MKT_UNLOCKED 重新核对"]
+  }
+}

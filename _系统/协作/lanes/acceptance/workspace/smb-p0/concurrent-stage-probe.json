@@ -1,0 +1,38 @@
+{
+  "requests": [
+    {
+      "success": false,
+      "errorCode": {
+        "code": "undefinedErrorCode",
+        "message": "未定义错误信息:{0}",
+        "system": false
+      }
+    },
+    {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-18 21:10:38"
+        },
+        "stageId": "226704200000000007",
+        "project": {
+          "projectId": "226702200000000003",
+          "no": "P-ACCEPT-SMB-P0-001",
+          "name": "SMB P0 独立验收项目 · 101",
+          "siteAddr": "验收小区1栋1单元101"
+        },
+        "name": "并发复现阶段",
+        "sort": 2,
+        "weight": 100.0,
+        "status": {
+          "name": "施工中",
+          "key": "Doing"
+        },
+        "progress": 0,
+        "plannedStart": "2026-09-20",
+        "plannedEnd": "2026-10-20",
+        "actualStart": "2026-09-18"
+      },
+      "success": true
+    }
+  ]
+}

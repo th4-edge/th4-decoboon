@@ -1,0 +1,49 @@
+### A4 量房完成执行人（DEF-SMB-P0-001）
+-- before: 101/202/303 measure facts
+property_id	designer_id	executor_id	status	latest_measure_at	rows_per_property
+226701441081802752	1890000000000000205	1890000000000000205	Completed	2026-09-19 00:00:00.000000	1
+226701976031723520	1890000000000000205	1890000000000000204	Completed	2026-09-19 11:00:00.000000	1
+226704069090082816	1890000000000000205	NULL	Scheduled	NULL	1
+-- A4-neg-1 业务员完成【已指派李设计】的 Scheduled 量房(303)
+{"success":false,"errorCode":{"code":"403","message":"该房屋已指定设计师，量房完成必须由指定设计师执行","system":false}}
+-- A4-neg-2 业务员重复提交【已完成】量房(202)
+{"success":false,"errorCode":{"code":"403","message":"该房屋已指定设计师，量房完成必须由指定设计师执行","system":false}}
+-- A4-pos 指定设计师本人完成(101, 同量房时间)
+  success= True designer= 1890000000000000205 executor= 1890000000000000205
+-- after: 量房记录必须无新增、状态/执行人不变
+property_id	designer_id	executor_id	status	latest_measure_at	rows_per_property
+226701441081802752	1890000000000000205	1890000000000000205	Completed	2026-09-19 00:00:00.000000	1
+226701976031723520	1890000000000000205	1890000000000000204	Completed	2026-09-19 11:00:00.000000	1
+226704069090082816	1890000000000000205	NULL	Scheduled	NULL	1
+
+### I1/I2/I4 预约态与多房屋投影（DEF-SMB-P0-002/003）
+-- property=226704069090082816 tags= ['source:WalkIn', 'measure:scheduled'] grade= 20 measureReason= [('engagement', 0, '到店 0 次；未加微信；未量房')]
+-- property=226701976031723520 tags= ['source:WalkIn', 'measured'] grade= 38 measureReason= [('engagement', 6, '到店 0 次；未加微信；已完成量房')]
+
+### C4 并发首次开工（DEF-SMB-P0-004）
+  reqa: success=True stage=226691387070873600 status=Doing actualStart=2026-09-18
+  reqb: success=True stage=226691387070873600 status=Doing actualStart=2026-09-18
+status	actual_start
+Doing	2026-09-18
+stage_open_reports
+1
+
+### F 合同负向语义与重复 Signed（DEF-SMB-P0-006/008）
+  update StoreManager 403 只有企业负责人可以处理合同签约与生效
+  save   StoreManager 403 只有企业负责人可以处理合同签约
+  update Marketer     403 只有企业负责人可以处理合同签约与生效
+  save   Marketer     403 只有企业负责人可以处理合同签约
+  update Pm           403 只有企业负责人可以处理合同签约与生效
+  save   Pm           403 只有企业负责人可以处理合同签约
+  update Designer     403 只有企业负责人可以处理合同签约与生效
+  save   Designer     403 只有企业负责人可以处理合同签约
+  save   missing-quote 404 报价不存在或无权访问
+  Boss repeat Signed success= True contractId= 226691331676700672 status= Effective project= 226691387045707776
+contracts_for_project
+1
+
+### G1/G5 成本完整性与毛利率三视图（DEF-SMB-P0-007）
+  summary: costComplete= False profit= None grossMargin= None incompleteProjects= 1
+  row P1789740291570 costComplete= False profit= None grossMargin= None settlement.grossMargin= None
+  row P-ACCEPT-SMB-P0-001 costComplete= True profit= 3944.5 grossMargin= 37.2 settlement.grossMargin= 37.2
+  row P1789737038390 costComplete= True profit= 3944.5 grossMargin= 37.2 settlement.grossMargin= 37.2

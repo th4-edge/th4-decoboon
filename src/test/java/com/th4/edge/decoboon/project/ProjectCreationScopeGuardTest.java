@@ -100,7 +100,7 @@ class ProjectCreationScopeGuardTest {
             created.setContractId(20L);
             when(access.requireEmployee(employee)).thenReturn(employee);
             when(access.requireQuote(10L, employee)).thenReturn(quote);
-            when(contractContext.createFromQuote(any(), any(), any(), any(), any(), any(), any())).thenReturn(created);
+            when(contractContext.createFromQuote(any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(created);
             when(contractContext.enrich(created)).thenReturn(created);
             Save save = new Save(access, contractContext);
             ReflectionTestUtils.setField(save, "employee", employee);

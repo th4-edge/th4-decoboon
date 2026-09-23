@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** 老板经营驾驶舱实现。 */
-@Note("老板经营驾驶舱")
+/** 企业负责人经营驾驶舱实现。 */
+@Note("企业负责人经营驾驶舱")
 @Properties(allow = {
         @AllowProperties(model = BossDashboard.class,
                 properties = {"month", "signedAmount", "receivedAmount", "grossProfit", "activeProjectCount"}),

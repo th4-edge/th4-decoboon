@@ -118,7 +118,17 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
             throw new DefinedException(new DefaultErrorCode("400", "合同尚未生成项目"));
         }
         Project project = accessContext.requireProject(contract.getProject().getProjectId(), current);
-        accessContext.requirePlanEditor(project, current);
+        // 增减项发起：企业负责人 / 店长 / 项目经理 / 项目设计师（用户 2026-09-23 裁决）
+        accessContext.requireChangeInitiator(project, current);
+        // 增减项只能在项目未完工前发起：完工/已结算后不允许再改合同与账务（合同终止/关闭同样阻断）。
+        if (project.getStatus() == com.th4.edge.decoboon.project.configure.ProjectStatus.Finished
+                || project.getStatus() == com.th4.edge.decoboon.project.configure.ProjectStatus.Settled) {
+            throw new DefinedException(new DefaultErrorCode("400", "项目已完工，不能继续发起增减项"));
+        }
+        if (contract.getStatus() == com.th4.edge.decoboon.project.configure.ContractStatus.Closed
+                || contract.getStatus() == com.th4.edge.decoboon.project.configure.ContractStatus.Terminated) {
+            throw new DefinedException(new DefaultErrorCode("400", "合同已终止或关闭，不能继续发起增减项"));
+        }
         ContractChangeType changeType = type == null ? ContractChangeType.Add : type;
         ContractLine sourceLine = null;
         if (contractLineId != null) {

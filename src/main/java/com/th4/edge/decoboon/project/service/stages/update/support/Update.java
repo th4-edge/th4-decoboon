@@ -38,7 +38,7 @@ import java.time.LocalDate;
 @Note("项目阶段推进")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
-                properties = {"stageId", "project", "name", "sort", "weight", "status", "progress",
+                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status", "progress",
                         "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" })
 })
@@ -93,8 +93,10 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目阶段不存在")));
         // 锁内统一做数据范围校验：不可见一律 404，不泄露对象存在性。
         accessContext.requireVisible(stage.getProject(), current);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以开启施工阶段"));
+        // 阶段开工：企业负责人 / 店长（限本门店数据范围）/ 项目经理
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm
+                && current.getRole() != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或项目经理可以开启施工阶段"));
         }
         StageStatus target = status == null ? StageStatus.Doing : status;
         if (target != StageStatus.Doing) {
@@ -138,7 +140,12 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
 
         stage.setStatus(StageStatus.Doing);
         stage.setActualStart(stage.getActualStart() == null ? LocalDate.now() : stage.getActualStart());
-        project.setStatus(ProjectStatus.Ongoing);
+        // 历史坑：这里原先把项目状态无条件写成 Ongoing，会把"阶段待验收（Accepting）/停工（Suspended）"
+        // 悄悄降级成"施工中"，出现"待验收"和"施工中"同时成立的矛盾（DEC-009 决策二）。
+        // 只允许"待开工 → 施工中"这一种推进，其余状态交给 refreshProject/验收流程维护。
+        if (project.getStatus() == ProjectStatus.Preparing) {
+            project.setStatus(ProjectStatus.Ongoing);
+        }
         projectRepository.save(project);
         ProjectStage saved = stageRepository.save(stage);
 

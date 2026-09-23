@@ -1,0 +1,60 @@
+{
+  "quote": {
+    "path": "subpackages/project/pages/owner-quote",
+    "keys": 26,
+    "pick": {
+      "eO": "",
+      "uR": "",
+      "uRIF": "",
+      "uI": "",
+      "uT": "",
+      "uP": "",
+      "uS": "array(0)",
+      "a": false,
+      "b": "329,0,0",
+      "c": "",
+      "$eS": "object:",
+      "$eA": "object:",
+      "r0": 1,
+      "__webviewId__": 35,
+      "g": "329,0,1",
+      "h": false,
+      "j": false,
+      "l": "329,1,1",
+      "m": "0.94",
+      "n": "0.94",
+      "o": "329,2,1",
+      "p": "329,3,1",
+      "q": "3",
+      "r": "6",
+      "s": "329,4,1",
+      "f": "object:projectId,projectNo,projectName,projectStatus,projectStatusName,progress,currentStageName,propertyAddress"
+    }
+  },
+  "acceptance": {
+    "path": "subpackages/project/pages/owner-acceptance",
+    "keys": 20,
+    "pick": {
+      "eO": "",
+      "uR": "",
+      "uRIF": "",
+      "uI": "",
+      "uT": "",
+      "uP": "",
+      "uS": "array(0)",
+      "a": false,
+      "b": "347,0,0",
+      "c": "",
+      "$eS": "object:",
+      "$eA": "object:",
+      "r0": 1,
+      "__webviewId__": 36,
+      "g": "347,0,1",
+      "h": 4,
+      "i": "array(4)",
+      "j": false,
+      "l": "347,1,1",
+      "f": "object:projectId,projectNo,projectName,projectStatus,projectStatusName,progress,currentStageName,propertyAddress"
+    }
+  }
+}

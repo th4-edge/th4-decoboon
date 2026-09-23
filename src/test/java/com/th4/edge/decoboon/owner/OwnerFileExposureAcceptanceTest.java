@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.owner;
 
 import com.th4.edge.decoboon.common.file.configure.FileScope;
+import com.th4.edge.decoboon.common.file.context.FileStorageContext;
 import com.th4.edge.decoboon.common.file.model.FileGrant;
 import com.th4.edge.decoboon.customer.configure.CustomerAccessStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
@@ -21,6 +22,7 @@ import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.framework.comm.codec.http.decoder.multipart.MultipartStreamFile;
 import com.th4.edge.tenant.user.configure.CredType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.Size;
@@ -41,6 +43,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.AopTestUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -108,6 +111,7 @@ class OwnerFileExposureAcceptanceTest {
 
     @Autowired private com.th4.edge.decoboon.common.file.service.grants.build.Build buildProvider;
     @Autowired private com.th4.edge.decoboon.common.file.service.grants.download.Download downloadProvider;
+    @Autowired private FileStorageContext storageContext;
 
     @BeforeEach
     void prepareStorageAndUnwrapProviders() throws Exception {
@@ -170,6 +174,33 @@ class OwnerFileExposureAcceptanceTest {
         reportRepository.save(fixture.reportA1());
 
         assertDefined(() -> grant(fixture.owner(), FileScope.Report, fixture.reportA1().getReportId(), PRIVATE_PATH), "404");
+    }
+
+    @Test
+    void ownerCanUploadRectificationAndFeedbackImagesOnlyForAuthorizedProject() {
+        Fixture fixture = fixture("owner-rectification-upload");
+        MockMultipartFile multipart = new MockMultipartFile(
+                "file", "rectification.jpg", "image/jpeg", "rectification-image".getBytes(StandardCharsets.UTF_8));
+        FileGrant grant = storageContext.upload(
+                fixture.owner(), FileScope.Acceptance, fixture.projectA1().getProjectId(),
+                new MultipartStreamFile(multipart));
+
+        assertThat(grant.getProjectId()).isEqualTo(fixture.projectA1().getProjectId());
+        assertThat(grant.getPath()).startsWith("companies/" + fixture.projectA1().getCompany().getComId()
+                + "/projects/" + fixture.projectA1().getProjectId() + "/files/acceptance/");
+
+        FileGrant feedbackGrant = storageContext.upload(
+                fixture.owner(), FileScope.Feedback, fixture.projectA1().getProjectId(),
+                new MultipartStreamFile(multipart));
+        assertThat(feedbackGrant.getPath()).startsWith("companies/" + fixture.projectA1().getCompany().getComId()
+                + "/projects/" + fixture.projectA1().getProjectId() + "/files/feedback/");
+
+        assertDefined(() -> storageContext.upload(
+                fixture.owner(), FileScope.Acceptance, fixture.projectA2().getProjectId(),
+                new MultipartStreamFile(multipart)), "404");
+        assertDefined(() -> storageContext.upload(
+                fixture.owner(), FileScope.Design, fixture.projectA1().getProjectId(),
+                new MultipartStreamFile(multipart)), "403");
     }
 
     @Test

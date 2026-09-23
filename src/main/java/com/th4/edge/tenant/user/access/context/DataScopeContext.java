@@ -5,7 +5,6 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.configure.DataScopeType;
-import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
@@ -57,9 +56,7 @@ public class DataScopeContext {
         Team team = current.getTeam();
         DataScopeType type = current.getRole() == null
                 ? DataScopeType.Self
-                : current.getRole() == EmployeeRole.Finance
-                        ? DataScopeType.Company
-                        : current.getRole().getDataScopeType();
+                : current.getRole().getDataScopeType();
 
         if (type == DataScopeType.Store && (store == null || store.getStoreId() == null)) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属门店"));

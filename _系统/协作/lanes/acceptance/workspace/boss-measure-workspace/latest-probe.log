@@ -1,0 +1,32 @@
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/Users/zhangwei/.m2/repository/net/bytebuddy/byte-buddy-agent/1.15.10/byte-buddy-agent-1.15.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[ERROR] Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.730 s <<< FAILURE! -- in com.th4.edge.decoboon.statistic.BossMeasureWorkspaceLatestProbeTest
+[ERROR] com.th4.edge.decoboon.statistic.BossMeasureWorkspaceLatestProbeTest.signedCustomerMeasureMustRemainInEnterprisePeriods -- Time elapsed: 0.711 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+
+expected: 1
+ but was: 0
+	at com.th4.edge.decoboon.statistic.BossMeasureWorkspaceLatestProbeTest.signedCustomerMeasureMustRemainInEnterprisePeriods(BossMeasureWorkspaceLatestProbeTest.java:48)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+[ERROR] Failures: 
+[ERROR]   BossMeasureWorkspaceLatestProbeTest.signedCustomerMeasureMustRemainInEnterprisePeriods:48 
+expected: 1
+ but was: 0
+[ERROR] Tests run: 3, Failures: 1, Errors: 0, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project th4-decoboon: There are test failures.
+[ERROR] 
+[ERROR] See /Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -1,0 +1,25 @@
+{
+  "source": "/Users/zhangwei/Desktop/麦鸿装饰报价9.5.xlsx",
+  "target": {
+    "com_id": 1789680913513045799,
+    "maintainer_id": 1789680913519913772
+  },
+  "count": 557,
+  "byType": {
+    "General": 14,
+    "Construction": 176,
+    "Material": 259,
+    "Custom": 108
+  },
+  "saleTotal": "188636.44",
+  "costTotal": "132045.50",
+  "costRate": "70%",
+  "unitFallbacks": [
+    {
+      "sheet": "综合项目报价清单",
+      "row": 15,
+      "unit": "车",
+      "name": "垃圾外运"
+    }
+  ]
+}

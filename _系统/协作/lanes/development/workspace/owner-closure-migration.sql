@@ -69,7 +69,7 @@ ALTER TABLE cust_customer_invite
     ADD COLUMN update_week INT NULL;
 
 UPDATE cust_customer_invite invite
-JOIN db_decoboon_project project ON project.project_id = invite.project_id
+JOIN db_project project ON project.project_id = invite.project_id
 SET invite.customer_id = project.customer_id
 WHERE invite.customer_id IS NULL;
 
@@ -78,15 +78,15 @@ ALTER TABLE cust_customer_invite
     ADD KEY idx_customer_invite_company (com_id, invite_id),
     ADD KEY idx_customer_invite_company_project (com_id, project_id, invite_id);
 
-ALTER TABLE db_decoboon_acceptance
+ALTER TABLE db_acceptance
     ADD COLUMN confirmed_by BIGINT NULL;
 
 -- 建议在存量数据核验后由 DBA 统一补外键约束：
 -- cust_customer_access.com_id -> db_tenant_company.com_id
 -- cust_customer_access.cre_id -> db_tenant_credentials.cre_id
 -- cust_customer_access.cust_id -> cust_customer.cust_id
--- cust_customer_access.project_id -> db_decoboon_project.project_id
+-- cust_customer_access.project_id -> db_project.project_id
 -- cust_customer_access.invite_id -> cust_customer_invite.invite_id
 -- cust_customer_invite.customer_id -> cust_customer.cust_id
 -- cust_customer_invite.accepted_by -> db_tenant_credentials.cre_id
--- db_decoboon_acceptance.confirmed_by -> db_tenant_credentials.cre_id
+-- db_acceptance.confirmed_by -> db_tenant_credentials.cre_id

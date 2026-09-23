@@ -1,0 +1,62 @@
+{
+  "legacy_pending_rounds": {
+    "data": [],
+    "success": true
+  },
+  "legacy_pending_duplicate_submit": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "该阶段已有待确认验收单",
+      "system": false
+    }
+  },
+  "new_round": {
+    "data": [
+      {
+        "createTime": {
+          "dateTime": "2026-09-21 04:39:45"
+        },
+        "roundId": "227529188179968000",
+        "roundNo": 1,
+        "result": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "rectificationEvidenceUrls": [],
+        "evidenceUrls": [
+          "acceptance/concurrent-first.jpg"
+        ],
+        "issues": [],
+        "conclusion": "并发首轮提交探针",
+        "submittedBy": {
+          "empId": "1789903521009050562",
+          "name": "张伟",
+          "role": {
+            "name": "老板",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "submittedAt": "2026-09-21 04:39:45"
+      }
+    ],
+    "success": true
+  },
+  "rectify_page_boss": {
+    "data": [],
+    "success": true
+  },
+  "round_page_finance_scope": {
+    "data": [],
+    "success": true
+  },
+  "rectify_page_finance_scope": {
+    "data": [],
+    "success": true
+  },
+  "round_page_marketer_scope": {
+    "data": [],
+    "success": true
+  }
+}

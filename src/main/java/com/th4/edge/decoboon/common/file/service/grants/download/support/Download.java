@@ -30,6 +30,10 @@ public class Download implements com.th4.edge.decoboon.common.file.service.grant
     @NotEmpty
     private String signature;
 
+    /** 下载展示文件名，仅影响 Content-Disposition，不参与签名校验。 */
+    @AutoInject
+    private String name;
+
     private final FileSignatureContext signatureContext;
 
     public Download(FileSignatureContext signatureContext) {
@@ -41,6 +45,6 @@ public class Download implements com.th4.edge.decoboon.common.file.service.grant
         if (!signatureContext.verify(path, expires, signature)) {
             throw new DefinedException(new DefaultErrorCode("404", "文件不存在或无权访问"));
         }
-        return signatureContext.resolve(path).toFile();
+        return signatureContext.materialize(path, name);
     }
 }

@@ -1,0 +1,58 @@
+[
+  {
+    "step": "起始页",
+    "ok": true,
+    "result": "pages/auth/login"
+  },
+  {
+    "step": "协议初始态",
+    "ok": true,
+    "result": 0
+  },
+  {
+    "step": "点击协议勾选",
+    "ok": true,
+    "result": "tapped"
+  },
+  {
+    "step": "协议勾选后",
+    "ok": true,
+    "result": 1
+  },
+  {
+    "step": "截图-登录页已勾选",
+    "ok": true,
+    "result": null
+  },
+  {
+    "step": "点击微信登录(不等待)",
+    "ok": true,
+    "result": "tap-fired"
+  },
+  {
+    "step": "登录后页面",
+    "ok": true,
+    "result": {
+      "path": "pages/auth/login",
+      "query": {}
+    }
+  },
+  {
+    "step": "截图-登录后",
+    "ok": true,
+    "result": null
+  },
+  {
+    "step": "会话快照",
+    "ok": true,
+    "result": {
+      "keys": [
+        "__DC_STAT_UUID",
+        "jzb_session_v2",
+        "jzb_consent_v1"
+      ],
+      "jzb_session_v2": "string",
+      "jzb_consent_v1": "string"
+    }
+  }
+]

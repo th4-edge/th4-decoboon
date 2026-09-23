@@ -7,7 +7,7 @@ USER_NAME="${DECOBOON_PROD_USER:-root}"
 SSH_KEY="${DECOBOON_PROD_SSH_KEY:-$HOME/.ssh/id_ed25519}"
 ENV_FILE="${DECOBOON_ENV_FILE:-/etc/decoboon/th4-decoboon.env}"
 SERVICE="${DECOBOON_SERVICE:-decoboon}"
-WEB_URL="${DECOBOON_WEB_URL:-https://decoboon.joytsing.com}"
+API_URL="${DECOBOON_API_URL:-https://decoboon.joytsing.com}"
 REPORT_ROOT="$ROOT_DIR/docs/operations/incidents"
 
 usage() {
@@ -26,7 +26,7 @@ Environment:
   DECOBOON_PROD_SSH_KEY   default ~/.ssh/id_ed25519
   DECOBOON_ENV_FILE       default /etc/decoboon/th4-decoboon.env
   DECOBOON_SERVICE        default decoboon
-  DECOBOON_WEB_URL        default https://decoboon.joytsing.com
+  DECOBOON_API_URL        default https://decoboon.joytsing.com
 EOF
 }
 
@@ -50,7 +50,7 @@ validate_since() {
 }
 
 status() {
-  ssh_run "SERVICE='$SERVICE' WEB_URL='$WEB_URL' bash -s" <<'REMOTE'
+  ssh_run "SERVICE='$SERVICE' API_URL='$API_URL' bash -s" <<'REMOTE'
 set -u
 echo "host=$(hostname)"
 echo "time=$(date -Is)"
@@ -58,7 +58,7 @@ echo "service_enabled=$(systemctl is-enabled "$SERVICE" 2>/dev/null || true)"
 echo "service_active=$(systemctl is-active "$SERVICE" 2>/dev/null || true)"
 systemctl show "$SERVICE" -p MainPID -p ActiveState -p SubState -p ExecMainStartTimestamp 2>/dev/null || true
 echo "listen=$(ss -ltnp 2>/dev/null | grep -E ':(80|443|8090)[[:space:]]' | tr '\n' ';' || true)"
-health_code="$(curl -sS -o /tmp/decoboon-monitor-health.$$.json -w '%{http_code}' "$WEB_URL/api/auth/session/info" 2>/dev/null || true)"
+health_code="$(curl -sS -o /tmp/decoboon-monitor-health.$$.json -w '%{http_code}' "$API_URL/api/auth/session/info" 2>/dev/null || true)"
 echo "health_http=$health_code"
 head -c 300 /tmp/decoboon-monitor-health.$$.json 2>/dev/null || true
 rm -f /tmp/decoboon-monitor-health.$$.json
@@ -74,7 +74,7 @@ collect() {
   mkdir -p "$report_dir"
 
   set +e
-  ssh_run "SINCE='$since' SERVICE='$SERVICE' ENV_FILE='$ENV_FILE' WEB_URL='$WEB_URL' bash -s" >"$report_dir/raw.txt" 2>&1 <<'REMOTE'
+  ssh_run "SINCE='$since' SERVICE='$SERVICE' ENV_FILE='$ENV_FILE' API_URL='$API_URL' bash -s" >"$report_dir/raw.txt" 2>&1 <<'REMOTE'
 set -u
 echo "== META =="
 hostname
@@ -90,7 +90,7 @@ readlink -f /opt/decoboon/th4-decoboon 2>&1 || true
 readlink -f /opt/decoboon/releases/.previous 2>&1 || true
 echo "== HEALTH =="
 health_file="$(mktemp)"
-http_code="$(curl -sS -o "$health_file" -w '%{http_code}' "$WEB_URL/api/auth/session/info" 2>/dev/null || true)"
+http_code="$(curl -sS -o "$health_file" -w '%{http_code}' "$API_URL/api/auth/session/info" 2>/dev/null || true)"
 echo "health_http=$http_code"
 head -c 1200 "$health_file" 2>/dev/null || true
 echo

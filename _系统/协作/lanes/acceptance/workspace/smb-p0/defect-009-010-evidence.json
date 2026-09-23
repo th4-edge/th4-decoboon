@@ -1,0 +1,26 @@
+{
+  "DEF-SMB-P0-009": {
+    "propertyId": "226709838300708864",
+    "measureId": "226709838510424064",
+    "firstCompletionMeasureTime": "2026-09-21 10:00:00",
+    "repeatRequest": {"propertyId": 226709838300708864, "status": "Completed"},
+    "observedAfterRepeat": {
+      "measureTime": "2026-09-18 22:26:15.477831",
+      "propertyLatestMeasureAt": "2026-09-18 22:26:15.477831",
+      "measureRows": 1
+    },
+    "restoredAfterEvidence": {
+      "measureTime": "2026-09-21 10:00:00",
+      "propertyLatestMeasureAt": "2026-09-21 10:00:00"
+    }
+  },
+  "DEF-SMB-P0-010": {
+    "session": {"phone": "13910000005", "empId": "1890000000000000205", "sessionRole": "Designer"},
+    "database": {"designerId": "1890000000000000205", "executorId": "1890000000000000205", "executorRole": "Designer"},
+    "apiResponse": {"designerRole": "Designer", "executorEmpId": "1890000000000000205", "executorRole": "Marketer"},
+    "rawEvidence": [
+      "_系统/协作/lanes/acceptance/workspace/smb-p0/recheck-a3-fresh.json",
+      "_系统/协作/lanes/acceptance/workspace/smb-p0/recheck-a3-repeat2.json"
+    ]
+  }
+}

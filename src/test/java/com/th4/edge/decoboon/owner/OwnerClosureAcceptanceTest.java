@@ -1,14 +1,30 @@
 package com.th4.edge.decoboon.owner;
 
 import com.th4.edge.decoboon.customer.configure.CustomerAccessStatus;
+import com.th4.edge.decoboon.customer.configure.CustomerFeedbackKind;
+import com.th4.edge.decoboon.customer.configure.CustomerFeedbackStatus;
+import com.th4.edge.decoboon.customer.configure.CustomerFeedbackType;
 import com.th4.edge.decoboon.customer.context.CustomerAccessContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerAccess;
+import com.th4.edge.decoboon.customer.model.CustomerFeedback;
 import com.th4.edge.decoboon.customer.model.CustomerInvite;
 import com.th4.edge.decoboon.customer.repository.CustomerAccessRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerInviteRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.finance.configure.PayableStatus;
+import com.th4.edge.decoboon.finance.configure.PayableType;
+import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
+import com.th4.edge.decoboon.finance.configure.ReceivableType;
+import com.th4.edge.decoboon.finance.configure.SettlementStatus;
+import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.Receivable;
+import com.th4.edge.decoboon.finance.model.Settlement;
+import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
+import com.th4.edge.decoboon.finance.repository.SettlementRepository;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
+import com.th4.edge.decoboon.project.configure.AcceptanceRectificationType;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.ReportType;
@@ -16,12 +32,15 @@ import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
 import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
+import com.th4.edge.decoboon.project.model.AcceptanceRound;
+import com.th4.edge.decoboon.project.model.ContractWorkbench;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectReport;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.model.ProjectTask;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
+import com.th4.edge.decoboon.project.repository.AcceptanceRoundRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -56,11 +75,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.util.AopTestUtils;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,6 +91,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,6 +132,10 @@ class OwnerClosureAcceptanceTest {
     @Autowired private ProjectStageRepository stageRepository;
     @Autowired private ProjectTaskRepository taskRepository;
     @Autowired private AcceptanceRepository acceptanceRepository;
+    @Autowired private AcceptanceRoundRepository acceptanceRoundRepository;
+    @Autowired private ReceivableRepository receivableRepository;
+    @Autowired private PayableRepository payableRepository;
+    @Autowired private SettlementRepository settlementRepository;
     @Autowired private ProjectReportRepository reportRepository;
     @Autowired private ProjectContractRepository contractRepository;
     @Autowired private QuoteRepository quoteRepository;
@@ -111,6 +143,9 @@ class OwnerClosureAcceptanceTest {
     @Autowired private CustomerAccessRepository accessRepository;
     @Autowired private CustomerAccessContext accessContext;
     @Autowired private ProjectContext projectContext;
+    @Autowired private JdbcTemplate jdbcTemplate;
+    @Autowired private com.th4.edge.decoboon.project.service.acceptances.round.page.Page acceptanceRoundPage;
+    @Autowired private com.th4.edge.decoboon.project.service.acceptances.update.Update projectAcceptanceUpdate;
 
     @Autowired private com.th4.edge.decoboon.customer.service.invite.save.Save inviteSave;
     @Autowired private com.th4.edge.decoboon.customer.service.invite.info.Info inviteInfo;
@@ -124,7 +159,16 @@ class OwnerClosureAcceptanceTest {
     @Autowired private com.th4.edge.decoboon.customer.service.acceptance.page.Page ownerAcceptancePage;
     @Autowired private com.th4.edge.decoboon.customer.service.acceptance.info.Info ownerAcceptanceInfo;
     @Autowired private com.th4.edge.decoboon.customer.service.acceptance.update.Update ownerAcceptanceUpdate;
+    @Autowired private com.th4.edge.decoboon.customer.service.acceptance.round.page.Page ownerAcceptanceRoundPage;
     @Autowired private com.th4.edge.decoboon.customer.service.contract.info.Info ownerContractInfo;
+    @Autowired private com.th4.edge.decoboon.customer.service.contract.workbench.Workbench ownerContractWorkbench;
+    @Autowired private com.th4.edge.decoboon.customer.service.contractlines.page.Page ownerContractLinePage;
+    @Autowired private com.th4.edge.decoboon.customer.service.feedback.save.Save ownerFeedbackSave;
+    @Autowired private com.th4.edge.decoboon.customer.service.feedback.page.Page ownerFeedbackPage;
+    @Autowired private com.th4.edge.decoboon.customer.service.feedback.close.Close ownerFeedbackClose;
+    @Autowired private com.th4.edge.decoboon.project.service.feedback.page.Page projectFeedbackPage;
+    @Autowired private com.th4.edge.decoboon.project.service.feedback.update.Update projectFeedbackUpdate;
+    @Autowired private com.th4.edge.decoboon.customer.service.project.journey.info.Info ownerJourneyInfo;
     @Autowired private com.th4.edge.tenant.user.service.auth.session.info.Info sessionInfo;
 
     @BeforeEach
@@ -141,8 +185,19 @@ class OwnerClosureAcceptanceTest {
         ownerAcceptancePage = AopTestUtils.getTargetObject(ownerAcceptancePage);
         ownerAcceptanceInfo = AopTestUtils.getTargetObject(ownerAcceptanceInfo);
         ownerAcceptanceUpdate = AopTestUtils.getTargetObject(ownerAcceptanceUpdate);
+        ownerAcceptanceRoundPage = AopTestUtils.getTargetObject(ownerAcceptanceRoundPage);
         ownerContractInfo = AopTestUtils.getTargetObject(ownerContractInfo);
+        ownerContractWorkbench = AopTestUtils.getTargetObject(ownerContractWorkbench);
+        ownerContractLinePage = AopTestUtils.getTargetObject(ownerContractLinePage);
+        ownerFeedbackSave = AopTestUtils.getTargetObject(ownerFeedbackSave);
+        ownerFeedbackPage = AopTestUtils.getTargetObject(ownerFeedbackPage);
+        ownerFeedbackClose = AopTestUtils.getTargetObject(ownerFeedbackClose);
+        projectFeedbackPage = AopTestUtils.getTargetObject(projectFeedbackPage);
+        projectFeedbackUpdate = AopTestUtils.getTargetObject(projectFeedbackUpdate);
+        ownerJourneyInfo = AopTestUtils.getTargetObject(ownerJourneyInfo);
         sessionInfo = AopTestUtils.getTargetObject(sessionInfo);
+        acceptanceRoundPage = AopTestUtils.getTargetObject(acceptanceRoundPage);
+        projectAcceptanceUpdate = AopTestUtils.getTargetObject(projectAcceptanceUpdate);
     }
 
     @Test
@@ -353,6 +408,162 @@ class OwnerClosureAcceptanceTest {
     }
 
     @Test
+    void shouldExposeOwnerContractWorkbenchWithoutCostAndRejectUnauthorizedContract() {
+        Fixture fixture = createFixture("owner-contract-workbench");
+        Credentials owner = credential("wx-owner-contract-workbench", "13800138688");
+        accept(fixture, owner, fixture.projectA1(), "合同工作台业主");
+        ProjectContract contract = createContract(fixture.projectA1(), fixture.marketerA(), "C-owner-workbench");
+        ProjectContract otherContract = createContract(fixture.projectA2(), fixture.marketerA(), "C-owner-other");
+
+        setField(ownerContractWorkbench, "principal", owner);
+        setField(ownerContractWorkbench, "projectId", fixture.projectA1().getProjectId());
+        setField(ownerContractWorkbench, "contractId", null);
+        ContractWorkbench view = ownerContractWorkbench.call(new ProjectContract());
+        assertThat(view.getContract().getContractId()).isEqualTo(contract.getContractId());
+        assertThat(view.getCost()).isNull();
+
+        setField(ownerContractWorkbench, "projectId", null);
+        setField(ownerContractWorkbench, "contractId", contract.getContractId());
+        assertThat(ownerContractWorkbench.call(new ProjectContract()).getContract().getContractId())
+                .isEqualTo(contract.getContractId());
+
+        Properties properties = com.th4.edge.decoboon.customer.service.contract.workbench.support.Workbench.class
+                .getAnnotation(Properties.class);
+        Set<String> workbenchAllowed = Arrays.stream(properties.allow())
+                .filter(item -> item.model().equals(ContractWorkbench.class))
+                .flatMap(item -> Arrays.stream(item.properties()))
+                .collect(Collectors.toSet());
+        Set<String> contractAllowed = Arrays.stream(properties.allow())
+                .filter(item -> item.model().equals(ProjectContract.class))
+                .flatMap(item -> Arrays.stream(item.properties()))
+                .collect(Collectors.toSet());
+        assertThat(workbenchAllowed).doesNotContain("cost");
+        assertThat(contractAllowed).doesNotContain("signedCost", "quote", "createdBy", "remark");
+
+        assertOwnerNotFound(owner, ownerContractWorkbench, "contractId", otherContract.getContractId(),
+                () -> ownerContractWorkbench.call(new ProjectContract()));
+
+        setField(ownerContractLinePage, "principal", owner);
+        setField(ownerContractLinePage, "projectId", null);
+        setField(ownerContractLinePage, "contractId", contract.getContractId());
+        assertThat(ownerContractLinePage.call(new com.th4.edge.decoboon.project.model.ContractLine()).getContent())
+                .isEmpty();
+        setField(ownerContractLinePage, "contractId", otherContract.getContractId());
+        assertDefined(() -> ownerContractLinePage.call(new com.th4.edge.decoboon.project.model.ContractLine()), "404");
+
+        setField(ownerContractWorkbench, "principal", fixture.bossA());
+        setField(ownerContractWorkbench, "contractId", contract.getContractId());
+        assertDefined(() -> ownerContractWorkbench.call(new ProjectContract()), "403");
+    }
+
+    @Test
+    void shouldReturnOwnerAcceptanceRoundsAndRejectUnauthorizedAcceptance() {
+        Fixture fixture = createFixture("owner-acceptance-rounds");
+        Credentials owner = credential("wx-owner-acceptance-rounds", "13800138689");
+        accept(fixture, owner, fixture.projectA1(), "轮次时间线业主");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance acceptance = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "轮次提交", List.of(), List.of("round-site.jpg"));
+        Acceptance rejected = decide(owner, acceptance.getAcceptanceId(), false, "轮次驳回");
+
+        setField(ownerAcceptanceRoundPage, "principal", owner);
+        setField(ownerAcceptanceRoundPage, "acceptanceId", rejected.getAcceptanceId());
+        List<AcceptanceRound> rounds = ownerAcceptanceRoundPage.call(new Acceptance());
+        assertThat(rounds).hasSize(1);
+        assertThat(rounds.get(0).getRectificationType()).isEqualTo(AcceptanceRectificationType.Construction);
+        assertThat(rounds.get(0).getRectificationDueDate()).isEqualTo(LocalDate.now().plusDays(3));
+
+        Acceptance otherAcceptance = acceptance(fixture.projectA2(), createStageAndTask(
+                fixture.projectA2(), fixture.marketerA()), fixture.marketerA());
+        setField(ownerAcceptanceRoundPage, "acceptanceId", otherAcceptance.getAcceptanceId());
+        assertDefined(() -> ownerAcceptanceRoundPage.call(new Acceptance()), "404");
+
+        setField(ownerAcceptanceRoundPage, "principal", fixture.marketerA());
+        setField(ownerAcceptanceRoundPage, "acceptanceId", rejected.getAcceptanceId());
+        assertDefined(() -> ownerAcceptanceRoundPage.call(new Acceptance()), "403");
+    }
+
+    @Test
+    void shouldPersistOwnerRectificationImagesOnAuthorizedAcceptance() {
+        Fixture fixture = createFixture("owner-rectification-images");
+        Credentials owner = credential("wx-owner-rectification-images", "13800138690");
+        accept(fixture, owner, fixture.projectA1(), "整改图片业主");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance acceptance = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "图片验收提交", List.of(), List.of("rectification-site.jpg"));
+
+        setField(ownerAcceptanceUpdate, "principal", owner);
+        setField(ownerAcceptanceUpdate, "acceptanceId", acceptance.getAcceptanceId());
+        setField(ownerAcceptanceUpdate, "confirmed", false);
+        setField(ownerAcceptanceUpdate, "conclusion", "提交整改图片");
+        setField(ownerAcceptanceUpdate, "issues", List.of("墙面收口不平"));
+        setField(ownerAcceptanceUpdate, "rectificationType", AcceptanceRectificationType.Construction);
+        setField(ownerAcceptanceUpdate, "rectificationIssueImages", List.of("issue-1.jpg", "issue-2.jpg"));
+
+        Acceptance rejected = ownerAcceptanceUpdate.call(new Acceptance());
+        assertThat(rejected.getRectificationIssueImages()).containsExactly("issue-1.jpg", "issue-2.jpg");
+        AcceptanceRound round = acceptanceRoundRepository.findByAcceptanceOrderByRoundNoDesc(rejected).get(0);
+        assertThat(round.getRectificationIssueImages()).containsExactly("issue-1.jpg", "issue-2.jpg");
+    }
+
+    @Test
+    void shouldCloseOwnerFeedbackWithEmployeeResponseAndExposeJourney() {
+        Fixture fixture = createFixture("owner-feedback");
+        Credentials owner = credential("wx-owner-feedback", "13800138691");
+        accept(fixture, owner, fixture.projectA1(), "意见投诉业主");
+
+        setField(ownerFeedbackSave, "principal", owner);
+        setField(ownerFeedbackSave, "projectId", fixture.projectA1().getProjectId());
+        setField(ownerFeedbackSave, "kind", CustomerFeedbackKind.Complaint);
+        setField(ownerFeedbackSave, "type", CustomerFeedbackType.Service);
+        setField(ownerFeedbackSave, "title", "现场无人沟通");
+        setField(ownerFeedbackSave, "content", "本周多次联系项目经理未得到回复");
+        setField(ownerFeedbackSave, "images", List.of("feedback-1.jpg"));
+        CustomerFeedback feedback = ownerFeedbackSave.call(new CustomerFeedback());
+        assertThat(feedback.getStatus()).isEqualTo(CustomerFeedbackStatus.Submitted);
+        assertThat(feedback.getHandler().getEmpId()).isEqualTo(fixture.projectA1().getManager().getEmpId());
+        assertThat(feedback.getDueAt()).isNotNull();
+
+        setField(ownerFeedbackPage, "principal", owner);
+        setField(ownerFeedbackPage, "projectId", fixture.projectA1().getProjectId());
+        assertThat(ownerFeedbackPage.call(new CustomerFeedback())).extracting(CustomerFeedback::getFeedbackId)
+                .containsExactly(feedback.getFeedbackId());
+
+        setField(projectFeedbackPage, "employee", fixture.projectA1().getManager());
+        setField(projectFeedbackPage, "projectId", fixture.projectA1().getProjectId());
+        assertThat(projectFeedbackPage.call(new CustomerFeedback())).extracting(CustomerFeedback::getFeedbackId)
+                .containsExactly(feedback.getFeedbackId());
+
+        setField(projectFeedbackUpdate, "employee", fixture.projectA1().getManager());
+        setField(projectFeedbackUpdate, "feedbackId", feedback.getFeedbackId());
+        setField(projectFeedbackUpdate, "status", CustomerFeedbackStatus.Resolved);
+        setField(projectFeedbackUpdate, "response", "已联系业主并说明处理计划");
+        CustomerFeedback resolved = projectFeedbackUpdate.call(new CustomerFeedback());
+        assertThat(resolved.getStatus()).isEqualTo(CustomerFeedbackStatus.Resolved);
+        assertThat(resolved.getResponse()).contains("处理计划");
+
+        setField(ownerFeedbackClose, "principal", owner);
+        setField(ownerFeedbackClose, "feedbackId", feedback.getFeedbackId());
+        setField(ownerFeedbackClose, "satisfaction", 5);
+        CustomerFeedback closed = ownerFeedbackClose.call(new CustomerFeedback());
+        assertThat(closed.getStatus()).isEqualTo(CustomerFeedbackStatus.Closed);
+        assertThat(closed.getSatisfaction()).isEqualTo(5);
+
+        setField(ownerJourneyInfo, "principal", owner);
+        setField(ownerJourneyInfo, "projectId", fixture.projectA1().getProjectId());
+        var journey = ownerJourneyInfo.call(new Project());
+        assertThat(journey.getProjectId()).isEqualTo(fixture.projectA1().getProjectId());
+        assertThat(journey.getSections()).extracting(item -> item.getKey())
+                .contains("measure", "design", "quote", "contract", "change", "material", "construction",
+                        "acceptance", "payment", "feedback");
+        assertThat(journey.getSections().stream().filter(item -> "quote".equals(item.getKey()))
+                .findFirst().orElseThrow().getItems()).isNotEmpty();
+        assertThat(journey.getOpenFeedbackCount()).isZero();
+    }
+
+    @Test
     void shouldConfirmAcceptanceIdempotentlyAndRejectConflictingDecision() {
         Fixture fixture = createFixture("accept-confirm");
         Credentials owner = credential("wx-owner-confirm", "13800138777");
@@ -379,11 +590,15 @@ class OwnerClosureAcceptanceTest {
         Fixture fixture = createFixture("accept-reject");
         Credentials owner = credential("wx-owner-reject", "13800138888");
         accept(fixture, owner, fixture.projectA1(), "业主驳回");
+        Employee manager = employee(fixture.companyA(), fixture.storeA(), EmployeeRole.Pm, "整改项目经理");
+        fixture.projectA1().setManager(manager);
+        projectRepository.save(fixture.projectA1());
         ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
         Acceptance first = acceptance(fixture.projectA1(), stage, fixture.marketerA());
 
         Acceptance rejected = decide(owner, first.getAcceptanceId(), false, "整改");
         assertThat(rejected.getStatus()).isEqualTo(AcceptStatus.Rejected);
+        assertThat(rejected.getRectificationOwner().getEmpId()).isEqualTo(manager.getEmpId());
         assertThat(stageRepository.findById(stage.getStageId()).orElseThrow().getStatus()).isEqualTo(StageStatus.Doing);
 
         Acceptance resubmitted = projectContext.submitAcceptance(
@@ -395,6 +610,281 @@ class OwnerClosureAcceptanceTest {
         Acceptance confirmed = decide(owner, resubmitted.getAcceptanceId(), true, "整改确认");
         assertThat(confirmed.getStatus()).isEqualTo(AcceptStatus.Confirmed);
         assertThat(stageRepository.findById(stage.getStageId()).orElseThrow().getStatus()).isEqualTo(StageStatus.Done);
+    }
+
+    @Test
+    void shouldBlockOwnerRejectionWhenProjectManagerIsMissing() {
+        Fixture fixture = createFixture("reject-without-manager");
+        Credentials owner = credential("wx-reject-without-manager", "13800138904");
+        accept(fixture, owner, fixture.projectA1(), "无项目经理整改");
+        fixture.projectA1().setManager(null);
+        projectRepository.save(fixture.projectA1());
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance acceptance = acceptance(fixture.projectA1(), stage, fixture.marketerA());
+
+        assertDefined(() -> decide(owner, acceptance.getAcceptanceId(), false, "缺少项目经理",
+                List.of("瓷砖空鼓")), "400");
+    }
+
+    @Test
+    void shouldRejectEmployeeImpersonationOnBothAcceptanceDecisionRoutes() {
+        Fixture fixture = createFixture("accept-employee-decision");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance acceptance = acceptance(fixture.projectA1(), stage, fixture.marketerA());
+
+        setField(projectAcceptanceUpdate, "employee", fixture.marketerA());
+        setField(projectAcceptanceUpdate, "acceptanceId", acceptance.getAcceptanceId());
+        setField(projectAcceptanceUpdate, "confirmed", true);
+        assertDefined(() -> projectAcceptanceUpdate.call(new Acceptance()), "403");
+
+        setField(ownerAcceptanceUpdate, "principal", fixture.marketerA());
+        setField(ownerAcceptanceUpdate, "acceptanceId", acceptance.getAcceptanceId());
+        setField(ownerAcceptanceUpdate, "confirmed", true);
+        assertDefined(() -> ownerAcceptanceUpdate.call(new Acceptance()), "403");
+    }
+
+    @Test
+    void shouldReturnExistingPendingAcceptanceOnDuplicateSubmission() {
+        Fixture fixture = createFixture("duplicate-pending");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+
+        Acceptance first = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "首次提交", List.of(), List.of("duplicate-site-1.jpg"));
+        AcceptanceRound firstRound = acceptanceRoundRepository
+                .findByAcceptanceOrderByRoundNoDesc(first).get(0);
+        RoundSnapshot before = snapshot(firstRound);
+
+        Acceptance repeated = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "重复点击", List.of(), List.of("duplicate-site-2.jpg"));
+
+        assertThat(repeated.getAcceptanceId()).isEqualTo(first.getAcceptanceId());
+        assertThat(acceptanceRepository.findByProject_ProjectIdOrderByAcceptanceIdDesc(
+                fixture.projectA1().getProjectId())).hasSize(1);
+        List<AcceptanceRound> rounds = acceptanceRoundRepository.findByAcceptanceOrderByRoundNoDesc(first);
+        assertThat(rounds).hasSize(1);
+        assertThat(snapshot(rounds.get(0))).isEqualTo(before);
+        assertThat(rounds.get(0).getEvidenceUrls()).containsExactly("duplicate-site-1.jpg");
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    void shouldSerializeConcurrentFirstSubmissionWithoutUndefinedErrors() throws Exception {
+        Fixture fixture = createFixture("concurrent-pending");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        CountDownLatch ready = new CountDownLatch(2);
+        CountDownLatch start = new CountDownLatch(1);
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+        try {
+            java.util.concurrent.Callable<Acceptance> submit = () -> {
+                ready.countDown();
+                if (!start.await(10, TimeUnit.SECONDS)) {
+                    throw new IllegalStateException("concurrent start timeout");
+                }
+                return projectContext.submitAcceptance(
+                        fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                        fixture.marketerA(), "并发提交", List.of(), List.of("concurrent-site.jpg"));
+            };
+            Future<Acceptance> left = pool.submit(submit);
+            Future<Acceptance> right = pool.submit(submit);
+            assertThat(ready.await(10, TimeUnit.SECONDS)).isTrue();
+            start.countDown();
+
+            Acceptance leftResult = left.get(20, TimeUnit.SECONDS);
+            Acceptance rightResult = right.get(20, TimeUnit.SECONDS);
+            assertThat(leftResult.getAcceptanceId()).isEqualTo(rightResult.getAcceptanceId());
+            assertThat(leftResult.getStatus()).isEqualTo(AcceptStatus.Pending);
+            assertThat(rightResult.getStatus()).isEqualTo(AcceptStatus.Pending);
+
+            List<Acceptance> acceptances = acceptanceRepository
+                    .findByProject_ProjectIdOrderByAcceptanceIdDesc(fixture.projectA1().getProjectId());
+            assertThat(acceptances).hasSize(1);
+            assertThat(acceptanceRoundRepository.findByAcceptanceOrderByRoundNoDesc(acceptances.get(0)))
+                    .singleElement()
+                    .extracting(AcceptanceRound::getRoundNo)
+                    .isEqualTo(1);
+        } finally {
+            start.countDown();
+            pool.shutdownNow();
+        }
+    }
+
+    @Test
+    void shouldRequireCompleteRectificationRequirementsOnOwnerRejection() {
+        Fixture fixture = createFixture("reject-requirements");
+        Credentials owner = credential("wx-reject-requirements", "13800138903");
+        accept(fixture, owner, fixture.projectA1(), "驳回校验业主");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance acceptance = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "首轮提交", List.of(), List.of("reject-requirements-site.jpg"));
+        LocalDate today = LocalDate.now();
+
+        assertDefined(() -> decide(owner, acceptance.getAcceptanceId(), false, "缺问题",
+                List.of(), null), "400");
+        assertDefined(() -> decide(owner, acceptance.getAcceptanceId(), false, "缺类型",
+                List.of("瓷砖空鼓"), null), "400");
+
+        Acceptance rejected = decide(owner, acceptance.getAcceptanceId(), false, "完整驳回",
+                List.of("瓷砖空鼓"), AcceptanceRectificationType.Construction);
+        AcceptanceRound round = acceptanceRoundRepository.findByAcceptanceOrderByRoundNoDesc(rejected).get(0);
+        assertThat(rejected.getStatus()).isEqualTo(AcceptStatus.Rejected);
+        assertThat(rejected.getIssues()).containsExactly("瓷砖空鼓");
+        assertThat(rejected.getRectificationOwner().getEmpId()).isEqualTo(fixture.marketerA().getEmpId());
+        assertThat(rejected.getRectificationType()).isEqualTo(AcceptanceRectificationType.Construction);
+        assertThat(rejected.getRectificationDueDate()).isEqualTo(today.plusDays(3));
+        assertThat(round.getIssues()).containsExactly("瓷砖空鼓");
+        assertThat(round.getRectificationOwner().getEmpId()).isEqualTo(fixture.marketerA().getEmpId());
+        assertThat(round.getRectificationType()).isEqualTo(AcceptanceRectificationType.Construction);
+        assertThat(round.getRectificationDueDate()).isEqualTo(today.plusDays(3));
+
+        ProjectStage designStage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance designAcceptance = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), designStage.getStageId(),
+                fixture.marketerA(), "设计验收提交", List.of(), List.of("design-site.jpg"));
+        Acceptance designRejected = decide(owner, designAcceptance.getAcceptanceId(), false, "设计整改",
+                List.of("柜体颜色与确认方案不一致"), AcceptanceRectificationType.Design);
+        assertThat(designRejected.getRectificationType()).isEqualTo(AcceptanceRectificationType.Design);
+        assertThat(designRejected.getRectificationDueDate()).isEqualTo(today.plusDays(5));
+    }
+
+    @Test
+    void shouldBackfillLegacyAcceptanceRoundsIdempotently() throws Exception {
+        Fixture fixture = createFixture("legacy-backfill");
+        ProjectStage pendingStage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance pending = acceptance(fixture.projectA1(), pendingStage, fixture.marketerA());
+
+        ProjectStage rejectedStage = createStageAndTask(fixture.projectA2(), fixture.marketerA());
+        Acceptance rejected = acceptance(fixture.projectA2(), rejectedStage, fixture.marketerA());
+        rejected.setStatus(AcceptStatus.Rejected);
+        rejected.setConclusion("遗留驳回");
+        rejected.setIssues(new ArrayList<>(List.of("遗留问题")));
+        rejected.setEvidenceUrls(new ArrayList<>(List.of("legacy-evidence.jpg")));
+        rejected.setRectificationOwner(fixture.marketerA());
+        rejected.setRectificationDueDate(LocalDate.now().plusDays(5));
+        final Acceptance rejectedSaved = acceptanceRepository.saveAndFlush(rejected);
+
+        executeRectificationBackfill();
+        executeRectificationBackfill();
+
+        List<AcceptanceRound> pendingRounds = acceptanceRoundRepository
+                .findByAcceptanceOrderByRoundNoDesc(pending);
+        List<AcceptanceRound> rejectedRounds = acceptanceRoundRepository
+                .findByAcceptanceOrderByRoundNoDesc(rejectedSaved);
+        assertThat(pendingRounds).singleElement()
+                .satisfies(round -> {
+                    assertThat(round.getRoundId()).isEqualTo(pending.getAcceptanceId());
+                    assertThat(round.getRoundNo()).isEqualTo(1);
+                    assertThat(round.getResult()).isEqualTo(AcceptStatus.Pending);
+                    assertThat(round.getEvidenceUrls()).containsExactly("https://example.test/acceptance.jpg");
+                });
+        assertThat(rejectedRounds).singleElement()
+                .satisfies(round -> {
+                    assertThat(round.getRoundId()).isEqualTo(rejectedSaved.getAcceptanceId());
+                    assertThat(round.getRoundNo()).isEqualTo(1);
+                    assertThat(round.getResult()).isEqualTo(AcceptStatus.Rejected);
+                    assertThat(round.getIssues()).containsExactly("遗留问题");
+                    assertThat(round.getEvidenceUrls()).containsExactly("legacy-evidence.jpg");
+                    assertThat(round.getRectificationOwner().getEmpId()).isEqualTo(fixture.marketerA().getEmpId());
+                    assertThat(round.getRectificationDueDate()).isEqualTo(rejectedSaved.getRectificationDueDate());
+                });
+    }
+
+    @Test
+    void shouldHideAcceptanceRoundsFromUnrelatedEmployee() {
+        Fixture fixture = createFixture("round-scope");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        Acceptance acceptance = acceptance(fixture.projectA1(), stage, fixture.marketerA());
+        Employee unrelated = employee(fixture.companyA(), fixture.storeA(), EmployeeRole.Designer, "无关设计师");
+        Employee otherCompanyBoss = fixture.bossB();
+
+        setField(acceptanceRoundPage, "employee", unrelated);
+        setField(acceptanceRoundPage, "acceptanceId", acceptance.getAcceptanceId());
+        assertDefined(() -> acceptanceRoundPage.call(new Acceptance()), "404");
+
+        setField(acceptanceRoundPage, "employee", otherCompanyBoss);
+        assertDefined(() -> acceptanceRoundPage.call(new Acceptance()), "404");
+    }
+
+    @Test
+    void shouldAppendRectificationRoundsAndPreserveHistoryAndFinanceFacts() {
+        Fixture fixture = createFixture("rectify-rounds");
+        Credentials owner = credential("wx-owner-rounds", "13800138901");
+        accept(fixture, owner, fixture.projectA1(), "整改多轮业主");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+        createFinanceFacts(fixture);
+        FinanceFacts before = financeFacts(fixture.projectA1());
+
+        Acceptance first = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "第 1 轮提交", List.of(), List.of("r1-site.jpg"),
+                null, null, null, null);
+        decide(owner, first.getAcceptanceId(), false, "第 1 轮驳回", List.of("瓷砖空鼓"));
+        AcceptanceRound round1 = acceptanceRoundRepository
+                .findByAcceptanceOrderByRoundNoDesc(first).stream()
+                .filter(item -> item.getRoundNo() == 1).findFirst().orElseThrow();
+        RoundSnapshot firstSnapshot = snapshot(round1);
+
+        Acceptance second = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "第 2 轮复验", List.of(), List.of("r2-site.jpg"),
+                null, null, "已重新铺贴并复检", List.of("r2-fix.jpg"));
+        decide(owner, second.getAcceptanceId(), false, "第 2 轮驳回", List.of("局部收口不平"));
+        Acceptance third = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "第 3 轮复验", List.of(), List.of("r3-site.jpg"),
+                null, null, "已完成二次整改", List.of("r3-fix.jpg"));
+        decide(owner, third.getAcceptanceId(), false, "第 3 轮驳回", List.of("胶缝不均匀"));
+        Acceptance fourth = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "第 4 轮复验", List.of(), List.of("r4-site.jpg"),
+                null, null, "全部问题完成整改", List.of("r4-fix.jpg"));
+        Acceptance confirmed = decide(owner, fourth.getAcceptanceId(), true, "复验通过", List.of());
+
+        List<AcceptanceRound> rounds = acceptanceRoundRepository.findByAcceptanceOrderByRoundNoDesc(confirmed);
+        assertThat(rounds).extracting(AcceptanceRound::getRoundNo)
+                .containsExactly(4, 3, 2, 1);
+        AcceptanceRound reloadedFirst = rounds.stream()
+                .filter(item -> item.getRoundNo() == 1).findFirst().orElseThrow();
+        assertThat(snapshot(reloadedFirst)).isEqualTo(firstSnapshot);
+        assertThat(reloadedFirst.getRectificationNote()).isNull();
+        assertThat(confirmed.getStatus()).isEqualTo(AcceptStatus.Confirmed);
+        assertThat(stageRepository.findById(stage.getStageId()).orElseThrow().getStatus()).isEqualTo(StageStatus.Done);
+        assertThat(acceptanceRepository.findFirstByStageOrderByAcceptanceIdDesc(stage).orElseThrow().getAcceptanceId())
+                .isEqualTo(first.getAcceptanceId());
+        assertThat(financeFacts(fixture.projectA1())).isEqualTo(before);
+    }
+
+    @Test
+    void shouldRequireRectificationEvidenceOnResubmitAndRejectPostConfirmedSubmission() {
+        Fixture fixture = createFixture("rectify-guard");
+        Credentials owner = credential("wx-owner-guard", "13800138902");
+        accept(fixture, owner, fixture.projectA1(), "整改校验业主");
+        ProjectStage stage = createStageAndTask(fixture.projectA1(), fixture.marketerA());
+
+        Acceptance first = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "首轮提交", List.of(), List.of("guard-site-1.jpg"),
+                null, null, null, null);
+        decide(owner, first.getAcceptanceId(), false, "首轮驳回", List.of("阳角破损"));
+
+        assertDefined(() -> projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "缺整改证据", List.of(), List.of("guard-site-2.jpg"),
+                null, null, null, null), "400");
+        assertThat(acceptanceRoundRepository.findByAcceptanceOrderByRoundNoDesc(first)).hasSize(1);
+
+        Acceptance resubmitted = projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "完整复验", List.of(), List.of("guard-site-3.jpg"),
+                null, null, "已完成整改", List.of("guard-fix.jpg"));
+        decide(owner, resubmitted.getAcceptanceId(), true, "复验通过", List.of());
+
+        assertDefined(() -> projectContext.submitAcceptance(
+                fixture.companyA().getComId(), fixture.projectA1().getProjectId(), stage.getStageId(),
+                fixture.marketerA(), "通过后再次提交", List.of(), List.of("guard-site-4.jpg"),
+                null, null, "再次整改", List.of("guard-fix-2.jpg")), "400");
     }
 
     @Test
@@ -657,11 +1147,138 @@ class OwnerClosureAcceptanceTest {
     }
 
     private Acceptance decide(Credentials owner, Long acceptanceId, boolean confirmed, String conclusion) {
+        if (confirmed) {
+            return decide(owner, acceptanceId, true, conclusion, List.of(), null);
+        }
+        return decide(owner, acceptanceId, false, conclusion, List.of("验收问题"),
+                AcceptanceRectificationType.Construction);
+    }
+
+    private Acceptance decide(Credentials owner, Long acceptanceId, boolean confirmed, String conclusion,
+                              List<String> issues) {
+        if (confirmed) {
+            return decide(owner, acceptanceId, true, conclusion, issues, null);
+        }
+        return decide(owner, acceptanceId, false, conclusion, issues,
+                AcceptanceRectificationType.Construction);
+    }
+
+    private Acceptance decide(Credentials owner, Long acceptanceId, boolean confirmed, String conclusion,
+                              List<String> issues, AcceptanceRectificationType rectificationType) {
         setField(ownerAcceptanceUpdate, "principal", owner);
         setField(ownerAcceptanceUpdate, "acceptanceId", acceptanceId);
         setField(ownerAcceptanceUpdate, "confirmed", confirmed);
         setField(ownerAcceptanceUpdate, "conclusion", conclusion);
+        setField(ownerAcceptanceUpdate, "issues", issues);
+        setField(ownerAcceptanceUpdate, "rectificationType", rectificationType);
         return ownerAcceptanceUpdate.call(new Acceptance());
+    }
+
+    private void executeRectificationBackfill() throws Exception {
+        String script = Files.readString(Path.of(
+                "docs/design/migrations/47-阶段验收整改轮次.sql"));
+        String lower = script.toLowerCase();
+        int roundStart = lower.indexOf("insert into db_acceptance_round (");
+        int issueStart = lower.indexOf("insert into db_acceptance_round_issue", roundStart);
+        int evidenceStart = lower.indexOf("insert into db_acceptance_round_evidence", issueStart);
+        int rollbackStart = lower.indexOf("-- 回滚", evidenceStart);
+        assertThat(roundStart).isGreaterThanOrEqualTo(0);
+        assertThat(issueStart).isGreaterThan(roundStart);
+        assertThat(evidenceStart).isGreaterThan(issueStart);
+        assertThat(rollbackStart).isGreaterThan(evidenceStart);
+        String roundSql = script.substring(roundStart, issueStart).strip();
+        // H2 不支持 MySQL 的 STR_TO_DATE；仅替换时间表达式，其他回填 SQL 原样执行。
+        roundSql = roundSql.replace(
+                "str_to_date(concat(a.create_date, lpad(coalesce(a.create_time, 0), 6, '0')),\n"
+                        + "                             '%Y%m%d%H%i%s')",
+                "coalesce(a.confirmed_at, current_timestamp)");
+        jdbcTemplate.execute(roundSql);
+        jdbcTemplate.execute(script.substring(issueStart, evidenceStart).strip());
+        jdbcTemplate.execute(script.substring(evidenceStart, rollbackStart).strip());
+    }
+
+    private RoundSnapshot snapshot(AcceptanceRound round) {
+        return new RoundSnapshot(round.getRoundId(), round.getRoundNo(), round.getResult(),
+                round.getRectificationNote(), round.getRectificationEvidenceUrls(), round.getEvidenceUrls(),
+                round.getIssues(), round.getConclusion(), round.getSubmittedAt(), round.getConfirmedAt(),
+                round.getRectificationOwner() == null ? null : round.getRectificationOwner().getEmpId(),
+                round.getRectificationDueDate(), round.getRectificationType(),
+                round.getRectificationIssueImages());
+    }
+
+    private void createFinanceFacts(Fixture fixture) {
+        Receivable receivable = new Receivable();
+        receivable.setCompany(fixture.companyA());
+        receivable.setStore(fixture.storeA());
+        receivable.setTeam(fixture.projectA1().getTeam());
+        receivable.setOwner(fixture.bossA());
+        receivable.setProject(fixture.projectA1());
+        receivable.setProperty(fixture.projectA1().getProperty());
+        receivable.setCustomer(fixture.customerA1());
+        receivable.setName("整改验收冻结应收");
+        receivable.setType(ReceivableType.Other);
+        receivable.setAmount(new BigDecimal("1000.00"));
+        receivable.setReceivedAmount(new BigDecimal("200.00"));
+        receivable.setDueDate(LocalDate.now().plusDays(10));
+        receivable.setStatus(ReceivableStatus.Partial);
+        receivable.setCreatedBy(fixture.bossA());
+        receivableRepository.save(receivable);
+
+        Payable payable = new Payable();
+        payable.setCompany(fixture.companyA());
+        payable.setStore(fixture.storeA());
+        payable.setTeam(fixture.projectA1().getTeam());
+        payable.setOwner(fixture.bossA());
+        payable.setProject(fixture.projectA1());
+        payable.setProperty(fixture.projectA1().getProperty());
+        payable.setName("整改验收冻结应付");
+        payable.setType(PayableType.Other);
+        payable.setAmount(new BigDecimal("600.00"));
+        payable.setPaidAmount(new BigDecimal("100.00"));
+        payable.setDueDate(LocalDate.now().plusDays(10));
+        payable.setStatus(PayableStatus.Partial);
+        payable.setCreatedBy(fixture.bossA());
+        payableRepository.save(payable);
+
+        Settlement settlement = new Settlement();
+        settlement.setCompany(fixture.companyA());
+        settlement.setStore(fixture.storeA());
+        settlement.setTeam(fixture.projectA1().getTeam());
+        settlement.setOwner(fixture.bossA());
+        settlement.setProject(fixture.projectA1());
+        settlement.setContractAmount(new BigDecimal("100000.00"));
+        settlement.setFinalAmount(new BigDecimal("100000.00"));
+        settlement.setReceivableAmount(new BigDecimal("1000.00"));
+        settlement.setReceivedAmount(new BigDecimal("200.00"));
+        settlement.setPayableAmount(new BigDecimal("600.00"));
+        settlement.setPaidAmount(new BigDecimal("100.00"));
+        settlement.setTotalCost(new BigDecimal("80000.00"));
+        settlement.setProfitAmount(new BigDecimal("20000.00"));
+        settlement.setGrossMargin(new BigDecimal("20.00"));
+        settlement.setStatus(SettlementStatus.Draft);
+        settlement.setCreatedBy(fixture.bossA());
+        settlementRepository.save(settlement);
+    }
+
+    private FinanceFacts financeFacts(Project project) {
+        List<String> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project).stream()
+                .map(item -> item.getReceivableId() + "|" + money(item.getAmount()) + "|"
+                        + money(item.getReceivedAmount()) + "|" + item.getStatus()).toList();
+        List<String> payables = payableRepository.findByProjectOrderByDueDateAsc(project).stream()
+                .map(item -> item.getPayableId() + "|" + money(item.getAmount()) + "|"
+                        + money(item.getPaidAmount()) + "|" + item.getStatus()).toList();
+        String settlement = settlementRepository.findByProject_ProjectId(project.getProjectId())
+                .map(item -> item.getSettlementId() + "|" + money(item.getContractAmount()) + "|"
+                        + money(item.getFinalAmount()) + "|" + money(item.getReceivableAmount()) + "|"
+                        + money(item.getReceivedAmount()) + "|" + money(item.getPayableAmount()) + "|"
+                        + money(item.getPaidAmount()) + "|" + money(item.getTotalCost()) + "|"
+                        + money(item.getProfitAmount()) + "|" + money(item.getGrossMargin()) + "|" + item.getStatus())
+                .orElse(null);
+        return new FinanceFacts(money(project.getContractAmount()), money(project.getCost()), receivables, payables, settlement);
+    }
+
+    private String money(BigDecimal value) {
+        return value == null ? null : value.stripTrailingZeros().toPlainString();
     }
 
     private ProjectReport report(Project project, ProjectStage stage, String title, boolean visible) {
@@ -721,6 +1338,18 @@ class OwnerClosureAcceptanceTest {
 
     private static void setField(Object target, String name, Object value) {
         ReflectionTestUtils.setField(target, name, value);
+    }
+
+    private record RoundSnapshot(Long roundId, Integer roundNo, AcceptStatus result, String rectificationNote,
+                                 List<String> rectificationEvidence, List<String> evidence,
+                                 List<String> issues, String conclusion, LocalDateTime submittedAt,
+                                 LocalDateTime confirmedAt, Long rectificationOwnerId, LocalDate rectificationDueDate,
+                                 AcceptanceRectificationType rectificationType,
+                                 List<String> rectificationIssueImages) {
+    }
+
+    private record FinanceFacts(String contractAmount, String cost, List<String> receivables,
+                                List<String> payables, String settlement) {
     }
 
     private record Fixture(Company companyA, Company companyB, Store storeA, Store storeB,

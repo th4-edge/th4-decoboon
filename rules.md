@@ -36,7 +36,7 @@ th4 是一套区别于传统 MVC 的**领域模型驱动设计**架构，任何�
 - 默认路径必须覆盖最高频场景，低频字段和高级能力按需展开。
 - 禁止把大型企业 ERP 的完整模型强加给中小装企；仓库、批次、税务、供应商门户和复杂审批只能在场景明确命中时出现。
 - 不能只按数据表结构生成页面，必须按“谁操作、下一步给谁”组织入口和状态。
-- App 优先现场快捷操作，Web 优先批量维护、对账和经营分析，但同一业务事实只能有一个服务端口径。
+- App 优先现场快捷操作，但同一业务事实只能有一个服务端口径。
 - 场景未闭环时，不得直接生成生产代码；应先补 PRD/操作说明和验收场景。
 
 ### 0.2 权限先行：领域设计的第一约束（最高优先级）
@@ -48,8 +48,9 @@ th4 是一套区别于传统 MVC 的**领域模型驱动设计**架构，任何�
 1. 所有业务实体必须直接归属 `Company company`；禁止通过间接关联绕过企业归属，禁止信任前端传入的 `companyId`。
 2. 所有需要登录的业务 Provider 必须继承 `Security`，当前员工必须通过 `@User` 注入。当前企业、角色、门店等上下文只能从登录员工加载，不能从前端参数获取。
 3. 查询权限矩阵统一使用四级数据范围，并由 `EmployeeRole` 集中绑定，禁止在 Provider 中散落角色判断：
+   - 员工角色固定为 `Boss / StoreManager / Designer / Marketer / Pm / Finance / TeamLeader` 七类；禁止新增“履约专员”“材料员”等重复角色，履约、材料与采购职责统一并入 `Finance`。
    - `BOSS`：`Company`，查询当前企业全量数据。
-   - `门店店长`：`Store`，查询当前企业、当前门店数据。
+   - `店长`：`Store`，查询当前企业、当前门店数据。
    - `团队负责人`：`Team`，查询当前企业、当前团队数据。
    - 普通员工：`Self`，查询当前企业、本人负责数据。
 4. `Company/Store/Team/Self` 只适用于有个人、团队或门店归属的业务实体，且只表示数据范围，不表示功能权限；BIM 工艺、材料、套餐模板等纯企业级主数据仍强制企业条件，但不得虚构负责人后错误套用 `Self`。
@@ -608,7 +609,7 @@ private AssetType type;                 // 枚举，实现 Enumerable<T>
 
 ### 4.3.1 全局搜索：@Keyword 全字段模糊（2026-09-04 新增）
 
-前端全局搜索（`th4-decoboon-web` 场景插件化命令面板，Ctrl+K）依赖框架的 **keyword 查询机制**：
+前端全局搜索（场景插件化命令面板，Ctrl+K）依赖框架的 **keyword 查询机制**：
 请求体带 `keyword` 字段时，框架对实体上标注 `@Keyword` 的 **String 字段做 OR 模糊匹配**（跨 `@ManyToOne` 关联对象递归），并与其它查询条件 AND。
 
 - 可搜索的字符串字段（名称/电话/需求/标题/备注/正文等）一律加 `@Keyword`：
@@ -632,6 +633,7 @@ private String customerName;
 - ❌ 禁止用 `@JsonIgnore` 硬编码序列化控制（具体 Provider 用 `@Properties`，通用 ModelService 用 `@ServiceProperties`）。
 - ❌ 禁止把关联字段退化成 `Long xxxId` 裸外键（必须对象关联）。
 - ❌ 需要按年/月/季度等维度统计的业务时间字段，不得使用 `Date`/`LocalDateTime`/`LocalDate`，必须用 `DateTime`；纯标记型时间才允许使用 `LocalDateTime`/`LocalDate`。
+- ❌ 新增或扩展 JSON、快照、备注等**长文本**字段时，禁止只改实体不补迁移：`ddl-auto: update` 不会修改既有列类型，必须同时提供 `alter table ... modify column ... longtext`（见 `ECD-009`）。
 - ✅ 每个字段用 `@Note` 标注中文标签；金额/大小等用 `@Unit`。
 
 ### 4.5 事务边界与懒加载禁则（强制，2026-09-16 新增）
@@ -748,6 +750,44 @@ public class User extends AbstractModel { /* ... */ }
 - `@DataPermission` 管“查得到什么”，`@ServiceProperties/@Properties` 管“返回什么”，两者必须同时设计，不能互相替代。
 
 ---
+
+### 5.6 对外可见投影必须显式组装（强制，2026-09-24 新增）
+
+**适用范围**：所有"给前端看"的读取投影——业主端（我的家系列）、员工端列表/详情/经营台、以及任何返回实体或实体集合的 Provider。
+
+**核心要求**：投影**不得直接把实体（或实体字段）当响应返回**；必须显式组装，并且**派生字段必须按领域事实现场推导**，不得信任可漂移的派生列。
+
+**为什么**：`Project.status`、`Project.currentStageName` 这类字段是**需要回填的派生列**（只有部分投影会临时赋值）。多个投影各写一套、或干脆不写，就会出现"同一业务事实在 App 不同页面给出不同结论"——2026-09-24 业主端审计一次就抓到 3 处同源缺陷（首页"待验收"/旅程"施工中"、详情"当前阶段"空白）。
+
+**业主端必须显式组装的四条投影（口径必须一致）**
+
+| 投影 | 用途 | 必须推导的派生字段 |
+|---|---|---|
+| `customer/project/page` | 我的家首页 / 进度 Tab | `currentStageName`、业主可见 `status` |
+| `customer/project/info` | **业主项目详情** | `currentStageName`、业主可见 `status` |
+| `customer/project/journey/info` | 业主项目旅程 | `currentStageName`、业主可见 `status` + 各业务段事实 |
+| `project/project/page`、`project/project/overview` | 员工列表 / 经营台（同源字段） | 同上（口径一致，不得与业主端不同） |
+
+**冻结口径（不得各写一套）**
+
+- **当前阶段**：`Doing` / `Accepting` 优先，否则取第一个阶段；
+- **业主可见项目状态**：存在 `Pending` 验收单 ⇔ `Accepting`；否则已开工（任一阶段 `Doing`/`Done`）⇒ `Ongoing`；全部 `Done` ⇒ `Finished`；无开工 ⇒ `Preparing`；`Suspended`/`Finished`/`Settled` 原样保留；
+- 上述推导必须由**同一处实现**产出（共享工具类或 context），禁止 4 份复制。
+
+**禁则**
+
+1. ❌ 禁止投影直接 `return entity;` / `return accessContext.requireProject(...)` 把实体原样返回（业主详情曾如此，是本次 P1 的真根因）。
+2. ❌ 禁止直接返回 `status` / `currentStageName` 等派生列而不校验其与领域事实一致。
+3. ❌ 禁止各投影各写一套推导；发现第二处复制必须立即收敛。
+4. ❌ 禁止用前端兜底（如 `projectStageText()`）替代后端推导——兜底只允许用于"字段确实缺失"时的降级展示，不得掩盖后端未组装。
+5. ❌ 禁止以 OSIV（`open-in-view`）或懒加载兜底关联读取；需要关联时显式 `@EntityGraph` / 显式查询。
+
+**检测与回归要求**
+
+1. 自检：`grep` 各 `service/**/support/*.java` 是否存在把实体直接 return 的投影；新增投影必须逐项对照本表。
+2. 跨投影一致性断言：同一项目在**我的家首页 / 项目详情 / 项目旅程**三处的 `status` 与 `currentStageName` 必须相同。
+3. 状态迁移回归：验收**驳回**后三处必须同时从"待验收"变为"施工中"；重新提交验收后同时回到"待验收"。
+4. 新增任何"对外可见"的派生字段，必须同时回答：口径是什么、由谁推导、在哪共用。
 
 ## 6. 完整示例（以 asset 素材域落地）
 
@@ -1067,14 +1107,13 @@ public class MarketerViewConfigure { }
   → 前端组件 views/marketer/asset/asset/manage/AssetManageView.vue
 ```
 
-前端页面生成规范详见前端工程 `th4-decoboon-web/rules.md`（页面目录、BasicManageView、自定义页、接口约定）。
 
 
 ---
 
 ## 10. 成本、利润与套餐边界（强制）
 
-- **销售价与成本价分离**：`CatalogItem.materialPrice/manualPrice` 表达销售价，`CatalogItem.costPrice` 直接表达企业标准成本价。成本价由 `Boss`、`StoreManager`、`ProjectSupport`、`Finance` 维护；设计师、业务员、项目经理默认不可见。
+- **销售价与成本价分离**：`CatalogItem.materialPrice/manualPrice` 表达销售价，`CatalogItem.costPrice` 直接表达企业标准成本价。成本价由 `Boss`、`StoreManager`、`Finance`（含履约协同）维护；设计师、业务员、项目经理默认不可见。
 - **供应商后置**：报价项目可以先建立并维护成本，不要求先创建供应商或逐项采购价。供应商在采购前维护，并通过品牌关系匹配材料，例如“马可波罗”品牌关联多个供应商。
 - **采购匹配**：材料采购按 `CatalogItem.brand` 查询供应商品牌关系，采购单保存本次供应商和采购执行价。`PartnerPrice` 只保留历史价格、比价和参考，不再作为标准成本必需来源。
 - **签约成本快照**：报价阶段成本仅作参考；合同签约时按当时 `CatalogItem.costPrice` 和报价行数量计算，并冻结到合同行。签约后修改报价项目成本不得改变已签约成本。
@@ -1109,7 +1148,6 @@ public class MarketerViewConfigure { }
 | 端 | 统一组件 | 运行时资源 |
 | --- | --- | --- |
 | App | `src/components/JzBrandLogo.vue` | `src/static/brand/logo-mark-white.png`、`src/static/brand/logo-mark-color.png` |
-| Web | `src/components/BrandLogo.vue` | `public/brand/logo-mark-white.png`、`public/brand/logo-mark-color.png` |
 | Admin | `src/components/BrandLogo.vue` | `public/brand/logo-mark-white.png`、`public/brand/logo-mark-color.png` |
 
 > 页面不得直接新增 Logo 文件或写死图片路径；必须使用上述组件，并通过 `variant="white|color"` 选择背景适配版本。
@@ -1119,7 +1157,7 @@ public class MarketerViewConfigure { }
 - `logo-mark-white.png` SHA-256：`12ade1524dfe4cd4b11d06593beff4ead19179a0288cb5f8765f08c3d2ffc997`
 - `logo-mark-color.png` SHA-256：`1115517a138f1998c54cc71619b74bb7aa84af1193b0eb791c08d5db6bc75577`
 
-更新 Logo 时必须在三端同时替换、更新组件资源和本节校验值，并执行 `type-check`、Web/Admin 构建、App `verify:mp-weixin`。
+更新 Logo 时必须在 App/Admin 同时替换、更新组件资源和本节校验值，并执行 Admin 构建、App `verify:mp-weixin`。
 
 ---
 

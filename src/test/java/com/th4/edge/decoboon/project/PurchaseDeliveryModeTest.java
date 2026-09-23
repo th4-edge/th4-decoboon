@@ -71,7 +71,10 @@ class PurchaseDeliveryModeTest {
         projectContext = mock(ProjectContext.class);
         save = new com.th4.edge.decoboon.project.service.goodsreceipts.save.support.Save(
                 purchaseRepository, receiptRepository, materialPlanRepository, payableRepository,
-                dueDateContext, accessContext, inventoryContext, identityContext, permissionContext, projectContext);
+                dueDateContext, accessContext, inventoryContext, identityContext, permissionContext, projectContext,
+                mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class),
+                new com.th4.edge.decoboon.project.context.MaterialPlanStatusContext(
+                        purchaseRepository, mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class)));
         ReflectionTestUtils.setField(save, "purchaseId", 1L);
         ReflectionTestUtils.setField(save, "quantity", new BigDecimal("5"));
         ReflectionTestUtils.setField(save, "employee", new Employee());
@@ -136,6 +139,8 @@ class PurchaseDeliveryModeTest {
         Project project = new Project();
         project.setProjectId(30L);
         project.setCompany(company);
+        // 到场确认限定本项目项目经理/设计负责人任一方（DEC-MP-07）
+        project.setManager(employee);
         MaterialPlan plan = new MaterialPlan();
         plan.setPlanId(40L);
         plan.setProject(project);
@@ -162,7 +167,9 @@ class PurchaseDeliveryModeTest {
 
         when(accessContext.requireEmployee(any())).thenReturn(employee);
         when(purchaseRepository.findOne(any(Specification.class))).thenReturn(Optional.of(purchase));
-        when(purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan)).thenReturn(existingPurchases);
+        when(purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan))
+                .thenReturn(java.util.stream.Stream.concat(existingPurchases.stream(),
+                        java.util.stream.Stream.of(purchase)).toList());
         ReflectionTestUtils.setField(save, "quantity", new BigDecimal(receiptQuantity));
         save.call(new GoodsReceipt());
         return purchase;

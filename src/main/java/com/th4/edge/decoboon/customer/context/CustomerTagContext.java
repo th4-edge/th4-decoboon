@@ -128,11 +128,10 @@ public class CustomerTagContext {
     public boolean isGoldenNoContact(Customer customer) {
         if (customer == null || customer.getCreateTime() == null || customer.getLastFollowAt() != null) return false;
         if (isClosed(customer.getStatus())) return false;
-        Long createdMillis = customer.getCreateTime().getDateTime();
-        if (createdMillis == null) return false;
-        LocalDate createdDate = java.time.LocalDateTime
-                .ofInstant(java.time.Instant.ofEpochMilli(createdMillis), java.time.ZoneId.systemDefault())
-                .toLocalDate();
+        // 历史坑：框架 DateTime.getDateTime() 返回的是 yyyyMMddHHmmss 的 14 位数字（不是 epoch 毫秒），
+        // 这里曾按毫秒换算，得出 2612 年，"建档≤3天"永远不成立。统一用框架提供的 toLocalDateTime()。
+        if (customer.getCreateTime().toLocalDateTime() == null) return false;
+        LocalDate createdDate = customer.getCreateTime().toLocalDateTime().toLocalDate();
         long days = java.time.temporal.ChronoUnit.DAYS.between(createdDate, LocalDate.now());
         return days >= 0 && days <= 3;
     }

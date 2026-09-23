@@ -29,7 +29,7 @@ import java.time.LocalDate;
 @Note("应收计划创建")
 @Properties(allow = {
         @AllowProperties(model = Receivable.class,
-                properties = {"receivableId", "project", "property", "customer", "name", "stageName", "type", "amount",
+                properties = {"receivableId", "project", "property", "customer", "name", "stageName", "stageCode", "triggerType", "type", "amount",
                         "receivedAmount", "dueDate", "status", "invoiceRequired", "invoiceNo", "remark", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status" }),

@@ -1,0 +1,23 @@
+[
+  {
+    "step": "connect",
+    "ms": 13
+  },
+  {
+    "step": "currentPage",
+    "path": "pages/auth/login",
+    "query": {}
+  },
+  {
+    "step": "findAgree",
+    "count": 1
+  },
+  {
+    "step": "findSubmit",
+    "count": 1
+  },
+  {
+    "step": "error",
+    "error": "page.text is not a function"
+  }
+]

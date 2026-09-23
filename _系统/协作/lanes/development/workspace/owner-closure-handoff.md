@@ -151,18 +151,6 @@
 - 未确认的微信 AppID 已清空，构建产物使用 `touristappid`；发布前必须替换为管理员确认的正式 AppID。
 - 发布检查和提审材料见 `docs/design/migrations/20-小程序发布合规基线.md`。
 
-## Web 企业工作台（第一阶段）
-
-- 目标目录：`../../前端代码/th4-decoboon-web/`，技术栈为 Vite + Vue3 + TypeScript + Element Plus + Vue Router + Pinia + Axios。
-- 已实现 AuthLayout、WorkbenchLayout、品牌主题、角色菜单、面包屑、响应式桌面布局、手机号密码登录、首次设置、改密、退出、会话恢复、Axios token 注入、401/403 处理和分页查询工具。
-- 一级路由和详情链路已覆盖客户、项目、报价、财务；设计、供应链、团队、订阅、统计、消息使用统一页面壳；驾驶舱在接口缺失时显示空状态，不伪造业务数据。
-- Web 后端密码会话已拆为明确 Provider：`auth/session/password-login`、`auth/session/password-setup` 为白名单公开入口；`auth/session/password-change`、`auth/session/logout` 为 `Security` 受保护入口。
-- 修复 Web API 契约：驾驶舱使用 `BossDashboard` 指标对象，财务总览使用 `FinanceSummary` 金额字段，报价使用 `title/amount`，任务使用 `owner/plannedEnd`，流水使用 `ledgerId/occurredAt`；项目状态使用 `Preparing/Ongoing` 等真实枚举并补充后端筛选。
-- `Credentials` 新增 BCrypt 密码哈希、更新时间、失败次数、锁定时间和强制改密字段；生产迁移为 `docs/design/migrations/21-用户密码登录.sql`，空库基线已同步。
-- Web 验证：`npm run type-check` 通过；`npm run build` 通过，入口 JS 约 1.10 MB（gzip 约 362 KB），存在 Vite chunk 体积警告；`WebPasswordSessionAcceptanceTest` 5 项全部通过。
-- Provider 安全扫描：`total=196 protected=185 public=11 violations=0`。全量后端测试当前 `77 tests / 1 failure`，唯一失败为旧 `ProviderSecurityAcceptanceTest` 仍按 9 条公开白名单断言 `password-login`，不是密码会话真实回归。
-- Web 发布阻断：`.env.production` 仍使用保留域名 `https://api.invalid/`，不是正式域名；正式 HTTPS 域名、部署路径和 API 联调尚未提供。
-
 ## 迁移
 
 正式迁移已落位：

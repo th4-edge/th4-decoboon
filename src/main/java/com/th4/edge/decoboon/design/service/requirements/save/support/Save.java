@@ -46,6 +46,9 @@ public class Save implements com.th4.edge.decoboon.design.service.requirements.s
     private Long propertyId;
 
     @AutoInject
+    private Long targetPropertyId;
+
+    @AutoInject
     private Long requirementId;
 
     @AutoInject
@@ -72,11 +75,14 @@ public class Save implements com.th4.edge.decoboon.design.service.requirements.s
         Requirement target = resolveTarget(request, customer);
         Employee fallback = customer.getDesigner() == null ? current : customer.getDesigner();
         Employee owner = designContext.resolveOwner(current, ownerId, fallback);
-        Property property = propertyContext.resolve(propertyId, customer, current);
+        Long resolvedPropertyId = targetPropertyId != null ? targetPropertyId : propertyId;
+        if (resolvedPropertyId == null && request.getProperty() != null) {
+            resolvedPropertyId = request.getProperty().getPropertyId();
+        }
+        Property property = propertyContext.resolve(resolvedPropertyId, customer, current);
         designContext.requirePropertyOpen(property);
         copyEditableFields(request, target);
-        designContext.apply(target, customer, owner);
-        target.setProperty(property);
+        designContext.apply(target, customer, owner, property);
         target.setStatus(RequirementStatus.Pending);
         target.setConfirmedAt(null);
         return requirementRepository.save(target);

@@ -86,7 +86,7 @@ Boss / StoreManager / TeamLeader / Marketer / Designer
 Pm / ProjectSupport / Finance
 ```
 
-每个建议必须包含使用人、触发事件、当前动作、系统下一步、异常处理。App 优先现场快捷操作，Web 优先批量维护、对账和经营分析。按 `references/role-workflow-review.md` 审查，不得只讲页面路径。
+每个建议必须包含使用人、触发事件、当前动作、系统下一步、异常处理。App 优先现场快捷操作；批量维护、对账和经营分析沿用同一业务事实。按 `references/role-workflow-review.md` 审查，不得只讲页面路径。
 
 ### 4. 自我学习与标准协作
 

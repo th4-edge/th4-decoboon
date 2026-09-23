@@ -1,0 +1,197 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-09-22T13:01:47+08:00
+ 13:01:47 up 6 days, 11:49,  1 user,  load average: 0.01, 0.02, 0.00
+since=35 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=63746
+ExecMainStartTimestamp=Mon 2026-09-21 05:06:10 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20260921-050519
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/vda3         40901312 6827320  32183624      18% /
+/dev/vda3         40901312 6827320  32183624      18% /
+/dev/vda3         40901312 6827320  32183624      18% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        3082         591         362        4434        4373
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-09-22 04:16:02.161] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-09-22 04:16:22.868] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env
+[2026-09-22 04:16:23.132] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env
+[2026-09-22 04:16:24.968] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env
+[2026-09-22 04:16:25.349] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env
+[2026-09-22 04:16:25.749] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env
+[2026-09-22 06:26:40.863] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .git/config处理失败:找不到对应的处理服务:.git/config
+[2026-09-22 06:27:26.092] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-09-22 06:40:23.294] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-09-22 06:40:36.298] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env
+[2026-09-22 06:40:36.549] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env
+[2026-09-22 06:40:38.024] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env
+[2026-09-22 06:40:38.274] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env
+[2026-09-22 06:40:38.525] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env
+[2026-09-22 08:07:43.677] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp
+[2026-09-22 09:57:24.305] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-09-22 09:57:24.317] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env.local处理失败:找不到对应的处理服务:.env.local
+[2026-09-22 10:27:23.371] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-09-22 10:27:23.399] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-22 10:27:23.404] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-22 10:27:23.441] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-22 13:01:47.234] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-09-21 05:06:18.400] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-21 05:06:20.119] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-21 05:06:22.513] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-21 05:06:26.998] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-21 05:06:27.294] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-21 05:06:27.306] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+431:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+532:2026-09-21T05:06:40.585+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+533:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+634:2026-09-21T05:06:47.076+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+635:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+736:2026-09-21T05:11:23.302+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+737:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+838:2026-09-21T05:11:27.996+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+839:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+936:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1033:2026-09-21T05:15:01.238+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1034:2026-09-21T05:15:01.242+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1035:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1135:2026-09-21T05:15:01.247+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1136:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1236:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1237:2026-09-21T05:15:01.251+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1337:2026-09-21T05:15:01.254+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1338:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+1443:2026-09-21T05:15:05.529+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+1444:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+1529:2026-09-21T08:19:35.388+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+1530:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+1615:2026-09-21T14:04:41.584+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+1616:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+1701:2026-09-21T14:04:42.798+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+1702:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+1787:2026-09-21T14:04:43.037+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+1788:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+1873:2026-09-21T14:04:43.443+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+1874:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+1959:2026-09-21T14:04:44.724+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+1960:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2045:2026-09-21T14:04:45.272+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2046:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2131:2026-09-21T14:04:46.279+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2132:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2217:2026-09-21T14:04:46.520+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2218:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2303:2026-09-21T14:04:46.764+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2304:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2389:2026-09-21T14:04:47.199+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2390:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2475:2026-09-21T14:04:48.157+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2476:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:auth/signin
+2561:2026-09-21T14:04:48.401+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin
+2562:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2659:2026-09-21T16:38:46.411+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2660:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2757:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2857:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2894:2026-09-21T16:38:46.427+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2907:2026-09-21T16:38:46.429+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2959:2026-09-21T16:38:46.430+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2960:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3060:2026-09-21T16:38:46.445+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3061:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3158:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3255:2026-09-21T19:06:47.705+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3256:2026-09-21T19:06:47.707+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3257:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3357:2026-09-21T19:06:47.715+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3358:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3458:2026-09-21T19:06:47.721+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3459:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3559:2026-09-21T19:06:47.729+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3560:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+3665:2026-09-21T19:06:49.722+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+3666:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+3751:2026-09-21T21:34:16.226+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+3752:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/.env
+3837:2026-09-21T21:34:30.882+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env
+3838:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v2/.env
+3923:2026-09-21T21:34:31.167+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env
+3924:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v3/.env
+4009:2026-09-21T21:34:32.830+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env
+4010:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:dev/.env
+4095:2026-09-21T21:34:33.113+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env
+4096:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:staging/.env
+4181:2026-09-21T21:34:33.397+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env
+4182:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+4279:2026-09-21T23:20:57.955+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+4280:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4380:2026-09-21T23:20:57.964+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4381:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4478:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4578:2026-09-21T23:20:57.968+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4579:2026-09-21T23:20:57.969+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4580:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4680:2026-09-21T23:20:57.980+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4681:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+4766:2026-09-22T04:16:02.161+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+4767:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/.env
+4852:2026-09-22T04:16:22.868+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env
+4853:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v2/.env
+4938:2026-09-22T04:16:23.132+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env
+4939:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v3/.env
+5024:2026-09-22T04:16:24.968+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env
+5025:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:dev/.env
+5110:2026-09-22T04:16:25.349+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env
+5111:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:staging/.env
+5196:2026-09-22T04:16:25.749+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env
+5197:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.git/config
+5282:2026-09-22T06:26:40.863+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config
+5283:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+5368:2026-09-22T06:27:26.092+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+5369:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+5454:2026-09-22T06:40:23.294+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+5455:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/.env
+5540:2026-09-22T06:40:36.298+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env
+5541:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v2/.env
+5626:2026-09-22T06:40:36.549+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env
+5627:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v3/.env
+5712:2026-09-22T06:40:38.024+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env
+5713:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:dev/.env
+5798:2026-09-22T06:40:38.274+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env
+5799:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:staging/.env
+5884:2026-09-22T06:40:38.525+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env
+5885:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+5970:2026-09-22T08:07:43.677+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+5971:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+6056:2026-09-22T09:57:24.305+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+6057:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env.local
+6142:2026-09-22T09:57:24.317+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env.local处理失败:找不到对应的处理服务:.env.local
+6143:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+6240:2026-09-22T10:27:23.371+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+6241:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6338:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6354:2026-09-22T10:27:23.399+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6439:2026-09-22T10:27:23.404+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6440:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6540:2026-09-22T10:27:23.441+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6541:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6642:2026-09-22T13:01:47.234+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+-- No entries --

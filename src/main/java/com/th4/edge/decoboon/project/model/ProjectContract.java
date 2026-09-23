@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.plan.model.ContractConstructionPlan;
+import com.th4.edge.decoboon.plan.model.ContractPaymentPlan;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.core.annotation.Note;
@@ -178,6 +180,14 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     @Note("签约成本是否完整")
     private Boolean costComplete;
 
+    @Transient
+    @Note("付款计划快照")
+    private ContractPaymentPlan paymentPlan;
+
+    @Transient
+    @Note("施工计划快照")
+    private ContractConstructionPlan constructionPlan;
+
     public Long getContractId() { return contractId; }
     public void setContractId(Long contractId) { this.contractId = contractId; }
     public Company getCompany() { return company; }
@@ -216,6 +226,10 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     public void setSignedCost(BigDecimal signedCost) { this.signedCost = signedCost; }
     public Boolean getCostComplete() { return costComplete; }
     public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
+    public ContractPaymentPlan getPaymentPlan() { return paymentPlan; }
+    public void setPaymentPlan(ContractPaymentPlan paymentPlan) { this.paymentPlan = paymentPlan; }
+    public ContractConstructionPlan getConstructionPlan() { return constructionPlan; }
+    public void setConstructionPlan(ContractConstructionPlan constructionPlan) { this.constructionPlan = constructionPlan; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

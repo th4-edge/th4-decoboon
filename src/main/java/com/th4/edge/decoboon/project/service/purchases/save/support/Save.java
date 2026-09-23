@@ -3,12 +3,18 @@ package com.th4.edge.decoboon.project.service.purchases.save.support;
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.project.configure.DeliveryMode;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.configure.MaterialSourceType;
+import com.th4.edge.decoboon.material.configure.SelectionStatus;
+import com.th4.edge.decoboon.material.model.MaterialSelection;
+import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
+import com.th4.edge.decoboon.project.model.PurchaseOrderItem;
+import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
@@ -73,6 +79,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
     private final ProjectAccessContext accessContext;
     private final ModelIdentityContext modelIdentityContext;
     private final ProjectPermissionContext permissionContext;
+    private final MaterialSelectionRepository materialSelectionRepository;
+    private final PurchaseOrderItemRepository purchaseItemRepository;
 
     public Save(MaterialPlanRepository materialPlanRepository,
                 ProjectContractRepository contractRepository,
@@ -81,7 +89,9 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
                 StoreRepository storeRepository,
                 ProjectAccessContext accessContext,
                 ModelIdentityContext modelIdentityContext,
-                ProjectPermissionContext permissionContext) {
+                ProjectPermissionContext permissionContext,
+                MaterialSelectionRepository materialSelectionRepository,
+                PurchaseOrderItemRepository purchaseItemRepository) {
         this.materialPlanRepository = materialPlanRepository;
         this.contractRepository = contractRepository;
         this.purchaseRepository = purchaseRepository;
@@ -90,6 +100,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         this.accessContext = accessContext;
         this.modelIdentityContext = modelIdentityContext;
         this.permissionContext = permissionContext;
+        this.materialSelectionRepository = materialSelectionRepository;
+        this.purchaseItemRepository = purchaseItemRepository;
     }
 
     @Override
@@ -105,6 +117,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         if (quantity.signum() <= 0 || unitPrice.signum() < 0) {
             throw new DefinedException(new DefaultErrorCode("400", "采购数量和单价不合法"));
         }
+        requireConfirmedSelection(plan);
         if (supplierId == null && (supplierName == null || supplierName.isBlank())) {
             throw new DefinedException(new DefaultErrorCode("400", "请选择供应商或填写供应商名称"));
         }
@@ -141,7 +154,53 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         request.setRemark(remark);
         plan.setStatus(MaterialPlanStatus.Requested);
         materialPlanRepository.save(plan);
-        return purchaseRepository.save(modelIdentityContext.prepare(request));
+        PurchaseOrder saved = purchaseRepository.save(modelIdentityContext.prepare(request));
+        saveItem(saved, plan, quantity, unitPrice, remark);
+        return saved;
+    }
+
+    /** 采购单明细：一采购单至少一条材料需求（多供应商拆单时同计划可有多条）。 */
+    private void saveItem(PurchaseOrder purchase, com.th4.edge.decoboon.project.model.MaterialPlan plan,
+                          BigDecimal quantity, BigDecimal unitPrice, String remark) {
+        PurchaseOrderItem item = new PurchaseOrderItem();
+        item.setCompany(purchase.getCompany());
+        item.setProperty(purchase.getProperty());
+        item.setProject(purchase.getProject());
+        item.setContract(purchase.getContract());
+        item.setPurchaseOrder(purchase);
+        item.setMaterialPlan(plan);
+        item.setStore(purchase.getStore());
+        item.setTeam(purchase.getTeam());
+        item.setOwner(purchase.getOwner());
+        item.setQuantity(quantity);
+        item.setUnit(purchase.getUnit());
+        item.setUnitPrice(unitPrice);
+        item.setAmount(quantity.multiply(unitPrice));
+        item.setReceivedQuantity(BigDecimal.ZERO);
+        item.setStatus(purchase.getStatus());
+        item.setPriceSource("采购单录入");
+        item.setRemark(remark);
+        purchaseItemRepository.save(modelIdentityContext.prepare(item));
+    }
+
+    /**
+     * 选材确认门禁（DEC-MP-05）：合同选材来源的计划行必须存在已确认的选材结果才能下单。
+     * 增减项来源的计划行在客户确认变更时生成，天然满足门禁。
+     */
+    private void requireConfirmedSelection(com.th4.edge.decoboon.project.model.MaterialPlan plan) {
+        if (plan.getSourceType() != MaterialSourceType.Selection) {
+            return;
+        }
+        MaterialSelection selection = plan.getSelection();
+        if (selection == null && plan.getContractLine() != null && plan.getCompany() != null) {
+            selection = materialSelectionRepository
+                    .findFirstByCompany_ComIdAndSourceContractLine_LineIdOrderByVersionDesc(
+                            plan.getCompany().getComId(), plan.getContractLine().getLineId())
+                    .orElse(null);
+        }
+        if (selection == null || selection.getStatus() != SelectionStatus.Confirmed) {
+            throw new DefinedException(new DefaultErrorCode("400", "该材料尚未完成客户选材确认，确认后方可下单"));
+        }
     }
 
     private Partner resolveSupplier(Employee current, Long supplierId, String supplierName) {

@@ -1,0 +1,347 @@
+{
+  "collectedAt": "2026-09-23T05:01:04.735202+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-09-23/20260923-130103",
+  "counts": {
+    "unknown": 66,
+    "expected": 60
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20260923-e3deff3d62",
+      "signature": "不能操作自己的员工记录",
+      "signatureHash": "e3deff3d62",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 9,
+      "firstSeen": "2026-09-22T16:13:08.704+08:00",
+      "lastSeen": "2026-09-22T16:19:11.447+08:00",
+      "samples": [
+        "7259:2026-09-22T16:13:08.704+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/resign处理失败:不能操作自己的员工记录",
+        "7378:2026-09-22T16:13:12.827+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/suspend处理失败:不能操作自己的员工记录",
+        "7608:2026-09-22T16:14:22.240+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录",
+        "7719:2026-09-22T16:14:24.833+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录",
+        "7830:2026-09-22T16:14:27.127+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-be3b1b0eae",
+      "signature": "企业唯一负责人不能退出，请先转让负责人",
+      "signatureHash": "be3b1b0eae",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 11,
+      "firstSeen": "2026-09-22T16:13:26.543+08:00",
+      "lastSeen": "2026-09-22T16:19:06.499+08:00",
+      "samples": [
+        "7497:2026-09-22T16:13:26.543+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:企业唯一负责人不能退出，请先转让负责人",
+        "8292:2026-09-22T16:19:03.716+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:企业唯一负责人不能退出，请先转让负责人",
+        "8411:2026-09-22T16:19:04.969+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:企业唯一负责人不能退出，请先转让负责人",
+        "8530:2026-09-22T16:19:05.220+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:企业唯一负责人不能退出，请先转让负责人",
+        "8649:2026-09-22T16:19:05.400+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:企业唯一负责人不能退出，请先转让负责人"
+      ],
+      "reportPaths": [
+        "2026-09-23/20260923-130103"
+      ]
+    },
+    {
+      "incidentId": "INC-20260923-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 7,
+      "firstSeen": "2026-09-21T21:34:16.226+08:00",
+      "lastSeen": "2026-09-23T12:42:05.453+08:00",
+      "samples": [
+        "[2026-09-23 12:42:05.453] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "3751:2026-09-21T21:34:16.226+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "4766:2026-09-22T04:16:02.161+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "5368:2026-09-22T06:27:26.092+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "5454:2026-09-22T06:40:23.294+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-277e6d5984",
+      "signature": "找不到对应的处理服务:.env.local",
+      "signatureHash": "277e6d5984",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 1,
+      "firstSeen": "2026-09-22T09:57:24.317+08:00",
+      "lastSeen": "2026-09-22T09:57:24.317+08:00",
+      "samples": [
+        "6142:2026-09-22T09:57:24.317+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env.local处理失败:找不到对应的处理服务:.env.local"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-8f4d3f4876",
+      "signature": "找不到对应的处理服务:.git/config",
+      "signatureHash": "8f4d3f4876",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-22T06:26:40.863+08:00",
+      "lastSeen": "2026-09-23T12:42:45.454+08:00",
+      "samples": [
+        "[2026-09-23 12:42:45.454] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .git/config处理失败:找不到对应的处理服务:.git/config",
+        "5282:2026-09-22T06:26:40.863+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config",
+        "12054:2026-09-23T12:42:45.454+08:00 ERROR 63746 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-0cd74dd730",
+      "signature": "找不到对应的处理服务:auth/signin",
+      "signatureHash": "0cd74dd730",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 12,
+      "firstSeen": "2026-09-21T14:04:41.584+08:00",
+      "lastSeen": "2026-09-21T14:04:48.401+08:00",
+      "samples": [
+        "1615:2026-09-21T14:04:41.584+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1701:2026-09-21T14:04:42.798+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1787:2026-09-21T14:04:43.037+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1873:2026-09-21T14:04:43.443+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin",
+        "1959:2026-09-21T14:04:44.724+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/signin处理失败:找不到对应的处理服务:auth/signin"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-c50a9523db",
+      "signature": "找不到对应的处理服务:dev/.env",
+      "signatureHash": "c50a9523db",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-21T21:34:33.113+08:00",
+      "lastSeen": "2026-09-22T06:40:38.274+08:00",
+      "samples": [
+        "4095:2026-09-21T21:34:33.113+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
+        "5110:2026-09-22T04:16:25.349+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
+        "5798:2026-09-22T06:40:38.274+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-22T08:07:43.677+08:00",
+      "lastSeen": "2026-09-22T20:33:36.877+08:00",
+      "samples": [
+        "5970:2026-09-22T08:07:43.677+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "11297:2026-09-22T18:56:56.044+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "11383:2026-09-22T20:33:36.877+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-e4bbca461d",
+      "signature": "找不到对应的处理服务:staging/.env",
+      "signatureHash": "e4bbca461d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-21T21:34:33.397+08:00",
+      "lastSeen": "2026-09-22T06:40:38.525+08:00",
+      "samples": [
+        "4181:2026-09-21T21:34:33.397+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
+        "5196:2026-09-22T04:16:25.749+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
+        "5884:2026-09-22T06:40:38.525+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-416878e316",
+      "signature": "找不到对应的处理服务:v1/.env",
+      "signatureHash": "416878e316",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-21T21:34:30.882+08:00",
+      "lastSeen": "2026-09-22T06:40:36.298+08:00",
+      "samples": [
+        "3837:2026-09-21T21:34:30.882+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "4852:2026-09-22T04:16:22.868+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "5540:2026-09-22T06:40:36.298+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-e359a7a32a",
+      "signature": "找不到对应的处理服务:v2/.env",
+      "signatureHash": "e359a7a32a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-21T21:34:31.167+08:00",
+      "lastSeen": "2026-09-22T06:40:36.549+08:00",
+      "samples": [
+        "3923:2026-09-21T21:34:31.167+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
+        "4938:2026-09-22T04:16:23.132+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
+        "5626:2026-09-22T06:40:36.549+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-7cc2b644b1",
+      "signature": "找不到对应的处理服务:v3/.env",
+      "signatureHash": "7cc2b644b1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-21T21:34:32.830+08:00",
+      "lastSeen": "2026-09-22T06:40:38.024+08:00",
+      "samples": [
+        "4009:2026-09-21T21:34:32.830+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
+        "5024:2026-09-22T04:16:24.968+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
+        "5712:2026-09-22T06:40:38.024+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-dfb2d5ba8f",
+      "signature": "找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+      "signatureHash": "dfb2d5ba8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-21T08:19:35.388+08:00",
+      "lastSeen": "2026-09-21T08:19:35.388+08:00",
+      "samples": [
+        "1529:2026-09-21T08:19:35.388+08:00 ERROR 63746 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-b0d2dae5eb",
+      "signature": "接受邀请后 30 天内不能再次加入企业",
+      "signatureHash": "b0d2dae5eb",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 8,
+      "firstSeen": "2026-09-22T16:32:14.014+08:00",
+      "lastSeen": "2026-09-22T16:35:16.226+08:00",
+      "samples": [
+        "9808:2026-09-22T16:32:14.014+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:接受邀请后 30 天内不能再次加入企业",
+        "9922:2026-09-22T16:32:23.925+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:接受邀请后 30 天内不能再次加入企业",
+        "10036:2026-09-22T16:32:29.268+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:接受邀请后 30 天内不能再次加入企业",
+        "10150:2026-09-22T16:32:33.124+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:接受邀请后 30 天内不能再次加入企业",
+        "10264:2026-09-22T16:32:36.624+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:接受邀请后 30 天内不能再次加入企业"
+      ],
+      "reportPaths": [
+        "2026-09-23/20260923-130103"
+      ]
+    },
+    {
+      "incidentId": "INC-20260923-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-21T23:20:57.955+08:00",
+      "lastSeen": "2026-09-22T16:11:42.419+08:00",
+      "samples": [
+        "4279:2026-09-21T23:20:57.955+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "6240:2026-09-22T10:27:23.371+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "6740:2026-09-22T16:11:42.419+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 48,
+      "firstSeen": "2026-09-21T05:06:40.585+08:00",
+      "lastSeen": "2026-09-23T13:01:04.579+08:00",
+      "samples": [
+        "[2026-09-23 12:03:49.753] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-23 12:03:49.771] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-23 12:03:49.771] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-23 12:03:49.780] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-23 12:03:49.792] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260923-383889c580",
+      "signature": "该手机号已有待接受邀请",
+      "signatureHash": "383889c580",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-22T16:17:26.992+08:00",
+      "lastSeen": "2026-09-22T16:17:26.992+08:00",
+      "samples": [
+        "8173:2026-09-22T16:17:26.992+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请"
+      ],
+      "reportPaths": [
+        "2026-09-23/20260923-130103"
+      ]
+    },
+    {
+      "incidentId": "INC-20260923-3470d63bd2",
+      "signature": "首次登录请授权手机号",
+      "signatureHash": "3470d63bd2",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 4,
+      "firstSeen": "2026-09-21T05:15:05.529+08:00",
+      "lastSeen": "2026-09-22T16:36:04.092+08:00",
+      "samples": [
+        "1443:2026-09-21T05:15:05.529+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号",
+        "3665:2026-09-21T19:06:49.722+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号",
+        "9694:2026-09-22T16:31:32.178+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号",
+        "10712:2026-09-22T16:36:04.092+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

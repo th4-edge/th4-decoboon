@@ -1,0 +1,38 @@
+{
+  "request": "REQ-20260922-CUSTOMER-MEASURE-METRIC",
+  "targeted": {
+    "command": "mvn -o -q -DforkCount=0 -Dtest=CustomerOverviewContextTest test",
+    "status": "PASS",
+    "coverage": [
+      "measureCustomer replaces riskCustomer",
+      "Measure.scheduledAt counted",
+      "historical measureTime fallback counted",
+      "Cancelled excluded",
+      "customer-level deduplication",
+      "today/yesterday/last7Days/month appointment windows",
+      "month completed and unassigned subtext"
+    ]
+  },
+  "isolated_regression": {
+    "known_exclusions": [
+      "BossMeasureWorkspace2AcceptanceTest: already-open BLOCK defects from measure workbench 2.0",
+      "ProviderSecurityAcceptanceTest: route total expected 280 but actual 279; unrelated baseline drift"
+    ],
+    "command": "mvn -o -q -DforkCount=0 '-Dtest=!BossMeasureWorkspace2AcceptanceTest,!ProviderSecurityAcceptanceTest' test",
+    "status": "PASS",
+    "suites": 78,
+    "tests": 240,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "app_type_check": "PASS",
+  "app_release_build": {
+    "status": "PASS",
+    "main_bytes": 616698,
+    "max_subpackage_bytes": 302211,
+    "total_bytes": 2068482,
+    "subpackages": 14,
+    "pages": 87
+  }
+}

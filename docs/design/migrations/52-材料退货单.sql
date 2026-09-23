@@ -1,0 +1,58 @@
+-- 52-材料退货单.sql
+-- 依据 DEC-MP-02：已到货材料的扣减必须走退货单，再冲减应付与已确认成本，禁止直接修改应付金额。
+-- 适用：MySQL 8.0+
+
+CREATE TABLE IF NOT EXISTS db_material_return (
+  material_return_id BIGINT        NOT NULL COMMENT '退货单索引',
+  create_date        INT           NULL,
+  create_date_time   BIGINT        NULL,
+  create_day         INT           NULL,
+  create_hour        INT           NULL,
+  create_minute      INT           NULL,
+  create_month       INT           NULL,
+  create_second      INT           NULL,
+  create_time        INT           NULL,
+  create_week        TINYINT       NULL,
+  create_year        INT           NULL,
+  update_date        INT           NULL,
+  update_date_time   BIGINT        NULL,
+  update_day         INT           NULL,
+  update_hour        INT           NULL,
+  update_minute      INT           NULL,
+  update_month       INT           NULL,
+  update_second      INT           NULL,
+  update_time        INT           NULL,
+  update_week        TINYINT       NULL,
+  update_year        INT           NULL,
+  amount             DECIMAL(14,2) NOT NULL COMMENT '退货金额（冲减应付与成本）',
+  no                 VARCHAR(64)   NULL COMMENT '退货单号',
+  quantity           DECIMAL(12,3) NOT NULL COMMENT '退货数量',
+  reason             VARCHAR(500)  NULL COMMENT '退货原因/来源说明',
+  remark             VARCHAR(500)  NULL COMMENT '备注（含待协商说明）',
+  returned_at        DATE          NULL COMMENT '退货日期',
+  status             ENUM('Pending','Confirmed','Cancelled') NOT NULL COMMENT '退货状态',
+  unit               ENUM('Area','Block','Centimeter','Count','Grid','Hole','House','Item',
+                          'Metre','Pcs','Place','Plate','Root','Set','Sheet','Step','Stick') NOT NULL COMMENT '单位',
+  unit_price         DECIMAL(12,2) NOT NULL COMMENT '退货单价',
+  com_id             BIGINT        NOT NULL COMMENT '所属企业',
+  creator_id         BIGINT        NOT NULL COMMENT '创建人',
+  material_plan_id   BIGINT        NOT NULL COMMENT '来源材料计划',
+  owner_id           BIGINT        NULL COMMENT '经营负责人',
+  project_id         BIGINT        NOT NULL COMMENT '所属项目',
+  property_id        BIGINT        NOT NULL COMMENT '所属房屋',
+  purchase_order_id  BIGINT        NULL COMMENT '来源采购单',
+  store_id           BIGINT        NULL COMMENT '所属门店',
+  supplier_id        BIGINT        NULL COMMENT '供应商',
+  team_id            BIGINT        NULL COMMENT '所属团队',
+  PRIMARY KEY (material_return_id),
+  KEY idx_material_return_company (com_id, material_return_id),
+  KEY idx_material_return_company_project (com_id, project_id, material_return_id),
+  KEY idx_material_return_company_plan (com_id, material_plan_id, material_return_id),
+  KEY idx_material_return_company_purchase (com_id, purchase_order_id, material_return_id),
+  KEY idx_material_return_company_store (com_id, store_id, material_return_id),
+  KEY idx_material_return_company_team (com_id, team_id, material_return_id),
+  KEY idx_material_return_company_owner (com_id, owner_id, material_return_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='材料退货单';
+
+-- 回滚（人工确认后执行）：
+-- DROP TABLE IF EXISTS db_material_return;

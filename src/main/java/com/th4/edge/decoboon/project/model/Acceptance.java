@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
+import com.th4.edge.decoboon.project.configure.AcceptanceRectificationType;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jpa.annotation.Model;
 import com.th4.edge.tenant.user.access.annotation.DataPermission;
@@ -132,6 +133,18 @@ public class Acceptance extends AuditModel implements ProjectOwned {
     @Note("整改截止日期")
     private LocalDate rectificationDueDate;
 
+    @Note("整改类型")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 24)
+    private AcceptanceRectificationType rectificationType;
+
+    @Note("业主提出的整改问题图片")
+    @ElementCollection
+    @CollectionTable(name = "db_acceptance_rectification_issue_image",
+            joinColumns = @JoinColumn(name = "acceptance_id"))
+    @Column(name = "url", length = 512)
+    private List<String> rectificationIssueImages;
+
     @Note("确认时间")
     private LocalDateTime confirmedAt;
 
@@ -218,6 +231,22 @@ public class Acceptance extends AuditModel implements ProjectOwned {
 
     public void setRectificationDueDate(LocalDate rectificationDueDate) {
         this.rectificationDueDate = rectificationDueDate;
+    }
+
+    public AcceptanceRectificationType getRectificationType() {
+        return rectificationType;
+    }
+
+    public void setRectificationType(AcceptanceRectificationType rectificationType) {
+        this.rectificationType = rectificationType;
+    }
+
+    public List<String> getRectificationIssueImages() {
+        return rectificationIssueImages;
+    }
+
+    public void setRectificationIssueImages(List<String> rectificationIssueImages) {
+        this.rectificationIssueImages = rectificationIssueImages;
     }
 
     public LocalDateTime getConfirmedAt() {

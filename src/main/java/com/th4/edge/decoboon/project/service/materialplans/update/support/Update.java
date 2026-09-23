@@ -71,7 +71,7 @@ public class Update implements com.th4.edge.decoboon.project.service.materialpla
         Employee current = accessContext.requireEmployee(employee);
         if (current.getRole() != EmployeeRole.Boss
                 && current.getRole() != EmployeeRole.Pm
-                && current.getRole() != EmployeeRole.ProjectSupport) {
+                && current.getRole() != EmployeeRole.Finance) {
             throw new DefinedException(new DefaultErrorCode("403", "当前角色无权推进材料计划"));
         }
         MaterialPlan plan = materialPlanRepository.findOne(((Specification<MaterialPlan>) (root, query, builder) -> builder.equal(root.get("planId"), planId)).and(accessContext.visibleChild(employee, MaterialPlan.class, "project")))

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "code": "STANDARD_30_40_30",
+      "name": "标准 30/40/30",
+      "description": "签约、开工、竣工三段式，适合常规住宅整装项目。",
+      "sort": 1,
+      "nodes": [
+        {"code": "SIGN_30", "name": "合同签约款", "ratio": 0.30, "type": "First", "triggerType": "ContractSigned", "triggerStageCode": null, "offsetDays": 0, "sort": 1},
+        {"code": "START_40", "name": "项目开工款", "ratio": 0.40, "type": "Progress", "triggerType": "StageStarted", "triggerStageCode": "PREPARE", "offsetDays": 0, "sort": 2},
+        {"code": "FINAL_30", "name": "竣工尾款", "ratio": 0.30, "type": "Final", "triggerType": "ProjectFinished", "triggerStageCode": "COMPLETION", "offsetDays": 0, "sort": 3}
+      ]
+    },
+    {
+      "code": "PROGRESS_4_STAGE",
+      "name": "四段节点收款",
+      "description": "签约、水电验收、泥木验收、竣工四段，适合重视里程碑验收的企业。",
+      "sort": 2,
+      "nodes": [
+        {"code": "SIGN_30", "name": "合同签约款", "ratio": 0.30, "type": "First", "triggerType": "ContractSigned", "triggerStageCode": null, "offsetDays": 0, "sort": 1},
+        {"code": "WATER_25", "name": "水电验收款", "ratio": 0.25, "type": "Progress", "triggerType": "StageAccepted", "triggerStageCode": "WATER_ELECTRIC", "offsetDays": 0, "sort": 2},
+        {"code": "MASONRY_25", "name": "泥木验收款", "ratio": 0.25, "type": "Progress", "triggerType": "StageAccepted", "triggerStageCode": "MASONRY", "offsetDays": 0, "sort": 3},
+        {"code": "FINAL_20", "name": "竣工尾款", "ratio": 0.20, "type": "Final", "triggerType": "ProjectFinished", "triggerStageCode": "COMPLETION", "offsetDays": 0, "sort": 4}
+      ]
+    },
+    {
+      "code": "FIRST_FINAL_50_50",
+      "name": "签约与竣工 50/50",
+      "description": "节点最少，适合短周期或商务条件简化的项目。",
+      "sort": 3,
+      "nodes": [
+        {"code": "SIGN_50", "name": "合同签约款", "ratio": 0.50, "type": "First", "triggerType": "ContractSigned", "triggerStageCode": null, "offsetDays": 0, "sort": 1},
+        {"code": "FINAL_50", "name": "竣工尾款", "ratio": 0.50, "type": "Final", "triggerType": "ProjectFinished", "triggerStageCode": "COMPLETION", "offsetDays": 0, "sort": 2}
+      ]
+    }
+  ]
+}

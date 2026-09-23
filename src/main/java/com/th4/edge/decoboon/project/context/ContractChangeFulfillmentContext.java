@@ -1,10 +1,14 @@
 package com.th4.edge.decoboon.project.context;
 
+import com.th4.edge.decoboon.quote.model.QuoteLine;
+import com.th4.edge.decoboon.common.support.CraftText;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
 import com.th4.edge.decoboon.project.configure.ContractChangeType;
+import com.th4.edge.decoboon.material.context.MaterialCategoryContext;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.configure.MaterialSourceType;
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
@@ -12,6 +16,7 @@ import com.th4.edge.decoboon.project.model.ContractChange;
 import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.decoboon.project.model.ContractLine;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
+import com.th4.edge.decoboon.project.model.MaterialReturn;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectReport;
 import com.th4.edge.decoboon.project.model.ProjectStage;
@@ -49,19 +54,28 @@ public class ContractChangeFulfillmentContext {
     private final MaterialPlanRepository materialPlanRepository;
     private final ProjectReportRepository reportRepository;
     private final ProjectPermissionContext permissionContext;
+    private final MaterialPlanContext materialPlanContext;
+    private final MaterialDeductionContext materialDeductionContext;
+    private final MaterialCategoryContext materialCategoryContext;
 
     public ContractChangeFulfillmentContext(ContractChangeItemRepository itemRepository,
                                             ProjectStageRepository stageRepository,
                                             ProjectTaskRepository taskRepository,
                                             MaterialPlanRepository materialPlanRepository,
                                             ProjectReportRepository reportRepository,
-                                            ProjectPermissionContext permissionContext) {
+                                            ProjectPermissionContext permissionContext,
+                                            MaterialPlanContext materialPlanContext,
+                                            MaterialDeductionContext materialDeductionContext,
+                                            MaterialCategoryContext materialCategoryContext) {
         this.itemRepository = itemRepository;
         this.stageRepository = stageRepository;
         this.taskRepository = taskRepository;
         this.materialPlanRepository = materialPlanRepository;
         this.reportRepository = reportRepository;
         this.permissionContext = permissionContext;
+        this.materialPlanContext = materialPlanContext;
+        this.materialDeductionContext = materialDeductionContext;
+        this.materialCategoryContext = materialCategoryContext;
     }
 
     @Transactional
@@ -176,9 +190,10 @@ public class ContractChangeFulfillmentContext {
         task.setChangeItem(item);
         task.setName(change.getNo() + " · " + item.getName());
         task.setZone(source == null ? null : source.getSpaceName());
-        task.setCraft(source == null || source.getSourceQuoteLine() == null
-                ? null : source.getSourceQuoteLine().getCatalogItem() == null ? null
-                : source.getSourceQuoteLine().getCatalogItem().getCraft());
+        // 施工工艺以报价行冻结的快照为准，历史行缺快照时兜底材料库主数据。
+        QuoteLine craftSource = source == null ? null : source.getSourceQuoteLine();
+        task.setCraft(craftSource == null ? null : CraftText.firstNonBlank(craftSource.getCraft(),
+                craftSource.getCatalogItem() == null ? null : craftSource.getCatalogItem().getCraft()));
         task.setSpec(source == null ? null : source.getSpec());
         task.setUnit(source == null ? Unit.Area : source.getUnit());
         task.setStatus(TaskStatus.Todo);
@@ -197,11 +212,20 @@ public class ContractChangeFulfillmentContext {
         MaterialPlan existing = findMaterial(materials, item.getSourceLine());
         ContractChangeType type = item.getChangeType();
         if (type == ContractChangeType.Remove) {
-            if (existing != null && canAdjustMaterial(existing.getStatus())) {
-                existing.setStatus(MaterialPlanStatus.Closed);
-                materialPlanRepository.save(existing);
-            } else {
-                report(change, project, operator, item, "材料已进入采购或到场，保留原事实并记录取消差异");
+            if (existing == null) {
+                report(change, project, operator, item, "取消范围未找到原材料计划，已记录差异");
+                return;
+            }
+            // DEC-MP-02：已到货走退货单、已下单调整采购单、未下单直接冲减（先冲损耗再冲净用量）
+            BigDecimal reduceQuantity = value(existing.getQuantity());
+            if (reduceQuantity.signum() <= 0) {
+                reduceQuantity = value(item.getOldQuantity());
+            }
+            List<MaterialReturn> returns = materialDeductionContext.reduce(
+                    existing, reduceQuantity, "合同变更减项", operator);
+            if (!returns.isEmpty()) {
+                report(change, project, operator, item,
+                        "材料已到货，生成退货单并冲减应付与成本（共 " + returns.size() + " 张）");
             }
             return;
         }
@@ -214,33 +238,60 @@ public class ContractChangeFulfillmentContext {
                 report(change, project, operator, item, "材料已采购，保留原计划并生成替代材料需求");
             }
             MaterialPlan replacement = newMaterial(change, item, project, operator);
+            replacement.setSourceType(MaterialSourceType.ChangeAdd);
             replacement.setQuantity(quantityForReplacement(item));
+            replacement.setNetQuantity(replacement.getQuantity());
             replacement.setUnitPrice(unitPrice(item, null));
             replacement.setCost(fullCost(item));
+            materialPlanContext.applyLossRate(replacement, categoryLoss(project, item));
+            materialPlanContext.applyDerived(replacement);
             materialPlanRepository.save(replacement);
             materials.add(replacement);
             return;
         }
 
-        if ((type == ContractChangeType.Quantity || type == ContractChangeType.Price)
-                && existing != null && canAdjustMaterial(existing.getStatus())) {
+        if ((type == ContractChangeType.Quantity || type == ContractChangeType.Price) && existing != null) {
             if (item.getNewQuantity() != null && item.getNewQuantity().signum() >= 0) {
-                existing.setQuantity(item.getNewQuantity());
+                BigDecimal current = value(existing.getQuantity());
+                BigDecimal target = item.getNewQuantity();
+                if (target.compareTo(current) < 0) {
+                    // 减少数量：已下单/已到货部分按采购调整或退货冲减，未下单部分直接冲减
+                    materialDeductionContext.reduce(existing, current.subtract(target),
+                            "合同变更减少数量", operator);
+                } else if (target.compareTo(current) > 0) {
+                    existing.setNetQuantity(value(existing.getNetQuantity()).add(target.subtract(current)));
+                    materialPlanContext.applyDerived(existing);
+                    materialPlanRepository.save(existing);
+                }
             }
             if (item.getNewPrice() != null && item.getNewPrice().signum() >= 0) {
                 existing.setUnitPrice(item.getNewPrice());
             }
             existing.setCost(value(existing.getCost()).add(value(item.getCostDelta())));
+            materialPlanContext.applyDerived(existing);
             materialPlanRepository.save(existing);
             return;
         }
 
         MaterialPlan plan = newMaterial(change, item, project, operator);
-        plan.setQuantity(type == ContractChangeType.Add ? quantityForReplacement(item) : quantityDelta(item));
+        plan.setSourceType(type == ContractChangeType.Remove
+                ? MaterialSourceType.ChangeReduce : MaterialSourceType.ChangeAdd);
+        plan.setQuantity(type == ContractChangeType.Add || type == ContractChangeType.Replace
+                ? quantityForReplacement(item) : quantityDelta(item));
+        plan.setNetQuantity(plan.getQuantity());
         plan.setUnitPrice(unitPrice(item, existing));
         plan.setCost(value(item.getCostDelta()));
+        materialPlanContext.applyLossRate(plan, categoryLoss(project, item));
+        materialPlanContext.applyDerived(plan);
         materialPlanRepository.save(plan);
         materials.add(plan);
+    }
+
+    /** 按变更来源的主材分类解析默认损耗率（DEC-MP-09）。 */
+    private java.math.BigDecimal categoryLoss(Project project, ContractChangeItem item) {
+        ContractLine source = item == null ? null : item.getSourceLine();
+        String category = source == null ? null : source.getCategory();
+        return materialCategoryContext.lossRate(project == null ? null : project.getCompany(), category);
     }
 
     private MaterialPlan newMaterial(ContractChange change, ContractChangeItem item, Project project,
@@ -257,7 +308,10 @@ public class ContractChangeFulfillmentContext {
         plan.setCatalogItem(source == null || source.getSourceQuoteLine() == null
                 ? null : source.getSourceQuoteLine().getCatalogItem());
         plan.setUnit(source == null ? Unit.Area : source.getUnit());
-        plan.setStatus(MaterialPlanStatus.Planned);
+        plan.setSelectedBrand(source == null ? null : source.getBrand());
+        plan.setSelectedSpec(source == null ? null : source.getSpec());
+        plan.setSourceType(MaterialSourceType.ChangeAdd);
+        plan.setStatus(MaterialPlanStatus.ReadyToOrder);
         plan.setRequiredAt(project.getStartDate() == null ? LocalDate.now() : project.getStartDate());
         return plan;
     }
@@ -288,6 +342,7 @@ public class ContractChangeFulfillmentContext {
 
     private boolean canAdjustMaterial(MaterialPlanStatus status) {
         return status == MaterialPlanStatus.Planned
+                || status == MaterialPlanStatus.ReadyToOrder
                 || status == MaterialPlanStatus.Requested
                 || status == MaterialPlanStatus.Approved;
     }

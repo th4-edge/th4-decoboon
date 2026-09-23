@@ -104,9 +104,9 @@ public class Save implements com.th4.edge.decoboon.project.service.projects.save
         if (manager != null && manager.getRole() != EmployeeRole.Pm && manager.getRole() != EmployeeRole.Boss) {
             throw new DefinedException(new DefaultErrorCode("400", "项目经理必须为项目经理角色"));
         }
-        if (support != null && support.getRole() != EmployeeRole.ProjectSupport
+        if (support != null && support.getRole() != EmployeeRole.Finance
                 && support.getRole() != EmployeeRole.Boss) {
-            throw new DefinedException(new DefaultErrorCode("400", "履约专员必须为履约专员角色"));
+            throw new DefinedException(new DefaultErrorCode("400", "履约负责人必须为财务角色或企业负责人"));
         }
 
         Project draft = new Project();

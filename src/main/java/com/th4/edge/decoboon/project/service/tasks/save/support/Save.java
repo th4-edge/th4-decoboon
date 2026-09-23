@@ -3,7 +3,9 @@ package com.th4.edge.decoboon.project.service.tasks.save.support;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.SpaceType;
+import com.th4.edge.decoboon.project.configure.TaskStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
@@ -101,6 +103,7 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
     private final EmployeeRepository employeeRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
+    private final ProjectContext projectContext;
 
     public Save(ProjectRepository projectRepository,
                 ProjectStageRepository stageRepository,
@@ -108,7 +111,8 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
                 CatalogItemRepository catalogItemRepository,
                 EmployeeRepository employeeRepository,
                 ProjectAccessContext accessContext,
-                ProjectPermissionContext permissionContext) {
+                ProjectPermissionContext permissionContext,
+                ProjectContext projectContext) {
         this.projectRepository = projectRepository;
         this.stageRepository = stageRepository;
         this.taskRepository = taskRepository;
@@ -116,6 +120,7 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
         this.employeeRepository = employeeRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
+        this.projectContext = projectContext;
     }
 
     @Override
@@ -161,6 +166,9 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
         if (spec != null) task.setSpec(spec);
         task.setCompany(current.getCompany());
         task.setProject(project);
+        // ProjectTask.property 为非空列：新建任务必须显式带上项目房屋，
+        // 否则真实排期接口在落库时抛 not-null 约束错误（DEF-PROJ37-005）。
+        task.setProperty(project.getProperty());
         task.setStage(stage);
         permissionContext.apply(task, project);
         task.setZone(resolveZone(zoneId));
@@ -173,7 +181,36 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
         Employee owner = ownerId == null ? project.getManager() : employeeRepository.findByEmpIdAndCompany_ComId(ownerId, current.getCompany().getComId());
         task.setOwner(owner);
         if (task.getEvidenceUrls() == null) task.setEvidenceUrls(new ArrayList<>());
-        return taskRepository.save(task);
+        if (task.getTaskId() == null) {
+            requireNotDispatched(project, stage, task);
+        }
+        ProjectTask saved = taskRepository.save(task);
+        // 排期即计划：任务计划起止变化后按排期重算阶段/项目计划并回写合同施工计划快照。
+        projectContext.recalculatePlanFromSchedule(project);
+        return saved;
+    }
+
+    /**
+     * 任务下发去重：同一「项目 × 阶段 × 区域 × 工艺任务」只允许一条未取消的任务。
+     *
+     * <p>历史缺陷：设计师排期可重复下发同一条工艺，产生多条重复任务（BUG-TASK-DUPLICATE-DISPATCH）。
+     * 需要追加数量时应在原任务上编辑，而不是再次下发。</p>
+     */
+    private void requireNotDispatched(Project project, ProjectStage stage, ProjectTask task) {
+        if (task.getCatalogItem() == null || task.getCatalogItem().getItemId() == null) {
+            return;
+        }
+        boolean duplicated = taskRepository
+                .findByProject_ProjectIdAndStage_StageIdAndCatalogItem_ItemId(
+                        project.getProjectId(), stage.getStageId(), task.getCatalogItem().getItemId())
+                .stream()
+                .anyMatch(existing -> existing.getStatus() != TaskStatus.Cancelled
+                        && java.util.Objects.equals(existing.getZone(), task.getZone()));
+        if (duplicated) {
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "该工艺任务已在「" + stage.getName() + " · " + (task.getZone() == null ? "未指定区域" : task.getZone())
+                            + "」下发过，请在原任务上调整数量，不要重复下发"));
+        }
     }
 
     private String resolveZone(String value) {

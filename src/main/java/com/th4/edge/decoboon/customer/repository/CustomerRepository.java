@@ -20,8 +20,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     List<Customer> findByCompany_ComId(Long comId);
 
+    List<Customer> findTop200ByCompany_ComIdOrderByCustIdDesc(Long comId);
+
     List<Customer> findByCompany_ComIdAndOwner_EmpId(Long comId, Long empId);
     List<Customer> findByCompany_ComIdAndDesigner_EmpId(Long comId, Long empId);
+    Optional<Customer> findByCustIdAndCompany_ComIdAndDesigner_EmpId(Long custId, Long comId, Long empId);
 
     List<Customer> findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(Long comId, Long storeId);
 

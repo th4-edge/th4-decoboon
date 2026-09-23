@@ -46,6 +46,9 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
     private Long propertyId;
 
     @AutoInject
+    private Long targetPropertyId;
+
+    @AutoInject
     private Long ownerId;
 
     @AutoInject
@@ -103,7 +106,11 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
         design.setStatus(DesignStatus.Draft);
         design.setArea(request.getArea() == null || request.getArea().signum() <= 0
                 ? customer.getArea() : request.getArea());
-        Property property = propertyContext.resolve(propertyId, customer, current);
+        Long resolvedPropertyId = targetPropertyId != null ? targetPropertyId : propertyId;
+        if (resolvedPropertyId == null && request.getProperty() != null) {
+            resolvedPropertyId = request.getProperty().getPropertyId();
+        }
+        Property property = propertyContext.resolve(resolvedPropertyId, customer, current);
         designContext.requirePropertyOpen(property);
         designContext.apply(design, customer, owner, property);
         Design saved = designRepository.save(design);

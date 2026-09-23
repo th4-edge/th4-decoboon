@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.quote.context;
 
+import com.th4.edge.decoboon.common.support.CraftText;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
 import com.th4.edge.decoboon.design.model.Design;
@@ -182,6 +183,7 @@ public class HybridQuoteBuilder {
         line.setProperty(quote.getProperty());
         line.setPackageLine(packageLine);
         line.setCatalogItem(packageLine.getItem());
+        line.setCraft(packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
         line.setType(packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
         line.setCategory(packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
         line.setName(packageLine.getName());
@@ -276,6 +278,8 @@ public class HybridQuoteBuilder {
         line.setAmount(money(unitSale.multiply(quantity).multiply(sign)));
         line.setCost(money(unitCost.multiply(quantity).multiply(sign)));
         line.setFormula("设计数量差异");
+        line.setCraft(CraftText.firstNonBlank(designItem.getCraft(),
+                designItem.getCatalogItem() == null ? null : designItem.getCatalogItem().getCraft()));
         line.setSort(sort + 10000);
         return line;
     }
@@ -313,6 +317,8 @@ public class HybridQuoteBuilder {
                 zero(designItem.getMaterialPrice()), zero(designItem.getManualPrice()), zero(designItem.getCost()),
                 designItem.getFormula()));
         line.setFormula("设计新增项目");
+        line.setCraft(CraftText.firstNonBlank(designItem.getCraft(),
+                designItem.getCatalogItem() == null ? null : designItem.getCatalogItem().getCraft()));
         line.setSort(sort);
         return line;
     }

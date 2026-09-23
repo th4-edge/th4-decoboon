@@ -1,0 +1,8 @@
+{
+  "success": false,
+  "errorCode": {
+    "code": "400",
+    "message": "该阶段已有待确认验收单",
+    "system": false
+  }
+}

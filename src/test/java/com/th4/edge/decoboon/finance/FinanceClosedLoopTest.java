@@ -8,7 +8,11 @@ import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
+import com.th4.edge.decoboon.document.context.VoucherContext;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
+import com.th4.edge.decoboon.labor.configure.WorkerStatus;
+import com.th4.edge.decoboon.labor.model.Worker;
+import com.th4.edge.decoboon.labor.repository.WorkerRepository;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
@@ -58,6 +62,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
         "th4.edge.components.wechat.pay.enabled=false",
         "spring.main.banner-mode=off",
         "th4.edge.components.lock.enabled=false",
+        "th4.edge.components.storage.provider=local",
+        "th4.edge.framework.upload-dir=${java.io.tmpdir}/finance-closed-loop-upload",
         "logging.level.root=ERROR",
         "logging.level.org.hibernate.SQL=OFF"
 })
@@ -80,6 +86,14 @@ class FinanceClosedLoopTest {
     private ProjectRepository projectRepository;
     @Autowired
     private LedgerRepository ledgerRepository;
+    @Autowired
+    private WorkerRepository workerRepository;
+    @Autowired
+    private VoucherContext voucherContext;
+    @Autowired
+    private com.th4.edge.decoboon.document.service.frequentproject.list.List frequentProjects;
+    @Autowired
+    private com.th4.edge.decoboon.project.service.projects.page.Page projectPage;
     @Autowired
     private EntityManager entityManager;
     @Autowired
@@ -117,6 +131,81 @@ class FinanceClosedLoopTest {
                         && item.getProject().getProjectId().equals(project.getProjectId()))
                 .toList();
         assertThat(ledgers).hasSizeGreaterThanOrEqualTo(2);
+    }
+
+    @Test
+    void shouldLinkWorkerAndUseWorkerNameOnSalaryPayment() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+
+        Worker worker = new Worker();
+        worker.setCompany(boss.getCompany());
+        worker.setName("张伟");
+        worker.setIdCardNo("341222198803305970");
+        worker.setTrade("木工");
+        worker.setBankAccount("662245678901266");
+        worker.setStatus(WorkerStatus.Active);
+        worker = workerRepository.save(worker);
+
+        Payable payable = createSalaryPayable(boss, project);
+        com.th4.edge.decoboon.finance.service.payments.save.support.Save save =
+                AopTestUtils.getTargetObject(paymentSave);
+        set(save, "employee", boss);
+        set(save, "payableId", payable.getPayableId());
+        set(save, "amount", new BigDecimal("40.00"));
+        set(save, "account", FundAccount.CompanyBank);
+        set(save, "paidAt", LocalDate.now());
+        set(save, "payeeName", null);
+        set(save, "workerId", worker.getWorkerId());
+        set(save, "transactionNo", null);
+        set(save, "voucherUrl", null);
+        set(save, "remark", "工资发放");
+        com.th4.edge.decoboon.finance.model.Payment payment =
+                save.call(new com.th4.edge.decoboon.finance.model.Payment());
+
+        assertThat(payment.getWorker()).isNotNull();
+        assertThat(payment.getWorker().getWorkerId()).isEqualTo(worker.getWorkerId());
+        assertThat(payment.getPayeeName()).isEqualTo("张伟");
+    }
+
+    @Test
+    void shouldRankFrequentProjectAndSupportServerSideProjectSearch() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+        Receivable receivable = createReceivable(boss, project);
+        createReceipt(boss, project, receivable);
+        entityManager.flush();
+
+        List<Ledger> ledgers = ledgerRepository
+                .findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(
+                        boss.getCompany().getComId(), project.getProjectId());
+        assertThat(ledgers).isNotEmpty();
+        voucherContext.build(boss, List.of(ledgers.get(0).getLedgerId()));
+
+        // 常用项目：按凭证出单频次返回该项目
+        com.th4.edge.decoboon.document.service.frequentproject.list.support.List frequent =
+                AopTestUtils.getTargetObject(frequentProjects);
+        set(frequent, "employee", boss);
+        set(frequent, "size", 5);
+        assertThat(frequent.call(new Project()))
+                .extracting(Project::getProjectId)
+                .contains(project.getProjectId());
+
+        // 服务端检索：关键词 + 状态集合 + 设计师
+        com.th4.edge.decoboon.project.service.projects.page.support.Page page =
+                AopTestUtils.getTargetObject(projectPage);
+        set(page, "employee", boss);
+        set(page, "keyword", project.getNo());
+        set(page, "statuses", List.of(project.getStatus()));
+        set(page, "designerId", boss.getEmpId());
+        assertThat(page.call(new Project()).getContent())
+                .extracting(Project::getProjectId)
+                .contains(project.getProjectId());
+
+        set(page, "designerId", -1L);
+        assertThat(page.call(new Project()).getContent()).isEmpty();
     }
 
     @Test
@@ -184,6 +273,25 @@ class FinanceClosedLoopTest {
         set(save, "urgent", false);
         set(save, "sourceNo", null);
         set(save, "remark", "transaction rollback");
+        return save.call(new Payable());
+    }
+
+    private Payable createSalaryPayable(Employee boss, Project project) {
+        com.th4.edge.decoboon.finance.service.payables.save.support.Save save =
+                AopTestUtils.getTargetObject(payableSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        set(save, "materialPlanId", null);
+        set(save, "name", "木工张伟工资");
+        set(save, "type", PayableType.Salary);
+        set(save, "payeeEmployeeId", null);
+        set(save, "payeeName", "木工班组");
+        set(save, "period", null);
+        set(save, "amount", new BigDecimal("40.00"));
+        set(save, "dueDate", LocalDate.now());
+        set(save, "urgent", false);
+        set(save, "sourceNo", null);
+        set(save, "remark", "工资待发");
         return save.call(new Payable());
     }
 

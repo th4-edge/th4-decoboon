@@ -55,6 +55,7 @@ public class GoodsReceipt extends AuditModel implements ProjectOwned {
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="project_id",nullable=false) @Note("所属项目") private Project project;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="purchase_id",nullable=false) @Note("采购订单") private PurchaseOrder purchase;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="material_plan_id",nullable=false) @Note("材料计划") private MaterialPlan materialPlan;
+    @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="purchase_item_id") @Note("采购明细") private PurchaseOrderItem purchaseItem;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="warehouse_id") @Note("入库仓库") private Store warehouse;
     @Column(precision=12,scale=3,nullable=false) @Note("到场数量") private BigDecimal quantity=BigDecimal.ZERO;
     @Column(length=64) @Note("批次号") private String batchNo;
@@ -70,6 +71,7 @@ public class GoodsReceipt extends AuditModel implements ProjectOwned {
     public Project getProject(){return project;} public void setProject(Project v){project=v;}
     public PurchaseOrder getPurchase(){return purchase;} public void setPurchase(PurchaseOrder v){purchase=v;}
     public MaterialPlan getMaterialPlan(){return materialPlan;} public void setMaterialPlan(MaterialPlan v){materialPlan=v;}
+    public PurchaseOrderItem getPurchaseItem(){return purchaseItem;} public void setPurchaseItem(PurchaseOrderItem v){purchaseItem=v;}
     public Store getWarehouse(){return warehouse;} public void setWarehouse(Store v){warehouse=v;}
     public BigDecimal getQuantity(){return quantity;} public void setQuantity(BigDecimal v){quantity=v;}
     public String getBatchNo(){return batchNo;} public void setBatchNo(String v){batchNo=v;}

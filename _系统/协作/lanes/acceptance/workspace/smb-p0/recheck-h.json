@@ -1,0 +1,1225 @@
+{
+  "no_follows": {
+    "data": {
+      "customerCount": 0,
+      "newCustomerCount": 0,
+      "followingCustomerCount": 0,
+      "signedCustomerCount": 0,
+      "pendingMeasureCount": 0,
+      "quotedCustomerCount": 0,
+      "followDueCount": 0,
+      "followOverdueCount": 0,
+      "draftQuoteCount": 0,
+      "submittedQuoteCount": 0,
+      "lostCustomerCount": 0,
+      "projectCount": 0,
+      "ongoingProjectCount": 0,
+      "finishedProjectCount": 0,
+      "taskTodoCount": 0,
+      "taskOverdueCount": 0,
+      "quoteAmount": 0,
+      "acceptedQuoteAmount": 0,
+      "signedAmount": 0,
+      "wechatAddedCount": 0,
+      "convertedCustomerCount": 0,
+      "conversionRate": 0,
+      "averageConversionDays": 0,
+      "goldenHotCount": 0,
+      "goldenWarmCount": 0,
+      "goldenCoolingCount": 0,
+      "goldenRiskCount": 0,
+      "customerInputDay": {
+        "current": 0,
+        "previous": 0,
+        "growthRate": 0
+      },
+      "customerInputWeek": {
+        "current": 0,
+        "previous": 0,
+        "growthRate": 0
+      },
+      "customerInputMonth": {
+        "current": 0,
+        "previous": 0,
+        "growthRate": 0
+      },
+      "followDay": {
+        "current": 0,
+        "previous": 0,
+        "growthRate": 0
+      },
+      "followWeek": {
+        "current": 0,
+        "previous": 0,
+        "growthRate": 0
+      },
+      "followMonth": {
+        "current": 0,
+        "previous": 0,
+        "growthRate": 0
+      },
+      "measureRateDay": {
+        "currentRate": 0,
+        "previousRate": 0,
+        "change": 0.0
+      },
+      "measureRateWeek": {
+        "currentRate": 0,
+        "previousRate": 0,
+        "change": 0.0
+      },
+      "measureRateMonth": {
+        "currentRate": 0,
+        "previousRate": 0,
+        "change": 0.0
+      },
+      "marketerRankings": [
+        {
+          "id": "1890000000000000204",
+          "name": "周业务",
+          "rank": 1,
+          "customerCount": 2,
+          "measureCount": 2,
+          "followCount": 2,
+          "measureRate": 100.0
+        },
+        {
+          "id": "1890000000000000209",
+          "name": "钱业务",
+          "rank": 2,
+          "customerCount": 0,
+          "measureCount": 0,
+          "followCount": 0,
+          "measureRate": 0
+        }
+      ],
+      "storeRankings": [
+        {
+          "id": "1890000000000000101",
+          "name": "云栖总店",
+          "rank": 1,
+          "customerCount": 2,
+          "measureCount": 2,
+          "followCount": 2,
+          "measureRate": 100.0
+        },
+        {
+          "id": "1890000000000000102",
+          "name": "云栖滨湖店",
+          "rank": 2,
+          "customerCount": 0,
+          "measureCount": 0,
+          "followCount": 0,
+          "measureRate": 0
+        }
+      ],
+      "myMarketerRank": 2,
+      "myStoreRank": 2,
+      "companyMarketerCount": 2,
+      "companyStoreCount": 2,
+      "recentCustomers": [],
+      "recentProjects": []
+    },
+    "success": true
+  },
+  "with_follows": {
+    "data": {
+      "customerCount": 2,
+      "newCustomerCount": 0,
+      "followingCustomerCount": 0,
+      "signedCustomerCount": 2,
+      "pendingMeasureCount": 0,
+      "quotedCustomerCount": 0,
+      "followDueCount": 0,
+      "followOverdueCount": 0,
+      "draftQuoteCount": 0,
+      "submittedQuoteCount": 1,
+      "lostCustomerCount": 0,
+      "projectCount": 4,
+      "ongoingProjectCount": 3,
+      "finishedProjectCount": 1,
+      "taskTodoCount": 0,
+      "taskOverdueCount": 0,
+      "quoteAmount": 52972.5,
+      "acceptedQuoteAmount": 42378.0,
+      "signedAmount": 42378.0,
+      "wechatAddedCount": 0,
+      "convertedCustomerCount": 2,
+      "conversionRate": 100.0,
+      "averageConversionDays": 0.0,
+      "goldenHotCount": 2,
+      "goldenWarmCount": 0,
+      "goldenCoolingCount": 0,
+      "goldenRiskCount": 0,
+      "customerInputDay": {
+        "current": 2,
+        "previous": 0,
+        "growthRate": 100
+      },
+      "customerInputWeek": {
+        "current": 2,
+        "previous": 0,
+        "growthRate": 100
+      },
+      "customerInputMonth": {
+        "current": 2,
+        "previous": 0,
+        "growthRate": 100
+      },
+      "followDay": {
+        "current": 2,
+        "previous": 0,
+        "growthRate": 100
+      },
+      "followWeek": {
+        "current": 2,
+        "previous": 0,
+        "growthRate": 100
+      },
+      "followMonth": {
+        "current": 2,
+        "previous": 0,
+        "growthRate": 100
+      },
+      "measureRateDay": {
+        "currentRate": 100.0,
+        "previousRate": 0,
+        "change": 100.0
+      },
+      "measureRateWeek": {
+        "currentRate": 100.0,
+        "previousRate": 0,
+        "change": 100.0
+      },
+      "measureRateMonth": {
+        "currentRate": 100.0,
+        "previousRate": 0,
+        "change": 100.0
+      },
+      "marketerRankings": [
+        {
+          "id": "1890000000000000204",
+          "name": "周业务",
+          "rank": 1,
+          "customerCount": 2,
+          "measureCount": 2,
+          "followCount": 2,
+          "measureRate": 100.0
+        },
+        {
+          "id": "1890000000000000209",
+          "name": "钱业务",
+          "rank": 2,
+          "customerCount": 0,
+          "measureCount": 0,
+          "followCount": 0,
+          "measureRate": 0
+        }
+      ],
+      "storeRankings": [
+        {
+          "id": "1890000000000000101",
+          "name": "云栖总店",
+          "rank": 1,
+          "customerCount": 2,
+          "measureCount": 2,
+          "followCount": 2,
+          "measureRate": 100.0
+        },
+        {
+          "id": "1890000000000000102",
+          "name": "云栖滨湖店",
+          "rank": 2,
+          "customerCount": 0,
+          "measureCount": 0,
+          "followCount": 0,
+          "measureRate": 0
+        }
+      ],
+      "myMarketerRank": 1,
+      "myStoreRank": 1,
+      "companyMarketerCount": 2,
+      "companyStoreCount": 2,
+      "recentCustomers": [
+        {
+          "createTime": {
+            "dateTime": "2026-09-18 21:50:18"
+          },
+          "custId": "226701371305361408",
+          "name": "验收客户王",
+          "telNo": "13800002222",
+          "gender": {
+            "name": "男",
+            "key": "M"
+          },
+          "source": {
+            "name": "自然到店",
+            "key": "WalkIn"
+          },
+          "community": "验收小区",
+          "addr": "验收小区3栋1单元303",
+          "area": 88.0,
+          "budget": 12.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          },
+          "owner": {
+            "empId": "1890000000000000204",
+            "name": "周业务"
+          },
+          "designer": {
+            "empId": "1890000000000000205",
+            "name": "李设计"
+          },
+          "lastFollowAt": "2026-09-18 21:50:41",
+          "wechatAdded": false,
+          "visitCount": 0,
+          "pendingMeasureAt": "2026-09-18 21:51:13",
+          "measureAt": "2026-09-20 10:00:00",
+          "measureRequestedAt": "2026-09-18 22:01:02",
+          "handedOffAt": "2026-09-18 21:52:06"
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-09-18 21:04:40"
+          },
+          "custId": "226689885732339712",
+          "name": "赵云",
+          "telNo": "13800001111",
+          "gender": {
+            "name": "男",
+            "key": "M"
+          },
+          "source": {
+            "name": "自然到店",
+            "key": "WalkIn"
+          },
+          "community": "望湖城",
+          "addr": "滨湖云谷 5 栋 2 单元 2001",
+          "area": 118.0,
+          "budget": 28.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          },
+          "owner": {
+            "empId": "1890000000000000204",
+            "name": "周业务"
+          },
+          "designer": {
+            "empId": "1890000000000000205",
+            "name": "李设计"
+          },
+          "lastFollowAt": "2026-09-18 21:04:55",
+          "nextFollowAt": "2026-09-19 10:00:00",
+          "wechatAdded": false,
+          "visitCount": 0,
+          "pendingMeasureAt": "2026-09-18 21:05:09",
+          "measureAt": "2026-09-19 10:00:00",
+          "measureRequestedAt": "2026-09-18 21:05:09",
+          "handedOffAt": "2026-09-18 21:07:18"
+        }
+      ],
+      "recentProjects": [
+        {
+          "projectId": "226706000000000003",
+          "no": "P-RECHECK2-SMB-P0",
+          "name": "SMB P0 第二轮复验项目",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:50:18"
+            },
+            "custId": "226701371305361408",
+            "name": "验收客户王",
+            "telNo": "13800002222",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "验收小区",
+            "addr": "验收小区3栋1单元303",
+            "area": 88.0,
+            "budget": 12.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "lastFollowAt": "2026-09-18 21:50:41",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-09-18 21:51:13",
+            "measureAt": "2026-09-20 10:00:00",
+            "measureRequestedAt": "2026-09-18 22:01:02",
+            "handedOffAt": "2026-09-18 21:52:06"
+          },
+          "property": {
+            "createTime": {
+              "dateTime": "2026-09-18 22:01:02"
+            },
+            "updateTime": {
+              "dateTime": "2026-09-18 22:21:29"
+            },
+            "propertyId": "226704069090082816",
+            "company": {
+              "comId": "1890000000000000001",
+              "title": "合肥云栖装饰工程有限公司",
+              "name": "云栖装饰",
+              "size": {
+                "name": "10人-50人",
+                "value": "B",
+                "key": "B"
+              },
+              "addr": "安徽省合肥市包河区云谷路 88 号",
+              "setting": {
+                "enableStore": true
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "store": {
+              "storeId": "1890000000000000101",
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "name": "云栖总店",
+              "defaultStore": true,
+              "addr": "合肥市包河区云谷路 88 号",
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "team": {
+              "teamId": "1890000000000000301",
+              "name": "云栖总店一组",
+              "leader": {
+                "empId": "1890000000000000203",
+                "name": "赵组长"
+              },
+              "store": {
+                "storeId": "1890000000000000101",
+                "company": {
+                  "comId": "1890000000000000001",
+                  "title": "合肥云栖装饰工程有限公司",
+                  "name": "云栖装饰",
+                  "size": {
+                    "name": "10人-50人",
+                    "value": "B",
+                    "key": "B"
+                  },
+                  "addr": "安徽省合肥市包河区云谷路 88 号",
+                  "setting": {
+                    "enableStore": true
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-18 21:15:00"
+                  }
+                },
+                "name": "云栖总店",
+                "defaultStore": true,
+                "addr": "合肥市包河区云谷路 88 号",
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-09-18 21:50:18"
+              },
+              "custId": "226701371305361408",
+              "name": "验收客户王",
+              "telNo": "13800002222",
+              "gender": {
+                "name": "男",
+                "key": "M"
+              },
+              "source": {
+                "name": "自然到店",
+                "key": "WalkIn"
+              },
+              "community": "验收小区",
+              "addr": "验收小区3栋1单元303",
+              "area": 88.0,
+              "budget": 12.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "1890000000000000204",
+                "name": "周业务"
+              },
+              "designer": {
+                "empId": "1890000000000000205",
+                "name": "李设计"
+              },
+              "lastFollowAt": "2026-09-18 21:50:41",
+              "wechatAdded": false,
+              "visitCount": 0,
+              "pendingMeasureAt": "2026-09-18 21:51:13",
+              "measureAt": "2026-09-20 10:00:00",
+              "measureRequestedAt": "2026-09-18 22:01:02",
+              "handedOffAt": "2026-09-18 21:52:06"
+            },
+            "propertyNo": "H1789740062029",
+            "community": "验收小区",
+            "building": "3栋1单元",
+            "roomNo": "303",
+            "address": "验收小区3栋1单元303",
+            "area": 105.0,
+            "layout": "三室两厅",
+            "status": {
+              "name": "已量房",
+              "key": "Measured"
+            },
+            "salesman": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "latestMeasureAt": "2026-09-20 10:00:00"
+          },
+          "siteAddr": "验收小区3栋1单元303",
+          "area": 118.0,
+          "contractAmount": 10594.5,
+          "status": {
+            "name": "施工中",
+            "key": "Ongoing"
+          },
+          "progress": 0,
+          "startDate": "2026-09-20",
+          "planEndDate": "2026-10-20"
+        },
+        {
+          "projectId": "226705031863205888",
+          "no": "P1789740291570",
+          "name": "验收客户王 · 验收小区2栋2单元202",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:50:18"
+            },
+            "custId": "226701371305361408",
+            "name": "验收客户王",
+            "telNo": "13800002222",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "验收小区",
+            "addr": "验收小区3栋1单元303",
+            "area": 88.0,
+            "budget": 12.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "lastFollowAt": "2026-09-18 21:50:41",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-09-18 21:51:13",
+            "measureAt": "2026-09-20 10:00:00",
+            "measureRequestedAt": "2026-09-18 22:01:02",
+            "handedOffAt": "2026-09-18 21:52:06"
+          },
+          "property": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:52:43"
+            },
+            "updateTime": {
+              "dateTime": "2026-09-18 22:04:51"
+            },
+            "propertyId": "226701976031723520",
+            "company": {
+              "comId": "1890000000000000001",
+              "title": "合肥云栖装饰工程有限公司",
+              "name": "云栖装饰",
+              "size": {
+                "name": "10人-50人",
+                "value": "B",
+                "key": "B"
+              },
+              "addr": "安徽省合肥市包河区云谷路 88 号",
+              "setting": {
+                "enableStore": true
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "store": {
+              "storeId": "1890000000000000101",
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "name": "云栖总店",
+              "defaultStore": true,
+              "addr": "合肥市包河区云谷路 88 号",
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "team": {
+              "teamId": "1890000000000000301",
+              "name": "云栖总店一组",
+              "leader": {
+                "empId": "1890000000000000203",
+                "name": "赵组长"
+              },
+              "store": {
+                "storeId": "1890000000000000101",
+                "company": {
+                  "comId": "1890000000000000001",
+                  "title": "合肥云栖装饰工程有限公司",
+                  "name": "云栖装饰",
+                  "size": {
+                    "name": "10人-50人",
+                    "value": "B",
+                    "key": "B"
+                  },
+                  "addr": "安徽省合肥市包河区云谷路 88 号",
+                  "setting": {
+                    "enableStore": true
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-18 21:15:00"
+                  }
+                },
+                "name": "云栖总店",
+                "defaultStore": true,
+                "addr": "合肥市包河区云谷路 88 号",
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-09-18 21:50:18"
+              },
+              "custId": "226701371305361408",
+              "name": "验收客户王",
+              "telNo": "13800002222",
+              "gender": {
+                "name": "男",
+                "key": "M"
+              },
+              "source": {
+                "name": "自然到店",
+                "key": "WalkIn"
+              },
+              "community": "验收小区",
+              "addr": "验收小区3栋1单元303",
+              "area": 88.0,
+              "budget": 12.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "1890000000000000204",
+                "name": "周业务"
+              },
+              "designer": {
+                "empId": "1890000000000000205",
+                "name": "李设计"
+              },
+              "lastFollowAt": "2026-09-18 21:50:41",
+              "wechatAdded": false,
+              "visitCount": 0,
+              "pendingMeasureAt": "2026-09-18 21:51:13",
+              "measureAt": "2026-09-20 10:00:00",
+              "measureRequestedAt": "2026-09-18 22:01:02",
+              "handedOffAt": "2026-09-18 21:52:06"
+            },
+            "propertyNo": "H1789739563005",
+            "community": "验收小区",
+            "building": "2栋2单元",
+            "roomNo": "202",
+            "address": "验收小区2栋2单元202",
+            "area": 96.0,
+            "layout": "三室一厅",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "latestMeasureAt": "2026-09-19 11:00:00"
+          },
+          "siteAddr": "验收小区2栋2单元202",
+          "area": 96.0,
+          "contractAmount": 10594.5,
+          "status": {
+            "name": "待开工",
+            "key": "Preparing"
+          },
+          "progress": 0,
+          "startDate": "2026-09-20",
+          "planEndDate": "2026-10-20"
+        },
+        {
+          "projectId": "226702200000000003",
+          "no": "P-ACCEPT-SMB-P0-001",
+          "name": "SMB P0 独立验收项目 · 101",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:50:18"
+            },
+            "custId": "226701371305361408",
+            "name": "验收客户王",
+            "telNo": "13800002222",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "验收小区",
+            "addr": "验收小区3栋1单元303",
+            "area": 88.0,
+            "budget": 12.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "lastFollowAt": "2026-09-18 21:50:41",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-09-18 21:51:13",
+            "measureAt": "2026-09-20 10:00:00",
+            "measureRequestedAt": "2026-09-18 22:01:02",
+            "handedOffAt": "2026-09-18 21:52:06"
+          },
+          "property": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:50:35"
+            },
+            "updateTime": {
+              "dateTime": "2026-09-18 21:56:26"
+            },
+            "propertyId": "226701441081802752",
+            "company": {
+              "comId": "1890000000000000001",
+              "title": "合肥云栖装饰工程有限公司",
+              "name": "云栖装饰",
+              "size": {
+                "name": "10人-50人",
+                "value": "B",
+                "key": "B"
+              },
+              "addr": "安徽省合肥市包河区云谷路 88 号",
+              "setting": {
+                "enableStore": true
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "store": {
+              "storeId": "1890000000000000101",
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "name": "云栖总店",
+              "defaultStore": true,
+              "addr": "合肥市包河区云谷路 88 号",
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "team": {
+              "teamId": "1890000000000000301",
+              "name": "云栖总店一组",
+              "leader": {
+                "empId": "1890000000000000203",
+                "name": "赵组长"
+              },
+              "store": {
+                "storeId": "1890000000000000101",
+                "company": {
+                  "comId": "1890000000000000001",
+                  "title": "合肥云栖装饰工程有限公司",
+                  "name": "云栖装饰",
+                  "size": {
+                    "name": "10人-50人",
+                    "value": "B",
+                    "key": "B"
+                  },
+                  "addr": "安徽省合肥市包河区云谷路 88 号",
+                  "setting": {
+                    "enableStore": true
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-18 21:15:00"
+                  }
+                },
+                "name": "云栖总店",
+                "defaultStore": true,
+                "addr": "合肥市包河区云谷路 88 号",
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-09-18 21:50:18"
+              },
+              "custId": "226701371305361408",
+              "name": "验收客户王",
+              "telNo": "13800002222",
+              "gender": {
+                "name": "男",
+                "key": "M"
+              },
+              "source": {
+                "name": "自然到店",
+                "key": "WalkIn"
+              },
+              "community": "验收小区",
+              "addr": "验收小区3栋1单元303",
+              "area": 88.0,
+              "budget": 12.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "1890000000000000204",
+                "name": "周业务"
+              },
+              "designer": {
+                "empId": "1890000000000000205",
+                "name": "李设计"
+              },
+              "lastFollowAt": "2026-09-18 21:50:41",
+              "wechatAdded": false,
+              "visitCount": 0,
+              "pendingMeasureAt": "2026-09-18 21:51:13",
+              "measureAt": "2026-09-20 10:00:00",
+              "measureRequestedAt": "2026-09-18 22:01:02",
+              "handedOffAt": "2026-09-18 21:52:06"
+            },
+            "propertyNo": "H1789739435463",
+            "community": "验收小区",
+            "building": "1栋1单元",
+            "roomNo": "101",
+            "address": "验收小区1栋101",
+            "area": 88.0,
+            "layout": "两室一厅",
+            "status": {
+              "name": "已量房",
+              "key": "Measured"
+            },
+            "salesman": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "latestMeasureAt": "2026-09-19 00:00:00",
+            "remark": ""
+          },
+          "siteAddr": "验收小区1栋1单元101",
+          "area": 118.0,
+          "contractAmount": 10594.5,
+          "status": {
+            "name": "施工中",
+            "key": "Ongoing"
+          },
+          "progress": 0,
+          "startDate": "2026-09-20",
+          "planEndDate": "2026-10-20"
+        },
+        {
+          "projectId": "226691387045707776",
+          "no": "P1789737038390",
+          "name": "赵云 · 望湖城 3 栋 1202",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:04:40"
+            },
+            "custId": "226689885732339712",
+            "name": "赵云",
+            "telNo": "13800001111",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "望湖城",
+            "addr": "滨湖云谷 5 栋 2 单元 2001",
+            "area": 118.0,
+            "budget": 28.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "lastFollowAt": "2026-09-18 21:04:55",
+            "nextFollowAt": "2026-09-19 10:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-09-18 21:05:09",
+            "measureAt": "2026-09-19 10:00:00",
+            "measureRequestedAt": "2026-09-18 21:05:09",
+            "handedOffAt": "2026-09-18 21:07:18"
+          },
+          "property": {
+            "createTime": {
+              "dateTime": "2026-09-18 21:05:02"
+            },
+            "updateTime": {
+              "dateTime": "2026-09-18 21:10:38"
+            },
+            "propertyId": "226689976694210560",
+            "company": {
+              "comId": "1890000000000000001",
+              "title": "合肥云栖装饰工程有限公司",
+              "name": "云栖装饰",
+              "size": {
+                "name": "10人-50人",
+                "value": "B",
+                "key": "B"
+              },
+              "addr": "安徽省合肥市包河区云谷路 88 号",
+              "setting": {
+                "enableStore": true
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "store": {
+              "storeId": "1890000000000000101",
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "name": "云栖总店",
+              "defaultStore": true,
+              "addr": "合肥市包河区云谷路 88 号",
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "team": {
+              "teamId": "1890000000000000301",
+              "name": "云栖总店一组",
+              "leader": {
+                "empId": "1890000000000000203",
+                "name": "赵组长"
+              },
+              "store": {
+                "storeId": "1890000000000000101",
+                "company": {
+                  "comId": "1890000000000000001",
+                  "title": "合肥云栖装饰工程有限公司",
+                  "name": "云栖装饰",
+                  "size": {
+                    "name": "10人-50人",
+                    "value": "B",
+                    "key": "B"
+                  },
+                  "addr": "安徽省合肥市包河区云谷路 88 号",
+                  "setting": {
+                    "enableStore": true
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-18 21:15:00"
+                  }
+                },
+                "name": "云栖总店",
+                "defaultStore": true,
+                "addr": "合肥市包河区云谷路 88 号",
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "company": {
+                "comId": "1890000000000000001",
+                "title": "合肥云栖装饰工程有限公司",
+                "name": "云栖装饰",
+                "size": {
+                  "name": "10人-50人",
+                  "value": "B",
+                  "key": "B"
+                },
+                "addr": "安徽省合肥市包河区云谷路 88 号",
+                "setting": {
+                  "enableStore": true
+                },
+                "createTime": {
+                  "dateTime": "2026-09-18 21:15:00"
+                }
+              },
+              "createTime": {
+                "dateTime": "2026-09-18 21:15:00"
+              }
+            },
+            "owner": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-09-18 21:04:40"
+              },
+              "custId": "226689885732339712",
+              "name": "赵云",
+              "telNo": "13800001111",
+              "gender": {
+                "name": "男",
+                "key": "M"
+              },
+              "source": {
+                "name": "自然到店",
+                "key": "WalkIn"
+              },
+              "community": "望湖城",
+              "addr": "滨湖云谷 5 栋 2 单元 2001",
+              "area": 118.0,
+              "budget": 28.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "1890000000000000204",
+                "name": "周业务"
+              },
+              "designer": {
+                "empId": "1890000000000000205",
+                "name": "李设计"
+              },
+              "lastFollowAt": "2026-09-18 21:04:55",
+              "nextFollowAt": "2026-09-19 10:00:00",
+              "wechatAdded": false,
+              "visitCount": 0,
+              "pendingMeasureAt": "2026-09-18 21:05:09",
+              "measureAt": "2026-09-19 10:00:00",
+              "measureRequestedAt": "2026-09-18 21:05:09",
+              "handedOffAt": "2026-09-18 21:07:18"
+            },
+            "propertyNo": "H1789736702139",
+            "community": "望湖城",
+            "building": "3栋1单元",
+            "roomNo": "1202",
+            "address": "望湖城 3 栋 1202",
+            "area": 118.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "1890000000000000204",
+              "name": "周业务"
+            },
+            "designer": {
+              "empId": "1890000000000000205",
+              "name": "李设计"
+            },
+            "latestMeasureAt": "2026-09-19 10:00:00",
+            "remark": ""
+          },
+          "siteAddr": "望湖城 3 栋 1202",
+          "area": 118.0,
+          "contractAmount": 10594.5,
+          "status": {
+            "name": "已完工",
+            "key": "Finished"
+          },
+          "progress": 100,
+          "startDate": "2026-09-20",
+          "planEndDate": "2026-10-20"
+        }
+      ]
+    },
+    "success": true
+  }
+}

@@ -83,8 +83,10 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
         ProjectTask task = taskRepository.findOne(((Specification<ProjectTask>) (root, query, builder) -> builder.equal(root.get("taskId"), taskId)).and(accessContext.visibleChild(employee, ProjectTask.class, "project")))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "施工任务不存在")));
         accessContext.requireVisible(task.getProject(), current);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以推进施工任务"));
+        // 施工任务推进：企业负责人 / 店长（限本门店数据范围）/ 项目经理
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm
+                && current.getRole() != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或项目经理可以推进施工任务"));
         }
         TaskStatus target = status != null ? status : statusOf(action);
         if (target == null) {

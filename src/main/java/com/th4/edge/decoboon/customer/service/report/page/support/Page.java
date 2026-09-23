@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.customer.service.report.page.support;
 
+import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.decoboon.customer.context.CustomerAccessContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectReport;
@@ -26,10 +27,12 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = ProjectReport.class,
                 properties = {"reportId", "project", "property", "stage", "type", "title", "content", "images",
-                        "authorRole", "createTime"}),
+                        "author", "authorRole", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name"}),
         @AllowProperties(model = Property.class, properties = {"propertyId", "propertyNo", "community", "roomNo", "address"}),
-        @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status", "progress"})
+        @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status", "progress"}),
+        // 工地相册按"朋友圈"展示需要落款人：只给姓名与角色，不含手机号等敏感字段
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("customer/report/page")
 @Scope(ScopeTypes.PROTOTYPE)

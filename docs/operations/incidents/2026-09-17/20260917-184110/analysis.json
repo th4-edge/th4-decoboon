@@ -1,0 +1,358 @@
+{
+  "collectedAt": "2026-09-17T10:41:11.626932+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-09-17/20260917-184110",
+  "counts": {
+    "unknown": 187,
+    "expected": 94
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20260917-e3deff3d62",
+      "signature": "不能操作自己的员工记录",
+      "signatureHash": "e3deff3d62",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-17 01:50:01.179",
+      "lastSeen": "2026-09-17T14:01:10.550+08:00",
+      "samples": [
+        "[2026-09-17 01:50:01.179] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:不能操作自己的员工记录",
+        "[2026-09-17 14:01:10.550] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:不能操作自己的员工记录",
+        "2411:2026-09-17T01:50:01.179+08:00 ERROR 39976 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录",
+        "5092:2026-09-17T14:01:10.550+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:不能操作自己的员工记录"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-627186ca11",
+      "signature": "当前员工已离职或停用",
+      "signatureHash": "627186ca11",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 150,
+      "firstSeen": "2026-09-17 14:23:37.214",
+      "lastSeen": "2026-09-17T14:30:41.963+08:00",
+      "samples": [
+        "[2026-09-17 14:23:37.214] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/user/resign处理失败:当前员工已离职或停用",
+        "[2026-09-17 14:23:40.188] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/user/resign处理失败:当前员工已离职或停用",
+        "[2026-09-17 14:23:43.101] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/user/resign处理失败:当前员工已离职或停用",
+        "[2026-09-17 14:24:19.014] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:当前员工已离职或停用",
+        "[2026-09-17 14:24:22.944] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:当前员工已离职或停用"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 2,
+      "firstSeen": "2026-09-17 01:44:49.792",
+      "lastSeen": "2026-09-17T01:44:49.792+08:00",
+      "samples": [
+        "[2026-09-17 01:44:49.792] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "1103:2026-09-17T01:44:49.792+08:00 ERROR 36047 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260917-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 8,
+      "firstSeen": "2026-09-17 01:50:37.597",
+      "lastSeen": "2026-09-17T11:24:43.033+08:00",
+      "samples": [
+        "[2026-09-17 01:50:37.597] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "[2026-09-17 04:35:54.972] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "[2026-09-17 07:38:04.577] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "[2026-09-17 11:24:43.033] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "2497:2026-09-17T01:50:37.597+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260917-c835f67858",
+      "signature": "找不到对应的处理服务:checkCleanIp",
+      "signatureHash": "c835f67858",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 05:25:47.118",
+      "lastSeen": "2026-09-17T05:25:47.118+08:00",
+      "samples": [
+        "[2026-09-17 05:25:47.118] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - checkCleanIp处理失败:找不到对应的处理服务:checkCleanIp",
+        "2669:2026-09-17T05:25:47.118+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : checkCleanIp处理失败:找不到对应的处理服务:checkCleanIp"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-cddd8368fa",
+      "signature": "找不到对应的处理服务:config",
+      "signatureHash": "cddd8368fa",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 09:34:39.759",
+      "lastSeen": "2026-09-17T09:34:39.759+08:00",
+      "samples": [
+        "[2026-09-17 09:34:39.759] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config处理失败:找不到对应的处理服务:config",
+        "3457:2026-09-17T09:34:39.759+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260917-c50a9523db",
+      "signature": "找不到对应的处理服务:dev/.env",
+      "signatureHash": "c50a9523db",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 11:25:08.128",
+      "lastSeen": "2026-09-17T11:25:08.128+08:00",
+      "samples": [
+        "[2026-09-17 11:25:08.128] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env",
+        "4391:2026-09-17T11:25:08.128+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-8478b5fd37",
+      "signature": "找不到对应的处理服务:graphql",
+      "signatureHash": "8478b5fd37",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 01:46:05.396",
+      "lastSeen": "2026-09-17T01:46:05.396+08:00",
+      "samples": [
+        "[2026-09-17 01:46:05.396] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql",
+        "1743:2026-09-17T01:46:05.396+08:00 ERROR 39701 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-e4bbca461d",
+      "signature": "找不到对应的处理服务:staging/.env",
+      "signatureHash": "e4bbca461d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 11:25:08.425",
+      "lastSeen": "2026-09-17T11:25:08.425+08:00",
+      "samples": [
+        "[2026-09-17 11:25:08.425] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env",
+        "4477:2026-09-17T11:25:08.425+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-416878e316",
+      "signature": "找不到对应的处理服务:v1/.env",
+      "signatureHash": "416878e316",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 11:25:05.462",
+      "lastSeen": "2026-09-17T11:25:05.462+08:00",
+      "samples": [
+        "[2026-09-17 11:25:05.462] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "4133:2026-09-17T11:25:05.462+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-e359a7a32a",
+      "signature": "找不到对应的处理服务:v2/.env",
+      "signatureHash": "e359a7a32a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 11:25:05.739",
+      "lastSeen": "2026-09-17T11:25:05.739+08:00",
+      "samples": [
+        "[2026-09-17 11:25:05.739] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env",
+        "4219:2026-09-17T11:25:05.739+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-7cc2b644b1",
+      "signature": "找不到对应的处理服务:v3/.env",
+      "signatureHash": "7cc2b644b1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 11:25:07.690",
+      "lastSeen": "2026-09-17T11:25:07.690+08:00",
+      "samples": [
+        "[2026-09-17 11:25:07.690] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env",
+        "4305:2026-09-17T11:25:07.690+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-dfb2d5ba8f",
+      "signature": "找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+      "signatureHash": "dfb2d5ba8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 17:49:39.098",
+      "lastSeen": "2026-09-17T17:49:39.098+08:00",
+      "samples": [
+        "[2026-09-17 17:49:39.098] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+        "15131:2026-09-17T17:49:39.098+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-172597aee7",
+      "signature": "找不到对应的实体处理服务[<hex>.env]",
+      "signatureHash": "172597aee7",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-17 07:38:05.182",
+      "lastSeen": "2026-09-17T07:38:05.182+08:00",
+      "samples": [
+        "[2026-09-17 07:38:05.182] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - zzcanary-5d0f56892ac10116.env处理失败:找不到对应的实体处理服务[5d0f56892ac10116.env]",
+        "3371:2026-09-17T07:38:05.182+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : zzcanary-5d0f56892ac10116.env处理失败:找不到对应的实体处理服务[5d0f56892ac10116.env]"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 9,
+      "firstSeen": "2026-09-17 01:39:15.650",
+      "lastSeen": "2026-09-17T15:49:38.054+08:00",
+      "samples": [
+        "[2026-09-17 01:39:15.650] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-09-17 05:46:40.529] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-09-17 11:11:59.791] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-09-17 14:00:50.267] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-09-17 15:49:38.054] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260917-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 80,
+      "firstSeen": "2026-09-17 01:39:15.652",
+      "lastSeen": "2026-09-17T18:41:11.507+08:00",
+      "samples": [
+        "[2026-09-17 01:39:15.652] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-17 01:39:15.653] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-17 01:39:15.679] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-17 01:39:15.680] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-17 01:40:36.929] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260917-5d746278b9",
+      "signature": "退出企业后 30 天内不能加入新企业",
+      "signatureHash": "5d746278b9",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-17 14:31:36.464",
+      "lastSeen": "2026-09-17T14:31:57.657+08:00",
+      "samples": [
+        "[2026-09-17 14:31:36.464] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/accept处理失败:退出企业后 30 天内不能加入新企业",
+        "[2026-09-17 14:31:57.657] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/accept处理失败:退出企业后 30 天内不能加入新企业",
+        "13202:2026-09-17T14:31:36.464+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:退出企业后 30 天内不能加入新企业",
+        "13321:2026-09-17T14:31:57.657+08:00 ERROR 39976 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:退出企业后 30 天内不能加入新企业"
+      ],
+      "reportPaths": [
+        "2026-09-17/20260917-184110"
+      ]
+    },
+    {
+      "incidentId": "INC-20260917-3470d63bd2",
+      "signature": "首次登录请授权手机号",
+      "signatureHash": "3470d63bd2",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 4,
+      "firstSeen": "2026-09-17 16:06:15.360",
+      "lastSeen": "2026-09-17T16:07:54.331+08:00",
+      "samples": [
+        "[2026-09-17 16:06:15.360] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "[2026-09-17 16:07:54.331] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "13931:2026-09-17T16:06:15.360+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号",
+        "14037:2026-09-17T16:07:54.331+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

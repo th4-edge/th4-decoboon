@@ -39,7 +39,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
-/** 门店店长经营报告，所有数据严格限定在登录店长所属企业、门店。 */
+/** 店长经营报告，所有数据严格限定在登录店长所属企业、门店。 */
 @Note("门店经营报告")
 @Description("聚合门店成员、客户、报价、项目、施工风险、通知与设计师工作量")
 @Properties(allow = {

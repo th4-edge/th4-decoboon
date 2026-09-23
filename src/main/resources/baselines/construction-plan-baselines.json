@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "code": "RESIDENTIAL_STANDARD_8",
+      "name": "住宅标准八阶段",
+      "description": "适用于常规住宅整装，覆盖开工交底到竣工保洁验收。",
+      "totalDays": 120,
+      "sort": 1,
+      "stages": [
+        {"code": "PREPARE", "name": "开工交底", "defaultDays": 5, "acceptanceMode": "None", "sort": 1, "description": "现场交底、保护、放线和开工准备"},
+        {"code": "DEMOLITION", "name": "拆除改造", "defaultDays": 5, "acceptanceMode": "ConstructionDone", "sort": 2, "description": "拆除、清运和结构条件确认"},
+        {"code": "WATER_ELECTRIC", "name": "水电施工", "defaultDays": 12, "acceptanceMode": "AcceptanceDone", "sort": 3, "description": "水电定位、布管布线和隐蔽验收"},
+        {"code": "MASONRY", "name": "泥瓦防水", "defaultDays": 20, "acceptanceMode": "ConstructionDone", "sort": 4, "description": "防水、找平、贴砖和泥瓦施工"},
+        {"code": "CARPENTRY", "name": "木作吊顶", "defaultDays": 18, "acceptanceMode": "ConstructionDone", "sort": 5, "description": "吊顶、木作基层和定制复尺"},
+        {"code": "PAINTING", "name": "油漆墙面", "defaultDays": 18, "acceptanceMode": "ConstructionDone", "sort": 6, "description": "腻子、乳胶漆和墙面收口"},
+        {"code": "INSTALL", "name": "安装收尾", "defaultDays": 12, "acceptanceMode": "ConstructionDone", "sort": 7, "description": "灯具、洁具、主材和设备安装"},
+        {"code": "COMPLETION", "name": "竣工保洁验收", "defaultDays": 10, "acceptanceMode": "AcceptanceDone", "sort": 8, "description": "开荒保洁、竣工自检和客户验收"}
+      ]
+    },
+    {
+      "code": "RESIDENTIAL_SIMPLE_5",
+      "name": "住宅精简五阶段",
+      "description": "适用于短周期、简化管理或局部改造项目。",
+      "totalDays": 90,
+      "sort": 2,
+      "stages": [
+        {"code": "PREPARE", "name": "开工交底", "defaultDays": 5, "acceptanceMode": "None", "sort": 1, "description": "交底、保护和开工准备"},
+        {"code": "WATER_ELECTRIC", "name": "水电施工", "defaultDays": 20, "acceptanceMode": "AcceptanceDone", "sort": 2, "description": "水电布管布线和隐蔽验收"},
+        {"code": "MASONRY", "name": "泥木施工", "defaultDays": 35, "acceptanceMode": "ConstructionDone", "sort": 3, "description": "防水、泥瓦、吊顶和木作"},
+        {"code": "FINISH", "name": "油漆安装", "defaultDays": 20, "acceptanceMode": "ConstructionDone", "sort": 4, "description": "油漆、墙面和主材设备安装"},
+        {"code": "COMPLETION", "name": "竣工验收", "defaultDays": 10, "acceptanceMode": "AcceptanceDone", "sort": 5, "description": "保洁、自检和客户验收"}
+      ]
+    }
+  ]
+}

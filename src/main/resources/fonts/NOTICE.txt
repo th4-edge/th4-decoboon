@@ -1,0 +1,13 @@
+fonts/DroidSansFallback.ttf  —— 中文字形
+fonts/Roboto-Regular.ttf     —— 西文、数字与半角符号字形
+------------------------------------------------------
+来源：Android Open Source Project（Android SDK platform 内置字体）
+许可：Apache License, Version 2.0（可再分发、可嵌入文档）
+用途：装得清企业单据 PDF 渲染时嵌入字形子集。
+
+为什么必须是两个字体的组合：
+  DroidSansFallback 只包含 CJK 字形，没有任何 ASCII 字形（数字、字母、半角 . - : 均缺失）；
+  Roboto 只包含西文字形。单据里金额、数量、面积都是数字，必须由 Roboto 提供，
+  否则数字会渲染为空白。渲染器通过 FontSelector 按字符自动选择字体。
+
+若需替换为品牌字体，请保持等价的“可嵌入”授权（同时覆盖中文与西文），并同步更新本说明。

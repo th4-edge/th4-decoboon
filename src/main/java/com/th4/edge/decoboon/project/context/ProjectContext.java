@@ -5,8 +5,12 @@ import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.design.context.DesignLifecycleContext;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
+import com.th4.edge.decoboon.project.configure.AcceptanceRectificationType;
+import com.th4.edge.decoboon.material.context.MaterialCategoryContext;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.configure.MaterialSourceType;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
@@ -15,13 +19,20 @@ import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.configure.ReceivableType;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
+import com.th4.edge.decoboon.plan.context.ContractPlanContext;
+import com.th4.edge.decoboon.plan.model.ContractConstructionPlan;
+import com.th4.edge.decoboon.plan.model.ContractConstructionStage;
+import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
+import com.th4.edge.decoboon.plan.model.ContractPaymentPlan;
 import com.th4.edge.decoboon.project.model.ContractLine;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.model.ProjectTask;
+import com.th4.edge.decoboon.project.model.AcceptanceRound;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
+import com.th4.edge.decoboon.project.repository.AcceptanceRoundRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.decoboon.property.model.Property;
@@ -54,6 +65,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 项目施工闭环上下文。
@@ -74,6 +86,7 @@ public class ProjectContext {
     private final MaterialPlanRepository materialPlanRepository;
     private final ReceivableRepository receivableRepository;
     private final AcceptanceRepository acceptanceRepository;
+    private final AcceptanceRoundRepository acceptanceRoundRepository;
     private final CustomerRepository customerRepository;
     private final PropertyContext propertyContext;
     private final PropertyRepository propertyRepository;
@@ -81,6 +94,10 @@ public class ProjectContext {
     private final UserIdentityContext userIdentityContext;
     private final NoticeContext noticeContext;
     private final ProjectCostContext projectCostContext;
+    private final ContractPlanContext contractPlanContext;
+    private final MaterialPlanContext materialPlanContext;
+    private final MaterialCategoryContext materialCategoryContext;
+    private final DesignLifecycleContext designLifecycleContext;
 
     public ProjectContext(QuoteRepository quoteRepository,
                           QuoteLineRepository quoteItemRepository,
@@ -90,6 +107,7 @@ public class ProjectContext {
                           MaterialPlanRepository materialPlanRepository,
                           ReceivableRepository receivableRepository,
                           AcceptanceRepository acceptanceRepository,
+                          AcceptanceRoundRepository acceptanceRoundRepository,
                           CustomerRepository customerRepository,
                           PropertyContext propertyContext,
                           PropertyRepository propertyRepository,
@@ -98,7 +116,11 @@ public class ProjectContext {
                           ContractLineRepository contractLineRepository,
                           UserIdentityContext userIdentityContext,
                           NoticeContext noticeContext,
-                          ProjectCostContext projectCostContext) {
+                          ProjectCostContext projectCostContext,
+                          ContractPlanContext contractPlanContext,
+                          MaterialPlanContext materialPlanContext,
+                          MaterialCategoryContext materialCategoryContext,
+                          DesignLifecycleContext designLifecycleContext) {
         this.quoteRepository = quoteRepository;
         this.quoteItemRepository = quoteItemRepository;
         this.projectRepository = projectRepository;
@@ -107,6 +129,7 @@ public class ProjectContext {
         this.materialPlanRepository = materialPlanRepository;
         this.receivableRepository = receivableRepository;
         this.acceptanceRepository = acceptanceRepository;
+        this.acceptanceRoundRepository = acceptanceRoundRepository;
         this.customerRepository = customerRepository;
         this.propertyContext = propertyContext;
         this.propertyRepository = propertyRepository;
@@ -116,6 +139,10 @@ public class ProjectContext {
         this.userIdentityContext = userIdentityContext;
         this.noticeContext = noticeContext;
         this.projectCostContext = projectCostContext;
+        this.contractPlanContext = contractPlanContext;
+        this.materialPlanContext = materialPlanContext;
+        this.materialCategoryContext = materialCategoryContext;
+        this.designLifecycleContext = designLifecycleContext;
     }
 
     /**
@@ -205,13 +232,20 @@ public class ProjectContext {
         projectRepository.save(project);
 
         List<ContractLine> contractLines = contractLineRepository.findByContractOrderBySortAsc(contract);
-        generateFromContract(project, contractLines);
-        scheduleStages(project);
+        ContractConstructionPlan constructionPlan = contractPlanContext.constructionPlan(contract);
+        if (constructionPlan != null && !constructionPlan.getStages().isEmpty()) {
+            generateFromConstructionPlan(project, constructionPlan, contractLines);
+        } else {
+            generateFromContract(project, contractLines);
+            scheduleStages(project);
+        }
         refreshProject(project);
         Quote converted = quote;
         converted.setStatus(QuoteStatus.Converted);
         converted.setConvertedAt(java.time.LocalDateTime.now());
         quoteRepository.save(converted);
+        // 项目立项说明方案已经落地施工，同步推进设计方案状态，保证业主端不再显示待谈单。
+        designLifecycleContext.markSelected(converted.getDesign());
         property.setStatus(com.th4.edge.decoboon.property.configure.PropertyStatus.Serving);
         propertyRepository.save(property);
         property.getCustomer().setStatus(CustStatus.Serving);
@@ -274,42 +308,78 @@ public class ProjectContext {
     }
 
     /**
-     * 阶段施工完成后提交验收。
+     * 阶段施工完成后提交验收（第 1 轮）。
      */
     @Transactional
     public Acceptance submitAcceptance(Long companyId, Long projectId, Long stageId, Employee employee,
                                        String conclusion, List<String> issues, List<String> evidenceUrls) {
-        return submitAcceptance(companyId, projectId, stageId, employee, conclusion, issues, evidenceUrls, null, null);
+        return submitAcceptance(companyId, projectId, stageId, employee, conclusion, issues, evidenceUrls,
+                null, null, null, null);
     }
 
     @Transactional
     public Acceptance submitAcceptance(Long companyId, Long projectId, Long stageId, Employee employee,
                                        String conclusion, List<String> issues, List<String> evidenceUrls,
                                        Employee rectificationOwner, LocalDate rectificationDueDate) {
-        ProjectStage stage = stageRepository.findById(stageId)
+        return submitAcceptance(companyId, projectId, stageId, employee, conclusion, issues, evidenceUrls,
+                rectificationOwner, rectificationDueDate, null, null);
+    }
+
+    /**
+     * 提交验收或提交复验：不合格复用同一阶段与同一张验收单，每次提交追加一条轮次（append-only）。
+     *
+     * <p>业务口径（用户 2026-09-21 裁决）：整改阶段级、循环不限次数、原验收记录保留并追加结论、
+     * 只做质量事实不碰账。第 2 轮起必须携带整改说明与整改后照片。</p>
+     */
+    @Transactional
+    public Acceptance submitAcceptance(Long companyId, Long projectId, Long stageId, Employee employee,
+                                       String conclusion, List<String> issues, List<String> evidenceUrls,
+                                       Employee rectificationOwner, LocalDate rectificationDueDate,
+                                       String rectificationNote, List<String> rectificationEvidenceUrls) {
+        // 同一阶段的所有提交/复验先锁定阶段事实，再读取验收单；并发后到请求
+        // 会排队并命中 Pending 幂等分支，不再触发唯一键冲突或未定义错误。
+        ProjectStage stage = stageRepository.findLockedByStageId(stageId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目阶段不存在")));
         requireTenant(stage.getCompany(), companyId);
         if (!stage.getProject().getProjectId().equals(projectId)) {
             throw new DefinedException(new DefaultErrorCode("400", "阶段不属于当前项目"));
         }
+
+        Acceptance acceptance = acceptanceRepository.findFirstByStageOrderByAcceptanceIdDesc(stage).orElse(null);
+        if (acceptance != null && AcceptStatus.Confirmed.equals(acceptance.getStatus())) {
+            // 复验通过后原验收记录保留，不再接受新轮次。
+            throw new DefinedException(new DefaultErrorCode("400", "该阶段验收已通过"));
+        }
+        if (acceptance != null && AcceptStatus.Pending.equals(acceptance.getStatus())) {
+            // 重复点击或并发后到请求返回已有待确认事实，不新增轮次。
+            return acceptance;
+        }
+
         List<ProjectTask> tasks = taskRepository.findByStage(stage);
         boolean unfinished = tasks.stream().anyMatch(task -> !TaskStatus.Done.equals(task.getStatus()));
         if (unfinished) {
             throw new DefinedException(new DefaultErrorCode("400", "阶段内仍有未完成施工任务"));
         }
-        if (acceptanceRepository.existsByStageAndStatus(stage, AcceptStatus.Pending)) {
-            throw new DefinedException(new DefaultErrorCode("400", "该阶段已有待确认验收单"));
-        }
         if (evidenceUrls == null || evidenceUrls.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400", "提交阶段验收前必须上传现场照片或视频"));
         }
 
-        Acceptance acceptance = new Acceptance();
-        acceptance.setCompany(stage.getProject().getCompany());
-        acceptance.setProperty(stage.getProject().getProperty());
-        acceptance.setProject(stage.getProject());
-        permissionContext.apply(acceptance, stage.getProject());
-        acceptance.setStage(stage);
+        int roundNo = acceptance == null ? 1
+                : acceptanceRoundRepository.findFirstByAcceptanceOrderByRoundNoDesc(acceptance)
+                        .map(round -> round.getRoundNo() + 1).orElse(1);
+        if (roundNo > 1 && (rectificationNote == null || rectificationNote.isBlank()
+                || rectificationEvidenceUrls == null || rectificationEvidenceUrls.isEmpty())) {
+            throw new DefinedException(new DefaultErrorCode("400", "提交复验必须填写整改说明并上传整改后照片"));
+        }
+
+        if (acceptance == null) {
+            acceptance = new Acceptance();
+            acceptance.setCompany(stage.getProject().getCompany());
+            acceptance.setProperty(stage.getProject().getProperty());
+            acceptance.setProject(stage.getProject());
+            permissionContext.apply(acceptance, stage.getProject());
+            acceptance.setStage(stage);
+        }
         acceptance.setSubmittedBy(employee);
         acceptance.setStatus(AcceptStatus.Pending);
         acceptance.setConclusion(conclusion);
@@ -317,11 +387,38 @@ public class ProjectContext {
         acceptance.setEvidenceUrls(evidenceUrls == null ? null : new ArrayList<>(evidenceUrls));
         acceptance.setRectificationOwner(rectificationOwner);
         acceptance.setRectificationDueDate(rectificationDueDate);
+        acceptance.setRectificationType(null);
+        acceptance.setRectificationIssueImages(null);
+        // 新一轮重新提交：清空单上的结论痕迹，历史结论保留在轮次记录中。
+        acceptance.setConfirmedAt(null);
+        acceptance.setConfirmedBy(null);
+        Acceptance saved = acceptanceRepository.save(acceptance);
+
+        AcceptanceRound round = new AcceptanceRound();
+        round.setCompany(saved.getCompany());
+        round.setStore(saved.getStore());
+        round.setTeam(saved.getTeam());
+        round.setOwner(saved.getOwner());
+        round.setAcceptance(saved);
+        round.setProject(saved.getProject());
+        round.setProperty(saved.getProperty());
+        round.setStage(stage);
+        round.setRoundNo(roundNo);
+        round.setResult(AcceptStatus.Pending);
+        round.setRectificationNote(rectificationNote);
+        round.setRectificationEvidenceUrls(
+                rectificationEvidenceUrls == null ? null : new ArrayList<>(rectificationEvidenceUrls));
+        round.setEvidenceUrls(evidenceUrls == null ? null : new ArrayList<>(evidenceUrls));
+        round.setIssues(issues == null ? null : new ArrayList<>(issues));
+        round.setConclusion(conclusion);
+        round.setSubmittedBy(employee);
+        round.setSubmittedAt(LocalDateTime.now());
+        acceptanceRoundRepository.save(round);
+
         stage.setStatus(StageStatus.Accepting);
         stageRepository.save(stage);
         stage.getProject().setStatus(ProjectStatus.Accepting);
         projectRepository.save(stage.getProject());
-        Acceptance saved = acceptanceRepository.save(acceptance);
         refreshProject(saved.getProject());
         return saved;
     }
@@ -341,14 +438,65 @@ public class ProjectContext {
     @Transactional
     public Acceptance confirmAcceptance(Acceptance acceptance, Credentials operator,
                                         boolean confirmed, String conclusion) {
+        return confirmAcceptance(acceptance, operator, confirmed, conclusion, null);
+    }
+
+    /**
+     * 业主确认或驳回：更新验收单当前状态，并把本轮结论追加回当前轮次（历史轮次不可修改）。
+     */
+    @Transactional
+    public Acceptance confirmAcceptance(Acceptance acceptance, Credentials operator,
+                                        boolean confirmed, String conclusion, List<String> issues) {
+        return confirmAcceptance(acceptance, operator, confirmed, conclusion, issues, null, null);
+    }
+
+    /**
+     * 兼容既有确认调用；业主驳回的完整事实由下面的类型化重载承载。
+     */
+    @Transactional
+    public Acceptance confirmAcceptance(Acceptance acceptance, Credentials operator,
+                                        boolean confirmed, String conclusion, List<String> issues,
+                                        Employee rectificationOwner, LocalDate rectificationDueDate) {
+        return confirmAcceptance(acceptance, operator, confirmed, conclusion, issues,
+                rectificationOwner, rectificationDueDate, null, null);
+    }
+
+    /**
+     * 业主确认或驳回。驳回必须带问题清单、整改类型和项目经理；截止日期由服务端按整改类型计算，
+     * 不接受前端传入的截止日期。已处理的同结果请求由 Provider 在锁定验收单后直接幂等返回。
+     */
+    @Transactional
+    public Acceptance confirmAcceptance(Acceptance acceptance, Credentials operator,
+                                        boolean confirmed, String conclusion, List<String> issues,
+                                        Employee rectificationOwner, LocalDate ignoredDueDate,
+                                        AcceptanceRectificationType rectificationType,
+                                        List<String> rectificationIssueImages) {
         if (acceptance == null) {
             throw new DefinedException(new DefaultErrorCode("404", "验收单不存在"));
         }
         if (!AcceptStatus.Pending.equals(acceptance.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "验收单已处理"));
         }
+        List<String> normalizedIssues = normalizeIssues(issues);
+        if (!confirmed && normalizedIssues.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400", "业主驳回必须填写问题清单"));
+        }
+        if (!confirmed && (rectificationOwner == null || rectificationType == null)) {
+            throw new DefinedException(new DefaultErrorCode("400", "业主驳回必须指定整改责任人和整改类型"));
+        }
+        LocalDate rectificationDueDate = confirmed ? null
+                : LocalDate.now().plusDays(rectificationType.getDueDays());
+        List<String> normalizedIssueImages = normalizeImageUrls(rectificationIssueImages);
         acceptance.setStatus(confirmed ? AcceptStatus.Confirmed : AcceptStatus.Rejected);
         acceptance.setConclusion(conclusion == null ? acceptance.getConclusion() : conclusion);
+        if (!confirmed) {
+            acceptance.setIssues(new ArrayList<>(normalizedIssues));
+            acceptance.setRectificationOwner(rectificationOwner);
+            acceptance.setRectificationDueDate(rectificationDueDate);
+            acceptance.setRectificationType(rectificationType);
+            acceptance.setRectificationIssueImages(normalizedIssueImages.isEmpty()
+                    ? null : new ArrayList<>(normalizedIssueImages));
+        }
         acceptance.setConfirmedAt(LocalDateTime.now());
         acceptance.setConfirmedBy(operator);
         if (confirmed) {
@@ -364,9 +512,53 @@ public class ProjectContext {
             stageRepository.save(stage);
         }
         Acceptance saved = acceptanceRepository.save(acceptance);
+
+        acceptanceRoundRepository.findFirstByAcceptanceOrderByRoundNoDesc(saved).ifPresent(round -> {
+            round.setResult(confirmed ? AcceptStatus.Confirmed : AcceptStatus.Rejected);
+            round.setConclusion(conclusion == null ? round.getConclusion() : conclusion);
+            if (!confirmed) {
+                round.setIssues(new ArrayList<>(normalizedIssues));
+                round.setRectificationOwner(rectificationOwner);
+                round.setRectificationDueDate(rectificationDueDate);
+                round.setRectificationType(rectificationType);
+                round.setRectificationIssueImages(normalizedIssueImages.isEmpty()
+                        ? null : new ArrayList<>(normalizedIssueImages));
+            }
+            round.setConfirmedBy(operator);
+            round.setConfirmedAt(LocalDateTime.now());
+            acceptanceRoundRepository.save(round);
+        });
+
         refreshProject(acceptance.getProject());
         noticeContext.notifyAcceptanceDecision(saved);
         return saved;
+    }
+
+    private List<String> normalizeImageUrls(List<String> images) {
+        if (images == null) {
+            return List.of();
+        }
+        List<String> normalized = images.stream()
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(value -> !value.isBlank())
+                .distinct()
+                .toList();
+        if (normalized.size() > 9) {
+            throw new DefinedException(new DefaultErrorCode("400", "整改问题图片最多上传 9 张"));
+        }
+        return normalized;
+    }
+
+    private List<String> normalizeIssues(List<String> issues) {
+        if (issues == null) {
+            return List.of();
+        }
+        return issues.stream()
+                .filter(issue -> issue != null && !issue.isBlank())
+                .map(String::trim)
+                .distinct()
+                .toList();
     }
 
     /** 员工验收入口从已认证员工显式解析微信身份，记录操作人。 */
@@ -375,6 +567,58 @@ public class ProjectContext {
                                         boolean confirmed, String conclusion) {
         Credentials credential = operator == null ? null : userIdentityContext.requireWx(operator);
         return confirmAcceptance(acceptance, credential, confirmed, conclusion);
+    }
+
+    /**
+     * 以排期为准重算阶段与项目计划（用户 2026-09-23 裁决）。
+     *
+     * <p>阶段计划 = 该阶段施工任务 plannedStart 的最小值 / plannedEnd 的最大值；项目计划 = 全部阶段的最值；
+     * 没有排期任务的阶段保留原有计划窗口；冲突时以排期为准并回写合同施工计划快照。</p>
+     */
+    @Transactional
+    public Project recalculatePlanFromSchedule(Project project) {
+        if (project == null || project.getProjectId() == null) {
+            return project;
+        }
+        List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
+        if (stages.isEmpty()) {
+            return project;
+        }
+        java.time.LocalDate projectStart = null;
+        java.time.LocalDate projectEnd = null;
+        for (ProjectStage stage : stages) {
+            List<ProjectTask> tasks = taskRepository.findByStage(stage);
+            java.time.LocalDate start = tasks.stream().map(ProjectTask::getPlannedStart)
+                    .filter(Objects::nonNull).min(java.time.LocalDate::compareTo).orElse(null);
+            java.time.LocalDate end = tasks.stream().map(ProjectTask::getPlannedEnd)
+                    .filter(Objects::nonNull).max(java.time.LocalDate::compareTo).orElse(null);
+            if (start != null) {
+                stage.setPlannedStart(start);
+            }
+            if (end != null) {
+                stage.setPlannedEnd(end);
+            }
+            if (stage.getPlannedStart() != null
+                    && (projectStart == null || stage.getPlannedStart().isBefore(projectStart))) {
+                projectStart = stage.getPlannedStart();
+            }
+            if (stage.getPlannedEnd() != null
+                    && (projectEnd == null || stage.getPlannedEnd().isAfter(projectEnd))) {
+                projectEnd = stage.getPlannedEnd();
+            }
+        }
+        if (projectStart != null) {
+            project.setStartDate(projectStart);
+        }
+        if (projectEnd != null) {
+            project.setPlanEndDate(projectEnd);
+        }
+        stageRepository.saveAll(stages);
+        Project saved = projectRepository.save(project);
+        projectContractRepository
+                .findByProject_ProjectIdAndCompany_ComId(saved.getProjectId(), saved.getCompany().getComId())
+                .ifPresent(contract -> contractPlanContext.syncConstructionPlanFromProject(contract, stages));
+        return saved;
     }
 
     /**
@@ -456,7 +700,9 @@ public class ProjectContext {
             } else if (progress == 100 && !tasks.isEmpty()) {
                 stage.setStatus(StageStatus.Accepting);
                 anyAccepting = true;
-            } else if (progress > 0) {
+            } else if (progress > 0 || stage.getActualStart() != null || StageStatus.Doing.equals(stage.getStatus())) {
+                // 历史坑：只看任务进度会把"刚开始、任务还没报进度"的阶段刷回 Todo。
+                // actualStart / 既有 Doing 都是"已开工"的真实事实，必须保留。
                 stage.setStatus(StageStatus.Doing);
                 stage.setActualStart(stage.getActualStart() == null ? LocalDate.now() : stage.getActualStart());
             } else {
@@ -466,7 +712,7 @@ public class ProjectContext {
             totalWeight = totalWeight.add(weight);
             weightedProgress = weightedProgress.add(weight.multiply(BigDecimal.valueOf(progress)));
             allDone = allDone && StageStatus.Done.equals(stage.getStatus());
-            anyStarted = anyStarted || progress > 0;
+            anyStarted = anyStarted || !StageStatus.Todo.equals(stage.getStatus());
             stageRepository.save(stage);
         }
 
@@ -502,6 +748,23 @@ public class ProjectContext {
                 || !receivableRepository.findByProjectOrderByDueDateAsc(project).isEmpty()) {
             return;
         }
+        ContractPaymentPlan paymentPlan = contractPlanContext.paymentPlan(contract);
+        if (paymentPlan != null && !paymentPlan.getNodes().isEmpty()) {
+            Map<String, ProjectStage> stages = new java.util.HashMap<>();
+            for (ProjectStage stage : stageRepository.findByProjectOrderBySort(project)) {
+                if (stage.getStageCode() != null) stages.put(stage.getStageCode(), stage);
+            }
+            for (ContractPaymentNode node : paymentPlan.getNodes()) {
+                ProjectStage stage = node.getTriggerStageCode() == null
+                        ? null : stages.get(node.getTriggerStageCode());
+                createReceivable(contract, project, node, stage);
+            }
+            return;
+        }
+        generateLegacyReceivablePlan(contract, project);
+    }
+
+    private void generateLegacyReceivablePlan(ProjectContract contract, Project project) {
         BigDecimal total = contract.getCurrentAmount() == null ? BigDecimal.ZERO : contract.getCurrentAmount();
         if (total.signum() <= 0) return;
         BigDecimal first = total.multiply(new BigDecimal("0.30")).setScale(2, RoundingMode.HALF_UP);
@@ -513,6 +776,34 @@ public class ProjectContext {
                 contract.getStartDate() == null ? LocalDate.now().plusDays(30) : contract.getStartDate(), 1);
         createReceivable(contract, project, "竣工尾款", ReceivableType.Final, last,
                 contract.getPlanEndDate() == null ? LocalDate.now().plusDays(90) : contract.getPlanEndDate(), 2);
+    }
+
+    private void createReceivable(ProjectContract contract, Project project,
+                                  ContractPaymentNode node, ProjectStage stage) {
+        Receivable receivable = new Receivable();
+        receivable.setCompany(project.getCompany());
+        receivable.setProperty(project.getProperty());
+        receivable.setProject(project);
+        receivable.setContract(contract);
+        receivable.setStage(stage);
+        receivable.setStageCode(stage == null ? node.getTriggerStageCode() : stage.getStageCode());
+        receivable.setTriggerType(node.getTriggerType());
+        receivable.setCustomer(project.getCustomer());
+        receivable.setOwner(project.getProperty().getOwner());
+        receivable.setStore(project.getProperty().getStore());
+        receivable.setTeam(project.getProperty().getTeam());
+        receivable.setName(node.getName());
+        receivable.setStageName(stage == null ? node.getTriggerStageName() : stage.getName());
+        receivable.setType(node.getType());
+        receivable.setAmount(node.getAmount());
+        receivable.setReceivedAmount(BigDecimal.ZERO);
+        receivable.setDueDate(node.getDueDate());
+        receivable.setStatus(ReceivableStatus.Pending);
+        receivable.setInvoiceRequired(Boolean.FALSE);
+        receivable.setRemark("合同付款计划快照：" + node.getPlan().getName() + " / " + node.getCode());
+        receivable.setCreatedBy(contract.getCreatedBy());
+        Receivable saved = receivableRepository.save(receivable);
+        node.setReceivable(saved);
     }
 
     private void createReceivable(ProjectContract contract, Project project, String name,
@@ -551,6 +842,98 @@ public class ProjectContext {
         }
         assignDesignStageWeights(stages, stageCosts);
         stageRepository.saveAll(stages.values());
+    }
+
+    private void generateFromConstructionPlan(Project project, ContractConstructionPlan plan,
+                                              List<ContractLine> contractLines) {
+        Map<String, ProjectStage> stages = new LinkedHashMap<>();
+        Map<String, BigDecimal> stageCosts = new LinkedHashMap<>();
+        for (ContractConstructionStage snapshot : plan.getStages()) {
+            ProjectStage stage = new ProjectStage();
+            stage.setCompany(project.getCompany());
+            stage.setProperty(project.getProperty());
+            stage.setProject(project);
+            permissionContext.apply(stage, project);
+            stage.setName(snapshot.getName());
+            stage.setStageCode(snapshot.getCode());
+            stage.setSort(snapshot.getSort());
+            stage.setWeight(BigDecimal.ZERO);
+            stage.setStatus(StageStatus.Todo);
+            stage.setProgress(0);
+            stage.setPlannedStart(snapshot.getPlannedStart());
+            stage.setPlannedEnd(snapshot.getPlannedEnd());
+            stageRepository.save(stage);
+            snapshot.setProjectStage(stage);
+            stages.put(snapshot.getCode(), stage);
+        }
+        for (ContractLine item : contractLines) {
+            if (item.getType() == ItemType.Material) {
+                appendMaterial(project, item);
+            } else if (item.getType() == ItemType.Construction) {
+                ProjectStage stage = stageFor(item, stages);
+                appendConstructionTask(project, item, stage, stageCosts);
+            }
+        }
+        assignPlanStageWeights(stages, stageCosts);
+    }
+
+    private ProjectStage stageFor(ContractLine item, Map<String, ProjectStage> stages) {
+        String text = ((item.getCategory() == null ? "" : item.getCategory()) + " "
+                + (item.getName() == null ? "" : item.getName())).toLowerCase();
+        String code;
+        if (text.contains("水电") || text.contains("强电") || text.contains("弱电")) code = "WATER_ELECTRIC";
+        else if (text.contains("泥") || text.contains("瓦") || text.contains("防水") || text.contains("贴砖")) code = "MASONRY";
+        else if (text.contains("木") || text.contains("吊顶")) code = "CARPENTRY";
+        else if (text.contains("油漆") || text.contains("涂料") || text.contains("墙面")) code = "PAINTING";
+        else if (text.contains("安装") || text.contains("设备")) code = "INSTALL";
+        else if (text.contains("拆除")) code = "DEMOLITION";
+        else if (text.contains("竣") || text.contains("清洁")) code = "COMPLETION";
+        else code = "PREPARE";
+        ProjectStage exact = stages.get(code);
+        if (exact != null) return exact;
+        if (code.equals("CARPENTRY") && stages.containsKey("MASONRY")) return stages.get("MASONRY");
+        if (code.equals("INSTALL") && stages.containsKey("FINISH")) return stages.get("FINISH");
+        return stages.values().stream().findFirst().orElseThrow(
+                () -> new DefinedException(new DefaultErrorCode("400", "施工计划没有可用阶段")));
+    }
+
+    private void appendConstructionTask(Project project, ContractLine item, ProjectStage stage,
+                                        Map<String, BigDecimal> stageCosts) {
+        CatalogItem catalogItem = item.getSourceQuoteLine() == null ? null : item.getSourceQuoteLine().getCatalogItem();
+        ProjectTask task = new ProjectTask();
+        task.setCompany(project.getCompany());
+        task.setProperty(project.getProperty());
+        task.setProject(project);
+        permissionContext.apply(task, project);
+        task.setStage(stage);
+        task.setContractLine(item);
+        task.setQuoteItem(item.getSourceQuoteLine());
+        task.setCatalogItem(catalogItem);
+        task.setName(item.getName());
+        task.setZone(item.getSpaceName());
+        task.setCraft(catalogItem == null ? null : catalogItem.getCraft());
+        task.setSpec(item.getSpec());
+        task.setQuantity(item.getQuantity());
+        task.setUnit(item.getUnit());
+        task.setSalePrice(item.getAmount());
+        task.setCost(item.getCost());
+        task.setStatus(TaskStatus.Todo);
+        task.setProgress(0);
+        task.setPlannedStart(stage.getPlannedStart());
+        task.setPlannedEnd(stage.getPlannedEnd());
+        taskRepository.save(task);
+        stageCosts.merge(stage.getStageCode(), item.getCost() == null ? BigDecimal.ZERO : item.getCost(), BigDecimal::add);
+    }
+
+    private void assignPlanStageWeights(Map<String, ProjectStage> stages,
+                                        Map<String, BigDecimal> stageCosts) {
+        BigDecimal total = stageCosts.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        for (ProjectStage stage : stages.values()) {
+            BigDecimal cost = stageCosts.getOrDefault(stage.getStageCode(), BigDecimal.ZERO);
+            BigDecimal weight = total.signum() == 0 ? BigDecimal.ONE
+                    : cost.multiply(BigDecimal.valueOf(100)).divide(total, 2, RoundingMode.HALF_UP);
+            stage.setWeight(weight);
+        }
     }
 
     private void appendConstruction(Project project, ContractLine item,
@@ -612,12 +995,20 @@ public class ProjectContext {
         plan.setContractLine(item);
         plan.setQuoteItem(item.getSourceQuoteLine());
         plan.setCatalogItem(item.getSourceQuoteLine().getCatalogItem());
+        plan.setSourceType(MaterialSourceType.Selection);
+        plan.setSelectedBrand(item.getBrand());
+        plan.setSelectedSpec(item.getSpec());
         plan.setQuantity(item.getQuantity());
+        plan.setNetQuantity(item.getQuantity());
         plan.setUnit(item.getUnit());
         plan.setUnitPrice(item.getSourceQuoteLine().getPrice());
         plan.setCost(item.getCost());
         plan.setStatus(MaterialPlanStatus.Planned);
         plan.setRequiredAt(project.getStartDate());
+        // 主材分类损耗率继承（DEC-MP-09）
+        materialPlanContext.applyLossRate(plan,
+                materialCategoryContext.lossRate(project.getCompany(), item.getCategory()));
+        materialPlanContext.applyDerived(plan);
         materialPlanRepository.save(plan);
     }
 
@@ -694,12 +1085,20 @@ public class ProjectContext {
         permissionContext.apply(plan, project);
         plan.setQuoteItem(item);
         plan.setCatalogItem(catalogItem);
+        plan.setSourceType(MaterialSourceType.Selection);
+        plan.setSelectedBrand(catalogItem.getBrand());
+        plan.setSelectedSpec(catalogItem.getSpec());
         plan.setQuantity(item.getQuantity());
+        plan.setNetQuantity(item.getQuantity());
         plan.setUnit(item.getUnit());
         plan.setUnitPrice(item.getPrice());
         plan.setCost(item.getCost());
         plan.setStatus(MaterialPlanStatus.Planned);
         plan.setRequiredAt(project.getStartDate());
+        // 主材分类损耗率继承（DEC-MP-09）
+        materialPlanContext.applyLossRate(plan,
+                materialCategoryContext.lossRate(project.getCompany(), catalogItem.getCategory()));
+        materialPlanContext.applyDerived(plan);
         materialPlanRepository.save(plan);
     }
 

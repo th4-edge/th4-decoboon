@@ -1,0 +1,1240 @@
+{
+  "result": {
+    "projectId": 227467763537412096,
+    "base": "http://127.0.0.1:8093/api",
+    "date": "2026-09-23",
+    "stage": {
+      "stageId": "227467763579355140",
+      "status": {
+        "name": "待验收",
+        "key": "Accepting"
+      }
+    },
+    "catalogItem": {
+      "itemId": "102087348359004440",
+      "name": "木工制作--矮柜 （现场制作，不含门）",
+      "unit": {
+        "name": "m",
+        "value": "Metre",
+        "key": "Metre"
+      },
+      "from": "project/task/page"
+    },
+    "tempTaskId": "228224608812138496",
+    "nodeStart": {
+      "success": true,
+      "errorCode": null,
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-23 02:43:07"
+        },
+        "nodeId": "228224611475521536",
+        "task": {
+          "taskId": "228224608812138496",
+          "name": "复验临时工艺任务（P0 回归）",
+          "status": {
+            "name": "施工中",
+            "key": "Doing"
+          },
+          "progress": 10,
+          "actualStart": "2026-09-23",
+          "evidenceUrls": [
+            "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+          ]
+        },
+        "nodeKey": {
+          "name": "施工进行",
+          "value": "Start",
+          "key": "Start"
+        },
+        "note": "P0 修复复验：施工进行留证",
+        "medias": [
+          "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+        ],
+        "confirmedBy": {
+          "empId": "1789903522000000006",
+          "name": "徐勇",
+          "telNo": "19900000006",
+          "store": {
+            "storeId": "1789903521001328357",
+            "company": {
+              "comId": "1789903520997907818",
+              "title": "麦鸿设计",
+              "name": "麦鸿设计",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "addr": "",
+              "setting": {
+                "enableStore": false
+              },
+              "createTime": {
+                "dateTime": "2026-09-20 19:25:21"
+              }
+            },
+            "name": "总店",
+            "defaultStore": true,
+            "addr": "",
+            "createTime": {
+              "dateTime": "2026-09-20 19:25:21"
+            }
+          },
+          "company": {
+            "comId": "1789903520997907818",
+            "title": "麦鸿设计",
+            "name": "麦鸿设计",
+            "size": {
+              "name": "10人以下",
+              "value": "A",
+              "key": "A"
+            },
+            "addr": "",
+            "setting": {
+              "enableStore": false
+            },
+            "createTime": {
+              "dateTime": "2026-09-20 19:25:21"
+            }
+          },
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          },
+          "joinedAt": "2026-09-23 02:03:38",
+          "createTime": {
+            "dateTime": "2026-09-23 02:03:38"
+          },
+          "userId": "1789903522000000006"
+        }
+      }
+    },
+    "taskAfterStart": {
+      "status": {
+        "name": "施工中",
+        "key": "Doing"
+      },
+      "progress": 10
+    },
+    "nodeDuplicate": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "该施工节点已经确认"
+      },
+      "data": null
+    },
+    "nodeInvalid": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "不支持的施工节点"
+      },
+      "data": null
+    },
+    "receiptRepeat": {
+      "success": true,
+      "errorCode": null,
+      "data": {
+        "createTime": {
+          "dateTime": "2026-09-23 02:23:44"
+        },
+        "receiptId": "228219731256016896",
+        "amount": 10675.77,
+        "account": {
+          "name": "企业对公",
+          "key": "CompanyBank"
+        },
+        "receivedAt": "2026-09-23",
+        "payerName": "端到端验证-业主",
+        "remark": "项目 37 端到端验证收款",
+        "idempotencyKey": "ee1c8b587788f89355a6bc9791af9c9f7ac80fd193f1815b1904acc94892e2cc"
+      }
+    },
+    "receiptIdMatchesOriginal": true,
+    "receiptOverPayment": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "收款金额不能超过应收余额"
+      },
+      "data": null
+    }
+  },
+  "log": [
+    {
+      "step": "login:19900000006",
+      "route": "auth/session/password-login",
+      "request": {
+        "phone": "19900000006",
+        "password": "Maihong2026"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzg5OTAzNTIyMDAwMDAwMDA2IiwiYXVkIjoiY29tLnRoNC5lZGdlLnRlbmFudC51c2VyLm1vZGVsLkVtcGxveWVlIn0.1SGHd8a5HgJt49dQURkQ57SBHQj-L-FD5HpLw41BceU"
+        }
+      }
+    },
+    {
+      "step": "login:19900000005",
+      "route": "auth/session/password-login",
+      "request": {
+        "phone": "19900000005",
+        "password": "Maihong2026"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzg5OTAzNTIyMDAwMDAwMDA1IiwiYXVkIjoiY29tLnRoNC5lZGdlLnRlbmFudC51c2VyLm1vZGVsLkVtcGxveWVlIn0.ENQa7o_-lQsCIXM3MiFKVt-b6c8vqzqQf3ZOdeYDVbU"
+        }
+      }
+    },
+    {
+      "step": "stage/page",
+      "route": "project/stage/page",
+      "request": {
+        "projectId": 227467763537412096
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355136",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "开工交底",
+              "stageCode": "PREPARE",
+              "sort": 1,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-09-13",
+              "plannedEnd": "2026-09-24",
+              "actualStart": "2026-09-21"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355137",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "拆除改造",
+              "stageCode": "DEMOLITION",
+              "sort": 2,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-09-25",
+              "plannedEnd": "2026-10-06"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355138",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "水电施工",
+              "stageCode": "WATER_ELECTRIC",
+              "sort": 3,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-10-07",
+              "plannedEnd": "2026-10-18"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355139",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "泥瓦防水",
+              "stageCode": "MASONRY",
+              "sort": 4,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-10-19",
+              "plannedEnd": "2026-10-30"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355140",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "木作吊顶",
+              "stageCode": "CARPENTRY",
+              "sort": 5,
+              "weight": 100.0,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              },
+              "progress": 100,
+              "plannedStart": "2026-10-31",
+              "plannedEnd": "2026-12-14",
+              "actualStart": "2026-09-23"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355141",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "油漆墙面",
+              "stageCode": "PAINTING",
+              "sort": 6,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-12-15",
+              "plannedEnd": "2026-12-15"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355142",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "安装收尾",
+              "stageCode": "INSTALL",
+              "sort": 7,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-12-16",
+              "plannedEnd": "2026-12-16"
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "stageId": "227467763579355143",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "name": "竣工保洁验收",
+              "stageCode": "COMPLETION",
+              "sort": 8,
+              "weight": 0.0,
+              "status": {
+                "name": "未开始",
+                "key": "Todo"
+              },
+              "progress": 0,
+              "plannedStart": "2026-12-17",
+              "plannedEnd": "2026-12-17"
+            }
+          ],
+          "last": true,
+          "totalElements": "8",
+          "totalPages": 1,
+          "first": true,
+          "size": 8
+        }
+      }
+    },
+    {
+      "step": "task/page",
+      "route": "project/task/page",
+      "request": {
+        "projectId": 227467763537412096,
+        "stageId": "227467763579355140"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "taskId": "227467763591938048",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "stage": {
+                "stageId": "227467763579355140",
+                "name": "木作吊顶"
+              },
+              "catalogItem": {
+                "itemId": "102087348359004440",
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "code": "MH-CON-153",
+                "name": "木工制作--矮柜 （现场制作，不含门）",
+                "unit": {
+                  "name": "m",
+                  "value": "Metre",
+                  "key": "Metre"
+                },
+                "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。"
+              },
+              "owner": {
+                "empId": "1789903522000000002",
+                "name": "黄贤杰",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "name": "木工制作--矮柜 （现场制作，不含门）",
+              "zone": "客餐厅",
+              "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。",
+              "quantity": 42.0,
+              "unit": {
+                "name": "m",
+                "value": "Metre",
+                "key": "Metre"
+              },
+              "status": {
+                "name": "已取消",
+                "key": "Cancelled"
+              },
+              "progress": 0,
+              "priority": "normal",
+              "conceal": false,
+              "plannedStart": "2026-11-13",
+              "plannedEnd": "2026-11-29",
+              "evidenceUrls": [
+                "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/c376c939f2cf45b1aef1921428e3e063.png"
+              ]
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "taskId": "227467763604520960",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "stage": {
+                "stageId": "227467763579355140",
+                "name": "木作吊顶"
+              },
+              "catalogItem": {
+                "itemId": "102087348359004432",
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "code": "MH-CON-149",
+                "name": "木工制作--阳台吊柜 （现场制作，不含门）",
+                "unit": {
+                  "name": "m",
+                  "value": "Metre",
+                  "key": "Metre"
+                },
+                "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。"
+              },
+              "owner": {
+                "empId": "1789903522000000002",
+                "name": "黄贤杰",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "name": "木工制作--阳台吊柜 （现场制作，不含门）",
+              "zone": "厨房",
+              "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。",
+              "quantity": 8.0,
+              "unit": {
+                "name": "m",
+                "value": "Metre",
+                "key": "Metre"
+              },
+              "status": {
+                "name": "已完成",
+                "key": "Done"
+              },
+              "progress": 100,
+              "priority": "normal",
+              "conceal": false,
+              "plannedStart": "2026-11-13",
+              "plannedEnd": "2026-11-29",
+              "actualEnd": "2026-09-23",
+              "evidenceUrls": [
+                "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/c376c939f2cf45b1aef1921428e3e063.png"
+              ]
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "taskId": "227467763612909568",
+              "project": {
+                "projectId": "227467763537412096",
+                "name": "麦鸿演示项目 37",
+                "siteAddr": "演示项目工地 37"
+              },
+              "stage": {
+                "stageId": "227467763579355140",
+                "name": "木作吊顶"
+              },
+              "catalogItem": {
+                "itemId": "102087348359004436",
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "code": "MH-CON-151",
+                "name": "木工制作--阳台吊柜封顶板",
+                "unit": {
+                  "name": "m",
+                  "value": "Metre",
+                  "key": "Metre"
+                },
+                "craft": "1.免漆板柜体，采用免钉胶收边 。 2.按展开长度计数。"
+              },
+              "owner": {
+                "empId": "1789903522000000002",
+                "name": "黄贤杰",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "name": "木工制作--阳台吊柜封顶板",
+              "zone": "主卧",
+              "craft": "1.免漆板柜体，采用免钉胶收边 。 2.按展开长度计数。",
+              "quantity": 16.0,
+              "unit": {
+                "name": "m",
+                "value": "Metre",
+                "key": "Metre"
+              },
+              "status": {
+                "name": "已完成",
+                "key": "Done"
+              },
+              "progress": 100,
+              "priority": "normal",
+              "conceal": false,
+              "plannedStart": "2026-11-13",
+              "plannedEnd": "2026-11-29",
+              "actualEnd": "2026-09-23",
+              "evidenceUrls": [
+                "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/c376c939f2cf45b1aef1921428e3e063.png"
+              ]
+            }
+          ],
+          "last": true,
+          "totalElements": "3",
+          "totalPages": 1,
+          "first": true,
+          "size": 3
+        }
+      }
+    },
+    {
+      "step": "task/save:临时复验任务",
+      "route": "project/task/save",
+      "request": {
+        "projectId": 227467763537412096,
+        "stageId": "227467763579355140",
+        "catalogId": "102087348359004440",
+        "zoneId": "LivingRoom",
+        "quantity": 1,
+        "plannedStart": "2026-10-31",
+        "plannedEnd": "2026-12-14",
+        "name": "复验临时工艺任务（P0 回归）",
+        "priority": "normal",
+        "remark": "DEF-PROJ37-001 复验用临时任务，复验后清理"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "createTime": {
+            "dateTime": "2026-09-23 02:43:06"
+          },
+          "taskId": "228224608812138496",
+          "project": {
+            "projectId": "227467763537412096",
+            "name": "麦鸿演示项目 37",
+            "property": {
+              "createTime": {
+                "dateTime": "2026-09-21 00:35:40"
+              },
+              "updateTime": {
+                "dateTime": "2026-09-21 00:35:41"
+              },
+              "propertyId": "227467760211329024",
+              "company": {
+                "comId": "1789903520997907818",
+                "title": "麦鸿设计",
+                "name": "麦鸿设计",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "addr": "",
+                "setting": {
+                  "enableStore": false
+                },
+                "createTime": {
+                  "dateTime": "2026-09-20 19:25:21"
+                }
+              },
+              "store": {
+                "storeId": "1789903521001328357",
+                "company": {
+                  "comId": "1789903520997907818",
+                  "title": "麦鸿设计",
+                  "name": "麦鸿设计",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-20 19:25:21"
+                  }
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "addr": "",
+                "createTime": {
+                  "dateTime": "2026-09-20 19:25:21"
+                }
+              },
+              "owner": {
+                "empId": "1789903522000000002",
+                "name": "黄贤杰",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "customer": {
+                "createTime": {
+                  "dateTime": "2026-09-21 00:35:40"
+                },
+                "updateTime": {
+                  "dateTime": "2026-09-21 00:35:40"
+                },
+                "custId": "227467760060334080",
+                "company": {
+                  "comId": "1789903520997907818",
+                  "title": "麦鸿设计",
+                  "name": "麦鸿设计",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "addr": "",
+                  "setting": {
+                    "enableStore": false
+                  },
+                  "createTime": {
+                    "dateTime": "2026-09-20 19:25:21"
+                  }
+                },
+                "store": {
+                  "storeId": "1789903521001328357",
+                  "company": {
+                    "comId": "1789903520997907818",
+                    "title": "麦鸿设计",
+                    "name": "麦鸿设计",
+                    "size": {
+                      "name": "10人以下",
+                      "value": "A",
+                      "key": "A"
+                    },
+                    "addr": "",
+                    "setting": {
+                      "enableStore": false
+                    },
+                    "createTime": {
+                      "dateTime": "2026-09-20 19:25:21"
+                    }
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "addr": "",
+                  "createTime": {
+                    "dateTime": "2026-09-20 19:25:21"
+                  }
+                },
+                "name": "蔡颖（演示37）",
+                "telNo": "13910000037",
+                "gender": {
+                  "name": "男",
+                  "key": "M"
+                },
+                "source": {
+                  "name": "转介绍",
+                  "key": "Referral"
+                },
+                "community": "万象公馆",
+                "addr": "高新云谷8栋1802（次房）",
+                "area": 100.0,
+                "budget": 33.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1789903522000000002",
+                  "name": "黄贤杰",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1789903522000000003",
+                  "name": "谢玲玲",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "lastFollowAt": "2026-09-21 00:35:40",
+                "nextFollowAt": "2026-09-25 00:00:00",
+                "wechatAdded": false,
+                "visitCount": 0,
+                "pendingMeasureAt": "2026-09-21 00:35:40",
+                "measureAt": "2026-09-28 02:35:40",
+                "measureRequestedAt": "2026-09-21 00:35:40",
+                "handedOffAt": "2026-09-21 00:35:40",
+                "idleDays": 0,
+                "riskLevel": {
+                  "name": "正常",
+                  "key": "Normal"
+                }
+              },
+              "propertyNo": "H1789922140181",
+              "community": "万象公馆",
+              "building": "8栋",
+              "roomNo": "1802",
+              "address": "万象公馆8栋1802（主房）",
+              "area": 110.0,
+              "layout": "三室两厅一厨一卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "1789903522000000002",
+                "name": "黄贤杰",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "1789903522000000003",
+                "name": "谢玲玲",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "latestMeasureAt": "2026-09-04 00:35:40",
+              "remark": "MH-DEMO-20260921-037 业务推演房屋"
+            },
+            "siteAddr": "演示项目工地 37"
+          },
+          "stage": {
+            "stageId": "227467763579355140",
+            "name": "木作吊顶"
+          },
+          "catalogItem": {
+            "itemId": "102087348359004440",
+            "code": "MH-CON-153",
+            "name": "木工制作--矮柜 （现场制作，不含门）",
+            "unit": {
+              "name": "m",
+              "value": "Metre",
+              "key": "Metre"
+            },
+            "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。"
+          },
+          "owner": {
+            "empId": "1789903522000000006",
+            "name": "徐勇",
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            }
+          },
+          "creator": {
+            "empId": "1789903522000000006",
+            "name": "徐勇",
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            }
+          },
+          "name": "复验临时工艺任务（P0 回归）",
+          "zone": "客厅",
+          "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。",
+          "quantity": 1,
+          "unit": {
+            "name": "m",
+            "value": "Metre",
+            "key": "Metre"
+          },
+          "status": {
+            "name": "未开始",
+            "key": "Todo"
+          },
+          "progress": 0,
+          "priority": "normal",
+          "remark": "DEF-PROJ37-001 复验用临时任务，复验后清理",
+          "plannedStart": "2026-10-31",
+          "plannedEnd": "2026-12-14",
+          "evidenceUrls": []
+        }
+      }
+    },
+    {
+      "step": "upload:task",
+      "route": "file/private/grant",
+      "request": {
+        "businessType": "Task",
+        "file": "project37-task-start.png"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": [
+          {
+            "businessType": {
+              "name": "施工任务",
+              "value": "Task",
+              "key": "Task"
+            },
+            "projectId": "227467763537412096",
+            "path": "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png",
+            "url": "https://decoboon.oss-cn-hangzhou.aliyuncs.com/companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png?Expires=1790102887&OSSAccessKeyId=LTAI5t8Yo1La1RfA6qtJoDt8&Signature=T%2BmKjlf9n9U%2FeSRHx4mJicqbv3I%3D",
+            "expiresAt": "2026-09-23 02:48:07",
+            "name": "project37-task-start.png",
+            "contentType": "image/png",
+            "size": "74"
+          }
+        ]
+      }
+    },
+    {
+      "step": "task-node/save:Start",
+      "route": "project/task-node/save",
+      "request": {
+        "taskId": "228224608812138496",
+        "key": "Start",
+        "note": "P0 修复复验：施工进行留证",
+        "medias": [
+          {
+            "url": "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+          }
+        ]
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "createTime": {
+            "dateTime": "2026-09-23 02:43:07"
+          },
+          "nodeId": "228224611475521536",
+          "task": {
+            "taskId": "228224608812138496",
+            "name": "复验临时工艺任务（P0 回归）",
+            "status": {
+              "name": "施工中",
+              "key": "Doing"
+            },
+            "progress": 10,
+            "actualStart": "2026-09-23",
+            "evidenceUrls": [
+              "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+            ]
+          },
+          "nodeKey": {
+            "name": "施工进行",
+            "value": "Start",
+            "key": "Start"
+          },
+          "note": "P0 修复复验：施工进行留证",
+          "medias": [
+            "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+          ],
+          "confirmedBy": {
+            "empId": "1789903522000000006",
+            "name": "徐勇",
+            "telNo": "19900000006",
+            "store": {
+              "storeId": "1789903521001328357",
+              "company": {
+                "comId": "1789903520997907818",
+                "title": "麦鸿设计",
+                "name": "麦鸿设计",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "addr": "",
+                "setting": {
+                  "enableStore": false
+                },
+                "createTime": {
+                  "dateTime": "2026-09-20 19:25:21"
+                }
+              },
+              "name": "总店",
+              "defaultStore": true,
+              "addr": "",
+              "createTime": {
+                "dateTime": "2026-09-20 19:25:21"
+              }
+            },
+            "company": {
+              "comId": "1789903520997907818",
+              "title": "麦鸿设计",
+              "name": "麦鸿设计",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "addr": "",
+              "setting": {
+                "enableStore": false
+              },
+              "createTime": {
+                "dateTime": "2026-09-20 19:25:21"
+              }
+            },
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            },
+            "joinedAt": "2026-09-23 02:03:38",
+            "createTime": {
+              "dateTime": "2026-09-23 02:03:38"
+            },
+            "userId": "1789903522000000006"
+          }
+        }
+      }
+    },
+    {
+      "step": "task/info:Start 后",
+      "route": "project/task/info",
+      "request": {
+        "taskId": "228224608812138496"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "createTime": {
+            "dateTime": "2026-09-23 02:43:06"
+          },
+          "taskId": "228224608812138496",
+          "project": {
+            "projectId": "227467763537412096",
+            "name": "麦鸿演示项目 37",
+            "siteAddr": "演示项目工地 37"
+          },
+          "stage": {
+            "stageId": "227467763579355140",
+            "name": "木作吊顶",
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            }
+          },
+          "catalogItem": {
+            "itemId": "102087348359004440",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "code": "MH-CON-153",
+            "name": "木工制作--矮柜 （现场制作，不含门）",
+            "unit": {
+              "name": "m",
+              "value": "Metre",
+              "key": "Metre"
+            },
+            "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。",
+            "criterion": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。"
+          },
+          "owner": {
+            "empId": "1789903522000000006",
+            "name": "徐勇",
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            }
+          },
+          "creator": {
+            "empId": "1789903522000000006",
+            "name": "徐勇",
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            }
+          },
+          "name": "复验临时工艺任务（P0 回归）",
+          "zone": "客厅",
+          "craft": "1.免漆板柜体，5厘板背板，采用免钉胶收边 。 2.按展开长度计数。 3.深度不超过600mm。 4.不含五金（拉手.三节抽.锁等费用另计）。",
+          "quantity": 1.0,
+          "unit": {
+            "name": "m",
+            "value": "Metre",
+            "key": "Metre"
+          },
+          "status": {
+            "name": "施工中",
+            "key": "Doing"
+          },
+          "progress": 10,
+          "priority": "normal",
+          "conceal": false,
+          "remark": "DEF-PROJ37-001 复验用临时任务，复验后清理",
+          "plannedStart": "2026-10-31",
+          "plannedEnd": "2026-12-14",
+          "actualStart": "2026-09-23",
+          "evidenceUrls": [
+            "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+          ],
+          "nodes": [
+            {
+              "createTime": {
+                "dateTime": "2026-09-23 02:43:07"
+              },
+              "nodeId": "228224611475521536",
+              "nodeKey": {
+                "name": "施工进行",
+                "value": "Start",
+                "key": "Start"
+              },
+              "note": "P0 修复复验：施工进行留证",
+              "medias": [
+                "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+              ],
+              "confirmedBy": {
+                "empId": "1789903522000000006",
+                "name": "徐勇",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "step": "task-node/save:重复 Start",
+      "route": "project/task-node/save",
+      "request": {
+        "taskId": "228224608812138496",
+        "key": "Start",
+        "note": "重复留证",
+        "medias": [
+          {
+            "url": "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+          }
+        ]
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "400",
+          "message": "该施工节点已经确认"
+        },
+        "data": null
+      }
+    },
+    {
+      "step": "task-node/save:非法节点",
+      "route": "project/task-node/save",
+      "request": {
+        "taskId": "228224608812138496",
+        "key": "NotANode",
+        "medias": [
+          {
+            "url": "companies/1789903520997907818/projects/227467763537412096/files/task/2026/09/44688a9a2b8046dba99277c58dab1818.png"
+          }
+        ]
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "400",
+          "message": "不支持的施工节点"
+        },
+        "data": null
+      }
+    },
+    {
+      "step": "finance/receipt/save:重复提交",
+      "route": "finance/receipt/save",
+      "request": {
+        "projectId": 227467763537412096,
+        "receivableId": 227467764040728576,
+        "amount": 10675.77,
+        "account": "CompanyBank",
+        "receivedAt": "2026-09-23",
+        "payerName": "端到端验证-业主",
+        "remark": "项目 37 端到端验证收款"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "createTime": {
+            "dateTime": "2026-09-23 02:23:44"
+          },
+          "receiptId": "228219731256016896",
+          "amount": 10675.77,
+          "account": {
+            "name": "企业对公",
+            "key": "CompanyBank"
+          },
+          "receivedAt": "2026-09-23",
+          "payerName": "端到端验证-业主",
+          "remark": "项目 37 端到端验证收款",
+          "idempotencyKey": "ee1c8b587788f89355a6bc9791af9c9f7ac80fd193f1815b1904acc94892e2cc"
+        }
+      }
+    },
+    {
+      "step": "finance/receipt/save:新事实超额",
+      "route": "finance/receipt/save",
+      "request": {
+        "projectId": 227467763537412096,
+        "receivableId": 227467764040728576,
+        "amount": 100.0,
+        "account": "CompanyBank",
+        "receivedAt": "2026-09-23",
+        "payerName": "端到端验证-业主乙",
+        "remark": "项目 37 端到端验证收款"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "400",
+          "message": "收款金额不能超过应收余额"
+        },
+        "data": null
+      }
+    }
+  ]
+}
