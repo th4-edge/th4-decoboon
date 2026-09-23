@@ -2,7 +2,7 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20260923-a1233597b0",
+      "incidentId": "INC-20260924-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -106,7 +106,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 24,
+      "count": 27,
       "firstSeen": "2026-09-16 12:29:27.868",
       "lastSeen": "2026-09-22T16:11:42.419+08:00",
       "samples": [
@@ -123,7 +123,8 @@
         "2026-09-17/20260917-184110",
         "2026-09-18/20260918-130145",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -134,7 +135,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 16,
+      "count": 25,
       "firstSeen": "2026-09-17 01:50:01.179",
       "lastSeen": "2026-09-22T16:19:11.447+08:00",
       "samples": [
@@ -147,7 +148,8 @@
       "reportPaths": [
         "2026-09-17/20260917-184110",
         "2026-09-18/20260918-130145",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -202,7 +204,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 15,
+      "count": 18,
       "firstSeen": "2026-09-17 11:25:08.128",
       "lastSeen": "2026-09-22T06:40:38.274+08:00",
       "samples": [
@@ -217,7 +219,8 @@
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -254,7 +257,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 15,
+      "count": 18,
       "firstSeen": "2026-09-17 11:25:08.425",
       "lastSeen": "2026-09-22T06:40:38.525+08:00",
       "samples": [
@@ -269,7 +272,8 @@
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -280,7 +284,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 15,
+      "count": 18,
       "firstSeen": "2026-09-17 11:25:05.462",
       "lastSeen": "2026-09-22T06:40:36.298+08:00",
       "samples": [
@@ -295,7 +299,8 @@
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -306,7 +311,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 15,
+      "count": 18,
       "firstSeen": "2026-09-17 11:25:05.739",
       "lastSeen": "2026-09-22T06:40:36.549+08:00",
       "samples": [
@@ -321,7 +326,8 @@
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -332,7 +338,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 15,
+      "count": 18,
       "firstSeen": "2026-09-17 11:25:07.690",
       "lastSeen": "2026-09-22T06:40:38.024+08:00",
       "samples": [
@@ -347,7 +353,8 @@
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -358,9 +365,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 5,
+      "count": 7,
       "firstSeen": "2026-09-17 17:49:39.098",
-      "lastSeen": "2026-09-21T08:19:35.388+08:00",
+      "lastSeen": "2026-09-23T15:05:13.763+08:00",
       "samples": [
         "[2026-09-17 17:49:39.098] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
         "15131:2026-09-17T17:49:39.098+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
@@ -372,7 +379,8 @@
         "2026-09-17/20260917-184110",
         "2026-09-18/20260918-130145",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -427,9 +435,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 18,
+      "count": 22,
       "firstSeen": "2026-09-17T23:54:36.942+08:00",
-      "lastSeen": "2026-09-22T20:33:36.877+08:00",
+      "lastSeen": "2026-09-23T19:11:40.127+08:00",
       "samples": [
         "16438:2026-09-17T23:54:36.942+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
         "[2026-09-20 02:26:19.563] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
@@ -445,7 +453,8 @@
         "2026-09-21/20260921-051122",
         "2026-09-21/20260921-051127",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -562,7 +571,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 35,
+      "count": 47,
       "firstSeen": "2026-09-18T14:05:25.255+08:00",
       "lastSeen": "2026-09-21T14:04:48.401+08:00",
       "samples": [
@@ -575,7 +584,8 @@
       "reportPaths": [
         "2026-09-20/20260920-130110",
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -1141,7 +1151,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 5,
+      "count": 7,
       "firstSeen": "2026-09-22 06:26:40.863",
       "lastSeen": "2026-09-23T12:42:45.454+08:00",
       "samples": [
@@ -1153,7 +1163,8 @@
       ],
       "reportPaths": [
         "2026-09-22/20260922-130146",
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -1164,7 +1175,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 11,
+      "count": 22,
       "firstSeen": "2026-09-22T16:13:26.543+08:00",
       "lastSeen": "2026-09-22T16:19:06.499+08:00",
       "samples": [
@@ -1175,7 +1186,8 @@
         "8649:2026-09-22T16:19:05.400+08:00 ERROR 63746 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/resign处理失败:企业唯一负责人不能退出，请先转让负责人"
       ],
       "reportPaths": [
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -1186,7 +1198,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 8,
+      "count": 16,
       "firstSeen": "2026-09-22T16:32:14.014+08:00",
       "lastSeen": "2026-09-22T16:35:16.226+08:00",
       "samples": [
@@ -1197,7 +1209,8 @@
         "10264:2026-09-22T16:32:36.624+08:00 ERROR 63746 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/register处理失败:接受邀请后 30 天内不能再次加入企业"
       ],
       "reportPaths": [
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
       ]
     },
     {
@@ -1208,16 +1221,39 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 1,
+      "count": 2,
       "firstSeen": "2026-09-22T16:17:26.992+08:00",
       "lastSeen": "2026-09-22T16:17:26.992+08:00",
       "samples": [
+        "8173:2026-09-22T16:17:26.992+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请",
         "8173:2026-09-22T16:17:26.992+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请"
       ],
       "reportPaths": [
-        "2026-09-23/20260923-130103"
+        "2026-09-23/20260923-130103",
+        "2026-09-24/20260924-043234"
+      ]
+    },
+    {
+      "incidentId": "INC-20260924-f2807bf3f6",
+      "signature": "邀请不存在或不可用",
+      "signatureHash": "f2807bf3f6",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-24 03:32:53.629",
+      "lastSeen": "2026-09-24T03:32:55.905+08:00",
+      "samples": [
+        "[2026-09-24 03:32:53.629] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - identity/customer-invite/info处理失败:邀请不存在或不可用",
+        "[2026-09-24 03:32:55.905] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - identity/customer-invite/info处理失败:邀请不存在或不可用",
+        "13049:2026-09-24T03:32:53.629+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : identity/customer-invite/info处理失败:邀请不存在或不可用",
+        "13166:2026-09-24T03:32:55.905+08:00 ERROR 63746 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : identity/customer-invite/info处理失败:邀请不存在或不可用"
+      ],
+      "reportPaths": [
+        "2026-09-24/20260924-043234"
       ]
     }
   ],
-  "updatedAt": "2026-09-23T05:01:04.734082+00:00"
+  "updatedAt": "2026-09-23T20:32:35.454689+00:00"
 }
