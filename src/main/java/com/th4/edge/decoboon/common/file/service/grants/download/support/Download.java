@@ -7,10 +7,10 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
-import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
-import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import java.util.regex.Pattern;
 
 /** 私有文件签名下载实现。 */
 @Note("私有文件下载")
@@ -18,16 +18,17 @@ import org.springframework.stereotype.Service;
 @Scope(ScopeTypes.PROTOTYPE)
 public class Download implements com.th4.edge.decoboon.common.file.service.grants.download.Download {
 
+    /** 只放行服务端生成的员工头像对象键，防止绕过私有文件签名读取其他 OSS 对象。 */
+    private static final Pattern PUBLIC_AVATAR_PATH =
+            Pattern.compile("^avatar/\\d+/\\d+-[0-9a-fA-F]{32}\\.(jpg|jpeg|png|webp)$");
+
     @AutoInject
-    @NotEmpty
     private String path;
 
     @AutoInject
-    @NotNull
     private Long expires;
 
     @AutoInject
-    @NotEmpty
     private String signature;
 
     /** 下载展示文件名，仅影响 Content-Disposition，不参与签名校验。 */
@@ -42,9 +43,10 @@ public class Download implements com.th4.edge.decoboon.common.file.service.grant
 
     @Override
     public java.io.File call(FileGrant request) {
-        if (!signatureContext.verify(path, expires, signature)) {
+        boolean publicAvatar = path != null && PUBLIC_AVATAR_PATH.matcher(path).matches();
+        if (!publicAvatar && !signatureContext.verify(path, expires, signature)) {
             throw new DefinedException(new DefaultErrorCode("404", "文件不存在或无权访问"));
         }
-        return signatureContext.materialize(path, name);
+        return signatureContext.materialize(path, publicAvatar ? null : name);
     }
 }

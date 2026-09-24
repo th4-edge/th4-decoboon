@@ -135,6 +135,16 @@ class DecoboonClosedLoopTest {
         employee.setRole(EmployeeRole.Marketer);
         employee = employeeRepository.save(employee);
 
+        Employee pm = new Employee();
+        pm.setEmpId(seq + 3);
+        pm.setName("测试施工经理");
+        pm.setTelNo("19900000003");
+        pm.setCompany(company);
+        pm.setStore(store);
+        pm.setRole(EmployeeRole.Pm);
+        pm = employeeRepository.save(pm);
+        Employee projectManager = pm;
+
         PackageSection section = new PackageSection();
         section.setCompany(company);
         section.setName("全屋");
@@ -206,10 +216,13 @@ class DecoboonClosedLoopTest {
         draft.setSiteAddr("测试小区 1 栋 101");
         draft.setStartDate(LocalDate.now());
         draft.setPlanEndDate(LocalDate.now().plusDays(90));
-        draft.setManager(employee);
+        draft.setManager(projectManager);
         Project project = projectContext.createFromEffectiveContract(contract, draft);
 
         assertThat(project.getContractAmount()).isEqualByComparingTo(finalSignedAmount);
+        assertThat(taskRepository.findByProject(project))
+                .isNotEmpty()
+                .allSatisfy(task -> assertThat(task.getOwner().getEmpId()).isEqualTo(projectManager.getEmpId()));
         List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
         assertThat(receivables.stream()
                 .map(item -> item.getAmount() == null ? BigDecimal.ZERO : item.getAmount())

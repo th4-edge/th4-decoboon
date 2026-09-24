@@ -11,6 +11,7 @@ import com.th4.edge.decoboon.project.model.ProjectTask;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
+import com.th4.edge.decoboon.statistic.context.QuoteAcceptanceContext;
 import com.th4.edge.decoboon.statistic.model.DesignerReport;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -29,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -111,13 +111,14 @@ public class Report implements com.th4.edge.decoboon.statistic.service.designer.
                 .map(Quote::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
         report.setSignedAmount(projects.stream().map(Project::getContractAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        if (effectiveQuoteCount == 0) {
-            report.setConversionRate(BigDecimal.ZERO);
-        } else {
-            report.setConversionRate(BigDecimal.valueOf(report.getAcceptedQuoteCount())
-                    .multiply(BigDecimal.valueOf(100))
-                    .divide(BigDecimal.valueOf(effectiveQuoteCount), 1, RoundingMode.HALF_UP));
-        }
+        QuoteAcceptanceContext.Result acceptance = QuoteAcceptanceContext.analyze(quotes);
+        report.setSubmittedQuoteCount(acceptance.submittedQuoteCount());
+        report.setPendingDecisionQuoteCount(acceptance.pendingDecisionQuoteCount());
+        report.setDecidedOpportunityCount(acceptance.decidedOpportunityCount());
+        report.setAcceptedOpportunityCount(acceptance.acceptedOpportunityCount());
+        report.setFinalQuoteAcceptanceRate(acceptance.finalAcceptanceRate());
+        report.setFirstQuoteAcceptanceRate(acceptance.firstAcceptanceRate());
+        report.setConversionRate(acceptance.finalAcceptanceRate());
         report.setProjectCount(projects.size());
         report.setOngoingProjectCount((int) projects.stream().filter(p -> p.getStatus() == ProjectStatus.Preparing
                 || p.getStatus() == ProjectStatus.Ongoing || p.getStatus() == ProjectStatus.Accepting).count());

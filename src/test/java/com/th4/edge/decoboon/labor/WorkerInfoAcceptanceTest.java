@@ -50,6 +50,7 @@ class WorkerInfoAcceptanceTest {
     @Autowired private EmployeeRepository employeeRepository;
     @Autowired private WorkerRepository workerRepository;
     @Autowired private com.th4.edge.decoboon.labor.service.worker.info.Info workerInfo;
+    @Autowired private com.th4.edge.decoboon.labor.service.worker.update.Update workerUpdate;
 
     @Test
     void shouldReturnWorkerForOwnerAndMaskSensitiveFieldsForDesigner() {
@@ -71,6 +72,38 @@ class WorkerInfoAcceptanceTest {
     }
 
     @Test
+    void shouldKeepSensitiveFieldsWhenUpdateOmitsThem() {
+        Employee pm = employee("项目经理", EmployeeRole.Pm, null);
+        Worker worker = worker(pm.getCompany());
+        com.th4.edge.decoboon.labor.service.worker.update.support.Update target = updateTarget();
+        ReflectionTestUtils.setField(target, "employee", pm);
+        ReflectionTestUtils.setField(target, "workerId", worker.getWorkerId());
+        ReflectionTestUtils.setField(target, "name", "张伟（改）");
+
+        Worker saved = target.call(new Worker());
+
+        assertThat(saved.getName()).isEqualTo("张伟（改）");
+        assertThat(saved.getIdCardNo()).isEqualTo("341222198803305970");
+        assertThat(saved.getBankAccount()).isEqualTo("662245678901266");
+    }
+
+    @Test
+    void shouldClearSensitiveFieldsWhenUpdateSendsBlank() {
+        Employee pm = employee("项目经理", EmployeeRole.Pm, null);
+        Worker worker = worker(pm.getCompany());
+        com.th4.edge.decoboon.labor.service.worker.update.support.Update target = updateTarget();
+        ReflectionTestUtils.setField(target, "employee", pm);
+        ReflectionTestUtils.setField(target, "workerId", worker.getWorkerId());
+        ReflectionTestUtils.setField(target, "idCardNo", "");
+        ReflectionTestUtils.setField(target, "bankAccount", "");
+
+        Worker saved = target.call(new Worker());
+
+        assertThat(saved.getIdCardNo()).isNull();
+        assertThat(saved.getBankAccount()).isNull();
+    }
+
+    @Test
     void shouldRejectCrossCompanyWorkerAccess() {
         Employee boss = employee("负责人", EmployeeRole.Boss, null);
         Employee stranger = employee("外部负责人", EmployeeRole.Boss, null);
@@ -88,6 +121,10 @@ class WorkerInfoAcceptanceTest {
 
     private com.th4.edge.decoboon.labor.service.worker.info.support.Info target() {
         return AopTestUtils.getTargetObject(workerInfo);
+    }
+
+    private com.th4.edge.decoboon.labor.service.worker.update.support.Update updateTarget() {
+        return AopTestUtils.getTargetObject(workerUpdate);
     }
 
     /** 传入已有员工表示同企业同门店（用于角色矩阵）；传空则新建企业。 */

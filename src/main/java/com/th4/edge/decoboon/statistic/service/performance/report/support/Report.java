@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
                         "performances"}),
         @AllowProperties(model = EmployeePerformance.class,
                 properties = {"employee", "role", "quoteCount", "acceptedQuoteCount", "designerConversionRate",
+                        "pendingDecisionQuoteCount", "decidedOpportunityCount", "firstQuoteAcceptanceRate",
                         "customerCount", "signedCustomerCount", "marketerSignRate", "deliveredProjectCount",
                         "onTimeProjectCount", "pmOnTimeDeliveryRate", "acceptanceCount", "acceptedAcceptanceCount",
                         "pmAcceptancePassRate"}),

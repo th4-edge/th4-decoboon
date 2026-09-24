@@ -905,6 +905,7 @@ public class ProjectContext {
         task.setProperty(project.getProperty());
         task.setProject(project);
         permissionContext.apply(task, project);
+        task.setOwner(resolveDefaultTaskOwner(project));
         task.setStage(stage);
         task.setContractLine(item);
         task.setQuoteItem(item.getSourceQuoteLine());
@@ -965,6 +966,7 @@ public class ProjectContext {
         task.setProperty(project.getProperty());
         task.setProject(project);
         permissionContext.apply(task, project);
+        task.setOwner(resolveDefaultTaskOwner(project));
         task.setStage(stage);
         task.setContractLine(item);
         task.setQuoteItem(item.getSourceQuoteLine());
@@ -1012,6 +1014,14 @@ public class ProjectContext {
         materialPlanRepository.save(plan);
     }
 
+    /**
+     * 默认施工任务负责人：优先项目经理，只有未指定项目经理时才回退项目经营负责人。
+     * 经营 owner 与施工任务负责人是不同语义，禁止通过 ProjectPermissionContext.apply 直接复制。
+     */
+    private Employee resolveDefaultTaskOwner(Project project) {
+        return project.getManager() == null ? project.getOwner() : project.getManager();
+    }
+
     private void generateFromQuote(Project project, List<QuoteLine> quoteItems) {
         Map<String, ProjectStage> stages = new LinkedHashMap<>();
         Map<String, BigDecimal> stageCosts = new LinkedHashMap<>();
@@ -1056,6 +1066,7 @@ public class ProjectContext {
         task.setProperty(project.getProperty());
         task.setProject(project);
         permissionContext.apply(task, project);
+        task.setOwner(resolveDefaultTaskOwner(project));
         task.setStage(stage);
         task.setQuoteItem(item);
         task.setCatalogItem(catalogItem);

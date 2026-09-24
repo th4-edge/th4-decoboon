@@ -113,7 +113,7 @@ public class OrganizationContext {
         return List.of(
                 new RoleCapacity(EmployeeRole.Designer.name(), EmployeeRole.Designer.getName(),
                         countRole(active, EmployeeRole.Designer),
-                        "designerConversionRate", "报价接受率",
+                        "designerConversionRate", "最终报价接受率",
                         average(performance == null ? null : performance.getAverageDesignerConversionRate())),
                 new RoleCapacity(EmployeeRole.Marketer.name(), EmployeeRole.Marketer.getName(),
                         countRole(active, EmployeeRole.Marketer),

@@ -77,7 +77,7 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
 
     @Override
     public Design call(@ModelSaveInject Design request) {
-        Employee current = designContext.requireEmployee(employee);
+        Employee current = designContext.requireDesignWriteAccess(employee);
         if (copyFromId != null) {
             return designCopyContext.copy(copyFromId, employee, current);
         }

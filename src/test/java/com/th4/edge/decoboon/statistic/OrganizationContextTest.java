@@ -103,7 +103,7 @@ class OrganizationContextTest {
                 .collect(Collectors.toMap(RoleCapacity::getRole, Function.identity()));
         assertThat(capacities).containsOnlyKeys("Designer", "Marketer", "Pm");
         assertThat(capacities.get("Designer").getCount()).isEqualTo(2);
-        assertThat(capacities.get("Designer").getMetricLabel()).isEqualTo("报价接受率");
+        assertThat(capacities.get("Designer").getMetricLabel()).isEqualTo("最终报价接受率");
         assertThat(capacities.get("Designer").getMetricValue()).isEqualByComparingTo("66.7");
         assertThat(capacities.get("Marketer").getCount()).isEqualTo(1);
         assertThat(capacities.get("Marketer").getMetricValue()).isEqualByComparingTo("40.0");
@@ -123,7 +123,7 @@ class OrganizationContextTest {
 
         OrganizationReport report = context.report(boss, query(MONTH, 2));
 
-        // 设计师按报价接受率倒序
+        // 设计师按最终报价接受率倒序
         assertThat(report.getDesignerRanking()).extracting(item -> item.getEmployee().getName())
                 .containsExactly("李设计", "王设计");
         // 业务员按签约率倒序

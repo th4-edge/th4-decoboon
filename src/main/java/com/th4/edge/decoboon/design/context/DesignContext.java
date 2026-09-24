@@ -26,6 +26,9 @@ import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 /**
  * 设计转化域归属和权限上下文。
  *
@@ -34,6 +37,12 @@ import org.springframework.stereotype.Component;
 @Note("设计转化上下文")
 @Component
 public class DesignContext {
+
+    private static final Set<EmployeeRole> DESIGN_WRITE_ROLES = EnumSet.of(
+            EmployeeRole.Boss,
+            EmployeeRole.StoreManager,
+            EmployeeRole.TeamLeader,
+            EmployeeRole.Designer);
 
     private final DataScopeContext dataScopeContext;
     private final CustomerRepository customerRepository;
@@ -61,6 +70,15 @@ public class DesignContext {
 
     public Employee requireEmployee(Employee principal) {
         return dataScopeContext.requireEmployee(principal);
+    }
+
+    /** 设计新增、复制等写操作的角色边界；数据范围仍由后续对象查询校验。 */
+    public Employee requireDesignWriteAccess(Employee principal) {
+        Employee current = requireEmployee(principal);
+        if (!DESIGN_WRITE_ROLES.contains(current.getRole())) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号无权新增或复制设计方案"));
+        }
+        return current;
     }
 
     public Customer requireCustomer(Long customerId, Employee principal) {

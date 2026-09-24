@@ -15,6 +15,12 @@ public class EmployeePerformance {
     private Integer quoteCount = 0;
     private Integer acceptedQuoteCount = 0;
     private BigDecimal designerConversionRate = BigDecimal.ZERO;
+    /** 当月待决策报价量：已提交且尚未形成客户决策，不进入接受率分母（MET-001）。 */
+    private Integer pendingDecisionQuoteCount = 0;
+    /** 当月该员工最终决策归属的报价机会数。 */
+    private Integer decidedOpportunityCount = 0;
+    /** 首版报价接受率（MET-001 辅助指标）。 */
+    private BigDecimal firstQuoteAcceptanceRate = BigDecimal.ZERO;
     private Integer customerCount = 0;
     private Integer signedCustomerCount = 0;
     private BigDecimal marketerSignRate = BigDecimal.ZERO;
@@ -35,6 +41,12 @@ public class EmployeePerformance {
     public void setAcceptedQuoteCount(Integer acceptedQuoteCount) { this.acceptedQuoteCount = acceptedQuoteCount; }
     public BigDecimal getDesignerConversionRate() { return designerConversionRate; }
     public void setDesignerConversionRate(BigDecimal designerConversionRate) { this.designerConversionRate = designerConversionRate; }
+    public Integer getPendingDecisionQuoteCount() { return pendingDecisionQuoteCount; }
+    public void setPendingDecisionQuoteCount(Integer pendingDecisionQuoteCount) { this.pendingDecisionQuoteCount = pendingDecisionQuoteCount; }
+    public Integer getDecidedOpportunityCount() { return decidedOpportunityCount; }
+    public void setDecidedOpportunityCount(Integer decidedOpportunityCount) { this.decidedOpportunityCount = decidedOpportunityCount; }
+    public BigDecimal getFirstQuoteAcceptanceRate() { return firstQuoteAcceptanceRate; }
+    public void setFirstQuoteAcceptanceRate(BigDecimal firstQuoteAcceptanceRate) { this.firstQuoteAcceptanceRate = firstQuoteAcceptanceRate; }
     public Integer getCustomerCount() { return customerCount; }
     public void setCustomerCount(Integer customerCount) { this.customerCount = customerCount; }
     public Integer getSignedCustomerCount() { return signedCustomerCount; }

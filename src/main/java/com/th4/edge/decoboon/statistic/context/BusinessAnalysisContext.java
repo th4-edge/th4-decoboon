@@ -25,7 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * 业务分析聚合：渠道 · 区域 · 客单 · 转化漏斗 + 报价接受率双指标。
@@ -42,11 +41,6 @@ public class BusinessAnalysisContext {
 
     private static final int DEFAULT_TOP_N = 5;
     private static final int MAX_TOP_N = 20;
-
-    /** 已产生客户决策的状态。 */
-    private static final Set<QuoteStatus> DECIDED = Set.of(QuoteStatus.Accepted, QuoteStatus.Rejected, QuoteStatus.Converted);
-    /** 视为接受的状态。 */
-    private static final Set<QuoteStatus> ACCEPTED = Set.of(QuoteStatus.Accepted, QuoteStatus.Converted);
 
     private final TenantContext tenantContext;
     private final CustomerRepository customerRepository;
@@ -125,67 +119,16 @@ public class BusinessAnalysisContext {
     // ------------------------------------------------------------------ 报价双指标
 
     private BusinessAnalysisReport.QuoteConversion quoteConversion(List<Quote> allQuotes, List<Quote> monthQuotes) {
-        BusinessAnalysisReport.QuoteConversion result = new BusinessAnalysisReport.QuoteConversion();
-        // 已提交报价口径：排除草稿与「已被替代」（替代稿只作历史，不构成本月有效提交）
-        result.setSubmittedQuoteCount((int) monthQuotes.stream()
-                .filter(item -> item.getStatus() != QuoteStatus.Draft && item.getStatus() != QuoteStatus.Superseded)
-                .count());
-        result.setPendingDecisionQuoteCount((int) monthQuotes.stream()
-                .filter(item -> item.getStatus() == QuoteStatus.Submitted)
-                .count());
-
-        // 机会 = 客户 + 房屋
-        Map<String, List<Quote>> opportunities = new LinkedHashMap<>();
-        for (Quote quote : allQuotes) {
-            if (quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Superseded) {
-                continue;
-            }
-            opportunities.computeIfAbsent(opportunityKey(quote), key -> new ArrayList<>()).add(quote);
-        }
-
-        int decided = 0;
-        int accepted = 0;
-        int firstDecided = 0;
-        int firstAccepted = 0;
-        for (List<Quote> group : opportunities.values()) {
-            List<Quote> decidedQuotes = group.stream()
-                    .filter(item -> DECIDED.contains(item.getStatus()))
-                    .sorted(Comparator.comparing(this::decisionAt, Comparator.nullsLast(Comparator.naturalOrder())))
-                    .toList();
-            if (!decidedQuotes.isEmpty()) {
-                decided++;
-                Quote last = decidedQuotes.get(decidedQuotes.size() - 1);
-                if (ACCEPTED.contains(last.getStatus())) {
-                    accepted++;
-                }
-            }
-            // 首版：版本号最小的一条（同版本取最早创建）
-            Quote first = group.stream()
-                    .min(Comparator.comparing(Quote::getVersion, Comparator.nullsLast(Comparator.naturalOrder())))
-                    .orElse(null);
-            if (first != null && DECIDED.contains(first.getStatus())) {
-                firstDecided++;
-                if (ACCEPTED.contains(first.getStatus())) {
-                    firstAccepted++;
-                }
-            }
-        }
-        result.setDecidedOpportunityCount(decided);
-        result.setFinalQuoteAcceptanceRate(rate(accepted, decided));
-        result.setFirstQuoteAcceptanceRate(rate(firstAccepted, firstDecided));
-        return result;
-    }
-
-    private String opportunityKey(Quote quote) {
-        Long custId = quote.getCustomer() == null ? null : quote.getCustomer().getCustId();
-        Long propertyId = quote.getProperty() == null ? null : quote.getProperty().getPropertyId();
-        return (custId == null ? "unknown" : custId) + "#" + (propertyId == null ? "none" : propertyId);
-    }
-
-    private LocalDateTime decisionAt(Quote quote) {
-        if (quote.getAcceptedAt() != null) return quote.getAcceptedAt();
-        if (quote.getRejectedAt() != null) return quote.getRejectedAt();
-        return quote.getConvertedAt();
+        // 统一口径：机会按客户 + 房屋聚合，草稿、待决策、已被替代不进正式分母（MET-001 / DEC-001 决策一）。
+        QuoteAcceptanceContext.Result result = QuoteAcceptanceContext.summarize(
+                QuoteAcceptanceContext.opportunities(allQuotes), monthQuotes);
+        BusinessAnalysisReport.QuoteConversion conversion = new BusinessAnalysisReport.QuoteConversion();
+        conversion.setSubmittedQuoteCount(result.submittedQuoteCount());
+        conversion.setPendingDecisionQuoteCount(result.pendingDecisionQuoteCount());
+        conversion.setDecidedOpportunityCount(result.decidedOpportunityCount());
+        conversion.setFinalQuoteAcceptanceRate(result.finalAcceptanceRate());
+        conversion.setFirstQuoteAcceptanceRate(result.firstAcceptanceRate());
+        return conversion;
     }
 
     // ------------------------------------------------------------------ 渠道

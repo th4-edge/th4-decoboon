@@ -21,6 +21,18 @@ public class DesignerReport {
     private BigDecimal quoteAmount = BigDecimal.ZERO;
     private BigDecimal signedAmount = BigDecimal.ZERO;
     private BigDecimal conversionRate = BigDecimal.ZERO;
+    /** 已提交报价量：排除草稿与已被替代报价（MET-001）。 */
+    private Integer submittedQuoteCount = 0;
+    /** 待决策报价量：已提交且尚未形成客户决策，单独展示且不进入分母（MET-001）。 */
+    private Integer pendingDecisionQuoteCount = 0;
+    /** 已产生明确客户决策的报价机会数（客户 + 房屋）。 */
+    private Integer decidedOpportunityCount = 0;
+    /** 最终被接受或已转项目的报价机会数。 */
+    private Integer acceptedOpportunityCount = 0;
+    /** 最终报价接受率（MET-001 主指标）。 */
+    private BigDecimal finalQuoteAcceptanceRate = BigDecimal.ZERO;
+    /** 首版报价接受率（MET-001 辅助指标）。 */
+    private BigDecimal firstQuoteAcceptanceRate = BigDecimal.ZERO;
     private Integer projectCount = 0;
     private Integer ongoingProjectCount = 0;
     private Integer finishedProjectCount = 0;
@@ -51,6 +63,18 @@ public class DesignerReport {
     public void setSignedAmount(BigDecimal signedAmount) { this.signedAmount = signedAmount; }
     public BigDecimal getConversionRate() { return conversionRate; }
     public void setConversionRate(BigDecimal conversionRate) { this.conversionRate = conversionRate; }
+    public Integer getSubmittedQuoteCount() { return submittedQuoteCount; }
+    public void setSubmittedQuoteCount(Integer submittedQuoteCount) { this.submittedQuoteCount = submittedQuoteCount; }
+    public Integer getPendingDecisionQuoteCount() { return pendingDecisionQuoteCount; }
+    public void setPendingDecisionQuoteCount(Integer pendingDecisionQuoteCount) { this.pendingDecisionQuoteCount = pendingDecisionQuoteCount; }
+    public Integer getDecidedOpportunityCount() { return decidedOpportunityCount; }
+    public void setDecidedOpportunityCount(Integer decidedOpportunityCount) { this.decidedOpportunityCount = decidedOpportunityCount; }
+    public Integer getAcceptedOpportunityCount() { return acceptedOpportunityCount; }
+    public void setAcceptedOpportunityCount(Integer acceptedOpportunityCount) { this.acceptedOpportunityCount = acceptedOpportunityCount; }
+    public BigDecimal getFinalQuoteAcceptanceRate() { return finalQuoteAcceptanceRate; }
+    public void setFinalQuoteAcceptanceRate(BigDecimal finalQuoteAcceptanceRate) { this.finalQuoteAcceptanceRate = finalQuoteAcceptanceRate; }
+    public BigDecimal getFirstQuoteAcceptanceRate() { return firstQuoteAcceptanceRate; }
+    public void setFirstQuoteAcceptanceRate(BigDecimal firstQuoteAcceptanceRate) { this.firstQuoteAcceptanceRate = firstQuoteAcceptanceRate; }
     public Integer getProjectCount() { return projectCount; }
     public void setProjectCount(Integer projectCount) { this.projectCount = projectCount; }
     public Integer getOngoingProjectCount() { return ongoingProjectCount; }

@@ -66,6 +66,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /** 私有文件授权、签名、路径边界和旧公开入口的独立验收。 */
@@ -96,6 +97,9 @@ class OwnerFileExposureAcceptanceTest {
     private static final String PRIVATE_PATH = "upload/reports/safe.txt";
     private static final String MISSING_PATH = "upload/reports/missing.txt";
     private static final String PRIVATE_CONTENT = "private contract content";
+    private static final String AVATAR_KEY =
+            "avatar/1789903520997907818/1789903521009050562-1829e9278ffa44fc86fb24244fccb39e.jpg";
+    private static final byte[] AVATAR_CONTENT = new byte[] {1, 2, 3, 4};
 
     @Autowired private MockMvc mockMvc;
     @Autowired private CompanyRepository companyRepository;
@@ -118,8 +122,10 @@ class OwnerFileExposureAcceptanceTest {
         buildProvider = AopTestUtils.getTargetObject(buildProvider);
         downloadProvider = AopTestUtils.getTargetObject(downloadProvider);
         Files.createDirectories(PRIVATE_ROOT.resolve("reports"));
+        Files.createDirectories(PRIVATE_ROOT.resolve("avatar/1789903520997907818"));
         Files.createDirectories(PUBLIC_ROOT);
         Files.writeString(PRIVATE_ROOT.resolve("reports/safe.txt"), PRIVATE_CONTENT);
+        Files.write(PRIVATE_ROOT.resolve(AVATAR_KEY), AVATAR_CONTENT);
         Files.writeString(PUBLIC_ROOT.resolve("open.txt"), "public asset");
     }
 
@@ -132,6 +138,21 @@ class OwnerFileExposureAcceptanceTest {
                 .andExpect(content().string("public asset"));
         mockMvc.perform(get("/public/reports/safe.txt"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void generatedAvatarPathIsPublicButOtherPathsStillRequireSignature() throws Exception {
+        mockMvc.perform(get("/api/file/private/download").param("path", AVATAR_KEY).header("User-Agent", "avatar-test"))
+                .andExpect(status().isOk())
+                .andExpect(content().bytes(AVATAR_CONTENT));
+        mockMvc.perform(get("/api/file/private/download").param("path", "avatar/12/not-a-generated-key.jpg").header("User-Agent", "avatar-test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.errorCode.code").value("404"));
+        mockMvc.perform(get("/api/file/private/download").param("path", PRIVATE_PATH).header("User-Agent", "avatar-test"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.errorCode.code").value("404"));
     }
 
     @Test

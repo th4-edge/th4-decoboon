@@ -11,6 +11,7 @@ import com.th4.edge.decoboon.project.model.ProjectTask;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
+import com.th4.edge.decoboon.statistic.context.QuoteAcceptanceContext;
 import com.th4.edge.decoboon.statistic.model.DesignerPerformance;
 import com.th4.edge.decoboon.statistic.model.StoreManagerReport;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
@@ -34,7 +35,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -140,7 +140,14 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         report.setSignedAmount(projects.stream()
                 .map(Project::getContractAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        report.setConversionRate(rate(report.getAcceptedQuoteCount(), report.getQuoteCount()));
+        QuoteAcceptanceContext.Result acceptance = QuoteAcceptanceContext.analyze(quotes);
+        report.setSubmittedQuoteCount(acceptance.submittedQuoteCount());
+        report.setPendingDecisionQuoteCount(acceptance.pendingDecisionQuoteCount());
+        report.setDecidedOpportunityCount(acceptance.decidedOpportunityCount());
+        report.setAcceptedOpportunityCount(acceptance.acceptedOpportunityCount());
+        report.setFinalQuoteAcceptanceRate(acceptance.finalAcceptanceRate());
+        report.setFirstQuoteAcceptanceRate(acceptance.firstAcceptanceRate());
+        report.setConversionRate(acceptance.finalAcceptanceRate());
 
         report.setProjectCount(projects.size());
         report.setPreparingProjectCount(countProjects(projects, ProjectStatus.Preparing));
@@ -230,7 +237,14 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
                         || project.getStatus() == ProjectStatus.Ongoing
                         || project.getStatus() == ProjectStatus.Accepting)
                 .count());
-        performance.setConversionRate(rate(performance.getAcceptedQuoteCount(), performance.getQuoteCount()));
+        QuoteAcceptanceContext.Result acceptance = QuoteAcceptanceContext.analyze(quotes, designer);
+        performance.setSubmittedQuoteCount(acceptance.submittedQuoteCount());
+        performance.setPendingDecisionQuoteCount(acceptance.pendingDecisionQuoteCount());
+        performance.setDecidedOpportunityCount(acceptance.decidedOpportunityCount());
+        performance.setAcceptedOpportunityCount(acceptance.acceptedOpportunityCount());
+        performance.setFinalQuoteAcceptanceRate(acceptance.finalAcceptanceRate());
+        performance.setFirstQuoteAcceptanceRate(acceptance.firstAcceptanceRate());
+        performance.setConversionRate(acceptance.finalAcceptanceRate());
 
         int todo = 0;
         int overdue = 0;
@@ -274,10 +288,4 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         return false;
     }
 
-    private BigDecimal rate(int numerator, int denominator) {
-        if (denominator == 0) return BigDecimal.ZERO;
-        return BigDecimal.valueOf(numerator)
-                .multiply(BigDecimal.valueOf(100))
-                .divide(BigDecimal.valueOf(denominator), 1, RoundingMode.HALF_UP);
-    }
 }

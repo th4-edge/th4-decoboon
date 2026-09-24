@@ -12,6 +12,7 @@ import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
+import com.th4.edge.decoboon.statistic.context.QuoteAcceptanceContext;
 import com.th4.edge.decoboon.statistic.model.EmployeePerformance;
 import com.th4.edge.decoboon.statistic.model.PerformanceQuery;
 import com.th4.edge.decoboon.statistic.model.PerformanceReport;
@@ -131,14 +132,22 @@ public class PerformanceReportContext {
             List<Quote> employeeQuotes = quotes.stream()
                     .filter(quote -> sameEmployee(quote.getCreatedBy(), employee))
                     .filter(quote -> sameMonth(quote.getCreateTime() == null ? null : quote.getCreateTime().toLocalDate(), month))
-                    .filter(quote -> quote.getStatus() != QuoteStatus.Rejected && quote.getStatus() != QuoteStatus.Superseded)
                     .toList();
-            int accepted = (int) employeeQuotes.stream()
-                    .filter(quote -> quote.getStatus() == QuoteStatus.Accepted || quote.getStatus() == QuoteStatus.Converted)
-                    .count();
-            performance.setQuoteCount(employeeQuotes.size());
-            performance.setAcceptedQuoteCount(accepted);
-            performance.setDesignerConversionRate(rate(accepted, employeeQuotes.size()));
+            // 口径统一（MET-001 / DEC-001）：机会按客户 + 房屋聚合，最终决策按 decidedAt 归属统计周期。
+            List<QuoteAcceptanceContext.Opportunity> monthOpportunities =
+                    QuoteAcceptanceContext.opportunities(quotes).stream()
+                            .filter(opportunity -> opportunity.ownedBy(employee))
+                            .filter(opportunity -> sameMonth(
+                                    opportunity.decidedAt() == null ? null : opportunity.decidedAt().toLocalDate(), month))
+                            .toList();
+            QuoteAcceptanceContext.Result acceptance =
+                    QuoteAcceptanceContext.summarize(monthOpportunities, employeeQuotes);
+            performance.setQuoteCount(acceptance.submittedQuoteCount());
+            performance.setAcceptedQuoteCount(acceptance.acceptedOpportunityCount());
+            performance.setPendingDecisionQuoteCount(acceptance.pendingDecisionQuoteCount());
+            performance.setDecidedOpportunityCount(acceptance.decidedOpportunityCount());
+            performance.setFirstQuoteAcceptanceRate(acceptance.firstAcceptanceRate());
+            performance.setDesignerConversionRate(acceptance.finalAcceptanceRate());
         } else if (employee.getRole() == EmployeeRole.Marketer) {
             List<Customer> employeeCustomers = customers.stream()
                     .filter(customer -> sameEmployee(customer.getOwner(), employee))

@@ -71,11 +71,13 @@ public class Update implements com.th4.edge.decoboon.labor.service.worker.update
         requireUniqueIdCard(comId, normalizedIdCard, target.getWorkerId());
 
         if (name != null && !name.isBlank()) target.setName(name.trim());
-        target.setIdCardNo(normalizedIdCard);
+        // 敏感字段（身份证号、银行账号）只有请求显式携带时才覆盖：null 表示未提供、保持原值，
+        // 空串表示用户主动清空。避免按角色脱敏的调用方把敏感字段误清空（BR-007 允许缺数据）。
+        if (idCardNo != null) target.setIdCardNo(normalizedIdCard);
         target.setTrade(blankToNull(trade));
         target.setPhone(blankToNull(phone));
         target.setBankName(blankToNull(bankName));
-        target.setBankAccount(blankToNull(bankAccount));
+        if (bankAccount != null) target.setBankAccount(blankToNull(bankAccount));
         target.setRemark(blankToNull(remark));
         if (status != null) target.setStatus(status);
         Worker saved = workerRepository.save(target);
