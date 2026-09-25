@@ -26,6 +26,8 @@
 - `src/main/java/com/th4/edge/decoboon/design/service/generation/info/support/Info.java`
 - `src/main/java/com/th4/edge/decoboon/design/service/generation/update/Update.java`
 - `src/main/java/com/th4/edge/decoboon/design/service/generation/update/support/Update.java`
+- `src/main/java/com/th4/edge/decoboon/design/service/generation/page/Page.java`
+- `src/main/java/com/th4/edge/decoboon/design/service/generation/page/support/Page.java`
 - `src/main/java/com/th4/edge/decoboon/design/context/DesignGenerationConfirmationContext.java`
 - `src/main/java/com/th4/edge/decoboon/design/configure/DesignRenderStatus.java`
 - `src/main/java/com/th4/edge/decoboon/design/configure/DesignGenerationAsyncConfigure.java`
@@ -48,7 +50,7 @@
   - 区域尺寸和客户诉求进入 VisualPrompt；
   - 手机号、完整地址和客户姓名未进入 Prompt；
   - 无CAD/户型图时构建阻断。
-- `ProviderSecurityAcceptanceTest` 当前仅因路由总数 341→344 失败；新增 build/info/update Provider 均已继承 Security。
+- `ProviderSecurityAcceptanceTest` 当前仅因路由总数 341→345 失败；新增 build/info/update/page Provider 均已继承 Security。
 
 ## Risks
 
@@ -59,7 +61,7 @@
 
 ## Acceptance Needed
 
-- `ProviderSecurityAcceptanceTest` 路由总数更新为 344，并覆盖 `design/generation/build`、`design/generation/info`、`design/generation/update` 未授权断言。
+- `ProviderSecurityAcceptanceTest` 路由总数更新为 345，并覆盖 `design/generation/{build,info,update,page}` 未授权断言。
 - `scripts/build-release.sh` 的 `MIGRATION_END` 上调到 63。
 - 迁移 63 在隔离 MySQL 演练。
 - 设计上下文正反向用例、PII隔离、无CAD阻断、上下文冲突与幂等用例由 acceptance 固化到 `src/test`。

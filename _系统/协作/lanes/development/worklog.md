@@ -1,5 +1,13 @@
 # Development Worklog
 
+## 2026-09-26 AI设计生成任务分页
+
+- 新增 `design/generation/page` Provider，按登录员工数据范围、设计方案和任务状态分页查询。
+- 支持设计工作台后续列表入口；列表响应裁剪为客户、房屋、设计、负责人、状态和选中效果图摘要。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS。
+- 待 acceptance：Provider 路由总数需 341→345；新增 `design/generation/page` 未授权断言。
+- 状态：`implementation_done_self_tested_pending_acceptance`。
+
 ## 2026-09-26 AI设计上下文与Prompt编排 P0.3
 
 - 新增效果图确认能力：`DesignGenerationConfirmationContext` 与 `design/generation/update` Provider。
