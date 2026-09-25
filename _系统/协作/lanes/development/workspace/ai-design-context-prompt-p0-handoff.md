@@ -73,3 +73,15 @@
 
 - P0.4：先由 product-planning 冻结 App 页面、状态和错误恢复，再实现设计师入口。
 - P0.4：App设计阶段入口、上下文/Prompt预览、版本确认。
+
+
+## App P0.4 Handoff
+
+- App branch: `feature/design-ai-generation-app`
+- App commit: `f646468`
+- Output paths:
+  - `../../前端代码/th4-decoboon-app/src/subpackages/design/pages/ai-generation.vue`
+  - `../../前端代码/th4-decoboon-app/src/domains/design/model.ts`
+  - `../../前端代码/th4-decoboon-app/src/domains/design/api.ts`
+- App verification: `npm run type-check` PASS；`npm run build:mp-weixin` PASS；`npm run check:subpackages` PASS。
+- Remaining acceptance: 375/390/430截图、四角色正反向、真实本地Provider、失败与门禁负向、确认后回读方案。

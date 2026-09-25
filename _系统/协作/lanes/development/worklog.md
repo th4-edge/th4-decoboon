@@ -1,5 +1,14 @@
 # Development Worklog
 
+## 2026-09-26 AI设计生成 P0.4 App 页面与入口
+
+- App 分支：`feature/design-ai-generation-app`，commit `f646468`。
+- 新增 `/subpackages/design/pages/ai-generation`，覆盖Preflight、上下文与缺失/冲突摘要、Visual/Talk/Document Prompt预览、2.5秒状态轮询、失败码恢复、版本查看/对比、全屏预览、封面/区域确认和正式交付门禁。
+- 设计列表方案卡、方案详情基础资料页和设计工作台增加AI生成入口；工作台按冻结规格先进入设计列表聚焦方案。
+- `domains/design` 扩展生成任务、上下文快照、Prompt快照、效果图版本类型及 build/info/page/update API，无新增DTO/VO文件。
+- 验证：App `npm run type-check` PASS；`npm run build:mp-weixin` PASS；`npm run check:subpackages` PASS（主包732378B、最大分包540733B、总包2603911B、111页）。
+- 状态：`implementation_done_self_tested_pending_acceptance`。375/390/430真实页面截图、跨角色黑盒、真实Provider正向/失败/越权回归待 acceptance。
+
 ## 2026-09-26 AI设计生成 P0.4 后端接口收口
 
 - 按 `PRD-AI-DESIGN-APP-20260926-001` 裁剪 build/info/page/update 响应字段：移除 sourceDigest、failureMessage、成本、用量、请求号、模型参数和内部模型字段。
