@@ -30,6 +30,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /** 一次AI设计方案生成任务。 */
 @Note("AI设计生成任务")
@@ -136,6 +137,10 @@ public class DesignGenerationTask extends AuditModel {
     @Note("Prompt快照")
     private DesignPromptSnapshot promptSnapshot;
 
+    @Transient
+    @Note("效果图版本")
+    private List<DesignRenderVersion> renderVersions;
+
     public Long getGenerationId() { return generationId; }
     public void setGenerationId(Long generationId) { this.generationId = generationId; }
     public String getNo() { return no; }
@@ -176,4 +181,6 @@ public class DesignGenerationTask extends AuditModel {
     public void setContextSnapshot(DesignContextSnapshot contextSnapshot) { this.contextSnapshot = contextSnapshot; }
     public DesignPromptSnapshot getPromptSnapshot() { return promptSnapshot; }
     public void setPromptSnapshot(DesignPromptSnapshot promptSnapshot) { this.promptSnapshot = promptSnapshot; }
+    public List<DesignRenderVersion> getRenderVersions() { return renderVersions; }
+    public void setRenderVersions(List<DesignRenderVersion> renderVersions) { this.renderVersions = renderVersions; }
 }

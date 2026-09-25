@@ -1,5 +1,16 @@
 # Development Worklog
 
+## 2026-09-26 AI设计上下文与Prompt编排 P0.2
+
+- 新增 `DesignRenderVersion`、`DesignRenderStatus` 和效果图版本仓储，效果图结果可追溯Prompt、任务、模型请求号与用量。
+- 新增 `DesignGenerationRunner` 异步执行器、专用线程池、`DesignGenerationStateContext` 短事务状态编排。
+- 新增 `DesignRenderClient`/`SeedreamDesignRenderClient`，支持火山方舟Seedream图生图、超时、429/5xx重试、凭证与响应错误码。
+- 新增 `design/generation/info` Provider，按数据范围返回任务、上下文、Prompt和效果图版本。
+- 迁移 63 补充 `db_design_render_version`。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；本地假模型服务完成 Runner 端到端自测，任务从 PromptReady→DraftReady，效果图版本保存成功。
+- 待 acceptance：Provider 路由总数需 341→343；`scripts/build-release.sh` 的 MIGRATION_END 需上调到 63；迁移63需隔离MySQL演练；异步Runner、失败重试、权限和版本用例需固化。
+- 状态：`implementation_done_self_tested_pending_acceptance`。P0.3效果图与Design正式回写尚未实现。
+
 ## 2026-09-26 AI设计上下文与Prompt编排 P0.1
 
 - 来源：`REQ-BIZ-20260926-003`、`DEC-010 AI-DEC-10～12`、冻结包 `PKT-20260926-AI-DESIGN-001`。

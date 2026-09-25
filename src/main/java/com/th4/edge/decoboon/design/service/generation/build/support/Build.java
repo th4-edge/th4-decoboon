@@ -4,9 +4,11 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.design.configure.DesignGenerationMode;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.context.DesignGenerationContext;
+import com.th4.edge.decoboon.design.context.DesignGenerationRunner;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignContextSnapshot;
 import com.th4.edge.decoboon.design.model.DesignGenerationTask;
+import com.th4.edge.decoboon.design.configure.DesignGenerationStatus;
 import com.th4.edge.decoboon.design.model.DesignPromptSnapshot;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -58,16 +60,23 @@ public class Build implements com.th4.edge.decoboon.design.service.generation.bu
 
     private final DesignContext designContext;
     private final DesignGenerationContext generationContext;
+    private final DesignGenerationRunner generationRunner;
 
-    public Build(DesignContext designContext, DesignGenerationContext generationContext) {
+    public Build(DesignContext designContext, DesignGenerationContext generationContext,
+                 DesignGenerationRunner generationRunner) {
         this.designContext = designContext;
         this.generationContext = generationContext;
+        this.generationRunner = generationRunner;
     }
 
     @Override
     public DesignGenerationTask call(DesignGenerationTask request) {
         Employee current = designContext.requireDesignWriteAccess(employee);
         Design design = designContext.requireDesign(designId, current);
-        return generationContext.build(request, design, current, mode);
+        DesignGenerationTask task = generationContext.build(request, design, current, mode);
+        if (task.getStatus() == DesignGenerationStatus.PromptReady) {
+            generationRunner.submit(task.getGenerationId());
+        }
+        return task;
     }
 }
