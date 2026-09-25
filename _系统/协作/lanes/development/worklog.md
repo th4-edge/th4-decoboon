@@ -1,5 +1,17 @@
 # Development Worklog
 
+## 2026-09-26 AI设计上下文与Prompt编排 P0.1
+
+- 来源：`REQ-BIZ-20260926-003`、`DEC-010 AI-DEC-10～12`、冻结包 `PKT-20260926-AI-DESIGN-001`。
+- 分支：`feature/design-ai-context-prompt`，基线 `dev`。
+- 后端新增 `DesignGenerationTask`、`DesignContextSnapshot`、`DesignPromptSnapshot` 及仓储。
+- 新增 `DesignAiContextBuilder`、`DesignPromptRenderer`、`DesignGenerationContext`，从客户、画像、房屋、量房、区域、诉求和设计方案生成结构化DesignBrief，并渲染视觉、谈单、方案书三类输出。
+- 新增 `design/generation/build` Provider；正式调用仍需当前员工数据范围和设计写权限。
+- 新增迁移 `63-AI设计上下文与Prompt编排.sql`。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；独立临时自测验证 High 置信度、空间/诉求进入Prompt、PII不泄漏、无CAD/户型图阻断。
+- 待 acceptance：`ProviderSecurityAcceptanceTest` 路由总数需 341→342；`scripts/build-release.sh` 迁移范围需在发布 lane 同步上调到 63。
+- 状态：`implementation_done_self_tested_pending_acceptance`。P0.2异步模型调用尚未实现。
+
 ## 2026-09-26 工地相册企业用户访问修复
 
 - 现象：业主工地相册开放后，企业员工从项目详情进入 “相册” 返回 `403 当前会话不是业主身份`。
