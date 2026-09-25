@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.finance.service.receipts.save.support;
 
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
@@ -79,13 +81,17 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
     private final ReceiptRepository receiptRepository;
     private final ReceivableRepository receivableRepository;
     private final FinanceAccessContext accessContext;
+    private final CarryoverLockContext carryoverLockContext;
+
 
     public Save(ReceiptRepository receiptRepository,
                 ReceivableRepository receivableRepository,
-                FinanceAccessContext accessContext) {
+                FinanceAccessContext accessContext,
+                CarryoverLockContext carryoverLockContext) {
         this.receiptRepository = receiptRepository;
         this.receivableRepository = receivableRepository;
         this.accessContext = accessContext;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -145,6 +151,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
                 receivable.getType().getName(), LedgerSource.Receipt, saved.getReceiptId(), paid,
                 saved.getAccount(), receivedAt, saved.getPayerName(),
                 "收款 · " + receivable.getName(), remark);
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Receipt, current);
         return saved;
     }
 

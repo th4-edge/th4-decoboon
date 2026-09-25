@@ -1,0 +1,91 @@
+{
+  "createTime": {
+    "dateTime": "2026-09-26 04:50:50"
+  },
+  "itemId": "229343917324107776",
+  "owner": {
+    "empId": "1790000000000000101",
+    "name": "钱小明",
+    "role": {
+      "name": "企业负责人",
+      "value": "Boss",
+      "key": "Boss"
+    }
+  },
+  "batch": {
+    "createTime": {
+      "dateTime": "2026-09-26 04:50:50"
+    },
+    "batchId": "229343917181501440",
+    "asOfDate": "2026-09-26",
+    "status": {
+      "name": "进行中",
+      "value": "Active",
+      "key": "Active"
+    }
+  },
+  "status": {
+    "name": "待确认",
+    "value": "Ready",
+    "key": "Ready"
+  },
+  "version": 1,
+  "customerName": "P0端到端验收客户",
+  "customerPhone": "13900002661",
+  "community": "验收小区",
+  "address": "合肥市验收小区1栋101",
+  "area": 100.0,
+  "manager": {
+    "empId": "1790000000000000107",
+    "name": "徐勇",
+    "role": {
+      "name": "项目经理",
+      "value": "Pm",
+      "key": "Pm"
+    }
+  },
+  "designer": {
+    "empId": "1790000000000000106",
+    "name": "谢玲玲",
+    "role": {
+      "name": "设计师",
+      "value": "Designer",
+      "key": "Designer"
+    }
+  },
+  "contractNo": "P0-E2E-20260926",
+  "signedAmount": 300000.0,
+  "currentAmount": 300000.0,
+  "signedAt": "2026-08-01",
+  "startDate": "2026-08-15",
+  "planEndDate": "2026-12-31",
+  "projectName": "P0端到端验收项目",
+  "projectStatus": {
+    "name": "施工中",
+    "key": "Ongoing"
+  },
+  "currentStageName": "泥木阶段",
+  "progress": 40,
+  "remainingWork": "继续完成墙地砖和木作",
+  "currentIssue": "验收用测试项目",
+  "receivableOutstanding": 120000.0,
+  "receivableDueDate": "2026-10-15",
+  "receivableSourceNo": "AR-E2E-001",
+  "receivableConfirmed": true,
+  "payableOutstanding": 50000.0,
+  "payableDueDate": "2026-10-20",
+  "payablePayeeName": "验收供应商",
+  "payableSourceNo": "AP-E2E-001",
+  "payableConfirmed": true,
+  "costTotal": 180000.0,
+  "costStatus": {
+    "name": "只知道总额",
+    "value": "TotalOnly",
+    "key": "TotalOnly"
+  },
+  "costMissingNote": "历史成本仅总额，完整性待确认",
+  "legacyId": "E2E-CARRYOVER-001",
+  "legacyProjectNo": "LEGACY-E2E-001",
+  "validationBlockers": [],
+  "carryoverReady": true
+}

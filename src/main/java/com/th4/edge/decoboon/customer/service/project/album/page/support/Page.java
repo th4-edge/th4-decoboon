@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.customer.model.ProjectAlbumEntry;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectReport;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -15,6 +16,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Credentials;
+import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -54,13 +56,16 @@ public class Page implements com.th4.edge.decoboon.customer.service.project.albu
     private Integer size;
 
     private final CustomerAccessContext accessContext;
+    private final ProjectAccessContext projectAccessContext;
     private final ProjectReportRepository reportRepository;
     private final AcceptanceRepository acceptanceRepository;
 
     public Page(CustomerAccessContext accessContext,
+                ProjectAccessContext projectAccessContext,
                 ProjectReportRepository reportRepository,
                 AcceptanceRepository acceptanceRepository) {
         this.accessContext = accessContext;
+        this.projectAccessContext = projectAccessContext;
         this.reportRepository = reportRepository;
         this.acceptanceRepository = acceptanceRepository;
     }
@@ -68,8 +73,13 @@ public class Page implements com.th4.edge.decoboon.customer.service.project.albu
     @Override
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<ProjectAlbumEntry> call(Project request) {
-        Credentials credential = accessContext.requireCredential(principal);
-        Project project = accessContext.requireProject(credential, projectId);
+        Project project;
+        if (principal instanceof Employee employee) {
+            project = projectAccessContext.requireReadableProject(projectId, employee);
+        } else {
+            Credentials credential = accessContext.requireCredential(principal);
+            project = accessContext.requireProject(credential, projectId);
+        }
         Long comId = project.getCompany().getComId();
 
         List<ProjectAlbumEntry> entries = new ArrayList<>();

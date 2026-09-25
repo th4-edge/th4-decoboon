@@ -18,9 +18,16 @@ import java.util.ArrayList;
 @Component
 public class QuoteCalcContext {
 
-    /** 根据材料、人工、数量和计价公式计算含税前的分项金额。 */
+    /** 根据材料、人工、数量和计价公式计算含税前的分项金额（兼容历史固定总价快照）。 */
     public BigDecimal amount(PricingMethod mode, BigDecimal quantity,
                              BigDecimal materialPrice, BigDecimal manualPrice) {
+        return amount(mode, quantity, materialPrice, manualPrice, null);
+    }
+
+    /** 含独立固定总价的金额计算：固定总价项目直接取固定总价，不乘工程量。 */
+    public BigDecimal amount(PricingMethod mode, BigDecimal quantity,
+                             BigDecimal materialPrice, BigDecimal manualPrice,
+                             BigDecimal fixedTotalPrice) {
         BigDecimal qty = positive(quantity);
         BigDecimal material = zero(materialPrice);
         BigDecimal manual = zero(manualPrice);
@@ -31,7 +38,7 @@ public class QuoteCalcContext {
             case FixedTotal -> BigDecimal.ZERO;
         };
         if (mode == PricingMethod.FixedTotal) {
-            return money(material.add(manual));
+            return money(fixedTotalPrice != null ? fixedTotalPrice : material.add(manual));
         }
         return money(unit.multiply(qty));
     }
@@ -48,7 +55,7 @@ public class QuoteCalcContext {
         }
         item.setQuantity(positive(item.getQuantity()));
         item.setAmount(amount(item.getPricingMode(), item.getQuantity(),
-                item.getMaterialPrice(), item.getManualPrice()));
+                item.getMaterialPrice(), item.getManualPrice(), item.getFixedTotalPrice()));
         item.setCost(cost(item.getQuantity(), item.getCostPrice()));
         return item;
     }
@@ -56,6 +63,13 @@ public class QuoteCalcContext {
     public java.util.List<QuoteComponent> components(PricingMethod method, BigDecimal quantityValue,
                                                      BigDecimal materialPrice, BigDecimal manualPrice,
                                                      BigDecimal costValue, String formula) {
+        return components(method, quantityValue, materialPrice, manualPrice, costValue, formula, null);
+    }
+
+    public java.util.List<QuoteComponent> components(PricingMethod method, BigDecimal quantityValue,
+                                                     BigDecimal materialPrice, BigDecimal manualPrice,
+                                                     BigDecimal costValue, String formula,
+                                                     BigDecimal fixedTotalPrice) {
         java.util.List<QuoteComponent> result = new ArrayList<>();
         BigDecimal quantity = positive(quantityValue);
         BigDecimal material = zero(materialPrice);
@@ -65,7 +79,7 @@ public class QuoteCalcContext {
             QuoteComponent total = new QuoteComponent();
             total.setType(QuoteComponentType.Other);
             total.setName("固定总价");
-            total.setSaleAmount(money(material.add(manual)));
+            total.setSaleAmount(money(fixedTotalPrice != null ? fixedTotalPrice : material.add(manual)));
             total.setCostAmount(zero(costValue));
             total.setFormula(formula);
             result.add(total);
@@ -101,8 +115,17 @@ public class QuoteCalcContext {
 
     public BigDecimal unitPrice(PricingMethod mode, BigDecimal quantity,
                                 BigDecimal materialPrice, BigDecimal manualPrice) {
+        return unitPrice(mode, quantity, materialPrice, manualPrice, null);
+    }
+
+    public BigDecimal unitPrice(PricingMethod mode, BigDecimal quantity,
+                                BigDecimal materialPrice, BigDecimal manualPrice,
+                                BigDecimal fixedTotalPrice) {
         BigDecimal qty = positive(quantity);
-        BigDecimal total = amount(mode, qty, materialPrice, manualPrice);
+        if (mode == PricingMethod.FixedTotal) {
+            return money(fixedTotalPrice != null ? fixedTotalPrice : zero(materialPrice).add(zero(manualPrice)));
+        }
+        BigDecimal total = amount(mode, qty, materialPrice, manualPrice, fixedTotalPrice);
         return total.divide(qty, 2, RoundingMode.HALF_UP);
     }
 

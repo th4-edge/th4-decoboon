@@ -346,13 +346,15 @@ public class QuoteContext {
         item.setQuantity(zero(source.getQuantity()));
         item.setMaterialPrice(zero(source.getMaterialPrice()));
         item.setManualPrice(zero(source.getManualPrice()));
+        item.setFixedTotalPrice(source.getFixedTotalPrice());
         item.setPricingMode(source.getPricingMode());
         item.setPrice(quoteCalcContext.unitPrice(source.getPricingMode(), zero(source.getQuantity()),
-                zero(source.getMaterialPrice()), zero(source.getManualPrice())));
+                zero(source.getMaterialPrice()), zero(source.getManualPrice()), source.getFixedTotalPrice()));
         item.setAmount(effectiveAmount(source));
         item.setCost(zero(source.getCost()));
         item.setComponents(quoteCalcContext.components(source.getPricingMode(), zero(source.getQuantity()),
-                zero(source.getMaterialPrice()), zero(source.getManualPrice()), zero(source.getCost()), source.getFormula()));
+                zero(source.getMaterialPrice()), zero(source.getManualPrice()), zero(source.getCost()),
+                source.getFormula(), source.getFixedTotalPrice()));
         item.setFormula(source.getFormula());
         // 施工工艺按"设计分项快照 → 材料库主数据"冻结，签约后不随材料库改动回溯。
         item.setCraft(CraftText.firstNonBlank(source.getCraft(),

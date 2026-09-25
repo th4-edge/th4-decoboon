@@ -33,4 +33,7 @@ public interface CatalogItemRepository extends JpaRepository<CatalogItem, Long>,
 
     List<CatalogItem> findByCompany_ComIdAndTypeAndActiveTrueOrderByCategoryAscBrandAscSeriesAscNameAsc(
             Long comId, ItemType type);
+
+    /** 企业全量报价项目，用于批量导入去重与编码冲突校验。 */
+    List<CatalogItem> findByCompany_ComId(Long comId);
 }

@@ -2,6 +2,7 @@
 
 ## Shared Outputs
 
+| development | 接管后剩余施工计划 P0：阶段增改排序删除、进度基线保护、计划确认/调整留痕、App 四步引导、业务承接返回与卡片优化；微信开发者工具真实 BOSS 已验证新增、确认和锁定调整，进度保持 40% | 后端 `carryover/**`、`Project/ProjectStage`、`ProjectContext`、迁移 62；App `subpackages/carryover/pages/{index,edit,plan}.vue`、`subpackages/project/pages/plan.vue`、`domains/carryover/**` | product-planning,acceptance,user | implementation_and_self_test_done_pending_acceptance_and_target_migration | 2026-09-26 |
 | development | v20260924-rc1 正式发布：后端 `/opt/decoboon/releases/20260924-044032` 已上线，迁移 48–59 全部 SUCCESS，首次缺迁移自动回滚后补齐成功；小程序 1.0.0 已上传，待微信后台提交审核；整改复验/业主发起暂缓 | `docs/operations/releases/2026-09-24-v20260924-rc1.md`、`docs/acceptance/20260924-业务App发版准备与遗留清单.md` | product-planning,acceptance,user | backend_released_miniapp_uploaded_pending_wechat_review | 2026-09-24 |
 | development | 预约量房 2.0 P1 修复与发版候选基线：修正今日预约自然日、保留签约客户历史量房事实、绩效月份/门店筛选、4h 逾期和业务员量房入口；发布包迁移 24–59，迁移 56 幂等 | 后端 `statistic/service/boss/measure/report/support/Report.java`、`BossMeasureQuery.java`、`ProviderSecurityAcceptanceTest.java`、`scripts/build-release.sh`、迁移 56；App `measure-workbench.vue`、`assessment.vue`、`permission.ts` | product-planning,acceptance,user | release_candidate_ready_pending_business_ack | 2026-09-24 |
 | development | 业主详情纳入「对外可见投影必须显式组装」规范：业主 `project/page`、`project/info`、`journey/info` 与员工侧同源投影统一冻结口径，派生状态/当前阶段按事实现场推导，禁止实体直出与前端兜底掩盖 | `rules.md` §5.6、`AGENTS.md`、`_系统/协作/lanes/development/workspace/code-error-catalog.md` ECD-011；App `docs/fixes/business-rules.md` §14.5、`docs/fixes/log.md` FIX-020 | product-planning,acceptance,user | norm_synced_pending_cross_projection_regression | 2026-09-24 |
@@ -166,6 +167,8 @@
 | REQ-20260918-SMB-P0-FIX | development | acceptance, product-planning, zhuangdeqing-smb-reviewer | 中小装企实机审查已裁决 P0 修复：量房角色分离、PM 量房可见性、阶段开工幂等、业主确认归位、收款幂等、财务成本完整性统一、合同写权限一致及 5 项依赖修复。含迁移 34。合同签约最终角色/线下代录/人工材料补录仍 BLOCKED。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix-handoff.md | 2026-09-18 |
 | REQ-20260918-SMB-P0-FIX-2 | development | acceptance, zhuangdeqing-smb-reviewer | 验收 BLOCK rework：量房执行人权限(A4)、预约/完成态与多房屋投影(I1/I2/I4)、并发开工幂等(C4)、readiness 文案(B2)、合同 403 语义与重复签约幂等(F2/F4)、FinanceSummary 毛利率(G1)。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix2-handoff.md | 2026-09-18 |
 | REQ-20260918-SMB-P0-FIX-3 | development | acceptance, zhuangdeqing-smb-reviewer | 量房重复 completion 幂等（不覆盖 measureTime/latestMeasureAt/executor/designer/status/附件）与 executor.role 响应串值修复（JWT 占位主体改为重新加载完整员工实体）。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix3-handoff.md | 2026-09-18 |
+| REQ-BIZ-20260926-001 | development | product-planning, acceptance | 报价项目库批量导入 P0：PRD 冻结的 6 条业务路由 + 模板下载，批次/导入行、预览不落库、重复与编码冲突、错误行与部分导入、成本待维护、固定总价独立字段、24h 撤销、小程序导入页与结果页。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/catalog-import-handoff.md | 2026-09-26 |
+| REQ-BIZ-20260926-001-W1/W2 | development | product-planning, acceptance | 报价项目库维护可达性修复（批量导入工具移入 CatalogPicker 管理模式插槽，不再被全屏层覆盖）、卡片“更多”操作层级与删除二次确认、后端新增 `catalog/item/delete`（9 类下游引用阻断 + 导入行受控解除 + 同事务删除）。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/catalog-import-ui-delete-handoff.md | 2026-09-26 |
 | REQ-20260919-QUOTE-PACKAGE-CLOSURE | development | acceptance, product-planning | 收紧设计报价状态、套餐报价版本、驳回重报、App 报价上下文、套餐模板配置和套餐 Draft 调整。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/worklog.md | 2026-09-19 |
 
 | REQ-20260918-ACCEPT-ROUTE-COUNT-SYNC | development | acceptance | 新增 8 条 P0-b Provider 路由后同步路由断言 209→217、protected 197→205。验收 lane 会话不可达，经用户在本线程授权后由开发 lane 代为同步，**待验收 lane 复核**。 | synced_by_development_pending_acceptance_review | pending | src/test/java/com/th4/edge/decoboon/security/ProviderSecurityAcceptanceTest.java | 2026-09-18 |
@@ -287,3 +290,10 @@
 - **风险提示（P0 级）**：同一手机号命中多家企业时"命中即进入"会造成跨企业串号——必须显式选择 + 逐项目授权。
 - 可立即开发（无需裁决）：未加入企业页删邀请码改三选一、注册企业独立入口、业主页去 token/猜参数。
 - 待业务答复（T05 五问）：业主是否仍需邀请、多企业可见范围、换号规则、防枚举、企业注销口径。
+
+## 2026-09-26 版本管理与发布分支规范建立
+
+- 总规范：`docs/operations/版本管理与发布分支规范.md`；发布记录模板：`docs/operations/releases/_发布记录模板.md`。
+- 强制链：大功能 `feature/*`、小修复 `fix/*` 从 `dev` 创建并回并；正常发布 `dev -> test -> prod`，生产事故才走 `hotfix/*`。
+- 当前迁移风险：Web 无独立 Git 仓库且被 `/Users/zhangwei/.git` 误纳管；后端/App 仍有混合未提交改动，需先拆分再建立 `dev/test/prod`。
+- 状态：`norm_established_migration_pending`。

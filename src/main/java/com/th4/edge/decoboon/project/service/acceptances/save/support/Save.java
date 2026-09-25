@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
@@ -70,13 +72,16 @@ public class Save implements com.th4.edge.decoboon.project.service.acceptances.s
     private final ProjectStageRepository stageRepository;
     private final ProjectContext projectContext;
     private final ProjectAccessContext accessContext;
+    private final CarryoverLockContext carryoverLockContext;
 
     public Save(ProjectStageRepository stageRepository,
                 ProjectContext projectContext,
-                ProjectAccessContext accessContext) {
+                ProjectAccessContext accessContext,
+                CarryoverLockContext carryoverLockContext) {
         this.stageRepository = stageRepository;
         this.projectContext = projectContext;
         this.accessContext = accessContext;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -94,8 +99,10 @@ public class Save implements com.th4.edge.decoboon.project.service.acceptances.s
         }
         String conclusion = content == null || content.isBlank()
                 ? ("pass".equalsIgnoreCase(result) ? "验收通过" : "提交验收") : content;
-        return projectContext.submitAcceptance(current.getCompany().getComId(), stage.getProject().getProjectId(),
+        var saved = projectContext.submitAcceptance(current.getCompany().getComId(), stage.getProject().getProjectId(),
                 stageId, current, conclusion, issues, images, null, null,
                 rectificationNote, rectificationImages);
+        if (carryoverLockContext != null) carryoverLockContext.lock(saved.getProject(), CarryoverBusinessType.Acceptance, current);
+        return saved;
     }
 }

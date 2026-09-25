@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.finance.context;
 
+import com.th4.edge.decoboon.carryover.context.CarryoverCostContext;
+import com.th4.edge.decoboon.common.context.BusinessOriginFilter;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
 import com.th4.edge.decoboon.finance.configure.PayableType;
@@ -20,6 +22,7 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -43,6 +46,7 @@ public class FinanceReportContext {
     private final LedgerRepository ledgerRepository;
     private final SettlementRepository settlementRepository;
     private final ProjectCostContext projectCostContext;
+    private final CarryoverCostContext carryoverCostContext;
 
     public FinanceReportContext(FinanceAccessContext accessContext,
                                 ProjectRepository projectRepository,
@@ -51,6 +55,19 @@ public class FinanceReportContext {
                                 LedgerRepository ledgerRepository,
                                 SettlementRepository settlementRepository,
                                 ProjectCostContext projectCostContext) {
+        this(accessContext, projectRepository, receivableRepository, payableRepository, ledgerRepository,
+                settlementRepository, projectCostContext, null);
+    }
+
+    @Autowired
+    public FinanceReportContext(FinanceAccessContext accessContext,
+                                ProjectRepository projectRepository,
+                                ReceivableRepository receivableRepository,
+                                PayableRepository payableRepository,
+                                LedgerRepository ledgerRepository,
+                                SettlementRepository settlementRepository,
+                                ProjectCostContext projectCostContext,
+                                CarryoverCostContext carryoverCostContext) {
         this.accessContext = accessContext;
         this.projectRepository = projectRepository;
         this.receivableRepository = receivableRepository;
@@ -58,6 +75,7 @@ public class FinanceReportContext {
         this.ledgerRepository = ledgerRepository;
         this.settlementRepository = settlementRepository;
         this.projectCostContext = projectCostContext;
+        this.carryoverCostContext = carryoverCostContext;
     }
 
     public FinanceSummary summary(Employee principal) {
@@ -113,7 +131,8 @@ public class FinanceReportContext {
         // 避免"汇总成本未完整、项目行却有利润"的口径冲突。
         Map<Long, BigDecimal> payableCostByProject = new HashMap<>();
         for (Payable payable : payables) {
-            if (payable.getProject() == null || payable.getProject().getProjectId() == null) {
+            if (payable.getProject() == null || payable.getProject().getProjectId() == null
+                    || !BusinessOriginFilter.isNormal(payable.getBusinessOrigin())) {
                 continue;
             }
             payableCostByProject.merge(payable.getProject().getProjectId(),
@@ -127,7 +146,7 @@ public class FinanceReportContext {
             ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
             BigDecimal payableCost = payableCostByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
             estimatedCost = estimatedCost.add(costSummary.estimatedCost());
-            aggregatedTotalCost = aggregatedTotalCost.add(totalCost(costSummary, payableCost));
+            aggregatedTotalCost = aggregatedTotalCost.add(totalCost(project, costSummary, payableCost));
             if (!costSummary.complete()) {
                 incompleteProjects++;
             }
@@ -178,6 +197,9 @@ public class FinanceReportContext {
         Project project = accessContext.resolveProject(current, projectId);
         List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
         List<Payable> payables = payableRepository.findByProjectOrderByDueDateAsc(project);
+        List<Payable> costPayables = payables.stream()
+                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
+                .toList();
         List<Ledger> ledgers = ledgerRepository
                 .findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(
                         current.getCompany().getComId(), projectId);
@@ -199,17 +221,17 @@ public class FinanceReportContext {
         report.setUnpaidAmount(payables.stream()
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        BigDecimal materialCost = payableAmount(payables, PayableType.Material);
-        BigDecimal laborCost = payableAmount(payables, PayableType.Salary);
-        BigDecimal projectCost = payableAmount(payables, PayableType.Project);
-        BigDecimal expenseAllocation = sum(payables.stream()
+        BigDecimal materialCost = payableAmount(costPayables, PayableType.Material);
+        BigDecimal laborCost = payableAmount(costPayables, PayableType.Salary);
+        BigDecimal projectCost = payableAmount(costPayables, PayableType.Project);
+        BigDecimal expenseAllocation = sum(costPayables.stream()
                 .filter(item -> item.getType() != PayableType.Material
                         && item.getType() != PayableType.Salary
                         && item.getType() != PayableType.Project)
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAllocation);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-        BigDecimal totalCost = totalCost(costSummary, payableCost);
+        BigDecimal totalCost = totalCost(project, costSummary, payableCost);
         boolean costComplete = costSummary.complete();
         BigDecimal grossProfit = costComplete
                 ? report.getContractAmount().subtract(totalCost) : null;
@@ -248,6 +270,9 @@ public class FinanceReportContext {
         Employee current = accessContext.requireReader(principal);
         List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
         List<Payable> payables = payableRepository.findByProjectOrderByDueDateAsc(project);
+        List<Payable> costPayables = payables.stream()
+                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
+                .toList();
         settlement.setCompany(current.getCompany());
         accessContext.applyOwnership(settlement, current, project);
         settlement.setProject(project);
@@ -256,17 +281,17 @@ public class FinanceReportContext {
         settlement.setReceivedAmount(sum(receivables.stream().map(Receivable::getReceivedAmount)));
         settlement.setPayableAmount(sum(payables.stream().map(Payable::getAmount)));
         settlement.setPaidAmount(sum(payables.stream().map(Payable::getPaidAmount)));
-        BigDecimal materialCost = payableAmount(payables, PayableType.Material);
-        BigDecimal laborCost = payableAmount(payables, PayableType.Salary);
-        BigDecimal projectCost = payableAmount(payables, PayableType.Project);
-        BigDecimal expenseAmount = sum(payables.stream()
+        BigDecimal materialCost = payableAmount(costPayables, PayableType.Material);
+        BigDecimal laborCost = payableAmount(costPayables, PayableType.Salary);
+        BigDecimal projectCost = payableAmount(costPayables, PayableType.Project);
+        BigDecimal expenseAmount = sum(costPayables.stream()
                 .filter(item -> item.getType() != PayableType.Material
                         && item.getType() != PayableType.Salary
                         && item.getType() != PayableType.Project)
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAmount);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-        BigDecimal totalCost = totalCost(costSummary, payableCost);
+        BigDecimal totalCost = totalCost(project, costSummary, payableCost);
         BigDecimal grossProfit = costSummary.complete()
                 ? settlement.getContractAmount().subtract(totalCost) : null;
         settlement.setEstimatedCost(costSummary.estimatedCost());
@@ -315,8 +340,14 @@ public class FinanceReportContext {
     /**
      * 项目实际成本唯一口径：实际发生成本与应付成本取较高者；汇总、项目报告、结算共用。
      */
-    private BigDecimal totalCost(ProjectCostContext.CostSummary costSummary, BigDecimal payableCost) {
-        return costSummary.actualCost().max(accessContext.value(payableCost));
+    private BigDecimal totalCost(Project project, ProjectCostContext.CostSummary costSummary, BigDecimal payableCost) {
+        BigDecimal postActual = costSummary.actualCost();
+        BigDecimal carryoverCost = BigDecimal.ZERO;
+        if (carryoverCostContext != null) {
+            carryoverCost = carryoverCostContext.totalCost(project);
+            postActual = postActual.subtract(carryoverCost).max(BigDecimal.ZERO);
+        }
+        return carryoverCost.add(postActual.max(accessContext.value(payableCost)));
     }
 
     private BigDecimal payableAmount(List<Payable> payables, PayableType type) {

@@ -1,0 +1,2589 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>候选方案人工复评</title>
+<style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;background:#f4f7fb;color:#172033}main{max-width:1800px;margin:auto;padding:24px}section{background:#fff;border:1px solid #e4e9f2;border-radius:14px;padding:16px;margin:18px 0}article{border:1px solid #e4e9f2;border-radius:10px;margin:12px 0;overflow:hidden}article header{display:flex;justify-content:space-between;padding:11px 14px;background:#eef3fb;font-size:12px}.meta{padding:10px 14px;font-size:12px;color:#475467;background:#fffaf0;border-bottom:1px solid #eee}pre{white-space:pre-wrap;font-size:12px;line-height:1.55;padding:14px;margin:0;max-height:620px;overflow:auto}.note{background:#fff7e8;border:1px solid #fedf89;padding:12px;border-radius:10px}.abc{font-size:13px}</style></head><body><main><h1>候选方案人工复评</h1><p class="note">只保留三个候选：A=DeepSeek Flash+完整上下文，B=DeepSeek V4 Pro+完整上下文，C=Flash+通用基线。裁判分仅用于筛选，最终应以业务员、店长或老板盲评为准。</p><section><h2>C01 · first_contact · 待首联</h2><p>今天是首次电话联系。客户只留下了短视频私信，尚未建立完整信任。请生成今天的首次联系方案。</p><article><header><b>A</b><span>裁判 91 分 · 5.4s · $0.00168 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>先补房屋和需求信息，不直接承诺总价，形成量房或加微信的下一步<br><b>裁判问题：</b>候选建议在事实准确性上存在多处将案例中未提供的信息当作事实使用，如预算包含内容、决策角色具体分工等，且部分表述与案例事实不符。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于首次联系阶段，仅通过短视频私信询问价格，尚未建立完整信任。真实卡点是客户只关注价格，未提供房屋完整信息，且未加微信，无法直接给出报价。&quot;,
+  &quot;priorityReason&quot;: &quot;客户计划1个月内开工，且已主动询问，今天应优先完成首次有效沟通，采集关键信息并建立下一步动作，避免线索冷却。&quot;,
+  &quot;goal&quot;: &quot;完成首次电话沟通，采集房屋现状、面积、预算、装修用途、计划开工时间、决策角色和主要顾虑，并约定量房或到店时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;请问您滨湖云境的房子是毛坯还是已经装修过？面积是118平吗？&quot;,
+    &quot;您计划1个月内开工，主要是自住还是其他用途？预算18万是准备花在硬装还是包含主材家电？&quot;,
+    &quot;装修是您和爱人一起决定吗？平时谁方便对接量房和看方案？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是[公司名称]的业务员[姓名]，看到您在短视频私信问滨湖云境118平大概多少钱。因为价格跟房屋现状、面积、主材和工艺都有关系，我需要先跟您确认几个信息，才能帮您安排准确的评估。&quot;,
+    &quot;您计划1个月内开工，时间比较紧，我们可以先约个量房，量房后设计师会根据实际尺寸和需求出方案和正式报价，这样价格才准确。您看这周末方便还是工作日晚上？&quot;,
+    &quot;您和爱人如果方便，可以一起到场，这样沟通效率更高。量房后我们会同步设计师和下一步反馈时间，不会让您干等。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你就直接告诉我118平大概多少钱，不说价格我就不考虑了。&quot;,
+      &quot;reply&quot;: &quot;理解您想先了解价格。因为未量房前只能说明计价因素和区间形成方式，不能承诺最终总价。您方便告诉我房屋现状和主材要求吗？我可以先帮您梳理价格构成，再约量房出正式报价。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还没决定要不要找你们，先问问价格。&quot;,
+      &quot;reply&quot;: &quot;没问题，先了解是应该的。我们可以先约量房，量房后您能看到具体方案和正式报价，再决定是否继续。这样您也有个准确的比较依据。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司正式介绍资料（已授权版本）&quot;,
+    &quot;量房服务说明和流程介绍（已授权版本）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺未审批价格或折扣&quot;,
+    &quot;不得在未量房情况下承诺最终总价&quot;,
+    &quot;不得使用虚假名额、虚假涨价或虚构优惠施压&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得展示未经授权的案例或材料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 电话沟通后，根据客户反馈约定具体量房或到店时间；若未接通，则2026-09-27再次跟进。&quot;,
+  &quot;nextAction&quot;: &quot;电话沟通后，立即记录客户房屋现状、面积、预算、用途、开工时间、决策角色和顾虑，并尝试添加微信，发送公司正式介绍和量房流程说明，同步约定量房或到店时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;P001&quot;,
+    &quot;P002&quot;,
+    &quot;P004&quot;,
+    &quot;客户事实：source=短视频线索&quot;,
+    &quot;客户事实：community=滨湖云境&quot;,
+    &quot;客户事实：area=118&quot;,
+    &quot;客户事实：budget=18万元&quot;,
+    &quot;客户事实：houseCondition=毛坯&quot;,
+    &quot;客户事实：purpose=三口自住&quot;,
+    &quot;客户事实：startWindow=1个月内&quot;,
+    &quot;客户事实：decisionRole=夫妻共同&quot;,
+    &quot;客户事实：concerns=[价格,工期]&quot;,
+    &quot;客户事实：competitor=尚未比较&quot;,
+    &quot;客户事实：wechatAdded=false&quot;,
+    &quot;客户事实：lastFollowAt=null&quot;,
+    &quot;客户事实：nextFollowAt=2026-09-26&quot;,
+    &quot;客户事实：quoteStatus=null&quot;,
+    &quot;客户事实：timeline[0].content=你们在滨湖做吗？118平大概多少钱？&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 83 分 · 5.8s · $0.00459 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>引导客户提供具体楼栋信息并邀约免费量房，同时尝试添加微信发送案例。<br><b>裁判问题：</b>部分话术将预算18万直接等同于硬装预算，且未充分核实客户对预算包含内容的真实想法，存在事实假设。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于首次接触阶段，通过短视频私信询问价格，尚未建立信任。真实卡点是价格和工期顾虑，但信息不足，无法给出准确报价。&quot;,
+  &quot;priorityReason&quot;: &quot;今天是首次电话联系，需及时响应客户咨询，建立初步信任，并引导至量房或到店，否则客户可能转向竞品。&quot;,
+  &quot;goal&quot;: &quot;完成首次有效沟通，确认房屋信息并邀约量房。&quot;,
+  &quot;questions&quot;: [
+    &quot;您的房子是毛坯房，118平，请问具体在滨湖云境哪个楼栋？方便我们安排量房。&quot;,
+    &quot;您计划1个月内开工，是打算自己住还是出租？对装修风格和主材有什么初步想法？&quot;,
+    &quot;您提到预算18万，这个预算包含家具家电吗？还是只做硬装？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是XX装饰的小李，看到您在短视频上咨询滨湖云境的装修，我们在这个小区做过不少案例，可以给您一些参考。&quot;,
+    &quot;关于价格，118平毛坯房，具体费用要看量房后的设计方案和主材选择，我们提供免费量房和初步方案，您看这周末方便吗？&quot;,
+    &quot;工期方面，一般毛坯房装修在3-4个月左右，具体要看施工项目和天气情况，量房后我们可以给您一个更准确的排期。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们价格太贵了，其他公司报价更低。&quot;,
+      &quot;reply&quot;: &quot;理解您关注价格，我们的报价包含基础施工和主材，具体要看包含哪些项目。建议您先量房，我们出详细报价单，您再对比。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我最近没时间，先给我个大概价格。&quot;,
+      &quot;reply&quot;: &quot;没问题，我可以先根据您提供的面积和毛坯情况，给您一个参考区间，但最终价格需要量房后确定。您方便加微信吗？我把参考信息发给您。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司简介和滨湖云境已授权案例&quot;,
+    &quot;量房服务说明&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体价格或折扣&quot;,
+    &quot;不得承诺具体工期&quot;,
+    &quot;不得贬低竞品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27&quot;,
+  &quot;nextAction&quot;: &quot;添加客户微信，发送公司简介和案例，确认量房时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K009&quot;,
+    &quot;P001&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 5.1s · $0.00116 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>通过电话了解客户具体需求，并争取添加微信以便后续发送资料。<br><b>裁判问题：</b>候选建议中多处将客户未提供的信息（如预算18万、三口自住、夫妻共同决策）当作已知事实使用，存在事实准确性风险。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待首联阶段，真实卡点是尚未建立信任且未添加微信，客户仅通过短视频私信询问是否在滨湖做及118平大概价格，对价格和工期有初步关注，但未提供更多细节。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在2026-09-25主动私信询问，且计划1个月内启动装修，今天（2026-09-26）是首次电话联系的最佳时机，及时跟进可避免线索冷却。&quot;,
+  &quot;goal&quot;: &quot;通过首次电话建立初步信任，了解客户具体需求，并争取添加微信以便后续发送资料。&quot;,
+  &quot;questions&quot;: [
+    &quot;您滨湖云境的房子是毛坯，计划1个月内启动装修，请问具体想什么时候开工？&quot;,
+    &quot;您和爱人共同决策，请问装修风格或功能上有什么初步想法？&quot;,
+    &quot;您预算18万左右，请问这是包含主材还是仅半包？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是XX装修公司的销售助理，看到您在短视频私信问滨湖云境118平大概多少钱。我们确实在滨湖做，想跟您电话简单沟通一下，了解您的具体需求，好给您更准确的参考。&quot;,
+    &quot;您房子是毛坯，三口自住，预算18万左右，我们这边有类似面积的案例，可以加您微信发您看看，您和爱人一起参考一下。&quot;,
+    &quot;您计划1个月内启动，我们最近在滨湖云境也有在施工地，方便的话可以约您和爱人一起去看看工艺和材料。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们价格会不会很贵？&quot;,
+      &quot;reply&quot;: &quot;我们价格是根据您的具体需求和材料选择来定的，您预算18万左右，我们可以先按这个范围给您做初步方案，加微信后发您参考，您和爱人看看是否合适。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还没想好什么时候装。&quot;,
+      &quot;reply&quot;: &quot;没关系，您计划1个月内启动，我们可以先加微信保持联系，发您一些滨湖云境的案例和报价参考，等您和爱人商量好了随时找我。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;滨湖云境或同区域118平左右毛坯房装修案例（已授权）&quot;,
+    &quot;18万预算范围内的初步报价参考（需标注待确认）&quot;,
+    &quot;公司介绍及施工工艺说明&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体价格或总价&quot;,
+    &quot;不得承诺具体工期天数&quot;,
+    &quot;不得承诺设计效果或材料品牌&quot;,
+    &quot;不得在未确认前发送正式报价单&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27 或根据电话沟通结果约定具体时间；若未接通，则2026-09-27再次尝试。&quot;,
+  &quot;nextAction&quot;: &quot;业务员电话沟通后，必须记录客户反馈，尝试添加微信，并根据客户需求发送已授权的案例或资料。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;source:短视频线索&quot;,
+    &quot;community:滨湖云境&quot;,
+    &quot;area:118&quot;,
+    &quot;budget:18&quot;,
+    &quot;budgetUnit:万元&quot;,
+    &quot;houseCondition:毛坯&quot;,
+    &quot;purpose:三口自住&quot;,
+    &quot;startWindow:1个月内&quot;,
+    &quot;decisionRole:夫妻共同&quot;,
+    &quot;concerns:价格&quot;,
+    &quot;concerns:工期&quot;,
+    &quot;competitor:尚未比较&quot;,
+    &quot;wechatAdded:false&quot;,
+    &quot;lastFollowAt:null&quot;,
+    &quot;nextFollowAt:2026-09-26&quot;,
+    &quot;timeline:2026-09-25 21:10 短视频私信 你们在滨湖做吗？118平大概多少钱？&quot;
+  ]
+}</pre></article></section><section><h2>C02 · first_contact · 待首联</h2><p>客户由老客户转介绍，已加微信但尚未正式沟通。目标是建立专业信任并推进首次量房。</p><article><header><b>A</b><span>裁判 91 分 · 5.8s · $0.00147 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>在首次沟通中确认房屋现状、预算形成方式、决策角色及量房意愿，并约定量房时间或下一次沟通节点。<br><b>裁判问题：</b>候选建议中询问客户预算范围，但案例中已明确客户预算为28万元，属于重复询问已知信息，可能降低沟通效率。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待首联阶段，已通过老客转介绍添加微信但尚未正式沟通。真实卡点在于尚未建立有效对话，客户对质量与环保有明确顾虑，且未确认量房意愿与具体时间。&quot;,
+  &quot;priorityReason&quot;: &quot;客户计划2个月内开工，且已加微信，今天（2026-09-26）是建议的首次跟进日，及时沟通可避免客户被其他公司抢先接触，并利用转介绍信任基础推进量房。&quot;,
+  &quot;goal&quot;: &quot;完成首次有效沟通，建立专业信任，并约定量房时间或下一次沟通节点。&quot;,
+  &quot;questions&quot;: [
+    &quot;您家金茂府这套96平的旧房，目前是自住还是空置？计划2个月内开工，具体想什么时候开始动工？&quot;,
+    &quot;您提到比较在意环保和质量，家里有老人和小孩，对旧房翻新有没有特别关注的地方，比如材料环保等级或施工工艺？&quot;,
+    &quot;您之前只看过1家公司，方便说说那家给您的初步方案或报价大概是什么范围吗？这样我能帮您更清楚地对比。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是XX公司的XX，您朋友XX推荐我联系您。听说您金茂府96平的旧房想翻新，家里有老人和小孩，特别在意环保和质量，这块我们确实比较有经验，想先跟您简单了解一下需求，帮您把后续量房和设计准备做得更准。&quot;,
+    &quot;旧房翻新价格主要看房屋现状、面积、主材和工艺，特别是环保材料的选择会影响预算。您方便告诉我大概的预算范围吗？这样我可以帮您判断哪些方案更匹配，避免后期超支。&quot;,
+    &quot;如果您方便，我们可以约个时间先去量房，量房后设计师会根据房屋实际情况和您的需求出方案，再给正式报价。您看这周或下周哪天方便？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还不确定要不要装修，先了解一下。&quot;,
+      &quot;reply&quot;: &quot;理解，旧房翻新确实需要多看看。您朋友推荐我们，也是因为信任。我们可以先约量房，量房后您能更清楚房屋现状和大概的预算范围，不一定要马上决定，但至少心里有数。您看方便约个时间吗？&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们价格会不会比别家贵？&quot;,
+      &quot;reply&quot;: &quot;价格跟面积、房屋现状、主材和工艺都有关系，特别是您关注的环保材料，不同品牌和等级价格差异挺大。我们可以在量房后给您一份正式报价，逐项列清楚，您再对比。您之前看的那家报价包含哪些项目，方便说一下吗？&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我平时比较忙，没时间量房。&quot;,
+      &quot;reply&quot;: &quot;没关系，量房一般1-2小时，我们可以约您方便的时间，比如周末。量房后设计师会先出方案，您不用马上到店，后续沟通也可以线上进行。您看周末哪天方便？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司介绍及旧房翻新服务流程说明（已授权版本）&quot;,
+    &quot;环保材料与工艺说明（已授权版本）&quot;,
+    &quot;老客户转介绍感谢信或已授权案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺未审批的价格、折扣或优惠&quot;,
+    &quot;不得在未量房情况下承诺最终总价&quot;,
+    &quot;不得承诺绝对完工日期&quot;,
+    &quot;不得展示未经授权的案例或材料&quot;,
+    &quot;不得贬低客户看过的其他公司&quot;,
+    &quot;不得承诺所有方案免费无限修改&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 当天完成首次沟通后，根据客户反馈约定量房时间；若客户未回复，则于2026-09-28再次跟进。&quot;,
+  &quot;nextAction&quot;: &quot;业务员应在2026-09-26当天通过微信或电话完成首次沟通，确认客户房屋现状、预算形成方式、决策角色及量房意愿，并约定量房时间或下一次沟通节点。沟通后记录客户反馈并同步至设计师（如量房已约定）。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;P001&quot;,
+    &quot;P004&quot;,
+    &quot;客户事实：source=老客转介绍&quot;,
+    &quot;客户事实：community=金茂府&quot;,
+    &quot;客户事实：area=96&quot;,
+    &quot;客户事实：budget=28万元&quot;,
+    &quot;客户事实：houseCondition=旧房翻新&quot;,
+    &quot;客户事实：purpose=改善自住&quot;,
+    &quot;客户事实：startWindow=2个月内&quot;,
+    &quot;客户事实：decisionRole=本人决策&quot;,
+    &quot;客户事实：concerns=质量,环保&quot;,
+    &quot;客户事实：competitor=只看过1家&quot;,
+    &quot;客户事实：wechatAdded=true&quot;,
+    &quot;客户事实：nextFollowAt=2026-09-26&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 91 分 · 5.7s · $0.00473 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>微信或电话联系客户，确认需求并预约量房时间，记录沟通结果。<br><b>裁判问题：</b>候选建议中未出现虚构事实，但部分表述如“公司有专门的环保材料体系”缺乏案例依据，可能构成过度承诺。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于首次接触阶段，已加微信但尚未正式沟通。客户为老客转介绍，有明确装修需求（旧房翻新、改善自住、2个月内开工），主要顾虑是质量和环保。当前真实卡点是建立专业信任并推进首次量房。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已加微信且为转介绍，信任基础较好，但尚未正式沟通。今天应优先建立联系，确认需求并推进量房，避免客户流失。&quot;,
+  &quot;goal&quot;: &quot;完成首次有效沟通，确认房屋现状和需求，约定量房时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您家旧房翻新具体想改造哪些区域？目前房屋现状如何？&quot;,
+    &quot;您计划2个月内开工，时间上是否比较紧迫？&quot;,
+    &quot;您对环保和质量有具体要求吗？比如材料品牌或施工标准？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是XX装饰的小李，王姐介绍我联系您的。听说您家金茂府的房子准备翻新，想先了解一下您的具体需求，方便安排设计师上门量房。&quot;,
+    &quot;您提到家里有老人和小孩，对环保要求高，我们公司有专门的环保材料体系，量房后可以给您详细讲解。&quot;,
+    &quot;您看这周或下周方便吗？我们安排设计师免费上门量房，顺便看看房屋现状，给您一些初步建议。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还没想好，先随便问问。&quot;,
+      &quot;reply&quot;: &quot;理解，装修是大事。我们可以先简单沟通一下您的需求，量房后给您一些专业建议，您再慢慢考虑。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们价格贵不贵？&quot;,
+      &quot;reply&quot;: &quot;价格要根据房屋面积、改造项目和材料来定。量房后我们会出详细报价，您放心，我们是正规公司，价格透明。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司简介和环保材料介绍&quot;,
+    &quot;旧房翻新案例（需已授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体价格或折扣&quot;,
+    &quot;不得承诺具体工期&quot;,
+    &quot;不得使用未经授权的案例&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-28&quot;,
+  &quot;nextAction&quot;: &quot;微信或电话联系客户，确认需求并预约量房时间，记录沟通结果。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;P001&quot;,
+    &quot;P004&quot;,
+    &quot;customer.source&quot;,
+    &quot;customer.community&quot;,
+    &quot;customer.area&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;customer.purpose&quot;,
+    &quot;customer.startWindow&quot;,
+    &quot;customer.concerns&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 90 分 · 4.0s · $0.00100 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>引用可验证的环保工艺和材料说明，并主动提供同小区案例，以建立专业信任。<br><b>裁判问题：</b>话术中提及“预算28万左右，我们可以帮您合理规划，不超支”，有暗示预算充足的倾向，可能引发客户对预算承诺的误解。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待首联阶段，已加微信但尚未正式沟通，真实卡点是尚未建立专业信任，且未确认具体量房时间。&quot;,
+  &quot;priorityReason&quot;: &quot;客户计划2个月内启动，且已加微信，今天（2026-09-26）是计划跟进日，需尽快建立联系并推进首次量房。&quot;,
+  &quot;goal&quot;: &quot;建立专业信任并约定首次量房时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您家旧房翻新，最想优先解决哪些居住痛点？&quot;,
+    &quot;家里老人和小孩对环保具体有哪些担心？&quot;,
+    &quot;您希望量房安排在周末还是工作日？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是XX装修公司的XX，您朋友XX推荐我联系您。听说您金茂府的房子96平旧房翻新，家里有老人和小孩，特别关注环保和质量，我们在这方面有很多经验，想跟您约个时间免费上门量房，给您一些专业建议。&quot;,
+    &quot;我们针对旧房翻新有专门的环保工艺，材料都是环保等级高的，很多有老人小孩的家庭都选这个方案。您看这周末方便还是下周？&quot;,
+    &quot;量房后我们会根据您的需求出初步方案和预算，您预算28万左右，我们可以帮您合理规划，不超支。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还在看其他公司，不着急。&quot;,
+      &quot;reply&quot;: &quot;理解，多比较是应该的。我们量房和初步方案都是免费的，您可以先了解一下我们的环保工艺和旧房翻新案例，再决定是否继续，这样比较也更全面。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;28万预算够吗？&quot;,
+      &quot;reply&quot;: &quot;96平旧房翻新，28万预算是比较合理的，具体要看改造范围和材料选择。量房后我们可以根据您的需求做详细预算，确保在预算内实现环保和质量要求。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;旧房翻新环保工艺介绍&quot;,
+    &quot;金茂府或同小区旧房翻新案例&quot;,
+    &quot;环保材料清单及检测报告&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺28万一定够用&quot;,
+    &quot;不得承诺具体完工时间&quot;,
+    &quot;不得承诺环保检测绝对达标&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 18:00前（若未回复，则2026-09-27 10:00再次跟进）&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后需记录客户对量房时间的反馈，并发送推荐材料，确认下次跟进时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;source:老客转介绍&quot;,
+    &quot;community:金茂府&quot;,
+    &quot;area:96&quot;,
+    &quot;budget:28&quot;,
+    &quot;houseCondition:旧房翻新&quot;,
+    &quot;purpose:改善自住&quot;,
+    &quot;startWindow:2个月内&quot;,
+    &quot;decisionRole:本人决策&quot;,
+    &quot;concerns:质量,环保&quot;,
+    &quot;competitor:只看过1家&quot;,
+    &quot;wechatAdded:true&quot;,
+    &quot;nextFollowAt:2026-09-26&quot;,
+    &quot;timeline:2026-09-24 15:20&quot;
+  ]
+}</pre></article></section><section><h2>C03 · price_only · 跟进中</h2><p>客户只问价格，并拒绝先量房。请生成今天的微信回复。</p><article><header><b>A</b><span>裁判 91 分 · 6.1s · $0.00151 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>先追问面积及房屋状态，并说明正式报价依据<br><b>裁判问题：</b>候选建议中未虚构事实，但部分表述如“已取得授权的真实案例”在案例中未提及，可能引入未确认信息</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于首次联系后的价格异议阶段，真实卡点是客户希望先获得价格再决定是否量房，但当前房屋面积、房屋条件、预算、用途、开工时间、决策角色和竞品信息均未确认，且报价未正式提交，无法给出最终总价。&quot;,
+  &quot;priorityReason&quot;: &quot;客户昨天已连续追问价格并质疑为何不能直接报价，今天若不回应，可能转向能直接给出口头低价的竞品；但直接报价又违反未量房报价限制，因此今天必须优先把价格问题转化为需求采集和量房/到店评估邀约。&quot;,
+  &quot;goal&quot;: &quot;今天通过微信完成一次有效回应，把客户从“先报价再量房”引导到提供户型图或房屋信息，并约定量房或到店评估的下一步。&quot;,
+  &quot;questions&quot;: [
+    &quot;您这套翡翠湖岸的房子大概多少平方？现在是什么状态，毛坯、旧房翻新还是精装修改造？&quot;,
+    &quot;您计划什么时候开工？主要用途是自住、出租还是给家人住？&quot;,
+    &quot;您方便先发一下户型图或房屋现场照片吗？这样我们可以先帮您判断计价因素，再约量房或到店看正式报价。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;理解您想先有个价格参考。我们不是不能报，而是装修价格受面积、房屋现状、主材范围和工艺影响很大，没量房或房屋信息不完整时，只能说明计价因素，不能直接承诺最终总价。您先发我户型图或房屋照片，我帮您把影响价格的项目先列清楚。&quot;,
+    &quot;别人直接报的价，您可以先确认它包含哪些项目、主材品牌、工艺和售后范围，避免只比一个总数字。我们这边正式报价要以量房后的清单为准，这样后面不会因为漏项反复加钱。&quot;,
+    &quot;您看这样行不行：今天先发我户型图和大概面积，我帮您做一次需求确认；如果信息合适，我们再约量房或到店，量房后由设计负责人同步下一步节点和预计反馈时间。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;别人都能直接报，你们为什么不能？&quot;,
+      &quot;reply&quot;: &quot;别人直接报的价，您可以先确认它包含哪些项目、主材品牌、工艺和售后范围，避免只比一个总数字。我们未量房或房屋条件不完整时，只能说明计价因素和区间形成方式，不能承诺最终总价；正式报价要以量房后的清单为准。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你先给我个总价，能接受我再量房。&quot;,
+      &quot;reply&quot;: &quot;总价现在确实给不了，因为面积、房屋状态、主材和工艺都会影响价格。您先发我户型图或房屋照片，我帮您把影响价格的项目列清楚，再约量房或到店看正式报价，这样更准。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;那你们是不是比别家贵？&quot;,
+      &quot;reply&quot;: &quot;现在还不能直接比总价。建议先确认竞品报价包含项、材料品牌、工艺和售后范围，再回到正式报价逐项解释。我们不会贬低竞品，也不会承诺最低价。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;计价因素说明（面积、房屋状态、主材范围、工艺如何影响价格）&quot;,
+    &quot;量房流程和后续设计准备节点说明&quot;,
+    &quot;已取得授权的真实案例（仅限授权范围内使用）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得直接给最终总价&quot;,
+    &quot;不得口头承诺未审批价格、折扣或优惠&quot;,
+    &quot;不得自行改价或把口头议价当作已接受&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得用虚假名额、虚假涨价或虚构优惠施压&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权的项目材料&quot;,
+    &quot;不得脱离合同和排期承诺绝对完工日期&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 当天微信回复后，若客户未回复，可于2026-09-27 同一时间窗口再跟进一次；若客户回复并愿意提供户型图或房屋信息，则立即推进量房或到店时间确认。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天通过微信发送上述话术，重点获取面积、房屋状态、户型图或照片、计划开工时间和决策角色；若客户仍拒绝量房，则记录真实拒绝原因并转交设计师或店长，不自行改价。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K003&quot;,
+    &quot;K004&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P002&quot;,
+    &quot;P004&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;customer.purpose&quot;,
+    &quot;customer.startWindow&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;timeline[1].content&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 90 分 · 4.2s · $0.00232 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>追问面积及房屋状态，说明正式报价依据，提供低压力下一步<br><b>裁判问题：</b>未直接回应客户对价格的质疑，且未提供具体低压力下一步选项</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于价格咨询阶段，真实卡点是希望先获得价格再决定是否量房，对量房前置流程有抵触。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已表达明确价格诉求且对流程有异议，今天需及时回应避免流失，同时将对话引导至需求采集和正式报价准备。&quot;,
+  &quot;goal&quot;: &quot;解释价格构成因素，争取客户提供房屋信息或同意量房以获取正式报价。&quot;,
+  &quot;questions&quot;: [
+    &quot;您房屋的面积和户型大概是什么情况？&quot;,
+    &quot;您计划什么时候开始装修？&quot;,
+    &quot;您对装修的主材和工艺有什么具体要求吗？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;理解您想先了解价格，但装修报价需要根据房屋面积、现状、主材和工艺来确定，这样才能给您准确的参考。&quot;,
+    &quot;别人能直接报可能是基于假设条件，我们不想用模糊报价误导您。如果您能提供户型图或同意量房，我们可以给您一份正式、透明的报价。&quot;,
+    &quot;您方便发一下户型图吗？或者我们约个时间上门量房，量房后报价会更准确，也能避免后期增项。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;别人都能直接报，你们为什么不能？&quot;,
+      &quot;reply&quot;: &quot;直接报价往往基于假设，后期容易产生增项。我们坚持先了解您的房屋情况，是为了给您更准确、无隐藏费用的报价。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司服务流程说明&quot;,
+    &quot;量房价值介绍&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得给出具体总价或单价&quot;,
+    &quot;不得承诺任何折扣或优惠&quot;,
+    &quot;不得贬低其他公司&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27&quot;,
+  &quot;nextAction&quot;: &quot;记录客户对房屋信息的反馈，若客户提供信息则转交设计师准备报价，若拒绝则继续跟进解释量房必要性。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K002&quot;,
+    &quot;K009&quot;,
+    &quot;P002&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 86 分 · 4.2s · $0.00094 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>先追问面积及房屋状态，说明正式报价依据，提供低压力下一步<br><b>裁判问题：</b>候选建议中虚构了客户未提供的面积、预算、装修需求等信息，并假设客户会接受量房，缺乏对客户拒绝量房的具体应对策略。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于价格敏感型初步询价阶段，真实卡点是客户要求先报价再量房，拒绝先量房，导致无法获取面积等关键信息进行准确报价。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在2026-09-25主动询问价格并质疑报价流程，且已添加微信，今日（2026-09-26）是计划跟进日，需及时回应以维持沟通热度，避免客户转向其他公司。&quot;,
+  &quot;goal&quot;: &quot;引导客户同意先量房或提供面积等基本信息，以便后续提供准确报价。&quot;,
+  &quot;questions&quot;: [
+    &quot;请问您房子的面积大概是多少？&quot;,
+    &quot;您计划什么时候开始装修？&quot;,
+    &quot;您最关注的价格范围或预算大概是多少？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是XX装修公司的销售助理。关于您昨天问的价格，我们非常理解您想先了解费用。为了给您更准确的报价，避免后期增项，我们需要先了解房屋面积和基本情况。您看方便告诉我面积吗？或者我们安排一次免费量房，这样报价更精准。&quot;,
+    &quot;很多客户都希望直接报价，但装修价格受面积、材料、工艺影响很大。我们不想用低价吸引您，然后后期加价。所以建议先量房，我们给您一份详细的报价单，您对比起来也放心。&quot;,
+    &quot;如果您暂时不方便量房，可以先告诉我小区、面积和大概的装修需求，我给您做一个初步估算。您看可以吗？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;别人都能直接报，你们为什么不能？&quot;,
+      &quot;reply&quot;: &quot;理解您的想法。其他公司直接报价可能用的是套餐或估算，但实际施工中容易有增项。我们坚持先量房是为了给您一份准确、透明的报价，避免后期纠纷。这也是对您负责。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我不想量房，你就给我个大概价格。&quot;,
+      &quot;reply&quot;: &quot;没问题，我可以给您一个参考范围。但需要您提供面积和基本需求，比如全包还是半包，这样估算更靠谱。您方便说一下面积吗？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司介绍及服务流程说明&quot;,
+    &quot;量房服务免费及价值说明&quot;,
+    &quot;已授权同小区或同户型案例（如有）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体价格或折扣&quot;,
+    &quot;不得承诺免费量房后不签约也无任何费用&quot;,
+    &quot;不得贬低竞争对手&quot;,
+    &quot;不得在未量房情况下给出确定性报价&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27 10:00&quot;,
+  &quot;nextAction&quot;: &quot;业务员在微信沟通后，记录客户反馈，若客户仍拒绝量房，尝试获取面积和需求信息，并约定下次跟进时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;customer.concerns&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;timeline[1].content&quot;,
+    &quot;customer.nextFollowAt&quot;
+  ]
+}</pre></article></section><section><h2>C04 · price_only · 跟进中</h2><p>客户拿竞品总价施压。请生成回应方案，不得直接降价。</p><article><header><b>A</b><span>裁判 91 分 · 4.8s · $0.00120 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>把竞品总价比较转换为需求确认和正式报价准备，约定量房或到店看正式报价的时间。<br><b>裁判问题：</b>未明确要求业务员在回应中主动询问竞品报价包含范围，仅停留在引导量房，可能错失澄清竞品报价的机会。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于跟进中且报价为草稿状态，真实卡点是用竞品18万总价施压，但未确认竞品包含项、主材品牌、工艺和售后范围，也未确认客户比较的是总价、单项、主材范围还是付款方式。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已到店并添加微信，计划3个月内开工，婚房自住，已比较3家，今天若不回应竞品总价施压，客户可能转向竞品；但报价未正式提交，不能讨论最终价格。&quot;,
+  &quot;goal&quot;: &quot;把竞品总价比较转换为需求确认和正式报价准备，约定量房或到店看正式报价的时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您说的另一家18万，包含的主材品牌、工艺和售后范围具体有哪些？&quot;,
+    &quot;您和爱人更关注总价，还是主材范围、工艺和付款方式？&quot;,
+    &quot;您方便本周约量房吗？量房后我们才能按云谷名庭135平毛坯房出正式报价。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您提到另一家同样面积18万，我理解您对价格很关注。不过总价需要看包含项、主材品牌、工艺和售后范围，不能只比一个数字。我们目前报价还是草稿，需要先量房确认房屋条件，才能给您正式报价。&quot;,
+    &quot;您这套云谷名庭135平毛坯房，婚房自住，预算20万，我们可以先约量房，量房后设计师会结合您的需求准备正式报价，到时候逐项给您解释金额构成。&quot;,
+    &quot;您和爱人可以一起到店或量房，我们同步确认主材范围和工艺标准，这样比较才公平，也能帮您判断哪家更适合。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家同样面积只要18万，你们能做到吗？&quot;,
+      &quot;reply&quot;: &quot;18万这个总价我需要先确认它包含哪些主材、工艺和售后范围。我们目前是草稿报价，不能直接承诺最终总价。建议先量房，量房后按正式报价逐项对比，这样您和爱人能看得更清楚。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们是不是比他们贵？&quot;,
+      &quot;reply&quot;: &quot;价格高低要看包含项。我们不会直接降价，也不会贬低竞品。先确认您比较的是总价、单项、主材范围还是付款方式，再回到正式报价逐项解释。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价版本（待生成后发送）&quot;,
+    &quot;工艺说明（待确认可发送版本）&quot;,
+    &quot;已授权真实案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得直接降价或承诺折扣&quot;,
+    &quot;不得口头承诺未审批价格&quot;,
+    &quot;不得承诺最终总价&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得使用未授权案例&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26，若客户未回复，则2026-09-28再跟进一次；若已约定量房，则按量房时间跟进。&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后必须确认客户是否已量房、竞品报价包含项、主材范围和付款方式，并将客户反馈回流至设计师或店长，推动量房或到店看正式报价。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P002&quot;,
+    &quot;P006&quot;,
+    &quot;P007&quot;,
+    &quot;quoteStatus: Draft&quot;,
+    &quot;competitor: 已比较3家&quot;,
+    &quot;area: 135&quot;,
+    &quot;budget: 20万元&quot;,
+    &quot;houseCondition: 毛坯&quot;,
+    &quot;purpose: 婚房自住&quot;,
+    &quot;startWindow: 3个月内&quot;,
+    &quot;decisionRole: 夫妻共同&quot;,
+    &quot;concerns: 价格, 主材&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 89 分 · 5.6s · $0.00289 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认竞品报价包含范围，并邀约夫妻共同到店进行报价逐项解释<br><b>裁判问题：</b>未明确利用已有报价草稿（Draft）进行逐项对比，且未充分结合客户婚房自住、主材关注等个性化需求</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于报价比较阶段，真实卡点是价格和主材范围，已比较3家竞品，拿竞品总价18万施压，但未明确竞品包含项、材料品牌、工艺和售后范围。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已到店并主动提出价格异议，且计划3个月内开工，决策角色为夫妻共同，需尽快澄清价格构成并推动正式报价确认，避免因价格误解流失。&quot;,
+  &quot;goal&quot;: &quot;将竞品总价比较转化为正式报价的逐项对比，确认客户是否已收到我方正式报价并安排看版。&quot;,
+  &quot;questions&quot;: [
+    &quot;您提到的18万报价，是否包含主材、防水、水电等所有项目？&quot;,
+    &quot;您是否已收到我们发给您的正式报价？如果收到，我们可以逐项对比。&quot;,
+    &quot;您和爱人什么时候方便一起到店，我们对照报价清单详细说明？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;价格确实重要，但不同报价包含的项目和材料品牌可能不同。我们可以先确认您拿到的18万具体包含哪些，再对照我们的正式报价逐项看，这样比较才公平。&quot;,
+    &quot;您家是135平毛坯婚房，主材和工艺会影响总价。我们已根据您的需求做了报价草稿，建议您和爱人一起到店，我们当面解释每一项的构成。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家同样面积只要18万，你们能做到吗？&quot;,
+      &quot;reply&quot;: &quot;我理解您关注价格。不过不同公司的报价包含项可能不同，比如主材品牌、防水工艺、售后范围。我们可以先确认对方18万具体包含哪些，再对照我们的正式报价逐项比较，确保您花的每一分钱都清楚。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价单（Draft版本）&quot;,
+    &quot;报价包含项说明（如主材清单、工艺标准）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得直接降价或承诺匹配18万&quot;,
+    &quot;不得口头承诺未审批折扣&quot;,
+    &quot;不得贬低竞品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-28（若客户未回复，则按原计划2026-09-26后两天内跟进）&quot;,
+  &quot;nextAction&quot;: &quot;确认客户是否收到正式报价，并邀约夫妻共同到店进行报价逐项解释。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P006&quot;,
+    &quot;P007&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 4.9s · $0.00114 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>要求客户提供竞品报价单，并约定到店逐项对比报价与主材配置。<br><b>裁判问题：</b>部分表述将未确认的竞品信息当作事实使用，如“差2万通常差在主材品牌、柜体面积或增项边界上”，可能误导客户。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案与报价对比阶段，真实卡点是价格敏感且已用竞品18万总价施压，但尚未确认竞品报价范围、主材配置和增项边界。&quot;,
+  &quot;priorityReason&quot;: &quot;今天为已约定的下次跟进日，客户3个月内婚房自住且已比较3家，若不及时回应竞品价格，客户可能直接按18万总价选择竞品。&quot;,
+  &quot;goal&quot;: &quot;不直接降价，先确认竞品18万包含范围，并约定到店逐项对比报价与主材配置。&quot;,
+  &quot;questions&quot;: [
+    &quot;您说的另一家18万，是包含全部主材、施工和柜体，还是只是基础报价？&quot;,
+    &quot;您和爱人最看重主材品牌、环保，还是总价控制？&quot;,
+    &quot;如果我把两家报价按同样项目逐项拆开对比，您和爱人哪天方便一起到店确认？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;18万这个总价我理解，但同样135平毛坯婚房，差2万通常差在主材品牌、柜体面积或增项边界上。您方便把竞品报价单发我，我帮您逐项标出包含和不包含，不直接谈降价。&quot;,
+    &quot;我们不会用低价先吸引再增项。您和爱人到店，我把云谷名庭135平婚房自住方案按主材、施工、柜体逐项列清，您拿竞品报价单一起对，差在哪一目了然。&quot;,
+    &quot;您预算20万，如果竞品18万确实全包且主材配置不低于我们，我建议您认真考虑；但如果只是基础价，后面增项可能超过20万，婚房自住还是要把总账算清。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家同样面积只要18万，你们能做到吗？&quot;,
+      &quot;reply&quot;: &quot;不能直接按18万承诺，因为目前只确认了竞品总价，未确认其包含项目、主材品牌和增项规则。我可以先帮您把两家报价按同样口径逐项对比，再判断是否真的更贵。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们就是比别家贵。&quot;,
+      &quot;reply&quot;: &quot;目前只确认您预算20万、竞品报18万，尚未确认竞品主材和施工标准。建议先对比主材配置和增项边界，再判断总价差异是否合理。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;云谷名庭135平毛坯婚房自住方案对比表模板&quot;,
+    &quot;主材配置清单模板&quot;,
+    &quot;报价包含项与增项边界说明模板&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得直接承诺降价到18万&quot;,
+    &quot;不得在未确认竞品包含范围前贬低竞品&quot;,
+    &quot;不得承诺输入中未确认的赠品、折扣或额外优惠&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26，若客户未回复，则顺延至2026-09-27再次跟进&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后必须获取竞品报价单或包含项信息，并整理云谷名庭135平婚房自住方案的主材与报价对比表，发给客户确认到店时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;C04&quot;,
+    &quot;customer.community&quot;,
+    &quot;customer.area&quot;,
+    &quot;customer.budget&quot;,
+    &quot;customer.budgetUnit&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;customer.purpose&quot;,
+    &quot;customer.startWindow&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;task&quot;
+  ]
+}</pre></article></section><section><h2>C05 · silent_wechat · 跟进中</h2><p>客户加微信后沉默4天，上次解释是忙。请生成一次不打扰但有用的唤醒消息。</p><article><header><b>A</b><span>裁判 91 分 · 5.4s · $0.00131 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>发送低压力唤醒消息，引用上次忙的语境，提供毛坯房装修前需确认事项清单，并询问一个简单问题。<br><b>裁判问题：</b>候选建议中部分内容将未在案例中出现的具体信息（如预算形成方式、竞品比较维度）当作已知事实，且个别话术略显冗长。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于跟进中但微信沉默阶段，真实卡点是上次以忙为由未回复，缺乏低压力互动和明确下一步，且报价未正式提交，无法讨论最终价格。&quot;,
+  &quot;priorityReason&quot;: &quot;客户加微信后沉默4天，上次解释是忙，今天应优先用低压力、有用的信息重新建立一次有效互动，避免继续沉默导致线索流失。&quot;,
+  &quot;goal&quot;: &quot;用一条不打扰但有用的微信消息唤醒客户，争取客户回复一个低压力问题或确认下一次沟通时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您最近忙得怎么样？之前提到的4个月内开工计划，现在时间窗口有变化吗？&quot;,
+    &quot;您比较的那1家公司，主要是在总价、主材范围还是施工工艺上有让您犹豫的地方？&quot;,
+    &quot;如果方便的话，您希望我先帮您梳理毛坯房装修前需要确认的哪些事项？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，上次您说最近比较忙，我就不多打扰。您书香门第108平毛坯房、首套自住、预算16万左右、计划4个月内开工这些信息我先记着。等您方便时，我可以先帮您梳理一下毛坯房装修前需要确认的房屋现状和主材范围，不涉及最终报价。&quot;,
+    &quot;您之前比较过1家公司，如果方便的话，我可以帮您看看对方报价里包含哪些项目、主材和工艺范围，避免只比一个总数字。您不用急着回复，等有空说一声就行。&quot;,
+    &quot;如果您这周方便，我可以先约个量房或到店沟通，量房后设计师会同步下一步节点和预计反馈时间。具体时间以设计责任人为准，您看哪天时间窗口合适？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我最近还是很忙，没时间聊。&quot;,
+      &quot;reply&quot;: &quot;理解，您先忙。我不催您，等您方便时回复我一下就行。您书香门第108平毛坯房、计划4个月内开工这些信息我先保留，后续有需要随时找我。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们价格怎么样？直接给我个总价吧。&quot;,
+      &quot;reply&quot;: &quot;因为目前还没有量房，房屋条件不完整，我不能直接承诺最终总价。价格主要由面积、房屋现状、主材和工艺决定。等量房后，设计师会按正式报价版本给您逐项说明。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我在看另一家，他们价格更低。&quot;,
+      &quot;reply&quot;: &quot;建议先确认对方报价包含哪些项目、主材品牌、工艺和售后范围，避免只比较一个总数字。我们这边也会按正式报价和工艺说明逐项跟您对齐，不会直接贬低竞品或承诺最低价。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;毛坯房装修前需要确认的房屋现状和主材范围清单（待确认是否已有正式授权材料）&quot;,
+    &quot;量房流程和后续设计节点说明（待确认是否已有正式版本）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺未审批价格、折扣或优惠&quot;,
+    &quot;不得在未量房情况下承诺最终总价&quot;,
+    &quot;不得编造涨价、名额紧张或虚假优惠施压&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得展示未经授权的案例或材料&quot;,
+    &quot;不得自行改价或把口头议价当作已接受&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-29 或客户回复后24小时内；若客户仍未回复，下次跟进间隔不少于3天，且需更换有用信息角度。&quot;,
+  &quot;nextAction&quot;: &quot;发送唤醒消息后，记录客户是否回复及回复内容；若客户回复，确认房屋现状、预算形成方式、竞品比较维度和下一步量房或到店时间；若未回复，按nextFollowAt再次跟进，不连续催促。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K003&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P003&quot;,
+    &quot;P004&quot;,
+    &quot;客户事实：source、community、area、budget、budgetUnit、houseCondition、purpose、startWindow、decisionRole、concerns、competitor、wechatAdded、lastFollowAt、nextFollowAt、quoteStatus、timeline&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 79 分 · 6.5s · $0.00315 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>分享同小区、面积相近的真实案例，并说明计价方式，提供低压力价值信息。<br><b>裁判问题：</b>候选建议中虚构了案例细节（同小区、面积相近、毛坯首套自住、客户满意），案例事实中未提供这些信息，属于编造案例，违反合规要求。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于首次联系后的沉默期，已加微信但4天未回复，上次解释是忙。真实卡点可能是对价格和施工质量有顾虑，且正在比较1家竞品，需要低压力唤醒并重新建立互动。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已沉默4天，且上次解释是忙，今天正好是原定跟进日，适合用有价值的信息唤醒，避免客户流失到竞品。&quot;,
+  &quot;goal&quot;: &quot;通过一条低压力、有价值的信息重新建立互动，确认客户是否愿意继续沟通。&quot;,
+  &quot;questions&quot;: [
+    &quot;上次您提到比较忙，现在方便简单聊两句吗？&quot;,
+    &quot;关于您之前关心的价格和施工质量，您最想先了解哪一块？&quot;,
+    &quot;您目前是否已经和另一家公司有过详细沟通？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，之前您提到最近比较忙，所以没打扰您。今天想分享一个我们刚完成的真实案例，和您同小区、面积相近，也是毛坯首套自住，客户对施工质量很满意。您有空可以看看，或许对您有帮助。&quot;,
+    &quot;关于您之前关心的价格，我们可以在您方便时先简单说明一下计价方式，不涉及最终报价，等您有空再详细沟通。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还在忙，没时间看。&quot;,
+      &quot;reply&quot;: &quot;完全理解，您先忙。我这边不着急，等您有空时回复我一下就行。我也可以把案例链接发给您，您有空再看。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我已经在和其他公司谈了。&quot;,
+      &quot;reply&quot;: &quot;好的，多比较是正常的。如果您愿意，我可以帮您分析一下不同报价的包含项，避免只看总价。您方便时告诉我对方报价包含哪些内容吗？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;已授权的同小区或相近面积真实案例（需确认授权）&quot;,
+    &quot;正式报价前的计价因素说明（非最终报价）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺任何未审批价格或折扣&quot;,
+    &quot;不得编造案例或使用未授权案例&quot;,
+    &quot;不得催促客户或制造虚假紧迫感&quot;,
+    &quot;不得贬低竞品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-29（若客户未回复，可再尝试一次轻提醒；若回复则按客户时间安排）&quot;,
+  &quot;nextAction&quot;: &quot;发送唤醒消息后，记录客户回复情况；若客户回复，则按P001或P002剧本推进需求采集或价格解释；若未回复，则标记待下次跟进。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K008&quot;,
+    &quot;K009&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P003&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 4.5s · $0.00110 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>发送一条引用上次具体事项、提供新信息且问题简单可回复的微信消息，如提供书香门第108平米毛坯房装修参考。<br><b>裁判问题：</b>候选建议中部分内容将未在案例中出现的具体信息（如预算16万左右的主材和施工要点、同小区案例）当作事实使用，存在事实准确性风险。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于加微信后沉默4天的跟进中阶段，真实卡点是客户以忙为由未回复，且价格和施工质量顾虑未解决，缺乏主动推进动力。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已沉默4天，且上次跟进时间为2026-09-22，原定下次跟进时间为2026-09-26，今天正是计划跟进日，需及时唤醒避免线索冷却。&quot;,
+  &quot;goal&quot;: &quot;通过一条不打扰的微信消息，了解客户当前状态并争取获得一个具体回应或下一步动作。&quot;,
+  &quot;questions&quot;: [
+    &quot;您最近装修的事考虑得怎么样了？&quot;,
+    &quot;您计划4个月内启动装修，目前时间上还合适吗？&quot;,
+    &quot;关于价格和施工质量，您有没有特别想先了解的地方？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;X先生/女士，您好，上次您说最近比较忙，我就不多打扰了。今天刚好整理了一份书香门第108平米的毛坯房装修参考，包含预算16万左右的主材和施工要点，您方便时我可以发您看看。&quot;,
+    &quot;您之前提到比较关注价格和施工质量，我这边可以帮您先做个初步的预算分配和施工标准说明，不着急定，您先了解下。&quot;,
+    &quot;如果您最近还是忙，我可以先把资料发您，您有空再看，有任何问题随时问我。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;最近还是很忙，没时间看。&quot;,
+      &quot;reply&quot;: &quot;理解，那我不催您。我先发一份简单的资料给您，您有空的时候翻一下，有问题随时找我。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;价格方面我还想再比较比较。&quot;,
+      &quot;reply&quot;: &quot;应该的，比较清楚再决定更放心。我可以先帮您把16万预算在书香门第108平米毛坯房上的大致分配列出来，您对比时也有个参考。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;施工质量我怎么知道好不好？&quot;,
+      &quot;reply&quot;: &quot;您担心施工质量很正常。我们可以先提供施工标准说明和已授权的同小区或同户型案例供您参考，您先看看再判断。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;书香门第108平米毛坯房装修预算参考（16万左右）&quot;,
+    &quot;施工标准说明或工艺介绍&quot;,
+    &quot;已授权的同小区或同户型案例&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体优惠或折扣&quot;,
+    &quot;不得承诺最低价或保证全小区最低&quot;,
+    &quot;不得承诺施工绝对无问题&quot;,
+    &quot;不得编造不存在的案例或资质&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-29 或客户回复后另行约定；若客户仍未回复，建议间隔3天再跟进一次。&quot;,
+  &quot;nextAction&quot;: &quot;发送唤醒消息后，记录客户是否回复及回复内容；若客户回复，及时解答价格和施工质量疑问；若未回复，按建议时间再次跟进。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;customer.source&quot;,
+    &quot;customer.community&quot;,
+    &quot;customer.area&quot;,
+    &quot;customer.budget&quot;,
+    &quot;customer.budgetUnit&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;customer.purpose&quot;,
+    &quot;customer.startWindow&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.wechatAdded&quot;,
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;timeline[0].time&quot;,
+    &quot;timeline[0].way&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;task&quot;,
+    &quot;evaluation_date&quot;
+  ]
+}</pre></article></section><section><h2>C06 · silent_wechat · 跟进中</h2><p>客户10天未回复，但点赞了案例。请生成唤醒方案。</p><article><header><b>A</b><span>裁判 91 分 · 4.5s · $0.00106 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>发送个性化唤醒消息，附上已授权的相关案例，并记录客户反馈<br><b>裁判问题：</b>部分动作假设客户已明确意向，如直接约量房或到店，可能给客户压力</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于跟进中但微信沉默阶段，真实卡点是未回复微信但通过朋友圈点赞表达了对旧房改造案例的兴趣，需低压力唤醒并推进需求确认。&quot;,
+  &quot;priorityReason&quot;: &quot;客户10天未回复但近期有朋友圈互动，表明仍有关注，今天是计划跟进日，应抓住互动信号及时唤醒，避免客户流失。&quot;,
+  &quot;goal&quot;: &quot;通过低压力互动重新建立有效沟通，确认客户对案例的兴趣点并约定下一次沟通或量房。&quot;,
+  &quot;questions&quot;: [
+    &quot;您点赞的旧房改造案例中，最吸引您的是设计风格还是空间改造思路？&quot;,
+    &quot;您家湖畔新城142平精装改造，目前有初步的改造想法或风格偏好吗？&quot;,
+    &quot;您和爱人计划什么时候开始装修？方便约个时间详细聊聊您的需求吗？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您点赞了我们旧房改造的案例，感谢关注！这个案例在空间利用和设计感上花了不少心思，如果您对类似改造感兴趣，我可以发一些已授权的相关案例供您参考。&quot;,
+    &quot;您家湖畔新城142平精装改造，改善居住，我们之前聊过。最近有新的改造思路或想了解的信息吗？我可以帮您对接设计师做初步沟通。&quot;,
+    &quot;如果您方便，我们可以约个时间到店或量房，设计师能根据您的房屋现状和需求给出更具体的建议，您看本周或下周哪天合适？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我最近比较忙，还没时间考虑。&quot;,
+      &quot;reply&quot;: &quot;理解，装修确实需要花时间规划。您可以先看看我发的案例，有任何想法随时告诉我。等您方便时我们再约量房或到店，不着急。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们价格怎么样？&quot;,
+      &quot;reply&quot;: &quot;价格需要根据房屋实际情况、主材和工艺来定。您家142平精装改造，我们可以先安排量房，之后设计师会出具正式报价，这样更准确。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;已授权的旧房改造案例（与客户点赞案例类似）&quot;,
+    &quot;精装改造设计流程说明&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺未审批的价格、折扣或优惠&quot;,
+    &quot;不得承诺绝对工期或完工日期&quot;,
+    &quot;不得使用未授权的案例或材料&quot;,
+    &quot;不得连续催促或群发无个性化内容&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-28 20:00（若客户回复，则根据客户意愿约定具体时间；若未回复，可间隔2-3天再尝试一次低压力互动）&quot;,
+  &quot;nextAction&quot;: &quot;发送个性化唤醒消息，附上已授权的相关案例，并记录客户反馈；若客户回复，及时确认需求并约定量房或到店时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K003&quot;,
+    &quot;K008&quot;,
+    &quot;K010&quot;,
+    &quot;P003&quot;,
+    &quot;P004&quot;,
+    &quot;客户事实：lastFollowAt=2026-09-16&quot;,
+    &quot;客户事实：timeline 2026-09-24 朋友圈互动&quot;,
+    &quot;客户事实：concerns=[设计感,工期]&quot;,
+    &quot;客户事实：houseCondition=精装改造&quot;,
+    &quot;客户事实：area=142&quot;,
+    &quot;客户事实：community=湖畔新城&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 80 分 · 5.5s · $0.00275 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>发送个性化唤醒消息，引用客户点赞的旧房改造案例，并询问其对设计风格的兴趣。<br><b>裁判问题：</b>候选建议中出现了案例中未提供的客户姓氏“王先生”，属于事实性错误。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于跟进中阶段，已添加微信但10天未回复，仅点赞旧房改造案例，真实卡点可能是对设计感和工期有顾虑，或当前沟通动力不足。&quot;,
+  &quot;priorityReason&quot;: &quot;客户有互动信号（点赞案例），表明仍有兴趣，且已到计划跟进日期，需及时唤醒避免流失。&quot;,
+  &quot;goal&quot;: &quot;通过低压力互动重新建立沟通，确认客户是否愿意继续推进量房或到店。&quot;,
+  &quot;questions&quot;: [
+    &quot;看到您点赞了旧房改造案例，是不是对这类设计风格感兴趣？&quot;,
+    &quot;咱们湖畔新城的房子是精装改造，您最想改善的是空间布局还是整体风格？&quot;,
+    &quot;您和爱人计划什么时候开始动工？方便的话我们可以先安排量房。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生您好，看到您关注了我们的旧房改造案例，这类项目我们做过不少，设计上可以兼顾改善居住和工期控制。&quot;,
+    &quot;您家142平精装改造，预算30万左右，我们可以先量房出个初步方案，您看这周方便吗？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;最近忙，没时间聊&quot;,
+      &quot;reply&quot;: &quot;理解，您先忙。我这边可以先把湖畔新城同户型的改造要点发给您参考，您有空看看，有疑问随时问我。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;担心工期太长&quot;,
+      &quot;reply&quot;: &quot;工期确实受改造范围和工艺影响，量房后我们可以根据您的需求给出更明确的排期参考，不会耽误您太多时间。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;已授权的旧房改造案例（与客户点赞内容相关）&quot;,
+    &quot;量房服务说明及后续流程介绍&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体工期或完工日期&quot;,
+    &quot;不得口头报价或承诺折扣&quot;,
+    &quot;不得使用未经授权的案例&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-29（若客户未回复，三天后再次轻提醒）&quot;,
+  &quot;nextAction&quot;: &quot;发送个性化唤醒消息，并记录客户回复情况；若客户回应，则推进量房邀约。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K003&quot;,
+    &quot;K006&quot;,
+    &quot;K008&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;P003&quot;,
+    &quot;P004&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;customer.area&quot;,
+    &quot;customer.budget&quot;,
+    &quot;timeline&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 78 分 · 3.5s · $0.00085 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>发送低压力且相关的案例内容，并询问客户对点赞案例的具体兴趣点。<br><b>裁判问题：</b>话术中假设了客户有明确意向，并使用了未在案例中出现的具体承诺（如30万预算内完成、类似项目），可能给客户不实期望。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于跟进中阶段，真实卡点是10天未回复微信，但通过朋友圈点赞旧房改造案例表明仍有兴趣，可能因设计感和工期顾虑而沉默。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在2026-09-24点赞案例，显示近期有互动，今天是计划跟进日2026-09-26，应趁热打铁唤醒客户，避免进一步流失。&quot;,
+  &quot;goal&quot;: &quot;通过微信发送针对性案例和问题，重新建立对话，确认客户对设计感和工期的具体需求。&quot;,
+  &quot;questions&quot;: [
+    &quot;您点赞的旧房改造案例中，哪个设计元素最吸引您？&quot;,
+    &quot;对于精装改造，您最关注工期的哪个方面？&quot;,
+    &quot;您的改善居住计划预计什么时候启动？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您点赞了我们湖畔新城的旧房改造案例，这个案例也是142平米的精装改造，特别注重设计感和工期优化，想问问您对哪些部分感兴趣？&quot;,
+    &quot;针对您之前提到的设计感和工期顾虑，我们最近完成了一个类似项目，可以在30万预算内实现，方便发您参考吗？&quot;,
+    &quot;如果您和先生有时间，我们可以约个简短沟通，聊聊如何为您的家量身定制方案，确保设计感和工期都满足。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还在比较其他公司。&quot;,
+      &quot;reply&quot;: &quot;理解您的比较，我们有很多湖畔新城的案例，可以分享给您参考，帮助您做出更明智的决定。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;工期可能太长。&quot;,
+      &quot;reply&quot;: &quot;我们针对精装改造有标准化流程，通常能在约定时间内完成，具体可以根据您的需求调整。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;湖畔新城旧房改造案例详情&quot;,
+    &quot;精装改造工期说明&quot;,
+    &quot;30万预算内设计感方案示例&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体工期天数&quot;,
+    &quot;不得承诺预算内一定能完成&quot;,
+    &quot;不得猜测或提及竞争对手信息&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-28 20:00&quot;,
+  &quot;nextAction&quot;: &quot;发送推荐材料后，记录客户回复，并更新跟进状态。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;community:湖畔新城&quot;,
+    &quot;area:142&quot;,
+    &quot;budget:30&quot;,
+    &quot;houseCondition:精装改造&quot;,
+    &quot;concerns:设计感&quot;,
+    &quot;concerns:工期&quot;,
+    &quot;lastFollowAt:2026-09-16&quot;,
+    &quot;nextFollowAt:2026-09-26&quot;,
+    &quot;timeline:2026-09-24 20:30&quot;
+  ]
+}</pre></article></section><section><h2>C07 · measure_invite · 待量房</h2><p>客户把折扣作为量房前提。请生成今天的跟进策略。</p><article><header><b>A</b><span>裁判 91 分 · 5.8s · $0.00124 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>不承诺折扣，把话题拉回量房和正式报价准备，并确认量房时间。<br><b>裁判问题：</b>个别表述如“具体时间以设计责任人为准”可能让客户感到推诿，且未充分利用转介绍和夫妻共同决策背景。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待量房阶段，真实卡点是客户把折扣作为量房前提，试图在未量房、未出正式报价前锁定价格；当前未量房、报价状态为空，不能讨论最终价格或折扣。&quot;,
+  &quot;priorityReason&quot;: &quot;客户昨天已明确用折扣换量房，今天若不跟进，容易转向已比较的另外2家公司；且客户计划2个月内开工，需尽快把话题从折扣拉回量房和正式报价准备。&quot;,
+  &quot;goal&quot;: &quot;在不承诺折扣的前提下，把客户从“先给折扣再量房”引导到确认量房时间或下一步正式评估。&quot;,
+  &quot;questions&quot;: [
+    &quot;您计划2个月内开工，是想先量房把方案和正式报价基础定下来，还是还在比较阶段？&quot;,
+    &quot;您比较的另外2家，报价里包含的主材范围、工艺和售后分别是什么？&quot;,
+    &quot;量房时您和您爱人能一起到场吗？这样后续方案和预算沟通会更高效。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您昨天提到如果先给最低折扣就约量房，我理解您最关心价格。但我们现在还没量房，房屋条件不完整，按公司规则我不能口头承诺最终总价或折扣，正式报价要以量房后的正式版本为准。&quot;,
+    &quot;量房不是让您马上签约，而是先把126平毛坯的实际情况、三口自住需求和预算形成方式确认清楚，这样后面正式报价才有依据，您比较另外2家时也更有判断标准。&quot;,
+    &quot;如果您和您爱人方便，我们可以先约一个量房时间；量房后我会同步设计师交接和下一次反馈节点，具体时间以设计责任人为准。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你不给折扣我就不量房。&quot;,
+      &quot;reply&quot;: &quot;折扣和最终价格必须基于正式报价版本，我现在没有权限口头承诺。我们可以先量房，把面积、毛坯状态、主材和工艺需求确认清楚，再按正式报价逐项看哪些部分可以优化。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别的公司给的价格更低。&quot;,
+      &quot;reply&quot;: &quot;价格不能只比一个总数字，建议先确认对方报价包含的主材品牌、工艺和售后范围。我们量房后会按正式报价清单逐项解释，您再综合比较。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我没时间量房，你先给个大概总价。&quot;,
+      &quot;reply&quot;: &quot;未量房或房屋条件不完整时，我只能说明计价因素和区间形成方式，不能承诺最终总价。量房后进入设计准备，正式报价才有依据。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房流程说明&quot;,
+    &quot;正式报价计价因素说明&quot;,
+    &quot;已授权的同小区或同户型真实案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺最低折扣或未审批价格&quot;,
+    &quot;不得在未量房、未正式报价时承诺最终总价&quot;,
+    &quot;不得自行改价或把口头议价当作已接受&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得使用未授权案例或材料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 当天跟进；若客户未回复，2026-09-27 再以低压力方式跟进一次，具体量房时间待客户确认。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天通过微信或电话跟进，确认客户是否愿意先量房；若客户坚持先要折扣，记录为价格异议并转交设计师或店长，不自行改价；若客户同意量房，确认地址、时间窗口和夫妻到场情况，并同步设计师交接和下一次反馈节点。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K003&quot;,
+    &quot;K004&quot;,
+    &quot;K010&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P002&quot;,
+    &quot;P004&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.startWindow&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 90 分 · 6.5s · $0.00327 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>不承诺折扣，引导先量房，将价格讨论放到正式报价后<br><b>裁判问题：</b>部分话术可能过度承诺或未完全基于案例事实，如声称量房免费、报价透明等未在案例中明确</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待量房阶段，真实卡点是用折扣作为量房前提，试图在未量房、未出正式报价前锁定价格优惠。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已明确表达量房意愿但附加折扣条件，今天需及时回应，避免因价格承诺问题导致量房邀约失败或违规承诺。&quot;,
+  &quot;goal&quot;: &quot;引导客户先完成量房，将折扣问题转化为正式报价后的流程，不承诺任何未审批折扣。&quot;,
+  &quot;questions&quot;: [
+    &quot;您提到的折扣，是希望针对总价、主材还是施工部分？&quot;,
+    &quot;您目前是否已有其他公司的报价？方便说下包含哪些项目吗？&quot;,
+    &quot;您和爱人本周哪个时间段方便量房？我们好提前安排。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生，我理解您希望价格有优惠。不过我们公司规定，任何折扣都必须基于正式报价和量房后的实际方案，我作为业务员没有权限口头承诺。今天先量房，拿到准确数据后，我帮您对接设计师出正式报价，到时候您看具体项目和金额，我们再谈优惠空间，这样对您也更有保障。&quot;,
+    &quot;您提到比较了2家，其实不同公司的报价包含项、材料和工艺差别很大。我们量房后会给您一份详细的报价清单，您可以逐项对比，避免只看总价。您看明天上午或下午方便吗？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;不给折扣我就不量房。&quot;,
+      &quot;reply&quot;: &quot;我完全理解您的顾虑。但根据公司规定，未量房前无法确定最终价格，任何口头折扣都是无效的。量房是免费且无风险的，完成后您会得到准确的方案和正式报价，届时再谈优惠才真正有效。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别家已经给了更低折扣。&quot;,
+      &quot;reply&quot;: &quot;每家公司的报价包含项、材料和工艺可能不同。建议您先看我们的正式报价和工艺说明，再逐项对比，避免只比较一个总数字。我们不会承诺最低价，但会确保报价透明。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房服务说明（含流程和客户价值）&quot;,
+    &quot;正式报价模板（空白示例，展示包含项）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺任何具体折扣或最低价&quot;,
+    &quot;不得口头给出最终总价或区间&quot;,
+    &quot;不得贬低竞品或承诺比竞品更低&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;若今天未确认量房时间，则明天（2026-09-27）上午再次跟进；若已确认，则在量房前一天提醒。&quot;,
+  &quot;nextAction&quot;: &quot;记录客户对折扣的具体关注点，并确认量房时间窗口；若客户坚持折扣前提，上报店长处理。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K004&quot;,
+    &quot;K010&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P004&quot;,
+    &quot;P007&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 90 分 · 4.0s · $0.00091 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>不承诺折扣，说明量房免费且能解决确定性问题，引导客户先量房再谈价格。<br><b>裁判问题：</b>部分话术将价格讨论推迟到量房后，但未充分说明量房能解决的具体问题，且未针对客户价格敏感特点提供个性化价值。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待量房阶段，真实卡点是客户将折扣作为量房前提，尚未确认量房时间，价格顾虑未解决。&quot;,
+  &quot;priorityReason&quot;: &quot;客户最后跟进时间为2026-09-25，计划下次跟进时间为2026-09-26，且客户已表达若给最低折扣就约量房，需及时回应以推进量房。&quot;,
+  &quot;goal&quot;: &quot;在不承诺最低折扣的前提下，与客户确认量房时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和爱人这周末或下周哪天方便安排量房？&quot;,
+    &quot;您比较的另外两家目前进展到哪一步了？&quot;,
+    &quot;除了价格，您对装修还有哪些必须满足的需求？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生/女士您好，昨天您提到如果先给最低折扣就约量房，我理解您对预算很在意。我们公司的流程是先量房再根据实际方案和工程量出详细报价，这样价格才准确，也能避免后期增项。您看这周末或下周哪天方便，我先帮您约设计师上门量房？&quot;,
+    &quot;您比较的另外两家也可以同步了解，量房后我给您出一份基于实际测量的报价，您再综合对比，这样更稳妥。&quot;,
+    &quot;量房是免费的，主要确认房屋尺寸和您的需求，不会产生费用，也不会强制签约。您看明天下午还是周末上午方便？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你不给最低折扣我就不量房。&quot;,
+      &quot;reply&quot;: &quot;折扣需要基于量房后的具体方案和工程量才能申请，现在给任何折扣都不准确。我先安排量房，量完出报价后，我再帮您向公司申请最优惠的价格，您看可以吗？&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还在比较其他两家。&quot;,
+      &quot;reply&quot;: &quot;比较是应该的，量房后您拿着我们的详细报价去对比，更清楚。您看哪天方便，我先帮您约量房？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房服务流程说明&quot;,
+    &quot;同小区或同户型已授权案例&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺最低折扣&quot;,
+    &quot;不得承诺具体折扣金额&quot;,
+    &quot;不得承诺最低价&quot;,
+    &quot;不得在未量房前给出正式报价&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26，若客户未回复，则2026-09-27再次跟进&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后需确认量房时间并录入系统；若客户仍拒绝，记录原因并安排下次跟进。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.measureAt&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;evaluation_date&quot;
+  ]
+}</pre></article></section><section><h2>C08 · measure_invite · 待量房</h2><p>已约量房，但父母意见导致客户犹豫。请生成确认决策链、保住量房动作的方案。</p><article><header><b>A</b><span>裁判 90 分 · 6.8s · $0.00171 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认父母对预算、工期或竞品的具体顾虑，并确认父母是否参与决策及是否到场，争取保留或改期量房。<br><b>裁判问题：</b>整体方案较完整，但部分表述如“荣盛华府已授权真实案例”未在案例事实中确认，且对客户个性化信息利用不足。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待量房阶段，已自然到店并添加微信，原定量房时间为2026-09-28 10:00，但2026-09-25客户微信表示父母觉得还要再看看、量房先推迟。真实卡点是决策链未确认：父母出资且意见影响决策，客户本人尚未能推动父母认可量房价值，导致已约量房动作面临取消。&quot;,
+  &quot;priorityReason&quot;: &quot;原定2026-09-28 10:00量房，2026-09-26是跟进日，距离量房仅2天；若不及时确认父母顾虑和决策角色，量房将直接流失，后续设计、正式报价和签约均无法推进。&quot;,
+  &quot;goal&quot;: &quot;确认父母对量房的具体顾虑和决策参与方式，争取保留或重新确认2026-09-28 10:00量房，至少让客户或父母中关键决策人参与一次量房沟通。&quot;,
+  &quot;questions&quot;: [
+    &quot;父母说还要再看看，主要是担心预算超支、工期不确定，还是想先对比其他公司？&quot;,
+    &quot;这次量房父母是否方便一起到场？如果父母不方便，我们是否可以先用微信或电话把量房能解决什么和后续流程同步给他们？&quot;,
+    &quot;如果9月28日10:00父母觉得太急，您方便给我一个父母能一起听沟通的时间窗口吗？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您说父母还想再看看，我完全理解，婚房又是父母出资，肯定要一起把预算和工期确认清楚。原定9月28日10:00量房，我想先不急着让您定，只想确认一下：父母主要担心的是预算、工期，还是想先比较其他公司？&quot;,
+    &quot;量房不是让您马上签约，而是把荣盛华府89平毛坯的房屋现状、面积和实际条件确认清楚，后面设计准备和正式报价才有依据。未量房前我们不会给最终总价，只能说明计价因素，所以量房反而是帮父母把预算和工期风险看清楚的一步。&quot;,
+    &quot;如果父母9月28日10:00不方便，我们可以把量房时间调整到父母能一起参与的时间；如果父母暂时不想到场，也可以我先跟您确认房屋信息，再把量房结论和下一步反馈节点同步给您，由您转达给父母。您看哪种方式更合适？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;父母觉得还要再看看，量房先推迟吧。&quot;,
+      &quot;reply&quot;: &quot;理解，父母出资肯定要谨慎。那我们先不把量房当成签约动作，只当成把89平毛坯的房屋条件和预算、工期影响因素确认清楚。您看父母主要是对预算、工期还是其他公司比较有顾虑？我根据这个来安排下一步，不急着让您定。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;父母担心量房后就被催着签约。&quot;,
+      &quot;reply&quot;: &quot;量房不等于签约，量房完成后是进入设计准备，我们会同步当前负责人、下一步节点和预计反馈时间，具体时间以设计责任人为准。正式报价提交后，您的反馈也会回流给设计师或店长，不会让您当场做决定。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;父母想先知道大概要花多少钱。&quot;,
+      &quot;reply&quot;: &quot;未量房或房屋条件不完整时，我们不能承诺最终总价，只能说明价格由面积、房屋状态、主材和工艺决定。荣盛华府89平毛坯这个面积和15万预算，需要量房后才能形成正式报价基础。您看是否先保留量房，把预算构成逐项确认清楚？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房流程说明和量房后设计准备节点说明&quot;,
+    &quot;荣盛华府已授权真实案例（如有授权且可溯源）&quot;,
+    &quot;婚房装修预算构成说明（仅说明计价因素，不含最终总价）&quot;,
+    &quot;工期影响因素说明（不承诺绝对完工日期）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺最终总价或未审批价格&quot;,
+    &quot;不得自行改价或承诺折扣、优惠&quot;,
+    &quot;不得用虚假名额、虚假涨价或虚构优惠施压&quot;,
+    &quot;不得承诺绝对完工日期&quot;,
+    &quot;不得展示未授权案例、成本、毛利或其他客户资料&quot;,
+    &quot;不得把量房等同于立即签约&quot;,
+    &quot;不得替设计师承诺最终方案或编造设计进度&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26当天微信或电话跟进；若客户未回复，2026-09-27上午再跟进一次，并确认9月28日10:00量房是否保留或改期。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天通过微信或电话联系客户，确认父母对预算、工期或竞品的具体顾虑，确认父母是否参与决策及是否到场，争取保留2026-09-28 10:00量房或与父母确认新的量房时间；沟通后把客户反馈和量房状态同步给设计师或店长。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K003&quot;,
+    &quot;K006&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;P004&quot;,
+    &quot;P005&quot;,
+    &quot;客户事实：stage=待量房&quot;,
+    &quot;客户事实：community=荣盛华府&quot;,
+    &quot;客户事实：area=89&quot;,
+    &quot;客户事实：budget=15万元&quot;,
+    &quot;客户事实：houseCondition=毛坯&quot;,
+    &quot;客户事实：purpose=婚房&quot;,
+    &quot;客户事实：decisionRole=父母出资&quot;,
+    &quot;客户事实：concerns=预算、工期&quot;,
+    &quot;客户事实：measureAt=2026-09-28 10:00&quot;,
+    &quot;客户事实：timeline 2026-09-25 18:00 微信：父母觉得还要再看看，量房先推迟吧。&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 89 分 · 7.0s · $0.00344 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>与客户确认父母顾虑，并重新确认量房时间或改期，同时记录决策链信息。<br><b>裁判问题：</b>候选建议中部分表述可能被理解为承诺具体工期或价格，如“避免后期增项和延误”和“结合您的预算15万，给出匹配的方案和工期范围”，存在合规风险。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待量房阶段，已约2026-09-28量房，但父母作为出资方提出再看看，导致客户犹豫并推迟量房。真实卡点是决策链未打通，父母对装修必要性或方案存在疑虑，且客户自身对预算和工期有顾虑。&quot;,
+  &quot;priorityReason&quot;: &quot;量房时间临近，若今天不处理父母异议，量房可能取消，后续推进将延迟。且客户已表达推迟意愿，需立即介入稳定决策链。&quot;,
+  &quot;goal&quot;: &quot;确认父母的核心顾虑，并争取保留或重新确认量房时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;父母主要担心哪方面？是预算、工期，还是对装修方案本身有疑问？&quot;,
+    &quot;量房当天父母是否方便一起到场？我们可以现场解答他们的具体问题。&quot;,
+    &quot;如果28号不方便，您看哪个时间段父母能一起参与？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;理解父母的谨慎，毕竟装修是大事。量房只是免费上门测量，不涉及任何费用和承诺，目的是拿到准确数据，后续方案和报价才能更贴合您家的实际情况。&quot;,
+    &quot;您提到预算和工期，量房后我们才能根据房屋现状给出更准确的预估，避免后期增项和延误。父母如果担心，可以一起到场，我们当面沟通。&quot;,
+    &quot;您看这样行吗？我先和您确认父母的具体顾虑，然后我们调整量房安排，确保他们放心。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;父母觉得还要再看看，不想现在量房。&quot;,
+      &quot;reply&quot;: &quot;理解，父母谨慎是正常的。量房只是收集房屋数据，不产生费用，也不代表必须签约。有了准确数据，我们才能提供更透明的报价和工期预估，反而能帮父母做决策。您看是否方便让父母一起参与量房？&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;预算和工期我们比较担心。&quot;,
+      &quot;reply&quot;: &quot;您的担心很合理。量房后，我们会根据实际面积和房屋状况，结合您的预算15万，给出匹配的方案和工期范围。目前未量房，我们无法承诺具体数字，但可以说明影响预算和工期的因素，让您和父母心里有底。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房服务说明（含流程、免费性质、客户需准备事项）&quot;,
+    &quot;已授权同小区或类似户型案例（如有）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺任何价格、折扣或优惠&quot;,
+    &quot;不得承诺具体工期&quot;,
+    &quot;不得施压或制造虚假紧迫感&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27（若今日未确认量房，则明日跟进；若已确认，则按新时间提醒）&quot;,
+  &quot;nextAction&quot;: &quot;与客户确认父母顾虑，并重新确认量房时间或改期，同时记录决策链信息。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K002&quot;,
+    &quot;K003&quot;,
+    &quot;K006&quot;,
+    &quot;K009&quot;,
+    &quot;K010&quot;,
+    &quot;P004&quot;,
+    &quot;P007&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.measureAt&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 5.2s · $0.00128 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>提供量房流程说明和预算框架，并邀请父母一起到场，把预算和工期讲明白。<br><b>裁判问题：</b>未明确识别父母是否为最终决策人，也未提供可带去给家人看的材料的具体内容。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于待量房阶段，但真实卡点是父母出资且父母意见导致量房推迟，决策链未确认，客户自身对预算和工期有顾虑，量房动作面临取消风险。&quot;,
+  &quot;priorityReason&quot;: &quot;原定量房时间为2026-09-28，客户在2026-09-25微信中表示父母觉得还要再看看、量房先推迟，今天（2026-09-26）是原定下次跟进日，若不及时确认决策链和量房价值，量房可能彻底取消。&quot;,
+  &quot;goal&quot;: &quot;确认父母对量房和后续决策的影响程度，争取保留或重新约定2026-09-28前后的量房动作。&quot;,
+  &quot;questions&quot;: [
+    &quot;父母说还要再看看，主要是对预算、工期，还是对公司或方案有顾虑？&quot;,
+    &quot;婚房计划大概什么时候要开始装修和入住？父母希望什么时候定下来？&quot;,
+    &quot;量房只是现场测量、不产生费用也不等于签约，能否先约父母一起到场看看？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;姐/哥，荣盛华府89平毛坯婚房，量房只是上门测量、出平面方案和初步预算，不签约也不收费，正好可以帮您和父母把15万预算和工期算清楚，再决定要不要继续。&quot;,
+    &quot;父母出资肯定要尊重他们的意见，不如约他们一起到现场，我们当面把预算和工期讲明白，您也不用夹在中间为难。&quot;,
+    &quot;如果9月28日10点不方便，我们可以先保留这个时间，或者约父母方便的时间，量房后给您一份预算和工期说明，您再和父母商量。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;父母觉得还要再看看，量房先推迟吧。&quot;,
+      &quot;reply&quot;: &quot;理解，父母出资确实要谨慎。量房不是签约，只是现场测量、出平面方案和初步预算，正好帮您和父母把15万预算和工期算清楚，再决定要不要继续。您看是保留9月28日10点，还是约父母方便的时间？&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;预算可能不够，父母担心超支。&quot;,
+      &quot;reply&quot;: &quot;89平毛坯、15万预算，我们可以先按这个预算做量房和初步规划，把哪些项目必须做、哪些可以后置列清楚，父母看到明细再决定，不会直接产生签约压力。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;婚房工期比较紧，怕耽误。&quot;,
+      &quot;reply&quot;: &quot;正因为是婚房，才建议先量房把工期排出来。量房后我们可以给您一个大致时间表，您和父母确认后再决定是否推进，避免后面更被动。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;荣盛华府89平毛坯户型量房流程说明&quot;,
+    &quot;15万预算婚房装修初步预算框架&quot;,
+    &quot;量房后工期排期示例&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺量房后一定签约&quot;,
+    &quot;不得承诺15万预算一定够用&quot;,
+    &quot;不得承诺具体工期天数&quot;,
+    &quot;不得贬低父母意见或催促客户绕过父母决策&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26当天微信或电话跟进；若客户仍犹豫，2026-09-27再次确认是否保留2026-09-28 10:00量房。&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后必须确认父母是否参与决策、量房是否保留或改期，并在微信中发送量房流程和预算框架说明，更新客户跟进记录。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage:待量房&quot;,
+    &quot;customer.community:荣盛华府&quot;,
+    &quot;customer.area:89&quot;,
+    &quot;customer.budget:15万元&quot;,
+    &quot;customer.houseCondition:毛坯&quot;,
+    &quot;customer.purpose:婚房&quot;,
+    &quot;customer.decisionRole:父母出资&quot;,
+    &quot;customer.concerns:预算&quot;,
+    &quot;customer.concerns:工期&quot;,
+    &quot;customer.measureAt:2026-09-28 10:00&quot;,
+    &quot;customer.nextFollowAt:2026-09-26&quot;,
+    &quot;timeline[0].content:父母觉得还要再看看，量房先推迟吧。&quot;
+  ]
+}</pre></article></section><section><h2>C09 · post_measure_wait · 方案报价</h2><p>客户量房后追问设计费。请生成回复方案，金额和规则以正式制度为准。</p><article><header><b>A</b><span>裁判 91 分 · 6.0s · $0.00151 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>今天微信回复客户，确认已收到设计费疑问并转交设计负责人，同步设计Draft当前状态和下一次反馈节点，并确认看设计草案或正式报价反馈的时间。<br><b>裁判问题：</b>候选建议过度依赖正式制度，未提供任何具体设计费规则或常见处理方式，导致回复缺乏实质信息，可能无法有效缓解客户顾虑。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户已完成量房，设计处于Draft阶段，报价尚未正式提交，当前处于量房后等待设计及报价准备阶段。真实卡点是客户对设计费是否免费、不签约时如何计费存在明确顾虑，且该顾虑尚未获得基于正式制度的答复，可能影响后续看方案和报价推进。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在2026-09-25主动微信追问设计费，今天是计划跟进日2026-09-26，若不及时回应，客户可能因费用不确定性降低配合度或转向已比较的1家竞品。&quot;,
+  &quot;goal&quot;: &quot;今天通过微信正面回应设计费疑问，说明设计费规则以正式制度为准，并确认客户看设计草案或正式报价反馈的时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您比较关注设计费，是希望先确认设计费是否单独收取，还是希望了解如果后续不签约费用如何处理？&quot;,
+    &quot;设计草案出来后，您更方便哪天看方案并集中反馈？&quot;,
+    &quot;除了设计费和价格，您对方案还有没有其他必须优先满足的需求？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您问设计费的问题。设计费是否收取、如果最后不签约怎么计算，需要以我们正式制度为准，我不能口头给您承诺。我先把您的疑问同步给设计负责人，拿到正式口径后第一时间回复您。&quot;,
+    &quot;您家已经量房，设计正在准备中。下一步我会同步设计师当前进度和预计反馈节点，具体时间以设计责任人为准。您这边方便的话，我们可以先约一个看草案或反馈的时间。&quot;,
+    &quot;关于价格，因为目前正式报价还没有提交，我不能先给最终总价。等设计草案和正式报价出来后，我们会按面积、房屋状态、主材和工艺逐项说明金额构成，您再判断是否匹配您的19万元预算。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;设计是免费的吗？&quot;,
+      &quot;reply&quot;: &quot;设计费是否免费不能由我口头承诺，需要以公司正式制度和正式报价为准。我先把这个问题转给设计负责人确认，拿到正式口径后回复您。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;如果最后不签，设计费怎么算？&quot;,
+      &quot;reply&quot;: &quot;不签约时设计费如何计算，同样要以正式制度为准。我会把您的原话同步给设计师或店长，由他们按正式规则给您明确答复，我不会自行承诺。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们比另一家贵怎么办？&quot;,
+      &quot;reply&quot;: &quot;价格需要看正式报价包含项、材料品牌、工艺和售后范围，不能只比一个总数字。等正式报价出来，我们可以逐项对照，您再判断差异在哪里。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;待确认：设计费正式制度说明或经授权的设计服务说明材料&quot;,
+    &quot;待确认：当前设计草案或设计进度说明（需设计负责人确认可发送后使用）&quot;,
+    &quot;待确认：正式报价版本（报价未提交前不得发送或讨论最终价格）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺设计免费或设计费具体金额&quot;,
+    &quot;不得承诺不签约时设计费如何处理的具体规则&quot;,
+    &quot;不得在正式报价未提交时讨论最终总价&quot;,
+    &quot;不得自行改价或承诺折扣、优惠&quot;,
+    &quot;不得承诺绝对完工日期&quot;,
+    &quot;不得使用未经授权的案例或材料&quot;,
+    &quot;不得贬低客户比较的1家竞品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 当天内先微信回复设计费疑问并同步已转交设计负责人；若设计负责人当天未给出正式口径，则2026-09-27再次跟进并告知客户正式反馈时间。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天微信回复客户，确认已收到设计费疑问并转交设计负责人；同步设计Draft当前状态和下一次反馈节点；向客户确认看设计草案或正式报价反馈的时间；将客户关于设计费的反馈回流给设计师或店长。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K003&quot;,
+    &quot;K004&quot;,
+    &quot;K009&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P005&quot;,
+    &quot;P006&quot;,
+    &quot;客户事实：stage=方案报价&quot;,
+    &quot;客户事实：designStatus=Draft&quot;,
+    &quot;客户事实：quoteStatus=null&quot;,
+    &quot;客户事实：measureAt=2026-09-22 14:00&quot;,
+    &quot;客户事实：lastFollowAt=2026-09-24&quot;,
+    &quot;客户事实：nextFollowAt=2026-09-26&quot;,
+    &quot;客户事实：timeline 2026-09-25 16:00 微信追问设计费&quot;,
+    &quot;客户事实：concerns包含设计费、价格&quot;,
+    &quot;客户事实：competitor=比较1家&quot;,
+    &quot;客户事实：budget=19万元&quot;,
+    &quot;客户事实：area=115&quot;,
+    &quot;客户事实：houseCondition=毛坯&quot;,
+    &quot;客户事实：purpose=自住&quot;,
+    &quot;客户事实：startWindow=2个月内&quot;,
+    &quot;客户事实：decisionRole=本人决策&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 77 分 · 5.2s · $0.00291 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>澄清设计费规则，确认客户对设计初稿的反馈，并推动进入正式报价环节。<br><b>裁判问题：</b>未给出具体设计费规则或金额，仅以“正式报价为准”回避，未解决客户核心疑虑。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于量房后等待设计阶段，已收到设计初稿（Draft），但尚未收到正式报价。客户当前真实卡点是对设计费及不签约时的费用规则存在疑虑，担心产生额外成本。&quot;,
+  &quot;priorityReason&quot;: &quot;客户主动追问设计费，说明其对价格敏感且可能影响后续签约意愿，需立即澄清规则，避免因误解流失。&quot;,
+  &quot;goal&quot;: &quot;澄清设计费规则，确认客户对设计初稿的反馈，并推动进入正式报价环节。&quot;,
+  &quot;questions&quot;: [
+    &quot;您对目前的设计初稿有哪些具体想法或需要调整的地方？&quot;,
+    &quot;关于设计费，您主要担心的是签约前还是签约后的费用？&quot;,
+    &quot;您希望我们下一步优先安排正式报价还是先完善设计？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;关于设计费，我们会在正式报价中明确列出，具体金额和是否减免以正式报价单为准。如果最终不签约，设计费的处理方式也会在报价说明中注明，您无需担心隐性收费。&quot;,
+    &quot;您已经收到设计初稿，我们可以先根据您的反馈完善方案，同时准备正式报价，这样您能更清楚地看到整体费用构成。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;如果最后不签，设计费是不是要收？&quot;,
+      &quot;reply&quot;: &quot;设计费的具体规则会在正式报价中明确，包括不签约时的处理方式。我们不会在报价之外额外收费，一切以正式文件为准。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别家设计免费，你们为什么要收设计费？&quot;,
+      &quot;reply&quot;: &quot;每家公司的报价包含项不同，设计费是否单列、是否减免都会在正式报价中体现。我们可以帮您对比包含项，确保您清楚每一笔费用的用途。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价单（待生成，需包含设计费说明）&quot;,
+    &quot;设计初稿（已提供）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺设计费减免或具体金额&quot;,
+    &quot;不得承诺不签约时不收设计费&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27（若客户未回复，则顺延一天）&quot;,
+  &quot;nextAction&quot;: &quot;记录客户对设计初稿的反馈，并将设计费疑问转交设计师或店长，准备正式报价。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K003&quot;,
+    &quot;K004&quot;,
+    &quot;K011&quot;,
+    &quot;P005&quot;,
+    &quot;P006&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.designStatus&quot;,
+    &quot;customer.quoteStatus&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 5.2s · $0.00134 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>先向公司确认正式设计费制度及未签约计费规则，再通过微信向客户发送书面说明<br><b>裁判问题：</b>未提供具体设计费规则，仅反复强调以正式制度为准，缺乏可执行细节</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已完成量房（2026-09-22 14:00），设计状态为Draft，报价状态未确认，客户在2026-09-25 16:00通过微信追问设计费及不签时设计费如何计算，真实卡点是设计费规则不明确导致对价格和签约风险的顾虑，尚未进入报价确认环节。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在量房后主动追问设计费，说明仍在推进但存在明确费用顾虑；原计划下次跟进时间为2026-09-26，今天应优先回应设计费问题并推动报价确认，避免客户因规则不清而转向已比较的1家竞品。&quot;,
+  &quot;goal&quot;: &quot;本次沟通唯一主目标是向客户清晰说明公司正式设计费规则及未签约时的处理方式，并确认客户是否接受该规则以继续推进方案报价。&quot;,
+  &quot;questions&quot;: [
+    &quot;您对设计费最关心的是免费条件，还是如果最后不签时费用如何计算？&quot;,
+    &quot;如果设计费规则和整体预算匹配，您希望我们本周先出正式报价，还是先调整方案？&quot;,
+    &quot;您目前比较的另外1家公司在设计费上是怎么说的？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您问设计费的问题，我理解您主要担心两点：设计是不是免费，以及如果最后不签设计费怎么算。我这边不凭个人口径给您承诺，我先把公司正式制度确认清楚，今天内给您准确回复。&quot;,
+    &quot;您家是万科森林公园115平毛坯、自住，量房已经在9月22日完成，设计初稿也在推进中。设计费和未签约计费规则我会按公司正式制度给您说明，确认后我们再决定是否进入正式报价。&quot;,
+    &quot;如果规则确认后您觉得可以接受，我建议我们约个时间把方案和报价一起过一遍；如果您还有顾虑，也可以直接告诉我，我按正式制度帮您核对。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;设计是免费的吗？&quot;,
+      &quot;reply&quot;: &quot;设计费是否免费需要以公司正式制度为准，我不能个人承诺免费。我确认后会把适用条件和费用标准一次性发给您。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;如果最后不签，设计费怎么算？&quot;,
+      &quot;reply&quot;: &quot;未签约时设计费如何计算同样以公司正式制度为准。我会把正式规则原文或书面说明发您，避免口头误解。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我预算19万，设计费会不会超？&quot;,
+      &quot;reply&quot;: &quot;您预算19万、面积115平，设计费是否在预算内需要结合正式收费标准核算。我确认规则后可以帮您一起看整体预算分配。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;公司正式设计费制度或收费标准文件&quot;,
+    &quot;未签约情况下设计费计算规则的书面说明&quot;,
+    &quot;万科森林公园或同户型已授权案例（如有）&quot;,
+    &quot;115平毛坯自住方案初稿（Draft）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺设计费一定免费&quot;,
+    &quot;不得承诺未签约时不收取设计费&quot;,
+    &quot;不得自行编造设计费金额或计算规则&quot;,
+    &quot;不得承诺正式报价金额&quot;,
+    &quot;不得贬低客户正在比较的1家竞品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26，与客户原nextFollowAt一致；如正式设计费制度未确认，则顺延至制度确认后24小时内跟进。&quot;,
+  &quot;nextAction&quot;: &quot;业务员需先向公司确认正式设计费制度及未签约计费规则，然后通过微信向客户发送书面说明，并记录客户对设计费规则的反馈及是否同意继续推进报价。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage&quot;,
+    &quot;customer.source&quot;,
+    &quot;customer.community&quot;,
+    &quot;customer.area&quot;,
+    &quot;customer.budget&quot;,
+    &quot;customer.budgetUnit&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;customer.purpose&quot;,
+    &quot;customer.startWindow&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.wechatAdded&quot;,
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;customer.measureAt&quot;,
+    &quot;customer.designStatus&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;timeline[0].time&quot;,
+    &quot;timeline[0].way&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;task&quot;,
+    &quot;evaluation_date&quot;
+  ]
+}</pre></article></section><section><h2>C10 · post_measure_wait · 方案报价</h2><p>客户量房后等待一周，情绪焦虑。请生成今天的安抚和推进方案。</p><article><header><b>A</b><span>裁判 91 分 · 4.3s · $0.00102 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>立即微信回复客户安抚，并联系设计师确认方案初稿反馈时间，将客户新增问题记录后同步设计师。<br><b>裁判问题：</b>候选建议中多次将设计状态描述为“初稿阶段”，但案例中designStatus为Draft，未明确是否已出初稿，存在事实不准确风险。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于量房后等待设计方案的阶段，当前真实卡点是量房后一周未收到方案反馈，客户因进度和设计还原顾虑产生焦虑，担心被遗忘。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已主动表达焦虑，且计划1个月内开工，今天不回应会加剧不信任，影响后续方案报价推进。&quot;,
+  &quot;goal&quot;: &quot;安抚客户情绪，同步量房后设计进度和下一步反馈节点，确认设计师交接。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和爱人本周哪天方便一起看方案初稿？&quot;,
+    &quot;关于设计还原，您最希望我们优先确认哪些空间或细节？&quot;,
+    &quot;您计划1个月内开工，方案确认后希望我们优先推进哪一步？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;X先生/X女士，非常抱歉让您久等了。您9月20日量房后，我们已经在推进设计准备，目前方案是初稿阶段。我今天会同步设计师，确认具体反馈时间后第一时间告诉您。&quot;,
+    &quot;您提到的进度和设计还原顾虑我记下了。量房后进入设计准备，下一步是设计师出方案初稿，具体反馈时间以设计责任人为准，我会帮您盯紧节点。&quot;,
+    &quot;为了不耽误您1个月内开工的计划，您和爱人本周方便的话，我们可以约一个时间一起看方案初稿，现场沟通设计还原和后续报价安排。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们是不是把我忘了？怎么这么久没消息？&quot;,
+      &quot;reply&quot;: &quot;没有忘记您。您9月20日量房后，我们已进入设计准备，目前方案是初稿阶段。我今天会同步设计师确认反馈时间，并第一时间告诉您，不会让您无限等待。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我担心设计还原不了我想要的。&quot;,
+      &quot;reply&quot;: &quot;您的顾虑我理解。量房后进入设计准备，方案初稿会结合您的需求沟通。具体设计细节以设计师方案为准，我们可以约时间一起看初稿，逐项确认您关心的空间。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房结论和需求摘要（待确认是否已整理）&quot;,
+    &quot;设计师方案初稿（待确认是否已完成）&quot;,
+    &quot;正式报价（尚未提交，待设计师和店长确认后提供）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺最终总价或未审批价格&quot;,
+    &quot;不得自行改价或承诺折扣&quot;,
+    &quot;不得替设计师承诺最终方案或编造设计进度&quot;,
+    &quot;不得承诺绝对完工日期&quot;,
+    &quot;不得使用未经授权的案例或材料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 当天先微信回复安抚，并同步设计师确认反馈时间；具体下次跟进时间以设计师反馈节点为准，待确认。&quot;,
+  &quot;nextAction&quot;: &quot;业务员立即微信回复客户安抚，并联系设计师确认方案初稿反馈时间，将客户新增问题记录后同步设计师。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K003&quot;,
+    &quot;K005&quot;,
+    &quot;K006&quot;,
+    &quot;K009&quot;,
+    &quot;P005&quot;,
+    &quot;measureAt&quot;,
+    &quot;designStatus&quot;,
+    &quot;quoteStatus&quot;,
+    &quot;concerns&quot;,
+    &quot;startWindow&quot;,
+    &quot;decisionRole&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 91 分 · 5.7s · $0.00271 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>立即联系设计师确认方案完成时间和可看版节点，并在今天内回复客户明确时间。<br><b>裁判问题：</b>未编造事实，但部分表述如“设计师已进入方案深化阶段”在案例中无依据，可能误导客户。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于量房后等待设计阶段，已量房一周但未收到方案反馈，产生焦虑情绪，担心被遗忘，核心卡点是进度不透明和缺乏明确反馈节点。&quot;,
+  &quot;priorityReason&quot;: &quot;客户主动表达焦虑，若不及时安抚并同步进度，可能转向已比较的2家竞品，且今天是计划跟进日，需立即响应。&quot;,
+  &quot;goal&quot;: &quot;安抚客户情绪，同步设计当前状态，明确方案反馈时间，恢复客户信心。&quot;,
+  &quot;questions&quot;: [
+    &quot;您希望方案在哪些方面重点体现设计还原？比如风格、功能布局或特殊需求。&quot;,
+    &quot;您和爱人本周哪个时间段方便一起到店看方案？&quot;,
+    &quot;除了进度，您对设计还有其他顾虑吗？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;非常理解您等待的心情，我们一直把您的项目放在心上。量房后设计师已进入方案深化阶段，目前正在完善细节，确保设计还原度。&quot;,
+    &quot;我马上和设计师确认最新进度，今天内给您一个明确的方案反馈时间，不会让您继续空等。&quot;,
+    &quot;您提到的设计还原我们特别重视，方案会结合您的改善自住需求，重点呈现空间利用和效果落地。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们是不是把我忘了？&quot;,
+      &quot;reply&quot;: &quot;绝对没有，您的项目一直在推进中。我理解等待的焦虑，现在就和设计师同步，今天内给您明确答复。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;还要等多久？&quot;,
+      &quot;reply&quot;: &quot;我马上确认设计师当前进度，今天内告诉您具体看方案时间，不会让您无限期等待。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;设计进度说明（内部同步后提供）&quot;,
+    &quot;量房需求摘要（用于确认设计方向）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体出图日期或设计完成时间&quot;,
+    &quot;不得编造设计进度或假装方案已完成&quot;,
+    &quot;不得口头承诺任何价格或优惠&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26（今天内完成设计师确认后回复客户）&quot;,
+  &quot;nextAction&quot;: &quot;立即联系设计师确认方案完成时间和可看版节点，并在今天内回复客户明确时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K003&quot;,
+    &quot;P005&quot;,
+    &quot;customer.designStatus&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 79 分 · 3.8s · $0.00093 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>业务员需在沟通后立即与设计师确认方案初稿完成时间，并在2026-09-27前向客户发送方案初稿或明确交付时间。<br><b>裁判问题：</b>话术中多处使用占位符（如X月X日）而未给出具体时间，且未明确说明当前设计状态为草稿，导致安抚力度不足。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已量房一周但设计仍为草稿状态，报价未出，客户因等待时间过长产生焦虑情绪，真实卡点是方案和报价的交付进度不透明，客户担心被遗忘。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已主动表达焦虑，且原定下次跟进日期为2026-09-26，今天必须回应以安抚情绪并明确推进计划，避免客户流失至已比较的2家竞品。&quot;,
+  &quot;goal&quot;: &quot;安抚客户情绪，明确告知方案和报价的当前进度及具体交付时间，并约定下次沟通节点。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和爱人最关注的设计还原点具体是哪些空间或细节？&quot;,
+    &quot;您希望方案重点解决哪些居住痛点？&quot;,
+    &quot;您和爱人通常什么时间方便一起沟通方案？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;X先生/女士您好，非常抱歉让您久等了，您的情况我一直记着，方案正在按您家的量房数据和需求细化，预计X月X日前能给您看初稿。&quot;,
+    &quot;为了方案更贴合您和爱人的想法，我想再确认一下：您最在意的设计还原是哪些部分？我让设计师重点把控。&quot;,
+    &quot;方案初稿出来后，我约您和爱人一起过一遍，时间您定，我们争取一次沟通到位，不耽误您入住进度。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们是不是把我忘了？&quot;,
+      &quot;reply&quot;: &quot;绝对没有忘记，您的量房记录和需求我都整理好了，方案正在设计中，预计X月X日前给您看，后续我会主动同步进度。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别人家一周就出方案了，你们太慢了。&quot;,
+      &quot;reply&quot;: &quot;理解您的心情，我们更注重方案与您家实际情况的匹配度，所以多花了些时间打磨，确保设计还原和进度可控，预计X月X日前一定给您看初稿。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;量房报告摘要&quot;,
+    &quot;设计进度说明&quot;,
+    &quot;中海九樾同户型已授权案例&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体报价金额&quot;,
+    &quot;不得承诺无法保证的完工时间&quot;,
+    &quot;不得贬低客户已比较的2家竞品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27 10:00&quot;,
+  &quot;nextAction&quot;: &quot;业务员需在沟通后立即与设计师确认方案初稿完成时间，并在2026-09-27前向客户发送方案初稿或明确交付时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;customer.measureAt&quot;,
+    &quot;customer.designStatus&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article></section><section><h2>C11 · quote_followup · 方案报价</h2><p>报价提交2天，客户未反馈。请生成推进看版和决策的方案。</p><article><header><b>A</b><span>裁判 91 分 · 5.3s · $0.00131 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认客户是否已查看正式报价，并约定一次看版或反馈时间。<br><b>裁判问题：</b>候选建议整体准确，但个别表述如“客户沉默导致决策窗口流失”略有推断，且未明确提及不自行改价等约束在动作中的体现。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，正式报价已于2026-09-24提交，客户回复“我先看看”后无反馈。真实卡点是客户未确认是否已看版、未表达对报价的具体异议，业务员缺少客户对价格和工期的真实反馈，无法推进正式决策。&quot;,
+  &quot;priorityReason&quot;: &quot;报价提交已2天，客户关注价格和工期且计划2个月内开工，今天应优先确认客户是否收到并查看正式报价，避免客户沉默导致决策窗口流失。&quot;,
+  &quot;goal&quot;: &quot;确认客户是否已查看正式报价，并约定一次看版或反馈时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您这两天看正式报价了吗？主要是对总价有疑问，还是对某些项目范围不清楚？&quot;,
+    &quot;您计划2个月内开工，目前看版或沟通时间上，这周哪天方便？&quot;,
+    &quot;关于工期，您更想先确认排期节点，还是先确认报价里的施工项目？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，9月24日给您发的正式报价（168800元）您先看看，我想跟您确认一下：您主要是对价格有疑问，还是对报价里的项目范围不清楚？我可以帮您逐项说明。&quot;,
+    &quot;您之前提到计划2个月内开工，如果报价方向没问题，建议我们尽快约一次看版，把价格构成和工期节点一起过一遍，这样您决策会更清楚。&quot;,
+    &quot;如果您现在不方便细看，我可以先帮您把报价里和价格、工期相关的重点标出来，您看完后告诉我最关心哪几项，我再请设计师或店长一起给您正式反馈。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;价格有点高，能不能便宜点？&quot;,
+      &quot;reply&quot;: &quot;价格需要以正式报价版本为准，我不能口头承诺折扣。我们可以先逐项看168800元包含哪些项目、主材和工艺，确认您比较的是总价、单项还是付款方式，再把您的反馈转给设计师或店长。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还没看，最近比较忙。&quot;,
+      &quot;reply&quot;: &quot;理解，您先不用急着做决定。我帮您约一个看版时间，把报价和工期节点一起过一遍，您看完再反馈，这样比只看总数字更清楚。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;工期能不能保证2个月内完工？&quot;,
+      &quot;reply&quot;: &quot;工期受排期、施工条件和合同约定影响，我不能脱离合同承诺绝对完工日期。我们可以先确认当前排期状态和影响工期的因素，再结合合同节点推进。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;当前正式报价版本（168800元）&quot;,
+    &quot;与报价对应的工艺说明或项目清单&quot;,
+    &quot;已授权的真实案例（如有授权且可溯源）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得自行改价或口头承诺折扣&quot;,
+    &quot;不得承诺未审批的优惠或赠送&quot;,
+    &quot;不得脱离合同和排期承诺绝对完工日期&quot;,
+    &quot;不得把客户未回复当成默认接受报价&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权的案例&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26当天再次微信跟进；若客户仍未反馈，2026-09-28前再跟进一次，具体以客户回复和看版安排为准。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天通过微信确认客户是否已查看正式报价，询问价格或工期方面的具体反馈，并尝试约定看版或反馈时间；沟通后把客户反馈回流给设计师或店长，不得自行改价。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K003&quot;,
+    &quot;K004&quot;,
+    &quot;K006&quot;,
+    &quot;K011&quot;,
+    &quot;P006&quot;,
+    &quot;P007&quot;,
+    &quot;客户事实：quoteStatus=Submitted&quot;,
+    &quot;客户事实：quoteAmount=168800&quot;,
+    &quot;客户事实：quoteSubmittedAt=2026-09-24&quot;,
+    &quot;客户事实：concerns=价格、工期&quot;,
+    &quot;客户事实：startWindow=2个月内&quot;,
+    &quot;客户事实：lastFollowAt=2026-09-23&quot;,
+    &quot;客户事实：nextFollowAt=2026-09-26&quot;,
+    &quot;客户事实：timeline 2026-09-24 11:00 客户回复“我先看看”后再无反馈&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 90 分 · 5.5s · $0.00304 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认客户是否看到报价并邀请明确时间进行逐项解释<br><b>裁判问题：</b>整体方案较完整，但部分表述如“确保您清楚每一项内容”可能过度承诺，且未充分结合客户个性化信息</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到正式报价（168800元）但未反馈，真实卡点可能是对价格或工期的顾虑，或尚未安排时间详细看版。&quot;,
+  &quot;priorityReason&quot;: &quot;报价提交已2天，客户未反馈，需主动跟进确认看版情况，避免客户流失或转向竞品。&quot;,
+  &quot;goal&quot;: &quot;确认客户是否已查看报价，并推动客户安排时间进行详细看版和反馈。&quot;,
+  &quot;questions&quot;: [
+    &quot;您收到我们9月24日发送的正式报价了吗？&quot;,
+    &quot;报价中的价格和工期部分，您是否有特别关注或需要进一步解释的地方？&quot;,
+    &quot;您方便安排一个时间，我们详细过一遍报价内容和工艺说明吗？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，我是之前和您沟通的小X。看到您已经收到我们9月24日发送的正式报价，想了解一下您是否已经看过，有没有需要我进一步解释的地方？&quot;,
+    &quot;报价中包含了您关注的105平米毛坯房自住装修的完整项目，总价168800元，其中价格和工期都有详细说明。如果您方便，我们可以约个时间详细过一遍，确保您清楚每一项内容。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;价格有点高，能不能优惠？&quot;,
+      &quot;reply&quot;: &quot;理解您的顾虑。我们的报价是基于正式版本，包含完整的工艺和材料。我们可以逐项解释报价构成，看看是否有调整范围或您不需要的项目，但价格调整需要设计师或店长确认。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;工期能不能保证？&quot;,
+      &quot;reply&quot;: &quot;工期受多种因素影响，比如材料供应和施工排期。我们可以在看版时详细说明当前排期状态和影响工期的因素，但具体完工日期需要以合同和排期为准。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价单（2026-09-24提交，金额168800元）&quot;,
+    &quot;工艺说明（如防水工艺，需确认是否包含基层处理、遍数、闭水试验和质保）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺任何折扣或优惠&quot;,
+    &quot;不得承诺绝对完工日期&quot;,
+    &quot;不得展示未经授权的案例或材料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-28（若客户未回复，可再次跟进）&quot;,
+  &quot;nextAction&quot;: &quot;记录客户反馈，若客户有价格或工期异议，转交设计师或店长处理；若客户同意看版，安排具体时间并同步设计师。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K005&quot;,
+    &quot;K006&quot;,
+    &quot;P006&quot;,
+    &quot;quoteStatus&quot;,
+    &quot;quoteAmount&quot;,
+    &quot;quoteSubmittedAt&quot;,
+    &quot;concerns&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 90 分 · 6.0s · $0.00148 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>邀请客户约定时间逐项解释报价明细，并针对价格和工期疑虑提供拆解和排期方案。<br><b>裁判问题：</b>部分话术和异议处理中隐含未经确认的假设，如将报价16.88万直接视为在预算内，可能误导客户。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，报价已提交2天（2026-09-24提交，评估日2026-09-26），客户回复“我先看看”后无反馈。真实卡点：客户关注价格和工期，但未确认具体异议点；预算17万与报价16.88万接近，但客户可能对报价明细或工期安排有疑虑；竞争情况未确认，存在比价可能。&quot;,
+  &quot;priorityReason&quot;: &quot;报价提交已2天，客户未反馈，且客户计划2个月内开工，时间窗口紧迫；今日为原定跟进日（nextFollowAt: 2026-09-26），需及时推进避免客户流失或转向竞品。&quot;,
+  &quot;goal&quot;: &quot;了解客户对报价的具体反馈，确认价格和工期方面的核心异议，争取约定下一步沟通或面谈时间。&quot;,
+  &quot;questions&quot;: [
+    &quot;您看报价后，整体感觉怎么样？有没有哪些项目觉得价格偏高或需要调整的？&quot;,
+    &quot;关于工期，您期望什么时候开工、什么时候完工？我们好帮您排期。&quot;,
+    &quot;您这边除了我们，还在看其他公司吗？方便的话我可以帮您做个对比参考。&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生/女士您好，前两天发您的报价您先看着，我今天正好整理了一下您这个户型的类似案例，想跟您简单对一下，看哪些地方可以帮您优化一下预算。&quot;,
+    &quot;您之前提到比较关注价格和工期，我这边可以帮您把报价里主材和施工分开拆解一下，您看看哪些部分可以调整，这样总价也能更贴合您的预算。&quot;,
+    &quot;如果您方便的话，我们可以约个时间当面或者视频过一遍报价明细，这样您有什么疑问我当场就能解答，也节省您的时间。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;价格还是有点高，超预算了。&quot;,
+      &quot;reply&quot;: &quot;理解您的顾虑。您预算17万，我们报价16.88万，其实已经在您预算范围内了。不过报价里有些项目是可以根据您的实际需求做调整的，比如主材品牌和部分个性化项目，我们可以一起看看哪些可以优化，帮您把总价控制得更合适。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;工期太长了，我怕来不及。&quot;,
+      &quot;reply&quot;: &quot;您计划2个月内开工，我们完全可以配合。具体工期我们可以根据您的开工时间倒排，签合同后就能安排进场。您方便告诉我期望的完工时间吗？我帮您看看排期是否来得及。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我再对比对比其他公司。&quot;,
+      &quot;reply&quot;: &quot;应该的，多对比一下更放心。您看方便告诉我您还在看哪几家吗？我可以帮您从报价明细、材料品牌、施工标准几个方面做个客观对比，这样您决策起来也更清晰。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;报价明细拆解表（区分主材、辅材、施工、设计费）&quot;,
+    &quot;同小区或同户型已授权案例（金地自在城105平类似户型）&quot;,
+    &quot;工期排期表模板（根据2个月内开工倒排）&quot;,
+    &quot;主材品牌对比清单（便于客户理解报价构成）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体折扣或降价幅度（未经授权）&quot;,
+    &quot;不得承诺具体开工和完工日期（需进一步确认排期）&quot;,
+    &quot;不得贬低或猜测竞争对手&quot;,
+    &quot;不得承诺报价之外赠送项目&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27 或 2026-09-28（若今日微信沟通后客户仍未给出明确反馈，则隔天再次跟进；若客户给出具体异议，则根据异议内容约定下次沟通时间）&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后需在微信或系统内记录客户反馈的具体异议点（价格/工期/其他），更新客户跟进状态，并根据客户反馈准备对应的报价调整方案或工期排期表，发送给客户确认。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage: 方案报价&quot;,
+    &quot;quoteStatus: Submitted&quot;,
+    &quot;quoteAmount: 168800&quot;,
+    &quot;quoteSubmittedAt: 2026-09-24&quot;,
+    &quot;lastFollowAt: 2026-09-23&quot;,
+    &quot;nextFollowAt: 2026-09-26&quot;,
+    &quot;concerns: 价格, 工期&quot;,
+    &quot;budget: 17万元&quot;,
+    &quot;startWindow: 2个月内&quot;,
+    &quot;timeline: 2026-09-24 11:00 微信 正式报价已发送，客户回复‘我先看看’后再无反馈&quot;,
+    &quot;competitor: 未确认&quot;,
+    &quot;community: 金地自在城&quot;,
+    &quot;area: 105&quot;,
+    &quot;houseCondition: 毛坯&quot;,
+    &quot;purpose: 自住&quot;,
+    &quot;decisionRole: 本人决策&quot;,
+    &quot;wechatAdded: true&quot;,
+    &quot;measureAt: 2026-09-18&quot;,
+    &quot;designStatus: Presented&quot;
+  ]
+}</pre></article></section><section><h2>C12 · quote_followup · 方案报价</h2><p>报价提交7天，客户没有明确决策。请生成一次高质量但不施压的跟进。</p><article><header><b>A</b><span>裁判 91 分 · 5.8s · $0.00152 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认夫妻共同决策的下一步反馈节点，并约定一次看版或逐项解释报价的沟通。<br><b>裁判问题：</b>部分建议过度依赖未在案例中出现的具体信息，如客户姓氏、具体工艺细节和案例授权，可能影响执行准确性。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价提交后的决策等待期，真实卡点不是方案本身，而是夫妻共同决策尚未完成，且客户在比较2家竞品，关注质量与主材，尚未给出明确拒绝或接受信号。&quot;,
+  &quot;priorityReason&quot;: &quot;正式报价已于2026-09-18提交，2026-09-19客户表示需与家人商量，今天2026-09-26已到原定跟进日，若继续沉默可能被竞品抢先锁定决策窗口。&quot;,
+  &quot;goal&quot;: &quot;确认夫妻共同决策的下一步反馈节点，并约定一次看版或逐项解释报价的沟通。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和家人商量时，主要是在比较总价、主材范围，还是工艺和售后这几块？&quot;,
+    &quot;您比较的另外2家，报价里包含的主材品牌和工艺范围方便说一下吗？&quot;,
+    &quot;这周您和爱人哪个时间方便，我安排设计师一起把正式报价逐项过一遍？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生/女士您好，上次您说方案挺好、报价还要和家人商量，我这边不催您决定。今天想跟您确认一下，您和家人商量时最关注的是总价、主材范围，还是工艺和售后？我可以按您关注的点，把正式报价里的对应项整理清楚再发您。&quot;,
+    &quot;您提到也在比较另外2家，我不评价别家。建议您比较时重点看三样：报价包含的主材品牌和型号、防水等工艺是否写进清单、售后范围。这样比只看一个总数字更清楚。&quot;,
+    &quot;如果方便，这周约个时间，我请设计师一起把329000元这份正式报价逐项过一遍，您和爱人有什么疑问当场记下来，反馈给设计师和店长，后续调整也走正式流程。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;报价还是有点高，能不能再便宜点？&quot;,
+      &quot;reply&quot;: &quot;理解您对预算的考虑。这份329000元是当前正式报价，我不能口头改价或承诺折扣。我们可以先确认您觉得高的是总价、某一项主材，还是付款方式，我把您的反馈转给设计师和店长，由他们按正式流程处理。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我还在看另外两家，想再比较一下。&quot;,
+      &quot;reply&quot;: &quot;应该比较。建议您别只比总价，把三家的报价单放在一起看：主材品牌型号、防水等工艺是否含基层处理和闭水试验、售后质保范围。您方便的话把别家包含项告诉我，我帮您对照我们这份正式报价逐项说明，不贬低别家。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;家人还没时间看，再等等。&quot;,
+      &quot;reply&quot;: &quot;没问题，不急着定。您看这样行不行：我先把正式报价里主材和工艺对应的部分整理成一页说明发您，您和爱人先看；等您们方便时约一次看版，设计师在场，把疑问一次过完。您预计这周还是下周方便？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;当前正式报价版本（329000元）&quot;,
+    &quot;与报价清单对应的主材品牌型号说明&quot;,
+    &quot;与报价清单对应的防水等工艺说明&quot;,
+    &quot;已取得授权的真实案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺任何折扣、优惠或未审批价格&quot;,
+    &quot;不得自行改价或把口头议价当作已接受&quot;,
+    &quot;不得承诺绝对完工日期&quot;,
+    &quot;不得脱离报价清单单独承诺防水工艺或质保&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权案例&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得用虚假名额、虚假涨价或虚构优惠施压&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;建议2026-09-28前跟进；若客户在本次沟通中给出明确看版或反馈时间，则以客户确认的时间为准。&quot;,
+  &quot;nextAction&quot;: &quot;业务员在沟通后把客户对预算、主材、工艺或竞品的反馈整理成文字，同步给设计师或店长，并记录下一次看版或反馈节点。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K003&quot;,
+    &quot;K004&quot;,
+    &quot;K005&quot;,
+    &quot;K006&quot;,
+    &quot;K008&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P006&quot;,
+    &quot;P007&quot;,
+    &quot;客户事实：quoteStatus=Submitted&quot;,
+    &quot;客户事实：quoteAmount=329000&quot;,
+    &quot;客户事实：quoteSubmittedAt=2026-09-18&quot;,
+    &quot;客户事实：lastFollowAt=2026-09-19&quot;,
+    &quot;客户事实：nextFollowAt=2026-09-26&quot;,
+    &quot;客户事实：decisionRole=夫妻共同&quot;,
+    &quot;客户事实：competitor=比较2家&quot;,
+    &quot;客户事实：concerns=质量、主材&quot;,
+    &quot;客户事实：timeline 2026-09-19 08:50 客户说方案挺好，但报价还要和家人商量&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 91 分 · 6.4s · $0.00329 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>询问客户与家人商量结果，并主动提出安排到店由设计师逐项解释报价<br><b>裁判问题：</b>未提供可直接转发给家人的沟通摘要，未确认家人身份和看版时间</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到正式报价（329000元），但表示需与家人商量，目前尚未明确决策。真实卡点可能是夫妻共同决策未达成一致，或对报价构成、主材范围存在疑虑。&quot;,
+  &quot;priorityReason&quot;: &quot;报价提交已7天，客户未明确决策，且上次沟通表示需与家人商量，今天跟进可了解商量结果，推动决策进程，避免客户流失。&quot;,
+  &quot;goal&quot;: &quot;了解客户与家人商量的结果，确认是否对报价有具体疑问，并推动下一步（如安排到店看版或与设计师沟通）。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和家人商量后，对方案和报价有什么具体想法或疑问吗？&quot;,
+    &quot;报价中哪些部分您觉得需要进一步了解？比如主材品牌、工艺或付款方式。&quot;,
+    &quot;您看是否需要安排一次到店，让设计师针对报价和方案做详细说明？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生您好，上次您提到方案挺好，报价需要和家人商量。今天想了解一下，您和家人商量得怎么样了？有没有什么具体问题，我们可以一起看看。&quot;,
+    &quot;报价是根据您家的面积、毛坯状态和您选择的主材、工艺来做的，如果对某些项目有疑问，我可以请设计师为您详细解释。&quot;,
+    &quot;如果您方便，我们可以约个时间到店里，设计师可以结合方案和报价，把每一项都过一遍，这样您和家人做决定时也更清楚。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;我们还在比较其他公司，想再看看。&quot;,
+      &quot;reply&quot;: &quot;理解，比较是正常的。您可以看看其他公司的报价包含哪些项目、主材品牌和工艺，这样对比更全面。我们这份报价是基于您家的具体情况做的，如果有需要，我可以帮您逐项分析。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;报价有点高，能不能优惠？&quot;,
+      &quot;reply&quot;: &quot;报价是根据您的需求和房屋情况制定的，具体金额和包含项目在正式报价单里都有列明。如果您觉得某些部分需要调整，我们可以请设计师看看是否有优化空间，但价格调整需要按公司流程来。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价单（已提交版本）&quot;,
+    &quot;已授权的主材品牌及工艺说明（如有）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺任何折扣或优惠&quot;,
+    &quot;不得自行修改报价金额&quot;,
+    &quot;不得承诺最终价格或工期&quot;,
+    &quot;不得展示未经授权的案例或材料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-29（若客户未回复，可再跟进一次；若客户明确需要时间，则尊重客户时间）&quot;,
+  &quot;nextAction&quot;: &quot;记录客户反馈，如有具体疑问，转交设计师或店长处理；若客户同意到店，预约具体时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K006&quot;,
+    &quot;K011&quot;,
+    &quot;P006&quot;,
+    &quot;P007&quot;,
+    &quot;quoteStatus&quot;,
+    &quot;quoteAmount&quot;,
+    &quot;lastFollowAt&quot;,
+    &quot;timeline&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 90 分 · 4.5s · $0.00104 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认家人是谁和看版时间，并提供逐项解释和沟通摘要<br><b>裁判问题：</b>未明确询问家人是谁和具体看版时间，且未提供便于客户与家人沟通的摘要材料</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已提交报价（32.9万元），客户反馈方案挺好但需与家人商量，当前真实卡点是夫妻共同决策未完成，且客户在比较2家竞争对手，对质量和主材有顾虑，尚未明确决策时间。&quot;,
+  &quot;priorityReason&quot;: &quot;报价已提交7天，客户仍未明确决策，且客户在比较2家，存在流失风险；今天是原定跟进日，需及时了解决策进展并推进。&quot;,
+  &quot;goal&quot;: &quot;了解客户与家人商量的进展，确认决策障碍，并约定下一步动作（如夫妻一起到店或线上沟通）。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和家人商量后，对方案和报价有什么新的想法或疑问吗？&quot;,
+    &quot;您比较看重的质量和主材方面，有没有需要我们再详细说明或提供资料的地方？&quot;,
+    &quot;您和先生/太太大概什么时候方便一起沟通一下，我们可以针对您们的疑问做一次详细解答？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;X先生/女士您好，上次给您发的报价方案，您和家人商量得怎么样了？如果有任何疑问，我可以随时帮您解答。&quot;,
+    &quot;我们理解装修是大事，需要和家人一起决定。如果您方便，可以约个时间让您和先生/太太一起来店里，我们针对方案和报价再详细过一遍，这样您们决策也更踏实。&quot;,
+    &quot;关于您关心的质量和主材，我们有一些合作品牌的检测报告和实物样品，可以发给您先看看，或者您来店里时我们现场讲解。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;报价有点高，超预算了。&quot;,
+      &quot;reply&quot;: &quot;理解您的预算考虑。您方便告诉我大概的预算范围吗？我们可以看看在哪些项目上做优化调整，尽量匹配您的需求。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;还在对比其他公司。&quot;,
+      &quot;reply&quot;: &quot;应该的，多比较一下更放心。您比较关注哪些方面？我们可以针对您关心的点提供更详细的资料，方便您对比。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;家人还没时间看。&quot;,
+      &quot;reply&quot;: &quot;没关系，等家人有时间了，我们可以约一个您们都方便的时间，一起线上或到店沟通，这样效率更高。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;报价明细单（已提交版本）&quot;,
+    &quot;主材品牌及环保检测报告&quot;,
+    &quot;同小区或同户型已授权案例&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺报价可大幅打折或给予未经授权的优惠&quot;,
+    &quot;不得承诺具体施工工期或质量保证超出公司标准&quot;,
+    &quot;不得贬低竞争对手&quot;,
+    &quot;不得催促客户立即签约&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-29（若本次沟通未获得明确下一步时间，则3天后再次跟进；若客户给出具体时间，则按客户时间跟进）&quot;,
+  &quot;nextAction&quot;: &quot;记录客户反馈的决策障碍和下一步时间，发送客户关心的主材资料或案例，并更新跟进计划。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.competitor&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.quoteAmount&quot;,
+    &quot;customer.quoteSubmittedAt&quot;,
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article></section><section><h2>C13 · quote_rejected · 方案报价</h2><p>客户因超预算要求直接少两万。请生成回复策略。</p><article><header><b>A</b><span>裁判 91 分 · 5.5s · $0.00144 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认客户超预算的具体口径（总价、单项、主材范围或付款方式），并将反馈正式回流给设计师或店长，约定复看时间。<br><b>裁判问题：</b>候选建议整体准确，但个别表述如“今天是最佳响应窗口”缺乏事实依据，且未明确提及客户已比较1家竞品这一关键信息。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已量房、已看方案、已收到正式报价161000元，但报价被拒绝，真实卡点是客户预算14万元与正式报价161000元存在21000元差距，客户直接要求少两万，属于价格异议，需先确认比较口径和真实拒绝原因，不能直接降价。&quot;,
+  &quot;priorityReason&quot;: &quot;客户昨天刚提出超预算并要求少两万，今天是最佳响应窗口，若不及时回应，客户可能转向已比较的1家竞品或直接流失；且报价已正式提交，必须按流程将反馈回流设计师或店长。&quot;,
+  &quot;goal&quot;: &quot;今天完成一次有效沟通，确认客户说的超预算是总价、单项、主材范围还是付款方式问题，并把客户反馈正式回流给设计师或店长，约定下一次看版或反馈节点。&quot;,
+  &quot;questions&quot;: [
+    &quot;您说的超预算，是总价超了，还是某一项比如主材、定制或施工项目超了？&quot;,
+    &quot;您比较的那1家公司，报价里包含的项目、材料品牌、工艺和售后范围分别是什么？&quot;,
+    &quot;如果总价需要调整，您更希望优先调整范围、主材配置，还是付款方式？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您说报价超预算了。我理解您的顾虑，不过这份161000元是正式报价，金额和范围都需要以正式版本为准，我个人不能直接改价或承诺少两万。我想先跟您确认一下，您说的超预算，是总价超了，还是某一项比如主材、定制或施工项目超了？&quot;,
+    &quot;您之前比较的那1家公司，报价里包含的项目、材料品牌、工艺和售后范围分别是什么？我们先把两边包含的内容对齐，再看差异在哪里，避免只比一个总数字。&quot;,
+    &quot;您反馈后，我会把您的意见整理给设计师或店长，由他们按正式报价逐项跟您解释可调整空间。您看今天或明天哪个时间方便，我们再约一次看版或电话沟通？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;能不能直接少两万？&quot;,
+      &quot;reply&quot;: &quot;我理解您希望控制在预算内，但这份161000元是正式报价，金额和范围必须以正式报价版本为准，我个人不能口头承诺少两万或直接改价。我可以先帮您确认超预算的具体项目，再把您的反馈转给设计师或店长，由他们按正式报价逐项跟您沟通可调整的范围。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别家比你们便宜。&quot;,
+      &quot;reply&quot;: &quot;价格确实很重要。为了公平比较，我想先确认对方报价里包含的项目、材料品牌、工艺和售后范围分别是什么，避免只比较一个总数字。我们回到正式报价逐项看，差异在哪里会更清楚。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我就想总价降下来，别的不用讲。&quot;,
+      &quot;reply&quot;: &quot;明白您关注总价。不过正式报价的调整需要设计师或店长按流程确认，我不能自行改价。我先帮您把超预算的具体项目找出来，再约设计师或店长跟您逐项解释，这样比直接砍总价更稳妥。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;当前正式报价版本（161000元）&quot;,
+    &quot;报价清单和工艺说明&quot;,
+    &quot;已取得授权的真实案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺少两万或任何折扣&quot;,
+    &quot;不得自行改价&quot;,
+    &quot;不得把口头议价当作已接受&quot;,
+    &quot;不得脱离正式报价和工艺说明单独承诺防水、工期或赠送&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权的项目材料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26当天或客户回复后24小时内；若客户未回复，2026-09-27再次低压力跟进一次，具体反馈节点以设计责任人为准。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天通过微信或电话完成一次沟通，确认客户超预算的具体口径和竞品比较内容，将客户反馈整理后正式回流给设计师或店长，并约定下一次看版或反馈时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P007&quot;,
+    &quot;quoteStatus=Rejected&quot;,
+    &quot;quoteAmount=161000&quot;,
+    &quot;budget=14万元&quot;,
+    &quot;competitor=比较1家&quot;,
+    &quot;concerns=价格&quot;,
+    &quot;designStatus=Presented&quot;,
+    &quot;quoteSubmittedAt=2026-09-22&quot;,
+    &quot;lastFollowAt=2026-09-25&quot;,
+    &quot;nextFollowAt=2026-09-26&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 91 分 · 7.0s · $0.00342 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认客户要求少两万的具体原因，并引导客户回到正式报价逐项解释，推动反馈回流设计师或店长。<br><b>裁判问题：</b>未明确给出可执行的下一步动作，如具体如何调整范围或安排复看时间，仅停留在询问和转交层面。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到正式报价161000元，但明确表示超预算并直接要求少两万。真实卡点是价格异议，可能涉及总价、单项或预算匹配问题，需确认具体比较维度。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已主动提出降价诉求，若不及时回应可能转向竞品或流失；今天是约定跟进日，需立即处理价格异议并引导回正式流程。&quot;,
+  &quot;goal&quot;: &quot;识别客户要求少两万的真实原因，并引导客户回到正式报价逐项解释，推动反馈回流设计师或店长。&quot;,
+  &quot;questions&quot;: [
+    &quot;您觉得超预算主要是总价整体偏高，还是某些项目（如主材、施工或设计费）单项费用不符合预期？&quot;,
+    &quot;您比较的另一家报价中，包含的材料品牌、施工工艺和售后范围是否和我们一致？&quot;,
+    &quot;如果预算需要控制在14万左右，您是否愿意调整主材档次或减少部分非必要项目？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;我理解您对预算的关注。我们的正式报价是161000元，具体构成包括设计、施工、主材等部分。您提到的少两万，我需要先和您确认是哪些项目让您觉得偏高，这样我才能把您的反馈准确转给设计师或店长，看是否有调整空间。&quot;,
+    &quot;根据公司规定，业务员不能直接改价或承诺折扣，但我们可以一起看看报价清单，逐项分析哪些部分可以优化，比如主材选择或工艺调整，这样既控制预算又不影响核心质量。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;别家报价比你们低两万，你们能不能直接少两万？&quot;,
+      &quot;reply&quot;: &quot;我理解您会比较价格。不过不同公司的报价包含项、材料品牌和工艺可能不同。我们先确认一下竞品报价的具体内容，再对照我们的正式报价逐项看差异，这样您能更清楚钱花在哪里，也避免后期增项。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我预算就14万，你们必须降到这个数。&quot;,
+      &quot;reply&quot;: &quot;明白您的预算上限是14万。我们可以看看在哪些项目上调整，比如主材档次或减少非必要项目，但最终价格需要设计师或店长根据正式报价重新核算，我不能口头承诺具体金额。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价单（161000元）&quot;,
+    &quot;报价构成说明或工艺清单（如有）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺直接少两万或任何具体折扣金额&quot;,
+    &quot;不得口头修改正式报价&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得展示成本、毛利或其他客户资料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27（若今日沟通未解决，需在明日跟进确认客户反馈）&quot;,
+  &quot;nextAction&quot;: &quot;将客户的价格异议和具体关注点记录并转交设计师或店长，等待正式回复后联系客户。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P006&quot;,
+    &quot;P007&quot;,
+    &quot;quoteAmount&quot;,
+    &quot;budget&quot;,
+    &quot;competitor&quot;,
+    &quot;concerns&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 4.4s · $0.00104 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>确认是预算还是范围问题，并约定复看时间<br><b>裁判问题：</b>候选建议中未出现虚构事实，但部分表述如“今天不跟进会降低响应速度”属于推断，未扣分；整体符合案例事实。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到设计Presented和报价161000元，但报价被Rejected，客户明确因价格超预算要求直接少两万，真实卡点是预算14万与报价16.1万之间存在2.1万差额，客户希望直接降价而非调整方案。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在2026-09-25主动微信提出少两万，且nextFollowAt为2026-09-26，今天不跟进会降低响应速度，客户可能转向比较的1家竞品。&quot;,
+  &quot;goal&quot;: &quot;了解客户对报价中哪些项目最在意，并约定一次方案调整沟通，而不是直接答应或拒绝降价。&quot;,
+  &quot;questions&quot;: [
+    &quot;您说的少两万，是希望总价控制在14万以内，还是希望先减掉一些非必要项目？&quot;,
+    &quot;报价里哪些项目您觉得可以调整或暂时不做？&quot;,
+    &quot;您比较的那家公司报价大概是多少，包含哪些项目？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您说报价超预算了，我理解首套自住想把总价控制在14万左右。直接少两万我需要和设计师核对哪些项目可以优化，今天下午或明天上午您方便通个10分钟电话吗？我们按您的优先级来调。&quot;,
+    &quot;您先不用急着定，我们可以把报价拆开看：哪些是必须做的，哪些可以后期再加。这样既能靠近您的预算，也不影响自住的基本品质。&quot;,
+    &quot;如果总价要往14万靠，可能需要调整部分材料或项目范围，我让设计师出一版调整后的对比方案，您看了再决定，可以吗？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;直接少两万不行吗？&quot;,
+      &quot;reply&quot;: &quot;直接少两万我需要和公司申请，但更稳妥的方式是先把报价里可调整的项目找出来，比如部分主材或非紧急项目，这样减下来的钱有依据，也不会影响后面施工。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家比你们便宜。&quot;,
+      &quot;reply&quot;: &quot;价格确实重要，您方便告诉我另一家报价大概多少、包含哪些项目吗？我帮您对比一下，避免只看总价漏掉项目或材料差异。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;报价拆分对比表（标注可调整项目和预估影响金额）&quot;,
+    &quot;14万预算内的调整方案草案&quot;,
+    &quot;已授权的同小区或同面积案例（如有）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得直接承诺少两万&quot;,
+    &quot;不得承诺14万全包&quot;,
+    &quot;不得贬低客户比较的竞品&quot;,
+    &quot;不得在未确认前承诺具体折扣或赠品&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26当天，优先微信或电话；若客户未回复，2026-09-27上午再跟进一次。&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后必须整理客户对可调整项目的反馈，并同步设计师出调整版报价或对比表。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage&quot;,
+    &quot;budget&quot;,
+    &quot;budgetUnit&quot;,
+    &quot;quoteAmount&quot;,
+    &quot;quoteStatus&quot;,
+    &quot;quoteSubmittedAt&quot;,
+    &quot;concerns&quot;,
+    &quot;competitor&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;nextFollowAt&quot;
+  ]
+}</pre></article></section><section><h2>C14 · quote_rejected · 方案报价</h2><p>客户用竞品同项目价格施压。请生成专业对比方案。</p><article><header><b>A</b><span>裁判 91 分 · 5.5s · $0.00141 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>把客户带到正式清单比较，逐项对比包含项、品牌、工艺和售后<br><b>裁判问题：</b>未明确要求客户提供竞品报价单，也未安排具体时间与设计师/店长沟通，动作不够落地</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，正式报价已提交但被拒绝，真实卡点是客户用竞品同项目便宜1.2万施压，要求同价，尚未确认竞品报价的包含项、材料品牌、工艺和售后范围，也未确认客户比较的是总价、单项、主材范围还是付款方式。&quot;,
+  &quot;priorityReason&quot;: &quot;客户昨天刚用竞品价格施压，今天若不及时回应，客户可能直接转向竞品；且报价已正式提交，必须把反馈回流设计师或店长，不能自行改价或口头议价。&quot;,
+  &quot;goal&quot;: &quot;把单纯比价拉回到正式报价逐项对比，确认竞品报价包含项和客户真实顾虑，并约定客户看版或与设计师/店长沟通的下一步。&quot;,
+  &quot;questions&quot;: [
+    &quot;另一家同项目便宜1.2万，这个价格包含的项目、主材品牌、工艺和售后范围分别是什么？&quot;,
+    &quot;您比较时最在意的是总价、某个单项、主材范围还是付款方式？&quot;,
+    &quot;您和爱人方便什么时候一起看版，或者和设计师/店长把正式报价逐项过一遍？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您说的另一家同项目便宜1.2万，我先不急着说能不能做同价，因为只比一个总数字容易漏掉包含项。我们这份206000元是正式报价，我想先和您逐项对一下：面积、房屋状态、主材和工艺分别怎么算，再看差异到底在哪里。&quot;,
+    &quot;价格不是不能谈，但按公司流程，任何金额、折扣和最终范围都要以当前正式报价版本为准，我个人不能口头承诺未审批价格。您把竞品报价的包含项发我，我帮您做一份逐项对比，再请设计师或店长一起给您正式反馈。&quot;,
+    &quot;您和爱人方便的话，我们约个时间看版，把正式报价逐项过一遍，您把竞品那边包含什么也一起带来，这样比较的是同一口径，不是只比一个总价。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家同项目便宜1.2万，你们能不能做到同价？&quot;,
+      &quot;reply&quot;: &quot;我先确认一下，另一家这个价格包含的项目、主材品牌、工艺和售后范围是什么？我们这份206000元是正式报价，按流程我不能口头承诺同价或折扣，需要把竞品包含项和我们的正式报价逐项对比后，由设计师或店长给您正式反馈。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们就是比别家贵。&quot;,
+      &quot;reply&quot;: &quot;价格差异可能来自包含项、主材品牌、工艺或售后范围，不一定是同一口径。我们先不直接比总价，把两边包含项列出来逐项对，您再判断哪个更符合您的需求。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;那你直接给我降1.2万不就行了？&quot;,
+      &quot;reply&quot;: &quot;我理解您的想法，但业务员不能自行改价，也不能把口头议价当作已接受。您的反馈我会转交设计师或店长，按正式报价流程给您答复。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;当前正式报价版本（206000元）&quot;,
+    &quot;正式报价对应的工艺说明&quot;,
+    &quot;已取得授权的真实案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得口头承诺同价、降价1.2万或任何未审批折扣&quot;,
+    &quot;不得自行改价&quot;,
+    &quot;不得把口头议价当作客户已接受&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权材料&quot;,
+    &quot;不得脱离合同和排期承诺绝对完工日期&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27，若客户未回复，可再间隔1天以低压力方式跟进；具体反馈时间以设计责任人为准。&quot;,
+  &quot;nextAction&quot;: &quot;业务员沟通后必须把客户竞品比价反馈和正式报价异议回流至设计师或店长，并记录客户对竞品包含项、比较口径和看版时间的回复。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P007&quot;,
+    &quot;quoteStatus=Rejected&quot;,
+    &quot;quoteAmount=206000&quot;,
+    &quot;quoteSubmittedAt=2026-09-23&quot;,
+    &quot;competitor=已比较3家&quot;,
+    &quot;concerns=竞品比较、价格&quot;,
+    &quot;timeline 2026-09-26 10:10 另一家同项目便宜1.2万，你们能不能做到同价？&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 87 分 · 6.4s · $0.00342 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>引导客户提供竞品报价明细，以便逐项对比包含项、品牌和工艺。<br><b>裁判问题：</b>多处使用待确认占位符，未基于案例事实给出具体对比内容，且未明确下一步具体动作。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到正式报价（206,000元）但拒绝，当前真实卡点是竞品同项目便宜1.2万，客户以此施压要求同价，属于价格异议与竞品比较叠加。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已明确表达价格异议并提及竞品，若不及时处理可能流失；且客户已比较3家，需尽快用专业对比澄清价值，避免陷入单纯比价。&quot;,
+  &quot;goal&quot;: &quot;引导客户从单纯比总价转向对比报价包含项、材料品牌、工艺和售后范围，并推动客户提供竞品报价明细以便逐项分析。&quot;,
+  &quot;questions&quot;: [
+    &quot;您提到的另一家便宜1.2万，方便提供他们的报价明细吗？我想帮您对比一下包含项和材料品牌。&quot;,
+    &quot;您目前主要关注的是总价差异，还是某些具体项目（如主材、防水或施工工艺）上的差异？&quot;,
+    &quot;如果我们在工艺和材料上确实有差异，您更看重哪些方面？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;我理解您关注价格，不同公司的报价差异往往来自包含项、材料品牌和工艺标准。为了帮您做出准确判断，我们可以一起逐项对比，避免只看总价。&quot;,
+    &quot;根据我们的正式报价（206,000元），其中包含了[待确认具体包含项]，如果竞品报价中缺少某些项目或使用不同材料，实际成本可能不同。您方便把竞品报价发给我，我帮您做个详细对比吗？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家同项目便宜1.2万，你们能不能做到同价？&quot;,
+      &quot;reply&quot;: &quot;我理解价格对您很重要。不过不同公司的报价可能包含不同项目、材料和工艺。为了确保您比较的是同等标准，我需要先了解竞品报价的具体内容。您方便提供他们的报价明细吗？我们可以逐项对比，看看差异在哪里。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们就是贵，我不想再提供什么明细了。&quot;,
+      &quot;reply&quot;: &quot;我明白您的感受。我们的报价是基于正式方案和工艺标准制定的，如果直接降价可能意味着减少某些项目或降低材料标准。为了对您负责，我需要先确认竞品报价的包含范围，才能判断是否有调整空间。您看是否方便让我帮您做个专业对比？&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价单（206,000元）&quot;,
+    &quot;工艺说明或报价清单（用于对比包含项）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺可以做到竞品同价或任何降价&quot;,
+    &quot;不得口头承诺未审批的折扣或优惠&quot;,
+    &quot;不得贬低竞品&quot;,
+    &quot;不得展示成本、毛利或其他客户资料&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27（若客户未提供竞品明细，则待客户回复后跟进）&quot;,
+  &quot;nextAction&quot;: &quot;获取竞品报价明细，并转交设计师或店长进行逐项对比分析，准备专业对比方案。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K004&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P007&quot;,
+    &quot;quoteAmount&quot;,
+    &quot;competitor&quot;,
+    &quot;concerns&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 77 分 · 5.0s · $0.00113 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>了解竞品报价的具体配置差异，并约定时间向夫妻双方展示专业对比方案，而非直接降价。<br><b>裁判问题：</b>多处引用未在案例中出现的具体信息（如XX工艺、XX材料、已完工案例），且未明确引导客户到正式清单比较。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到报价（20.6万）并拒绝，核心卡点是价格（竞品同项目便宜1.2万）和竞品比较（已比较3家），夫妻共同决策，需专业对比方案来证明价值差异。&quot;,
+  &quot;priorityReason&quot;: &quot;客户昨日（2026-09-26）主动来电施压，今日（2026-09-27）是计划跟进日，且客户3个月内启动，决策窗口紧迫，需及时回应避免流失。&quot;,
+  &quot;goal&quot;: &quot;了解竞品报价的具体配置差异，并约定时间向夫妻双方展示专业对比方案，而非直接降价。&quot;,
+  &quot;questions&quot;: [
+    &quot;另一家报价便宜1.2万，请问他们的报价里包含了哪些具体项目和材料品牌？&quot;,
+    &quot;您和爱人最关注哪些方面的品质或服务？&quot;,
+    &quot;如果我们的方案在配置或服务上更有优势，您是否愿意和爱人一起再花30分钟看看对比？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，昨天您提到另一家同项目便宜1.2万，我完全理解价格很重要。为了给您一个公平的对比，我想了解一下他们报价的具体配置，比如水电材料、防水工艺、柜体品牌等，这样我能帮您分析差异在哪里。&quot;,
+    &quot;我们公司在这个小区做了不少案例，针对122平毛坯自住，我们的报价20.6万是基于XX工艺和XX材料（待确认具体配置）。如果您方便，我可以做一份详细的对比表，您和爱人一起看看，再决定是否值得。&quot;,
+    &quot;价格上我们可能不是最低，但我们能保证的是透明报价和后期零增项。您看今天下午或明天上午，我带着对比方案到您小区附近，和您夫妻俩聊15分钟？&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;另一家就是比你们便宜1.2万，你们能不能做到同价？&quot;,
+      &quot;reply&quot;: &quot;我理解您希望价格更优。不过直接降价可能意味着配置调整。为了不牺牲您的居住品质，我建议我们先对比一下两家的报价明细，如果发现我们确实有溢价，我会向公司申请最优惠的方案。您看这样可以吗？&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;我已经比较了3家，你们价格没优势。&quot;,
+      &quot;reply&quot;: &quot;比较3家说明您很谨慎，这是对的。价格只是其中一部分，后期增项、工艺标准和售后也很关键。我们在这个小区有已完工的案例（待确认），可以带您实地看看，您再综合判断。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;针对皖投天下名筑122平毛坯自住的详细报价明细（含材料品牌、工艺说明）&quot;,
+    &quot;同小区已完工案例的图文或视频（需已授权）&quot;,
+    &quot;竞品对比分析表模板（待填充具体竞品信息）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺直接降价1.2万或同价&quot;,
+    &quot;不得贬低竞品公司或其报价&quot;,
+    &quot;不得在未确认配置差异前承诺任何优惠&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27 18:00前（若客户未接电话，则微信留言并约定次日）&quot;,
+  &quot;nextAction&quot;: &quot;业务员需在沟通后整理竞品配置差异，制作对比方案，并微信发送给客户，同时预约夫妻双方共同沟通的时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;customer.competitor&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.quoteAmount&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;timeline[0].content&quot;,
+    &quot;customer.decisionRole&quot;,
+    &quot;customer.nextFollowAt&quot;
+  ]
+}</pre></article></section><section><h2>C15 · quote_rejected · 方案报价</h2><p>客户对防水单项有强烈异议。请生成解释和下一步。</p><article><header><b>A</b><span>裁判 90 分 · 5.1s · $0.00130 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>逐项核对正式报价中防水相关条目，并邀请设计师或店长参与解释<br><b>裁判问题：</b>部分表述可能超出事实范围，如建议客户比较其他公司报价时需谨慎，避免引导客户关注竞品</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价已提交但被拒绝的阶段，真实卡点是对防水单项价格和报价透明度有强烈异议，怀疑存在拆项收费，尚未进入签约决策。&quot;,
+  &quot;priorityReason&quot;: &quot;客户昨日主动提出防水价格质疑，是明确的异议信号，今天应优先回应以恢复正式沟通，避免客户因误解而流失。&quot;,
+  &quot;goal&quot;: &quot;澄清防水单项的计价依据和报价构成，将客户异议转化为对正式报价的逐项复核，并约定下一次反馈节点。&quot;,
+  &quot;questions&quot;: [
+    &quot;您比较的是防水这一项的总价，还是包含的基层处理、遍数、闭水试验和质保范围？&quot;,
+    &quot;您目前手头是否有其他公司的报价或工艺说明，方便我帮您逐项对照包含项？&quot;,
+    &quot;关于这份正式报价，您希望我们优先解释防水单项，还是整体逐项过一遍？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您对防水单项有疑问，我理解您关心价格透明度。防水价格不是单独一项，它和基层处理、涂刷遍数、闭水试验、质保范围都有关，具体以正式报价清单和工艺说明为准，我这边可以帮您逐项核对。&quot;,
+    &quot;这份报价是9月22日提交的正式版本，金额226000元。防水部分我不能脱离清单单独承诺，但可以约设计师或店长一起，按清单给您解释每一项的构成，您看今天或明天哪个时间方便？&quot;,
+    &quot;如果您也在看其他公司，建议先确认对方防水报价包含哪些工艺和售后范围，避免只比一个总数字。我们可以把两边包含项列出来对照，这样您判断会更清楚。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;防水为什么这么贵？是不是故意拆项收费？&quot;,
+      &quot;reply&quot;: &quot;防水是否包含基层处理、遍数、闭水试验和质保，必须以报价清单和工艺说明为准，我不能脱离清单单独承诺。我们可以一起逐项核对，确认每一项对应的工作内容和计价依据，如果清单里有不清楚的地方，我同步给设计师或店长给您正式解释。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别的公司防水比你们便宜很多。&quot;,
+      &quot;reply&quot;: &quot;价格差异通常来自包含项、材料品牌、工艺和售后范围不同。建议先确认对方防水报价具体包含什么，我们再按正式报价清单逐项对照，避免只比较一个总数字。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;能不能把防水这一项价格降一点？&quot;,
+      &quot;reply&quot;: &quot;报价以正式版本为准，我个人不能自行改价或承诺折扣。您的反馈我会如实转交设计师或店长，由他们按正式流程处理。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;当前正式报价版本（2026-09-22提交，金额226000元）&quot;,
+    &quot;防水工艺说明及报价清单中防水相关条目&quot;,
+    &quot;已取得授权的旧房翻新真实案例（如有授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得自行改价或承诺折扣&quot;,
+    &quot;不得脱离报价清单单独承诺防水包含范围或质保&quot;,
+    &quot;不得口头承诺最终总价或未审批优惠&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权案例&quot;,
+    &quot;不得把客户未回复当作默认接受&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26当天跟进；若客户未回复，2026-09-27再次低压力跟进，具体反馈节点以设计师或店长确认为准。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天通过微信或电话回应防水异议，逐项核对正式报价中防水相关条目，将客户反馈同步给设计师或店长，并约定下一次看版或解释时间。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K004&quot;,
+    &quot;K005&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P007&quot;,
+    &quot;quoteStatus=Rejected&quot;,
+    &quot;quoteAmount=226000&quot;,
+    &quot;quoteSubmittedAt=2026-09-22&quot;,
+    &quot;concerns=工艺质量,价格透明度&quot;,
+    &quot;timeline=2026-09-25 20:00 防水为什么这么贵？是不是故意拆项收费？&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 91 分 · 5.0s · $0.00287 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>邀请设计师或店长一起过一遍防水工艺和报价依据，确保透明。<br><b>裁判问题：</b>部分解释可能超出清单范围，如提及基层处理、施工遍数等未在案例中明确的内容，存在不实承诺风险。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，已收到正式报价但拒绝，当前对防水单项价格有强烈异议，质疑故意拆项收费。真实卡点是价格透明度和工艺价值认知不足。&quot;,
+  &quot;priorityReason&quot;: &quot;客户已明确表达异议，若不及时解释可能加深不信任，影响整体报价接受度。今天应优先处理防水异议，恢复沟通。&quot;,
+  &quot;goal&quot;: &quot;解释防水报价构成，消除拆项误解，并推动客户反馈整体报价意见。&quot;,
+  &quot;questions&quot;: [
+    &quot;您是对防水总价、单价，还是包含的工艺项目有疑问？&quot;,
+    &quot;您方便看下报价清单中防水部分的具体描述吗？我可以逐项解释。&quot;,
+    &quot;您是否对比过其他公司的防水报价？他们包含哪些项目？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;理解您对防水价格的关注。防水报价包含基层处理、防水涂料、施工遍数和闭水试验等，具体以报价清单和工艺说明为准。&quot;,
+    &quot;我们不会故意拆项收费，每一项都对应实际施工内容。您可以对照清单，我帮您逐项核对。&quot;,
+    &quot;如果您方便，我们可以安排设计师或店长一起过一遍防水工艺和报价依据，确保透明。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;防水为什么这么贵？是不是故意拆项收费？&quot;,
+      &quot;reply&quot;: &quot;防水价格包含基层处理、防水涂料、施工遍数和闭水试验等，具体以报价清单和工艺说明为准。我们不会故意拆项，每一项都对应实际施工内容。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;别家防水报价低很多。&quot;,
+      &quot;reply&quot;: &quot;建议先确认别家报价包含哪些项目、材料品牌和工艺标准，避免只比较总价。我们可以逐项对比，确保您清楚差异。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;正式报价清单（防水部分）&quot;,
+    &quot;防水工艺说明&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺防水价格可以降低或给予折扣&quot;,
+    &quot;不得口头承诺防水质保年限或具体工艺细节超出报价清单和工艺说明&quot;,
+    &quot;不得贬低竞品或承诺最低价&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27&quot;,
+  &quot;nextAction&quot;: &quot;将客户对防水的异议反馈给设计师或店长，并获取防水工艺说明和报价依据，准备逐项解释。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K001&quot;,
+    &quot;K005&quot;,
+    &quot;K011&quot;,
+    &quot;K012&quot;,
+    &quot;P007&quot;,
+    &quot;quoteStatus&quot;,
+    &quot;quoteAmount&quot;,
+    &quot;timeline&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 80 分 · 5.1s · $0.00111 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>发送防水工艺标准、材料清单和报价明细拆分表，并预约电话或视频沟通<br><b>裁判问题：</b>部分回复中使用了未在案例中出现的具体材料品牌和质保年限，可能构成不实承诺</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户处于方案报价阶段，报价已被拒绝，真实卡点是对防水单项价格和报价透明度的强烈质疑，认为可能存在故意拆项收费，尚未建立对报价合理性的信任。&quot;,
+  &quot;priorityReason&quot;: &quot;客户在2026-09-25主动提出防水价格和拆项收费的异议，且原定下次跟进时间为2026-09-26，说明客户仍有沟通意愿，但若不及时、专业地回应，可能因不信任而流失。&quot;,
+  &quot;goal&quot;: &quot;澄清防水单项的计价依据和工艺标准，消除客户对故意拆项收费的疑虑，争取客户同意进一步沟通或重新审视报价。&quot;,
+  &quot;questions&quot;: [
+    &quot;您觉得防水这项大概多少钱是合理的？&quot;,
+    &quot;您之前了解到的防水报价是按什么标准或包含哪些内容？&quot;,
+    &quot;除了防水，报价里还有哪些项目您觉得价格或拆分方式需要再说明？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;王先生/女士，您昨天提到的防水价格问题我特别理解，装修里防水确实是很关键的一项。我先把我们防水的工艺标准、材料品牌和计价方式整理给您，您看看是不是和您了解的市场情况有差异。&quot;,
+    &quot;关于拆项收费，我们报价里每一项都是独立列出的，就是为了让您看得清楚。防水这一项包含了基层处理、防水涂料、闭水试验和质保，不是故意拆开多收费。我可以把明细和对应的工艺说明发给您核对。&quot;,
+    &quot;如果您方便，我们可以约个时间当面或视频过一遍报价，您有疑问的地方我随时解释，也可以根据您的预算看看哪些项目可以优化。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;防水为什么这么贵？是不是故意拆项收费？&quot;,
+      &quot;reply&quot;: &quot;防水价格高主要是因为旧房翻新对基层处理和防水层要求更高，我们用的是XX品牌防水涂料，包含基层处理、两遍防水、闭水试验和5年质保。报价里每一项都是独立列出的，不是拆项多收费。我可以把防水施工标准和材料清单发给您对比。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们报价比别家贵，我不太放心。&quot;,
+      &quot;reply&quot;: &quot;价格差异可能来自材料品牌、工艺标准和质保年限不同。我们可以把报价里的每一项拆开跟您解释，您也可以拿其他公司的报价来对比，我们帮您分析差异在哪里。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;防水施工工艺标准说明&quot;,
+    &quot;防水材料品牌及型号清单&quot;,
+    &quot;报价明细拆分表（含防水单项）&quot;,
+    &quot;旧房翻新防水案例（已授权）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺防水单项可以随意打折或降价&quot;,
+    &quot;不得承诺报价可以无条件调整&quot;,
+    &quot;不得贬低客户提到的其他公司或报价&quot;,
+    &quot;不得在未确认前承诺具体施工周期或质保年限&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-26 20:00前，若客户未回复则2026-09-27 12:00前再次跟进&quot;,
+  &quot;nextAction&quot;: &quot;业务员需在2026-09-26当天通过微信发送防水工艺标准、材料清单和报价明细拆分表，并预约一次15分钟的电话或视频沟通，记录客户对防水价格的具体预期和对比依据。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;customer.concerns&quot;,
+    &quot;customer.quoteStatus&quot;,
+    &quot;customer.quoteAmount&quot;,
+    &quot;customer.quoteSubmittedAt&quot;,
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;customer.houseCondition&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article></section><section><h2>C16 · post_sign · 已签约</h2><p>客户签约后一周追问开工时间。请生成关系维护和项目交接方案。</p><article><header><b>A</b><span>裁判 90 分 · 5.7s · $0.00128 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>今天内将客户签约后追问开工时间和施工质量的情况同步给项目经理，确认项目经理联系客户的时间窗口，并在交接完成后向客户回复已安排项目经理跟进。<br><b>裁判问题：</b>候选建议整体准确，但个别表述如“报价已转为合同金额218000元”与案例中quoteAmount=218000且contractStatus=Signed的对应关系不够严谨，且未明确区分报价与合同金额，存在轻微事实混淆。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户已签约，合同状态为Signed，项目状态为Preparing，设计状态为Selected，报价已转为合同金额218000元。客户当前真实卡点是签约后一周无人联系，对开工时间和施工质量产生焦虑，需要业务员完成签约后关系维护和项目交接，而非继续销售推进。&quot;,
+  &quot;priorityReason&quot;: &quot;客户今天主动追问开工时间并表达“最近没人联系我”，说明签约后服务断档已经引发不满；若不及时回应，会放大对施工质量和开工时间的担忧，影响转介绍口碑和后续配合。&quot;,
+  &quot;goal&quot;: &quot;今天完成一次有效安抚和项目交接：确认客户已签约后的当前项目状态，同步已确认的下一步节点，并把施工相关事实转交项目经理跟进。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和爱人最希望我们优先确认的是开工时间窗口，还是施工质量保障安排？&quot;,
+    &quot;目前项目经理或设计师是否已经和您建立过联系？&quot;,
+    &quot;您方便哪个时间段接听项目经理的电话，以便我们安排交接？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;您好，看到您的消息了。您已经签约一周，我们这边确实应该更早跟您同步进度，让您久等很抱歉。您的合同状态是已签约，项目目前处于准备阶段，我今天会先把您的开工时间和施工质量两个顾虑同步给项目经理，由他给您确认当前排期和下一步安排。&quot;,
+    &quot;关于开工时间，我不能脱离合同和当前排期给您承诺绝对日期，但我会请项目经理今天或明天跟您联系，说明当前准备节点、影响开工的因素和预计反馈时间。&quot;,
+    &quot;关于施工质量，后续施工事实由项目经理负责说明，我会把您对施工质量的关注点一并交接，确保您不用重复讲一遍。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;你们签约后怎么没人管我了？&quot;,
+      &quot;reply&quot;: &quot;非常抱歉让您有这种感觉。您签约后项目进入准备阶段，本应有人主动同步节点。我今天会完成项目经理交接，并让项目经理直接跟您确认当前状态和下一步，不再让您空等。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;到底什么时候能开工？给我一个准确日期。&quot;,
+      &quot;reply&quot;: &quot;我理解您着急。按公司口径，我不能脱离合同和当前排期承诺绝对完工或开工日期。我会请项目经理根据当前排期状态，向您说明影响开工的因素和预计反馈时间。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;施工质量你们怎么保证？&quot;,
+      &quot;reply&quot;: &quot;您对施工质量的关注我已经记录。具体施工工艺、防水、质保等要以报价清单和工艺说明为准，后续由项目经理结合您的项目情况向您说明，我不会脱离清单单独承诺。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;已签约项目的当前节点说明或项目准备阶段流程说明（需确认可对外发送）&quot;,
+    &quot;项目经理联系方式或交接安排说明（需确认已授权）&quot;,
+    &quot;报价清单和工艺说明中与施工质量、防水、质保相关的正式版本（如客户需要）&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺未排期的绝对开工日期&quot;,
+    &quot;不得越过项目经理修改施工事实&quot;,
+    &quot;不得自行改价或承诺折扣&quot;,
+    &quot;不得展示成本、毛利、其他客户资料或未经授权案例&quot;,
+    &quot;不得把客户转交后就完全失联&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27前，条件为项目经理已与客户建立联系并反馈当前排期状态；若项目经理尚未联系，业务员需在2026-09-27再次跟进交接结果。&quot;,
+  &quot;nextAction&quot;: &quot;业务员今天内将客户签约后追问开工时间和施工质量的情况同步给项目经理，确认项目经理联系客户的时间窗口，并在交接完成后向客户回复已安排项目经理跟进。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;P008&quot;,
+    &quot;K003&quot;,
+    &quot;K006&quot;,
+    &quot;K007&quot;,
+    &quot;K008&quot;,
+    &quot;客户事实：contractStatus=Signed&quot;,
+    &quot;客户事实：projectStatus=Preparing&quot;,
+    &quot;客户事实：concerns=[开工时间,施工质量]&quot;,
+    &quot;客户事实：timeline 2026-09-26 08:30 微信内容&quot;
+  ]
+}</pre></article><article><header><b>B</b><span>裁判 90 分 · 4.6s · $0.00254 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>立即联系项目经理，确认当前排期和预计开工时间，并在今天内回复客户。<br><b>裁判问题：</b>未充分利用客户个性化信息，如转介绍来源、夫妻共同决策、预算等，建议中缺乏针对性。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户已签约，当前处于施工准备阶段，真实卡点是签约后信息断层导致对开工时间和施工质量的焦虑。&quot;,
+  &quot;priorityReason&quot;: &quot;客户主动追问且已出现不满情绪，需立即回应并完成项目交接，避免信任流失。&quot;,
+  &quot;goal&quot;: &quot;确认项目当前状态并同步开工前流程和责任人，缓解客户焦虑。&quot;,
+  &quot;questions&quot;: [
+    &quot;您希望我们多久同步一次项目进度？&quot;,
+    &quot;除了开工时间，您对施工质量还有哪些具体担心？&quot;,
+    &quot;您方便本周内到店与项目经理做一次开工前交底吗？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;感谢您的信任，合同已生效，目前项目正在施工准备阶段，我会马上为您对接项目经理，并同步具体排期。&quot;,
+    &quot;关于开工时间，项目经理会根据当前排期和您的时间窗口确认，我会在明天前给您明确答复。&quot;,
+    &quot;施工质量方面，我们会按合同和工艺标准执行，项目经理会全程负责，您有任何问题可以随时联系我。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;为什么签约后没人联系我？&quot;,
+      &quot;reply&quot;: &quot;非常抱歉给您带来困扰，我立即为您查询项目状态并安排项目经理与您对接，今天内给您回复。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;到底什么时候能开工？&quot;,
+      &quot;reply&quot;: &quot;开工时间需要项目经理根据当前排期和您的时间窗口确认，我会在明天前给您明确答复，不会让您一直等。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;合同约定的施工进度计划模板（如有）&quot;,
+    &quot;项目经理联系方式及职责说明&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体开工日期&quot;,
+    &quot;不得越过项目经理修改施工事实&quot;,
+    &quot;不得承诺未排期日期&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27&quot;,
+  &quot;nextAction&quot;: &quot;立即联系项目经理，确认当前排期和预计开工时间，并在今天内回复客户。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;K003&quot;,
+    &quot;K006&quot;,
+    &quot;P008&quot;,
+    &quot;projectStatus&quot;,
+    &quot;projectStartAt&quot;,
+    &quot;lastFollowAt&quot;,
+    &quot;nextFollowAt&quot;
+  ]
+}</pre></article><article><header><b>C</b><span>裁判 91 分 · 3.3s · $0.00084 peak</span></header>
+        <div class='meta'><b>最值得保留：</b>业务员立即联系项目经理确认开工排期，并在今天内给客户初步回复，同时安排项目经理与客户建立联系。<br><b>裁判问题：</b>候选建议中出现了未在案例中提供的具体承诺，如“今天之内项目经理会与您联系”“最晚明天回复您”，这些时间承诺缺乏事实依据，可能误导客户。</div>
+        <pre>{
+  &quot;stageDiagnosis&quot;: &quot;客户已签约，处于项目准备阶段，真实卡点是签约后一周无人主动联系，客户对开工时间和施工质量产生焦虑，需要立即进行关系维护和项目交接。&quot;,
+  &quot;priorityReason&quot;: &quot;客户主动追问且表达不满，若不及时回应可能影响信任和后续配合，今天是评估日期，应优先处理。&quot;,
+  &quot;goal&quot;: &quot;安抚客户情绪，明确告知开工时间待确认，并同步项目交接进展和后续联系安排。&quot;,
+  &quot;questions&quot;: [
+    &quot;您和先生对开工时间有没有特别期望的日期范围？&quot;,
+    &quot;关于施工质量，您最关注哪些具体环节？&quot;,
+    &quot;您希望我们多久同步一次项目进展？&quot;
+  ],
+  &quot;talkTrack&quot;: [
+    &quot;X先生/X女士您好，非常抱歉让您久等了。您签约后我们一直在内部推进项目交接，今天之内项目经理会与您联系，确认开工前的准备事项。&quot;,
+    &quot;关于开工时间，目前合同已签、项目准备中，具体开工日期需要和项目经理确认后给您准确答复，我们不会让您干等。&quot;,
+    &quot;您和先生对施工质量很关注，我们会在开工前安排一次详细沟通，把施工标准和验收节点跟您对齐。&quot;
+  ],
+  &quot;objectionHandling&quot;: [
+    {
+      &quot;ifCustomerSays&quot;: &quot;怎么最近没人联系我？&quot;,
+      &quot;reply&quot;: &quot;非常抱歉，是我们交接环节的疏忽。今天项目经理会主动联系您，后续我会每周至少一次向您同步进展。&quot;
+    },
+    {
+      &quot;ifCustomerSays&quot;: &quot;到底什么时候能开工？&quot;,
+      &quot;reply&quot;: &quot;具体开工日期需要项目经理根据排期确认，我今天会推动给出一个明确时间，最晚明天回复您。&quot;
+    }
+  ],
+  &quot;recommendedMaterials&quot;: [
+    &quot;项目交接确认单&quot;,
+    &quot;施工进度计划模板&quot;,
+    &quot;施工质量标准说明&quot;
+  ],
+  &quot;forbidden&quot;: [
+    &quot;不得承诺具体开工日期&quot;,
+    &quot;不得承诺施工质量绝对无问题&quot;,
+    &quot;不得贬低客户或推卸责任&quot;
+  ],
+  &quot;nextFollowAt&quot;: &quot;2026-09-27 18:00前，若项目经理未确认开工时间则顺延至确认后立即跟进&quot;,
+  &quot;nextAction&quot;: &quot;业务员立即联系项目经理确认开工排期，并在今天内给客户初步回复，同时安排项目经理与客户建立联系。&quot;,
+  &quot;evidenceRefs&quot;: [
+    &quot;stage&quot;,
+    &quot;customer.concerns&quot;,
+    &quot;customer.lastFollowAt&quot;,
+    &quot;customer.nextFollowAt&quot;,
+    &quot;customer.contractStatus&quot;,
+    &quot;customer.projectStatus&quot;,
+    &quot;timeline[0].content&quot;
+  ]
+}</pre></article></section></main></body></html>

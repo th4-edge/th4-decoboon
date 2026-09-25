@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
                 properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status",
-                        "progress", "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
+                        "progress", "baselineProgress", "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
         @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class,
                 properties = {"projectId", "name", "siteAddr"}),
 })

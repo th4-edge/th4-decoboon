@@ -1,0 +1,550 @@
+MH-CON-5	Construction	拆除	拆除--墙顶面白灰/腻子粉铲除	NULL	NULL	NULL	Area	ManualOnly	0.00	6.80	6.80
+MH-CON-6	Construction	拆除	拆除--墙体拆除（12墙）	NULL	NULL	NULL	Area	ManualOnly	0.00	54.80	54.80
+MH-CON-7	Construction	拆除	拆除--墙体拆除（24墙）	NULL	NULL	NULL	Area	ManualOnly	0.00	68.50	68.50
+MH-CON-8	Construction	拆除	拆除--小面积拆除墙体（2.5平以下）	NULL	NULL	NULL	Item	ManualOnly	0.00	143.80	143.80
+MH-CON-9	Construction	拆除	拆除--墙体拆除后粉边	NULL	NULL	NULL	Metre	ManualOnly	0.00	28.80	28.80
+MH-CON-10	Construction	拆除	拆除--飘窗拆除	NULL	NULL	NULL	Count	ManualOnly	0.00	479.50	479.50
+MH-CON-11	Construction	拆除	拆除--飘窗拆除后只是粉刷	NULL	NULL	NULL	Place	MaterialAndManual	95.90	143.80	239.70
+MH-CON-12	Construction	拆除	拆除--飘窗拆除后砌砖+粉刷	NULL	NULL	NULL	Place	MaterialAndManual	143.80	287.70	431.50
+MH-CON-13	Construction	拆除	拆除--红砖墙打门洞或掏鞋柜洞	NULL	NULL	NULL	Count	ManualOnly	0.00	274.00	274.00
+MH-CON-14	Construction	拆除	拆除--拆除后粉边	NULL	NULL	NULL	Metre	ManualOnly	0.00	28.80	28.80
+MH-CON-15	Construction	拆除	拆除--混凝土墙打门洞	NULL	NULL	NULL	Count	ManualOnly	0.00	855.00	855.00
+MH-CON-16	Construction	拆除	拆除--保温墙铲除	NULL	NULL	NULL	Area	ManualOnly	0.00	27.40	27.40
+MH-CON-17	Construction	拆除	拆除--拆除后粉刷	NULL	NULL	NULL	Area	ManualOnly	0.00	28.80	28.80
+MH-CON-18	Construction	拆除	拆除--墙地砖拆除	NULL	NULL	NULL	Area	ManualOnly	0.00	24.00	24.00
+MH-CON-20	Construction	拆除	拆除--门头抬高	NULL	NULL	NULL	Count	ManualOnly	0.00	95.90	95.90
+MH-CON-21	Construction	拆除	拆除--混凝土门头抬高	NULL	NULL	NULL	Count	ManualOnly	0.00	191.80	191.80
+MH-CON-22	Construction	拆除	拆除--拆除顶面吊顶	NULL	NULL	NULL	Area	ManualOnly	0.00	17.30	17.30
+MH-CON-23	Construction	拆除	拆除--拆除门窗	NULL	NULL	NULL	Count	ManualOnly	0.00	28.80	28.80
+MH-CON-24	Construction	拆除	拆除--拆除门窗套	NULL	NULL	NULL	Count	ManualOnly	0.00	19.20	19.20
+MH-CON-25	Construction	拆除	拆除--拆除橱柜	NULL	NULL	NULL	Set	ManualOnly	0.00	191.80	191.80
+MH-CON-26	Construction	拆除	拆除--拆除马桶.卫浴	NULL	NULL	NULL	Set	ManualOnly	0.00	76.70	76.70
+MH-CON-27	Construction	拆除	拆除--铲卫生间防水（毛坯沥青防水）+墙固加固处理	NULL	NULL	NULL	Item	MaterialAndManual	261.52	149.40	410.92
+MH-CON-28	Construction	拆除	拆除--拆除木地板	NULL	NULL	NULL	Area	ManualOnly	0.00	9.60	9.60
+MH-CON-29	Construction	拆除	拆除--暗踢脚线拆除	NULL	NULL	NULL	Metre	ManualOnly	0.00	19.20	19.20
+MH-CON-30	Construction	拆除	拆除--开孔（燃气孔，空调孔）	NULL	NULL	NULL	Count	ManualOnly	0.00	62.30	62.30
+MH-CON-32	Construction	水电	水电--水电改造（水管全换，电路增改）	NULL	NULL	NULL	Area	MaterialAndManual	54.00	45.00	99.00
+MH-CON-33	Construction	水电	水电--水电改造（水管全换，电路全改）	NULL	NULL	NULL	Area	MaterialAndManual	68.00	60.00	128.00
+MH-CON-34	Construction	水电	水电--无主灯电路改造	NULL	NULL	NULL	Area	MaterialAndManual	8.00	8.00	16.00
+MH-CON-35	Construction	水电	水电--更换进户主线（不足 1 米按 1 米计算）	NULL	NULL	NULL	Metre	MaterialAndManual	65.00	55.00	120.00
+MH-CON-36	Construction	水电	水电--移强电箱	NULL	NULL	NULL	Item	MaterialAndManual	200.00	300.00	500.00
+MH-CON-37	Construction	水电	水电--移弱电箱	NULL	NULL	NULL	Item	MaterialAndManual	200.00	300.00	500.00
+MH-CON-38	Construction	水电	水电--马桶移位	NULL	NULL	NULL	Item	MaterialAndManual	50.00	100.00	150.00
+MH-CON-39	Construction	水电	水电--PVC管道改造	NULL	NULL	NULL	Place	MaterialAndManual	50.00	100.00	150.00
+MH-CON-40	Construction	水电	水电--一拖一风管机室内布线	NULL	NULL	NULL	Count	MaterialOnly	145.00	0.00	145.00
+MH-CON-41	Construction	水电	水电--风管机室外机布线	NULL	NULL	NULL	Area	MaterialOnly	10.00	0.00	10.00
+MH-CON-43	Construction	瓦工	瓦工--地面水泥沙浆找平（3cm内）	NULL	NULL	NULL	Area	MaterialAndManual	16.40	24.70	41.10
+MH-CON-44	Construction	瓦工	瓦工--地面水泥沙浆找平（4cm-5cm）	NULL	NULL	NULL	Area	MaterialAndManual	25.40	29.40	54.80
+MH-CON-45	Construction	瓦工	瓦工--地面水泥沙浆找平（6cm-8cm）	NULL	NULL	NULL	Area	MaterialAndManual	35.10	29.30	64.40
+MH-CON-46	Construction	瓦工	瓦工--石膏基自流平（4cm以内）	NULL	NULL	NULL	Area	MaterialAndManual	35.00	25.00	60.00
+MH-CON-47	Construction	瓦工	瓦工--石膏基自流平（4cm-5cm以内）	NULL	NULL	NULL	Area	MaterialAndManual	45.00	35.00	80.00
+MH-CON-48	Construction	瓦工	瓦工--石膏基自流平（5cm-6cm以内）	NULL	NULL	NULL	Area	MaterialAndManual	55.00	40.00	95.00
+MH-CON-49	Construction	瓦工	瓦工--地暖自流平找平	NULL	NULL	NULL	Area	MaterialAndManual	47.90	46.00	93.90
+MH-CON-50	Construction	瓦工	瓦工-- 地暖豆石找平	NULL	NULL	NULL	Area	MaterialAndManual	39.30	33.60	72.90
+MH-CON-51	Construction	瓦工	瓦工-- 地暖瓜子片找平	NULL	NULL	NULL	Area	MaterialAndManual	33.60	31.60	65.20
+MH-CON-52	Construction	瓦工	瓦工--800*800/300*300/400*400 地砖铺贴	NULL	NULL	800*800	Area	MaterialAndManual	32.90	38.40	71.30
+MH-CON-53	Construction	瓦工	瓦工-- 600*1200 地砖铺贴	NULL	NULL	600*1200	Area	MaterialAndManual	31.50	71.30	102.80
+MH-CON-54	Construction	瓦工	瓦工--750*1500 地砖铺贴	NULL	NULL	750*1500	Area	MaterialAndManual	31.10	88.10	119.20
+MH-CON-55	Construction	瓦工	瓦工--400*800 墙砖铺贴（含背胶倒角）	NULL	NULL	400*800	Area	MaterialAndManual	38.10	61.90	100.00
+MH-CON-56	Construction	瓦工	瓦工--600*1200 墙砖铺贴（含瓷砖胶倒角）	NULL	NULL	600*1200	Area	MaterialAndManual	53.70	72.30	126.00
+MH-CON-57	Construction	瓦工	瓦工-- 800*800 墙砖铺贴（含瓷砖胶倒角）	NULL	NULL	800*800	Area	MaterialAndManual	53.70	72.30	126.00
+MH-CON-58	Construction	瓦工	瓦工--墙地对缝（单空间）	NULL	NULL	NULL	Item	ManualOnly	0.00	575.30	575.30
+MH-CON-59	Construction	瓦工	瓦工--全屋通铺瓷砖（产证120 平方内）	NULL	NULL	NULL	House	ManualOnly	0.00	623.30	623.30
+MH-CON-62	Construction	瓦工	瓦工--木纹砖铺贴（仅限369 铺贴法）	NULL	NULL	NULL	Area	MaterialAndManual	43.20	67.10	110.30
+MH-CON-63	Construction	瓦工	瓦工--瓷砖刷背胶差价	NULL	NULL	NULL	Area	MaterialAndManual	9.60	7.70	17.30
+MH-CON-64	Construction	瓦工	瓦工--单厨房或卫生间阳台贴砖	NULL	NULL	NULL	Item	MaterialAndManual	958.90	1726.00	2684.90
+MH-CON-65	Construction	瓦工	瓦工--地面暧气片管槽水泥砂浆封闭（250mm）	NULL	NULL	NULL	Area	MaterialAndManual	32.60	19.20	51.80
+MH-CON-66	Construction	瓦工	瓦工--地面抬高	NULL	NULL	NULL	Area	MaterialAndManual	76.70	49.90	126.60
+MH-CON-67	Construction	瓦工	瓦工--卫生间陶粒回填	NULL	NULL	NULL	Area	MaterialAndManual	191.80	219.20	411.00
+MH-CON-68	Construction	瓦工	瓦工--新建12砖墙（红砖）	NULL	NULL	NULL	Area	MaterialAndManual	84.90	120.60	205.50
+MH-CON-69	Construction	瓦工	瓦工--电视背景墙加气块砌墙红砖加固	NULL	NULL	NULL	Item	MaterialAndManual	191.80	383.60	575.40
+MH-CON-70	Construction	瓦工	瓦工--新建24砖墙（红砖）	NULL	NULL	NULL	Area	MaterialAndManual	94.50	152.10	246.60
+MH-CON-71	Construction	瓦工	瓦工--新建12砖墙（轻质砖）	NULL	NULL	NULL	Area	MaterialAndManual	59.40	63.90	123.30
+MH-CON-72	Construction	瓦工	瓦工--新建20砖墙（轻质砖）	NULL	NULL	NULL	Area	MaterialAndManual	72.70	78.00	150.70
+MH-CON-73	Construction	瓦工	瓦工--砖砌包单管	NULL	NULL	NULL	Count	MaterialAndManual	199.10	184.50	383.60
+MH-CON-74	Construction	瓦工	瓦工--砖砌包双管	NULL	NULL	NULL	Count	MaterialAndManual	250.10	229.30	479.40
+MH-CON-75	Construction	瓦工	瓦工--下水横管隔音棉处理	NULL	NULL	NULL	Count	MaterialOnly	205.50	0.00	205.50
+MH-CON-76	Construction	瓦工	瓦工--下水竖管隔音棉处理	NULL	NULL	NULL	Metre	MaterialOnly	163.00	0.00	163.00
+MH-CON-77	Construction	瓦工	瓦工--砌小墙垛	NULL	NULL	NULL	Metre	MaterialAndManual	57.50	67.10	124.60
+MH-CON-78	Construction	瓦工	瓦工--包烟道	NULL	NULL	NULL	Count	MaterialAndManual	310.20	237.80	548.00
+MH-CON-79	Construction	瓦工	瓦工--烟道挂网	NULL	NULL	NULL	Count	MaterialOnly	274.00	0.00	274.00
+MH-CON-80	Construction	瓦工	瓦工--瓷砖碰角	NULL	NULL	NULL	Metre	ManualOnly	0.00	24.00	24.00
+MH-CON-81	Construction	瓦工	瓦工--阳台翻边	NULL	NULL	NULL	Item	ManualOnly	0.00	191.80	191.80
+MH-CON-82	Construction	瓦工	瓦工--东方雨虹滚涂防水	NULL	NULL	NULL	Area	MaterialAndManual	19.20	24.00	43.20
+MH-CON-83	Construction	瓦工	瓦工--丙纶防水	NULL	NULL	NULL	Area	MaterialAndManual	19.20	28.80	48.00
+MH-CON-84	Construction	瓦工	瓦工--防水前找平（老房翻新瓷砖拆后必报）	NULL	NULL	NULL	Area	MaterialAndManual	33.60	33.60	67.20
+MH-CON-85	Construction	瓦工	瓦工--防水前拉毛（单空间必做项）	NULL	NULL	NULL	Item	MaterialAndManual	83.00	122.50	205.50
+MH-CON-86	Construction	瓦工	瓦工--蹲便池处理（红砖垒砌）	NULL	NULL	NULL	Area	MaterialAndManual	115.10	268.50	383.60
+MH-CON-87	Construction	瓦工	瓦工--菱贴铺贴	NULL	NULL	NULL	Area	MaterialAndManual	43.20	71.90	115.10
+MH-CON-88	Construction	瓦工	瓦工--墙压地铺贴工艺附加费	NULL	NULL	NULL	Count	ManualOnly	0.00	191.80	191.80
+MH-CON-89	Construction	瓦工	瓦工--文化石铺贴	NULL	NULL	NULL	Area	MaterialAndManual	24.90	76.70	101.60
+MH-CON-90	Construction	瓦工	瓦工--马赛克.鹅卵石铺贴	NULL	NULL	NULL	Area	MaterialAndManual	28.80	100.70	129.50
+MH-CON-91	Construction	瓦工	瓦工--成品地砖走边线（直线）	NULL	NULL	NULL	Metre	MaterialAndManual	4.80	14.40	19.20
+MH-CON-92	Construction	瓦工	瓦工--加工墙地砖走边线（直线）	NULL	NULL	NULL	Metre	MaterialAndManual	4.80	14.40	19.20
+MH-CON-93	Construction	瓦工	瓦工--墙地砖走边线加工费用	NULL	NULL	NULL	Metre	MaterialAndManual	4.80	1.60	6.40
+MH-CON-94	Construction	瓦工	瓦工--明踢脚线铺贴	NULL	NULL	NULL	Metre	MaterialAndManual	8.20	12.30	20.50
+MH-CON-95	Construction	瓦工	瓦工--暗踢脚线铺贴	NULL	NULL	NULL	Metre	MaterialAndManual	9.60	24.00	33.60
+MH-CON-96	Construction	瓦工	瓦工--石材地脚线	NULL	NULL	NULL	Metre	MaterialAndManual	7.80	38.80	46.60
+MH-CON-97	Construction	瓦工	瓦工--波打线铺贴	NULL	NULL	NULL	Metre	MaterialOnly	27.40	0.00	27.40
+MH-CON-98	Construction	瓦工	瓦工--铺楼梯踏步人工（地砖）	NULL	NULL	NULL	Metre	MaterialAndManual	14.40	47.90	62.30
+MH-CON-99	Construction	瓦工	瓦工--门槛石铺贴	NULL	NULL	NULL	Block	MaterialAndManual	10.30	30.80	41.10
+MH-CON-100	Construction	瓦工	瓦工--淋浴房石基铺贴	NULL	NULL	NULL	Block	MaterialAndManual	16.10	120.90	137.00
+MH-CON-101	Construction	瓦工	瓦工--红砖砌壁龛（90cm内）	NULL	NULL	NULL	Item	MaterialAndManual	310.20	443.20	753.40
+MH-CON-102	Construction	瓦工	瓦工--墙面内掏壁龛（90cm内）	NULL	NULL	NULL	Item	MaterialOnly	431.50	0.00	431.50
+MH-CON-104	Construction	木工	木工--轻钢龙骨直线反光灯槽（阳角走边）	NULL	NULL	NULL	Metre	MaterialAndManual	67.10	67.10	134.20
+MH-CON-105	Construction	木工	木工--轻钢龙骨弧线反光吊顶	NULL	NULL	NULL	Metre	MaterialAndManual	61.20	68.90	130.10
+MH-CON-106	Construction	木工	木工--轻钢龙骨弧线反光造型吊顶	NULL	NULL	NULL	Area	MaterialAndManual	86.30	95.90	182.20
+MH-CON-107	Construction	木工	木工--轻钢龙骨石膏板吊平顶	NULL	NULL	NULL	Area	MaterialAndManual	61.60	61.60	123.20
+MH-CON-108	Construction	木工	木工--轻钢龙骨石膏板吊平顶（双层石膏板工艺）	NULL	NULL	NULL	Area	MaterialAndManual	81.50	76.70	158.20
+MH-CON-109	Construction	木工	木工--轻钢龙骨石膏板直线吊顶（不含灯带）	NULL	NULL	NULL	Metre	MaterialAndManual	61.60	61.60	123.20
+MH-CON-110	Construction	木工	木工--单层石膏板叠级走边	NULL	NULL	NULL	Metre	MaterialAndManual	20.80	27.10	47.90
+MH-CON-111	Construction	木工	木工--双层石膏板叠级走边	NULL	NULL	NULL	Metre	MaterialAndManual	28.50	33.20	61.70
+MH-CON-112	Construction	木工	木工--轻钢龙骨石膏板造型吊顶	NULL	NULL	NULL	Area	MaterialAndManual	83.20	88.10	171.30
+MH-CON-113	Construction	木工	木工--轻钢龙骨石膏板造型型吊顶（圆形.异形）	NULL	NULL	NULL	Metre	MaterialAndManual	134.20	153.40	287.60
+MH-CON-114	Construction	木工	木工--轻钢龙骨防水石膏板吊顶（平顶）	NULL	NULL	NULL	Area	MaterialAndManual	80.60	56.40	137.00
+MH-CON-115	Construction	木工	木工--桑拿板吊顶	NULL	NULL	NULL	Area	MaterialAndManual	115.10	76.70	191.80
+MH-CON-116	Construction	木工	木工--磁吸轨道灯灯槽	NULL	NULL	NULL	Metre	MaterialAndManual	19.20	33.60	52.80
+MH-CON-117	Construction	木工	木工--线型灯灯槽	NULL	NULL	NULL	Metre	MaterialAndManual	14.40	19.20	33.60
+MH-CON-118	Construction	木工	木工--窗帘盒	NULL	NULL	NULL	Metre	MaterialAndManual	47.90	47.90	95.80
+MH-CON-119	Construction	木工	木工--背景墙木工板打底	NULL	NULL	NULL	Area	MaterialAndManual	79.50	57.50	137.00
+MH-CON-120	Construction	木工	木工--沙发背景墙（整体石膏线背景墙）	NULL	NULL	NULL	Count	MaterialOnly	547.90	0.00	547.90
+MH-CON-121	Construction	木工	木工--沙发背景墙（石膏板造型）	NULL	NULL	NULL	Count	MaterialOnly	684.90	0.00	684.90
+MH-CON-122	Construction	木工	木工--轻钢龙骨石膏板单面隔墙	NULL	NULL	NULL	Area	MaterialAndManual	67.10	47.90	115.00
+MH-CON-123	Construction	木工	木工--石膏板双面隔墙	NULL	NULL	NULL	Area	MaterialAndManual	71.90	57.60	129.50
+MH-CON-124	Construction	木工	木工--弧形包梁	NULL	NULL	NULL	Metre	MaterialAndManual	191.80	239.70	431.50
+MH-CON-125	Construction	木工	木工--圆弧门洞（单边）	NULL	NULL	NULL	Count	MaterialAndManual	67.10	86.30	153.40
+MH-CON-126	Construction	木工	木工--圆弧门洞（双边）	NULL	NULL	NULL	Count	MaterialAndManual	134.20	172.60	306.80
+MH-CON-127	Construction	木工	木工--拱形门洞	NULL	NULL	NULL	Count	MaterialAndManual	249.30	326.00	575.30
+MH-CON-128	Construction	木工	木工--封厨房门头	NULL	NULL	NULL	Item	MaterialAndManual	162.20	180.20	342.40
+MH-CON-129	Construction	木工	木工--封卫生间门头	NULL	NULL	NULL	Item	MaterialAndManual	89.30	116.20	205.50
+MH-CON-130	Construction	木工	木工--封房间门头	NULL	NULL	NULL	Item	MaterialAndManual	89.30	116.20	205.50
+MH-CON-131	Construction	木工	木工--石膏板封柜头	NULL	NULL	NULL	Item	MaterialAndManual	89.30	116.10	205.40
+MH-CON-132	Construction	木工	木工--石膏板做假梁	NULL	NULL	NULL	Metre	MaterialAndManual	57.50	67.10	124.60
+MH-CON-133	Construction	木工	木工--中央空调风口包封加固（标准尺寸出风口+回风口）	NULL	NULL	NULL	Place	MaterialAndManual	101.20	118.00	219.20
+MH-CON-134	Construction	木工	木工--中央空调加长风口制作（出风口+回风口）	NULL	NULL	NULL	Item	MaterialAndManual	63.90	73.10	137.00
+MH-CON-135	Construction	木工	木工--不锈钢条装饰(高度1cm，宽度3cm内)	NULL	NULL	NULL	Metre	MaterialAndManual	33.60	19.20	52.80
+MH-CON-136	Construction	木工	木工--不锈钢条装饰(高度1cm，宽度4-6cm之间)	NULL	NULL	NULL	Metre	MaterialAndManual	47.90	19.20	67.10
+MH-CON-137	Construction	木工	木工--木制地台	NULL	NULL	NULL	Area	MaterialAndManual	105.50	67.10	172.60
+MH-CON-138	Construction	木工	木工--不锈钢包门套	NULL	NULL	NULL	Metre	MaterialAndManual	163.00	57.50	220.50
+MH-CON-139	Construction	木工	木工--不锈钢门套木工打底	NULL	NULL	NULL	Metre	MaterialAndManual	81.50	33.60	115.10
+MH-CON-140	Construction	木工	木工--不锈钢型材踢脚线	NULL	NULL	NULL	Area	MaterialAndManual	24.00	14.40	38.40
+MH-CON-141	Construction	木工	木工--阴影缝（双层石膏板基础）	NULL	NULL	NULL	Metre	MaterialAndManual	47.90	24.00	71.90
+MH-CON-144	Construction	木制作	木工制作--免漆板酒柜 （现场制作，不含门）	NULL	NULL	NULL	Area	MaterialAndManual	460.30	364.40	824.70
+MH-CON-145	Construction	木制作	木工制作--免漆板鞋柜 （现场制作，不含门）	NULL	NULL	NULL	Area	MaterialAndManual	460.30	364.40	824.70
+MH-CON-146	Construction	木制作	木工制作--免漆板书柜 （现场制作，不含门）	NULL	NULL	NULL	Area	MaterialAndManual	460.30	287.70	748.00
+MH-CON-147	Construction	木制作	木工制作--免漆板衣柜 （现场制作，不含门）	NULL	NULL	NULL	Area	MaterialAndManual	460.30	306.80	767.10
+MH-CON-148	Construction	木制作	木工制作--吊柜 （现场制作，不含门）	NULL	NULL	NULL	Metre	MaterialAndManual	364.40	249.30	613.70
+MH-CON-149	Construction	木制作	木工制作--阳台吊柜 （现场制作，不含门）	NULL	NULL	NULL	Metre	MaterialAndManual	364.40	249.30	613.70
+MH-CON-150	Construction	木制作	木工制作--吊柜下置物架	NULL	NULL	NULL	Metre	MaterialAndManual	148.60	95.90	244.50
+MH-CON-151	Construction	木制作	木工制作--阳台吊柜封顶板	NULL	NULL	NULL	Metre	MaterialAndManual	52.70	47.90	100.60
+MH-CON-152	Construction	木制作	木工制作--榻榻米 （现场制作，不含门）	NULL	NULL	NULL	Area	MaterialAndManual	517.80	306.80	824.60
+MH-CON-153	Construction	木制作	木工制作--矮柜 （现场制作，不含门）	NULL	NULL	NULL	Metre	MaterialAndManual	364.40	249.30	613.70
+MH-CON-154	Construction	木制作	木工制作--书桌（现场制作）	NULL	NULL	NULL	Metre	MaterialAndManual	527.40	335.60	863.00
+MH-CON-155	Construction	木制作	木工制作--书架（现场制作）	NULL	NULL	NULL	Area	MaterialAndManual	436.30	258.90	695.20
+MH-CON-156	Construction	木制作	木工制作--免漆板橱柜地柜 （现场制作，不含门，不含台面）	NULL	NULL	NULL	Metre	MaterialAndManual	335.60	220.50	556.10
+MH-CON-157	Construction	木制作	木工制作--免漆板橱柜吊柜 （现场制作，不含门）	NULL	NULL	NULL	Metre	MaterialAndManual	249.30	249.30	498.60
+MH-CON-158	Construction	木制作	木工制作--机器封边	NULL	NULL	NULL	Item	MaterialOnly	767.10	0.00	767.10
+MH-CON-176	Construction	油漆	油漆--墙固	NULL	NULL	NULL	Area	MaterialAndManual	2.50	2.00	4.50
+MH-CON-177	Construction	油漆	油漆--倍得丽粉刷石膏墙面基础处理 墙顶面网格布防开裂处理	NULL	NULL	NULL	Area	MaterialAndManual	13.00	8.00	21.00
+MH-CON-178	Construction	油漆	油漆--倍得丽墙面腻子基础处理	NULL	NULL	NULL	Area	MaterialAndManual	12.00	18.00	30.00
+MH-CON-179	Construction	油漆	油漆--乳胶漆（三棵树典萃多效）	三棵树	NULL	NULL	Area	MaterialAndManual	6.00	6.00	12.00
+MH-CON-180	Construction	油漆	油漆--乳胶漆（三棵树净味随意洗 ）	三棵树	NULL	NULL	Area	MaterialAndManual	9.00	6.00	15.00
+MH-CON-181	Construction	油漆	油漆--乳胶漆（立邦净味120）	立邦	NULL	NULL	Area	MaterialAndManual	6.00	6.00	12.00
+MH-CON-182	Construction	油漆	油漆--乳胶漆底漆	NULL	NULL	NULL	Area	MaterialAndManual	2.00	3.00	5.00
+MH-CON-184	Construction	现浇、钢结构	现浇及钢结构--现浇地梁（宽6公分）	NULL	NULL	NULL	Metre	MaterialAndManual	80.00	75.00	155.00
+MH-CON-185	Construction	现浇、钢结构	现浇及钢结构--现浇地梁（宽12-24公分）	NULL	NULL	NULL	Area	MaterialAndManual	125.00	75.00	200.00
+MH-CON-186	Construction	现浇、钢结构	现浇及钢结构--现浇层制作	NULL	NULL	NULL	Area	MaterialAndManual	420.00	300.00	720.00
+MH-CON-187	Construction	现浇、钢结构	现浇及钢结构--现浇楼梯制作	NULL	NULL	NULL	Step	MaterialAndManual	300.00	270.00	570.00
+MH-CON-188	Construction	现浇、钢结构	现浇及钢结构--槽钢隔层制作（10#槽钢）	NULL	NULL	NULL	Area	MaterialAndManual	360.00	240.00	600.00
+MH-CON-189	Construction	现浇、钢结构	现浇及钢结构--槽钢隔层制作（12#槽钢）	NULL	NULL	NULL	Area	MaterialAndManual	400.00	240.00	640.00
+MH-CON-190	Construction	现浇、钢结构	现浇及钢结构--槽钢楼梯制作	NULL	NULL	NULL	Step	MaterialAndManual	260.00	150.00	410.00
+MH-MAT-6	Material	瓷砖	瓷砖--马可波罗800*800（展厅款）	马可波罗	NULL	800*800	Area	MaterialOnly	85.60	0.00	85.60
+MH-MAT-7	Material	瓷砖	瓷砖--马可波罗300*600（展厅款）	马可波罗	NULL	300*600	Area	MaterialOnly	64.70	0.00	64.70
+MH-MAT-8	Material	瓷砖	瓷砖--马可波罗300*300（展厅款）	马可波罗	NULL	300*300	Area	MaterialOnly	68.50	0.00	68.50
+MH-MAT-9	Material	瓷砖	瓷砖--马可波罗400*800（展厅款）	马可波罗	NULL	400*800	Area	MaterialOnly	68.50	0.00	68.50
+MH-MAT-10	Material	瓷砖	瓷砖--马可波罗400*400（展厅款）	马可波罗	NULL	400*400	Area	MaterialOnly	64.20	0.00	64.20
+MH-MAT-11	Material	瓷砖	瓷砖--马可波罗600*1200（展厅款）	马可波罗	NULL	600*1200	Area	MaterialOnly	93.20	0.00	93.20
+MH-MAT-12	Material	瓷砖	瓷砖--马可波罗600*1200                        （CH12811/CH12812/CH12816）	马可波罗	NULL	600*1200	Area	MaterialOnly	104.60	0.00	104.60
+MH-MAT-13	Material	瓷砖	瓷砖--马可波罗750*1500（展厅款）	马可波罗	NULL	750*1500	Area	MaterialOnly	114.50	0.00	114.50
+MH-MAT-15	Material	瓷砖	瓷砖--东鹏800*800（展厅款）	东鹏	NULL	800*800	Area	MaterialOnly	85.60	0.00	85.60
+MH-MAT-16	Material	瓷砖	瓷砖--东鹏400*800（展厅款）	东鹏	NULL	400*800	Area	MaterialOnly	68.50	0.00	68.50
+MH-MAT-17	Material	瓷砖	瓷砖--东鹏400*400（展厅款）	东鹏	NULL	400*400	Area	MaterialOnly	64.20	0.00	64.20
+MH-MAT-18	Material	瓷砖	瓷砖--东鹏750*1500（展厅款）	东鹏	NULL	750*1500	Area	MaterialOnly	98.00	0.00	98.00
+MH-MAT-19	Material	瓷砖	瓷砖--东鹏600*1200（展厅款）	东鹏	NULL	600*1200	Area	MaterialOnly	99.00	0.00	99.00
+MH-MAT-21	Material	瓷砖	瓷砖--亚细亚800*800（展厅款）	亚细亚	NULL	800*800	Area	MaterialOnly	77.10	0.00	77.10
+MH-MAT-22	Material	瓷砖	瓷砖--亚细亚300*300（展厅款）	亚细亚	NULL	300*300	Area	MaterialOnly	65.80	0.00	65.80
+MH-MAT-23	Material	瓷砖	瓷砖--亚细亚300*600（展厅款）	亚细亚	NULL	300*600	Area	MaterialOnly	57.80	0.00	57.80
+MH-MAT-24	Material	瓷砖	瓷砖--亚细亚400*400（展厅款）	亚细亚	NULL	400*400	Area	MaterialOnly	51.40	0.00	51.40
+MH-MAT-25	Material	瓷砖	瓷砖--亚细亚400*800（展厅款）	亚细亚	NULL	400*800	Area	MaterialOnly	59.10	0.00	59.10
+MH-MAT-26	Material	瓷砖	瓷砖--亚细亚600*1200（展厅款）	亚细亚	NULL	600*1200	Area	MaterialOnly	94.20	0.00	94.20
+MH-MAT-27	Material	瓷砖	瓷砖--亚细亚750*1500（展厅款）	亚细亚	NULL	750*1500	Area	MaterialOnly	96.40	0.00	96.40
+MH-MAT-29	Material	瓷砖	瓷砖--大角鹿800*800（展厅款）	大角鹿	NULL	800*800	Area	MaterialOnly	74.90	0.00	74.90
+MH-MAT-30	Material	瓷砖	瓷砖--大角鹿400*800（展厅款）	大角鹿	NULL	400*800	Area	MaterialOnly	59.90	0.00	59.90
+MH-MAT-31	Material	瓷砖	瓷砖--大角鹿400*400（展厅款）	大角鹿	NULL	400*400	Area	MaterialOnly	59.90	0.00	59.90
+MH-MAT-32	Material	瓷砖	瓷砖--大角鹿600*1200（展厅款）	大角鹿	NULL	600*1200	Area	MaterialOnly	78.00	0.00	78.00
+MH-MAT-33	Material	瓷砖	瓷砖--大角鹿750*1500（展厅款）	大角鹿	NULL	750*1500	Area	MaterialOnly	90.10	0.00	90.10
+MH-MAT-34	Material	瓷砖	瓷砖--大角鹿900*1800（展厅款）	大角鹿	NULL	900*1800	Area	MaterialOnly	168.30	0.00	168.30
+MH-MAT-36	Material	瓷砖	瓷砖--利家福800*800（展厅款）	利家福	NULL	800*800	Area	MaterialOnly	64.00	0.00	64.00
+MH-MAT-37	Material	瓷砖	瓷砖--利家福300*600（展厅款）	利家福	NULL	300*600	Area	MaterialOnly	41.90	0.00	41.90
+MH-MAT-38	Material	瓷砖	瓷砖--利家福400*800（展厅款）	利家福	NULL	400*800	Area	MaterialOnly	53.90	0.00	53.90
+MH-MAT-39	Material	瓷砖	瓷砖--利家福600*1200（展厅款）	利家福	NULL	600*1200	Area	MaterialOnly	68.30	0.00	68.30
+MH-MAT-40	Material	瓷砖	瓷砖--利家福750*1500（展厅款）	利家福	NULL	750*1500	Area	MaterialOnly	71.70	0.00	71.70
+MH-MAT-42	Material	瓷砖	瓷砖--高尔夫800*800（展厅款）	高尔夫	NULL	800*800	Area	MaterialOnly	60.80	0.00	60.80
+MH-MAT-43	Material	瓷砖	瓷砖--高尔夫400*800（展厅款）	高尔夫	NULL	400*800	Area	MaterialOnly	36.30	0.00	36.30
+MH-MAT-44	Material	瓷砖	瓷砖--高尔夫400*400（展厅款）	高尔夫	NULL	400*400	Area	MaterialOnly	46.90	0.00	46.90
+MH-MAT-45	Material	瓷砖	瓷砖--高尔夫300*600（展厅款）	高尔夫	NULL	300*600	Area	MaterialOnly	34.40	0.00	34.40
+MH-MAT-46	Material	瓷砖	瓷砖--高尔夫300*300（展厅款）	高尔夫	NULL	300*300	Area	MaterialOnly	42.20	0.00	42.20
+MH-MAT-47	Material	瓷砖	瓷砖--高尔夫600*1200（展厅款）	高尔夫	NULL	600*1200	Area	MaterialOnly	57.00	0.00	57.00
+MH-MAT-49	Material	瓷砖	瓷砖--利德福750*1500（展厅款）	利德福	NULL	750*1500	Area	MaterialOnly	66.90	0.00	66.90
+MH-MAT-50	Material	瓷砖	瓷砖--利德福木纹砖800*800	利德福	NULL	800*800	Area	MaterialOnly	85.90	0.00	85.90
+MH-MAT-51	Material	瓷砖	瓷砖--利德福木纹砖600*1200	利德福	NULL	600*1200	Area	MaterialOnly	74.20	0.00	74.20
+MH-MAT-52	Material	瓷砖	瓷砖--利德福木纹砖 20*1000	利德福	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-53	Material	瓷砖	瓷砖--利德福 木纹砖 20*1200	利德福	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-54	Material	瓷砖	瓷砖--利德福花砖系列300*300	利德福	NULL	300*300	Area	MaterialOnly	53.30	0.00	53.30
+MH-MAT-55	Material	瓷砖	瓷砖--利德福花砖系列300*600	利德福	NULL	300*600	Area	MaterialOnly	91.30	0.00	91.30
+MH-MAT-56	Material	瓷砖	瓷砖--利德福花砖系列400*400	利德福	NULL	400*400	Area	MaterialOnly	64.20	0.00	64.20
+MH-MAT-57	Material	瓷砖	瓷砖--利德福花砖系列400*800	利德福	NULL	400*800	Area	MaterialOnly	94.20	0.00	94.20
+MH-MAT-60	Material	铝合金	铝合金--0735/1635/4335极窄地轨移门	NULL	NULL	NULL	Area	MaterialOnly	435.60	0.00	435.60
+MH-MAT-61	Material	铝合金	铝合金--0735/1635/4335极窄地轨三联动移门	NULL	NULL	NULL	Area	MaterialOnly	572.60	0.00	572.60
+MH-MAT-62	Material	铝合金	铝合金--1635/4335极窄地轨四联动移门	NULL	NULL	NULL	Area	MaterialOnly	641.10	0.00	641.10
+MH-MAT-63	Material	铝合金	铝合金--套餐内移门加三联动组件	NULL	NULL	NULL	Count	MaterialOnly	486.00	0.00	486.00
+MH-MAT-64	Material	铝合金	铝合金--移门吊轨（特殊工艺）	NULL	NULL	NULL	Area	MaterialOnly	55.00	0.00	55.00
+MH-MAT-66	Material	铝合金	铝合金--4535中窄边框平开门	NULL	NULL	NULL	Area	MaterialOnly	630.10	0.00	630.10
+MH-MAT-67	Material	铝合金	铝合金--1635极窄边框平开门	NULL	NULL	NULL	Area	MaterialOnly	600.00	0.00	600.00
+MH-MAT-68	Material	铝合金	铝合金--0735极窄边框平开门	NULL	NULL	NULL	Area	MaterialOnly	712.30	0.00	712.30
+MH-MAT-70	Material	铝合金	铝合金--16极窄边框吊轨折叠门	NULL	NULL	NULL	Area	MaterialOnly	931.50	0.00	931.50
+MH-MAT-71	Material	铝合金	铝合金--45中窄边框吊轨折叠门	NULL	NULL	NULL	Area	MaterialOnly	657.50	0.00	657.50
+MH-MAT-73	Material	铝合金	铝合金--铝合金双包门套（有拼接缝）	NULL	NULL	NULL	Item	MaterialOnly	164.40	0.00	164.40
+MH-MAT-74	Material	铝合金	铝合金--铝合金双包门套（无拼接缝）	NULL	NULL	NULL	Metre	MaterialOnly	205.50	0.00	205.50
+MH-MAT-75	Material	铝合金	铝合金--铝合金单包门套/窗套（有拼接缝）	NULL	NULL	NULL	Metre	MaterialOnly	109.60	0.00	109.60
+MH-MAT-76	Material	铝合金	铝合金--铝合金单包门套/窗套（无拼接缝）	NULL	NULL	NULL	Metre	MaterialOnly	123.30	0.00	123.30
+MH-MAT-77	Material	铝合金	①灰玻，茶玻 ，普通长虹。每层玻璃另加28元/m² ②超白长虹，超白油沙，灰油沙，等...超白系列。 双层4mm玻璃每层玻璃另加55元/m²，单层4mm玻璃另加85/㎡，单层8mm玻璃另加170/㎡ ③缓冲器另加100元/个，一般不建议做，属于易损件	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-79	Material	铝合金	铝合金--极窄边框玻璃隔断/屏风	NULL	NULL	NULL	Count	MaterialOnly	600.00	0.00	600.00
+MH-MAT-80	Material	铝合金	铝合金--铝合金复古平开门	NULL	NULL	NULL	Area	MaterialOnly	931.50	0.00	931.50
+MH-MAT-81	Material	铝合金	铝合金--铝合金复古地轨移门	NULL	NULL	NULL	Area	MaterialOnly	800.00	0.00	800.00
+MH-MAT-83	Material	铝合金	铝合金--密度板移门	NULL	NULL	NULL	Area	MaterialOnly	178.00	0.00	178.00
+MH-MAT-84	Material	铝合金	铝合金--实木多层移门	NULL	NULL	NULL	Area	MaterialOnly	328.80	0.00	328.80
+MH-MAT-85	Material	铝合金	铝合金--衣柜移门+单面全身镜	NULL	NULL	NULL	Area	MaterialOnly	383.60	0.00	383.60
+MH-MAT-88	Material	木门	木门--TATA免漆木门系列（TZ001）	TATA	NULL	NULL	Plate	MaterialOnly	1330.00	0.00	1330.00
+MH-MAT-89	Material	木门	木门--TATA油漆木门系列（TZ001）	TATA	NULL	NULL	Plate	MaterialOnly	1715.00	0.00	1715.00
+MH-MAT-90	Material	木门	木门--TATA单包门套（免漆）	TATA	NULL	NULL	Metre	MaterialOnly	129.00	0.00	129.00
+MH-MAT-91	Material	木门	木门--TATA双包门套（免漆）	TATA	NULL	NULL	Metre	MaterialOnly	143.00	0.00	143.00
+MH-MAT-93	Material	木门	木门--生态木门系列	NULL	NULL	NULL	Plate	MaterialOnly	760.00	0.00	760.00
+MH-MAT-94	Material	木门	木门--实木复合烤漆门/无漆门	NULL	NULL	NULL	Plate	MaterialOnly	1080.00	0.00	1080.00
+MH-MAT-96	Material	木门	木门--欧派日系无漆复合门	欧派	NULL	NULL	Plate	MaterialOnly	1080.00	0.00	1080.00
+MH-MAT-98	Material	木门	木门--静音条（一樘门一个）	NULL	NULL	NULL	Root	MaterialOnly	136.00	0.00	136.00
+MH-MAT-99	Material	木门	木门--飘窗套（烤漆/无漆）	NULL	NULL	NULL	Count	MaterialOnly	1200.00	0.00	1200.00
+MH-MAT-100	Material	木门	木门--单包门套（烤漆/无漆）	NULL	NULL	NULL	Metre	MaterialOnly	85.00	0.00	85.00
+MH-MAT-101	Material	木门	木门--双包门套（烤漆/无漆）	NULL	NULL	NULL	Metre	MaterialOnly	100.00	0.00	100.00
+MH-MAT-102	Material	木门	木门--劲庭实木多层无漆墙板	NULL	NULL	NULL	Area	MaterialOnly	384.00	0.00	384.00
+MH-MAT-103	Material	木门	木门--劲庭烤漆墙板（密度板）	NULL	NULL	NULL	Area	MaterialOnly	384.00	0.00	384.00
+MH-MAT-104	Material	木门	木门--格林盾墙板（密度板）	NULL	NULL	NULL	Area	MaterialOnly	430.00	0.00	430.00
+MH-MAT-109	Material	卫浴	卫浴--OXO浴室柜（展厅.图册）	OXO	NULL	NULL	Set	MaterialOnly	1172.00	0.00	1172.00
+MH-MAT-110	Material	卫浴	卫浴--花洒（展厅款）	NULL	NULL	NULL	Set	MaterialOnly	600.00	0.00	600.00
+MH-MAT-111	Material	卫浴	卫浴--马桶（展厅款）	NULL	NULL	NULL	Set	MaterialOnly	743.00	0.00	743.00
+MH-MAT-112	Material	卫浴	卫浴--五金配件	NULL	NULL	NULL	Item	MaterialOnly	215.00	0.00	215.00
+MH-MAT-113	Material	卫浴	卫浴--升级轻智能马桶	NULL	NULL	NULL	Item	MaterialOnly	400.00	0.00	400.00
+MH-MAT-115	Material	卫浴	卫浴--爱智贞浴室柜（展厅图册）	爱智贞	NULL	NULL	Set	MaterialOnly	1700.00	0.00	1700.00
+MH-MAT-120	Material	卫浴	卫浴--升级全智能马桶	NULL	NULL	NULL	Item	MaterialOnly	1720.00	0.00	1720.00
+MH-MAT-122	Material	卫浴	卫浴--创博浴室柜（展厅.图册）	创博	NULL	NULL	Set	MaterialOnly	1165.00	0.00	1165.00
+MH-MAT-128	Material	卫浴	卫浴--九牧浴室柜（展厅款）	九牧	NULL	NULL	Set	MaterialOnly	2055.00	0.00	2055.00
+MH-MAT-129	Material	卫浴	卫浴--九牧花洒（展厅款）	九牧	NULL	NULL	Set	MaterialOnly	890.00	0.00	890.00
+MH-MAT-130	Material	卫浴	卫浴--九牧马桶（展厅款）	九牧	NULL	NULL	Set	MaterialOnly	890.00	0.00	890.00
+MH-MAT-131	Material	卫浴	卫浴--九牧五金配件	九牧	NULL	NULL	Item	MaterialOnly	445.00	0.00	445.00
+MH-MAT-133	Material	卫浴	卫浴--惠达浴室柜（展厅款）	惠达	NULL	NULL	Set	MaterialOnly	2060.00	0.00	2060.00
+MH-MAT-134	Material	卫浴	卫浴--惠达花洒（展厅款）	惠达	NULL	NULL	Set	MaterialOnly	955.00	0.00	955.00
+MH-MAT-135	Material	卫浴	卫浴--惠达马桶（展厅款）	惠达	NULL	NULL	Set	MaterialOnly	955.00	0.00	955.00
+MH-MAT-136	Material	卫浴	卫浴--惠达五金配件	惠达	NULL	NULL	Item	MaterialOnly	445.00	0.00	445.00
+MH-MAT-138	Material	卫浴	卫浴--太空铝卫浴挂件	NULL	NULL	NULL	Set	MaterialOnly	300.00	0.00	300.00
+MH-MAT-139	Material	卫浴	卫浴--定制浴室柜加长（1米内）另加	NULL	NULL	NULL	Set	MaterialOnly	870.00	0.00	870.00
+MH-MAT-140	Material	卫浴	卫浴--定制浴室柜加长（1-1.5米）另加	NULL	NULL	NULL	Set	MaterialOnly	1550.00	0.00	1550.00
+MH-MAT-142	Material	洗衣机柜	洗衣机柜--大理石洗衣机柜	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-143	Material	洗衣机柜	洗衣机柜--大理石洗衣机柜五金配套	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-144	Material	洗衣机柜	洗衣机柜--大理石洗衣机柜台下盆安装费	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-146	Material	洗衣机柜	洗衣机柜--水晶面洗衣机柜	NULL	NULL	NULL	Count	MaterialOnly	960.00	0.00	960.00
+MH-MAT-147	Material	洗衣机柜	洗衣机柜--洗衣机柜五金配套	NULL	NULL	NULL	Count	MaterialOnly	370.00	0.00	370.00
+MH-MAT-148	Material	洗衣机柜	洗衣机柜--平台切角	NULL	NULL	NULL	Count	MaterialOnly	140.00	0.00	140.00
+MH-MAT-149	Material	洗衣机柜	洗衣机柜--盆内切角	NULL	NULL	NULL	Count	MaterialOnly	415.00	0.00	415.00
+MH-MAT-150	Material	洗衣机柜	洗衣机柜--升级为铝合金柜	NULL	NULL	NULL	Count	MaterialOnly	300.00	0.00	300.00
+MH-MAT-151	Material	洗衣机柜	洗衣机柜--后飘	NULL	NULL	NULL	Count	MaterialOnly	360.00	0.00	360.00
+MH-MAT-153	Material	洗衣机柜	洗衣机柜--机上盆洗衣机柜	NULL	NULL	NULL	Count	MaterialOnly	1140.00	0.00	1140.00
+MH-MAT-159	Material	洗衣机柜	洗衣机柜--洗衣机柜全柜，单洗衣池，不放洗衣机	NULL	NULL	NULL	Count	MaterialOnly	1240.00	0.00	1240.00
+MH-MAT-163	Material	洗衣机柜	洗衣机柜--单洗衣池（柜体其它家做，独立烘干机洗衣机）	NULL	NULL	NULL	Count	MaterialOnly	1410.00	0.00	1410.00
+MH-MAT-164	Material	洗衣机柜	洗衣机柜--半径90圆弧304不锈钢淋浴房                              （黑色.本色）含石基及铺贴人工费	NULL	NULL	NULL	Set	MaterialOnly	1600.00	0.00	1600.00
+MH-MAT-165	Material	洗衣机柜	洗衣机柜--90钻石开门淋浴房                                            （黑色.本色）含石基及铺贴人工费	NULL	NULL	NULL	Set	MaterialOnly	1500.00	0.00	1500.00
+MH-MAT-166	Material	洗衣机柜	洗衣机柜--一字型淋浴房                                                   （黑色.本色）含石基及铺贴人工费	NULL	NULL	NULL	Area	MaterialOnly	480.00	0.00	480.00
+MH-MAT-167	Material	洗衣机柜	洗衣机柜--全包围框一字型淋浴房                                              （黑色.本色）含石基及铺贴人工费	NULL	NULL	NULL	Area	MaterialOnly	650.00	0.00	650.00
+MH-MAT-169	Material	淋浴房	淋浴房--钻石型、圆弧型防爆淋浴房	NULL	NULL	NULL	Set	MaterialOnly	1200.00	0.00	1200.00
+MH-MAT-170	Material	淋浴房	淋浴房--一字型防爆淋浴房	NULL	NULL	NULL	Area	MaterialOnly	420.00	0.00	420.00
+MH-MAT-171	Material	淋浴房	淋浴房--极窄地轨全包框一字型防爆淋浴房	NULL	NULL	NULL	Area	MaterialOnly	500.00	0.00	500.00
+MH-MAT-172	Material	淋浴房	淋浴房--极窄吊轨全包框一字型防爆淋浴房	NULL	NULL	NULL	Area	MaterialOnly	480.00	0.00	480.00
+MH-MAT-173	Material	淋浴房	淋浴房--单淋浴基石铺贴 含石基及人工费	NULL	NULL	NULL	Count	MaterialAndManual	152.00	78.00	230.00
+MH-MAT-174	Material	淋浴房	淋浴房--定制异型淋浴房	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-175	Material	淋浴房	①圆弧淋浴房玻璃厚6mm，圆弧正常高度1.9米，圆弧也可以做8mm厚，玻璃另加100元/套 ②其他玻璃厚度为8mm ③默认为普通透明玻璃，升级灰玻28元/m²，升级超白加41元/m²，升级油沙灰油沙加55元/m²	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-178	Material	石材	石材--人造大理石飘窗石	NULL	NULL	NULL	Metre	MaterialOnly	280.00	0.00	280.00
+MH-MAT-179	Material	石材	石材--人造大理窗台石	NULL	NULL	NULL	Metre	MaterialOnly	125.00	0.00	125.00
+MH-MAT-180	Material	石材	石材--若有酒柜中间石材，水吧台石材不要忘记宽度补费用	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-181	Material	石材	石材--岛台岩板台面	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-182	Material	石材	石材--天然飘窗石材	NULL	NULL	NULL	Metre	MaterialOnly	710.00	0.00	710.00
+MH-MAT-183	Material	石材	石材--天然窗台石材	NULL	NULL	NULL	Metre	MaterialOnly	310.00	0.00	310.00
+MH-MAT-185	Material	石材	石材--人造门槛石	NULL	NULL	NULL	Block	MaterialOnly	70.00	0.00	70.00
+MH-MAT-186	Material	石材	石材--天然门槛石	NULL	NULL	NULL	Block	MaterialOnly	110.00	0.00	110.00
+MH-MAT-187	Material	石材	石材--石英石台面（单色）	NULL	NULL	NULL	Metre	MaterialOnly	355.00	0.00	355.00
+MH-MAT-188	Material	石材	石材--石英石台面（双色或纯色）	NULL	NULL	NULL	Metre	MaterialOnly	495.00	0.00	495.00
+MH-MAT-190	Material	石材	石材--天然石基石	NULL	NULL	NULL	Metre	MaterialOnly	280.00	0.00	280.00
+MH-MAT-191	Material	石材	石材--人造石基石	NULL	NULL	NULL	Metre	MaterialOnly	180.00	0.00	180.00
+MH-MAT-192	Material	石材	石材--天然大理石淋浴区拉槽	NULL	NULL	NULL	Item	MaterialOnly	1300.00	0.00	1300.00
+MH-MAT-195	Material	地板	石材--圣象强化地板（1.0）	圣象	NULL	NULL	Area	MaterialOnly	123.30	0.00	123.30
+MH-MAT-196	Material	地板	石材--圣象实木多层地板（1.2）	圣象	NULL	NULL	Area	MaterialOnly	191.80	0.00	191.80
+MH-MAT-197	Material	地板	石材--圣象实木多层地板（1.5）	圣象	NULL	NULL	Area	MaterialOnly	239.70	0.00	239.70
+MH-MAT-199	Material	地板	石材--大自然强化地板（1.0）	大自然	NULL	NULL	Area	MaterialOnly	109.60	0.00	109.60
+MH-MAT-200	Material	地板	石材--大自然实木多层地板（1.2）	大自然	NULL	NULL	Area	MaterialOnly	135.60	0.00	135.60
+MH-MAT-201	Material	地板	石材--大自然新三层地板（1.4）	大自然	NULL	NULL	Area	MaterialOnly	202.70	0.00	202.70
+MH-MAT-203	Material	地板	石材--大艺树强化地板（1.0）	大艺树	NULL	NULL	Area	MaterialOnly	105.50	0.00	105.50
+MH-MAT-204	Material	地板	石材--大艺树多层地板（1.2）	大艺树	NULL	NULL	Area	MaterialOnly	143.80	0.00	143.80
+MH-MAT-205	Material	地板	石材--大艺树多层地板（1.4）	大艺树	NULL	NULL	Area	MaterialOnly	182.20	0.00	182.20
+MH-MAT-206	Material	地板	石材--大艺树实木地板	大艺树	NULL	NULL	Area	MaterialOnly	328.80	0.00	328.80
+MH-MAT-208	Material	地板	石材--管仲实木多层地板（1.0）	管仲	NULL	NULL	Area	MaterialOnly	106.80	0.00	106.80
+MH-MAT-209	Material	地板	石材--管仲实木多层地板（1.4）	管仲	NULL	NULL	Area	MaterialOnly	130.10	0.00	130.10
+MH-MAT-210	Material	地板	石材--管仲新三层地板（1.4）	管仲	NULL	NULL	Area	MaterialOnly	135.60	0.00	135.60
+MH-MAT-212	Material	地板	石材--荣程强化地板（1.2）	荣程	NULL	NULL	Area	MaterialOnly	79.50	0.00	79.50
+MH-MAT-213	Material	地板	石材--荣程实木多层地板（1.4）	荣程	NULL	NULL	Area	MaterialOnly	109.60	0.00	109.60
+MH-MAT-215	Material	地板	石材--实木踢脚线	NULL	NULL	NULL	Metre	MaterialOnly	30.00	0.00	30.00
+MH-MAT-216	Material	地板	石材--铝合金踢脚线	NULL	NULL	NULL	Metre	MaterialOnly	35.00	0.00	35.00
+MH-MAT-218	Material	石膏线	石膏线--石膏线条 （光板.C型.水波纹.荷花.凤尾.新荷花.莲藕.宝石）	NULL	NULL	NULL	Metre	MaterialAndManual	5.00	6.00	11.00
+MH-MAT-219	Material	石膏线	石膏线--石膏线条 （太阳.半圆.草帽等小石膏线）	NULL	NULL	NULL	Metre	MaterialAndManual	7.00	8.00	15.00
+MH-MAT-220	Material	石膏线	石膏线--10公分双眼皮叠级	NULL	NULL	NULL	Metre	MaterialAndManual	7.00	9.00	16.00
+MH-MAT-221	Material	石膏线	石膏线--15公分双眼皮叠级	NULL	NULL	NULL	Metre	MaterialAndManual	10.00	11.00	21.00
+MH-MAT-222	Material	石膏线	石膏线--20公分双眼皮叠级	NULL	NULL	NULL	Metre	MaterialAndManual	16.00	12.00	28.00
+MH-MAT-223	Material	石膏线	石膏线--25公分双眼皮叠级	NULL	NULL	NULL	Metre	MaterialAndManual	22.00	13.00	35.00
+MH-MAT-224	Material	石膏线	石膏线--30公分双眼皮叠级	NULL	NULL	NULL	Metre	MaterialAndManual	26.00	15.00	41.00
+MH-MAT-225	Material	石膏线	石膏线--恒大专用线条	NULL	NULL	NULL	Metre	MaterialAndManual	12.00	10.00	22.00
+MH-MAT-226	Material	石膏线	石膏线--15公分光板S线条	NULL	NULL	NULL	Metre	MaterialAndManual	8.00	10.00	18.00
+MH-MAT-227	Material	石膏线	石膏线--12公分光板S线条	NULL	NULL	NULL	Metre	MaterialAndManual	8.00	9.00	17.00
+MH-MAT-228	Material	石膏线	石膏线--12公分文武线条	NULL	NULL	NULL	Metre	MaterialAndManual	8.00	9.00	17.00
+MH-MAT-229	Material	石膏线	石膏线--10公分碧桂园专用线条	NULL	NULL	NULL	Metre	MaterialAndManual	8.00	9.00	17.00
+MH-MAT-230	Material	石膏线	石膏线--10公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	8.00	9.00	17.00
+MH-MAT-231	Material	石膏线	石膏线--12公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	9.00	10.00	19.00
+MH-MAT-232	Material	石膏线	石膏线--15公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	11.00	12.00	23.00
+MH-MAT-233	Material	石膏线	石膏线--18公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	13.00	15.00	28.00
+MH-MAT-234	Material	石膏线	石膏线--20公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	15.00	16.00	31.00
+MH-MAT-235	Material	石膏线	石膏线--25公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	18.00	19.00	37.00
+MH-MAT-236	Material	石膏线	石膏线--26公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	19.00	20.00	39.00
+MH-MAT-237	Material	石膏线	石膏线--30公分波浪板/钢琴键	NULL	NULL	NULL	Metre	MaterialAndManual	21.00	23.00	44.00
+MH-MAT-238	Material	石膏线	石膏线--11公分虎头线石膏线	NULL	NULL	NULL	Metre	MaterialAndManual	7.00	8.00	15.00
+MH-MAT-239	Material	石膏线	石膏线--13公分虎头线石膏线	NULL	NULL	NULL	Metre	MaterialAndManual	8.00	9.00	17.00
+MH-MAT-240	Material	石膏线	石膏线--石膏小角花	NULL	NULL	NULL	Count	MaterialAndManual	30.00	12.00	42.00
+MH-MAT-241	Material	石膏线	石膏线--大角花、圆盘、PU类	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-243	Material	墙布	墙纸.墙布.壁画--DXM墙布	NULL	NULL	NULL	Area	MaterialOnly	49.00	0.00	49.00
+MH-SOF-243	Soft	墙布	墙纸.墙布.壁画--DXM墙布	NULL	NULL	NULL	Area	MaterialOnly	49.00	0.00	49.00
+MH-MAT-244	Material	墙布	墙纸.墙布.壁画--DXM壁画ME	NULL	NULL	NULL	Area	MaterialOnly	85.00	0.00	85.00
+MH-SOF-244	Soft	墙布	墙纸.墙布.壁画--DXM壁画ME	NULL	NULL	NULL	Area	MaterialOnly	85.00	0.00	85.00
+MH-MAT-245	Material	墙布	墙纸.墙布.壁画--DXM墙纸系列	NULL	NULL	NULL	Area	MaterialOnly	24.00	0.00	24.00
+MH-SOF-245	Soft	墙布	墙纸.墙布.壁画--DXM墙纸系列	NULL	NULL	NULL	Area	MaterialOnly	24.00	0.00	24.00
+MH-MAT-247	Material	墙布	墙纸.墙布.壁画--低调墙布	NULL	NULL	NULL	Area	MaterialOnly	49.00	0.00	49.00
+MH-SOF-247	Soft	墙布	墙纸.墙布.壁画--低调墙布	NULL	NULL	NULL	Area	MaterialOnly	49.00	0.00	49.00
+MH-MAT-248	Material	墙布	墙纸.墙布.壁画-- 低调硬包	NULL	NULL	NULL	Area	MaterialOnly	240.00	0.00	240.00
+MH-SOF-248	Soft	墙布	墙纸.墙布.壁画-- 低调硬包	NULL	NULL	NULL	Area	MaterialOnly	240.00	0.00	240.00
+MH-MAT-249	Material	墙布	墙纸.墙布.壁画--低调软包	NULL	NULL	NULL	Area	MaterialOnly	400.00	0.00	400.00
+MH-SOF-249	Soft	墙布	墙纸.墙布.壁画--低调软包	NULL	NULL	NULL	Area	MaterialOnly	400.00	0.00	400.00
+MH-MAT-250	Material	墙布	墙纸.墙布.壁画--6 公分不锈钢踢脚线（人工+材料）	NULL	NULL	NULL	Metre	MaterialOnly	55.00	0.00	55.00
+MH-SOF-250	Soft	墙布	墙纸.墙布.壁画--6 公分不锈钢踢脚线（人工+材料）	NULL	NULL	NULL	Metre	MaterialOnly	55.00	0.00	55.00
+MH-MAT-251	Material	墙布	墙纸.墙布.壁画--智能流水灯带	NULL	NULL	NULL	Metre	MaterialOnly	90.00	0.00	90.00
+MH-SOF-251	Soft	墙布	墙纸.墙布.壁画--智能流水灯带	NULL	NULL	NULL	Metre	MaterialOnly	90.00	0.00	90.00
+MH-MAT-252	Material	墙布	墙纸.墙布.壁画--2*1 预埋式线型灯（含安装）	NULL	NULL	NULL	Metre	MaterialOnly	65.00	0.00	65.00
+MH-SOF-252	Soft	墙布	墙纸.墙布.壁画--2*1 预埋式线型灯（含安装）	NULL	NULL	NULL	Metre	MaterialOnly	65.00	0.00	65.00
+MH-MAT-253	Material	墙布	墙纸.墙布.壁画-- 碳晶板木饰面0.3（做背景墙必须打底）	NULL	NULL	NULL	Area	MaterialOnly	180.00	0.00	180.00
+MH-SOF-253	Soft	墙布	墙纸.墙布.壁画-- 碳晶板木饰面0.3（做背景墙必须打底）	NULL	NULL	NULL	Area	MaterialOnly	180.00	0.00	180.00
+MH-MAT-254	Material	墙布	墙纸.墙布.壁画-- 碳晶板木饰面0.8（做背景墙可以不打底）	NULL	NULL	NULL	Area	MaterialOnly	230.00	0.00	230.00
+MH-SOF-254	Soft	墙布	墙纸.墙布.壁画-- 碳晶板木饰面0.8（做背景墙可以不打底）	NULL	NULL	NULL	Area	MaterialOnly	230.00	0.00	230.00
+MH-MAT-257	Material	集成吊顶	集成吊顶、浴霸--麦鸿定制集成吊顶（300*600）	NULL	NULL	300*600	Area	MaterialOnly	118.00	0.00	118.00
+MH-MAT-258	Material	集成吊顶	集成吊顶、浴霸--奥瑞奇扣板方灯（300*300）	NULL	NULL	300*300	Pcs	MaterialOnly	76.00	0.00	76.00
+MH-MAT-259	Material	集成吊顶	集成吊顶、浴霸--奥瑞奇扣板长灯（300*600）	NULL	NULL	300*600	Pcs	MaterialOnly	103.00	0.00	103.00
+MH-MAT-260	Material	集成吊顶	集成吊顶、浴霸--奥瑞奇浴霸	NULL	NULL	NULL	Pcs	MaterialOnly	520.00	0.00	520.00
+MH-MAT-261	Material	集成吊顶	集成吊顶、浴霸--蜂窝大板吊顶	NULL	NULL	NULL	Area	MaterialOnly	246.50	0.00	246.50
+MH-MAT-262	Material	集成吊顶	集成吊顶、浴霸--线性灯	NULL	NULL	NULL	Metre	MaterialOnly	80.00	0.00	80.00
+MH-MAT-263	Material	集成吊顶	集成吊顶、浴霸--泛光灯	NULL	NULL	NULL	Stick	MaterialOnly	93.00	0.00	93.00
+MH-MAT-264	Material	集成吊顶	集成吊顶、浴霸--五珠灯	NULL	NULL	NULL	Count	MaterialOnly	50.00	0.00	50.00
+MH-MAT-265	Material	集成吊顶	集成吊顶、浴霸--格栅灯（7.5*60）	NULL	NULL	NULL	Grid	MaterialOnly	65.00	0.00	65.00
+MH-MAT-266	Material	集成吊顶	集成吊顶、浴霸--牛眼灯	NULL	NULL	NULL	Count	MaterialOnly	65.00	0.00	65.00
+MH-MAT-267	Material	集成吊顶	集成吊顶、浴霸--方灯（190*190）	NULL	NULL	190*190	Pcs	MaterialOnly	50.00	0.00	50.00
+MH-MAT-269	Material	集成吊顶	集成吊顶、浴霸--奥普集成吊顶（300*600）	NULL	NULL	300*600	Area	MaterialOnly	122.00	0.00	122.00
+MH-MAT-270	Material	集成吊顶	集成吊顶、浴霸--奥普扣板方灯（300*300）	NULL	NULL	300*300	Pcs	MaterialOnly	100.00	0.00	100.00
+MH-MAT-271	Material	集成吊顶	集成吊顶、浴霸--奥普扣板方灯（300*600）	NULL	NULL	300*600	Pcs	MaterialOnly	172.00	0.00	172.00
+MH-MAT-272	Material	集成吊顶	集成吊顶、浴霸--奥普浴霸	NULL	NULL	NULL	Pcs	MaterialOnly	642.00	0.00	642.00
+MH-MAT-274	Material	集成吊顶	集成吊顶、浴霸--名族集成吊顶（300*600）	NULL	NULL	300*600	Area	MaterialOnly	107.00	0.00	107.00
+MH-MAT-275	Material	集成吊顶	集成吊顶、浴霸--名族扣板方灯（300*300）	NULL	NULL	300*300	Pcs	MaterialOnly	100.00	0.00	100.00
+MH-MAT-276	Material	集成吊顶	集成吊顶、浴霸--名族扣板方灯（300*600）	NULL	NULL	300*600	Pcs	MaterialOnly	172.00	0.00	172.00
+MH-MAT-277	Material	集成吊顶	集成吊顶、浴霸--名族浴霸	NULL	NULL	NULL	Pcs	MaterialOnly	410.00	0.00	410.00
+MH-MAT-279	Material	开关面板	开关面板--雷士开关面板（2024一月起停用）	雷士	NULL	NULL	Item	MaterialOnly	1450.00	0.00	1450.00
+MH-MAT-280	Material	开关面板	开关面板--金斯卡 开关面板	金斯卡	NULL	NULL	Item	MaterialOnly	850.00	0.00	850.00
+MH-MAT-281	Material	开关面板	开关面板--德力西、固帝 开关面板	德力西	NULL	NULL	Item	MaterialOnly	1300.00	0.00	1300.00
+MH-MAT-282	Material	开关面板	开关面板--依诺 开关面板	依诺	NULL	NULL	Item	MaterialOnly	750.00	0.00	750.00
+MH-MAT-283	Material	开关面板	开关面板--单色灯带	NULL	NULL	NULL	Metre	MaterialOnly	9.80	0.00	9.80
+MH-MAT-284	Material	开关面板	开关面板--双色灯带	NULL	NULL	NULL	Metre	MaterialOnly	13.00	0.00	13.00
+MH-MAT-285	Material	开关面板	开关面板--欧普筒灯	欧普	NULL	NULL	Count	MaterialOnly	25.00	0.00	25.00
+MH-MAT-286	Material	开关面板	开关面板--防眩射灯	NULL	NULL	NULL	Count	MaterialOnly	35.00	0.00	35.00
+MH-MAT-287	Material	开关面板	开关面板--伊诺防眩射灯	NULL	NULL	NULL	Count	MaterialOnly	35.00	0.00	35.00
+MH-MAT-288	Material	开关面板	开关面板--雷士防眩射灯	雷士	NULL	NULL	Count	MaterialOnly	55.00	0.00	55.00
+MH-MAT-290	Material	美缝	美缝--瓷砖美缝	NULL	NULL	NULL	Area	MaterialOnly	18.00	0.00	18.00
+MH-MAT-291	Material	美缝	美缝--三棵树美缝	三棵树	NULL	NULL	Area	MaterialOnly	20.00	0.00	20.00
+MH-MAT-292	Material	美缝	美缝--调色美缝	NULL	NULL	NULL	Area	MaterialOnly	25.00	0.00	25.00
+MH-MAT-293	Material	美缝	美缝--环氧彩砂美缝	NULL	NULL	NULL	Area	MaterialOnly	25.00	0.00	25.00
+MH-MAT-294	Material	美缝	美缝--背景墙等美缝	NULL	NULL	NULL	Item	MaterialOnly	300.00	0.00	300.00
+MH-MAT-297	Material	背景墙	背景墙--欧松板打底（厂家可打底）	NULL	NULL	NULL	Area	MaterialAndManual	60.00	45.00	105.00
+MH-MAT-298	Material	背景墙	背景墙--碳晶板背景墙	NULL	NULL	NULL	Count	MaterialOnly	940.00	0.00	940.00
+MH-MAT-299	Material	背景墙	背景墙--背景墙单格栅（附带安装）	NULL	NULL	NULL	Count	MaterialOnly	410.00	0.00	410.00
+MH-MAT-300	Material	背景墙	背景墙--背景墙单格栅（独立安装）	NULL	NULL	NULL	Count	MaterialOnly	800.00	0.00	800.00
+MH-MAT-301	Material	背景墙	背景墙--定制碳晶板背景墙	NULL	NULL	NULL	Count	MaterialOnly	1480.00	0.00	1480.00
+MH-MAT-302	Material	背景墙	背景墙--黄晶板背景墙	NULL	NULL	NULL	Count	MaterialOnly	1210.00	0.00	1210.00
+MH-MAT-303	Material	背景墙	背景墙--实木多层板背景墙	NULL	NULL	NULL	Count	MaterialOnly	2180.00	0.00	2180.00
+MH-MAT-304	Material	背景墙	背景墙--隐形门	NULL	NULL	NULL	Plate	MaterialOnly	1950.00	0.00	1950.00
+MH-MAT-305	Material	背景墙	背景墙--隐形门五金	NULL	NULL	NULL	Set	MaterialOnly	350.00	0.00	350.00
+MH-MAT-306	Material	背景墙	背景墙--全屋墙面碳晶板	NULL	NULL	NULL	Area	MaterialOnly	140.00	0.00	140.00
+MH-MAT-308	Material	背景墙	背景墙--背景墙（多层木工板打底）	NULL	NULL	NULL	Area	MaterialAndManual	60.00	45.00	105.00
+MH-MAT-309	Material	背景墙	背景墙--0.6*1.2m阿波罗造型大砖	NULL	NULL	NULL	Area	MaterialOnly	320.00	0.00	320.00
+MH-MAT-310	Material	背景墙	背景墙--不锈钢条装饰(高度1cm，宽度3cm内)	NULL	NULL	NULL	Metre	MaterialAndManual	35.00	20.00	55.00
+MH-MAT-313	Material	背景墙	背景墙--墙布	NULL	NULL	NULL	Area	MaterialOnly	85.00	0.00	85.00
+MH-MAT-315	Material	背景墙	背景墙--石膏线背景墙	NULL	NULL	NULL	Metre	MaterialAndManual	7.00	8.00	15.00
+MH-MAT-316	Material	背景墙	背景墙--石膏小角花	NULL	NULL	NULL	Count	MaterialAndManual	30.00	12.00	42.00
+MH-MAT-317	Material	背景墙	背景墙--石膏中角花	NULL	NULL	NULL	Count	MaterialAndManual	200.00	100.00	300.00
+MH-MAT-318	Material	背景墙	背景墙--石膏大角花	NULL	NULL	NULL	Item	MaterialOnly	0.00	0.00	0.00
+MH-MAT-319	Material	背景墙	背景墙--石膏线背景墙分色	NULL	NULL	NULL	Item	MaterialAndManual	100.00	200.00	300.00
+MH-MAT-322	Material	背景墙	背景墙--背景墙（欧松板打底）	NULL	NULL	NULL	Area	MaterialAndManual	60.00	45.00	105.00
+MH-MAT-323	Material	背景墙	背景墙--悬空背景墙 （如备注图片造型）	NULL	NULL	NULL	Area	MaterialOnly	660.00	0.00	660.00
+MH-MAT-324	Material	背景墙	背景墙--现代轻奢石材背景墙 （如备注图片造型）	NULL	NULL	NULL	Area	MaterialOnly	660.00	0.00	660.00
+MH-MAT-325	Material	背景墙	背景墙--简约平面石材背景墙 （如备注图片造型）	NULL	NULL	NULL	Area	MaterialOnly	525.00	0.00	525.00
+MH-MAT-327	Material	背景墙	背景墙--硬包背景墙	NULL	NULL	NULL	Area	MaterialOnly	170.00	0.00	170.00
+MH-MAT-328	Material	背景墙	背景墙--软包背景墙	NULL	NULL	NULL	Area	MaterialOnly	210.00	0.00	210.00
+MH-MAT-329	Material	背景墙	背景墙--艺术喷绘硬包背景墙	NULL	NULL	NULL	Area	MaterialOnly	230.00	0.00	230.00
+MH-MAT-330	Material	背景墙	背景墙--异型软包背景墙	NULL	NULL	NULL	Area	MaterialOnly	300.00	0.00	300.00
+MH-MAT-331	Material	背景墙	背景墙--星空顶-满天星 （加造型另计）	NULL	NULL	NULL	Area	MaterialOnly	330.00	0.00	330.00
+MH-MAT-332	Material	背景墙	背景墙--不锈钢金属条	NULL	NULL	NULL	Metre	MaterialOnly	35.00	0.00	35.00
+MH-MAT-335	Material	背景墙	背景墙--DXM壁画ME	NULL	NULL	NULL	Area	MaterialOnly	85.00	0.00	85.00
+MH-MAT-337	Material	窗帘	窗帘--窗帘	NULL	NULL	NULL	Metre	MaterialOnly	185.00	0.00	185.00
+MH-SOF-337	Soft	窗帘	窗帘--窗帘	NULL	NULL	NULL	Metre	MaterialOnly	185.00	0.00	185.00
+MH-MAT-338	Material	窗帘	窗帘--窗纱	NULL	NULL	NULL	Metre	MaterialOnly	130.00	0.00	130.00
+MH-SOF-338	Soft	窗帘	窗帘--窗纱	NULL	NULL	NULL	Metre	MaterialOnly	130.00	0.00	130.00
+MH-GEN-5	General	杂项费用	100平内杂项收费	NULL	NULL	NULL	Item	MaterialOnly	400.00	0.00	400.00
+MH-GEN-6	General	杂项费用	100—150平内杂项收费	NULL	NULL	NULL	Item	MaterialOnly	600.00	0.00	600.00
+MH-GEN-7	General	五金费用	建筑面积100平内五金件收费	NULL	NULL	NULL	Item	MaterialOnly	1200.00	0.00	1200.00
+MH-GEN-8	General	五金费用	建筑面积100-150平内五金收费	NULL	NULL	NULL	Item	MaterialOnly	1700.00	0.00	1700.00
+MH-GEN-9	General	五金费用	建筑面积150-200平内五金收费	NULL	NULL	NULL	Item	MaterialOnly	2500.00	0.00	2500.00
+MH-GEN-10	General	高空作业	高空作业费	NULL	NULL	NULL	Item	MaterialOnly	800.00	0.00	800.00
+MH-GEN-11	General	成品保护	现场成品保护及地固	NULL	NULL	NULL	Area	MaterialOnly	6.00	0.00	6.00
+MH-GEN-12	General	材料搬运	材料运输及搬运费	NULL	NULL	NULL	Area	MaterialOnly	4.00	0.00	4.00
+MH-GEN-13	General	材料搬运	无电梯材料搬运	NULL	NULL	NULL	Area	MaterialOnly	0.00	0.00	0.00
+MH-GEN-14	General	垃圾清理	垃圾清运费（日常垃圾清理，非外运）	NULL	NULL	NULL	Area	MaterialOnly	4.00	0.00	4.00
+MH-GEN-15	General	垃圾外运	垃圾外运	NULL	NULL	NULL	Item	MaterialOnly	600.00	0.00	600.00
+MH-GEN-16	General	保洁	完工保洁	NULL	NULL	NULL	Area	MaterialOnly	6.00	0.00	6.00
+MH-GEN-17	General	远程费	远程施工费	NULL	NULL	NULL	Area	MaterialOnly	12.00	0.00	12.00
+MH-GEN-18	General	设计费	方案、图纸设计费	NULL	NULL	NULL	Area	MaterialOnly	50.00	0.00	50.00
+MH-GEN-19	General	管理费	工程管理费	NULL	NULL	NULL	Area	MaterialOnly	80.00	0.00	80.00
+MH-CUS-6	Custom	定制柜体	欧松板 柜体（ENF级）不含门	NULL	NULL	NULL	Area	MaterialOnly	615.00	0.00	615.00
+MH-CUS-7	Custom	定制柜体	生态板/多层板 柜体（ENF级）不含门	NULL	NULL	NULL	Area	MaterialOnly	660.00	0.00	660.00
+MH-CUS-8	Custom	定制柜体	生态板 柜体（兔宝宝 ENF级）不含门	NULL	NULL	NULL	Area	MaterialOnly	770.00	0.00	770.00
+MH-CUS-9	Custom	定制柜体	吊柜下置物架	NULL	NULL	NULL	Metre	MaterialOnly	350.00	0.00	350.00
+MH-CUS-10	Custom	定制柜体	阳台吊柜封顶板	NULL	NULL	NULL	Metre	MaterialOnly	50.00	0.00	50.00
+MH-CUS-11	Custom	定制柜体	书桌（生态板）	NULL	NULL	NULL	Metre	MaterialOnly	950.00	0.00	950.00
+MH-CUS-12	Custom	定制柜体	书架（多层板不含门）	NULL	NULL	NULL	Metre	MaterialOnly	1100.00	0.00	1100.00
+MH-CUS-13	Custom	定制柜体	书架（兔宝宝不含门）	NULL	NULL	NULL	Metre	MaterialOnly	1200.00	0.00	1200.00
+MH-CUS-15	Custom	定制门板、配套	门板（颗粒板 双饰面）	NULL	NULL	NULL	Area	MaterialOnly	150.00	0.00	150.00
+MH-CUS-16	Custom	定制门板、配套	门板（欧松板 双饰面）	NULL	NULL	NULL	Area	MaterialOnly	195.00	0.00	195.00
+MH-CUS-17	Custom	定制门板、配套	门板（生态板或多层板 双饰面）	NULL	NULL	NULL	Area	MaterialOnly	250.00	0.00	250.00
+MH-CUS-18	Custom	定制门板、配套	玻璃门板 （双饰面）	NULL	NULL	NULL	Area	MaterialOnly	165.00	0.00	165.00
+MH-CUS-19	Custom	定制门板、配套	吸塑门板	NULL	NULL	NULL	Area	MaterialOnly	185.00	0.00	185.00
+MH-CUS-20	Custom	定制门板、配套	吸塑玻璃门板	NULL	NULL	NULL	Hole	MaterialOnly	185.00	0.00	185.00
+MH-CUS-21	Custom	定制门板、配套	极窄边框玻璃门	NULL	NULL	NULL	Area	MaterialOnly	460.00	0.00	460.00
+MH-CUS-22	Custom	定制门板、配套	肤感膜吸塑门	NULL	NULL	NULL	Area	MaterialOnly	230.00	0.00	230.00
+MH-CUS-23	Custom	定制门板、配套	高光门板	NULL	NULL	NULL	Area	MaterialOnly	215.00	0.00	215.00
+MH-CUS-24	Custom	定制门板、配套	PET门板	NULL	NULL	NULL	Area	MaterialOnly	240.00	0.00	240.00
+MH-CUS-25	Custom	定制门板、配套	吸塑铜条镶嵌门	NULL	NULL	NULL	Area	MaterialOnly	320.00	0.00	320.00
+MH-CUS-26	Custom	定制门板、配套	吸塑铜条镶嵌玻璃门	NULL	NULL	NULL	Hole	MaterialOnly	210.00	0.00	210.00
+MH-CUS-27	Custom	定制门板、配套	吸塑网格门	NULL	NULL	NULL	Hole	MaterialOnly	135.00	0.00	135.00
+MH-CUS-28	Custom	定制门板、配套	吸塑百叶门	NULL	NULL	NULL	Hole	MaterialOnly	120.00	0.00	120.00
+MH-CUS-29	Custom	定制门板、配套	吸塑罗马柱	NULL	NULL	NULL	Metre	MaterialOnly	120.00	0.00	120.00
+MH-CUS-30	Custom	定制门板、配套	吸塑顶线	NULL	NULL	NULL	Metre	MaterialOnly	95.00	0.00	95.00
+MH-CUS-31	Custom	定制门板、配套	吸塑楣板	NULL	NULL	NULL	Root	MaterialOnly	85.00	0.00	85.00
+MH-CUS-32	Custom	定制门板、配套	肌肤板.缎面板	NULL	NULL	NULL	Area	MaterialOnly	240.00	0.00	240.00
+MH-CUS-33	Custom	定制门板、配套	岩石板	NULL	NULL	NULL	Area	MaterialOnly	210.00	0.00	210.00
+MH-CUS-34	Custom	定制门板、配套	亚克力密度板（上海）	NULL	NULL	NULL	Area	MaterialOnly	220.00	0.00	220.00
+MH-CUS-35	Custom	定制门板、配套	亚克力多层板（合肥）	NULL	NULL	NULL	Area	MaterialOnly	245.00	0.00	245.00
+MH-CUS-36	Custom	定制门板、配套	烤漆门板	NULL	NULL	NULL	Area	MaterialOnly	320.00	0.00	320.00
+MH-CUS-37	Custom	定制门板、配套	橡胶木直接板烤漆	NULL	NULL	NULL	Area	MaterialOnly	620.00	0.00	620.00
+MH-CUS-38	Custom	定制门板、配套	成品折叠镜	NULL	NULL	NULL	Set	MaterialOnly	180.00	0.00	180.00
+MH-CUS-39	Custom	定制门板、配套	成品键盘抽	NULL	NULL	NULL	Set	MaterialOnly	45.00	0.00	45.00
+MH-CUS-40	Custom	定制门板、配套	2米以上门加拉直器	NULL	NULL	NULL	Root	MaterialOnly	100.00	0.00	100.00
+MH-CUS-41	Custom	定制门板、配套	跳色套格	NULL	NULL	NULL	Count	MaterialOnly	150.00	0.00	150.00
+MH-CUS-42	Custom	定制门板、配套	LED灯条	NULL	NULL	NULL	Metre	MaterialOnly	100.00	0.00	100.00
+MH-CUS-43	Custom	定制门板、配套	镇流器	NULL	NULL	NULL	Count	MaterialOnly	130.00	0.00	130.00
+MH-CUS-45	Custom	橱柜	橱柜下柜 （多层板柜体+颗粒双饰面柜门）	NULL	NULL	NULL	Metre	MaterialOnly	650.00	0.00	650.00
+MH-CUS-46	Custom	橱柜	橱柜上柜 （多层板柜体+颗粒双饰面柜门）	NULL	NULL	NULL	Metre	MaterialOnly	600.00	0.00	600.00
+MH-CUS-47	Custom	橱柜	橱柜下柜（升级款） （吸塑.高光）	NULL	NULL	NULL	Metre	MaterialOnly	735.00	0.00	735.00
+MH-CUS-48	Custom	橱柜	橱柜上柜（升级款） （吸塑.高光）	NULL	NULL	NULL	Metre	MaterialOnly	650.00	0.00	650.00
+MH-CUS-49	Custom	橱柜	橱柜台面	NULL	NULL	NULL	Metre	MaterialOnly	350.00	0.00	350.00
+MH-CUS-50	Custom	橱柜	抽屉工艺	NULL	NULL	NULL	Count	MaterialOnly	100.00	0.00	100.00
+MH-CUS-51	Custom	橱柜	橱柜配套水槽	NULL	NULL	NULL	Set	MaterialOnly	550.00	0.00	550.00
+MH-CUS-52	Custom	橱柜	橱柜配套冷热龙头	NULL	NULL	NULL	Set	MaterialOnly	260.00	0.00	260.00
+MH-CUS-53	Custom	橱柜	橱柜配套碗篮	NULL	NULL	NULL	Set	MaterialOnly	330.00	0.00	330.00
+MH-CUS-54	Custom	橱柜	橱柜配套调味篮	NULL	NULL	NULL	Set	MaterialOnly	280.00	0.00	280.00
+MH-CUS-55	Custom	橱柜	橱柜台下盆工艺	NULL	NULL	NULL	Item	MaterialOnly	160.00	0.00	160.00
+MH-CUS-56	Custom	橱柜	橱柜台中盆	NULL	NULL	NULL	Item	MaterialOnly	200.00	0.00	200.00
+MH-CUS-57	Custom	橱柜	橱柜吊柜封顶板	NULL	NULL	NULL	Metre	MaterialOnly	25.00	0.00	25.00
+MH-CUS-58	Custom	橱柜	橱柜吊柜侧顶板	NULL	NULL	NULL	Area	MaterialOnly	260.00	0.00	260.00
+MH-CUS-59	Custom	橱柜	定制橱柜板材包管	NULL	NULL	NULL	Count	MaterialOnly	120.00	0.00	120.00
+MH-CUS-60	Custom	橱柜	橱柜切角	NULL	NULL	NULL	Count	MaterialOnly	100.00	0.00	100.00
+MH-CUS-61	Custom	橱柜	上翻门支撑	NULL	NULL	NULL	Hole	MaterialOnly	120.00	0.00	120.00
+MH-CUS-65	Custom	志邦橱柜	轻奢系列志邦橱柜地柜（双饰面门板）	志邦	NULL	NULL	Metre	MaterialOnly	700.00	0.00	700.00
+MH-CUS-66	Custom	志邦橱柜	轻奢系列志邦橱柜吊柜（双饰面门板）	志邦	NULL	NULL	Metre	MaterialOnly	480.00	0.00	480.00
+MH-CUS-67	Custom	志邦橱柜	轻奢系列志邦橱柜石材台面	志邦	NULL	NULL	Metre	MaterialOnly	700.00	0.00	700.00
+MH-CUS-68	Custom	志邦橱柜	志邦橱柜配套单水槽	志邦	NULL	NULL	Set	MaterialOnly	665.00	0.00	665.00
+MH-CUS-69	Custom	志邦橱柜	志邦橱柜配套水槽	志邦	NULL	NULL	Set	MaterialOnly	665.00	0.00	665.00
+MH-CUS-70	Custom	志邦橱柜	志邦橱柜多功能单水槽	志邦	NULL	NULL	Set	MaterialOnly	1360.00	0.00	1360.00
+MH-CUS-71	Custom	志邦橱柜	志邦橱柜配套龙头	志邦	NULL	NULL	Set	MaterialOnly	300.00	0.00	300.00
+MH-CUS-72	Custom	志邦橱柜	志邦橱柜配套碗篮	志邦	NULL	NULL	Set	MaterialOnly	540.00	0.00	540.00
+MH-CUS-73	Custom	志邦橱柜	志邦橱柜台下盆工艺	志邦	NULL	NULL	Item	MaterialOnly	345.00	0.00	345.00
+MH-CUS-74	Custom	志邦橱柜	志邦橱柜抽屉工艺	志邦	NULL	NULL	Count	MaterialOnly	160.00	0.00	160.00
+MH-CUS-75	Custom	志邦橱柜	志邦橱柜吊柜封顶板	志邦	NULL	NULL	Metre	MaterialOnly	35.00	0.00	35.00
+MH-CUS-76	Custom	志邦橱柜	志邦橱柜吊柜侧顶板	志邦	NULL	NULL	Area	MaterialOnly	320.00	0.00	320.00
+MH-CUS-77	Custom	志邦橱柜	志邦橱柜-油烟机	志邦	NULL	NULL	Pcs	MaterialOnly	1870.00	0.00	1870.00
+MH-CUS-78	Custom	志邦橱柜	志邦橱柜-燃气灶	志邦	NULL	NULL	Pcs	MaterialOnly	860.00	0.00	860.00
+MH-CUS-79	Custom	志邦橱柜	志邦橱柜板材包管	志邦	NULL	NULL	Area	MaterialOnly	300.00	0.00	300.00
+MH-CUS-80	Custom	志邦橱柜	志邦橱柜切角	志邦	NULL	NULL	Count	MaterialOnly	190.00	0.00	190.00
+MH-CUS-81	Custom	志邦橱柜	志邦上翻门支撑	志邦	NULL	NULL	Hole	MaterialOnly	220.00	0.00	220.00
+MH-CUS-83	Custom	志邦全屋定制	志邦整装现代风格                              双饰面20色可选	志邦	NULL	NULL	Metre	MaterialOnly	945.00	0.00	945.00
+MH-CUS-84	Custom	志邦全屋定制	志邦整装轻奢风格                          UV超晶板 6色可选	志邦	NULL	NULL	Metre	MaterialOnly	1158.00	0.00	1158.00
+MH-CUS-85	Custom	志邦全屋定制	志邦整装欧式风格                 维也纳模压7色可选	志邦	NULL	NULL	Metre	MaterialOnly	1285.00	0.00	1285.00
+MH-CUS-86	Custom	志邦全屋定制	志邦整装轻奢风格                          烤漆5色可选	志邦	NULL	NULL	Metre	MaterialOnly	1500.00	0.00	1500.00
+MH-CUS-87	Custom	志邦全屋定制	升级加选拉手1306492/1306369（线条拉手）	NULL	NULL	NULL	Item	FixedTotal	100.00	0.00	100.00
+MH-CUS-88	Custom	志邦全屋定制	升级加选拉手1306494/1306370（线条拉手）	NULL	NULL	NULL	Item	FixedTotal	150.00	0.00	150.00
+MH-CUS-89	Custom	志邦全屋定制	志邦刚抽	志邦	NULL	NULL	Item	FixedTotal	145.00	0.00	145.00
+MH-CUS-90	Custom	志邦全屋定制	志邦刚抽+围杆	志邦	NULL	NULL	Item	FixedTotal	195.00	0.00	195.00
+MH-CUS-91	Custom	志邦全屋定制	志邦阻尼抽屉	志邦	NULL	NULL	Item	FixedTotal	365.00	0.00	365.00
+MH-CUS-92	Custom	志邦全屋定制	志邦阻尼抽屉+围杆	志邦	NULL	NULL	Item	FixedTotal	415.00	0.00	415.00
+MH-CUS-93	Custom	志邦全屋定制	雅黑拉直器	NULL	NULL	NULL	Item	FixedTotal	260.00	0.00	260.00
+MH-CUS-94	Custom	志邦全屋定制	D米003.平米05（标配透明玻璃及磨砂玻璃）	NULL	NULL	NULL	Metre	FixedTotal	550.00	0.00	550.00
+MH-CUS-95	Custom	志邦全屋定制	D米009（标配灰玻）	NULL	NULL	NULL	Metre	FixedTotal	1175.00	0.00	1175.00
+MH-CUS-96	Custom	志邦全屋定制	榻榻米柜体升级	NULL	NULL	NULL	Metre	FixedTotal	285.00	0.00	285.00
+MH-CUS-97	Custom	志邦全屋定制	榻榻米阻尼蜗牛	NULL	NULL	NULL	Item	FixedTotal	110.00	0.00	110.00
+MH-CUS-98	Custom	志邦全屋定制	三段式气动榻榻米升降机	NULL	NULL	NULL	Pcs	FixedTotal	1460.00	0.00	1460.00
+MH-CUS-99	Custom	志邦全屋定制	H370	NULL	NULL	NULL	Item	FixedTotal	120.00	0.00	120.00
+MH-CUS-100	Custom	志邦全屋定制	H470	NULL	NULL	NULL	Item	FixedTotal	120.00	0.00	120.00
+MH-CUS-101	Custom	志邦全屋定制	H570	NULL	NULL	NULL	Item	FixedTotal	120.00	0.00	120.00
+MH-CUS-102	Custom	志邦全屋定制	H704	NULL	NULL	NULL	Item	FixedTotal	165.00	0.00	165.00
+MH-CUS-103	Custom	志邦全屋定制	H880	NULL	NULL	NULL	Item	FixedTotal	165.00	0.00	165.00
+MH-CUS-104	Custom	志邦全屋定制	H2112	NULL	NULL	NULL	Item	FixedTotal	410.00	0.00	410.00
+MH-CUS-105	Custom	志邦全屋定制	H2368	NULL	NULL	NULL	Item	FixedTotal	410.00	0.00	410.00
+MH-CUS-106	Custom	志邦全屋定制	H2288	NULL	NULL	NULL	Item	FixedTotal	410.00	0.00	410.00
+MH-CUS-107	Custom	志邦全屋定制	W300 柜	NULL	NULL	NULL	Item	FixedTotal	110.00	0.00	110.00
+MH-CUS-108	Custom	志邦全屋定制	W450 柜	NULL	NULL	NULL	Item	FixedTotal	110.00	0.00	110.00
+MH-CUS-109	Custom	志邦全屋定制	W600 柜	NULL	NULL	NULL	Item	FixedTotal	120.00	0.00	120.00
+MH-CUS-110	Custom	志邦全屋定制	W900 柜	NULL	NULL	NULL	Item	FixedTotal	165.00	0.00	165.00
+MH-CUS-111	Custom	志邦全屋定制	L=413	NULL	NULL	NULL	Item	FixedTotal	95.00	0.00	95.00
+MH-CUS-112	Custom	志邦全屋定制	L=463	NULL	NULL	NULL	Item	FixedTotal	95.00	0.00	95.00
+MH-CUS-113	Custom	志邦全屋定制	L=563	NULL	NULL	NULL	Item	FixedTotal	95.00	0.00	95.00
+MH-CUS-114	Custom	志邦全屋定制	L=763	NULL	NULL	NULL	Item	FixedTotal	145.00	0.00	145.00
+MH-CUS-115	Custom	志邦全屋定制	L=863	NULL	NULL	NULL	Item	FixedTotal	145.00	0.00	145.00
+MH-CUS-116	Custom	志邦全屋定制	L 型隔板灯12W	NULL	NULL	NULL	Set	FixedTotal	1215.00	0.00	1215.00
+MH-CUS-117	Custom	志邦全屋定制	L 型隔板灯18W	NULL	NULL	NULL	Set	FixedTotal	1580.00	0.00	1580.00
+MH-CUS-118	Custom	志邦全屋定制	单口变压器12W	NULL	NULL	NULL	Item	FixedTotal	65.00	0.00	65.00
+MH-CUS-119	Custom	志邦全屋定制	单口变压器35W	NULL	NULL	NULL	Item	FixedTotal	160.00	0.00	160.00

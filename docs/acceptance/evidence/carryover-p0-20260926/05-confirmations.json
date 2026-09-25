@@ -1,0 +1,29 @@
+[
+  {
+    "role": {
+      "name": "企业负责人",
+      "value": "Boss",
+      "key": "Boss"
+    },
+    "proxy": false,
+    "version": 1
+  },
+  {
+    "role": {
+      "name": "财务",
+      "value": "Finance",
+      "key": "Finance"
+    },
+    "proxy": true,
+    "version": 1
+  },
+  {
+    "role": {
+      "name": "项目经理",
+      "value": "Pm",
+      "key": "Pm"
+    },
+    "proxy": true,
+    "version": 1
+  }
+]

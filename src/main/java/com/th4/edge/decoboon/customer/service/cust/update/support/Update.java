@@ -31,7 +31,7 @@ import java.math.BigDecimal;
  * 客户编辑 Provider。
  *
  * <p>先按当前角色的数据范围加载客户，只编辑业务字段；客户状态由后续状态流转服务维护。
- * 非 BOSS 不能转交客户，BOSS 转交时同步刷新 store/team 归属快照。</p>
+ * 企业负责人和店长可以明确转交客户，店长只能转交给本门店人员，转交时同步刷新 store/team 归属快照。</p>
  */
 @Note("客户编辑")
 @Description("按当前角色数据范围编辑客户基础信息和负责人归属")
@@ -87,7 +87,7 @@ public class Update implements com.th4.edge.decoboon.customer.service.cust.updat
     @Length(max = 512)
     private String remark;
 
-    /** 前端候选负责人；仅 BOSS 生效，非 BOSS 转交请求会被服务端忽略。 */
+    /** 前端候选负责人；仅企业负责人和店长可明确转交，其他角色沿用原负责人。 */
     @AutoInject
     private Long ownerId;
 

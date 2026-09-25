@@ -1,0 +1,12 @@
+{
+  "projectId": "229343918263631872",
+  "businessOrigin": {
+    "name": "接管基线",
+    "value": "Carryover",
+    "key": "Carryover"
+  },
+  "status": {
+    "name": "施工中",
+    "key": "Ongoing"
+  }
+}

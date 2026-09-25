@@ -51,3 +51,12 @@ __pycache__/
 ### Local IDE platform run configurations (may contain local bootstrap credentials)
 .run/平台运营*.xml
 .idea/runConfigurations/平台运营*.xml
+
+# Local AI provider credential (never commit)
+docs/DASHSCOPE_API_KEY
+
+# Local Volcengine Ark credential (never commit)
+docs/1
+
+# Local DeepSeek credential (never commit)
+docs/deepseek

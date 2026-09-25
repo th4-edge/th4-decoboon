@@ -1,4 +1,6 @@
 package com.th4.edge.decoboon.quote.model;
+
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.property.model.Property;
 
 import jakarta.persistence.EntityListeners;
@@ -65,6 +67,11 @@ public class Quote extends AuditModel {
     @Id
     @SnowflakeId
     private Long quoteId;
+
+    @Note("业务来源")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "business_origin", length = 16, nullable = false)
+    private BusinessOrigin businessOrigin = BusinessOrigin.New;
 
     @Note("报价编号")
     @Keyword
@@ -209,7 +216,9 @@ public class Quote extends AuditModel {
     @Transient
     private List<QuoteGroup> otherGroups;
 
-    public Long getQuoteId() { return quoteId; }
+        public BusinessOrigin getBusinessOrigin() { return businessOrigin; }
+    public void setBusinessOrigin(BusinessOrigin businessOrigin) { this.businessOrigin = businessOrigin; }
+public Long getQuoteId() { return quoteId; }
     public void setQuoteId(Long quoteId) { this.quoteId = quoteId; }
     public String getNo() { return no; }
     public void setNo(String no) { this.no = no; }

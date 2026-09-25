@@ -23,6 +23,8 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
 
     Optional<ProjectContract> findByContractIdAndCompany_ComId(Long contractId, Long comId);
 
+    boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
+
     boolean existsByProject_ProjectId(Long projectId);
 
     boolean existsByProperty_PropertyId(Long propertyId);

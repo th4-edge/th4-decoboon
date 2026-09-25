@@ -29,8 +29,8 @@ import java.util.List;
 @Note("家装材料库新增")
 @Properties(allow = @AllowProperties(model = CatalogItem.class,
         properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
-                "pricingMode", "materialPrice", "manualPrice", "costPrice", "formula", "craft", "criterion",
-                "description", "images", "maintainer", "active", "sort", "createTime"}))
+                "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion",
+                "description", "images", "maintainer", "active", "sort", "sourceType", "createTime"}))
 @Service("catalog/item/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Save {
@@ -46,6 +46,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
     @AutoInject @NotNull private PricingMethod pricingMode;
     @AutoInject private BigDecimal materialPrice;
     @AutoInject private BigDecimal manualPrice;
+    @AutoInject private BigDecimal fixedTotalPrice;
     @AutoInject private BigDecimal costPrice;
     @AutoInject private String craft;
     @AutoInject private String criterion;
@@ -108,7 +109,10 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
         item.setPricingMode(pricingMode);
         item.setMaterialPrice(zero(materialPrice));
         item.setManualPrice(zero(manualPrice));
-        item.setCostPrice(zero(costPrice));
+        item.setFixedTotalPrice(fixedTotalPrice);
+        // 成本空白保持 null（成本待维护），0 表示明确零成本
+        item.setCostPrice(costPrice);
+        item.setSourceType(com.th4.edge.decoboon.catalog.configure.CatalogSourceType.Manual);
         item.setFormula(context.formula(pricingMode));
         item.setCraft(craft);
         item.setCriterion(criterion);

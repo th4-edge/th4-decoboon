@@ -3,6 +3,8 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.ReportType;
@@ -66,6 +68,7 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
     private final ProjectPermissionContext permissionContext;
     private final MeasureRepository measureRepository;
     private final ProjectContractRepository contractRepository;
+    private final CarryoverLockContext carryoverLockContext;
 
     public Update(ProjectStageRepository stageRepository,
                   ProjectRepository projectRepository,
@@ -73,7 +76,8 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
                   ProjectAccessContext accessContext,
                   ProjectPermissionContext permissionContext,
                   MeasureRepository measureRepository,
-                  ProjectContractRepository contractRepository) {
+                  ProjectContractRepository contractRepository,
+                  CarryoverLockContext carryoverLockContext) {
         this.stageRepository = stageRepository;
         this.projectRepository = projectRepository;
         this.reportRepository = reportRepository;
@@ -81,6 +85,7 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         this.permissionContext = permissionContext;
         this.measureRepository = measureRepository;
         this.contractRepository = contractRepository;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -164,6 +169,7 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
             report.setVisibleToCustomer(true);
             reportRepository.save(report);
         }
+        if (carryoverLockContext != null) carryoverLockContext.lock(saved.getProject(), CarryoverBusinessType.Stage, current);
         return snapshot(saved);
     }
 

@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20260926-catalog-import-devtools-verify",
+  "tenant": "安徽昭青网络科技",
+  "environment": "local-dev/WeChatDevTools",
+  "mode": "cold-start",
+  "created_at": "2026-09-26T04:19:03",
+  "status": "INITIALIZED",
+  "source": "zhuangdeqing-miniapp-immersion-audit",
+  "notes": [
+    "Mini Program UI evidence is authoritative for experience findings.",
+    "High-impact actions require explicit authorization.",
+    "Local reset and credential switching require current-run authorization, backup, and rollback evidence.",
+    "Raw evidence must not be overwritten by reports."
+  ]
+}

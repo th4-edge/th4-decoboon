@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.project.service.contractchange.batchsave.support;
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
 import com.th4.edge.decoboon.project.configure.ContractChangeType;
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.ContractChange;
@@ -85,6 +87,7 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
     private final ContractChangeItemRepository itemRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
+    private final CarryoverLockContext carryoverLockContext;
     private final ModelIdentityContext modelIdentityContext;
 
     public BatchSave(ProjectContractRepository contractRepository,
@@ -92,12 +95,14 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
                      ContractChangeItemRepository itemRepository,
                      ProjectAccessContext accessContext,
                      ProjectPermissionContext permissionContext,
-                     ModelIdentityContext modelIdentityContext) {
+                     ModelIdentityContext modelIdentityContext,
+                     CarryoverLockContext carryoverLockContext) {
         this.contractRepository = contractRepository;
         this.changeRepository = changeRepository;
         this.itemRepository = itemRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
+        this.carryoverLockContext = carryoverLockContext;
         this.modelIdentityContext = modelIdentityContext;
     }
 
@@ -174,6 +179,7 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
             itemRepository.save(modelIdentityContext.prepare(item));
         }
         saved.setItems(preparedItems);
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.ContractChange, current);
         return saved;
     }
 

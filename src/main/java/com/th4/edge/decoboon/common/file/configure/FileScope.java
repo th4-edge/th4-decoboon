@@ -18,6 +18,7 @@ public enum FileScope implements Enumerable<String> {
     GoodsReceipt("材料到场"),
     StockMovement("库存流水"),
     Catalog("材料库"),
+    Carryover("业务承接"),
     Document("单据归档");
 
     private final String name;

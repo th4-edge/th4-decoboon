@@ -1,0 +1,52 @@
+{
+  "base_url": "https://api.deepseek.com",
+  "key_file": "docs/deepseek",
+  "currency": "USD",
+  "exchange_rate_usd_cny": 7.1,
+  "temperature": 0.2,
+  "profiles": {
+    "flash-fast": {
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "max_tokens": 1800,
+      "description": "低成本快速档"
+    },
+    "pro-fast": {
+      "model": "deepseek-v4-pro",
+      "thinking": "disabled",
+      "max_tokens": 1800,
+      "description": "高质量非思考档"
+    },
+    "pro-think-low": {
+      "model": "deepseek-v4-pro",
+      "thinking": "enabled",
+      "reasoning_effort": "low",
+      "max_tokens": 3000,
+      "description": "高质量低强度思考档"
+    }
+  },
+  "pricing_per_million_usd": {
+    "deepseek-flash": {
+      "peak_cache_hit": 0.006,
+      "peak_cache_miss": 0.3,
+      "peak_output": 1.2,
+      "offpeak_cache_hit": 0.003,
+      "offpeak_cache_miss": 0.15,
+      "offpeak_output": 0.6
+    },
+    "deepseek-v4-pro": {
+      "peak_cache_hit": 0.044,
+      "peak_cache_miss": 1.32,
+      "peak_output": 3.96,
+      "offpeak_cache_hit": 0.022,
+      "offpeak_cache_miss": 0.66,
+      "offpeak_output": 1.98
+    }
+  },
+  "modes": {
+    "generic": "通用销售助手，不提供客户事实规则、企业知识或销售剧本",
+    "facts": "提供完整客户事实和使用事实的约束",
+    "knowledge": "在事实基础上加入企业知识与禁止表达",
+    "full": "在知识和事实基础上再加入销售剧本与结构化动作规则"
+  }
+}

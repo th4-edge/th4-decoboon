@@ -1,0 +1,6 @@
+{
+  "attachmentId": "229345226806788096",
+  "pageCount": 3,
+  "deleteAfterLockRejected": true,
+  "deleteMessage": "carryover/attachment/delete: {\"success\":false,\"errorCode\":{\"code\":\"400\",\"message\":\"项目已承接，附件只能补充不能直接删除\",\"system\":false}}"
+}

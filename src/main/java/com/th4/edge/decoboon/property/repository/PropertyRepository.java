@@ -18,6 +18,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long>,
 
     boolean existsByCompany_ComIdAndCustomer_CustIdAndAddress(Long comId, Long custId, String address);
 
+    boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long custId);
+
     Optional<Property> findFirstByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(Long comId, Long custId);
 
     List<Property> findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(Long comId, Long custId);

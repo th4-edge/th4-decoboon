@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.statistic.context;
 
+import com.th4.edge.decoboon.common.context.BusinessOriginFilter;
+
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
@@ -126,6 +128,7 @@ public class BossDashboardContext {
 
     private BigDecimal signedAmount(List<ProjectContract> contracts, LocalDate month) {
         return contracts.stream()
+                .filter(contract -> BusinessOriginFilter.isNormal(contract.getBusinessOrigin()))
                 .filter(contract -> sameMonth(contract.getSignedAt(), month))
                 .map(this::contractRevenue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

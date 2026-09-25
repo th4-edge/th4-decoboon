@@ -2,21 +2,37 @@
 
 ## Current
 
-当前无产品规划在途任务。
+`REQ-BIZ-20260926-001` 报价项目库批量导入 PRD 已完成，状态 `frozen_for_development`。尝试向 development session 直接投递时返回 archived，未视为已接手；完整 handoff 已写入 PRD 第 15 节，等待协调侧转交或恢复 development session。
 
 ## Outputs
 
 | title | path | audience | status |
 | --- | --- | --- | --- |
 | 装得清上线前业务功能与开发范围规划 | `docs/plan/2026-09-15-上线前业务功能规划.md` | user / development / acceptance | draft_for_review |
+| 报价项目库批量导入 PRD | `docs/product/2026-09-26-报价项目库批量导入PRD.md` | user / development / acceptance | frozen_for_development |
 
 ## Verification
 
-- 当前后端与小程序的可重复验证结果以 `docs/plan/2026-09-15-上线前业务功能规划.md` 为准。
+- 业务裁决 `ANS-BIZ-20260926-001` 与研发咨询 `REQ-BIZ-20260926-001` 已完整读取。
+- 模板 V1.0 已读取：4 个工作表、正式表 23 列、8 组数据验证；SHA-256=`0791273625f65cf6f021089d58284d17aefaab654ddadea50a67766e0f3638a9`。
+- 现有 `catalog/item/import`、`CatalogItem`、六类明细、报价/套餐/成本 Context 与小程序报价项目库页面已核对。
+- 未修改 `src/**`、小程序或生产配置。
 
 ## Next
 
-1. 等待用户确认后续产品范围、首发渠道与业主模型。
+1. 协调侧恢复或转交 development session；development lane 按 PRD 第 15 节 handoff 接手，先冻结批次模型、迁移、Provider 路由和成本完整性传播。
+2. 开发自测完成后按主流程交 acceptance lane，按 PRD 第 14 节独立验收。
+3. 历史项目、合同、报价和财务迁移继续保持暂缓。
+
+## 2026-09-26 报价项目库批量导入 PRD（product-planning → development）
+
+- 业务输入：`ANS-BIZ-20260926-001` 只窄口径解锁报价项目库主数据导入；标准模板 V1.0；历史项目、合同、报价和财务迁移继续暂缓。
+- 产出：`docs/product/2026-09-26-报价项目库批量导入PRD.md`，状态 `frozen_for_development`。
+- 冻结内容：模板下载、微信聊天文件选择、上传解析、预览、整批/部分导入、结果页、错误清单、批次状态、重复策略、成本待维护、固定总价和撤销规则。
+- 现有实现差距：`catalog/item/import` 仅支持接口列表或 classpath JSON，逐条默认值写入、成本缺失写 0、无预览/批次/重复/撤销，不能直接作为小程序闭环。
+- 模型影响：新增 `CatalogImportBatch`、`CatalogImportRow`；`CatalogItem.costPrice` 改为可空并新增固定总价/来源批次；同步报价、套餐、合同和成本完整性上下文。
+- 验收要求：550 条数据、重复文件、跨企业、成本空白与 0、固定总价冲突、错误行、部分导入、24 小时内无引用撤销、导入后立即选材。
+- 交接：`HANDOFF-CATALOG-IMPORT-20260926-001` 已写入 PRD；直接发送 development session 返回 archived，当前只算“已交接资料准备完成”，尚未确认接手。
 
 ## 2026-09-23 企业负责人 Web 端「经营管控中心」高保真交互设计方案
 

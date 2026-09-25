@@ -1,5 +1,27 @@
 # Development Worklog
 
+## 2026-09-26 工地相册企业用户访问修复
+
+- 现象：业主工地相册开放后，企业员工从项目详情进入 “相册” 返回 `403 当前会话不是业主身份`。
+- 根因：`customer/project/album/page` 只把 `@User` 当 `Credentials` 处理，员工 `Employee` 会话被 `CustomerAccessContext.requireCredential` 拒绝。
+- 修复：相册 Provider 改为双入口鉴权。员工使用 `ProjectAccessContext.requireReadableProject` 走四级数据范围；业主继续使用 `CustomerAccessContext.requireCredential + requireProject` 走显式项目授权。相册内容仍只合并 `visibleToCustomer=true` 的现场汇报与阶段验收。
+- 回归：新增 `ProjectAlbumAccessTest` 覆盖员工/业主两条入口；`OwnerClosureAcceptanceTest`、`OwnerFileExposureAcceptanceTest`、`ProviderSecurityAcceptanceTest` 全部 PASS。
+- 状态：`fixed_pending_app_publish_or_acceptance`。
+
+## 2026-09-26 接管后剩余施工计划 P0
+
+- 依据：`DEC-011`、`SCN-011`、`BR-010`、`SOL-005` 与用户本轮 6 项要求。
+- 后端：新增 `CarryoverPlanContext`、计划状态/动作枚举、计划确认与调整留痕实体/仓储，以及 `carryover/plan/stage/{save,delete,reorder}`、`carryover/plan/confirm`、`carryover/plan/change/page` 五条受保护 Provider。
+- 进度保护：`Project/ProjectStage` 增加 `baselineProgress`；`ProjectContext.refreshProject` 以接管进度为下限，按剩余任务完成率推进，新增阶段或排任务不会把进度算回零。
+- 锁定规则：接管基线阶段不可删除；未来未开工阶段可以调整；首笔接管后业务或计划已确认后修改必须填写原因并写入调整记录；负责人未建立时保留 BOSS 代确认痕迹。
+- 迁移：新增 `docs/design/migrations/62-接管后剩余施工计划.sql`，本地执行 PASS；已有 Carryover 项目进度基线回填成功；发布脚本迁移范围上调到 `24..62`。
+- App：新增 `subpackages/carryover/pages/plan.vue` 四步引导；业务承接首页/录入页补返回；项目列表卡片重构为状态、项目事实、计划下一步三层；计划页“排施工任务”复用现有 `project/pages/plan-edit`。
+- 验证：后端全量 `mvn -o -q test` PASS；App `npm run verify:mp-weixin` PASS（110 页）；微信开发者工具真实 BOSS 完成新增阶段、确认计划、锁定后带原因调整，项目进度全程保持 40%，计划版本 v1→v2，确认/调整记录回读正确。
+- 用户复验修复：接管后施工计划“最近调整”不再显示 `stageCreate` 等内部枚举，统一映射为“新增阶段 / 调整阶段 / 调整顺序 / 删除阶段 / 确认计划”；App type-check、计划契约、构建与分包检查 PASS。
+- 风险：当前只做项目内剩余计划，不做历史补录和企业计划版本快照；未排任务的当前阶段会保持接管基线进度，属于防高估策略。
+- 交接：`_系统/协作/lanes/development/workspace/carryover-remaining-plan-p0.md`。
+- 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。
+
 ## 2026-09-24 v20260924-rc1 正式生产发布
 
 - 用户决策：整改复验、业主主动发起需求暂缓，等真实客户反馈后再评估；本次不纳入正式发布能力表述。
@@ -2383,3 +2405,74 @@ size=12 -> 返回 9 条（全量），响应 size 字段 = 12
 - 复验通过（开发者工具真机页面文本）：① 项目旅程状态 **待验收→施工中**（P1 读侧权威生效）；② 量房摘要 **ISO→`2026-09-10 05:03:07`**；③ 项目详情"当前阶段" **空白→"待验收"**（回退口径生效）；④ 验收整改显示 **整改责任人/类型/截止/轮次**。
 - 另一项：业主邀请链接生成已改指向 `pages/owner/enter`（`subpackages/project/pages/invite.vue`）。
 - 待办：项目详情投影补 `currentStageName`；2c 待我处理可展开；"整改完成请复验"与业主发起通道待业务裁决。
+
+## 2026-09-26 REQ-BIZ-20260926-001 报价项目库批量导入 P0（小程序闭环）
+- 依据：`ANS-BIZ-20260926-001`、`REQ-BIZ-20260926-001`、模板 V1.0（SHA-256 07912736…）、PRD-CATALOG-IMPORT-20260926-001（frozen_for_development）。
+- 后端：新增批次/导入行实体与 6 条业务路由（PRD §12 冻结）：`catalog/import-batch/{build,info,page,save,update}`、`catalog/import-row/page`，模板下载 `catalog/import-template/build`（返回与仓库一致的 V1.0 模板，实测下载 SHA-256 与冻结值相同）。
+  - 解析：`.xlsx`（POI，校验工作表「报价项目库」、合并单元格、超列、≤2000 行）与 UTF-8/BOM `.csv`；表头按名称识别（去必填星号与括号提示），缺列/多列阻断；预览不写 `CatalogItem`。
+  - 校验：类型/单位/计价方式枚举归一、售价按计价方式校验（空白不得当 0）、固定总价独立列且禁止与材料/人工混填、成本空白=null（待维护）与 0=明确零成本、类型专项字段、文本长度。
+  - 重复：有编码按“企业+类型+编码”，无编码按“类型+名称+品牌+规格+单位”；文件内重复跳过并提示行号、企业内重复跳过、编码冲突错误行提示原项目、系列不同进入疑似重复（批次策略 Skip/Import）；同一文件按 SHA-256 幂等返回原批次，撤销/失败/过期不占用指纹。
+  - 确认/撤销：确认导入单事务写入，整批有错误行时拒绝，`partialImport=true` 才仅导入合格行；24 小时内且无下游引用（设计/套餐/报价/任务/材料计划/库存/流水/供货价/采购价）可整批撤销；重复确认幂等。
+  - 主模型：`CatalogItem.costPrice` 可空（null=待维护）、新增 `fixedTotalPrice`/`importBatch`/`sourceType`；`DesignItem`/`QuoteLine` 增加 `fixedTotalPrice`，`QuoteCalcContext` 固定总价使用独立字段（不再用材料+人工伪造），设计/报价/混合报价/调整项链路同步。
+- 小程序：报价项目库维护页新增 BOSS 专属「下载 V1.0 模板 / 批量导入 / 最近导入记录」；新增导入页（微信聊天选文件、上传解析、预览统计、可导入/重复/错误清单、疑似重复策略、整批或二次确认仅导入合格行）与结果页（批次信息、统计、错误/重复清单、复制错误摘要、撤销）；`CatalogPicker`/维护页按独立固定总价展示，成本显示区分“成本待维护 / ¥0.00（明确零成本）”。
+- 验证：`mvn -o -q test` 344 tests / 0 failures / 0 errors（含同步 `ProviderSecurityAcceptanceTest` 路由计数 315→322，待 acceptance 复核）；App `type-check`、`build:mp-weixin`、`check:subpackages` PASS（主包 719719 B，最大分包 539173 B，总包 2493098 B）；真实 550 条数据端到端探针见 `workspace/catalog-import-verify/probe-output.txt`。
+- 补充：`catalog/import-batch/build` 支持可选 `fileName`（微信 chooseMessageFile 临时文件名可能无扩展名，小程序上传时传原始文件名），探针验证通过；最终门禁 `mvn -o -q test` 344/0/0、App `type-check`+`build:mp-weixin`+`check:subpackages` PASS。
+
+## 2026-09-26 版本管理与发布分支规范建立
+
+- 盘点：后端仅有 `master` + `codex/backend-baseline-20260920`；App 仅有 `master` + `codex/app-business-closure`；两者均有混合未提交改动，尚未建立 `dev/test/prod`。
+- 高风险发现：Web 无独立 `.git`，Git 实际回溯到 `/Users/zhangwei/.git`，当前 Web 代码处于用户主目录仓库的错误版本管理边界内。
+- 产出：`docs/operations/版本管理与发布分支规范.md`、`docs/operations/releases/_发布记录模板.md`；`AGENTS.md`、`rules.md` §14、`docs/deploy/PRODUCTION.md` 已同步强制入口。
+- 规范：大功能 `feature/*`、小修复 `fix/*` 均从 `dev` 创建并回并；正常链 `dev -> test -> prod`，仅生产事故走 `prod -> hotfix/*`；禁止直推、强推、移动 tag。
+- 状态：`norm_established_migration_pending`。未创建或推送远端长期分支，未调整现有工作区改动。
+
+## 2026-09-26 新装企业在跑项目承接 P0 后端第一批
+
+- 依据：`DEC-011`、`SCN-011`、`BR-010`、`SOL-005`、`REQ-BIZ-20260926-002`、`docs/design/21-新装企业在跑项目承接P0设计.md`。
+- 后端：新增 `carryover` 领域（承接批次、承接项目、确认、成本快照、锁定后调整、附件）与迁移 `61-新装企业在跑项目承接P0.sql`。
+- 来源隔离：为 Quote、ProjectContract、Project、Receivable、Payable 增加 `BusinessOrigin`；报价接受率、经营分析和负责人仪表盘排除 Carryover 新签/转化，不影响接管项目当前工地与财务承载。
+- 业务落地：承接项目可生成接管基线报价、生效合同、正式项目、当前阶段、期初应收应付和接管前成本快照；首笔收款、付款、任务、阶段、验收、现场汇报、采购和合同变更会锁定单项目。
+- 验证：`mvn -q -DskipTests compile` PASS；`CarryoverProjectContextTest`、`CarryoverCostContextTest` PASS；`ProviderSecurityAcceptanceTest` 3/3 PASS（路由更新至 331 条）。
+- 未完成：前端页面/引导、成本上下文与现有利润链路最终接入、附件删除/调整分页、迁移 61 目标环境执行、完整业务验收。
+- 状态：`implementation_in_progress_backend_first_batch`。
+
+## 2026-09-26 新装企业在跑项目承接 P0 App 第二批
+
+- App：新增 `src/domains/carryover/{model,api}.ts`，接入 batch info/save、project page/info/save/build、confirmation save。
+- App：注册企业页增加“已有在建项目”开关，开启后创建企业直接进入业务承接；新增 `subpackages/carryover/pages/index.vue`（承接首页）与 `edit.vue`（客户房屋、报价合同、当前工地、期初财务、成本与来源追溯五段录入）。
+- 权限：仅 BOSS 可见和操作；提交时由 BOSS 依次代 BOSS/财务/项目经理确认，再调用 build 落地真实业务对象；服务端继续执行负责人、金额、成本和锁定校验。
+- 入口：我的-经营工具新增“业务承接”。
+- 验证：App `npm run verify:mp-weixin` 全量 PASS；主包 14 页，分包 15 个 / 109 页，分包检查通过。
+- 未完成：首页承接卡片、附件上传 UI、调整/撤回 UI、接管项目标识、后端成本链最终接入、迁移 61 执行和真实企业端到端验收。
+- 状态：`app_first_batch_done_pending_e2e`。
+
+## 2026-09-26 新装企业在跑项目承接 P0 成本链接入
+
+- `ProjectCostContext` 新增接管前成本快照合并：接管前成本 + 接管后实际成本；快照完整性未确认时整体成本不完整。
+- `FinanceReportContext` 新增接管成本上下文：期初应付继续进入当前应付余额，但不重复计入项目成本；汇总与项目明细按“接管前成本 + max(接管后实际成本, 接管后应付成本)”计算。
+- 新增测试：完整快照合并、完整性未确认保持利润为空；现有 `ProjectCostContextTest`、`FinanceProfitAccountingTest`、`ProjectOverviewContextTest`、`BossDashboardContextTest`、`QuoteAcceptanceContextTest`、`BusinessAnalysisContextTest` 全部 PASS。
+- 状态：`cost_integration_done_self_tested`。
+
+## 2026-09-26 新装企业在跑项目承接 P0 本地 BOSS 端到端自测
+
+- 本地 MySQL `decoboon` 已执行迁移 61；6 张 carryover 表和 5 张现有业务表 `business_origin` 列/默认值均验证通过。
+- 真实麦鸿 BOSS `19900000001` 完成：建立承接任务、录入项目、BOSS 代 BOSS/财务/PM 确认、正式承接、项目来源回读、期初应收应付、首笔收款锁定、锁定后撤回拒绝、成本调整、附件上传与删除拒绝。
+- 关键结果：项目 `229343918263631872`、承接项 `229343917324107776`、首笔收款 5000、未收 115000、成本状态 TotalOnly、利润 null、项目状态 Locked。
+- 验证：后端承接/成本/财务/Provider 安全定向回归 PASS；App `verify:mp-weixin` PASS；证据 `docs/acceptance/evidence/carryover-p0-20260926/`，自测报告 `docs/acceptance/carryover-p0-boss-e2e-20260926.md`。
+- 边界：本地开发自测，不等于独立 acceptance，不等于生产上线。
+- 状态：`development_e2e_self_test_passed_pending_acceptance`。
+
+## 2026-09-26 承接项目期初财务录入体验与准确性
+
+- App 承接录入页重构“期初财务与接管前成本”：增加应收未收/尾款/欠款、应付未付/供应商欠款/工资待付等术语解释，给出“总额减已收/已付”公式和示例。
+- 增加准确性交互：无未收款/无未付款一键明确为 0、未收超当前合同金额实时警告、成本状态解释卡片、提交前财务摘要确认。
+- 后端校验同步增加：期初应收不得超过当前合同金额；金额、归属和成本完整性仍由服务端阻断。
+- 验证：App `verify:mp-weixin` PASS；后端承接、成本、财务和 Provider 安全定向回归 PASS。
+- 状态：`financial_ux_accuracy_done_self_tested`。
+
+## 2026-09-26 REQ-BIZ-20260926-001-W1/W2 报价项目库维护可达性 + 交互优化 + 项目删除
+- W1 UI 可达性：`CatalogPicker` 根节点为 `position:fixed; inset:0; z-index:120` 全屏层，维护页把批量导入卡片放在其兄弟节点导致被覆盖。修复为**管理模式工具栏插槽**：`CatalogPicker` 在固定层内 header 之后渲染 `cp__manage-toolbar` + `<slot name="manage-toolbar"/>`，维护页把「批量导入报价项目库 / 下载 V1.0 模板 / 最近导入记录」作为插槽内容注入（编译产物 `manage.wxml` 中 `cm__import` 已带 `slot="manage-toolbar"` 且位于 `<catalog-picker>` 内，`CatalogPicker.wxml` 中 `.cp__manage-toolbar` 位于 `.cp` 固定层内）。
+- W2 交互优化：项目卡片主体点击=编辑（移除冗余铅笔按钮），底部改为「更多」操作菜单（`uni.showActionSheet`：启用/停用 + 删除项目）；删除必须二次确认（`uni.showModal`），成功后刷新列表并提示，失败直接展示后端业务原因（如“已被设计分项引用，无法删除；如不再使用，可改为停用”）。
+- W2 后端删除：新增 `catalog/item/delete`（Security，复用现有维护权限，企业取登录员工企业）。删除前检查设计分项/套餐/报价/任务/材料计划/库存/库存流水/供应商供货/供应商采购价引用，命中即 400 并建议停用；导入批次行采用**受控解除**（置空 `item_id` 并写 `errorCode=DELETED` 保留审计），主项目+类型明细同事务删除；重复删除稳定 404。
+- 验证：后端 `mvn -o -q test` 109 suites / 365 tests / 0 failures / 0 errors（同步 `ProviderSecurityAcceptanceTest` 路由计数 340→341，待 acceptance 复核）；删除能力真实 HTTP+DB 探针见 `workspace/catalog-delete-verify/probe-output.txt`（无引用删除成功、重复删除 404、被设计分项引用 400+停用建议、不存在 404、导入行解除关联 DELETED、撤销清理）；App `type-check`、`build:mp-weixin`、`check:subpackages` PASS（主包 729697 B、最大分包 540733 B、总包 2571475 B）。
+- 遗留：微信开发者工具自动化（miniprogram-automator）在本机无法附着（IDE 服务端口未开启，`reLaunch` 超时），H5 登录仅支持微信手机号快捷登录，无法用脚本注入 BOSS 会话，故小屏视觉确认改由**编译产物结构证据**给出，真机/DevTools 视觉复验列为 acceptance 项。

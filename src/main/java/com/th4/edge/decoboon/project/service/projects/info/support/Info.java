@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Note("项目详情")
 @Properties(allow = {
         @AllowProperties(model = Project.class,
-                properties = {"projectId", "no", "name", "property", "customer", "quote", "designer", "manager",
+                properties = {"projectId", "businessOrigin", "no", "name", "property", "customer", "quote", "designer", "manager",
                         "siteAddr", "area", "contractAmount", "cost", "status", "progress", "startDate",
                         "planEndDate", "actualEndDate", "currentStageName", "createTime" }),
         @AllowProperties(model = Customer.class,

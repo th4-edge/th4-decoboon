@@ -21,6 +21,8 @@ public interface CustomerFollowRepository extends JpaRepository<CustomerFollow, 
 
     List<CustomerFollow> findByCompany_ComIdAndEmp_EmpId(Long comId, Long empId);
 
+    boolean existsByCustomer_CustId(Long customerId);
+
     /** 批量统计客户跟进次数，供客户列表装配分级时避免 N+1。 */
     @Query("select f.customer.custId as customerId, count(f) as total from CustomerFollow f "
             + "where f.company.comId = :comId and f.customer.custId in :customerIds "

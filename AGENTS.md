@@ -41,6 +41,15 @@
 - 自动修复只允许处理高置信、单根因、可回滚且不涉及 DDL/迁移/密钥/权限放宽/资金金额语义的代码缺陷；其余事故只记录并人工处理。
 - 任何生产发版必须使用 `scripts/deploy-prod.sh`，失败自动回滚到 `/opt/decoboon/releases/.previous`。
 
+## 版本管理与发布分支（强制）
+
+- 大功能从 `dev` 创建 `feature/<domain>-<slug>`，小修复或小变更从 `dev` 创建 `fix/<domain>-<slug>`；禁止在 `dev/test/prod/master` 上直接开发或直接推送。
+- 正常发布链固定为 `feature|fix -> dev -> test -> prod`；生产事故才允许 `prod -> hotfix/* -> test 环境验证 -> prod -> test -> dev`。
+- `test` 只接收发布经理合并的 `dev` 发布批次；`prod` 只接收已验收的 RC 或已验证热修。正常发布禁止逐条 cherry-pick、强推、重置或移动 tag。
+- 每次生产发布必须从正式 tag 构建，记录 Release ID、commit、tag、制品 SHA-256、迁移、备份、回滚点和验证证据；发布记录使用 `docs/operations/releases/_发布记录模板.md`。
+- 当前尚在迁移期：Web 必须先建立独立 Git 仓库，后端和 App 的混合未提交改动必须按需求/缺陷拆分后才能建立正式环境分支。
+- 完整流程、分支保护、热修、回滚和多仓库顺序见 `docs/operations/版本管理与发布分支规范.md`。
+
 ## 实际业务场景推演（强制）
 
 - 任何新功能在定义实体、字段、页面和权限前，先写清至少 2 个真实中小装企场景，含「使用人、触发事件、当前动作、系统下一步、异常处理」，没有闭环不得进入编码。

@@ -105,8 +105,17 @@ class ProviderSecurityAcceptanceTest {
         // 2026-09-23 业主验收轮次时间线拆分 1 条（customer/acceptance/round/page）
         // 2026-09-23 业主项目旅程 1 条、意见投诉 5 条
         // 2026-09-24 业主工地相册聚合 1 条（customer/project/album/page）
-        assertThat(routes).hasSize(312);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(300);
+        // 2026-09-26 报价项目库批量导入 P0 并入 7 条（catalog/import-batch/{build,info,page,save,update}、
+        // catalog/import-row/page、catalog/import-template/build）
+        // 2026-09-26 新装企业在跑项目承接 P0 并入 13 条（carryover/batch/{info,save}、
+        // carryover/project/{page,info,save,update,build}、carryover/confirmation/save、
+        // carryover/adjustment/{save,page}、carryover/attachment/{save,page,delete}）。
+        // 接管后剩余施工计划新增 5 条（stage/save、stage/delete、stage/reorder、plan/confirm、plan/change/page）。
+        // => 总数为 340（public 12 + protected 328）；待 acceptance 复核。
+        // 2026-09-26 报价项目库批量导入 W2 并入 1 条（catalog/item/delete）
+        // => 总数为 341（public 12 + protected 329）；由 development lane 机械同步，待 acceptance 复核
+        assertThat(routes).hasSize(341);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(329);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
     }
 
@@ -153,6 +162,9 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("customer/customer-tag-link/delete");
         assertUnauthorized("customer/customer-portrait/save");
         assertUnauthorized("customer/customer/overview");
+        assertUnauthorized("customer/customer-batch/build");
+        assertUnauthorized("customer/customer-batch/save");
+        assertUnauthorized("customer/customer/delete");
         assertUnauthorized("design/scheme/delete");
         assertUnauthorized("pack/section/save");
         assertUnauthorized("pack/line/save");

@@ -123,6 +123,14 @@
                     <include>fonts/*.txt</include>
                 </includes>
             </resource>
+            <!-- 报价项目库批量导入 V1.0 模板：二进制资源禁止过滤，否则模板损坏 -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>catalog/*.xlsx</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>

@@ -126,7 +126,9 @@ public class Save implements com.th4.edge.decoboon.design.service.items.save.Sav
         target.setUnit(source.getUnit());
         target.setMaterialPrice(zero(source.getMaterialPrice()));
         target.setManualPrice(zero(source.getManualPrice()));
-        target.setCostPrice(zero(source.getCostPrice()));
+        target.setFixedTotalPrice(source.getFixedTotalPrice());
+        // 成本空白保持 null（成本待维护），不得落成 0
+        target.setCostPrice(source.getCostPrice());
         target.setPricingMode(source.getPricingMode() == null ? PricingMethod.MaterialAndManual : source.getPricingMode());
         target.setFormula(source.getFormula());
         target.setCriterion(source.getCriterion());

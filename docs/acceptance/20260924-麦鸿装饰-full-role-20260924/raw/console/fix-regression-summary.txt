@@ -1,0 +1,8 @@
+修复回归验证
+- mvn -o -q -Dtest=DesignWritePermissionTest,DecoboonClosedLoopTest test：PASS
+- mvn -o -q -DforkCount=0 test：PASS
+- npm run verify:mp-weixin：PASS
+- money-format：5/5 PASS
+- vue-tsc：PASS
+- mp-weixin build：PASS
+- 分包检查：PASS（主包 699738 B，最大分包 539173 B，总包 2435179 B）

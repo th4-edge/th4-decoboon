@@ -29,7 +29,7 @@ import java.util.List;
 @Note("项目分页")
 @Properties(allow = {
         @AllowProperties(model = Project.class,
-                properties = {"projectId", "no", "name", "property", "customer", "quote", "designer", "manager", "support",
+                properties = {"projectId", "businessOrigin", "no", "name", "property", "customer", "quote", "designer", "manager", "support",
                         "siteAddr", "area", "contractAmount", "cost", "status", "progress", "startDate",
                         "planEndDate", "actualEndDate", "currentStageName", "createTime" }),
         @AllowProperties(model = Customer.class,

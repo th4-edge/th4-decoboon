@@ -5,6 +5,8 @@ import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
@@ -67,13 +69,16 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
     private final ProjectTaskRepository taskRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectContext projectContext;
+    private final CarryoverLockContext carryoverLockContext;
 
     public Update(ProjectTaskRepository taskRepository,
                   ProjectAccessContext accessContext,
-                  ProjectContext projectContext) {
+                  ProjectContext projectContext,
+                  CarryoverLockContext carryoverLockContext) {
         this.taskRepository = taskRepository;
         this.accessContext = accessContext;
         this.projectContext = projectContext;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -115,6 +120,7 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
         }
         ProjectTask saved = taskRepository.save(task);
         projectContext.refreshProject(task.getProject());
+        if (carryoverLockContext != null) carryoverLockContext.lock(task.getProject(), CarryoverBusinessType.Task, current);
         return safeCopy(saved);
     }
 

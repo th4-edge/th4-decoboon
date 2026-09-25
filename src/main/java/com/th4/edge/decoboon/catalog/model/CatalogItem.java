@@ -7,6 +7,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.bim.configure.Unit;
+import com.th4.edge.decoboon.catalog.configure.CatalogSourceType;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -158,10 +159,21 @@ public class CatalogItem extends AbstractModel {
     @Column(precision = 12, scale = 2, nullable = false)
     private BigDecimal manualPrice = BigDecimal.ZERO;
 
+    @Note("固定总价（仅固定总价计价方式使用，独立于材料/人工单价）")
+    @com.th4.edge.framework.core.annotation.Unit("元")
+    @Column(name = "fixed_total_price", precision = 12, scale = 2)
+    private BigDecimal fixedTotalPrice;
+
+    /**
+     * 标准成本单价。
+     *
+     * <p>{@code null} = 成本待维护；{@code 0} = 明确零成本；{@code >0} = 已维护标准成本。
+     * 不允许在导入或维护时把“待维护”写成 0。</p>
+     */
     @Note("成本单价")
     @com.th4.edge.framework.core.annotation.Unit("元")
-    @Column(precision = 12, scale = 2, nullable = false)
-    private BigDecimal costPrice = BigDecimal.ZERO;
+    @Column(precision = 12, scale = 2)
+    private BigDecimal costPrice;
 
     @Note("计算公式说明")
     @Column(length = 256, nullable = false)
@@ -188,6 +200,16 @@ public class CatalogItem extends AbstractModel {
     @Note("是否启用")
     @Column(nullable = false)
     private Boolean active = Boolean.TRUE;
+
+    @Note("导入来源批次")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "import_batch_id")
+    private CatalogImportBatch importBatch;
+
+    @Note("来源类型")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source_type", length = 16, nullable = false)
+    private CatalogSourceType sourceType = CatalogSourceType.Manual;
 
     @Note("排序")
     @Column(nullable = false)
@@ -241,6 +263,12 @@ public class CatalogItem extends AbstractModel {
     public void setManualPrice(BigDecimal manualPrice) { this.manualPrice = manualPrice; }
     public BigDecimal getCostPrice() { return costPrice; }
     public void setCostPrice(BigDecimal costPrice) { this.costPrice = costPrice; }
+    public BigDecimal getFixedTotalPrice() { return fixedTotalPrice; }
+    public void setFixedTotalPrice(BigDecimal fixedTotalPrice) { this.fixedTotalPrice = fixedTotalPrice; }
+    public CatalogImportBatch getImportBatch() { return importBatch; }
+    public void setImportBatch(CatalogImportBatch importBatch) { this.importBatch = importBatch; }
+    public CatalogSourceType getSourceType() { return sourceType; }
+    public void setSourceType(CatalogSourceType sourceType) { this.sourceType = sourceType; }
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
     public String getCraft() { return craft; }

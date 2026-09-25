@@ -13,4 +13,6 @@ public interface CustomerPortraitRepository extends JpaRepository<CustomerPortra
     Optional<CustomerPortrait> findByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
 
     List<CustomerPortrait> findByCompany_ComIdAndCustomer_CustIdIn(Long comId, Collection<Long> customerIds);
+
+    long deleteByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
 }

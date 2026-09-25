@@ -1198,3 +1198,18 @@ key / label / required / source_provider / completion_predicate / count / refres
 - 供应商品牌关系为可选步骤；完成谓词为 `status=active && type=supplier && brands.length > 0`。
 - 第一份报价、签约和项目立项属于业务里程碑，不纳入首次入驻完成分母。
 - 权威状态表与验收矩阵见 `输出/草稿/装得清首次入驻三件套-20260918/07-系统内引导与验收清单.md`。
+
+
+---
+
+## 14. 版本管理与发布分支（强制）
+
+- 长期分支固定为 `dev`（日常集成和默认分支）、`test`（发布候选和验收）、`prod`（生产事实源）；`master/main` 迁移完成后只读归档，不再接新工作。
+- 大功能使用 `feature/<domain>-<slug>`，小修复或小变更使用 `fix/<domain>-<slug>`，均从最新 `dev` 创建并合并回 `dev`；生产事故才使用从 `prod` 创建的 `hotfix/*`。
+- 正常发布链固定为 `feature|fix -> dev -> test -> prod`。只有发布经理执行 `dev -> test`、`test -> prod`，且必须使用 `--no-ff` 保留发布边界；禁止直接 push、强推、重置和移动 tag。
+- `test` 上必须创建不可变 RC tag；验收通过后才能在 `prod` 创建正式 tag。每个提交的 tag 只能使用一个新 RC/正式版本，禁止覆盖旧 tag。
+- 每次生产发布必须从 tag 构建，并记录 Release ID、commit/tag、制品 SHA-256、迁移、备份、回滚点、冒烟结果和发布批准；模板见 `docs/operations/releases/_发布记录模板.md`。
+- 热修必须从 `prod` 创建最小修复分支，先在 test 等价环境按 tag 验证，再合并 `prod` 并回灌 `test/dev`；不能把普通需求伪装成热修。
+- 生产回滚优先切换上一稳定制品，禁止通过重置 `prod` 或强推远端分支“回滚”。已发布 tag 和失败证据只追加状态，不删除。
+- 后端、App、Web 使用独立 Git 仓库和同一 Release ID，发布顺序、兼容窗口与客户端版本映射必须写入发布记录。
+- 详细规则、迁移步骤、分支保护、发布命令和检查清单见 `docs/operations/版本管理与发布分支规范.md`。

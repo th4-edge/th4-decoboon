@@ -79,6 +79,8 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
 
     long countByDesign_DesignId(Long designId);
 
+    boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
+
     long countByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
 
     long countByCompany_ComIdAndProperty_PropertyId(Long comId, Long propertyId);

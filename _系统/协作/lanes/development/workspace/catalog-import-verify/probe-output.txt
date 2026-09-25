@@ -1,0 +1,42 @@
+== P1 模板下载（BOSS）==
+ name= 报价项目库批量导入模板_v1.0.xlsx size= 121197 path= system/catalog-import/报价项目库批量导入模板_v1.0.xlsx
+ downloaded sha256=2243827b5e11e1f1d635191e514355f1b5ac803277107f75b9fad7973ec4e46e
+== P2 非法表头阻断（不创建批次）==
+{"success":false,"errorCode":{"code":"400","message":"表头与 V1.0 模板不一致，缺少列：项目名称，请重新下载模板","system":false}}
+== P3 非 BOSS 发起上传（期望 403）==
+{"success":false,"errorCode":{"code":"403","message":"只有企业负责人可以批量导入报价项目库","system":false}}
+== P4 550 条真实模板预览 ==
+ batchId= 229324412220866560 batchNo= CI-20260926033320-0747 status= PendingConfirm total= 550 ready= 550 dup= 0 susp= 0 error= 0 costPending= 0
+== P5 重复上传同一文件（指纹命中，返回原批次）==
+ batchId= 229324412220866560 status= PendingConfirm message= 该文件已于 2026-09-26 上传过（批次 CI-20260926033320-0747），本次返回原批次结果，不会重复创建报价项目
+== P6 确认导入 550 条（整批）==
+ status= Imported imported= 550 ready= 550 finished= 2026-09-26 03:33:24
+ catalog_items_with_batch=550
+== P7 重复确认（幂等，不新增）==
+ status= Imported imported= 550
+ catalog_items_with_batch=550
+== P8 撤销批次（24h 内、无引用）==
+ status= Revoked revokedAt= 2026-09-26 03:33:30 message= 批次已撤销：删除本批新增项目 550 条，原文件可重新上传为新批次
+ catalog_items_with_batch=0
+== P9 撤销后重新上传同一文件（新批次，不作为指纹命中）==
+ batchId= 229324453182439424 (与已撤销批次不同= True ）status= PendingConfirm ready= 550
+== P10 混合文件预览（重复/错误/成本待维护/固定总价）==
+ batchId= 229324454168100864 total= 5 ready= 2 dup= 1 susp= 0 error= 2 costPending= 2
+== P11 有错误行时整批导入被拒绝 ==
+{"success":false,"errorCode":{"code":"400","message":"存在 2 行错误，不能整批导入；请修正后重新上传，或二次确认仅导入合格行","system":false}}
+== P12 二次确认仅导入合格行 ==
+ status= PartiallyImported imported= 2 skipped= 2 partialImport= True
+ IMP-FIX-0001 cost=NULL fixed=1280.00 material=0.00 manual=0.00
+ IMP-MIX-0001 cost=NULL fixed=NULL material=0.00 manual=10.00
+== P13 错误清单分页（字段+错误码+原因）==
+ total= 2
+  行 5 计量单位 R-04 计量单位不能识别，请使用模板下拉选项（原值：尺）
+  行 6 项目编码 C-03 项目编码已存在：编码 MH-CON-5 属于已有项目「拆除--墙顶面白灰/腻子粉铲除」（原值：MH-CON-5）
+== P14 撤销部分导入批次 ==
+ status= Revoked
+ catalog_items_with_batch=0
+== P15 批次列表（最近记录）==
+ total= 5
+   CI-20260926033330-9506 Revoked 2 2
+   CI-20260926033330-9705 PendingConfirm 0 0
+   CI-20260926033320-0747 Revoked 550 0

@@ -57,6 +57,26 @@ public class CatalogDetailContext {
         }
     }
 
+    /** 撤销导入批次时删除该项目的类型明细。 */
+    @Transactional
+    public void remove(CatalogItem item) {
+        if (item == null || item.getItemId() == null || item.getType() == null) return;
+        switch (item.getType()) {
+            case Construction -> constructionRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(constructionRepository::delete);
+            case Material -> materialRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(materialRepository::delete);
+            case Soft -> softRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(softRepository::delete);
+            case Custom -> customRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(customRepository::delete);
+            case Appliance -> applianceRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(applianceRepository::delete);
+            case General -> generalRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(generalRepository::delete);
+        }
+    }
+
     private void syncConstruction(CatalogItem item) {
         ConstructionItemDetail detail = constructionRepository.findByItem_ItemId(item.getItemId())
                 .orElseGet(ConstructionItemDetail::new);

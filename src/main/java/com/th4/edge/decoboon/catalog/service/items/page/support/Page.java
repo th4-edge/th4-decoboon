@@ -28,7 +28,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
-                        "pricingMode", "materialPrice", "manualPrice", "costPrice", "formula", "craft",
+                        "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft",
                         "criterion", "description", "images", "active", "sort", "maintainer", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })

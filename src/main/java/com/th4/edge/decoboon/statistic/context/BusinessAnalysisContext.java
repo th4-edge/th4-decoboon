@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.statistic.context;
 
+import com.th4.edge.decoboon.common.context.BusinessOriginFilter;
+
 import com.th4.edge.decoboon.customer.configure.CustomerSource;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
@@ -70,9 +72,11 @@ public class BusinessAnalysisContext {
                 .filter(item -> matchesStore(item.getStore() == null ? null : item.getStore().getStoreId(), storeId))
                 .toList();
         List<Quote> quotes = quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId).stream()
+                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
                 .filter(item -> matchesStore(quoteStoreId(item), storeId))
                 .toList();
         List<ProjectContract> contracts = contractRepository.findByCompany_ComIdOrderByContractIdDesc(comId).stream()
+                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
                 .filter(item -> matchesStore(contractStoreId(item), storeId))
                 .toList();
 

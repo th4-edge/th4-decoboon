@@ -1,0 +1,962 @@
+{
+  "BL-031AEE3ABA": {
+    "caseId": "C01",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-3FF6ED3F2E": {
+    "caseId": "C01",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-17E3402A0B": {
+    "caseId": "C01",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-D4F7E2F524": {
+    "caseId": "C01",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-A76B42640F": {
+    "caseId": "C01",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-3496772C3F": {
+    "caseId": "C01",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-8AB81DF1C2": {
+    "caseId": "C01",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-CE325DDC49": {
+    "caseId": "C01",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-9260727522": {
+    "caseId": "C02",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-79F76107C1": {
+    "caseId": "C02",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-85946525A8": {
+    "caseId": "C02",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-41C5C6C8BE": {
+    "caseId": "C02",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-72D2FBFC44": {
+    "caseId": "C02",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-10D38E214B": {
+    "caseId": "C02",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-81ED7DCFD7": {
+    "caseId": "C02",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-F1E1BB9732": {
+    "caseId": "C02",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-9BD024936D": {
+    "caseId": "C01",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-B4D75006FA": {
+    "caseId": "C01",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-759E71B019": {
+    "caseId": "C03",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-5202905DAB": {
+    "caseId": "C03",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-DB5BE366FC": {
+    "caseId": "C03",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-9B07E59093": {
+    "caseId": "C02",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-8515583648": {
+    "caseId": "C02",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-D044142332": {
+    "caseId": "C01",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-5A535D192D": {
+    "caseId": "C02",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-68BCE924AC": {
+    "caseId": "C03",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-4E4EE4D64C": {
+    "caseId": "C01",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-0D3C087CBB": {
+    "caseId": "C03",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-14CB16E8A0": {
+    "caseId": "C03",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-E36D10DFE0": {
+    "caseId": "C03",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-8FA65FAAA9": {
+    "caseId": "C03",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-EC564C1DE6": {
+    "caseId": "C03",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-4A8F154C89": {
+    "caseId": "C04",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-5B44B144D8": {
+    "caseId": "C04",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-7403D6274B": {
+    "caseId": "C02",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-6CBDEC0E45": {
+    "caseId": "C04",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-3126B9F873": {
+    "caseId": "C04",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-700FA74608": {
+    "caseId": "C04",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-43C0F13985": {
+    "caseId": "C04",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-231B92FC62": {
+    "caseId": "C04",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-D6D281F3E8": {
+    "caseId": "C03",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-78F49F076D": {
+    "caseId": "C04",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-795980DF46": {
+    "caseId": "C03",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-D4417DB07F": {
+    "caseId": "C03",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-C5F99ADE78": {
+    "caseId": "C05",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-D02C3BC837": {
+    "caseId": "C05",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-1DD7697181": {
+    "caseId": "C05",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-ECD0D1BA08": {
+    "caseId": "C05",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-54CF3493C3": {
+    "caseId": "C05",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-22B88372E7": {
+    "caseId": "C04",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-DBE998FBB3": {
+    "caseId": "C05",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-A3A747BE7D": {
+    "caseId": "C05",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-40AAA66500": {
+    "caseId": "C05",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-89747B0049": {
+    "caseId": "C04",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-630C29D9F9": {
+    "caseId": "C06",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-87D70F03E6": {
+    "caseId": "C05",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-B39E189019": {
+    "caseId": "C04",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-00751F3F34": {
+    "caseId": "C04",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-E7C324F094": {
+    "caseId": "C06",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-51A4369DBA": {
+    "caseId": "C06",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-579E6A80AC": {
+    "caseId": "C06",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-829FE43882": {
+    "caseId": "C06",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-76A4E1D80E": {
+    "caseId": "C06",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-024C53BB61": {
+    "caseId": "C06",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-89D6514E42": {
+    "caseId": "C06",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-78653F3B60": {
+    "caseId": "C05",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-ED9CCFE45E": {
+    "caseId": "C07",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-497801CBEC": {
+    "caseId": "C05",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-226F59BC82": {
+    "caseId": "C06",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-C0F64FAD3F": {
+    "caseId": "C07",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-1F55243578": {
+    "caseId": "C06",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-42104B9B38": {
+    "caseId": "C07",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-16B8054EE0": {
+    "caseId": "C05",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-D3FA18EFC0": {
+    "caseId": "C07",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-5B0D54EAF3": {
+    "caseId": "C07",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-522722B9E6": {
+    "caseId": "C07",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-C9049FC4A4": {
+    "caseId": "C06",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-D1AA246EB6": {
+    "caseId": "C07",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-183BA7733C": {
+    "caseId": "C06",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-F2C680C650": {
+    "caseId": "C07",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-38EE519AAD": {
+    "caseId": "C08",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-C31BDCECB6": {
+    "caseId": "C08",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-CA18DB0AE5": {
+    "caseId": "C08",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-BBC9289067": {
+    "caseId": "C08",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-93C21BEBFD": {
+    "caseId": "C08",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-192FB581CF": {
+    "caseId": "C07",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-12947431BA": {
+    "caseId": "C08",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-B4026C3B30": {
+    "caseId": "C08",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-4FA05384F6": {
+    "caseId": "C07",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-D9BB917B8D": {
+    "caseId": "C08",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-464B7E35CA": {
+    "caseId": "C07",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-690FD2F4B6": {
+    "caseId": "C09",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-81A3AE7A88": {
+    "caseId": "C09",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-B59FF73FF7": {
+    "caseId": "C07",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-827CF701E5": {
+    "caseId": "C09",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-FCF0A7261E": {
+    "caseId": "C09",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-BB9A5A4998": {
+    "caseId": "C09",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-B5C046646E": {
+    "caseId": "C09",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-9AB387621E": {
+    "caseId": "C09",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-393BBEA36D": {
+    "caseId": "C08",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-A3DEF959EE": {
+    "caseId": "C09",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-92E9F30810": {
+    "caseId": "C09",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-7A9494BA6D": {
+    "caseId": "C08",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-40D69D69E6": {
+    "caseId": "C08",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-DCF0B1501A": {
+    "caseId": "C10",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-44AD216E0A": {
+    "caseId": "C10",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-06B0A5E68F": {
+    "caseId": "C09",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-DD08014522": {
+    "caseId": "C08",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-735D1C617B": {
+    "caseId": "C10",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-94C98F72DB": {
+    "caseId": "C10",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-170EB22348": {
+    "caseId": "C10",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-3557622E74": {
+    "caseId": "C09",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-027576D4E1": {
+    "caseId": "C10",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-18DD3BCA33": {
+    "caseId": "C10",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-538B24199D": {
+    "caseId": "C10",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-B3D6ED07B5": {
+    "caseId": "C09",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-ECEA605011": {
+    "caseId": "C10",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-61C9B65366": {
+    "caseId": "C11",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-0A555CEC87": {
+    "caseId": "C11",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-FF75A644E8": {
+    "caseId": "C11",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-424B0CD6B0": {
+    "caseId": "C11",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-E785DD0EA0": {
+    "caseId": "C11",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-2E20C47DCB": {
+    "caseId": "C11",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-739EDE1438": {
+    "caseId": "C11",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-9C2E0E26EB": {
+    "caseId": "C10",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-E40E611681": {
+    "caseId": "C11",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-7D09B1A45D": {
+    "caseId": "C10",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-D063C8DED1": {
+    "caseId": "C12",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-8BCDB70E72": {
+    "caseId": "C12",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-A31AE766B2": {
+    "caseId": "C11",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-91B6C37F9A": {
+    "caseId": "C12",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-E639DCB434": {
+    "caseId": "C12",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-245B039B4C": {
+    "caseId": "C12",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-D7F64FE4E0": {
+    "caseId": "C10",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-F0DFDE7C69": {
+    "caseId": "C12",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-52F512ABD9": {
+    "caseId": "C11",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-A702594D2F": {
+    "caseId": "C12",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-FDDCDF83B3": {
+    "caseId": "C12",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-311B088CDD": {
+    "caseId": "C11",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-A9EE841E4B": {
+    "caseId": "C13",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-E75207990C": {
+    "caseId": "C11",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-7C68D6AB29": {
+    "caseId": "C13",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-5E5F6FA340": {
+    "caseId": "C13",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-45693446D2": {
+    "caseId": "C13",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-AACC15EBE9": {
+    "caseId": "C12",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-EADBD5FE29": {
+    "caseId": "C13",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-D6E8F51134": {
+    "caseId": "C13",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-0FF8BF673B": {
+    "caseId": "C12",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-34242C4FD1": {
+    "caseId": "C13",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-EB8D85917E": {
+    "caseId": "C12",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-19D57A8177": {
+    "caseId": "C13",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-ED54AA93B3": {
+    "caseId": "C12",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-972459EF9A": {
+    "caseId": "C14",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-21853D6E6D": {
+    "caseId": "C14",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-4C558224F5": {
+    "caseId": "C13",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-FD49D96020": {
+    "caseId": "C14",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-66DD48C2BE": {
+    "caseId": "C13",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-BDDD11A4F9": {
+    "caseId": "C14",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-BCE9A7E8F9": {
+    "caseId": "C14",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-B1EA2E6B8E": {
+    "caseId": "C14",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-98C24EABE5": {
+    "caseId": "C14",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-15B474CDAB": {
+    "caseId": "C14",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-1B0F9D38EF": {
+    "caseId": "C14",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-5A867FF77C": {
+    "caseId": "C15",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-9D43DBA937": {
+    "caseId": "C15",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-6E6BD908D7": {
+    "caseId": "C13",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-0B70BCB99C": {
+    "caseId": "C13",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-AF2B773B61": {
+    "caseId": "C14",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-C3982D57D9": {
+    "caseId": "C15",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-CF2CCED9EB": {
+    "caseId": "C15",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-C7BEEF8316": {
+    "caseId": "C15",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-1A1E2C3AAD": {
+    "caseId": "C15",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-99663A5332": {
+    "caseId": "C15",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-122DC908BF": {
+    "caseId": "C15",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-4D1FB7FCA3": {
+    "caseId": "C14",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-492D6AD10B": {
+    "caseId": "C14",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-DF4F345EE2": {
+    "caseId": "C16",
+    "profile": "flash-fast",
+    "mode": "generic"
+  },
+  "BL-A72DC9AB44": {
+    "caseId": "C15",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  },
+  "BL-926431254B": {
+    "caseId": "C16",
+    "profile": "flash-fast",
+    "mode": "knowledge"
+  },
+  "BL-A900B560B9": {
+    "caseId": "C16",
+    "profile": "flash-fast",
+    "mode": "facts"
+  },
+  "BL-C1EC6B5274": {
+    "caseId": "C16",
+    "profile": "flash-fast",
+    "mode": "full"
+  },
+  "BL-6A64DD07DE": {
+    "caseId": "C16",
+    "profile": "pro-fast",
+    "mode": "facts"
+  },
+  "BL-741E843B04": {
+    "caseId": "C16",
+    "profile": "pro-fast",
+    "mode": "full"
+  },
+  "BL-B2AB02C02B": {
+    "caseId": "C16",
+    "profile": "pro-fast",
+    "mode": "generic"
+  },
+  "BL-633D2508BD": {
+    "caseId": "C16",
+    "profile": "pro-fast",
+    "mode": "knowledge"
+  },
+  "BL-95CF477711": {
+    "caseId": "C15",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-1853A3303C": {
+    "caseId": "C15",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-AA28B47F01": {
+    "caseId": "C15",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-1308B70845": {
+    "caseId": "C16",
+    "profile": "pro-think-low",
+    "mode": "full"
+  },
+  "BL-48EEEDE4FD": {
+    "caseId": "C16",
+    "profile": "pro-think-low",
+    "mode": "facts"
+  },
+  "BL-8C22C30ACA": {
+    "caseId": "C16",
+    "profile": "pro-think-low",
+    "mode": "generic"
+  },
+  "BL-37CFBB01C1": {
+    "caseId": "C16",
+    "profile": "pro-think-low",
+    "mode": "knowledge"
+  }
+}

@@ -1,0 +1,323 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-09-26T02:22:27+08:00
+ 02:22:27 up 10 days,  1:10,  1 user,  load average: 0.01, 0.01, 0.00
+since=30 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=80532
+ExecMainStartTimestamp=Thu 2026-09-24 12:07:51 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20260924-120708
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/vda3         40901312 7321008  31689936      19% /
+/dev/vda3         40901312 7321008  31689936      19% /
+/dev/vda3         40901312 7321008  31689936      19% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        3416         465         486        4350        4039
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-09-26 01:20:47.724] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - 处理失败:找不到对应的处理服务:
+[2026-09-26 01:20:48.505] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - openapi.json处理失败:找不到对应的处理服务:openapi.json
+[2026-09-26 01:38:28.592] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 01:38:29.040] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 01:38:29.058] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 01:38:29.063] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 01:38:29.073] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:19:07.376] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-09-26 02:19:11.300] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-09-26 02:19:11.497] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-09-26 02:19:40.020] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:19:40.094] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:20:43.877] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/company/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:20:50.247] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/team/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:20:56.626] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:20:58.424] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:20:58.425] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:21:03.012] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:21:03.051] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:21:09.384] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/user/handover处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:22:23.555] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-09-26 02:22:27.342] [ERROR] [XNIO-1 task-10] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-09-24 04:36:11.497] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:36:13.284] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:36:15.875] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:36:20.621] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:36:37.445] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:36:39.194] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:36:41.740] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:36:46.565] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:37:03.550] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:37:05.666] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:37:08.194] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:37:12.955] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:37:30.080] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:37:32.292] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:37:34.881] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:37:39.915] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:37:56.913] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:37:58.598] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:38:01.077] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:38:06.204] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:38:23.166] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:38:24.841] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:38:27.490] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:38:32.057] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:38:48.595] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:38:50.699] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:38:53.143] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:38:58.159] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:39:14.871] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:39:16.604] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:39:19.096] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:39:24.246] [WARN ] [main] [o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext] [?] [?] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [completed_at] in table [db_measure]
+[2026-09-24 04:39:35.556] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:39:37.243] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:39:39.848] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:39:44.840] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 04:39:45.136] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 04:39:45.161] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 04:41:31.776] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 04:41:33.811] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 04:41:36.321] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 04:41:41.096] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 04:41:41.379] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 04:41:41.400] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 12:08:00.464] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-09-24 12:08:02.215] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-09-24 12:08:04.779] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-09-24 12:08:09.697] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 12:08:09.992] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-09-24 12:08:10.017] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+473:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+574:2026-09-24T12:08:25.253+08:00 ERROR 80532 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+575:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+676:2026-09-24T12:08:34.889+08:00 ERROR 80532 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+677:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+778:2026-09-24T12:08:37.404+08:00 ERROR 80532 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+779:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+876:2026-09-24T12:09:26.567+08:00 ERROR 80532 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+877:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+977:2026-09-24T12:09:26.576+08:00 ERROR 80532 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/overview处理失败:访问受限，缺少授权标识，请先登录后再访问。
+979:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1080:2026-09-24T12:10:03.840+08:00 ERROR 80532 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1081:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1190:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1264:2026-09-24T12:15:37.620+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1300:2026-09-24T12:15:37.623+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/report/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1301:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1410:2026-09-24T12:15:46.080+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1411:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1520:2026-09-24T12:15:46.083+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/report/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1522:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+1627:2026-09-24T12:15:47.143+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+1629:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+1734:2026-09-24T12:15:47.156+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+1736:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+1841:2026-09-24T12:15:49.372+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+1843:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+1948:2026-09-24T12:15:49.386+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+1950:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+2055:2026-09-24T12:15:49.599+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+2057:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+2162:2026-09-24T12:15:49.637+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+2163:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2267:2026-09-24T12:16:19.810+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2268:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2372:2026-09-24T12:16:19.891+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2373:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2474:2026-09-24T12:17:24.213+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/company/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2475:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2576:2026-09-24T12:17:30.658+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/team/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2577:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2678:2026-09-24T12:17:37.092+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2679:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2780:2026-09-24T12:17:43.503+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2781:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2885:2026-09-24T12:17:43.550+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2886:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2990:2026-09-24T12:17:49.932+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/handover处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2991:com.th4.edge.framework.exception.DefinedException: 微信登录失败：code been used, rid: 6ab4a4f1-5d18a70e-1c836727
+3098:2026-09-24T12:20:01.330+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:微信登录失败：code been used, rid: 6ab4a4f1-5d18a70e-1c836727
+3099:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3200:2026-09-24T12:24:47.170+08:00 ERROR 80532 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3201:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3298:2026-09-24T12:28:19.384+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3301:com.th4.edge.framework.exception.DefinedException: 接受邀请后 30 天内不能再次加入企业
+3419:2026-09-24T12:28:33.876+08:00 ERROR 80532 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:接受邀请后 30 天内不能再次加入企业
+3421:com.th4.edge.framework.exception.DefinedException: 接受邀请后 30 天内不能再次加入企业
+3539:2026-09-24T12:29:20.064+08:00 ERROR 80532 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:接受邀请后 30 天内不能再次加入企业
+3541:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3638:2026-09-24T12:46:18.558+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3639:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3736:2026-09-24T12:46:18.585+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3737:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3842:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3908:2026-09-24T12:46:18.605+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3940:2026-09-24T12:46:18.608+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3941:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4041:2026-09-24T12:46:18.633+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4043:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+4128:2026-09-24T13:23:32.616+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+4129:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+4214:2026-09-24T13:28:02.132+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+4215:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4312:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4354:2026-09-24T13:40:12.661+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4418:2026-09-24T13:40:12.662+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4420:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+4525:2026-09-24T13:45:07.949+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+4528:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+4633:2026-09-24T13:46:47.194+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+4635:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+4740:2026-09-24T13:47:51.976+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+4742:com.th4.edge.framework.exception.DefinedException: 该手机号已绑定其他微信，请联系客服
+4858:2026-09-24T13:47:56.725+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:该手机号已绑定其他微信，请联系客服
+4860:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+4945:2026-09-24T14:44:57.585+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+4946:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.git/config
+5031:2026-09-24T14:45:18.598+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config
+5032:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5129:2026-09-24T14:54:31.203+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5131:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5228:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+5229:2026-09-24T14:59:55.783+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5326:2026-09-24T14:59:55.785+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，授权已过期，请重新登录后再访问。
+5327:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5424:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5426:2026-09-24T14:59:55.792+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5525:2026-09-24T14:59:55.797+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5526:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5626:2026-09-24T14:59:55.826+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5628:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+5725:2026-09-24T15:02:58.639+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+5726:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5831:2026-09-24T15:02:58.665+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5832:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5929:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6017:2026-09-24T15:02:58.681+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6027:2026-09-24T15:02:58.682+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6030:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+6127:2026-09-24T18:17:38.883+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+6128:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6225:2026-09-24T18:17:38.890+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6226:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6323:2026-09-24T18:17:38.894+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6324:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6429:2026-09-24T18:17:38.896+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6430:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6530:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6635:2026-09-24T18:17:38.898+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6636:2026-09-24T18:17:38.900+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6637:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6734:2026-09-24T18:17:38.915+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6735:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6832:2026-09-24T18:17:38.937+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6833:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+6933:2026-09-24T18:17:38.940+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+6935:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+7020:2026-09-24T19:42:37.342+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+7021:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+7126:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+7129:2026-09-24T21:47:14.106+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。
+7224:2026-09-24T21:47:14.107+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+7225:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7325:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7326:2026-09-24T21:47:14.115+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7423:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7424:2026-09-24T21:47:14.116+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7524:2026-09-24T21:47:14.117+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/marketer/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7525:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7625:2026-09-24T21:47:14.138+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7626:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7731:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7745:2026-09-24T21:47:14.159+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7832:2026-09-24T21:47:14.159+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7833:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7933:2026-09-24T21:47:14.187+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7934:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8034:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8035:2026-09-24T21:47:14.188+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/marketer/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8132:2026-09-24T21:47:14.189+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8133:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8233:2026-09-24T21:47:14.195+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8234:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8334:2026-09-24T21:47:14.201+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8336:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+8421:2026-09-25T02:11:45.167+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+8422:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.git/config
+8507:2026-09-25T02:12:37.564+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config
+8509:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+8606:2026-09-25T18:18:39.849+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+8607:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8707:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8742:2026-09-25T18:18:39.864+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8808:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8810:2026-09-25T18:18:39.866+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8906:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8907:2026-09-25T18:18:39.867+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9004:2026-09-25T18:18:39.868+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9005:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9105:2026-09-25T18:18:39.876+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9106:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+9191:2026-09-25T23:35:36.156+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+9192:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:
+9277:2026-09-26T01:20:47.724+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:
+9278:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:openapi.json
+9363:2026-09-26T01:20:48.505+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : openapi.json处理失败:找不到对应的处理服务:openapi.json
+9364:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9461:2026-09-26T01:38:28.592+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9462:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9559:2026-09-26T01:38:29.040+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9560:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9660:2026-09-26T01:38:29.058+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9661:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9758:2026-09-26T01:38:29.063+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9759:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9859:2026-09-26T01:38:29.073+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9861:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+9966:2026-09-26T02:19:07.376+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+9968:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+10073:2026-09-26T02:19:11.300+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+10075:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+10180:2026-09-26T02:19:11.497+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+10181:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10285:2026-09-26T02:19:40.020+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10286:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10390:2026-09-26T02:19:40.094+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10392:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10493:2026-09-26T02:20:43.877+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/company/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10494:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10595:2026-09-26T02:20:50.247+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/team/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10596:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10697:2026-09-26T02:20:56.626+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10698:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10802:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10803:2026-09-26T02:20:58.424+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10907:2026-09-26T02:20:58.425+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10908:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11009:2026-09-26T02:21:03.012+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : company/member/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11010:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11114:2026-09-26T02:21:03.051+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11115:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11219:2026-09-26T02:21:09.384+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/user/handover处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11220:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11321:2026-09-26T02:22:23.555+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11322:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11423:2026-09-26T02:22:27.342+08:00 ERROR 80532 --- [ XNIO-1 task-10] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+-- No entries --

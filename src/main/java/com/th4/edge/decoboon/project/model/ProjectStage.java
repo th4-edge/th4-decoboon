@@ -117,6 +117,10 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
     @Column(nullable = false)
     private Integer progress = 0;
 
+    @Note("接管时阶段进度基线；仅接管基线阶段使用")
+    @Column(name = "baseline_progress")
+    private Integer baselineProgress;
+
     @Note("计划开始日期")
     private LocalDate plannedStart;
 
@@ -191,6 +195,14 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
+    }
+
+    public Integer getBaselineProgress() {
+        return baselineProgress;
+    }
+
+    public void setBaselineProgress(Integer baselineProgress) {
+        this.baselineProgress = baselineProgress;
     }
 
     public LocalDate getPlannedStart() {

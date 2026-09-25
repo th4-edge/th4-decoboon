@@ -1,0 +1,9 @@
+{
+  "contractAmount": 300000.0,
+  "receivableAmount": 120000.0,
+  "receivedAmount": 0.0,
+  "payableAmount": 50000.0,
+  "totalCost": 180000.0,
+  "costComplete": false,
+  "profitAmount": null
+}

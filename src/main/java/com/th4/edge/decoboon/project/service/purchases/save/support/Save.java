@@ -9,6 +9,8 @@ import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -36,6 +38,7 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.StoreRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
@@ -81,6 +84,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
     private final ProjectPermissionContext permissionContext;
     private final MaterialSelectionRepository materialSelectionRepository;
     private final PurchaseOrderItemRepository purchaseItemRepository;
+    private final CarryoverLockContext carryoverLockContext;
 
     public Save(MaterialPlanRepository materialPlanRepository,
                 ProjectContractRepository contractRepository,
@@ -92,6 +96,23 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
                 ProjectPermissionContext permissionContext,
                 MaterialSelectionRepository materialSelectionRepository,
                 PurchaseOrderItemRepository purchaseItemRepository) {
+        this(materialPlanRepository, contractRepository, purchaseRepository, partnerRepository, storeRepository,
+                accessContext, modelIdentityContext, permissionContext, materialSelectionRepository,
+                purchaseItemRepository, null);
+    }
+
+    @Autowired
+    public Save(MaterialPlanRepository materialPlanRepository,
+                ProjectContractRepository contractRepository,
+                PurchaseOrderRepository purchaseRepository,
+                PartnerRepository partnerRepository,
+                StoreRepository storeRepository,
+                ProjectAccessContext accessContext,
+                ModelIdentityContext modelIdentityContext,
+                ProjectPermissionContext permissionContext,
+                MaterialSelectionRepository materialSelectionRepository,
+                PurchaseOrderItemRepository purchaseItemRepository,
+                CarryoverLockContext carryoverLockContext) {
         this.materialPlanRepository = materialPlanRepository;
         this.contractRepository = contractRepository;
         this.purchaseRepository = purchaseRepository;
@@ -102,6 +123,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         this.permissionContext = permissionContext;
         this.materialSelectionRepository = materialSelectionRepository;
         this.purchaseItemRepository = purchaseItemRepository;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -156,6 +178,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         materialPlanRepository.save(plan);
         PurchaseOrder saved = purchaseRepository.save(modelIdentityContext.prepare(request));
         saveItem(saved, plan, quantity, unitPrice, remark);
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Purchase, current);
         return saved;
     }
 

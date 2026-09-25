@@ -1,4 +1,6 @@
 package com.th4.edge.decoboon.finance.model;
+
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.property.model.Property;
 
 import jakarta.persistence.EntityListeners;
@@ -60,6 +62,11 @@ public class Receivable extends AuditModel {
     @Id
     @SnowflakeId
     private Long receivableId;
+
+    @Note("业务来源")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "business_origin", length = 16, nullable = false)
+    private BusinessOrigin businessOrigin = BusinessOrigin.New;
 
     @Note("所属企业")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -169,7 +176,9 @@ public class Receivable extends AuditModel {
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee createdBy;
 
-    public Long getReceivableId() { return receivableId; }
+        public BusinessOrigin getBusinessOrigin() { return businessOrigin; }
+    public void setBusinessOrigin(BusinessOrigin businessOrigin) { this.businessOrigin = businessOrigin; }
+public Long getReceivableId() { return receivableId; }
     public void setReceivableId(Long receivableId) { this.receivableId = receivableId; }
     public Company getCompany() { return company; }
     public void setCompany(Company company) { this.company = company; }

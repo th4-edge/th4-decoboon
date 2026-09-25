@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.finance.service.payments.save.support;
 import com.th4.edge.decoboon.customer.model.Customer;
 
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
@@ -82,17 +84,21 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
     private final PayableRepository payableRepository;
     private final PayableSettlementRepository payableSettlementRepository;
     private final FinanceAccessContext accessContext;
+    private final CarryoverLockContext carryoverLockContext;
+
     private final WorkerRepository workerRepository;
 
     public Save(PaymentRepository paymentRepository,
                 PayableRepository payableRepository,
                 PayableSettlementRepository payableSettlementRepository,
                 FinanceAccessContext accessContext,
+                CarryoverLockContext carryoverLockContext,
                 WorkerRepository workerRepository) {
         this.paymentRepository = paymentRepository;
         this.payableRepository = payableRepository;
         this.payableSettlementRepository = payableSettlementRepository;
         this.accessContext = accessContext;
+        this.carryoverLockContext = carryoverLockContext;
         this.workerRepository = workerRepository;
     }
 
@@ -148,6 +154,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 payable.getType().getName(), LedgerSource.Payment, saved.getPaymentId(), paid,
                 saved.getAccount(), paidAt, saved.getPayeeName(),
                 "付款 · " + payable.getName(), remark);
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Payment, current);
         return saved;
     }
 
@@ -229,6 +236,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 primary.getType().getName(), LedgerSource.Payment, saved.getPaymentId(), paid,
                 saved.getAccount(), paidAt, saved.getPayeeName(),
                 "付款 · " + primary.getName() + "（核销 " + payables.size() + " 张应付）", remark);
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Payment, current);
         return saved;
     }
 }

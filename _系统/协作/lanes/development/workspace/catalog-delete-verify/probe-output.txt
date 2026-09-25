@@ -1,0 +1,21 @@
+== D1 新建无引用项目 ==
+ itemId=229370825520709632
+  db_before=1
+== D2 无引用删除成功 ==
+  success= True name= 删除验证项目A
+  db_after=0
+  detail_after=0
+== D3 重复删除稳定失败 ==
+{"success":false,"errorCode":{"code":"404","message":"报价项目不存在或无权访问","system":false}}
+== D4 被设计/报价引用的项目禁止删除 ==
+{"success":false,"errorCode":{"code":"400","message":"该项目已被设计分项引用，无法删除；如不再使用，可改为停用","system":false}}
+== D5 不存在/跨企业项目统一 404 ==
+{"success":false,"errorCode":{"code":"404","message":"报价项目不存在或无权访问","system":false}}
+== D6 导入批次行关联的受控解除 ==
+ imported item=229370831413706752 batch=229370830620983296
+  delete success= True
+  row_item_null=1 reason=DELETED
+  batch_rows_linked=1
+== D7 撤销剩余批次清理 ==
+  revoke success= True
+  catalog_after_cleanup=552

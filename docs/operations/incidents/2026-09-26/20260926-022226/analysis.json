@@ -1,0 +1,212 @@
+{
+  "collectedAt": "2026-09-25T18:22:27.449962+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-09-26/20260926-022226",
+  "counts": {
+    "unknown": 20,
+    "expected": 110
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20260926-72da57a9d1",
+      "signature": "微信登录失败：code been used, rid: 6ab4a4f1-5d18a70e-1c836727",
+      "signatureHash": "72da57a9d1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-24T12:20:01.330+08:00",
+      "lastSeen": "2026-09-24T12:20:01.330+08:00",
+      "samples": [
+        "3098:2026-09-24T12:20:01.330+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:微信登录失败：code been used, rid: 6ab4a4f1-5d18a70e-1c836727"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-f7155d2eba",
+      "signature": "找不到对应的处理服务:",
+      "signatureHash": "f7155d2eba",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-26 01:20:47.724",
+      "lastSeen": "2026-09-26T01:20:47.724+08:00",
+      "samples": [
+        "[2026-09-26 01:20:47.724] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - 处理失败:找不到对应的处理服务:",
+        "9277:2026-09-26T01:20:47.724+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:"
+      ],
+      "reportPaths": [
+        "2026-09-26/20260926-022226"
+      ]
+    },
+    {
+      "incidentId": "INC-20260926-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 2,
+      "firstSeen": "2026-09-24T14:44:57.585+08:00",
+      "lastSeen": "2026-09-25T02:11:45.167+08:00",
+      "samples": [
+        "4945:2026-09-24T14:44:57.585+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "8421:2026-09-25T02:11:45.167+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-8f4d3f4876",
+      "signature": "找不到对应的处理服务:.git/config",
+      "signatureHash": "8f4d3f4876",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-24T14:45:18.598+08:00",
+      "lastSeen": "2026-09-25T02:12:37.564+08:00",
+      "samples": [
+        "5031:2026-09-24T14:45:18.598+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config",
+        "8507:2026-09-25T02:12:37.564+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-09-24T13:23:32.616+08:00",
+      "lastSeen": "2026-09-25T23:35:36.156+08:00",
+      "samples": [
+        "4128:2026-09-24T13:23:32.616+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "4214:2026-09-24T13:28:02.132+08:00 ERROR 80532 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "7020:2026-09-24T19:42:37.342+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "9191:2026-09-25T23:35:36.156+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-090b7ceb5e",
+      "signature": "找不到对应的处理服务:openapi.json",
+      "signatureHash": "090b7ceb5e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-26 01:20:48.505",
+      "lastSeen": "2026-09-26T01:20:48.505+08:00",
+      "samples": [
+        "[2026-09-26 01:20:48.505] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - openapi.json处理失败:找不到对应的处理服务:openapi.json",
+        "9363:2026-09-26T01:20:48.505+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : openapi.json处理失败:找不到对应的处理服务:openapi.json"
+      ],
+      "reportPaths": [
+        "2026-09-26/20260926-022226"
+      ]
+    },
+    {
+      "incidentId": "INC-20260926-b0d2dae5eb",
+      "signature": "接受邀请后 30 天内不能再次加入企业",
+      "signatureHash": "b0d2dae5eb",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-24T12:28:33.876+08:00",
+      "lastSeen": "2026-09-24T12:29:20.064+08:00",
+      "samples": [
+        "3419:2026-09-24T12:28:33.876+08:00 ERROR 80532 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:接受邀请后 30 天内不能再次加入企业",
+        "3539:2026-09-24T12:29:20.064+08:00 ERROR 80532 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/accept处理失败:接受邀请后 30 天内不能再次加入企业"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-09-24T14:59:55.785+08:00",
+      "lastSeen": "2026-09-25T18:18:39.849+08:00",
+      "samples": [
+        "5326:2026-09-24T14:59:55.785+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "5725:2026-09-24T15:02:58.639+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "6127:2026-09-24T18:17:38.883+08:00 ERROR 80532 --- [ XNIO-1 task-11] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "7129:2026-09-24T21:47:14.106+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "7224:2026-09-24T21:47:14.107+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 93,
+      "firstSeen": "2026-09-24T12:08:25.253+08:00",
+      "lastSeen": "2026-09-26T02:22:27.342+08:00",
+      "samples": [
+        "[2026-09-26 01:38:28.592] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-26 01:38:29.040] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-26 01:38:29.058] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-26 01:38:29.063] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-09-26 01:38:29.073] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20260926-309d1d47f2",
+      "signature": "该手机号已绑定其他微信，请联系客服",
+      "signatureHash": "309d1d47f2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-24T13:47:56.725+08:00",
+      "lastSeen": "2026-09-24T13:47:56.725+08:00",
+      "samples": [
+        "4858:2026-09-24T13:47:56.725+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:该手机号已绑定其他微信，请联系客服"
+      ],
+      "reportPaths": [
+        "2026-09-26/20260926-022226"
+      ]
+    },
+    {
+      "incidentId": "INC-20260926-3470d63bd2",
+      "signature": "首次登录请授权手机号",
+      "signatureHash": "3470d63bd2",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 15,
+      "firstSeen": "2026-09-24T12:15:47.143+08:00",
+      "lastSeen": "2026-09-26T02:19:11.497+08:00",
+      "samples": [
+        "[2026-09-26 02:19:07.376] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "[2026-09-26 02:19:11.300] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "[2026-09-26 02:19:11.497] [ERROR] [XNIO-1 task-11] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "1627:2026-09-24T12:15:47.143+08:00 ERROR 80532 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号",
+        "1734:2026-09-24T12:15:47.156+08:00 ERROR 80532 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

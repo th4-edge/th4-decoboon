@@ -1,6 +1,10 @@
 package com.th4.edge.decoboon.project.context;
 
+import com.th4.edge.decoboon.carryover.configure.CarryoverCostStatus;
+import com.th4.edge.decoboon.carryover.model.CarryoverCostSnapshot;
+import com.th4.edge.decoboon.carryover.repository.CarryoverCostSnapshotRepository;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.project.model.ContractLine;
@@ -10,6 +14,7 @@ import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -23,16 +28,39 @@ public class ProjectCostContext {
     private final QuoteLineRepository quoteLineRepository;
     private final ContractLineRepository contractLineRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
+    private final CarryoverCostSnapshotRepository carryoverCostRepository;
 
     public ProjectCostContext(QuoteLineRepository quoteLineRepository,
                               ContractLineRepository contractLineRepository,
                               PurchaseOrderRepository purchaseOrderRepository) {
+        this(quoteLineRepository, contractLineRepository, purchaseOrderRepository, null);
+    }
+
+    @Autowired
+    public ProjectCostContext(QuoteLineRepository quoteLineRepository,
+                              ContractLineRepository contractLineRepository,
+                              PurchaseOrderRepository purchaseOrderRepository,
+                              CarryoverCostSnapshotRepository carryoverCostRepository) {
         this.quoteLineRepository = quoteLineRepository;
         this.contractLineRepository = contractLineRepository;
         this.purchaseOrderRepository = purchaseOrderRepository;
+        this.carryoverCostRepository = carryoverCostRepository;
     }
 
     public CostSummary summarize(Project project) {
+        CarryoverCostSnapshot snapshot = carryoverSnapshot(project);
+        if (snapshot == null) {
+            return summarizePostCarryover(project);
+        }
+        CostSummary post = summarizePostCarryover(project);
+        BigDecimal pre = money(snapshot.getTotalCost());
+        int incomplete = post.incompleteItemCount()
+                + (snapshot.getCostStatus() == CarryoverCostStatus.Complete ? 0 : 1);
+        return new CostSummary(money(post.estimatedCost().add(pre)),
+                money(post.actualCost().add(pre)), incomplete);
+    }
+
+    private CostSummary summarizePostCarryover(Project project) {
         if (project == null || project.getQuote() == null) {
             BigDecimal fallback = value(project == null ? null : project.getCost());
             return new CostSummary(fallback, fallback, fallback.signum() > 0 ? 0 : 1);
@@ -62,6 +90,9 @@ public class ProjectCostContext {
         }
         List<QuoteLine> lines = quoteLineRepository.findByQuote(project.getQuote());
         if (lines == null || lines.isEmpty()) {
+            if (project.getBusinessOrigin() == BusinessOrigin.Carryover) {
+                return new CostSummary(BigDecimal.ZERO, BigDecimal.ZERO, 0);
+            }
             BigDecimal fallback = value(project.getCost());
             return new CostSummary(money(fallback), money(fallback), 1);
         }
@@ -193,6 +224,14 @@ public class ProjectCostContext {
                 || type == ItemType.Custom
                 || type == ItemType.Soft
                 || type == ItemType.Appliance;
+    }
+
+    private CarryoverCostSnapshot carryoverSnapshot(Project project) {
+        if (carryoverCostRepository == null || project == null || project.getProjectId() == null
+                || project.getBusinessOrigin() != BusinessOrigin.Carryover) {
+            return null;
+        }
+        return carryoverCostRepository.findByProject_ProjectId(project.getProjectId()).orElse(null);
     }
 
     private BigDecimal value(BigDecimal value) {

@@ -1,0 +1,339 @@
+Window: "装得清", App: 微信开发者工具.
+0 标准窗口 装得清, Secondary Actions: Raise
+	1 HTML 内容 file:///Applications/wechatwebdevtools.app/Contents/Resources/app.asar/html/electron-project-lite.html?projectpath=%2FUsers%2Fzhangwei%2FFutureFiles%2F%E5%AE%89%E5%BE%BD%E6%98%AD%E9%9D%92%2F%E5%AE%B6%E8%A3%85%E8%A3%85%E4%BF%AE%2F%E8%A3%85%E5%AE%A2%E5%AE%9D%2F%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%2Fth4-decoboon-app%2Fdist%2Fdev%2Fmp-weixin&projectname=%E8%A3%85%E5%BE%97%E6%B8%85&projectid=%2FUsers%2Fzhangwei%2FFutureFiles%2F%E5%AE%89%E5%BE%BD%E6%98%AD%E9%9D%92%2F%E5%AE%B6%E8%A3%85%E8%A3%85%E4%BF%AE%2F%E8%A3%85%E5%AE%A2%E5%AE%9D%2F%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%2Fth4-decoboon-app%2Fdist%2Fdev%2Fmp-weixin&theme=dark&skeletonPath=%2FUsers%2Fzhangwei%2FLibrary%2FApplication%20Support%2F%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%2Fd1e8765721a6c23d43b14c95b1843e6b%2FWeappCache%2FskeletonCache%2F82a0e25bf6c73bc31cd73bad2fbf4a73%2Fpageskeleton.html&appid=wxe5cc5fec9e50a9a9&windowMode=liteMode&compileType=weapp&trustProject=1&openSource=cli&frame=0&liteProject=1&devid=s0&runtimeid=0&devtype=miniprogram&proxyPort=33004&userDataPath=%2FUsers%2Fzhangwei%2FLibrary%2FApplication%2520Support%2F%25E5%25BE%25AE%25E4%25BF%25A1%25E5%25BC%2580%25E5%258F%2591%25E8%2580%2585%25E5%25B7%25A5%25E5%2585%25B7%2Fd1e8765721a6c23d43b14c95b1843e6b&appVersion=2.02.2609231&appVersionType=1
+		2 container
+			3 文本 预览
+			4 文本 真机调试
+			5 未加标签的图片 要获取缺失的图片说明，请打开上下文菜单。
+			6 container
+				7 container
+					8 文本 普通编译
+					9 container
+						10 container
+							11 text 5 : 22
+						12 container
+							13 链接
+							14 链接
+						15 HTML 内容 Webview: pages/index/index, URL: 127.0.0.1:51831/__pageframe__/pages/index/index
+							16 container
+								17 text 夜深了，张伟 安徽昭青网络科技
+								18 图像
+							19 文本 企业负责人 · 启动引导
+							20 文本 开始使用装得清
+							21 文本 先完成报价基础和第一个客户，再按需要补充供应商。
+							22 文本 0/3
+							23 文本 必做
+							24 文本 下一步
+							25 文本 维护报价项目库
+							26 文本 建立可报价项目，填写单位、计价方式和销售价。
+							27 图像
+							28 container
+								29 图像
+								30 文本 维护报价项目库
+								31 文本 待完成 · 0
+								32 图像
+								33 文本 维护标准成本价
+								34 文本 待完成 · 0
+								35 图像
+								36 文本 创建第一个客户及房屋
+								37 文本 待完成 · 0
+								38 图像
+								39 文本 维护供应商品牌关系
+								40 文本 待完成 · 0
+								41 文本 可选
+								42 图像
+								43 文本 邀请关键成员
+								44 文本 待完成 · 0
+								45 文本 可选
+							46 图像
+							47 文本 业务承接进行中
+							48 文本 继续录入在跑项目，让工地、业主和账务不断档
+							49 图像
+							50 文本 张伟
+							51 文本 企业负责人
+							52 图像
+							53 文本 安徽昭青网络科技
+							54 图像
+							55 文本 总店
+							56 图像
+							57 文本 签约额
+							58 container 签约额正常
+							59 container
+								60 text ¥ 0 元
+							61 图像
+							62 文本 回款额
+							63 container 回款额正常
+							64 container
+								65 text ¥ 0 元
+							66 图像
+							67 文本 项目毛利
+							68 container 项目毛利正常
+							69 container
+								70 text ¥ 0 元
+							71 图像
+							72 文本 在建项目
+							73 container 在建项目正常
+							74 文本 0
+							75 文本 经营驾驶舱
+							76 文本 ¥0
+							77 文本 签约 ¥0 · 回款 ¥0 · 在建 0 个 · 风险 0 项
+							78 图像
+							79 图像
+							80 文本 客户经营
+							81 图像
+							82 文本 方案设计
+							83 图像
+							84 文本 报价谈单
+							85 图像
+							86 文本 合同签约
+							87 图像
+							88 文本 财务总览
+							89 文本 需要关注的项目
+							90 文本 项目台账
+							91 图像
+							92 container
+								93 图像
+								94 text 当前项目运行正常 首页只展示逾期、停工、材料超领和变更异常等项目
+							95 文本 经营动态
+							96 文本 全部
+							97 图像
+							98 container
+								99 图像
+								100 text 暂无经营动态 客户、合同、项目和资金发生变化后会自动形成事件
+							101 container
+								102 图像
+								103 文本 工作台
+								104 图像
+								105 文本 客户
+								106 图像
+								107 文本 项目
+								108 图像
+								109 文本 财务
+								110 图像
+								111 文本 我的
+						112 container
+							113 链接
+							114 链接
+						115 HTML 内容 Webview: subpackages/carryover/pages/index, URL: 127.0.0.1:51831/__pageframe__/subpackages/carryover/pages/index
+							116 container
+								117 text 业务承接 把在跑项目接进装得清，继续管理工地和账务
+							118 文本 1
+							119 文本 项目总数
+							120 文本 0
+							121 文本 已完成
+							122 文本 1
+							123 文本 待处理
+							124 文本 接管日期 2026-09-26
+							125 按钮 录入项目
+							126 文本 王亮梦圆小区
+							127 文本 合肥市
+							128 文本 待补齐
+							129 文本 木工
+							130 文本 进度 0%
+							131 文本 未收 100000
+							132 文本 待补齐：项目状态
+						133 container
+							134 链接
+							135 链接
+						136 container
+							137 HTML 内容 Webview: subpackages/carryover/pages/edit, URL: 127.0.0.1:51831/__pageframe__/subpackages/carryover/pages/edit (showing 7-107 of 107 items)
+								138 文本 小区
+								139 文本栏 (settable) 
+选填
+									140 文本栏 (settable)
+									141 文本 选填
+								142 文本 房屋地址 *
+								143 文本栏 (settable) 合肥市
+									144 文本栏 (settable) 合肥市
+								145 文本 面积㎡
+								146 文本栏 (settable) 110
+									147 文本栏 (settable) 110
+								148 文本 经营负责人 *
+								149 container
+									150 文本 张伟
+									151 图像
+								152 文本 项目经理 *
+								153 container
+									154 文本 张伟
+									155 图像
+								156 文本 设计师
+								157 container
+									158 文本 张伟
+									159 图像
+								160 文本 2. 报价与合同基线
+								161 文本 合同编号 *
+								162 文本栏 (settable) ZX222
+									163 文本栏 (settable) ZX222
+								164 文本 原签约金额
+								165 文本栏 (settable) 
+选填
+									166 文本栏 (settable)
+									167 文本 选填
+								168 文本 当前金额 *
+								169 文本栏 (settable) 128000
+									170 文本栏 (settable) 128000
+								171 文本 签约日期 *
+								172 container
+									173 文本 2026-07-26
+									174 图像
+								175 文本 3. 当前工地
+								176 文本 项目名称
+								177 文本栏 (settable) 王亮梦圆小区
+									178 文本栏 (settable) 王亮梦圆小区
+								179 文本 项目状态 *
+								180 container
+									181 文本 施工中
+									182 图像
+								183 文本 当前阶段 *
+								184 文本栏 (settable) 木工
+									185 文本栏 (settable) 木工
+								186 文本 当前进度 0%
+								187 滑块 Value: 0, Secondary Actions: Increment, Decrement
+								188 文本 剩余工作摘要 *
+								189 container
+									190 文本输入区 (settable) 施工、材料
+									191 文本 施工、材料
+								192 文本 当前问题
+								193 container
+									194 文本输入区 (settable) 无
+									195 文本 无
+								196 文本 4. 期初财务与接管前成本
+								197 图像
+								198 文本 收起说明
+								199 container
+									200 text 这里只填写 接管日仍未结清 和 已经发生 的金额。已经收过、已经付过的历史流水不要重复填写。
+								201 container
+									202 text 客户未收工程款： 应收未收、尾款、客户欠款、工程款未收，都是同一件事。填写“总额减已收”。
+								203 container
+									204 text 当前未付款： 应付未付、供应商欠款、工人工资待付、项目款待付。填写“应付总额减已付”。
+								205 container
+									206 text 接管前已发生成本： 项目至今已经产生的材料、人工、项目及其他成本，包含已付和未付，不等于下面的未付款。
+								207 container
+									208 text 举例： 合同30万，客户已收18万，则客户未收填12万；供应商应付10万、已付4万，则当前未付填6万。
+								209 文本 当前合同
+								210 文本 128000 元
+								211 文本 客户未收
+								212 文本 100000 元
+								213 文本 当前未付
+								214 文本 42000 元
+								215 文本 接管前成本
+								216 文本 120000 元
+								217 文本 客户未收工程款
+								218 文本 = 应收账款总额 - 已收款合计
+								219 文本 无未收款
+								220 文本 客户未收工程款 *
+								221 文本栏 (settable) 100000
+									222 文本栏 (settable) 100000
+								223 文本 约定收款日
+								224 container
+									225 文本 选填
+									226 图像
+								227 文本 原应收单号
+								228 文本栏 (settable) 
+选填，便于对账追溯
+									229 文本栏 (settable)
+									230 文本 选填，便于对账追溯
+								231 文本 我已核对客户未收工程款
+								232 文本 无未收款也必须点击左侧“无未收款”或填写 0 并确认
+								233 复选框 1
+								234 文本 当前未付款
+								235 文本 = 应付总额 - 已付款合计
+								236 文本 无未付款
+								237 文本 当前未付款 *
+								238 文本栏 (settable) 42000
+									239 文本栏 (settable) 42000
+								240 文本 约定付款日
+								241 container
+									242 文本 选填
+									243 图像
+								244 文本 收款方
+								245 文本栏 (settable) 供应商
+									246 文本栏 (settable) 供应商
+								247 文本 原应付单号
+								248 文本栏 (settable) 
+选填，便于对账追溯
+									249 文本栏 (settable)
+									250 文本 选填，便于对账追溯
+								251 文本 我已核对当前未付款
+								252 文本 无未付款也必须点击左侧“无未付款”或填写 0 并确认
+								253 复选框 1
+								254 文本 接管前已发生成本
+								255 文本 包含已付与未付，不是上面的未付款，也不包含未来预算。
+								256 文本 已发生成本总额
+								257 文本栏 (settable) 120000
+									258 文本栏 (settable) 120000
+								259 文本 已确认完整
+								260 文本 已发生成本都能核对，系统可以计算项目利润
+								261 文本 只知道总额
+								262 文本 只掌握总金额，明细未完整，利润暂不计算
+								263 文本 暂不确认
+								264 文本 接管前成本尚不清楚，先承接，利润暂不计算
+								265 文本 成本缺失说明
+								266 container
+									267 文本 例如：历史人工成本只有总额，材料明细缺失
+									268 文本输入区 (settable)
+									269 文本 a
+								270 文本 5. 来源追溯
+								271 文本 原系统项目号
+								272 文本栏 (settable) 
+选填
+									273 文本栏 (settable)
+									274 文本 选填
+								275 文本 原系统 ID
+								276 文本栏 (settable) 
+选填
+									277 文本栏 (settable)
+									278 文本 选填
+								279 文本 附件资料
+								280 文本 暂未上传合同、报价或现场资料
+								281 按钮 上传图片或资料 
+									282 文本 上传图片或资料
+								283 文本 撤回承接
+								284 文本 撤回后不会生成正式工地，可修改后重新提交。已承接项目不能在这里撤回。
+								285 按钮 撤回当前项目 
+									286 文本 撤回当前项目
+								287 container
+									288 按钮 保存草稿
+									289 按钮 提交承接
+						290 HTML 内容 小程序渲染层, URL: 127.0.0.1:51831/__pageframe__/instanceframe.html
+						291 HTML 内容 小程序逻辑层, URL: 127.0.0.1:51831/appservice/s0/_sessionId/simulator-app-session-s0/mainframe?load
+							292 container
+								293 HTML 内容 小程序逻辑层, URL: 127.0.0.1:51831/appservice/instanceframe?s=1790371160190&autoload#id_1
+								294 HTML 内容 127.0.0.1:51831/appservice/appContext?contextName=app&id=ifr-1_2#id_1
+								295 HTML 内容 127.0.0.1:51831/appservice/app_xrframe_renderContext?contextName=app_xrframe_render&id=ifr-1_3&empty=true#id_1
+								296 HTML 内容 127.0.0.1:51831/appservice/app_sub_debugContext?contextName=app_sub_debug&id=ifr-1_4&empty=true#id_1
+								297 HTML 内容 小程序逻辑层, URL: 127.0.0.1:51831/appservice/instanceframe?s=1790371160190#id_2
+						298 container
+							299 链接
+							300 链接
+						301 container
+							302 文本 提交前核对财务数据
+							303 文本 当前合同金额：128000 元 客户未收工程款：100000 元 当前未付款：42000 元 接管前已发生成本：120000 元 成本状态：只知道总额 请确认以上是接管日尚未结清的余额和已发生成本，不是历史累计收款、历史累计付款或未来预算。
+							304 container
+								305 链接 取消
+									306 文本 取消
+								307 链接 确认无误
+									308 文本 确认无误
+					309 container
+						310 text iPhone 12/13 (Pro) 82% 16
+					311 container
+						312 文本 页面路径
+					313 文本 subpackages/carryover/pages/edit
+					314 链接 复制
+				315 container
+					316 文本 调试器已设置启动时不加载，点此启动
+		317 container
+	318 关闭按钮
+	319 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	320 最小化按钮
+321 menu bar
+	322 微信开发者工具
+	323 项目
+	324 编辑
+	325 工具
+	326 界面
+	327 设置
+	328 插件
+	329 帮助
+
+The focused UI element is 222 文本栏 (settable) 100000

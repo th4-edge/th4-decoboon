@@ -22,6 +22,7 @@ PUBLIC_ROUTES = {
     "invite/invitation/reject",
     "order/callback",
     "file/private/download",
+    "platform/auth/login",
 }
 
 

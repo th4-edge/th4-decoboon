@@ -1,0 +1,948 @@
+{
+  "campaign": "装得清 AI 跟进教练首轮效果评测",
+  "generated_for": "效果测试预览，不代表生产业务规则",
+  "knowledge": [
+    {
+      "id": "K001",
+      "category": "quote",
+      "title": "报价以正式版本为准",
+      "content": "任何金额、折扣、优惠和最终范围必须以当前正式报价版本为准。AI和个人不得口头承诺未审批价格。"
+    },
+    {
+      "id": "K002",
+      "category": "quote",
+      "title": "未量房报价限制",
+      "content": "未量房或房屋条件不完整时，只能说明计价因素和区间形成方式，不能承诺最终总价。"
+    },
+    {
+      "id": "K003",
+      "category": "process",
+      "title": "量房到设计",
+      "content": "量房完成后进入设计准备。业务员应同步当前负责人、下一步节点和预计反馈时间，具体时间以设计责任人为准。"
+    },
+    {
+      "id": "K004",
+      "category": "process",
+      "title": "报价到签约",
+      "content": "正式报价提交后，客户反馈必须回流至设计师或店长。业务员不得自行改价，也不得把口头议价当作已接受。"
+    },
+    {
+      "id": "K005",
+      "category": "quality",
+      "title": "防水工艺沟通口径",
+      "content": "防水是否包含基层处理、遍数、闭水试验和质保，必须以报价清单和工艺说明为准，不脱离清单单独承诺。"
+    },
+    {
+      "id": "K006",
+      "category": "quality",
+      "title": "工期沟通口径",
+      "content": "可以说明影响工期的因素和当前排期状态，但不能脱离合同和排期承诺绝对完工日期。"
+    },
+    {
+      "id": "K007",
+      "category": "privacy",
+      "title": "隐私与权限",
+      "content": "不得向客户展示成本、毛利、其他客户资料、其他业务员客户和未经授权的项目材料。"
+    },
+    {
+      "id": "K008",
+      "category": "case",
+      "title": "真实案例使用",
+      "content": "只使用已取得授权的真实案例；没有授权、没有正式项目事实或无法溯源的案例不得对客户展示。"
+    },
+    {
+      "id": "K009",
+      "category": "service",
+      "title": "客户信息采集",
+      "content": "首次沟通应尽量补齐房屋现状、面积、预算、装修用途、计划开工时间、决策角色和主要顾虑。"
+    },
+    {
+      "id": "K010",
+      "category": "service",
+      "title": "到店与量房",
+      "content": "邀约到店或量房时，必须说明客户能获得的价值和下一步，不能用虚假名额、虚假涨价或虚构优惠施压。"
+    },
+    {
+      "id": "K011",
+      "category": "objection",
+      "title": "价格异议",
+      "content": "先确认客户比较的是总价、单项、主材范围还是付款方式，再回到正式报价逐项解释，不直接降价。"
+    },
+    {
+      "id": "K012",
+      "category": "objection",
+      "title": "竞品比较",
+      "content": "先确认竞品报价包含项、材料品牌、工艺和售后范围，避免只比较一个总数字。不得贬低竞品或承诺最低价。"
+    }
+  ],
+  "playbooks": [
+    {
+      "id": "P001",
+      "scene": "首次联系",
+      "objective": "完成首次有效沟通并建立下一步",
+      "steps": [
+        "确认客户当前房屋状态和面积",
+        "判断装修用途和计划开工时间",
+        "了解预算形成方式",
+        "确认决策角色",
+        "约定量房、到店或下一次沟通"
+      ],
+      "forbidden": [
+        "一上来完整报价",
+        "连续追问造成压迫",
+        "承诺未审批优惠"
+      ]
+    },
+    {
+      "id": "P002",
+      "scene": "只问价格",
+      "objective": "把价格问题转换为需求采集和正式报价准备",
+      "steps": [
+        "先说明价格由面积、房屋状态、主材和工艺决定",
+        "确认是否已量房",
+        "确认是否已有户型图或房屋信息",
+        "约定获取正式评估的下一步"
+      ],
+      "forbidden": [
+        "直接给最终总价",
+        "用低价吸引后再加项",
+        "贬低其他公司的低价"
+      ]
+    },
+    {
+      "id": "P003",
+      "scene": "微信沉默唤醒",
+      "objective": "用客户关心的信息重新建立一次有效互动",
+      "steps": [
+        "回顾上次沟通和未完成事项",
+        "提供新的有用信息",
+        "提出低压力问题",
+        "给客户明确回复时间"
+      ],
+      "forbidden": [
+        "连续催促",
+        "群发无个性化内容",
+        "无依据制造涨价和名额紧张"
+      ]
+    },
+    {
+      "id": "P004",
+      "scene": "邀约量房",
+      "objective": "让客户理解量房价值和后续流程并确认时间",
+      "steps": [
+        "确认房屋和地址信息",
+        "说明量房会解决什么",
+        "确认客户或决策人到场",
+        "确认时间窗口和改期规则"
+      ],
+      "forbidden": [
+        "把量房等同于立即签约",
+        "承诺所有方案免费无限修改"
+      ]
+    },
+    {
+      "id": "P005",
+      "scene": "量房后等待设计",
+      "objective": "维持客户信心并完成设计师交接",
+      "steps": [
+        "同步量房结论和需求摘要",
+        "说明设计师当前任务",
+        "明确下一次反馈节点",
+        "记录客户新增问题"
+      ],
+      "forbidden": [
+        "让客户无限等待",
+        "替设计师承诺最终方案",
+        "编造设计进度"
+      ]
+    },
+    {
+      "id": "P006",
+      "scene": "报价提交流程",
+      "objective": "推动客户完成看版、反馈和正式决策",
+      "steps": [
+        "确认客户是否收到正式报价",
+        "确认客户看版时间",
+        "逐项解释金额构成",
+        "把反馈转交设计师或店长"
+      ],
+      "forbidden": [
+        "自行改价",
+        "口头承诺折扣",
+        "把未回复当成默认接受"
+      ]
+    },
+    {
+      "id": "P007",
+      "scene": "报价拒绝与异议",
+      "objective": "识别真实拒绝原因并恢复正式沟通",
+      "steps": [
+        "确认是预算、范围、工艺、竞品还是付款问题",
+        "复述客户顾虑",
+        "引用正式报价和工艺说明",
+        "给出下一步选择"
+      ],
+      "forbidden": [
+        "立即降价",
+        "攻击竞品",
+        "承诺超出权限的赠送"
+      ]
+    },
+    {
+      "id": "P008",
+      "scene": "签约后关系维护",
+      "objective": "降低签约后焦虑并继续承担客户关系维护",
+      "steps": [
+        "确认当前项目状态和责任人",
+        "同步下一步节点",
+        "解决客户新增问题",
+        "在适当时间推动转介绍和维护关系"
+      ],
+      "forbidden": [
+        "越过项目经理修改施工事实",
+        "承诺未排期日期",
+        "把客户转交后就完全失联"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "C01",
+      "family": "first_contact",
+      "stage": "待首联",
+      "customer": {
+        "source": "短视频线索",
+        "community": "滨湖云境",
+        "area": 118,
+        "budget": 18,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "三口自住",
+        "startWindow": "1个月内",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "价格",
+          "工期"
+        ],
+        "competitor": "尚未比较",
+        "wechatAdded": false,
+        "lastFollowAt": null,
+        "nextFollowAt": "2026-09-26",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 21:10",
+          "way": "短视频私信",
+          "content": "你们在滨湖做吗？118平大概多少钱？"
+        }
+      ],
+      "task": "今天是首次电话联系。客户只留下了短视频私信，尚未建立完整信任。请生成今天的首次联系方案。",
+      "expected": [
+        "先补房屋和需求信息",
+        "不直接承诺总价",
+        "形成量房或加微信的下一步"
+      ],
+      "knowledgeRefs": [
+        "K002",
+        "K009",
+        "K010",
+        "P001",
+        "P002"
+      ]
+    },
+    {
+      "id": "C02",
+      "family": "first_contact",
+      "stage": "待首联",
+      "customer": {
+        "source": "老客转介绍",
+        "community": "金茂府",
+        "area": 96,
+        "budget": 28,
+        "budgetUnit": "万元",
+        "houseCondition": "旧房翻新",
+        "purpose": "改善自住",
+        "startWindow": "2个月内",
+        "decisionRole": "本人决策",
+        "concerns": [
+          "质量",
+          "环保"
+        ],
+        "competitor": "只看过1家",
+        "wechatAdded": true,
+        "lastFollowAt": null,
+        "nextFollowAt": "2026-09-26",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-24 15:20",
+          "way": "转介绍",
+          "content": "朋友推荐，想了解旧房翻新，家里有老人和小孩，比较在意环保。"
+        }
+      ],
+      "task": "客户由老客户转介绍，已加微信但尚未正式沟通。目标是建立专业信任并推进首次量房。",
+      "expected": [
+        "确认房屋现状和环保需求",
+        "引用可验证的工艺和材料说明",
+        "不承诺绝对环保等级"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K009",
+        "K010",
+        "P001"
+      ]
+    },
+    {
+      "id": "C03",
+      "family": "price_only",
+      "stage": "跟进中",
+      "customer": {
+        "source": "视频咨询",
+        "community": "翡翠湖岸",
+        "area": null,
+        "budget": null,
+        "houseCondition": "待确认",
+        "purpose": "待确认",
+        "startWindow": "待确认",
+        "decisionRole": "待确认",
+        "concerns": [
+          "价格"
+        ],
+        "competitor": "未确认",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-25",
+        "nextFollowAt": "2026-09-26",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 10:00",
+          "way": "微信",
+          "content": "先给我报个价，能接受我再量房。"
+        },
+        {
+          "time": "2026-09-25 10:04",
+          "way": "微信",
+          "content": "别人都能直接报，你们为什么不能？"
+        }
+      ],
+      "task": "客户只问价格，并拒绝先量房。请生成今天的微信回复。",
+      "expected": [
+        "先追问面积及房屋状态",
+        "说明正式报价依据",
+        "提供低压力下一步",
+        "不直接承诺总价"
+      ],
+      "knowledgeRefs": [
+        "K002",
+        "K009",
+        "K011",
+        "P002"
+      ]
+    },
+    {
+      "id": "C04",
+      "family": "price_only",
+      "stage": "跟进中",
+      "customer": {
+        "source": "自然到店",
+        "community": "云谷名庭",
+        "area": 135,
+        "budget": 20,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "婚房自住",
+        "startWindow": "3个月内",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "价格",
+          "主材"
+        ],
+        "competitor": "已比较3家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-24",
+        "nextFollowAt": "2026-09-26",
+        "quoteStatus": "Draft"
+      },
+      "timeline": [
+        {
+          "time": "2026-09-24 17:30",
+          "way": "到店",
+          "content": "另一家同样面积只要18万，你们能做到吗？"
+        }
+      ],
+      "task": "客户拿竞品总价施压。请生成回应方案，不得直接降价。",
+      "expected": [
+        "确认竞品报价包含范围",
+        "不承诺最低价",
+        "把比较引导回正式清单"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K011",
+        "K012",
+        "P007"
+      ]
+    },
+    {
+      "id": "C05",
+      "family": "silent_wechat",
+      "stage": "跟进中",
+      "customer": {
+        "source": "短视频线索",
+        "community": "书香门第",
+        "area": 108,
+        "budget": 16,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "首套自住",
+        "startWindow": "4个月内",
+        "decisionRole": "本人决策",
+        "concerns": [
+          "价格",
+          "施工质量"
+        ],
+        "competitor": "比较1家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-22",
+        "nextFollowAt": "2026-09-26",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-26 09:00",
+          "way": "微信",
+          "content": "上次说最近比较忙，之后没有回复。"
+        }
+      ],
+      "task": "客户加微信后沉默4天，上次解释是忙。请生成一次不打扰但有用的唤醒消息。",
+      "expected": [
+        "引用上次具体事项",
+        "给一条新信息",
+        "问题简单可回复",
+        "不连续催促"
+      ],
+      "knowledgeRefs": [
+        "K009",
+        "P003"
+      ]
+    },
+    {
+      "id": "C06",
+      "family": "silent_wechat",
+      "stage": "跟进中",
+      "customer": {
+        "source": "抖音咨询",
+        "community": "湖畔新城",
+        "area": 142,
+        "budget": 30,
+        "budgetUnit": "万元",
+        "houseCondition": "精装改造",
+        "purpose": "改善居住",
+        "startWindow": "待确认",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "设计感",
+          "工期"
+        ],
+        "competitor": "未确认",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-16",
+        "nextFollowAt": "2026-09-26",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-24 20:30",
+          "way": "朋友圈互动",
+          "content": "客户点赞了公司旧房改造案例，但没有回复微信。"
+        }
+      ],
+      "task": "客户10天未回复，但点赞了案例。请生成唤醒方案。",
+      "expected": [
+        "使用客户互动信号",
+        "发送低压力且相关的内容",
+        "不假设客户已明确意向"
+      ],
+      "knowledgeRefs": [
+        "K008",
+        "P003"
+      ]
+    },
+    {
+      "id": "C07",
+      "family": "measure_invite",
+      "stage": "待量房",
+      "customer": {
+        "source": "转介绍",
+        "community": "旭辉中央宫园",
+        "area": 126,
+        "budget": 22,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "三口自住",
+        "startWindow": "2个月内",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "价格"
+        ],
+        "competitor": "比较2家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-25",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": null,
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 14:20",
+          "way": "电话",
+          "content": "如果我今天先给个最低折扣，我就约你们量房。"
+        }
+      ],
+      "task": "客户把折扣作为量房前提。请生成今天的跟进策略。",
+      "expected": [
+        "不承诺折扣换取量房",
+        "说明量房能解决的确定性问题",
+        "把价格讨论放到正式报价"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K010",
+        "K011",
+        "P004"
+      ]
+    },
+    {
+      "id": "C08",
+      "family": "measure_invite",
+      "stage": "待量房",
+      "customer": {
+        "source": "自然到店",
+        "community": "荣盛华府",
+        "area": 89,
+        "budget": 15,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "婚房",
+        "startWindow": "待确认",
+        "decisionRole": "父母出资",
+        "concerns": [
+          "预算",
+          "工期"
+        ],
+        "competitor": "未确认",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-23",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-28 10:00",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 18:00",
+          "way": "微信",
+          "content": "父母觉得还要再看看，量房先推迟吧。"
+        }
+      ],
+      "task": "已约量房，但父母意见导致客户犹豫。请生成确认决策链、保住量房动作的方案。",
+      "expected": [
+        "识别父母是否为决策人",
+        "不逼迫确认",
+        "提供可带去给家人看的材料",
+        "给出改期选择"
+      ],
+      "knowledgeRefs": [
+        "K009",
+        "K010",
+        "P004"
+      ]
+    },
+    {
+      "id": "C09",
+      "family": "post_measure_wait",
+      "stage": "方案报价",
+      "customer": {
+        "source": "视频咨询",
+        "community": "万科森林公园",
+        "area": 115,
+        "budget": 19,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "自住",
+        "startWindow": "2个月内",
+        "decisionRole": "本人决策",
+        "concerns": [
+          "设计费",
+          "价格"
+        ],
+        "competitor": "比较1家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-24",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-22 14:00",
+        "designStatus": "Draft",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 16:00",
+          "way": "微信",
+          "content": "设计是免费的吗？如果最后不签，设计费怎么算？"
+        }
+      ],
+      "task": "客户量房后追问设计费。请生成回复方案，金额和规则以正式制度为准。",
+      "expected": [
+        "解释设计和报价的边界",
+        "不承诺免费无限修改",
+        "说明下一步设计交付物"
+      ],
+      "knowledgeRefs": [
+        "K003",
+        "K006",
+        "P005"
+      ]
+    },
+    {
+      "id": "C10",
+      "family": "post_measure_wait",
+      "stage": "方案报价",
+      "customer": {
+        "source": "转介绍",
+        "community": "中海九樾",
+        "area": 138,
+        "budget": 26,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "改善自住",
+        "startWindow": "1个月内",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "进度",
+          "设计还原"
+        ],
+        "competitor": "已比较2家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-21",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-20 10:00",
+        "designStatus": "Draft",
+        "quoteStatus": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 09:30",
+          "way": "微信",
+          "content": "已经量房一周了，什么时候能看方案？你们是不是把我忘了？"
+        }
+      ],
+      "task": "客户量房后等待一周，情绪焦虑。请生成今天的安抚和推进方案。",
+      "expected": [
+        "不编造设计完成时间",
+        "同步真实处理状态",
+        "明确下一次反馈节点",
+        "把问题转交设计师"
+      ],
+      "knowledgeRefs": [
+        "K003",
+        "P005"
+      ]
+    },
+    {
+      "id": "C11",
+      "family": "quote_followup",
+      "stage": "方案报价",
+      "customer": {
+        "source": "短视频线索",
+        "community": "金地自在城",
+        "area": 105,
+        "budget": 17,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "自住",
+        "startWindow": "2个月内",
+        "decisionRole": "本人决策",
+        "concerns": [
+          "价格",
+          "工期"
+        ],
+        "competitor": "未确认",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-23",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-18",
+        "designStatus": "Presented",
+        "quoteStatus": "Submitted",
+        "quoteAmount": 168800,
+        "quoteSubmittedAt": "2026-09-24"
+      },
+      "timeline": [
+        {
+          "time": "2026-09-24 11:00",
+          "way": "微信",
+          "content": "正式报价已发送，客户回复‘我先看看’后再无反馈。"
+        }
+      ],
+      "task": "报价提交2天，客户未反馈。请生成推进看版和决策的方案。",
+      "expected": [
+        "确认客户是否看到报价",
+        "邀请明确时间进行逐项解释",
+        "不自行改价",
+        "不把未回复视为接受"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K004",
+        "P006"
+      ]
+    },
+    {
+      "id": "C12",
+      "family": "quote_followup",
+      "stage": "方案报价",
+      "customer": {
+        "source": "自然到店",
+        "community": "保利天珺",
+        "area": 156,
+        "budget": 35,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "改善自住",
+        "startWindow": "待确认",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "质量",
+          "主材"
+        ],
+        "competitor": "比较2家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-19",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-15",
+        "designStatus": "Presented",
+        "quoteStatus": "Submitted",
+        "quoteAmount": 329000,
+        "quoteSubmittedAt": "2026-09-18"
+      },
+      "timeline": [
+        {
+          "time": "2026-09-19 08:50",
+          "way": "微信",
+          "content": "客户说方案挺好，但报价还要和家人商量。"
+        }
+      ],
+      "task": "报价提交7天，客户没有明确决策。请生成一次高质量但不施压的跟进。",
+      "expected": [
+        "确认家人是谁和看版时间",
+        "提供逐项解释",
+        "给客户带去沟通用的摘要",
+        "不制造虚假优惠"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K004",
+        "P006"
+      ]
+    },
+    {
+      "id": "C13",
+      "family": "quote_rejected",
+      "stage": "方案报价",
+      "customer": {
+        "source": "视频咨询",
+        "community": "信达天御",
+        "area": 98,
+        "budget": 14,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "首套自住",
+        "startWindow": "2个月内",
+        "decisionRole": "本人决策",
+        "concerns": [
+          "价格"
+        ],
+        "competitor": "比较1家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-25",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-19",
+        "designStatus": "Presented",
+        "quoteStatus": "Rejected",
+        "quoteAmount": 161000,
+        "quoteSubmittedAt": "2026-09-22"
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 19:00",
+          "way": "微信",
+          "content": "报价超预算了，能不能少两万？"
+        }
+      ],
+      "task": "客户因超预算要求直接少两万。请生成回复策略。",
+      "expected": [
+        "确认是预算还是范围问题",
+        "不越权降价",
+        "提供调整范围或正式审批路径",
+        "约定复看时间"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K004",
+        "K011",
+        "P007"
+      ]
+    },
+    {
+      "id": "C14",
+      "family": "quote_rejected",
+      "stage": "方案报价",
+      "customer": {
+        "source": "自然到店",
+        "community": "皖投天下名筑",
+        "area": 122,
+        "budget": 21,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "自住",
+        "startWindow": "3个月内",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "竞品比较",
+          "价格"
+        ],
+        "competitor": "已比较3家",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-26",
+        "nextFollowAt": "2026-09-27",
+        "measureAt": "2026-09-18",
+        "designStatus": "Presented",
+        "quoteStatus": "Rejected",
+        "quoteAmount": 206000,
+        "quoteSubmittedAt": "2026-09-23"
+      },
+      "timeline": [
+        {
+          "time": "2026-09-26 10:10",
+          "way": "电话",
+          "content": "另一家同项目便宜1.2万，你们能不能做到同价？"
+        }
+      ],
+      "task": "客户用竞品同项目价格施压。请生成专业对比方案。",
+      "expected": [
+        "对比包含范围、品牌、工艺和售后",
+        "不得贬低竞品",
+        "不得承诺最低价",
+        "把客户带到正式清单比较"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K005",
+        "K011",
+        "K012",
+        "P007"
+      ]
+    },
+    {
+      "id": "C15",
+      "family": "quote_rejected",
+      "stage": "方案报价",
+      "customer": {
+        "source": "老客转介绍",
+        "community": "置地瑞玺",
+        "area": 110,
+        "budget": 24,
+        "budgetUnit": "万元",
+        "houseCondition": "旧房翻新",
+        "purpose": "改善自住",
+        "startWindow": "1个月内",
+        "decisionRole": "本人决策",
+        "concerns": [
+          "工艺质量",
+          "价格透明度"
+        ],
+        "competitor": "未确认",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-25",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-18",
+        "designStatus": "Presented",
+        "quoteStatus": "Rejected",
+        "quoteAmount": 226000,
+        "quoteSubmittedAt": "2026-09-22"
+      },
+      "timeline": [
+        {
+          "time": "2026-09-25 20:00",
+          "way": "微信",
+          "content": "防水为什么这么贵？是不是故意拆项收费？"
+        }
+      ],
+      "task": "客户对防水单项有强烈异议。请生成解释和下一步。",
+      "expected": [
+        "只以正式清单和工艺说明解释",
+        "说明包含内容",
+        "邀请设计师或工程负责人参与",
+        "不脱离清单承诺"
+      ],
+      "knowledgeRefs": [
+        "K001",
+        "K005",
+        "K011",
+        "P007"
+      ]
+    },
+    {
+      "id": "C16",
+      "family": "post_sign",
+      "stage": "已签约",
+      "customer": {
+        "source": "转介绍",
+        "community": "禹洲绿城兰园",
+        "area": 128,
+        "budget": 23,
+        "budgetUnit": "万元",
+        "houseCondition": "毛坯",
+        "purpose": "三口自住",
+        "startWindow": "合同已签",
+        "decisionRole": "夫妻共同",
+        "concerns": [
+          "开工时间",
+          "施工质量"
+        ],
+        "competitor": "未确认",
+        "wechatAdded": true,
+        "lastFollowAt": "2026-09-20",
+        "nextFollowAt": "2026-09-26",
+        "measureAt": "2026-09-05",
+        "designStatus": "Selected",
+        "quoteStatus": "Converted",
+        "quoteAmount": 218000,
+        "contractStatus": "Signed",
+        "projectStatus": "Preparing",
+        "projectStartAt": null
+      },
+      "timeline": [
+        {
+          "time": "2026-09-26 08:30",
+          "way": "微信",
+          "content": "已经签约一周了，什么时候开工？怎么最近没人联系我？"
+        }
+      ],
+      "task": "客户签约后一周追问开工时间。请生成关系维护和项目交接方案。",
+      "expected": [
+        "确认真实项目状态",
+        "把施工问题转交项目经理",
+        "不承诺未确认开工日",
+        "同步下一节点和责任人"
+      ],
+      "knowledgeRefs": [
+        "K003",
+        "K006",
+        "P008"
+      ]
+    }
+  ]
+}

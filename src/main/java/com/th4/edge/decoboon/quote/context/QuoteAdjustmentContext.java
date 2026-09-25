@@ -117,15 +117,16 @@ public class QuoteAdjustmentContext {
         target.setQuantity(quantity);
         target.setMaterialPrice(zero(catalog.getMaterialPrice()));
         target.setManualPrice(zero(catalog.getManualPrice()));
+        target.setFixedTotalPrice(catalog.getFixedTotalPrice());
         target.setPricingMode(catalog.getPricingMode());
         target.setPrice(quoteCalcContext.unitPrice(catalog.getPricingMode(), quantity,
-                zero(catalog.getMaterialPrice()), zero(catalog.getManualPrice())));
+                zero(catalog.getMaterialPrice()), zero(catalog.getManualPrice()), catalog.getFixedTotalPrice()));
         target.setAmount(quoteCalcContext.amount(catalog.getPricingMode(), quantity,
-                zero(catalog.getMaterialPrice()), zero(catalog.getManualPrice())));
+                zero(catalog.getMaterialPrice()), zero(catalog.getManualPrice()), catalog.getFixedTotalPrice()));
         target.setCost(quoteCalcContext.cost(quantity, zero(catalog.getCostPrice())));
         target.setComponents(quoteCalcContext.components(catalog.getPricingMode(), quantity,
                 zero(catalog.getMaterialPrice()), zero(catalog.getManualPrice()),
-                zero(catalog.getCostPrice()), catalog.getFormula()));
+                zero(catalog.getCostPrice()), catalog.getFormula(), catalog.getFixedTotalPrice()));
         target.setFormula(catalog.getFormula());
         target.setCraft(catalog.getCraft());
         target.setSort(source.getSort() == null ? nextSort(quote) : source.getSort());

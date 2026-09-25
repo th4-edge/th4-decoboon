@@ -11,7 +11,8 @@ public enum CustomerSource implements Enumerable<String> {
     WalkIn("自然到店"),
     OldCustomer("老客户"),
     Video("视频咨询"),
-    Other("其他");
+    Other("其他"),
+    BatchPhone("批量导入");
 
     private final String name;
 

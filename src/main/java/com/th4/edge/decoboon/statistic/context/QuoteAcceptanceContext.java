@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.context;
 
+import com.th4.edge.decoboon.common.context.BusinessOriginFilter;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.tenant.user.model.Employee;
@@ -123,7 +124,8 @@ public final class QuoteAcceptanceContext {
         Map<String, List<Quote>> groups = new LinkedHashMap<>();
         if (quotes != null) {
             for (Quote quote : quotes) {
-                if (quote == null || quote.getStatus() == null || NOT_OPPORTUNITY.contains(quote.getStatus())) {
+                if (quote == null || quote.getStatus() == null || NOT_OPPORTUNITY.contains(quote.getStatus())
+                        || !BusinessOriginFilter.isNormal(quote.getBusinessOrigin())) {
                     continue;
                 }
                 groups.computeIfAbsent(opportunityKey(quote), key -> new ArrayList<>()).add(quote);
@@ -154,7 +156,8 @@ public final class QuoteAcceptanceContext {
         int pending = 0;
         if (periodQuotes != null) {
             for (Quote quote : periodQuotes) {
-                if (quote == null || quote.getStatus() == null) {
+                if (quote == null || quote.getStatus() == null
+                        || !BusinessOriginFilter.isNormal(quote.getBusinessOrigin())) {
                     continue;
                 }
                 if (!NOT_OPPORTUNITY.contains(quote.getStatus())) {

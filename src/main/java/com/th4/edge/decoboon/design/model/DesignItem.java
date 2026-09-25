@@ -142,10 +142,15 @@ public class DesignItem extends AuditModel {
     @Column(precision = 12, scale = 2, nullable = false)
     private BigDecimal manualPrice = BigDecimal.ZERO;
 
-    @Note("成本单价")
+    @Note("固定总价（仅固定总价计价方式使用）")
     @com.th4.edge.framework.core.annotation.Unit("元")
-    @Column(precision = 12, scale = 2, nullable = false)
-    private BigDecimal costPrice = BigDecimal.ZERO;
+    @Column(name = "fixed_total_price", precision = 12, scale = 2)
+    private BigDecimal fixedTotalPrice;
+
+    @Note("成本单价（null = 成本待维护，0 = 明确零成本）")
+    @com.th4.edge.framework.core.annotation.Unit("元")
+    @Column(precision = 12, scale = 2)
+    private BigDecimal costPrice;
 
     @Note("计价公式")
     @Enumerated(EnumType.STRING)
@@ -226,6 +231,8 @@ public class DesignItem extends AuditModel {
     public void setManualPrice(BigDecimal manualPrice) { this.manualPrice = manualPrice; }
     public BigDecimal getCostPrice() { return costPrice; }
     public void setCostPrice(BigDecimal costPrice) { this.costPrice = costPrice; }
+    public BigDecimal getFixedTotalPrice() { return fixedTotalPrice; }
+    public void setFixedTotalPrice(BigDecimal fixedTotalPrice) { this.fixedTotalPrice = fixedTotalPrice; }
     public PricingMethod getPricingMode() { return pricingMode; }
     public void setPricingMode(PricingMethod pricingMode) { this.pricingMode = pricingMode; }
     public BigDecimal getAmount() { return amount; }

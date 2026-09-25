@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.project.service.contractchange.save.support;
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
 import com.th4.edge.decoboon.project.configure.ContractChangeType;
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.ContractChange;
@@ -84,6 +86,7 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
     private final ProjectAccessContext accessContext;
     private final ModelIdentityContext modelIdentityContext;
     private final ProjectPermissionContext permissionContext;
+    private final CarryoverLockContext carryoverLockContext;
 
     public Save(ProjectContractRepository contractRepository,
                 ContractChangeRepository changeRepository,
@@ -93,7 +96,8 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
                 ProjectReportRepository reportRepository,
                 ProjectAccessContext accessContext,
                 ModelIdentityContext modelIdentityContext,
-                ProjectPermissionContext permissionContext) {
+                ProjectPermissionContext permissionContext,
+                CarryoverLockContext carryoverLockContext) {
         this.contractRepository = contractRepository;
         this.changeRepository = changeRepository;
         this.itemRepository = itemRepository;
@@ -103,6 +107,7 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
         this.accessContext = accessContext;
         this.modelIdentityContext = modelIdentityContext;
         this.permissionContext = permissionContext;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -173,6 +178,7 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
             report.setChange(saved);
             reportRepository.save(report);
         }
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.ContractChange, current);
         return saved;
     }
 

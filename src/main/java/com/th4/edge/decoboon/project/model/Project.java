@@ -1,4 +1,6 @@
 package com.th4.edge.decoboon.project.model;
+
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.property.model.Property;
 
 import jakarta.persistence.EntityListeners;
@@ -71,6 +73,11 @@ public class Project extends AuditModel implements ProjectOwned {
     @Id
     @SnowflakeId
     private Long projectId;
+
+    @Note("业务来源")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "business_origin", length = 16, nullable = false)
+    private BusinessOrigin businessOrigin = BusinessOrigin.New;
 
     @Note("项目编号")
     @Keyword
@@ -167,6 +174,10 @@ public class Project extends AuditModel implements ProjectOwned {
     @Column(nullable = false)
     private Integer progress = 0;
 
+    @Note("接管时项目进度基线；普通新项目为空")
+    @Column(name = "baseline_progress")
+    private Integer baselineProgress;
+
     @Note("计划开工日期")
     private LocalDate startDate;
 
@@ -241,7 +252,9 @@ public class Project extends AuditModel implements ProjectOwned {
     @Note("只读投影：合同履约阶段")
     private ProjectContractStage contractStage = ProjectContractStage.Pending;
 
-    public Long getProjectId() {
+        public BusinessOrigin getBusinessOrigin() { return businessOrigin; }
+    public void setBusinessOrigin(BusinessOrigin businessOrigin) { this.businessOrigin = businessOrigin; }
+public Long getProjectId() {
         return projectId;
     }
 
@@ -359,6 +372,14 @@ public class Project extends AuditModel implements ProjectOwned {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
+    }
+
+    public Integer getBaselineProgress() {
+        return baselineProgress;
+    }
+
+    public void setBaselineProgress(Integer baselineProgress) {
+        this.baselineProgress = baselineProgress;
     }
 
     public LocalDate getStartDate() {

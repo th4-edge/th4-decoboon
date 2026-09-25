@@ -143,6 +143,7 @@ public class QuoteCopyContext {
         copy.setQuantity(zero(source.getQuantity()));
         copy.setMaterialPrice(zero(source.getMaterialPrice()));
         copy.setManualPrice(zero(source.getManualPrice()));
+        copy.setFixedTotalPrice(source.getFixedTotalPrice());
         copy.setPricingMode(source.getPricingMode());
         copy.setPrice(zero(source.getPrice()));
         copy.setAmount(zero(source.getAmount()));

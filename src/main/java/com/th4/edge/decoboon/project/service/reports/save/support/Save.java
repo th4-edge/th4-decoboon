@@ -2,6 +2,8 @@ package com.th4.edge.decoboon.project.service.reports.save.support;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 
 import com.th4.edge.decoboon.project.configure.ReportType;
+import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
+import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.ProjectReport;
@@ -80,19 +82,22 @@ public class Save implements com.th4.edge.decoboon.project.service.reports.save.
     private final ProjectReportRepository reportRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
+    private final CarryoverLockContext carryoverLockContext;
 
     public Save(ProjectRepository projectRepository,
                 ProjectStageRepository stageRepository,
                 ProjectTaskRepository taskRepository,
                 ProjectReportRepository reportRepository,
                 ProjectAccessContext accessContext,
-                ProjectPermissionContext permissionContext) {
+                ProjectPermissionContext permissionContext,
+                CarryoverLockContext carryoverLockContext) {
         this.projectRepository = projectRepository;
         this.stageRepository = stageRepository;
         this.taskRepository = taskRepository;
         this.reportRepository = reportRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
+        this.carryoverLockContext = carryoverLockContext;
     }
 
     @Override
@@ -129,7 +134,9 @@ public class Save implements com.th4.edge.decoboon.project.service.reports.save.
         report.setAuthor(current);
         report.setAuthorRole(current.getRole());
         report.setVisibleToCustomer(visibleToCustomer == null || visibleToCustomer);
-        return reportRepository.save(report);
+        ProjectReport saved = reportRepository.save(report);
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.SiteReport, current);
+        return saved;
     }
 
     private String defaultTitle(ReportType type) {

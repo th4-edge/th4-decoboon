@@ -1,0 +1,44 @@
+[
+  {
+    "who": "谢玲玲",
+    "uri": "customer/customer/info",
+    "success": false,
+    "code": "404",
+    "message": "客户不存在或无权访问"
+  },
+  {
+    "who": "董夏鹏",
+    "uri": "customer/customer/info",
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  {
+    "who": "徐勇",
+    "uri": "project/manager/customer/info",
+    "success": false,
+    "code": "404",
+    "message": "客户不存在或不属于当前项目经理负责的项目"
+  },
+  {
+    "who": "王昌富",
+    "uri": "project/manager/customer/info",
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  {
+    "who": "吴濛濛",
+    "uri": "customer/customer/info",
+    "success": true,
+    "code": null,
+    "message": null
+  },
+  {
+    "who": "钱小明",
+    "uri": "customer/customer/info",
+    "success": true,
+    "code": null,
+    "message": null
+  }
+]

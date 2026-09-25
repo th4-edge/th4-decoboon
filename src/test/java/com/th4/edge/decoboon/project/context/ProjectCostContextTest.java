@@ -1,5 +1,9 @@
 package com.th4.edge.decoboon.project.context;
 
+import com.th4.edge.decoboon.carryover.configure.CarryoverCostStatus;
+import com.th4.edge.decoboon.carryover.model.CarryoverCostSnapshot;
+import com.th4.edge.decoboon.carryover.repository.CarryoverCostSnapshotRepository;
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
@@ -55,6 +59,53 @@ class ProjectCostContextTest {
         assertThat(summary.estimatedCost()).isEqualByComparingTo("100.00");
         assertThat(summary.actualCost()).isEqualByComparingTo("150.00");
         assertThat(summary.incompleteItemCount()).isEqualTo(1);
+        assertThat(summary.complete()).isFalse();
+    }
+
+    @Test
+    void shouldMergeCarryoverCostSnapshot() {
+        CarryoverCostSnapshotRepository snapshots = mock(CarryoverCostSnapshotRepository.class);
+        ProjectCostContext carryoverContext = new ProjectCostContext(
+                quoteLines, contractLines, purchaseOrders, snapshots);
+        Project project = new Project();
+        project.setProjectId(88L);
+        project.setBusinessOrigin(BusinessOrigin.Carryover);
+        project.setCost(BigDecimal.ZERO);
+        var quote = new com.th4.edge.decoboon.quote.model.Quote();
+        quote.setQuoteId(880L);
+        project.setQuote(quote);
+        CarryoverCostSnapshot snapshot = new CarryoverCostSnapshot();
+        snapshot.setTotalCost(new BigDecimal("12000.00"));
+        snapshot.setCostStatus(CarryoverCostStatus.Complete);
+        when(snapshots.findByProject_ProjectId(88L)).thenReturn(java.util.Optional.of(snapshot));
+
+        ProjectCostContext.CostSummary summary = carryoverContext.summarize(project);
+
+        assertThat(summary.estimatedCost()).isEqualByComparingTo("12000.00");
+        assertThat(summary.actualCost()).isEqualByComparingTo("12000.00");
+        assertThat(summary.complete()).isTrue();
+    }
+
+    @Test
+    void incompleteCarryoverCostSnapshotMustKeepProfitIncomplete() {
+        CarryoverCostSnapshotRepository snapshots = mock(CarryoverCostSnapshotRepository.class);
+        ProjectCostContext carryoverContext = new ProjectCostContext(
+                quoteLines, contractLines, purchaseOrders, snapshots);
+        Project project = new Project();
+        project.setProjectId(89L);
+        project.setBusinessOrigin(BusinessOrigin.Carryover);
+        project.setCost(BigDecimal.ZERO);
+        var quote = new com.th4.edge.decoboon.quote.model.Quote();
+        quote.setQuoteId(890L);
+        project.setQuote(quote);
+        CarryoverCostSnapshot snapshot = new CarryoverCostSnapshot();
+        snapshot.setTotalCost(new BigDecimal("12000.00"));
+        snapshot.setCostStatus(CarryoverCostStatus.TotalOnly);
+        when(snapshots.findByProject_ProjectId(89L)).thenReturn(java.util.Optional.of(snapshot));
+
+        ProjectCostContext.CostSummary summary = carryoverContext.summarize(project);
+
+        assertThat(summary.actualCost()).isEqualByComparingTo("12000.00");
         assertThat(summary.complete()).isFalse();
     }
 

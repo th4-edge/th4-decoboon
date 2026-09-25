@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.common.file.context;
 
+import com.th4.edge.decoboon.carryover.model.CarryoverAttachment;
+import com.th4.edge.decoboon.carryover.repository.CarryoverAttachmentRepository;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.common.file.configure.FileScope;
@@ -74,6 +76,7 @@ public class FileAuthorizationContext {
     private final GoodsReceiptRepository goodsReceiptRepository;
     private final StockMovementRepository stockMovementRepository;
     private final CatalogItemRepository catalogItemRepository;
+    private final CarryoverAttachmentRepository carryoverAttachmentRepository;
 
     public FileAuthorizationContext(FileSignatureContext signatureContext,
                                     TenantContext tenantContext,
@@ -94,7 +97,8 @@ public class FileAuthorizationContext {
                                     TaskNodeRepository taskNodeRepository,
                                     GoodsReceiptRepository goodsReceiptRepository,
                                     StockMovementRepository stockMovementRepository,
-                                    CatalogItemRepository catalogItemRepository) {
+                                    CatalogItemRepository catalogItemRepository,
+                                    CarryoverAttachmentRepository carryoverAttachmentRepository) {
         this.signatureContext = signatureContext;
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
@@ -115,6 +119,7 @@ public class FileAuthorizationContext {
         this.goodsReceiptRepository = goodsReceiptRepository;
         this.stockMovementRepository = stockMovementRepository;
         this.catalogItemRepository = catalogItemRepository;
+        this.carryoverAttachmentRepository = carryoverAttachmentRepository;
     }
 
     public Authorization authorize(User<?> principal, FileScope scope, Long businessId,
@@ -237,6 +242,15 @@ public class FileAuthorizationContext {
                     throw notFound();
                 }
                 add(allowed, item.getImages());
+            }
+            case Carryover -> {
+                CarryoverAttachment attachment = carryoverAttachmentRepository.findById(businessId)
+                        .orElseThrow(this::notFound);
+                if (attachment.getCompany() == null
+                        || !employee.getCompany().getComId().equals(attachment.getCompany().getComId())) {
+                    throw notFound();
+                }
+                add(allowed, attachment.getFileUrl());
             }
         }
         return new Authorization(projectId, requested(allowed, requestedPaths));

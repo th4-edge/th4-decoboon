@@ -677,13 +677,15 @@ public class ProjectContext {
         List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
         BigDecimal totalWeight = BigDecimal.ZERO;
         BigDecimal weightedProgress = BigDecimal.ZERO;
+        BigDecimal weightedRemainingProgress = BigDecimal.ZERO;
         boolean allDone = !stages.isEmpty();
         boolean anyStarted = false;
         boolean anyAccepting = false;
 
         for (ProjectStage stage : stages) {
             List<ProjectTask> tasks = taskRepository.findByStage(stage);
-            int progress = averageTaskProgress(tasks);
+            int rawProgress = averageTaskProgress(tasks);
+            int progress = blendProgress(stage.getBaselineProgress(), rawProgress);
             Acceptance latestAcceptance = acceptanceRepository
                     .findFirstByStageOrderByAcceptanceIdDesc(stage)
                     .orElse(null);
@@ -711,13 +713,23 @@ public class ProjectContext {
             BigDecimal weight = stage.getWeight() == null ? BigDecimal.ZERO : stage.getWeight();
             totalWeight = totalWeight.add(weight);
             weightedProgress = weightedProgress.add(weight.multiply(BigDecimal.valueOf(progress)));
+            weightedRemainingProgress = weightedRemainingProgress.add(weight.multiply(BigDecimal.valueOf(rawProgress)));
             allDone = allDone && StageStatus.Done.equals(stage.getStatus());
             anyStarted = anyStarted || !StageStatus.Todo.equals(stage.getStatus());
             stageRepository.save(stage);
         }
 
-        project.setProgress(totalWeight.signum() == 0 ? 0
-                : weightedProgress.divide(totalWeight, 0, RoundingMode.HALF_UP).intValue());
+        int calculatedProgress;
+        if (project.getBaselineProgress() != null && totalWeight.signum() > 0) {
+            int remainingProgress = weightedRemainingProgress
+                    .divide(totalWeight, 0, RoundingMode.HALF_UP)
+                    .intValue();
+            calculatedProgress = blendProgress(project.getBaselineProgress(), remainingProgress);
+        } else {
+            calculatedProgress = totalWeight.signum() == 0 ? 0
+                    : weightedProgress.divide(totalWeight, 0, RoundingMode.HALF_UP).intValue();
+        }
+        project.setProgress(calculatedProgress);
         project.setCost(calculateProjectCost(project));
         if (allDone) {
             project.setStatus(ProjectStatus.Finished);
@@ -730,6 +742,13 @@ public class ProjectContext {
             project.setStatus(ProjectStatus.Preparing);
         }
         return projectRepository.save(project);
+    }
+
+    /** 接管基线进度只作为起点：后续剩余任务从基线继续增长，不能把进度算回零。 */
+    static int blendProgress(Integer baselineProgress, int remainingProgress) {
+        int baseline = baselineProgress == null ? 0 : Math.max(0, Math.min(100, baselineProgress));
+        int remaining = Math.max(0, Math.min(100, remainingProgress));
+        return Math.min(100, baseline + Math.round((100 - baseline) * remaining / 100f));
     }
 
     private void supersedeOtherQuotes(Property property, Long winnerQuoteId) {

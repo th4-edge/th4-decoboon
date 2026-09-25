@@ -186,6 +186,11 @@ public class QuoteLine extends AuditModel {
     @Column(precision = 12, scale = 2, nullable = false)
     private BigDecimal manualPrice = BigDecimal.ZERO;
 
+    @Note("固定总价（仅固定总价计价方式使用，独立于材料/人工单价）")
+    @com.th4.edge.framework.core.annotation.Unit("元")
+    @Column(name = "fixed_total_price", precision = 12, scale = 2)
+    private BigDecimal fixedTotalPrice;
+
     @Note("计价公式")
     @Enumerated(EnumType.STRING)
     @Column(length = 24, nullable = false)
@@ -288,6 +293,8 @@ public class QuoteLine extends AuditModel {
     public void setMaterialPrice(BigDecimal materialPrice) { this.materialPrice = materialPrice; }
     public BigDecimal getManualPrice() { return manualPrice; }
     public void setManualPrice(BigDecimal manualPrice) { this.manualPrice = manualPrice; }
+    public BigDecimal getFixedTotalPrice() { return fixedTotalPrice; }
+    public void setFixedTotalPrice(BigDecimal fixedTotalPrice) { this.fixedTotalPrice = fixedTotalPrice; }
     public PricingMethod getPricingMode() { return pricingMode; }
     public void setPricingMode(PricingMethod pricingMode) { this.pricingMode = pricingMode; }
     public BigDecimal getPrice() { return price; }

@@ -1,0 +1,13 @@
+{
+  "createTime": {
+    "dateTime": "2026-09-26 04:50:50"
+  },
+  "batchId": "229343917181501440",
+  "asOfDate": "2026-09-26",
+  "status": {
+    "name": "进行中",
+    "value": "Active",
+    "key": "Active"
+  },
+  "version": 1
+}

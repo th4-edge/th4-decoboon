@@ -17,4 +17,6 @@ public interface RequirementRepository extends JpaRepository<Requirement, Long>,
 
     List<Requirement> findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(
             Long comId, Collection<Long> propertyIds);
+
+    boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
 }

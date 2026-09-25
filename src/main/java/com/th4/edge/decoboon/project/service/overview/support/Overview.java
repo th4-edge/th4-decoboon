@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = ProjectStatusCount.class,
                 properties = {"key", "label", "count"}),
         @AllowProperties(model = Project.class,
-                properties = {"projectId", "no", "name", "customer", "property", "quote", "designer", "manager", "support",
+                properties = {"projectId", "businessOrigin", "no", "name", "customer", "property", "quote", "designer", "manager", "support",
                         "siteAddr", "area", "contractAmount", "cost", "status", "progress", "startDate",
                         "planEndDate", "actualEndDate", "currentStageName", "createTime",
                         "riskLevel", "riskCount", "mainRiskType", "riskReason", "nextAction",

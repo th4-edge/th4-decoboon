@@ -273,6 +273,7 @@ public class HybridQuoteBuilder {
         line.setQuantity(quantity);
         line.setMaterialPrice(zero(designItem.getMaterialPrice()));
         line.setManualPrice(zero(designItem.getManualPrice()));
+        line.setFixedTotalPrice(designItem.getFixedTotalPrice());
         line.setPricingMode(designItem.getPricingMode());
         line.setPrice(money(unitSale));
         line.setAmount(money(unitSale.multiply(quantity).multiply(sign)));
@@ -308,14 +309,15 @@ public class HybridQuoteBuilder {
         line.setQuantity(zero(designItem.getQuantity()));
         line.setMaterialPrice(zero(designItem.getMaterialPrice()));
         line.setManualPrice(zero(designItem.getManualPrice()));
+        line.setFixedTotalPrice(designItem.getFixedTotalPrice());
         line.setPricingMode(designItem.getPricingMode());
         line.setPrice(quoteCalcContext.unitPrice(designItem.getPricingMode(), zero(designItem.getQuantity()),
-                zero(designItem.getMaterialPrice()), zero(designItem.getManualPrice())));
+                zero(designItem.getMaterialPrice()), zero(designItem.getManualPrice()), designItem.getFixedTotalPrice()));
         line.setAmount(zero(designItem.getAmount()));
         line.setCost(zero(designItem.getCost()));
         line.setComponents(quoteCalcContext.components(designItem.getPricingMode(), zero(designItem.getQuantity()),
                 zero(designItem.getMaterialPrice()), zero(designItem.getManualPrice()), zero(designItem.getCost()),
-                designItem.getFormula()));
+                designItem.getFormula(), designItem.getFixedTotalPrice()));
         line.setFormula("设计新增项目");
         line.setCraft(CraftText.firstNonBlank(designItem.getCraft(),
                 designItem.getCatalogItem() == null ? null : designItem.getCatalogItem().getCraft()));
