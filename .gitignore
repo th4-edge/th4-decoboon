@@ -44,7 +44,7 @@ config/wechat-pay/
 config/application-dev.yml
 .env.dev.local
 logs/
-data/
+/data/
 __pycache__/
 *.pyc
 
