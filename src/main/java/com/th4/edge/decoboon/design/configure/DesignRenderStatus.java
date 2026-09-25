@@ -7,6 +7,7 @@ import com.th4.edge.framework.data.enums.Enumerable;
 @Note("AI效果图版本状态")
 public enum DesignRenderStatus implements Enumerable<String> {
     Ready("已生成"),
+    Confirmed("设计师已确认"),
     Failed("生成失败"),
     Superseded("已被替代");
 

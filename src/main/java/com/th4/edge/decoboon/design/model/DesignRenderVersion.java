@@ -131,6 +131,18 @@ public class DesignRenderVersion extends AuditModel {
     @Note("完成时间")
     private LocalDateTime completedAt;
 
+    @Note("是否正式可交付")
+    @Column(nullable = false)
+    private Boolean deliverable = Boolean.FALSE;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "confirmed_by")
+    @Note("确认人")
+    private Employee confirmedBy;
+
+    @Note("确认时间")
+    private LocalDateTime confirmedAt;
+
     public Long getRenderId() { return renderId; }
     public void setRenderId(Long renderId) { this.renderId = renderId; }
     public Company getCompany() { return company; }
@@ -175,4 +187,10 @@ public class DesignRenderVersion extends AuditModel {
     public void setStartedAt(LocalDateTime startedAt) { this.startedAt = startedAt; }
     public LocalDateTime getCompletedAt() { return completedAt; }
     public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
+    public Boolean getDeliverable() { return deliverable; }
+    public void setDeliverable(Boolean deliverable) { this.deliverable = deliverable; }
+    public Employee getConfirmedBy() { return confirmedBy; }
+    public void setConfirmedBy(Employee confirmedBy) { this.confirmedBy = confirmedBy; }
+    public LocalDateTime getConfirmedAt() { return confirmedAt; }
+    public void setConfirmedAt(LocalDateTime confirmedAt) { this.confirmedAt = confirmedAt; }
 }

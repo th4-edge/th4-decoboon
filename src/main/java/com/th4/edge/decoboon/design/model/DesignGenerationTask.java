@@ -137,6 +137,11 @@ public class DesignGenerationTask extends AuditModel {
     @Note("Prompt快照")
     private DesignPromptSnapshot promptSnapshot;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "selected_render_id")
+    @Note("选中的效果图版本")
+    private DesignRenderVersion selectedRender;
+
     @Transient
     @Note("效果图版本")
     private List<DesignRenderVersion> renderVersions;
@@ -181,6 +186,8 @@ public class DesignGenerationTask extends AuditModel {
     public void setContextSnapshot(DesignContextSnapshot contextSnapshot) { this.contextSnapshot = contextSnapshot; }
     public DesignPromptSnapshot getPromptSnapshot() { return promptSnapshot; }
     public void setPromptSnapshot(DesignPromptSnapshot promptSnapshot) { this.promptSnapshot = promptSnapshot; }
+    public DesignRenderVersion getSelectedRender() { return selectedRender; }
+    public void setSelectedRender(DesignRenderVersion selectedRender) { this.selectedRender = selectedRender; }
     public List<DesignRenderVersion> getRenderVersions() { return renderVersions; }
     public void setRenderVersions(List<DesignRenderVersion> renderVersions) { this.renderVersions = renderVersions; }
 }

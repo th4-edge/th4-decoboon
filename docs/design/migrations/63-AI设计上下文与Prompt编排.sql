@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS db_design_generation_task (
     customer_id BIGINT NOT NULL COMMENT '客户',
     property_id BIGINT NOT NULL COMMENT '所属房屋',
     design_id BIGINT NOT NULL COMMENT '设计方案',
+    selected_render_id BIGINT NULL COMMENT '选中的效果图版本',
     mode VARCHAR(16) NOT NULL COMMENT 'Precise/Concept',
     status VARCHAR(32) NOT NULL COMMENT '生成任务状态',
     version INT NOT NULL DEFAULT 1 COMMENT '任务版本',
@@ -25,6 +26,9 @@ CREATE TABLE IF NOT EXISTS db_design_generation_task (
     failure_message VARCHAR(512) NULL COMMENT '失败说明',
     built_at DATETIME(6) NULL COMMENT '构建时间',
     completed_at DATETIME(6) NULL COMMENT '完成时间',
+    deliverable TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否正式可交付',
+    confirmed_by BIGINT NULL COMMENT '确认人',
+    confirmed_at DATETIME(6) NULL COMMENT '确认时间',
     create_date INT NULL, create_date_time BIGINT NULL, create_day INT NULL, create_hour INT NULL,
     create_minute INT NULL, create_month INT NULL, create_second INT NULL, create_time INT NULL,
     create_week TINYINT NULL, create_year INT NULL,
@@ -172,4 +176,8 @@ ALTER TABLE db_design_render_version
     ADD CONSTRAINT fk_design_render_property FOREIGN KEY (property_id) REFERENCES db_property (property_id),
     ADD CONSTRAINT fk_design_render_design FOREIGN KEY (design_id) REFERENCES db_design (design_id),
     ADD CONSTRAINT fk_design_render_task FOREIGN KEY (generation_id) REFERENCES db_design_generation_task (generation_id),
-    ADD CONSTRAINT fk_design_render_prompt FOREIGN KEY (prompt_id) REFERENCES db_design_prompt_snapshot (prompt_id);
+    ADD CONSTRAINT fk_design_render_prompt FOREIGN KEY (prompt_id) REFERENCES db_design_prompt_snapshot (prompt_id),
+    ADD CONSTRAINT fk_design_render_confirmer FOREIGN KEY (confirmed_by) REFERENCES db_tenant_employee (emp_id);
+
+ALTER TABLE db_design_generation_task
+    ADD CONSTRAINT fk_design_generation_selected_render FOREIGN KEY (selected_render_id) REFERENCES db_design_render_version (render_id);

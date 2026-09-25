@@ -1,5 +1,16 @@
 # Development Worklog
 
+## 2026-09-26 AI设计上下文与Prompt编排 P0.3
+
+- 新增效果图确认能力：`DesignGenerationConfirmationContext` 与 `design/generation/update` Provider。
+- 选择效果图后回写 `Design.coverUrl`；传入 `spaceId` 时写入区域图片，保持区域设计事实可追溯。
+- 选中版本标记 `Confirmed + deliverable=true + confirmedBy/confirmedAt`，其他有效版本标记 `Superseded`。
+- `DesignGenerationTask.status` 推进为 `DesignerConfirmed`，并保存 `selectedRender`。
+- 迁移63补充 selected_render、deliverable、confirmed_by、confirmed_at。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；独立自测验证封面回写、选中版本确认和其他版本替代。
+- 待 acceptance：Provider 路由总数需 341→344；新增 `design/generation/update` 未授权断言；迁移63隔离MySQL演练；确认/重选/已分享/已锁定负向用例固化。
+- 状态：`backend_p0_1_to_p0_3_completed_pending_acceptance`。P0.4 App页面仍需 product-planning 先冻结交互规格。
+
 ## 2026-09-26 AI设计上下文与Prompt编排 P0.2
 
 - 新增 `DesignRenderVersion`、`DesignRenderStatus` 和效果图版本仓储，效果图结果可追溯Prompt、任务、模型请求号与用量。

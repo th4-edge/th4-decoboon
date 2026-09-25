@@ -13,6 +13,8 @@ public interface SpaceRepository extends JpaRepository<Space, Long>,
 
     List<Space> findByDesign_DesignIdOrderBySortAsc(Long designId);
 
+    java.util.Optional<Space> findBySpaceIdAndDesign_DesignId(Long spaceId, Long designId);
+
     List<Space> findByDesign_DesignIdIn(Collection<Long> designIds);
 
     long deleteByDesign_DesignId(Long designId);
