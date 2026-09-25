@@ -78,10 +78,11 @@
 ## App P0.4 Handoff
 
 - App branch: `feature/design-ai-generation-app`
-- App commit: `f646468`
+- App commits: `f646468`（页面与入口）、`5b19501`（私有对象签名）
 - Output paths:
   - `../../前端代码/th4-decoboon-app/src/subpackages/design/pages/ai-generation.vue`
   - `../../前端代码/th4-decoboon-app/src/domains/design/model.ts`
   - `../../前端代码/th4-decoboon-app/src/domains/design/api.ts`
+- Asset persistence: `DesignRenderAssetContext` + `FileAuthorizationContext`，模型临时图持久化到 `design/ai-render/{designId}/`，通过Design数据范围签名。
 - App verification: `npm run type-check` PASS；`npm run build:mp-weixin` PASS；`npm run check:subpackages` PASS。
 - Remaining acceptance: 375/390/430截图、四角色正反向、真实本地Provider、失败与门禁负向、确认后回读方案。

@@ -1,5 +1,13 @@
 # Development Worklog
 
+## 2026-09-26 AI设计生成效果图持久化与App签名
+
+- 新增 `DesignRenderAssetContext`：模型生成的临时图片先下载并写入私有OSS `design/ai-render/{designId}/`，版本保存对象键，避免24小时后失效。
+- `FileAuthorizationContext` 在Design数据范围内放行 `design/ai-render/{designId}/` 对象请求，员工和业主授权均继续要求原Design可见性。
+- App 分支 `feature/design-ai-generation-app` commit `5b19501`：生成任务版本图片通过 `fileApi.grant('Design', designId, paths)` 签名后展示。
+- 验证：后端 `mvn -q -DskipTests compile/package` PASS；本地假模型+假OSS端到端自测 PASS，版本落为 `upload/design/ai-render/4/9-*.png`。
+- 状态：`implementation_done_self_tested_pending_acceptance`。
+
 ## 2026-09-26 AI设计生成 P0.4 App 页面与入口
 
 - App 分支：`feature/design-ai-generation-app`，commit `f646468`。

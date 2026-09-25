@@ -16,13 +16,16 @@ public class DesignGenerationRunner {
     private final DesignGenerationStateContext stateContext;
     private final DesignReferenceImageContext referenceImageContext;
     private final DesignRenderClient renderClient;
+    private final DesignRenderAssetContext renderAssetContext;
 
     public DesignGenerationRunner(DesignGenerationStateContext stateContext,
                                   DesignReferenceImageContext referenceImageContext,
-                                  DesignRenderClient renderClient) {
+                                  DesignRenderClient renderClient,
+                                  DesignRenderAssetContext renderAssetContext) {
         this.stateContext = stateContext;
         this.referenceImageContext = referenceImageContext;
         this.renderClient = renderClient;
+        this.renderAssetContext = renderAssetContext;
     }
 
     @Async("designGenerationExecutor")
@@ -45,7 +48,10 @@ public class DesignGenerationRunner {
             String referenceImage = referenceImageContext.resolveDataUrl(input.getReferenceImagePath());
             DesignRenderClient.RenderResult result = renderClient.render(input.getModelName(),
                     input.getVisualPrompt(), referenceImage, input.getModelParametersJson());
-            stateContext.complete(generationId, result);
+            String persistedImage = renderAssetContext.persist(input.getDesignId(), generationId, result.getImageUrl());
+            stateContext.complete(generationId, new DesignRenderClient.RenderResult(
+                    persistedImage, result.getRequestId(), result.getInputImageCount(),
+                    result.getOutputImageCount(), result.getUsageJson()));
         } catch (DesignRenderException ex) {
             log.warn("AI设计生成失败 generationId={} code={}", generationId, ex.getCode());
             stateContext.fail(generationId, ex.getCode(), ex.getMessage());

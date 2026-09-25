@@ -50,7 +50,7 @@ public class DesignGenerationStateContext {
         if (referencePath == null || referencePath.isBlank()) {
             throw new DefinedException(new DefaultErrorCode("400", "缺少可用于AI生成的CAD图片或户型图片"));
         }
-        return new RunInput(task.getGenerationId(), prompt.getVisualPrompt(), referencePath,
+        return new RunInput(task.getGenerationId(), task.getDesign().getDesignId(), prompt.getVisualPrompt(), referencePath,
                 prompt.getModelName(), prompt.getModelParametersJson());
     }
 
@@ -126,14 +126,16 @@ public class DesignGenerationStateContext {
     /** 外部调用所需的不可变输入。 */
     public static final class RunInput {
         private final Long generationId;
+        private final Long designId;
         private final String visualPrompt;
         private final String referenceImagePath;
         private final String modelName;
         private final String modelParametersJson;
 
-        private RunInput(Long generationId, String visualPrompt, String referenceImagePath,
+        private RunInput(Long generationId, Long designId, String visualPrompt, String referenceImagePath,
                          String modelName, String modelParametersJson) {
             this.generationId = generationId;
+            this.designId = designId;
             this.visualPrompt = visualPrompt;
             this.referenceImagePath = referenceImagePath;
             this.modelName = modelName;
@@ -141,6 +143,7 @@ public class DesignGenerationStateContext {
         }
 
         public Long getGenerationId() { return generationId; }
+        public Long getDesignId() { return designId; }
         public String getVisualPrompt() { return visualPrompt; }
         public String getReferenceImagePath() { return referenceImagePath; }
         public String getModelName() { return modelName; }
