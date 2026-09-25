@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.design.configure.DesignGenerationStatus;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignGenerationTask;
 import com.th4.edge.decoboon.design.repository.DesignGenerationTaskRepository;
+import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -31,7 +32,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = DesignGenerationTask.class,
                 properties = {"generationId", "no", "design", "customer", "property", "owner", "mode", "status",
-                        "sourceDigest", "version", "modelName", "failureCode", "failureMessage", "builtAt",
+                        "version", "failureCode", "builtAt",
                         "completedAt", "selectedRender", "createTime", "updateTime"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "style", "status", "area", "layout", "coverUrl", "updateTime"}),
@@ -62,15 +63,19 @@ public class Page implements com.th4.edge.decoboon.design.service.generation.pag
 
     private final DesignGenerationTaskRepository taskRepository;
     private final DataScopeContext dataScopeContext;
+    private final DesignContext designContext;
 
-    public Page(DesignGenerationTaskRepository taskRepository, DataScopeContext dataScopeContext) {
+    public Page(DesignGenerationTaskRepository taskRepository, DataScopeContext dataScopeContext,
+                DesignContext designContext) {
         this.taskRepository = taskRepository;
         this.dataScopeContext = dataScopeContext;
+        this.designContext = designContext;
     }
 
     @Override
     public org.springframework.data.domain.Page<DesignGenerationTask> call(DesignGenerationTask request) {
-        DataScope scope = dataScopeContext.requireScope(employee);
+        Employee currentEmployee = designContext.requireDesignWriteAccess(employee);
+        DataScope scope = dataScopeContext.requireScope(currentEmployee);
         Specification<DesignGenerationTask> condition = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (designId != null) {

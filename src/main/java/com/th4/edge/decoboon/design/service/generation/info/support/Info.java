@@ -10,6 +10,8 @@ import com.th4.edge.decoboon.design.repository.DesignContextSnapshotRepository;
 import com.th4.edge.decoboon.design.repository.DesignGenerationTaskRepository;
 import com.th4.edge.decoboon.design.repository.DesignPromptSnapshotRepository;
 import com.th4.edge.decoboon.design.repository.DesignRenderVersionRepository;
+import com.th4.edge.decoboon.design.context.DesignContext;
+import com.th4.edge.decoboon.design.context.DesignPromptPrivacyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -35,18 +37,15 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = DesignGenerationTask.class,
                 properties = {"generationId", "no", "design", "customer", "property", "owner", "mode", "status",
-                        "sourceDigest", "version", "modelName", "failureCode", "failureMessage", "builtAt",
+                        "version", "failureCode", "builtAt",
                         "completedAt", "selectedRender", "contextSnapshot", "promptSnapshot", "renderVersions", "createTime", "updateTime"}),
         @AllowProperties(model = DesignContextSnapshot.class,
-                properties = {"snapshotId", "contextJson", "sourceDigest", "missingFieldsJson", "conflictFlagsJson",
+                properties = {"snapshotId", "contextJson", "missingFieldsJson", "conflictFlagsJson",
                         "confidence", "capturedAt"}),
         @AllowProperties(model = DesignPromptSnapshot.class,
-                properties = {"promptId", "visualPrompt", "talkPrompt", "documentBriefJson", "templateVersion",
-                        "modelName", "modelParametersJson", "renderedAt"}),
+                properties = {"promptId", "visualPrompt", "talkPrompt", "documentBriefJson", "templateVersion", "renderedAt"}),
         @AllowProperties(model = DesignRenderVersion.class,
-                properties = {"renderId", "sequence", "status", "imageUrl", "modelName", "requestId",
-                        "inputImageCount", "outputImageCount", "usageJson", "costAmount", "costCurrency",
-                        "deliverable", "confirmedBy", "confirmedAt", "startedAt", "completedAt", "createTime"}),
+                properties = {"renderId", "sequence", "status", "imageUrl", "deliverable", "confirmedBy", "confirmedAt", "startedAt", "completedAt", "createTime"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "style", "status", "area", "layout", "cadUrl",
                         "cadPreviewUrl", "originalPlanUrl", "updateTime"}),
@@ -72,22 +71,29 @@ public class Info implements com.th4.edge.decoboon.design.service.generation.inf
     private final DesignPromptSnapshotRepository promptSnapshotRepository;
     private final DesignRenderVersionRepository renderVersionRepository;
     private final DataScopeContext dataScopeContext;
+    private final DesignContext designContext;
+    private final DesignPromptPrivacyContext promptPrivacyContext;
 
     public Info(DesignGenerationTaskRepository taskRepository,
                 DesignContextSnapshotRepository contextSnapshotRepository,
                 DesignPromptSnapshotRepository promptSnapshotRepository,
                 DesignRenderVersionRepository renderVersionRepository,
-                DataScopeContext dataScopeContext) {
+                DataScopeContext dataScopeContext,
+                DesignContext designContext,
+                DesignPromptPrivacyContext promptPrivacyContext) {
         this.taskRepository = taskRepository;
         this.contextSnapshotRepository = contextSnapshotRepository;
         this.promptSnapshotRepository = promptSnapshotRepository;
         this.renderVersionRepository = renderVersionRepository;
         this.dataScopeContext = dataScopeContext;
+        this.designContext = designContext;
+        this.promptPrivacyContext = promptPrivacyContext;
     }
 
     @Override
     public DesignGenerationTask call(DesignGenerationTask request) {
-        DataScope scope = dataScopeContext.requireScope(employee);
+        Employee current = designContext.requireDesignWriteAccess(employee);
+        DataScope scope = dataScopeContext.requireScope(current);
         Specification<DesignGenerationTask> byId = (root, query, builder) ->
                 builder.equal(root.get("generationId"), generationId);
         DesignGenerationTask task = taskRepository.findOne(
@@ -101,6 +107,7 @@ public class Info implements com.th4.edge.decoboon.design.service.generation.inf
         List<DesignRenderVersion> versions = renderVersionRepository
                 .findByTask_GenerationIdOrderBySequenceAsc(generationId);
         task.setRenderVersions(versions);
+        promptPrivacyContext.mask(task, current);
         return task;
     }
 }

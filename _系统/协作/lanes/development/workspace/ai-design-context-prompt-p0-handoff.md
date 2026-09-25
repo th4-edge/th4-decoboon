@@ -29,6 +29,7 @@
 - `src/main/java/com/th4/edge/decoboon/design/service/generation/page/Page.java`
 - `src/main/java/com/th4/edge/decoboon/design/service/generation/page/support/Page.java`
 - `src/main/java/com/th4/edge/decoboon/design/context/DesignGenerationConfirmationContext.java`
+- `src/main/java/com/th4/edge/decoboon/design/context/DesignPromptPrivacyContext.java`
 - `src/main/java/com/th4/edge/decoboon/design/configure/DesignRenderStatus.java`
 - `src/main/java/com/th4/edge/decoboon/design/configure/DesignGenerationAsyncConfigure.java`
 - `src/main/java/com/th4/edge/decoboon/design/model/DesignRenderVersion.java`
@@ -51,6 +52,7 @@
   - 手机号、完整地址和客户姓名未进入 Prompt；
   - 无CAD/户型图时构建阻断。
 - `ProviderSecurityAcceptanceTest` 当前仅因路由总数 341→345 失败；新增 build/info/update/page Provider 均已继承 Security。
+- P0.4 字段收口已完成：内部成本、用量、请求号、模型参数、原始失败信息和 sourceDigest 不对外下发；TalkBrief 仅 Designer 返回。
 
 ## Risks
 
@@ -62,6 +64,7 @@
 ## Acceptance Needed
 
 - `ProviderSecurityAcceptanceTest` 路由总数更新为 345，并覆盖 `design/generation/{build,info,update,page}` 未授权断言。
+- 增加四角色字段最小化和 TalkBrief 不下发断言；业务员、项目经理、财务、业主直连拒绝。
 - `scripts/build-release.sh` 的 `MIGRATION_END` 上调到 63。
 - 迁移 63 在隔离 MySQL 演练。
 - 设计上下文正反向用例、PII隔离、无CAD阻断、上下文冲突与幂等用例由 acceptance 固化到 `src/test`。

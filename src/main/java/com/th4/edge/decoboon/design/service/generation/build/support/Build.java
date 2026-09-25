@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.design.configure.DesignGenerationMode;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.context.DesignGenerationContext;
 import com.th4.edge.decoboon.design.context.DesignGenerationRunner;
+import com.th4.edge.decoboon.design.context.DesignPromptPrivacyContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignContextSnapshot;
 import com.th4.edge.decoboon.design.model.DesignGenerationTask;
@@ -27,14 +28,13 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = DesignGenerationTask.class,
                 properties = {"generationId", "no", "design", "customer", "property", "owner", "mode", "status",
-                        "sourceDigest", "version", "modelName", "failureCode", "failureMessage", "builtAt", "completedAt",
+                        "version", "failureCode", "builtAt", "completedAt",
                         "contextSnapshot", "promptSnapshot", "createTime", "updateTime"}),
         @AllowProperties(model = DesignContextSnapshot.class,
-                properties = {"snapshotId", "contextJson", "sourceDigest", "missingFieldsJson", "conflictFlagsJson",
+                properties = {"snapshotId", "contextJson", "missingFieldsJson", "conflictFlagsJson",
                         "confidence", "capturedAt"}),
         @AllowProperties(model = DesignPromptSnapshot.class,
-                properties = {"promptId", "visualPrompt", "talkPrompt", "documentBriefJson", "templateVersion",
-                        "modelName", "modelParametersJson", "renderedAt"}),
+                properties = {"promptId", "visualPrompt", "talkPrompt", "documentBriefJson", "templateVersion", "renderedAt"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "style", "status", "area", "layout", "cadUrl",
                         "cadPreviewUrl", "originalPlanUrl", "updateTime"}),
@@ -61,12 +61,15 @@ public class Build implements com.th4.edge.decoboon.design.service.generation.bu
     private final DesignContext designContext;
     private final DesignGenerationContext generationContext;
     private final DesignGenerationRunner generationRunner;
+    private final DesignPromptPrivacyContext promptPrivacyContext;
 
     public Build(DesignContext designContext, DesignGenerationContext generationContext,
-                 DesignGenerationRunner generationRunner) {
+                 DesignGenerationRunner generationRunner,
+                 DesignPromptPrivacyContext promptPrivacyContext) {
         this.designContext = designContext;
         this.generationContext = generationContext;
         this.generationRunner = generationRunner;
+        this.promptPrivacyContext = promptPrivacyContext;
     }
 
     @Override
@@ -77,6 +80,7 @@ public class Build implements com.th4.edge.decoboon.design.service.generation.bu
         if (task.getStatus() == DesignGenerationStatus.PromptReady) {
             generationRunner.submit(task.getGenerationId());
         }
+        promptPrivacyContext.mask(task, current);
         return task;
     }
 }

@@ -1,5 +1,14 @@
 # Development Worklog
 
+## 2026-09-26 AI设计生成 P0.4 后端接口收口
+
+- 按 `PRD-AI-DESIGN-APP-20260926-001` 裁剪 build/info/page/update 响应字段：移除 sourceDigest、failureMessage、成本、用量、请求号、模型参数和内部模型字段。
+- 新增 `DesignPromptPrivacyContext`：TalkBrief 仅 Designer 可见，BOSS、店长、团队负责人只返回 VisualBrief/DocumentBrief。
+- `design/generation/info`、`page` 统一接入 `requireDesignWriteAccess`，与 build/update 的设计写角色门槛一致；数据范围继续由 DataScope 强制。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；TalkBrief角色裁剪独立自测 PASS。
+- 待 acceptance：响应字段最小化、四角色权限矩阵、跨企业/门店/团队负向断言需固化到 `src/test`。
+- 状态：`backend_p0_4_contract_closed_pending_acceptance`。
+
 ## 2026-09-26 AI设计生成任务分页
 
 - 新增 `design/generation/page` Provider，按登录员工数据范围、设计方案和任务状态分页查询。
