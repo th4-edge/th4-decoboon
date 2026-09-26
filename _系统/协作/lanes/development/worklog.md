@@ -67,6 +67,16 @@
 - 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；独立临时自测验证 High 置信度、空间/诉求进入Prompt、PII不泄漏、无CAD/户型图阻断。
 - 待 acceptance：`ProviderSecurityAcceptanceTest` 路由总数需 341→342；`scripts/build-release.sh` 迁移范围需在发布 lane 同步上调到 63。
 - 状态：`implementation_done_self_tested_pending_acceptance`。P0.2异步模型调用尚未实现。
+## 2026-09-26 AI 调用与企业门店影子用量底账
+
+- 新增 `ai` 后端域：`AiUsageCall` 底账、调用状态/影子账务状态/门店归属枚举、幂等记录 Context、企业/门店/能力聚合报表 Context。
+- 新增受保护 Provider `ai/usage/report`、`ai/usage/page`，P0 仅 BOSS 可读；调用明细不返回企业、幂等键、请求标识和平台成本。
+- 门店归属：业务对象门店优先，执行员工门店兜底，无法归属进入企业公共且不静默归总店。
+- 影子点数：P0 使用 `shadow-direct-v1` 一比一占位，只统计不扣订阅天数、不出账单。
+- 迁移：`docs/design/migrations/64-AI调用与影子用量底账.sql`；发布包迁移范围同步到 24–64。
+- Web：独立仓库基线提交 `970049c`，功能分支 `feature/ai-usage-statistics`；从组织效能进入 AI 资源统计，覆盖筛选、趋势、能力、门店/企业公共和明细；`npm run type-check`、`npm run build` PASS。
+- 验证：后端全量 `mvn -o -q test` PASS；新增序列化白名单契约 PASS；Provider 路由 343（public 12 + protected 331）；交接见 `_系统/协作/lanes/development/workspace/ai-usage-shadow-metering-handoff.md`。
+- 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。
 
 ## 2026-09-26 工地相册企业用户访问修复
 

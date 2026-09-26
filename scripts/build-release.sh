@@ -32,9 +32,9 @@ cp docs/design/migrations/19-生产发布基线.md "$RELEASE_DIR/"
 cp docs/design/migrations/22-OSS对象存储部署说明.md "$RELEASE_DIR/"
 cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
 # 增量迁移范围：新迁移必须同步上调 MIGRATION_END，否则 DBA 会拿不到待执行脚本。
-# 2026-09-24 修正：发布包必须覆盖 24-62，包含业主闭环、整改、意见、设计状态与 craft 快照。
+# 2026-09-26 修正：发布包必须覆盖 24-64，包含 AI 调用与影子用量底账。
 MIGRATION_START=24
-MIGRATION_END=62
+MIGRATION_END=64
 for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   matches=(docs/design/migrations/"${number}"-*.sql)
   if [ ! -e "${matches[0]}" ]; then
