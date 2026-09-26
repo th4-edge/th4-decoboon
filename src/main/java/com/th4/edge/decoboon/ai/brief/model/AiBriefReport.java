@@ -37,6 +37,9 @@ public class AiBriefReport {
     @Note("生成器版本")
     private String generatorVersion;
 
+    @Note("来源记录")
+    private List<AiBriefSource> sources = new ArrayList<>();
+
     public LocalDate getMonth() { return month; }
     public void setMonth(LocalDate month) { this.month = month; }
     public LocalDateTime getAsOf() { return asOf; }
@@ -53,6 +56,40 @@ public class AiBriefReport {
     public void setUsage(AiBriefUsage usage) { this.usage = usage; }
     public String getGeneratorVersion() { return generatorVersion; }
     public void setGeneratorVersion(String generatorVersion) { this.generatorVersion = generatorVersion; }
+    public List<AiBriefSource> getSources() { return sources; }
+    public void setSources(List<AiBriefSource> sources) { this.sources = sources; }
+
+    /** 对象级来源。 */
+    @Note("AI经营简报来源")
+    public static class AiBriefSource {
+        private String provider;
+        private String objectType;
+        private Long objectId;
+        private String version;
+        private LocalDateTime updatedAt;
+
+        public AiBriefSource() { }
+
+        public AiBriefSource(String provider, String objectType, Long objectId,
+                             String version, LocalDateTime updatedAt) {
+            this.provider = provider;
+            this.objectType = objectType;
+            this.objectId = objectId;
+            this.version = version;
+            this.updatedAt = updatedAt;
+        }
+
+        public String getProvider() { return provider; }
+        public void setProvider(String provider) { this.provider = provider; }
+        public String getObjectType() { return objectType; }
+        public void setObjectType(String objectType) { this.objectType = objectType; }
+        public Long getObjectId() { return objectId; }
+        public void setObjectId(Long objectId) { this.objectId = objectId; }
+        public String getVersion() { return version; }
+        public void setVersion(String version) { this.version = version; }
+        public LocalDateTime getUpdatedAt() { return updatedAt; }
+        public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    }
 
     /** 经营事实。 */
     @Note("AI经营事实")

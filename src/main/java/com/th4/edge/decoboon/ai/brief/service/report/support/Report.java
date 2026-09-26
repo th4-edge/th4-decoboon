@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("AI经营简报")
 @Properties(allow = {
         @AllowProperties(model = AiBriefReport.class,
-                properties = {"month", "asOf", "summary", "facts", "actions", "costStatus", "usage", "generatorVersion"}),
+                properties = {"month", "asOf", "summary", "facts", "actions", "costStatus", "usage", "generatorVersion", "sources"}),
         @AllowProperties(model = AiBriefReport.AiBriefFact.class,
                 properties = {"category", "label", "value", "note", "tone"}),
         @AllowProperties(model = AiBriefReport.AiBriefAction.class,
@@ -25,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = AiBriefReport.AiBriefCostStatus.class,
                 properties = {"complete", "incompleteProjectCount", "message"}),
         @AllowProperties(model = AiBriefReport.AiBriefUsage.class,
-                properties = {"callId", "resourceUnits", "shadowBillableUnits", "rateCardVersion"})
+                properties = {"callId", "resourceUnits", "shadowBillableUnits", "rateCardVersion"}),
+        @AllowProperties(model = AiBriefReport.AiBriefSource.class,
+                properties = {"provider", "objectType", "objectId", "version", "updatedAt"})
 })
 @Service("ai/brief/report")
 @Scope(ScopeTypes.PROTOTYPE)
