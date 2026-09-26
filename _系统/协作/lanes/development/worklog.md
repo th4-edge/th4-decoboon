@@ -1,5 +1,16 @@
 # Development Worklog
 
+## 2026-09-26 A0.2 AI资源点数账本
+
+- 已取得 `ANS-BIZ-20260926-004` / `DEC-012` / `BR-011~012`，正式点数账本机制可开发。
+- 新增企业资源账户、append-only 点数账本、不可变费率版本和预占/结算/释放/返还/调整上下文。
+- `ai.billing.formal-enabled` 默认关闭；真实费率、套餐点数、资源包价格和货币扣款继续暂缓。
+- 迁移：`docs/design/migrations/65-AI资源点数账本.sql`。
+- 验证：编译 PASS；`AiBillingContextTest` 4 tests PASS。
+- 同时启动 A2 AI 谈单官 PRD：`docs/product/2026-09-26-AI谈单官P0产品需求规格.md`。
+- 交接：`_系统/协作/lanes/development/workspace/ai-point-ledger-a02-handoff.md`。
+- 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。
+
 ## 2026-09-26 AI设计生成效果图持久化与App签名
 
 - 新增 `DesignRenderAssetContext`：模型生成的临时图片先下载并写入私有OSS `design/ai-render/{designId}/`，版本保存对象键，避免24小时后失效。
