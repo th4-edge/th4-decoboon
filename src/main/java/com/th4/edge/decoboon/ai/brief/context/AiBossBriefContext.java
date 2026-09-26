@@ -96,6 +96,7 @@ public class AiBossBriefContext {
         report.setAsOf(generatedAt);
         report.setSummary(generator.generate(new AiBriefInput(month, dashboard, finance, alerts)));
         report.setGeneratorVersion(generator.version());
+        report.setSources(sources(current, month, dashboard, finance, alerts, generatedAt));
         report.setFacts(facts(dashboard, finance, alerts));
         report.setActions(actions(alerts));
         report.setCostStatus(costStatus(dashboard, finance));
@@ -103,6 +104,26 @@ public class AiBossBriefContext {
         report.getUsage().setShadowBillableUnits(report.getUsage().getResourceUnits());
         report.getUsage().setRateCardVersion("shadow-direct-v1");
         return report;
+    }
+
+    private List<AiBriefReport.AiBriefSource> sources(Employee current, LocalDate month,
+                                                       BossDashboard dashboard, FinanceSummary finance,
+                                                       BusinessAlertReport alerts, LocalDateTime generatedAt) {
+        Long companyId = current.getCompany() == null ? null : current.getCompany().getComId();
+        List<AiBriefReport.AiBriefSource> sources = new ArrayList<>();
+        if (dashboard != null) {
+            sources.add(new AiBriefReport.AiBriefSource("statistic/boss/dashboard", "Company",
+                    companyId, month == null ? null : month.toString(), generatedAt));
+        }
+        if (finance != null) {
+            sources.add(new AiBriefReport.AiBriefSource("finance/summary/report", "Company",
+                    companyId, generatedAt.toLocalDate().toString(), generatedAt));
+        }
+        if (alerts != null) {
+            sources.add(new AiBriefReport.AiBriefSource("statistic/alert/report", "Company",
+                    companyId, alerts.getAsOf() == null ? null : alerts.getAsOf().toString(), generatedAt));
+        }
+        return sources;
     }
 
     private void appendUnavailableNotice(AiBriefReport report, boolean dashboardUnavailable,
