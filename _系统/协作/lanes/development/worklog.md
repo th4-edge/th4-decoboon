@@ -6,7 +6,8 @@
 - 新增企业资源账户、append-only 点数账本、不可变费率版本和预占/结算/释放/返还/调整上下文。
 - `ai.billing.formal-enabled` 默认关闭；真实费率、套餐点数、资源包价格和货币扣款继续暂缓。
 - 迁移：`docs/design/migrations/65-AI资源点数账本.sql`。
-- 验证：编译 PASS；`AiBillingContextTest` 4 tests PASS。
+- 新增 BOSS 只读账户摘要 `ai/account/report`，Web AI经营助手展示可用、预占、已消耗、返还和最近账本。
+- 验证：编译 PASS；`AiBillingContextTest` 4 tests PASS、`AiBillingReportContextTest` 2 tests PASS；Provider Security 349 routes PASS；Web type-check PASS。
 - 同时启动 A2 AI 谈单官 PRD：`docs/product/2026-09-26-AI谈单官P0产品需求规格.md`。
 - 交接：`_系统/协作/lanes/development/workspace/ai-point-ledger-a02-handoff.md`。
 - 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。

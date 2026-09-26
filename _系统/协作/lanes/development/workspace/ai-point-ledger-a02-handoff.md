@@ -23,12 +23,14 @@ T06 已允许开发正式点数账本机制，但真实票价、模型倍率、�
 - 成功、失败、超时、取消、重复和缓存规则；
 - 企业与门店归属；
 - 平台成本不进入租户接口；
-- `ai.billing.formal-enabled` 默认关闭。
+- `ai.billing.formal-enabled` 默认关闭；
+- BOSS 只读账户摘要 `ai/account/report`。
 
 ## Changed Files
 
 - `src/main/java/com/th4/edge/decoboon/ai/billing/**`
 - `src/test/java/com/th4/edge/decoboon/ai/AiBillingContextTest.java`
+- `src/test/java/com/th4/edge/decoboon/ai/AiBillingReportContextTest.java`
 - `docs/design/migrations/65-AI资源点数账本.sql`
 - `scripts/build-release.sh`
 - `docs/product/2026-09-26-AI资源点数账本P0产品需求规格.md`
@@ -38,6 +40,8 @@ T06 已允许开发正式点数账本机制，但真实票价、模型倍率、�
 
 - `mvn -o -q -DskipTests compile` PASS
 - `AiBillingContextTest` 4 tests PASS
+- `AiBillingReportContextTest` 2 tests PASS
+- Provider Security PASS，路由 349（public 12 + protected 337）
 - 正式扣点默认关闭
 - 账户、预占、释放、消耗、返还和调整流水可审计
 - 费率计算按向上取整且成功调用最低1点
