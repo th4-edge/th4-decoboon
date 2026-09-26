@@ -2,12 +2,13 @@
 
 ## Current
 
-`REQ-20260922-CUSTOMER-MEASURE-METRIC` 独立验收完成。客户经营第四张卡已由风险客户切换为预约量房客户；定向测试覆盖预约时间、measureTime 兼容、Cancelled 排除、客户去重、四类日期窗口、完成与待派单副文案，App 构建通过。真实页面视觉仍为 BLOCKED_EXTERNAL，最终状态 `CONDITIONAL`。
+`REQ-20260926-AI-USAGE-BRIEF-ACCEPTANCE` 联合独立验收完成。后端 `5252afa`、Web `68e6bff`；A0.1/A1 前序 7 项缺陷全部关闭，独立验收测试 9/9、全量 385/0/0/0，Provider 348/12/336，迁移 64 隔离 MySQL 双跑 PASS，Web 静态/Build 门禁 PASS。仅并发幂等回查、真实浏览器流程和生产库直连不可执行，最终状态 `CONDITIONAL`。
 
 ## Outputs
 
 | title | path | audience | status |
 | --- | --- | --- | --- |
+| AI用量与经营参谋联合独立验收报告 | `docs/acceptance/AI用量与经营参谋联合独立验收报告.md` | development / product-planning / user | conditional |
 | Provider 安全验收测试 | `src/test/java/com/th4/edge/decoboon/security/ProviderSecurityAcceptanceTest.java` | development / acceptance | 3 passed |
 | 小程序企业负责人全链路闭环验收报告 | `docs/acceptance/小程序企业负责人全链路闭环验收报告.md` | development / product-planning / user | pass_with_defects |
 | 小程序全链路回归规范（含根因反思） | `docs/acceptance/小程序全链路回归规范.md` | development / product-planning / acceptance | ready |
@@ -216,6 +217,21 @@
 - 报告：`docs/acceptance/预约量房工作台独立验收报告.md`。
 - 证据：`_系统/协作/lanes/acceptance/workspace/boss-measure-workspace/latest-probe-summary.json`、`latest-probe.log`。
 - 最终状态：`BLOCK`；误派单的客户经营页报告保持 `VOID / SUPERSEDED`，不计入本轮结论。
+
+## 2026-09-26 AI用量与经营参谋联合独立验收
+
+- 请求：`REQ-20260926-AI-USAGE-BRIEF-ACCEPTANCE`。
+- 后端基线：`5252afa`；Web 基线：`68e6bff`。
+- A0.1 PASS：企业总量=门店分摊+企业公共；业务门店优先；企业公共不归默认总店；失败/取消不计有效点；顺序同幂等键只一条。
+- A1 后端 PASS：前序 4 项缺陷全部关闭；`AiUsageBriefJointAcceptanceTest` 9/9；稳定幂等键、部分数据源降级、财务缺失成本状态、行动去重和对象级 sources 均通过。
+- Web A1 PASS（代码/构建）：移除挂载自动生成；补预计消耗说明；来源抽屉展示 Provider/对象/版本/更新时间。
+- Provider Security PASS：348 routes / 12 public / 336 protected。
+- 后端全量：115 suites / 385 tests / 0 failures / 0 errors / 0 skipped。
+- 迁移 64：SHA-256 `c99dba4b19632b756eaa3d7e81267ed0626d204fc5678761565eaa7f2c267b75`；隔离 MySQL 8.0.24 连续执行两次 PASS；生产账本为证据文档登记 SUCCESS，沙箱不可直连复核。
+- BLOCKED：真实 BOSS 会话的浏览器加载/筛选翻页；同幂等键并发冲突回查；生产库直连；门店级简报 finance/alert 口径。
+- 报告：`docs/acceptance/AI用量与经营参谋联合独立验收报告.md`。
+- 证据：`_系统/协作/lanes/acceptance/workspace/ai-usage-and-brief/**`。
+- 最终状态：`CONDITIONAL`。
 
 ## 2026-09-24 麦鸿设计 · 业主端沉浸式体验审计（微信开发者工具）
 

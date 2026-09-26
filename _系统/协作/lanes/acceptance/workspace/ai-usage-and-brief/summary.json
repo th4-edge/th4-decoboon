@@ -1,0 +1,64 @@
+{
+  "request": "REQ-20260926-AI-USAGE-BRIEF-ACCEPTANCE",
+  "backend_commit": "5252afa",
+  "web_commit": "68e6bff",
+  "a0_1": {
+    "status": "PASS",
+    "company_total_equals_store_plus_public": "PASS",
+    "business_store_priority": "PASS",
+    "enterprise_public_not_default_store": "PASS",
+    "failed_cancelled_no_effective_points": "PASS",
+    "same_key_sequential_idempotency": "PASS",
+    "concurrent_idempotency": "BLOCKED"
+  },
+  "a1_backend": {
+    "status": "PASS",
+    "previous_defects": "CLOSED",
+    "acceptance_test": "9/9 PASS",
+    "partial_source_failure": "PASS",
+    "stable_brief_idempotency": "PASS",
+    "cost_completeness_missing_finance": "PASS",
+    "action_category_deduplication": "PASS",
+    "object_level_sources": "PASS"
+  },
+  "provider_security": {
+    "status": "PASS",
+    "routes": 348,
+    "public_routes": 12,
+    "protected_routes": 336
+  },
+  "backend_full": {
+    "status": "PASS",
+    "suites": 115,
+    "tests": 385,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "migration_64": {
+    "status": "PASS",
+    "sha256": "c99dba4b19632b756eaa3d7e81267ed0626d204fc5678761565eaa7f2c267b75",
+    "isolated_mysql_version": "8.0.24",
+    "executions": 2,
+    "target_production_ledger": "SUCCESS evidence reviewed; direct production query not available"
+  },
+  "web": {
+    "type_check": "PASS",
+    "verify_system": "PASS",
+    "build": "PASS",
+    "route_and_boss_capability": "PASS",
+    "filters_and_pagination": "PASS_STATIC",
+    "manual_generation_only": "PASS",
+    "estimated_points_before_generation": "PASS",
+    "source_drawer_object_level_sources": "PASS",
+    "no_platform_cost_prompt_customer_text": "PASS_STATIC",
+    "live_browser_flow": "BLOCKED"
+  },
+  "remaining_blockers": [
+    "concurrent same idempotency key conflict recovery",
+    "live browser load/filter/pagination with equivalent backend and real BOSS session",
+    "direct production migration ledger query",
+    "store-level brief finance/alert consistency if store filter is later exposed"
+  ],
+  "final_status": "CONDITIONAL"
+}

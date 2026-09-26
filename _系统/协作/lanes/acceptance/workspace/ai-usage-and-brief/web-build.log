@@ -1,0 +1,239 @@
+
+> th4-decoboon-web@2.0.0 build
+> npm run type-check && vite build
+
+
+> th4-decoboon-web@2.0.0 type-check
+> vue-tsc --noEmit
+
+vite v5.2.8 building for production...
+transforming...
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+DEPRECATION WARNING [legacy-js-api]: The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+
+More info: https://sass-lang.com/d/legacy-js-api
+
+✓ 1817 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                                   0.81 kB │ gzip:   0.47 kB
+dist/assets/AppIcon-BHIA7StE.css                                                  0.06 kB │ gzip:   0.08 kB
+dist/assets/BrandLogo-CEXA0C19.css                                                0.08 kB │ gzip:   0.10 kB
+dist/assets/PrivateAttachmentUploader-B4JJe-0C.css                                0.10 kB │ gzip:   0.12 kB
+dist/assets/ScopeTag-YnvS_uou.css                                                 0.16 kB │ gzip:   0.15 kB
+dist/assets/QualityReportView-BHf3ovTb.css                                        0.27 kB │ gzip:   0.18 kB
+dist/assets/PerformanceView-DrOESHOS.css                                          0.27 kB │ gzip:   0.18 kB
+dist/assets/PartnerLedgerView-C1YhRE0n.css                                        0.28 kB │ gzip:   0.18 kB
+dist/assets/MessagesView-DUuaGoqF.css                                             0.30 kB │ gzip:   0.20 kB
+dist/assets/NotFoundView-B7fxGeRj.css                                             0.38 kB │ gzip:   0.23 kB
+dist/assets/format-CwC4B9Ig.css                                                   0.41 kB │ gzip:   0.25 kB
+dist/assets/ForbiddenView-q3vPLj88.css                                            0.49 kB │ gzip:   0.29 kB
+dist/assets/PageHeader-CXHUuPgD.css                                               0.57 kB │ gzip:   0.30 kB
+dist/assets/CostIncompleteValue-DoIKh70a.css                                      0.69 kB │ gzip:   0.32 kB
+dist/assets/ProfileView-CicDke0s.css                                              0.70 kB │ gzip:   0.33 kB
+dist/assets/BusinessReportView-BH5rA5M4.css                                       0.77 kB │ gzip:   0.33 kB
+dist/assets/CompanyView-Ro8KzJ2Z.css                                              0.89 kB │ gzip:   0.42 kB
+dist/assets/QuoteDetailView-DCg0Uoxk.css                                          1.04 kB │ gzip:   0.45 kB
+dist/assets/FinanceOverviewView-Ch_ad9bC.css                                      1.08 kB │ gzip:   0.44 kB
+dist/assets/StatCard-CvuEwu26.css                                                 1.29 kB │ gzip:   0.49 kB
+dist/assets/ContractChangeCreateView-oY2-2ejE.css                                 1.36 kB │ gzip:   0.54 kB
+dist/assets/LoginView-FMa9jyA_.css                                                1.37 kB │ gzip:   0.52 kB
+dist/assets/SubscriptionView-DcOYOs_8.css                                         1.42 kB │ gzip:   0.55 kB
+dist/assets/AuthLayout-DbJ8AqOt.css                                               1.69 kB │ gzip:   0.68 kB
+dist/assets/TodoCenterView-BToRYbdG.css                                           1.70 kB │ gzip:   0.62 kB
+dist/assets/WorkbenchView-B1cZclCE.css                                            1.97 kB │ gzip:   0.67 kB
+dist/assets/ContractWorkbenchView-B3SZ6kAq.css                                    1.97 kB │ gzip:   0.66 kB
+dist/assets/MeasurementWorkbenchView-BcWuoEL-.css                                 2.06 kB │ gzip:   0.70 kB
+dist/assets/BusinessObjectPickerDrawer-DUZAVn8f.css                               2.10 kB │ gzip:   0.65 kB
+dist/assets/ResourceListView-DA5WTzLi.css                                         2.12 kB │ gzip:   0.69 kB
+dist/assets/DesignSchemeWorkbenchView-BuhCaEXd.css                                2.12 kB │ gzip:   0.74 kB
+dist/assets/AiCenterView-Cw_tk7rQ.css                                             2.83 kB │ gzip:   0.72 kB
+dist/assets/AcceptanceWorkbenchView-D6p9fJ23.css                                  2.87 kB │ gzip:   0.82 kB
+dist/assets/ProjectDetailView-BSfn59m8.css                                        3.06 kB │ gzip:   0.82 kB
+dist/assets/WorkbenchLayout-CIvGQvd6.css                                          3.42 kB │ gzip:   1.06 kB
+dist/assets/CustomerDetailView-BVQ2TBVg.css                                       4.56 kB │ gzip:   1.16 kB
+dist/assets/index-BmRDxeAO.css                                                  366.70 kB │ gzip:  49.62 kB
+dist/assets/feedback-C3FWCYso.js                                                  0.26 kB │ gzip:   0.23 kB
+dist/assets/meta-ucebc6IW.js                                                      0.42 kB │ gzip:   0.39 kB
+dist/assets/ScopeTag-CchDinJ-.js                                                  0.49 kB │ gzip:   0.38 kB
+dist/assets/BrandLogo-9zFBkLXg.js                                                 0.52 kB │ gzip:   0.39 kB
+dist/assets/PageHeader-CbJ9NUfH.js                                                0.62 kB │ gzip:   0.39 kB
+dist/assets/NotFoundView-jTr9W9tm.js                                              0.65 kB │ gzip:   0.57 kB
+dist/assets/ForbiddenView-PUDRJcgS.js                                             0.78 kB │ gzip:   0.69 kB
+dist/assets/CostIncompleteValue-ErI7mqnJ.js                                       0.84 kB │ gzip:   0.57 kB
+dist/assets/AuthLayout-DJE4fJeP.js                                                0.97 kB │ gzip:   0.77 kB
+dist/assets/BusinessDrawer.vue_vue_type_script_setup_true_lang-BMfEhyYp.js        1.06 kB │ gzip:   0.58 kB
+dist/assets/StatCard-By6XLBkp.js                                                  1.17 kB │ gzip:   0.64 kB
+dist/assets/format-bl4nW8xL.js                                                    1.17 kB │ gzip:   0.75 kB
+dist/assets/spreadsheet-BztMhekE.js                                               1.29 kB │ gzip:   0.73 kB
+dist/assets/TaskEvidenceDrawer.vue_vue_type_script_setup_true_lang-SBWXtQ4l.js    1.39 kB │ gzip:   0.91 kB
+dist/assets/catalog-BNwFzz17.js                                                   1.40 kB │ gzip:   0.91 kB
+dist/assets/PrivateAttachmentUploader-BgRknHda.js                                 1.65 kB │ gzip:   1.07 kB
+dist/assets/api-BoikQb_0.js                                                       2.03 kB │ gzip:   0.86 kB
+dist/assets/StatusTag.vue_vue_type_script_setup_true_lang-rCbsRvzD.js             2.44 kB │ gzip:   1.13 kB
+dist/assets/LoginView-H4nAQl-e.js                                                 2.57 kB │ gzip:   1.55 kB
+dist/assets/QualityReportView-DirD_qAu.js                                         2.94 kB │ gzip:   1.78 kB
+dist/assets/CompanyView-CG_wzSn8.js                                               3.15 kB │ gzip:   1.66 kB
+dist/assets/ProfileView-D5j1st80.js                                               3.47 kB │ gzip:   1.84 kB
+dist/assets/PartnerLedgerView-_UTFbGb1.js                                         3.61 kB │ gzip:   1.84 kB
+dist/assets/api-CTfEjSfS.js                                                       3.92 kB │ gzip:   1.35 kB
+dist/assets/MessagesView-mXnsFgh3.js                                              3.98 kB │ gzip:   2.14 kB
+dist/assets/BusinessReportView-DsEx9W2N.js                                        4.17 kB │ gzip:   2.21 kB
+dist/assets/api-BCs9_7Wg.js                                                       4.41 kB │ gzip:   1.73 kB
+dist/assets/WorkbenchLayout-DsyxSthu.js                                           4.78 kB │ gzip:   2.22 kB
+dist/assets/AppIcon-BNKQXdrY.js                                                   5.37 kB │ gzip:   2.17 kB
+dist/assets/BusinessObjectPickerDrawer-5bVnbRbS.js                                5.90 kB │ gzip:   3.07 kB
+dist/assets/PerformanceView-P50Rb6rY.js                                           6.48 kB │ gzip:   3.00 kB
+dist/assets/FinanceOverviewView-BX5fj5in.js                                       6.79 kB │ gzip:   2.77 kB
+dist/assets/TodoCenterView-C5MbYKaC.js                                            7.32 kB │ gzip:   3.56 kB
+dist/assets/SubscriptionView-BUtEGnHH.js                                          7.40 kB │ gzip:   3.29 kB
+dist/assets/QuoteDetailView-DhuFItm2.js                                           7.67 kB │ gzip:   3.47 kB
+dist/assets/api-BmiHjEzO.js                                                       7.79 kB │ gzip:   2.62 kB
+dist/assets/dictionaries-BXuBY0Xm.js                                              8.10 kB │ gzip:   2.76 kB
+dist/assets/permission-BZD6eibB.js                                                8.44 kB │ gzip:   2.32 kB
+dist/assets/api-JebfICaD.js                                                       9.52 kB │ gzip:   2.32 kB
+dist/assets/ContractChangeCreateView-I-NqxfA7.js                                  9.95 kB │ gzip:   4.31 kB
+dist/assets/ContractWorkbenchView-DRid8fon.js                                    10.14 kB │ gzip:   4.18 kB
+dist/assets/options-B-CytsSr.js                                                  10.36 kB │ gzip:   3.46 kB
+dist/assets/MeasurementWorkbenchView-DLRlq5cj.js                                 11.36 kB │ gzip:   4.82 kB
+dist/assets/AcceptanceWorkbenchView-D_YwWsXI.js                                  11.51 kB │ gzip:   4.72 kB
+dist/assets/api-CgG3tv4p.js                                                      13.44 kB │ gzip:   2.79 kB
+dist/assets/WorkbenchView-DLNibf4d.js                                            14.30 kB │ gzip:   5.82 kB
+dist/assets/AiCenterView-Doj6-_CZ.js                                             14.66 kB │ gzip:   5.57 kB
+dist/assets/ProjectDetailView-BXBUGq1d.js                                        18.77 kB │ gzip:   6.72 kB
+dist/assets/DesignSchemeWorkbenchView-BlYp9Fhe.js                                18.84 kB │ gzip:   7.69 kB
+dist/assets/CustomerDetailView-DdiDhEGG.js                                       20.02 kB │ gzip:   7.64 kB
+dist/assets/api-CQqiybiC.js                                                      20.13 kB │ gzip:   5.61 kB
+dist/assets/index-Cc9sPcWa.js                                                    27.84 kB │ gzip:  10.81 kB
+dist/assets/http-BCn5QfZZ.js                                                     51.44 kB │ gzip:  19.49 kB
+dist/assets/ResourceListView-CKaltFhI.js                                         60.63 kB │ gzip:  19.93 kB
+dist/assets/vue-CM1ixznD.js                                                     111.27 kB │ gzip:  43.39 kB
+dist/assets/element-CqLR32D8.js                                                 916.26 kB │ gzip: 295.18 kB
+✓ built in 4.09s
