@@ -1,5 +1,73 @@
 # Development Worklog
 
+## 2026-09-26 AI设计生成效果图持久化与App签名
+
+- 新增 `DesignRenderAssetContext`：模型生成的临时图片先下载并写入私有OSS `design/ai-render/{designId}/`，版本保存对象键，避免24小时后失效。
+- `FileAuthorizationContext` 在Design数据范围内放行 `design/ai-render/{designId}/` 对象请求，员工和业主授权均继续要求原Design可见性。
+- App 分支 `feature/design-ai-generation-app` commit `5b19501`：生成任务版本图片通过 `fileApi.grant('Design', designId, paths)` 签名后展示。
+- 验证：后端 `mvn -q -DskipTests compile/package` PASS；本地假模型+假OSS端到端自测 PASS，版本落为 `upload/design/ai-render/4/9-*.png`。
+- 状态：`implementation_done_self_tested_pending_acceptance`。
+
+## 2026-09-26 AI设计生成 P0.4 App 页面与入口
+
+- App 分支：`feature/design-ai-generation-app`，commit `f646468`。
+- 新增 `/subpackages/design/pages/ai-generation`，覆盖Preflight、上下文与缺失/冲突摘要、Visual/Talk/Document Prompt预览、2.5秒状态轮询、失败码恢复、版本查看/对比、全屏预览、封面/区域确认和正式交付门禁。
+- 设计列表方案卡、方案详情基础资料页和设计工作台增加AI生成入口；工作台按冻结规格先进入设计列表聚焦方案。
+- `domains/design` 扩展生成任务、上下文快照、Prompt快照、效果图版本类型及 build/info/page/update API，无新增DTO/VO文件。
+- 验证：App `npm run type-check` PASS；`npm run build:mp-weixin` PASS；`npm run check:subpackages` PASS（主包732378B、最大分包540733B、总包2603911B、111页）。
+- 状态：`implementation_done_self_tested_pending_acceptance`。375/390/430真实页面截图、跨角色黑盒、真实Provider正向/失败/越权回归待 acceptance。
+
+## 2026-09-26 AI设计生成 P0.4 后端接口收口
+
+- 按 `PRD-AI-DESIGN-APP-20260926-001` 裁剪 build/info/page/update 响应字段：移除 sourceDigest、failureMessage、成本、用量、请求号、模型参数和内部模型字段。
+- 新增 `DesignPromptPrivacyContext`：TalkBrief 仅 Designer 可见，BOSS、店长、团队负责人只返回 VisualBrief/DocumentBrief。
+- `design/generation/info`、`page` 统一接入 `requireDesignWriteAccess`，与 build/update 的设计写角色门槛一致；数据范围继续由 DataScope 强制。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；TalkBrief角色裁剪独立自测 PASS。
+- 待 acceptance：响应字段最小化、四角色权限矩阵、跨企业/门店/团队负向断言需固化到 `src/test`。
+- 状态：`backend_p0_4_contract_closed_pending_acceptance`。
+
+## 2026-09-26 AI设计生成任务分页
+
+- 新增 `design/generation/page` Provider，按登录员工数据范围、设计方案和任务状态分页查询。
+- 支持设计工作台后续列表入口；列表响应裁剪为客户、房屋、设计、负责人、状态和选中效果图摘要。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS。
+- 待 acceptance：Provider 路由总数需 341→345；新增 `design/generation/page` 未授权断言。
+- 状态：`implementation_done_self_tested_pending_acceptance`。
+
+## 2026-09-26 AI设计上下文与Prompt编排 P0.3
+
+- 新增效果图确认能力：`DesignGenerationConfirmationContext` 与 `design/generation/update` Provider。
+- 选择效果图后回写 `Design.coverUrl`；传入 `spaceId` 时写入区域图片，保持区域设计事实可追溯。
+- 选中版本标记 `Confirmed + deliverable=true + confirmedBy/confirmedAt`，其他有效版本标记 `Superseded`。
+- `DesignGenerationTask.status` 推进为 `DesignerConfirmed`，并保存 `selectedRender`。
+- 迁移63补充 selected_render、deliverable、confirmed_by、confirmed_at。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；独立自测验证封面回写、选中版本确认和其他版本替代。
+- 待 acceptance：Provider 路由总数需 341→344；新增 `design/generation/update` 未授权断言；迁移63隔离MySQL演练；确认/重选/已分享/已锁定负向用例固化。
+- 状态：`backend_p0_1_to_p0_3_completed_pending_acceptance`。P0.4 App页面仍需 product-planning 先冻结交互规格。
+
+## 2026-09-26 AI设计上下文与Prompt编排 P0.2
+
+- 新增 `DesignRenderVersion`、`DesignRenderStatus` 和效果图版本仓储，效果图结果可追溯Prompt、任务、模型请求号与用量。
+- 新增 `DesignGenerationRunner` 异步执行器、专用线程池、`DesignGenerationStateContext` 短事务状态编排。
+- 新增 `DesignRenderClient`/`SeedreamDesignRenderClient`，支持火山方舟Seedream图生图、超时、429/5xx重试、凭证与响应错误码。
+- 新增 `design/generation/info` Provider，按数据范围返回任务、上下文、Prompt和效果图版本。
+- 迁移 63 补充 `db_design_render_version`。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；本地假模型服务完成 Runner 端到端自测，任务从 PromptReady→DraftReady，效果图版本保存成功。
+- 待 acceptance：Provider 路由总数需 341→343；`scripts/build-release.sh` 的 MIGRATION_END 需上调到 63；迁移63需隔离MySQL演练；异步Runner、失败重试、权限和版本用例需固化。
+- 状态：`implementation_done_self_tested_pending_acceptance`。P0.3效果图与Design正式回写尚未实现。
+
+## 2026-09-26 AI设计上下文与Prompt编排 P0.1
+
+- 来源：`REQ-BIZ-20260926-003`、`DEC-010 AI-DEC-10～12`、冻结包 `PKT-20260926-AI-DESIGN-001`。
+- 分支：`feature/design-ai-context-prompt`，基线 `dev`。
+- 后端新增 `DesignGenerationTask`、`DesignContextSnapshot`、`DesignPromptSnapshot` 及仓储。
+- 新增 `DesignAiContextBuilder`、`DesignPromptRenderer`、`DesignGenerationContext`，从客户、画像、房屋、量房、区域、诉求和设计方案生成结构化DesignBrief，并渲染视觉、谈单、方案书三类输出。
+- 新增 `design/generation/build` Provider；正式调用仍需当前员工数据范围和设计写权限。
+- 新增迁移 `63-AI设计上下文与Prompt编排.sql`。
+- 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；独立临时自测验证 High 置信度、空间/诉求进入Prompt、PII不泄漏、无CAD/户型图阻断。
+- 待 acceptance：`ProviderSecurityAcceptanceTest` 路由总数需 341→342；`scripts/build-release.sh` 迁移范围需在发布 lane 同步上调到 63。
+- 状态：`implementation_done_self_tested_pending_acceptance`。P0.2异步模型调用尚未实现。
+
 ## 2026-09-26 工地相册企业用户访问修复
 
 - 现象：业主工地相册开放后，企业员工从项目详情进入 “相册” 返回 `403 当前会话不是业主身份`。
