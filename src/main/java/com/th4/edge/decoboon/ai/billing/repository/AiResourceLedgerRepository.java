@@ -10,4 +10,6 @@ public interface AiResourceLedgerRepository extends JpaRepository<AiResourceLedg
     List<AiResourceLedger> findByCompany_ComIdAndCall_CallIdAndType(Long comId, Long callId, AiLedgerType type);
 
     List<AiResourceLedger> findByCompany_ComIdAndCall_CallIdOrderByLedgerIdAsc(Long comId, Long callId);
+
+    List<AiResourceLedger> findTop20ByCompany_ComIdOrderByLedgerIdDesc(Long comId);
 }
