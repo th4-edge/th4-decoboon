@@ -113,9 +113,10 @@ class ProviderSecurityAcceptanceTest {
         // 接管后剩余施工计划新增 5 条（stage/save、stage/delete、stage/reorder、plan/confirm、plan/change/page）。
         // => 总数为 340（public 12 + protected 328）；待 acceptance 复核。
         // 2026-09-26 报价项目库批量导入 W2 并入 1 条（catalog/item/delete）
-        // => 总数为 341（public 12 + protected 329）；由 development lane 机械同步，待 acceptance 复核
-        assertThat(routes).hasSize(341);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(329);
+        // 2026-09-26 A0.1 AI用量新增 2 条（ai/usage/report、ai/usage/page）
+        // => 总数为 343（public 12 + protected 331）；由 development lane 机械同步，待 acceptance 复核
+        assertThat(routes).hasSize(343);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(331);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
     }
 
@@ -172,6 +173,8 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("quote/line/save");
         assertUnauthorized("quote/line/delete");
         assertUnauthorized("statistic/onboarding/report");
+        assertUnauthorized("ai/usage/report");
+        assertUnauthorized("ai/usage/page");
         assertUnauthorized("statistic/boss/workbench");
         assertUnauthorized("statistic/boss/design/report");
         assertUnauthorized("statistic/boss/quote/report");
