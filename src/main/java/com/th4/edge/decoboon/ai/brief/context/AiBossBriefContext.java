@@ -31,8 +31,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 /** AI 经营参谋 P0 上下文。只读经营事实，生成建议并记录影子用量。 */
 @Component
@@ -71,15 +72,15 @@ public class AiBossBriefContext {
         BossDashboardQuery dashboardQuery = new BossDashboardQuery();
         dashboardQuery.setMonth(month);
         dashboardQuery.setStoreId(storeId);
-        BossDashboard dashboard = dashboardContext.dashboard(current, dashboardQuery);
-
-        FinanceSummary finance = financeContext.summary(current);
+        BossDashboard dashboard = safeDashboard(current, dashboardQuery);
+        FinanceSummary finance = safeFinance(current);
         BusinessAlertQuery alertQuery = new BusinessAlertQuery();
         alertQuery.setAsOf(LocalDate.now());
-        BusinessAlertReport alerts = alertContext.report(current, alertQuery);
+        BusinessAlertReport alerts = safeAlerts(current, alertQuery);
 
         LocalDateTime startedAt = LocalDateTime.now();
         AiBriefReport report = buildReport(current, month, dashboard, finance, alerts, startedAt);
+        appendUnavailableNotice(report, dashboard == null, finance == null, alerts == null);
         LocalDateTime completedAt = LocalDateTime.now();
         AiUsageCall usage = recordUsage(current, report, startedAt, completedAt);
         report.getUsage().setCallId(usage.getCallId());
@@ -102,6 +103,17 @@ public class AiBossBriefContext {
         report.getUsage().setShadowBillableUnits(report.getUsage().getResourceUnits());
         report.getUsage().setRateCardVersion("shadow-direct-v1");
         return report;
+    }
+
+    private void appendUnavailableNotice(AiBriefReport report, boolean dashboardUnavailable,
+                                         boolean financeUnavailable, boolean alertsUnavailable) {
+        List<String> unavailable = new ArrayList<>();
+        if (dashboardUnavailable) unavailable.add("经营指标");
+        if (financeUnavailable) unavailable.add("财务汇总");
+        if (alertsUnavailable) unavailable.add("经营预警");
+        if (!unavailable.isEmpty()) {
+            report.setSummary(report.getSummary() + " " + String.join("、", unavailable) + "暂不可确认，请稍后重试。");
+        }
     }
 
     private List<AiBriefReport.AiBriefFact> facts(BossDashboard dashboard, FinanceSummary finance,
@@ -153,13 +165,13 @@ public class AiBossBriefContext {
         add(all, alerts.getSuspensionRisks());
         add(all, alerts.getMaterialOverIssues());
         add(all, alerts.getChangeAnomalies());
-        return all.stream()
+        Map<String, BusinessAlert> selected = new LinkedHashMap<>();
+        all.stream()
                 .sorted(Comparator
                         .comparingInt((BusinessAlert item) -> levelOrder(item.getLevel()))
                         .thenComparing(BusinessAlert::getDueDate, Comparator.nullsLast(Comparator.naturalOrder())))
-                .limit(ACTION_LIMIT)
-                .map(this::action)
-                .toList();
+                .forEach(item -> selected.putIfAbsent(String.valueOf(item.getBusinessType()), item));
+        return selected.values().stream().limit(ACTION_LIMIT).map(this::action).toList();
     }
 
     private AiBriefReport.AiBriefAction action(BusinessAlert alert) {
@@ -177,21 +189,56 @@ public class AiBossBriefContext {
     }
 
     private AiBriefReport.AiBriefCostStatus costStatus(BossDashboard dashboard, FinanceSummary finance) {
-        boolean complete = (dashboard == null || dashboard.getGrossProfit() == null
-                || !Boolean.FALSE.equals(dashboard.getGrossProfit().getComplete()))
-                && (finance == null || !Boolean.FALSE.equals(finance.getCostComplete()));
         AiBriefReport.AiBriefCostStatus status = new AiBriefReport.AiBriefCostStatus();
+        if (finance == null) {
+            status.setComplete(false);
+            status.setIncompleteProjectCount(0);
+            status.setMessage("财务汇总暂不可确认，成本完整性暂不可确认");
+            return status;
+        }
+        boolean dashboardComplete = dashboard == null || dashboard.getGrossProfit() == null
+                || !Boolean.FALSE.equals(dashboard.getGrossProfit().getComplete());
+        boolean complete = dashboardComplete && !Boolean.FALSE.equals(finance.getCostComplete());
         status.setComplete(complete);
-        status.setIncompleteProjectCount(finance == null || finance.getCostIncompleteProjectCount() == null
+        status.setIncompleteProjectCount(finance.getCostIncompleteProjectCount() == null
                 ? 0 : finance.getCostIncompleteProjectCount());
         status.setMessage(complete ? null : "成本未完整，暂不展示可靠毛利");
         return status;
     }
 
+    private BossDashboard safeDashboard(Employee current, BossDashboardQuery query) {
+        try { return dashboardContext.dashboard(current, query); }
+        catch (RuntimeException ignored) { return null; }
+    }
+
+    private FinanceSummary safeFinance(Employee current) {
+        try { return financeContext.summary(current); }
+        catch (RuntimeException ignored) { return null; }
+    }
+
+    private BusinessAlertReport safeAlerts(Employee current, BusinessAlertQuery query) {
+        try { return alertContext.report(current, query); }
+        catch (RuntimeException ignored) { return null; }
+    }
+
+    private String idempotencyKey(Employee current, AiBriefReport report) {
+        String companyId = current.getCompany() == null ? "0" : String.valueOf(current.getCompany().getComId());
+        StringBuilder fingerprint = new StringBuilder();
+        for (AiBriefReport.AiBriefFact fact : report.getFacts()) {
+            fingerprint.append(fact.getCategory()).append(':').append(fact.getLabel()).append(':')
+                    .append(fact.getValue()).append('|');
+        }
+        for (AiBriefReport.AiBriefAction action : report.getActions()) {
+            fingerprint.append(action.getBusinessType()).append(':').append(action.getBusinessId()).append('|');
+        }
+        fingerprint.append(report.getMonth()).append('|').append(report.getCostStatus().getComplete());
+        return "boss-brief:" + companyId + ":" + current.getEmpId() + ":" + Integer.toHexString(fingerprint.toString().hashCode());
+    }
+
     private AiUsageCall recordUsage(Employee current, AiBriefReport report,
                                     LocalDateTime startedAt, LocalDateTime completedAt) {
         AiUsageCall call = new AiUsageCall();
-        call.setIdempotencyKey("boss-brief:" + UUID.randomUUID());
+        call.setIdempotencyKey(idempotencyKey(current, report));
         call.setBusinessModule("Analytics");
         call.setCapabilityCode("boss-brief");
         call.setSceneCode("boss-monday-review");
