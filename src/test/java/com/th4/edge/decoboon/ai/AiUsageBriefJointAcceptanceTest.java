@@ -36,7 +36,9 @@ import org.springframework.data.jpa.domain.Specification;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -124,6 +126,28 @@ class AiUsageBriefJointAcceptanceTest {
     }
 
     @Test
+    void sameExplicitIdempotencyKeyMustReturnExactlyOneUsageRecord() {
+        TenantContext tenant = mock(TenantContext.class);
+        AiUsageCallRepository repository = mock(AiUsageCallRepository.class);
+        Map<String, AiUsageCall> stored = new LinkedHashMap<>();
+        AiUsageContext context = new AiUsageContext(tenant, repository);
+        when(tenant.requireEmployee(any())).thenReturn(boss);
+        when(repository.findByCompany_ComIdAndIdempotencyKey(any(), any())).thenAnswer(invocation ->
+                java.util.Optional.ofNullable(stored.get(invocation.getArgument(1))));
+        when(repository.save(any(AiUsageCall.class))).thenAnswer(invocation -> {
+            AiUsageCall call = invocation.getArgument(0);
+            stored.put(call.getIdempotencyKey(), call);
+            return call;
+        });
+
+        AiUsageCall first = context.record(boss, usage("same-key"));
+        AiUsageCall second = context.record(boss, usage("same-key"));
+
+        assertThat(second).isSameAs(first);
+        assertThat(stored).hasSize(1);
+    }
+
+    @Test
     void businessStorePriorityAndExplicitEnterprisePublicMustOverrideEmployeeStore() {
         TenantContext tenant = mock(TenantContext.class);
         AiUsageCallRepository repository = mock(AiUsageCallRepository.class);
@@ -188,6 +212,27 @@ class AiUsageBriefJointAcceptanceTest {
 
         assertThat(report.getCostStatus().getComplete()).isFalse();
         assertThat(report.getCostStatus().getMessage()).contains("暂不可确认");
+    }
+
+    @Test
+    void briefMustExposeObjectLevelSourceMetadata() {
+        CapturedBrief fixture = briefFixture(null);
+        when(fixture.dashboardContext.dashboard(any(), any())).thenReturn(dashboard(true));
+        when(fixture.financeContext.summary(any())).thenReturn(finance(true));
+        BusinessAlertReport alerts = new BusinessAlertReport();
+        alerts.setAsOf(LocalDate.now());
+        when(fixture.alertContext.report(any(), any())).thenReturn(alerts);
+
+        AiBriefReport report = fixture.context.report(boss, new AiBriefQuery());
+
+        assertThat(report.getSources()).hasSize(3);
+        assertThat(report.getSources()).allSatisfy(source -> {
+            assertThat(source.getProvider()).isNotBlank();
+            assertThat(source.getObjectType()).isNotBlank();
+            assertThat(source.getObjectId()).isEqualTo(41L);
+            assertThat(source.getVersion()).isNotBlank();
+            assertThat(source.getUpdatedAt()).isNotNull();
+        });
     }
 
     @Test

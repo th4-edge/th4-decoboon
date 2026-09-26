@@ -116,7 +116,7 @@ class ProviderSecurityAcceptanceTest {
         // 2026-09-26 A0.1 AI用量新增 2 条（ai/usage/report、ai/usage/page）
         // 2026-09-26 AI用量新增 2 条（ai/usage/report、ai/usage/page）
         // 2026-09-26 A1 AI经营参谋新增 1 条（ai/brief/report）
-        // dev 已包含 AI 设计生成 4 条，基线 345；A0.1+A1 合计 348（public 12 + protected 336）。
+        // 独立复核：AI 设计 4 条基线 345；A0.1+A1 实际新增 3 条，干净基线为 348（public 12 + protected 336）。
         assertThat(routes).hasSize(348);
         assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(336);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
