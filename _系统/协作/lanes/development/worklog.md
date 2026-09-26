@@ -1,5 +1,15 @@
 # Development Worklog
 
+## 2026-09-26 AI 经营参谋 P0 基线版
+
+- 后端新增 `ai/brief/report`：复用经营驾驶舱、财务汇总和经营预警，返回摘要、业务/交付/资金事实、行动建议、成本状态和影子用量；仅 BOSS 可读。
+- 新增可替换 `AiBriefGenerator`，首版 `BaselineAiBriefGenerator` 保证大模型未接入时链路可运行；不生成净利润、预测收入或无依据因果。
+- 每次生成写入 `AiUsageContext`，经营简报显式归入企业公共；不自动修改业务数据。
+- Web 新增 AI 经营简报卡、行动下钻和来源抽屉；手动生成，成本不完整时不展示伪毛利。
+- 验证：后端定向测试与 Provider 安全回归 PASS，路由 344（public 12 + protected 332）；Web type-check/build PASS。
+- 交接：`_系统/协作/lanes/development/workspace/ai-boss-brief-handoff.md`。
+- 状态：`implementation_and_self_test_done_pending_joint_test_and_acceptance`。
+
 ## 2026-09-26 AI 调用与企业门店影子用量底账
 
 - 新增 `ai` 后端域：`AiUsageCall` 底账、调用状态/影子账务状态/门店归属枚举、幂等记录 Context、企业/门店/能力聚合报表 Context。
