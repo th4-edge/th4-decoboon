@@ -95,6 +95,17 @@ class AiUsageContextTest {
     }
 
     @Test
+    void explicitEnterprisePublicShouldOverrideEmployeeStore() {
+        AiUsageCall request = request("enterprise-brief");
+        request.setAllocationType(AiStoreAllocation.EnterprisePublic);
+
+        AiUsageCall saved = context.record(boss, request);
+
+        assertThat(saved.getAllocationStore()).isNull();
+        assertThat(saved.getAllocationType()).isEqualTo(AiStoreAllocation.EnterprisePublic);
+    }
+
+    @Test
     void sameIdempotencyKeyShouldReturnExistingRecord() {
         AiUsageCall first = context.record(boss, request("same-action"));
         AiUsageCall second = context.record(boss, request("same-action"));
