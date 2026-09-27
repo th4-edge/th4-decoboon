@@ -34,7 +34,7 @@ cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
 # 增量迁移范围：新迁移必须同步上调 MIGRATION_END，否则 DBA 会拿不到待执行脚本。
 # 2026-09-24 修正：发布包必须覆盖 24-62，包含业主闭环、整改、意见、设计状态与 craft 快照。
 MIGRATION_START=24
-MIGRATION_END=62
+MIGRATION_END=63
 for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   matches=(docs/design/migrations/"${number}"-*.sql)
   if [ ! -e "${matches[0]}" ]; then
@@ -43,6 +43,9 @@ for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   fi
   cp "${matches[@]}" "$RELEASE_DIR/"
 done
+
+# 本分支新增企业入驻服务台账 66；64/65 由并行官网线索和 AI 点数工作流合并后统一纳入范围。
+cp docs/design/migrations/66-*.sql "$RELEASE_DIR/"
 
 (
   cd "$RELEASE_DIR"

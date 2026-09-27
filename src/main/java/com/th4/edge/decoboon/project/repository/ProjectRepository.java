@@ -25,6 +25,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
 
     List<Project> findByCompany_ComIdOrderByProjectIdDesc(Long comId);
 
+    long countByCompany_ComId(Long comId);
+
     List<Project> findByCompany_ComIdAndDesigner_EmpIdOrderByProjectIdDesc(Long comId, Long empId);
     List<Project> findByCompany_ComIdAndOwner_EmpIdOrderByProjectIdDesc(Long comId, Long empId);
 

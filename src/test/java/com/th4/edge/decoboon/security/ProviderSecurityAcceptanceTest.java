@@ -114,8 +114,12 @@ class ProviderSecurityAcceptanceTest {
         // => 总数为 340（public 12 + protected 328）；待 acceptance 复核。
         // 2026-09-26 报价项目库批量导入 W2 并入 1 条（catalog/item/delete）
         // => 总数为 341（public 12 + protected 329）；由 development lane 机械同步，待 acceptance 复核
-        assertThat(routes).hasSize(341);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(329);
+        // 2026-09-26 AI 设计生成并入 4 条（design/generation/{build,info,update,page}）。
+        // => 总数为 345（public 12 + protected 333）。
+        // 2026-09-27 企业入驻台账并入 4 条（platform/tenant/onboarding/{page,info,reveal,service/save}）。
+        // => 总数为 349（public 12 + protected 337）；由 development lane 机械同步，待 acceptance 复核。
+        assertThat(routes).hasSize(349);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(337);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
     }
 
