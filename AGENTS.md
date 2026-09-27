@@ -4,20 +4,28 @@
 **所有新增/修改/重构代码必须严格遵循本规范**；与既有旧写法冲突时，以本规范为准并回改存量代码。
 
 
-## StarWork 工作台入口（开始任务前先读）
+## 试运营单人模式（当前最高优先级）
+
+- 当前为试运营阶段，研发协作只有一人，以成本和响应速度优先。
+- 小修复和普通需求默认直接使用 `dev`；不强制 lane、独立验收、RC tag 和全量测试。
+- 默认验证按变更级别执行：定向测试 + 编译/类型检查/构建 + 必要时生产冒烟。
+- 仅 DDL、迁移、权限、金额/成本/利润、支付、跨租户和数据删除保持全量测试、备份、回滚和用户确认。
+- 本文件后续的 lane、严格发布和全量验收条款与本节冲突时，以本节和
+  `docs/operations/试运营单人轻量协作与发版规范.md` 为准。
+
+
+## StarWork 与轻量入口
+
+默认只读：
 
 1. `AGENTS.md`
-2. `_系统/上下文/当前项目.md`
-3. `_系统/任务/当前工作.md`
-4. `.starwork/workspace.json`
-5. `.starwork/skills.json`
-6. `.starwork/rules/index.md`，再按索引读取相关扩展规则
-7. `_系统/协作/agent-lanes.md`
-8. `_系统/协作/lanes/{当前-lane}/worklog.md`
-9. `_系统/协作/shared.md`
-10. `_系统/协作/工作约定.md`（省 Token 执行口径与近期改动简报，同一话题续做的唯一入口）
+2. `docs/operations/试运营单人轻量协作与发版规范.md`
+3. `_系统/协作/工作约定.md` 的近期改动
+4. 与任务直接相关的源码、迁移和最近发布记录
 
-涉及用户偏好或长期背景时读 `_系统/身份/README.md`；涉及高复用经验或已知风险时读 `_系统/教训/README.md`；涉及后端实现时还必须读取根目录 `rules.md`。
+lane、完整 worklog、shared 和 rules 大段只在事故、大功能、权限/金额/迁移变更或用户要求时读取。
+
+涉及后端实现时按需读取根目录 `rules.md` 对应章节，不全文预读。
 
 ## StarWork 文件边界
 
@@ -25,14 +33,12 @@
 营销素材/选题/脚本/设计/分析分别落 `docs/marketing/{material,topics,scripts,design,analytics}/**`；
 项目状态写 `_系统/上下文/当前项目.md`，执行记录写 `_系统/任务/当前工作.md`；草稿与调研放本 lane `workspace/**`，成熟成果晋升到 `输出/确认成果/` 或对应业务目录。
 
-## MultiAgent 协作规则
+## MultiAgent 协作规则（试运营模式简化）
 
-- 进入任务先确认当前 lane、绑定 session、职责与 `write_scope`；未绑定 lane 不得自行假定职责，只主动改本 lane 的 `write_scope`。
-- 主流程 `product-planning -> development -> acceptance -> product-planning`；产品只出需求/规格，开发只出实现与自测，验收只出结论，互不代替。
-- 项目内 5 个营销 Lane（material / topic-selection / content-writing / design / data-review）默认不由研发主流程派发；营销问题走
-  `MKT_REPORTED -> 业务裁决 -> 研发修复 -> LEARNING_ACK -> VERIFIED -> MKT_UNLOCKED`，未收到 `MKT_UNLOCKED` 前双方不得对外使用待修复口径。
-- 交接必须含：输入依据、changed_files、verification、risks、next_action、acceptance_needed；跨智能体修复另含 ISSUE-ID、业务 T12、重启/部署证据、learning_request、可用/禁用口径。
-- 未确认接手只算「已交接」，不得表述为完成。任务结束更新本 lane worklog，跨 lane 可见成果登记 `shared.md`。
+- 试运营单人模式下，不强制 lane、跨 lane 交接和独立验收。
+- 只有用户要求、大功能或高风险变更才启用多 Agent 协作。
+- 业务对象、状态、权限、金额、成本、支付和对外口径仍必须先查业务事实源。
+- 工作记录按 `工作约定.md` 一行追加，不为小任务写交接包。
 
 ## 生产后端监控
 
@@ -41,14 +47,13 @@
 - 自动修复只允许处理高置信、单根因、可回滚且不涉及 DDL/迁移/密钥/权限放宽/资金金额语义的代码缺陷；其余事故只记录并人工处理。
 - 任何生产发版必须使用 `scripts/deploy-prod.sh`，失败自动回滚到 `/opt/decoboon/releases/.previous`。
 
-## 版本管理与发布分支（强制）
+## 版本管理与发布（试运营轻量）
 
-- 大功能从 `dev` 创建 `feature/<domain>-<slug>`，小修复或小变更从 `dev` 创建 `fix/<domain>-<slug>`；禁止在 `dev/test/prod/master` 上直接开发或直接推送。
-- 正常发布链固定为 `feature|fix -> dev -> test -> prod`；生产事故才允许 `prod -> hotfix/* -> test 环境验证 -> prod -> test -> dev`。
-- `test` 只接收发布经理合并的 `dev` 发布批次；`prod` 只接收已验收的 RC 或已验证热修。正常发布禁止逐条 cherry-pick、强推、重置或移动 tag。
-- 每次生产发布必须从正式 tag 构建，记录 Release ID、commit、tag、制品 SHA-256、迁移、备份、回滚点和验证证据；发布记录使用 `docs/operations/releases/_发布记录模板.md`。
-- 当前尚在迁移期：Web 必须先建立独立 Git 仓库，后端和 App 的混合未提交改动必须按需求/缺陷拆分后才能建立正式环境分支。
-- 完整流程、分支保护、热修、回滚和多仓库顺序见 `docs/operations/版本管理与发布分支规范.md`。
+- 默认直接使用 `dev`；大功能可选 `feature/*`，生产事故用 `hotfix/*`。
+- 小修复不强制全量测试、RC tag 和独立验收；按变更级别执行定向测试、构建和冒烟。
+- 发布成功后把 `test`、`prod` 快进同步到 `dev` 当前提交；tag 按天、周或批次创建。
+- DDL、迁移、权限、金额/成本、支付、跨租户和数据删除仍必须备份、全量验证和可回滚。
+- 完整规则见 `docs/operations/试运营单人轻量协作与发版规范.md`。
 
 ## 实际业务场景推演（强制）
 
