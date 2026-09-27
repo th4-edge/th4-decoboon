@@ -82,6 +82,11 @@ th4:
           enabled: ${WECHAT_MINI_ENABLED}
           app-id: ${WECHAT_MINI_APP_ID}
           app-secret: ${WECHAT_MINI_APP_SECRET}
+          subscribe-templates:
+            "owner.acceptance-pending": ${WECHAT_TEMPLATE_OWNER_ACCEPTANCE_PENDING:}
+            "employee.acceptance-decision": ${WECHAT_TEMPLATE_EMPLOYEE_ACCEPTANCE_DECISION:}
+            "employee.task-overdue": ${WECHAT_TEMPLATE_EMPLOYEE_TASK_OVERDUE:}
+            "employee.material-arrival": ${WECHAT_TEMPLATE_EMPLOYEE_MATERIAL_ARRIVAL:}
         pay:
           enabled: ${WECHAT_PAY_ENABLED:false}
           app-id: ${WECHAT_PAY_APP_ID:}

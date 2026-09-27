@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.context;
 
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.collab.context.NoticeContext;
+import com.th4.edge.decoboon.collab.context.SubscribeMessageContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
@@ -93,6 +94,7 @@ public class ProjectContext {
     private final ProjectPermissionContext permissionContext;
     private final UserIdentityContext userIdentityContext;
     private final NoticeContext noticeContext;
+    private final SubscribeMessageContext subscribeMessageContext;
     private final ProjectCostContext projectCostContext;
     private final ContractPlanContext contractPlanContext;
     private final MaterialPlanContext materialPlanContext;
@@ -116,6 +118,7 @@ public class ProjectContext {
                           ContractLineRepository contractLineRepository,
                           UserIdentityContext userIdentityContext,
                           NoticeContext noticeContext,
+                          SubscribeMessageContext subscribeMessageContext,
                           ProjectCostContext projectCostContext,
                           ContractPlanContext contractPlanContext,
                           MaterialPlanContext materialPlanContext,
@@ -138,6 +141,7 @@ public class ProjectContext {
         this.contractLineRepository = contractLineRepository;
         this.userIdentityContext = userIdentityContext;
         this.noticeContext = noticeContext;
+        this.subscribeMessageContext = subscribeMessageContext;
         this.projectCostContext = projectCostContext;
         this.contractPlanContext = contractPlanContext;
         this.materialPlanContext = materialPlanContext;
@@ -420,6 +424,9 @@ public class ProjectContext {
         stage.getProject().setStatus(ProjectStatus.Accepting);
         projectRepository.save(stage.getProject());
         refreshProject(saved.getProject());
+        // 验收提交后由项目侧统一触达业主；触发时机与站内事实一致，避免出现
+        // “站内有验收单但业主没收到提醒”的半套状态。
+        subscribeMessageContext.ownerAcceptancePending(saved);
         return saved;
     }
 

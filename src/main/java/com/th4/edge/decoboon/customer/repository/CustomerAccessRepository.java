@@ -29,4 +29,7 @@ public interface CustomerAccessRepository extends JpaRepository<CustomerAccess, 
     Optional<CustomerAccess> findLockedByCredential_CreIdAndProject_ProjectId(Long creId, Long projectId);
 
     List<CustomerAccess> findByInvite_InviteId(Long inviteId);
+
+    /** 按项目查有效业主授权，用于向业主侧发送订阅消息。 */
+    List<CustomerAccess> findByProject_ProjectIdAndStatus(Long projectId, CustomerAccessStatus status);
 }

@@ -55,6 +55,7 @@ logging:
 # th4 框架配置 默认配置
 th4:
   edge:
+    site-dir: ${TH4_SITE_DIR:./site/}
     framework:
       upload-dir: ${TH4_FILE_UPLOAD_DIR:./data/upload/}
       public-dir: ${TH4_FILE_PUBLIC_DIR:./data/public/}
@@ -84,6 +85,13 @@ th4:
           app-secret: ${WECHAT_MINI_APP_SECRET:}
           connect-timeout-ms: 3000
           read-timeout-ms: 5000
+          # 订阅消息模板 ID（微信公众平台 → 功能 → 订阅消息 → 一次性订阅）。
+          # 场景键见 WechatSubscribeScenario；留空即跳过该场景发送，不影响任何业务流程。
+          subscribe-templates:
+            "owner.acceptance-pending": ${WECHAT_TEMPLATE_OWNER_ACCEPTANCE_PENDING:}
+            "employee.acceptance-decision": ${WECHAT_TEMPLATE_EMPLOYEE_ACCEPTANCE_DECISION:}
+            "employee.task-overdue": ${WECHAT_TEMPLATE_EMPLOYEE_TASK_OVERDUE:}
+            "employee.material-arrival": ${WECHAT_TEMPLATE_EMPLOYEE_MATERIAL_ARRIVAL:}
         pay:
           # 微信支付 API v3；商户私钥、API v3 密钥和回调地址只允许通过环境变量注入
           enabled: ${WECHAT_PAY_ENABLED:false}

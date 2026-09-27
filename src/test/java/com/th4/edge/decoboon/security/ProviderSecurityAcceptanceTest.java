@@ -53,7 +53,8 @@ class ProviderSecurityAcceptanceTest {
             "invite/invitation/reject",
             "order/callback",
             "file/private/download",
-            "platform/auth/login"
+            "platform/auth/login",
+            "site/lead/submit"
     );
 
     @Autowired private ApplicationContext applicationContext;
@@ -67,7 +68,8 @@ class ProviderSecurityAcceptanceTest {
             Class<?> target = AopUtils.getTargetClass(provider);
             if (!target.getName().startsWith("com.th4.edge.decoboon")
                     && !target.getName().startsWith("com.th4.edge.tenant")
-                    && !target.getName().startsWith("com.th4.edge.platform")) {
+                    && !target.getName().startsWith("com.th4.edge.platform")
+                    && !target.getName().startsWith("com.th4.edge.site")) {
                 continue;
             }
             Service service = AnnotationUtils.findAnnotation(target, Service.class);
@@ -118,10 +120,11 @@ class ProviderSecurityAcceptanceTest {
         // 2026-09-26 A0.2 AI账户摘要新增 1 条（ai/account/report）
         // => AI 相关基线共 4 条，干净基线为 349（public 12 + protected 337）。
         // 2026-09-27 企业入驻台账并入 4 条（platform/tenant/onboarding/{page,info,reveal,service/save}）。
-        // => 总数为 353（public 12 + protected 341）；由 development lane 机械同步，待 acceptance 复核。
-        assertThat(routes).hasSize(353);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(341);
-        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(12);
+        // 2026-09-27 恢复未发布能力新增 2 条（site/lead/submit、statistic/success/report）。
+        // => 总数为 355（public 13 + protected 342）。
+        assertThat(routes).hasSize(355);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(342);
+        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
     @Test
