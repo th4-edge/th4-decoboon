@@ -451,6 +451,7 @@ public class TenantDataAdapter {
         value.setAddr(company.getAddr());
         value.setCreateTime(company.getCreateTime());
         value.setEnableStore(company.getSetting() != null ? company.getSetting().getEnableStore() : false);
+        value.setSubId(subscription == null ? null : subscription.getSubId());
         value.setPlanName(planName(subscription));
         value.setSubscriptionStatus(subscription == null || subscription.getStatus() == null ? "None" : subscription.getStatus().name());
         value.setServiceEndTime(subscription == null ? null : subscription.getServiceEndTime());

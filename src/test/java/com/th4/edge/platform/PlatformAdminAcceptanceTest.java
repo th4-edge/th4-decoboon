@@ -104,6 +104,7 @@ class PlatformAdminAcceptanceTest {
         assertThat(tenants.path("data").path("content").size()).isEqualTo(1);
         assertThat(tenants.path("data").path("content").get(0).path("title").asText()).isEqualTo("普通企业");
         assertThat(tenants.path("data").path("content").get(0).has("platform")).isFalse();
+        assertThat(tenants.path("data").path("content").get(0).path("subId").asLong()).isEqualTo(subscription.getSubId());
 
         JsonNode adjusted = call("platform/subscription/update", """
                 {"subId":%d,"days":30,"extraSeats":2,"extraStores":1,"reason":"客户成功人工续费并扩容"}
