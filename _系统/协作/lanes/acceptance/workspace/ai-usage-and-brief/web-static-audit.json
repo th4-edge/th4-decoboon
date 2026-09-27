@@ -1,0 +1,40 @@
+{
+  "request": "HANDOFF-AI-DESIGN-P0.4-ACCEPTANCE-20260926-001",
+  "results": [
+    {
+      "id": "route-and-boss-capability",
+      "status": "PASS"
+    },
+    {
+      "id": "usage-filters-and-pagination",
+      "status": "PASS"
+    },
+    {
+      "id": "no-platform-cost-or-prompt-ui",
+      "status": "PASS"
+    },
+    {
+      "id": "manual-brief-generation-only",
+      "status": "FAIL",
+      "detail": "页面 onMounted 当前自动调用 loadBrief，产品要求 BOSS 手动点击生成且 P0 不自动后台生成"
+    },
+    {
+      "id": "pre-generation-estimated-points",
+      "status": "FAIL",
+      "detail": "生成前未展示预计影子点数"
+    },
+    {
+      "id": "source-drawer-has-source-records",
+      "status": "FAIL",
+      "detail": "来源抽屉只显示事实和生成信息，没有 Provider/对象/版本/更新时间来源记录"
+    },
+    {
+      "id": "repeat-click-guard",
+      "status": "PASS"
+    },
+    {
+      "id": "brief-results-do-not-show-pseudo-margin",
+      "status": "PASS"
+    }
+  ]
+}

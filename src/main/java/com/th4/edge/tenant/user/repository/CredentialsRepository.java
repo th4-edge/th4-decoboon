@@ -7,6 +7,7 @@ import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.Lock;
 import com.th4.edge.tenant.user.model.Credentials;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public interface CredentialsRepository extends JpaRepository<Credentials, Long> 
     Credentials findFirstByEmployee_EmpIdAndTypeOrderByCreIdDesc(Long empId, CredType type);
 
     List<Credentials> findByEmployee_EmpId(Long empId);
+
+    List<Credentials> findByEmployee_EmpIdIn(Collection<Long> empIds);
 
     @EntityGraph(attributePaths = {"employee", "employee.store", "employee.team", "employee.company"})
     java.util.Optional<Credentials> findByCreId(Long creId);
