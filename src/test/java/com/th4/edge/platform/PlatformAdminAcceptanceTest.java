@@ -149,10 +149,73 @@ class PlatformAdminAcceptanceTest {
     }
 
     @Test
+    void onboardingLedgerMustExposeOwnerContactAndServiceState() throws Exception {
+        Employee boss = employee("13900000003", "入驻台账负责人");
+        Company company = boss.getCompany();
+        company.setTitle("入驻台账测试企业");
+        company.setName("入驻台账测试企业");
+        company = companyRepository.save(company);
+        boss.setCompany(company);
+        boss = employeeRepository.save(boss);
+        Credentials bossCredential = credential(boss, "TenantPass123");
+        bossCredential.setLastTime(LocalDateTime.now().minusMinutes(5));
+        credentialsRepository.save(bossCredential);
+
+        String adminToken = platformLogin("13900000001", "AdminPass123");
+        JsonNode page = call("platform/tenant/onboarding/page", """
+                {"keyword":"入驻台账测试企业","current":1,"size":20}
+                """, adminToken);
+        assertThat(page.path("success").asBoolean()).isTrue();
+        JsonNode item = page.path("data").path("content").get(0);
+        assertThat(item.path("companyTitle").asText()).isEqualTo("入驻台账测试企业");
+        assertThat(item.path("ownerName").asText()).isEqualTo("入驻台账负责人");
+        assertThat(item.path("ownerPhoneMasked").asText()).isEqualTo("139****0003");
+        assertThat(item.path("lastLoginAt").asText()).isNotBlank();
+        assertThat(item.path("ownerCount").asInt()).isEqualTo(1);
+        assertThat(page.toString()).doesNotContain("13900000003");
+
+        JsonNode reveal = call("platform/tenant/onboarding/reveal", """
+                {"companyId":%d,"empId":%d,"reason":"首次入驻电话服务"}
+                """.formatted(company.getComId(), boss.getEmpId()), adminToken);
+        assertThat(reveal.path("success").asBoolean()).isTrue();
+        assertThat(reveal.path("data").path("phone").asText()).isEqualTo("13900000003");
+
+        JsonNode logs = call("platform/operation/page", """
+                {"companyId":%d,"action":"OwnerPhoneReveal","current":1,"size":20}
+                """.formatted(company.getComId()), adminToken);
+        assertThat(logs.path("data").path("content").size()).isGreaterThan(0);
+
+        JsonNode saved = call("platform/tenant/onboarding/service/save", """
+                {"companyId":%d,"status":"Contacted","contactResult":"已电话确认负责人","nextAction":"引导建立第一个客户","nextFollowAt":"2026-10-01T10:00:00","remark":"负责人可正常联系","reason":"首次入驻服务"}
+                """.formatted(company.getComId()), adminToken);
+        assertThat(saved.path("success").asBoolean()).isTrue();
+
+        JsonNode detail = call("platform/tenant/onboarding/info", """
+                {"companyId":%d}
+                """.formatted(company.getComId()), adminToken);
+        assertThat(detail.path("success").asBoolean()).isTrue();
+        assertThat(detail.path("data").path("serviceStatus").path("key").asText()).isEqualTo("Contacted");
+        assertThat(detail.path("data").path("serviceRecords").size()).isEqualTo(1);
+        assertThat(detail.path("data").path("owners").get(0).path("phoneMasked").asText()).isEqualTo("139****0003");
+
+        Employee tenant = employee("13900000004", "普通验收用户");
+        Company tenantCompany = tenant.getCompany();
+        tenantCompany.setTitle("越权验收企业");
+        tenantCompany.setName("越权验收企业");
+        tenantCompany = companyRepository.save(tenantCompany);
+        tenant.setCompany(tenantCompany);
+        tenant = employeeRepository.save(tenant);
+        credential(tenant, "TenantPass123");
+        String tenantToken = tenantLogin("13900000004", "TenantPass123");
+        JsonNode forbidden = call("platform/tenant/onboarding/page", "{}", tenantToken);
+        assertThat(forbidden.path("success").asBoolean()).isFalse();
+    }
+
+    @Test
     void platformTablesMustNotReferenceTenantTables() throws Exception {
         Set<String> referencedTables = new LinkedHashSet<>();
         try (Connection connection = dataSource.getConnection()) {
-            for (String table : new String[]{"db_platform_org", "db_platform_department", "db_platform_user", "db_platform_operation_log"}) {
+            for (String table : new String[]{"db_platform_org", "db_platform_department", "db_platform_user", "db_platform_operation_log", "db_platform_onboarding_service"}) {
                 try (ResultSet keys = connection.getMetaData().getImportedKeys(null, null, table)) {
                     while (keys.next()) referencedTables.add(keys.getString("PKTABLE_NAME").toLowerCase());
                 }

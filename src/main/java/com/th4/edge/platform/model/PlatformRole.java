@@ -14,18 +14,23 @@ public enum PlatformRole implements Enumerable<String> {
             PlatformPermission.DashboardRead, PlatformPermission.TenantRead,
             PlatformPermission.TenantSensitiveRead, PlatformPermission.SubscriptionRead,
             PlatformPermission.SubscriptionWrite, PlatformPermission.PlanRead,
-            PlatformPermission.AuditRead, PlatformPermission.SystemRead)),
+            PlatformPermission.AuditRead, PlatformPermission.SystemRead,
+            PlatformPermission.TenantOnboardingRead, PlatformPermission.TenantOnboardingSensitiveRead,
+            PlatformPermission.TenantOwnerPhoneReveal, PlatformPermission.TenantOnboardingServiceWrite)),
     CustomerSuccess("客户成功", EnumSet.of(
             PlatformPermission.DashboardRead, PlatformPermission.TenantRead,
             PlatformPermission.SubscriptionRead, PlatformPermission.SubscriptionWrite,
-            PlatformPermission.AuditSelfRead)),
+            PlatformPermission.AuditSelfRead, PlatformPermission.TenantOnboardingRead,
+            PlatformPermission.TenantOnboardingSensitiveRead, PlatformPermission.TenantOwnerPhoneReveal,
+            PlatformPermission.TenantOnboardingServiceWrite)),
     BillingOperator("财务运营", EnumSet.of(
             PlatformPermission.DashboardRead, PlatformPermission.TenantRead,
             PlatformPermission.SubscriptionRead, PlatformPermission.SubscriptionWrite,
             PlatformPermission.AuditRead)),
     GrowthOperator("市场增长", EnumSet.of(
             PlatformPermission.DashboardRead, PlatformPermission.TenantRead,
-            PlatformPermission.SubscriptionRead, PlatformPermission.PlanRead)),
+            PlatformPermission.SubscriptionRead, PlatformPermission.PlanRead,
+            PlatformPermission.TenantOnboardingRead)),
     SreOperator("平台可靠性", EnumSet.of(
             PlatformPermission.DashboardRead, PlatformPermission.TenantRead,
             PlatformPermission.SubscriptionRead, PlatformPermission.SystemRead,
@@ -33,7 +38,7 @@ public enum PlatformRole implements Enumerable<String> {
     Auditor("审计合规", EnumSet.of(
             PlatformPermission.DashboardRead, PlatformPermission.TenantRead,
             PlatformPermission.SubscriptionRead, PlatformPermission.AuditRead,
-            PlatformPermission.SystemRead));
+            PlatformPermission.SystemRead, PlatformPermission.TenantOnboardingRead));
 
     private final String name;
     private final Set<PlatformPermission> permissions;

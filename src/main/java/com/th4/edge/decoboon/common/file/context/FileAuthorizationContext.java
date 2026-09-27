@@ -187,6 +187,7 @@ public class FileAuthorizationContext {
                 for (DesignItem item : designItemRepository.findByDesign_DesignIdOrderBySortAsc(businessId)) {
                     add(allowed, item.getImages());
                 }
+                addAiRenderPaths(allowed, requestedPaths, design.getDesignId());
             }
             case Talk -> {
                 DataScope scopeData = dataScopeContext.resolve(employee);
@@ -309,6 +310,7 @@ public class FileAuthorizationContext {
                 for (DesignItem item : designItemRepository.findByDesign_DesignIdOrderBySortAsc(businessId)) {
                     add(allowed, item.getImages());
                 }
+                addAiRenderPaths(allowed, requestedPaths, design.getDesignId());
                 projectId = null;
             }
             case Feedback -> {
@@ -345,6 +347,24 @@ public class FileAuthorizationContext {
                 (customerId != null && access.getCustomer() != null && customerId.equals(access.getCustomer().getCustId()))
                         || (propertyId != null && access.getProject() != null && access.getProject().getProperty() != null
                         && propertyId.equals(access.getProject().getProperty().getPropertyId())));
+    }
+
+
+    private void addAiRenderPaths(Set<String> allowed, Set<String> requestedPaths, Long designId) {
+        if (requestedPaths == null || requestedPaths.isEmpty() || designId == null) {
+            return;
+        }
+        String prefix = "design/ai-render/" + designId + "/";
+        for (String path : requestedPaths) {
+            try {
+                String normalized = signatureContext.normalize(path);
+                if (normalized.startsWith(prefix)) {
+                    allowed.add(normalized);
+                }
+            } catch (DefinedException ignored) {
+                // 外部链接或非法路径不进入签名范围。
+            }
+        }
     }
 
     private Set<String> requested(Set<String> allowed, Set<String> requestedPaths) {

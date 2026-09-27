@@ -12,7 +12,9 @@ public enum PlatformAction implements Enumerable<String> {
     StoreAdjust("调整门店"),
     StatusChange("调整订阅状态"),
     Freeze("冻结订阅"),
-    Unfreeze("恢复订阅");
+    Unfreeze("恢复订阅"),
+    OwnerPhoneReveal("查看负责人手机号"),
+    OnboardingServiceUpdate("企业入驻服务更新");
 
     private final String name;
 
