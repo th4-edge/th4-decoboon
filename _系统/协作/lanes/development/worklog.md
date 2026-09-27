@@ -2585,5 +2585,6 @@ size=12 -> 返回 9 条（全量），响应 size 字段 = 12
 - 权限：新增 `TenantOnboardingRead`、`TenantOnboardingSensitiveRead`、`TenantOwnerPhoneReveal`、`TenantOnboardingServiceWrite`；OperationsManager 与 CustomerSuccess 可按范围揭示手机号，Growth 只读，Auditor 只读。
 - Admin：新增 `/onboarding` 企业入驻台账，支持企业/负责人登录筛选、手机号揭示与复制、详情、多负责人和服务记录；新增 Provider 真实 API 门禁至 14 条。
 - 验证：`mvn -q test` 366/366 PASS；`npm run type-check` PASS；`npm run build` PASS；发布包 `dist/releases/20260927-151555/th4-decoboon-1.0.0-build.tar.gz` SHA-256 `94b7914a0fde83fc379641f8ebbb5c2d315a5cd560c83785f905d323a97bd541`。
-- 状态：`implementation_and_self_test_done_pending_dev_merge_test_migration_acceptance`。
+- 状态：`deployed_prod_pending_platform_account_business_smoke_and_independent_acceptance`。
+- 发布：正式 tag `v2026.09.27.1`；后端生产目录 `/opt/decoboon/releases/20260927-155033`；Admin 生产目录 `/opt/decoboon-admin/releases/20260927-155500`；迁移 65/66 SUCCESS。
 - 风险/下一步：Admin 工程仍无独立 Git；生产必须按 `feature -> dev -> test -> prod`，执行迁移 66 并完成独立 acceptance；最近登录时间不等于最近活跃时间。
