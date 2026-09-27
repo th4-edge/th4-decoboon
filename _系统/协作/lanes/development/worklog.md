@@ -2588,3 +2588,12 @@ size=12 -> 返回 9 条（全量），响应 size 字段 = 12
 - 状态：`deployed_prod_pending_platform_account_business_smoke_and_independent_acceptance`。
 - 发布：正式 tag `v2026.09.27.1`；后端生产目录 `/opt/decoboon/releases/20260927-155033`；Admin 生产目录 `/opt/decoboon-admin/releases/20260927-155500`；迁移 65/66 SUCCESS。
 - 风险/下一步：Admin 工程仍无独立 Git；生产必须按 `feature -> dev -> test -> prod`，执行迁移 66 并完成独立 acceptance；最近登录时间不等于最近活跃时间。
+
+## 2026-09-27 生产热修：Admin 订阅调整“订阅不存在”
+
+- 根因：Admin 使用企业 `comId` 冒充订阅 `subId`；企业分页快照未返回真实 `subId`。
+- 修复：`PlatformTenant` 暴露真实 `subId`，Admin 订阅页提交真实订阅主键，无订阅企业禁用调整按钮。
+- 测试：`PlatformAdminAcceptanceTest` PASS；后端全量测试 PASS；Admin `npm run build` PASS。
+- 发布：后端 `/opt/decoboon/releases/20260927-161525`，Admin `/opt/decoboon-admin/releases/20260927-161700`。
+- 事故：`INC-20260927-9e5cc3140b` 已 fixed。
+

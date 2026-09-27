@@ -2,6 +2,7 @@
 
 ## Shared Outputs
 
+| development | 生产热修：Admin 订阅调整 subId 根因修复；后端/Admin 已部署，事故 INC-20260927-9e5cc3140b fixed | `docs/operations/releases/2026-09-27-admin-subscription-subid-hotfix.md` | acceptance,user,运维 | deployed_hotfix_pending_branch_sync_and_tag | 2026-09-27 |
 | development | 企业入驻与负责人服务台账 P0：平台企业/负责人手机号/注册与最近登录/服务记录；Admin 新增企业入驻台账，手机号揭示写审计；迁移 66 | `docs/product/2026-09-27-装得清小程序运营管理平台产品需求规格.md`、`docs/operations/releases/2026-09-27-企业入驻运营RC.md`、后端分支 `feature/operation-onboarding-console` | product-planning,acceptance,user,运维 | deployed_v2026.09.27.1_pending_platform_account_business_smoke | 2026-09-27 |
 | development | AI设计上下文与Prompt编排P0.4：后端上下文/Prompt快照、异步Seedream、效果图版本/确认/分页、字段权限收口、临时图OSS持久化；App新增AI生成页面与三处入口 | 后端 commits `88fb6d4,b422ded,4a54790,668570f,ebda263,c143bd5`、迁移63；App `feature/design-ai-generation-app` commits `f646468,5b19501`；交接 `_系统/协作/lanes/development/workspace/ai-design-context-prompt-p0-handoff.md` | product-planning,acceptance,user | implementation_and_self_test_done_pending_acceptance | 2026-09-26 |
 | development | AI 经营参谋 P0 基线版：`ai/brief/report` 汇总经营驾驶舱、财务与预警，返回业务/交付/资金事实和行动建议；规则生成器可替换大模型，生成调用归企业公共影子用量；Web 经营总览新增简报卡和来源抽屉 | 后端 `ai/brief/**`、`ProviderSecurityAcceptanceTest`；Web `views/ai/AiCenterView.vue`、`domains/ai/{api,model}.ts`；交接 `_系统/协作/lanes/development/workspace/ai-boss-brief-handoff.md` | product-planning,acceptance,user | acceptance_joint_verified_conditional | 2026-09-26 |
