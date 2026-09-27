@@ -17,6 +17,8 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
 
     List<Quote> findByCompany_ComIdOrderByQuoteIdDesc(Long comId);
 
+    long countByCompany_ComId(Long comId);
+
     List<Quote> findTop200ByCompany_ComIdOrderByQuoteIdDesc(Long comId);
 
     List<Quote> findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(Long comId, Long empId);

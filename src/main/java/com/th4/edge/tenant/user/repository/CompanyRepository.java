@@ -3,6 +3,7 @@ package com.th4.edge.tenant.user.repository;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.billing.configure.SubStatus;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -21,6 +22,23 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     boolean existsByTitle(String title);
 
+
+    @Query("""
+            select distinct c from Company c
+            where (:keyword is null
+                   or lower(c.title) like lower(concat('%', :keyword, '%'))
+                   or lower(c.name) like lower(concat('%', :keyword, '%'))
+                   or exists (select e from Employee e
+                              where e.company = c and e.role = :bossRole
+                                and (lower(e.name) like lower(concat('%', :keyword, '%'))
+                                     or e.telNo like concat('%', :keyword, '%'))))
+              and (:status is null
+                   or exists (select s from Subscription s where s.company = c and s.status = :status))
+            order by c.comId desc
+            """)
+    List<Company> findForOnboarding(@Param("keyword") String keyword,
+                                    @Param("status") SubStatus status,
+                                    @Param("bossRole") EmployeeRole bossRole);
 
     @Query("""
             select c from Company c

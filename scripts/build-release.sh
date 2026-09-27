@@ -44,6 +44,11 @@ for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   cp "${matches[@]}" "$RELEASE_DIR/"
 done
 
+# 66 企业入驻服务台账为本批必须迁移。
+REQUIRED_MIGRATION_66=(docs/design/migrations/66-*.sql)
+[[ -e "${REQUIRED_MIGRATION_66[0]}" ]] || { echo "[release] missing migration 66" >&2; exit 1; }
+cp "${REQUIRED_MIGRATION_66[@]}" "$RELEASE_DIR/"
+
 (
   cd "$RELEASE_DIR"
   shasum -a 256 "th4-decoboon-${VERSION}-build.tar.gz" > SHA256SUMS

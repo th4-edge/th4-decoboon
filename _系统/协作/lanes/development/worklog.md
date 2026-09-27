@@ -2576,3 +2576,14 @@ size=12 -> 返回 9 条（全量），响应 size 字段 = 12
 - W2 后端删除：新增 `catalog/item/delete`（Security，复用现有维护权限，企业取登录员工企业）。删除前检查设计分项/套餐/报价/任务/材料计划/库存/库存流水/供应商供货/供应商采购价引用，命中即 400 并建议停用；导入批次行采用**受控解除**（置空 `item_id` 并写 `errorCode=DELETED` 保留审计），主项目+类型明细同事务删除；重复删除稳定 404。
 - 验证：后端 `mvn -o -q test` 109 suites / 365 tests / 0 failures / 0 errors（同步 `ProviderSecurityAcceptanceTest` 路由计数 340→341，待 acceptance 复核）；删除能力真实 HTTP+DB 探针见 `workspace/catalog-delete-verify/probe-output.txt`（无引用删除成功、重复删除 404、被设计分项引用 400+停用建议、不存在 404、导入行解除关联 DELETED、撤销清理）；App `type-check`、`build:mp-weixin`、`check:subpackages` PASS（主包 729697 B、最大分包 540733 B、总包 2571475 B）。
 - 遗留：微信开发者工具自动化（miniprogram-automator）在本机无法附着（IDE 服务端口未开启，`reLaunch` 超时），H5 登录仅支持微信手机号快捷登录，无法用脚本注入 BOSS 会话，故小屏视觉确认改由**编译产物结构证据**给出，真机/DevTools 视觉复验列为 acceptance 项。
+
+## 2026-09-27 企业入驻与负责人服务台账 P0（运营管理端）
+
+- 依据：`PRODUCT-OPS-20260927-MP01`、`REQ-BIZ-20260927-001`、用户 2026-09-27 明确要求：前期运营人员必须知道哪些企业入驻、负责人手机号、注册时间和最近登录时间。
+- 后端：新增 `platform/tenant/onboarding/{page,info,reveal,service/save}` 四条平台 Provider；企业注册时间取 `Company.createTime`，负责人姓名/手机号取 Active/历史 `Boss` 的 `Employee`，最近登录取该负责人关联 `Credentials.lastTime` 最大值；列表只返回手机号掩码，完整号码经原因确认后揭示并写 `OwnerPhoneReveal` 审计。
+- 服务记录：新增平台独立表 `db_platform_onboarding_service` 和迁移 66；记录状态、沟通结果、下一步、下次跟进和备注，只属于平台运营，不写回租户业务状态。
+- 权限：新增 `TenantOnboardingRead`、`TenantOnboardingSensitiveRead`、`TenantOwnerPhoneReveal`、`TenantOnboardingServiceWrite`；OperationsManager 与 CustomerSuccess 可按范围揭示手机号，Growth 只读，Auditor 只读。
+- Admin：新增 `/onboarding` 企业入驻台账，支持企业/负责人登录筛选、手机号揭示与复制、详情、多负责人和服务记录；新增 Provider 真实 API 门禁至 14 条。
+- 验证：`mvn -q test` 366/366 PASS；`npm run type-check` PASS；`npm run build` PASS；发布包 `dist/releases/20260927-151555/th4-decoboon-1.0.0-build.tar.gz` SHA-256 `94b7914a0fde83fc379641f8ebbb5c2d315a5cd560c83785f905d323a97bd541`。
+- 状态：`implementation_and_self_test_done_pending_dev_merge_test_migration_acceptance`。
+- 风险/下一步：Admin 工程仍无独立 Git；生产必须按 `feature -> dev -> test -> prod`，执行迁移 66 并完成独立 acceptance；最近登录时间不等于最近活跃时间。

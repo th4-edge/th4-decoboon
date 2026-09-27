@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     long countByCompany_ComId(Long comId);
 
     List<Employee> findByCompany_ComId(Long comId);
+
+    List<Employee> findByCompany_ComIdInAndRoleOrderByNameAsc(Collection<Long> comIds, EmployeeRole role);
 
     Page<Employee> findByCompany_ComId(Long comId, Pageable pageable);
 
