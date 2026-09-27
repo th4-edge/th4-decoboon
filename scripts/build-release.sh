@@ -44,8 +44,16 @@ for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   cp "${matches[@]}" "$RELEASE_DIR/"
 done
 
-# 本分支新增企业入驻服务台账 66；64/65 由并行官网线索和 AI 点数工作流合并后统一纳入范围。
-cp docs/design/migrations/66-*.sql "$RELEASE_DIR/"
+# 并行工作流迁移按实际存在文件复制：64 官网线索、65 AI 点数、66 企业入驻服务台账。
+# 本功能分支必须包含 66；64/65 合并到 dev 后由同一脚本自动带入。
+REQUIRED_MIGRATION_66=(docs/design/migrations/66-*.sql)
+[[ -e "${REQUIRED_MIGRATION_66[0]}" ]] || { echo "[release] missing migration 66" >&2; exit 1; }
+for number in 64 65 66; do
+  matches=(docs/design/migrations/"${number}"-*.sql)
+  if [ -e "${matches[0]}" ]; then
+    cp "${matches[@]}" "$RELEASE_DIR/"
+  fi
+done
 
 (
   cd "$RELEASE_DIR"
