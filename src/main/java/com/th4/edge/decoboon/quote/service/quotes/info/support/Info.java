@@ -45,7 +45,7 @@ import org.springframework.stereotype.Service;
                         "pricingMode", "materialPrice", "manualPrice", "formula", "craft", "criterion"}),
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
-                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "role",
+                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "quantityFormula", "role",
                         "differenceType", "differenceStatus", "included", "discountAmount", "components", "craft", "sort"}),
         @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteComponent.class,
                 properties = {"type", "name", "saleAmount", "costAmount", "formula", "sort"}),

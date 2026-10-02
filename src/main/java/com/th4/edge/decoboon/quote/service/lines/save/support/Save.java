@@ -34,7 +34,7 @@ import java.math.BigDecimal;
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "quote", "space", "catalogItem", "role", "included", "discountAmount",
                         "differenceType", "differenceStatus", "components", "type", "category", "name", "brand", "spec", "unit", "quantity",
-                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "formula", "sort"}),
+                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "formula", "quantityFormula", "sort"}),
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "mode", "status", "area", "subtotal", "discount", "taxRate",
                         "taxAmount", "amount", "submittedAt", "rejectedAt", "acceptedAt", "convertedAt",

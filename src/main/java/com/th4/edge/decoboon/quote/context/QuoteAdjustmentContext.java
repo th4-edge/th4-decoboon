@@ -178,7 +178,7 @@ public class QuoteAdjustmentContext {
         }
     }
 
-    private void recalculate(Quote quote) {
+    public void recalculate(Quote quote) {
         List<QuoteLine> lines = lineRepository.findByQuote(quote);
         BigDecimal subtotal = lines.stream()
                 .filter(line -> line.getIncluded() == null || line.getIncluded())

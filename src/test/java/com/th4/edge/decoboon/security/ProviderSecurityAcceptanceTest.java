@@ -127,6 +127,11 @@ class ProviderSecurityAcceptanceTest {
         assertThat(routes).hasSize(364);
         assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(351);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
+        // 2026-10-05 Web 报价公式引擎新增 1 条（quote/lines/batchsave，protected）。
+        // => 总数为 365（public 13 + protected 352）。
+        assertThat(routes).hasSize(365);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(352);
+        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
     @Test

@@ -235,6 +235,10 @@ public class QuoteLine extends AuditModel {
     @Column(length = 256)
     private String formula;
 
+    @Note("工程量公式（Web Excel 式报价）")
+    @Column(name = "quantity_formula", length = 512)
+    private String quantityFormula;
+
     @Note("施工工艺快照（生成报价时从设计分项/材料库冻结）")
     @Lob
     private String craft;
@@ -313,6 +317,8 @@ public class QuoteLine extends AuditModel {
     public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
+    public String getQuantityFormula() { return quantityFormula; }
+    public void setQuantityFormula(String quantityFormula) { this.quantityFormula = quantityFormula; }
     public String getCraft() { return craft; }
     public void setCraft(String craft) { this.craft = craft; }
     public Integer getSort() { return sort; }

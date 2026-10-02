@@ -30,7 +30,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 @Properties(allow = {
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
-                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "role",
+                        "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "quantityFormula", "role",
                         "differenceType", "differenceStatus", "included", "discountAmount", "components", "craft", "sort"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter"}),
