@@ -47,7 +47,7 @@ public class QuoteWorkbookFileContext {
             int rowIndex = 1;
             for (QuoteLine line : lines) {
                 Row row = sheet.createRow(rowIndex++);
-                row.createCell(0).setCellValue(line.getItemId());
+                row.createCell(0).setCellValue(String.valueOf(line.getItemId()));
                 row.createCell(1).setCellValue(line.getSpace() == null || line.getSpace().getName() == null ? "综合项目" : line.getSpace().getName());
                 row.createCell(2).setCellValue(nvl(line.getName()));
                 row.createCell(3).setCellValue(join(line.getBrand(), line.getSpec()));
