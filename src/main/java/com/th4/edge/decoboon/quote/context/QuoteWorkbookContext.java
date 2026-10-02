@@ -82,12 +82,21 @@ public class QuoteWorkbookContext {
                 throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于零"));
             }
             target.setQuantity(quantity.setScale(3, RoundingMode.HALF_UP));
-            if (change.getQuantityFormula() != null) {
-                target.setQuantityFormula(change.getQuantityFormula().isBlank() ? null : change.getQuantityFormula().trim());
+            boolean hasFormula = change.getQuantityFormula() != null && !change.getQuantityFormula().isBlank();
+            if (hasFormula) {
+                target.setQuantityFormula(change.getQuantityFormula().trim());
+            } else if (change.getQuantity() != null && change.getQuantity().signum() > 0) {
+                target.setQuantityFormula(null);
             }
-            if (change.getMaterialPrice() != null) target.setMaterialPrice(change.getMaterialPrice());
-            if (change.getManualPrice() != null) target.setManualPrice(change.getManualPrice());
-            if (change.getFixedTotalPrice() != null) target.setFixedTotalPrice(change.getFixedTotalPrice());
+            if (change.getMaterialPrice() != null && change.getMaterialPrice().signum() > 0) {
+                target.setMaterialPrice(change.getMaterialPrice());
+            }
+            if (change.getManualPrice() != null && change.getManualPrice().signum() > 0) {
+                target.setManualPrice(change.getManualPrice());
+            }
+            if (change.getFixedTotalPrice() != null && change.getFixedTotalPrice().signum() > 0) {
+                target.setFixedTotalPrice(change.getFixedTotalPrice());
+            }
             recalculateLine(target, unitCost);
             lineRepository.save(target);
         }
