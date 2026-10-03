@@ -81,7 +81,7 @@ public class AiUsageCall extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "allocation_type", length = 24, nullable = false)
     @Note("门店归属方式")
-    private AiStoreAllocation allocationType = AiStoreAllocation.EnterprisePublic;
+    private AiStoreAllocation allocationType;
 
     @Note("门店归属规则版本")
     @Column(name = "allocation_rule_version", length = 24)

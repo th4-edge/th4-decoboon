@@ -17,7 +17,11 @@ public enum PlatformPermission implements Enumerable<String> {
     AuditRead("审计读取"),
     AuditSelfRead("本人审计读取"),
     SystemRead("系统状态读取"),
-    UserManage("平台用户管理");
+    UserManage("平台用户管理"),
+    TenantOnboardingRead("企业入驻台账读取"),
+    TenantOnboardingSensitiveRead("企业入驻敏感字段读取"),
+    TenantOwnerPhoneReveal("企业负责人手机号揭示"),
+    TenantOnboardingServiceWrite("企业入驻服务写入");
 
     private final String name;
     PlatformPermission(String name) { this.name = name; }

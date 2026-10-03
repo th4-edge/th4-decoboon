@@ -1,0 +1,40 @@
+{
+  "request": "REQ-20260926-AI-USAGE-BRIEF-ACCEPTANCE",
+  "results": [
+    {
+      "id": "route-and-boss-capability",
+      "status": "PASS"
+    },
+    {
+      "id": "usage-filters-and-pagination",
+      "status": "PASS"
+    },
+    {
+      "id": "no-platform-cost-or-prompt-ui",
+      "status": "PASS"
+    },
+    {
+      "id": "manual-brief-generation-only",
+      "status": "PASS",
+      "detail": "onMounted 不得自动调用 loadBrief；必须由 BOSS 点击生成"
+    },
+    {
+      "id": "pre-generation-estimated-points",
+      "status": "PASS",
+      "detail": "生成前必须展示预计资源/影子点数"
+    },
+    {
+      "id": "source-drawer-has-source-records",
+      "status": "PASS",
+      "detail": "来源抽屉必须展示 Provider/对象/版本/更新时间"
+    },
+    {
+      "id": "repeat-click-guard",
+      "status": "PASS"
+    },
+    {
+      "id": "brief-results-do-not-show-pseudo-margin",
+      "status": "PASS"
+    }
+  ]
+}

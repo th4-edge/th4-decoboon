@@ -85,6 +85,9 @@ public class AiUsageContext {
         if (businessStore != null) {
             request.setAllocationStore(businessStore);
             request.setAllocationType(AiStoreAllocation.BusinessStore);
+        } else if (request.getAllocationType() == AiStoreAllocation.EnterprisePublic) {
+            request.setAllocationStore(null);
+            request.setAllocationType(AiStoreAllocation.EnterprisePublic);
         } else if (employeeStore != null) {
             request.setAllocationStore(employeeStore);
             request.setAllocationType(AiStoreAllocation.EmployeeStore);

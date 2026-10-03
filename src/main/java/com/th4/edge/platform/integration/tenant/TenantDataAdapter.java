@@ -7,7 +7,14 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.platform.model.FunnelMetric;
 import com.th4.edge.platform.model.PlatformAction;
 import com.th4.edge.platform.model.PlatformMetrics;
+import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
+import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.platform.model.PlatformOperationLog;
+import com.th4.edge.platform.model.PlatformTenantOnboarding;
+import com.th4.edge.platform.model.PlatformTenantOwner;
+import com.th4.edge.platform.model.PlatformTenantOwnerContact;
 import com.th4.edge.platform.model.PlatformPlan;
 import com.th4.edge.platform.model.PlatformSubscription;
 import com.th4.edge.platform.model.PlatformTenant;
@@ -25,8 +32,13 @@ import com.th4.edge.tenant.billing.repository.OrderRepository;
 import com.th4.edge.tenant.billing.repository.PlanRepository;
 import com.th4.edge.tenant.billing.repository.PlanVersionRepository;
 import com.th4.edge.tenant.billing.repository.SubscriptionRepository;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
+import com.th4.edge.tenant.user.model.Credentials;
+import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.CompanyRepository;
+import com.th4.edge.tenant.user.repository.CredentialsRepository;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import com.th4.edge.tenant.user.repository.StoreRepository;
 import org.springframework.data.domain.Page;
@@ -36,7 +48,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +68,11 @@ public class TenantDataAdapter {
     private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
     private final StoreRepository storeRepository;
+    private final CredentialsRepository credentialsRepository;
+    private final CustomerRepository customerRepository;
+    private final QuoteRepository quoteRepository;
+    private final ProjectContractRepository projectContractRepository;
+    private final ProjectRepository projectRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final PlanRepository planRepository;
     private final PlanVersionRepository planVersionRepository;
@@ -64,6 +83,11 @@ public class TenantDataAdapter {
     public TenantDataAdapter(CompanyRepository companyRepository,
                              EmployeeRepository employeeRepository,
                              StoreRepository storeRepository,
+                             CredentialsRepository credentialsRepository,
+                             CustomerRepository customerRepository,
+                             QuoteRepository quoteRepository,
+                             ProjectContractRepository projectContractRepository,
+                             ProjectRepository projectRepository,
                              SubscriptionRepository subscriptionRepository,
                              PlanRepository planRepository,
                              PlanVersionRepository planVersionRepository,
@@ -73,6 +97,11 @@ public class TenantDataAdapter {
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
         this.storeRepository = storeRepository;
+        this.credentialsRepository = credentialsRepository;
+        this.customerRepository = customerRepository;
+        this.quoteRepository = quoteRepository;
+        this.projectContractRepository = projectContractRepository;
+        this.projectRepository = projectRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.planRepository = planRepository;
         this.planVersionRepository = planVersionRepository;
@@ -91,6 +120,49 @@ public class TenantDataAdapter {
         Company company = companyRepository.findByComId(comId);
         if (company == null) throw new DefinedException(new DefaultErrorCode("404", "企业不存在"));
         return tenant(company);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PlatformTenantOnboarding> onboarding(String keyword, SubStatus status) {
+        String normalized = keyword == null || keyword.isBlank() ? null : keyword.trim();
+        List<Company> companies = companyRepository.findForOnboarding(normalized, status, EmployeeRole.Boss);
+        if (companies.isEmpty()) return List.of();
+        List<Long> companyIds = companies.stream().map(Company::getComId).toList();
+        List<Employee> owners = employeeRepository
+                .findByCompany_ComIdInAndRoleOrderByNameAsc(companyIds, EmployeeRole.Boss);
+        List<Long> empIds = owners.stream().map(Employee::getEmpId).toList();
+        List<Credentials> credentials = empIds.isEmpty() ? List.of()
+                : credentialsRepository.findByEmployee_EmpIdIn(empIds);
+        return companies.stream().map(company -> onboarding(company, owners, credentials)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public PlatformTenantOnboarding onboarding(Long comId) {
+        Company company = companyRepository.findByComId(comId);
+        if (company == null) throw new DefinedException(new DefaultErrorCode("404", "企业不存在"));
+        List<Employee> owners = employeeRepository
+                .findByCompany_ComIdInAndRoleOrderByNameAsc(List.of(comId), EmployeeRole.Boss);
+        List<Long> empIds = owners.stream().map(Employee::getEmpId).toList();
+        List<Credentials> credentials = empIds.isEmpty() ? List.of()
+                : credentialsRepository.findByEmployee_EmpIdIn(empIds);
+        return onboarding(company, owners, credentials);
+    }
+
+    @Transactional(readOnly = true)
+    public PlatformTenantOwnerContact ownerContact(Long comId, Long empId) {
+        Employee owner = employeeRepository.findByEmpIdAndCompany_ComId(empId, comId);
+        if (owner == null || owner.getRole() != EmployeeRole.Boss) {
+            throw new DefinedException(new DefaultErrorCode("404", "企业负责人不存在或无权访问"));
+        }
+        if (owner.getTelNo() == null || owner.getTelNo().isBlank()) {
+            throw new DefinedException(new DefaultErrorCode("400", "企业负责人未维护手机号"));
+        }
+        PlatformTenantOwnerContact contact = new PlatformTenantOwnerContact();
+        contact.setCompanyId(comId);
+        contact.setEmpId(owner.getEmpId());
+        contact.setOwnerName(owner.getName());
+        contact.setPhone(owner.getTelNo());
+        return contact;
     }
 
     @Transactional(readOnly = true)
@@ -224,6 +296,149 @@ public class TenantDataAdapter {
         return subscription(saved);
     }
 
+    private PlatformTenantOnboarding onboarding(Company company,
+                                                  List<Employee> allOwners,
+                                                  List<Credentials> allCredentials) {
+        List<Employee> owners = allOwners.stream()
+                .filter(owner -> company.getComId().equals(owner.getCompany() == null ? null : owner.getCompany().getComId()))
+                .toList();
+        List<Long> ownerIds = owners.stream().map(Employee::getEmpId).toList();
+        List<Credentials> credentials = allCredentials.stream()
+                .filter(item -> item.getEmployee() != null && ownerIds.contains(item.getEmployee().getEmpId()))
+                .toList();
+        Map<Long, List<Credentials>> credentialsByOwner = new LinkedHashMap<>();
+        for (Credentials credential : credentials) {
+            credentialsByOwner.computeIfAbsent(credential.getEmployee().getEmpId(), key -> new ArrayList<>()).add(credential);
+        }
+
+        List<Employee> activeOwners = owners.stream()
+                .filter(owner -> owner.getStatus() == EmployeeStatus.Active)
+                .sorted((left, right) -> {
+                    LocalDateTime leftLogin = lastLogin(credentialsByOwner.get(left.getEmpId()));
+                    LocalDateTime rightLogin = lastLogin(credentialsByOwner.get(right.getEmpId()));
+                    if (leftLogin != null && rightLogin != null) {
+                        int compared = rightLogin.compareTo(leftLogin);
+                        if (compared != 0) return compared;
+                    } else if (leftLogin != null) {
+                        return -1;
+                    } else if (rightLogin != null) {
+                        return 1;
+                    }
+                    return Long.compare(right.getEmpId(), left.getEmpId());
+                })
+                .toList();
+        Employee primary = activeOwners.isEmpty() ? null : activeOwners.get(0);
+
+        PlatformTenantOnboarding value = new PlatformTenantOnboarding();
+        Subscription subscription = subscriptionContext.current(company);
+        value.setComId(company.getComId());
+        value.setCompanyTitle(company.getTitle());
+        value.setCompanyName(company.getName());
+        value.setCompanySize(company.getSize() == null ? null : company.getSize().name());
+        value.setCompanyAddress(company.getAddr());
+        value.setCompanyCreateTime(company.getCreateTime());
+        value.setPlanName(planName(subscription));
+        value.setSubscriptionStatus(subscription == null || subscription.getStatus() == null ? "None" : subscription.getStatus().name());
+        value.setRemainingDays(subscription == null ? null : subscriptionContext.remainingDays(subscription));
+        value.setOwnerCount(activeOwners.size());
+        value.setBusinessStage(businessStage(company.getComId()));
+        value.setOwners(owners.stream().map(owner -> owner(owner, credentialsByOwner.get(owner.getEmpId()))).toList());
+        if (primary != null) {
+            List<Credentials> primaryCredentials = credentialsByOwner.getOrDefault(primary.getEmpId(), List.of());
+            LocalDateTime lastLogin = lastLogin(primaryCredentials);
+            value.setOwnerEmpId(primary.getEmpId());
+            value.setOwnerName(primary.getName());
+            value.setOwnerPhoneMasked(mask(primary.getTelNo()));
+            value.setOwnerStatus(primary.getStatus() == null ? null : primary.getStatus().name());
+            value.setOwnerJoinedAt(primary.getJoinedAt() == null
+                    ? dateTime(primary.getCreateTime()) : primary.getJoinedAt());
+            value.setAccountCreateTime(firstCredentialCreateTime(primaryCredentials));
+            value.setLastLoginAt(lastLogin);
+            value.setLastLoginType(lastLoginType(primaryCredentials));
+            value.setDaysSinceLastLogin(lastLogin == null ? null
+                    : Math.max(0L, ChronoUnit.DAYS.between(lastLogin.toLocalDate(), LocalDateTime.now().toLocalDate())));
+            value.setLoginStatus(loginStatus(lastLogin));
+        } else {
+            value.setOwnerPhoneMasked("");
+            value.setLoginStatus("未维护负责人");
+        }
+        value.setNextAction(defaultNextAction(value));
+        return value;
+    }
+
+    private PlatformTenantOwner owner(Employee owner, List<Credentials> credentials) {
+        PlatformTenantOwner item = new PlatformTenantOwner();
+        item.setEmpId(owner.getEmpId());
+        item.setName(owner.getName());
+        item.setPhoneMasked(mask(owner.getTelNo()));
+        item.setStatus(owner.getStatus() == null ? null : owner.getStatus().name());
+        item.setJoinedAt(owner.getJoinedAt() == null ? dateTime(owner.getCreateTime()) : owner.getJoinedAt());
+        item.setAccountCreateTime(firstCredentialCreateTime(credentials));
+        item.setLastLoginAt(lastLogin(credentials));
+        item.setLastLoginType(lastLoginType(credentials));
+        return item;
+    }
+
+    private String businessStage(Long comId) {
+        if (customerRepository.countByCompany_ComId(comId) == 0) return "未建客户";
+        if (quoteRepository.countByCompany_ComId(comId) == 0) return "已建客户";
+        if (projectContractRepository.countByCompany_ComId(comId) == 0) return "已报价";
+        if (projectRepository.countByCompany_ComId(comId) == 0) return "已签约";
+        return "已立项";
+    }
+
+    private String defaultNextAction(PlatformTenantOnboarding value) {
+        if ("从未登录".equals(value.getLoginStatus())) return "首次联系并确认登录方式";
+        if (value.getDaysSinceLastLogin() != null && value.getDaysSinceLastLogin() >= 30) return "30日未登录，核实使用问题";
+        if (value.getOwnerCount() == 0) return "确认负责人并补全联系信息";
+        return switch (value.getBusinessStage()) {
+            case "未建客户" -> "引导建立第一个客户和房屋";
+            case "已建客户" -> "引导完成首次报价";
+            case "已报价" -> "跟进报价决策和签约";
+            case "已签约" -> "确认项目立项和施工计划";
+            default -> "回访业务使用情况";
+        };
+    }
+
+    private LocalDateTime lastLogin(List<Credentials> credentials) {
+        if (credentials == null) return null;
+        return credentials.stream().map(Credentials::getLastTime).filter(item -> item != null)
+                .max(LocalDateTime::compareTo).orElse(null);
+    }
+
+    private LocalDateTime firstCredentialCreateTime(List<Credentials> credentials) {
+        if (credentials == null) return null;
+        return credentials.stream().map(item -> dateTime(item.getCreateTime())).filter(item -> item != null)
+                .min(LocalDateTime::compareTo).orElse(null);
+    }
+
+    private String lastLoginType(List<Credentials> credentials) {
+        if (credentials == null) return null;
+        return credentials.stream().filter(item -> item.getLastTime() != null)
+                .max(Comparator.comparing(Credentials::getLastTime))
+                .map(item -> item.getType() == null ? null : item.getType().name()).orElse(null);
+    }
+
+    private String loginStatus(LocalDateTime lastLogin) {
+        if (lastLogin == null) return "从未登录";
+        long days = Math.max(0L, ChronoUnit.DAYS.between(lastLogin.toLocalDate(), LocalDateTime.now().toLocalDate()));
+        if (days >= 30) return "30日未登录";
+        if (days >= 7) return "7日未登录";
+        if (days == 0) return "今日已登录";
+        return "7日内登录";
+    }
+
+    private String mask(String phone) {
+        if (phone == null || phone.isBlank()) return "";
+        String normalized = phone.trim();
+        if (normalized.length() < 7) return "******";
+        return normalized.substring(0, 3) + "****" + normalized.substring(normalized.length() - 4);
+    }
+
+    private LocalDateTime dateTime(DateTime value) {
+        return value == null ? null : value.toLocalDateTime();
+    }
+
     private PlatformTenant tenant(Company company) {
         Subscription subscription = subscriptionContext.current(company);
         PlatformTenant value = new PlatformTenant();
@@ -236,6 +451,7 @@ public class TenantDataAdapter {
         value.setAddr(company.getAddr());
         value.setCreateTime(company.getCreateTime());
         value.setEnableStore(company.getSetting() != null ? company.getSetting().getEnableStore() : false);
+        value.setSubId(subscription == null ? null : subscription.getSubId());
         value.setPlanName(planName(subscription));
         value.setSubscriptionStatus(subscription == null || subscription.getStatus() == null ? "None" : subscription.getStatus().name());
         value.setServiceEndTime(subscription == null ? null : subscription.getServiceEndTime());

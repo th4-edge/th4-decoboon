@@ -31,5 +31,7 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
 
     List<ProjectContract> findByCompany_ComIdOrderByContractIdDesc(Long comId);
 
+    long countByCompany_ComId(Long comId);
+
     List<ProjectContract> findTop200ByCompany_ComIdOrderByContractIdDesc(Long comId);
 }

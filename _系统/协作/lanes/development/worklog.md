@@ -68,6 +68,18 @@
 - 验证：后端全量 `mvn -o -q test` PASS；新增序列化白名单契约 PASS；Provider 路由 343（public 12 + protected 331）；交接见 `_系统/协作/lanes/development/workspace/ai-usage-shadow-metering-handoff.md`。
 - 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。
 
+## 2026-09-26 A0.2 AI资源点数账本
+
+- 已取得 `ANS-BIZ-20260926-004` / `DEC-012` / `BR-011~012`，正式点数账本机制可开发。
+- 新增企业资源账户、append-only 点数账本、不可变费率版本和预占/结算/释放/返还/调整上下文。
+- `ai.billing.formal-enabled` 默认关闭；真实费率、套餐点数、资源包价格和货币扣款继续暂缓。
+- 迁移：`docs/design/migrations/65-AI资源点数账本.sql`。
+- 新增 BOSS 只读账户摘要 `ai/account/report`，Web AI经营助手展示可用、预占、已消耗、返还和最近账本。
+- 验证：编译 PASS；`AiBillingContextTest` 4 tests PASS、`AiBillingReportContextTest` 2 tests PASS；Provider Security 349 routes PASS；Web type-check PASS。
+- 同时启动 A2 AI 谈单官 PRD：`docs/product/2026-09-26-AI谈单官P0产品需求规格.md`。
+- 交接：`_系统/协作/lanes/development/workspace/ai-point-ledger-a02-handoff.md`。
+- 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。
+
 ## 2026-09-26 AI设计生成效果图持久化与App签名
 
 - 新增 `DesignRenderAssetContext`：模型生成的临时图片先下载并写入私有OSS `design/ai-render/{designId}/`，版本保存对象键，避免24小时后失效。
@@ -135,6 +147,26 @@
 - 验证：`mvn -q -DskipTests compile` PASS；`mvn -q -DskipTests package` PASS；独立临时自测验证 High 置信度、空间/诉求进入Prompt、PII不泄漏、无CAD/户型图阻断。
 - 待 acceptance：`ProviderSecurityAcceptanceTest` 路由总数需 341→342；`scripts/build-release.sh` 迁移范围需在发布 lane 同步上调到 63。
 - 状态：`implementation_done_self_tested_pending_acceptance`。P0.2异步模型调用尚未实现。
+## 2026-09-26 AI 经营参谋 P0 基线版
+
+- 后端新增 `ai/brief/report`：复用经营驾驶舱、财务汇总和经营预警，返回摘要、业务/交付/资金事实、行动建议、成本状态和影子用量；仅 BOSS 可读。
+- 新增可替换 `AiBriefGenerator`，首版 `BaselineAiBriefGenerator` 保证大模型未接入时链路可运行；不生成净利润、预测收入或无依据因果。
+- 每次生成写入 `AiUsageContext`，经营简报显式归入企业公共；不自动修改业务数据。
+- Web 新增 AI 经营简报卡、行动下钻和来源抽屉；手动生成，成本不完整时不展示伪毛利。
+- 验证：后端定向测试与 Provider 安全回归 PASS，路由 344（public 12 + protected 332）；Web type-check/build PASS。
+- 交接：`_系统/协作/lanes/development/workspace/ai-boss-brief-handoff.md`。
+- 状态：`implementation_and_self_test_done_pending_joint_test_and_acceptance`。
+
+## 2026-09-26 AI 调用与企业门店影子用量底账
+
+- 新增 `ai` 后端域：`AiUsageCall` 底账、调用状态/影子账务状态/门店归属枚举、幂等记录 Context、企业/门店/能力聚合报表 Context。
+- 新增受保护 Provider `ai/usage/report`、`ai/usage/page`，P0 仅 BOSS 可读；调用明细不返回企业、幂等键、请求标识和平台成本。
+- 门店归属：业务对象门店优先，执行员工门店兜底，无法归属进入企业公共且不静默归总店。
+- 影子点数：P0 使用 `shadow-direct-v1` 一比一占位，只统计不扣订阅天数、不出账单。
+- 迁移：`docs/design/migrations/64-AI调用与影子用量底账.sql`；发布包迁移范围同步到 24–64。
+- Web：独立仓库基线提交 `970049c`，功能分支 `feature/ai-usage-statistics`；从组织效能进入 AI 资源统计，覆盖筛选、趋势、能力、门店/企业公共和明细；`npm run type-check`、`npm run build` PASS。
+- 验证：后端全量 `mvn -o -q test` PASS；新增序列化白名单契约 PASS；Provider 路由 343（public 12 + protected 331）；交接见 `_系统/协作/lanes/development/workspace/ai-usage-shadow-metering-handoff.md`。
+- 状态：`implementation_and_self_test_done_pending_acceptance_and_target_migration`。
 
 ## 2026-09-26 工地相册企业用户访问修复
 
@@ -2613,391 +2645,23 @@ size=12 -> 返回 9 条（全量），响应 size 字段 = 12
 - 验证：后端 `mvn -o -q test` 109 suites / 365 tests / 0 failures / 0 errors（同步 `ProviderSecurityAcceptanceTest` 路由计数 340→341，待 acceptance 复核）；删除能力真实 HTTP+DB 探针见 `workspace/catalog-delete-verify/probe-output.txt`（无引用删除成功、重复删除 404、被设计分项引用 400+停用建议、不存在 404、导入行解除关联 DELETED、撤销清理）；App `type-check`、`build:mp-weixin`、`check:subpackages` PASS（主包 729697 B、最大分包 540733 B、总包 2571475 B）。
 - 遗留：微信开发者工具自动化（miniprogram-automator）在本机无法附着（IDE 服务端口未开启，`reLaunch` 超时），H5 登录仅支持微信手机号快捷登录，无法用脚本注入 BOSS 会话，故小屏视觉确认改由**编译产物结构证据**给出，真机/DevTools 视觉复验列为 acceptance 项。
 
-## 2026-09-26 AI 设计生成入口 · 微信开发者工具验证
+## 2026-09-27 企业入驻与负责人服务台账 P0（运营管理端）
+
+- 依据：`PRODUCT-OPS-20260927-MP01`、`REQ-BIZ-20260927-001`、用户 2026-09-27 明确要求：前期运营人员必须知道哪些企业入驻、负责人手机号、注册时间和最近登录时间。
+- 后端：新增 `platform/tenant/onboarding/{page,info,reveal,service/save}` 四条平台 Provider；企业注册时间取 `Company.createTime`，负责人姓名/手机号取 Active/历史 `Boss` 的 `Employee`，最近登录取该负责人关联 `Credentials.lastTime` 最大值；列表只返回手机号掩码，完整号码经原因确认后揭示并写 `OwnerPhoneReveal` 审计。
+- 服务记录：新增平台独立表 `db_platform_onboarding_service` 和迁移 66；记录状态、沟通结果、下一步、下次跟进和备注，只属于平台运营，不写回租户业务状态。
+- 权限：新增 `TenantOnboardingRead`、`TenantOnboardingSensitiveRead`、`TenantOwnerPhoneReveal`、`TenantOnboardingServiceWrite`；OperationsManager 与 CustomerSuccess 可按范围揭示手机号，Growth 只读，Auditor 只读。
+- Admin：新增 `/onboarding` 企业入驻台账，支持企业/负责人登录筛选、手机号揭示与复制、详情、多负责人和服务记录；新增 Provider 真实 API 门禁至 14 条。
+- 验证：`mvn -q test` 366/366 PASS；`npm run type-check` PASS；`npm run build` PASS；发布包 `dist/releases/20260927-151555/th4-decoboon-1.0.0-build.tar.gz` SHA-256 `94b7914a0fde83fc379641f8ebbb5c2d315a5cd560c83785f905d323a97bd541`。
+- 状态：`deployed_prod_pending_platform_account_business_smoke_and_independent_acceptance`。
+- 发布：正式 tag `v2026.09.27.1`；后端生产目录 `/opt/decoboon/releases/20260927-155033`；Admin 生产目录 `/opt/decoboon-admin/releases/20260927-155500`；迁移 65/66 SUCCESS。
+- 风险/下一步：Admin 工程仍无独立 Git；生产必须按 `feature -> dev -> test -> prod`，执行迁移 66 并完成独立 acceptance；最近登录时间不等于最近活跃时间。
+
+## 2026-09-27 生产热修：Admin 订阅调整“订阅不存在”
+
+- 根因：Admin 使用企业 `comId` 冒充订阅 `subId`；企业分页快照未返回真实 `subId`。
+- 修复：`PlatformTenant` 暴露真实 `subId`，Admin 订阅页提交真实订阅主键，无订阅企业禁用调整按钮。
+- 测试：`PlatformAdminAcceptanceTest` PASS；后端全量测试 PASS；Admin `npm run build` PASS。
+- 发布：后端 `/opt/decoboon/releases/20260927-161525`，Admin `/opt/decoboon-admin/releases/20260927-161700`。
+- 事故：`INC-20260927-9e5cc3140b` 已 fixed。
 
-- 正常 App 工作区 `th4-decoboon-app` 仍在 `dev`，AI UI 位于独立工作区 `/private/tmp/th4-decoboon-app-ai` 分支 `feature/design-ai-generation-app`；这是用户当前看不到 AI 元素的直接原因。
-- 使用本地专属测试企业「麦鸿装饰」设计师账号，在微信开发者工具开发态构建完成真实页面验证：
-  - `subpackages/design/pages/workbench`：已有方案客户显示「AI 生成」；
-  - `subpackages/design/pages/list?focusDesign=1`：聚焦提示和方案卡片「AI 生成」均可见；
-  - `subpackages/design/pages/scheme`：显示 CAD 上传入口和底部「AI 效果图」；
-  - `subpackages/design/pages/ai-generation`：可由工作台和方案详情两条路径真实进入。
-- 当前方案无 CAD/户型图，AI 页面按设计门禁显示“缺少 CAD 或户型图片”；无法继续真实出图。
-- 本地运行后端尚未包含 AI 生成路由：`design/generation/page` 返回 `canNotFoundHandler`；本地数据库也未发现 AI 生成任务/版本表，说明迁移 63 尚未在当前运行库执行。
-- 结论：UI 入口验证 PASS；真实生成链路 BLOCKED，不得表述为已上线或已验收。
-- 证据：`docs/acceptance/20260926-ai-generation-devtools/verification.md` 及 `raw/{screenshots,accessibility}`。
-- 下一步：切换本地后端到 AI 功能工作区并完成迁移 63 隔离验证，使用带 CAD/户型图的测试方案完成真实四图生成后，再交 acceptance 独立验收。
-
-## 2026-09-26 AI设计前后端分支合并到dev
-
-- 后端：将本地工作区 `feature/design-ai-context-prompt` 合并到 `dev`，合并提交 `f85f3b1`；包含 8 个功能提交、38 个后端/迁移/文档文件，新增 build/info/update/page 四条 Route。
-- App：将本地工作区 `feature/design-ai-generation-app` 合并到 `dev`，合并提交 `b095ecb`；包含 2 个功能提交、9 个前端文件，新增 AI 生成页面及工作台/方案列表/方案详情入口。
-- 保护未提交改动：合并前对两个仓库执行 stash 备份；合并后已恢复 App 未提交改动，并恢复后端 AI 用量、用户成功等未提交工作。后端备份 stash `stash@{0}` 暂保留，备份标签 `codex-backup-dev-before-ai-design-merge-20260926` 已创建。
-- 验证：后端全量 `mvn -o -q test` PASS（在当前含未提交 AI 用量/用户成功代码的合并工作区）；App `type-check`、`build:mp-weixin`、`check:subpackages` PASS（主包 761711 B，最大分包 541659 B，总包 2659754 B，15 分包/113 页）。
-- 当前未推送 `origin/dev`；两个仓库仍保留合并前的功能分支和本地兜底标签。
-- 已知未清零项：acceptance P0（迁移隔离失败、自由文本 PII、锁定方案门禁、未确认图文件授权）仍未修复；工作区同时存在 `63-AI设计上下文与Prompt编排.sql` 与未提交的 `63-AI调用与影子用量底账.sql`，发布前必须先重新编号/收口迁移 63。
-
-## 2026-10-01 Web 侧规范补齐至 App 同级（WEB-SPEC-PARITY-20261001）
-
-- 依据：用户裁决"Web 端做的时候很多设计和技术实现远远比不上 App"，要求按 App 全部规范补齐 Web 侧，必须达到 App 同级。
-- 边界：本任务未绑定 Lane，仅新增技能与规范文档，未修改 Web 生产代码（`src/**`）、后端代码、数据库与验收结论。
-- 新增项目级技能 `.agents/skills/zhuangdeqing-product-web-development/`：
-  - `SKILL.md`：身份、不可违反边界（含跨端同源同口径、渲染证据不可省略）、五种运行模式（tenant_onboarding / full_chain_simulation / feature_iteration / ux_review / batch_validation）、标准工作流 R1–R3、用户模拟硬规则、低 token 协作门、输出契约、完成定义；
-  - `references/simulation-protocol.md`：租户画像 T-A/T-B/T-C、角色任务卡、0-1 主链、拒绝/返工链、跨企业负向链、证据粒度、问题分级；
-  - `references/mainline-interaction-model.md`：四个锚点与事实链、系统下一动作、Web 双壳层职责、Web/App 分工表、多分辨率验收；
-  - `references/collaboration-token-budget.md`：责任分工、三阶段九门禁、Agent 通信规则、Token 分级、交接字段、停止条件；
-  - `references/iteration-packet.example.json` + `scripts/validate_iteration_packet.py`：迭代包模板与校验器，Web 专项校验"至少一个 Web 用例且至少一个 ≥1024px 桌面视口"。
-  - 已验证：`python3 scripts/validate_iteration_packet.py references/iteration-packet.example.json` PASS。
-- 新增全局技能 `~/.codex/skills/zhuangdeqing-web-immersion-audit/`（与 `zhuangdeqing-miniapp-immersion-audit` 同级）：
-  - `SKILL.md`：三种模式、双身份、不可违反边界、受控闭环授权、全角色执行顺序、操作循环、多分辨率与浏览器矩阵、问题分级、成果与完成；
-  - `references/full-role-business-audit.md`：运行门禁、企业夹具与 App 批次同源（不复制人员名单）、Web 手机号+密码切换规范、岗位矩阵、角色切换强制核验（含直开 URL 负向）、对账口径（增加跨端列）、多分辨率核验、逐角色评价、完成条件；
-  - `references/experience-protocol.md`、`value-and-finding-rubric.md`（新增 V8 跨端一致与宽屏效率、A11Y/ADAPT 分类）、`report-contract.md`（08–12 号 Web 专项报告）、`browser-control.md`；
-  - `scripts/init_run.py`：生成与仓库 `npm run audit:init` 兼容的运行目录（01–12 + run.json + raw 七类）；已在临时目录冒烟验证；
-  - `scripts/preflight.py`：核对 Web 仓库必需文件、npm scripts、node/npm 与站点可达性；对 Web 仓库运行结果 PASS_WITH_WARNINGS（仅缺本地 dev server）。
-- Web 仓库新增/强化规范：
-  - `AGENTS.md` 重写为项目级门禁（六条工程铁律、强制阅读、G1/G2 门禁、产品推演、可完成状态投影、数据与账务、前端工程摘要、提交与记录要求）；
-  - `docs/development/WEB-FRONTEND-STANDARD.md`（六条工程铁律、目录结构、请求层、类型与数据、组件复用清单、Token 与样式、路由与权限、表格与批量、表单与高影响动作、可访问性、多分辨率、错误与空态、提交前强制检查、禁止清单）；
-  - `docs/product/WEB-DESIGN-SYSTEM.md`（设计原则、颜色/排版/间距/圆角/阴影、布局骨架、断点冻结 DS-001 = 1440/1280/1024/768、组件清单与职责、状态四重表达、密度分层、图表、图标与品牌、动效与可访问性）；
-  - `docs/product/WEB-PAGE-DELIVERY-GATE.md`（G1 开工门禁七项冻结：场景/对象状态/权限矩阵/金额账务/可完成状态投影/页面结构与复用/分辨率与跨端；G2 交付门禁七类检查；页面交付模板；硬性禁止）；
-  - `docs/acceptance/WEB-RENDER-ACCEPTANCE.md`（渲染证据最小要求、三档分辨率清单、六种状态清单、可访问性、判定与记录、与静态守卫的证明边界对照）。
-  - `docs/fixes/`（Fix Agent 四角色流程：诊断/修复/资深业务观察者/流程沉淀官，含 `README.md`、`log.md`、`business-rules.md`、`user-guide.md` 模板），补齐 App 侧 §18 BUG 修复与业务沉淀工作流。
-  - `WEB-FRONTEND-STANDARD.md` 补 §14 构建产物与依赖（路由按需加载、禁止整库导入、`build:analyze` 体积记录）与 §15 BUG 修复与业务沉淀工作流。
-- 协作治理：`.starwork/skills.json` 登记 Web 产品技能；`_系统/协作/agent-lanes.md` 将 Web 仓库纳入 product-planning（docs/product|plan）、development（src/scripts/package.json/AGENTS.md/docs/development）、acceptance（docs/acceptance）写入范围，并新增 Web 端规范与门禁章节。
-- 验证：迭代包校验 PASS；审计预检 PASS_WITH_WARNINGS；Web 仓库现有 `verify:*` 脚本未运行（本任务未改 `src/**`，运行会受工作区未提交改动影响）。规范对页面实际执行的有效性尚未验证。
-- 风险与阻断：① 规范尚未在任何页面按 G1→G2 实跑，可能存在门禁条目与实际工作流不匹配；② Web 仓库工作区存在大量未提交改动（`fix/designer-customer-archive` 分支），规范落地需先完成版本管理迁移；③ `verify:*.mjs` 为静态 grep 守卫，不产生渲染证据，已在新规范中明确其证明边界；④ 现有 Web 断点分散在 17 个不同值，收敛到四档需按批次回改，尚未执行。
-- 下一步：选取一个页面（建议从设计师报价或 Boss 经营总览开始）按 G1 冻结 → 实现 → G2 交付 + 渲染证据实跑一次，验证规范可执行性后再批量推广。
-
-## 2026-10-01 Web 产品级 UI/交互智能体规范与视觉守卫（WEB-UI-CRAFT-20261001）
-
-- 依据：用户裁决"WEB 端 UI 页面交互太丑"，要求对照 App 与专业能力构建**可交付**的产品级 UI Web 智能体规范。
-- 诊断（先量化再设计，避免凭感觉）：对 `th4-decoboon-web` 全量扫描 161 个源文件，得到 1341 项视觉债务 / 69 个文件（FAIL 621、WARN 720）。两类根因：
-  1. **第二套设计语言**：185 处已废弃冷灰蓝（`#8d98a5` 51、`#25313d` 24、`#778390` 19、`#465260` 17、`#17212b` 14、`#66717e` 10、`#aeb8c2` 9、`#eef2f4` 20 等），全部不在 `tokens.scss` 中；集中在 ProjectDetailView(27)、AcceptanceWorkbenchView(14)、AiCenterView(13)、CustomerListView/CustomerDetailView(各12)、MeasurementWorkbenchView(12)、ResourceListView(10)、BusinessObjectPickerDrawer(10)、OnboardingChecklist(8)、DesignSchemeWorkbenchView(9)。
-  2. **字号过小**：365 处 <12px（9/9.5/10/10.5/11/11.5px），集中在设计师工作台家族（Construction/Performance/Design/Quote/Measure 各 29–37 处）与 CatalogLibraryView(37)。
-  另有圆角裸值 88、内联样式 79、非冻结断点 67（共 17 个不同断点）、`transition: all` 14、`!important` 15、`outline:none` 4。
-- 新增项目级技能 `.agents/skills/zhuangdeqing-web-ui-interaction/`：
-  - `SKILL.md`：身份与核心判断、10 条不可违反边界、触发条件、D1 设计意图（七问）/ D2 构图与状态 / D3 **强制两轮渲染—批判—修正循环**、C1–C8 设计量规（任一 <3 不得交付，主链页面平均 ≥3.5）、输出契约、完成定义；
-  - `references/design-language.md`：三层信息层级、冻结字阶 DS-TYPE-001（含禁用字号）、90/9/1 配色、废弃调色板清单、4px 间距节奏、12 列对齐栅格、边框优先的层级深度、三档密度、圆角与图标、三个"专业度"快检；
-  - `references/interaction-spec.md`：交互四原则、七类状态、反馈时序、表单/表格/抽屉与模态/破坏性操作分级/键盘与焦点/动效/提示选择/加载骨架/错误与恢复；
-  - `references/page-composition.md`：五类页面构图模板（决策页/行动队列/对象详情/专业列表/抽屉表单）+ 通用骨架 + 栅格降级表 + 构图自检；
-  - `references/component-spec.md`：18 类组件的尺寸/变体/状态/禁止；
-  - `references/visual-critique.md`：六步批判循环、12 组共 60+ 条反模式清单（含严重度）、10 条常见病症处方、量规评分锚点、批判记录模板。
-- Web 仓库新增/接入：
-  - `docs/product/WEB-UI-INTERACTION-SPEC.md`（293 行）：现状诊断证据表、适用范围、设计语言强约束（含废弃色 → Token 替代映射表）、五类页面构图、交互要点、七类状态、视觉批判循环与量规、**G1.5/G3 门禁接入**、UI Craft Guard 规则表与棘轮策略、交付模板、硬性禁止；
-  - `docs/product/WEB-COMPONENT-SPEC.md`：新增组件六步流程、现有 21 个组件按四类登记（职责/状态要求/禁止用途）、尺寸统一标准、Element Plus 使用规则；
-  - `docs/product/WEB-VISUAL-DEBT-PLAN.md`：两类根因分组、三阶段清偿计划（阶段 0 止血已完成 / 阶段 1 主链清偿含九步单页 SOP / 阶段 2 组件与断点收敛 / 阶段 3 基线归零）、进度追踪表、禁止抬高基线；
-  - `scripts/verify-ui-craft.mjs` + `scripts/ui-craft-baseline.json` + npm `verify:ui` / `verify:ui:report`：13 条规则（UI-001 废弃调色板、UI-003 <12px 字号、UI-006 非冻结断点、UI-007 `outline:none` 为 FAIL，其余 WARN），支持 `--json` / `--report` / `--write-baseline`；棘轮策略只对超出基线的新增问题判失败，新增文件必须零 FAIL；
-  - `src/styles/tokens.scss` 补 `$font-h1 20px` / `$font-h2 24px` / `$font-body-sm 13px` / `$font-micro 11px`（纯新增，无行为变更）；
-  - `AGENTS.md` 增补 §6.5 UI 与交互（强制）与 UI 规范强制阅读；`WEB-PAGE-DELIVERY-GATE.md` 增补 G1.5 设计冻结与 G3 视觉门禁并在 G2 加入 `verify:ui`；`WEB-DESIGN-SYSTEM.md` 增加配套指引与废弃调色板警告。
-- 协作治理：`.starwork/skills.json` 登记 UI 技能；`_系统/协作/agent-lanes.md` Web 章节补充 UI 技能、四道门禁与自动守卫；`shared.md`、`_系统/协作/工作约定.md`、`_系统/上下文/当前项目.md` 同步登记。
-- 验证：`node scripts/verify-ui-craft.mjs` PASS（基线建立后无新增违规）；构造违规探测文件正确触发 4 条 FAIL 输出并 `exit=1`，且给出 3 条 WARN 提示；移除探测文件后恢复 PASS 且 `exit=0`；预检脚本已纳入新规范文件与 `verify:ui` 脚本检查。
-- 风险与阻断：① 视觉债务**尚未开始清偿**，1341 项仍在，阶段目标值属预期不是承诺；② 尚无任何页面按 G1.5→G3 实跑，量规与反模式清单的实际可操作性未验证；③ 棘轮基线是权宜手段，若被随意抬高会失效，已在规范中禁止并要求设计评审；④ `src/styles/tokens.scss` 本次有改动，需与 `fix/designer-customer-archive` 分支上的未提交改动合并时注意冲突。
-- 下一步：按 `WEB-VISUAL-DEBT-PLAN.md` 阶段 1 启动主链清偿，建议从 `DesignerQuoteWorkbenchView` 或 `CustomerDetailView` 开始，单页走完九步 SOP 并做两轮视觉批判，用首个页面验证整套规范的实际可操作性。
-
-## 2026-10-01 Web 视觉清偿首批·登录页 G1.5→G3 实跑（UI-CRAFT-LOGIN-20261001）
-
-- 依据：上一轮建立 UI/交互规范与 UI Craft Guard 后，需用真实页面验证整套门禁是否可执行；选登录页（公开可渲染、无凭据依赖、每用户首屏、规模可控）。
-- 环境：Web `http://127.0.0.1:8080`（本地已有 dev server）、后端 `127.0.0.1:8090`、Codex 内置浏览器（Chrome 扩展通道报 `unsupported Codex auth method: apikey`，改用 iab）。
-- G1.5 冻结：页面类型=表单页；唯一主行动=进入工作台；信息三层（品牌主张+标题 / 表单+主按钮 / 辅助说明）；构图=左品牌栏+右表单面板（>1024）+ ≤1024 单列；复用 `BrandLogo`/`AppIcon`，无新增组件；七类状态已定义。
-- 第 1 轮（渲染→批判）：三档 before 截图 + 计算样式测量，命中 8 类问题：
-  1. P0 废弃冷灰蓝：输入框前缀图标 `#8d98a5`×2，提示图标硬编码 `#26654a`；
-  2. P0 对比度：辅助文字 `#b8b8b0` on `#fafaf8` = **1.91:1**，不达 WCAG AA；
-  3. P0 字号：正文 min 10px×1、11px×4；
-  4. P1 非刻度字号：30px 标题、15px 按钮/引导、**46.08px**（`clamp(34px,3.2vw,52px)` 产出）；
-  5. P1 非冻结断点：`1000px`×2、`480px`×1；
-  6. P2 自定义阴影 `rgba(0,0,0,.18) 0 12px 28px`；
-  7. P2 非标字重 `650`/`750`；
-  8. P2 裸圆角 `11px`。
-- 第 1 轮修正：
-  - `LoginView.vue`：移除三个 AppIcon 的 `color` prop（改由 `.el-input__prefix` 用 `$ink-400`、`.login-panel__tip svg` 用 `$brand-600` 控制）；eyebrow 10px→`$font-caption`；h1 30px→`$font-display`；描述/选项 `$text-tertiary`→`$ink-600` 且 11px→`$font-caption`；标签字重 650→`$font-weight-semibold`；按钮 15px→`$font-body-lg`；tip 11px→`$font-caption`；brand-mobile 圆角 11px→`$radius-sm`、字重 750→`$font-weight-bold`；断点 1000→1024、480→768。
-  - `AuthLayout.vue`：`color:#fff`→`$surface-0`；eyebrow 11px→`$font-caption` 且 `rgba(255,255,255,.62)`→`.78`；h1 `clamp(34px,3.2vw,52px)`→`$font-hero`(44px)，新增 1280 断点降为 `$font-display`；copy 15px→`$font-body-lg`、`.72`→`.78`；logo 阴影→`$shadow-elevated`；断点 1000→1024。
-  - `tokens.scss`：新增 `$font-body-lg: 16px`、`$font-hero: 44px`。
-- 第 2 轮（复渲染→复批判）：after 三档截图 + 复测。文字字号仅剩 12/13/14/16/18/28/44px（全部在冻结字阶）；<12px 归零；硬编码色值归零；非冻结断点归零；对比度 5.53:1 PASS；三档均无横向溢出；h1 在 1440=44px、1280/1024=28px；未消除项 0，新增问题 0。
-- 验证：`npm run type-check` PASS；`npm run verify:ui` PASS（`LoginView.vue` 与 `AuthLayout.vue` 债务 14→0；全站 1341→1327，含债务文件 69→67）。
-- 证据：`docs/acceptance/runs/20261001T195325+0800-ui-craft-login-昭青/`（01 清单、02 双轮批判记录、06 问题清单、07 最终报告、08 分辨率与可访问性矩阵、11 BUG 台账、12 未覆盖；`raw/screenshots/` 6 张 before/after 截图；run.json）。
-- 量规：C1=4（实测零 off-token）、C2=3、C3=3、C4=3、C5=3、C6=3、C7=3、C8=4，平均 3.25，全部 ≥3 过门禁。
-- **重要限制与风险**：
-  1. 执行方当前会话**无法查看图片**（`view_image` 与图像输入均不可用），批判基于渲染后计算样式测量而非人眼视觉确认；C2 信息层级与 C3 对齐留白置信度仅 medium，需人工看图复核后确认。
-  2. 未执行真实登录，提交中/登录失败/会话过期/无权限四种运行时状态为 `NOT_TESTED`；浏览器 200% 缩放、Safari/Edge 亦 `NOT_TESTED`。
-  3. 本轮为单页清偿，其余 67 个文件债务未动；阶段 1 进度 1/N。
-  4. 工作区仍在 `fix/designer-customer-archive` 且含大量未提交改动，本轮改动与既有改动混合，提交前需按需求拆分。
-- 下一步：按 SOP 继续阶段 1，优先 `DesignerQuoteWorkbenchView.vue`（FAIL 32）或 `CustomerDetailView.vue`（FAIL 27）；建议同时补一个 Playwright 渲染测量脚本，把"计算样式测量"自动化，减少对人眼与人工测量的依赖。
-
-### 登录页清偿·证据更正与遗留裁决（同日补记）
-
-- **发现证据失效**：首次采集的 before/after 截图字节完全相同（md5 一致），说明后台标签页未重绘时截图 API 返回**陈旧帧**，不能作为差异证据。
-- **更正**：调用浏览器 `visibility.set(true)`；每次截图前用带时间戳 URL 重新导航并等待 `networkidle`；为生成可信 BEFORE 证据，对三个文件做可回滚临时还原（备份 `/tmp/uifix-backup`，恢复后 md5 校验一致），重新渲染后再恢复修正版。重采后三档 md5 全部不同：1440 `53196B/fbe05eab→54506B/9ce631bd`、1280 `49577B/b2c0faa7→47785B/7ac7984b`、1024 `45334B/612e4616→26900B/0e2c5e46`。
-- **固化教训**（已写入 `WEB-VISUAL-DEBT-PLAN.md` 单页 SOP）：① 后台标签页截图不可作为证据，必须让浏览器可见；② 采集后必须校验 before/after md5 不同，相同则判定采集失败而非"没有变化"；③ 计算样式测量不受重绘影响，可作独立证据。
-- **发现行为变更并如实登记**：断点 `1000px → 1024px` 使 **1001–1024px 区间由双栏变单栏**（1024 实测 `grid-template-columns: 1024px`、`.auth-layout__brand` = `display:none`、移动品牌头 = `flex`）。依据：双栏最小需求 980px，1024 下仅余约 44px；且 1024 是规范冻结的窄桌面边界。这是本次唯一的可见行为变更，**状态：待用户确认**（已登记 07/12 号文件）。
-- 结论修订：页面级 UI 工艺门禁仍为 `PASS`，但"是否需要保留 1001–1024px 双栏"是产品决策，不由开发单方认定。
-
-## 2026-10-01 报价项目库（设计师角色）UI 工艺重构（UI-CRAFT-CATALOG-20261001）
-
-- 依据：用户要求"按规范重构优化设计师角色的报价项目库页面"。
-- 业务口径（G1）：
-  - 依据 `SOL-002`（报价库维护销售价，不直接由前端覆盖标准成本）、`SOL-004`（成本价仅 BOSS/店长/财务可见，设计师不得看到成本）、`BR-003`、`DEC-004`（报价项目库属主数据）。
-  - 页面职责 = 查询企业标准报价的**销售价构成** + 施工工艺 + 验收标准；**不做**：不在此页维护价格、不展示标准成本、不展示供应商报价历史。
-  - 权限双重核验（`src/roles/permission.ts` + 本地 DB）：designer = `catalog ✅ / catalog:write ❌ / catalog:cost ❌`。
-- 设计冻结（G1.5）：页面类型=专业列表页（master-detail）；唯一主行动=搜索查询；三层信息=筛选上下文+结果数量 / 项目列表 / 报价依据详情；构图=筛选230 + 结果1fr + 详情380；复用 `AppIcon`/`EmptyState`/`WorkbenchStateNotice`，无新增组件；七类状态齐备；三档分辨率 1440 三栏 / 1280 两栏 / 1024 单列。
-- 静态批判命中（修正前 71 项）：
-  1. **6 种一级分类彩虹强调色**（`#C56A1A` `#2F6FDB` `#6958C8` `#168A96` `#52635F` `#1D7A5A`），经 `TYPE_TONES`→`typeStyle()`→内联 `--catalog-accent` 扩散到卡片、占位图与详情栏；
-  2. UI-003：9/9.5/10/10.5/11/11.5px 共 37 处；
-  3. UI-006：断点 1400/1180/900；
-  4. UI-005：圆角裸值 9px/7px 共 7 处；UI-009：`!important`×4；UI-008：`transition: all`×2；UI-002：硬编码 `#fff` 等 15 处；UI-004：19px/12.5px 等 3 处；
-  5. **A11Y 缺陷**：项目卡片 `<article @click>` 无 `role`/`tabindex`，键盘完全不可达；
-  6. **A11Y 缺陷**：搜索输入 `outline: 0` 移除焦点且无替代焦点样式；
-  7. 页头深色渐变 + 径向光斑 + `backdrop-filter: blur(10px)`，对高频查询页过重；无权限态缺失。
-- 修正：删除 `TYPE_TONES`/`typeStyle`/`activeTone` 与全部内联色，强调色统一品牌青绿；字号升档到 12/13/14；断点收敛 1440/1280/1024；圆角归 Token；`!important` 改 `button.catalog-hero-search__submit` 更高特异性；`transition: all` 改明确属性；`#fff`→`$surface-0`；卡片补 `role="button"`/`tabindex="0"`/`aria-pressed`/`aria-label`/Enter+Space；搜索改 `:focus-within` + `$shadow-focus`；新增无权限 `EmptyState` 并隐藏主体；页头改浅底卡片、去光斑与毛玻璃；补成本可见性业务注释。
-- 自检拦截：卡片 `:focus-visible` 初版写了 `outline: none`，被自家 UI-007 规则判 FAIL；改为保留全局焦点环、仅加强调。
-- 验证：`npm run verify:ui` PASS（`CatalogLibraryView.vue` 71→0；全站 1327→1256，含债务文件 67→66）；`npm run type-check` PASS；`npm run verify:system` 中 catalog 断言（248–260 行：catalog-tabs/catalog-grid/catalog-detail、施工工艺/验收标准/参考图片、fixedTotalPrice、catalog-price-card/"不在此页修改价格"）全部 PASS。
-- 既有失败（**非本次引入**，已核实断言依赖的 `src/config/navigation.ts`、`src/domains/experience/projection.ts` 等在本任务开始前即为 modified）：`verify:system` 3 条、`verify:roles` 6 条、`verify:boss` 1 条。
-- **渲染验证 BLOCKED**：设计师账号 `19900000005`（董夏鹏，Active）今日 19:04 仍有成功登录记录，但其口令已于今日 04:37 被批量重设；仓库 `app-full-chain-simulation-20260923/README.md` 记录的 `Maihong2026` 失效（UI 与直连 `POST /api/auth/session/password-login` 均返回 `AUTH_FAILED`），账号未锁定（failed_attempts=0/5）。因此无三档截图、无量规评分。
-- 风险：
-  1. 本次为"按规范改写 + 静态校验"，**不等于视觉已验证**；页头深色→浅色属可见观感变化，须人眼确认；
-  2. `catalog/item/page` 是否对无 `catalog:cost` 角色裁剪 `costPrice` 未核查——前端隐藏不等于未下发，若未裁剪属后端越权风险（未擅自改后端契约）；
-  3. 工作树混有既有未提交改动，提交前需按需求拆分。
-- 证据：`docs/acceptance/runs/20261001T200415+0800-ui-craft-catalog-designer-昭青/`（01 清单、02 冻结与批判、07 最终报告、12 未覆盖、run.json）。
-- 下一步：① 获取设计师账号当前口令后补做 G3 三档渲染与量规评分；② 排查其余页面是否存在"每个分类一种强调色"的同类写法；③ 核查后端对 `costPrice` 的按角色裁剪。
-
-## 2026-10-01 报价项目库后续三项核查（UI-CRAFT-CATALOG-FOLLOWUP-20261001）
-
-用户要求推进三项：①补完 G3（需口令）②核查后端成本字段裁剪 ③排查同类彩虹配色。
-
-### ② 后端成本字段裁剪核查 — 结论：**无风险，更正前序误报**
-
-- 机制：`catalog/context/CatalogCostContext`
-  - `COST_VISIBLE = EnumSet.of(Boss, StoreManager, Finance)`
-  - `mask(CatalogItem, Employee)`：无权限时 `setCostPrice(null)`，依赖 non_null 序列化策略使字段不出现在响应中
-  - 类注释明确「其余角色（设计师、业务员、项目经理等）的响应中直接不返回该字段，不依赖前端隐藏」
-- 逐接口核查（`costPrice` 出现在 `@Properties` 白名单的全部 Provider）：
-
-| Provider | 处理方式 | 结论 |
-| --- | --- | --- |
-| `catalog/item/page` | `costContext.mask(...)`（support/Page.java:120） | ✅ 设计师被裁剪 |
-| `catalog/item/save` / `update` / `catalog/import` | 使用 `CatalogCostContext` | ✅ 已处理 |
-| `catalog/import-row/page` | 未 mask，但 `importContext.requireBoss(employee)` | ✅ 仅 Boss 可达 |
-| `catalog/item/delete` | 未 mask，但 `context.requireMaintainer(employee)` | ✅ 仅 Boss/StoreManager/Finance 可达 |
-
-- `requireMaintainer` 实现与 `COST_VISIBLE` 集合一致（Boss/StoreManager/Finance）。
-- 结论：设计师无法经 `catalog/item/page`、`catalog/import-row/page`、`catalog/item/delete` 任一路径取得标准成本；符合 `SOL-004`、`BR-003`。前端 `v-if="canViewCost"` 属纵深防御第二层，不是唯一控制。
-- 已更正 `07-final-report.md` 风险第 2 条与 `12-uncovered-and-blocked.md` 对应行。
-- 遗留观察（非缺陷）：`delete` 与 `import-row/page` 依赖角色白名单拦截而非显式 mask，属隐式耦合；若将来新增可访问这两条路由但不属 `COST_VISIBLE` 的角色，会立刻泄露成本。建议后续补防御性 mask。当前无实际漏洞。
-
-### ③ 全站「每类一色」彩虹配色排查 — 确认系统性三套色板
-
-- **状态色板**：`src/domains/{schedule(13), project(11), site(9), crm(8), finance(33), acceptance(3)}/meta.ts` 共 77 项硬编码色值，为 Arco Design 默认色板（`#00B42A` `#FF7D00` `#16A394` `#F53F3F` `#13C2C2` `#722ED1` `#FA8C16` `#2F54EB` `#86909C` 等），`finance/meta.ts` 另含冷灰蓝残留 `#778390`/`#AEB8C2`。消费方：`crm/meta` 被 8 个文件引用（如 `PerformanceView.vue:349` 内联 `color`/`background`），`project`/`finance` 各 1 个，`schedule`/`site`/`acceptance` 当前 **0 引用（疑似死代码）**。
-- **角色色板**：`src/roles/catalog.ts` 8 个角色各一组 `color`+`soft`（Boss `#26654a`、StoreManager `#08796f`、TeamLeader `#2f54eb`、Marketer `#168a96`、Designer `#6958c8`、Pm `#d96f16`、ProjectSupport `#8a5cc7`、Finance `#3568c7`）；经 `RoleWorkbenchShell.vue:95` 内联 `:style="{ background: descriptor?.soft }"` **真实渲染**——同一业务事实在不同角色下呈现不同底色，违反「一页一个品牌强调色」。
-- **头像色板**：`src/core/format.ts` `colorOf()` 7 色轮转（Arco 色）。
-- 共 19 个不同色值全部不在 `tokens.scss`；与 Token 存在语义重复与撞色（如 `$brand-600 = #26654a` 与 Boss 色重复、`#6958c8` 与 `$purple-500` 同值不同名）。
-- 收敛原则与方案已写入 `docs/product/WEB-COLOR-SYSTEM-AUDIT.md`：**元数据只描述语义 tone，颜色由 Token 解析**——代码库已有正确范式 `StatusTag.vue`（`type: 'success'|'warning'|'danger'|'info'|'primary'`）。分三阶段：状态色板（优先）→ 角色色板（建议取消角色配色，改品牌浅底 + 图标文案）→ 头像色板（改品牌浅色梯度）。
-
-### ③B 守卫盲区修复（本轮实施）
-
-- **问题**：`scripts/verify-ui-craft.mjs` 的 UI-002 只在 `.vue` 的 `<style>` 块内统计色值；`.ts` 文件无 `<style>` 块 → 写在 TS 中的色板对检查器**完全不可见**。只有 `finance/meta.ts` 因含冷灰蓝被 UI-001 抓到 7 处。
-- **修复**：UI-002 扫描范围扩展为 `.vue` 扫 `<style>` 块（不变）、`.ts/.js/.scss` 整文件扫描。UI-003～UI-011 仍只作用于 `styleText`，行为不变。
-- **结果**：新登记 **93 项历史既有债务 / 7 个文件**——`finance/meta.ts` +26、`roles/catalog.ts` +16、`schedule/meta.ts` +13、`project/meta.ts` +11、`site/meta.ts` +9、`crm/meta.ts` +8、`core/format.ts` +7、`acceptance/meta.ts` +3。
-- **合规声明**：这是**检测覆盖扩展，不是抬高基线掩盖回归**。已逐文件核对确认均为历史既有写法；复核 `regressions=0`、`newViolations=0`，本轮未引入任何新增违规；基线 `note` 已写明覆盖扩展原因。
-- 验证：`npm run verify:ui` PASS（1349/1349）。
-
-### ① G3 渲染验证 — 仍 BLOCKED
-
-- 设计师账号 `19900000005`（董夏鹏，Active）口令已于今日 04:37 被批量重设，仓库文档记录的 `Maihong2026` 失效（UI 与直连 `POST /api/auth/session/password-login` 均返回 `AUTH_FAILED`，账号未锁定 `failed_attempts=0/5`）。
-- 因此报价项目库的三档渲染、键盘可达实测、无权限态实测与量规 C1–C8 评分仍无法完成，状态保持 `BLOCKED`，不得表述为视觉已验收。
-- 阻塞条件明确且单一：**需要一个可登录的设计师账号口令**。
-
-### 证据
-
-- `前端代码/th4-decoboon-web/docs/product/WEB-COLOR-SYSTEM-AUDIT.md`（色板审计与收敛方案）
-- `前端代码/th4-decoboon-web/docs/acceptance/runs/20261001T200415+0800-ui-craft-catalog-designer-昭青/raw/notes/backend-cost-visibility-check.md`（后端逐接口核查）
-- 同运行目录 `07-final-report.md`、`12-uncovered-and-blocked.md`（已同步更正）
-
-## 2026-10-01 报价项目库 G3 完成 + 色板收敛阶段 1（UI-CRAFT-G3-COLOR-20261001）
-
-用户授权：①重设本地测试口令 ②开始色板收敛阶段 1。
-
-### ① 本地测试口令重设（授权范围内，仅本地库）
-
-- 前置核验：环境 `MacBook-Pro-3.local` / MySQL `decoboon`（本地开发库）；目标 `19900000005` 董夏鹏 / Designer / Active。
-- 原口令失效原因：该账号 `password_updated_at = 2026-10-01 04:37:38` 被批量重设，仓库文档记录的 `Maihong2026` 已失效（直连 `POST /api/auth/session/password-login` 返回 `AUTH_FAILED`；账号未锁定 `failed_attempts=0/5`）。
-- 备份：`~/.decoboon-local/cred-19900000005-backup.tsv`（含重设前 `password_hash`，目录 700 / 文件 600，**未写入任何仓库**）。
-- 哈希生成：使用应用同款 `spring-security-crypto 6.4.1` 的 `BCryptPasswordEncoder`，生成后自校验 `SELFCHECK_OK`（格式 `$2a$10$…`，与库中 `$2b$10$` 同族，`matches()` 兼容）。
-- 变更：`update db_tenant_credentials set password_hash=…, failed_attempts=0, locked_until=null, password_updated_at=now(6) where phone='19900000005' and type='Password'`（1 行）。
-- 验证：`POST /api/auth/session/password-login` → **HTTP 200 / success=true / token 长度 168**。
-- 记录：口令与回滚说明写入 `~/.decoboon-local/README.txt`（600）。**口令未写入仓库、未写入运行目录**（符合审计技能「密码/哈希不得进入报告」要求）。
-- 回滚：恢复备份文件中的 `password_hash` 即可回到原（未知）口令状态。
-
-### ② 报价项目库 G3 渲染验收（设计师角色）— 完成
-
-- 身份：董夏鹏 / Designer / 昭青（顶栏实测「本人负责 · Self」）。
-- 三档渲染：1440×900 / 1280×800 / 1024×768，均无横向溢出；证据 `raw/screenshots/catalog__designer__*__after.png`。
-- **业务硬约束实测通过**：`.catalog-cost-card` 元素**不存在**、页面文本不含「标准成本」、无「维护项目库」入口 → 符合 `SOL-004` / `BR-003`。与后端 `CatalogCostContext` 的角色裁剪形成前后端一致的纵深防御。
-- 控制台：全新标签页 0 error（原 HMR 报错为修复前历史缓冲，经新标签页排除）。
-- **量规 C1–C8 = 4 / 3 / 3 / 3 / 3 / 3 / 3 / 4，平均 3.25**（26/8）。全部维度 ≥3 → 达交付门槛；若按「报价域属主链页面」需平均 ≥3.5 判定，则 **3.25 未达更高门槛**，已如实记录。
-- **验收中发现并修复的真实缺陷**：首屏加载原为 `v-loading` spinner 遮罩，加载完成后布局跳动；按交互规范「首屏加载用骨架屏」，否则 C4 仅 2 分、按「任一维度 <3 不得交付」不能通过。已改为 6 张骨架卡片（形状与真实卡片一致）。修复后回归：18 张真实卡片正常渲染、骨架消失、无溢出、0 控制台错误。
-- **新发现（重要）**：渲染测量定位出页面内仍存在的 `10px×6`、`10.5px×1` 与 9/10/11px 圆角**全部来自应用外壳**——`WorkbenchLayout.vue`(21 项)、`GlobalContextBar.vue`(11 项)、`SidebarMenu.vue`、`BrandLogo.vue` 及 Element Plus 分页默认值。这些元素出现在**每一个页面**，是「改完单页仍显小字」的主因。已建议把应用外壳提到阶段 2 首位。
-
-### ③ 色板收敛阶段 1（状态色板）
-
-- 新增 `src/core/tone.ts`：`Tone` 联合类型（brand/info/success/warning/danger/neutral/accent）+ `toneColor/toneSoft/toneBorder/toneMeta`。
-- 新增 `src/styles/index.scss` 的 `:root` 语义变量 `--th4-*`（含 `-soft` / `-border`）。**放全局而非 `tokens.scss`**：后者被各 SFC `@use` 引入 scoped 样式，`:root` 会被编译成 `:root[data-v-x]` 而永不匹配。
-- 迁移 6 个 `domains/*/meta.ts`：77 项硬编码色值 → 语义 tone，形态由 `{ label, color: '#hex' }` 改为 `T('label', 'tone')`（本地泛型构造器保留 `short`/`tip` 扩展字段）。
-- 色值收敛：**19 种散乱色值 → 7 个语义色调**；阶段推进不再靠"更多颜色"，靠 label + 位置表达。
-- 消费方：全站仅 1 处读取 `.color`（`PerformanceView.vue:349`），由 `${color}1a` 拼接改为语义 `.soft`；其余消费方只用 `.label`。
-- 验证：`npm run type-check` PASS；`npm run verify:ui` PASS（**1349 → 1272，−77**）；浏览器实测 7 个 `--th4-*` 全部解析到 Token 值（`--th4-brand #2f7d5a` 等）。
-- **过程失误（已记录为教训）**：`src/core/tone.ts` 与 `src/styles/index.scss` 两处注释写成 `domains/*/meta.ts`，其中 `*/` 提前闭合注释，导致 TS `TS1127` 与 SCSS `expected selector`。**关键点：SCSS 报错时页面仍返回 200，`--th4-*` 全部未定义，只有渲染后实测 CSS 变量才发现**——仅看构建/接口成功会漏掉。
-
-### 未完成
-
-- `PerformanceView` 未实页复验：设计师角色访问 `/statistics/performance` 被路由守卫跳回 `/trade/catalog`。
-- 无权限态 / 加载失败态 / 会话过期态未实测（需相应账号或故障构造）。
-- 人工键盘走查未做（已自动化确认 role/tabindex/aria 与 Enter/Space 绑定）。
-- 色板阶段 2（角色色板 `roles/catalog.ts` 16 项、头像色板 `core/format.ts` 7 项）未开始。
-- 0 引用的 `schedule` / `site` / `acceptance` meta 已一并迁移，但仍是死代码，待确认后清理。
-
-### 证据
-
-- `前端代码/th4-decoboon-web/docs/acceptance/runs/20261001T200415+0800-ui-craft-catalog-designer-昭青/{07-final-report.md,08-viewport-and-a11y-matrix.md,raw/screenshots/*}`
-- `前端代码/th4-decoboon-web/docs/product/WEB-COLOR-CONVERGENCE-PHASE1.md`
-- `前端代码/th4-decoboon-web/docs/product/WEB-COLOR-SYSTEM-AUDIT.md`
-- 本地凭据与回滚：`~/.decoboon-local/`（未纳入版本控制）
-
-## 2026-10-01 应用外壳清理 + 色板收敛阶段 2（UI-CRAFT-SHELL-COLOR2-20261001）
-
-用户指定：①先清应用外壳 ②继续色板阶段 2。
-
-### ① 应用外壳清理（31 项）
-
-背景：报价项目库 G3 渲染测量发现页面本体已无小字，但**外壳仍在每个页面贡献 10px×6 / 10.5px×1 与 9/10/11px 圆角**——这是"单页改干净、整体仍显小字"的主因。
-
-| 文件 | 主要修正 |
-| --- | --- |
-| `layouts/WorkbenchLayout.vue` | 侧栏渐变 `#10251f`/`#0b2d28`→`$brand-900`/`$brand-800`；图标色 `#465260`/`#8d98a5`→`currentColor`；字号 10px×4→`$font-caption`；圆角 11/10/9px→`$radius-sm`；字重 650/700→Token；`#fff`×4→`$surface-0`；断点 1360→1280；头像 34px 圆角方→32px 圆 |
-| `components/GlobalContextBar.vue` | 图标色 `#8a9895`/`#8d98a5`→`currentColor`；字号 12.5/10.5/11px→`$font-body-sm`/`$font-caption`；圆角 10/9/7px→`$radius-sm`；`#fff`×2→`$surface-0`；移除搜索框 `outline: 0`；断点 1360+1180→1280 合并 |
-| `components/SidebarMenu.vue` | 图标色 `#AFC5C0`×3→继承 `currentColor`；分组字号 10px→`$font-caption`；**补 `<style scoped lang="scss">` + `@use tokens`**——原文件缺 `lang="scss"` 却在样式里用 SCSS 变量，导致变量**实际全部失效** |
-| `components/BrandLogo.vue` | 无问题，未改动 |
-
-**实测（设计师身份，报价项目库）**：
-```text
-全页 <12px 文字      0 处（清理前 6+ 处）
-菜单项  13px / 圆角 8px / color rgba(255,255,255,.78)
-菜单图标 rgba(255,255,255,.78)（currentColor，深色底可见）
-分组标题 12px / rgba(255,255,255,.55)
-品牌副标题 12px   角色标签 12px   头像 32px 圆形   图标按钮 圆角 8px
-```
-`npm run build` PASS（同时证明 SidebarMenu 补 `lang="scss"` 后 SCSS 可正确编译）。
-证据：`raw/screenshots/catalog__designer__{1440x900,1024x768}__shell-cleaned.png`。
-
-### ② 色板收敛阶段 2（26 项）
-
-- **角色色板** `src/roles/catalog.ts`：8 个角色各一组 `color`+`soft` 共 16 项硬编码色值（Boss `#26654a`、店长 `#08796f`、团队长 `#2f54eb`、业务员 `#168a96`、设计师 `#6958c8`、PM `#d96f16`、履约 `#8a5cc7`、财务 `#3568c7`）→ 统一 `toneColor('brand')` / `toneSoft('brand')`。
-  - 全站唯一渲染点：`RoleWorkbenchShell.vue:95` 的 `:style="{ background: descriptor?.soft }"`。
-  - 角色身份仍由 `label` + `description` + 数据范围标签表达，信息未丢失。
-  - **产品决策留白**：若产品要求角色间视觉区分，应通过图标+文案而非色相；如确需配色，必须在 `tokens.scss` 建立 `$role-*` 系列并登记用途。本条不等同于产品已裁决。
-- **头像色板** `src/core/format.ts` `colorOf()`：7 个 Arco 色 → 品牌梯度 5 色（`--th4-brand-600/400/700/300/brand`）。该方法**当前无任何调用点（死代码）**，本次仅收敛色值未删除。
-- **新增品牌梯度变量** `src/styles/index.scss`：`--th4-brand-300/400/600/700`。
-- **顺带修复** `RoleWorkbenchShell.vue`：`.scope-visual` 圆角 15px→`$radius-lg`；`.scope-list strong` 字重 650→`$font-weight-semibold`。
-
-### 验证
-
-| 检查 | 结果 |
-| --- | --- |
-| `npm run type-check` | PASS |
-| `npm run build` | PASS |
-| `npm run verify:ui` | PASS（1272 → **1215**，本轮 −57，含外壳 31 + 色板 26） |
-| `roles/catalog.ts` / `core/format.ts` 残留 hex | 0 |
-| 浏览器实测 `--th4-brand*` | 全部解析（`#2f7d5a` / `#eef6f1` / `#7fbb9b` / `#529e77` / `#26654a` / `#1d4e39`） |
-
-**至此，`WEB-COLOR-SYSTEM-AUDIT.md` 发现的四套色板中，三套非 Token 色板（状态 / 角色 / 头像）共 19 个散乱色值全部消除。**
-
-### 未完成与限制
-
-1. `.scope-visual` 实际绘制未复验：设计师无店长/项目经理/团队长/财务/履约路由权限；其余本地测试账号口令当日亦被重设，**未获授权重置**，未越界操作。变量解析链已端到端验证。
-2. `colorOf()` 无调用点，故无实际绘制可复验。
-3. 0 引用的 `schedule` / `site` / `acceptance` meta 已随阶段 1 迁移，但仍属死代码，待确认后清理。
-4. 阶段 3（基线归零）未开始；当前债务 1215，主要来自业务页面自身（`ProjectDetailView` 102、`CustomerDetailView` 82 等）。
-5. `npm run build` 重新生成了 `dist/`（构建产物，非源码）。
-
-### 证据
-
-- `前端代码/th4-decoboon-web/docs/product/WEB-COLOR-CONVERGENCE-PHASE2.md`
-- `前端代码/th4-decoboon-web/docs/product/WEB-VISUAL-DEBT-PLAN.md`（进度表已更新）
-- `前端代码/th4-decoboon-web/docs/acceptance/runs/20261001T200415+0800-ui-craft-catalog-designer-昭青/raw/screenshots/catalog__designer__*__shell-cleaned.png`
-
-## 2026-10-01 Web 业务页清偿批次 2 + 死代码清理 + 侧栏图标（UI-CRAFT-BATCH2-20261001）
-
-用户指定：①继续清偿业务页面 ②清理死代码 ③左侧菜单图标应该是白色的。
-
-### ① ProjectDetailView 清偿（102 → 0，全站最高债务页）
-
-| 规则 | 前 | 处理 |
-| --- | --- | --- |
-| UI-001 废弃冷灰蓝 | 27 | 按 `WEB-COLOR-SYSTEM-AUDIT.md` 映射表 → `$ink-*` / `$surface-*` / `$line-*` |
-| UI-002 硬编码色值 | 51 | 样式块 9 类色 → Token；模板 2 处图标色 → `currentColor` / `var(--th4-*)` |
-| UI-003 字号 < 12px | 11 | `10px`/`11px` → `$font-caption` |
-| UI-004 非刻度字号 | 1 | `17px` → `$font-title` |
-| UI-005 圆角裸值 | 5 | `11/13/10/12/999px` → `$radius-sm/md/pill` |
-| UI-006 非冻结断点 | 2 | `1400`→`1440`、`900`→`1024` |
-| UI-010 内联样式 | 5 | `style="width:100%"` → `.project-setup-form :deep(...)` 类规则 |
-
-新增 Token：`$warning-700`（警告文案深色，浅底对比度达标）、`$warning-200`、`$danger-200`（边框）——登记项目既有事实色，非新发明。
-
-### ② 共享组件清偿（21 项）
-
-`PageHeader`（eyebrow 11→12px、移动 h1 22px→`$font-h1`、**描述文字 `$text-tertiary`→`$ink-600` 修低对比度——与登录页同类问题**）、
-`CostIncompleteValue`（**移除 `outline: none`**，UI-007 FAIL；9px→`$font-micro`）、
-`ObjectDetailShell`、`ObjectMainlineTrack`、`StatCard`、`QuantityFormulaInput`、`PrivateAttachmentUploader`、`WorkbenchOperationDrawer`
-（字号升档、圆角归 Token、硬编码色清零、断点 `640px`→`768px`）。
-
-### ③ 死代码清理（用户确认后执行）
-
-清理前对三个 meta 文件的**全部 5 个导出**逐个全仓 grep（含 `.ts`/`.vue`、动态 `import()`、字符串引用），外部引用均为 0：
-
-`TASK_STATUS_META` / `TASK_PRIORITY_META` / `NODE_META` / `REPORT_TYPE_META` / `ACCEPT_RESULT_META` / `colorOf` → 全部 0。
-
-删除：`src/domains/schedule/meta.ts`、`src/domains/site/meta.ts`、`src/domains/acceptance/meta.ts`、`src/core/format.ts` 中的 `colorOf()`（同文件其余导出保持不动）。
-影响面：三个 domain 目录仍保留 `api.ts` / `model.ts`（被其他模块引用）；删除后 `type-check`/`build` 均 PASS。
-
-### ④ 侧栏图标改纯白（用户反馈）
-
-实测：`iconColor rgb(255,255,255)`（未选中与选中一致），`labelColor rgba(255,255,255,.78)`（标签保留层级）。
-
-### ⑤ 发现并修复守卫盲区 → 新增 UI-014（FAIL）
-
-**问题**：`ProjectDetailView.vue`、`QuantityFormulaInput.vue`、`PrivateAttachmentUploader.vue` 三个文件的 `<style>` **原本没有 `@use tokens`**（全文硬编码色）。把 hex 换成 `$token` 后变量未定义，构建失败。
-
-**为什么没提前发现**：`vue-tsc` 与 `verify:ui` 都不编译 SCSS，**只有 `npm run build` 会报错**。
-
-**修复**：三个文件补 `@use '@/styles/tokens.scss' as *;` → build PASS。
-**加固**：新增守卫规则 **UI-014（FAIL）——使用 SCSS 变量但未 `@use tokens`**，已用探测文件验证会正确 FAIL 且 `exit=1`，移除探测后恢复 PASS。
-
-### 验证
-
-`verify:ui` PASS（1215 → **1092**，本批 −123）；`type-check` PASS；`build` PASS；`/projects` 渲染 0 控制台错误。
-
-### 未完成
-
-- `ProjectDetailView` 与 8 个共享组件**未做三档渲染与视觉批判**：本批以"去硬编码色 / 字号升档 / 圆角与断点归 Token"为主，属可静态确认的机械清偿；按 G3 门禁，未做渲染证据不得表述为"视觉已验收"。
-- `CustomerDetailView`(82)、`CustomerListView`(80)、设计工作台家族（`DesignerDesignWorkbenchView` 44 等）、`OnboardingChecklist`(41) 未处理。
-- 当前债务 1092 / 54 个文件。
-
-### 证据
-
-`前端代码/th4-decoboon-web/docs/product/WEB-DEBT-REPAYMENT-BATCH2.md`、`docs/product/WEB-VISUAL-DEBT-PLAN.md`（进度表已更新）
-
-
-## 2026-10-02 Web V2 报价公式引擎与批量保存
-
-- 独立后端工作树 `th4-decoboon-v2-quote`，分支 `feature/web-v2-quote-engine`，当前提交 `b335ec0`。
-- 迁移 `64-报价工程量公式.sql` 增加 `quote_line.quantity_formula`，不改既有 `formula` 字段。
-- 新增 `QuoteFormulaContext`：P0 支持四则运算、百分比、同表单元格/绝对引用、区域范围和 `SUM/ROUND/MIN/MAX`，拒绝循环引用、查找函数和非白名单函数。
-- 新增 `QuoteWorkbookContext` 与 Provider `quote/lines/save`：设计师本人草稿可批量更新，服务端权威重算数量和金额，未提交的价格字段不被默认 0 覆盖，清空公式后恢复固定工程量。
-- 前端 V2 `/v2/designer/quotes/:quoteId` 已接入编辑与保存。
-- 真实 UI 端到端：`=F2*2` 使数量 42→16、总价 ¥19,254.66；清空公式恢复 42、总价 ¥29,911.88。
-- 验证：后端编译、公式单测、Provider 安全测试通过；前端 type-check/build/UI guard 通过。App 1.0.7 现有 `quote/line/save` 和状态机未改。
-
-
-## 2026-10-02 报价工作簿 XLSX 导出
-
-- 后端 V2 提交 `f5bcb56`，新增 `quote/workbook/build` 与 Apache POI 导出上下文。
-- 工作簿包含区域、分类/项目、品牌/规格、单位、工程量、工程量公式、销售单价与金额；成本不导出，行ID作为隐藏列供后续导入匹配。
-- 前端 V2 提交 `70f5a61`，设计师报价工作空间新增“导出 Excel”。
-- 实测接口输出 `Q1790208525180-报价工作簿-V1.xlsx`，文件类型 `Microsoft OOXML`，SHA-256 `2ad83c3113b1110ebc3032049e7e0bc0128cdf9d87ec4050b5535d94848a00f0`。
-- 尚未实现：XLSX 导入预览、区域匹配、错误行和确认写入。

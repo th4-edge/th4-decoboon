@@ -39,7 +39,7 @@
 - `src/main/java/com/th4/edge/decoboon/ai/service/usage/report/**`
 - `src/main/java/com/th4/edge/decoboon/ai/service/usage/page/**`
 - `src/test/java/com/th4/edge/decoboon/ai/**`
-- `docs/design/migrations/63-AI调用与影子用量底账.sql`
+- `docs/design/migrations/64-AI调用与影子用量底账.sql`
 - `scripts/build-release.sh`
 - `src/test/java/com/th4/edge/decoboon/security/ProviderSecurityAcceptanceTest.java`
 

@@ -2,7 +2,7 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20261003-a1233597b0",
+      "incidentId": "INC-20260927-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -106,9 +106,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 54,
+      "count": 41,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-10-03T01:36:01.626+08:00",
+      "lastSeen": "2026-09-27 04:36:52.823",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
         "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
@@ -128,7 +128,8 @@
         "2026-09-24/20260924-120834",
         "2026-09-24/20260924-122445",
         "2026-09-26/20260926-022226",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -210,9 +211,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 19,
+      "count": 20,
       "firstSeen": "2026-09-17 11:25:08.128",
-      "lastSeen": "2026-09-29T13:13:44.643+08:00",
+      "lastSeen": "2026-09-27 12:53:54.552",
       "samples": [
         "[2026-09-17 11:25:08.128] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env",
         "4391:2026-09-17T11:25:08.128+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
@@ -227,7 +228,8 @@
         "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -238,9 +240,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 7,
+      "count": 9,
       "firstSeen": "2026-09-17 01:46:05.396",
-      "lastSeen": "2026-09-20 04:20:12.168",
+      "lastSeen": "2026-09-27 05:44:45.902",
       "samples": [
         "[2026-09-17 01:46:05.396] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql",
         "1743:2026-09-17T01:46:05.396+08:00 ERROR 39701 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql",
@@ -253,7 +255,9 @@
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
         "2026-09-20/20260920-142638",
-        "2026-09-20/20260920-142653"
+        "2026-09-20/20260920-142653",
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -264,9 +268,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 19,
+      "count": 20,
       "firstSeen": "2026-09-17 11:25:08.425",
-      "lastSeen": "2026-09-29T13:13:44.887+08:00",
+      "lastSeen": "2026-09-27 12:53:54.653",
       "samples": [
         "[2026-09-17 11:25:08.425] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env",
         "4477:2026-09-17T11:25:08.425+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
@@ -281,7 +285,8 @@
         "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -292,9 +297,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 19,
+      "count": 20,
       "firstSeen": "2026-09-17 11:25:05.462",
-      "lastSeen": "2026-09-29T13:13:42.713+08:00",
+      "lastSeen": "2026-09-27 12:53:53.779",
       "samples": [
         "[2026-09-17 11:25:05.462] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env",
         "4133:2026-09-17T11:25:05.462+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
@@ -309,7 +314,8 @@
         "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -320,9 +326,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 19,
+      "count": 20,
       "firstSeen": "2026-09-17 11:25:05.739",
-      "lastSeen": "2026-09-29T13:13:42.957+08:00",
+      "lastSeen": "2026-09-27 12:53:53.884",
       "samples": [
         "[2026-09-17 11:25:05.739] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env",
         "4219:2026-09-17T11:25:05.739+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
@@ -337,7 +343,8 @@
         "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -348,9 +355,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 19,
+      "count": 20,
       "firstSeen": "2026-09-17 11:25:07.690",
-      "lastSeen": "2026-09-29T13:13:44.398+08:00",
+      "lastSeen": "2026-09-27 12:53:54.452",
       "samples": [
         "[2026-09-17 11:25:07.690] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env",
         "4305:2026-09-17T11:25:07.690+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
@@ -365,7 +372,8 @@
         "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -557,9 +565,9 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 75,
+      "count": 89,
       "firstSeen": "2026-09-18 13:05:07.158",
-      "lastSeen": "2026-09-24 04:38:58.254",
+      "lastSeen": "2026-09-27 05:23:29.798",
       "samples": [
         "[2026-09-18 13:05:07.158] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ",
         "[2026-09-18 13:05:30.183] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ",
@@ -574,7 +582,9 @@
         "2026-09-20/20260920-142653",
         "2026-09-24/20260924-044441",
         "2026-09-24/20260924-120834",
-        "2026-09-24/20260924-122445"
+        "2026-09-24/20260924-122445",
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -833,21 +843,22 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 5,
+      "count": 6,
       "firstSeen": "2026-09-20 00:01:40.691",
-      "lastSeen": "2026-10-02T11:48:32.125+08:00",
+      "lastSeen": "2026-09-27 02:14:34.361",
       "samples": [
         "[2026-09-20 00:01:40.691] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/version处理失败:找不到对应的处理服务:v1/version",
         "5882:2026-09-20T00:01:40.691+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/version处理失败:找不到对应的处理服务:v1/version",
         "[2026-09-20 00:01:40.691] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/version处理失败:找不到对应的处理服务:v1/version",
         "[2026-09-20 00:01:40.691] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/version处理失败:找不到对应的处理服务:v1/version",
-        "20399:2026-10-02T11:48:32.125+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/version处理失败:找不到对应的处理服务:v1/version"
+        "[2026-09-27 02:14:34.361] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/version处理失败:找不到对应的处理服务:v1/version"
       ],
       "reportPaths": [
         "2026-09-20/20260920-130110",
         "2026-09-20/20260920-142638",
         "2026-09-20/20260920-142653",
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
@@ -1450,352 +1461,220 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 1,
+      "count": 3,
       "firstSeen": "2026-09-24T13:47:56.725+08:00",
-      "lastSeen": "2026-09-24T13:47:56.725+08:00",
+      "lastSeen": "2026-09-27 11:43:02.789",
       "samples": [
-        "4858:2026-09-24T13:47:56.725+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:该手机号已绑定其他微信，请联系客服"
+        "4858:2026-09-24T13:47:56.725+08:00 ERROR 80532 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:该手机号已绑定其他微信，请联系客服",
+        "[2026-09-27 11:43:02.789] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:该手机号已绑定其他微信，请联系客服",
+        "[2026-09-27 11:43:02.789] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:该手机号已绑定其他微信，请联系客服"
       ],
       "reportPaths": [
-        "2026-09-26/20260926-022226"
+        "2026-09-26/20260926-022226",
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
-      "incidentId": "INC-20261003-ca771ba23d",
+      "incidentId": "INC-20260927-20406376dc",
+      "signature": "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_desi",
+      "signatureHash": "20406376dc",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 14,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted"
+      ],
+      "reportPaths": [
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
+      ]
+    },
+    {
+      "incidentId": "INC-20260927-a8a380ae4e",
+      "signature": "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]",
+      "signatureHash": "a8a380ae4e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 14,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:136)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.create",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:136)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.create",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:136)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.create",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:136)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.create",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:136)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.create"
+      ],
+      "reportPaths": [
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
+      ]
+    },
+    {
+      "incidentId": "INC-20260927-bc0021868c",
+      "signature": "Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_con",
+      "signatureHash": "bc0021868c",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 16,
+      "firstSeen": "2026-09-27 05:20:46.351",
+      "lastSeen": "2026-09-27 05:23:56.465",
+      "samples": [
+        "[2026-09-27 05:20:46.351] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]",
+        "[2026-09-27 05:21:12.690] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]",
+        "[2026-09-27 05:21:39.948] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]",
+        "[2026-09-27 05:22:07.077] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]",
+        "[2026-09-27 05:22:34.761] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing table [db_design_context_snapshot]"
+      ],
+      "reportPaths": [
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
+      ]
+    },
+    {
+      "incidentId": "INC-20260927-f8c5f0971d",
+      "signature": "com.th4.edge.framework.exception.DefinedException: Application run failed",
+      "signatureHash": "f8c5f0971d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-27 14:30:33.794",
+      "lastSeen": "2026-09-27 14:30:33.794",
+      "samples": [
+        "[2026-09-27 14:30:33.794] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\ncom.th4.edge.framework.exception.DefinedException: 密码必须同时包含字母和数字\n\tat com.th4.edge.platform.context.PlatformPasswordContext.validate(PlatformPasswordContext.java:35)\n\tat com.th4.edge.platform.configure.PlatformBootstrap.run(PlatformBootstrap.java:70)\n\tat java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)\n\tat org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:727)\n\tat com.th4.edge.platform.configure.PlatformBootstrap$$SpringCGLIB$$0.run(<generated>)\n\tat org.springframework.boot.SpringApplication.lambda$callRunner$4(SpringApplication.java:784)\n\tat org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)\n\tat org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)\n\tat org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)\n\tat org.spr",
+        "[2026-09-27 14:30:33.794] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\ncom.th4.edge.framework.exception.DefinedException: 密码必须同时包含字母和数字\n\tat com.th4.edge.platform.context.PlatformPasswordContext.validate(PlatformPasswordContext.java:35)\n\tat com.th4.edge.platform.configure.PlatformBootstrap.run(PlatformBootstrap.java:70)\n\tat java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\n\tat org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)\n\tat org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)\n\tat org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)\n\tat org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:727)\n\tat com.th4.edge.platform.configure.PlatformBootstrap$$SpringCGLIB$$0.run(<generated>)\n\tat org.springframework.boot.SpringApplication.lambda$callRunner$4(SpringApplication.java:784)\n\tat org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)\n\tat org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)\n\tat org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)\n\tat org.spr"
+      ],
+      "reportPaths": [
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
+      ]
+    },
+    {
+      "incidentId": "INC-20260927-ca771ba23d",
       "signature": "name不能为空",
       "signatureHash": "ca771ba23d",
       "classification": "unknown",
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-09-27T16:49:47.734+08:00",
-      "lastSeen": "2026-09-27T16:49:47.734+08:00",
+      "count": 10,
+      "firstSeen": "2026-09-27 05:27:25.457",
+      "lastSeen": "2026-09-27 05:44:16.268",
       "samples": [
-        "757:2026-09-27T16:49:47.734+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : site/lead/submit处理失败: name不能为空"
+        "[2026-09-27 05:27:25.457] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - site/lead/submit处理失败: name不能为空",
+        "[2026-09-27 05:27:54.345] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - site/lead/submit处理失败: name不能为空",
+        "[2026-09-27 05:30:37.932] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - site/lead/submit处理失败: name不能为空",
+        "[2026-09-27 05:43:36.173] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - site/lead/submit处理失败: name不能为空",
+        "[2026-09-27 05:44:16.268] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - site/lead/submit处理失败: name不能为空"
       ],
       "reportPaths": [
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
-      "incidentId": "INC-20261003-05ad2b36fb",
-      "signature": "下次跟进时间不能早于今天",
-      "signatureHash": "05ad2b36fb",
+      "incidentId": "INC-20260927-aa9694d67a",
+      "signature": "平台账号或密码错误",
+      "signatureHash": "aa9694d67a",
       "classification": "unknown",
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 7,
-      "firstSeen": "2026-09-30T16:03:29.918+08:00",
-      "lastSeen": "2026-09-30T16:03:35.642+08:00",
+      "count": 4,
+      "firstSeen": "2026-09-27 14:23:30.757",
+      "lastSeen": "2026-09-27 14:24:50.962",
       "samples": [
-        "13211:2026-09-30T16:03:29.918+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
-        "13326:2026-09-30T16:03:32.373+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
-        "13441:2026-09-30T16:03:33.188+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
-        "13556:2026-09-30T16:03:33.817+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
-        "13671:2026-09-30T16:03:34.483+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天"
+        "[2026-09-27 14:23:30.757] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/auth/login处理失败:平台账号或密码错误",
+        "[2026-09-27 14:24:50.962] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/auth/login处理失败:平台账号或密码错误",
+        "[2026-09-27 14:23:30.757] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/auth/login处理失败:平台账号或密码错误",
+        "[2026-09-27 14:24:50.962] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/auth/login处理失败:平台账号或密码错误"
       ],
       "reportPaths": [
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
-      "incidentId": "INC-20261003-83305d84a1",
-      "signature": "客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除",
-      "signatureHash": "83305d84a1",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 2,
-      "firstSeen": "2026-10-01T14:31:16.985+08:00",
-      "lastSeen": "2026-10-01T14:31:19.202+08:00",
-      "samples": [
-        "18119:2026-10-01T14:31:16.985+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除",
-        "18225:2026-10-01T14:31:19.202+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-ad7561a398",
-      "signature": "找不到对应的处理服务:2.0/mlflow/experiments/list",
-      "signatureHash": "ad7561a398",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 6,
-      "firstSeen": "2026-09-28T14:58:45.015+08:00",
-      "lastSeen": "2026-09-30T03:56:14.961+08:00",
-      "samples": [
-        "4092:2026-09-28T14:58:45.015+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
-        "5652:2026-09-29T06:15:42.580+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
-        "6254:2026-09-29T06:25:07.256+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
-        "9286:2026-09-29T22:48:21.984+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
-        "9888:2026-09-29T23:04:47.984+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-afef172054",
-      "signature": "找不到对应的处理服务:2.0/mlflow/experiments/search",
-      "signatureHash": "afef172054",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 6,
-      "firstSeen": "2026-09-28T14:58:44.978+08:00",
-      "lastSeen": "2026-09-30T03:56:14.928+08:00",
-      "samples": [
-        "4006:2026-09-28T14:58:44.978+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
-        "5566:2026-09-29T06:15:42.545+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
-        "6168:2026-09-29T06:25:07.219+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
-        "9200:2026-09-29T22:48:21.949+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
-        "9802:2026-09-29T23:04:47.956+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-4444eb57d2",
-      "signature": "找不到对应的处理服务:actpt.data",
-      "signatureHash": "4444eb57d2",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 6,
-      "firstSeen": "2026-09-28T14:58:45.868+08:00",
-      "lastSeen": "2026-09-30T03:56:15.802+08:00",
-      "samples": [
-        "4436:2026-09-28T14:58:45.868+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
-        "5996:2026-09-29T06:15:43.469+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
-        "6598:2026-09-29T06:25:08.165+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
-        "9630:2026-09-29T22:48:22.837+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
-        "10232:2026-09-29T23:04:48.684+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-80b62c529e",
-      "signature": "找不到对应的处理服务:index.php/v1/config/application",
-      "signatureHash": "80b62c529e",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:24.203+08:00",
-      "lastSeen": "2026-10-02T11:48:24.203+08:00",
-      "samples": [
-        "20141:2026-10-02T11:48:24.203+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-fb8c378068",
-      "signature": "找不到对应的处理服务:merge",
-      "signatureHash": "fb8c378068",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 12,
-      "firstSeen": "2026-09-28T14:58:45.172+08:00",
-      "lastSeen": "2026-09-30T03:56:15.974+08:00",
-      "samples": [
-        "4264:2026-09-28T14:58:45.172+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
-        "4522:2026-09-28T14:58:46.048+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
-        "5824:2026-09-29T06:15:42.739+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
-        "6082:2026-09-29T06:15:43.654+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
-        "6426:2026-09-29T06:25:07.423+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-d9c140e2ef",
-      "signature": "找不到对应的处理服务:modular-connector/login/qrvuf",
-      "signatureHash": "d9c140e2ef",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:24.126+08:00",
-      "lastSeen": "2026-10-02T11:48:24.126+08:00",
-      "samples": [
-        "20055:2026-10-02T11:48:24.126+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : modular-connector/login/qrvuf处理失败:找不到对应的处理服务:modular-connector/login/qrvuf"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-299dbbb9f5",
-      "signature": "找不到对应的处理服务:raster/search/",
-      "signatureHash": "299dbbb9f5",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:23.160+08:00",
-      "lastSeen": "2026-10-02T11:48:23.160+08:00",
-      "samples": [
-        "19969:2026-10-02T11:48:23.160+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : raster/search/处理失败:找不到对应的处理服务:raster/search/"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-7b4ee7ccd3",
-      "signature": "找不到对应的处理服务:secrets.yml",
-      "signatureHash": "7b4ee7ccd3",
+      "incidentId": "INC-20260927-972186b589",
+      "signature": "找不到对应的处理服务:gql",
+      "signatureHash": "972186b589",
       "classification": "unknown",
       "severity": "medium",
       "status": "open",
       "actionable": true,
       "count": 2,
-      "firstSeen": "2026-09-29T06:53:24.429+08:00",
-      "lastSeen": "2026-09-29T16:32:57.712+08:00",
+      "firstSeen": "2026-09-27 05:44:47.512",
+      "lastSeen": "2026-09-27 05:44:47.512",
       "samples": [
-        "6856:2026-09-29T06:53:24.429+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml",
-        "8243:2026-09-29T16:32:57.712+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml"
+        "[2026-09-27 05:44:47.512] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - gql处理失败:找不到对应的处理服务:gql",
+        "[2026-09-27 05:44:47.512] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - gql处理失败:找不到对应的处理服务:gql"
       ],
       "reportPaths": [
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
-      "incidentId": "INC-20261003-301f44d7f3",
+      "incidentId": "INC-20260927-301f44d7f3",
       "signature": "找不到对应的处理服务:session/properties",
       "signatureHash": "301f44d7f3",
       "classification": "unknown",
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 8,
-      "firstSeen": "2026-09-30T04:27:15.593+08:00",
-      "lastSeen": "2026-10-01T08:08:17.009+08:00",
+      "count": 2,
+      "firstSeen": "2026-09-27 11:44:14.948",
+      "lastSeen": "2026-09-27 11:44:14.948",
       "samples": [
-        "11705:2026-09-30T04:27:15.593+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
-        "11791:2026-09-30T04:27:16.372+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
-        "16783:2026-10-01T08:05:47.080+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
-        "16869:2026-10-01T08:05:48.541+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
-        "16955:2026-10-01T08:07:31.030+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties"
+        "[2026-09-27 11:44:14.948] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - session/properties处理失败:找不到对应的处理服务:session/properties",
+        "[2026-09-27 11:44:14.948] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - session/properties处理失败:找不到对应的处理服务:session/properties"
       ],
       "reportPaths": [
-        "2026-10-03/20261003-032939"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ]
     },
     {
-      "incidentId": "INC-20261003-dcd3cd89d2",
-      "signature": "找不到对应的处理服务:system/system/string_render",
-      "signatureHash": "dcd3cd89d2",
+      "incidentId": "INC-20260927-9e5cc3140b",
+      "signature": "订阅不存在",
+      "signatureHash": "9e5cc3140b",
       "classification": "unknown",
       "severity": "medium",
-      "status": "open",
-      "actionable": true,
+      "status": "fixed",
+      "actionable": false,
       "count": 6,
-      "firstSeen": "2026-09-28T14:58:45.079+08:00",
-      "lastSeen": "2026-09-30T03:56:15.021+08:00",
+      "firstSeen": "2026-09-27 16:04:42.847",
+      "lastSeen": "2026-09-27 16:06:20.503",
       "samples": [
-        "4178:2026-09-28T14:58:45.079+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
-        "5738:2026-09-29T06:15:42.644+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
-        "6340:2026-09-29T06:25:07.322+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
-        "9372:2026-09-29T22:48:22.046+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
-        "9974:2026-09-29T23:04:48.035+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render"
+        "[2026-09-27 16:04:42.847] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/subscription/update处理失败:订阅不存在",
+        "[2026-09-27 16:06:20.503] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/subscription/update处理失败:订阅不存在",
+        "1051:2026-09-27T16:04:42.847+08:00 ERROR 101384 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : platform/subscription/update处理失败:订阅不存在",
+        "1165:2026-09-27T16:06:20.503+08:00 ERROR 101384 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : platform/subscription/update处理失败:订阅不存在",
+        "[2026-09-27 16:04:42.847] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - platform/subscription/update处理失败:订阅不存在"
       ],
       "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-5d7427dfe2",
-      "signature": "找不到对应的处理服务:v1/config/application",
-      "signatureHash": "5d7427dfe2",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:33.478+08:00",
-      "lastSeen": "2026-10-02T11:48:33.478+08:00",
-      "samples": [
-        "20485:2026-10-02T11:48:33.478+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/config/application处理失败:找不到对应的处理服务:v1/config/application"
+        "2026-09-27/20260927-160708",
+        "2026-09-27/20260927-161931"
       ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-6bcaa7f28f",
-      "signature": "找不到对应的处理服务:v1/fabric_device_auth/fortigate/init",
-      "signatureHash": "6bcaa7f28f",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:27.115+08:00",
-      "lastSeen": "2026-10-02T11:48:27.115+08:00",
-      "samples": [
-        "20227:2026-10-02T11:48:27.115+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-8c03798289",
-      "signature": "找不到对应的处理服务:v1/init_consts",
-      "signatureHash": "8c03798289",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:27.149+08:00",
-      "lastSeen": "2026-10-02T11:48:27.149+08:00",
-      "samples": [
-        "20313:2026-10-02T11:48:27.149+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
-    },
-    {
-      "incidentId": "INC-20261003-71492b16e8",
-      "signature": "找不到对应的处理服务:v1/monitor/messages",
-      "signatureHash": "71492b16e8",
-      "classification": "unknown",
-      "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 1,
-      "firstSeen": "2026-10-02T11:48:18.475+08:00",
-      "lastSeen": "2026-10-02T11:48:18.475+08:00",
-      "samples": [
-        "19883:2026-10-02T11:48:18.475+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages"
-      ],
-      "reportPaths": [
-        "2026-10-03/20261003-032939"
-      ]
+      "fixedAt": "2026-09-27 16:22:11",
+      "fixedRelease": "/opt/decoboon/releases/20260927-161525",
+      "fixSummary": "平台企业快照返回真实 subId；Admin 提交真实订阅主键；定向与全量测试通过，热修部署后无新指纹"
     }
   ],
-  "updatedAt": "2026-10-02T19:29:40.333841+00:00"
+  "updatedAt": "2026-09-27T16:22:11+08:00"
 }

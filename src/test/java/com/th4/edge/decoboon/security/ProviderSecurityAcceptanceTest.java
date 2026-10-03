@@ -115,14 +115,15 @@ class ProviderSecurityAcceptanceTest {
         // 接管后剩余施工计划新增 5 条（stage/save、stage/delete、stage/reorder、plan/confirm、plan/change/page）。
         // => 总数为 340（public 12 + protected 328）；待 acceptance 复核。
         // 2026-09-26 报价项目库批量导入 W2 并入 1 条（catalog/item/delete）
-        // => 总数为 341（public 12 + protected 329）；由 development lane 机械同步，待 acceptance 复核
-        // 2026-09-26 用户成功闭环并入 1 条（statistic/success/report）
         // 2026-09-26 A0.1 AI用量新增 2 条（ai/usage/report、ai/usage/page）
-        // 2026-09-26 AI设计生成 P0.4 新增 4 条（design/generation/{build,info,update,page}）
-        // 2026-09-27 官网分包新增公开留资入口 1 条（site/lead/submit）
-        // => 总数为 349（public 13 + protected 336）
-        assertThat(routes).hasSize(349);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(336);
+        // 2026-09-26 A1 AI经营参谋新增 1 条（ai/brief/report）
+        // 2026-09-26 A0.2 AI账户摘要新增 1 条（ai/account/report）
+        // => AI 相关基线共 4 条，干净基线为 349（public 12 + protected 337）。
+        // 2026-09-27 企业入驻台账并入 4 条（platform/tenant/onboarding/{page,info,reveal,service/save}）。
+        // 2026-09-27 恢复未发布能力新增 2 条（site/lead/submit、statistic/success/report）。
+        // => 总数为 355（public 13 + protected 342）。
+        assertThat(routes).hasSize(355);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(342);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
@@ -180,11 +181,9 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("quote/line/delete");
         assertUnauthorized("statistic/onboarding/report");
         assertUnauthorized("ai/usage/report");
+        assertUnauthorized("ai/brief/report");
+        assertUnauthorized("ai/account/report");
         assertUnauthorized("ai/usage/page");
-        assertUnauthorized("design/generation/build");
-        assertUnauthorized("design/generation/info");
-        assertUnauthorized("design/generation/update");
-        assertUnauthorized("design/generation/page");
         assertUnauthorized("statistic/boss/workbench");
         assertUnauthorized("statistic/boss/design/report");
         assertUnauthorized("statistic/boss/quote/report");

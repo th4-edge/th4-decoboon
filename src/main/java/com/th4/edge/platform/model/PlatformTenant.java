@@ -18,6 +18,7 @@ public class PlatformTenant {
     @Note("规模") private String size;
     @Note("地址") private String addr;
     @Note("创建时间") private DateTime createTime;
+    @Note("订阅ID") private Long subId;
     @Note("套餐名称") private String planName;
     @Note("订阅状态") private String subscriptionStatus;
     @Note("服务到期时间") private DateTime serviceEndTime;
@@ -44,6 +45,8 @@ public class PlatformTenant {
     public void setAddr(String addr) { this.addr = addr; }
     public DateTime getCreateTime() { return createTime; }
     public void setCreateTime(DateTime createTime) { this.createTime = createTime; }
+    public Long getSubId() { return subId; }
+    public void setSubId(Long subId) { this.subId = subId; }
     public String getPlanName() { return planName; }
     public void setPlanName(String planName) { this.planName = planName; }
     public String getSubscriptionStatus() { return subscriptionStatus; }
