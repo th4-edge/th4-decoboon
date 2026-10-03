@@ -1,16 +1,22 @@
 package com.th4.edge.decoboon.customer.context;
 
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.access.DataScope;
+import com.th4.edge.tenant.user.access.DataScopeSpecification;
+import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -24,17 +30,53 @@ import java.util.Set;
 public class CustomerContext {
 
     private final EmployeeRepository employeeRepository;
+    private final CustomerRepository customerRepository;
+    private final DataScopeContext dataScopeContext;
 
-    public CustomerContext(EmployeeRepository employeeRepository) {
+    public CustomerContext(EmployeeRepository employeeRepository,
+                           CustomerRepository customerRepository,
+                           DataScopeContext dataScopeContext) {
         this.employeeRepository = employeeRepository;
+        this.customerRepository = customerRepository;
+        this.dataScopeContext = dataScopeContext;
     }
 
     private static final Set<EmployeeRole> ASSIGNABLE_OWNER_ROLES = Set.of(
             EmployeeRole.Boss,
             EmployeeRole.StoreManager,
             EmployeeRole.TeamLeader,
-            EmployeeRole.Marketer
+            EmployeeRole.Marketer,
+            EmployeeRole.Designer
     );
+
+    /**
+     * 按数据范围加载客户，并兼容设计师作为业务负责人使用客户档案的场景。
+     *
+     * <p>设计师既可访问自己负责的客户，也可访问已指派给自己的设计客户；
+     * 其他角色仍严格沿用框架数据范围。</p>
+     */
+    public Customer requireVisible(Long customerId, Employee principal) {
+        return findVisible(customerId, principal)
+                .orElseThrow(() -> new DefinedException(
+                        new DefaultErrorCode("404", "客户不存在或无权访问")));
+    }
+
+    public Optional<Customer> findVisible(Long customerId, Employee principal) {
+        if (customerId == null) return Optional.empty();
+        Employee current = dataScopeContext.requireEmployee(principal);
+        DataScope scope = dataScopeContext.resolve(current);
+        Specification<Customer> byId = (root, query, builder) ->
+                builder.equal(root.get("custId"), customerId);
+        Optional<Customer> scoped = customerRepository.findOne(
+                byId.and(DataScopeSpecification.visible(Customer.class, scope)));
+        if (scoped.isPresent() || current.getRole() != EmployeeRole.Designer) {
+            return scoped;
+        }
+        // 不用带 PESSIMISTIC_WRITE 的客户查询：本方法同时服务只读详情，
+        // 且上面的数据范围查询已经覆盖“本人是客户负责人”的情况。
+        return customerRepository.findByCustIdAndCompany_ComIdAndDesigner_EmpId(
+                customerId, requireCompanyId(current), current.getEmpId());
+    }
 
     /**
      * 解析客户负责人。
@@ -70,7 +112,7 @@ public class CustomerContext {
             throw new DefinedException(new DefaultErrorCode("400", "负责人不属于当前企业或已离职"));
         }
         if (!ASSIGNABLE_OWNER_ROLES.contains(owner.getRole())) {
-            throw new DefinedException(new DefaultErrorCode("400", "客户负责人只能选择业务员、团队负责人、店长或企业负责人"));
+            throw new DefinedException(new DefaultErrorCode("400", "客户负责人只能选择业务员、设计师、团队负责人、店长或企业负责人"));
         }
         if (current.getRole() == EmployeeRole.StoreManager) {
             if (current.getStore() == null || owner.getStore() == null
@@ -102,5 +144,10 @@ public class CustomerContext {
         customer.setStore(owner.getStore());
         customer.setTeam(owner.getTeam());
         customer.setOwner(owner);
+    }
+
+    private boolean sameEmployee(Employee target, Employee current) {
+        return target != null && current != null && target.getEmpId() != null
+                && target.getEmpId().equals(current.getEmpId());
     }
 }
