@@ -60,3 +60,8 @@ docs/1
 
 # Local DeepSeek credential (never commit)
 docs/deepseek
+
+# IntelliJ 本地数据源与工作区状态（含环境用户名/连接串，禁止入库）
+.idea/dataSources.xml
+.idea/workspace.xml
+.idea/workspace.xml*
