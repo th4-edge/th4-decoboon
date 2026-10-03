@@ -1215,6 +1215,16 @@ key / label / required / source_provider / completion_predicate / count / refres
 ## 14. 版本管理与发布分支（强制）
 
 - 长期分支固定为 `dev`（日常集成和默认分支）、`test`（发布候选和验收）、`prod`（生产事实源）；`master/main` 迁移完成后只读归档，不再接新工作。
+
+**分支生命周期（2026-10-04 收紧，强制）：**
+
+- 长期分支**只有** `dev` / `test` / `prod`；`master/main` 归档后删除，不再保留。
+- `feature/*`、`fix/*`、`hotfix/*`、`integration/*` 一律为**短生命周期分支**：合入下游分支后**立即删除**（本地与远端同步删）。
+- 未合入且暂不使用的分支，删除前必须先打 `archive/<branch>-<YYYYMMDD>` 标签，保证历史永久可达。
+- ❌ 禁止长期保留已合并的特性分支；❌ 禁止用多个 worktree 长期挂不同特性分支充当"多仓库"。
+- 定期体检：`git branch` 出现 `dev/test/prod` 之外的本地分支即为违规，必须在当次任务内清理。
+- 2026-10-04 首次收敛：后端 18 → 3 个分支、web 9 → 3 个分支；全部历史归档为 `archive/*-20261004` 标签。
+
 - 大功能使用 `feature/<domain>-<slug>`，小修复或小变更使用 `fix/<domain>-<slug>`，均从最新 `dev` 创建并合并回 `dev`；生产事故才使用从 `prod` 创建的 `hotfix/*`。
 - 正常发布链固定为 `feature|fix -> dev -> test -> prod`。只有发布经理执行 `dev -> test`、`test -> prod`，且必须使用 `--no-ff` 保留发布边界；禁止直接 push、强推、重置和移动 tag。
 - `test` 上必须创建不可变 RC tag；验收通过后才能在 `prod` 创建正式 tag。每个提交的 tag 只能使用一个新 RC/正式版本，禁止覆盖旧 tag。
