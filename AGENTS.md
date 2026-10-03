@@ -48,6 +48,7 @@
 - `test` 只接收发布经理合并的 `dev` 发布批次；`prod` 只接收已验收的 RC 或已验证热修。正常发布禁止逐条 cherry-pick、强推、重置或移动 tag。
 - 每次生产发布必须从正式 tag 构建，记录 Release ID、commit、tag、制品 SHA-256、迁移、备份、回滚点和验证证据；发布记录使用 `docs/operations/releases/_发布记录模板.md`。
 - 当前尚在迁移期：Web 必须先建立独立 Git 仓库，后端和 App 的混合未提交改动必须按需求/缺陷拆分后才能建立正式环境分支。
+- **Web 开发 App 线上兼容优先**：Web 不得改变 App 当前线上版本依赖的 Provider 契约、状态机、金额/成本/权限口径、数据库列类型或既有行为。共享后端改动必须向后兼容；涉及 App 依赖契约时必须完成 App 类型检查、发布构建和关键链路回归，风险发生时优先停止或回滚 Web 相关改动，确保 App 线上不受影响。
 - 完整流程、分支保护、热修、回滚和多仓库顺序见 `docs/operations/版本管理与发布分支规范.md`。
 
 ## 实际业务场景推演（强制）
@@ -107,6 +108,8 @@
 生产 `application-prod.yml` 必须保持 `spring.jpa.open-in-view: true`（回环部署兜底）；但业务代码必须做到「关闭 OSIV 也正确」：
 禁止在无事务边界的 `RequestFilter/@Component`/工具类中访问 LAZY 关联；事务外必须读取的关联用 `@EntityGraph` 或 `JOIN FETCH` 预取，
 或把聚合逻辑放进 `@Transactional(readOnly = true)`；禁止用临时 `EAGER`、`@JsonIgnore` 或「dev 通过」替代回归。
+**只读事务禁锁**：`@Transactional(readOnly = true)` 及其**间接调用链**禁止调用带 `@Lock(PESSIMISTIC_*)` 的仓储方法（MySQL 会报 1792）；凡仓储方法名含 `ForUpdate` 或以 `findLockedBy` 开头，其调用方必须处于**写事务**（见 `ECD-012`）。
+
 涉及关联的测试必须显式 `open-in-view=false` 且不加 `@Transactional`。详见 `rules.md` §4.5 与错误集 `ECD-*`。
 
 ## 序列化控制
@@ -132,7 +135,7 @@
 
 ## 品牌 Logo 统一（强制）
 
-Logo 只能使用 `logo-export` 同一套 Mark（深色背景白色版、浅色背景彩色版）；App 只用 `JzBrandLogo`，Admin 只用 `BrandLogo`，禁止页面另存图片或复制路径。
+Logo 只能使用 `logo-export` 同一套 Mark（深色背景白色版、浅色背景彩色版）；App 只用 `JzBrandLogo`，Admin 只用 `BrandLogo`，Site 只用 `brand-logo`，禁止页面另存图片或复制路径。
 资源路径、校验值与验收命令见 `rules.md` §12。
 
 ## 完整规范

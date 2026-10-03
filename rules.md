@@ -649,6 +649,14 @@ OSIV 打开是**运行时兜底**，不是代码可以依赖的许可：下列�
 - ✅ 事务外需要读取的关联，必须在查询上使用 `@EntityGraph(attributePaths = {...})` 或 `JOIN FETCH` 预取。
 - ✅ 聚合、校验类上下文方法若必须访问关联，应置于 `@Transactional(readOnly = true)` 内；带 `PESSIMISTIC_WRITE` 的查询不要与 `@EntityGraph` 随意组合。
 - ✅ 涉及关联的回归测试必须显式设置 `spring.jpa.open-in-view=false`，且测试方法**不得**加 `@Transactional`，否则无法复现缺陷。
+**只读事务禁锁（强制，2026-10-04 新增，见 ECD-012）**
+
+- ❌ 禁止 `@Transactional(readOnly = true)` 的方法（**含其间接调用链**）调用任何带 `@Lock(LockModeType.PESSIMISTIC_*)` 的仓储方法。MySQL 在只读事务中拒绝 `SELECT ... FOR UPDATE`，报 `1792 Cannot execute statement in a READ ONLY transaction`。
+- ❌ 禁止把「加锁版」查询复用到只读流程（例如详情、列表、聚合投影）；只读路径必须使用**无锁**查询。
+- ✅ 需要行锁时，把调用方改为写事务（去掉 `readOnly = true`），或改用无锁查询 + 乐观校验。
+- ✅ 命名契约：凡仓储方法名含 `ForUpdate` 或以 `findLockedBy` 开头，**其调用方必须处于写事务**。
+- ✅ 本次全仓排查结论与证据：`docs/operations/2026-10-04-只读事务加锁风险排查.md`（14 个加锁方法 / 27 处调用点 / 只读命中 0 处）。
+
 - ✅ 错误集与检测清单：`_系统/协作/lanes/development/workspace/code-error-catalog.md`（ECD-001）。
 
 ---
@@ -1064,6 +1072,7 @@ public class DashboardQuery {
 - [ ] 本次新增/修改的查询是否可能被 Filter / Context（事务外）调用？若是，LAZY 关联是否已 `@EntityGraph` / `JOIN FETCH` 预取？
 - [ ] 涉及实体关联的回归测试是否显式 `spring.jpa.open-in-view=false` 且未加 `@Transactional`，并确认修复前会失败？
 - [ ] 是否排查了同一懒加载根因的其他调用点，而不是只修一处（见 ECD-001）？
+- [ ] 本次新增/修改的 `@Transactional(readOnly = true)` 方法，其调用链（含间接调用）是否完全不含带 `@Lock(PESSIMISTIC_*)` 的仓储方法？（见 ECD-012）
 
 ---
 
@@ -1149,6 +1158,7 @@ public class MarketerViewConfigure { }
 | --- | --- | --- |
 | App | `src/components/JzBrandLogo.vue` | `src/static/brand/logo-mark-white.png`、`src/static/brand/logo-mark-color.png` |
 | Admin | `src/components/BrandLogo.vue` | `public/brand/logo-mark-white.png`、`public/brand/logo-mark-color.png` |
+| Site | `components/brand-logo.js` | `public/brand/logo-mark-white.png`、`public/brand/logo-mark-color.png` |
 
 > 页面不得直接新增 Logo 文件或写死图片路径；必须使用上述组件，并通过 `variant="white|color"` 选择背景适配版本。
 
@@ -1157,7 +1167,7 @@ public class MarketerViewConfigure { }
 - `logo-mark-white.png` SHA-256：`12ade1524dfe4cd4b11d06593beff4ead19179a0288cb5f8765f08c3d2ffc997`
 - `logo-mark-color.png` SHA-256：`1115517a138f1998c54cc71619b74bb7aa84af1193b0eb791c08d5db6bc75577`
 
-更新 Logo 时必须在 App/Admin 同时替换、更新组件资源和本节校验值，并执行 Admin 构建、App `verify:mp-weixin`。
+更新 Logo 时必须在 App/Admin/Site 同时替换、更新组件资源和本节校验值，并执行 Admin 构建、App `verify:mp-weixin`、Site `npm run build`。
 
 ---
 
@@ -1211,5 +1221,5 @@ key / label / required / source_provider / completion_predicate / count / refres
 - 每次生产发布必须从 tag 构建，并记录 Release ID、commit/tag、制品 SHA-256、迁移、备份、回滚点、冒烟结果和发布批准；模板见 `docs/operations/releases/_发布记录模板.md`。
 - 热修必须从 `prod` 创建最小修复分支，先在 test 等价环境按 tag 验证，再合并 `prod` 并回灌 `test/dev`；不能把普通需求伪装成热修。
 - 生产回滚优先切换上一稳定制品，禁止通过重置 `prod` 或强推远端分支“回滚”。已发布 tag 和失败证据只追加状态，不删除。
-- 后端、App、Web 使用独立 Git 仓库和同一 Release ID，发布顺序、兼容窗口与客户端版本映射必须写入发布记录。
+- 后端、App、Web、Admin、Site 使用独立 Git 仓库和同一 Release ID，发布顺序、兼容窗口、静态资源版本与客户端版本映射必须写入发布记录。
 - 详细规则、迁移步骤、分支保护、发布命令和检查清单见 `docs/operations/版本管理与发布分支规范.md`。

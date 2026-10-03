@@ -446,3 +446,57 @@ Failed to instantiate [CustomerOverviewContext]: No default constructor found
 - 断言测试：同一项目在**我的家首页 / 项目详情 / 项目旅程**三处 `status` 与 `currentStageName` 相等；
 - 迁移回归：验收**驳回**后三处同时由"待验收"变"施工中"；重新提交验收后同时回到"待验收"；
 - 小程序内人工复验：三页同时截图，比对同一字段。
+
+---
+
+## ECD-012 只读事务中执行加锁查询（FOR UPDATE）
+
+### 现象
+
+设计师进入「客户与房屋 → 设计」时，`customer/customer/info` 返回：
+
+```json
+{"success":false,"errorCode":{"code":"undefinedErrorCode","message":"未定义错误信息:{0}"}}
+```
+
+### 根因
+
+`CustomerContext.findVisible` 在只读调用链中调用了带 `@Lock(LockModeType.PESSIMISTIC_WRITE)` 的
+`CustomerRepository.findByCustIdAndCompany_ComId`，Hibernate 生成 `SELECT ... FOR UPDATE`；
+而其调用方 `customer/service/cust/info/support/Info.call` 标注 `@Transactional(readOnly = true)`，
+MySQL 8 直接拒绝：
+
+```text
+1792 Cannot execute statement in a READ ONLY transaction
+```
+
+**让问题难发现的两点：**
+
+1. 加锁声明在 **Repository**，只读注解在 **Provider**，二者不在同一文件，代码审查与局部阅读都容易漏；
+2. 异常被框架折叠为 `未定义错误信息:{0}`，错误码无语义，前端只能显示通用失败——**排查成本远高于修复成本**。
+
+### 禁则
+
+1. ❌ 禁止 `@Transactional(readOnly = true)` 方法（**含间接调用链**）调用任何带 `@Lock(PESSIMISTIC_*)` 的仓储方法。
+2. ❌ 禁止在只读流程中复用「加锁版」查询（详情、列表、聚合投影均属只读流程）。
+3. ❌ 禁止让未映射异常直接落到前端（`未定义错误信息:{0}`）；新增 Provider 必须保证异常具备可读 `errorCode`。
+
+### 必须写法
+
+- 需要行锁 → 调用方改为**写事务**（去掉 `readOnly = true`）；
+- 只读详情 → 使用数据范围 `Specification` 查询，或专用**无锁**派生查询
+  （如 `findByCustIdAndCompany_ComIdAndDesigner_EmpId`）；
+- 命名契约：`...ForUpdate` / `findLockedBy...` 的调用方**必须处于写事务**。
+
+### 检测与回归要求
+
+- 静态扫描：见 `docs/operations/2026-10-04-只读事务加锁风险排查.md`
+  （14 个加锁方法 / 27 处调用点 / 只读命中 **0** 处）；
+- 回归：以设计师身份调用 `customer/customer/info` 必须 `success=true`；
+- 运行日志不得出现 `Cannot execute statement in a READ ONLY transaction`。
+
+### 关联
+
+- 修复提交：`bdc256a`
+- 风险排查：`b5ffdbc`
+- 规范条目：`rules.md` §4.5「只读事务禁锁」
