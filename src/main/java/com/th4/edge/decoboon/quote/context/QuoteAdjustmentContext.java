@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.quote.context;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
+import com.th4.edge.decoboon.quote.configure.QuoteMode;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.configure.QuoteDifferenceStatus;
 import com.th4.edge.decoboon.quote.configure.QuoteDifferenceType;
@@ -158,7 +159,9 @@ public class QuoteAdjustmentContext {
     public void delete(Quote quote, Long lineId) {
         requireDraft(quote);
         QuoteLine line = requireLine(quote, lineId);
-        if (line.getRole() == QuoteLineRole.Base && line.getIncluded()) {
+        if (!QuoteMode.Custom.equals(quote.getMode())
+                && line.getRole() == QuoteLineRole.Base
+                && Boolean.TRUE.equals(line.getIncluded())) {
             throw new DefinedException(new DefaultErrorCode("400", "基础套餐项目不能直接删除，请使用扣减或替换"));
         }
         lineRepository.delete(line);

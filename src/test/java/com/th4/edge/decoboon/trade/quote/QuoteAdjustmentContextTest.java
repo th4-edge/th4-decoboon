@@ -2,7 +2,9 @@ package com.th4.edge.decoboon.trade.quote;
 
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.pack.model.PackageLine;
+import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
+import com.th4.edge.decoboon.quote.configure.QuoteMode;
 import com.th4.edge.decoboon.quote.context.QuoteAdjustmentContext;
 import com.th4.edge.decoboon.quote.context.QuoteCalcContext;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,6 +30,40 @@ class QuoteAdjustmentContextTest {
     private final QuoteCalcContext calcContext = new QuoteCalcContext();
     private final QuoteAdjustmentContext context = new QuoteAdjustmentContext(
             quoteRepository, lineRepository, catalogRepository, calcContext);
+
+    @Test
+    void shouldDeleteBaseLineFromCustomDesignQuote() {
+        Quote quote = new Quote();
+        quote.setQuoteId(1L);
+        quote.setStatus(QuoteStatus.Draft);
+        quote.setMode(QuoteMode.Custom);
+        QuoteLine base = new QuoteLine();
+        base.setItemId(2L);
+        base.setRole(QuoteLineRole.Base);
+        base.setIncluded(true);
+        when(lineRepository.findByQuote(quote)).thenReturn(List.of(base));
+
+        context.delete(quote, 2L);
+
+        verify(lineRepository).delete(base);
+        verify(quoteRepository).save(quote);
+    }
+
+    @Test
+    void shouldProtectBaseLineFromPackageQuote() {
+        Quote quote = new Quote();
+        quote.setQuoteId(1L);
+        quote.setStatus(QuoteStatus.Draft);
+        quote.setMode(QuoteMode.Package);
+        QuoteLine base = new QuoteLine();
+        base.setItemId(2L);
+        base.setRole(QuoteLineRole.Base);
+        base.setIncluded(true);
+        when(lineRepository.findByQuote(quote)).thenReturn(List.of(base));
+
+        assertThatThrownBy(() -> context.delete(quote, 2L))
+                .hasMessageContaining("基础套餐项目不能直接删除");
+    }
 
     @Test
     void shouldDeductBasePackageLineAndRecalculateQuote() {
