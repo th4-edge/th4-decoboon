@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.customer;
 
 import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.customer.context.CustomerContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.customer.service.cust.measure.support.Measure;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -93,7 +95,11 @@ class CustomerMeasureStateGateTest {
         when(scopes.requireEmployee(employee)).thenReturn(employee);
         when(scopes.resolve(employee)).thenReturn(new DataScope(
                 DataScopeType.Company, 2L, null, null, 1L));
-        Measure provider = new Measure(customers, scopes, mock(NoticeContext.class),
+        CustomerContext customerContext = mock(CustomerContext.class);
+        when(customerContext.requireVisible(eq(3L), eq(employee))).thenAnswer(invocation ->
+                customers.findOne(org.mockito.ArgumentMatchers.<Specification<Customer>>any())
+                        .orElseThrow());
+        Measure provider = new Measure(customers, scopes, customerContext, mock(NoticeContext.class),
                 properties, mock(MeasureRepository.class));
         ReflectionTestUtils.setField(provider, "employee", employee);
         ReflectionTestUtils.setField(provider, "customerId", 3L);

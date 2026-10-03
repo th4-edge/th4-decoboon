@@ -18,6 +18,7 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -86,7 +87,7 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
                 .orElse(null);
 
         // 设计师是设计责任事实：只取已指派的设计师，绝不把当前操作人写成设计师。
-        Employee assignedDesigner = resolveDesigner(property, scheduled == null ? request : scheduled);
+        Employee assignedDesigner = resolveDesigner(property, scheduled == null ? request : scheduled, current);
         if (measureStatus == MeasureStatus.Completed) {
             if (assignedDesigner == null) {
                 if (property.getCustomer() != null) {
@@ -113,6 +114,13 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
         target.setCustomer(property.getCustomer());
         target.setProperty(property);
         target.setDesigner(assignedDesigner);
+        if (assignedDesigner != null && property.getDesigner() == null) {
+            property.setDesigner(assignedDesigner);
+        }
+        if (assignedDesigner != null && property.getCustomer() != null
+                && property.getCustomer().getDesigner() == null) {
+            property.getCustomer().setDesigner(assignedDesigner);
+        }
         // 量房执行人单独记录在 executor，与设计师语义分离，并保持完整员工实体。
         target.setExecutor(current);
         LocalDateTime legacyTime = measureTime;
@@ -163,14 +171,30 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
         return saved;
     }
 
-    /** 解析当前房屋已指派的设计师，未指派时保持为空。 */
-    private Employee resolveDesigner(Property property, Measure target) {
+    /** 解析当前房屋已指派的设计师；设计师本人录入客户时默认由本人承接设计。 */
+    private Employee resolveDesigner(Property property, Measure target, Employee current) {
         if (property.getDesigner() != null) {
             return property.getDesigner();
         }
         if (target.getDesigner() != null) {
             return target.getDesigner();
         }
-        return property.getCustomer() == null ? null : property.getCustomer().getDesigner();
+        if (property.getCustomer() != null && property.getCustomer().getDesigner() != null) {
+            return property.getCustomer().getDesigner();
+        }
+        if (current == null || current.getRole() != EmployeeRole.Designer) {
+            return null;
+        }
+        if (sameEmployee(property.getOwner(), current)
+                || sameEmployee(property.getSalesman(), current)
+                || (property.getCustomer() != null && sameEmployee(property.getCustomer().getOwner(), current))) {
+            return current;
+        }
+        return null;
+    }
+
+    private boolean sameEmployee(Employee left, Employee right) {
+        return left != null && right != null && left.getEmpId() != null
+                && left.getEmpId().equals(right.getEmpId());
     }
 }

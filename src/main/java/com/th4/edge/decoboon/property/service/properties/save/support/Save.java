@@ -17,12 +17,9 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.access.DataScope;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,10 +66,7 @@ public class Save implements com.th4.edge.decoboon.property.service.properties.s
     @Transactional
     public Property call(Property request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        DataScope scope = dataScopeContext.resolve(current);
-        Specification<Customer> byId = (root, query, builder) -> builder.equal(root.get("custId"), customerId);
-        Customer customer = customerRepository.findOne(byId.and(DataScopeSpecification.visible(Customer.class, scope)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
+        Customer customer = customerContext.requireVisible(customerId, current);
         if (propertyRepository.existsByCompany_ComIdAndCustomer_CustIdAndAddress(
                 current.getCompany().getComId(), customerId, address.trim())) {
             throw new DefinedException(new DefaultErrorCode("400", "该客户已存在相同地址的房屋"));

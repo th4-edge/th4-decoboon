@@ -43,19 +43,22 @@ public class NoticeContext {
     private final NoticeRepository noticeRepository;
     private final QuoteRepository quoteRepository;
     private final EmployeeRepository employeeRepository;
+    private final SubscribeMessageContext subscribeMessageContext;
 
     public NoticeContext(CustomerRepository customerRepository,
                          ProjectRepository projectRepository,
                          ProjectTaskRepository taskRepository,
                          NoticeRepository noticeRepository,
                          QuoteRepository quoteRepository,
-                         EmployeeRepository employeeRepository) {
+                         EmployeeRepository employeeRepository,
+                         SubscribeMessageContext subscribeMessageContext) {
         this.customerRepository = customerRepository;
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.noticeRepository = noticeRepository;
         this.quoteRepository = quoteRepository;
         this.employeeRepository = employeeRepository;
+        this.subscribeMessageContext = subscribeMessageContext;
     }
 
     @Transactional
@@ -302,6 +305,8 @@ public class NoticeContext {
                     NoticeType.Project,
                     "业主已" + status + "阶段验收",
                     project.getName() + " · " + acceptance.getStage().getName() + " · 业主已" + status);
+            // 站内通知与微信订阅消息同时发；订阅消息未授权时在触达上下文内静默跳过。
+            subscribeMessageContext.acceptanceDecision(receiver, acceptance, confirmed);
         }
     }
 

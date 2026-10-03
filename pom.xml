@@ -12,6 +12,7 @@
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <site.dist.dir>${project.basedir}/../../前端代码/th4-decoboon-site/dist</site.dist.dir>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>

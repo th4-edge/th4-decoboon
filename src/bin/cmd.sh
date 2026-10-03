@@ -55,6 +55,7 @@ validate() {
   require_var TH4_FILE_UPLOAD_DIR
   require_var TH4_FILE_PUBLIC_DIR
   require_var TH4_FILE_SIGNATURE_SECRET
+  require_file "${TH4_SITE_DIR:-$APP_HOME/site}/index.html"
   require_var WECHAT_MINI_APP_ID
   require_var WECHAT_MINI_APP_SECRET
 

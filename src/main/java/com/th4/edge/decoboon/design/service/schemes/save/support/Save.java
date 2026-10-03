@@ -21,6 +21,8 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 /** 设计方案保存实现。 */
 @Note("设计方案保存")
 @Properties(allow = {
@@ -104,19 +106,25 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
         design.setSurveyPhotos(request.getSurveyPhotos());
         design.setOriginalPlanImages(request.getOriginalPlanImages());
         design.setStatus(DesignStatus.Draft);
-        design.setArea(request.getArea() == null || request.getArea().signum() <= 0
-                ? customer.getArea() : request.getArea());
         Long resolvedPropertyId = targetPropertyId != null ? targetPropertyId : propertyId;
         if (resolvedPropertyId == null && request.getProperty() != null) {
             resolvedPropertyId = request.getProperty().getPropertyId();
         }
         Property property = propertyContext.resolve(resolvedPropertyId, customer, current);
         designContext.requirePropertyOpen(property);
+        design.setArea(initialArea(request.getArea(), customer.getArea(), property.getArea()));
         designContext.apply(design, customer, owner, property);
         Design saved = designRepository.save(design);
         if (saved.getCadUrl() != null && !saved.getCadUrl().isBlank()) {
             cadConvertService.convertAsync(saved.getDesignId(), saved.getCadUrl());
         }
         return saved;
+    }
+
+    private BigDecimal initialArea(BigDecimal requested, BigDecimal customerArea, BigDecimal propertyArea) {
+        if (requested != null && requested.signum() > 0) return requested;
+        if (customerArea != null && customerArea.signum() > 0) return customerArea;
+        if (propertyArea != null && propertyArea.signum() > 0) return propertyArea;
+        return BigDecimal.ZERO;
     }
 }

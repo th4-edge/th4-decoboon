@@ -12,6 +12,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
+import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -42,14 +43,16 @@ public class Save implements com.th4.edge.decoboon.customer.service.customerbatc
     private Long ownerId;
 
     private final CustomerBatchContext customerBatchContext;
+    private final TenantContext tenantContext;
 
-    public Save(CustomerBatchContext customerBatchContext) {
+    public Save(CustomerBatchContext customerBatchContext, TenantContext tenantContext) {
         this.customerBatchContext = customerBatchContext;
+        this.tenantContext = tenantContext;
     }
 
     @Override
     @Transactional
     public CustomerBatchPreview call(CustomerBatch request) {
-        return customerBatchContext.save(employee, text, ownerId);
+        return customerBatchContext.save(tenantContext.requireEmployee(employee), text, ownerId);
     }
 }

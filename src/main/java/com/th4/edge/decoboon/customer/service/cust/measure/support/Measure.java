@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.customer.service.cust.measure.support;
 
 import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.customer.context.CustomerContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
@@ -18,11 +19,10 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,17 +47,20 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
     @AutoInject @NotNull private LocalDateTime measureAt;
     private final CustomerRepository customerRepository;
     private final DataScopeContext dataScopeContext;
+    private final CustomerContext customerContext;
     private final NoticeContext noticeContext;
     private final PropertyContext propertyContext;
     private final MeasureRepository measureRepository;
 
     public Measure(CustomerRepository customerRepository,
                    DataScopeContext dataScopeContext,
+                   CustomerContext customerContext,
                    NoticeContext noticeContext,
                    PropertyContext propertyContext,
                    MeasureRepository measureRepository) {
         this.customerRepository = customerRepository;
         this.dataScopeContext = dataScopeContext;
+        this.customerContext = customerContext;
         this.noticeContext = noticeContext;
         this.propertyContext = propertyContext;
         this.measureRepository = measureRepository;
@@ -67,12 +70,7 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
     @Transactional
     public Customer call(Customer request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        var scope = dataScopeContext.resolve(current);
-        Specification<Customer> byId = (root, query, builder) ->
-                builder.equal(root.get("custId"), customerId);
-        Customer customer = customerRepository.findOne(
-                        byId.and(DataScopeSpecification.visible(Customer.class, scope)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
+        Customer customer = customerContext.requireVisible(customerId, current);
         if (customer.getStatus() == CustStatus.New) {
             throw new DefinedException(new DefaultErrorCode("400", "请先完成首次跟进，再约定量房"));
         }
@@ -81,6 +79,7 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         }
         Long resolvedPropertyId = targetPropertyId != null ? targetPropertyId : propertyId;
         Property property = propertyContext.resolve(resolvedPropertyId, customer, current);
+        Employee responsibleDesigner = resolveResponsibleDesigner(property, customer, current);
         if (property.getLatestMeasureAt() != null
                 || EnumSet.of(PropertyStatus.Measured, PropertyStatus.Designing, PropertyStatus.Quoted,
                 PropertyStatus.Contracted, PropertyStatus.Serving, PropertyStatus.Completed).contains(property.getStatus())) {
@@ -91,9 +90,15 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
         }
         customer.setMeasureAt(measureAt);
         customer.setStatus(CustStatus.PendingMeasure);
+        if (customer.getDesigner() == null && responsibleDesigner != null) {
+            customer.setDesigner(responsibleDesigner);
+        }
         if (customer.getPendingMeasureAt() == null) customer.setPendingMeasureAt(LocalDateTime.now());
         customer.setMeasureRequestedAt(LocalDateTime.now());
         Customer saved = customerRepository.save(customer);
+        if (property.getDesigner() == null && responsibleDesigner != null) {
+            property.setDesigner(responsibleDesigner);
+        }
 
         com.th4.edge.decoboon.property.model.Measure scheduled = measureRepository
                 .findByPropertyOrderByMeasureTimeDesc(property).stream()
@@ -117,5 +122,23 @@ public class Measure implements com.th4.edge.decoboon.customer.service.cust.meas
 
         noticeContext.measureRequested(saved, current);
         return saved;
+    }
+
+    /** 设计师录入的客户默认由本人承接设计，无需再次指派。 */
+    private Employee resolveResponsibleDesigner(Property property, Customer customer, Employee current) {
+        if (property.getDesigner() != null) return property.getDesigner();
+        if (customer.getDesigner() != null) return customer.getDesigner();
+        if (current.getRole() != EmployeeRole.Designer) return null;
+        if (sameEmployee(property.getOwner(), current)
+                || sameEmployee(property.getSalesman(), current)
+                || sameEmployee(customer.getOwner(), current)) {
+            return current;
+        }
+        return null;
+    }
+
+    private boolean sameEmployee(Employee left, Employee right) {
+        return left != null && right != null && left.getEmpId() != null
+                && left.getEmpId().equals(right.getEmpId());
     }
 }

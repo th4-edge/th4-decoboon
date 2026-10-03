@@ -262,7 +262,7 @@ class DecoboonClosedLoopTest {
                         .getProject();
             }
         }
-        assertThat(project.getProgress()).isEqualTo(100);
+        assertThat(project.getProgress()).isEqualTo(99);
         assertThat(project.getStatus()).isEqualTo(ProjectStatus.Accepting);
 
         for (ProjectStage stage : stages) {
@@ -273,7 +273,9 @@ class DecoboonClosedLoopTest {
             assertThat(confirmed.getStatus().name()).isEqualTo("Confirmed");
             assertThat(stageRepository.findById(stage.getStageId()).orElseThrow().getStatus().name()).isEqualTo("Done");
         }
-        assertThat(project.getStatus()).isEqualTo(ProjectStatus.Finished);
+        Project finished = projectContext.refreshProject(project);
+        assertThat(finished.getStatus()).isEqualTo(ProjectStatus.Finished);
+        assertThat(finished.getProgress()).isEqualTo(100);
     }
 
     private CatalogItem catalogItem(Company company, Employee employee, ItemType type,

@@ -15,6 +15,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -97,6 +98,10 @@ public class Save implements com.th4.edge.decoboon.customer.service.cust.save.Sa
         Employee owner = customerContext.resolveOwner(current, ownerId, current);
 
         customerContext.applyOwnership(request, owner);
+        if (current.getRole() == EmployeeRole.Designer && sameEmployee(owner, current)) {
+            // 设计师通过客户录入成为业务负责人时，量房与设计责任默认归本人，无需再次指派。
+            request.setDesigner(current);
+        }
         if (gender != null) request.setGender(gender);
         if (source != null) request.setSource(source);
         request.setWechatAdded(Boolean.FALSE);
@@ -105,5 +110,10 @@ public class Save implements com.th4.edge.decoboon.customer.service.cust.save.Sa
         request.setStatus(com.th4.edge.decoboon.customer.configure.CustStatus.New);
         request.setVisitCount(0);
         return customerRepository.save(request);
+    }
+
+    private boolean sameEmployee(Employee left, Employee right) {
+        return left != null && right != null && left.getEmpId() != null
+                && left.getEmpId().equals(right.getEmpId());
     }
 }

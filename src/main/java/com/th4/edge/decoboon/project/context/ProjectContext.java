@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.context;
 
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.collab.context.NoticeContext;
+import com.th4.edge.decoboon.collab.context.SubscribeMessageContext;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
@@ -93,6 +94,7 @@ public class ProjectContext {
     private final ProjectPermissionContext permissionContext;
     private final UserIdentityContext userIdentityContext;
     private final NoticeContext noticeContext;
+    private final SubscribeMessageContext subscribeMessageContext;
     private final ProjectCostContext projectCostContext;
     private final ContractPlanContext contractPlanContext;
     private final MaterialPlanContext materialPlanContext;
@@ -116,6 +118,7 @@ public class ProjectContext {
                           ContractLineRepository contractLineRepository,
                           UserIdentityContext userIdentityContext,
                           NoticeContext noticeContext,
+                          SubscribeMessageContext subscribeMessageContext,
                           ProjectCostContext projectCostContext,
                           ContractPlanContext contractPlanContext,
                           MaterialPlanContext materialPlanContext,
@@ -138,6 +141,7 @@ public class ProjectContext {
         this.contractLineRepository = contractLineRepository;
         this.userIdentityContext = userIdentityContext;
         this.noticeContext = noticeContext;
+        this.subscribeMessageContext = subscribeMessageContext;
         this.projectCostContext = projectCostContext;
         this.contractPlanContext = contractPlanContext;
         this.materialPlanContext = materialPlanContext;
@@ -420,6 +424,9 @@ public class ProjectContext {
         stage.getProject().setStatus(ProjectStatus.Accepting);
         projectRepository.save(stage.getProject());
         refreshProject(saved.getProject());
+        // 验收提交后由项目侧统一触达业主；触发时机与站内事实一致，避免出现
+        // “站内有验收单但业主没收到提醒”的半套状态。
+        subscribeMessageContext.ownerAcceptancePending(saved);
         return saved;
     }
 
@@ -729,6 +736,9 @@ public class ProjectContext {
             calculatedProgress = totalWeight.signum() == 0 ? 0
                     : weightedProgress.divide(totalWeight, 0, RoundingMode.HALF_UP).intValue();
         }
+        // 防高估：计划内仍有阶段未完成（包括无任务阶段）时，项目整体不得显示 100%。
+        // 阶段权重可以按任务/成本动态计算，但 100% 必须同时满足“所有阶段 Done”。
+        calculatedProgress = capProjectProgress(allDone, calculatedProgress);
         project.setProgress(calculatedProgress);
         project.setCost(calculateProjectCost(project));
         if (allDone) {
@@ -749,6 +759,11 @@ public class ProjectContext {
         int baseline = baselineProgress == null ? 0 : Math.max(0, Math.min(100, baselineProgress));
         int remaining = Math.max(0, Math.min(100, remainingProgress));
         return Math.min(100, baseline + Math.round((100 - baseline) * remaining / 100f));
+    }
+
+    static int capProjectProgress(boolean allDone, int calculatedProgress) {
+        int bounded = Math.max(0, Math.min(100, calculatedProgress));
+        return !allDone && bounded == 100 ? 99 : bounded;
     }
 
     private void supersedeOtherQuotes(Property property, Long winnerQuoteId) {

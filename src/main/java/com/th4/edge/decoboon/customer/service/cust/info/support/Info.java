@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.customer.service.cust.info.support;
 
 import com.th4.edge.decoboon.customer.context.CustomerGradeContext;
+import com.th4.edge.decoboon.customer.context.CustomerContext;
 import com.th4.edge.decoboon.customer.context.CustomerTagContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerGrade;
@@ -8,7 +9,6 @@ import com.th4.edge.decoboon.customer.model.CustomerPortrait;
 import com.th4.edge.decoboon.customer.model.CustomerTag;
 import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerPortraitRepository;
-import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
@@ -22,14 +22,9 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.access.DataScope;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
-import com.th4.edge.tenant.user.access.context.DataScopeContext;
-import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,52 +74,34 @@ public class Info implements com.th4.edge.decoboon.customer.service.cust.info.In
     @User
     private Employee employee;
 
-    private final CustomerRepository customerRepository;
     private final CustomerPortraitRepository portraitRepository;
     private final CustomerFollowRepository followRepository;
     private final PropertyRepository propertyRepository;
     private final MeasureRepository measureRepository;
     private final CustomerTagContext tagContext;
     private final CustomerGradeContext gradeContext;
-    private final DataScopeContext dataScopeContext;
+    private final CustomerContext customerContext;
 
-    public Info(CustomerRepository customerRepository,
-                CustomerPortraitRepository portraitRepository,
+    public Info(CustomerPortraitRepository portraitRepository,
                 CustomerFollowRepository followRepository,
                 PropertyRepository propertyRepository,
                 MeasureRepository measureRepository,
                 CustomerTagContext tagContext,
                 CustomerGradeContext gradeContext,
-                DataScopeContext dataScopeContext) {
-        this.customerRepository = customerRepository;
+                CustomerContext customerContext) {
         this.portraitRepository = portraitRepository;
         this.followRepository = followRepository;
         this.propertyRepository = propertyRepository;
         this.measureRepository = measureRepository;
         this.tagContext = tagContext;
         this.gradeContext = gradeContext;
-        this.dataScopeContext = dataScopeContext;
+        this.customerContext = customerContext;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Customer call(Customer request) {
-        Employee current = dataScopeContext.requireEmployee(employee);
-        DataScope scope = dataScopeContext.resolve(current);
-        Customer customer;
-        if (current.getRole() == EmployeeRole.Designer) {
-            customer = customerRepository.findByCustIdAndCompany_ComIdAndDesigner_EmpId(
-                            customerId, scope.comId(), current.getEmpId())
-                    .orElseThrow(() -> new DefinedException(
-                            new DefaultErrorCode("404", "客户不存在或无权访问")));
-        } else {
-            Specification<Customer> byId = (root, query, builder) ->
-                    builder.equal(root.get("custId"), customerId);
-            customer = customerRepository.findOne(
-                            byId.and(DataScopeSpecification.visible(Customer.class, scope)))
-                    .orElseThrow(() -> new DefinedException(
-                            new DefaultErrorCode("404", "客户不存在或无权访问")));
-        }
+        Customer customer = customerContext.requireVisible(customerId, employee);
         assemble(customer);
         return customer;
     }

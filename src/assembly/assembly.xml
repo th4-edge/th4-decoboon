@@ -57,6 +57,16 @@
 			</includes>
 		</fileSet>
 
+		<!-- 官网静态分包：由 th4-decoboon-site 构建后纳入发布包。 -->
+		<fileSet>
+			<directory>${site.dist.dir}</directory>
+			<outputDirectory>site</outputDirectory>
+			<fileMode>0644</fileMode>
+			<includes>
+				<include>**</include>
+			</includes>
+		</fileSet>
+
 		<!-- 将第三方依赖打包到lib目录中 -->
 		<fileSet>
 			<directory>${basedir}/target/lib</directory>

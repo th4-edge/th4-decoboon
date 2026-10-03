@@ -11,6 +11,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
+import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -37,14 +38,16 @@ public class Build implements com.th4.edge.decoboon.customer.service.customerbat
     private String text;
 
     private final CustomerBatchContext customerBatchContext;
+    private final TenantContext tenantContext;
 
-    public Build(CustomerBatchContext customerBatchContext) {
+    public Build(CustomerBatchContext customerBatchContext, TenantContext tenantContext) {
         this.customerBatchContext = customerBatchContext;
+        this.tenantContext = tenantContext;
     }
 
     @Override
     @Transactional(readOnly = true)
     public CustomerBatchPreview call(CustomerBatch request) {
-        return customerBatchContext.preview(employee, text);
+        return customerBatchContext.preview(tenantContext.requireEmployee(employee), text);
     }
 }

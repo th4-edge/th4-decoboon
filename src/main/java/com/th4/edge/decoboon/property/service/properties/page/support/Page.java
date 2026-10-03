@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /** 当前角色可见房屋分页。 */
@@ -67,11 +68,26 @@ public class Page implements com.th4.edge.decoboon.property.service.properties.p
                 case TeamLeader -> current.getTeam() == null ? List.of()
                         : propertyRepository.findByCompany_ComIdAndTeam_TeamIdOrderByPropertyIdDesc(
                                 comId, current.getTeam().getTeamId());
-                case Designer -> propertyRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(comId, empId);
+                case Designer -> mergeProperties(
+                        propertyRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(comId, empId),
+                        propertyRepository.findByCompany_ComIdAndOwner_EmpIdOrderByPropertyIdDesc(comId, empId),
+                        propertyRepository.findByCompany_ComIdAndSalesman_EmpIdOrderByPropertyIdDesc(comId, empId));
                 case Marketer -> propertyRepository.findByCompany_ComIdAndSalesman_EmpIdOrderByPropertyIdDesc(comId, empId);
                 default -> propertyRepository.findByCompany_ComIdAndOwner_EmpIdOrderByPropertyIdDesc(comId, empId);
             };
         }
         return new PageImpl<>(list);
+    }
+
+    /** 设计师作为业务负责人时，同样需要看到本人负责、营销或设计的房屋，且不重复。 */
+    @SafeVarargs
+    private final List<Property> mergeProperties(List<Property>... groups) {
+        LinkedHashMap<Long, Property> merged = new LinkedHashMap<>();
+        for (List<Property> group : groups) {
+            for (Property property : group) {
+                merged.putIfAbsent(property.getPropertyId(), property);
+            }
+        }
+        return List.copyOf(merged.values());
     }
 }
