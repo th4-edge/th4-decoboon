@@ -1,0 +1,556 @@
+{
+  "collectedAt": "2026-10-02T19:29:40.334998+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-03/20261003-032939",
+  "counts": {
+    "unknown": 97,
+    "expected": 129
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261003-ca771ba23d",
+      "signature": "name不能为空",
+      "signatureHash": "ca771ba23d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-27T16:49:47.734+08:00",
+      "lastSeen": "2026-09-27T16:49:47.734+08:00",
+      "samples": [
+        "757:2026-09-27T16:49:47.734+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : site/lead/submit处理失败: name不能为空"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-05ad2b36fb",
+      "signature": "下次跟进时间不能早于今天",
+      "signatureHash": "05ad2b36fb",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": "2026-09-30T16:03:29.918+08:00",
+      "lastSeen": "2026-09-30T16:03:35.642+08:00",
+      "samples": [
+        "13211:2026-09-30T16:03:29.918+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
+        "13326:2026-09-30T16:03:32.373+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
+        "13441:2026-09-30T16:03:33.188+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
+        "13556:2026-09-30T16:03:33.817+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天",
+        "13671:2026-09-30T16:03:34.483+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-83305d84a1",
+      "signature": "客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除",
+      "signatureHash": "83305d84a1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-01T14:31:16.985+08:00",
+      "lastSeen": "2026-10-01T14:31:19.202+08:00",
+      "samples": [
+        "18119:2026-10-01T14:31:16.985+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除",
+        "18225:2026-10-01T14:31:19.202+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 9,
+      "firstSeen": "2026-09-28T14:58:45.720+08:00",
+      "lastSeen": "2026-09-30T03:56:15.655+08:00",
+      "samples": [
+        "4350:2026-09-28T14:58:45.720+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "5910:2026-09-29T06:15:43.307+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "6512:2026-09-29T06:25:08.008+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "6770:2026-09-29T06:53:11.934+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "6942:2026-09-29T13:13:29.998+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-ad7561a398",
+      "signature": "找不到对应的处理服务:2.0/mlflow/experiments/list",
+      "signatureHash": "ad7561a398",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-09-28T14:58:45.015+08:00",
+      "lastSeen": "2026-09-30T03:56:14.961+08:00",
+      "samples": [
+        "4092:2026-09-28T14:58:45.015+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
+        "5652:2026-09-29T06:15:42.580+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
+        "6254:2026-09-29T06:25:07.256+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
+        "9286:2026-09-29T22:48:21.984+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list",
+        "9888:2026-09-29T23:04:47.984+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-afef172054",
+      "signature": "找不到对应的处理服务:2.0/mlflow/experiments/search",
+      "signatureHash": "afef172054",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-09-28T14:58:44.978+08:00",
+      "lastSeen": "2026-09-30T03:56:14.928+08:00",
+      "samples": [
+        "4006:2026-09-28T14:58:44.978+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
+        "5566:2026-09-29T06:15:42.545+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
+        "6168:2026-09-29T06:25:07.219+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
+        "9200:2026-09-29T22:48:21.949+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search",
+        "9802:2026-09-29T23:04:47.956+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-4444eb57d2",
+      "signature": "找不到对应的处理服务:actpt.data",
+      "signatureHash": "4444eb57d2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-09-28T14:58:45.868+08:00",
+      "lastSeen": "2026-09-30T03:56:15.802+08:00",
+      "samples": [
+        "4436:2026-09-28T14:58:45.868+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
+        "5996:2026-09-29T06:15:43.469+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
+        "6598:2026-09-29T06:25:08.165+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
+        "9630:2026-09-29T22:48:22.837+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data",
+        "10232:2026-09-29T23:04:48.684+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-c835f67858",
+      "signature": "找不到对应的处理服务:checkCleanIp",
+      "signatureHash": "c835f67858",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-29T02:02:32.604+08:00",
+      "lastSeen": "2026-09-29T02:02:32.604+08:00",
+      "samples": [
+        "5480:2026-09-29T02:02:32.604+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : checkCleanIp处理失败:找不到对应的处理服务:checkCleanIp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-c50a9523db",
+      "signature": "找不到对应的处理服务:dev/.env",
+      "signatureHash": "c50a9523db",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-29T13:13:44.643+08:00",
+      "lastSeen": "2026-09-29T13:13:44.643+08:00",
+      "samples": [
+        "7286:2026-09-29T13:13:44.643+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-80b62c529e",
+      "signature": "找不到对应的处理服务:index.php/v1/config/application",
+      "signatureHash": "80b62c529e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:24.203+08:00",
+      "lastSeen": "2026-10-02T11:48:24.203+08:00",
+      "samples": [
+        "20141:2026-10-02T11:48:24.203+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": "2026-09-27T17:34:20.851+08:00",
+      "lastSeen": "2026-10-02T18:09:41.373+08:00",
+      "samples": [
+        "1254:2026-09-27T17:34:20.851+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "1340:2026-09-27T20:03:10.905+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "5307:2026-09-28T16:26:02.294+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "5393:2026-09-28T16:33:49.450+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "9028:2026-09-29T21:33:07.788+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-fb8c378068",
+      "signature": "找不到对应的处理服务:merge",
+      "signatureHash": "fb8c378068",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 12,
+      "firstSeen": "2026-09-28T14:58:45.172+08:00",
+      "lastSeen": "2026-09-30T03:56:15.974+08:00",
+      "samples": [
+        "4264:2026-09-28T14:58:45.172+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
+        "4522:2026-09-28T14:58:46.048+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
+        "5824:2026-09-29T06:15:42.739+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
+        "6082:2026-09-29T06:15:43.654+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge",
+        "6426:2026-09-29T06:25:07.423+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-d9c140e2ef",
+      "signature": "找不到对应的处理服务:modular-connector/login/qrvuf",
+      "signatureHash": "d9c140e2ef",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:24.126+08:00",
+      "lastSeen": "2026-10-02T11:48:24.126+08:00",
+      "samples": [
+        "20055:2026-10-02T11:48:24.126+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : modular-connector/login/qrvuf处理失败:找不到对应的处理服务:modular-connector/login/qrvuf"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-299dbbb9f5",
+      "signature": "找不到对应的处理服务:raster/search/",
+      "signatureHash": "299dbbb9f5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:23.160+08:00",
+      "lastSeen": "2026-10-02T11:48:23.160+08:00",
+      "samples": [
+        "19969:2026-10-02T11:48:23.160+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : raster/search/处理失败:找不到对应的处理服务:raster/search/"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-7b4ee7ccd3",
+      "signature": "找不到对应的处理服务:secrets.yml",
+      "signatureHash": "7b4ee7ccd3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-09-29T06:53:24.429+08:00",
+      "lastSeen": "2026-09-29T16:32:57.712+08:00",
+      "samples": [
+        "6856:2026-09-29T06:53:24.429+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml",
+        "8243:2026-09-29T16:32:57.712+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-301f44d7f3",
+      "signature": "找不到对应的处理服务:session/properties",
+      "signatureHash": "301f44d7f3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 8,
+      "firstSeen": "2026-09-30T04:27:15.593+08:00",
+      "lastSeen": "2026-10-01T08:08:17.009+08:00",
+      "samples": [
+        "11705:2026-09-30T04:27:15.593+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
+        "11791:2026-09-30T04:27:16.372+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
+        "16783:2026-10-01T08:05:47.080+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
+        "16869:2026-10-01T08:05:48.541+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties",
+        "16955:2026-10-01T08:07:31.030+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-e4bbca461d",
+      "signature": "找不到对应的处理服务:staging/.env",
+      "signatureHash": "e4bbca461d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-29T13:13:44.887+08:00",
+      "lastSeen": "2026-09-29T13:13:44.887+08:00",
+      "samples": [
+        "7372:2026-09-29T13:13:44.887+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-dcd3cd89d2",
+      "signature": "找不到对应的处理服务:system/system/string_render",
+      "signatureHash": "dcd3cd89d2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-09-28T14:58:45.079+08:00",
+      "lastSeen": "2026-09-30T03:56:15.021+08:00",
+      "samples": [
+        "4178:2026-09-28T14:58:45.079+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
+        "5738:2026-09-29T06:15:42.644+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
+        "6340:2026-09-29T06:25:07.322+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
+        "9372:2026-09-29T22:48:22.046+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render",
+        "9974:2026-09-29T23:04:48.035+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-416878e316",
+      "signature": "找不到对应的处理服务:v1/.env",
+      "signatureHash": "416878e316",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-29T13:13:42.713+08:00",
+      "lastSeen": "2026-09-29T13:13:42.713+08:00",
+      "samples": [
+        "7028:2026-09-29T13:13:42.713+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-5d7427dfe2",
+      "signature": "找不到对应的处理服务:v1/config/application",
+      "signatureHash": "5d7427dfe2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:33.478+08:00",
+      "lastSeen": "2026-10-02T11:48:33.478+08:00",
+      "samples": [
+        "20485:2026-10-02T11:48:33.478+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/config/application处理失败:找不到对应的处理服务:v1/config/application"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-6bcaa7f28f",
+      "signature": "找不到对应的处理服务:v1/fabric_device_auth/fortigate/init",
+      "signatureHash": "6bcaa7f28f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:27.115+08:00",
+      "lastSeen": "2026-10-02T11:48:27.115+08:00",
+      "samples": [
+        "20227:2026-10-02T11:48:27.115+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-8c03798289",
+      "signature": "找不到对应的处理服务:v1/init_consts",
+      "signatureHash": "8c03798289",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:27.149+08:00",
+      "lastSeen": "2026-10-02T11:48:27.149+08:00",
+      "samples": [
+        "20313:2026-10-02T11:48:27.149+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-71492b16e8",
+      "signature": "找不到对应的处理服务:v1/monitor/messages",
+      "signatureHash": "71492b16e8",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:18.475+08:00",
+      "lastSeen": "2026-10-02T11:48:18.475+08:00",
+      "samples": [
+        "19883:2026-10-02T11:48:18.475+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages"
+      ],
+      "reportPaths": [
+        "2026-10-03/20261003-032939"
+      ]
+    },
+    {
+      "incidentId": "INC-20261003-363c89fdc5",
+      "signature": "找不到对应的处理服务:v1/version",
+      "signatureHash": "363c89fdc5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-02T11:48:32.125+08:00",
+      "lastSeen": "2026-10-02T11:48:32.125+08:00",
+      "samples": [
+        "20399:2026-10-02T11:48:32.125+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/version处理失败:找不到对应的处理服务:v1/version"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-e359a7a32a",
+      "signature": "找不到对应的处理服务:v2/.env",
+      "signatureHash": "e359a7a32a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-29T13:13:42.957+08:00",
+      "lastSeen": "2026-09-29T13:13:42.957+08:00",
+      "samples": [
+        "7114:2026-09-29T13:13:42.957+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-7cc2b644b1",
+      "signature": "找不到对应的处理服务:v3/.env",
+      "signatureHash": "7cc2b644b1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-09-29T13:13:44.398+08:00",
+      "lastSeen": "2026-09-29T13:13:44.398+08:00",
+      "samples": [
+        "7200:2026-09-29T13:13:44.398+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-dfb2d5ba8f",
+      "signature": "找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+      "signatureHash": "dfb2d5ba8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-09-28T05:31:42.591+08:00",
+      "lastSeen": "2026-10-01T15:05:56.377+08:00",
+      "samples": [
+        "2623:2026-09-28T05:31:42.591+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+        "9114:2026-09-29T21:43:40.804+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+        "18311:2026-10-01T15:05:56.377+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 17,
+      "firstSeen": "2026-09-28T00:26:03.871+08:00",
+      "lastSeen": "2026-10-03T01:36:01.626+08:00",
+      "samples": [
+        "[2026-10-03 01:36:01.626] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "1439:2026-09-28T00:26:03.871+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "2037:2026-09-28T02:38:18.030+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "3319:2026-09-28T14:04:22.641+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "4620:2026-09-28T15:29:55.303+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261003-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 120,
+      "firstSeen": "2026-09-27T16:49:33.845+08:00",
+      "lastSeen": "2026-10-03T03:29:40.175+08:00",
+      "samples": [
+        "[2026-10-03 01:36:01.660] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-03 01:36:01.666] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-03 01:36:01.667] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-03 01:36:01.672] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-03 01:36:01.681] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

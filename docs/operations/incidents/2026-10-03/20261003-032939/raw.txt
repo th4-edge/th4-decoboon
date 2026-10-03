@@ -1,0 +1,485 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-10-03T03:29:40+08:00
+ 03:29:40 up 17 days,  2:17,  1 user,  load average: 0.15, 0.05, 0.01
+since=30 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=103193
+ExecMainStartTimestamp=Sun 2026-09-27 16:48:56 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20260927-164804
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/vda3         40901312 8745524  30265420      23% /
+/dev/vda3         40901312 8745524  30265420      23% /
+/dev/vda3         40901312 8745524  30265420      23% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        3408         966         260        3637        4048
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-10-03 01:36:01.626] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-03 01:36:01.660] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-03 01:36:01.666] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-03 01:36:01.667] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-03 01:36:01.672] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-03 01:36:01.681] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-03 03:29:27.010] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-03 03:29:40.175] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-10-02 04:18:21.189] [WARN ] [XNIO-1 task-2] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+[2026-10-02 04:18:29.729] [WARN ] [XNIO-1 task-2] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+
+== STDOUT_ERRORS ==
+537:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+638:2026-09-27T16:49:33.845+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+640:com.th4.edge.framework.exception.DefinedException:  name不能为空
+757:2026-09-27T16:49:47.734+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : site/lead/submit处理失败: name不能为空
+758:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+862:2026-09-27T16:49:47.918+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+863:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+960:2026-09-27T16:53:40.629+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+961:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1061:2026-09-27T16:53:40.642+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/overview处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1062:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1166:2026-09-27T16:53:40.710+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1169:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+1254:2026-09-27T17:34:20.851+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+1255:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+1340:2026-09-27T20:03:10.905+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+1341:2026-09-27T23:41:03.384+08:00  WARN 103193 --- [  XNIO-1 task-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+1342:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+1439:2026-09-28T00:26:03.871+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+1440:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1537:2026-09-28T00:26:03.941+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1538:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1635:2026-09-28T00:26:03.946+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1636:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1736:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1737:2026-09-28T00:26:03.951+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1837:2026-09-28T00:26:03.955+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1838:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1938:2026-09-28T00:26:03.966+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1940:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+2037:2026-09-28T02:38:18.030+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+2038:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2138:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2235:2026-09-28T02:38:18.049+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2236:2026-09-28T02:38:18.050+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2237:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2337:2026-09-28T02:38:18.054+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2338:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2435:2026-09-28T02:38:18.060+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2436:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2536:2026-09-28T02:38:18.068+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2538:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+2623:2026-09-28T05:31:42.591+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+2624:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2724:2026-09-28T12:59:14.998+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2725:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2825:2026-09-28T12:59:15.005+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2826:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2923:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2924:2026-09-28T12:59:15.008+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3021:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3070:2026-09-28T12:59:15.014+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3122:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3123:2026-09-28T12:59:15.016+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3220:2026-09-28T12:59:15.019+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3222:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+3319:2026-09-28T14:04:22.641+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，授权已过期，请重新登录后再访问。
+3320:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3417:2026-09-28T14:04:22.646+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3418:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3515:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3516:2026-09-28T14:04:22.662+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3616:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3617:2026-09-28T14:04:22.663+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3717:2026-09-28T14:04:22.666+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3718:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3818:2026-09-28T14:04:22.676+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3819:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3919:2026-09-28T14:04:22.722+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3921:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/search
+4006:2026-09-28T14:58:44.978+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search
+4007:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/list
+4092:2026-09-28T14:58:45.015+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list
+4093:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system/system/string_render
+4178:2026-09-28T14:58:45.079+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render
+4179:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+4264:2026-09-28T14:58:45.172+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+4265:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+4350:2026-09-28T14:58:45.720+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+4351:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:actpt.data
+4436:2026-09-28T14:58:45.868+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data
+4437:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+4522:2026-09-28T14:58:46.048+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+4523:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+4620:2026-09-28T15:29:55.303+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+4621:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4718:2026-09-28T15:29:55.332+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4719:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4819:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4820:2026-09-28T15:29:55.344+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4917:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5017:2026-09-28T15:29:55.354+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5018:2026-09-28T15:29:55.355+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5019:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5119:2026-09-28T15:29:55.398+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5120:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+5220:2026-09-28T15:29:55.416+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+5222:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+5307:2026-09-28T16:26:02.294+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+5308:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+5393:2026-09-28T16:33:49.450+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+5394:2026-09-28T22:56:29.437+08:00  WARN 103193 --- [  XNIO-1 task-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+5395:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:checkCleanIp
+5480:2026-09-29T02:02:32.604+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : checkCleanIp处理失败:找不到对应的处理服务:checkCleanIp
+5481:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/search
+5566:2026-09-29T06:15:42.545+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search
+5567:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/list
+5652:2026-09-29T06:15:42.580+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list
+5653:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system/system/string_render
+5738:2026-09-29T06:15:42.644+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render
+5739:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+5824:2026-09-29T06:15:42.739+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+5825:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+5910:2026-09-29T06:15:43.307+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+5911:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:actpt.data
+5996:2026-09-29T06:15:43.469+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data
+5997:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+6082:2026-09-29T06:15:43.654+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+6083:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/search
+6168:2026-09-29T06:25:07.219+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search
+6169:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/list
+6254:2026-09-29T06:25:07.256+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list
+6255:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system/system/string_render
+6340:2026-09-29T06:25:07.322+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render
+6341:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+6426:2026-09-29T06:25:07.423+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+6427:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+6512:2026-09-29T06:25:08.008+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+6513:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:actpt.data
+6598:2026-09-29T06:25:08.165+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data
+6599:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+6684:2026-09-29T06:25:08.353+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+6685:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+6770:2026-09-29T06:53:11.934+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+6771:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:secrets.yml
+6856:2026-09-29T06:53:24.429+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml
+6857:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+6942:2026-09-29T13:13:29.998+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+6943:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/.env
+7028:2026-09-29T13:13:42.713+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env
+7029:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v2/.env
+7114:2026-09-29T13:13:42.957+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env
+7115:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v3/.env
+7200:2026-09-29T13:13:44.398+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env
+7201:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:dev/.env
+7286:2026-09-29T13:13:44.643+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env
+7287:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:staging/.env
+7372:2026-09-29T13:13:44.887+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env
+7373:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+7470:2026-09-29T14:02:47.850+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+7471:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7568:2026-09-29T14:02:47.860+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7569:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7666:2026-09-29T14:02:47.865+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7667:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7767:2026-09-29T14:02:47.873+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7768:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7868:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+7968:2026-09-29T14:02:47.881+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7969:2026-09-29T14:02:47.883+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+7970:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8070:2026-09-29T14:02:47.927+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8072:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+8157:2026-09-29T16:32:29.478+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+8158:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:secrets.yml
+8243:2026-09-29T16:32:57.712+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml
+8244:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+8341:2026-09-29T21:22:58.618+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+8342:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8442:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8451:2026-09-29T21:22:58.659+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8540:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8637:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8673:2026-09-29T21:22:58.678+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8674:2026-09-29T21:22:58.683+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8739:2026-09-29T21:22:58.688+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8740:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8840:2026-09-29T21:22:58.722+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8841:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8941:2026-09-29T21:22:58.740+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8943:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+9028:2026-09-29T21:33:07.788+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+9029:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+9114:2026-09-29T21:43:40.804+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+9115:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/search
+9200:2026-09-29T22:48:21.949+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search
+9201:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/list
+9286:2026-09-29T22:48:21.984+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list
+9287:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system/system/string_render
+9372:2026-09-29T22:48:22.046+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render
+9373:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+9458:2026-09-29T22:48:22.137+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+9459:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+9544:2026-09-29T22:48:22.688+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+9545:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:actpt.data
+9630:2026-09-29T22:48:22.837+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data
+9631:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+9716:2026-09-29T22:48:23.016+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+9717:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/search
+9802:2026-09-29T23:04:47.956+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search
+9803:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/list
+9888:2026-09-29T23:04:47.984+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list
+9889:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system/system/string_render
+9974:2026-09-29T23:04:48.035+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render
+9975:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+10060:2026-09-29T23:04:48.112+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+10061:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+10146:2026-09-29T23:04:48.563+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+10147:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:actpt.data
+10232:2026-09-29T23:04:48.684+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data
+10233:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+10318:2026-09-29T23:04:48.828+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+10319:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+10416:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10513:2026-09-30T00:25:52.912+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+10514:2026-09-30T00:25:52.914+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10515:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10612:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10712:2026-09-30T00:25:52.918+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10713:2026-09-30T00:25:52.920+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10714:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10814:2026-09-30T00:25:52.926+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10815:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+10915:2026-09-30T00:25:52.934+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+10916:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11016:2026-09-30T00:25:52.939+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11018:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/search
+11103:2026-09-30T03:56:14.928+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/search处理失败:找不到对应的处理服务:2.0/mlflow/experiments/search
+11104:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:2.0/mlflow/experiments/list
+11189:2026-09-30T03:56:14.961+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 2.0/mlflow/experiments/list处理失败:找不到对应的处理服务:2.0/mlflow/experiments/list
+11190:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system/system/string_render
+11275:2026-09-30T03:56:15.021+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : system/system/string_render处理失败:找不到对应的处理服务:system/system/string_render
+11276:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+11361:2026-09-30T03:56:15.111+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+11362:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:.env
+11447:2026-09-30T03:56:15.655+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env
+11448:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:actpt.data
+11533:2026-09-30T03:56:15.802+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : actpt.data处理失败:找不到对应的处理服务:actpt.data
+11534:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:merge
+11619:2026-09-30T03:56:15.974+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : merge处理失败:找不到对应的处理服务:merge
+11620:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+11705:2026-09-30T04:27:15.593+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+11706:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+11791:2026-09-30T04:27:16.372+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+11792:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+11889:2026-09-30T13:17:30.861+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+11890:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11987:2026-09-30T13:17:30.872+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11988:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12085:2026-09-30T13:17:30.873+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12086:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12186:2026-09-30T13:17:30.876+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12187:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12287:2026-09-30T13:17:30.878+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12288:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12388:2026-09-30T13:17:30.889+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12389:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12489:2026-09-30T13:17:30.903+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12491:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12588:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12603:2026-09-30T16:02:20.629+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12694:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12695:2026-09-30T16:02:20.630+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12792:2026-09-30T16:02:20.631+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12793:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12893:2026-09-30T16:02:20.639+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12894:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12994:2026-09-30T16:02:20.644+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/marketer/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12995:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13095:2026-09-30T16:02:20.659+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13097:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13211:2026-09-30T16:03:29.918+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13212:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13326:2026-09-30T16:03:32.373+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13327:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13441:2026-09-30T16:03:33.188+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13442:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13556:2026-09-30T16:03:33.817+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13557:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13671:2026-09-30T16:03:34.483+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13672:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13786:2026-09-30T16:03:34.992+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13787:com.th4.edge.framework.exception.DefinedException: 下次跟进时间不能早于今天
+13901:2026-09-30T16:03:35.642+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer-follow/save处理失败:下次跟进时间不能早于今天
+13902:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+13999:2026-09-30T16:07:07.425+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，授权已过期，请重新登录后再访问。
+14000:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14097:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14197:2026-09-30T16:07:07.432+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14198:2026-09-30T16:07:07.430+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14199:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14296:2026-09-30T16:07:07.437+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14297:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14397:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14497:2026-09-30T16:07:07.442+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14498:2026-09-30T16:07:07.444+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14499:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14599:2026-09-30T16:07:07.452+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14601:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+14698:2026-09-30T17:04:32.209+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+14699:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14799:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14817:2026-09-30T17:04:32.314+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14897:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14997:2026-09-30T17:04:32.315+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14998:2026-09-30T17:04:32.316+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14999:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15096:2026-09-30T17:04:32.319+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15097:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15197:2026-09-30T17:04:32.328+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15199:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+15296:2026-09-30T19:14:22.913+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+15297:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15397:2026-09-30T19:14:22.919+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15398:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15495:2026-09-30T19:14:22.926+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15496:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15596:2026-09-30T19:14:22.928+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15597:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15694:2026-09-30T19:14:22.930+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15695:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15795:2026-09-30T19:14:22.935+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15796:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15896:2026-09-30T19:14:22.979+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15898:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+15995:2026-10-01T02:15:21.032+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+15996:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16096:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16193:2026-10-01T02:15:21.063+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16194:2026-10-01T02:15:21.063+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16195:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16295:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16336:2026-10-01T02:15:21.067+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16393:2026-10-01T02:15:21.069+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16394:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16494:2026-10-01T02:15:21.082+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16495:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16595:2026-10-01T02:15:21.097+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16596:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16696:2026-10-01T02:15:21.107+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16698:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+16783:2026-10-01T08:05:47.080+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+16784:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+16869:2026-10-01T08:05:48.541+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+16870:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+16955:2026-10-01T08:07:31.030+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+16956:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+17041:2026-10-01T08:07:31.138+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+17042:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+17127:2026-10-01T08:08:16.210+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+17128:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:session/properties
+17213:2026-10-01T08:08:17.009+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : session/properties处理失败:找不到对应的处理服务:session/properties
+17214:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+17311:2026-10-01T12:47:49.469+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+17312:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+17409:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+17410:2026-10-01T12:47:49.493+08:00 ERROR 103193 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+17510:2026-10-01T12:47:49.494+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+17511:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+17611:2026-10-01T12:47:49.498+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+17612:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+17709:2026-10-01T12:47:49.500+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+17710:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+17810:2026-10-01T12:47:49.505+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+17811:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+17911:2026-10-01T12:47:49.527+08:00 ERROR 103193 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+17912:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+18012:2026-10-01T12:47:49.530+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+18014:com.th4.edge.framework.exception.DefinedException: 客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除
+18119:2026-10-01T14:31:16.985+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除
+18120:com.th4.edge.framework.exception.DefinedException: 客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除
+18225:2026-10-01T14:31:19.202+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除
+18226:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+18311:2026-10-01T15:05:56.377+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+18312:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+18409:2026-10-01T18:06:22.689+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+18410:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+18510:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+18511:2026-10-01T18:06:22.697+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+18611:2026-10-01T18:06:22.701+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+18612:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+18709:2026-10-01T18:06:22.703+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+18710:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+18807:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+18808:2026-10-01T18:06:22.709+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+18908:2026-10-01T18:06:22.710+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+18910:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+18995:2026-10-01T22:32:23.928+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+18996:2026-10-02T04:18:21.189+08:00  WARN 103193 --- [  XNIO-1 task-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+18997:2026-10-02T04:18:29.729+08:00  WARN 103193 --- [  XNIO-1 task-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+18998:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+19095:2026-10-02T10:32:03.541+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+19096:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19196:2026-10-02T10:32:03.549+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19197:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19294:2026-10-02T10:32:03.563+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19295:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19392:2026-10-02T10:32:03.566+08:00 ERROR 103193 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19393:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19493:2026-10-02T10:32:03.569+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19494:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19594:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19601:2026-10-02T10:32:03.579+08:00 ERROR 103193 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19695:2026-10-02T10:32:03.581+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19696:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+19796:2026-10-02T10:32:03.589+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+19798:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/monitor/messages
+19883:2026-10-02T11:48:18.475+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages
+19884:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:raster/search/
+19969:2026-10-02T11:48:23.160+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : raster/search/处理失败:找不到对应的处理服务:raster/search/
+19970:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:modular-connector/login/qrvuf
+20055:2026-10-02T11:48:24.126+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : modular-connector/login/qrvuf处理失败:找不到对应的处理服务:modular-connector/login/qrvuf
+20056:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:index.php/v1/config/application
+20141:2026-10-02T11:48:24.203+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application
+20142:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/fabric_device_auth/fortigate/init
+20227:2026-10-02T11:48:27.115+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init
+20228:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/init_consts
+20313:2026-10-02T11:48:27.149+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts
+20314:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/version
+20399:2026-10-02T11:48:32.125+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/version处理失败:找不到对应的处理服务:v1/version
+20400:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:v1/config/application
+20485:2026-10-02T11:48:33.478+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/config/application处理失败:找不到对应的处理服务:v1/config/application
+20486:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+20571:2026-10-02T18:09:41.373+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+20572:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+20669:2026-10-03T01:36:01.626+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+20670:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+20770:2026-10-03T01:36:01.660+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+20771:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+20868:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+20869:2026-10-03T01:36:01.666+08:00 ERROR 103193 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+20969:2026-10-03T01:36:01.667+08:00 ERROR 103193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+20970:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+21067:2026-10-03T01:36:01.672+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+21068:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+21168:2026-10-03T01:36:01.681+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+21169:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+21270:2026-10-03T03:29:27.010+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+21271:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+21372:2026-10-03T03:29:40.175+08:00 ERROR 103193 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+-- No entries --

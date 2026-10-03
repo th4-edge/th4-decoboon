@@ -28,6 +28,11 @@ th4-decoboon-1.0.0-build/
 │   ├── application.yml
 │   ├── application-prod.yml
 │   └── logback-spring.xml
+├── site/
+│   ├── index.html
+│   ├── assets/
+│   ├── brand/
+│   └── components/
 ├── lib/
 └── docs/PRODUCTION.md
 ```
@@ -63,6 +68,7 @@ chmod 600 /etc/decoboon/th4-decoboon.env
 - `DB_URL`、`DB_USERNAME`、`DB_PASSWORD`
 - `REDIS_HOST`、`REDIS_PASSWORD`
 - `TH4_FILE_SIGNATURE_SECRET`
+- `TH4_SITE_DIR`（默认指向发布包 `site/` 目录）
 - `ALIYUN_OSS_*`
 - `WECHAT_MINI_*`
 - `WECHAT_PAY_*`
@@ -92,6 +98,11 @@ systemctl status decoboon
 
 - `decoboon.joytsing.com` 必须解析到服务器。
 - `/api/` 反向代理到 `http://127.0.0.1:8090`。
+- `/site/` 反向代理到 `http://127.0.0.1:8090`，由后端静态资源分包提供。
+- `www.joytsing.com` 的 A 记录指向 `120.55.15.159`。
+- 正式官网根路径映射到后端 `/site/`，`robots.txt`、`sitemap.xml`、`llms.txt` 与静态资源同样经该域名提供。
+- HTTPS 证书使用 `/etc/letsencrypt/live/www.joytsing.com/`，由 `certbot-renew.timer` 每日检查续期。
+- 配置模板：`docs/deploy/www.joytsing.com.http.conf`（证书签发前）、`docs/deploy/www.joytsing.com.conf`（正式 HTTPS）。
 - `client_max_body_size` 必须不低于 500 MB。
 - 微信支付回调地址必须为 `https://decoboon.joytsing.com/api/order/callback`。
 
