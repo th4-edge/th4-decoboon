@@ -1,8 +1,24 @@
-# Product Planning Worklog
+## 2026-09-26 T06冻结、A0.2启动与A2 PRD
+
+- `ANS-BIZ-20260926-004` 已返回：正式点数账本机制可开发，真实票价、套餐点数和资源包价格继续暂缓 A0.4。
+- A0.2 产品规格：`docs/product/2026-09-26-AI资源点数账本P0产品需求规格.md`。
+- A0.2 开发分支：`feature/ai-point-ledger`，提交 `6fb2304`，全量后端测试 PASS。
+- A2 产品规划已启动：`docs/product/2026-09-26-AI谈单官P0产品需求规格.md`。
+- A0.1/A1 联合验收发现 4 项缺陷，开发已在后端 dev `0f78366` 修复并提交复验。
+- 状态：A0.2 实现自测完成待验收；A2 PRD 待评审。
+
+## 2026-09-26 AI 能力接入产品研发总计划与首波启动
+
+- 依据用户要求，将 AI 能力接入总体设计方案正式转为研发项目。
+- 产出 `docs/plan/2026-09-26-AI能力接入产品研发总计划.md`，明确 A0-A6 波次、依赖、责任人、权限边界和验收流程。
+- 首波冻结为 A0.1 影子用量底账 + A1 AI 经营参谋 P0。
+- 当前检查点：后端 A0.1 `9ed122c`、A1 `2218ce9`；Web AI 资源统计 `7257482`、经营简报 `0597914`。
+- A0.1、A1 均完成开发自测和构建，下一步为联合联调与 acceptance 独立验收。
+- T06 仍为正式点数、资源包和收费门禁。
 
 ## Current
 
-`REQ-BIZ-20260926-001` 报价项目库批量导入 PRD 已完成，状态 `frozen_for_development`。尝试向 development session 直接投递时返回 archived，未视为已接手；完整 handoff 已写入 PRD 第 15 节，等待协调侧转交或恢复 development session。
+`REQ-20260926-AI-DESIGN-P0.4-PRODUCT` 已由 development lane 实现并自测交付，当前状态 `implementation_done_self_tested_pending_independent_acceptance`。后端 `feature/design-ai-context-prompt` 已完成字段/角色收口与效果图持久化，App `feature/design-ai-generation-app` 已完成页面和入口；已转入 acceptance lane，等待独立验收，不得视为验收通过。
 
 ## Outputs
 
@@ -10,19 +26,48 @@
 | --- | --- | --- | --- |
 | 装得清上线前业务功能与开发范围规划 | `docs/plan/2026-09-15-上线前业务功能规划.md` | user / development / acceptance | draft_for_review |
 | 报价项目库批量导入 PRD | `docs/product/2026-09-26-报价项目库批量导入PRD.md` | user / development / acceptance | frozen_for_development |
+| AI 设计生成 App 页面与状态规格 | `docs/product/2026-09-26-AI设计生成App页面与状态规格.md` | user / development / acceptance | implementation_done_self_tested_pending_independent_acceptance |
 
 ## Verification
 
-- 业务裁决 `ANS-BIZ-20260926-001` 与研发咨询 `REQ-BIZ-20260926-001` 已完整读取。
-- 模板 V1.0 已读取：4 个工作表、正式表 23 列、8 组数据验证；SHA-256=`0791273625f65cf6f021089d58284d17aefaab654ddadea50a67766e0f3638a9`。
-- 现有 `catalog/item/import`、`CatalogItem`、六类明细、报价/套餐/成本 Context 与小程序报价项目库页面已核对。
-- 未修改 `src/**`、小程序或生产配置。
+- `REQ-BIZ-20260926-003`、`DEC-010 / AI-DEC-10~12`、`SOL-004` 与冻结包 `PKT-20260926-AI-DESIGN-001` 已读取。
+- P0.1-P0.3 工作树 `/private/tmp/th4-decoboon-ai-design` 的 build/info/page/update、模型、状态枚举、上下文构建、Prompt 渲染和迁移 63 已逐项核对。
+- App 设计分包路由、`domains/design` 类型/API、角色矩阵、路由守卫、方案详情 CAD 交互已核对；当前不存在 AI 生成页面或 API。
+- 已确认 `info/update` 对外返回成本、模型参数、用量、请求号和原始失败信息，且 `info/page` 未复用设计写角色门槛；已作为 P0.4 阻断缺口写入规格。
+- development 后端分支提交 `88fb6d4,b422ded,4a54790,668570f,ebda263,f2f1376,c143bd5,fc5bb9f` 与 App 分支提交 `f646468,5b19501` 已存在；后端 build/info/page/update 字段裁剪、`requireDesignWriteAccess`、TalkBrief 角色裁剪、私有效果图持久化与 Design 文件签名均已在源码中核对。
+- development 报告后端 compile/package PASS、假模型端到端 PASS，App type-check/build/分包检查 PASS；375/390/430 真实截图、四角色黑盒和迁移隔离演练仍待 acceptance。
+- 仅修改 `docs/product/**` 与 product-planning lane/协作记录，未修改 `src/**`、App 或生产配置。
 
 ## Next
 
-1. 协调侧恢复或转交 development session；development lane 按 PRD 第 15 节 handoff 接手，先冻结批次模型、迁移、Provider 路由和成本完整性传播。
-2. 开发自测完成后按主流程交 acceptance lane，按 PRD 第 14 节独立验收。
-3. 历史项目、合同、报价和财务迁移继续保持暂缓。
+1. acceptance lane 按规格第 12/14 节独立复验，重点覆盖四角色、TalkBrief 隔离、任务状态恢复、封面/区域回写、文件签名和交付门禁。
+2. `ProviderSecurityAcceptanceTest` 路由基线从 341 更新为 345，并让字段最小化断言与当前响应契约一致；不得只改预期掩盖权限缺陷。
+3. 迁移 63 需在隔离 MySQL 演练，`scripts/build-release.sh` 的 `MIGRATION_END` 由 release/acceptance 流程处理。
+4. 正式 HTML/PDF、Prompt 生成前人工确认和客户发送仍未解锁，需用户另行裁决。
+
+## 2026-09-26 AI 设计生成 P0.4 development 交付转入 acceptance
+
+- 交付状态：`DEV_FIXED_OR_IMPLEMENTED_PENDING_ACCEPTANCE`，只表示开发完成和自测通过，不代表独立验收结论。
+- 后端分支：`feature/design-ai-context-prompt`；关键提交 `ebda263`（权限/响应收口）、`c143bd5`（效果图持久化与签名）、`fc5bb9f`（Shared Outputs）。
+- App 分支：`feature/design-ai-generation-app`；关键提交 `f646468`（页面和入口）、`5b19501`（私有对象签名）。
+- 产品基线：`docs/product/2026-09-26-AI设计生成App页面与状态规格.md`，状态更新为 `implementation_done_self_tested_pending_independent_acceptance`。
+- 已核对实现：`DesignPromptPrivacyContext` 非 Designer 清空 `talkPrompt`；build/info/page/update 使用设计写角色门槛；效果图写入 `design/ai-render/{designId}/` 并按 Design 数据范围签名；App 新增路由、领域 API、页面及 list/scheme/workbench 入口。
+- 待独立验收：真实 375/390/430 页面与安全区、四角色正反向、跨企业/门店/团队、Prompt 字段最小化、TalkBrief 隔离、状态恢复、重复任务、封面/区域回写、过期/失败版本、正式交付门禁。
+- 已知开发自测项：后端 compile/package PASS；假模型 `PromptReady -> DraftReady` PASS；App type-check/build/分包检查 PASS；`ProviderSecurityAcceptanceTest` 仅因路由总数 Expected 341 / Actual 345 失败。
+- 风险：真实 Seedream 受账户余额和开通状态影响；CAD 几何绝对一致性未承诺；迁移 63 未隔离演练；375/390/430 真实截图和四角色黑盒未完成。
+- 交接：`HANDOFF-AI-DESIGN-P0.4-ACCEPTANCE-20260926-001` 已转交 acceptance lane。
+
+## 2026-09-26 AI 设计生成 App 页面与状态规格（product-planning → development）
+
+- 业务输入：`REQ-BIZ-20260926-003`、`DEC-010 / AI-DEC-10~12`、`SOL-004`、冻结包 `PKT-20260926-AI-DESIGN-001`。
+- 产出：`docs/product/2026-09-26-AI设计生成App页面与状态规格.md`，状态 `frozen_for_development`。
+- 页面冻结：新增 `/subpackages/design/pages/ai-generation`；设计列表方案卡和方案详情提供入口；一个页面承载条件检查、上下文摘要、Prompt 预览、状态恢复、版本对比和确认。
+- 权限冻结：入口和 API 读取统一限定 BOSS、店长、团队负责人、设计师，并继续叠加企业/门店/团队/本人数据范围；TalkBrief 仅 Designer 可见，业务员、项目经理、财务、业主不得读取生成任务或 Prompt。
+- 状态冻结：`PromptReady` 等待、`Generating` 等待、`DraftReady` 可确认、`DesignerConfirmed` 可切换版本、`Failed` 映射恢复；当前 `build` 提交后立即异步生成，Prompt 为冻结快照，不是生成前确认页。
+- 回写冻结：确认封面替换 `Design.coverUrl`；确认区域向 `Space.images` 追加。确认后必须重新读取 `design/scheme/info`。
+- 交付门禁：仅 `DesignerConfirmed + Confirmed + deliverable=true + 当前设计目标匹配` 可作为未来正式 HTML/PDF 输入；当前无 HTML/PDF Provider，App 不提供可用正式交付按钮。
+- 关键缺口：`info/update` 当前下发 `costAmount/costCurrency/usageJson/requestId/modelParametersJson/failureMessage` 并向所有可读角色返回 `talkPrompt`；`info/page` 未复用 `requireDesignWriteAccess`，均必须在 P0.4 开发前收口。
+- 交接：`HANDOFF-AI-DESIGN-P0.4-APP-20260926-001` 已写入规格第 14 节，等待 development lane 确认接手。
 
 ## 2026-09-26 报价项目库批量导入 PRD（product-planning → development）
 
@@ -154,3 +199,69 @@
 - 状态：`frozen_design_waiting_for_biz_decision`（P0 不需要裁决即可开发；P1 前必须拿到 T06）。
 
 - **P0 已完成（2026-09-24）**：新增业主专用页 `pages/owner/enter`；`company/join` 重写为"选择您的身份"四选一（邀请码输入默认收起、注册企业独立入口）；`invite/accept` 删除业主分支（残留 0）并做历史链接兼容重定向。真机验证：选择页与业主页 ✅；**历史邀请链接自动重定向未通过**（已记录原因与建议）。
+
+## 2026-10-02 Web V2 前置冻结包（设计师最后一公里）
+
+- 输入：用户确认 Web 比 App 更重，要求把控重量成为亮点；设计师的设计、报价、合同、增减项、选材和客户沟通必须解决最后一公里转化问题。
+- 产出：
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/00-README.md`：冻结包入口、P0 范围、明确不做与当前状态。
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/01-product-charter-and-ia.md`：Web 定位、L1/L2/L3 重量模型、双壳层、一级导航、页面原型和角色对象变形。
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/02-designer-last-mile.md`：设计师“一单一世界”转化工作台、三栏骨架、沟通闭环、版本比较、合同/变更/选材连续链路。
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/03-object-action-state-contract.md`：对象上下文、动作、写入刷新、状态、权限、账务和沟通投影契约。
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/04-provider-data-acceptance.md`：Provider 缺口、三租户数据、G1-G3 和第一阶段验收。
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/05-t05-business-consultation.md` + `docs/product/consultations/REQ-BIZ-20261002-001-Web V2设计师最后一公里.md`：5 个阻断性业务问题。
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/iteration-packet.json`：校验 PASS，`tenants=3 scenarios=3 web_ux=4 desktop_ux=4 blocking_questions=5`。
+- 关键判断：
+  1. Web 重量必须来自对象上下文、版本比较、客户反馈、跨角色交接、风险和对账，不来自更多卡片与指标。
+  2. Web V2 P0 核心是统一对象工作空间，设计师最后一公里是第一个垂直样板。
+  3. Web 与 App 仍必须使用同一业务事实、Provider、状态机和金额口径。
+  4. 客户沟通当前存在事实冲突和对象缺口，不得在 T06 前新增正式状态、消息渠道或 AI 事实。
+  5. `ProjectSupport` 第 8 角色与固定 7 类员工角色冲突，继续开发前必须裁决。
+- 验证：Web 产品迭代包校验器 PASS；本批次只写产品文档与咨询单，未修改生产代码，未执行页面验收。
+- 状态：`iterating_waiting_for_biz_consultation`
+- 下一步：业务智能体回复 T06；随后冻结 G1，选择设计师转化工作台作为首个页面样板上设计与浏览器验证。
+- T06 已完成（2026-10-02）：`docs/product/consultations/ANS-BIZ-20261002-001-Web V2设计师最后一公里五问答复.md`。裁决 Web 为设计师转化指挥台和沟通记录中心；P0 使用 `CustomerFollow` + 现有版本对象引用，不新增独立沟通状态机；AI 谈单辅助保持 P1；正式客户确认和合同生效按正式权限；正式员工角色维持 7 类，`ProjectSupport` 作为岗位能力/项目参与关系。冻结包状态更新为 `frozen_for_G1`，迭代包校验 PASS（blocking_questions=0）。
+
+
+## 2026-10-02 Web V2 设计师 Excel 式报价工作空间（重点需求）
+
+- 用户新增重点需求：面向主要以 Excel 做方案报价的设计师，Web 报价页必须支持按区域报价、已报价分项、实时价格计算、类似 Excel 单元格的工程量公式、导入导出，并兼容既有 Excel 操作习惯，以更优的桌面 UI 呈现。
+- 产出：
+  - `前端代码/th4-decoboon-web/docs/product/web-v2/07-designer-excel-quote-workspace.md`：页面定位、三栏骨架、区域模型、单元格公式、实时计算、Excel 导入导出、版本、权限、App 兼容和验收重点。
+  - `docs/product/consultations/REQ-BIZ-20261002-002-设计师Excel式报价工作空间.md`：区域、公式白名单、导入导出、设计师价格权限、服务端重算与快照 5 个业务问题。
+  - `iteration-packet.json` 更新为 `iterating`，校验 PASS：`scenarios=4 web_ux=7 desktop_ux=7 blocking_questions=5`。
+- 现状核对：现有后端有 `Quote/QuoteGroup/QuoteLine/QuoteComponent`、`Space` 关联、`formula` 与 `QuoteCalcContext`；Web 只有简单数量公式输入和 CSV 导出，尚不支持单元格引用、区域范围、通用函数和 `.xlsx` 报价工作簿。
+- 关键约束：新增批量/公式/导入导出能力只能采用兼容加法，保留 App 单行报价接口、状态机和金额行为；公式预览可由前端提供，正式金额由服务端重算并冻结。
+- 状态：`frozen_for_G1`，未编码、未验收。
+- T06 已完成（2026-10-02）：`docs/product/consultations/ANS-BIZ-20261002-002-设计师Excel式报价五问答复.md`。冻结区域来源、公式白名单与精度、导入导出兼容范围、设计师销售侧价格权限、前端预览/服务端权威重算；迭代包恢复 `frozen`（blocking_questions=0）。
+- 下一步：业务智能体答复 5 问；随后与设计师最后一公里共同通过 G1/G1.5，再进入首个报价样板实现。
+
+
+## 2026-10-02 设计师角色页面盘点到分批开发计划
+
+- 产出 `前端代码/th4-decoboon-web/docs/product/web-v2/08-designer-role-page-inventory-and-rollout.md`。
+- 盘点当前设计师专属路由和共享页面，区分为保留、重构、合并、归档候选；明确材料选材/增减项不能继续以“复用施工页面入口”冒充独立职责。
+- 建议顺序：B1 设计师对象工作空间骨架 → B2 Excel 式区域报价工作空间 → B3 客户反馈/合同交接 → B4 增减项/选材 → B5 量房/设计/施工收敛 → B6 业绩与全量清理。
+- 结论：设计师业务裁决已足够，可立即开始页面梳理和 G1/G1.5 设计；开发前置阻断为 Web/App 未提交基线、稳定测试账号、App 线上回归基线，以及公式引擎/区域快照/导入导出/批量保存的技术设计。
+
+
+## 2026-10-02 设计师 B1/B2 静态高保真构图
+
+- 产出 `design/web-v2/designer-one-case-workspace.html`：一单一世界三栏对象工作空间、阶段轨道、客户决策台和事实时间线。
+- 产出 `design/web-v2/designer-excel-quote-workspace.html`：区域报价表、公式栏、实时预览、服务端重算、区域小计、版本差异、导入导出入口和客户反馈。
+- 产出 `docs/product/web-v2/09-designer-b1-b2-g1.5-design-freeze.md` 与 `docs/product/web-v2/10-designer-b1-b2-visual-critique-round1.md`。
+- 已完成 1440/1280/1024 三档 Chromium 截图与两轮布局批判；实测无页面横向溢出、无小于12px文本；1024 下右栏改为横向决策摘要。
+- 关键设计修正：公式错误时总额显示“暂不可确认”，保留上次已保存金额，避免伪完整报价。
+- 状态：静态设计可评审，未接 Provider、未运行真实业务、未进入生产代码重构。
+
+
+## 2026-10-02 Web V2 独立开发基线与设计师代码骨架
+
+- 建立独立工作树 `前端代码/th4-decoboon-web-v2`，分支 `feature/web-v2-designer`，初始标签 `web-v2-designer-baseline-20261002`；原 Web 工作树保持不动。
+- 将当前 Web 实际工作状态同步到 V2 工作树，避免从落后 `dev` 重建造成 2 万行架构倒退；正式发布仍必须回到 feature -> dev -> test -> prod 流程。
+- App 兼容基线：线上 `1.0.7`，tag `v2026.09.26.2`，commit `a27fc5c`；App 不开发，仅后续回归。
+- 新增 `/v2/designer/cases` 一单对象工作空间，使用现有 `useDesignerWorkbench`、客户沟通和真实报价/项目事实。
+- 新增 `/v2/designer/quotes/:quoteId` Excel 式报价工作空间骨架，读取真实 Quote/QuoteItem/区域分组；编辑、公式服务、批量和导入导出明确未接入。
+- 验证：`type-check` PASS、`build` PASS、`verify:ui` PASS。`verify:system`/`verify:roles` 仍为现有 Web 基线历史失败，需在导航切换批次统一修复。
+- 当前提交：`1a684db`。
+- 后续提交：`9d97870` 修正三档布局溢出、金额两位小数和最小字号；`b22653d` 记录运行验收。本地 Designer `19900000005` 登录及 B1/B2 真实 Provider 三档浏览器检查通过：横向溢出 0、<12px 文本 0、运行时错误 0。

@@ -13,13 +13,13 @@
     },
     "development": {
       "host": "codex",
-      "current_session": "codex:01a0a51f-cf38-7e23-bc39-54516fab56ec",
-      "thread_id": "01a0a51f-cf38-7e23-bc39-54516fab56ec",
-      "session_id": "01a0a51f-cf38-7e23-bc39-54516fab56ec",
+      "current_session": "codex:01a0d9e7-fdda-7d33-b4a1-0218d1dcbccd",
+      "thread_id": "01a0d9e7-fdda-7d33-b4a1-0218d1dcbccd",
+      "session_id": "01a0d9e7-fdda-7d33-b4a1-0218d1dcbccd",
       "session_name": "开发 Agent",
       "pinned": false,
       "created_by": "starwork multiagent bind",
-      "created_at": "2026-09-15T12:52:09.088Z"
+      "created_at": "2026-09-25T23:07:13.070Z"
     },
     "acceptance": {
       "host": "codex",
@@ -277,6 +277,30 @@
       "id": "REQ-20260915-ACCEPT-P05-FINAL",
       "from": "development",
       "to": "acceptance",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "REQ-20260926-AI-DESIGN-P0.4-PRODUCT",
+      "from": "development",
+      "to": "product-planning",
+      "message_type": "instruction",
+      "recorded_in": "_系统/协作/shared.md",
+      "host_delivery": {
+        "status": "delivered_via_codex_thread_tool",
+        "delivery_tool": "send_message_to_thread",
+        "mode": "record_only"
+      }
+    },
+    {
+      "id": "DELIVERY-20260926-AI-DESIGN-P0.4-DEV",
+      "from": "development",
+      "to": "product-planning",
       "message_type": "instruction",
       "recorded_in": "_系统/协作/shared.md",
       "host_delivery": {

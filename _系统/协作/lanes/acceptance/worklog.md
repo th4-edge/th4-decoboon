@@ -4,6 +4,20 @@
 
 `REQ-20260922-CUSTOMER-MEASURE-METRIC` 独立验收完成。客户经营第四张卡已由风险客户切换为预约量房客户；定向测试覆盖预约时间、measureTime 兼容、Cancelled 排除、客户去重、四类日期窗口、完成与待派单副文案，App 构建通过。真实页面视觉仍为 BLOCKED_EXTERNAL，最终状态 `CONDITIONAL`。
 
+### 2026-10-01 Web 设计师多客户全链沉浸审计（PARTIAL / BLOCKED）
+
+- 输入依据：用户外出授权持续推进；项目 `AGENTS.md`、业务智能体、小程序沉浸审计协议、当前 Web/App 工作树。
+- 范围：昭青本地测试企业；A/B 两户不同设计、预算、诉求和结果；Web 主操作，微信开发者工具 Boss 项目列表/业务动态辅助印证。
+- 完成链：客户建档→跟进→房屋→预约量房→量房→空间/设计项→方案构建→真实报价→提交/接受→合同签约→立项→项目经理/工期配置→任务完成→任务验收→阶段验收→合同增项审批。
+- 关键业务事实：A `231349995851218944` / 项目 `231352287052693504`；B `231350025186181120` / 项目 `231352376261345280`。
+- 结果：A 进入 `Accepting/100%`，3 阶段待业主确认，合同变更 `Changing`；B `Preparing/0%`。
+- 缺陷：`XA-016` 量房 tinytext 长文本失败；`XA-017` 业主邀请新增入口缺失；`XA-018` 设计项 space_id 全空；`XA-019` 写入后多视图空态/旧值；`XA-020` 项目提前 100%；`XA-021` Pm 下一步错误；`XA-023` 主材选材缺路径；`XA-024` route transition 风险；`XA-025` 结构校验脚本失败。
+- 已修复：`XA-016` 迁移 65+基线 LONGTEXT；`XA-017` 补 `writeCapability`；`XA-018` 设计项空间必选；`XA-024` 路由 key；本地/页面验证 PASS。历史 space_id、项目 100% 和 Pm 下一步仍待业务/数据治理。
+- 工程验证：Web type-check/build PASS；App type-check/check:subpackages PASS；后端定向测试 PASS；Web verify:roles/system/boss FAIL。
+- 阻断：无业主邀请/owner access；不代录、不直调业务接口，业主确认、整改复验、最终交付 `BLOCKED`。
+- 证据：`../../../../前端代码/th4-decoboon-web/docs/acceptance/runs/20261001T174143+0800-designer-multiclient-full-chain-昭青/`
+- 状态：`partial_blocked_needs_owner_invite_and_dev_fix`。
+
 ## Outputs
 
 | title | path | audience | status |

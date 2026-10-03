@@ -1,8 +1,23 @@
 # Shared Agent Context
 
 ## Shared Outputs
+| development | 2026-10-01 Web 业务页清偿批次 2：`ProjectDetailView` 102→0；8 个共享组件 −21（含 1 处 `outline:none` 与 `PageHeader` 低对比度）；经引用核查删除 3 个 0 引用 meta 与 `colorOf()`；侧栏图标改纯白；**新增守卫 UI-014（使用 SCSS 变量但未 @use tokens → FAIL）**——该隐患 type-check/verify:ui 均查不出，只有 build 报错；债务 1215→1092 | `前端代码/th4-decoboon-web/{src/views/project/ProjectDetailView.vue,src/components/{PageHeader,CostIncompleteValue,ObjectDetailShell,ObjectMainlineTrack,StatCard,QuantityFormulaInput,PrivateAttachmentUploader,WorkbenchOperationDrawer}.vue,scripts/verify-ui-craft.mjs,docs/product/WEB-DEBT-REPAYMENT-BATCH2.md}` | development,product-planning,acceptance,user | batch2_static_pass_render_pending | 2026-10-01 |
+| development | 2026-10-01 应用外壳清理 + 色板收敛阶段 2：外壳四文件字号/圆角/图标/断点全部归 Token，实测全页 <12px 文字 0 处；角色色板（8 角色 16 色）与头像色板（7 色）收敛为品牌 tone/品牌梯度；**审计发现的三套非 Token 色板 19 个散乱色值全部消除**；债务 1272→1215；顺带修复 `SidebarMenu.vue` 缺 `lang="scss"` 导致变量失效的问题 | `前端代码/th4-decoboon-web/{src/layouts/WorkbenchLayout.vue,src/components/{GlobalContextBar,SidebarMenu}.vue,src/roles/catalog.ts,src/core/format.ts,src/styles/index.scss,docs/product/WEB-COLOR-CONVERGENCE-PHASE2.md}` | development,product-planning,acceptance,user | shell_clean_color_all_converged | 2026-10-01 |
+| development | 2026-10-01 报价项目库 G3 完成 + 色板收敛阶段 1：经授权重设本地设计师测试口令后完成真实浏览器三档渲染验收，**实测确认标准成本对设计师完全不渲染**（SOL-004/BR-003），量规平均 3.25（达门槛、若按主链 3.5 未达）；修复加载态 spinner→骨架屏；发现**应用外壳为剩余小字主因**（影响所有页面）；6 个 meta 文件 77 项硬编码色值收敛为语义 tone，19 色→7 色调，债务 1349→1272 | `前端代码/th4-decoboon-web/{src/core/tone.ts,src/styles/index.scss,src/domains/*/meta.ts,src/views/trade/CatalogLibraryView.vue,docs/product/WEB-COLOR-CONVERGENCE-PHASE1.md}`；运行记录 `docs/acceptance/runs/20261001T200415+0800-ui-craft-catalog-designer-昭青/` | development,product-planning,acceptance,user | catalog_g3_pass_color_phase1_done | 2026-10-01 |
+| development | 2026-10-01 后端成本裁剪核查 + 全站色板审计：①成本裁剪**无风险（更正前序误报）**——`CatalogCostContext` 按角色 mask，逐接口核查 6 个 catalog Provider，设计师无法取得 `costPrice`；②确认系统性三套非 Token 色板（状态 77 项 / 角色 16 项 / 头像 7 项，19 色全不在 `tokens.scss`）；③修复守卫盲区，UI-002 扩展到 TS 整文件扫描，新登记 93 项历史债务（复核为覆盖扩展非抬高基线） | `后端代码/th4-decoboon/src/main/java/com/th4/edge/decoboon/catalog/context/CatalogCostContext.java`（只读核查）；`前端代码/th4-decoboon-web/{docs/product/WEB-COLOR-SYSTEM-AUDIT.md,scripts/verify-ui-craft.mjs,scripts/ui-craft-baseline.json}` | development,product-planning,acceptance,user | cost_check_clean_color_convergence_pending | 2026-10-01 |
+| development | 2026-10-01 报价项目库（设计师角色）UI 工艺重构：`CatalogLibraryView.vue` 债务 71→0（全站 1256）；修复 6 色彩虹强调色、37 处 <12px 字号、非冻结断点、`!important`、`transition: all`、硬编码色，以及两处真实可访问性缺陷（卡片键盘不可达、搜索焦点被移除）；新增无权限态；补成本可见性注释（设计师不可见，依据 SOL-004/BR-003） | `前端代码/th4-decoboon-web/src/views/trade/CatalogLibraryView.vue`；运行记录 `docs/acceptance/runs/20261001T200415+0800-ui-craft-catalog-designer-昭青/` | development,product-planning,acceptance,user | static_gates_pass_render_blocked_on_credentials | 2026-10-01 |
+| development | 2026-10-01 Web 视觉清偿首批（登录页）：按 G1.5→G3 实跑九步 SOP，真实浏览器三档渲染 before/after 测量；修复 1 个 P0 可访问性缺陷（辅助文字对比度 1.91:1 → 5.53:1，达 WCAG AA）与 7 类视觉问题（废弃冷灰蓝、<12px 正文、非刻度字号含 46.08px clamp、非冻结断点、自定义阴影、非标字重、裸圆角）；新增 `$font-body-lg`/`$font-hero` Token；债务 14→0，全站 1341→1327 | `前端代码/th4-decoboon-web/{src/views/auth/LoginView.vue,src/layouts/AuthLayout.vue,src/styles/tokens.scss,docs/product/WEB-VISUAL-DEBT-PLAN.md}`；运行记录 `docs/acceptance/runs/20261001T195325+0800-ui-craft-login-昭青/` | development,product-planning,acceptance,user | page_passed_visual_gate_visual_confirmation_pending | 2026-10-01 |
+| development | 2026-10-01 Web 产品级 UI/交互智能体规范建成：新增技能 `zhuangdeqing-web-ui-interaction`（设计语言/交互规范/页面构图/组件规范/视觉批判五份 references + 强制两轮渲染批判循环 + C1–C8 量规）；Web 仓库新增 `WEB-UI-INTERACTION-SPEC.md`、`WEB-COMPONENT-SPEC.md`、`WEB-VISUAL-DEBT-PLAN.md`；新增可执行守卫 `npm run verify:ui`（13 条规则 + 棘轮基线）。全量扫描 161 文件、1341 项视觉债务、69 个文件、其中 FAIL 级 621 项（含已废弃冷灰蓝 185 处、<12px 字号 365 处、非冻结断点 67 处、`outline:none` 4 处）。新增字阶 Token（`$font-h1/$font-h2/$font-body-sm/$font-micro`）。新增 G1.5 设计冻结与 G3 视觉门禁 | `.agents/skills/zhuangdeqing-web-ui-interaction/**`；`../../前端代码/th4-decoboon-web/{docs/product/WEB-UI-INTERACTION-SPEC.md,docs/product/WEB-COMPONENT-SPEC.md,docs/product/WEB-VISUAL-DEBT-PLAN.md,scripts/verify-ui-craft.mjs,scripts/ui-craft-baseline.json,src/styles/tokens.scss}` | product-planning,development,acceptance,user | ui_guard_active_debt_repayment_not_started | 2026-10-01 |
+| development | 2026-10-01 Web 侧规范补齐至 App 同级：新增产品推演技能 `zhuangdeqing-product-web-development`（含迭代包校验）与全局沉浸审计技能 `zhuangdeqing-web-immersion-audit`（浏览器证据链）；Web 仓库新增 AGENTS 门禁、前端工程规范、设计系统、页面交付门禁（G1/G2）与渲染验收规范；Lane 写入范围扩展至 Web | `.agents/skills/zhuangdeqing-product-web-development/**`；`~/.codex/skills/zhuangdeqing-web-immersion-audit/**`；`../../前端代码/th4-decoboon-web/{AGENTS.md,docs/development/**,docs/product/WEB-DESIGN-SYSTEM.md,docs/product/WEB-PAGE-DELIVERY-GATE.md,docs/acceptance/WEB-RENDER-ACCEPTANCE.md}` | product-planning,development,acceptance,user | specs_complete_not_yet_applied_to_a_page | 2026-10-01 |
+| development/acceptance | 2026-10-01 Web 设计师多客户全链沉浸审计与高置信修复：A/B 完成建档到阶段验收/合同增项审批；修复量房 LONGTEXT 迁移、业主邀请写入口、设计项空间必选、路由 key、项目未完成阶段防 100% gate。历史 space_id、Pm 下一步和业主确认仍待后续 | `../../前端代码/th4-decoboon-web/docs/acceptance/runs/20261001T174143+0800-designer-multiclient-full-chain-昭青/07-final-report.md`；迁移 65；`_系统/协作/lanes/development/worklog.md` 2026-10-01 | development,product-planning,user | fixes_applied_partial_blocked_pending_acceptance | 2026-10-01 |
+| development | 设计师客户经营与量房工作台冻结：统一量房/设计责任、预约与录入动作、工作台信息架构、对象和状态边界；新增正式产品规格 `docs/product/2026-10-01-量房工作台产品规格.md` | 后端分支 `fix/designer-customer-sales-access`；Web 分支 `fix/designer-customer-archive`；App 分支 `fix/designer-customer-sales-access`；开发记录见 `_系统/协作/lanes/development/worklog.md` 2026-10-01 | product-planning,acceptance,user | frozen_for_development_pending_implementation_acceptance | 2026-10-01 |
+| development | 生产数据变更：18660219918 张伟迁入麦鸿装饰并设为 Active Boss；原麦鸿负责人保留，原安徽昭青企业员工数为 0 | `docs/operations/data-changes/2026-09-26-18660219918转任麦鸿装饰企业负责人.md` | user,acceptance,运维 | production_data_change_success_pending_login_acceptance | 2026-09-26 |
 
-| development | AI设计上下文与Prompt编排P0.4：后端上下文/Prompt快照、异步Seedream、效果图版本/确认/分页、字段权限收口、临时图OSS持久化；App新增AI生成页面与三处入口 | 后端 commits `88fb6d4,b422ded,4a54790,668570f,ebda263,c143bd5`、迁移63；App `feature/design-ai-generation-app` commits `f646468,5b19501`；交接 `_系统/协作/lanes/development/workspace/ai-design-context-prompt-p0-handoff.md` | product-planning,acceptance,user | implementation_and_self_test_done_pending_acceptance | 2026-09-26 |
+| development | A0.2 AI资源点数账本：T06冻结企业唯一收费主体、门店分摊、预占/结算/释放/返还/调整和失败零扣点；真实费率/资源包价格暂缓A0.4。分支 `feature/ai-point-ledger` commit `6fb2304`，全量测试 PASS；A2谈单官PRD已启动 | 后端 `ai/billing/**`、迁移65、`AiBillingContextTest`；`docs/product/2026-09-26-AI资源点数账本P0产品需求规格.md`、`docs/product/2026-09-26-AI谈单官P0产品需求规格.md` | product-planning,acceptance,user | implementation_and_self_test_done_pending_acceptance | 2026-09-26 |
+| from | title | path | audience | status | updated |
+|---|---|---|---|---|---|
+| development | AI设计上下文与Prompt编排P0.4：后端上下文/Prompt快照、异步Seedream、效果图版本/确认/分页、字段权限收口、临时图OSS持久化；App新增AI生成页面与三处入口 | 后端 commits `88fb6d4,b422ded,4a54790,668570f,ebda263,c143bd5`、迁移63；App `feature/design-ai-generation-app` commits `f646468,5b19501`；交接 `_系统/协作/lanes/development/workspace/ai-design-context-prompt-p0-handoff.md` | product-planning,acceptance,user | merged_to_local_dev_acceptance_blocked_not_pushed | 2026-09-26 |
+| development | AI 调用与企业门店影子用量底账：新增 `ai/usage/report`、`ai/usage/page`，企业/业务门店/执行门店/企业公共归属、幂等、影子点数和只读聚合；迁移 63，P0 不扣真实资源包 | 后端 `ai/**`、`ProviderSecurityAcceptanceTest`、迁移 63、`scripts/build-release.sh`；交接 `_系统/协作/lanes/development/workspace/ai-usage-shadow-metering-handoff.md` | product-planning,acceptance,user | implementation_and_self_test_done_pending_acceptance_and_target_migration | 2026-09-26 |
 | development | 接管后剩余施工计划 P0：阶段增改排序删除、进度基线保护、计划确认/调整留痕、App 四步引导、业务承接返回与卡片优化；微信开发者工具真实 BOSS 已验证新增、确认和锁定调整，进度保持 40% | 后端 `carryover/**`、`Project/ProjectStage`、`ProjectContext`、迁移 62；App `subpackages/carryover/pages/{index,edit,plan}.vue`、`subpackages/project/pages/plan.vue`、`domains/carryover/**` | product-planning,acceptance,user | implementation_and_self_test_done_pending_acceptance_and_target_migration | 2026-09-26 |
 | development | v20260924-rc1 正式发布：后端 `/opt/decoboon/releases/20260924-044032` 已上线，迁移 48–59 全部 SUCCESS，首次缺迁移自动回滚后补齐成功；小程序 1.0.0 已上传，待微信后台提交审核；整改复验/业主发起暂缓 | `docs/operations/releases/2026-09-24-v20260924-rc1.md`、`docs/acceptance/20260924-业务App发版准备与遗留清单.md` | product-planning,acceptance,user | backend_released_miniapp_uploaded_pending_wechat_review | 2026-09-24 |
 | development | 预约量房 2.0 P1 修复与发版候选基线：修正今日预约自然日、保留签约客户历史量房事实、绩效月份/门店筛选、4h 逾期和业务员量房入口；发布包迁移 24–59，迁移 56 幂等 | 后端 `statistic/service/boss/measure/report/support/Report.java`、`BossMeasureQuery.java`、`ProviderSecurityAcceptanceTest.java`、`scripts/build-release.sh`、迁移 56；App `measure-workbench.vue`、`assessment.vue`、`permission.ts` | product-planning,acceptance,user | release_candidate_ready_pending_business_ack | 2026-09-24 |
@@ -49,9 +64,6 @@
 | development | 装企历史数据承载三条渠道交互流程 | docs/product/2026-09-21-装企历史数据承载-三条渠道交互流程.md | product-planning,acceptance,user | suspended_not_planned | 2026-09-21 |
 | development | 装企历史数据最小承载集字段冻结 | docs/plan/2026-09-21-装企历史数据最小承载集字段冻结.md | product-planning,acceptance,user | suspended_not_planned | 2026-09-21 |
 | user | 装企历史数据承载业务裁决（DEC-004 / EV-024） | ../推广营销/装得清业务智能体/01-知识库/09-已确认决策/DEC-004-装企历史数据承载范围与服务通道.md | development,product-planning,acceptance | verified_pending_development | 2026-09-21 |
-
-| from | title | path | audience | status | updated |
-|---|---|---|---|---|---|
 | product-planning | 装得清上线前业务功能与开发范围规划 | docs/plan/2026-09-15-上线前业务功能规划.md | user,development,acceptance | draft | 2026-09-15 |
 | material | 装得清上线前素材盘点 | docs/marketing/material/装得清上线前素材盘点.md | topic-selection,content-writing,design,user | ready | 2026-09-15 |
 | material | 装得清上线前素材索引 | docs/marketing/material/素材索引.md | topic-selection,content-writing,design | ready | 2026-09-15 |
@@ -68,7 +80,6 @@
 | development | 装得清运营管理端（独立平台域） | ../../前端代码/th4-decoboon-admin/ | product-planning,acceptance,运维,user | platform_isolated_built_pending_acceptance | 2026-09-16 |
 | development | 独立平台组织与用户体系设计 | docs/product/装得清运营管理端用户组织与权限设计.md | product-planning,acceptance,运维,user | implemented_pending_acceptance | 2026-09-16 |
 | development | IDEA 平台运营启动与本地数据同步 | docs/operations/2026-09-16-IDEA平台运营启动与本地数据同步.md | user,运维,acceptance | local_running_verified | 2026-09-16 |
-
 | acceptance | 小程序企业负责人全链路闭环验收报告 | docs/acceptance/小程序企业负责人全链路闭环验收报告.md | development,product-planning,user | pass_with_defects | 2026-09-16 |
 | acceptance | 小程序全链路回归规范（含根因反思） | docs/acceptance/小程序全链路回归规范.md | development,product-planning,acceptance | ready | 2026-09-16 |
 | acceptance | 小程序全路由巡检自动化资产 | _系统/协作/lanes/acceptance/workspace/miniapp-boss-pilot/ | development,acceptance | ready | 2026-09-16 |
@@ -96,33 +107,21 @@
 | development | 财务配色与表单对齐二次修复（含开发者工具实测） | 前端 finance.scss、project.vue、base.scss | acceptance,user | verified_in_devtools | 2026-09-16 |
 | development | 本地版本提交 1.0.1（后端 f5a0c57 / 前端 6b30de8） | 后端+前端仓库 | acceptance,user | committed_not_released | 2026-09-16 |
 | development | 生产后端监控 2026-09-17 18:41（exit 20） | docs/operations/incidents/2026-09-17/20260917-184110/triage.md | 运维,development,user | open_needs_manual_triage | 2026-09-17 |
-
 | product-planning | 客户标签/画像/分级实施规格（用户已冻结） | docs/plan/2026-09-18-客户标签画像与分级实施规格.md | development,acceptance,user | spec_frozen_pending_acceptance | 2026-09-18 |
 | product-planning | 客户标签/画像/分级 P0 前端实施方案（App） | docs/plan/2026-09-18-客户标签画像与分级-P0前端实施方案.md | development,acceptance,user | plan_ready_pending_dev | 2026-09-18 |
 | product-planning | 客户标签/画像/分级 P0-b 后端字段与 Provider 契约 | docs/plan/2026-09-18-客户标签画像与分级-P0b后端契约.md | development,acceptance,user | contract_ready_pending_backend | 2026-09-18 |
 | development | 研发任务单：客户标签/画像/分级 P0-b | _系统/协作/lanes/development/workspace/p0b-customer-tag-portrait-dev-task.md | acceptance,product-planning,user | b1_b6_done_b7_pending | 2026-09-18 |
 | development | 小程序 ICP 备案号登记与提审基线更新 | docs/design/migrations/20-小程序发布合规基线.md | acceptance,product-planning,user | filed_number_recorded_pending_verification | 2026-09-20 |
-
 | product-planning | 材料计划业务梳理与产品设计 v1.2：签约选材确认→财务逐条下单（选供应商/下单价/调数量）→下单形成应付→到货回填账期→PM/设计负责人任一方到场确认；含增减项加/减联动（已到货扣减强制退货单）、损耗率来源于企业主材分类、采购损耗计成本/施工损耗只流转库存、预计成本取合同成本价、选材文本不参与供应商匹配、材料域供应商关系、采购明细行、迁移 51、AC-01～23；DEC-MP-01～10 全部裁决，无待裁决项 | docs/product/2026-09-23-材料计划业务梳理与设计.md | development,acceptance,user | all_decisions_closed_P0_ready | 2026-09-23 |
-
 | development | 材料计划 P0 实现：MaterialPlan 增来源/选材快照/损耗字段与状态扩展、选材确认门禁、材料域供应商供应关系、确认下单即形成应付、到场回填账期与 PM/设计负责人确认、material/plan/workbench 工作台 Provider + App 页面、迁移 51 | `_系统/协作/lanes/development/workspace/material-plan-p0-handoff.md`；后端 `project/**`、`material/**`、`supply/**`、`finance/**`；App `subpackages/project/pages/material-plan-workbench.vue`、`domains/material/**`、`subpackages/supply/**`；`docs/design/migrations/51-材料计划与供应商下单.sql` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | 材料计划 P1（扣减与退货冲减）：三段式扣减（未下单先冲损耗再冲净用量 / 已下单调整采购单并按差额下调应付 / 已到货强制走退货单冲减应付与计划实际成本）、已付款转待协商、扣减后计划状态重算、MaterialReturn + material/return/page、迁移 52 | `_系统/协作/lanes/development/workspace/material-plan-p1-handoff.md`；后端 `project/context/MaterialDeductionContext.java`、`project/model/MaterialReturn.java`、`material/service/returnorder/**`；App `subpackages/project/pages/material-plan-workbench.vue`、`domains/material/**` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | 材料计划 P2：退货余款冲抵同供应商其他应付（余额转 PartnerCredit 往来余额）、PurchaseOrderItem 采购明细与按供应商合并下单 `project/purchase/batch`、多明细到场验收、主材分类 MaterialCategory 默认损耗率被计划行继承、计划状态统一 MaterialPlanStatusContext 派生、迁移 53 | `_系统/协作/lanes/development/workspace/material-plan-p2-handoff.md`；后端 `project/**`、`material/**`、`finance/**`；App `subpackages/project/pages/material-category.vue`、`material-plan-workbench.vue`、`domains/material/**` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | 材料计划 P3：供应商往来余额自动抵扣新应付（FIFO）、入仓退货统一入口（退货单按库存批次同步退回）、合并下单多选 UI（工作台多选→合并下单页→按供应商一次下单并形成应付） | `_系统/协作/lanes/development/workspace/material-plan-p3-handoff.md`；后端 `finance/context/PartnerCreditContext.java`、`project/service/purchases/order/**`、`project/context/MaterialDeductionContext.java`；App `subpackages/project/pages/material-batch-order.vue`、`material-plan-workbench.vue` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | App 企业负责人端接入材料计划工作台：BOSS 首页快捷入口「材料计划」+ 首页卡片（待下单/在途/逾期未到场，服务端聚合、全 0 自动隐藏）直达工作台；工作台按角色切换副文案、项目卡片可进项目详情 | App `src/pages/index/index.vue`、`src/roles/catalog.ts`、`src/styles/home.scss`、`src/subpackages/project/pages/material-plan-workbench.vue` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | 材料计划工作台 UI 交互优化：筛选带实时数量（0 值弱化）、项目卡片可折叠（默认只展开有逾期/待下单项目）、项目标签跟随筛选口径、退货冲减独立视图、「下一步」降级为状态标签保留主次按钮、多选态不可选置灰+全选本项目+底部已选项目名、一次拉全量本地筛选、空态给下一步行动 | App `src/subpackages/project/pages/material-plan-workbench.vue`、`src/domains/material/model.ts`、`src/domains/material/api.ts` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | App 返回入口补齐：JzPageHeader 新增 back 属性（栈内返回，直达时回首页兜底），9 个自定义导航页开启返回，contract.vue Hero 内补返回按钮并修复状态栏遮挡；全 App 自定义导航页审计 11 个需返回，仅 auth/login 有意例外 | App `src/components/JzPageHeader.vue`、`src/subpackages/project/pages/{sign-workbench,change,change-workbench,change-create,change-detail,material-plan,material-plan-workbench,material-category,material-batch-order,contract}.vue` | acceptance,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development | 材料计划状态机与「已下单后能否再选材」规则印证（verify-only）：现状前后端均允许已下单后继续选材（仅留痕、不改采购事实）；发现缺陷 D1（确认新版本会无条件覆盖已下单计划行的选材快照，造成计划行与采购单口径不一致）与缺口 G1（下单后选材变更规则业务未冻结，GAP-005 待确认项4 已由 DEC-MP-05 裁决但未回写） | `_系统/协作/lanes/development/workspace/material-plan-selection-state-verification.md` | product-planning,business,acceptance,user | verification_done_pending_business_decision | 2026-09-23 |
-
 | development | 材料计划「进入采购后禁止变更选材」：后端 save/confirm 门禁（Planned/ReadyToOrder 可改，其余 8 态锁定；同一合同行多条计划任一锁定即锁定）、修复 D1（已下单计划行不再回写选材快照）、orderStatus 补 ordering/partiallyOrdered；App 选材页锁定编辑并给出「去发起增减项」入口 | 后端 `material/context/MaterialSelectionContext.java`、`material/service/selections/{save,confirm}/support/**`、`project/repository/MaterialPlanRepository.java`、`test/.../material/MaterialSelectionGateTest.java`；App `subpackages/project/pages/selection-item.vue`、`selection.vue`、`domains/material/model.ts`；印证文档 `_系统/协作/lanes/development/workspace/material-plan-selection-state-verification.md` §七 | acceptance,business,product-planning,user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-23 |
-
 | development→business | 业务知识库回写（用户授权）：新增 DEC-008（材料计划选材门禁与换材路径）、BR-009（选材门禁规则）、GAP-009（材料计划采购应付口径待知识化）；更新 GAP-005（项4 收敛为必须、补禁止变更选材）；登记 EV-040~EV-043；CHANGELOG v0.9.0；validate 通过、索引已刷新 | 业务库 `01-知识库/09-已确认决策/DEC-008-*.md`、`01-知识库/02-业务规则/BR-009-*.md`、`01-知识库/08-冲突与缺口/GAP-00{5,9}-*.md`、`04-证据来源/registry.json`、`06-状态/CHANGELOG.md`、`06-状态/知识索引.*` | product-planning,acceptance,user | business_writeback_done | 2026-09-23 |
 
 ## Cross-Lane Requests
@@ -155,15 +154,11 @@
 | REQ-20260916-ACCEPT-OSS | development | acceptance | 独立验证 OSS 企业/项目隔离、跨租户拒绝、预签名过期、大文件/视频和历史文件迁移方案。 | pending_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/aliyun-oss-storage-handoff.md | 2026-09-16 |
 | REQ-20260916-ACCEPT-WECHAT-PAY | development | acceptance | 独立验证微信支付 JSAPI 预下单、支付查询、真实回调验签解密、金额/商户/AppID 边界和重复通知。 | pending_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/wechat-pay-config-handoff.md | 2026-09-16 |
 | REQ-20260916-ACCEPT-PROD-RELEASE | development | acceptance | 使用真实企业账号验证生产 API 全业务闭环、微信支付首笔回调和密钥/备份回滚。 | pending_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/production-release-config-handoff.md | 2026-09-16 |
-
 | REQ-20260916-DEV-FIX-MP-BOSS | acceptance | development | 修复企业负责人小程序 4 项缺陷：001 设计师列表 Boss 角色分支调用店长接口、002 成员详情读权限被写保护拦截、003 已锁定方案洽谈页无法查看、004 页面加载异常无错误态。 | pending_fix | pending_fix | docs/acceptance/小程序企业负责人全链路闭环验收报告.md | 2026-09-16 |
 | REQ-20260916-ACCEPT-VERIFY-PROD-LAZY-FIX | development | acceptance | 独立复验生产 PlanVersion 懒加载修复：发版后窗口无新增指纹，并核对错误集/规范是否可执行。 | pending_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/code-error-catalog.md | 2026-09-16 |
-| development | 生产后端监控 2026-09-16 13:02（exit 20） | docs/operations/incidents/2026-09-16/20260916-130232/triage.md | 运维,development,user | open_needs_manual_fix | 2026-09-16 |
-
+| development | 生产后端监控 2026-09-16 13:02（exit 20） | docs/operations/incidents/2026-09-16/20260916-130232/triage.md | 运维,development,user | open_needs_manual_fix | 2026-09-16 |  |  |
 | REQ-20260917-PROD-MONITOR-1841 | development | 运维,acceptance | 人工复核离职员工会话循环、registry 中 fixed 基线被改写和公网扫描探测；确认后再决定是否人工修复。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-17/20260917-184110/triage.md | 2026-09-17 |
-
 | REQ-20260918-PROD-MONITOR-1301 | development | 运维,acceptance | 生产监控 exit 20 仅归档；人工处理离职员工会话、授权过期分类、扫描路径拦截及 registry fixed 基线改写。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-18/20260918-130145/triage.md | 2026-09-18 |
-
 | REQ-20260918-ONBOARDING-DEFECT-001 | development | product-planning, acceptance | 首次入驻三件套状态契约与验收冻结；供应商可选且以“有效供应商 + 品牌关系”为完成谓词；App FIX-004 代码保持不改。 | product_spec_frozen_pending_independent_acceptance | pending_acceptance | 输出/草稿/装得清首次入驻三件套-20260918/07-系统内引导与验收清单.md | 2026-09-18 |
 | REQ-20260918-SMB-P0-FIX | development | acceptance, product-planning, zhuangdeqing-smb-reviewer | 中小装企实机审查已裁决 P0 修复：量房角色分离、PM 量房可见性、阶段开工幂等、业主确认归位、收款幂等、财务成本完整性统一、合同写权限一致及 5 项依赖修复。含迁移 34。合同签约最终角色/线下代录/人工材料补录仍 BLOCKED。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix-handoff.md | 2026-09-18 |
 | REQ-20260918-SMB-P0-FIX-2 | development | acceptance, zhuangdeqing-smb-reviewer | 验收 BLOCK rework：量房执行人权限(A4)、预约/完成态与多房屋投影(I1/I2/I4)、并发开工幂等(C4)、readiness 文案(B2)、合同 403 语义与重复签约幂等(F2/F4)、FinanceSummary 毛利率(G1)。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/smb-p0-fix2-handoff.md | 2026-09-18 |
@@ -171,130 +166,42 @@
 | REQ-BIZ-20260926-001 | development | product-planning, acceptance | 报价项目库批量导入 P0：PRD 冻结的 6 条业务路由 + 模板下载，批次/导入行、预览不落库、重复与编码冲突、错误行与部分导入、成本待维护、固定总价独立字段、24h 撤销、小程序导入页与结果页。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/catalog-import-handoff.md | 2026-09-26 |
 | REQ-BIZ-20260926-001-W1/W2 | development | product-planning, acceptance | 报价项目库维护可达性修复（批量导入工具移入 CatalogPicker 管理模式插槽，不再被全屏层覆盖）、卡片“更多”操作层级与删除二次确认、后端新增 `catalog/item/delete`（9 类下游引用阻断 + 导入行受控解除 + 同事务删除）。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/workspace/catalog-import-ui-delete-handoff.md | 2026-09-26 |
 | REQ-20260919-QUOTE-PACKAGE-CLOSURE | development | acceptance, product-planning | 收紧设计报价状态、套餐报价版本、驳回重报、App 报价上下文、套餐模板配置和套餐 Draft 调整。 | implementation_done_self_tested_pending_independent_acceptance | pending_acceptance | _系统/协作/lanes/development/worklog.md | 2026-09-19 |
-
 | REQ-20260918-ACCEPT-ROUTE-COUNT-SYNC | development | acceptance | 新增 8 条 P0-b Provider 路由后同步路由断言 209→217、protected 197→205。验收 lane 会话不可达，经用户在本线程授权后由开发 lane 代为同步，**待验收 lane 复核**。 | synced_by_development_pending_acceptance_review | pending | src/test/java/com/th4/edge/decoboon/security/ProviderSecurityAcceptanceTest.java | 2026-09-18 |
-
 | REQ-20260920-PROD-MONITOR-1301 | development | 运维,acceptance | 生产监控 exit 20 仅归档；窗口内无新增异常，人工处理扫描路径、auth/signin 未知入口及 registry fixed 基线/ID 改写。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-20/20260920-130110/triage.md | 2026-09-20 |
-
-
 | REQ-20260922-PROD-MONITOR-1301 | development | 运维,acceptance | 生产监控 exit 20 仅归档；窗口内无新增异常，人工处理扫描路径、auth/signin 未知入口、授权过期分类，以及 registry fixed 基线/ID 改写和 macOS 日期兼容性。 | open_needs_manual_triage | pending | docs/operations/incidents/2026-09-22/20260922-130146/triage.md | 2026-09-22 |
+| product-planning | REQ-20260926-AI-DESIGN-P0.4-PRODUCT：AI 设计生成 App 页面与状态规格；development 已完成后端 `feature/design-ai-context-prompt` 与 App `feature/design-ai-generation-app` 自测交付，等待 acceptance 独立验收 | `docs/product/2026-09-26-AI设计生成App页面与状态规格.md` | development, acceptance, user | implementation_done_self_tested_pending_independent_acceptance | 2026-09-26 |
+| DELIVERY-20260926-AI-DESIGN-P0.4-DEV | development | product-planning | P0.4后端/App已实现并自测，回传changed_files、verification、risks和next_action，请转acceptance独立验收 | delivered_via_codex_thread_tool | delivered_via_codex_thread_tool | _系统/协作/shared.md | 2026-09-25 |
+
+| product-planning | 2026-10-02 Web V2 前置冻结包：确认 Web 比 App 更重，但重量必须来自对象上下文、版本比较、客户反馈、跨角色交接和对账；以设计师设计→报价→合同→增减项→选材→客户沟通为最后一公里首个垂直样板。产出产品章程、重量模型、对象动作状态契约、Provider/验收前置、T05 五问和已校验迭代包。 | `前端代码/th4-decoboon-web/docs/product/web-v2/00-README.md`；`前端代码/th4-decoboon-web/docs/product/web-v2/iteration-packet.json`；`docs/product/consultations/REQ-BIZ-20261002-001-Web V2设计师最后一公里.md` | development,acceptance,user | frozen_for_G1_ready_for_design | 2026-10-02 |
+| product-planning | 2026-10-02 Web 开发 App 线上兼容硬门禁：Web 不得破坏 App 现有逻辑功能和当前线上版本；禁止改变 App 依赖的 Provider 契约、状态机、金额/成本/权限、数据库列类型；共享后端必须向后兼容并完成 App 类型检查、发布构建、契约检查和关键链路回归后才能发布，风险时优先回滚 Web。 | `前端代码/th4-decoboon-web/docs/product/web-v2/06-app-online-compatibility-contract.md`；`前端代码/th4-decoboon-web/AGENTS.md`；`docs/product/WEB-PAGE-DELIVERY-GATE.md` | development,acceptance,user | active_hard_gate | 2026-10-02 |
+| product-planning | 2026-10-02 Web V2 设计师 Excel 式报价工作空间重点需求：按区域报价、分项表格、实时计算、工程量单元格公式、`.xlsx` 导入导出和 Excel 操作习惯；以对象工作空间强化桌面交互，同时保持 App 单行报价接口、状态机和线上逻辑兼容。 | `前端代码/th4-decoboon-web/docs/product/web-v2/07-designer-excel-quote-workspace.md`；`docs/product/consultations/REQ-BIZ-20261002-002-设计师Excel式报价工作空间.md`；`前端代码/th4-decoboon-web/docs/product/web-v2/iteration-packet.json` | development,acceptance,user | frozen_for_G1_quote_rules_resolved | 2026-10-02 |
+| product-planning | 2026-10-02 设计师角色页面盘点到分批开发计划：盘点量房/方案/报价/签约/施工/选材/增减项/业绩及共享页面，按保留/重构/合并/归档分类；建议先做设计师对象工作空间骨架和 Excel 式报价样板，再分批收敛。业务裁决已足够，代码发布仍受未提交基线、稳定测试账号、App 线上回归和技术设计前置约束。 | `前端代码/th4-decoboon-web/docs/product/web-v2/08-designer-role-page-inventory-and-rollout.md` | development,acceptance,user | ready_for_G1_page_inventory | 2026-10-02 |
+| product-planning | 2026-10-02 设计师 B1/B2 静态高保真构图：一单对象工作空间与 Excel 式区域报价工作空间，已完成1440/1280/1024三档截图、两轮布局批判；无页面横向溢出、无<12px文本。公式错误时总额不可确认，避免伪造完整报价。 | `design/web-v2/designer-one-case-workspace.html`；`design/web-v2/designer-excel-quote-workspace.html`；`docs/product/web-v2/09-designer-b1-b2-g1.5-design-freeze.md`；`docs/product/web-v2/10-designer-b1-b2-visual-critique-round1.md` | development,acceptance,user | static_design_ready_for_review | 2026-10-02 |
+| development | 2026-10-02 Web V2 独立开发基线：`th4-decoboon-web-v2` / `feature/web-v2-designer` / tag `web-v2-designer-baseline-20261002`；新增设计师一单工作空间和 Excel 式区域报价页面，使用真实 Designer 账号和 Provider 完成三档运行检查；type-check/build/UI guard PASS，横向溢出 0、<12px文本 0、运行时错误 0。App 兼容基线锁定 1.0.7 / v2026.09.26.2 / a27fc5c，App 不开发。 | `前端代码/th4-decoboon-web-v2`；当前提交 `b22653d` | product-planning,acceptance,user | designer_v2_runtime_smoke_passed | 2026-10-02 |
+| development | 2026-10-02 报价公式引擎兼容批次：后端 V2 `feature/web-v2-quote-engine` / `b335ec0`，迁移64、`quantity_formula`、`quote/lines/save`；支持白名单公式、区域范围和 SUM/ROUND/MIN/MAX，服务端权威重算并保护未提交价格。真实 UI E2E：`=F2*2` 数量42→16、总价¥19,254.66，清空公式恢复42、总价¥29,911.88。App 1.0.7 接口与状态机未改。 | `后端代码/th4-decoboon-v2-quote`；`前端代码/th4-decoboon-web-v2`；`docs/development/web-v2-designer-runtime/quote-e2e-summary.json` | product-planning,acceptance,user | formula_engine_e2e_passed_app_contract_unchanged | 2026-10-02 |
+| development | 2026-10-02 报价工作簿 XLSX 导出：后端 `quote/workbook/build` + Apache POI，前端报价空间“导出 Excel”；包含区域、分项、公式与销售价格，不含成本，隐藏行ID供后续导入。实测生成有效 OOXML，SHA-256 已记录。导入预览待下一批。 | `后端代码/th4-decoboon-v2-quote`；`前端代码/th4-decoboon-web-v2`；`tmp/quote-workbook-export.xlsx` | product-planning,acceptance,user | xlsx_export_verified_import_pending | 2026-10-02 |
+| development | 2026-10-02 报价工作簿 XLSX 导入预览：后端 `quote/workbook/import` + 前端文件选择/预览/确认；行ID文本化，系统导出文件回读6/6匹配，确认后复用 `quote/lines/save`。仅设计师本人草稿。 | `后端代码/th4-decoboon-v2-quote`；`前端代码/th4-decoboon-web-v2` | product-planning,acceptance,user | xlsx_import_preview_verified | 2026-10-02 |
 
 ## Shared Agreements
 
 | agreement | owner | status | link |
 |---|---|---|---|
 | 装得清产品开发与宣传、推广、营销全流程协作 | user | active | `_系统/上下文/当前项目.md` |
+## 2026-10-03 荷塘家园 Web 实作与缺陷修复
 
-## App 全链路真实数据模拟（2026-09-23）
+- 运行目录：`../../前端代码/th4-decoboon-web/docs/acceptance/runs/20261003T022936+0800-mixed-昭青-荷塘家园/`。
+- 已完成 Web 主链实作与 5 个前端修复；`type-check`、`build`、`verify:ui` 均 PASS。
+- 仍阻断：成本完整性 P0、报价面积 0㎡、0 价项目、深链上下文、阶段排期、Excel 批量导入、业主本人确认。
+- 结论为 `COMPLETED_WITH_OPEN_HIGH_RISKS`，不得对外表述为业务验收通过。
 
-- 批次：`APP-BIZ-SIM-20260923`，基础项目 `麦鸿演示项目 37~44`，真实 Provider 构造，未直接写业务终态表。
-- 覆盖：业务员录入/跟进/量房、设计、报价、签约、主材选材、材料计划、材料下单、材料到场/应付、增项、减项和数量变更。
-- 每名可用员工均达到不少于 2 条有效数据；状态矩阵见 `_系统/协作/lanes/development/workspace/app-full-chain-simulation-20260923/README.md`。
-- 闭环修复：材料下单因 `Payable.dueDate=null` 被 `NOT NULL` 阻断，已按 `DEC-MP-01` 改为到场后回填，新增迁移 55 并同步空库基线。
-- 验证：定向后端测试 30/0/0 PASS；独立数据核验 `failures=[]`；App 读取接口 PASS。
-- 结论状态：`implementation_and_self_test_done_pending_independent_acceptance`。
+## 2026-10-03 Web V2 设计师唯一入口收敛
 
-## 签约后项目立项与三角色协作业务规则梳理（2026-09-23）
+- V2 设计师运行入口统一为 `/designer/**`，旧 V1/V2 兼容路径集中重定向，非设计师访问设计师壳层返回 403。
+- 新增 `npm run verify:designer-shell`；真实浏览器登录 `19900000005` 已进入唯一设计师工作台，旧路由重定向和非设计师 403 通过，V2 六项工程门禁全部 PASS。
+- 尚未建立 clean git tag：V2 工作树仍有大量既有未提交改动，必须先分批审阅提交后冻结正式基线。
 
-- 产出：`docs/product/2026-09-23-签约后项目立项与三角色协作业务规则梳理.md`
-- 覆盖：合同签约/生效 → 自动立项 → 施工计划快照阶段 → 工艺任务排期 → 影像节点留证 → 阶段验收与整改复验 → 应收/收款/应付/付款/结算；含设计师、项目经理、财务、业主四方协作推进与触发关系。
-- 关键口径：立项唯一入口=已生效合同；`Signed ≠ Effective`；任务=阶段×区域×工艺×数量；阶段验收只能业主本人确认；成本不完整时利润返回 `null`。
-- 待裁决缺口 6 项（G-01 阶段验收模式未落库、G-02 工艺库未绑定阶段/区域、G-03 阶段权重与工期口径、G-04 重排不回写快照、G-05 阶段日期无编辑入口、G-06 工艺非独立主数据）＋ `BR-002` 直接签约补录未实现。
-- 状态：`analysis_done_ready_for_product_decision`。
+## 2026-10-03 Web V2 设计师页面统一与业务承接
 
-## 麦鸿演示项目 37 端到端实测与 T05 咨询单（2026-09-23）
+- 设计师 11 个入口统一页头、控件、状态和视觉规范；材料/增减项模式识别修复。
+- 真实浏览器逐页无整页横向溢出；六项工程门禁与构建 PASS，UI 债务 1092→827。
 
-- 实测报告：`docs/acceptance/麦鸿演示项目37端到端实测报告.md`（开发自测，非独立验收结论）
-- 证据：`docs/acceptance/evidence/project37-e2e-20260923/run.json`、`run_project37_e2e.py`、`owner-closure-acceptance-test.txt`
-- T05 咨询单：`docs/product/consultations/REQ-BIZ-20260923-001-施工计划与阶段验收七项口径.md`，已投递装得清业务智能体 `02-采集与咨询/`
-- 实测结论：员工侧主链（开工/任务完成/提交验收/收款/结算）可跑通；**发现 P0 `TaskNodeKey.getValue()` 缺失导致影像节点留证接口 100% 失败**，P1 收款幂等顺序、空任务阶段开工回退、取消任务计入验收门禁且 `Cancelled→Done` 无校验；业主人脸会话为外部阻断（无真实微信授权），业主驳回/复验/确认未能在真实 HTTP 链路执行。
-- 状态：`self_test_done_with_defects_pending_fix_and_independent_acceptance`
-
-## P0/P1 修复：影像节点留证 / 施工任务排期 / 收款幂等（2026-09-23）
-
-- 修复：`TaskNodeKey` 补 `Enumerable#getValue()`；`tasknodes/save#parseKey` 空安全；`project/task/save` 补 `task.property`；`finance/receipt/save` 幂等键查找前移到余额校验之前。
-- 新增测试：`TaskNodeSaveAcceptanceTest` 9/0/0、`ReceiptIdempotencyTest` 4/0/0；后端全量（排除历史无关失败类）284 tests / 0 failures / BUILD SUCCESS。
-- 真实复验（项目 37，8093 修复后实例）：Start 节点留证成功、重复/非法节点 400；重复收款返回原收款；新事实超额仍 400；复验夹具与临时任务已清理。
-- 报告与证据：`docs/acceptance/麦鸿演示项目37端到端实测报告.md` 附录 A、`docs/acceptance/evidence/project37-e2e-20260923/reverify-after-fix.json`。
-- 待业务裁决：G-03 阶段权重与工期口径、G-07 取消任务与验收门禁（`REQ-BIZ-20260923-001`）。
-- 状态：`p0_p1_fixed_pending_independent_acceptance`。
-
-## 项目工地五项要求：权限与增减项窗口（2026-09-23）
-
-- 已实现：施工任务推进与节点留证开放给企业负责人/店长/项目经理（店长限本门店）；增减项在项目未完工前允许，完工/结算及合同关闭/终止阻断。
-- 已支持（未改代码）：成员切换（设计师/项目经理）、任务制定（项目经理/设计师）。
-- 测试：`TaskNodeSaveAcceptanceTest` 11/0/0、`ContractChangeCompletionGateTest` 5/0/0；后端全量（排除历史无关失败类）291 tests / 0 failures / BUILD SUCCESS。
-- 待裁决：成员切换权限与留痕、阶段开工是否开放店长、计划按排期自动生成口径（与 `REQ-BIZ-20260923-001` G-03/G-04 合并）、增减项边界。
-- 记录：`docs/product/2026-09-23-项目工地需求对照与实施记录.md`。
-- 状态：`partial_implemented_pending_business_decision`。
-
-## 项目工地五项要求落地（2026-09-23）
-
-- 用户裁决 → 已实现：成员切换仅 Boss + 本门店店长（PM 自行改派 403）+ 对内动态留痕；阶段开工开放店长；计划以排期为准自动生成（阶段=任务最值、项目=阶段汇总）并回写合同施工计划快照；增减项在待验收期间允许、店长可发起、完工/结算阻断。
-- 测试：新增 `ProjectMemberSwitchAndStageOpenTest` 7/0/0、`ProjectPlanFromScheduleTest` 1/0/0；后端全量（排除历史无关失败类）299 tests / 0 failures / BUILD SUCCESS。
-- 记录：`docs/product/2026-09-23-项目工地需求对照与实施记录.md`、`REQ-BIZ-20260923-001`（含用户裁决回执）。
-- 状态：`implemented_self_tested_pending_independent_acceptance`。
-
-## App 修复：新建任务负责人显示 undefined（2026-09-23）
-
-- 根因：后端 `Employee` 无 `title` 字段（岗位名在 `role.name`），App 直接取 `raw.title` → 下拉渲染「张三（undefined）」。
-- 修复：`normalizeEmployee` 从 `role.name` 派生 `title`（全局生效），任务负责人下拉/验收提交人文案补岗位回退；新增 `scripts/verify-employee-display-contract.mjs` 并接入 `verify:mp-weixin`。
-- 验证：新契约校验 PASS、type-check PASS、mp-weixin 构建 DONE、分包检查 PASS（92 页 / 总包 2187039 B）；`check:home` 失败为既有问题（首页文案契约，另一会话在途）。
-- 状态：`fixed_pending_device_check`。
-
-## App 修复（续）：任务负责人候选含店长 + 任务保存映射（2026-09-23）
-
-- 负责人候选加入店长；节点推进角色与服务端对齐（Boss/店长/PM）；店长补阶段开工能力。
-- 关键修复：`scheduleApi.saveTask` 由「直接提交对象」改为扁平字段映射（`taskId/zoneId/ownerId/catalogId`），否则选择的负责人/区域不落库、编辑任务会变新建。
-- 真实验证（8093 + 本地库）：任务保存后 `owner=王宏文（店长）`、`zone=客厅`；证据 `docs/acceptance/evidence/project37-e2e-20260923/task-owner-save-verify.json`。
-- 门禁：`scripts/verify-employee-display-contract.mjs` 已扩展；type-check / build / 分包检查 PASS。
-- 状态：`fixed_verified_by_live_api_pending_device_check`。
-
-## 项目工地闭环与交互缺陷修复（2026-09-23）
-
-- 修复：未指定项目经理警示与开工阻断提示、工地岗位切换（设计师/项目经理，Boss+本门店店长）、施工任务重复下发拦截（后端唯一性 + App「已下发」标记）、验收横幅阶段名、开工/保存失败提示、排期 catalogId 回退等 9 项。
-- 真实证据：`docs/acceptance/evidence/project37-e2e-20260923/site-flow-verify.json`（首次下发成功 / 重复下发 400 / 换区域成功 / 店长切换项目经理成功）。
-- 门禁：后端 300 tests / 0 failures（排除历史无关失败类）；App type-check / build / 分包检查 / 员工显示契约 PASS。
-- 报告：`docs/acceptance/项目工地闭环与交互缺陷检查报告.md`。
-- 状态：`fixed_verified_by_live_api_pending_device_and_acceptance`。
-
-## 微信开发者工具 · 企业负责人真机闭环测试（2026-09-23）
-
-- 用 DevTools + miniprogram-automator 以企业负责人（张伟）真实操作小程序：首页/项目列表/工地详情/成员切换/排期去重/负责人候选/验收横幅均通过；切换项目经理后 DB 落库并写入项目动态。
-- 真机发现并修复 6 项缺陷（区域口径导致工艺库为空、已下发识别失效、未指定项目经理无提示、无切换入口、验收文案硬编码、保存失败卡 loading）。
-- 报告 `docs/acceptance/微信开发者工具企业负责人业务闭环测试报告.md`；截图 `docs/acceptance/evidence/mp-devtools-20260923/`。
-- 未覆盖：现场拍照节点留证、业主侧确认/驳回（需真实业主微信）、视觉审美评审（无图像识别）。
-- 状态：`boss_role_closed_loop_verified_on_devtools_pending_device_and_visual_review`。
-
-## 生产后端监控 2026-09-23（exit 20）
-
-- 服务健康：`decoboon.service` active/running，版本 `/opt/decoboon/releases/20260921-050519`，HTTPS health 200，根盘 18%，35 分钟 journal 无条目。
-- 窗口内无新增高置信代码缺陷；仅 `.env`、`.git/config` 扫描探测和 expected `tokenIsUndefined`，未修改代码、未重启、未构建、未发版。
-- 监控工具仍有待人工修复的数据完整性问题：历史 fixed 懒加载事故被改写为 `INC-20260923-a1233597b0/open` 且计数重复；另有 macOS `date -Is` 兼容性导致失败归档时间/退出码失真。
-- 证据与建议：`docs/operations/incidents/2026-09-23/20260923-130103/triage.md`。
-- 状态：`open_needs_manual_tooling_fix`。
-
-## 2026-09-24 麦鸿设计业务 App 全场景验收视图（product-planning → acceptance）
-
-- 批次：`MH-APP-ACCEPT-20260924`（模式 `full_chain_simulation`，状态 `frozen`）
-- 产出：
-  - `docs/product/2026-09-24-麦鸿设计业务App全场景验收视图.md`
-  - 冻结包 `_系统/协作/lanes/product-planning/workspace/PKT-20260924-MAIHONG-FULLCHAIN-001.json`（validator PASS）
-- 复用夹具：麦鸿设计 `com_id=1789903520997907818`，演示项目 37–44，账号 `19900000001`–`19900000007`（口令 `Maihong2026`），来源 `_系统/协作/lanes/development/workspace/app-full-chain-simulation-20260923/`。
-- 用途：acceptance lane 按 B1 主链 → B2 账务 → B3 负向 → B4 业主端全页 → B5 多机型分批验收；缺陷按视图 §10 模板登记。
-- 不构成验收结论；✅ 仅为"已有实现/修复证据可复核"。
-
-## 2026-09-24 业主邀请与注册交互重构方案（product-planning，待业务裁决）
-
-- 产出：`docs/product/2026-09-24-业主邀请与注册交互重构方案.md` + T05 `docs/product/consultations/REQ-BIZ-20260924-001-业主邀请与注册身份判定口径.md`
-- 结论：三类身份必须拆成三个独立入口；业主身份改由**手机号 + 客户档案**判定（不再依赖 token）；注册企业页去掉邀请码；允许"暂不属于任何企业"中间态；企业需支持注销。
-- **风险提示（P0 级）**：同一手机号命中多家企业时"命中即进入"会造成跨企业串号——必须显式选择 + 逐项目授权。
-- 可立即开发（无需裁决）：未加入企业页删邀请码改三选一、注册企业独立入口、业主页去 token/猜参数。
-- 待业务答复（T05 五问）：业主是否仍需邀请、多企业可见范围、换号规则、防枚举、企业注销口径。
-
-## 2026-09-26 版本管理与发布分支规范建立
-
-- 总规范：`docs/operations/版本管理与发布分支规范.md`；发布记录模板：`docs/operations/releases/_发布记录模板.md`。
-- 强制链：大功能 `feature/*`、小修复 `fix/*` 从 `dev` 创建并回并；正常发布 `dev -> test -> prod`，生产事故才走 `hotfix/*`。
-- 当前迁移风险：Web 无独立 Git 仓库且被 `/Users/zhangwei/.git` 误纳管；后端/App 仍有混合未提交改动，需先拆分再建立 `dev/test/prod`。
-- 状态：`norm_established_migration_pending`。
