@@ -14,8 +14,17 @@ if [ -z "$VERSION" ]; then
   exit 1
 fi
 
+SITE_DIR="$(cd "$ROOT_DIR/../../前端代码/th4-decoboon-site" && pwd)"
+if [ ! -f "$SITE_DIR/package.json" ]; then
+  echo "Site project not found: $SITE_DIR" >&2
+  exit 1
+fi
+
+echo "[release] building th4-decoboon-site"
+(cd "$SITE_DIR" && npm run build)
+
 echo "[release] building th4-decoboon $VERSION"
-mvn -o -q clean package -DskipTests
+mvn -o -q clean package -DskipTests -Dsite.dist.dir="$SITE_DIR/dist"
 
 if [ ! -f "$ARCHIVE" ]; then
   echo "Release archive not found: $ARCHIVE" >&2
@@ -26,15 +35,19 @@ mkdir -p "$RELEASE_DIR"
 cp "$ARCHIVE" "$RELEASE_DIR/"
 cp .env.prod.example "$RELEASE_DIR/"
 cp docs/deploy/PRODUCTION.md "$RELEASE_DIR/"
+cp docs/deploy/www.joytsing.com.http.conf "$RELEASE_DIR/"
+cp docs/deploy/www.joytsing.com.conf "$RELEASE_DIR/"
+cp docs/deploy/certbot-renew.service "$RELEASE_DIR/"
+cp docs/deploy/certbot-renew.timer "$RELEASE_DIR/"
 cp docs/design/migrations/00-迁移账本.sql "$RELEASE_DIR/"
 cp docs/design/migrations/01-空库基线.sql "$RELEASE_DIR/"
 cp docs/design/migrations/19-生产发布基线.md "$RELEASE_DIR/"
 cp docs/design/migrations/22-OSS对象存储部署说明.md "$RELEASE_DIR/"
 cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
 # 增量迁移范围：新迁移必须同步上调 MIGRATION_END，否则 DBA 会拿不到待执行脚本。
-# 2026-09-24 修正：发布包必须覆盖 24-62，包含业主闭环、整改、意见、设计状态与 craft 快照。
+# 2026-10-01：新增 65 量房长文本字段迁移。
 MIGRATION_START=24
-MIGRATION_END=62
+MIGRATION_END=65
 for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   matches=(docs/design/migrations/"${number}"-*.sql)
   if [ ! -e "${matches[0]}" ]; then
