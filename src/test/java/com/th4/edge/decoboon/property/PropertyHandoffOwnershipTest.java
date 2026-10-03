@@ -23,7 +23,7 @@ class PropertyHandoffOwnershipTest {
     @Test
     void assignedDesignerMustBecomePropertyOwner() {
         PropertyRepository repository = mock(PropertyRepository.class);
-        PropertyContext context = new PropertyContext(repository, mock(DataScopeContext.class));
+        PropertyContext context = new PropertyContext(repository, mock(com.th4.edge.decoboon.project.repository.ProjectRepository.class), mock(DataScopeContext.class));
         Property property = new Property();
         property.setStatus(PropertyStatus.PendingMeasure);
         Employee marketer = new Employee();
@@ -45,7 +45,7 @@ class PropertyHandoffOwnershipTest {
     @Test
     void customerAddressMustNotAutomaticallyCreateProperty() {
         PropertyRepository repository = mock(PropertyRepository.class);
-        PropertyContext context = new PropertyContext(repository, mock(DataScopeContext.class));
+        PropertyContext context = new PropertyContext(repository, mock(com.th4.edge.decoboon.project.repository.ProjectRepository.class), mock(DataScopeContext.class));
         Customer customer = new Customer();
         customer.setCustId(1L);
         var company = new com.th4.edge.tenant.user.model.Company();

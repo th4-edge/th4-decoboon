@@ -36,7 +36,7 @@ class PropertyPageDesignerVisibilityTest {
         when(properties.findByCompany_ComIdAndSalesman_EmpIdOrderByPropertyIdDesc(1L, 10L))
                 .thenReturn(List.of(owned));
 
-        Page page = new Page(properties, tenant, mock(PropertyContext.class));
+        Page page = new Page(properties, mock(com.th4.edge.decoboon.project.repository.ProjectRepository.class), tenant, mock(PropertyContext.class));
         ReflectionTestUtils.setField(page, "employee", designer);
 
         assertThat(page.call(new Property()).getContent())

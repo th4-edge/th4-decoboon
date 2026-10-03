@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
+import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 /** 当前角色可见房屋分页。 */
 @Note("房屋分页")
@@ -40,11 +43,16 @@ public class Page implements com.th4.edge.decoboon.property.service.properties.p
     private Employee employee;
 
     private final PropertyRepository propertyRepository;
+    private final ProjectRepository projectRepository;
     private final TenantContext tenantContext;
     private final PropertyContext propertyContext;
 
-    public Page(PropertyRepository propertyRepository, TenantContext tenantContext, PropertyContext propertyContext) {
+    public Page(PropertyRepository propertyRepository,
+                ProjectRepository projectRepository,
+                TenantContext tenantContext,
+                PropertyContext propertyContext) {
         this.propertyRepository = propertyRepository;
+        this.projectRepository = projectRepository;
         this.tenantContext = tenantContext;
         this.propertyContext = propertyContext;
     }
@@ -73,6 +81,8 @@ public class Page implements com.th4.edge.decoboon.property.service.properties.p
                         propertyRepository.findByCompany_ComIdAndOwner_EmpIdOrderByPropertyIdDesc(comId, empId),
                         propertyRepository.findByCompany_ComIdAndSalesman_EmpIdOrderByPropertyIdDesc(comId, empId));
                 case Marketer -> propertyRepository.findByCompany_ComIdAndSalesman_EmpIdOrderByPropertyIdDesc(comId, empId);
+                case Pm -> projectRepository.findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(comId, empId)
+                        .stream().map(Project::getProperty).filter(Objects::nonNull).distinct().toList();
                 default -> propertyRepository.findByCompany_ComIdAndOwner_EmpIdOrderByPropertyIdDesc(comId, empId);
             };
         }

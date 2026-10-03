@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.property.configure.PropertyStatus;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
+import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
@@ -20,10 +21,14 @@ import java.util.List;
 public class PropertyContext {
 
     private final PropertyRepository propertyRepository;
+    private final ProjectRepository projectRepository;
     private final DataScopeContext dataScopeContext;
 
-    public PropertyContext(PropertyRepository propertyRepository, DataScopeContext dataScopeContext) {
+    public PropertyContext(PropertyRepository propertyRepository,
+                           ProjectRepository projectRepository,
+                           DataScopeContext dataScopeContext) {
         this.propertyRepository = propertyRepository;
+        this.projectRepository = projectRepository;
         this.dataScopeContext = dataScopeContext;
     }
 
@@ -94,6 +99,11 @@ public class PropertyContext {
         }
         if (sameEmployee(property.getOwner(), current)) return true;
         if (current.getRole() == EmployeeRole.Marketer && sameEmployee(property.getSalesman(), current)) return true;
+        if (current.getRole() == EmployeeRole.Pm && property.getPropertyId() != null) {
+            // 项目经理通过项目参与关系只读本项目房屋，不获得量房/设计/报价写权限。
+            return projectRepository.existsByCompany_ComIdAndProperty_PropertyIdAndManager_EmpId(
+                    current.getCompany().getComId(), property.getPropertyId(), current.getEmpId());
+        }
         return current.getRole() == EmployeeRole.Designer && sameEmployee(property.getDesigner(), current);
     }
 

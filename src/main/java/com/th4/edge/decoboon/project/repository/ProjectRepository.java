@@ -18,6 +18,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
     boolean existsByQuote(Quote quote);
 
     boolean existsByCompany_ComIdAndProperty_PropertyId(Long comId, Long propertyId);
+    boolean existsByCompany_ComIdAndProperty_PropertyIdAndManager_EmpId(Long comId, Long propertyId, Long empId);
 
     boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long custId);
 
