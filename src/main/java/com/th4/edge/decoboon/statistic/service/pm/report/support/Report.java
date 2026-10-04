@@ -45,9 +45,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** 项目经理履约与业绩报告实现。 */
-@Note("项目经理履约报告")
-@Description("仅汇总当前项目经理负责项目的施工、验收、材料、客户和业绩视图")
+/** 企业负责人全公司履约与项目经理个人履约报告实现。 */
+@Note("履约驾驶舱报告")
+@Description("企业负责人查看全公司项目履约，项目经理查看本人负责项目的施工、验收、材料、客户和业绩视图")
 @Properties(allow = {
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "property", "customer", "quote", "designer", "manager",
@@ -102,14 +102,15 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
     @Override
     @Transactional(readOnly = true)
     public PmReport call(@User Employee employee) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Pm);
+        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.Pm);
         if (current.getCompany() == null || current.getCompany().getComId() == null) {
-            throw new DefinedException(new DefaultErrorCode("403", "当前项目经理未归属企业"));
+            throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
         }
 
         Long comId = current.getCompany().getComId();
-        List<Project> projects = projectRepository
-                .findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(comId, current.getEmpId());
+        List<Project> projects = current.getRole() == EmployeeRole.Boss
+                ? projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId)
+                : projectRepository.findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(comId, current.getEmpId());
 
         PmReport report = new PmReport();
         report.setProjectCount(projects.size());

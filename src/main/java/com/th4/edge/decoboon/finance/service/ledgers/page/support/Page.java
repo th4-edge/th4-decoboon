@@ -25,12 +25,15 @@ import java.util.List;
 @Note("资金流水分页")
 @Properties(allow = {
         @AllowProperties(model = Ledger.class,
-                properties = {"ledgerId", "project", "direction", "category", "source", "sourceId", "amount",
-                        "account", "occurredAt", "counterparty", "summary", "remark", "createdBy", "createTime"}),
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "sourceId", "amount",
+                        "account", "occurredAt", "counterparty", "summary", "remark", "originalLedger",
+                        "correctionGroupId", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.finance.model.LedgerCategory.class,
+                properties = {"categoryId", "name", "direction", "code", "builtIn", "sort", "active"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/ledger/page")
@@ -43,6 +46,8 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
     private Integer current;
     @AutoInject
     private Integer size;
+    @AutoInject
+    private Long ledgerId;
     @AutoInject
     private Long projectId;
     @AutoInject
@@ -70,6 +75,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<Ledger> items = ledgerRepository.findAll(accessContext.visible(currentEmployee, Ledger.class))
                 .stream()
+                .filter(item -> ledgerId == null || ledgerId.equals(item.getLedgerId()))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> direction == null || direction.isBlank() || item.getDirection().name().equalsIgnoreCase(direction))
                 .filter(item -> category == null || category.isBlank() || item.getCategory().equals(category))

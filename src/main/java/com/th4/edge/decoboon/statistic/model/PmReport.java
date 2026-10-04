@@ -13,12 +13,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 项目经理履约与业绩报告。
+ * 履约驾驶舱报告。
  *
- * <p>统计域允许使用语义化视图模型；该对象只返回当前项目经理负责项目及其关联业务，
- * 不承担其他员工或门店的数据汇总。</p>
+ * <p>项目经理只返回本人负责项目；企业负责人返回全公司项目履约汇总。</p>
  */
-@Note("项目经理履约报告")
+@Note("履约驾驶舱报告")
 public class PmReport {
 
     private Integer projectCount = 0;

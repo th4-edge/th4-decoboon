@@ -23,7 +23,8 @@ import org.springframework.stereotype.Service;
                 properties = {"projectCount", "activeProjectCount", "contractAmount", "receivableAmount", "receivedAmount",
                         "outstandingAmount", "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount",
                         "materialPayableAmount", "salaryPayableAmount", "projectPayableAmount", "otherPayableAmount",
-                        "monthIncome", "monthExpense", "cashBalance", "estimatedCost", "actualCost",
+                        "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
+                        "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "cashBalance", "estimatedCost", "actualCost",
                         "costComplete", "costIncompleteProjectCount", "costIncompleteItemCount",
                         "profitAmount", "grossMargin", "collectionRate",
                         "urgentReceivables", "urgentPayables", "recentLedgers"}),
@@ -34,11 +35,13 @@ import org.springframework.stereotype.Service;
                 properties = {"payableId", "project", "name", "type", "payeeEmployee", "payeeName", "period",
                         "amount", "paidAmount", "dueDate", "status", "urgent", "property" }),
         @AllowProperties(model = Ledger.class,
-                properties = {"ledgerId", "project", "direction", "category", "source", "amount", "account",
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
                         "occurredAt", "counterparty", "summary"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
+        @AllowProperties(model = com.th4.edge.decoboon.finance.model.LedgerCategory.class,
+                properties = {"categoryId", "name", "direction", "builtIn"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/summary/report")

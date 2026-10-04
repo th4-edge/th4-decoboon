@@ -15,4 +15,6 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long>,
     List<Ledger> findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(Long comId, Long projectId);
 
     List<Ledger> findByCompany_ComIdAndLedgerIdIn(Long comId, java.util.Collection<Long> ledgerIds);
+
+    java.util.Optional<Ledger> findByCompany_ComIdAndLedgerId(Long comId, Long ledgerId);
 }

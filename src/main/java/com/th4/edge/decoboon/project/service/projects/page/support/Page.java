@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.project.service.projects.page.support;
 
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
@@ -72,6 +73,10 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
     @AutoInject
     private Long designerId;
 
+    /** 项目类型筛选：正常业务 / 接管基线。 */
+    @AutoInject
+    private BusinessOrigin businessOrigin;
+
     private final ProjectRepository projectRepository;
     private final ProjectStageRepository stageRepository;
     private final ProjectAccessContext accessContext;
@@ -117,6 +122,7 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
                 .filter(project -> statuses == null || statuses.isEmpty() || statuses.contains(project.getStatus()))
                 .filter(project -> designerId == null
                         || (project.getDesigner() != null && designerId.equals(project.getDesigner().getEmpId())))
+                .filter(project -> businessOrigin == null || project.getBusinessOrigin() == businessOrigin)
                 .filter(project -> kw.isBlank()
                         || project.getName().toLowerCase().contains(kw)
                         || project.getNo().toLowerCase().contains(kw)

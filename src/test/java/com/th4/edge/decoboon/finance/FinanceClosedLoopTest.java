@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.finance;
 
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
@@ -104,6 +105,32 @@ class FinanceClosedLoopTest {
     private com.th4.edge.decoboon.finance.service.payables.save.Save payableSave;
     @Autowired
     private com.th4.edge.decoboon.finance.service.payments.save.Save paymentSave;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgers.save.Save ledgerSave;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgers.update.Update ledgerUpdate;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgers.correct.Correct ledgerCorrect;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgercategories.tree.Tree ledgerCategoryTree;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgercategories.save.Save ledgerCategorySave;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgercategories.delete.Delete ledgerCategoryDelete;
+    @Autowired
+    private com.th4.edge.decoboon.finance.repository.LedgerRevisionRepository ledgerRevisionRepository;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.summary.report.Report summaryReport;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgers.report.Report ledgerReport;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.projects.report.Report financeProjectReport;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.payables.report.Report payableReport;
+    @Autowired
+    private com.th4.edge.decoboon.document.service.voucher.report.Report voucherReport;
+    @Autowired
+    private com.th4.edge.decoboon.statistic.service.pm.report.Report pmReport;
 
     @Test
     void shouldCloseReceivablePayableAndLedgerInOneFlow() {
@@ -206,6 +233,219 @@ class FinanceClosedLoopTest {
 
         set(page, "designerId", -1L);
         assertThat(page.call(new Project()).getContent()).isEmpty();
+
+        // 项目类型：新签与接管不能混淆
+        set(page, "designerId", null);
+        set(page, "businessOrigin", BusinessOrigin.Carryover);
+        assertThat(page.call(new Project()).getContent()).isEmpty();
+        set(page, "businessOrigin", BusinessOrigin.New);
+        assertThat(page.call(new Project()).getContent())
+                .extracting(Project::getProjectId)
+                .contains(project.getProjectId());
+    }
+
+    @Test
+    void shouldAllowBossToOpenCompanyFulfillmentWorkbench() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+
+        com.th4.edge.decoboon.statistic.service.pm.report.support.Report report =
+                AopTestUtils.getTargetObject(pmReport);
+        com.th4.edge.decoboon.statistic.model.PmReport result = report.call(boss);
+
+        assertThat(result.getProjectCount()).isGreaterThanOrEqualTo(1);
+        assertThat(result.getFocusProjects())
+                .extracting(Project::getProjectId)
+                .contains(project.getProjectId());
+    }
+
+    @Test
+    void shouldReportAllFilteredLedgerAndFinancialTotalsOnServer() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+        Receivable receivable = createReceivable(boss, project);
+        createReceipt(boss, project, receivable);
+        Payable payable = createPayable(boss, project);
+        createPayment(boss, payable);
+        entityManager.flush();
+
+        com.th4.edge.decoboon.finance.service.ledgers.report.support.Report ledger =
+                AopTestUtils.getTargetObject(ledgerReport);
+        set(ledger, "employee", boss);
+        set(ledger, "projectId", project.getProjectId());
+        set(ledger, "startDate", LocalDate.now());
+        set(ledger, "endDate", LocalDate.now());
+        var ledgerResult = ledger.call(new com.th4.edge.decoboon.finance.model.Ledger());
+        assertThat(ledgerResult.getCount()).isEqualTo(2);
+        assertThat(ledgerResult.getIncomeAmount()).isEqualByComparingTo("3000.00");
+        assertThat(ledgerResult.getExpenseAmount()).isEqualByComparingTo("800.00");
+        assertThat(ledgerResult.getNetCashFlowAmount()).isEqualByComparingTo("2200.00");
+        assertThat(ledgerResult.getTotalAmount()).isEqualByComparingTo("3800.00");
+
+        com.th4.edge.decoboon.finance.service.payables.report.support.Report payables =
+                AopTestUtils.getTargetObject(payableReport);
+        set(payables, "employee", boss);
+        set(payables, "projectId", project.getProjectId());
+        var payableResult = payables.call(new com.th4.edge.decoboon.finance.model.Payable());
+        assertThat(payableResult.getCount()).isEqualTo(1);
+        assertThat(payableResult.getTotalAmount()).isEqualByComparingTo("800.00");
+        assertThat(payableResult.getPaidAmount()).isEqualByComparingTo("800.00");
+        assertThat(payableResult.getOutstandingAmount()).isEqualByComparingTo("0.00");
+
+        com.th4.edge.decoboon.finance.service.summary.report.support.Report summary =
+                AopTestUtils.getTargetObject(summaryReport);
+        set(summary, "employee", boss);
+        var summaryResult = summary.call(new Project());
+        assertThat(summaryResult.getReceiptCount()).isEqualTo(1);
+        assertThat(summaryResult.getPaymentCount()).isEqualTo(1);
+        assertThat(summaryResult.getReceiptAmount()).isEqualByComparingTo("3000.00");
+        assertThat(summaryResult.getPaymentAmount()).isEqualByComparingTo("800.00");
+        assertThat(summaryResult.getMonthReceiptAmount()).isEqualByComparingTo("3000.00");
+        assertThat(summaryResult.getMonthPaymentAmount()).isEqualByComparingTo("800.00");
+        assertThat(summaryResult.getMonthNetCashFlowAmount()).isEqualByComparingTo("2200.00");
+
+        Ledger receiptLedger = ledgerRepository.findAll().stream()
+                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Income)
+                .findFirst().orElseThrow();
+        voucherContext.build(boss, List.of(receiptLedger.getLedgerId()));
+        entityManager.flush();
+
+        com.th4.edge.decoboon.document.service.voucher.report.support.Report vouchers =
+                AopTestUtils.getTargetObject(voucherReport);
+        set(vouchers, "employee", boss);
+        set(vouchers, "type", "Receipt");
+        set(vouchers, "startDate", LocalDate.now());
+        set(vouchers, "endDate", LocalDate.now());
+        var voucherResult = vouchers.call(new com.th4.edge.decoboon.document.model.VoucherRecord());
+        assertThat(voucherResult.getCount()).isEqualTo(1);
+        assertThat(voucherResult.getTotalAmount()).isEqualByComparingTo("3000.00");
+        assertThat(voucherResult.getReceiptAmount()).isEqualByComparingTo("3000.00");
+        assertThat(voucherResult.getPaymentAmount()).isEqualByComparingTo("0.00");
+        assertThat(voucherResult.getMonthlyAmounts()).hasSize(1);
+        assertThat(voucherResult.getMonthlyAmounts().get(0).getAmount()).isEqualByComparingTo("3000.00");
+    }
+
+    @Test
+    void shouldSeedTwoLevelCategoriesAndAllowBossOnlyManualCorrection() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+
+        com.th4.edge.decoboon.finance.service.ledgercategories.tree.support.Tree tree =
+                AopTestUtils.getTargetObject(ledgerCategoryTree);
+        set(tree, "employee", boss);
+        List<com.th4.edge.decoboon.finance.model.LedgerCategory> categories =
+                tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        var materialRoot = categories.stream()
+                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense)
+                .filter(item -> "材料采购".equals(item.getName()))
+                .findFirst().orElseThrow();
+        assertThat(materialRoot.getChildren()).extracting(com.th4.edge.decoboon.finance.model.LedgerCategory::getName)
+                .contains("主材", "辅材", "五金");
+
+        com.th4.edge.decoboon.finance.service.ledgercategories.save.support.Save categorySave =
+                AopTestUtils.getTargetObject(ledgerCategorySave);
+        set(categorySave, "employee", boss);
+        set(categorySave, "name", "展会费用");
+        set(categorySave, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(categorySave, "parentId", materialRoot.getCategoryId());
+        var custom = categorySave.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        assertThat(custom.getBuiltIn()).isFalse();
+        assertThat(custom.getParent().getCategoryId()).isEqualTo(materialRoot.getCategoryId());
+
+        com.th4.edge.decoboon.finance.service.ledgers.save.support.Save save =
+                AopTestUtils.getTargetObject(ledgerSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(save, "category", custom.getName());
+        set(save, "categoryId", custom.getCategoryId());
+        set(save, "amount", new BigDecimal("120.00"));
+        set(save, "account", FundAccount.CompanyBank);
+        set(save, "occurredAt", LocalDate.now());
+        set(save, "counterparty", "会展中心");
+        set(save, "summary", "展会摊位费");
+        set(save, "remark", null);
+        Ledger ledger = save.call(new Ledger());
+        assertThat(ledger.getCategoryNode().getCategoryId()).isEqualTo(custom.getCategoryId());
+        assertThat(ledger.getProject().getProjectId()).isEqualTo(project.getProjectId());
+        com.th4.edge.decoboon.finance.service.projects.report.support.Report projectReport =
+                AopTestUtils.getTargetObject(financeProjectReport);
+        set(projectReport, "employee", boss);
+        set(projectReport, "projectId", project.getProjectId());
+        assertThat(projectReport.call(new Project()).getRecentLedgers())
+                .extracting(Ledger::getLedgerId)
+                .contains(ledger.getLedgerId());
+
+        com.th4.edge.decoboon.finance.service.ledgercategories.delete.support.Delete delete =
+                AopTestUtils.getTargetObject(ledgerCategoryDelete);
+        set(delete, "employee", boss);
+        set(delete, "categoryId", custom.getCategoryId());
+        delete.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        assertThat(custom.getActive()).isFalse();
+
+        // 分类停用后，负责人仍应能更正历史流水元数据，并保留原分类关联和回显文本。
+        com.th4.edge.decoboon.finance.service.ledgers.update.support.Update update =
+                AopTestUtils.getTargetObject(ledgerUpdate);
+        set(update, "employee", boss);
+        set(update, "ledgerId", ledger.getLedgerId());
+        set(update, "categoryId", custom.getCategoryId());
+        set(update, "category", "展会费用（更正）");
+        set(update, "counterparty", "会展中心");
+        set(update, "summary", "展会摊位费（更正）");
+        set(update, "remark", "分类描述更正");
+        set(update, "reason", "分类选择错误");
+        update.call(new Ledger());
+        Ledger afterInactiveUpdate = ledgerRepository.findByCompany_ComIdAndLedgerId(
+                boss.getCompany().getComId(), ledger.getLedgerId()).orElseThrow();
+        assertThat(afterInactiveUpdate.getSummary()).isEqualTo("展会摊位费（更正）");
+        assertThat(afterInactiveUpdate.getCategoryNode().getCategoryId()).isEqualTo(custom.getCategoryId());
+        assertThat(afterInactiveUpdate.getCategory()).isEqualTo("展会费用（更正）");
+        assertThat(ledgerRevisionRepository.findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(
+                boss.getCompany().getComId(), ledger.getLedgerId())).hasSize(1);
+
+        // 冲正重记沿用已停用的原分类时，也应保留历史分类，而不是把关联断开。
+        com.th4.edge.decoboon.finance.service.ledgers.correct.support.Correct correct =
+                AopTestUtils.getTargetObject(ledgerCorrect);
+        set(correct, "employee", boss);
+        set(correct, "ledgerId", ledger.getLedgerId());
+        set(correct, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(correct, "categoryId", custom.getCategoryId());
+        set(correct, "category", "展会费用");
+        set(correct, "amount", new BigDecimal("150.00"));
+        set(correct, "account", FundAccount.CompanyBank);
+        set(correct, "occurredAt", LocalDate.now());
+        set(correct, "counterparty", "会展中心");
+        set(correct, "summary", "展会摊位费（重记）");
+        set(correct, "remark", null);
+        set(correct, "projectId", project.getProjectId());
+        set(correct, "reason", "金额录入错误");
+        Ledger replacement = correct.call(new Ledger());
+        assertThat(replacement.getAmount()).isEqualByComparingTo("150.00");
+        assertThat(replacement.getCategoryNode().getCategoryId()).isEqualTo(custom.getCategoryId());
+        assertThat(replacement.getCategory()).isEqualTo("展会费用");
+        assertThat(replacement.getOriginalLedger().getLedgerId()).isEqualTo(ledger.getLedgerId());
+        assertThat(ledger.getCorrectionGroupId()).isNotBlank();
+        assertThat(ledgerRepository.findByCompany_ComIdAndLedgerId(boss.getCompany().getComId(), ledger.getLedgerId())
+                .orElseThrow().getCorrectionGroupId()).isEqualTo(replacement.getCorrectionGroupId());
+        assertThat(ledgerRevisionRepository.findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(
+                boss.getCompany().getComId(), ledger.getLedgerId())).hasSize(2);
+
+        Employee finance = new Employee();
+        finance.setCompany(boss.getCompany());
+        finance.setStore(boss.getStore());
+        finance.setRole(EmployeeRole.Finance);
+        finance.setStatus(EmployeeStatus.Active);
+        finance.setName("财务测试");
+        finance.setTelNo("17" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L)));
+        finance.setJoinedAt(LocalDateTime.now());
+        finance = employeeRepository.save(finance);
+        set(correct, "employee", finance);
+        assertThatThrownBy(() -> correct.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("无权");
     }
 
     @Test

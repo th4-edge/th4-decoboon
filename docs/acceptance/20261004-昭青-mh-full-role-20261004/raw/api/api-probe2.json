@@ -1,0 +1,381 @@
+{
+  "Boss-customers": {
+    "id": "Boss-customers",
+    "role": "Boss",
+    "route": "customer/customer/page",
+    "body": {
+      "current": 1,
+      "size": 5
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "52"
+    }
+  },
+  "Boss-finance": {
+    "id": "Boss-finance",
+    "role": "Boss",
+    "route": "finance/summary/report",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Store-measure": {
+    "id": "Store-measure",
+    "role": "StoreManager",
+    "route": "statistic/boss/measure/report",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Store-designers": {
+    "id": "Store-designers",
+    "role": "StoreManager",
+    "route": "user/designer/list",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": 4
+    }
+  },
+  "Team-report": {
+    "id": "Team-report",
+    "role": "TeamLeader",
+    "route": "statistic/team-leader/report",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Team-customers": {
+    "id": "Team-customers",
+    "role": "TeamLeader",
+    "route": "customer/customer/page",
+    "body": {
+      "current": 1,
+      "size": 10
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "1"
+    }
+  },
+  "Team-projects": {
+    "id": "Team-projects",
+    "role": "TeamLeader",
+    "route": "project/project/page",
+    "body": {
+      "current": 1,
+      "size": 10
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "1"
+    }
+  },
+  "Team-quotes": {
+    "id": "Team-quotes",
+    "role": "TeamLeader",
+    "route": "quote/page",
+    "body": {
+      "current": 1,
+      "size": 10
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "1"
+    }
+  },
+  "Marketer-customers": {
+    "id": "Marketer-customers",
+    "role": "Marketer",
+    "route": "customer/customer/page",
+    "body": {
+      "current": 1,
+      "size": 5
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "45"
+    }
+  },
+  "Marketer-measure": {
+    "id": "Marketer-measure",
+    "role": "Marketer",
+    "route": "statistic/boss/measure/report",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Marketer-report": {
+    "id": "Marketer-report",
+    "role": "Marketer",
+    "route": "statistic/marketer/report",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Designer-design": {
+    "id": "Designer-design",
+    "role": "Designer-Dong",
+    "route": "design/scheme/info",
+    "body": {
+      "designId": "231846502647988224"
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Designer-quotes": {
+    "id": "Designer-quotes",
+    "role": "Designer-Dong",
+    "route": "quote/designer/page",
+    "body": {
+      "current": 1,
+      "size": 5
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "38"
+    }
+  },
+  "Pm-own-project": {
+    "id": "Pm-own-project",
+    "role": "Pm-Xu",
+    "route": "project/project/info",
+    "body": {
+      "projectId": "231848057782665216"
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Pm-tasks": {
+    "id": "Pm-tasks",
+    "role": "Pm-Xu",
+    "route": "project/task/page",
+    "body": {
+      "projectId": "231848057782665216",
+      "current": 1,
+      "size": 20
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "8"
+    }
+  },
+  "Pm-reports": {
+    "id": "Pm-reports",
+    "role": "Pm-Xu",
+    "route": "project/report/page",
+    "body": {
+      "projectId": "231848057782665216",
+      "current": 1,
+      "size": 20
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "2"
+    }
+  },
+  "Finance-summary": {
+    "id": "Finance-summary",
+    "role": "Finance",
+    "route": "finance/summary/report",
+    "body": {},
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true
+    }
+  },
+  "Finance-projects": {
+    "id": "Finance-projects",
+    "role": "Finance",
+    "route": "finance/project/page",
+    "body": {
+      "current": 1,
+      "size": 5
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "14"
+    }
+  },
+  "Finance-receivables": {
+    "id": "Finance-receivables",
+    "role": "Finance",
+    "route": "finance/receivable/page",
+    "body": {
+      "current": 1,
+      "size": 5
+    },
+    "expect": "allow",
+    "result": {
+      "status": 200,
+      "success": true,
+      "count": "48"
+    }
+  },
+  "Deny-marketer-design-write": {
+    "id": "Deny-marketer-design-write",
+    "role": "Marketer",
+    "route": "design/scheme/update",
+    "body": {
+      "designId": "231846502647988224",
+      "name": "荷塘家园业主设计方案",
+      "propertyId": "231845419045355520",
+      "area": 118,
+      "layout": "三室两厅",
+      "style": "现代简约",
+      "status": "Selected"
+    },
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "设计方案不存在或无权访问"
+    }
+  },
+  "Deny-marketer-finance": {
+    "id": "Deny-marketer-finance",
+    "role": "Marketer",
+    "route": "finance/summary/report",
+    "body": {},
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "当前账号无权执行该操作"
+    }
+  },
+  "Deny-designer-other-design": {
+    "id": "Deny-designer-other-design",
+    "role": "Designer-Dong",
+    "route": "design/scheme/info",
+    "body": {
+      "designId": "228669021967351808"
+    },
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "设计方案不存在或无权访问"
+    }
+  },
+  "Deny-designer-contract": {
+    "id": "Deny-designer-contract",
+    "role": "Designer-Dong",
+    "route": "project/contract/update",
+    "body": {
+      "contractId": "231847981748322304",
+      "status": "Effective"
+    },
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "只有企业负责人可以处理合同签约与生效"
+    }
+  },
+  "Deny-pm-other-project": {
+    "id": "Deny-pm-other-project",
+    "role": "Pm-Xu",
+    "route": "project/project/info",
+    "body": {
+      "projectId": "231352376261345280"
+    },
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "项目不存在或无权访问"
+    }
+  },
+  "Deny-team-finance": {
+    "id": "Deny-team-finance",
+    "role": "TeamLeader",
+    "route": "finance/summary/report",
+    "body": {},
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "403",
+      "message": "当前账号无权执行该操作"
+    }
+  },
+  "Deny-cross-company-customer": {
+    "id": "Deny-cross-company-customer",
+    "role": "Boss",
+    "route": "customer/customer/info",
+    "body": {
+      "customerId": "229353590202826752"
+    },
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "客户不存在或无权访问"
+    }
+  },
+  "Deny-cross-company-project": {
+    "id": "Deny-cross-company-project",
+    "role": "Boss",
+    "route": "project/project/info",
+    "body": {
+      "projectId": "229353590450290688"
+    },
+    "expect": "deny",
+    "result": {
+      "status": 200,
+      "success": false,
+      "code": "404",
+      "message": "项目不存在或无权访问"
+    }
+  }
+}

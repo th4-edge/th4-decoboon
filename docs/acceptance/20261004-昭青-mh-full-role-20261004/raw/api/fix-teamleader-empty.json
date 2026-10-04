@@ -1,0 +1,8 @@
+{
+  "role": "TeamLeader",
+  "teamBinding": "temporarily removed for verification only",
+  "attemptedPage": "subpackages/team/pages/designers",
+  "afterPage": "pages/index/index",
+  "blocked": true,
+  "note": "无团队时统一提示并返回首页；测试后 team_id 已恢复为 1790000000000000999。"
+}

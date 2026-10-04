@@ -53,6 +53,11 @@ public class FinanceAccessContext {
         return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
     }
 
+    /** 手工作废、更正和冲正重记仅允许企业负责人执行。 */
+    public Employee requireBoss(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss);
+    }
+
     public Project resolveProject(Employee current, Long projectId) {
         Project project = projectRepository.findByProjectIdAndCompany_ComId(projectId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目不存在或无权访问")));
@@ -83,6 +88,8 @@ public class FinanceAccessContext {
     }
 
     public void applyOwnership(Ledger ledger, Employee current, Project project) {
+        // 项目账本按 project_id 归集；这里必须固化项目关联，不能只写门店/团队/负责人快照。
+        ledger.setProject(project);
         applyBase(ledger, current, project);
     }
 

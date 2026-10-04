@@ -57,8 +57,8 @@ for number in $(seq "$MIGRATION_START" "$MIGRATION_END"); do
   cp "${matches[@]}" "$RELEASE_DIR/"
 done
 
-# 66 企业入驻服务台账、67 官网预约线索为本批必须迁移。
-for number in 66 67; do
+# 66 企业入驻服务台账、67 官网预约线索、68 手工记账分类与更正审计为本批必须迁移。
+for number in 66 67 68; do
   matches=(docs/design/migrations/"${number}"-*.sql)
   [[ -e "${matches[0]}" ]] || { echo "[release] missing migration ${number}" >&2; exit 1; }
   cp "${matches[@]}" "$RELEASE_DIR/"

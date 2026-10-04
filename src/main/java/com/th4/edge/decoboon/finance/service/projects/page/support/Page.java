@@ -27,7 +27,8 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = FinanceProjectReport.class,
                 properties = {"project", "contractAmount", "contractRevenue", "receivableAmount", "receivedAmount", "outstandingAmount",
-                        "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount", "materialAmount", "materialCost", "salaryAmount",
+                        "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
+                        "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "materialAmount", "materialCost", "salaryAmount",
                         "laborCost", "projectPaymentAmount", "projectCost", "otherPayableAmount", "expenseAllocation",
                         "estimatedCost", "actualCost", "totalCost", "profitAmount", "costComplete", "costIncompleteCount",
                         "grossProfit", "grossMargin", "collectionRate", "paymentRate",

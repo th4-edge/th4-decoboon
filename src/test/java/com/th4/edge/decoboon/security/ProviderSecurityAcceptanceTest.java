@@ -121,9 +121,11 @@ class ProviderSecurityAcceptanceTest {
         // => AI 相关基线共 4 条，干净基线为 349（public 12 + protected 337）。
         // 2026-09-27 企业入驻台账并入 4 条（platform/tenant/onboarding/{page,info,reveal,service/save}）。
         // 2026-09-27 恢复未发布能力新增 2 条（site/lead/submit、statistic/success/report）。
-        // => 总数为 355（public 13 + protected 342）。
-        assertThat(routes).hasSize(355);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(342);
+        // 2026-10-04 财务全量汇总新增 3 条（finance/ledger/report、finance/payable/report、document/voucher/report）。
+        // 2026-10-05 手工记账分类与更正新增 6 条（finance/ledger-category tree/save/update/delete、finance/ledger/update、finance/ledger/correct）。
+        // => 总数为 364（public 13 + protected 351）。
+        assertThat(routes).hasSize(364);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(351);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
@@ -132,6 +134,15 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("project/project/page");
         assertUnauthorized("project/project/overview");
         assertUnauthorized("finance/aging/report");
+        assertUnauthorized("finance/ledger/report");
+        assertUnauthorized("finance/payable/report");
+        assertUnauthorized("finance/ledger-category/tree");
+        assertUnauthorized("finance/ledger-category/save");
+        assertUnauthorized("finance/ledger-category/update");
+        assertUnauthorized("finance/ledger-category/delete");
+        assertUnauthorized("finance/ledger/update");
+        assertUnauthorized("finance/ledger/correct");
+        assertUnauthorized("document/voucher/report");
         assertUnauthorized("statistic/organization/report");
         assertUnauthorized("statistic/boss/business/report");
         assertUnauthorized("statistic/risk/report");

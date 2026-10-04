@@ -25,6 +25,14 @@ public class FinanceSummary {
     private BigDecimal otherPayableAmount = BigDecimal.ZERO;
     private BigDecimal monthIncome = BigDecimal.ZERO;
     private BigDecimal monthExpense = BigDecimal.ZERO;
+    private BigDecimal monthNetCashFlowAmount = BigDecimal.ZERO;
+    private Integer receiptCount = 0;
+    private Integer paymentCount = 0;
+    private BigDecimal receiptAmount = BigDecimal.ZERO;
+    private BigDecimal paymentAmount = BigDecimal.ZERO;
+    private BigDecimal monthReceiptAmount = BigDecimal.ZERO;
+    private BigDecimal monthPaymentAmount = BigDecimal.ZERO;
+    private BigDecimal urgentPayableAmount = BigDecimal.ZERO;
     private BigDecimal cashBalance = BigDecimal.ZERO;
     private BigDecimal estimatedCost = BigDecimal.ZERO;
     private BigDecimal actualCost = BigDecimal.ZERO;
@@ -71,6 +79,22 @@ public class FinanceSummary {
     public void setMonthIncome(BigDecimal monthIncome) { this.monthIncome = monthIncome; }
     public BigDecimal getMonthExpense() { return monthExpense; }
     public void setMonthExpense(BigDecimal monthExpense) { this.monthExpense = monthExpense; }
+    public BigDecimal getMonthNetCashFlowAmount() { return monthNetCashFlowAmount; }
+    public void setMonthNetCashFlowAmount(BigDecimal monthNetCashFlowAmount) { this.monthNetCashFlowAmount = monthNetCashFlowAmount; }
+    public Integer getReceiptCount() { return receiptCount; }
+    public void setReceiptCount(Integer receiptCount) { this.receiptCount = receiptCount; }
+    public Integer getPaymentCount() { return paymentCount; }
+    public void setPaymentCount(Integer paymentCount) { this.paymentCount = paymentCount; }
+    public BigDecimal getReceiptAmount() { return receiptAmount; }
+    public void setReceiptAmount(BigDecimal receiptAmount) { this.receiptAmount = receiptAmount; }
+    public BigDecimal getPaymentAmount() { return paymentAmount; }
+    public void setPaymentAmount(BigDecimal paymentAmount) { this.paymentAmount = paymentAmount; }
+    public BigDecimal getMonthReceiptAmount() { return monthReceiptAmount; }
+    public void setMonthReceiptAmount(BigDecimal monthReceiptAmount) { this.monthReceiptAmount = monthReceiptAmount; }
+    public BigDecimal getMonthPaymentAmount() { return monthPaymentAmount; }
+    public void setMonthPaymentAmount(BigDecimal monthPaymentAmount) { this.monthPaymentAmount = monthPaymentAmount; }
+    public BigDecimal getUrgentPayableAmount() { return urgentPayableAmount; }
+    public void setUrgentPayableAmount(BigDecimal urgentPayableAmount) { this.urgentPayableAmount = urgentPayableAmount; }
     public BigDecimal getCashBalance() { return cashBalance; }
     public void setCashBalance(BigDecimal cashBalance) { this.cashBalance = cashBalance; }
     public BigDecimal getProfitAmount() { return profitAmount; }

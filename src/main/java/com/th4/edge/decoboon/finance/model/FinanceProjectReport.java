@@ -20,6 +20,13 @@ public class FinanceProjectReport {
     private BigDecimal payableAmount = BigDecimal.ZERO;
     private BigDecimal paidAmount = BigDecimal.ZERO;
     private BigDecimal unpaidAmount = BigDecimal.ZERO;
+    private Integer receiptCount = 0;
+    private Integer paymentCount = 0;
+    private BigDecimal receiptAmount = BigDecimal.ZERO;
+    private BigDecimal paymentAmount = BigDecimal.ZERO;
+    private BigDecimal monthReceiptAmount = BigDecimal.ZERO;
+    private BigDecimal monthPaymentAmount = BigDecimal.ZERO;
+    private BigDecimal urgentPayableAmount = BigDecimal.ZERO;
     private BigDecimal materialAmount = BigDecimal.ZERO;
     private BigDecimal materialCost = BigDecimal.ZERO;
     private BigDecimal salaryAmount = BigDecimal.ZERO;
@@ -65,6 +72,20 @@ public class FinanceProjectReport {
     public void setPaidAmount(BigDecimal paidAmount) { this.paidAmount = paidAmount; }
     public BigDecimal getUnpaidAmount() { return unpaidAmount; }
     public void setUnpaidAmount(BigDecimal unpaidAmount) { this.unpaidAmount = unpaidAmount; }
+    public Integer getReceiptCount() { return receiptCount; }
+    public void setReceiptCount(Integer receiptCount) { this.receiptCount = receiptCount; }
+    public Integer getPaymentCount() { return paymentCount; }
+    public void setPaymentCount(Integer paymentCount) { this.paymentCount = paymentCount; }
+    public BigDecimal getReceiptAmount() { return receiptAmount; }
+    public void setReceiptAmount(BigDecimal receiptAmount) { this.receiptAmount = receiptAmount; }
+    public BigDecimal getPaymentAmount() { return paymentAmount; }
+    public void setPaymentAmount(BigDecimal paymentAmount) { this.paymentAmount = paymentAmount; }
+    public BigDecimal getMonthReceiptAmount() { return monthReceiptAmount; }
+    public void setMonthReceiptAmount(BigDecimal monthReceiptAmount) { this.monthReceiptAmount = monthReceiptAmount; }
+    public BigDecimal getMonthPaymentAmount() { return monthPaymentAmount; }
+    public void setMonthPaymentAmount(BigDecimal monthPaymentAmount) { this.monthPaymentAmount = monthPaymentAmount; }
+    public BigDecimal getUrgentPayableAmount() { return urgentPayableAmount; }
+    public void setUrgentPayableAmount(BigDecimal urgentPayableAmount) { this.urgentPayableAmount = urgentPayableAmount; }
     public BigDecimal getMaterialAmount() { return materialAmount; }
     public void setMaterialAmount(BigDecimal materialAmount) { this.materialAmount = materialAmount; }
     public BigDecimal getMaterialCost() { return materialCost; }

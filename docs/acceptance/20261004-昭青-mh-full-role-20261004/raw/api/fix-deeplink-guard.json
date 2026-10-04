@@ -1,0 +1,8 @@
+{
+  "role": "Marketer",
+  "attemptedPage": "subpackages/finance/pages/ledger",
+  "openedByNativeReLaunch": true,
+  "afterAppOnShow": "pages/index/index",
+  "blocked": true,
+  "note": "App.onShow 的页面栈权限检查将无权限深链返回首页；接口仍保留最终 403 校验。"
+}

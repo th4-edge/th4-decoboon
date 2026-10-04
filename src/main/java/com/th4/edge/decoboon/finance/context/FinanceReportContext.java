@@ -10,10 +10,14 @@ import com.th4.edge.decoboon.finance.model.FinanceProjectReport;
 import com.th4.edge.decoboon.finance.model.FinanceSummary;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.Payment;
+import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.model.Settlement;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.finance.repository.PaymentRepository;
+import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
@@ -44,6 +48,8 @@ public class FinanceReportContext {
     private final ReceivableRepository receivableRepository;
     private final PayableRepository payableRepository;
     private final LedgerRepository ledgerRepository;
+    private final ReceiptRepository receiptRepository;
+    private final PaymentRepository paymentRepository;
     private final SettlementRepository settlementRepository;
     private final ProjectCostContext projectCostContext;
     private final CarryoverCostContext carryoverCostContext;
@@ -56,7 +62,7 @@ public class FinanceReportContext {
                                 SettlementRepository settlementRepository,
                                 ProjectCostContext projectCostContext) {
         this(accessContext, projectRepository, receivableRepository, payableRepository, ledgerRepository,
-                settlementRepository, projectCostContext, null);
+                null, null, settlementRepository, projectCostContext, null);
     }
 
     @Autowired
@@ -65,6 +71,8 @@ public class FinanceReportContext {
                                 ReceivableRepository receivableRepository,
                                 PayableRepository payableRepository,
                                 LedgerRepository ledgerRepository,
+                                ReceiptRepository receiptRepository,
+                                PaymentRepository paymentRepository,
                                 SettlementRepository settlementRepository,
                                 ProjectCostContext projectCostContext,
                                 CarryoverCostContext carryoverCostContext) {
@@ -73,6 +81,8 @@ public class FinanceReportContext {
         this.receivableRepository = receivableRepository;
         this.payableRepository = payableRepository;
         this.ledgerRepository = ledgerRepository;
+        this.receiptRepository = receiptRepository;
+        this.paymentRepository = paymentRepository;
         this.settlementRepository = settlementRepository;
         this.projectCostContext = projectCostContext;
         this.carryoverCostContext = carryoverCostContext;
@@ -84,6 +94,10 @@ public class FinanceReportContext {
         List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class));
         List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class));
         List<Ledger> ledgers = ledgerRepository.findAll(accessContext.visible(current, Ledger.class));
+        List<Receipt> receipts = receiptRepository == null ? List.of()
+                : receiptRepository.findAll(accessContext.visible(current, Receipt.class));
+        List<Payment> payments = paymentRepository == null ? List.of()
+                : paymentRepository.findAll(accessContext.visible(current, Payment.class));
 
         FinanceSummary summary = new FinanceSummary();
         summary.setProjectCount(projects.size());
@@ -123,6 +137,21 @@ public class FinanceReportContext {
         summary.setMonthExpense(sum(ledgers.stream()
                 .filter(item -> item.getDirection() == LedgerDirection.Expense && sameMonth(item.getOccurredAt(), month))
                 .map(Ledger::getAmount)));
+        summary.setMonthNetCashFlowAmount(summary.getMonthIncome().subtract(summary.getMonthExpense()));
+        summary.setReceiptCount(receipts.size());
+        summary.setPaymentCount(payments.size());
+        summary.setReceiptAmount(sum(receipts.stream().map(Receipt::getAmount)));
+        summary.setPaymentAmount(sum(payments.stream().map(Payment::getAmount)));
+        summary.setMonthReceiptAmount(sum(receipts.stream()
+                .filter(item -> sameMonth(item.getReceivedAt(), month))
+                .map(Receipt::getAmount)));
+        summary.setMonthPaymentAmount(sum(payments.stream()
+                .filter(item -> sameMonth(item.getPaidAt(), month))
+                .map(Payment::getAmount)));
+        summary.setUrgentPayableAmount(payables.stream()
+                .filter(item -> item.getStatus() == PayableStatus.Overdue || Boolean.TRUE.equals(item.getUrgent()))
+                .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
         summary.setCashBalance(ledgers.stream()
                 .map(item -> item.getDirection() == LedgerDirection.Income
                         ? accessContext.value(item.getAmount()) : accessContext.value(item.getAmount()).negate())
@@ -203,6 +232,12 @@ public class FinanceReportContext {
         List<Ledger> ledgers = ledgerRepository
                 .findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(
                         current.getCompany().getComId(), projectId);
+        List<Receipt> receipts = receiptRepository == null ? List.of()
+                : receiptRepository.findByCompany_ComIdAndProject_ProjectIdOrderByReceivedAtDesc(
+                        current.getCompany().getComId(), projectId);
+        List<Payment> payments = paymentRepository == null ? List.of()
+                : paymentRepository.findByCompany_ComIdAndProject_ProjectIdOrderByPaidAtDesc(
+                        current.getCompany().getComId(), projectId);
 
         FinanceProjectReport report = new FinanceProjectReport();
         report.setProject(project);
@@ -219,6 +254,21 @@ public class FinanceReportContext {
         report.setPayableAmount(sum(payables.stream().map(Payable::getAmount)));
         report.setPaidAmount(sum(payables.stream().map(Payable::getPaidAmount)));
         report.setUnpaidAmount(payables.stream()
+                .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        YearMonth month = YearMonth.now();
+        report.setReceiptCount(receipts.size());
+        report.setPaymentCount(payments.size());
+        report.setReceiptAmount(sum(receipts.stream().map(Receipt::getAmount)));
+        report.setPaymentAmount(sum(payments.stream().map(Payment::getAmount)));
+        report.setMonthReceiptAmount(sum(receipts.stream()
+                .filter(item -> sameMonth(item.getReceivedAt(), month))
+                .map(Receipt::getAmount)));
+        report.setMonthPaymentAmount(sum(payments.stream()
+                .filter(item -> sameMonth(item.getPaidAt(), month))
+                .map(Payment::getAmount)));
+        report.setUrgentPayableAmount(payables.stream()
+                .filter(item -> item.getStatus() == PayableStatus.Overdue || Boolean.TRUE.equals(item.getUrgent()))
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
         BigDecimal materialCost = payableAmount(costPayables, PayableType.Material);

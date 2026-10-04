@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.finance.service.partnerledger.report.support;
 
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.PartnerLedger;
+import com.th4.edge.decoboon.finance.model.PartnerLedgerReport;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.supply.model.Partner;
@@ -31,6 +32,8 @@ import java.util.Map;
  */
 @Note("供应商应付台账")
 @Properties(allow = {
+        @AllowProperties(model = PartnerLedgerReport.class,
+                properties = {"rows", "partnerCount", "payableAmount", "paidAmount", "outstandingAmount", "overdueAmount"}),
         @AllowProperties(model = PartnerLedger.class,
                 properties = {"partner", "payableAmount", "paidAmount", "outstanding", "overdueAmount",
                         "pendingCount", "nearestDueDate"}),
@@ -63,7 +66,7 @@ public class Report implements com.th4.edge.decoboon.finance.service.partnerledg
 
     @Override
     @Transactional(readOnly = true)
-    public List<PartnerLedger> call(Payable request) {
+    public PartnerLedgerReport call(Payable request) {
         Employee current = accessContext.requireReader(employee);
         LocalDate today = LocalDate.now();
         Map<Long, PartnerLedger> aggregated = new LinkedHashMap<>();
@@ -103,7 +106,19 @@ public class Report implements com.th4.edge.decoboon.finance.service.partnerledg
             result.removeIf(ledger -> ledger.getOverdueAmount().signum() <= 0);
         }
         result.sort((left, right) -> right.getOutstanding().compareTo(left.getOutstanding()));
-        return result;
+
+        PartnerLedgerReport report = new PartnerLedgerReport();
+        report.setRows(result);
+        report.setPartnerCount(result.size());
+        report.setPayableAmount(result.stream().map(PartnerLedger::getPayableAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        report.setPaidAmount(result.stream().map(PartnerLedger::getPaidAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        report.setOutstandingAmount(result.stream().map(PartnerLedger::getOutstanding)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        report.setOverdueAmount(result.stream().map(PartnerLedger::getOverdueAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
+        return report;
     }
 
     private BigDecimal value(BigDecimal amount) {

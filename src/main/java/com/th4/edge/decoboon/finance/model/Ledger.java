@@ -87,8 +87,22 @@ public class Ledger extends AuditModel {
 
     @Note("业务分类")
     @Keyword
-    @Column(length = 32, nullable = false)
+    @Column(length = 128, nullable = false)
     private String category;
+
+    @Note("结构化业务分类；历史文本分类为空")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private LedgerCategory categoryNode;
+
+    @Note("被冲正或更正的原流水")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "original_ledger_id")
+    private Ledger originalLedger;
+
+    @Note("冲正重记分组标识")
+    @Column(length = 64)
+    private String correctionGroupId;
 
     @Note("资金来源")
     @Enumerated(EnumType.STRING)
@@ -146,6 +160,12 @@ public class Ledger extends AuditModel {
     public void setDirection(LedgerDirection direction) { this.direction = direction; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public LedgerCategory getCategoryNode() { return categoryNode; }
+    public void setCategoryNode(LedgerCategory categoryNode) { this.categoryNode = categoryNode; }
+    public Ledger getOriginalLedger() { return originalLedger; }
+    public void setOriginalLedger(Ledger originalLedger) { this.originalLedger = originalLedger; }
+    public String getCorrectionGroupId() { return correctionGroupId; }
+    public void setCorrectionGroupId(String correctionGroupId) { this.correctionGroupId = correctionGroupId; }
     public LedgerSource getSource() { return source; }
     public void setSource(LedgerSource source) { this.source = source; }
     public Long getSourceId() { return sourceId; }
