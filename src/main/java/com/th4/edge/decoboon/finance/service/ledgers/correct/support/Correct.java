@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.finance.service.ledgers.correct.support;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerRevisionType;
@@ -38,9 +39,18 @@ import java.util.UUID;
 
 /** 手工流水冲正重记实现。 */
 @Note("手工流水冲正重记")
-@Properties(allow = @AllowProperties(model = Ledger.class,
-        properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
-                "occurredAt", "counterparty", "summary", "remark", "originalLedger", "correctionGroupId", "createdBy", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = Ledger.class,
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
+                        "occurredAt", "counterparty", "summary", "remark", "originalLedger", "correctionGroupId", "createdBy", "createTime"}),
+        @AllowProperties(model = Project.class,
+                properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status"}),
+        @AllowProperties(model = Customer.class,
+                properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
+        @AllowProperties(model = LedgerCategory.class,
+                properties = {"categoryId", "name", "direction", "code", "builtIn", "sort", "active"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
 @Service("finance/ledger/correct")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.correct.Correct {

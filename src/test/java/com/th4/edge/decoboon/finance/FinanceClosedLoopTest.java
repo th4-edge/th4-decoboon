@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.finance;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.PayableType;
@@ -39,6 +40,7 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.test.util.AopTestUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,6 +99,8 @@ class FinanceClosedLoopTest {
     private com.th4.edge.decoboon.project.service.projects.page.Page projectPage;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private com.th4.edge.decoboon.finance.service.receivables.save.Save receivableSave;
     @Autowired
@@ -328,7 +332,7 @@ class FinanceClosedLoopTest {
     }
 
     @Test
-    void shouldSeedTwoLevelCategoriesAndAllowBossOnlyManualCorrection() {
+    void shouldSeedTwoLevelCategoriesAndAllowBossOnlyManualCorrection() throws Exception {
         Fixture fixture = createFixture();
         Employee boss = fixture.boss();
         Project project = fixture.project();
@@ -405,6 +409,7 @@ class FinanceClosedLoopTest {
         assertThat(afterInactiveUpdate.getCategory()).isEqualTo("展会费用（更正）");
         assertThat(ledgerRevisionRepository.findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(
                 boss.getCompany().getComId(), ledger.getLedgerId())).hasSize(1);
+        assertBoundedLedgerProjection(ledgerUpdate, afterInactiveUpdate);
 
         // 冲正重记沿用已停用的原分类时，也应保留历史分类，而不是把关联断开。
         com.th4.edge.decoboon.finance.service.ledgers.correct.support.Correct correct =
@@ -427,6 +432,7 @@ class FinanceClosedLoopTest {
         assertThat(replacement.getCategoryNode().getCategoryId()).isEqualTo(custom.getCategoryId());
         assertThat(replacement.getCategory()).isEqualTo("展会费用");
         assertThat(replacement.getOriginalLedger().getLedgerId()).isEqualTo(ledger.getLedgerId());
+        assertBoundedLedgerProjection(ledgerCorrect, replacement);
         assertThat(ledger.getCorrectionGroupId()).isNotBlank();
         assertThat(ledgerRepository.findByCompany_ComIdAndLedgerId(boss.getCompany().getComId(), ledger.getLedgerId())
                 .orElseThrow().getCorrectionGroupId()).isEqualTo(replacement.getCorrectionGroupId());
@@ -642,6 +648,26 @@ class FinanceClosedLoopTest {
 
     private com.th4.edge.decoboon.finance.service.receipts.save.support.Save asReceiptSave() {
         return AopTestUtils.getTargetObject(receiptSave);
+    }
+
+    private void assertBoundedLedgerProjection(Object provider, Ledger ledger) throws Exception {
+        Object target = AopTestUtils.getTargetObject(provider);
+        com.th4.edge.framework.data.jackson.annotation.Properties properties =
+                AnnotationUtils.findAnnotation(target.getClass(), com.th4.edge.framework.data.jackson.annotation.Properties.class);
+        assertThat(properties).as("Provider must declare @Properties").isNotNull();
+        com.th4.edge.framework.data.jackson.context.MixInModelPropertiesHolder.setAspectProperties(properties);
+        try {
+            String json = objectMapper.writeValueAsString(ledger);
+            assertThat(json.length())
+                    .as("更正响应必须使用最小项目投影，不能把整棵项目对象返回给 App")
+                    .isLessThan(8000);
+            com.fasterxml.jackson.databind.JsonNode node = objectMapper.readTree(json);
+            assertThat(node.path("project").path("projectId").asLong()).isPositive();
+            assertThat(node.path("project").has("company")).isFalse();
+            assertThat(node.path("project").has("quote")).isFalse();
+        } finally {
+            com.th4.edge.framework.data.jackson.context.MixInModelPropertiesHolder.removeAspectProperties();
+        }
     }
 
     private void set(Object target, String field, Object value) {
