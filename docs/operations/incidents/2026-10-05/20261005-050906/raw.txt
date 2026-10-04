@@ -1,0 +1,97 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-10-05T05:09:06+08:00
+ 05:09:06 up 19 days,  3:56,  1 user,  load average: 0.47, 0.43, 0.18
+since=15 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=136956
+ExecMainStartTimestamp=Mon 2026-10-05 05:06:49 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20261005-050556
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks    Used Available Capacity Mounted on
+/dev/vda3         40901312 8947584  30063360      23% /
+/dev/vda3         40901312 8947584  30063360      23% /
+/dev/vda3         40901312 8947584  30063360      23% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        2767        1456         137        3664        4689
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-10-05 01:39:51.168] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-10-05 01:40:38.765] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config.js处理失败:找不到对应的处理服务:config.js
+[2026-10-05 01:41:03.560] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application
+[2026-10-05 02:43:16.850] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-05 02:43:16.851] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 02:43:16.853] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 02:43:16.858] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 02:43:16.861] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 02:43:16.864] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 02:43:16.871] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 04:48:42.502] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-10-05 04:48:45.017] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env
+[2026-10-05 04:48:45.060] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env
+[2026-10-05 04:48:45.326] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env
+[2026-10-05 04:48:45.371] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env
+[2026-10-05 04:48:45.420] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env
+[2026-10-05 05:07:28.213] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:36.642] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:44.826] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:45.004] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger-category/tree处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:45.116] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:45.304] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger/update处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:45.434] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger/correct处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:07:45.551] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/pm/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-05 05:09:06.868] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-10-05 04:48:40.518] [WARN ] [XNIO-1 task-5] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+[2026-10-05 04:48:40.588] [WARN ] [XNIO-1 task-2] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+[2026-10-05 04:48:40.654] [WARN ] [XNIO-1 task-5] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+[2026-10-05 04:48:40.756] [WARN ] [XNIO-1 task-2] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' is not supported]
+[2026-10-05 04:48:53.146] [WARN ] [XNIO-1 task-2] [o.s.w.s.m.support.DefaultHandlerExceptionResolver] [?] [?] - Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+[2026-10-05 05:06:59.607] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-10-05 05:07:02.022] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-10-05 05:07:05.063] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-10-05 05:07:10.630] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-05 05:07:10.865] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-05 05:07:10.888] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+547:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+648:2026-10-05T05:07:28.213+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+650:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+751:2026-10-05T05:07:36.642+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+752:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+853:2026-10-05T05:07:44.826+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+854:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+958:2026-10-05T05:07:45.004+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/ledger-category/tree处理失败:访问受限，缺少授权标识，请先登录后再访问。
+959:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1063:2026-10-05T05:07:45.116+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/ledger/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1064:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1176:2026-10-05T05:07:45.304+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/ledger/update处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1177:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1289:2026-10-05T05:07:45.434+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/ledger/correct处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1290:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1392:2026-10-05T05:07:45.551+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/pm/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1393:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1494:2026-10-05T05:09:06.868+08:00 ERROR 136956 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Stopping decoboon.service - Decoboon backend service...
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ cmd.sh[136932]: th4-decoboon is not running
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Main process exited, code=exited, status=143/n/a
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Failed with result 'exit-code'.
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Stopped decoboon.service - Decoboon backend service.
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Consumed 26min 43.660s CPU time, 1.8G memory peak, 0B memory swap peak.
+Oct 05 05:06:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Starting decoboon.service - Decoboon backend service...
+Oct 05 05:06:49 iZbp14tkw2g2pye56mfj7cZ cmd.sh[136951]: th4-decoboon started, PID=136956, log=/opt/decoboon/th4-decoboon/logs/stdout.log
+Oct 05 05:06:49 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Started decoboon.service - Decoboon backend service.

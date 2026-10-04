@@ -2,7 +2,7 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20260927-a1233597b0",
+      "incidentId": "INC-20261005-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -106,9 +106,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 41,
+      "count": 42,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-09-27 04:36:52.823",
+      "lastSeen": "2026-10-05 02:43:16.850",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
         "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
@@ -129,7 +129,8 @@
         "2026-09-24/20260924-122445",
         "2026-09-26/20260926-022226",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-050906"
       ]
     },
     {
@@ -211,9 +212,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 20,
+      "count": 21,
       "firstSeen": "2026-09-17 11:25:08.128",
-      "lastSeen": "2026-09-27 12:53:54.552",
+      "lastSeen": "2026-10-05 04:48:45.371",
       "samples": [
         "[2026-09-17 11:25:08.128] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env",
         "4391:2026-09-17T11:25:08.128+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
@@ -229,7 +230,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-050906"
       ]
     },
     {
@@ -268,9 +270,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 20,
+      "count": 21,
       "firstSeen": "2026-09-17 11:25:08.425",
-      "lastSeen": "2026-09-27 12:53:54.653",
+      "lastSeen": "2026-10-05 04:48:45.420",
       "samples": [
         "[2026-09-17 11:25:08.425] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env",
         "4477:2026-09-17T11:25:08.425+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
@@ -286,7 +288,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-050906"
       ]
     },
     {
@@ -297,9 +300,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 20,
+      "count": 21,
       "firstSeen": "2026-09-17 11:25:05.462",
-      "lastSeen": "2026-09-27 12:53:53.779",
+      "lastSeen": "2026-10-05 04:48:45.017",
       "samples": [
         "[2026-09-17 11:25:05.462] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env",
         "4133:2026-09-17T11:25:05.462+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
@@ -315,7 +318,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-050906"
       ]
     },
     {
@@ -326,9 +330,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 20,
+      "count": 21,
       "firstSeen": "2026-09-17 11:25:05.739",
-      "lastSeen": "2026-09-27 12:53:53.884",
+      "lastSeen": "2026-10-05 04:48:45.060",
       "samples": [
         "[2026-09-17 11:25:05.739] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env",
         "4219:2026-09-17T11:25:05.739+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
@@ -344,7 +348,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-050906"
       ]
     },
     {
@@ -355,9 +360,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 20,
+      "count": 21,
       "firstSeen": "2026-09-17 11:25:07.690",
-      "lastSeen": "2026-09-27 12:53:54.452",
+      "lastSeen": "2026-10-05 04:48:45.326",
       "samples": [
         "[2026-09-17 11:25:07.690] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env",
         "4305:2026-09-17T11:25:07.690+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
@@ -373,7 +378,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-050906"
       ]
     },
     {
@@ -1674,7 +1680,43 @@
       "fixedAt": "2026-09-27 16:22:11",
       "fixedRelease": "/opt/decoboon/releases/20260927-161525",
       "fixSummary": "平台企业快照返回真实 subId；Admin 提交真实订阅主键；定向与全量测试通过，热修部署后无新指纹"
+    },
+    {
+      "incidentId": "INC-20261005-492596d42a",
+      "signature": "找不到对应的处理服务:config.js",
+      "signatureHash": "492596d42a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-05 01:40:38.765",
+      "lastSeen": "2026-10-05 01:40:38.765",
+      "samples": [
+        "[2026-10-05 01:40:38.765] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config.js处理失败:找不到对应的处理服务:config.js"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-050906"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-80b62c529e",
+      "signature": "找不到对应的处理服务:index.php/v1/config/application",
+      "signatureHash": "80b62c529e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-05 01:41:03.560",
+      "lastSeen": "2026-10-05 01:41:03.560",
+      "samples": [
+        "[2026-10-05 01:41:03.560] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-050906"
+      ]
     }
   ],
-  "updatedAt": "2026-09-27T16:22:11+08:00"
+  "updatedAt": "2026-10-04T21:09:06.997137+00:00"
 }
