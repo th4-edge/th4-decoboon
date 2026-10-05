@@ -500,3 +500,70 @@ MySQL 8 直接拒绝：
 - 修复提交：`bdc256a`
 - 风险排查：`b5ffdbc`
 - 规范条目：`rules.md` §4.5「只读事务禁锁」
+
+---
+
+## ECD-013 · 报价行改量价会清空空间归属（区域分组被破坏）
+
+**发现时间**：2026-10-06
+**发现方式**：Web 端接真实数据做「编辑工程量 → 保存草稿」闭环时暴露
+
+### 现象
+
+调用 `quote/line/save` 只传 App 既有入参（`quoteId / itemId / catalogItemId / quantity`）修改工程量后，
+该报价行的 `space_id` 被写成 `NULL`，报价的区域分组随之被拆散：
+
+```text
+改前：regionGroups = [('全屋', 67 项)]
+改后：regionGroups = [('全屋', 66 项), ('综合项目', 1 项)]
+```
+
+金额本身是正确的（服务端重算正常，小计 +300 / 税额 +15 / 总额 +315），
+**丢的是空间归属**，属静默数据损坏。
+
+### 根因
+
+`QuoteAdjustmentContext.save()` 第 102 行无条件覆盖：
+
+```java
+target.setSpace(source.getSpace());   // source 来自请求绑定
+```
+
+请求未携带 `space` 时 `source.getSpace()` 为 `null`，于是把已有行的空间归属覆盖为 `null`。
+
+### 让问题难发现的两点
+
+1. **接口不报错**：返回 `success=true`，金额也重算正确，只有比 `space_id` 或 `regionGroups` 才看得出来；
+2. **两端同源**：App 的 `QuoteLineInput` 同样没有 `space` 字段，所以 App 走这条路径也会清空空间归属。
+
+### 禁则
+
+1. ❌ 禁止在「更新既有行」时无条件用请求值覆盖未提交的关联字段（`space` / `packageLine` 等）；
+2. ❌ 禁止让调用方必须"记得回传"才能保住既有数据——缺省必须表示"不改"，不是"清空"。
+
+### 必须写法
+
+```java
+// 仅当请求显式提供时才覆盖，否则保留既有归属
+if (source.getSpace() != null) {
+    target.setSpace(source.getSpace());
+}
+```
+
+同类字段（`packageLine`、`property` 等）一并按"缺省即保留"处理。
+
+### Web 侧当前规避
+
+Web `saveQuoteLine` 已强制携带 `spaceId`（`space: { spaceId }`），
+并在类型注释中标注原因；但**这属于规避，根治仍需后端按上述写法修复**。
+
+### 检测与回归要求
+
+- 回归：对既有报价行只传 `quantity` 调用 `quote/line/save`，断言 `space_id` 与 `regionGroups` 不变；
+- 断言金额仍按服务端重算（小计/税额/总额同步变化）；
+- App 侧同路径需一并回归（App `QuoteLineInput` 无 `space`）。
+
+### 关联
+
+- 发现批次：`QUOTE-WRITE-20261006`（Web `th4-decoboon-web`）
+- 证据：`docs/acceptance/runs/20261006-报价写入闭环/README.md`
