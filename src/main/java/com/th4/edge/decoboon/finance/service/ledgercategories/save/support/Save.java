@@ -69,9 +69,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.ledgercategor
         }
         String normalized = name.trim();
         boolean duplicated = parent == null
-                ? repository.existsByCompany_ComIdAndDirectionAndParentIsNullAndName(
+                ? repository.existsByCompany_ComIdAndDirectionAndParentIsNullAndNameAndActiveTrue(
                         current.getCompany().getComId(), direction, normalized)
-                : repository.existsByCompany_ComIdAndDirectionAndParent_CategoryIdAndName(
+                : repository.existsByCompany_ComIdAndDirectionAndParent_CategoryIdAndNameAndActiveTrue(
                         current.getCompany().getComId(), direction, parent.getCategoryId(), normalized);
         if (duplicated) {
             throw new DefinedException(new DefaultErrorCode("400", "同级分类名称已存在"));

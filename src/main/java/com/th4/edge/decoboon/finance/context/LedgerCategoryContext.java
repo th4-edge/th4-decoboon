@@ -159,7 +159,7 @@ public class LedgerCategoryContext {
     }
 
     /**
-     * 幂等补齐内置模板：已存在的一级/二级只同步名称、排序与父子关系，不删除、不重建。
+     * 幂等补齐内置模板：仅为企业创建缺失的内置编码，不覆盖企业已改名、已停用或已删除的内置二级分类。
      */
     @Transactional
     public void ensureBuiltIns(Company company) {
@@ -184,61 +184,24 @@ public class LedgerCategoryContext {
                 category = repository.save(category);
                 byCode.put(key, category);
             }
-            syncBuiltIn(category, template, null);
             roots.put(template.code(), category);
         }
         for (Template template : TEMPLATES) {
             if (template.parentCode() == null) continue;
             String key = codeKey(template.direction(), template.code());
-            LedgerCategory category = byCode.get(key);
-            LedgerCategory parent = roots.get(template.parentCode());
-            if (category == null) {
-                category = new LedgerCategory();
-                category.setCompany(company);
-                category.setName(template.name());
-                category.setDirection(template.direction());
-                category.setCode(template.code());
-                category.setBuiltIn(true);
-                category.setActive(true);
-                category.setSort(template.sort());
-                category.setParent(parent);
-                category = repository.save(category);
-                byCode.put(key, category);
-            }
-            syncBuiltIn(category, template, parent);
-        }
-    }
-
-    private void syncBuiltIn(LedgerCategory category, Template template, LedgerCategory parent) {
-        boolean changed = false;
-        if (!template.name().equals(category.getName())) {
+            if (byCode.containsKey(key)) continue;
+            LedgerCategory category = new LedgerCategory();
+            category.setCompany(company);
             category.setName(template.name());
-            changed = true;
-        }
-        if (category.getDirection() != template.direction()) {
             category.setDirection(template.direction());
-            changed = true;
-        }
-        if (!Boolean.TRUE.equals(category.getBuiltIn())) {
+            category.setCode(template.code());
             category.setBuiltIn(true);
-            changed = true;
-        }
-        if (!Boolean.TRUE.equals(category.getActive())) {
             category.setActive(true);
-            changed = true;
-        }
-        if (category.getSort() == null || category.getSort() != template.sort()) {
             category.setSort(template.sort());
-            changed = true;
+            category.setParent(roots.get(template.parentCode()));
+            category = repository.save(category);
+            byCode.put(key, category);
         }
-        boolean parentChanged = parent == null
-                ? category.getParent() != null
-                : category.getParent() == null || !parent.getCategoryId().equals(category.getParent().getCategoryId());
-        if (parentChanged) {
-            category.setParent(parent);
-            changed = true;
-        }
-        if (changed) repository.save(category);
     }
 
     /**

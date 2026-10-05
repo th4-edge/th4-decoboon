@@ -48,8 +48,9 @@ public class Delete implements com.th4.edge.decoboon.finance.service.ledgercateg
         LedgerCategory category = repository.findByCompany_ComIdAndCategoryId(
                         current.getCompany().getComId(), categoryId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "分类不存在或无权访问")));
-        if (Boolean.TRUE.equals(category.getBuiltIn())) {
-            throw new DefinedException(new DefaultErrorCode("400", "内置分类不可删除"));
+        // 内置一级分组不允许删除；内置二级分类允许按企业逻辑删除（停用）。
+        if (Boolean.TRUE.equals(category.getBuiltIn()) && category.getParent() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "内置一级分组不可删除"));
         }
         category.setActive(false);
         if (category.getParent() == null) {

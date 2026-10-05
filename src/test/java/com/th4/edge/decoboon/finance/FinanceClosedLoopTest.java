@@ -120,6 +120,8 @@ class FinanceClosedLoopTest {
     @Autowired
     private com.th4.edge.decoboon.finance.service.ledgercategories.save.Save ledgerCategorySave;
     @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgercategories.update.Update ledgerCategoryUpdate;
+    @Autowired
     private com.th4.edge.decoboon.finance.service.ledgercategories.delete.Delete ledgerCategoryDelete;
     @Autowired
     private com.th4.edge.decoboon.finance.repository.LedgerRevisionRepository ledgerRevisionRepository;
@@ -560,6 +562,84 @@ class FinanceClosedLoopTest {
         assertThatThrownBy(() -> update.call(new Ledger()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
                 .hasMessageContaining("财务仅可补充业务分类");
+    }
+
+    @Test
+    void shouldAllowTenantToEditAndDeleteBuiltInSecondLevelCategory() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+
+        com.th4.edge.decoboon.finance.service.ledgercategories.tree.support.Tree tree =
+                AopTestUtils.getTargetObject(ledgerCategoryTree);
+        set(tree, "employee", boss);
+        List<com.th4.edge.decoboon.finance.model.LedgerCategory> categories =
+                tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        var materialRoot = categories.stream()
+                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense)
+                .filter(item -> "材料采购".equals(item.getName()))
+                .findFirst().orElseThrow();
+        var builtInChild = materialRoot.getChildren().stream()
+                .filter(item -> "主材采购".equals(item.getName()))
+                .findFirst().orElseThrow();
+
+        // 内置二级分类允许企业改名，改名后再次读取分类树不得被模板覆盖。
+        com.th4.edge.decoboon.finance.service.ledgercategories.update.support.Update update =
+                AopTestUtils.getTargetObject(ledgerCategoryUpdate);
+        set(update, "employee", boss);
+        set(update, "categoryId", builtInChild.getCategoryId());
+        set(update, "name", "主材采购（企业定制）");
+        set(update, "active", true);
+        var renamed = update.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        assertThat(renamed.getBuiltIn()).isTrue();
+        assertThat(renamed.getName()).isEqualTo("主材采购（企业定制）");
+
+        set(tree, "employee", boss);
+        var reloaded = tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()).stream()
+                .filter(item -> "材料采购".equals(item.getName()))
+                .findFirst().orElseThrow()
+                .getChildren().stream()
+                .filter(item -> item.getCategoryId().equals(builtInChild.getCategoryId()))
+                .findFirst().orElseThrow();
+        assertThat(reloaded.getName()).isEqualTo("主材采购（企业定制）");
+
+        // 内置一级分组仍不允许改名/停用。
+        set(update, "categoryId", materialRoot.getCategoryId());
+        set(update, "name", "材料采购（改名）");
+        set(update, "active", true);
+        assertThatThrownBy(() -> update.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("内置一级分组不可修改");
+
+        // 内置二级分类允许企业逻辑删除，删除后分类树不得复活。
+        com.th4.edge.decoboon.finance.service.ledgercategories.delete.support.Delete delete =
+                AopTestUtils.getTargetObject(ledgerCategoryDelete);
+        set(delete, "employee", boss);
+        set(delete, "categoryId", builtInChild.getCategoryId());
+        var deleted = delete.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        assertThat(deleted.getActive()).isFalse();
+
+        set(tree, "employee", boss);
+        boolean stillVisible = tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()).stream()
+                .flatMap(item -> item.getChildren().stream())
+                .anyMatch(item -> item.getCategoryId().equals(builtInChild.getCategoryId()));
+        assertThat(stillVisible).isFalse();
+
+        // 内置一级分组仍不允许删除。
+        set(delete, "categoryId", materialRoot.getCategoryId());
+        assertThatThrownBy(() -> delete.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("内置一级分组不可删除");
+
+        // 停用的内置二级分类名称可被企业重新创建。
+        com.th4.edge.decoboon.finance.service.ledgercategories.save.support.Save categorySave =
+                AopTestUtils.getTargetObject(ledgerCategorySave);
+        set(categorySave, "employee", boss);
+        set(categorySave, "name", "主材采购");
+        set(categorySave, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(categorySave, "parentId", materialRoot.getCategoryId());
+        var recreated = categorySave.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        assertThat(recreated.getBuiltIn()).isFalse();
+        assertThat(recreated.getName()).isEqualTo("主材采购");
     }
 
     @Test

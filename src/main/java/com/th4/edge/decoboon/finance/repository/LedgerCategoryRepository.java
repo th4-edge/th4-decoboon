@@ -23,11 +23,14 @@ public interface LedgerCategoryRepository extends JpaRepository<LedgerCategory, 
     List<LedgerCategory> findByCompany_ComIdAndParent_CategoryIdAndDirectionAndActiveTrueOrderBySortAscCategoryIdAsc(
             Long comId, Long parentId, LedgerDirection direction);
 
-    boolean existsByCompany_ComIdAndDirectionAndParent_CategoryIdAndName(
+    boolean existsByCompany_ComIdAndDirectionAndParent_CategoryIdAndNameAndActiveTrue(
             Long comId, LedgerDirection direction, Long parentId, String name);
 
-    boolean existsByCompany_ComIdAndDirectionAndParentIsNullAndName(
+    boolean existsByCompany_ComIdAndDirectionAndParentIsNullAndNameAndActiveTrue(
             Long comId, LedgerDirection direction, String name);
+
+    boolean existsByCompany_ComIdAndDirectionAndParentIsNullAndNameAndCategoryIdNot(
+            Long comId, LedgerDirection direction, String name, Long categoryId);
 
     List<LedgerCategory> findByCompany_ComIdAndParent_CategoryId(Long comId, Long parentId);
 
