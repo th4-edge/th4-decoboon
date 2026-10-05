@@ -35,7 +35,12 @@ public class Report implements com.th4.edge.decoboon.finance.service.ledgers.rep
     @AutoInject
     private String direction;
     @AutoInject
+    private Long categoryId;
+    @AutoInject
     private String category;
+    /** 待关联业务分类：手工记账且尚未关联分类节点。 */
+    @AutoInject
+    private Boolean uncategorized;
     @AutoInject
     private LocalDate startDate;
     @AutoInject
@@ -64,12 +69,19 @@ public class Report implements com.th4.edge.decoboon.finance.service.ledgers.rep
                 .filter(item -> selected.isEmpty() || selected.contains(item.getLedgerId()))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> direction == null || direction.isBlank() || item.getDirection().name().equalsIgnoreCase(direction))
-                .filter(item -> category == null || category.isBlank() || item.getCategory().equals(category))
+                .filter(item -> categoryId == null || (item.getCategoryNode() != null
+                        && categoryId.equals(item.getCategoryNode().getCategoryId())))
+                .filter(item -> category == null || category.isBlank() || category.equals(item.getCategory()))
+                .filter(item -> !Boolean.TRUE.equals(uncategorized)
+                        || (item.getSource() == com.th4.edge.decoboon.finance.configure.LedgerSource.Manual
+                        && item.getCategoryNode() == null))
                 .filter(item -> startDate == null || (item.getOccurredAt() != null && !item.getOccurredAt().isBefore(startDate)))
                 .filter(item -> endDate == null || (item.getOccurredAt() != null && !item.getOccurredAt().isAfter(endDate)))
                 .filter(item -> kw.isBlank()
-                        || item.getSummary().toLowerCase().contains(kw)
-                        || (item.getCounterparty() != null && item.getCounterparty().toLowerCase().contains(kw)))
+                        || contains(item.getSummary(), kw)
+                        || contains(item.getCounterparty(), kw)
+                        || contains(item.getCategory(), kw)
+                        || (item.getCategoryNode() != null && contains(item.getCategoryNode().getName(), kw)))
                 .toList();
 
         BigDecimal income = BigDecimal.ZERO;
@@ -96,5 +108,9 @@ public class Report implements com.th4.edge.decoboon.finance.service.ledgers.rep
 
     private BigDecimal value(BigDecimal amount) {
         return amount == null ? BigDecimal.ZERO : amount;
+    }
+
+    private boolean contains(String value, String keyword) {
+        return value != null && value.toLowerCase().contains(keyword);
     }
 }

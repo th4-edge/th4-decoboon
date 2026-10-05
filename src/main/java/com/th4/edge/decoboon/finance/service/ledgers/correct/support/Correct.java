@@ -64,11 +64,8 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
     @NotNull
     private LedgerDirection direction;
     @AutoInject
+    @NotNull
     private Long categoryId;
-    @AutoInject
-    @NotEmpty
-    @Length(max = 128)
-    private String category;
     @AutoInject
     @NotNull
     private BigDecimal amount;
@@ -125,7 +122,7 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
                 && categoryId.equals(originalCategoryNode.getCategoryId())
                 ? originalCategoryNode
                 : categoryContext.select(current, categoryId, direction);
-        String normalizedCategory = categoryNode == null ? category.trim() : categoryNode.getName();
+        String normalizedCategory = categoryNode.getName();
 
         String groupId = UUID.randomUUID().toString();
         Ledger reversal = new Ledger();

@@ -54,9 +54,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.ledgers.save.
     @NotNull
     private LedgerDirection direction;
     @AutoInject
-    @NotEmpty
-    private String category;
-    @AutoInject
+    @NotNull
     private Long categoryId;
     @AutoInject
     @NotNull
@@ -95,8 +93,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.ledgers.save.
         }
         Project project = projectId == null ? null : accessContext.resolveProject(current, projectId);
         request.setDirection(direction);
+        // 业务分类只认关联：分类文本由服务端按关联生成快照，客户端不再提交自由文本。
         LedgerCategory categoryNode = categoryContext.select(current, categoryId, direction);
-        request.setCategory(categoryNode == null ? category.trim() : categoryNode.getName());
+        request.setCategory(categoryNode.getName());
         request.setCategoryNode(categoryNode);
         request.setSource(LedgerSource.Manual);
         request.setAmount(total);

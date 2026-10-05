@@ -332,7 +332,7 @@ class FinanceClosedLoopTest {
     }
 
     @Test
-    void shouldSeedTwoLevelCategoriesAndAllowBossOnlyManualCorrection() throws Exception {
+    void shouldSeedTwoLevelCategoriesAndLinkManualLedgerByCategoryId() throws Exception {
         Fixture fixture = createFixture();
         Employee boss = fixture.boss();
         Project project = fixture.project();
@@ -347,7 +347,7 @@ class FinanceClosedLoopTest {
                 .filter(item -> "材料采购".equals(item.getName()))
                 .findFirst().orElseThrow();
         assertThat(materialRoot.getChildren()).extracting(com.th4.edge.decoboon.finance.model.LedgerCategory::getName)
-                .contains("主材", "辅材", "五金");
+                .contains("主材采购", "辅材采购", "五金采购");
 
         com.th4.edge.decoboon.finance.service.ledgercategories.save.support.Save categorySave =
                 AopTestUtils.getTargetObject(ledgerCategorySave);
@@ -364,7 +364,6 @@ class FinanceClosedLoopTest {
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
         set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
-        set(save, "category", custom.getName());
         set(save, "categoryId", custom.getCategoryId());
         set(save, "amount", new BigDecimal("120.00"));
         set(save, "account", FundAccount.CompanyBank);
@@ -396,7 +395,6 @@ class FinanceClosedLoopTest {
         set(update, "employee", boss);
         set(update, "ledgerId", ledger.getLedgerId());
         set(update, "categoryId", custom.getCategoryId());
-        set(update, "category", "展会费用（更正）");
         set(update, "counterparty", "会展中心");
         set(update, "summary", "展会摊位费（更正）");
         set(update, "remark", "分类描述更正");
@@ -406,7 +404,7 @@ class FinanceClosedLoopTest {
                 boss.getCompany().getComId(), ledger.getLedgerId()).orElseThrow();
         assertThat(afterInactiveUpdate.getSummary()).isEqualTo("展会摊位费（更正）");
         assertThat(afterInactiveUpdate.getCategoryNode().getCategoryId()).isEqualTo(custom.getCategoryId());
-        assertThat(afterInactiveUpdate.getCategory()).isEqualTo("展会费用（更正）");
+        assertThat(afterInactiveUpdate.getCategory()).isEqualTo("展会费用");
         assertThat(ledgerRevisionRepository.findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(
                 boss.getCompany().getComId(), ledger.getLedgerId())).hasSize(1);
         assertBoundedLedgerProjection(ledgerUpdate, afterInactiveUpdate);
@@ -418,7 +416,6 @@ class FinanceClosedLoopTest {
         set(correct, "ledgerId", ledger.getLedgerId());
         set(correct, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
         set(correct, "categoryId", custom.getCategoryId());
-        set(correct, "category", "展会费用");
         set(correct, "amount", new BigDecimal("150.00"));
         set(correct, "account", FundAccount.CompanyBank);
         set(correct, "occurredAt", LocalDate.now());
@@ -452,6 +449,117 @@ class FinanceClosedLoopTest {
         assertThatThrownBy(() -> correct.call(new Ledger()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
                 .hasMessageContaining("无权");
+    }
+
+    @Test
+    void shouldEnforceSecondLevelCategoryAndAllowFinanceRelinkLegacyLedger() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+
+        com.th4.edge.decoboon.finance.service.ledgercategories.tree.support.Tree tree =
+                AopTestUtils.getTargetObject(ledgerCategoryTree);
+        set(tree, "employee", boss);
+        List<com.th4.edge.decoboon.finance.model.LedgerCategory> categories =
+                tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
+        var projectRoot = categories.stream()
+                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Income)
+                .filter(item -> "工程款".equals(item.getName()))
+                .findFirst().orElseThrow();
+        assertThat(projectRoot.getChildren()).extracting(com.th4.edge.decoboon.finance.model.LedgerCategory::getName)
+                .contains("首期款", "进度款", "尾款", "质保金", "增项款");
+        var firstIncome = projectRoot.getChildren().stream()
+                .filter(item -> "首期款".equals(item.getName()))
+                .findFirst().orElseThrow();
+
+        com.th4.edge.decoboon.finance.service.ledgers.save.support.Save save =
+                AopTestUtils.getTargetObject(ledgerSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
+
+        // 未选分类与选择一级分组都必须被拒绝。
+        set(save, "categoryId", null);
+        set(save, "amount", new BigDecimal("100.00"));
+        set(save, "account", FundAccount.CompanyBank);
+        set(save, "occurredAt", LocalDate.now());
+        set(save, "counterparty", null);
+        set(save, "summary", "缺分类");
+        set(save, "remark", null);
+        assertThatThrownBy(() -> save.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("请选择业务分类");
+
+        set(save, "categoryId", projectRoot.getCategoryId());
+        assertThatThrownBy(() -> save.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("一级分组");
+
+        // 二级分类正常保存，分类快照由服务端生成。
+        set(save, "categoryId", firstIncome.getCategoryId());
+        set(save, "summary", "首期款入账");
+        Ledger manual = save.call(new Ledger());
+        assertThat(manual.getCategoryNode().getCategoryId()).isEqualTo(firstIncome.getCategoryId());
+        assertThat(manual.getCategory()).isEqualTo("首期款");
+
+        // 历史手工流水未关联分类，进入待关联统计。
+        Ledger legacy = new Ledger();
+        legacy.setCompany(boss.getCompany());
+        legacy.setOwner(boss);
+        legacy.setDirection(com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
+        legacy.setCategory("老文本：首期");
+        legacy.setSource(com.th4.edge.decoboon.finance.configure.LedgerSource.Manual);
+        legacy.setAmount(new BigDecimal("66.00"));
+        legacy.setAccount(FundAccount.CompanyBank);
+        legacy.setOccurredAt(LocalDate.now());
+        legacy.setSummary("历史流水");
+        legacy.setCreatedBy(boss);
+        legacy = ledgerRepository.save(legacy);
+        entityManager.flush();
+
+        com.th4.edge.decoboon.finance.service.ledgers.report.support.Report report =
+                AopTestUtils.getTargetObject(ledgerReport);
+        set(report, "employee", boss);
+        set(report, "uncategorized", true);
+        var before = report.call(new Ledger());
+        assertThat(before.getCount()).isEqualTo(1);
+        assertThat(before.getIncomeAmount()).isEqualByComparingTo("66.00");
+
+        Employee finance = new Employee();
+        finance.setCompany(boss.getCompany());
+        finance.setStore(boss.getStore());
+        finance.setRole(EmployeeRole.Finance);
+        finance.setStatus(EmployeeStatus.Active);
+        finance.setName("财务补分类");
+        finance.setTelNo("18" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L)));
+        finance.setJoinedAt(LocalDateTime.now());
+        finance = employeeRepository.save(finance);
+
+        com.th4.edge.decoboon.finance.service.ledgers.update.support.Update update =
+                AopTestUtils.getTargetObject(ledgerUpdate);
+        set(update, "employee", finance);
+        set(update, "ledgerId", legacy.getLedgerId());
+        set(update, "categoryId", firstIncome.getCategoryId());
+        set(update, "counterparty", null);
+        set(update, "summary", null);
+        set(update, "remark", null);
+        set(update, "projectId", null);
+        set(update, "reason", "补关联历史业务分类");
+        Ledger relinked = update.call(new Ledger());
+        assertThat(relinked.getCategoryNode().getCategoryId()).isEqualTo(firstIncome.getCategoryId());
+        assertThat(relinked.getCategory()).isEqualTo("首期款");
+        assertThat(relinked.getSummary()).isEqualTo("历史流水");
+        assertThat(relinked.getAmount()).isEqualByComparingTo("66.00");
+
+        set(report, "uncategorized", true);
+        assertThat(report.call(new Ledger()).getCount()).isZero();
+
+        // 财务仅可补分类，不能改摘要等元数据。
+        set(update, "categoryId", null);
+        set(update, "summary", "财务越权改摘要");
+        assertThatThrownBy(() -> update.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("财务仅可补充业务分类");
     }
 
     @Test

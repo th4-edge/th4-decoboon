@@ -30,4 +30,6 @@ public interface LedgerCategoryRepository extends JpaRepository<LedgerCategory, 
             Long comId, LedgerDirection direction, String name);
 
     List<LedgerCategory> findByCompany_ComIdAndParent_CategoryId(Long comId, Long parentId);
+
+    boolean existsByCompany_ComIdAndParent_CategoryIdAndActiveTrue(Long comId, Long parentId);
 }

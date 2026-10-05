@@ -184,7 +184,7 @@ public class VoucherContext {
         item.setBusinessDate(ledger.getOccurredAt());
         item.setAccount(ledger.getAccount());
         item.setAmount(ledger.getAmount() == null ? BigDecimal.ZERO : ledger.getAmount());
-        item.setCategory(ledger.getCategory());
+        item.setCategory(ledger.getCategoryNode() == null ? ledger.getCategory() : ledger.getCategoryNode().getName());
         item.setRemark(ledger.getRemark() == null ? ledger.getSummary() : ledger.getRemark());
         return item;
     }
@@ -234,7 +234,8 @@ public class VoucherContext {
 
     private String key(Ledger ledger) {
         Long projectId = ledger.getProject() == null ? null : ledger.getProject().getProjectId();
-        return String.join("|", safe(ledger.getCounterparty()), String.valueOf(projectId), safe(ledger.getCategory()));
+        String category = ledger.getCategoryNode() == null ? ledger.getCategory() : ledger.getCategoryNode().getName();
+        return String.join("|", safe(ledger.getCounterparty()), String.valueOf(projectId), safe(category));
     }
 
     private String safe(String value) {

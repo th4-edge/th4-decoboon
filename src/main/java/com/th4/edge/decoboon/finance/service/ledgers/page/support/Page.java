@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.finance.service.ledgers.page.support;
 import com.th4.edge.decoboon.customer.model.Customer;
 
+import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -53,7 +55,12 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
     @AutoInject
     private String direction;
     @AutoInject
+    private Long categoryId;
+    @AutoInject
     private String category;
+    /** 待关联业务分类：手工记账且尚未关联分类节点。 */
+    @AutoInject
+    private Boolean uncategorized;
     @AutoInject
     private LocalDate startDate;
     @AutoInject
@@ -70,6 +77,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Ledger> call(Ledger request) {
         Employee currentEmployee = accessContext.requireReader(employee);
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
@@ -78,12 +86,18 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
                 .filter(item -> ledgerId == null || ledgerId.equals(item.getLedgerId()))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> direction == null || direction.isBlank() || item.getDirection().name().equalsIgnoreCase(direction))
-                .filter(item -> category == null || category.isBlank() || item.getCategory().equals(category))
+                .filter(item -> categoryId == null || (item.getCategoryNode() != null
+                        && categoryId.equals(item.getCategoryNode().getCategoryId())))
+                .filter(item -> category == null || category.isBlank() || category.equals(item.getCategory()))
+                .filter(item -> !Boolean.TRUE.equals(uncategorized)
+                        || (item.getSource() == LedgerSource.Manual && item.getCategoryNode() == null))
                 .filter(item -> startDate == null || (item.getOccurredAt() != null && !item.getOccurredAt().isBefore(startDate)))
                 .filter(item -> endDate == null || (item.getOccurredAt() != null && !item.getOccurredAt().isAfter(endDate)))
                 .filter(item -> kw.isBlank()
-                        || item.getSummary().toLowerCase().contains(kw)
-                        || (item.getCounterparty() != null && item.getCounterparty().toLowerCase().contains(kw)))
+                        || contains(item.getSummary(), kw)
+                        || contains(item.getCounterparty(), kw)
+                        || contains(item.getCategory(), kw)
+                        || (item.getCategoryNode() != null && contains(item.getCategoryNode().getName(), kw)))
                 .sorted(Comparator.comparing(Ledger::getOccurredAt,
                                 Comparator.nullsLast(Comparator.naturalOrder()))
                         .thenComparing(Ledger::getLedgerId,
@@ -95,5 +109,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
         int from = Math.min(page * pageSize, items.size());
         int to = Math.min(from + pageSize, items.size());
         return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+    }
+
+    private boolean contains(String value, String keyword) {
+        return value != null && value.toLowerCase().contains(keyword);
     }
 }

@@ -23,6 +23,8 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
+import com.th4.edge.framework.provider.validation.annotation.NotNull;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -31,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** 手工流水元数据更正实现。 */
-@Note("更正手工流水元数据")
+/** 手工流水元数据更正与历史分类补关联实现。 */
+@Note("更正手工流水")
 @Properties(allow = {
         @AllowProperties(model = Ledger.class,
                 properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
@@ -52,13 +54,13 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
     @User
     private Employee employee;
     @AutoInject
+    @NotNull
     private Long ledgerId;
+    /** 补齐/改选业务分类；只允许可选二级分类。 */
     @AutoInject
     private Long categoryId;
     @AutoInject
     @Length(max = 128)
-    private String category;
-    @AutoInject
     private String counterparty;
     @AutoInject
     @Length(max = 256)
@@ -92,23 +94,27 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
     @Override
     @Transactional
     public Ledger call(Ledger request) {
-        Employee current = accessContext.requireBoss(employee);
+        Employee current = accessContext.requireEditor(employee);
         Ledger ledger = requireManual(current, ledgerId);
+        boolean boss = current.getRole() == EmployeeRole.Boss;
+        if (!boss && (changed(counterparty, ledger.getCounterparty())
+                || changed(summary, ledger.getSummary())
+                || changed(remark, ledger.getRemark())
+                || projectChanged(projectId, ledger.getProject()))) {
+            throw new DefinedException(new DefaultErrorCode("403", "财务仅可补充业务分类，其他元数据更正需企业负责人操作"));
+        }
+        if (categoryId == null && counterparty == null && summary == null && remark == null && projectId == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "没有需要更新的内容"));
+        }
         String before = snapshot(ledger);
         if (categoryId != null) {
-            // 分类停用后，历史流水仍可继续更正摘要等项目；未改选原分类时保留原关联，避免拆断历史。
+            // 分类停用后，历史流水仍可继续更正其他字段；未改选原分类时保留原关联，避免拆断历史。
             LedgerCategory originalNode = ledger.getCategoryNode();
             LedgerCategory node = originalNode != null && categoryId.equals(originalNode.getCategoryId())
                     ? originalNode
                     : categoryContext.select(current, categoryId, ledger.getDirection());
             ledger.setCategoryNode(node);
-            if (node != null && (category == null || category.isBlank())) {
-                ledger.setCategory(node.getName());
-            }
-        }
-        if (category != null) {
-            if (category.isBlank()) throw new DefinedException(new DefaultErrorCode("400", "业务分类不能为空"));
-            ledger.setCategory(category.trim());
+            ledger.setCategory(node.getName());
         }
         if (counterparty != null) ledger.setCounterparty(counterparty.trim());
         if (summary != null) {
@@ -132,6 +138,20 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
         revision.setAfterSnapshot(snapshot(saved));
         revisionRepository.save(revision);
         return saved;
+    }
+
+    /** 字段未提交或与当前值一致时不算修改；财务补分类时可原样回传表单其他字段。 */
+    private boolean changed(String submitted, String current) {
+        if (submitted == null) return false;
+        String next = submitted.trim();
+        String now = current == null ? "" : current.trim();
+        return !next.equals(now);
+    }
+
+    private boolean projectChanged(Long submitted, Project current) {
+        if (submitted == null) return false;
+        Long currentId = current == null ? 0L : current.getProjectId();
+        return !submitted.equals(currentId);
     }
 
     private Ledger requireManual(Employee current, Long id) {
