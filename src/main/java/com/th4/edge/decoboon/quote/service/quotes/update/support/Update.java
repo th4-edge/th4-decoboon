@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @Description("提交、接受、驳回或转换客户报价")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
-                properties = {"quoteId", "no", "title", "mode", "status", "area", "subtotal", "discount",
+                properties = {"quoteId", "no", "title", "mode", "version", "status", "area", "subtotal", "discount",
                         "taxRate", "taxAmount", "amount", "designFee", "managementFee", "submittedAt", "rejectedAt",
                         "acceptedAt", "convertedAt", "updateTime", "property"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
