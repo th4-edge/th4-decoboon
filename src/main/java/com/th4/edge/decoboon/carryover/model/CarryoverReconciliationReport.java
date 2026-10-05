@@ -20,6 +20,9 @@ public class CarryoverReconciliationReport {
     private String remark;
     private Integer unclassifiedCount = 0;
     private Integer pendingCount = 0;
+    private Boolean complete = Boolean.FALSE;
+    private List<String> blockers = new ArrayList<>();
+    private List<CarryoverChecklistItem> checklist = new ArrayList<>();
     private List<CarryoverReconciliationItem> items = new ArrayList<>();
 
     public Long getReconciliationId() { return reconciliationId; }
@@ -40,6 +43,12 @@ public class CarryoverReconciliationReport {
     public void setUnclassifiedCount(Integer unclassifiedCount) { this.unclassifiedCount = unclassifiedCount; }
     public Integer getPendingCount() { return pendingCount; }
     public void setPendingCount(Integer pendingCount) { this.pendingCount = pendingCount; }
+    public Boolean getComplete() { return complete; }
+    public void setComplete(Boolean complete) { this.complete = complete; }
+    public List<String> getBlockers() { return blockers; }
+    public void setBlockers(List<String> blockers) { this.blockers = blockers == null ? new ArrayList<>() : blockers; }
+    public List<CarryoverChecklistItem> getChecklist() { return checklist; }
+    public void setChecklist(List<CarryoverChecklistItem> checklist) { this.checklist = checklist == null ? new ArrayList<>() : checklist; }
     public List<CarryoverReconciliationItem> getItems() { return items; }
     public void setItems(List<CarryoverReconciliationItem> items) { this.items = items == null ? new ArrayList<>() : items; }
 }

@@ -25,6 +25,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,11 +59,15 @@ class CarryoverReconciliationContextTest {
         Map<CarryoverReconciliationTheme, CarryoverReconciliationItem> store =
                 new EnumMap<>(CarryoverReconciliationTheme.class);
         AtomicLong itemIds = new AtomicLong(1);
+        AtomicReference<CarryoverReconciliation> savedReconciliation = new AtomicReference<>();
         when(reconciliationRepository.save(any(CarryoverReconciliation.class))).thenAnswer(invocation -> {
             CarryoverReconciliation reconciliation = invocation.getArgument(0);
             if (reconciliation.getReconciliationId() == null) reconciliation.setReconciliationId(100L);
+            savedReconciliation.set(reconciliation);
             return reconciliation;
         });
+        when(reconciliationRepository.findByCompany_ComIdAndReconciliationId(anyLong(), anyLong()))
+                .thenAnswer(invocation -> java.util.Optional.ofNullable(savedReconciliation.get()));
         when(itemRepository.findByCompany_ComIdAndReconciliation_ReconciliationIdAndTheme(anyLong(), anyLong(), any()))
                 .thenAnswer(invocation -> Optional.ofNullable(store.get(invocation.getArgument(2))));
         when(itemRepository.save(any(CarryoverReconciliationItem.class))).thenAnswer(invocation -> {
@@ -102,6 +107,30 @@ class CarryoverReconciliationContextTest {
         assertThat(receivableAfter.getDifferenceStatus()).isEqualTo(CarryoverDifferenceStatus.Handling);
         assertThat(updated.getUnclassifiedCount()).isZero();
         assertThat(updated.getPendingCount()).isEqualTo(1);
+
+        // 把四个主题都确认为与原账一致后，完成度通过，可提交/确认/关闭，并可导出 CSV。
+        for (CarryoverReconciliationItem item : updated.getItems()) {
+            updated = context.saveItem(boss, item.getItemId(), item.getSystemAmount(), "原账核对",
+                    true, null, CarryoverDifferenceStatus.Accepted, null, null, null, null);
+        }
+        assertThat(updated.getComplete()).isTrue();
+        assertThat(updated.getBlockers()).isEmpty();
+
+        updated = context.updateStatus(boss, 100L,
+                com.th4.edge.decoboon.carryover.configure.CarryoverReconciliationStatus.Pending, "提交待确认");
+        assertThat(updated.getStatus())
+                .isEqualTo(com.th4.edge.decoboon.carryover.configure.CarryoverReconciliationStatus.Pending);
+        updated = context.updateStatus(boss, 100L,
+                com.th4.edge.decoboon.carryover.configure.CarryoverReconciliationStatus.Confirmed, "确认");
+        assertThat(updated.getStatus())
+                .isEqualTo(com.th4.edge.decoboon.carryover.configure.CarryoverReconciliationStatus.Confirmed);
+        updated = context.updateStatus(boss, 100L,
+                com.th4.edge.decoboon.carryover.configure.CarryoverReconciliationStatus.Closed, "关闭");
+        assertThat(updated.getStatus())
+                .isEqualTo(com.th4.edge.decoboon.carryover.configure.CarryoverReconciliationStatus.Closed);
+
+        var export = context.export(boss, 100L);
+        assertThat(export.getContent()).contains("首月双轨对账表").contains("项目未收").contains("项目成本");
     }
 
     private BigDecimal amount(com.th4.edge.decoboon.carryover.model.CarryoverReconciliationReport report,

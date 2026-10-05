@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = CarryoverReconciliationReport.class,
                 properties = {"reconciliationId", "batchId", "asOfDate", "periodStart", "periodEnd",
-                        "status", "remark", "unclassifiedCount", "pendingCount", "items"}),
+                        "status", "remark", "unclassifiedCount", "pendingCount", "complete", "blockers", "checklist", "items"}),
         @AllowProperties(model = CarryoverReconciliationItem.class,
                 properties = {"itemId", "theme", "originalAmount", "originalSource", "originalConfirmed",
                         "systemAmount", "difference", "differenceType", "differenceStatus", "reason", "action",
