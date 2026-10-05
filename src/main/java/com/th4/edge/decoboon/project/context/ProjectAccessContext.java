@@ -39,6 +39,18 @@ public class ProjectAccessContext {
         return tenantContext.requireEmployee(employee);
     }
 
+    /**
+     * 合同签约/生效角色矩阵（2026-10-05 用户确认）：企业负责人 + 店长。
+     * 其他角色（含设计师）不因页面可点而获得签约权。
+     */
+    public Employee requireContractSigner(Employee employee) {
+        Employee current = requireEmployee(employee);
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或店长可以处理合同签约与生效"));
+        }
+        return current;
+    }
+
     /** 主键 + 当前数据范围的单次项目查询。 */
     public Project requireProject(Long projectId, Employee employee) {
         if (projectId == null) {

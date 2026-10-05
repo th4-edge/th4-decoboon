@@ -103,13 +103,9 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
     @Override
     @Transactional
     public ProjectContract call(ProjectContract request) {
-        Employee current = tenantContext.requireEmployee(employee);
-        // 现行能力矩阵只有 Boss 拥有 contract:write；Designer 不因页面可点而获得签约/生效权。
-        // 合同签署/生效的最终角色矩阵仍为 BLOCKED，确认前按最小权限失败关闭。
+        // 2026-10-05 用户确认：合同签约/生效角色矩阵 = 企业负责人 + 店长。
         // 权限判定先于数据加载：无能力角色统一 403，不用 404 掩盖语义（也不泄露对象存在性）。
-        if (current.getRole() != EmployeeRole.Boss) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以处理合同签约与生效"));
-        }
+        Employee current = accessContext.requireContractSigner(employee);
         Specification<ProjectContract> byId = (root, query, builder) ->
                 builder.equal(root.get("contractId"), contractId);
         ProjectContract contract = contractRepository.findOne(byId.and(accessContext.visibleContract(employee)))

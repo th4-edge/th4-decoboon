@@ -86,22 +86,19 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
     @Override
     @Transactional
     public ProjectContract call(ProjectContract request) {
-        Employee current = accessContext.requireEmployee(employee);
-        // 现行能力矩阵只有 Boss 拥有 contract:write；Designer 不因页面可点而获得签约权。
-        // 合同签署/生效的最终角色矩阵仍为 BLOCKED，确认前按最小权限失败关闭。
+        Employee current = accessContext.requireContractSigner(employee);
+        // 2026-10-05 用户确认：合同签约角色矩阵 = 企业负责人 + 店长。
+        // 设计师等其他角色不因页面可点而获得签约权。
         Quote quote;
         try {
             quote = accessContext.requireQuote(quoteId, current);
         } catch (DefinedException notVisible) {
             // 同企业但超出数据范围：无 contract:write 的角色按能力语义返回 403（矩阵要求），
             // 跨企业或不存在仍保持 404，避免泄露对象存在性。
-            if (current.getRole() != EmployeeRole.Boss && accessContext.sameCompanyQuote(quoteId, current)) {
-                throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以处理合同签约"));
+            if (accessContext.sameCompanyQuote(quoteId, current)) {
+                throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或店长可以处理合同签约"));
             }
             throw notVisible;
-        }
-        if (current.getRole() != EmployeeRole.Boss) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以处理合同签约"));
         }
         if (quote.getStatus() != QuoteStatus.Accepted) {
             throw new DefinedException(new DefaultErrorCode("400", "只有客户已确认的报价可以生成合同"));
@@ -117,4 +114,5 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
         }
         return contractContext.enrich(contract);
     }
+
 }
