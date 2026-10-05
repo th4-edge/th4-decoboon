@@ -595,7 +595,7 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 117,
+      "count": 124,
       "firstSeen": "2026-09-18 13:05:07.158",
       "lastSeen": "2026-10-06 02:26:17.326",
       "samples": [
@@ -618,7 +618,8 @@
         "2026-10-05/20261005-190730",
         "2026-10-05/20261005-192227",
         "2026-10-06/20261006-022935",
-        "2026-10-06/20261006-025710"
+        "2026-10-06/20261006-025710",
+        "2026-10-06/20261006-030850"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -2208,10 +2209,11 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 3,
+      "count": 4,
       "firstSeen": "2026-10-06 00:53:33.913",
       "lastSeen": "2026-10-06 00:53:33.913",
       "samples": [
+        "[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同",
         "[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同",
         "[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同",
         "[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同"
@@ -2219,7 +2221,8 @@
       "reportPaths": [
         "2026-10-06/20261006-020937",
         "2026-10-06/20261006-022935",
-        "2026-10-06/20261006-025710"
+        "2026-10-06/20261006-025710",
+        "2026-10-06/20261006-030850"
       ]
     },
     {
@@ -2230,7 +2233,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 14,
+      "count": 21,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2242,11 +2245,12 @@
       ],
       "reportPaths": [
         "2026-10-06/20261006-022935",
-        "2026-10-06/20261006-025710"
+        "2026-10-06/20261006-025710",
+        "2026-10-06/20261006-030850"
       ],
-      "fixedAt": "2026-10-06 02:57:15",
-      "fixedRelease": "20261006-025527",
-      "fixSummary": "历史失败部署日志再次被窗口采集；当前 release 20261006-025527 已含迁移72/73/74并 health 200，无新增 schema 异常"
+      "fixedAt": "2026-10-06 03:08:59",
+      "fixedRelease": "20261006-030618",
+      "fixSummary": "历史失败部署日志仍在采集窗口内；当前 release 20261006-030618 已含迁移72/73/74/75并 health 200，无新增 schema 异常"
     },
     {
       "incidentId": "INC-20261006-fd03000078",
@@ -2256,7 +2260,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 14,
+      "count": 21,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2268,11 +2272,12 @@
       ],
       "reportPaths": [
         "2026-10-06/20261006-022935",
-        "2026-10-06/20261006-025710"
+        "2026-10-06/20261006-025710",
+        "2026-10-06/20261006-030850"
       ],
-      "fixedAt": "2026-10-06 02:57:15",
-      "fixedRelease": "20261006-025527",
-      "fixSummary": "历史失败部署日志再次被窗口采集；当前 release 20261006-025527 已含迁移72/73/74并 health 200，无新增 schema 异常"
+      "fixedAt": "2026-10-06 03:08:59",
+      "fixedRelease": "20261006-030618",
+      "fixSummary": "历史失败部署日志仍在采集窗口内；当前 release 20261006-030618 已含迁移72/73/74/75并 health 200，无新增 schema 异常"
     },
     {
       "incidentId": "INC-20261006-de7086a9d5",
@@ -2282,7 +2287,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 16,
+      "count": 24,
       "firstSeen": "2026-10-06 02:23:27.647",
       "lastSeen": "2026-10-06 02:26:44.919",
       "samples": [
@@ -2294,12 +2299,13 @@
       ],
       "reportPaths": [
         "2026-10-06/20261006-022935",
-        "2026-10-06/20261006-025710"
+        "2026-10-06/20261006-025710",
+        "2026-10-06/20261006-030850"
       ],
-      "fixedAt": "2026-10-06 02:57:15",
-      "fixedRelease": "20261006-025527",
-      "fixSummary": "历史失败部署日志再次被窗口采集；当前 release 20261006-025527 已含迁移72/73/74并 health 200，无新增 schema 异常"
+      "fixedAt": "2026-10-06 03:08:59",
+      "fixedRelease": "20261006-030618",
+      "fixSummary": "历史失败部署日志仍在采集窗口内；当前 release 20261006-030618 已含迁移72/73/74/75并 health 200，无新增 schema 异常"
     }
   ],
-  "updatedAt": "2026-10-06T02:57:15+08:00"
+  "updatedAt": "2026-10-06T03:08:59+08:00"
 }
