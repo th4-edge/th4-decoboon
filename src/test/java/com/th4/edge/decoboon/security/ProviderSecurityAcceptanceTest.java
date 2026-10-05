@@ -131,9 +131,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-06 手工流水作废新增 1 条（finance/ledger/delete）。
         // 2026-10-06 期初资金余额新增 2 条（finance/opening-balance/save、finance/opening-balance/page）。
         // 2026-10-06 剩余收付款计划新增 2 条（carryover/payment-plan/save、carryover/payment-plan/report）。
-        // => 总数为 373（public 13 + protected 360）。
-        assertThat(routes).hasSize(373);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(360);
+        // 2026-10-06 首月双轨对账新增 3 条（carryover/reconciliation/save、report、item/save）。
+        // => 总数为 376（public 13 + protected 363）。
+        assertThat(routes).hasSize(376);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(363);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
@@ -155,6 +156,9 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("finance/opening-balance/page");
         assertUnauthorized("carryover/payment-plan/save");
         assertUnauthorized("carryover/payment-plan/report");
+        assertUnauthorized("carryover/reconciliation/save");
+        assertUnauthorized("carryover/reconciliation/report");
+        assertUnauthorized("carryover/reconciliation/item/save");
         assertUnauthorized("document/voucher/report");
         assertUnauthorized("statistic/organization/report");
         assertUnauthorized("statistic/boss/business/report");

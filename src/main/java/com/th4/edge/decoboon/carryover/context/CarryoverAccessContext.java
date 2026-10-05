@@ -39,6 +39,15 @@ public class CarryoverAccessContext {
         return tenantContext.requireEmployee(principal);
     }
 
+    /** 双轨对账维护：仅企业负责人或财务。 */
+    public Employee requireFinance(Employee principal) {
+        Employee current = tenantContext.requireEmployee(principal);
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或财务可以维护双轨对账"));
+        }
+        return current;
+    }
+
     public CarryoverProject requireItem(Employee principal, Long itemId) {
         Employee current = tenantContext.requireEmployee(principal);
         Specification<CarryoverProject> byId = (root, query, builder) ->
