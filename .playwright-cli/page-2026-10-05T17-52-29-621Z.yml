@@ -1,0 +1,202 @@
+- generic [ref=f1e51]:
+  - complementary [ref=f1e52]:
+    - generic [ref=f1e53]:
+      - img "装得清 Logo" [ref=f1e54]
+      - generic [ref=f1e55]:
+        - strong [ref=f1e56]: 装得清
+        - generic [ref=f1e57]: 经营管控中心
+    - generic [ref=f1e58]:
+      - generic [ref=f1e59]: 当前角色 · 老板
+      - strong [ref=f1e60]: 全公司
+      - generic [ref=f1e61]: Company
+    - menubar [ref=f1e62]:
+      - menuitem "经营总览" [ref=f1e63] [cursor=pointer]
+      - menuitem "业务分析" [ref=f1e69]
+      - menuitem "项目监管" [ref=f1e77] [cursor=pointer]
+      - menuitem "财务经营" [ref=f1e81] [cursor=pointer]
+      - menuitem "组织效能" [ref=f1e85] [cursor=pointer]
+      - menuitem "风险中心" [ref=f1e91] [cursor=pointer]
+  - generic [ref=f1e95]:
+    - banner [ref=f1e96]:
+      - button "展开或收起菜单" [ref=f1e97] [cursor=pointer]
+      - navigation "面包屑" [ref=f1e101]:
+        - generic [ref=f1e102]:
+          - link "工作台" [ref=f1e103]
+          - text: /
+        - link "经营总览" [ref=f1e105]
+      - generic [ref=f1e106]:
+        - generic [ref=f1e108] [cursor=pointer]:
+          - generic:
+            - combobox "搜索范围" [ref=f1e110]
+            - generic [ref=f1e111]: 全部
+        - textbox "搜索对象或旧菜单名称" [ref=f1e119]
+        - generic "企业全局" [ref=f1e124]
+        - button "快捷入口" [ref=f1e127] [cursor=pointer]
+      - generic [ref=f1e131]:
+        - generic [ref=f1e132]: 全公司 · Company
+        - button "消息中心" [ref=f1e134] [cursor=pointer]
+        - button "伟 张伟 老板" [ref=f1e138] [cursor=pointer]:
+          - generic [ref=f1e139]: 伟
+          - generic [ref=f1e140]:
+            - strong [ref=f1e141]: 张伟
+            - generic [ref=f1e142]: 老板
+    - main [ref=f1e145]:
+      - generic [ref=f1e146]:
+        - generic [ref=f1e147]:
+          - generic [ref=f1e148]:
+            - generic [ref=f1e149]: Boss / Company DataScope
+            - heading "经营总览" [level=1] [ref=f1e150]
+            - paragraph [ref=f1e151]: 先看经营健康、资金风险、项目异常和当前需要处理的经营事实。
+          - generic [ref=f1e152]:
+            - button "刷新" [ref=f1e153] [cursor=pointer]
+            - button "项目监管" [ref=f1e160] [cursor=pointer]
+        - generic [ref=f1e166]:
+          - complementary [ref=f1e167]:
+            - generic [ref=f1e168]:
+              - text: 经营结论
+              - strong [ref=f1e169]: 成本未完整，毛利待确认
+              - paragraph [ref=f1e170]: 按签约、回款、毛利、在营项目和风险事实综合判断；成本不完整时不展示可靠毛利。
+            - generic [ref=f1e171]:
+              - generic [ref=f1e177]:
+                - generic [ref=f1e178]: 本月签约额
+                - strong [ref=f1e179]: 10.6万
+                - generic [ref=f1e180]: 目标 0万 · 环比 -70%
+              - generic [ref=f1e185]:
+                - generic [ref=f1e186]: 本月实收
+                - strong [ref=f1e187]: 0万
+                - generic [ref=f1e188]: 目标 0万 · 达成 0%
+              - generic [ref=f1e193]:
+                - generic [ref=f1e194]: 本月毛利
+                - generic "成本未完整" [ref=f1e195]:
+                  - generic [ref=f1e196]: "-"
+                  - img [aria-hidden] [ref=f1e197]:
+                    - generic [ref=f1e199]: "?"
+                - generic [ref=f1e201]: 1 个项目的成本未完整，暂不展示可靠毛利
+              - generic [ref=f1e207]:
+                - generic [ref=f1e208]: 在营项目
+                - strong [ref=f1e209]: "16"
+                - generic [ref=f1e210]: 目标 0万
+          - main [ref=f1e211]:
+            - generic [ref=f1e212]:
+              - generic [ref=f1e213]:
+                - generic [ref=f1e214]:
+                  - heading "经营风险雷达" [level=2] [ref=f1e215]
+                  - paragraph [ref=f1e216]: 风险只来自已存在的业务事实，数字和责任人可继续下钻。
+                - generic [ref=f1e217]: 数据截止 2026-10-06
+              - generic [ref=f1e218]:
+                - button "总风险 36" [ref=f1e219] [cursor=pointer]:
+                  - generic [ref=f1e220]: 总风险
+                  - strong [ref=f1e221]: "36"
+                - button "高风险 1" [ref=f1e222] [cursor=pointer]:
+                  - generic [ref=f1e223]: 高风险
+                  - strong [ref=f1e224]: "1"
+                - button "中风险 11" [ref=f1e225] [cursor=pointer]:
+                  - generic [ref=f1e226]: 中风险
+                  - strong [ref=f1e227]: "11"
+                - button "低风险 24" [ref=f1e228] [cursor=pointer]:
+                  - generic [ref=f1e229]: 低风险
+                  - strong [ref=f1e230]: "24"
+              - generic [ref=f1e232]:
+                - table [ref=f1e234]:
+                  - rowgroup [ref=f1e243]:
+                    - row [ref=f1e244]:
+                      - columnheader "风险类型" [ref=f1e245]
+                      - columnheader "风险标题" [ref=f1e247]
+                      - columnheader "风险说明" [ref=f1e249]
+                      - columnheader "项目" [ref=f1e251]
+                      - columnheader "负责人" [ref=f1e253]
+                      - columnheader "涉及金额" [ref=f1e255]
+                      - columnheader "等级" [ref=f1e257]
+                - table [ref=f1e263]:
+                  - rowgroup [ref=f1e272]:
+                    - row [ref=f1e273]:
+                      - cell "逾期应收" [ref=f1e274]
+                      - cell "逾期应收" [ref=f1e276]
+                      - cell "合同签约款 逾期 12 天，待收 10675.77 元" [ref=f1e278]
+                      - cell "昭青演示项目 37" [ref=f1e280]
+                      - cell "徐勇" [ref=f1e282]
+                      - cell "¥10,675.77" [ref=f1e284]
+                      - cell "中" [ref=f1e286]
+                    - row [ref=f1e288]:
+                      - cell "逾期应收" [ref=f1e289]
+                      - cell "逾期应收" [ref=f1e291]
+                      - cell "合同签约款 逾期 12 天，待收 16568.63 元" [ref=f1e293]
+                      - cell "袁媛（演示35） · 锦绣园6栋1606（主房）" [ref=f1e295]
+                      - cell "徐勇" [ref=f1e297]
+                      - cell "¥16,568.63" [ref=f1e299]
+                      - cell "中" [ref=f1e301]
+                    - row [ref=f1e303]:
+                      - cell "逾期应收" [ref=f1e304]
+                      - cell "逾期应收" [ref=f1e306]
+                      - cell "合同签约款 逾期 12 天，待收 15551.76 元" [ref=f1e308]
+                      - cell "蒋涛（演示36） · 翡翠湖畔7栋1701（主房）" [ref=f1e310]
+                      - cell [ref=f1e312]
+                      - cell "¥15,551.76" [ref=f1e313]
+                      - cell "中" [ref=f1e315]
+                    - row [ref=f1e317]:
+                      - cell "逾期应收" [ref=f1e318]
+                      - cell "逾期应收" [ref=f1e320]
+                      - cell "合同签约款 逾期 12 天，待收 9741.16 元" [ref=f1e322]
+                      - cell "昭青演示项目 38" [ref=f1e324]
+                      - cell "王昌富" [ref=f1e326]
+                      - cell "¥9,741.16" [ref=f1e328]
+                      - cell "中" [ref=f1e330]
+                    - row [ref=f1e332]:
+                      - cell "逾期应收" [ref=f1e333]
+                      - cell "逾期应收" [ref=f1e335]
+                      - cell "合同签约款 逾期 12 天，待收 2625.57 元" [ref=f1e337]
+                      - cell "昭青演示项目 44" [ref=f1e339]
+                      - cell "王昌富" [ref=f1e341]
+                      - cell "¥2,625.57" [ref=f1e343]
+                      - cell "中" [ref=f1e345]
+                    - row [ref=f1e347]:
+                      - cell "逾期应收" [ref=f1e348]
+                      - cell "逾期应收" [ref=f1e350]
+                      - cell "合同签约款 逾期 12 天，待收 2042.03 元" [ref=f1e352]
+                      - cell "昭青演示项目 43" [ref=f1e354]
+                      - cell "徐勇" [ref=f1e356]
+                      - cell "¥2,042.03" [ref=f1e358]
+                      - cell "中" [ref=f1e360]
+                    - row [ref=f1e362]:
+                      - cell "逾期应收" [ref=f1e363]
+                      - cell "逾期应收" [ref=f1e365]
+                      - cell "合同签约款 逾期 12 天，待收 2944.3 元" [ref=f1e367]
+                      - cell "昭青演示项目 39" [ref=f1e369]
+                      - cell "徐勇" [ref=f1e371]
+                      - cell "¥2,944.30" [ref=f1e373]
+                      - cell "中" [ref=f1e375]
+                    - row [ref=f1e377]:
+                      - cell "逾期应收" [ref=f1e378]
+                      - cell "逾期应收" [ref=f1e380]
+                      - cell "合同签约款 逾期 12 天，待收 3474.88 元" [ref=f1e382]
+                      - cell "昭青演示项目 42" [ref=f1e384]
+                      - cell "王昌富" [ref=f1e386]
+                      - cell "¥3,474.88" [ref=f1e388]
+                      - cell "中" [ref=f1e390]
+          - complementary [ref=f1e392]:
+            - generic [ref=f1e393]:
+              - generic [ref=f1e395]:
+                - heading "经营下钻" [level=3] [ref=f1e396]
+                - paragraph [ref=f1e397]: 从结论到风险，再到具体对象。
+              - button "业务分析 签约、转化和渠道结构" [ref=f1e398] [cursor=pointer]:
+                - generic [ref=f1e402]:
+                  - strong [ref=f1e403]: 业务分析
+                  - generic [ref=f1e404]: 签约、转化和渠道结构
+              - button "项目监管 交付、进度和停工风险" [ref=f1e405] [cursor=pointer]:
+                - generic [ref=f1e410]:
+                  - strong [ref=f1e411]: 项目监管
+                  - generic [ref=f1e412]: 交付、进度和停工风险
+              - button "财务经营 回款、应付和毛利" [ref=f1e413] [cursor=pointer]:
+                - generic [ref=f1e418]:
+                  - strong [ref=f1e419]: 财务经营
+                  - generic [ref=f1e420]: 回款、应付和毛利
+              - button "组织效能 角色、团队和产出" [ref=f1e421] [cursor=pointer]:
+                - generic [ref=f1e428]:
+                  - strong [ref=f1e429]: 组织效能
+                  - generic [ref=f1e430]: 角色、团队和产出
+              - button "风险中心 应收、停工、材料和变更" [ref=f1e431] [cursor=pointer]:
+                - generic [ref=f1e436]:
+                  - strong [ref=f1e437]: 风险中心
+                  - generic [ref=f1e438]: 应收、停工、材料和变更
+              - paragraph [ref=f1e439]: 数据截止：2026-10-06
+              - paragraph [ref=f1e440]: 成本未完整，毛利暂不展示；利润与毛利率以项目正式指标为准。
