@@ -567,3 +567,66 @@ Web `saveQuoteLine` 已强制携带 `spaceId`（`space: { spaceId }`），
 
 - 发现批次：`QUOTE-WRITE-20261006`（Web `th4-decoboon-web`）
 - 证据：`docs/acceptance/runs/20261006-报价写入闭环/README.md`
+
+---
+
+## ECD-014 · 批量保存只改价格会覆盖工程量（缺省被当作显式 1）
+
+**发现时间**：2026-10-06
+**发现方式**：220+ 行真实规模分批保存验收（Web `th4-decoboon-web`）
+
+### 现象
+
+在 `quote/lines/save` 的 `items` 中只提交 `materialPrice`（不带 `quantity`）时，
+该行的**工程量被覆盖成 1**：
+
+```text
+行 232950664710324226：qty 30 → 1，金额 28,650.00 → 955.01（-27,694.99）
+行 232950664710324227：qty 12 → 1，金额  2,520.00 → 210.01（-2,309.99）
+报价总额：88,826.43 → 57,323.33（-31,503.10）
+```
+
+接口返回 `success=true`，无任何错误提示。
+
+### 根因
+
+与 ECD-013 同一类（"缺省即被当作显式值"）：
+
+```java
+// QuoteLine
+private BigDecimal quantity = BigDecimal.ONE;      // ← 实体默认值 1，不是 null
+```
+
+`QuoteWorkbookContext.update` 取值逻辑：
+
+```java
+BigDecimal quantity = formulaResults.get(target.getItemId());
+if (quantity == null) quantity = change.getQuantity() == null ? oldQuantity : change.getQuantity();
+```
+
+请求未携带 `quantity` 时，绑定出的 `change.getQuantity()` 是**实体默认值 1 而非 null**，
+于是走 `change.getQuantity()` 分支，用 1 覆盖原工程量。
+
+### 让问题难发现的两点
+
+1. **接口不报错**：`success=true`，金额"重算正确"，只有比对逐行金额或总额才看得出来；
+2. **只在部分行可见**：本身工程量就是 1 的行看不出差异，工程量 ≠ 1 的行才丢数据。
+
+### 禁则
+
+1. ❌ 禁止在"更新既有行"的入参里依赖**实体默认值**来判断字段是否提供；
+2. ❌ 禁止让调用方必须"记得回传"才能保住既有数据——缺省必须表示"不改"。
+
+### 当前处置
+
+- **客户端**（Web）：`quote/lines/save` 的 `items` 中**每行必须携带完整可编辑状态**
+  （工程量必传；公式/价格按修改与否传递），已修复。
+- **服务端**：建议按"缺省即保留"统一口径修复（与 ECD-013 同类）；
+  因 `quantity` 默认值 `1` 是合法值，无法在绑定层区分，需评估将实体默认值改为 `null`
+  并在持久化前补齐，或改为显式入参对象承载"是否提供"语义。
+
+### 检测与回归要求
+
+- 回归：对既有行只提交 `materialPrice`，断言 `quantity` 不变；
+- 断言报价总额只按价格变化量变动；
+- 220+ 行规模下逐行比对 `quantity` 与 `amount`。
