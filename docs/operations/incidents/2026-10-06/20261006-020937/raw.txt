@@ -1,0 +1,70 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-10-06T02:09:37+08:00
+ 02:09:37 up 20 days, 57 min,  1 user,  load average: 2.27, 0.66, 0.23
+since=10 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=149475
+ExecMainStartTimestamp=Tue 2026-10-06 02:08:49 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20261006-020756
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks     Used Available Capacity Mounted on
+/dev/vda3         40901312 10137616  28873328      26% /
+/dev/vda3         40901312 10137616  28873328      26% /
+/dev/vda3         40901312 10137616  28873328      26% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        3258         563         265        4198        4198
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同
+[2026-10-06 00:54:48.832] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:07:04.268] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:18:40.648] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:18:41.254] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:18:41.263] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:18:41.271] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:18:41.274] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 01:18:41.285] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 02:09:28.462] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 02:09:33.217] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 02:09:33.406] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger/delete处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-06 02:09:37.669] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-10-06 02:08:58.218] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-10-06 02:09:00.634] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-10-06 02:09:03.522] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-10-06 02:09:09.314] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-06 02:09:09.574] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-06 02:09:09.588] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+552:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+653:2026-10-06T02:09:28.462+08:00 ERROR 149475 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+654:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+755:2026-10-06T02:09:33.217+08:00 ERROR 149475 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+756:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+868:2026-10-06T02:09:33.406+08:00 ERROR 149475 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/ledger/delete处理失败:访问受限，缺少授权标识，请先登录后再访问。
+870:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+971:2026-10-06T02:09:37.669+08:00 ERROR 149475 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+Oct 06 02:08:45 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Stopping decoboon.service - Decoboon backend service...
+Oct 06 02:08:45 iZbp14tkw2g2pye56mfj7cZ cmd.sh[149453]: th4-decoboon is not running
+Oct 06 02:08:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Main process exited, code=exited, status=143/n/a
+Oct 06 02:08:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Failed with result 'exit-code'.
+Oct 06 02:08:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Stopped decoboon.service - Decoboon backend service.
+Oct 06 02:08:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Consumed 4min 15.766s CPU time.
+Oct 06 02:08:46 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Starting decoboon.service - Decoboon backend service...
+Oct 06 02:08:49 iZbp14tkw2g2pye56mfj7cZ cmd.sh[149469]: th4-decoboon started, PID=149475, log=/opt/decoboon/th4-decoboon/logs/stdout.log
+Oct 06 02:08:49 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Started decoboon.service - Decoboon backend service.

@@ -2,7 +2,7 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20261005-a1233597b0",
+      "incidentId": "INC-20261006-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -2197,7 +2197,25 @@
         "2026-10-05/20261005-190730",
         "2026-10-05/20261005-192227"
       ]
+    },
+    {
+      "incidentId": "INC-20261006-0e18c4a6b0",
+      "signature": "只有客户已确认的报价可以生成合同",
+      "signatureHash": "0e18c4a6b0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-06 00:53:33.913",
+      "lastSeen": "2026-10-06 00:53:33.913",
+      "samples": [
+        "[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同"
+      ],
+      "reportPaths": [
+        "2026-10-06/20261006-020937"
+      ]
     }
   ],
-  "updatedAt": "2026-10-05T11:22:27.889118+00:00"
+  "updatedAt": "2026-10-05T18:09:37.791461+00:00"
 }

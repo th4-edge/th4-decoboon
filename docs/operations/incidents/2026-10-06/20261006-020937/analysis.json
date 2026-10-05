@@ -1,0 +1,48 @@
+{
+  "collectedAt": "2026-10-05T18:09:37.793835+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-06/20261006-020937",
+  "counts": {
+    "unknown": 1,
+    "expected": 16
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261006-0e18c4a6b0",
+      "signature": "只有客户已确认的报价可以生成合同",
+      "signatureHash": "0e18c4a6b0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-06 00:53:33.913",
+      "lastSeen": "2026-10-06 00:53:33.913",
+      "samples": [
+        "[2026-10-06 00:53:33.913] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/save处理失败:只有客户已确认的报价可以生成合同"
+      ],
+      "reportPaths": [
+        "2026-10-06/20261006-020937"
+      ]
+    },
+    {
+      "incidentId": "INC-20261006-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 16,
+      "firstSeen": "2026-10-06 00:54:48.832",
+      "lastSeen": "2026-10-06T02:09:37.669+08:00",
+      "samples": [
+        "[2026-10-06 00:54:48.832] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-06 01:07:04.268] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-06 01:18:40.648] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-06 01:18:41.254] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-06 01:18:41.263] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}
