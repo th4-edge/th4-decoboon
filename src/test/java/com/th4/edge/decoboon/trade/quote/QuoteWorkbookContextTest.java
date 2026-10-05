@@ -25,9 +25,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * 报价工作表批量保存的价格校验（ANS-BIZ-20261002-002 Q4）。
+ * 报价工作表批量保存的「缺省即保留」与价格校验。
  *
- * 覆盖：0 价、负价、四类计价模式、未传字段保持原值、显式有效价更新、校验失败不落库。
+ * ECD-014：`QuoteLine.quantity` 默认值是 ONE，嵌套绑定新对象时「未传」与「显式传 1」无法区分，
+ * 导致"只改价格"的请求把工程量覆盖成 1。修复方式为请求携带 `*Provided` 显式标记，
+ * 未标记 = 未提供 = 保留原值（标记为 @Transient，不持久化、不序列化）。
  */
 class QuoteWorkbookContextTest {
 
@@ -39,168 +41,203 @@ class QuoteWorkbookContextTest {
     private final QuoteWorkbookContext context = new QuoteWorkbookContext(
             lineRepository, calcContext, formulaContext, adjustmentContext, viewContext);
 
-    // ───────────────────────── 负价 ─────────────────────────
+    // ───────────────── ECD-014 核心复现：只改价格不得覆盖工程量 ─────────────────
+
+    @Test
+    void shouldKeepQuantityWhenOnlyMaterialPriceProvided() {
+        QuoteLine line = line(PricingMethod.MaterialOnly, "10.00", "0");
+        line.setQuantity(new BigDecimal("30"));
+
+        QuoteLine change = changeOf(line);
+        change.setMaterialPrice(new BigDecimal("12.00"));
+        change.setMaterialPriceProvided(true);
+
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getQuantity()).isEqualByComparingTo("30");   // ← 修复前会变成 1
+        assertThat(saved.getMaterialPrice()).isEqualByComparingTo("12.00");
+        assertThat(saved.getAmount()).isEqualByComparingTo("360.00"); // 12 × 30
+    }
+
+    @Test
+    void shouldKeepQuantityWhenOnlyManualPriceProvided() {
+        QuoteLine line = line(PricingMethod.ManualOnly, "0", "20.00");
+        line.setQuantity(new BigDecimal("12"));
+
+        QuoteLine change = changeOf(line);
+        change.setManualPrice(new BigDecimal("25.00"));
+        change.setManualPriceProvided(true);
+
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getQuantity()).isEqualByComparingTo("12");
+        assertThat(saved.getManualPrice()).isEqualByComparingTo("25.00");
+        assertThat(saved.getAmount()).isEqualByComparingTo("300.00"); // 25 × 12
+    }
+
+    // ───────────────── 三路取值：公式 > 显式 quantity > 保留原值 ─────────────────
+
+    @Test
+    void shouldKeepQuantityWhenNeitherQuantityNorFormulaProvided() {
+        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
+        line.setQuantity(new BigDecimal("7"));
+
+        QuoteLine change = changeOf(line);          // 什么标记都不带
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getQuantity()).isEqualByComparingTo("7");
+    }
+
+    @Test
+    void shouldUseExplicitQuantityWhenProvided() {
+        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
+        line.setQuantity(new BigDecimal("7"));
+
+        QuoteLine change = changeOf(line);
+        change.setQuantity(new BigDecimal("9"));
+        change.setQuantityProvided(true);
+
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getQuantity()).isEqualByComparingTo("9");
+        assertThat(saved.getAmount()).isEqualByComparingTo("135.00"); // 15 × 9
+    }
+
+    @Test
+    void shouldUseFormulaResultWhenFormulaProvided() {
+        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
+        line.setQuantity(new BigDecimal("7"));
+
+        QuoteLine change = changeOf(line);
+        change.setQuantityFormula("=3*4");
+        change.setQuantityProvided(true);
+        change.setQuantity(new BigDecimal("999"));   // 有公式时忽略显式数量
+
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getQuantity()).isEqualByComparingTo("12");   // 3*4，公式优先
+        assertThat(saved.getQuantityFormula()).isEqualTo("=3*4");
+    }
+
+    // ───────────────── 缺省即保留（价格） ─────────────────
+
+    @Test
+    void shouldKeepExistingPricesWhenNotProvided() {
+        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
+
+        QuoteLine change = changeOf(line);
+        change.setQuantity(new BigDecimal("3"));
+        change.setQuantityProvided(true);
+
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getMaterialPrice()).isEqualByComparingTo("10.00");
+        assertThat(saved.getManualPrice()).isEqualByComparingTo("5.00");
+    }
+
+    @Test
+    void shouldApplyExplicitValidPrices() {
+        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
+
+        QuoteLine change = changeOf(line);
+        change.setQuantity(new BigDecimal("30"));
+        change.setQuantityProvided(true);
+        change.setMaterialPrice(new BigDecimal("40.00"));
+        change.setMaterialPriceProvided(true);
+        change.setManualPrice(new BigDecimal("30.00"));
+        change.setManualPriceProvided(true);
+
+        QuoteLine saved = save(line, change);
+
+        assertThat(saved.getMaterialPrice()).isEqualByComparingTo("40.00");
+        assertThat(saved.getManualPrice()).isEqualByComparingTo("30.00");
+        assertThat(saved.getAmount()).isEqualByComparingTo("2100.00"); // 70 × 30
+    }
+
+    // ───────────────── 显式 0 / 负价 ─────────────────
 
     @Test
     void shouldRejectNegativeMaterialPrice() {
         QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
-        assertRejected(line, change(line, c -> c.setMaterialPrice(new BigDecimal("-1"))), "材料单价不能为负");
+        QuoteLine change = changeOf(line);
+        change.setMaterialPrice(new BigDecimal("-1"));
+        change.setMaterialPriceProvided(true);
+
+        assertRejected(line, change, "材料单价不能为负");
     }
 
     @Test
     void shouldRejectNegativeManualPrice() {
         QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
-        assertRejected(line, change(line, c -> c.setManualPrice(new BigDecimal("-1"))), "人工单价不能为负");
+        QuoteLine change = changeOf(line);
+        change.setManualPrice(new BigDecimal("-1"));
+        change.setManualPriceProvided(true);
+
+        assertRejected(line, change, "人工单价不能为负");
     }
 
     @Test
-    void shouldRejectNegativeFixedTotalPrice() {
-        QuoteLine line = line(PricingMethod.FixedTotal, "0", "0");
-        line.setFixedTotalPrice(new BigDecimal("100.00"));
-        assertRejected(line, change(line, c -> c.setFixedTotalPrice(new BigDecimal("-1"))), "固定总价不能为负");
-    }
-
-    // ───────────────────────── 零价（按计价模式）─────────────────────────
-
-    /**
-     * 冻结口径：materialPrice 传 0 视为「未修改」（实体默认 0，无法与未传区分），
-     * 因此校验的是**有效价格**——当前材料价本就是 0 的 MaterialOnly 行必须被阻断。
-     */
-    @Test
-    void shouldRejectMaterialOnlyLineWhoseEffectiveMaterialPriceIsZero() {
-        QuoteLine line = line(PricingMethod.MaterialOnly, "0", "0");
-        assertRejected(line, change(line, c -> c.setQuantity(new BigDecimal("3"))), "仅材料计价要求材料单价大于零");
-    }
-
-    /** 冻结口径：materialPrice 传 0 视为未修改，保持原值（不是静默丢弃有效修改）。 */
-    @Test
-    void shouldTreatZeroMaterialPriceAsUnchanged() {
-        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
-        Quote request = requestWith(line, c -> c.setMaterialPrice(BigDecimal.ZERO));
-        Quote quote = quoteOf(line);
-        stubPersist(quote, line);
-
-        context.update(quote, request);
-
-        assertThat(line.getMaterialPrice()).isEqualByComparingTo("10.00");
-    }
-
-    @Test
-    void shouldRejectManualOnlyLineWhoseEffectiveManualPriceIsZero() {
-        QuoteLine line = line(PricingMethod.ManualOnly, "0", "0");
-        assertRejected(line, change(line, c -> c.setQuantity(new BigDecimal("3"))), "仅人工计价要求人工单价大于零");
-    }
-
-    @Test
-    void shouldRejectMaterialAndManualLineWithZeroEffectiveTotal() {
-        QuoteLine line = line(PricingMethod.MaterialAndManual, "0", "0");
-        assertRejected(line, change(line, c -> c.setQuantity(new BigDecimal("3"))), "材料单价与人工单价之和必须大于零");
-    }
-
-    @Test
-    void shouldRejectZeroFixedTotalForFixedTotal() {
-        QuoteLine line = line(PricingMethod.FixedTotal, "0", "0");
-        line.setFixedTotalPrice(new BigDecimal("100.00"));
-        assertRejected(line, change(line, c -> c.setFixedTotalPrice(BigDecimal.ZERO)), "固定总价计价要求固定总价大于零");
-    }
-
-    // ───────────────────────── 单侧为 0 允许 ─────────────────────────
-
-    @Test
-    void shouldAllowZeroManualPriceForMaterialOnly() {
+    void shouldRejectExplicitZeroMaterialPriceForMaterialOnly() {
         QuoteLine line = line(PricingMethod.MaterialOnly, "10.00", "0");
-        Quote request = requestWith(line, change -> {
-            change.setMaterialPrice(new BigDecimal("12.00"));
-            change.setManualPrice(BigDecimal.ZERO);
-        });
-        Quote quote = quoteOf(line);
-        stubPersist(quote, line);
+        QuoteLine change = changeOf(line);
+        change.setMaterialPrice(BigDecimal.ZERO);      // 显式 0（此前会被静默忽略）
+        change.setMaterialPriceProvided(true);
 
-        context.update(quote, request);
-
-        assertThat(line.getMaterialPrice()).isEqualByComparingTo("12.00");
-        assertThat(line.getManualPrice()).isEqualByComparingTo("0");
+        assertRejected(line, change, "仅材料计价要求材料单价大于零");
     }
 
     @Test
-    void shouldAllowZeroMaterialPriceForManualOnly() {
+    void shouldRejectExplicitZeroManualPriceForManualOnly() {
         QuoteLine line = line(PricingMethod.ManualOnly, "0", "20.00");
-        Quote request = requestWith(line, change -> {
-            change.setManualPrice(new BigDecimal("22.00"));
-            change.setMaterialPrice(BigDecimal.ZERO);
-        });
-        Quote quote = quoteOf(line);
-        stubPersist(quote, line);
+        QuoteLine change = changeOf(line);
+        change.setManualPrice(BigDecimal.ZERO);
+        change.setManualPriceProvided(true);
 
-        context.update(quote, request);
-
-        assertThat(line.getManualPrice()).isEqualByComparingTo("22.00");
-        assertThat(line.getMaterialPrice()).isEqualByComparingTo("0");
-    }
-
-    // ───────────────────────── 不适用字段必须显式报错 ─────────────────────────
-
-    @Test
-    void shouldRejectManualPriceForMaterialOnlyWhenNonZero() {
-        QuoteLine line = line(PricingMethod.MaterialOnly, "10.00", "0");
-        assertRejected(line, change(line, c -> c.setManualPrice(new BigDecimal("5"))), "仅材料计价的报价行不接受人工单价");
+        assertRejected(line, change, "仅人工计价要求人工单价大于零");
     }
 
     @Test
-    void shouldRejectMaterialPriceForManualOnlyWhenNonZero() {
-        QuoteLine line = line(PricingMethod.ManualOnly, "0", "20.00");
-        assertRejected(line, change(line, c -> c.setMaterialPrice(new BigDecimal("5"))), "仅人工计价的报价行不接受材料单价");
-    }
-
-    @Test
-    void shouldRejectPriceForFixedTotalMode() {
+    void shouldRejectExplicitZeroFixedTotalForFixedTotal() {
         QuoteLine line = line(PricingMethod.FixedTotal, "0", "0");
         line.setFixedTotalPrice(new BigDecimal("100.00"));
-        assertRejected(line, change(line, c -> c.setMaterialPrice(new BigDecimal("5"))), "固定总价计价的报价行不接受材料单价或人工单价");
+        QuoteLine change = changeOf(line);
+        change.setFixedTotalPrice(BigDecimal.ZERO);
+        change.setFixedTotalPriceProvided(true);
+
+        assertRejected(line, change, "固定总价计价要求固定总价大于零");
+    }
+
+    @Test
+    void shouldRejectManualPriceForMaterialOnlyWhenProvided() {
+        QuoteLine line = line(PricingMethod.MaterialOnly, "10.00", "0");
+        QuoteLine change = changeOf(line);
+        change.setManualPrice(new BigDecimal("5"));
+        change.setManualPriceProvided(true);
+
+        assertRejected(line, change, "仅材料计价的报价行不接受人工单价");
+    }
+
+    @Test
+    void shouldRejectMaterialPriceForManualOnlyWhenProvided() {
+        QuoteLine line = line(PricingMethod.ManualOnly, "0", "20.00");
+        QuoteLine change = changeOf(line);
+        change.setMaterialPrice(new BigDecimal("5"));
+        change.setMaterialPriceProvided(true);
+
+        assertRejected(line, change, "仅人工计价的报价行不接受材料单价");
     }
 
     @Test
     void shouldRejectFixedTotalForNonFixedTotalMode() {
         QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
-        assertRejected(line, change(line, c -> c.setFixedTotalPrice(new BigDecimal("100"))), "非固定总价计价的报价行不接受固定总价");
+        QuoteLine change = changeOf(line);
+        change.setFixedTotalPrice(new BigDecimal("100"));
+        change.setFixedTotalPriceProvided(true);
+
+        assertRejected(line, change, "非固定总价计价的报价行不接受固定总价");
     }
 
-    // ───────────────────────── 未传保持原值 / 显式有效价更新 ─────────────────────────
-
-    @Test
-    void shouldKeepExistingPricesWhenFieldsOmitted() {
-        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
-        Quote request = requestWith(line, change -> change.setQuantity(new BigDecimal("3")));
-        Quote quote = quoteOf(line);
-        stubPersist(quote, line);
-
-        context.update(quote, request);
-
-        assertThat(line.getMaterialPrice()).isEqualByComparingTo("10.00");
-        assertThat(line.getManualPrice()).isEqualByComparingTo("5.00");
-        assertThat(line.getQuantity()).isEqualByComparingTo("3");
-    }
-
-    @Test
-    void shouldApplyExplicitValidPricesAndRecalculate() {
-        QuoteLine line = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
-        Quote request = requestWith(line, change -> {
-            change.setMaterialPrice(new BigDecimal("40.00"));
-            change.setManualPrice(new BigDecimal("30.00"));
-            change.setQuantity(new BigDecimal("30"));
-        });
-        Quote quote = quoteOf(line);
-        stubPersist(quote, line);
-
-        context.update(quote, request);
-
-        assertThat(line.getMaterialPrice()).isEqualByComparingTo("40.00");
-        assertThat(line.getManualPrice()).isEqualByComparingTo("30.00");
-        assertThat(line.getPrice()).isEqualByComparingTo("70.00");
-        assertThat(line.getAmount()).isEqualByComparingTo("2100.00");
-    }
-
-    // ───────────────────────── 错误不落库 ─────────────────────────
+    // ───────────────── 错误不落库 ─────────────────
 
     @Test
     void shouldNotPersistAnyLineWhenValidationFails() {
@@ -208,27 +245,28 @@ class QuoteWorkbookContextTest {
         QuoteLine bad = line(PricingMethod.MaterialAndManual, "10.00", "5.00");
         bad.setItemId(3L);
 
-        QuoteLine okChange = baseChange(ok);
+        QuoteLine okChange = changeOf(ok);
         okChange.setMaterialPrice(new BigDecimal("12.00"));
-        QuoteLine badChange = baseChange(bad);
+        okChange.setMaterialPriceProvided(true);
+
+        QuoteLine badChange = changeOf(bad);
         badChange.setManualPrice(new BigDecimal("-1"));
+        badChange.setManualPriceProvided(true);
 
         Quote quote = quoteOf(ok, bad);
         when(lineRepository.findByQuote(quote)).thenReturn(List.of(ok, bad));
-
         Quote request = new Quote();
         request.setItems(List.of(okChange, badChange));
 
         assertThatThrownBy(() -> context.update(quote, request))
                 .hasMessageContaining("人工单价不能为负");
 
-        // 校验先于写入：任何一行都不得落库，且不得触发重算
         verify(lineRepository, never()).save(any());
         verify(adjustmentContext, never()).recalculate(any());
         assertThat(ok.getMaterialPrice()).isEqualByComparingTo("10.00");
     }
 
-    // ───────────────────────── 辅助 ─────────────────────────
+    // ───────────────── 辅助 ─────────────────
 
     private QuoteLine line(PricingMethod mode, String material, String manual) {
         QuoteLine line = new QuoteLine();
@@ -250,23 +288,23 @@ class QuoteWorkbookContextTest {
         return quote;
     }
 
-    private QuoteLine baseChange(QuoteLine target) {
+    /** 变更对象：默认不带任何 Provided 标记（等价于"未传"）。 */
+    private QuoteLine changeOf(QuoteLine target) {
         QuoteLine change = new QuoteLine();
         change.setItemId(target.getItemId());
-        change.setQuantity(target.getQuantity());
         return change;
     }
 
-    private QuoteLine change(QuoteLine target, java.util.function.Consumer<QuoteLine> customizer) {
-        QuoteLine change = baseChange(target);
-        customizer.accept(change);
-        return change;
-    }
-
-    private Quote requestWith(QuoteLine target, java.util.function.Consumer<QuoteLine> customizer) {
+    /** 执行一次批量保存并返回被保存的行。 */
+    private QuoteLine save(QuoteLine line, QuoteLine change) {
+        Quote quote = quoteOf(line);
+        when(lineRepository.findByQuote(quote)).thenReturn(List.of(line));
+        when(lineRepository.save(line)).thenReturn(line);
+        when(viewContext.apply(any(), anyList())).thenReturn(new Quote());
         Quote request = new Quote();
-        request.setItems(List.of(change(target, customizer)));
-        return request;
+        request.setItems(List.of(change));
+        context.update(quote, request);
+        return line;
     }
 
     private void assertRejected(QuoteLine line, QuoteLine change, String message) {
@@ -275,15 +313,7 @@ class QuoteWorkbookContextTest {
         Quote request = new Quote();
         request.setItems(List.of(change));
 
-        assertThatThrownBy(() -> context.update(quote, request))
-                .hasMessageContaining(message);
+        assertThatThrownBy(() -> context.update(quote, request)).hasMessageContaining(message);
         verify(lineRepository, never()).save(any());
-    }
-
-    /** 统一的持久化桩：必须使用与 update() 同一个 Quote 实例，否则 findByQuote 匹配不上。 */
-    private void stubPersist(Quote quote, QuoteLine line) {
-        when(lineRepository.findByQuote(quote)).thenReturn(List.of(line));
-        when(lineRepository.save(line)).thenReturn(line);
-        when(viewContext.apply(any(), anyList())).thenReturn(new Quote());
     }
 }

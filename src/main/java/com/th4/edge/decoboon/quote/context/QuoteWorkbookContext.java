@@ -84,26 +84,36 @@ public class QuoteWorkbookContext {
             BigDecimal unitCost = oldQuantity.signum() > 0
                     ? zero(target.getCost()).divide(oldQuantity, 12, RoundingMode.HALF_UP)
                     : BigDecimal.ZERO;
-            BigDecimal quantity = formulaResults.get(target.getItemId());
-            if (quantity == null) quantity = change.getQuantity() == null ? oldQuantity : change.getQuantity();
-            if (quantity.signum() <= 0) {
+            boolean hasFormula = change.getQuantityFormula() != null && !change.getQuantityFormula().isBlank();
+            boolean quantityProvided = Boolean.TRUE.equals(change.getQuantityProvided());
+
+            // ECD-014：工程量按「公式 > 显式传入 > 保留原值」三路取值，
+            // 不再被实体默认值 1 覆盖。
+            BigDecimal quantity;
+            if (hasFormula) {
+                quantity = formulaResults.get(target.getItemId());
+            } else if (quantityProvided) {
+                quantity = change.getQuantity();
+            } else {
+                quantity = oldQuantity;
+            }
+            if (quantity == null || quantity.signum() <= 0) {
                 throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于零"));
             }
             target.setQuantity(quantity.setScale(3, RoundingMode.HALF_UP));
-            boolean hasFormula = change.getQuantityFormula() != null && !change.getQuantityFormula().isBlank();
             if (hasFormula) {
                 target.setQuantityFormula(change.getQuantityFormula().trim());
-            } else if (change.getQuantity() != null && change.getQuantity().signum() > 0) {
+            } else if (quantityProvided) {
                 target.setQuantityFormula(null);
             }
-            // 冻结口径：价格为 0 视为「未修改」（见 validatePriceInput 注释）
-            if (change.getMaterialPrice() != null && change.getMaterialPrice().signum() > 0) {
+            // 价格：只有显式提供才写入（未提供保留原值），显式值合法性已在校验阶段判定
+            if (Boolean.TRUE.equals(change.getMaterialPriceProvided()) && change.getMaterialPrice() != null) {
                 target.setMaterialPrice(change.getMaterialPrice());
             }
-            if (change.getManualPrice() != null && change.getManualPrice().signum() > 0) {
+            if (Boolean.TRUE.equals(change.getManualPriceProvided()) && change.getManualPrice() != null) {
                 target.setManualPrice(change.getManualPrice());
             }
-            if (change.getFixedTotalPrice() != null && change.getFixedTotalPrice().signum() > 0) {
+            if (Boolean.TRUE.equals(change.getFixedTotalPriceProvided()) && change.getFixedTotalPrice() != null) {
                 target.setFixedTotalPrice(change.getFixedTotalPrice());
             }
             recalculateLine(target, unitCost);
@@ -137,11 +147,9 @@ public class QuoteWorkbookContext {
      * 3. 明确传了该计价模式**不适用**的非零价格时必须报错——不允许"返成功但字段没生效"。
      *
      * 传输口径（测试冻结，非静默忽略）：
-     * `QuoteLine.materialPrice / manualPrice` 的实体默认值是 `0`（数据库列 NOT NULL 且无默认），
-     * 因此请求中「未传该字段」与「显式传 0」在绑定层**无法区分**。
-     * 冻结为：**价格字段传 0 视为「未修改」，保持原值**。
-     * 需要某个计价侧为零，应使用不适用该侧的计价模式（如 MaterialOnly 的人工价天然为 0），
-     * 而不是把该侧显式改成 0。负价一律阻断。
+     * ECD-014 之后：由请求的**显式提供标记**（`*Provided`，@Transient 不持久化不序列化）
+     * 区分「未传」与「显式传值」——未传保留原值（含 0），显式传 0/负数按下列规则校验：
+     * 负数一律 400；显式 0 是否允许由计价模式的有效价格规则决定。
      */
     private void validatePriceInput(QuoteLine target, QuoteLine change) {
         PricingMethod mode = target.getPricingMode() == null
@@ -151,17 +159,17 @@ public class QuoteWorkbookContext {
         BigDecimal manual = change.getManualPrice();
         BigDecimal fixed = change.getFixedTotalPrice();
 
-        rejectNegative(material, "材料单价");
-        rejectNegative(manual, "人工单价");
-        rejectNegative(fixed, "固定总价");
+        // ECD-014：以「显式提供标记」判断是否本次传入，不再依赖实体默认值推断
+        boolean materialProvided = Boolean.TRUE.equals(change.getMaterialPriceProvided()) && material != null;
+        boolean manualProvided = Boolean.TRUE.equals(change.getManualPriceProvided()) && manual != null;
+        boolean fixedProvided = Boolean.TRUE.equals(change.getFixedTotalPriceProvided()) && fixed != null;
 
-        // materialPrice / manualPrice：实体默认值为 0，只有 > 0 才视为「本次提供」（0 视为未修改）
-        boolean materialUsed = material != null && material.signum() > 0;
-        boolean manualUsed = manual != null && manual.signum() > 0;
-        // fixedTotalPrice：实体默认为 null，因此非 null 即视为「本次提供」，传 0 也要按无效价阻断
-        boolean fixedProvided = fixed != null;
+        // 负数：仅对显式传入的值判定
+        if (materialProvided) rejectNegative(material, "材料单价");
+        if (manualProvided) rejectNegative(manual, "人工单价");
+        if (fixedProvided) rejectNegative(fixed, "固定总价");
 
-        if (mode == PricingMethod.FixedTotal && (materialUsed || manualUsed)) {
+        if (mode == PricingMethod.FixedTotal && ((materialProvided && material.signum() > 0) || (manualProvided && manual.signum() > 0))) {
             throw new DefinedException(new DefaultErrorCode("400",
                     "固定总价计价的报价行不接受材料单价或人工单价，请修改固定总价"));
         }
@@ -169,17 +177,17 @@ public class QuoteWorkbookContext {
             throw new DefinedException(new DefaultErrorCode("400",
                     "非固定总价计价的报价行不接受固定总价"));
         }
-        if (mode == PricingMethod.MaterialOnly && manualUsed) {
+        if (mode == PricingMethod.MaterialOnly && manualProvided && manual.signum() > 0) {
             throw new DefinedException(new DefaultErrorCode("400",
                     "仅材料计价的报价行不接受人工单价"));
         }
-        if (mode == PricingMethod.ManualOnly && materialUsed) {
+        if (mode == PricingMethod.ManualOnly && materialProvided && material.signum() > 0) {
             throw new DefinedException(new DefaultErrorCode("400",
                     "仅人工计价的报价行不接受材料单价"));
         }
 
-        BigDecimal effectiveMaterial = materialUsed ? material : zero(target.getMaterialPrice());
-        BigDecimal effectiveManual = manualUsed ? manual : zero(target.getManualPrice());
+        BigDecimal effectiveMaterial = materialProvided ? material : zero(target.getMaterialPrice());
+        BigDecimal effectiveManual = manualProvided ? manual : zero(target.getManualPrice());
         BigDecimal effectiveFixed = fixedProvided ? fixed : target.getFixedTotalPrice();
 
         switch (mode) {

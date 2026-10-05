@@ -26,6 +26,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Team;
 import jakarta.persistence.Column;
+import jakarta.persistence.Transient;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -237,6 +238,26 @@ public class QuoteLine extends AuditModel {
 
     @Note("工程量公式（Web Excel 式报价）")
     @Column(name = "quantity_formula", length = 512)
+    /*
+     * 请求「字段是否显式提供」的存在标记（ECD-014）。
+     *
+     * 背景：quantity / materialPrice / manualPrice 的实体默认值分别是 1 / 0 / 0，
+     * 嵌套绑定新对象时「未传」与「显式传默认值」无法区分，
+     * 会让"只改价格"的请求把工程量覆盖成 1。
+     *
+     * 设计：@Transient 不参与持久化；不加入任何 @Properties 白名单，因此也不会序列化
+     * （无需 @JsonIgnore）。**默认 false = 未提供 = 保留原值**，把缺省语义反转为安全默认。
+     * 仅由 Web 批量保存入口使用；App 的 quote/line/save 不读取这些标记，契约不变。
+     */
+    @Transient
+    private Boolean quantityProvided;
+    @Transient
+    private Boolean materialPriceProvided;
+    @Transient
+    private Boolean manualPriceProvided;
+    @Transient
+    private Boolean fixedTotalPriceProvided;
+
     private String quantityFormula;
 
     @Note("施工工艺快照（生成报价时从设计分项/材料库冻结）")
@@ -326,4 +347,13 @@ public class QuoteLine extends AuditModel {
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }
+
+    public Boolean getQuantityProvided() { return quantityProvided; }
+    public void setQuantityProvided(Boolean quantityProvided) { this.quantityProvided = quantityProvided; }
+    public Boolean getMaterialPriceProvided() { return materialPriceProvided; }
+    public void setMaterialPriceProvided(Boolean materialPriceProvided) { this.materialPriceProvided = materialPriceProvided; }
+    public Boolean getManualPriceProvided() { return manualPriceProvided; }
+    public void setManualPriceProvided(Boolean manualPriceProvided) { this.manualPriceProvided = manualPriceProvided; }
+    public Boolean getFixedTotalPriceProvided() { return fixedTotalPriceProvided; }
+    public void setFixedTotalPriceProvided(Boolean fixedTotalPriceProvided) { this.fixedTotalPriceProvided = fixedTotalPriceProvided; }
 }
