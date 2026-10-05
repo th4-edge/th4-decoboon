@@ -35,6 +35,7 @@ import java.util.List;
 public class Build implements com.th4.edge.decoboon.quote.service.workbook.build.Build {
 
     @AutoInject @NotNull private Long quoteId;
+    @AutoInject private String variant;
     @User private Employee employee;
 
     private final QuoteRepository quoteRepository;
@@ -64,6 +65,6 @@ public class Build implements com.th4.edge.decoboon.quote.service.workbook.build
             throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
         }
         List<QuoteLine> lines = lineRepository.findByQuote(quote);
-        return fileContext.export(quote, lines);
+        return fileContext.export(quote, lines, variant);
     }
 }
