@@ -235,6 +235,7 @@ public class CarryoverProjectContext {
         target.setCostMissingNote(trim(source.getCostMissingNote()));
         target.setLegacyId(trim(source.getLegacyId()));
         target.setLegacyProjectNo(trim(source.getLegacyProjectNo()));
+        target.setLegacyAccountNote(trim(source.getLegacyAccountNote()));
     }
 
     private Employee resolveEmployee(Employee current, Employee source) {

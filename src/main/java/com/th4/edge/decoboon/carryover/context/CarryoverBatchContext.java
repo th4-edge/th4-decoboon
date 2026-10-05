@@ -64,6 +64,9 @@ public class CarryoverBatchContext {
         if (request.getScopeConfirmedAt() != null) {
             target.setScopeConfirmedAt(request.getScopeConfirmedAt());
         }
+        if (request.getBookkeepingSurveyNote() != null) {
+            target.setBookkeepingSurveyNote(request.getBookkeepingSurveyNote().trim());
+        }
         return batchRepository.save(target);
     }
 

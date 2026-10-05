@@ -9,6 +9,7 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.data.jpa.inject.annotation.ModelSaveInject;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 
 @Note("保存承接任务")
 @Properties(allow = @AllowProperties(model = CarryoverBatch.class,
-        properties = {"batchId", "asOfDate", "status", "scopeConfirmedAt", "completedAt", "version", "createTime"}))
+        properties = {"batchId", "asOfDate", "bookkeepingSurveyNote", "status", "scopeConfirmedAt", "completedAt", "version", "createTime"}))
 @Service("carryover/batch/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.carryover.service.batch.save.Save {
@@ -32,6 +33,10 @@ public class Save implements com.th4.edge.decoboon.carryover.service.batch.save.
 
     @AutoInject
     private LocalDate asOfDate;
+
+    @AutoInject
+    @Length(max = 2000)
+    private String bookkeepingSurveyNote;
 
     private final CarryoverAccessContext accessContext;
     private final CarryoverBatchContext batchContext;
@@ -47,6 +52,7 @@ public class Save implements com.th4.edge.decoboon.carryover.service.batch.save.
         Employee current = accessContext.requireBoss(employee);
         request.setBatchId(batchId);
         request.setAsOfDate(asOfDate);
+        request.setBookkeepingSurveyNote(bookkeepingSurveyNote);
         return batchContext.save(current, request);
     }
 }

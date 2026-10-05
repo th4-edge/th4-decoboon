@@ -67,6 +67,10 @@ public class CarryoverBatch extends AuditModel {
     @Column(nullable = false)
     private Integer version = 1;
 
+    @Note("账本摸底说明")
+    @Column(name = "bookkeeping_survey_note", length = 2000)
+    private String bookkeepingSurveyNote;
+
     public Long getBatchId() { return batchId; }
     public void setBatchId(Long batchId) { this.batchId = batchId; }
     public Company getCompany() { return company; }
@@ -83,4 +87,6 @@ public class CarryoverBatch extends AuditModel {
     public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
     public Integer getVersion() { return version; }
     public void setVersion(Integer version) { this.version = version; }
+    public String getBookkeepingSurveyNote() { return bookkeepingSurveyNote; }
+    public void setBookkeepingSurveyNote(String bookkeepingSurveyNote) { this.bookkeepingSurveyNote = bookkeepingSurveyNote; }
 }

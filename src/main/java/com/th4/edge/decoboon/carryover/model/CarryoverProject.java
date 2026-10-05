@@ -242,6 +242,10 @@ public class CarryoverProject extends AuditModel implements ProjectOwned {
     @Column(name = "legacy_project_no", length = 64)
     private String legacyProjectNo;
 
+    @Note("原账口径备注")
+    @Column(name = "legacy_account_note", length = 1000)
+    private String legacyAccountNote;
+
     @Note("接管基线报价")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quote_id")
@@ -419,6 +423,9 @@ public class CarryoverProject extends AuditModel implements ProjectOwned {
     public void setCancelReason(String cancelReason) { this.cancelReason = cancelReason; }
     public LocalDateTime getLockedAt() { return lockedAt; }
     public void setLockedAt(LocalDateTime lockedAt) { this.lockedAt = lockedAt; }
+    public String getLegacyAccountNote() { return legacyAccountNote; }
+    public void setLegacyAccountNote(String legacyAccountNote) { this.legacyAccountNote = legacyAccountNote; }
+
     public LocalDateTime getFirstBusinessAt() { return firstBusinessAt; }
     public void setFirstBusinessAt(LocalDateTime firstBusinessAt) { this.firstBusinessAt = firstBusinessAt; }
     public CarryoverBusinessType getFirstBusinessType() { return firstBusinessType; }

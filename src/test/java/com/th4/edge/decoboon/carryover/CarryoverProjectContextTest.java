@@ -48,6 +48,13 @@ class CarryoverProjectContextTest {
         assertTrue(item.getCostStatus() != CarryoverCostStatus.Complete);
     }
 
+    @Test
+    void legacyAccountNoteIsStoredOnEntity() {
+        CarryoverProject item = validItem();
+        item.setLegacyAccountNote("原账科目：应收账款-工程款");
+        assertEquals("原账科目：应收账款-工程款", item.getLegacyAccountNote());
+    }
+
     private CarryoverProject validItem() {
         CarryoverProject item = new CarryoverProject();
         item.setCustomerName("张三");

@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
                 "projectName", "projectStatus", "currentStageName", "progress", "remainingWork", "currentIssue",
                 "receivableOutstanding", "receivableDueDate", "receivableSourceNo", "receivableConfirmed",
                 "payableOutstanding", "payableDueDate", "payablePayeeName", "payableSourceNo", "payableConfirmed",
-                "costTotal", "costStatus", "costMissingNote", "legacyId", "legacyProjectNo", "createTime"}))
+                "costTotal", "costStatus", "costMissingNote", "legacyId", "legacyProjectNo", "legacyAccountNote", "createTime"}))
 @Service("carryover/project/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.carryover.service.project.save.Save {
