@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
                         "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
                         "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "materialAmount", "materialCost", "salaryAmount",
                         "laborCost", "projectPaymentAmount", "projectCost", "otherPayableAmount", "expenseAllocation",
-                        "estimatedCost", "actualCost", "totalCost", "profitAmount", "costComplete", "costIncompleteCount",
+                        "estimatedCost", "actualCost", "manualIncomeAmount", "manualCostAmount", "totalCost", "profitAmount", "costComplete", "costIncompleteCount",
                         "grossProfit", "grossMargin", "collectionRate", "paymentRate",
                         "receivableCleared", "payableCleared", "settlement", "receivables", "payables", "recentLedgers"}),
         @AllowProperties(model = Project.class,

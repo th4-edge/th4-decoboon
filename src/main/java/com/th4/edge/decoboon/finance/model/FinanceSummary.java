@@ -36,6 +36,10 @@ public class FinanceSummary {
     private BigDecimal cashBalance = BigDecimal.ZERO;
     private BigDecimal estimatedCost = BigDecimal.ZERO;
     private BigDecimal actualCost = BigDecimal.ZERO;
+    /** 手工记账中关联项目的其他收入，已计入项目收入口径。 */
+    private BigDecimal manualIncomeAmount = BigDecimal.ZERO;
+    /** 手工记账中项目零星成本，已计入项目实际成本口径。 */
+    private BigDecimal manualCostAmount = BigDecimal.ZERO;
     private BigDecimal profitAmount;
     /** 汇总毛利率；成本不完整时为 null（不得用 0 代替）。 */
     private BigDecimal grossMargin;
@@ -105,6 +109,10 @@ public class FinanceSummary {
     public void setEstimatedCost(BigDecimal estimatedCost) { this.estimatedCost = estimatedCost; }
     public BigDecimal getActualCost() { return actualCost; }
     public void setActualCost(BigDecimal actualCost) { this.actualCost = actualCost; }
+    public BigDecimal getManualIncomeAmount() { return manualIncomeAmount; }
+    public void setManualIncomeAmount(BigDecimal manualIncomeAmount) { this.manualIncomeAmount = manualIncomeAmount; }
+    public BigDecimal getManualCostAmount() { return manualCostAmount; }
+    public void setManualCostAmount(BigDecimal manualCostAmount) { this.manualCostAmount = manualCostAmount; }
     public Boolean getCostComplete() { return costComplete; }
     public void setCostComplete(Boolean costComplete) { this.costComplete = costComplete; }
     public Integer getCostIncompleteProjectCount() { return costIncompleteProjectCount; }

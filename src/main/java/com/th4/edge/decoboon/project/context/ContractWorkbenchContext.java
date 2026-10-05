@@ -45,6 +45,9 @@ public class ContractWorkbenchContext {
     private final ContractChangeRepository changeRepository;
     private final MaterialSelectionRepository selectionRepository;
 
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private com.th4.edge.decoboon.finance.context.ManualLedgerContext manualLedgerContext;
+
     public ContractWorkbenchContext(ProjectContractContext contractContext,
                                     ReceivableRepository receivableRepository,
                                     ProjectCostContext costContext,
@@ -165,19 +168,26 @@ public class ContractWorkbenchContext {
     private ContractWorkbench.Cost cost(ProjectContract contract) {
         ContractWorkbench.Cost view = new ContractWorkbench.Cost();
         ProjectCostContext.CostSummary summary = costContext.summarize(contract.getProject());
+        com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = manualAmounts(contract.getProject());
         view.setEstimatedCost(money(summary.estimatedCost()));
-        view.setActualCost(money(summary.actualCost()));
+        view.setActualCost(money(value(summary.actualCost()).add(manual.cost())));
         view.setCostComplete(summary.complete());
         view.setIncompleteItemCount(summary.incompleteItemCount());
         if (summary.complete()) {
-            BigDecimal income = value(contract.getCurrentAmount());
-            BigDecimal profit = income.subtract(value(summary.actualCost()));
+            BigDecimal income = value(contract.getCurrentAmount()).add(manual.income());
+            BigDecimal profit = income.subtract(value(summary.actualCost()).add(manual.cost()));
             view.setGrossProfit(money(profit));
             view.setGrossMargin(income.signum() == 0
                     ? null
                     : profit.divide(income, 4, RoundingMode.HALF_UP));
         }
         return view;
+    }
+
+    private com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manualAmounts(Project project) {
+        return manualLedgerContext == null
+                ? com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO
+                : manualLedgerContext.amounts(project);
     }
 
     private ContractWorkbench.Progress progress(Project project) {

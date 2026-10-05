@@ -368,6 +368,8 @@ class FinanceClosedLoopTest {
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
         set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(save, "category", custom.getName());
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
         set(save, "categoryId", custom.getCategoryId());
         set(save, "amount", new BigDecimal("120.00"));
         set(save, "account", FundAccount.CompanyBank);
@@ -419,6 +421,8 @@ class FinanceClosedLoopTest {
         set(correct, "employee", boss);
         set(correct, "ledgerId", ledger.getLedgerId());
         set(correct, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(correct, "category", custom.getName());
+        set(correct, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
         set(correct, "categoryId", custom.getCategoryId());
         set(correct, "amount", new BigDecimal("150.00"));
         set(correct, "account", FundAccount.CompanyBank);
@@ -456,192 +460,83 @@ class FinanceClosedLoopTest {
     }
 
     @Test
-    void shouldEnforceSecondLevelCategoryAndAllowFinanceRelinkLegacyLedger() {
+    void shouldEnforceManualLedgerBoundaryAndIncludeProjectManualAmounts() {
         Fixture fixture = createFixture();
         Employee boss = fixture.boss();
         Project project = fixture.project();
-
-        com.th4.edge.decoboon.finance.service.ledgercategories.tree.support.Tree tree =
-                AopTestUtils.getTargetObject(ledgerCategoryTree);
-        set(tree, "employee", boss);
-        List<com.th4.edge.decoboon.finance.model.LedgerCategory> categories =
-                tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
-        var projectRoot = categories.stream()
-                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Income)
-                .filter(item -> "工程款".equals(item.getName()))
-                .findFirst().orElseThrow();
-        assertThat(projectRoot.getChildren()).extracting(com.th4.edge.decoboon.finance.model.LedgerCategory::getName)
-                .contains("首期款", "进度款", "尾款", "质保金", "增项款");
-        var firstIncome = projectRoot.getChildren().stream()
-                .filter(item -> "首期款".equals(item.getName()))
-                .findFirst().orElseThrow();
 
         com.th4.edge.decoboon.finance.service.ledgers.save.support.Save save =
                 AopTestUtils.getTargetObject(ledgerSave);
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
-        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
-
-        // 未选分类与选择一级分组都必须被拒绝。
-        set(save, "categoryId", null);
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
         set(save, "amount", new BigDecimal("100.00"));
         set(save, "account", FundAccount.CompanyBank);
         set(save, "occurredAt", LocalDate.now());
-        set(save, "counterparty", null);
-        set(save, "summary", "缺分类");
+        set(save, "counterparty", "临时保洁");
+        set(save, "summary", "现场临时保洁");
         set(save, "remark", null);
+
+        // 项目零星成本必须关联项目。
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
+        set(save, "category", "临时保洁");
+        set(save, "projectId", null);
         assertThatThrownBy(() -> save.call(new Ledger()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("请选择业务分类");
+                .hasMessageContaining("项目零星成本必须关联项目");
 
-        set(save, "categoryId", projectRoot.getCategoryId());
+        // 工程款、材料款等已有应收/应付闭环的业务禁止在手工记账登记。
+        set(save, "projectId", project.getProjectId());
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.OtherIncome);
+        set(save, "category", "工程款");
         assertThatThrownBy(() -> save.call(new Ledger()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("一级分组");
+                .hasMessageContaining("应收计划");
 
-        // 二级分类正常保存，分类快照由服务端生成。
-        set(save, "categoryId", firstIncome.getCategoryId());
-        set(save, "summary", "首期款入账");
-        Ledger manual = save.call(new Ledger());
-        assertThat(manual.getCategoryNode().getCategoryId()).isEqualTo(firstIncome.getCategoryId());
-        assertThat(manual.getCategory()).isEqualTo("首期款");
-
-        // 历史手工流水未关联分类，进入待关联统计。
-        Ledger legacy = new Ledger();
-        legacy.setCompany(boss.getCompany());
-        legacy.setOwner(boss);
-        legacy.setDirection(com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
-        legacy.setCategory("老文本：首期");
-        legacy.setSource(com.th4.edge.decoboon.finance.configure.LedgerSource.Manual);
-        legacy.setAmount(new BigDecimal("66.00"));
-        legacy.setAccount(FundAccount.CompanyBank);
-        legacy.setOccurredAt(LocalDate.now());
-        legacy.setSummary("历史流水");
-        legacy.setCreatedBy(boss);
-        legacy = ledgerRepository.save(legacy);
-        entityManager.flush();
-
-        com.th4.edge.decoboon.finance.service.ledgers.report.support.Report report =
-                AopTestUtils.getTargetObject(ledgerReport);
-        set(report, "employee", boss);
-        set(report, "uncategorized", true);
-        var before = report.call(new Ledger());
-        assertThat(before.getCount()).isEqualTo(1);
-        assertThat(before.getIncomeAmount()).isEqualByComparingTo("66.00");
-
-        Employee finance = new Employee();
-        finance.setCompany(boss.getCompany());
-        finance.setStore(boss.getStore());
-        finance.setRole(EmployeeRole.Finance);
-        finance.setStatus(EmployeeStatus.Active);
-        finance.setName("财务补分类");
-        finance.setTelNo("18" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L)));
-        finance.setJoinedAt(LocalDateTime.now());
-        finance = employeeRepository.save(finance);
-
-        com.th4.edge.decoboon.finance.service.ledgers.update.support.Update update =
-                AopTestUtils.getTargetObject(ledgerUpdate);
-        set(update, "employee", finance);
-        set(update, "ledgerId", legacy.getLedgerId());
-        set(update, "categoryId", firstIncome.getCategoryId());
-        set(update, "counterparty", null);
-        set(update, "summary", null);
-        set(update, "remark", null);
-        set(update, "projectId", null);
-        set(update, "reason", "补关联历史业务分类");
-        Ledger relinked = update.call(new Ledger());
-        assertThat(relinked.getCategoryNode().getCategoryId()).isEqualTo(firstIncome.getCategoryId());
-        assertThat(relinked.getCategory()).isEqualTo("首期款");
-        assertThat(relinked.getSummary()).isEqualTo("历史流水");
-        assertThat(relinked.getAmount()).isEqualByComparingTo("66.00");
-
-        set(report, "uncategorized", true);
-        assertThat(report.call(new Ledger()).getCount()).isZero();
-
-        // 财务仅可补分类，不能改摘要等元数据。
-        set(update, "categoryId", null);
-        set(update, "summary", "财务越权改摘要");
-        assertThatThrownBy(() -> update.call(new Ledger()))
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.CompanyExpense);
+        set(save, "category", "材料采购");
+        assertThatThrownBy(() -> save.call(new Ledger()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("财务仅可补充业务分类");
-    }
+                .hasMessageContaining("应付");
 
-    @Test
-    void shouldAllowTenantToEditAndDeleteBuiltInSecondLevelCategory() {
-        Fixture fixture = createFixture();
-        Employee boss = fixture.boss();
+        // 项目零星成本：计入项目实际成本。
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
+        set(save, "category", "临时保洁");
+        Ledger costLedger = save.call(new Ledger());
+        assertThat(costLedger.getPurpose())
+                .isEqualTo(com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
+        assertThat(costLedger.getCategory()).isEqualTo("临时保洁");
 
-        com.th4.edge.decoboon.finance.service.ledgercategories.tree.support.Tree tree =
-                AopTestUtils.getTargetObject(ledgerCategoryTree);
-        set(tree, "employee", boss);
-        List<com.th4.edge.decoboon.finance.model.LedgerCategory> categories =
-                tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
-        var materialRoot = categories.stream()
-                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense)
-                .filter(item -> "材料采购".equals(item.getName()))
-                .findFirst().orElseThrow();
-        var builtInChild = materialRoot.getChildren().stream()
-                .filter(item -> "主材采购".equals(item.getName()))
-                .findFirst().orElseThrow();
+        // 其他收入 + 关联项目：计入项目收入。
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.OtherIncome);
+        set(save, "category", "设计费");
+        set(save, "summary", "设计费收入");
+        Ledger incomeLedger = save.call(new Ledger());
+        assertThat(incomeLedger.getPurpose())
+                .isEqualTo(com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.OtherIncome);
 
-        // 内置二级分类允许企业改名，改名后再次读取分类树不得被模板覆盖。
-        com.th4.edge.decoboon.finance.service.ledgercategories.update.support.Update update =
-                AopTestUtils.getTargetObject(ledgerCategoryUpdate);
-        set(update, "employee", boss);
-        set(update, "categoryId", builtInChild.getCategoryId());
-        set(update, "name", "主材采购（企业定制）");
-        set(update, "active", true);
-        var renamed = update.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
-        assertThat(renamed.getBuiltIn()).isTrue();
-        assertThat(renamed.getName()).isEqualTo("主材采购（企业定制）");
+        // 项目财务报告同源纳入手工成本与收入。
+        com.th4.edge.decoboon.finance.service.projects.report.support.Report projectReport =
+                AopTestUtils.getTargetObject(financeProjectReport);
+        set(projectReport, "employee", boss);
+        set(projectReport, "projectId", project.getProjectId());
+        var report = projectReport.call(new Project());
+        assertThat(report.getManualCostAmount()).isEqualByComparingTo("100.00");
+        assertThat(report.getManualIncomeAmount()).isEqualByComparingTo("100.00");
+        assertThat(report.getTotalCost()).isGreaterThanOrEqualTo(new BigDecimal("100.00"));
 
-        set(tree, "employee", boss);
-        var reloaded = tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()).stream()
-                .filter(item -> "材料采购".equals(item.getName()))
-                .findFirst().orElseThrow()
-                .getChildren().stream()
-                .filter(item -> item.getCategoryId().equals(builtInChild.getCategoryId()))
-                .findFirst().orElseThrow();
-        assertThat(reloaded.getName()).isEqualTo("主材采购（企业定制）");
-
-        // 内置一级分组仍不允许改名/停用。
-        set(update, "categoryId", materialRoot.getCategoryId());
-        set(update, "name", "材料采购（改名）");
-        set(update, "active", true);
-        assertThatThrownBy(() -> update.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()))
-                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("内置一级分组不可修改");
-
-        // 内置二级分类允许企业逻辑删除，删除后分类树不得复活。
-        com.th4.edge.decoboon.finance.service.ledgercategories.delete.support.Delete delete =
-                AopTestUtils.getTargetObject(ledgerCategoryDelete);
-        set(delete, "employee", boss);
-        set(delete, "categoryId", builtInChild.getCategoryId());
-        var deleted = delete.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
-        assertThat(deleted.getActive()).isFalse();
-
-        set(tree, "employee", boss);
-        boolean stillVisible = tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()).stream()
-                .flatMap(item -> item.getChildren().stream())
-                .anyMatch(item -> item.getCategoryId().equals(builtInChild.getCategoryId()));
-        assertThat(stillVisible).isFalse();
-
-        // 内置一级分组仍不允许删除。
-        set(delete, "categoryId", materialRoot.getCategoryId());
-        assertThatThrownBy(() -> delete.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()))
-                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("内置一级分组不可删除");
-
-        // 停用的内置二级分类名称可被企业重新创建。
-        com.th4.edge.decoboon.finance.service.ledgercategories.save.support.Save categorySave =
-                AopTestUtils.getTargetObject(ledgerCategorySave);
-        set(categorySave, "employee", boss);
-        set(categorySave, "name", "主材采购");
-        set(categorySave, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
-        set(categorySave, "parentId", materialRoot.getCategoryId());
-        var recreated = categorySave.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
-        assertThat(recreated.getBuiltIn()).isFalse();
-        assertThat(recreated.getName()).isEqualTo("主材采购");
+        // 历史客户端未传 purpose：默认“其他”，不进入项目成本/收入。
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Income);
+        set(save, "purpose", null);
+        set(save, "category", "补贴收入");
+        set(save, "summary", "政府补贴");
+        Ledger legacyDefault = save.call(new Ledger());
+        assertThat(legacyDefault.getPurpose())
+                .isEqualTo(com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.Other);
     }
 
     @Test
@@ -666,6 +561,8 @@ class FinanceClosedLoopTest {
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
         set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(save, "category", "作废测试分类");
+        set(save, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
         set(save, "categoryId", materialChild.getCategoryId());
         set(save, "amount", new BigDecimal("88.00"));
         set(save, "account", FundAccount.CompanyBank);
@@ -743,6 +640,8 @@ class FinanceClosedLoopTest {
         set(correct, "employee", boss);
         set(correct, "ledgerId", second.getLedgerId());
         set(correct, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(correct, "category", "冲正重记分类");
+        set(correct, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.ProjectIncidentalCost);
         set(correct, "categoryId", materialChild.getCategoryId());
         set(correct, "amount", new BigDecimal("99.00"));
         set(correct, "account", FundAccount.CompanyBank);

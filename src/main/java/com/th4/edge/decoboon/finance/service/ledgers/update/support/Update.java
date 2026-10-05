@@ -3,10 +3,12 @@ package com.th4.edge.decoboon.finance.service.ledgers.update.support;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.finance.configure.LedgerManualPurpose;
 import com.th4.edge.decoboon.finance.configure.LedgerRevisionType;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.context.LedgerCategoryContext;
+import com.th4.edge.decoboon.finance.context.ManualLedgerContext;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.LedgerCategory;
 import com.th4.edge.decoboon.finance.model.LedgerRevision;
@@ -33,11 +35,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** 手工流水元数据更正与历史分类补关联实现。 */
+/** 手工流水元数据更正：支持文本分类、账务用途与历史分类节点兼容。 */
 @Note("更正手工流水")
 @Properties(allow = {
         @AllowProperties(model = Ledger.class,
-                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "purpose", "source", "amount", "account",
                         "occurredAt", "counterparty", "summary", "remark", "originalLedger", "correctionGroupId", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status"}),
@@ -56,9 +58,14 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
     @AutoInject
     @NotNull
     private Long ledgerId;
-    /** 补齐/改选业务分类；只允许可选二级分类。 */
+    /** 兼容旧版 App 的分类节点；新版本不再传。 */
     @AutoInject
     private Long categoryId;
+    @AutoInject
+    private LedgerManualPurpose purpose;
+    @AutoInject
+    @Length(max = 128)
+    private String category;
     @AutoInject
     @Length(max = 128)
     private String counterparty;
@@ -78,15 +85,17 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
     private final LedgerRepository ledgerRepository;
     private final LedgerRevisionRepository revisionRepository;
     private final LedgerCategoryContext categoryContext;
+    private final ManualLedgerContext manualContext;
     private final FinanceAccessContext accessContext;
     private final ObjectMapper objectMapper;
 
     public Update(LedgerRepository ledgerRepository, LedgerRevisionRepository revisionRepository,
-                  LedgerCategoryContext categoryContext, FinanceAccessContext accessContext,
-                  ObjectMapper objectMapper) {
+                  LedgerCategoryContext categoryContext, ManualLedgerContext manualContext,
+                  FinanceAccessContext accessContext, ObjectMapper objectMapper) {
         this.ledgerRepository = ledgerRepository;
         this.revisionRepository = revisionRepository;
         this.categoryContext = categoryContext;
+        this.manualContext = manualContext;
         this.accessContext = accessContext;
         this.objectMapper = objectMapper;
     }
@@ -101,21 +110,29 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
                 || changed(summary, ledger.getSummary())
                 || changed(remark, ledger.getRemark())
                 || projectChanged(projectId, ledger.getProject()))) {
-            throw new DefinedException(new DefaultErrorCode("403", "财务仅可补充业务分类，其他元数据更正需企业负责人操作"));
+            throw new DefinedException(new DefaultErrorCode("403", "财务仅可更正分类与账务用途，其他元数据更正需企业负责人操作"));
         }
-        if (categoryId == null && counterparty == null && summary == null && remark == null && projectId == null) {
+        if (categoryId == null && purpose == null && category == null
+                && counterparty == null && summary == null && remark == null && projectId == null) {
             throw new DefinedException(new DefaultErrorCode("400", "没有需要更新的内容"));
         }
         String before = snapshot(ledger);
+
+        if (category != null) {
+            if (category.isBlank()) throw new DefinedException(new DefaultErrorCode("400", "分类说明不能为空"));
+            ledger.setCategory(category.trim());
+            if (categoryId == null) ledger.setCategoryNode(null);
+        }
         if (categoryId != null) {
-            // 分类停用后，历史流水仍可继续更正其他字段；未改选原分类时保留原关联，避免拆断历史。
+            // 兼容旧版 App：分类节点停用后仍可继续更正其他字段，未改选原节点时保留原关联。
             LedgerCategory originalNode = ledger.getCategoryNode();
             LedgerCategory node = originalNode != null && categoryId.equals(originalNode.getCategoryId())
                     ? originalNode
                     : categoryContext.select(current, categoryId, ledger.getDirection());
             ledger.setCategoryNode(node);
-            ledger.setCategory(node.getName());
+            if (category == null || category.isBlank()) ledger.setCategory(node.getName());
         }
+        if (purpose != null) ledger.setPurpose(purpose);
         if (counterparty != null) ledger.setCounterparty(counterparty.trim());
         if (summary != null) {
             if (summary.isBlank()) throw new DefinedException(new DefaultErrorCode("400", "摘要不能为空"));
@@ -127,6 +144,16 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
             ledger.setProject(project);
             accessContext.applyOwnership(ledger, current, project);
         }
+
+        LedgerManualPurpose effectivePurpose = ledger.getPurpose() == null
+                ? LedgerManualPurpose.Other : ledger.getPurpose();
+        if (purpose != null || projectId != null) {
+            manualContext.validatePurpose(effectivePurpose, ledger.getProject());
+        }
+        if (category != null || summary != null || purpose != null) {
+            manualContext.validateAllowed(ledger.getDirection(), ledger.getCategory(), ledger.getSummary());
+        }
+
         Ledger saved = ledgerRepository.save(ledger);
         LedgerRevision revision = new LedgerRevision();
         revision.setCompany(current.getCompany());
@@ -176,6 +203,7 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
         value.put("direction", ledger.getDirection());
         value.put("categoryId", ledger.getCategoryNode() == null ? null : ledger.getCategoryNode().getCategoryId());
         value.put("category", ledger.getCategory());
+        value.put("purpose", ledger.getPurpose());
         value.put("source", ledger.getSource());
         value.put("amount", ledger.getAmount());
         value.put("account", ledger.getAccount());

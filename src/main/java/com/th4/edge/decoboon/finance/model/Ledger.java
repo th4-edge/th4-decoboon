@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
+import com.th4.edge.decoboon.finance.configure.LedgerManualPurpose;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.annotation.Note;
@@ -86,10 +87,15 @@ public class Ledger extends AuditModel {
     @Column(length = 16, nullable = false)
     private LedgerDirection direction;
 
-    @Note("业务分类")
+    @Note("业务分类/手工分类说明")
     @Keyword
     @Column(length = 128, nullable = false)
     private String category;
+
+    @Note("手工账务用途；自动流水为空")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 24)
+    private LedgerManualPurpose purpose;
 
     @Note("结构化业务分类；历史文本分类为空")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -177,6 +183,8 @@ public class Ledger extends AuditModel {
     public void setDirection(LedgerDirection direction) { this.direction = direction; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public LedgerManualPurpose getPurpose() { return purpose; }
+    public void setPurpose(LedgerManualPurpose purpose) { this.purpose = purpose; }
     public LedgerCategory getCategoryNode() { return categoryNode; }
     public void setCategoryNode(LedgerCategory categoryNode) { this.categoryNode = categoryNode; }
     public Ledger getOriginalLedger() { return originalLedger; }

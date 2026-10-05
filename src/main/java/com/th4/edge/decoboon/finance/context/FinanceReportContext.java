@@ -53,6 +53,7 @@ public class FinanceReportContext {
     private final SettlementRepository settlementRepository;
     private final ProjectCostContext projectCostContext;
     private final CarryoverCostContext carryoverCostContext;
+    private final ManualLedgerContext manualLedgerContext;
 
     public FinanceReportContext(FinanceAccessContext accessContext,
                                 ProjectRepository projectRepository,
@@ -62,7 +63,8 @@ public class FinanceReportContext {
                                 SettlementRepository settlementRepository,
                                 ProjectCostContext projectCostContext) {
         this(accessContext, projectRepository, receivableRepository, payableRepository, ledgerRepository,
-                null, null, settlementRepository, projectCostContext, null);
+                null, null, settlementRepository, projectCostContext, null,
+                new ManualLedgerContext(ledgerRepository));
     }
 
     @Autowired
@@ -75,7 +77,8 @@ public class FinanceReportContext {
                                 PaymentRepository paymentRepository,
                                 SettlementRepository settlementRepository,
                                 ProjectCostContext projectCostContext,
-                                CarryoverCostContext carryoverCostContext) {
+                                CarryoverCostContext carryoverCostContext,
+                                ManualLedgerContext manualLedgerContext) {
         this.accessContext = accessContext;
         this.projectRepository = projectRepository;
         this.receivableRepository = receivableRepository;
@@ -86,6 +89,7 @@ public class FinanceReportContext {
         this.settlementRepository = settlementRepository;
         this.projectCostContext = projectCostContext;
         this.carryoverCostContext = carryoverCostContext;
+        this.manualLedgerContext = manualLedgerContext;
     }
 
     public FinanceSummary summary(Employee principal) {
@@ -171,29 +175,38 @@ public class FinanceReportContext {
         }
         BigDecimal estimatedCost = BigDecimal.ZERO;
         BigDecimal aggregatedTotalCost = BigDecimal.ZERO;
+        BigDecimal aggregatedManualIncome = BigDecimal.ZERO;
+        BigDecimal aggregatedManualCost = BigDecimal.ZERO;
         int incompleteProjects = 0;
         int incompleteItems = 0;
         for (Project project : projects) {
             ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
             BigDecimal payableCost = payableCostByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
+            ManualLedgerContext.ManualAmounts manual = manualLedgerContext.amounts(project);
             estimatedCost = estimatedCost.add(costSummary.estimatedCost());
-            aggregatedTotalCost = aggregatedTotalCost.add(totalCost(project, costSummary, payableCost));
+            aggregatedTotalCost = aggregatedTotalCost.add(totalCost(project, costSummary, payableCost))
+                    .add(manual.cost());
+            aggregatedManualIncome = aggregatedManualIncome.add(manual.income());
+            aggregatedManualCost = aggregatedManualCost.add(manual.cost());
             if (!costSummary.complete()) {
                 incompleteProjects++;
             }
             incompleteItems += costSummary.incompleteItemCount();
         }
         boolean costComplete = incompleteProjects == 0;
+        BigDecimal aggregatedRevenue = summary.getContractAmount().add(aggregatedManualIncome);
         summary.setEstimatedCost(estimatedCost);
         summary.setActualCost(aggregatedTotalCost);
+        summary.setManualIncomeAmount(aggregatedManualIncome);
+        summary.setManualCostAmount(aggregatedManualCost);
         summary.setCostComplete(costComplete);
         summary.setCostIncompleteProjectCount(incompleteProjects);
         summary.setCostIncompleteItemCount(incompleteItems);
         summary.setProfitAmount(costComplete
-                ? summary.getContractAmount().subtract(aggregatedTotalCost) : null);
+                ? aggregatedRevenue.subtract(aggregatedTotalCost) : null);
         // 与项目明细/结算同口径：成本不完整时毛利率同样为 null。
         summary.setGrossMargin(costComplete
-                ? rate(summary.getProfitAmount(), summary.getContractAmount()) : null);
+                ? rate(summary.getProfitAmount(), aggregatedRevenue) : null);
         summary.setCollectionRate(rate(summary.getReceivedAmount(), summary.getReceivableAmount()));
 
         summary.setUrgentReceivables(receivables.stream()
@@ -286,10 +299,12 @@ public class FinanceReportContext {
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAllocation);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-        BigDecimal totalCost = totalCost(project, costSummary, payableCost);
+        ManualLedgerContext.ManualAmounts manual = manualLedgerContext.amounts(project);
+        BigDecimal totalCost = totalCost(project, costSummary, payableCost).add(manual.cost());
         boolean costComplete = costSummary.complete();
+        BigDecimal projectRevenue = report.getContractAmount().add(manual.income());
         BigDecimal grossProfit = costComplete
-                ? report.getContractAmount().subtract(totalCost) : null;
+                ? projectRevenue.subtract(totalCost) : null;
         report.setContractRevenue(report.getContractAmount());
         report.setMaterialAmount(materialCost);
         report.setMaterialCost(materialCost);
@@ -300,13 +315,15 @@ public class FinanceReportContext {
         report.setOtherPayableAmount(expenseAllocation);
         report.setExpenseAllocation(expenseAllocation);
         report.setEstimatedCost(costSummary.estimatedCost());
-        report.setActualCost(costSummary.actualCost());
+        report.setActualCost(costSummary.actualCost().add(manual.cost()));
+        report.setManualIncomeAmount(manual.income());
+        report.setManualCostAmount(manual.cost());
         report.setCostComplete(costComplete);
         report.setCostIncompleteCount(costSummary.incompleteItemCount());
         report.setTotalCost(totalCost);
         report.setProfitAmount(grossProfit);
         report.setGrossProfit(grossProfit);
-        report.setGrossMargin(grossProfit == null ? null : rate(grossProfit, report.getContractAmount()));
+        report.setGrossMargin(grossProfit == null ? null : rate(grossProfit, projectRevenue));
         report.setCollectionRate(rate(report.getReceivedAmount(), report.getReceivableAmount()));
         report.setPaymentRate(rate(report.getPaidAmount(), report.getPayableAmount()));
         report.setReceivableCleared(!receivables.isEmpty() && receivables.stream()
@@ -346,11 +363,15 @@ public class FinanceReportContext {
                 .map(Payable::getAmount));
         BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAmount);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-        BigDecimal totalCost = totalCost(project, costSummary, payableCost);
+        ManualLedgerContext.ManualAmounts manual = manualLedgerContext.amounts(project);
+        BigDecimal totalCost = totalCost(project, costSummary, payableCost).add(manual.cost());
+        BigDecimal settlementRevenue = settlement.getContractAmount().add(manual.income());
         BigDecimal grossProfit = costSummary.complete()
-                ? settlement.getContractAmount().subtract(totalCost) : null;
+                ? settlementRevenue.subtract(totalCost) : null;
         settlement.setEstimatedCost(costSummary.estimatedCost());
-        settlement.setActualCost(costSummary.actualCost());
+        settlement.setActualCost(costSummary.actualCost().add(manual.cost()));
+        settlement.setManualIncomeAmount(manual.income());
+        settlement.setManualCostAmount(manual.cost());
         settlement.setCostComplete(costSummary.complete());
         settlement.setCostIncompleteCount(costSummary.incompleteItemCount());
         settlement.setMaterialAmount(materialCost);
@@ -359,7 +380,7 @@ public class FinanceReportContext {
         settlement.setExpenseAmount(expenseAmount);
         settlement.setTotalCost(totalCost);
         settlement.setProfitAmount(grossProfit);
-        settlement.setGrossMargin(grossProfit == null ? null : rate(grossProfit, settlement.getContractAmount()));
+        settlement.setGrossMargin(grossProfit == null ? null : rate(grossProfit, settlementRevenue));
         if (settlement.getCreatedBy() == null) {
             settlement.setCreatedBy(operator);
         }

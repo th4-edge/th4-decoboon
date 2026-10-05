@@ -64,6 +64,9 @@ public class ProjectOverviewContext {
     private final ProjectCostContext costContext;
     private final BusinessAlertContext alertContext;
 
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private com.th4.edge.decoboon.finance.context.ManualLedgerContext manualLedgerContext;
+
     public ProjectOverviewContext(TenantContext tenantContext,
                                   ProjectRepository projectRepository,
                                   ProjectContractRepository contractRepository,
@@ -172,7 +175,8 @@ public class ProjectOverviewContext {
      */
     private void applyProfit(Project project, ProjectContract contract) {
         ProjectCostContext.CostSummary cost = costContext.summarize(project);
-        BigDecimal actualCost = value(cost.actualCost()).setScale(2, RoundingMode.HALF_UP);
+        com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = manualAmounts(project);
+        BigDecimal actualCost = value(cost.actualCost()).add(manual.cost()).setScale(2, RoundingMode.HALF_UP);
         project.setActualCost(actualCost);
         project.setCostComplete(cost.complete());
         if (!cost.complete()) {
@@ -180,10 +184,17 @@ public class ProjectOverviewContext {
             project.setGrossMargin(null);
             return;
         }
-        BigDecimal revenue = contract == null ? value(project.getContractAmount()) : contractAmount(project, contract);
+        BigDecimal revenue = (contract == null ? value(project.getContractAmount()) : contractAmount(project, contract))
+                .add(manual.income());
         BigDecimal profit = revenue.subtract(actualCost).setScale(2, RoundingMode.HALF_UP);
         project.setGrossProfit(profit);
         project.setGrossMargin(percentage(profit, revenue));
+    }
+
+    private com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manualAmounts(Project project) {
+        return manualLedgerContext == null
+                ? com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO
+                : manualLedgerContext.amounts(project);
     }
 
     // ---------------------------------------------------------------- 指标与计数

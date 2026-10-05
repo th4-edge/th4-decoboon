@@ -159,6 +159,16 @@ public class Settlement extends AuditModel {
     @Column(precision = 14, scale = 2, nullable = false)
     private BigDecimal expenseAmount = BigDecimal.ZERO;
 
+    @Note("手工关联项目的其他收入")
+    @Unit("元")
+    @Column(precision = 14, scale = 2, nullable = false)
+    private BigDecimal manualIncomeAmount = BigDecimal.ZERO;
+
+    @Note("手工项目零星成本")
+    @Unit("元")
+    @Column(precision = 14, scale = 2, nullable = false)
+    private BigDecimal manualCostAmount = BigDecimal.ZERO;
+
     @Note("项目总成本")
     @Unit("元")
     @Column(precision = 14, scale = 2, nullable = false)
@@ -263,6 +273,10 @@ public class Settlement extends AuditModel {
     public void setExpenseAmount(BigDecimal expenseAmount) { this.expenseAmount = expenseAmount; }
     public BigDecimal getTotalCost() { return totalCost; }
     public void setTotalCost(BigDecimal totalCost) { this.totalCost = totalCost; }
+    public BigDecimal getManualIncomeAmount() { return manualIncomeAmount; }
+    public void setManualIncomeAmount(BigDecimal manualIncomeAmount) { this.manualIncomeAmount = manualIncomeAmount; }
+    public BigDecimal getManualCostAmount() { return manualCostAmount; }
+    public void setManualCostAmount(BigDecimal manualCostAmount) { this.manualCostAmount = manualCostAmount; }
     public BigDecimal getProfitAmount() { return profitAmount; }
     public void setProfitAmount(BigDecimal profitAmount) { this.profitAmount = profitAmount; }
     public BigDecimal getGrossMargin() { return grossMargin; }

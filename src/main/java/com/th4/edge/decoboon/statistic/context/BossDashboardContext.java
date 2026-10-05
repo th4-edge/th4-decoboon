@@ -41,6 +41,9 @@ public class BossDashboardContext {
     private final BusinessTargetRepository targetRepository;
     private final ProjectCostContext projectCostContext;
 
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private com.th4.edge.decoboon.finance.context.ManualLedgerContext manualLedgerContext;
+
     public BossDashboardContext(TenantContext tenantContext,
                                 ProjectRepository projectRepository,
                                 ProjectContractRepository contractRepository,
@@ -160,12 +163,13 @@ public class BossDashboardContext {
             BigDecimal payableCost = project == null ? BigDecimal.ZERO
                     : costByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
             ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-            BigDecimal cost = costSummary.actualCost().max(payableCost);
+            com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = manualAmounts(project);
+            BigDecimal cost = costSummary.actualCost().max(payableCost).add(manual.cost());
             if (!costSummary.complete()) {
                 incomplete++;
                 continue;
             }
-            profit = profit.add(contractRevenue(contract).subtract(cost));
+            profit = profit.add(contractRevenue(contract).add(manual.income()).subtract(cost));
         }
         if (incomplete > 0) {
             return new ProfitResult(null, false, incomplete + " 个项目的成本未完整，暂不展示可靠毛利");
@@ -174,6 +178,12 @@ public class BossDashboardContext {
     }
 
     private record ProfitResult(BigDecimal value, boolean complete, String warning) {}
+
+    private com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manualAmounts(Project project) {
+        return manualLedgerContext == null
+                ? com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO
+                : manualLedgerContext.amounts(project);
+    }
 
     private BigDecimal activeProjectCount(List<Project> projects, List<ProjectContract> contracts, LocalDate month) {
         LocalDate end = YearMonth.from(month).atEndOfMonth();

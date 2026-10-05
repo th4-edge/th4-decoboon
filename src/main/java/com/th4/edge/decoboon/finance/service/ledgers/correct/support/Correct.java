@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
+import com.th4.edge.decoboon.finance.configure.LedgerManualPurpose;
 import com.th4.edge.decoboon.finance.configure.LedgerRevisionType;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.context.LedgerCategoryContext;
+import com.th4.edge.decoboon.finance.context.ManualLedgerContext;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.LedgerCategory;
 import com.th4.edge.decoboon.finance.model.LedgerRevision;
@@ -41,7 +43,7 @@ import java.util.UUID;
 @Note("手工流水冲正重记")
 @Properties(allow = {
         @AllowProperties(model = Ledger.class,
-                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "purpose", "source", "amount", "account",
                         "occurredAt", "counterparty", "summary", "remark", "originalLedger", "correctionGroupId", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status"}),
@@ -63,9 +65,15 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
     @AutoInject
     @NotNull
     private LedgerDirection direction;
+    /** 兼容旧版 App 的分类节点；新版本不再传。 */
     @AutoInject
-    @NotNull
     private Long categoryId;
+    @AutoInject
+    private LedgerManualPurpose purpose;
+    @AutoInject
+    @NotEmpty
+    @Length(max = 128)
+    private String category;
     @AutoInject
     @NotNull
     private BigDecimal amount;
@@ -93,15 +101,17 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
     private final LedgerRepository ledgerRepository;
     private final LedgerRevisionRepository revisionRepository;
     private final LedgerCategoryContext categoryContext;
+    private final ManualLedgerContext manualContext;
     private final FinanceAccessContext accessContext;
     private final ObjectMapper objectMapper;
 
     public Correct(LedgerRepository ledgerRepository, LedgerRevisionRepository revisionRepository,
-                   LedgerCategoryContext categoryContext, FinanceAccessContext accessContext,
-                   ObjectMapper objectMapper) {
+                   LedgerCategoryContext categoryContext, ManualLedgerContext manualContext,
+                   FinanceAccessContext accessContext, ObjectMapper objectMapper) {
         this.ledgerRepository = ledgerRepository;
         this.revisionRepository = revisionRepository;
         this.categoryContext = categoryContext;
+        this.manualContext = manualContext;
         this.accessContext = accessContext;
         this.objectMapper = objectMapper;
     }
@@ -117,12 +127,22 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
         }
         Project project = projectId == null ? original.getProject()
                 : projectId == 0L ? null : accessContext.resolveProject(current, projectId);
-        LedgerCategory originalCategoryNode = original.getCategoryNode();
-        LedgerCategory categoryNode = originalCategoryNode != null && categoryId != null
-                && categoryId.equals(originalCategoryNode.getCategoryId())
-                ? originalCategoryNode
-                : categoryContext.select(current, categoryId, direction);
-        String normalizedCategory = categoryNode.getName();
+        if (category == null || category.isBlank()) {
+            throw new DefinedException(new DefaultErrorCode("400", "请填写分类说明"));
+        }
+        LedgerManualPurpose effectivePurpose = manualContext.purposeOrDefault(purpose);
+        manualContext.validatePurpose(effectivePurpose, project);
+        manualContext.validateAllowed(direction, category, summary);
+        String normalizedCategory = category.trim();
+        LedgerCategory categoryNode = null;
+        if (categoryId != null && categoryId != 0L) {
+            // 兼容旧版 App：仍接受分类节点关联。
+            LedgerCategory originalCategoryNode = original.getCategoryNode();
+            categoryNode = originalCategoryNode != null && categoryId.equals(originalCategoryNode.getCategoryId())
+                    ? originalCategoryNode
+                    : categoryContext.select(current, categoryId, direction);
+            if (normalizedCategory.isBlank()) normalizedCategory = categoryNode.getName();
+        }
 
         String groupId = UUID.randomUUID().toString();
         Ledger reversal = new Ledger();
@@ -134,6 +154,7 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
         reversal.setDirection(opposite(original.getDirection()));
         reversal.setCategory(original.getCategory());
         reversal.setCategoryNode(original.getCategoryNode());
+        reversal.setPurpose(original.getPurpose());
         reversal.setSource(LedgerSource.Adjustment);
         reversal.setAmount(accessContext.value(original.getAmount()));
         reversal.setAccount(original.getAccount());
@@ -152,6 +173,7 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
         replacement.setDirection(direction);
         replacement.setCategory(normalizedCategory);
         replacement.setCategoryNode(categoryNode);
+        replacement.setPurpose(effectivePurpose);
         replacement.setSource(LedgerSource.Manual);
         replacement.setAmount(total);
         replacement.setAccount(account == null ? original.getAccount() : account);
@@ -174,6 +196,7 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
         after.put("direction", replacement.getDirection());
         after.put("categoryId", replacement.getCategoryNode() == null ? null : replacement.getCategoryNode().getCategoryId());
         after.put("category", replacement.getCategory());
+        after.put("purpose", replacement.getPurpose());
         after.put("amount", replacement.getAmount());
         after.put("account", replacement.getAccount());
         after.put("occurredAt", replacement.getOccurredAt());
@@ -220,6 +243,7 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
         value.put("direction", ledger.getDirection());
         value.put("categoryId", ledger.getCategoryNode() == null ? null : ledger.getCategoryNode().getCategoryId());
         value.put("category", ledger.getCategory());
+        value.put("purpose", ledger.getPurpose());
         value.put("source", ledger.getSource());
         value.put("amount", ledger.getAmount());
         value.put("account", ledger.getAccount());

@@ -35,7 +35,7 @@ import java.util.Map;
 @Note("作废手工流水")
 @Properties(allow = {
         @AllowProperties(model = Ledger.class,
-                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "amount", "account",
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "purpose", "source", "amount", "account",
                         "occurredAt", "counterparty", "summary", "remark", "voided", "voidedBy", "voidedAt", "voidReason",
                         "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,

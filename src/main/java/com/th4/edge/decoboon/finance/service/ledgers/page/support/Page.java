@@ -27,7 +27,7 @@ import java.util.List;
 @Note("资金流水分页")
 @Properties(allow = {
         @AllowProperties(model = Ledger.class,
-                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "source", "sourceId", "amount",
+                properties = {"ledgerId", "project", "direction", "category", "categoryNode", "purpose", "source", "sourceId", "amount",
                         "account", "occurredAt", "counterparty", "summary", "remark", "originalLedger",
                         "correctionGroupId", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
