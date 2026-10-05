@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.context.QuoteAdjustmentContext;
 import com.th4.edge.decoboon.quote.context.QuoteCalcContext;
 import com.th4.edge.decoboon.quote.context.QuoteFormulaContext;
+import com.th4.edge.decoboon.quote.context.QuoteRevisionContext;
 import com.th4.edge.decoboon.quote.context.QuoteViewContext;
 import com.th4.edge.decoboon.quote.context.QuoteWorkbookContext;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -39,7 +40,8 @@ class QuoteWorkbookContextTest {
     private final QuoteAdjustmentContext adjustmentContext = mock(QuoteAdjustmentContext.class);
     private final QuoteViewContext viewContext = mock(QuoteViewContext.class);
     private final QuoteWorkbookContext context = new QuoteWorkbookContext(
-            lineRepository, calcContext, formulaContext, adjustmentContext, viewContext);
+            lineRepository, calcContext, formulaContext, adjustmentContext, viewContext,
+            new QuoteRevisionContext());
 
     // ───────────────── ECD-014 核心复现：只改价格不得覆盖工程量 ─────────────────
 

@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
                         "area", "subtotal", "amount", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
                         "submittedAt", "rejectedAt", "acceptedAt", "convertedAt", "items", "regionGroups", "constructionGroups",
-                        "materialGroups", "otherGroups", "createTime", "updateTime", "property"}),
+                        "materialGroups", "otherGroups", "createTime", "updateTime", "property", "revision"}),
         @AllowProperties(model = QuoteLine.class,
                 properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
                         "materialPrice", "manualPrice", "fixedTotalPrice", "pricingMode", "price", "amount", "formula",
@@ -69,6 +69,10 @@ public class BatchSave implements com.th4.edge.decoboon.quote.service.lines.batc
     @AutoInject
     @NotNull
     private Long quoteId;
+
+    /** 客户端读取时拿到的内容修订令牌；为空表示不做冲突校验（兼容旧客户端）。 */
+    @AutoInject
+    private String revisionToken;
 
     @ModelSaveInject
     private Quote request;
@@ -104,7 +108,7 @@ public class BatchSave implements com.th4.edge.decoboon.quote.service.lines.batc
         if (quote.getCreatedBy() == null || !quote.getCreatedBy().getEmpId().equals(current.getEmpId())) {
             throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
         }
-        Quote updated = workbookContext.update(quote, request);
+        Quote updated = workbookContext.update(quote, request, revisionToken);
         return viewContext.apply(updated, updated.getItems());
     }
 }

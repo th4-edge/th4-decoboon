@@ -196,6 +196,10 @@ public class Quote extends AuditModel {
     @Note("转项目时间")
     private LocalDateTime convertedAt;
 
+    @Note("内容修订令牌（不持久化，用于并发冲突检测）")
+    @Transient
+    private String revision;
+
     @Note("报价明细")
     @Transient
     private List<QuoteLine> items;
@@ -285,4 +289,7 @@ public Long getQuoteId() { return quoteId; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }
+
+    public String getRevision() { return revision; }
+    public void setRevision(String revision) { this.revision = revision; }
 }

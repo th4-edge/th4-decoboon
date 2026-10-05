@@ -32,21 +32,37 @@ public class QuoteWorkbookContext {
     private final QuoteFormulaContext formulaContext;
     private final QuoteAdjustmentContext adjustmentContext;
     private final QuoteViewContext viewContext;
+    private final QuoteRevisionContext revisionContext;
 
     public QuoteWorkbookContext(QuoteLineRepository lineRepository,
                                 QuoteCalcContext quoteCalcContext,
                                 QuoteFormulaContext formulaContext,
                                 QuoteAdjustmentContext adjustmentContext,
-                                QuoteViewContext viewContext) {
+                                QuoteViewContext viewContext,
+                                QuoteRevisionContext revisionContext) {
         this.lineRepository = lineRepository;
         this.quoteCalcContext = quoteCalcContext;
         this.formulaContext = formulaContext;
         this.adjustmentContext = adjustmentContext;
         this.viewContext = viewContext;
+        this.revisionContext = revisionContext;
     }
 
     @Transactional
     public Quote update(Quote quote, Quote request) {
+        return update(quote, request, null);
+    }
+
+    /**
+     * 带并发基准的批量更新。
+     *
+     * `baselineToken` 为客户端读取时拿到的内容修订令牌：
+     * - 为 null（App 或旧客户端）→ 跳过冲突校验，保持既有行为；
+     * - 与当前内容指纹不一致 → **409，不落库、不重算、不覆盖**；
+     * - 一致 → 正常执行，响应回传新的修订令牌。
+     */
+    @Transactional
+    public Quote update(Quote quote, Quote request, String baselineToken) {
         requireDraft(quote);
         List<QuoteLine> lines = lineRepository.findByQuote(quote);
         if (lines.isEmpty()) {
@@ -70,6 +86,13 @@ public class QuoteWorkbookContext {
                 formulas.put(change.getItemId(), change.getQuantityFormula().trim());
             }
         }
+        // ── 并发冲突校验：必须在任何写入之前 ──
+        if (baselineToken != null && !baselineToken.isBlank()
+                && !baselineToken.equals(revisionContext.token(quote, lines))) {
+            throw new DefinedException(new DefaultErrorCode("409",
+                    "报价已被他人修改，请重新读取后再保存"));
+        }
+
         Map<Long, BigDecimal> formulaResults = formulaContext.evaluate(lines, formulas);
 
         // ── 校验阶段：任何一条不合法都不得落库（先全量校验，再统一应用）──
@@ -120,7 +143,10 @@ public class QuoteWorkbookContext {
             lineRepository.save(target);
         }
         adjustmentContext.recalculate(quote);
-        return viewContext.apply(quote, lineRepository.findByQuote(quote));
+        List<QuoteLine> saved = lineRepository.findByQuote(quote);
+        Quote view = viewContext.apply(quote, saved);
+        view.setRevision(revisionContext.token(quote, saved));
+        return view;
     }
 
     private void recalculateLine(QuoteLine line, BigDecimal unitCost) {
