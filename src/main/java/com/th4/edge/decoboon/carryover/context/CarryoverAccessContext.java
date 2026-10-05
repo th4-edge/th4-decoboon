@@ -60,6 +60,19 @@ public class CarryoverAccessContext {
         return item;
     }
 
+    /** 财务口径可编辑：Boss / Finance，且承接项目仍处于可编辑状态。 */
+    public CarryoverProject requireFinanceEditableItem(Employee principal, Long itemId) {
+        Employee current = tenantContext.requireEmployee(principal);
+        CarryoverProject item = requireItem(current, itemId);
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或财务可以维护剩余收付款计划"));
+        }
+        if (!item.getStatus().editable()) {
+            throw new DefinedException(new DefaultErrorCode("400", "当前承接项目已不能直接编辑"));
+        }
+        return item;
+    }
+
     public Specification<CarryoverProject> visible(Employee current) {
         if (current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance) {
             Long comId = current.getCompany().getComId();

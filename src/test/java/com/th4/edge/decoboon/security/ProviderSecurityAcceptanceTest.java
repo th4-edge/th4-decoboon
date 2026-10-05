@@ -130,9 +130,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-05 设计分项原子批量保存新增 1 条（design/items/save）。
         // 2026-10-06 手工流水作废新增 1 条（finance/ledger/delete）。
         // 2026-10-06 期初资金余额新增 2 条（finance/opening-balance/save、finance/opening-balance/page）。
-        // => 总数为 371（public 13 + protected 358）。
-        assertThat(routes).hasSize(371);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(358);
+        // 2026-10-06 剩余收付款计划新增 2 条（carryover/payment-plan/save、carryover/payment-plan/report）。
+        // => 总数为 373（public 13 + protected 360）。
+        assertThat(routes).hasSize(373);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(360);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
@@ -152,6 +153,8 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("finance/ledger/delete");
         assertUnauthorized("finance/opening-balance/save");
         assertUnauthorized("finance/opening-balance/page");
+        assertUnauthorized("carryover/payment-plan/save");
+        assertUnauthorized("carryover/payment-plan/report");
         assertUnauthorized("document/voucher/report");
         assertUnauthorized("statistic/organization/report");
         assertUnauthorized("statistic/boss/business/report");
