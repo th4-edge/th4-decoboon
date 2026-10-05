@@ -75,9 +75,8 @@ class DesignItemBatchSaveTest {
 
         ReflectionTestUtils.setField(batchSave, "designId", 100L);
         ReflectionTestUtils.setField(batchSave, "employee", designer);
+        ReflectionTestUtils.setField(batchSave, "items", List.of(row(space, first, "2"), row(space, second, "3")));
         Design request = new Design();
-        request.setItems(List.of(row(space, first, "2"), row(space, second, "3")));
-        ReflectionTestUtils.setField(batchSave, "request", request);
 
         Design result = batchSave.call(request);
 
@@ -103,8 +102,7 @@ class DesignItemBatchSaveTest {
         ReflectionTestUtils.setField(batchSave, "designId", 100L);
         ReflectionTestUtils.setField(batchSave, "employee", designer);
         Design request = new Design();
-        request.setItems(List.of(row(space, valid, "2"), row(space, foreign, "3")));
-        ReflectionTestUtils.setField(batchSave, "request", request);
+        ReflectionTestUtils.setField(batchSave, "items", List.of(row(space, valid, "2"), row(space, foreign, "3")));
 
         assertThatThrownBy(() -> batchSave.call(request))
                 .isInstanceOf(DefinedException.class)
@@ -134,7 +132,6 @@ class DesignItemBatchSaveTest {
         ReflectionTestUtils.setField(batchSave, "designId", 100L);
         ReflectionTestUtils.setField(batchSave, "employee", designer);
         ReflectionTestUtils.setField(batchSave, "deletedItemIds", List.of(555L));
-        ReflectionTestUtils.setField(batchSave, "request", new Design());
 
         assertThatThrownBy(() -> batchSave.call(new Design()))
                 .isInstanceOf(DefinedException.class)

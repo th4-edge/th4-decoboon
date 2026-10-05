@@ -15,7 +15,6 @@ import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
-import com.th4.edge.framework.data.jpa.inject.annotation.ModelSaveInject;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
@@ -68,8 +67,8 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
     @AutoInject
     private List<Long> deletedItemIds;
 
-    @ModelSaveInject
-    private Design request;
+    @AutoInject
+    private List<DesignItem> items;
 
     @User
     private Employee employee;
@@ -147,8 +146,7 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
 
     private List<PreparedRow> prepareRows(Design design) {
         List<PreparedRow> prepared = new ArrayList<>();
-        List<DesignItem> incoming = request == null || request.getItems() == null
-                ? List.of() : request.getItems();
+        List<DesignItem> incoming = items == null ? List.of() : items;
         for (DesignItem row : incoming) {
             DesignItem target = row.getItemId() == null ? new DesignItem() : requireOwnedItem(row.getItemId());
             if (target.getItemId() != null) {
