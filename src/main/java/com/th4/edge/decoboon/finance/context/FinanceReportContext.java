@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -54,6 +55,7 @@ public class FinanceReportContext {
     private final ProjectCostContext projectCostContext;
     private final CarryoverCostContext carryoverCostContext;
     private final ManualLedgerContext manualLedgerContext;
+    private final OpeningBalanceContext openingBalanceContext;
 
     public FinanceReportContext(FinanceAccessContext accessContext,
                                 ProjectRepository projectRepository,
@@ -64,7 +66,7 @@ public class FinanceReportContext {
                                 ProjectCostContext projectCostContext) {
         this(accessContext, projectRepository, receivableRepository, payableRepository, ledgerRepository,
                 null, null, settlementRepository, projectCostContext, null,
-                new ManualLedgerContext(ledgerRepository));
+                new ManualLedgerContext(ledgerRepository), null);
     }
 
     @Autowired
@@ -78,7 +80,8 @@ public class FinanceReportContext {
                                 SettlementRepository settlementRepository,
                                 ProjectCostContext projectCostContext,
                                 CarryoverCostContext carryoverCostContext,
-                                ManualLedgerContext manualLedgerContext) {
+                                ManualLedgerContext manualLedgerContext,
+                                OpeningBalanceContext openingBalanceContext) {
         this.accessContext = accessContext;
         this.projectRepository = projectRepository;
         this.receivableRepository = receivableRepository;
@@ -90,6 +93,7 @@ public class FinanceReportContext {
         this.projectCostContext = projectCostContext;
         this.carryoverCostContext = carryoverCostContext;
         this.manualLedgerContext = manualLedgerContext;
+        this.openingBalanceContext = openingBalanceContext;
     }
 
     public FinanceSummary summary(Employee principal) {
@@ -158,10 +162,18 @@ public class FinanceReportContext {
                 .filter(item -> item.getStatus() == PayableStatus.Overdue || Boolean.TRUE.equals(item.getUrgent()))
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        summary.setCashBalance(ledgers.stream()
+        BigDecimal openingBalance = openingBalanceContext == null
+                ? BigDecimal.ZERO : openingBalanceContext.totalAtLatest(current.getCompany().getComId());
+        LocalDate openingDate = openingBalanceContext == null
+                ? null : openingBalanceContext.latestAsOfDate(current.getCompany().getComId());
+        BigDecimal ledgerNet = ledgers.stream()
+                .filter(item -> openingDate == null
+                        || (item.getOccurredAt() != null && !item.getOccurredAt().isBefore(openingDate)))
                 .map(item -> item.getDirection() == LedgerDirection.Income
                         ? accessContext.value(item.getAmount()) : accessContext.value(item.getAmount()).negate())
-                .reduce(BigDecimal.ZERO, BigDecimal::add));
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        summary.setOpeningBalanceAmount(openingBalance);
+        summary.setCashBalance(openingBalance.add(ledgerNet));
         // 汇总与项目行、结算快照统一使用 ProjectCostContext + 同一 totalCost 公式，
         // 避免"汇总成本未完整、项目行却有利润"的口径冲突。
         Map<Long, BigDecimal> payableCostByProject = new HashMap<>();

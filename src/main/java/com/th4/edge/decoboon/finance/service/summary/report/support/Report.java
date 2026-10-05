@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
                         "outstandingAmount", "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount",
                         "materialPayableAmount", "salaryPayableAmount", "projectPayableAmount", "otherPayableAmount",
                         "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
-                        "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "cashBalance", "estimatedCost", "actualCost",
+                        "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "cashBalance", "openingBalanceAmount", "estimatedCost", "actualCost",
                         "manualIncomeAmount", "manualCostAmount",
                         "costComplete", "costIncompleteProjectCount", "costIncompleteItemCount",
                         "profitAmount", "grossMargin", "collectionRate",

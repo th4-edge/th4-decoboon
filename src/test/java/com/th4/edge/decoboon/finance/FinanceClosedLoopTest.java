@@ -130,6 +130,10 @@ class FinanceClosedLoopTest {
     @Autowired
     private com.th4.edge.decoboon.finance.service.summary.report.Report summaryReport;
     @Autowired
+    private com.th4.edge.decoboon.finance.service.openingbalances.save.Save openingBalanceSave;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.openingbalances.page.Page openingBalancePage;
+    @Autowired
     private com.th4.edge.decoboon.finance.service.ledgers.report.Report ledgerReport;
     @Autowired
     private com.th4.edge.decoboon.finance.service.projects.report.Report financeProjectReport;
@@ -657,6 +661,87 @@ class FinanceClosedLoopTest {
         assertThatThrownBy(() -> delete.call(new Ledger()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
                 .hasMessageContaining("已冲正重记，不能作废");
+    }
+
+    @Test
+    void shouldSaveOpeningBalancesAndKeepThemOutOfIncome() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+
+        com.th4.edge.decoboon.finance.service.openingbalances.save.support.Save save =
+                AopTestUtils.getTargetObject(openingBalanceSave);
+        set(save, "employee", boss);
+        set(save, "account", FundAccount.CompanyBank);
+        set(save, "amount", new BigDecimal("1000.00"));
+        set(save, "asOfDate", LocalDate.now());
+        set(save, "remark", "接管日对公余额");
+        com.th4.edge.decoboon.finance.model.OpeningBalance bank = save.call(
+                new com.th4.edge.decoboon.finance.model.OpeningBalance());
+
+        set(save, "account", FundAccount.Cash);
+        set(save, "amount", new BigDecimal("200.00"));
+        set(save, "remark", "接管日现金");
+        com.th4.edge.decoboon.finance.model.OpeningBalance cash = save.call(
+                new com.th4.edge.decoboon.finance.model.OpeningBalance());
+        assertThat(cash.getOpeningId()).isNotEqualTo(bank.getOpeningId());
+
+        // 同一企业 + 同一账户 + 同一接管日重复保存为更正余额。
+        set(save, "account", FundAccount.CompanyBank);
+        set(save, "amount", new BigDecimal("1200.00"));
+        set(save, "remark", "接管日对公余额更正");
+        com.th4.edge.decoboon.finance.model.OpeningBalance updated = save.call(
+                new com.th4.edge.decoboon.finance.model.OpeningBalance());
+        assertThat(updated.getOpeningId()).isEqualTo(bank.getOpeningId());
+        assertThat(updated.getAmount()).isEqualByComparingTo("1200.00");
+
+        com.th4.edge.decoboon.finance.service.openingbalances.page.support.Page page =
+                AopTestUtils.getTargetObject(openingBalancePage);
+        set(page, "employee", boss);
+        set(page, "current", 1);
+        set(page, "size", 20);
+        assertThat(page.call(new com.th4.edge.decoboon.finance.model.OpeningBalance()).getContent())
+                .hasSize(2);
+
+        // 接管后发生一笔手续费支出：期初余额不进收入，现金流 = 期初 + 接管后净流量。
+        com.th4.edge.decoboon.finance.service.ledgers.save.support.Save ledgerSave =
+                AopTestUtils.getTargetObject(this.ledgerSave);
+        set(ledgerSave, "employee", boss);
+        set(ledgerSave, "projectId", null);
+        set(ledgerSave, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(ledgerSave, "purpose", com.th4.edge.decoboon.finance.configure.LedgerManualPurpose.CompanyExpense);
+        set(ledgerSave, "category", "银行手续费");
+        set(ledgerSave, "amount", new BigDecimal("100.00"));
+        set(ledgerSave, "account", FundAccount.CompanyBank);
+        set(ledgerSave, "occurredAt", LocalDate.now());
+        set(ledgerSave, "counterparty", "银行");
+        set(ledgerSave, "summary", "银行手续费");
+        set(ledgerSave, "remark", null);
+        ledgerSave.call(new Ledger());
+        entityManager.flush();
+
+        com.th4.edge.decoboon.finance.service.summary.report.support.Report summary =
+                AopTestUtils.getTargetObject(summaryReport);
+        set(summary, "employee", boss);
+        com.th4.edge.decoboon.finance.model.FinanceSummary result = summary.call(new Project());
+        assertThat(result.getOpeningBalanceAmount()).isEqualByComparingTo("1400.00");
+        assertThat(result.getCashBalance()).isEqualByComparingTo("1300.00");
+        assertThat(result.getMonthIncome()).isEqualByComparingTo("0.00");
+        assertThat(result.getMonthExpense()).isEqualByComparingTo("100.00");
+
+        // 设计师不可维护期初资金余额。
+        Employee designer = new Employee();
+        designer.setCompany(boss.getCompany());
+        designer.setStore(boss.getStore());
+        designer.setRole(EmployeeRole.Designer);
+        designer.setStatus(EmployeeStatus.Active);
+        designer.setName("设计师期初测试");
+        designer.setTelNo("16" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L)));
+        designer.setJoinedAt(LocalDateTime.now());
+        designer = employeeRepository.save(designer);
+        set(save, "employee", designer);
+        assertThatThrownBy(() -> save.call(new com.th4.edge.decoboon.finance.model.OpeningBalance()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("无权");
     }
 
     @Test

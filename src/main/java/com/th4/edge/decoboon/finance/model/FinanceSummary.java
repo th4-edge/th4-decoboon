@@ -34,6 +34,7 @@ public class FinanceSummary {
     private BigDecimal monthPaymentAmount = BigDecimal.ZERO;
     private BigDecimal urgentPayableAmount = BigDecimal.ZERO;
     private BigDecimal cashBalance = BigDecimal.ZERO;
+    private BigDecimal openingBalanceAmount = BigDecimal.ZERO;
     private BigDecimal estimatedCost = BigDecimal.ZERO;
     private BigDecimal actualCost = BigDecimal.ZERO;
     /** 手工记账中关联项目的其他收入，已计入项目收入口径。 */
@@ -101,6 +102,8 @@ public class FinanceSummary {
     public void setUrgentPayableAmount(BigDecimal urgentPayableAmount) { this.urgentPayableAmount = urgentPayableAmount; }
     public BigDecimal getCashBalance() { return cashBalance; }
     public void setCashBalance(BigDecimal cashBalance) { this.cashBalance = cashBalance; }
+    public BigDecimal getOpeningBalanceAmount() { return openingBalanceAmount; }
+    public void setOpeningBalanceAmount(BigDecimal openingBalanceAmount) { this.openingBalanceAmount = openingBalanceAmount; }
     public BigDecimal getProfitAmount() { return profitAmount; }
     public void setProfitAmount(BigDecimal profitAmount) { this.profitAmount = profitAmount; }
     public BigDecimal getGrossMargin() { return grossMargin; }
