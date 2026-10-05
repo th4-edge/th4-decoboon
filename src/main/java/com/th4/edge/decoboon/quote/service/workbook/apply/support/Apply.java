@@ -157,10 +157,33 @@ public class Apply implements com.th4.edge.decoboon.quote.service.workbook.apply
                     "区域不匹配，已阻止导入：" + String.join("；", regionErrors)));
         }
 
+        String normalizedMode = mode == null ? "MERGE" : mode.trim().toUpperCase();
+        if (!"MERGE".equals(normalizedMode) && !"OVERWRITE".equals(normalizedMode)) {
+            throw new DefinedException(new DefaultErrorCode("400", "不支持的导入模式：" + mode));
+        }
+
+        // OVERWRITE：工作簿有效行成为当前草稿的**有效集合**；
+        // 工作簿未出现的原行不物理删除，改为 included=false 逻辑排除（保留审计数据）。
+        // MERGE：只更新工作簿出现的 itemId，未出现的原行不动。
+        if ("OVERWRITE".equals(normalizedMode)) {
+            java.util.Set<Long> imported = parsed.getRows().stream()
+                    .map(ImportResult.Row::getItemId)
+                    .filter(java.util.Objects::nonNull)
+                    .collect(Collectors.toSet());
+            for (QuoteLine line : lines) {
+                boolean keep = imported.contains(line.getItemId());
+                if (!Boolean.valueOf(keep).equals(line.getIncluded())) {
+                    line.setIncluded(keep);
+                    lineRepository.save(line);
+                }
+            }
+        }
+
         // 落库：以工作簿为准更新量价与公式（未提供的字段保留原值）
         for (ImportResult.Row row : parsed.getRows()) {
             QuoteLine target = lineById.get(row.getItemId());
             if (target == null) continue;
+            target.setIncluded(true);
             if (row.getQuantityFormula() != null && !row.getQuantityFormula().isBlank()) {
                 target.setQuantityFormula(row.getQuantityFormula().trim());
             }
