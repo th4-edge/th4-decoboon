@@ -106,9 +106,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 51,
+      "count": 56,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-10-05T17:30:13.886+08:00",
+      "lastSeen": "2026-10-05 17:30:13.886",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
         "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
@@ -131,7 +131,8 @@
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -213,7 +214,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 22,
+      "count": 23,
       "firstSeen": "2026-09-17 11:25:08.128",
       "lastSeen": "2026-10-05 04:48:45.371",
       "samples": [
@@ -233,7 +234,8 @@
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -272,7 +274,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 22,
+      "count": 23,
       "firstSeen": "2026-09-17 11:25:08.425",
       "lastSeen": "2026-10-05 04:48:45.420",
       "samples": [
@@ -292,7 +294,8 @@
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -303,7 +306,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 22,
+      "count": 23,
       "firstSeen": "2026-09-17 11:25:05.462",
       "lastSeen": "2026-10-05 04:48:45.017",
       "samples": [
@@ -323,7 +326,8 @@
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -334,7 +338,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 22,
+      "count": 23,
       "firstSeen": "2026-09-17 11:25:05.739",
       "lastSeen": "2026-10-05 04:48:45.060",
       "samples": [
@@ -354,7 +358,8 @@
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -365,7 +370,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 22,
+      "count": 23,
       "firstSeen": "2026-09-17 11:25:07.690",
       "lastSeen": "2026-10-05 04:48:45.326",
       "samples": [
@@ -385,7 +390,8 @@
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -396,9 +402,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 12,
+      "count": 13,
       "firstSeen": "2026-09-17 17:49:39.098",
-      "lastSeen": "2026-10-05T16:57:44.322+08:00",
+      "lastSeen": "2026-10-05 16:57:44.322",
       "samples": [
         "[2026-09-17 17:49:39.098] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
         "15131:2026-09-17T17:49:39.098+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
@@ -413,7 +419,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-10-03/20261003-032939",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -468,9 +475,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 35,
+      "count": 36,
       "firstSeen": "2026-09-17T23:54:36.942+08:00",
-      "lastSeen": "2026-10-05T18:08:30.801+08:00",
+      "lastSeen": "2026-10-05 18:08:30.801",
       "samples": [
         "16438:2026-09-17T23:54:36.942+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
         "[2026-09-20 02:26:19.563] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
@@ -490,7 +497,8 @@
         "2026-09-24/20260924-043234",
         "2026-09-26/20260926-022226",
         "2026-10-03/20261003-032939",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -579,9 +587,9 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 89,
+      "count": 96,
       "firstSeen": "2026-09-18 13:05:07.158",
-      "lastSeen": "2026-09-27 05:23:29.798",
+      "lastSeen": "2026-10-05 18:45:07.180",
       "samples": [
         "[2026-09-18 13:05:07.158] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ",
         "[2026-09-18 13:05:30.183] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ",
@@ -598,7 +606,8 @@
         "2026-09-24/20260924-120834",
         "2026-09-24/20260924-122445",
         "2026-09-27/20260927-160708",
-        "2026-09-27/20260927-161931"
+        "2026-09-27/20260927-161931",
+        "2026-10-05/20261005-190730"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -857,9 +866,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 8,
+      "count": 9,
       "firstSeen": "2026-09-20 00:01:40.691",
-      "lastSeen": "2026-10-05T16:32:25.515+08:00",
+      "lastSeen": "2026-10-05 16:32:25.515",
       "samples": [
         "[2026-09-20 00:01:40.691] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/version处理失败:找不到对应的处理服务:v1/version",
         "5882:2026-09-20T00:01:40.691+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/version处理失败:找不到对应的处理服务:v1/version",
@@ -873,7 +882,8 @@
         "2026-09-20/20260920-142653",
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1196,9 +1206,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 11,
+      "count": 12,
       "firstSeen": "2026-09-22 06:26:40.863",
-      "lastSeen": "2026-10-05T15:52:03.199+08:00",
+      "lastSeen": "2026-10-05 15:52:03.199",
       "samples": [
         "[2026-09-22 06:26:40.863] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .git/config处理失败:找不到对应的处理服务:.git/config",
         "5282:2026-09-22T06:26:40.863+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config",
@@ -1211,7 +1221,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-26/20260926-022226",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1699,16 +1710,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 01:40:38.765",
       "lastSeen": "2026-10-05 01:40:38.765",
       "samples": [
+        "[2026-10-05 01:40:38.765] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config.js处理失败:找不到对应的处理服务:config.js",
         "[2026-10-05 01:40:38.765] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config.js处理失败:找不到对应的处理服务:config.js",
         "[2026-10-05 01:40:38.765] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - config.js处理失败:找不到对应的处理服务:config.js"
       ],
       "reportPaths": [
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1719,18 +1732,20 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 4,
+      "count": 6,
       "firstSeen": "2026-10-05 01:41:03.560",
-      "lastSeen": "2026-10-05T16:29:27.618+08:00",
+      "lastSeen": "2026-10-05 16:29:27.618",
       "samples": [
         "[2026-10-05 01:41:03.560] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application",
         "[2026-10-05 01:41:03.560] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application",
         "[2026-10-05 16:29:27.618] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application",
-        "4167:2026-10-05T16:29:27.618+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application"
+        "4167:2026-10-05T16:29:27.618+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application",
+        "[2026-10-05 01:41:03.560] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - index.php/v1/config/application处理失败:找不到对应的处理服务:index.php/v1/config/application"
       ],
       "reportPaths": [
         "2026-10-05/20261005-050906",
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1741,9 +1756,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 6,
+      "count": 9,
       "firstSeen": "2026-10-05 17:44:26.379",
-      "lastSeen": "2026-10-05T17:44:59.569+08:00",
+      "lastSeen": "2026-10-05 17:44:59.569",
       "samples": [
         "[2026-10-05 17:44:26.379] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除",
         "[2026-10-05 17:44:57.069] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除",
@@ -1752,7 +1767,8 @@
         "6606:2026-10-05T17:44:57.069+08:00 ERROR 138035 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/delete处理失败:客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1763,15 +1779,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:31:12.712",
-      "lastSeen": "2026-10-05T16:31:12.712+08:00",
+      "lastSeen": "2026-10-05 16:31:12.712",
       "samples": [
         "[2026-10-05 16:31:12.712] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - backup处理失败:找不到对应的处理服务:backup",
-        "4623:2026-10-05T16:31:12.712+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : backup处理失败:找不到对应的处理服务:backup"
+        "4623:2026-10-05T16:31:12.712+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : backup处理失败:找不到对应的处理服务:backup",
+        "[2026-10-05 16:31:12.712] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - backup处理失败:找不到对应的处理服务:backup"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1782,15 +1800,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:31:14.686",
-      "lastSeen": "2026-10-05T16:31:14.686+08:00",
+      "lastSeen": "2026-10-05 16:31:14.686",
       "samples": [
         "[2026-10-05 16:31:14.686] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - chat/get-chat-session/1处理失败:找不到对应的处理服务:chat/get-chat-session/1",
-        "4709:2026-10-05T16:31:14.686+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : chat/get-chat-session/1处理失败:找不到对应的处理服务:chat/get-chat-session/1"
+        "4709:2026-10-05T16:31:14.686+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : chat/get-chat-session/1处理失败:找不到对应的处理服务:chat/get-chat-session/1",
+        "[2026-10-05 16:31:14.686] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - chat/get-chat-session/1处理失败:找不到对应的处理服务:chat/get-chat-session/1"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1801,15 +1821,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:32:26.509",
-      "lastSeen": "2026-10-05T16:32:26.509+08:00",
+      "lastSeen": "2026-10-05 16:32:26.509",
       "samples": [
         "[2026-10-05 16:32:26.509] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - modular-connector/login/slrdg处理失败:找不到对应的处理服务:modular-connector/login/slrdg",
-        "4881:2026-10-05T16:32:26.509+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : modular-connector/login/slrdg处理失败:找不到对应的处理服务:modular-connector/login/slrdg"
+        "4881:2026-10-05T16:32:26.509+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : modular-connector/login/slrdg处理失败:找不到对应的处理服务:modular-connector/login/slrdg",
+        "[2026-10-05 16:32:26.509] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - modular-connector/login/slrdg处理失败:找不到对应的处理服务:modular-connector/login/slrdg"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1820,15 +1842,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 06:17:26.827",
-      "lastSeen": "2026-10-05T06:17:26.827+08:00",
+      "lastSeen": "2026-10-05 06:17:26.827",
       "samples": [
         "[2026-10-05 06:17:26.827] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php",
-        "1331:2026-10-05T06:17:26.827+08:00 ERROR 138035 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php"
+        "1331:2026-10-05T06:17:26.827+08:00 ERROR 138035 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php",
+        "[2026-10-05 06:17:26.827] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1839,15 +1863,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:32:27.543",
-      "lastSeen": "2026-10-05T16:32:27.543+08:00",
+      "lastSeen": "2026-10-05 16:32:27.543",
       "samples": [
         "[2026-10-05 16:32:27.543] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - raster/search/处理失败:找不到对应的处理服务:raster/search/",
-        "4967:2026-10-05T16:32:27.543+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : raster/search/处理失败:找不到对应的处理服务:raster/search/"
+        "4967:2026-10-05T16:32:27.543+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : raster/search/处理失败:找不到对应的处理服务:raster/search/",
+        "[2026-10-05 16:32:27.543] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - raster/search/处理失败:找不到对应的处理服务:raster/search/"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1858,15 +1884,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:29:33.580",
-      "lastSeen": "2026-10-05T16:29:33.580+08:00",
+      "lastSeen": "2026-10-05 16:29:33.580",
       "samples": [
         "[2026-10-05 16:29:33.580] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/config/application处理失败:找不到对应的处理服务:v1/config/application",
-        "4425:2026-10-05T16:29:33.580+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/config/application处理失败:找不到对应的处理服务:v1/config/application"
+        "4425:2026-10-05T16:29:33.580+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/config/application处理失败:找不到对应的处理服务:v1/config/application",
+        "[2026-10-05 16:29:33.580] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/config/application处理失败:找不到对应的处理服务:v1/config/application"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1877,17 +1905,19 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 4,
+      "count": 6,
       "firstSeen": "2026-10-05 16:29:24.646",
-      "lastSeen": "2026-10-05T16:29:30.539+08:00",
+      "lastSeen": "2026-10-05 16:29:30.539",
       "samples": [
         "[2026-10-05 16:29:24.646] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init",
         "[2026-10-05 16:29:30.539] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init",
         "4081:2026-10-05T16:29:24.646+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init",
-        "4253:2026-10-05T16:29:30.539+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init"
+        "4253:2026-10-05T16:29:30.539+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init",
+        "[2026-10-05 16:29:24.646] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/fabric_device_auth/fortigate/init处理失败:找不到对应的处理服务:v1/fabric_device_auth/fortigate/init"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1898,17 +1928,19 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 4,
+      "count": 6,
       "firstSeen": "2026-10-05 16:29:24.581",
-      "lastSeen": "2026-10-05T16:29:30.553+08:00",
+      "lastSeen": "2026-10-05 16:29:30.553",
       "samples": [
         "[2026-10-05 16:29:24.581] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts",
         "[2026-10-05 16:29:30.553] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts",
         "3995:2026-10-05T16:29:24.581+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts",
-        "4339:2026-10-05T16:29:30.553+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts"
+        "4339:2026-10-05T16:29:30.553+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts",
+        "[2026-10-05 16:29:24.581] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/init_consts处理失败:找不到对应的处理服务:v1/init_consts"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1919,15 +1951,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:28:05.548",
-      "lastSeen": "2026-10-05T16:28:05.548+08:00",
+      "lastSeen": "2026-10-05 16:28:05.548",
       "samples": [
         "[2026-10-05 16:28:05.548] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages",
-        "3909:2026-10-05T16:28:05.548+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages"
+        "3909:2026-10-05T16:28:05.548+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages",
+        "[2026-10-05 16:28:05.548] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/monitor/messages处理失败:找不到对应的处理服务:v1/monitor/messages"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1938,15 +1972,17 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:31:11.561",
-      "lastSeen": "2026-10-05T16:31:11.561+08:00",
+      "lastSeen": "2026-10-05 16:31:11.561",
       "samples": [
         "[2026-10-05 16:31:11.561] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - setup-complete处理失败:找不到对应的实体处理服务[complete]",
-        "4537:2026-10-05T16:31:11.561+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : setup-complete处理失败:找不到对应的实体处理服务[complete]"
+        "4537:2026-10-05T16:31:11.561+08:00 ERROR 138035 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : setup-complete处理失败:找不到对应的实体处理服务[complete]",
+        "[2026-10-05 16:31:11.561] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - setup-complete处理失败:找不到对应的实体处理服务[complete]"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1957,17 +1993,19 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 4,
+      "count": 6,
       "firstSeen": "2026-10-05 16:40:44.368",
-      "lastSeen": "2026-10-05T17:29:06.111+08:00",
+      "lastSeen": "2026-10-05 17:29:06.111",
       "samples": [
         "[2026-10-05 16:40:44.368] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - quote/save处理失败:设计方案尚未完成，不能生成客户报价",
         "[2026-10-05 17:29:06.111] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - quote/save处理失败:设计方案尚未完成，不能生成客户报价",
         "5187:2026-10-05T16:40:44.368+08:00 ERROR 138035 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : quote/save处理失败:设计方案尚未完成，不能生成客户报价",
-        "5594:2026-10-05T17:29:06.111+08:00 ERROR 138035 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : quote/save处理失败:设计方案尚未完成，不能生成客户报价"
+        "5594:2026-10-05T17:29:06.111+08:00 ERROR 138035 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : quote/save处理失败:设计方案尚未完成，不能生成客户报价",
+        "[2026-10-05 16:40:44.368] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - quote/save处理失败:设计方案尚未完成，不能生成客户报价"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
       ]
     },
     {
@@ -1978,17 +2016,144 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 3,
       "firstSeen": "2026-10-05 16:37:49.422",
-      "lastSeen": "2026-10-05T16:37:49.422+08:00",
+      "lastSeen": "2026-10-05 16:37:49.422",
       "samples": [
         "[2026-10-05 16:37:49.422] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:该房屋已指定设计师，量房完成必须由指定设计师执行",
-        "5073:2026-10-05T16:37:49.422+08:00 ERROR 138035 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : property/measure/save处理失败:该房屋已指定设计师，量房完成必须由指定设计师执行"
+        "5073:2026-10-05T16:37:49.422+08:00 ERROR 138035 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : property/measure/save处理失败:该房屋已指定设计师，量房完成必须由指定设计师执行",
+        "[2026-10-05 16:37:49.422] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:该房屋已指定设计师，量房完成必须由指定设计师执行"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-181721"
+        "2026-10-05/20261005-181721",
+        "2026-10-05/20261005-190730"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-7a15e72695",
+      "signature": "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quanti",
+      "signatureHash": "7a15e72695",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-190730"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-2ed6f423ba",
+      "signature": "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]",
+      "signatureHash": "2ed6f423ba",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFacto",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFacto",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFacto",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFacto",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFacto"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-190730"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-23fca06cdb",
+      "signature": "Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_for",
+      "signatureHash": "23fca06cdb",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 8,
+      "firstSeen": "2026-10-05 18:42:18.138",
+      "lastSeen": "2026-10-05 18:45:35.692",
+      "samples": [
+        "[2026-10-05 18:42:18.138] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]",
+        "[2026-10-05 18:42:46.279] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]",
+        "[2026-10-05 18:43:14.359] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]",
+        "[2026-10-05 18:43:43.059] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]",
+        "[2026-10-05 18:44:10.747] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [quantity_formula] in table [quote_line]"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-190730"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-c9e817936a",
+      "signature": "同级分类名称已存在",
+      "signatureHash": "c9e817936a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 5,
+      "firstSeen": "2026-10-05 18:28:45.958",
+      "lastSeen": "2026-10-05 18:31:40.261",
+      "samples": [
+        "[2026-10-05 18:28:45.958] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger-category/save处理失败:同级分类名称已存在",
+        "[2026-10-05 18:29:11.574] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger-category/save处理失败:同级分类名称已存在",
+        "[2026-10-05 18:29:56.288] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger-category/save处理失败:同级分类名称已存在",
+        "[2026-10-05 18:31:09.355] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger-category/save处理失败:同级分类名称已存在",
+        "[2026-10-05 18:31:40.261] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/ledger-category/save处理失败:同级分类名称已存在"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-190730"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-cc3580e077",
+      "signature": "工程量必须大于0",
+      "signatureHash": "cc3580e077",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-05 19:03:00.959",
+      "lastSeen": "2026-10-05T19:03:00.959+08:00",
+      "samples": [
+        "[2026-10-05 19:03:00.959] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/save处理失败:工程量必须大于0",
+        "1063:2026-10-05T19:03:00.959+08:00 ERROR 145544 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:工程量必须大于0"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-190730"
+      ]
+    },
+    {
+      "incidentId": "INC-20261005-783e89e45e",
+      "signature": "找不到对应的处理服务:design/items/save",
+      "signatureHash": "783e89e45e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-05 18:46:26.491",
+      "lastSeen": "2026-10-05 18:46:26.491",
+      "samples": [
+        "[2026-10-05 18:46:26.491] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/save处理失败:找不到对应的处理服务:design/items/save"
+      ],
+      "reportPaths": [
+        "2026-10-05/20261005-190730"
       ]
     }
   ],
-  "updatedAt": "2026-10-05T10:17:22.238205+00:00"
+  "updatedAt": "2026-10-05T11:07:31.462278+00:00"
 }
