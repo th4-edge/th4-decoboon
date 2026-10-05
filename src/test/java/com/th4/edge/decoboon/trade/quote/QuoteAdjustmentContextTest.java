@@ -1,6 +1,9 @@
 package com.th4.edge.decoboon.trade.quote;
 
+import com.th4.edge.decoboon.catalog.configure.PricingMethod;
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
+import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.pack.model.PackageLine;
 import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
@@ -11,10 +14,12 @@ import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
+import com.th4.edge.tenant.user.model.Company;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -92,5 +97,89 @@ class QuoteAdjustmentContextTest {
         assertThat(quote.getAmount()).isEqualByComparingTo("0");
         assertThat(quote.getCost()).isEqualByComparingTo("0");
         verify(quoteRepository).save(quote);
+    }
+
+    /**
+     * ECD-013 回归：请求未携带 space 时，必须保留既有行的空间归属。
+     *
+     * 背景：App 与 Web 单行入口的入参都不含 space，原实现无条件覆盖为 null，
+     * 会把报价行从原区域挪走，破坏区域分组与区域小计。
+     */
+    @Test
+    void shouldPreserveExistingSpaceWhenRequestOmitsSpace() {
+        Quote quote = draftQuoteWithCompany();
+        QuoteLine existing = existingLineWithSpace(5L, 77L);
+        CatalogItem catalog = materialAndManualCatalog();
+
+        when(lineRepository.findByQuote(quote)).thenReturn(List.of(existing));
+        when(catalogRepository.findByItemIdAndCompany_ComId(100L, 9L)).thenReturn(Optional.of(catalog));
+        when(lineRepository.save(existing)).thenReturn(existing);
+
+        QuoteLine request = new QuoteLine();
+        request.setItemId(5L);
+        // 关键：request 不带 space（模拟 App / Web 单行入口的既有入参）
+
+        context.save(quote, request, false, null, 100L, new BigDecimal("2"));
+
+        assertThat(existing.getSpace()).isNotNull();
+        assertThat(existing.getSpace().getSpaceId()).isEqualTo(77L);
+    }
+
+    /** 显式提供 space 时，仍应正常更新（缺省即保留，不等于永远不改）。 */
+    @Test
+    void shouldApplySpaceWhenRequestProvidesIt() {
+        Quote quote = draftQuoteWithCompany();
+        QuoteLine existing = existingLineWithSpace(5L, 77L);
+        CatalogItem catalog = materialAndManualCatalog();
+
+        when(lineRepository.findByQuote(quote)).thenReturn(List.of(existing));
+        when(catalogRepository.findByItemIdAndCompany_ComId(100L, 9L)).thenReturn(Optional.of(catalog));
+        when(lineRepository.save(existing)).thenReturn(existing);
+
+        Space target = new Space();
+        target.setSpaceId(88L);
+        QuoteLine request = new QuoteLine();
+        request.setItemId(5L);
+        request.setSpace(target);
+
+        context.save(quote, request, false, null, 100L, new BigDecimal("2"));
+
+        assertThat(existing.getSpace()).isNotNull();
+        assertThat(existing.getSpace().getSpaceId()).isEqualTo(88L);
+    }
+
+    private Quote draftQuoteWithCompany() {
+        Company company = new Company();
+        company.setComId(9L);
+        Quote quote = new Quote();
+        quote.setQuoteId(1L);
+        quote.setStatus(QuoteStatus.Draft);
+        quote.setCompany(company);
+        quote.setDiscount(BigDecimal.ONE);
+        quote.setTaxRate(new BigDecimal("0.05"));
+        return quote;
+    }
+
+    private QuoteLine existingLineWithSpace(Long itemId, Long spaceId) {
+        Space space = new Space();
+        space.setSpaceId(spaceId);
+        QuoteLine line = new QuoteLine();
+        line.setItemId(itemId);
+        line.setSpace(space);
+        line.setIncluded(true);
+        line.setAmount(new BigDecimal("100.00"));
+        line.setCost(new BigDecimal("50.00"));
+        return line;
+    }
+
+    private CatalogItem materialAndManualCatalog() {
+        CatalogItem catalog = mock(CatalogItem.class);
+        when(catalog.getActive()).thenReturn(Boolean.TRUE);
+        when(catalog.getPricingMode()).thenReturn(PricingMethod.MaterialAndManual);
+        when(catalog.getName()).thenReturn("测试项目");
+        when(catalog.getMaterialPrice()).thenReturn(new BigDecimal("10.00"));
+        when(catalog.getManualPrice()).thenReturn(new BigDecimal("5.00"));
+        when(catalog.getCostPrice()).thenReturn(new BigDecimal("4.00"));
+        return catalog;
     }
 }

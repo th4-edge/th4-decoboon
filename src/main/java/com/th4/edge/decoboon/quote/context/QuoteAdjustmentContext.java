@@ -99,7 +99,13 @@ public class QuoteAdjustmentContext {
         target.setQuote(quote);
         target.setProperty(quote.getProperty());
         target.setCatalogItem(catalog);
-        target.setSpace(source.getSpace());
+        // ECD-013：请求未显式提供 space 时必须保留既有归属。
+        // 原实现无条件 setSpace(request.space)，而 App / Web 单行入参都不携带 space，
+        // 会把已有行的 space_id 覆盖为 null，破坏区域分组（区间小计随之漂移）。
+        // 语义：缺省即保留；产品未定义「显式清空」，因此不开放 clear。
+        if (source.getSpace() != null) {
+            target.setSpace(source.getSpace());
+        }
         target.setPackageLine(replacedBase == null ? null : replacedBase.getPackageLine());
         target.setRole(role);
         target.setDifferenceType(role == QuoteLineRole.Replace ? QuoteDifferenceType.Replace
