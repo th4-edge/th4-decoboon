@@ -7,7 +7,8 @@ import com.th4.edge.framework.data.enums.Enumerable;
 @Note("手工流水更正类型")
 public enum LedgerRevisionType implements Enumerable<String> {
     MetadataCorrection("元数据更正"),
-    ReverseAndRecreate("冲正重记");
+    ReverseAndRecreate("冲正重记"),
+    Void("作废");
 
     private final String name;
 

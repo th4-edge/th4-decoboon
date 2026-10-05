@@ -93,7 +93,9 @@ public class FinanceReportContext {
         List<Project> projects = projects(current);
         List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class));
         List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class));
-        List<Ledger> ledgers = ledgerRepository.findAll(accessContext.visible(current, Ledger.class));
+        List<Ledger> ledgers = ledgerRepository.findAll(accessContext.visible(current, Ledger.class)).stream()
+                .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
+                .toList();
         List<Receipt> receipts = receiptRepository == null ? List.of()
                 : receiptRepository.findAll(accessContext.visible(current, Receipt.class));
         List<Payment> payments = paymentRepository == null ? List.of()
@@ -231,7 +233,10 @@ public class FinanceReportContext {
                 .toList();
         List<Ledger> ledgers = ledgerRepository
                 .findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(
-                        current.getCompany().getComId(), projectId);
+                        current.getCompany().getComId(), projectId)
+                .stream()
+                .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
+                .toList();
         List<Receipt> receipts = receiptRepository == null ? List.of()
                 : receiptRepository.findByCompany_ComIdAndProject_ProjectIdOrderByReceivedAtDesc(
                         current.getCompany().getComId(), projectId);

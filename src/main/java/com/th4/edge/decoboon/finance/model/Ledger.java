@@ -34,6 +34,7 @@ import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /** 不可变资金流水，所有收付款与手工记账最后归集到此处。 */
 @Note("资金流水")
@@ -103,6 +104,22 @@ public class Ledger extends AuditModel {
     @Note("冲正重记分组标识")
     @Column(length = 64)
     private String correctionGroupId;
+
+    @Note("是否作废；作废后保留审计，不再进入台账与汇总")
+    @Column(nullable = false)
+    private Boolean voided = Boolean.FALSE;
+
+    @Note("作废人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "voided_by_id")
+    private Employee voidedBy;
+
+    @Note("作废时间")
+    private LocalDateTime voidedAt;
+
+    @Note("作废原因")
+    @Column(length = 500)
+    private String voidReason;
 
     @Note("资金来源")
     @Enumerated(EnumType.STRING)
@@ -184,4 +201,12 @@ public class Ledger extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
+    public Boolean getVoided() { return voided; }
+    public void setVoided(Boolean voided) { this.voided = voided; }
+    public Employee getVoidedBy() { return voidedBy; }
+    public void setVoidedBy(Employee voidedBy) { this.voidedBy = voidedBy; }
+    public LocalDateTime getVoidedAt() { return voidedAt; }
+    public void setVoidedAt(LocalDateTime voidedAt) { this.voidedAt = voidedAt; }
+    public String getVoidReason() { return voidReason; }
+    public void setVoidReason(String voidReason) { this.voidReason = voidReason; }
 }

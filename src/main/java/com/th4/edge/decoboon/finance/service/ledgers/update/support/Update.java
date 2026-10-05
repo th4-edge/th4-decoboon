@@ -160,6 +160,9 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
         if (ledger.getSource() != LedgerSource.Manual) {
             throw new DefinedException(new DefaultErrorCode("400", "仅手工记账流水允许更正"));
         }
+        if (Boolean.TRUE.equals(ledger.getVoided())) {
+            throw new DefinedException(new DefaultErrorCode("400", "该流水已作废，不能更正"));
+        }
         if (ledger.getCorrectionGroupId() != null) {
             throw new DefinedException(new DefaultErrorCode("400", "该流水已冲正重记，请更正重记后的流水"));
         }

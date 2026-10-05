@@ -116,6 +116,8 @@ class FinanceClosedLoopTest {
     @Autowired
     private com.th4.edge.decoboon.finance.service.ledgers.correct.Correct ledgerCorrect;
     @Autowired
+    private com.th4.edge.decoboon.finance.service.ledgers.delete.Delete ledgerDelete;
+    @Autowired
     private com.th4.edge.decoboon.finance.service.ledgercategories.tree.Tree ledgerCategoryTree;
     @Autowired
     private com.th4.edge.decoboon.finance.service.ledgercategories.save.Save ledgerCategorySave;
@@ -640,6 +642,122 @@ class FinanceClosedLoopTest {
         var recreated = categorySave.call(new com.th4.edge.decoboon.finance.model.LedgerCategory());
         assertThat(recreated.getBuiltIn()).isFalse();
         assertThat(recreated.getName()).isEqualTo("主材采购");
+    }
+
+    @Test
+    void shouldAllowBossToVoidManualLedgerOnly() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+
+        com.th4.edge.decoboon.finance.service.ledgercategories.tree.support.Tree tree =
+                AopTestUtils.getTargetObject(ledgerCategoryTree);
+        set(tree, "employee", boss);
+        var materialRoot = tree.call(new com.th4.edge.decoboon.finance.model.LedgerCategory()).stream()
+                .filter(item -> item.getDirection() == com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense)
+                .filter(item -> "材料采购".equals(item.getName()))
+                .findFirst().orElseThrow();
+        var materialChild = materialRoot.getChildren().stream()
+                .filter(item -> "主材采购".equals(item.getName()))
+                .findFirst().orElseThrow();
+
+        com.th4.edge.decoboon.finance.service.ledgers.save.support.Save save =
+                AopTestUtils.getTargetObject(ledgerSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        set(save, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(save, "categoryId", materialChild.getCategoryId());
+        set(save, "amount", new BigDecimal("88.00"));
+        set(save, "account", FundAccount.CompanyBank);
+        set(save, "occurredAt", LocalDate.now());
+        set(save, "counterparty", "作废测试供应商");
+        set(save, "summary", "作废测试流水");
+        set(save, "remark", null);
+        Ledger manual = save.call(new Ledger());
+
+        com.th4.edge.decoboon.finance.service.ledgers.report.support.Report report =
+                AopTestUtils.getTargetObject(ledgerReport);
+        set(report, "employee", boss);
+        set(report, "projectId", project.getProjectId());
+        set(report, "startDate", LocalDate.now());
+        set(report, "endDate", LocalDate.now());
+        assertThat(report.call(new Ledger()).getCount()).isEqualTo(1);
+
+        // 财务不可作废；仅企业负责人可作废。
+        Employee finance = new Employee();
+        finance.setCompany(boss.getCompany());
+        finance.setStore(boss.getStore());
+        finance.setRole(EmployeeRole.Finance);
+        finance.setStatus(EmployeeStatus.Active);
+        finance.setName("财务作废测试");
+        finance.setTelNo("19" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L)));
+        finance.setJoinedAt(LocalDateTime.now());
+        finance = employeeRepository.save(finance);
+
+        com.th4.edge.decoboon.finance.service.ledgers.delete.support.Delete delete =
+                AopTestUtils.getTargetObject(ledgerDelete);
+        set(delete, "employee", finance);
+        set(delete, "ledgerId", manual.getLedgerId());
+        set(delete, "reason", "录入错误");
+        assertThatThrownBy(() -> delete.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("无权");
+
+        set(delete, "employee", boss);
+        Ledger voided = delete.call(new Ledger());
+        assertThat(voided.getVoided()).isTrue();
+        assertThat(voided.getVoidReason()).isEqualTo("录入错误");
+        assertThat(voided.getVoidedBy().getEmpId()).isEqualTo(boss.getEmpId());
+
+        // 原记录保留，但台账/汇总不再返回。
+        Ledger stored = ledgerRepository.findByCompany_ComIdAndLedgerId(boss.getCompany().getComId(), manual.getLedgerId())
+                .orElseThrow();
+        assertThat(stored.getVoided()).isTrue();
+        assertThat(report.call(new Ledger()).getCount()).isZero();
+        assertThat(ledgerRevisionRepository
+                .findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(boss.getCompany().getComId(), manual.getLedgerId()))
+                .hasSize(1)
+                .extracting(item -> item.getType().name())
+                .contains("Void");
+
+        // 自动流水不可作废。
+        Receivable receivable = createReceivable(boss, project);
+        Receipt receipt = createReceipt(boss, project, receivable);
+        Ledger receiptLedger = ledgerRepository
+                .findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(
+                        boss.getCompany().getComId(), project.getProjectId())
+                .stream()
+                .filter(item -> item.getSource() == com.th4.edge.decoboon.finance.configure.LedgerSource.Receipt)
+                .findFirst().orElseThrow();
+        set(delete, "ledgerId", receiptLedger.getLedgerId());
+        set(delete, "reason", "自动流水测试");
+        assertThatThrownBy(() -> delete.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("仅手工记账流水允许作废");
+
+        // 已冲正重记的流水不可作废。
+        set(save, "summary", "冲正后再作废测试");
+        Ledger second = save.call(new Ledger());
+        com.th4.edge.decoboon.finance.service.ledgers.correct.support.Correct correct =
+                AopTestUtils.getTargetObject(ledgerCorrect);
+        set(correct, "employee", boss);
+        set(correct, "ledgerId", second.getLedgerId());
+        set(correct, "direction", com.th4.edge.decoboon.finance.configure.LedgerDirection.Expense);
+        set(correct, "categoryId", materialChild.getCategoryId());
+        set(correct, "amount", new BigDecimal("99.00"));
+        set(correct, "account", FundAccount.CompanyBank);
+        set(correct, "occurredAt", LocalDate.now());
+        set(correct, "counterparty", "作废测试供应商");
+        set(correct, "summary", "冲正重记后的流水");
+        set(correct, "remark", null);
+        set(correct, "projectId", project.getProjectId());
+        set(correct, "reason", "冲正测试");
+        Ledger replacement = correct.call(new Ledger());
+        set(delete, "ledgerId", replacement.getLedgerId());
+        set(delete, "reason", "冲正后作废测试");
+        assertThatThrownBy(() -> delete.call(new Ledger()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("已冲正重记，不能作废");
     }
 
     @Test

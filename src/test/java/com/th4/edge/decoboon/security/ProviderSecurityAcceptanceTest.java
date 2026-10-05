@@ -128,9 +128,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-05 手工记账分类/更正 + Web 报价公式引擎（batchsave/build/import）合并后基线。
         // => 总数为 367（public 13 + protected 354）。
         // 2026-10-05 设计分项原子批量保存新增 1 条（design/items/save）。
-        // => 总数为 368（public 13 + protected 355）。
-        assertThat(routes).hasSize(368);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(355);
+        // 2026-10-06 手工流水作废新增 1 条（finance/ledger/delete）。
+        // => 总数为 369（public 13 + protected 356）。
+        assertThat(routes).hasSize(369);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(356);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
@@ -147,6 +148,7 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("finance/ledger-category/delete");
         assertUnauthorized("finance/ledger/update");
         assertUnauthorized("finance/ledger/correct");
+        assertUnauthorized("finance/ledger/delete");
         assertUnauthorized("document/voucher/report");
         assertUnauthorized("statistic/organization/report");
         assertUnauthorized("statistic/boss/business/report");

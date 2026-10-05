@@ -100,7 +100,9 @@ public class VoucherContext {
         List<Long> ids = normalizeIds(ledgerIds);
         if (ids.isEmpty()) throw invalid("请选择要打印的款项记录");
 
-        List<Ledger> ledgers = ledgerRepository.findByCompany_ComIdAndLedgerIdIn(comId, ids);
+        List<Ledger> ledgers = new ArrayList<>(ledgerRepository.findByCompany_ComIdAndLedgerIdIn(comId, ids).stream()
+                .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
+                .toList());
         if (ledgers.size() != ids.size()) throw notFound("存在无权访问或已不存在的款项记录");
         ledgers.sort(Comparator.comparing(Ledger::getOccurredAt, Comparator.nullsLast(Comparator.naturalOrder()))
                 .thenComparing(Ledger::getLedgerId, Comparator.nullsLast(Comparator.naturalOrder())));

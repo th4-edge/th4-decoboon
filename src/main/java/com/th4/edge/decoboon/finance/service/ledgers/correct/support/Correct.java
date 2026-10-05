@@ -200,6 +200,9 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
         if (ledger.getSource() != LedgerSource.Manual) {
             throw new DefinedException(new DefaultErrorCode("400", "仅手工记账流水允许冲正重记"));
         }
+        if (Boolean.TRUE.equals(ledger.getVoided())) {
+            throw new DefinedException(new DefaultErrorCode("400", "该流水已作废，不能冲正重记"));
+        }
         if (ledger.getCorrectionGroupId() != null) {
             throw new DefinedException(new DefaultErrorCode("400", "该流水已冲正重记，请更正重记后的流水"));
         }

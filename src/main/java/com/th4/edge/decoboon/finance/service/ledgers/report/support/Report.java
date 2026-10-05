@@ -66,6 +66,7 @@ public class Report implements com.th4.edge.decoboon.finance.service.ledgers.rep
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         Set<Long> selected = ledgerIds == null ? Set.of() : Set.copyOf(ledgerIds);
         List<Ledger> items = ledgerRepository.findAll(accessContext.visible(current, Ledger.class)).stream()
+                .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
                 .filter(item -> selected.isEmpty() || selected.contains(item.getLedgerId()))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> direction == null || direction.isBlank() || item.getDirection().name().equalsIgnoreCase(direction))

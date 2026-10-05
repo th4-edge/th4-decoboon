@@ -83,6 +83,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<Ledger> items = ledgerRepository.findAll(accessContext.visible(currentEmployee, Ledger.class))
                 .stream()
+                .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
                 .filter(item -> ledgerId == null || ledgerId.equals(item.getLedgerId()))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> direction == null || direction.isBlank() || item.getDirection().name().equalsIgnoreCase(direction))
