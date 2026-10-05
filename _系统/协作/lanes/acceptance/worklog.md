@@ -15,7 +15,7 @@
 - 已修复：`XA-016` 迁移 65+基线 LONGTEXT；`XA-017` 补 `writeCapability`；`XA-018` 设计项空间必选；`XA-024` 路由 key；本地/页面验证 PASS。历史 space_id、项目 100% 和 Pm 下一步仍待业务/数据治理。
 - 工程验证：Web type-check/build PASS；App type-check/check:subpackages PASS；后端定向测试 PASS；Web verify:roles/system/boss FAIL。
 - 阻断：无业主邀请/owner access；不代录、不直调业务接口，业主确认、整改复验、最终交付 `BLOCKED`。
-- 证据：`../../../../前端代码/th4-decoboon-web/docs/acceptance/runs/20261001T174143+0800-designer-multiclient-full-chain-昭青/`
+- 证据：`../../../../前端代码/th4-decoboon-web-v1v2-archive/docs/acceptance/runs/20261001T174143+0800-designer-multiclient-full-chain-昭青/`
 - 状态：`partial_blocked_needs_owner_invite_and_dev_fix`。
 
 ## Outputs
