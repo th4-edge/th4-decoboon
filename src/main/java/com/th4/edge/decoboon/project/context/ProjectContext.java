@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.project.context;
 
+import com.th4.edge.components.lock.DistributedLocked;
+
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.collab.context.NoticeContext;
 import com.th4.edge.decoboon.collab.context.SubscribeMessageContext;
@@ -314,6 +316,7 @@ public class ProjectContext {
     /**
      * 阶段施工完成后提交验收（第 1 轮）。
      */
+    @DistributedLocked(key = "'stage-acceptance:' + #companyId + ':' + #stageId")
     @Transactional
     public Acceptance submitAcceptance(Long companyId, Long projectId, Long stageId, Employee employee,
                                        String conclusion, List<String> issues, List<String> evidenceUrls) {
@@ -342,7 +345,7 @@ public class ProjectContext {
                                        String rectificationNote, List<String> rectificationEvidenceUrls) {
         // 同一阶段的所有提交/复验先锁定阶段事实，再读取验收单；并发后到请求
         // 会排队并命中 Pending 幂等分支，不再触发唯一键冲突或未定义错误。
-        ProjectStage stage = stageRepository.findLockedByStageId(stageId)
+        ProjectStage stage = stageRepository.findByStageId(stageId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目阶段不存在")));
         requireTenant(stage.getCompany(), companyId);
         if (!stage.getProject().getProjectId().equals(projectId)) {

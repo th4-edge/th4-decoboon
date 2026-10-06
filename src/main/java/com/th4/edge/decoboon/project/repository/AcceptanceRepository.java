@@ -4,8 +4,6 @@ import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
-import jakarta.persistence.LockModeType;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -62,19 +60,4 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
     @Query("select a from Acceptance a where a.stage = :stage order by a.acceptanceId desc")
     Optional<Acceptance> findFirstForCustomerByStage(@Param("stage") ProjectStage stage);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("""
-            select a from Acceptance a
-            where a.acceptanceId = :acceptanceId
-              and exists (
-                select access.accessId from CustomerAccess access
-                where access.project = a.project
-                  and access.credential.creId = :creId
-                  and access.status = :status
-              )
-            """)
-    Optional<Acceptance> findLockedForCustomerAccess(
-            @Param("acceptanceId") Long acceptanceId,
-            @Param("creId") Long creId,
-            @Param("status") com.th4.edge.decoboon.customer.configure.CustomerAccessStatus status);
 }

@@ -3,6 +3,8 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
+import com.th4.edge.components.lock.DistributedLock;
+
 import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
 import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
@@ -70,6 +72,8 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
     private final ProjectContractRepository contractRepository;
     private final CarryoverLockContext carryoverLockContext;
 
+    private final DistributedLock distributedLock;
+
     public Update(ProjectStageRepository stageRepository,
                   ProjectRepository projectRepository,
                   ProjectReportRepository reportRepository,
@@ -77,7 +81,8 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
                   ProjectPermissionContext permissionContext,
                   MeasureRepository measureRepository,
                   ProjectContractRepository contractRepository,
-                  CarryoverLockContext carryoverLockContext) {
+                  CarryoverLockContext carryoverLockContext,
+                DistributedLock distributedLock) {
         this.stageRepository = stageRepository;
         this.projectRepository = projectRepository;
         this.reportRepository = reportRepository;
@@ -86,6 +91,7 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         this.measureRepository = measureRepository;
         this.contractRepository = contractRepository;
         this.carryoverLockContext = carryoverLockContext;
+        this.distributedLock = distributedLock;
     }
 
     @Override
@@ -94,7 +100,12 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         Employee current = accessContext.requireEmployee(employee);
         // 行级排他锁把同一阶段的并发开工串行化：后到请求拿到锁后读到已提交状态，
         // 走幂等分支返回同一事实，避免死锁与 undefinedErrorCode。
-        ProjectStage stage = stageRepository.findLockedByStageId(stageId)
+        String lockKey = "stage-open:" + current.getCompany().getComId() + ":" + stageId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "项目阶段正在处理中，请稍后重试"));
+        }
+        try {
+        ProjectStage stage = stageRepository.findByStageId(stageId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目阶段不存在")));
         // 锁内统一做数据范围校验：不可见一律 404，不泄露对象存在性。
         accessContext.requireVisible(stage.getProject(), current);
@@ -171,6 +182,9 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         }
         if (carryoverLockContext != null) carryoverLockContext.lock(saved.getProject(), CarryoverBusinessType.Stage, current);
         return snapshot(saved);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     /** 开工前置：项目必须绑定已生效合同（Effective 及之后的履约状态均视为已生效）。 */
