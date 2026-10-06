@@ -63,6 +63,51 @@ public class ManualLedgerContext {
     }
 
     /** 项目口径：项目零星成本计入项目实际成本；关联项目的其他收入计入项目收入。 */
+    /**
+     * 批量计算多项目的「关联项目其他收入 / 项目零星成本」。
+     * 过滤口径与 {@link #amounts(Project)} 完全一致，但改为一次取多项目流水后在内存分组。
+     */
+    public java.util.Map<Long, ManualAmounts> amountsAll(java.util.Collection<Project> projects) {
+        java.util.List<Project> list = projects == null ? java.util.List.of()
+                : projects.stream().filter(item -> item != null && item.getProjectId() != null
+                        && item.getCompany() != null && item.getCompany().getComId() != null).toList();
+        if (list.isEmpty()) {
+            return java.util.Map.of();
+        }
+        Long comId = list.get(0).getCompany().getComId();
+        java.util.List<Long> projectIds = list.stream().map(Project::getProjectId).distinct().toList();
+        java.util.Map<Long, java.util.List<Ledger>> byProject = ledgerRepository
+                .findByCompany_ComIdAndProject_ProjectIdIn(comId, projectIds).stream()
+                .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, ManualAmounts> result = new java.util.LinkedHashMap<>();
+        for (Project project : list) {
+            result.put(project.getProjectId(), sum(byProject.getOrDefault(project.getProjectId(), java.util.List.of())));
+        }
+        return result;
+    }
+
+    private ManualAmounts sum(java.util.List<Ledger> ledgers) {
+        BigDecimal income = BigDecimal.ZERO;
+        BigDecimal cost = BigDecimal.ZERO;
+        for (Ledger ledger : ledgers) {
+            if (Boolean.TRUE.equals(ledger.getVoided())
+                    || ledger.getSource() != LedgerSource.Manual
+                    || ledger.getPurpose() == null) {
+                continue;
+            }
+            BigDecimal amount = ledger.getAmount() == null ? BigDecimal.ZERO : ledger.getAmount();
+            if (ledger.getDirection() == LedgerDirection.Income
+                    && ledger.getPurpose() == LedgerManualPurpose.OtherIncome) {
+                income = income.add(amount);
+            } else if (ledger.getDirection() == LedgerDirection.Expense
+                    && ledger.getPurpose() == LedgerManualPurpose.ProjectIncidentalCost) {
+                cost = cost.add(amount);
+            }
+        }
+        return new ManualAmounts(income, cost);
+    }
+
     public ManualAmounts amounts(Project project) {
         if (project == null || project.getProjectId() == null || project.getCompany() == null) {
             return ManualAmounts.ZERO;

@@ -36,9 +36,13 @@ import java.time.LocalDate;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.Map;
 import java.util.Set;
 
@@ -205,10 +209,16 @@ public class FinanceReportContext {
         BigDecimal aggregatedManualCost = BigDecimal.ZERO;
         int incompleteProjects = 0;
         int incompleteItems = 0;
+        Map<Long, ProjectCostContext.CostSummary> costSummaries = projectCostContext.summarizeAll(projects);
+        Map<Long, ManualLedgerContext.ManualAmounts> manualAmounts = manualLedgerContext.amountsAll(projects);
         for (Project project : projects) {
-            ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
+            ProjectCostContext.CostSummary costSummary = costSummaries.get(project.getProjectId());
+            if (costSummary == null) {
+                costSummary = projectCostContext.summarize(project);
+            }
             BigDecimal payableCost = payableCostByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
-            ManualLedgerContext.ManualAmounts manual = manualLedgerContext.amounts(project);
+            ManualLedgerContext.ManualAmounts manual = manualAmounts.getOrDefault(
+                    project.getProjectId(), ManualLedgerContext.ManualAmounts.ZERO);
             estimatedCost = estimatedCost.add(costSummary.estimatedCost());
             aggregatedTotalCost = aggregatedTotalCost.add(totalCost(project, costSummary, payableCost))
                     .add(manual.cost());
@@ -268,7 +278,49 @@ public class FinanceReportContext {
                                 Comparator.nullsLast(Comparator.naturalOrder()))
                         .reversed())
                 .limit(8).toList());
+        prefetchDisplayAssociations(current, summary);
         return summary;
+    }
+
+    /**
+     * 预取列表展示实体的关联，避免响应序列化阶段逐条懒加载。
+     *
+     * <p>响应里的 urgent/overdue/dueSoon 应收、urgent 应付与 recent 流水最多 32 个实体，原先
+     * 每个实体的 project / property / customer / payeeEmployee / category 等关联在序列化时各自触发一次
+     * 懒加载查询；同一持久化上下文中按 id 带 fetch graph 重取会初始化已托管实体的代理，
+     * 因此这里只做预取，不改变返回对象、顺序与金额口径。</p>
+     */
+    private void prefetchDisplayAssociations(Employee current, FinanceSummary summary) {
+        Long comId = current.getCompany() == null ? null : current.getCompany().getComId();
+        if (comId == null) {
+            return;
+        }
+        Set<Long> receivableIds = Stream.of(summary.getUrgentReceivables(),
+                        summary.getOverdueReceivables(), summary.getDueSoonReceivables())
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .map(Receivable::getReceivableId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        if (!receivableIds.isEmpty()) {
+            receivableRepository.findByCompany_ComIdAndReceivableIdIn(comId, receivableIds);
+        }
+        Set<Long> payableIds = summary.getUrgentPayables() == null ? Set.of()
+                : summary.getUrgentPayables().stream()
+                        .map(Payable::getPayableId)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toSet());
+        if (!payableIds.isEmpty()) {
+            payableRepository.findByCompany_ComIdAndPayableIdIn(comId, payableIds);
+        }
+        Set<Long> ledgerIds = summary.getRecentLedgers() == null ? Set.of()
+                : summary.getRecentLedgers().stream()
+                        .map(Ledger::getLedgerId)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toSet());
+        if (!ledgerIds.isEmpty()) {
+            ledgerRepository.findByCompany_ComIdAndLedgerIdIn(comId, ledgerIds);
+        }
     }
 
     public List<FinanceProjectReport> projectReports(Employee principal) {

@@ -19,6 +19,10 @@ public interface QuoteLineRepository extends JpaRepository<QuoteLine, Long> {
     @EntityGraph(attributePaths = {"catalogItem", "designItem"})
     List<QuoteLine> findByQuote(Quote quote);
 
+    /** 财务汇总回退：一次取多报价的报价行（预取报价本体便于分组 + 目录项/设计分项）。 */
+    @EntityGraph(attributePaths = {"quote", "catalogItem", "designItem"})
+    List<QuoteLine> findByQuote_QuoteIdIn(java.util.Collection<Long> quoteIds);
+
     boolean existsByDesignItem_ItemId(Long itemId);
 
     boolean existsByPackageLine_ItemId(Long itemId);

@@ -15,4 +15,8 @@ public interface ContractLineRepository extends JpaRepository<ContractLine, Long
 
     @EntityGraph(attributePaths = {"sourceQuoteLine", "sourceQuoteLine.catalogItem"})
     List<ContractLine> findByContract_Project_ProjectIdOrderBySortAsc(Long projectId);
+
+    /** 财务汇总：一次取多项目合同行（预取合同所属项目便于分组 + 报价行/目录项）。 */
+    @EntityGraph(attributePaths = {"contract", "contract.project", "sourceQuoteLine", "sourceQuoteLine.catalogItem"})
+    List<ContractLine> findByContract_Project_ProjectIdInOrderBySortAsc(java.util.Collection<Long> projectIds);
 }

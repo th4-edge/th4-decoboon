@@ -243,9 +243,9 @@ class FinanceProfitAccountingTest {
             BigDecimal paid = invocation.getArgument(1) == null ? BigDecimal.ZERO : invocation.getArgument(1);
             return amount.subtract(paid);
         });
-        when(contractLineRepository.findByContract_Project_ProjectIdOrderBySortAsc(1004L))
-                .thenReturn(List.of(contractLine));
-        when(purchaseOrderRepository.findByProjectOrderByPurchaseIdDesc(project)).thenReturn(List.of());
+        contractLine.setContract(contractOf(project));
+        when(contractLineRepository.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(contractLine));
+        when(purchaseOrderRepository.findByProject_ProjectIdInOrderByPurchaseIdDesc(any())).thenReturn(List.of());
         when(receivableRepository.findByProjectOrderByDueDateAsc(project)).thenReturn(List.of());
         when(payableRepository.findByProjectOrderByDueDateAsc(project)).thenReturn(List.of(material));
         when(ledgerRepository.findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(1L, 1004L))
@@ -268,8 +268,8 @@ class FinanceProfitAccountingTest {
         var partialPurchase = new com.th4.edge.decoboon.project.model.PurchaseOrder();
         partialPurchase.setStatus(com.th4.edge.decoboon.project.configure.PurchaseStatus.PartiallyReceived);
         partialPurchase.setQuoteLine(quoteLine);
-        when(purchaseOrderRepository.findByProjectOrderByPurchaseIdDesc(project))
-                .thenReturn(List.of(partialPurchase));
+        partialPurchase.setProject(project);
+        when(purchaseOrderRepository.findByProject_ProjectIdInOrderByPurchaseIdDesc(any())).thenReturn(List.of(partialPurchase));
 
         FinanceProjectReport partialReport = context.project(boss, 1004L);
 
@@ -313,5 +313,13 @@ class FinanceProfitAccountingTest {
         payable.setPaidAmount(BigDecimal.ZERO);
         payable.setDueDate(java.time.LocalDate.now());
         return payable;
+    }
+
+    /** 测试夹具：合同行分组需要 contract.project 关联。 */
+    private static com.th4.edge.decoboon.project.model.ProjectContract contractOf(Project project) {
+        com.th4.edge.decoboon.project.model.ProjectContract contract =
+                new com.th4.edge.decoboon.project.model.ProjectContract();
+        contract.setProject(project);
+        return contract;
     }
 }

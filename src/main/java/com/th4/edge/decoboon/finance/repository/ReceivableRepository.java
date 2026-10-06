@@ -20,6 +20,10 @@ public interface ReceivableRepository extends JpaRepository<Receivable, Long>,
     @EntityGraph(attributePaths = {"project", "customer", "property", "store", "owner", "contract"})
     List<Receivable> findByCompany_ComIdOrderByDueDateAsc(Long comId);
 
+    /** 财务汇总展示：按 id 批量重取，预取响应实际使用的关联，避免序列化期逐条懒加载。 */
+    @EntityGraph(attributePaths = {"project", "project.property", "project.customer", "property", "customer"})
+    List<Receivable> findByCompany_ComIdAndReceivableIdIn(Long comId, Collection<Long> receivableIds);
+
     /** 企业负责人增减项工作台：按项目集合批量取应收，用于变更款落地核对。 */
     @EntityGraph(attributePaths = {"project", "customer", "property", "store", "owner", "contract"})
     List<Receivable> findByProject_ProjectIdInOrderByDueDateAsc(Collection<Long> projectIds);
