@@ -41,8 +41,10 @@ public interface ProjectReportRepository extends JpaRepository<ProjectReport, Lo
     long countCreatedBetween(@org.springframework.data.repository.query.Param("comId") Long comId,
                              @org.springframework.data.repository.query.Param("projectIds")
                              java.util.Collection<Long> projectIds,
-                             @org.springframework.data.repository.query.Param("from") java.time.LocalDateTime from,
-                             @org.springframework.data.repository.query.Param("to") java.time.LocalDateTime to);
+                             @org.springframework.data.repository.query.Param("from")
+                             com.th4.edge.framework.data.date.model.DateTime from,
+                             @org.springframework.data.repository.query.Param("to")
+                             com.th4.edge.framework.data.date.model.DateTime to);
 
     /** 角色报表：按时间倒序取全局 TopN（ORDER BY + LIMIT，行数有界）。 */
     @org.springframework.data.jpa.repository.Query("select r from ProjectReport r "

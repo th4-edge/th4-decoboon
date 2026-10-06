@@ -226,10 +226,12 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
         // 日报：区间聚合计数 + 全局 TopN 列表（不再逐项目拉取）
         report.setReportTodayCount(projectIds.isEmpty() ? 0
                 : (int) reportRepository.countCreatedBetween(comId, projectIds,
-                        today.atStartOfDay(), today.plusDays(1).atStartOfDay()));
+                        new com.th4.edge.framework.data.date.model.DateTime(today.atStartOfDay()),
+                        new com.th4.edge.framework.data.date.model.DateTime(today.plusDays(1).atStartOfDay())));
         report.setReportWeekCount(projectIds.isEmpty() ? 0
                 : (int) reportRepository.countCreatedBetween(comId, projectIds,
-                        weekStart.atStartOfDay(), today.plusDays(1).atStartOfDay()));
+                        new com.th4.edge.framework.data.date.model.DateTime(weekStart.atStartOfDay()),
+                        new com.th4.edge.framework.data.date.model.DateTime(today.plusDays(1).atStartOfDay())));
         report.setRecentReports(projectIds.isEmpty() ? List.of()
                 : reportRepository.findTopByProjectIds(comId, projectIds, PageRequest.of(0, 12)));
 
