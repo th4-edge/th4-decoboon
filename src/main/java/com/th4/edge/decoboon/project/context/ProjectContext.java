@@ -158,6 +158,7 @@ public class ProjectContext {
      * @param draft 项目基础信息，至少包含名称和工地地址
      * @return 已生成阶段、任务和材料计划的项目
      */
+    @DistributedLocked(key = "#root.quoteProjectLockKey(#quote)")
     @Transactional
     public Project createFromQuote(Quote quote, Project draft) {
         if (quote == null || quote.getQuoteId() == null) {
@@ -169,6 +170,7 @@ public class ProjectContext {
         return createFromEffectiveContract(contract, draft);
     }
 
+    @DistributedLocked(key = "#root.contractProjectLockKey(#contract)")
     @Transactional
     public Project createFromEffectiveContract(ProjectContract contract, Project draft) {
         if (contract == null || contract.getContractId() == null
@@ -1189,5 +1191,41 @@ public class ProjectContext {
 
     private BigDecimal scale(BigDecimal value) {
         return value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 立项与同一房屋下的报价确认、签约共用同一把房屋锁（替代原房屋行级悲观锁）。
+     * key 不可解析时退化为对象维度，保证非空锁键且由业务方法返回既有错误口径。
+     */
+    public String quoteProjectLockKey(Quote quote) {
+        if (quote == null) {
+            return "property-project:unknown";
+        }
+        Property property = quote.getProperty();
+        if (property == null || property.getPropertyId() == null) {
+            return "property-project:quote:" + quote.getQuoteId();
+        }
+        return "property:" + resolveComId(property, quote.getCompany()) + ":" + property.getPropertyId();
+    }
+
+    public String contractProjectLockKey(ProjectContract contract) {
+        if (contract == null) {
+            return "property-project:unknown";
+        }
+        Property property = contract.getProperty();
+        if (property == null && contract.getQuote() != null) {
+            property = contract.getQuote().getProperty();
+        }
+        if (property == null || property.getPropertyId() == null) {
+            return "property-project:contract:" + contract.getContractId();
+        }
+        return "property:" + resolveComId(property, contract.getCompany()) + ":" + property.getPropertyId();
+    }
+
+    private Long resolveComId(Property property, com.th4.edge.tenant.user.model.Company fallback) {
+        if (property != null && property.getCompany() != null) {
+            return property.getCompany().getComId();
+        }
+        return fallback == null ? null : fallback.getComId();
     }
 }

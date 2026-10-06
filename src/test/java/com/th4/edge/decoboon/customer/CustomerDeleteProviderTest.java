@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.customer;
 
+import com.th4.edge.components.lock.DisabledDistributedLock;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerPortraitRepository;
@@ -84,7 +85,8 @@ class CustomerDeleteProviderTest {
         employee.setRole(role);
         employee.setCompany(company);
         when(tenantContext.requireEmployee(employee)).thenReturn(employee);
-        Delete provider = new Delete(tenantContext, customerRepository, followRepository, portraitRepository,
+        Delete provider = new Delete(tenantContext, new DisabledDistributedLock(), customerRepository,
+                followRepository, portraitRepository,
                 tagLinkRepository, propertyRepository, quoteRepository, designRepository,
                 requirementRepository, projectRepository, contractRepository);
         org.springframework.test.util.ReflectionTestUtils.setField(provider, "employee", employee);

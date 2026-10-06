@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.quote.context;
 
+import com.th4.edge.components.lock.DistributedLocked;
+
 import com.th4.edge.decoboon.common.support.CraftText;
 import com.th4.edge.decoboon.pack.context.PackageContext;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -235,6 +237,7 @@ public class QuoteContext {
         return quoteRepository.save(quote);
     }
 
+    @DistributedLocked(key = "#root.acceptLockKey(#quoteId)")
     @Transactional
     public Quote accept(Long quoteId) {
         Quote quote = requireQuote(quoteId);
@@ -439,5 +442,22 @@ public class QuoteContext {
 
     private BigDecimal money(BigDecimal value) {
         return value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 报价接受与同一房屋下的合同/立项共用同一把房屋锁，保证同一房屋的报价确认、签约、立项严格串行。
+     */
+    public String acceptLockKey(Long quoteId) {
+        if (quoteId == null) {
+            return "quote-accept:unknown";
+        }
+        Quote quote = quoteRepository.findById(quoteId).orElse(null);
+        Property property = quote == null ? null : quote.getProperty();
+        if (property == null || property.getPropertyId() == null) {
+            // 报价不存在或缺房屋时仍返回非空键，由业务方法按既有口径返回 400/404。
+            return "quote-accept:" + quoteId;
+        }
+        Long comId = property.getCompany() == null ? null : property.getCompany().getComId();
+        return "property:" + comId + ":" + property.getPropertyId();
     }
 }

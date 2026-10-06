@@ -3,8 +3,6 @@ package com.th4.edge.decoboon.property.repository;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Lock;
-import jakarta.persistence.LockModeType;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +11,6 @@ import java.util.Optional;
 public interface PropertyRepository extends JpaRepository<Property, Long>,
         JpaSpecificationExecutor<Property> {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Property> findByPropertyIdAndCompany_ComId(Long propertyId, Long comId);
 
     boolean existsByCompany_ComIdAndCustomer_CustIdAndAddress(Long comId, Long custId, String address);

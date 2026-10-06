@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.customer.service.cust.delete.support;
 
+import com.th4.edge.components.lock.DistributedLock;
+
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerPortraitRepository;
@@ -46,6 +48,7 @@ public class Delete implements com.th4.edge.decoboon.customer.service.cust.delet
     private Long customerId;
 
     private final TenantContext tenantContext;
+    private final DistributedLock distributedLock;
     private final CustomerRepository customerRepository;
     private final CustomerFollowRepository followRepository;
     private final CustomerPortraitRepository portraitRepository;
@@ -58,6 +61,7 @@ public class Delete implements com.th4.edge.decoboon.customer.service.cust.delet
     private final ProjectContractRepository contractRepository;
 
     public Delete(TenantContext tenantContext,
+                  DistributedLock distributedLock,
                   CustomerRepository customerRepository,
                   CustomerFollowRepository followRepository,
                   CustomerPortraitRepository portraitRepository,
@@ -69,6 +73,7 @@ public class Delete implements com.th4.edge.decoboon.customer.service.cust.delet
                   ProjectRepository projectRepository,
                   ProjectContractRepository contractRepository) {
         this.tenantContext = tenantContext;
+        this.distributedLock = distributedLock;
         this.customerRepository = customerRepository;
         this.followRepository = followRepository;
         this.portraitRepository = portraitRepository;
@@ -89,16 +94,25 @@ public class Delete implements com.th4.edge.decoboon.customer.service.cust.delet
             throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人可以删除客户"));
         }
         Long comId = current.getCompany().getComId();
-        Customer customer = customerRepository.findByCustIdAndCompany_ComId(customerId, comId)
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
-        if (hasBusinessFacts(comId, customer.getCustId())) {
-            throw new DefinedException(new DefaultErrorCode(
-                    "409", "客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除"));
+        // 删除是先读后写：并发删除同一客户必须串行，替代原 customer 行级悲观锁。
+        String lockKey = "customer:" + comId + ":" + customerId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "该客户正在被处理，请稍后重试"));
         }
-        portraitRepository.deleteByCompany_ComIdAndCustomer_CustId(comId, customer.getCustId());
-        tagLinkRepository.deleteByCompany_ComIdAndCustomer_CustId(comId, customer.getCustId());
-        customerRepository.delete(customer);
-        return customer;
+        try {
+            Customer customer = customerRepository.findByCustIdAndCompany_ComId(customerId, comId)
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
+            if (hasBusinessFacts(comId, customer.getCustId())) {
+                throw new DefinedException(new DefaultErrorCode(
+                        "409", "客户已形成跟进、房屋、设计、报价、合同或项目事实，不能删除"));
+            }
+            portraitRepository.deleteByCompany_ComIdAndCustomer_CustId(comId, customer.getCustId());
+            tagLinkRepository.deleteByCompany_ComIdAndCustomer_CustId(comId, customer.getCustId());
+            customerRepository.delete(customer);
+            return customer;
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     private boolean hasBusinessFacts(Long comId, Long customerId) {

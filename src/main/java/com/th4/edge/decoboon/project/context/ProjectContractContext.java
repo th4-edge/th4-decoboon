@@ -13,6 +13,7 @@ import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.model.ContractChange;
 import com.th4.edge.decoboon.project.model.ContractLine;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
@@ -89,6 +90,7 @@ public class ProjectContractContext {
     }
 
     /** 客户确认报价后先创建合同草稿/待签，不创建项目。 */
+    @DistributedLocked(key = "#root.contractLockKey(#quote)")
     @Transactional
     public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt,
                                            LocalDate startDate, LocalDate planEndDate, String remark) {
@@ -97,12 +99,14 @@ public class ProjectContractContext {
     }
 
     /** 客户确认报价后先创建合同草稿/待签，不创建项目。 */
+    @DistributedLocked(key = "#root.contractLockKey(#quote)")
     @Transactional
     public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt, BigDecimal signedAmount,
                                            LocalDate startDate, LocalDate planEndDate, String remark) {
         return createFromQuote(quote, employee, signedAt, signedAmount, startDate, planEndDate, remark, null, null);
     }
 
+    @DistributedLocked(key = "#root.contractLockKey(#quote)")
     @Transactional
     public ProjectContract createFromQuote(Quote quote, Employee employee, LocalDate signedAt, BigDecimal signedAmount,
                                            LocalDate startDate, LocalDate planEndDate, String remark,
@@ -389,6 +393,23 @@ public class ProjectContractContext {
         if (!lines.isEmpty()) {
             lineRepository.saveAll(lines);
         }
+    }
+
+    /**
+     * 同一房屋串行建合同：house 锁与报价确认、立项共用同一键，替代原房屋行级悲观锁。
+     * key 不可解析时退化为报价维度，保证仍有非空锁键并由业务方法返回既有错误口径。
+     */
+    public String contractLockKey(Quote quote) {
+        if (quote == null) {
+            return "property-contract:unknown";
+        }
+        Property property = quote.getProperty();
+        if (property == null || property.getPropertyId() == null) {
+            return "property-contract:quote:" + quote.getQuoteId();
+        }
+        Long comId = property.getCompany() != null ? property.getCompany().getComId()
+                : (quote.getCompany() == null ? null : quote.getCompany().getComId());
+        return "property:" + comId + ":" + property.getPropertyId();
     }
 
     private BigDecimal money(BigDecimal value) {
