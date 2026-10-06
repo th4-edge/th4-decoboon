@@ -137,8 +137,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-06 同步当前 dev 基线实际 Provider 数：383（public 13 + protected 370）。
         // 2026-10-07 指标口径字典新增 1 条（statistic/metric/dictionary，protected）。
         // => 总数为 384（public 13 + protected 371）。
-        assertThat(routes).hasSize(384);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(371);
+        // 2026-10-07 员工工资提成 / 企业单据模板版本 · 版式 · 凭证设计器 / 客户退款 在途功能整批上线，
+        // protected 新增 32 条 => 总数为 416（public 13 + protected 403）。
+        assertThat(routes).hasSize(416);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(403);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
