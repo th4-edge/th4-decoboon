@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -77,7 +78,8 @@ class ProjectCostContextTest {
         CarryoverCostSnapshot snapshot = new CarryoverCostSnapshot();
         snapshot.setTotalCost(new BigDecimal("12000.00"));
         snapshot.setCostStatus(CarryoverCostStatus.Complete);
-        when(snapshots.findByProject_ProjectId(88L)).thenReturn(java.util.Optional.of(snapshot));
+        snapshot.setProject(project);
+        when(snapshots.findByProject_ProjectIdIn(any())).thenReturn(List.of(snapshot));
 
         ProjectCostContext.CostSummary summary = carryoverContext.summarize(project);
 
@@ -101,7 +103,8 @@ class ProjectCostContextTest {
         CarryoverCostSnapshot snapshot = new CarryoverCostSnapshot();
         snapshot.setTotalCost(new BigDecimal("12000.00"));
         snapshot.setCostStatus(CarryoverCostStatus.TotalOnly);
-        when(snapshots.findByProject_ProjectId(89L)).thenReturn(java.util.Optional.of(snapshot));
+        snapshot.setProject(project);
+        when(snapshots.findByProject_ProjectIdIn(any())).thenReturn(List.of(snapshot));
 
         ProjectCostContext.CostSummary summary = carryoverContext.summarize(project);
 
@@ -163,7 +166,8 @@ class ProjectCostContextTest {
                 new com.th4.edge.decoboon.project.model.ContractLine();
         line.setType(ItemType.Material);
         line.setCost(new BigDecimal("188.00"));
-        when(contractLines.findByContract_Project_ProjectIdOrderBySortAsc(77L)).thenReturn(List.of(line));
+        line.setContract(contractOf(project));
+        when(contractLines.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(line));
 
         ProjectCostContext.CostSummary summary = context.summarize(project);
 
@@ -187,8 +191,8 @@ class ProjectCostContextTest {
         contractLine.setType(ItemType.Material);
         contractLine.setCost(BigDecimal.ZERO);
         contractLine.setSourceQuoteLine(source);
-        when(contractLines.findByContract_Project_ProjectIdOrderBySortAsc(78L))
-                .thenReturn(List.of(contractLine));
+        contractLine.setContract(contractOf(project));
+        when(contractLines.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(contractLine));
 
         ProjectCostContext.CostSummary summary = context.summarize(project);
 
@@ -216,9 +220,10 @@ class ProjectCostContextTest {
         PurchaseOrder purchaseOrder = new PurchaseOrder();
         purchaseOrder.setStatus(com.th4.edge.decoboon.project.configure.PurchaseStatus.PartiallyReceived);
         purchaseOrder.setQuoteLine(source);
-        when(contractLines.findByContract_Project_ProjectIdOrderBySortAsc(80L))
-                .thenReturn(List.of(contractLine));
-        when(purchaseOrders.findByProjectOrderByPurchaseIdDesc(project)).thenReturn(List.of(purchaseOrder));
+        contractLine.setContract(contractOf(project));
+        when(contractLines.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(contractLine));
+        purchaseOrder.setProject(project);
+        when(purchaseOrders.findByProject_ProjectIdInOrderByPurchaseIdDesc(any())).thenReturn(List.of(purchaseOrder));
 
         ProjectCostContext.CostSummary summary = context.summarize(project);
 
@@ -249,9 +254,10 @@ class ProjectCostContextTest {
         purchaseOrder.setQuoteLine(source);
         purchaseOrder.setQuantity(BigDecimal.ONE);
         purchaseOrder.setReceivedQuantity(BigDecimal.ONE);
-        when(contractLines.findByContract_Project_ProjectIdOrderBySortAsc(81L))
-                .thenReturn(List.of(contractLine));
-        when(purchaseOrders.findByProjectOrderByPurchaseIdDesc(project)).thenReturn(List.of(purchaseOrder));
+        contractLine.setContract(contractOf(project));
+        when(contractLines.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(contractLine));
+        purchaseOrder.setProject(project);
+        when(purchaseOrders.findByProject_ProjectIdInOrderByPurchaseIdDesc(any())).thenReturn(List.of(purchaseOrder));
 
         ProjectCostContext.CostSummary summary = context.summarize(project);
 
@@ -287,9 +293,9 @@ class ProjectCostContextTest {
         second.setQuoteLine(source);
         second.setQuantity(BigDecimal.ONE);
         second.setReceivedQuantity(BigDecimal.ONE);
-        when(contractLines.findByContract_Project_ProjectIdOrderBySortAsc(82L))
-                .thenReturn(List.of(contractLine));
-        when(purchaseOrders.findByProjectOrderByPurchaseIdDesc(project))
+        contractLine.setContract(contractOf(project));
+        when(contractLines.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(contractLine));
+        when(purchaseOrders.findByProject_ProjectIdInOrderByPurchaseIdDesc(any()))
                 .thenReturn(List.of(first, second));
 
         ProjectCostContext.CostSummary summary = context.summarize(project);
@@ -315,8 +321,8 @@ class ProjectCostContextTest {
         contractLine.setType(ItemType.Material);
         contractLine.setCost(BigDecimal.ZERO);
         contractLine.setSourceQuoteLine(source);
-        when(contractLines.findByContract_Project_ProjectIdOrderBySortAsc(79L))
-                .thenReturn(List.of(contractLine));
+        contractLine.setContract(contractOf(project));
+        when(contractLines.findByContract_Project_ProjectIdInOrderBySortAsc(any())).thenReturn(List.of(contractLine));
 
         ProjectCostContext.CostSummary summary = context.summarize(project);
 
@@ -354,5 +360,13 @@ class ProjectCostContextTest {
         item.setType(type);
         item.setPricingMode(pricingMode);
         return item;
+    }
+
+    /** 测试夹具：合同行分组需要 contract.project 关联。 */
+    private static com.th4.edge.decoboon.project.model.ProjectContract contractOf(Project project) {
+        com.th4.edge.decoboon.project.model.ProjectContract contract =
+                new com.th4.edge.decoboon.project.model.ProjectContract();
+        contract.setProject(project);
+        return contract;
     }
 }

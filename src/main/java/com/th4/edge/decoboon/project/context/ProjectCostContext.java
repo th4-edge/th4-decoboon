@@ -48,28 +48,77 @@ public class ProjectCostContext {
     }
 
     public CostSummary summarize(Project project) {
-        CarryoverCostSnapshot snapshot = carryoverSnapshot(project);
-        if (snapshot == null) {
-            return summarizePostCarryover(project);
+        if (project == null || project.getProjectId() == null) {
+            // 无项目主键（历史/测试夹具）时保持原单一项目语义：直接按报价行回退。
+            List<QuoteLine> lines = project == null || project.getQuote() == null
+                    ? List.of() : quoteLineRepository.findByQuote(project.getQuote());
+            return summarizePostCarryover(project, List.of(), List.of(), lines);
         }
-        CostSummary post = summarizePostCarryover(project);
-        BigDecimal pre = money(snapshot.getTotalCost());
-        int incomplete = post.incompleteItemCount()
-                + (snapshot.getCostStatus() == CarryoverCostStatus.Complete ? 0 : 1);
-        return new CostSummary(money(post.estimatedCost().add(pre)),
-                money(post.actualCost().add(pre)), incomplete);
+        return summarizeAll(List.of(project)).get(project.getProjectId());
     }
 
-    private CostSummary summarizePostCarryover(Project project) {
+    /**
+     * 批量汇总多项目成本（财务汇总等聚合读取用）。
+     *
+     * <p>原实现逐项目查询「接管快照 / 采购单 / 合同行 / 报价行」，项目数 N 时产生 4N 次查询；
+     * 这里改为按项目集合批量取数后内存分组，查询条数与项目数解耦。金额与完整性判定
+     * 完全复用同一套规则，{@link #summarize(Project)} 也委托到本方法，保证单项目/批量口径一致。</p>
+     */
+    public java.util.Map<Long, CostSummary> summarizeAll(java.util.Collection<Project> projects) {
+        List<Project> list = projects == null ? List.of()
+                : projects.stream().filter(item -> item != null && item.getProjectId() != null).toList();
+        if (list.isEmpty()) {
+            return java.util.Map.of();
+        }
+        List<Long> projectIds = list.stream().map(Project::getProjectId).distinct().toList();
+
+        java.util.Map<Long, CarryoverCostSnapshot> snapshots = carryoverCostRepository == null
+                ? java.util.Map.of()
+                : carryoverCostRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.toMap(
+                                item -> item.getProject().getProjectId(), item -> item, (left, right) -> left));
+        java.util.Map<Long, List<PurchaseOrder>> ordersByProject =
+                purchaseOrderRepository.findByProject_ProjectIdInOrderByPurchaseIdDesc(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, List<ContractLine>> contractLinesByProject =
+                contractLineRepository.findByContract_Project_ProjectIdInOrderBySortAsc(projectIds).stream()
+                        .filter(item -> item.getContract() != null && item.getContract().getProject() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(
+                                item -> item.getContract().getProject().getProjectId()));
+        // 未签约项目（无合同行）才回退到报价行，属低频路径：仅对这类项目按报价查询，
+        // 保持与原实现完全相同的回退语义；有合同行的项目不再触碰报价行。
+        java.util.Map<Long, CostSummary> result = new java.util.LinkedHashMap<>();
+        for (Project project : list) {
+            CarryoverCostSnapshot snapshot = snapshots.get(project.getProjectId());
+            CostSummary post = summarizePostCarryover(project,
+                    ordersByProject.getOrDefault(project.getProjectId(), List.of()),
+                    contractLinesByProject.getOrDefault(project.getProjectId(), List.of()),
+                    contractLinesByProject.containsKey(project.getProjectId()) || project.getQuote() == null
+                            ? List.of()
+                            : quoteLineRepository.findByQuote(project.getQuote()));
+            if (snapshot == null) {
+                result.put(project.getProjectId(), post);
+                continue;
+            }
+            BigDecimal pre = money(snapshot.getTotalCost());
+            int incomplete = post.incompleteItemCount()
+                    + (snapshot.getCostStatus() == CarryoverCostStatus.Complete ? 0 : 1);
+            result.put(project.getProjectId(), new CostSummary(money(post.estimatedCost().add(pre)),
+                    money(post.actualCost().add(pre)), incomplete));
+        }
+        return result;
+    }
+
+    private CostSummary summarizePostCarryover(Project project,
+                                              List<PurchaseOrder> purchaseOrders,
+                                              List<ContractLine> signedLines,
+                                              List<QuoteLine> lines) {
         if (project == null || project.getQuote() == null) {
             BigDecimal fallback = value(project == null ? null : project.getCost());
             return new CostSummary(fallback, fallback, fallback.signum() > 0 ? 0 : 1);
         }
-        List<PurchaseOrder> purchaseOrders = project.getProjectId() == null
-                ? List.of()
-                : purchaseOrderRepository.findByProjectOrderByPurchaseIdDesc(project);
-        List<ContractLine> signedLines = contractLineRepository
-                .findByContract_Project_ProjectIdOrderBySortAsc(project.getProjectId());
         if (!signedLines.isEmpty()) {
             BigDecimal signedEstimated = BigDecimal.ZERO;
             BigDecimal signedActual = BigDecimal.ZERO;
@@ -90,7 +139,6 @@ public class ProjectCostContext {
             }
             return new CostSummary(money(signedEstimated), money(signedActual), signedIncomplete);
         }
-        List<QuoteLine> lines = quoteLineRepository.findByQuote(project.getQuote());
         if (lines == null || lines.isEmpty()) {
             if (project.getBusinessOrigin() == BusinessOrigin.Carryover) {
                 return new CostSummary(BigDecimal.ZERO, BigDecimal.ZERO, 0);
@@ -249,14 +297,6 @@ public class ProjectCostContext {
                 || type == ItemType.Custom
                 || type == ItemType.Soft
                 || type == ItemType.Appliance;
-    }
-
-    private CarryoverCostSnapshot carryoverSnapshot(Project project) {
-        if (carryoverCostRepository == null || project == null || project.getProjectId() == null
-                || project.getBusinessOrigin() != BusinessOrigin.Carryover) {
-            return null;
-        }
-        return carryoverCostRepository.findByProject_ProjectId(project.getProjectId()).orElse(null);
     }
 
     private BigDecimal value(BigDecimal value) {
