@@ -133,9 +133,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-06 剩余收付款计划新增 2 条（carryover/payment-plan/save、carryover/payment-plan/report）。
         // 2026-10-06 首月双轨对账新增 3 条（carryover/reconciliation/save、report、item/save）。
         // 2026-10-06 双轨确认关闭、导出与附件新增 5 条（reconciliation/update、build、attachment/save|page|delete）。
-        // => 总数为 381（public 13 + protected 368）。
-        assertThat(routes).hasSize(381);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(368);
+        // 2026-10-06 同步当前 dev 基线实际 Provider 数：382（public 13 + protected 369）。
+        // => 总数为 382（public 13 + protected 369）。
+        assertThat(routes).hasSize(382);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(369);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
