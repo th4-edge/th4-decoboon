@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
                         "area", "layout", "status", "salesman", "designer"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
 })
 @Service("design/scheme/update")
 @Scope(ScopeTypes.PROTOTYPE)
