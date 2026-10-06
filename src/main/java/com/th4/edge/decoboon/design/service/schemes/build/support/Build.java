@@ -73,16 +73,17 @@ public class Build implements com.th4.edge.decoboon.design.service.schemes.build
         designContext.requireEditable(design);
         if (status == DesignStatus.Ready || status == DesignStatus.Presented || status == DesignStatus.Selected) {
             List<Space> spaces = spaceRepository.findByDesign_DesignIdOrderBySortAsc(designId);
-            if (spaces.isEmpty()) {
-                throw new DefinedException(new DefaultErrorCode("400", "请先录入方案区域和尺寸"));
-            }
             if (itemRepository.findByDesign_DesignIdOrderBySortAsc(designId).isEmpty()) {
                 throw new DefinedException(new DefaultErrorCode("400", "请先配置施工或材料分项"));
             }
-            design.setArea(spaces.stream()
-                    .map(Space::getArea)
-                    .filter(java.util.Objects::nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add));
+            // 区域是可选的设计组织维度：允许无区域但有综合项目的方案完成；
+            // 有区域时仍按区域面积汇总，无区域时保留方案已有面积，不强制改写为 0。
+            if (!spaces.isEmpty()) {
+                design.setArea(spaces.stream()
+                        .map(Space::getArea)
+                        .filter(java.util.Objects::nonNull)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add));
+            }
         }
         design.setStatus(status);
         return designRepository.save(design);
