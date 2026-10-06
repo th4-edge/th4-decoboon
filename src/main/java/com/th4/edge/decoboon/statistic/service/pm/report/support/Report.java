@@ -165,22 +165,18 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
                 : materialPlanRepository.findByProject_ProjectIdIn(projectIds).stream()
                         .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
                         .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
-        java.util.Map<Long, List<Acceptance>> acceptancesByProject = projectIds.isEmpty() ? java.util.Map.of()
-                : acceptanceRepository.findByProject_ProjectIdInOrderByAcceptanceIdDesc(projectIds).stream()
-                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
-                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
-        java.util.Map<Long, List<ProjectReport>> reportsByProject = projectIds.isEmpty() ? java.util.Map.of()
-                : reportRepository.findByCompany_ComIdAndProject_ProjectIdInOrderByCreateTime_DateTimeDesc(comId, projectIds)
-                        .stream()
-                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
-                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
         for (Project project : projects) {
             allTasks.addAll(tasksByProject.getOrDefault(project.getProjectId(), List.of()));
             allMaterials.addAll(materialsByProject.getOrDefault(project.getProjectId(), List.of()));
-            allAcceptances.addAll(acceptancesByProject
-                    .getOrDefault(project.getProjectId(), List.of()).stream().limit(50).toList());
-            List<ProjectReport> projectReports = reportsByProject
-                    .getOrDefault(project.getProjectId(), List.of()).stream().limit(30).toList();
+            // 有界查询：每项目最多 50 条（原语义）。批量版本会取回远超需要的行，实测导致耗时翻倍。
+            allAcceptances.addAll(acceptanceRepository
+                    .findByProject_ProjectIdOrderByAcceptanceIdDesc(project.getProjectId(), PageRequest.of(0, 50))
+                    .getContent());
+            // 有界查询：每项目最多 30 条（原语义）
+            List<ProjectReport> projectReports = reportRepository
+                    .findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
+                            comId, project.getProjectId(), PageRequest.of(0, 30))
+                    .getContent();
             allReports.addAll(projectReports);
             report.setReportTodayCount(report.getReportTodayCount() + countReportsOn(projectReports, today));
             report.setReportWeekCount(report.getReportWeekCount() + countReportsSince(projectReports, weekStart));
