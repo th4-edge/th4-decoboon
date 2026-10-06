@@ -154,9 +154,15 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
 
         LocalDate today = LocalDate.now();
         LocalDate weekStart = today.minusDays(6);
+        // Step 2-1：任务改为循环外一次批量取数（DEC-036 正模式）
+        List<Long> projectIds = projects.stream().map(Project::getProjectId)
+                .filter(java.util.Objects::nonNull).distinct().toList();
+        java.util.Map<Long, List<ProjectTask>> tasksByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : taskRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
         for (Project project : projects) {
-            List<ProjectTask> projectTasks = taskRepository.findByProject(project);
-            allTasks.addAll(projectTasks);
+            allTasks.addAll(tasksByProject.getOrDefault(project.getProjectId(), List.of()));
             allMaterials.addAll(materialPlanRepository.findByProject(project));
             allAcceptances.addAll(acceptanceRepository
                     .findByProject_ProjectIdOrderByAcceptanceIdDesc(project.getProjectId(), PageRequest.of(0, 50))
