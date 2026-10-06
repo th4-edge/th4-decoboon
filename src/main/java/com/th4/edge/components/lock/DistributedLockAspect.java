@@ -16,8 +16,10 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
-/** @DistributedLocked 切面：锁在事务外层获取，finally 释放。 */
+/** @DistributedLocked 切面：锁在事务外层获取，按声明顺序加锁、逆序释放。 */
 @Note("分布式锁切面")
 @Aspect
 @Component
@@ -39,18 +41,34 @@ public class DistributedLockAspect {
         if (locked == null) {
             return joinPoint.proceed();
         }
-        String key = resolveKey(joinPoint, locked.key());
-        if (!distributedLock.tryLock(key, locked.waitMillis(), locked.leaseMillis())) {
-            throw new DefinedException(new DefaultErrorCode("409", locked.message()));
-        }
+        List<String> keys = resolveKeys(joinPoint, locked);
+        List<String> acquired = new ArrayList<>(keys.size());
         try {
+            for (String key : keys) {
+                if (!distributedLock.tryLock(key, locked.waitMillis(), locked.leaseMillis())) {
+                    throw new DefinedException(new DefaultErrorCode("409", locked.message()));
+                }
+                acquired.add(key);
+            }
             return joinPoint.proceed();
         } finally {
-            distributedLock.unlock(key);
+            for (int index = acquired.size() - 1; index >= 0; index--) {
+                distributedLock.unlock(acquired.get(index));
+            }
         }
     }
 
-    private String resolveKey(ProceedingJoinPoint joinPoint, String expression) {
+    private List<String> resolveKeys(ProceedingJoinPoint joinPoint, DistributedLocked locked) {
+        StandardEvaluationContext context = buildContext(joinPoint);
+        List<String> keys = new ArrayList<>();
+        keys.add(resolveKey(context, locked.key()));
+        for (String expression : locked.extraKeys()) {
+            keys.add(resolveKey(context, expression));
+        }
+        return keys;
+    }
+
+    private StandardEvaluationContext buildContext(ProceedingJoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         StandardEvaluationContext context = new StandardEvaluationContext(joinPoint.getTarget());
@@ -60,6 +78,13 @@ public class DistributedLockAspect {
             for (int i = 0; i < names.length && i < args.length; i++) {
                 context.setVariable(names[i], args[i]);
             }
+        }
+        return context;
+    }
+
+    private String resolveKey(StandardEvaluationContext context, String expression) {
+        if (expression == null || expression.isBlank()) {
+            throw new LockException("分布式锁 key 表达式为空");
         }
         Object value = PARSER.parseExpression(expression).getValue(context);
         String key = value == null ? null : value.toString();

@@ -3,14 +3,16 @@ package com.th4.edge.decoboon.customer.repository;
 import com.th4.edge.decoboon.customer.configure.CustomerAccessStatus;
 import com.th4.edge.decoboon.customer.model.CustomerAccess;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.Lock;
 
 import java.util.List;
 import java.util.Optional;
 
-/** 业主项目授权仓储。 */
+/**
+ * 业主项目授权仓储。
+ *
+ * <p>非加锁读取；(cre_id, project_id) 唯一约束下的并发写入由 {@code @DistributedLocked} 串行化。</p>
+ */
 public interface CustomerAccessRepository extends JpaRepository<CustomerAccess, Long> {
 
     @EntityGraph(attributePaths = {"project", "project.property", "project.customer", "project.designer",
@@ -24,9 +26,6 @@ public interface CustomerAccessRepository extends JpaRepository<CustomerAccess, 
             Long creId, Long projectId, CustomerAccessStatus status);
 
     Optional<CustomerAccess> findByCredential_CreIdAndProject_ProjectId(Long creId, Long projectId);
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<CustomerAccess> findLockedByCredential_CreIdAndProject_ProjectId(Long creId, Long projectId);
 
     List<CustomerAccess> findByInvite_InviteId(Long inviteId);
 

@@ -12,6 +12,14 @@ public @interface DistributedLocked {
 
     String key();
 
+    /**
+     * 额外加锁的 SpEL 键，按声明顺序在 {@link #key()} 之后获取、逆序释放。
+     *
+     * <p>用于一个方法需要同时串行化两类互斥对象的场景（如业主邀请：既要按邀请串行，
+     * 又要按「微信身份 + 项目」授权串行）。注意所有调用方必须保持相同的加锁顺序，避免死锁。</p>
+     */
+    String[] extraKeys() default {};
+
     long waitMillis() default 1000;
 
     long leaseMillis() default 30000;
