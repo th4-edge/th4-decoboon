@@ -26,5 +26,13 @@ public interface ProjectReportRepository extends JpaRepository<ProjectReport, Lo
     List<ProjectReport> findByCompany_ComIdAndProject_ProjectIdInOrderByCreateTime_DateTimeDesc(
             Long comId, java.util.Collection<Long> projectIds);
 
+    /** 角色报表：一次按项目分组统计日报数，替代逐项目 count（DEC-036 正模式：计数用聚合 SQL）。 */
+    @org.springframework.data.jpa.repository.Query("select r.project.projectId, count(r) from ProjectReport r "
+            + "where r.company.comId = :comId and r.project.projectId in :projectIds "
+            + "group by r.project.projectId")
+    List<Object[]> countGroupByProject(@org.springframework.data.repository.query.Param("comId") Long comId,
+                                       @org.springframework.data.repository.query.Param("projectIds")
+                                       java.util.Collection<Long> projectIds);
+
     long countByProject_ProjectId(Long projectId);
 }

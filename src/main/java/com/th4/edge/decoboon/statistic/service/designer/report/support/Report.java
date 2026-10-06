@@ -129,14 +129,27 @@ public class Report implements com.th4.edge.decoboon.statistic.service.designer.
         int done = 0;
         int overdue = 0;
         int reportCount = 0;
+        // DEC-036：循环外一次批量取数，循环内零查询
+        List<Long> projectIds = projects.stream().map(Project::getProjectId)
+                .filter(java.util.Objects::nonNull).distinct().toList();
+        java.util.Map<Long, List<ProjectTask>> tasksByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : taskRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, Integer> reportCountByProject = new java.util.HashMap<>();
+        if (!projectIds.isEmpty()) {
+            for (Object[] row : projectReportRepository.countGroupByProject(comId, projectIds)) {
+                reportCountByProject.put((Long) row[0], ((Number) row[1]).intValue());
+            }
+        }
         for (Project project : projects) {
-            for (ProjectTask task : taskRepository.findByProject(project)) {
+            for (ProjectTask task : tasksByProject.getOrDefault(project.getProjectId(), List.of())) {
                 if (task.getStatus() == TaskStatus.Todo || task.getStatus() == TaskStatus.Doing) todo++;
                 if (task.getStatus() == TaskStatus.Done) done++;
                 if (task.getPlannedEnd() != null && task.getPlannedEnd().isBefore(LocalDate.now())
                         && task.getStatus() != TaskStatus.Done && task.getStatus() != TaskStatus.Cancelled) overdue++;
             }
-            reportCount += projectReportRepository.countByProject_ProjectId(project.getProjectId());
+            reportCount += reportCountByProject.getOrDefault(project.getProjectId(), 0);
         }
         report.setTaskTodoCount(todo);
         report.setTaskDoneCount(done);
