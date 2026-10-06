@@ -32,8 +32,13 @@ public class DistributedLockAspect {
         this.distributedLock = distributedLock;
     }
 
-    @Around("@annotation(locked)")
-    public Object around(ProceedingJoinPoint joinPoint, DistributedLocked locked) throws Throwable {
+    @Around("@annotation(com.th4.edge.components.lock.DistributedLocked)")
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+        DistributedLocked locked = method.getAnnotation(DistributedLocked.class);
+        if (locked == null) {
+            return joinPoint.proceed();
+        }
         String key = resolveKey(joinPoint, locked.key());
         if (!distributedLock.tryLock(key, locked.waitMillis(), locked.leaseMillis())) {
             throw new DefinedException(new DefaultErrorCode("409", locked.message()));
