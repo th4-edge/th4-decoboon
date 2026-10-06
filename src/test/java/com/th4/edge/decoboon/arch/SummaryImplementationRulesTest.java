@@ -54,6 +54,11 @@ class SummaryImplementationRulesTest {
      */
     private static final java.util.Map<String, Set<String>> LEGACY_BASELINE = java.util.Map.ofEntries(
             java.util.Map.entry("project/context/ProjectCostContext.java", Set.of("A2")),
+            java.util.Map.entry("statistic/service/teamleader/report/support/Report.java", Set.of("A2")),
+            java.util.Map.entry("statistic/service/store/report/support/Report.java", Set.of("A2")),
+            java.util.Map.entry("statistic/service/pm/report/support/Report.java", Set.of("A2")),
+            java.util.Map.entry("statistic/service/marketer/report/support/Report.java", Set.of("A2")),
+            java.util.Map.entry("statistic/service/designer/report/support/Report.java", Set.of("A2")),
             java.util.Map.entry("statistic/context/RiskCenterContext.java", Set.of("A7")),
             java.util.Map.entry("statistic/context/OrganizationContext.java", Set.of("A7")),
             java.util.Map.entry("carryover/context/CarryoverReconciliationContext.java", Set.of("A7")),
@@ -154,10 +159,10 @@ class SummaryImplementationRulesTest {
         try (Stream<Path> files = Files.walk(SRC)) {
             for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
                 String rel = rel(file);
-                if (!inScope(rel)) {
+                String source = Files.readString(file);
+                if (!inScope(rel, source)) {
                     continue;
                 }
-                String source = Files.readString(file);
                 Set<String> queryHelpers = new java.util.HashSet<>();
                 Matcher mm = Pattern.compile("(?:private|protected|public)\\s+[\\w<>,\\[\\].\\s]+?\\s+(\\w+)\\s*\\([^)]*\\)\\s*\\{")
                         .matcher(source);
@@ -282,10 +287,11 @@ class SummaryImplementationRulesTest {
         try (Stream<Path> files = Files.walk(SRC)) {
             for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
                 String rel = rel(file);
+                String source = Files.readString(file);
+                // A7 只针对 context 之间/内部：Provider（service/**/support）调用自己的 delegate context 属正常委托
                 if (!inScope(rel)) {
                     continue;
                 }
-                String source = Files.readString(file);
                 // 字段名（camelCase）与类型名都要覆盖：financeContext.summary(...) / FinanceReportContext.summary(...)
                 Matcher m = Pattern.compile("\\b(\\w*[Cc]ontext)\\s*\\.\\s*(summary|report|dashboard|workbench|overview)\\s*\\(")
                         .matcher(source);
@@ -306,10 +312,10 @@ class SummaryImplementationRulesTest {
         try (Stream<Path> files = Files.walk(SRC)) {
             for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
                 String rel = rel(file);
-                if (!inScope(rel)) {
+                String source = Files.readString(file);
+                if (!inScope(rel, source)) {
                     continue;
                 }
-                String source = Files.readString(file);
                 if (rule.startsWith("A1")) {
                     // 「全量实体 + 内存求和」的真实形态：同一文件既 findAll(...) 又对结果做 sum()/count()。
                     // 允许：代价为 O(1) 或已注释豁免的场景（需评审）。存量见 LEGACY_BASELINE。
@@ -344,6 +350,25 @@ class SummaryImplementationRulesTest {
 
     private boolean inScope(String rel) {
         return SUMMARY_PACKAGES.stream().anyMatch(rel::contains);
+    }
+
+    /**
+     * 扩大的纳管判定：登记在 {@link #SUMMARY_PACKAGES}，**或**该文件本身声明了统计语义路由。
+     *
+     * <p>补此判定是因为 `statistic/pm/report` 这类实现把汇总逻辑**直接写在 Provider 的 support 类里**
+     * （没有 delegate Context），只按 context 路径纳管会永远扫不到它们。</p>
+     */
+    private boolean inScope(String rel, String source) {
+        if (inScope(rel)) {
+            return true;
+        }
+        Matcher m = Pattern.compile("@Service\\(\\s*\"([^\"]+)\"\\s*\\)").matcher(source);
+        while (m.find()) {
+            if (m.group(1).matches("(?i).*(statistic|report|workbench|dashboard|summary|overview|metrics|cockpit).*")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String rel(Path file) {
