@@ -54,7 +54,8 @@ AUDIT-ID: AUD-20261007-001
 - 迁移前全仓扫描：`@Lock(PESSIMISTIC_*)` / `FOR UPDATE` / `LOCK IN SHARE MODE` 共 **17 处，12 个文件**；
 - **Batch 1 已完成**：`CatalogImportBatchRepository` 数据库锁移除，确认导入/撤销改用 `DistributedLock`（生产 `RedissonLock`，测试禁用时 no-op）；release `20261007-022508`，commit `60fabbe`；
 - **Batch 2 已完成**：`CarryoverProjectRepository` 两个数据库锁方法移除，`CarryoverApplyContext`、`CarryoverProjectContext`、`CarryoverAdjustmentContext`、`CarryoverLockContext` 改用 `DistributedLock`；release `20261007-023421`，commit `d952c40`；
-- 剩余 **13 处 / 10 个文件**，按下列批次迁移：
+- **Batch 3 已完成**：`ProjectStageRepository`、`AcceptanceRepository` 数据库锁移除，两个 Provider 与 `ProjectContext.submitAcceptance` 改用分布式锁；release `20261007-025828`，commit `95f380d`；
+- 剩余 **11 处 / 8 个文件**，按下列批次迁移：
   1. Batch 3：`ProjectStageRepository`、`AcceptanceRepository`（2 处）；
   2. Batch 4：`CustomerRepository`、`PropertyRepository`（2 处，公共 finder，需改调用方）；
   3. Batch 5：`CustomerInviteRepository`、`CustomerAccessRepository`（3 处，邀请/访问）；
@@ -74,7 +75,7 @@ AUDIT-ID: AUD-20261007-001
 ## 6. 建议与复测
 
 1. 用真实 BOSS 会话复测 App 首页、财务工作台、Web 财务页：≥20 次采样，输出 P50/P95/P99、SQL 条数、页面瀑布；
-2. 继续迁移剩余 10 个 `@Lock(PESSIMISTIC_*)` 文件（Batch 3–7）到 `RedissonLock`，提供 key/wait/lease/幂等/解锁证据；
+2. 继续迁移剩余 8 个 `@Lock(PESSIMISTIC_*)` 文件（Batch 4–7）到 `RedissonLock` / `@DistributedLocked`，提供 key/wait/lease/幂等/解锁证据；
 3. 若复测仍超预算，P2：`findAll(Specification)` EntityGraph/投影、onboarding/success 合并读模型、请求耗时 + SQL 条数常驻监控、报表分页/异步；
 4. 多租户 10× 数据量与并发验证未执行，属于必测项。
 
