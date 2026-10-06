@@ -246,6 +246,15 @@ class SummaryImplementationRulesTest {
                     if (!route.matches("(?i).*(statistic|report|workbench|dashboard|summary|overview|metrics|cockpit).*")) {
                         continue;
                     }
+                    // 变更类能力不属统计实现治理范围（如 attendance/summary/delete 是业务删除，不是汇总查询）。
+                    String capability = route.substring(route.lastIndexOf('/') + 1);
+                    if (capability.matches("(?i)save|update|delete|create|submit|approve|reject|cancel|confirm|enable|disable")) {
+                        continue;
+                    }
+                    // payroll 域「考勤汇总」业务实体的标准 CRUD，路由名含 summary 但非 DEC-036 统计汇总接口，属启发式误报。
+                    if (route.startsWith("attendance/summary/")) {
+                        continue;
+                    }
                     boolean governed = inScope(rel(file));
                     if (!governed) {
                         Matcher contextMatcher = Pattern
