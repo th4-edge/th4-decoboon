@@ -117,13 +117,13 @@ public class MaterialSelectionContext {
         return isProjectParticipant(selection.getProperty(), current);
     }
 
-    /** 维护与确认动作：设计师负责整理提交，店长/团队负责人/BOSS 在同范围内可代维护。 */
+    /** 维护与确认动作：Designer/Boss/StoreManager/Finance 在数据范围内可维护；Pm/TeamLeader 只读。 */
     public void requireMaintainer(Property property, Employee principal) {
         Employee current = requireEmployee(principal);
         if (canMaintain(property, current)) {
             return;
         }
-        throw new DefinedException(new DefaultErrorCode("403", "只有该房屋的设计师或管理者可以维护主材选材"));
+        throw new DefinedException(new DefaultErrorCode("403", "只有该房屋的设计师、企业负责人、店长或财务可以维护主材选材"));
     }
 
     public boolean canMaintain(Property property, Employee current) {
@@ -137,9 +137,8 @@ public class MaterialSelectionContext {
         if (role == EmployeeRole.Designer) {
             return sameEmployee(property.getDesigner(), current) || sameEmployee(property.getOwner(), current);
         }
-        // 店长/团队负责人按房屋可见性代维护；财务（含履约协同）和项目经理与设计师协同，但业务员不允许改选材事实。
-        return role == EmployeeRole.StoreManager || role == EmployeeRole.TeamLeader
-                || role == EmployeeRole.Finance || role == EmployeeRole.Pm;
+        // 店长和财务按数据范围维护；Pm、团队负责人和业务员只读。
+        return role == EmployeeRole.StoreManager || role == EmployeeRole.Finance;
     }
 
     /** 解析并校验合同归属，合同必须属于当前企业且与房屋一致。 */
