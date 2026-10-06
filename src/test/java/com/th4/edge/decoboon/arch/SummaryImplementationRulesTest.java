@@ -56,8 +56,6 @@ class SummaryImplementationRulesTest {
             java.util.Map.entry("finance/context/FinanceReportContext.java", Set.of("A1")),
             java.util.Map.entry("payroll/context/PayrollWorkbenchContext.java", Set.of("A1")),
             java.util.Map.entry("statistic/context/SiteWorkbenchContext.java", Set.of("A1", "A2b")),
-            // A2b：循环体经私有方法查库（材料计划工作台逐计划查采购单/采购明细 = 2N；GAP-027 待整改）
-            java.util.Map.entry("material/context/MaterialPlanWorkbenchContext.java", Set.of("A2b")),
             java.util.Map.entry("statistic/context/BossContractChangeContext.java", Set.of("A1")),
             java.util.Map.entry("customer/repository/CustomerAccessRepository.java", Set.of("A4")),
             java.util.Map.entry("finance/repository/LedgerRepository.java", Set.of("A4")),

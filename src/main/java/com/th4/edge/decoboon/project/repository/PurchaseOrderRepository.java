@@ -12,5 +12,8 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Lon
  @org.springframework.data.jpa.repository.EntityGraph(attributePaths = {"quoteLine", "project"})
  List<PurchaseOrder> findByProject_ProjectIdInOrderByPurchaseIdDesc(java.util.Collection<Long> projectIds);
  List<PurchaseOrder> findByMaterialPlanOrderByPurchaseIdAsc(com.th4.edge.decoboon.project.model.MaterialPlan materialPlan);
+
+ /** 材料计划工作台：一次取多计划的采购单，替代逐计划查询。 */
+ List<PurchaseOrder> findByMaterialPlan_PlanIdIn(java.util.Collection<Long> planIds);
  List<PurchaseOrder> findByCompany_ComIdOrderByPurchaseIdDesc(Long comId);
 }

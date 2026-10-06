@@ -86,15 +86,30 @@ public class MaterialPlanWorkbenchContext {
                 : materialPlanRepository.findByProject_ProjectIdIn(projectIds).stream()
                         .filter(plan -> plan.getProject() != null && plan.getProject().getProjectId() != null)
                         .collect(Collectors.groupingBy(plan -> plan.getProject().getProjectId()));
+        // 一次性取回全部计划的采购明细与采购单，循环内不再查库（DEC-036 反模式 A2b）
+        List<Long> planIds = plansByProject.values().stream().flatMap(List::stream)
+                .map(MaterialPlan::getPlanId).filter(Objects::nonNull).distinct().toList();
+        Map<Long, List<PurchaseOrderItem>> purchaseItemsByPlan = planIds.isEmpty() ? Map.of()
+                : purchaseItemRepository.findByMaterialPlan_PlanIdIn(planIds).stream()
+                        .filter(row -> row.getMaterialPlan() != null && row.getMaterialPlan().getPlanId() != null)
+                        .collect(Collectors.groupingBy(row -> row.getMaterialPlan().getPlanId()));
+        Map<Long, List<PurchaseOrder>> purchasesByPlan = planIds.isEmpty() ? Map.of()
+                : purchaseRepository.findByMaterialPlan_PlanIdIn(planIds).stream()
+                        .filter(order -> order.getMaterialPlan() != null && order.getMaterialPlan().getPlanId() != null)
+                        .collect(Collectors.groupingBy(order -> order.getMaterialPlan().getPlanId()));
         return projects.stream()
-                .map(project -> summarizeProject(project, group, plansByProject.getOrDefault(project.getProjectId(), List.of())))
+                .map(project -> summarizeProject(project, group,
+                        plansByProject.getOrDefault(project.getProjectId(), List.of()),
+                        purchaseItemsByPlan, purchasesByPlan))
                 .filter(workbench -> workbench.getTotalItems() > 0)
                 .sorted(Comparator.comparing(MaterialPlanWorkbench::getProjectId,
                         Comparator.nullsLast(Comparator.reverseOrder())))
                 .toList();
     }
 
-    private MaterialPlanWorkbench summarizeProject(Project project, String group, List<MaterialPlan> plans) {
+    private MaterialPlanWorkbench summarizeProject(Project project, String group, List<MaterialPlan> plans,
+                                                  Map<Long, List<PurchaseOrderItem>> purchaseItemsByPlan,
+                                                  Map<Long, List<PurchaseOrder>> purchasesByPlan) {
         MaterialPlanWorkbench workbench = new MaterialPlanWorkbench();
         workbench.setProjectId(project.getProjectId());
         workbench.setProjectNo(project.getNo());
@@ -110,7 +125,9 @@ public class MaterialPlanWorkbenchContext {
             if (plan.getStatus() == MaterialPlanStatus.Closed || plan.getStatus() == MaterialPlanStatus.Cancelled) {
                 continue;
             }
-            MaterialPlanWorkbenchItem item = toItem(project, plan);
+            MaterialPlanWorkbenchItem item = toItem(project, plan,
+                    purchaseItemsByPlan.getOrDefault(plan.getPlanId(), List.of()),
+                    purchasesByPlan.getOrDefault(plan.getPlanId(), List.of()));
             if (matchGroup(item, group)) {
                 items.add(item);
             }
@@ -132,7 +149,9 @@ public class MaterialPlanWorkbenchContext {
         return workbench;
     }
 
-    private MaterialPlanWorkbenchItem toItem(Project project, MaterialPlan plan) {
+    private MaterialPlanWorkbenchItem toItem(Project project, MaterialPlan plan,
+                                            List<PurchaseOrderItem> items,
+                                            List<PurchaseOrder> purchases) {
         MaterialPlanWorkbenchItem item = new MaterialPlanWorkbenchItem();
         item.setPlanId(plan.getPlanId());
         item.setProjectId(project.getProjectId());
@@ -171,8 +190,6 @@ public class MaterialPlanWorkbenchContext {
         BigDecimal ordered;
         BigDecimal received;
         // 优先按采购明细汇总（支持按供应商合并下单与一条材料拆多供应商）
-        List<PurchaseOrderItem> items = purchaseItemRepository
-                .findByMaterialPlanOrderByPurchaseItemIdAsc(plan);
         if (!items.isEmpty()) {
             ordered = items.stream()
                     .filter(row -> row.getStatus() != null && COUNTED.contains(row.getStatus()))
@@ -182,7 +199,6 @@ public class MaterialPlanWorkbenchContext {
                     .map(row -> value(row.getReceivedQuantity()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } else {
-            List<PurchaseOrder> purchases = purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan);
             ordered = purchases.stream()
                     .filter(order -> order.getStatus() != null && COUNTED.contains(order.getStatus()))
                     .map(order -> value(order.getQuantity()))
@@ -191,7 +207,6 @@ public class MaterialPlanWorkbenchContext {
                     .map(order -> value(order.getReceivedQuantity()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-        List<PurchaseOrder> purchases = purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan);
         item.setOrderedQuantity(ordered);
         item.setReceivedQuantity(received);
         purchases.stream()
