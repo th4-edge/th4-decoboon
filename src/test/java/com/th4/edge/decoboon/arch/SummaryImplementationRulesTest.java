@@ -55,7 +55,9 @@ class SummaryImplementationRulesTest {
             java.util.Map.entry("project/context/ProjectCostContext.java", Set.of("A2")),
             java.util.Map.entry("finance/context/FinanceReportContext.java", Set.of("A1")),
             java.util.Map.entry("payroll/context/PayrollWorkbenchContext.java", Set.of("A1")),
-            java.util.Map.entry("statistic/context/SiteWorkbenchContext.java", Set.of("A1")),
+            java.util.Map.entry("statistic/context/SiteWorkbenchContext.java", Set.of("A1", "A2b")),
+            // A2b：循环体经私有方法查库（材料计划工作台逐计划查采购单/采购明细 = 2N；GAP-027 待整改）
+            java.util.Map.entry("material/context/MaterialPlanWorkbenchContext.java", Set.of("A2b")),
             java.util.Map.entry("statistic/context/BossContractChangeContext.java", Set.of("A1")),
             java.util.Map.entry("customer/repository/CustomerAccessRepository.java", Set.of("A4")),
             java.util.Map.entry("finance/repository/LedgerRepository.java", Set.of("A4")),
@@ -136,6 +138,79 @@ class SummaryImplementationRulesTest {
                 .isEmpty();
     }
 
+
+    /**
+     * A2b（跨方法）：循环体内调用的**本类私有方法**，其方法体内出现仓储调用。
+     *
+     * <p>纯过程内扫描无法发现这一形态 —— 例如材料计划工作台：
+     * {@code for (plan : plans) { toItem(plan) }}，而 {@code toItem()} 内部逐条查采购明细/采购单。</p>
+     */
+    @Test
+    void summaryClassesMustNotQueryInsideLoopViaHelperMethod() throws IOException {
+        List<String> violations = new ArrayList<>();
+        try (Stream<Path> files = Files.walk(SRC)) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
+                String rel = rel(file);
+                if (!inScope(rel)) {
+                    continue;
+                }
+                String source = Files.readString(file);
+                Set<String> queryHelpers = new java.util.HashSet<>();
+                Matcher mm = Pattern.compile("(?:private|protected|public)\\s+[\\w<>,\\[\\].\\s]+?\\s+(\\w+)\\s*\\([^)]*\\)\\s*\\{")
+                        .matcher(source);
+                while (mm.find()) {
+                    String body = blockBody(source, source.indexOf('{', mm.end() - 1));
+                    if (body == null) {
+                        continue;
+                    }
+                    if (body.contains("Repository.") || Pattern.compile("\\b(findAll|findBy\\w*|countBy\\w*)\\s*\\(")
+                            .matcher(body).find()) {
+                        queryHelpers.add(mm.group(1));
+                    }
+                }
+                if (queryHelpers.isEmpty()) {
+                    continue;
+                }
+                Matcher lm = Pattern.compile("(for|while)\\s*\\([^)]*\\)\\s*\\{").matcher(source);
+                while (lm.find()) {
+                    String body = blockBody(source, source.indexOf('{', lm.end() - 1));
+                    if (body == null) {
+                        continue;
+                    }
+                    for (String helper : queryHelpers) {
+                        if (Pattern.compile("\\b" + helper + "\\s*\\(").matcher(body).find()) {
+                            add(violations, rel, "A2b: 循环体经私有方法查库 → " + helper + "()");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        assertThat(violations)
+                .as("统计汇总类禁止「循环体调用会查库的私有方法」：应把该方法的取数改为循环外一次批量取数（DEC-036 反模式 A2）")
+                .isEmpty();
+    }
+
+    /** 基于花括号配平取代码块内容。 */
+    private String blockBody(String source, int braceStart) {
+        if (braceStart < 0 || braceStart >= source.length()) {
+            return null;
+        }
+        int depth = 0;
+        for (int i = braceStart; i < source.length(); i++) {
+            char c = source.charAt(i);
+            if (c == '{') {
+                depth++;
+            } else if (c == '}') {
+                depth--;
+                if (depth == 0) {
+                    return source.substring(braceStart + 1, i);
+                }
+            }
+        }
+        return null;
+    }
+
     // ---------- 扫描实现 ----------
 
     private List<String> scan(String rule) throws IOException {
@@ -171,7 +246,7 @@ class SummaryImplementationRulesTest {
     }
 
     private void add(List<String> violations, String rel, String rule) {
-        String tag = rule.substring(0, 2);
+        String tag = rule.split(":")[0];
         String entry = rule + " | " + rel;
         boolean allowedLegacy = LEGACY_BASELINE.getOrDefault(rel, Set.of()).contains(tag);
         if (!allowedLegacy && !violations.contains(entry)) {
