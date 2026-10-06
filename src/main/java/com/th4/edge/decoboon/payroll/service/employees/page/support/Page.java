@@ -17,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-
 /** 薪酬域员工选择器：BOSS、财务可按企业范围选择发薪员工。 */
 @Note("薪酬员工选择器")
 @Properties(allow = {

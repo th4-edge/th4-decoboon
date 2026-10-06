@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface AttendanceSummaryRepository extends JpaRepository<AttendanceSummary, Long>, JpaSpecificationExecutor<AttendanceSummary> {
     Optional<AttendanceSummary> findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(Long comId, Long empId, String month);
     List<AttendanceSummary> findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(Long comId, String month);
+    boolean existsByCompany_ComIdAndEmployee_EmpId(Long comId, Long empId);
 }

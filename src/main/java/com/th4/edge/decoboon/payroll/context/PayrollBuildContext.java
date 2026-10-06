@@ -125,7 +125,11 @@ public class PayrollBuildContext {
             }
             item.setBaseSalaryAmount(money(scheme.getBaseSalary()));
             item.setCommissionAmount(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP));
-            BigDecimal daily = calculationContext.dailySalary(scheme.getBaseSalary(), scheme.getScheduledDays());
+            int scheduledDays = attendance == null || attendance.getScheduledDays() == null
+                    || attendance.getScheduledDays() <= 0
+                    ? scheme.getScheduledDays()
+                    : attendance.getScheduledDays();
+            BigDecimal daily = calculationContext.dailySalary(scheme.getBaseSalary(), scheduledDays);
             item.setAttendanceDeduction(attendance == null ? BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
                     : calculationContext.attendanceDeduction(daily, attendance, null, null, null));
             List<CommissionAdjustment> pendingAdjustments = adjustmentRepository

@@ -10,4 +10,6 @@ public interface PayrollItemRepository extends JpaRepository<PayrollItem, Long>,
     List<PayrollItem> findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(Long comId, Long sheetId);
     List<PayrollItem> findByCompany_ComIdAndEmployee_EmpIdAndSheet_PeriodOrderByItemIdAsc(Long comId, Long empId, String period);
     Optional<PayrollItem> findByCompany_ComIdAndSheet_SheetIdAndEmployee_EmpIdAndAttributionKey(Long comId, Long sheetId, Long empId, String attributionKey);
+    boolean existsByCompany_ComIdAndEmployee_EmpId(Long comId, Long empId);
+    boolean existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(Long comId, Long empId, String period);
 }
