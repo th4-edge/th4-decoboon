@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.ai.billing.context;
 
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.decoboon.ai.billing.configure.AiAccountStatus;
 import com.th4.edge.decoboon.ai.billing.configure.AiLedgerType;
 import com.th4.edge.decoboon.ai.billing.configure.AiRateCardStatus;
@@ -27,6 +28,10 @@ import java.util.List;
  * AI 正式点数账本上下文。
  *
  * <p>A0.2 只提供内部结算机制，默认关闭正式扣点。费率、套餐点数和资源包价格必须在 A0.4 成本验证后另行发布。</p>
+ *
+ * <p>并发口径（2026-10-07 锁迁移 Batch 6）：所有账户余额的先读后写都按企业串行，锁键
+ * {@code ai-resource-account:{comId}}，由 {@code @DistributedLocked} 在事务外层获取，替代原账户行的
+ * {@code SELECT ... FOR UPDATE}。锁在事务外层同时保证：进入事务后的首次读取已经在锁内，不会命中加锁前的旧快照。</p>
  */
 @Component
 public class AiBillingContext {
@@ -47,10 +52,11 @@ public class AiBillingContext {
     }
 
     /** 读取企业账户，不存在时创建零余额账户。 */
+    @DistributedLocked(key = "#root.accountLockKey(#company)")
     @Transactional
     public AiResourceAccount account(Company company) {
         requireCompany(company);
-        AiResourceAccount account = accountRepository.lockByCompanyId(company.getComId()).orElse(null);
+        AiResourceAccount account = accountRepository.findByCompany_ComId(company.getComId()).orElse(null);
         if (account != null) return account;
         account = new AiResourceAccount();
         account.setCompany(company);
@@ -58,6 +64,7 @@ public class AiBillingContext {
     }
 
     /** 内部测试或套餐发放点数。真实套餐额度数值暂缓。 */
+    @DistributedLocked(key = "#root.accountLockKey(#company)")
     @Transactional
     public AiResourceLedger grant(Employee operator, Company company, long units, String reason) {
         requirePositive(units, "发放点数必须大于0");
@@ -68,6 +75,7 @@ public class AiBillingContext {
     }
 
     /** 预占点数。同一调用重复预占幂等。 */
+    @DistributedLocked(key = "#root.callAccountLockKey(#call)")
     @Transactional
     public AiResourceLedger reserve(Employee operator, AiUsageCall call, long units) {
         requireFormal();
@@ -85,6 +93,7 @@ public class AiBillingContext {
     }
 
     /** 预占转实际消耗。实际消耗不得超过预占，超出进入人工处理。 */
+    @DistributedLocked(key = "#root.callAccountLockKey(#call)")
     @Transactional
     public AiResourceLedger settle(Employee operator, AiUsageCall call, long actualUnits) {
         requireFormal();
@@ -109,6 +118,7 @@ public class AiBillingContext {
     }
 
     /** 失败、超时、取消或重复拦截时释放预占。 */
+    @DistributedLocked(key = "#root.callAccountLockKey(#call)")
     @Transactional
     public AiResourceLedger release(Employee operator, AiUsageCall call, String reason) {
         requireFormal();
@@ -128,6 +138,7 @@ public class AiBillingContext {
     }
 
     /** 人工返还，原 Consume 保留，返还单独入账。 */
+    @DistributedLocked(key = "#root.callAccountLockKey(#call)")
     @Transactional
     public AiResourceLedger refund(Employee operator, AiUsageCall call, long units, String reason) {
         requireFormal();
@@ -144,6 +155,7 @@ public class AiBillingContext {
     }
 
     /** 人工调整，正数增加、负数扣减，不允许负余额。 */
+    @DistributedLocked(key = "#root.accountLockKey(#company)")
     @Transactional
     public AiResourceLedger adjust(Employee operator, Company company, long units, String reason) {
         requireFormal();
@@ -175,7 +187,7 @@ public class AiBillingContext {
 
     private AiResourceAccount lockedAccount(Company company) {
         requireCompany(company);
-        AiResourceAccount account = accountRepository.lockByCompanyId(company.getComId()).orElse(null);
+        AiResourceAccount account = accountRepository.findByCompany_ComId(company.getComId()).orElse(null);
         if (account == null) {
             account = new AiResourceAccount();
             account.setCompany(company);
@@ -244,4 +256,17 @@ public class AiBillingContext {
     private long nvl(Long value) { return value == null ? 0L : value; }
     private BigDecimal nvl(BigDecimal value, BigDecimal fallback) { return value == null ? fallback : value; }
     private DefinedException error(String message) { return new DefinedException(new DefaultErrorCode("400", message)); }
+
+    /**
+     * AI 资源账户锁键：按企业串行，保证账户余额（可用/预占/消耗/赠送/返还/调整）先读后写不丢更新。
+     * 企业缺失时退化为不争用键，保证锁键非空并由业务方法返回原有 400 口径。
+     */
+    public String accountLockKey(Company company) {
+        Long comId = company == null ? null : company.getComId();
+        return "ai-resource-account:" + (comId == null ? "unknown" : comId);
+    }
+
+    public String callAccountLockKey(AiUsageCall call) {
+        return accountLockKey(call == null ? null : call.getCompany());
+    }
 }

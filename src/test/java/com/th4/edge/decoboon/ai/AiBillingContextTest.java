@@ -68,7 +68,7 @@ class AiBillingContextTest {
         account = new AiResourceAccount();
         account.setAccountId(1L);
         account.setCompany(company);
-        when(accountRepository.lockByCompanyId(COM_ID)).thenAnswer(invocation -> Optional.of(account));
+        when(accountRepository.findByCompany_ComId(COM_ID)).thenAnswer(invocation -> Optional.of(account));
         when(accountRepository.save(any(AiResourceAccount.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(ledgerRepository.save(any(AiResourceLedger.class))).thenAnswer(invocation -> {
             AiResourceLedger ledger = invocation.getArgument(0);
@@ -125,6 +125,16 @@ class AiBillingContextTest {
         assertThatThrownBy(() -> context.reserve(boss, call, 1L))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("正式AI点数扣减未启用");
+    }
+
+    @Test
+    void accountLockKeyShouldBePerCompany() {
+        AiBillingContext context = new AiBillingContext(accountRepository, ledgerRepository, rateCardRepository, true);
+
+        assertThat(context.accountLockKey(company)).isEqualTo("ai-resource-account:41");
+        assertThat(context.callAccountLockKey(call)).isEqualTo("ai-resource-account:41");
+        assertThat(context.accountLockKey(null)).isEqualTo("ai-resource-account:unknown");
+        assertThat(context.callAccountLockKey(null)).isEqualTo("ai-resource-account:unknown");
     }
 
     @Test

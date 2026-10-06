@@ -1,18 +1,16 @@
 package com.th4.edge.decoboon.ai.billing.repository;
 
 import com.th4.edge.decoboon.ai.billing.model.AiResourceAccount;
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
+/**
+ * AI 资源账户仓储。
+ *
+ * <p>非加锁读取；账户余额的先读后写由 {@code @DistributedLocked} 按企业串行化。</p>
+ */
 public interface AiResourceAccountRepository extends JpaRepository<AiResourceAccount, Long> {
-    Optional<AiResourceAccount> findByCompany_ComId(Long comId);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select account from AiResourceAccount account where account.company.comId = :comId")
-    Optional<AiResourceAccount> lockByCompanyId(@Param("comId") Long comId);
+    Optional<AiResourceAccount> findByCompany_ComId(Long comId);
 }
