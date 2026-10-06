@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.carryover.context;
 
+import com.th4.edge.components.lock.DistributedLock;
+
 import com.th4.edge.decoboon.carryover.configure.CarryoverProjectStatus;
 import com.th4.edge.decoboon.carryover.model.CarryoverCostSnapshot;
 import com.th4.edge.decoboon.carryover.model.CarryoverProject;
@@ -60,6 +62,8 @@ public class CarryoverApplyContext {
     private final PayableRepository payableRepository;
     private final ProjectPermissionContext permissionContext;
 
+    private final DistributedLock distributedLock;
+
     public CarryoverApplyContext(CarryoverProjectRepository itemRepository,
                                  CarryoverCostSnapshotRepository costRepository,
                                  CustomerRepository customerRepository,
@@ -70,7 +74,8 @@ public class CarryoverApplyContext {
                                  ProjectStageRepository stageRepository,
                                  ReceivableRepository receivableRepository,
                                  PayableRepository payableRepository,
-                                 ProjectPermissionContext permissionContext) {
+                                 ProjectPermissionContext permissionContext,
+                DistributedLock distributedLock) {
         this.itemRepository = itemRepository;
         this.costRepository = costRepository;
         this.customerRepository = customerRepository;
@@ -82,10 +87,16 @@ public class CarryoverApplyContext {
         this.receivableRepository = receivableRepository;
         this.payableRepository = payableRepository;
         this.permissionContext = permissionContext;
+        this.distributedLock = distributedLock;
     }
 
     public CarryoverProject apply(CarryoverProject item, Employee current) {
-        CarryoverProject locked = itemRepository.findLockedByItemId(item.getItemId())
+        String lockKey = "carryover:" + current.getCompany().getComId() + ":" + item.getItemId();
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "承接项目正在处理中，请稍后重试"));
+        }
+        try {
+        CarryoverProject locked = itemRepository.findByItemId(item.getItemId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问")));
         if (locked.getStatus() == CarryoverProjectStatus.Applied
                 || locked.getStatus() == CarryoverProjectStatus.Locked) {
@@ -122,6 +133,9 @@ public class CarryoverApplyContext {
         property.setStatus(PropertyStatus.Serving);
         propertyRepository.save(property);
         return locked;
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     private Customer createCustomer(CarryoverProject item, Employee current) {

@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.carryover.context.CarryoverProjectContext;
 import com.th4.edge.decoboon.carryover.model.CarryoverProject;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.components.lock.DistributedLock;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CarryoverProjectContextTest {
 
     private final CarryoverProjectContext context =
-            new CarryoverProjectContext(null, null, null, null);
+            new CarryoverProjectContext(null, null, null, null, noopLock());
 
     @Test
     void completeDraftHasNoBlockers() {
@@ -80,5 +81,12 @@ class CarryoverProjectContextTest {
         item.setCostStatus(CarryoverCostStatus.Complete);
         item.setCostTotal(new BigDecimal("180000.00"));
         return item;
+    }
+
+    private static DistributedLock noopLock() {
+        return new DistributedLock() {
+            @Override public boolean tryLock(String name, long waitMillis, long leaseMillis) { return true; }
+            @Override public void unlock(String name) { }
+        };
     }
 }

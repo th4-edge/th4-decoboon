@@ -1,5 +1,9 @@
 package com.th4.edge.decoboon.carryover.context;
 
+import com.th4.edge.components.lock.DistributedLock;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
+
 import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
 import com.th4.edge.decoboon.carryover.configure.CarryoverPlanStatus;
 import com.th4.edge.decoboon.carryover.configure.CarryoverProjectStatus;
@@ -21,8 +25,12 @@ public class CarryoverLockContext {
 
     private final CarryoverProjectRepository projectRepository;
 
-    public CarryoverLockContext(CarryoverProjectRepository projectRepository) {
+    private final DistributedLock distributedLock;
+
+    public CarryoverLockContext(CarryoverProjectRepository projectRepository,
+                DistributedLock distributedLock) {
         this.projectRepository = projectRepository;
+        this.distributedLock = distributedLock;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -30,7 +38,12 @@ public class CarryoverLockContext {
         if (project == null || project.getProjectId() == null || businessType == null) {
             return;
         }
-        CarryoverProject item = projectRepository.findLockedByProjectId(project.getProjectId()).orElse(null);
+        String lockKey = "carryover-lock:" + operator.getCompany().getComId() + ":" + project.getProjectId();
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "承接项目正在锁定中，请稍后重试"));
+        }
+        try {
+        CarryoverProject item = projectRepository.findByProject_ProjectId(project.getProjectId()).orElse(null);
         if (item == null || item.getStatus() == CarryoverProjectStatus.Locked
                 || item.getStatus() == CarryoverProjectStatus.Cancelled) {
             return;
@@ -49,5 +62,8 @@ public class CarryoverLockContext {
             item.setPlanStatus(CarryoverPlanStatus.Locked);
         }
         projectRepository.save(item);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 }

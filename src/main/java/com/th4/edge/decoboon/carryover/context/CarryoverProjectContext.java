@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.carryover.context;
 
+import com.th4.edge.components.lock.DistributedLock;
+
 import com.th4.edge.decoboon.carryover.configure.CarryoverBatchStatus;
 import com.th4.edge.decoboon.carryover.configure.CarryoverConfirmationRole;
 import com.th4.edge.decoboon.carryover.configure.CarryoverCostStatus;
@@ -40,14 +42,18 @@ public class CarryoverProjectContext {
     private final CarryoverConfirmationRepository confirmationRepository;
     private final EmployeeRepository employeeRepository;
 
+    private final DistributedLock distributedLock;
+
     public CarryoverProjectContext(CarryoverBatchRepository batchRepository,
                                    CarryoverProjectRepository projectRepository,
                                    CarryoverConfirmationRepository confirmationRepository,
-                                   EmployeeRepository employeeRepository) {
+                                   EmployeeRepository employeeRepository,
+                DistributedLock distributedLock) {
         this.batchRepository = batchRepository;
         this.projectRepository = projectRepository;
         this.confirmationRepository = confirmationRepository;
         this.employeeRepository = employeeRepository;
+        this.distributedLock = distributedLock;
     }
 
     public CarryoverBatch ensureActiveBatch(Employee current, LocalDate asOfDate) {
@@ -139,7 +145,12 @@ public class CarryoverProjectContext {
         if (role == null) {
             throw new DefinedException(new DefaultErrorCode("400", "确认角色不能为空"));
         }
-        CarryoverProject item = projectRepository.findLockedByItemId(itemId)
+        String lockKey = "carryover:" + principal.getCompany().getComId() + ":" + itemId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "承接项目正在处理中，请稍后重试"));
+        }
+        try {
+        CarryoverProject item = projectRepository.findByItemId(itemId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问")));
         if (item.getCompany() == null || !item.getCompany().getComId().equals(principal.getCompany().getComId())) {
             throw new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问"));
@@ -175,10 +186,18 @@ public class CarryoverProjectContext {
             projectRepository.save(item);
         }
         return saved;
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     public CarryoverProject withdraw(Employee principal, Long itemId, String reason) {
-        CarryoverProject item = projectRepository.findLockedByItemId(itemId)
+        String lockKey = "carryover:" + principal.getCompany().getComId() + ":" + itemId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "承接项目正在处理中，请稍后重试"));
+        }
+        try {
+        CarryoverProject item = projectRepository.findByItemId(itemId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问")));
         if (item.getCompany() == null || !item.getCompany().getComId().equals(principal.getCompany().getComId())) {
             throw new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问"));
@@ -193,6 +212,9 @@ public class CarryoverProjectContext {
         item.setCancelledAt(LocalDateTime.now());
         item.setCancelReason(reason);
         return projectRepository.save(item);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     private void copyEditableFields(CarryoverProject target, CarryoverProject source, Employee current) {

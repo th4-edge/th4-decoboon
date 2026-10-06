@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.carryover.context;
 
+import com.th4.edge.components.lock.DistributedLock;
+
 import com.th4.edge.decoboon.carryover.configure.CarryoverAdjustmentType;
 import com.th4.edge.decoboon.carryover.configure.CarryoverProjectStatus;
 import com.th4.edge.decoboon.carryover.model.CarryoverAdjustment;
@@ -31,16 +33,20 @@ public class CarryoverAdjustmentContext {
     private final ReceivableRepository receivableRepository;
     private final PayableRepository payableRepository;
 
+    private final DistributedLock distributedLock;
+
     public CarryoverAdjustmentContext(CarryoverProjectRepository projectRepository,
                                       CarryoverAdjustmentRepository adjustmentRepository,
                                       CarryoverCostSnapshotRepository costRepository,
                                       ReceivableRepository receivableRepository,
-                                      PayableRepository payableRepository) {
+                                      PayableRepository payableRepository,
+                DistributedLock distributedLock) {
         this.projectRepository = projectRepository;
         this.adjustmentRepository = adjustmentRepository;
         this.costRepository = costRepository;
         this.receivableRepository = receivableRepository;
         this.payableRepository = payableRepository;
+        this.distributedLock = distributedLock;
     }
 
     public CarryoverAdjustment adjust(Employee current, Long itemId, CarryoverAdjustmentType type,
@@ -51,7 +57,12 @@ public class CarryoverAdjustmentContext {
         if (reason == null || reason.isBlank()) {
             throw new DefinedException(new DefaultErrorCode("400", "调整原因不能为空"));
         }
-        CarryoverProject item = projectRepository.findLockedByItemId(itemId)
+        String lockKey = "carryover:" + current.getCompany().getComId() + ":" + itemId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "承接项目正在处理中，请稍后重试"));
+        }
+        try {
+        CarryoverProject item = projectRepository.findByItemId(itemId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问")));
         if (item.getCompany() == null || !item.getCompany().getComId().equals(current.getCompany().getComId())) {
             throw new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问"));
@@ -95,6 +106,9 @@ public class CarryoverAdjustmentContext {
         adjustment.setReason(reason.trim());
         adjustment.setCreatedBy(current);
         return adjustmentRepository.save(adjustment);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     private void syncReceivable(CarryoverProject item, BigDecimal amount) {
