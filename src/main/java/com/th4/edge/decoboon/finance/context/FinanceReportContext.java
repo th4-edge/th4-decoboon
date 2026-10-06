@@ -116,16 +116,11 @@ public class FinanceReportContext {
                 .toList();
         List<Ledger> ledgers = ledgerRepository.findAll(accessContext.visible(current, Ledger.class)).stream()
                 .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
-                .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
                 .toList();
         List<Receipt> receipts = receiptRepository == null ? List.of()
-                : receiptRepository.findAll(accessContext.visible(current, Receipt.class)).stream()
-                        .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
-                        .toList();
+                : receiptRepository.findAll(accessContext.visible(current, Receipt.class)).stream().toList();
         List<Payment> payments = paymentRepository == null ? List.of()
-                : paymentRepository.findAll(accessContext.visible(current, Payment.class)).stream()
-                        .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
-                        .toList();
+                : paymentRepository.findAll(accessContext.visible(current, Payment.class)).stream().toList();
 
         FinanceSummary summary = new FinanceSummary();
         summary.setProjectCount(projects.size());
@@ -191,6 +186,7 @@ public class FinanceReportContext {
                         ? accessContext.value(item.getAmount()) : accessContext.value(item.getAmount()).negate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         summary.setOpeningBalanceAmount(openingBalance);
+        summary.setOpeningBalanceCaptured(openingDate != null);
         summary.setCashBalance(openingBalance.add(ledgerNet));
         // 汇总与项目行、结算快照统一使用 ProjectCostContext + 同一 totalCost 公式，
         // 避免"汇总成本未完整、项目行却有利润"的口径冲突。
@@ -239,8 +235,24 @@ public class FinanceReportContext {
                 ? rate(summary.getProfitAmount(), aggregatedRevenue) : null);
         summary.setCollectionRate(rate(summary.getReceivedAmount(), summary.getReceivableAmount()));
 
-        summary.setUrgentReceivables(receivables.stream()
+        LocalDate today = LocalDate.now();
+        List<Receivable> collectible = receivables.stream()
                 .filter(item -> accessContext.outstanding(item.getAmount(), item.getReceivedAmount()).signum() > 0)
+                .toList();
+        summary.setUrgentReceivables(collectible.stream()
+                .sorted(Comparator.comparing(Receivable::getDueDate,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
+                .limit(8).toList());
+        summary.setOverdueReceivables(collectible.stream()
+                .filter(this::receivableOverdue)
+                .sorted(Comparator.comparing(Receivable::getDueDate,
+                        Comparator.nullsLast(Comparator.naturalOrder())))
+                .limit(8).toList());
+        summary.setDueSoonReceivables(collectible.stream()
+                .filter(item -> !receivableOverdue(item))
+                .filter(item -> item.getDueDate() != null
+                        && !item.getDueDate().isBefore(today)
+                        && !item.getDueDate().isAfter(today.plusDays(7)))
                 .sorted(Comparator.comparing(Receivable::getDueDate,
                         Comparator.nullsLast(Comparator.naturalOrder())))
                 .limit(8).toList());

@@ -137,6 +137,21 @@ class ProjectCostContextTest {
 
 
     @Test
+    void costEqualToSaleMustBeIncomplete() {
+        CatalogItem item = item("68.00", ItemType.Material, PricingMethod.MaterialOnly);
+        item.setMaterialPrice(new BigDecimal("68.00"));
+        item.setManualPrice(BigDecimal.ZERO);
+        QuoteLine line = line(item, "2", "68.00", "0");
+        line.setAmount(new BigDecimal("68.00"));
+        Project project = project(line);
+
+        ProjectCostContext.CostSummary summary = context.summarize(project);
+
+        assertThat(summary.incompleteItemCount()).isGreaterThanOrEqualTo(1);
+        assertThat(summary.complete()).isFalse();
+    }
+
+    @Test
     void signedContractCostMustWinAfterCatalogCostChanges() {
         Project project = new Project();
         project.setProjectId(77L);

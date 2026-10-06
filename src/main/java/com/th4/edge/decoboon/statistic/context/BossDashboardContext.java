@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.statistic.model.BossDashboard;
@@ -83,6 +84,7 @@ public class BossDashboardContext {
         }
         BusinessTarget target = targetRepository.findByCompany_ComIdAndTargetMonth(comId, month)
                 .orElseGet(BusinessTarget::new);
+        boolean targetSet = target.getTargetId() != null;
 
         BigDecimal signed = signedAmount(contracts, month);
         BigDecimal previousMonthSigned = signedAmount(contracts, previousMonth);
@@ -99,10 +101,10 @@ public class BossDashboardContext {
 
         BossDashboard dashboard = new BossDashboard();
         dashboard.setMonth(month);
-        dashboard.setSignedAmount(metric(signed, target.getSignedAmount(), previousMonthSigned, previousYearSigned));
-        dashboard.setReceivedAmount(metric(received, target.getReceivedAmount(), previousMonthReceived, previousYearReceived));
+        dashboard.setSignedAmount(metric(signed, target.getSignedAmount(), previousMonthSigned, previousYearSigned, targetSet));
+        dashboard.setReceivedAmount(metric(received, target.getReceivedAmount(), previousMonthReceived, previousYearReceived, targetSet));
         DashboardMetric profitMetric = metric(profit.value(), target.getGrossProfit(),
-                previousMonthProfit.value(), previousYearProfit.value());
+                previousMonthProfit.value(), previousYearProfit.value(), targetSet);
         profitMetric.setComplete(profit.complete());
         profitMetric.setWarning(profit.warning());
         if (!profit.complete()) {
@@ -110,20 +112,25 @@ public class BossDashboardContext {
             profitMetric.setAchievementRate(BigDecimal.ZERO);
             profitMetric.setMonthOverMonthRate(BigDecimal.ZERO);
             profitMetric.setYearOverYearRate(BigDecimal.ZERO);
+            profitMetric.setMonthOverMonthComparable(Boolean.FALSE);
+            profitMetric.setYearOverYearComparable(Boolean.FALSE);
         }
         dashboard.setGrossProfit(profitMetric);
         dashboard.setActiveProjectCount(metric(active, BigDecimal.valueOf(value(target.getActiveProjectCount())),
-                previousMonthActive, previousYearActive));
+                previousMonthActive, previousYearActive, targetSet));
         return dashboard;
     }
 
-    private DashboardMetric metric(BigDecimal value, BigDecimal target, BigDecimal previousMonth, BigDecimal previousYear) {
+    private DashboardMetric metric(BigDecimal value, BigDecimal target, BigDecimal previousMonth, BigDecimal previousYear, boolean targetSet) {
         DashboardMetric metric = new DashboardMetric();
         metric.setValue(value);
         metric.setTarget(value(target));
+        metric.setTargetSet(targetSet);
         metric.setAchievementRate(percentage(value, value(target)));
         metric.setPreviousMonthValue(value(previousMonth));
         metric.setPreviousYearValue(value(previousYear));
+        metric.setMonthOverMonthComparable(previousMonth != null && previousMonth.signum() != 0);
+        metric.setYearOverYearComparable(previousYear != null && previousYear.signum() != 0);
         metric.setMonthOverMonthRate(changeRate(value, value(previousMonth)));
         metric.setYearOverYearRate(changeRate(value, value(previousYear)));
         return metric;
@@ -156,6 +163,9 @@ public class BossDashboardContext {
         BigDecimal profit = BigDecimal.ZERO;
         int incomplete = 0;
         for (ProjectContract contract : contracts) {
+            if (!BusinessOriginFilter.isNormal(contract.getBusinessOrigin())) {
+                continue;
+            }
             if (!sameMonth(contract.getSignedAt(), month)) {
                 continue;
             }
@@ -194,6 +204,9 @@ public class BossDashboardContext {
             }
         }
         long count = projects.stream().filter(project -> {
+            if (project.getStatus() == ProjectStatus.Finished || project.getStatus() == ProjectStatus.Settled) {
+                return false;
+            }
             LocalDate started = signedByProject.get(project.getProjectId());
             if (started == null && project.getCreateTime() != null) {
                 started = project.getCreateTime().toLocalDate();

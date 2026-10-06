@@ -15,6 +15,9 @@ public class DashboardMetric {
     private BigDecimal previousYearValue = BigDecimal.ZERO;
     private BigDecimal monthOverMonthRate = BigDecimal.ZERO;
     private BigDecimal yearOverYearRate = BigDecimal.ZERO;
+    private Boolean targetSet = Boolean.FALSE;
+    private Boolean monthOverMonthComparable = Boolean.FALSE;
+    private Boolean yearOverYearComparable = Boolean.FALSE;
     private Boolean complete = Boolean.TRUE;
     private String warning;
 
@@ -32,6 +35,12 @@ public class DashboardMetric {
     public void setMonthOverMonthRate(BigDecimal monthOverMonthRate) { this.monthOverMonthRate = monthOverMonthRate; }
     public BigDecimal getYearOverYearRate() { return yearOverYearRate; }
     public void setYearOverYearRate(BigDecimal yearOverYearRate) { this.yearOverYearRate = yearOverYearRate; }
+    public Boolean getTargetSet() { return targetSet; }
+    public void setTargetSet(Boolean targetSet) { this.targetSet = targetSet; }
+    public Boolean getMonthOverMonthComparable() { return monthOverMonthComparable; }
+    public void setMonthOverMonthComparable(Boolean monthOverMonthComparable) { this.monthOverMonthComparable = monthOverMonthComparable; }
+    public Boolean getYearOverYearComparable() { return yearOverYearComparable; }
+    public void setYearOverYearComparable(Boolean yearOverYearComparable) { this.yearOverYearComparable = yearOverYearComparable; }
     public Boolean getComplete() { return complete; }
     public void setComplete(Boolean complete) { this.complete = complete; }
     public String getWarning() { return warning; }

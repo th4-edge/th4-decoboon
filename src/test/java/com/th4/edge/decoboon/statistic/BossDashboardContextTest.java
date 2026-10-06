@@ -1,9 +1,11 @@
 package com.th4.edge.decoboon.statistic;
 
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
+import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.context.ProjectCostContext;
@@ -84,6 +86,56 @@ class BossDashboardContextTest {
         assertThat(dashboard.getReceivedAmount().getValue()).isEqualByComparingTo("3000.00");
         assertThat(dashboard.getGrossProfit().getValue()).isEqualByComparingTo("6000.00");
         assertThat(dashboard.getActiveProjectCount().getValue()).isEqualByComparingTo("2");
+    }
+
+    @Test
+    void shouldExcludeCarryoverGrossProfitAndSettledActiveProject() {
+        TenantContext tenant = mock(TenantContext.class);
+        ProjectRepository projects = mock(ProjectRepository.class);
+        ProjectContractRepository contracts = mock(ProjectContractRepository.class);
+        ReceiptRepository receipts = mock(ReceiptRepository.class);
+        PayableRepository payables = mock(PayableRepository.class);
+        BusinessTargetRepository targets = mock(BusinessTargetRepository.class);
+        ProjectCostContext costs = mock(ProjectCostContext.class);
+        BossDashboardContext context = new BossDashboardContext(tenant, projects, contracts, receipts, payables, targets, costs);
+
+        LocalDate month = LocalDate.of(2026, 9, 1);
+        Company company = new Company();
+        company.setComId(10L);
+        Employee boss = new Employee();
+        boss.setEmpId(11L);
+        boss.setRole(EmployeeRole.Boss);
+        boss.setCompany(company);
+
+        Project newProject = project(20L, company, month);
+        Project carryoverProject = project(21L, company, month);
+        carryoverProject.setBusinessOrigin(BusinessOrigin.Carryover);
+        carryoverProject.setStatus(ProjectStatus.Settled);
+
+        ProjectContract newContract = contract(30L, newProject, month, "10000.00");
+        ProjectContract carryoverContract = contract(31L, carryoverProject, month, "5000.00");
+        carryoverContract.setBusinessOrigin(BusinessOrigin.Carryover);
+
+        when(tenant.requireBoss(boss)).thenReturn(boss);
+        when(projects.findByCompany_ComIdOrderByProjectIdDesc(10L)).thenReturn(List.of(newProject, carryoverProject));
+        when(contracts.findByCompany_ComIdOrderByContractIdDesc(10L)).thenReturn(List.of(newContract, carryoverContract));
+        when(receipts.findByCompany_ComIdOrderByReceivedAtDesc(10L)).thenReturn(List.of());
+        when(payables.findByCompany_ComIdOrderByDueDateAsc(10L)).thenReturn(List.of());
+        when(targets.findByCompany_ComIdAndTargetMonth(10L, month)).thenReturn(Optional.empty());
+        when(costs.summarize(newProject)).thenReturn(
+                new ProjectCostContext.CostSummary(new BigDecimal("4000.00"), new BigDecimal("4000.00"), 0));
+        when(costs.summarize(carryoverProject)).thenReturn(
+                new ProjectCostContext.CostSummary(new BigDecimal("5000.00"), new BigDecimal("5000.00"), 0));
+
+        BossDashboardQuery query = new BossDashboardQuery();
+        query.setMonth(month);
+        BossDashboard dashboard = context.dashboard(boss, query);
+
+        assertThat(dashboard.getSignedAmount().getValue()).isEqualByComparingTo("10000.00");
+        assertThat(dashboard.getGrossProfit().getValue()).isEqualByComparingTo("6000.00");
+        assertThat(dashboard.getActiveProjectCount().getValue()).isEqualByComparingTo("1");
+        assertThat(dashboard.getSignedAmount().getTargetSet()).isFalse();
+        assertThat(dashboard.getSignedAmount().getMonthOverMonthComparable()).isFalse();
     }
 
     private Project project(Long id, Company company, LocalDate date) {

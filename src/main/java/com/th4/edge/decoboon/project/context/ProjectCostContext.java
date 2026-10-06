@@ -82,7 +82,9 @@ public class ProjectCostContext {
                 if (hasIncompletePurchaseCoverage(line.getSourceQuoteLine(), line.getQuantity(), purchaseOrders)
                         || (requiresCost(line.getType())
                         && estimatedLine.signum() <= 0
-                        && actualLine.signum() <= 0)) {
+                        && actualLine.signum() <= 0)
+                        || costEqualsSale(line.getCost(), line.getAmount())
+                        || catalogCostEqualsSale(line.getSourceQuoteLine())) {
                     signedIncomplete++;
                 }
             }
@@ -107,7 +109,9 @@ public class ProjectCostContext {
             if (hasIncompletePurchaseCoverage(line, line.getQuantity(), purchaseOrders)
                     || (requiresCost(line.getType())
                     && estimatedLine.signum() <= 0
-                    && value(line.getActualCost()).signum() <= 0)) {
+                    && value(line.getActualCost()).signum() <= 0)
+                    || costEqualsSale(line.getCost(), line.getAmount())
+                    || catalogCostEqualsSale(line)) {
                 incomplete++;
             }
         }
@@ -216,6 +220,27 @@ public class ProjectCostContext {
             return money(item.getCostPrice());
         }
         return money(item.getCostPrice().multiply(value(line.getQuantity())));
+    }
+
+    /** 成本价与销售价相同视为成本未维护，不得据此计算毛利。 */
+    private boolean costEqualsSale(BigDecimal cost, BigDecimal sale) {
+        BigDecimal costValue = value(cost);
+        BigDecimal saleValue = value(sale);
+        return costValue.signum() > 0 && saleValue.signum() > 0 && costValue.compareTo(saleValue) == 0;
+    }
+
+    /** 目录标准成本等于材料+人工售价时，视为成本未维护。 */
+    private boolean catalogCostEqualsSale(QuoteLine line) {
+        if (line == null || line.getCatalogItem() == null) {
+            return false;
+        }
+        CatalogItem item = line.getCatalogItem();
+        if (!requiresCost(item.getType())) {
+            return false;
+        }
+        BigDecimal sale = value(item.getMaterialPrice()).add(value(item.getManualPrice()));
+        BigDecimal cost = value(item.getCostPrice());
+        return sale.signum() > 0 && cost.signum() > 0 && cost.compareTo(sale) == 0;
     }
 
     private boolean requiresCost(ItemType type) {

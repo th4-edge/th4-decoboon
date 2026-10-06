@@ -158,7 +158,8 @@ class BossMeasureWorkspace2AcceptanceTest {
     @Test
     void shouldKeepSignedCustomerMeasureEventsInEnterpriseDateWindows() {
         Fixture f = fixture("签约客户事件");
-        LocalDateTime now = LocalDateTime.now();
+        // 使用当天固定白天时点，避免凌晨执行时 now.minusHours(2) 落到前一天导致日期窗口 flake。
+        LocalDateTime now = LocalDate.now().atTime(10, 0);
 
         Customer signed = customer(f, CustStatus.Signed, "已签约客户");
         Property property = property(signed, f.designer, PropertyStatus.Measured);
