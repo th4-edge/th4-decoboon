@@ -135,9 +135,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-06 双轨确认关闭、导出与附件新增 5 条（reconciliation/update、build、attachment/save|page|delete）。
         // 2026-10-06 工资付款补录工人新增 1 条（finance/payment/update）。
         // 2026-10-06 同步当前 dev 基线实际 Provider 数：383（public 13 + protected 370）。
-        // => 总数为 383（public 13 + protected 370）。
-        assertThat(routes).hasSize(383);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(370);
+        // 2026-10-07 指标口径字典新增 1 条（statistic/metric/dictionary，protected）。
+        // => 总数为 384（public 13 + protected 371）。
+        assertThat(routes).hasSize(384);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(371);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
