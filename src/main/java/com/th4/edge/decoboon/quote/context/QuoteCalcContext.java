@@ -28,7 +28,7 @@ public class QuoteCalcContext {
     public BigDecimal amount(PricingMethod mode, BigDecimal quantity,
                              BigDecimal materialPrice, BigDecimal manualPrice,
                              BigDecimal fixedTotalPrice) {
-        BigDecimal qty = positive(quantity);
+        BigDecimal qty = nonNegative(quantity);
         BigDecimal material = zero(materialPrice);
         BigDecimal manual = zero(manualPrice);
         BigDecimal unit = switch (mode == null ? PricingMethod.MaterialAndManual : mode) {
@@ -45,7 +45,7 @@ public class QuoteCalcContext {
 
     /** 成本统一按成本单价乘工程量计算。 */
     public BigDecimal cost(BigDecimal quantity, BigDecimal costPrice) {
-        return money(positive(quantity).multiply(zero(costPrice)));
+        return money(nonNegative(quantity).multiply(zero(costPrice)));
     }
 
     /** 将计算结果写回设计分项，避免前端直接指定金额。 */
@@ -53,7 +53,7 @@ public class QuoteCalcContext {
         if (item == null) {
             throw new DefinedException(new DefaultErrorCode("400", "设计分项不能为空"));
         }
-        item.setQuantity(positive(item.getQuantity()));
+        item.setQuantity(nonNegative(item.getQuantity()));
         item.setAmount(amount(item.getPricingMode(), item.getQuantity(),
                 item.getMaterialPrice(), item.getManualPrice(), item.getFixedTotalPrice()));
         item.setCost(cost(item.getQuantity(), item.getCostPrice()));
@@ -71,7 +71,7 @@ public class QuoteCalcContext {
                                                      BigDecimal costValue, String formula,
                                                      BigDecimal fixedTotalPrice) {
         java.util.List<QuoteComponent> result = new ArrayList<>();
-        BigDecimal quantity = positive(quantityValue);
+        BigDecimal quantity = nonNegative(quantityValue);
         BigDecimal material = zero(materialPrice);
         BigDecimal manual = zero(manualPrice);
         PricingMethod mode = method == null ? PricingMethod.MaterialAndManual : method;
@@ -118,20 +118,30 @@ public class QuoteCalcContext {
         return unitPrice(mode, quantity, materialPrice, manualPrice, null);
     }
 
+    /**
+     * 单价（项目库基价）。数量允许为 0（赠送）：0 不参与除法，仍返回项目库基价。
+     */
     public BigDecimal unitPrice(PricingMethod mode, BigDecimal quantity,
                                 BigDecimal materialPrice, BigDecimal manualPrice,
                                 BigDecimal fixedTotalPrice) {
-        BigDecimal qty = positive(quantity);
-        if (mode == PricingMethod.FixedTotal) {
-            return money(fixedTotalPrice != null ? fixedTotalPrice : zero(materialPrice).add(zero(manualPrice)));
+        BigDecimal material = zero(materialPrice);
+        BigDecimal manual = zero(manualPrice);
+        PricingMethod method = mode == null ? PricingMethod.MaterialAndManual : mode;
+        if (method == PricingMethod.FixedTotal) {
+            return money(fixedTotalPrice != null ? fixedTotalPrice : material.add(manual));
         }
-        BigDecimal total = amount(mode, qty, materialPrice, manualPrice, fixedTotalPrice);
-        return total.divide(qty, 2, RoundingMode.HALF_UP);
+        return switch (method) {
+            case MaterialAndManual -> money(material.add(manual));
+            case MaterialOnly -> money(material);
+            case ManualOnly -> money(manual);
+            case FixedTotal -> BigDecimal.ZERO;
+        };
     }
 
-    private BigDecimal positive(BigDecimal value) {
-        if (value == null || value.signum() <= 0) {
-            throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于零"));
+    /** 工程量允许 0（赠送项目），负数一律阻断。 */
+    private BigDecimal nonNegative(BigDecimal value) {
+        if (value == null || value.signum() < 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "工程量不能为负数"));
         }
         return value;
     }

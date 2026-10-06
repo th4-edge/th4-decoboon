@@ -153,8 +153,8 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
                 requireSameDesign(design, target);
             }
             BigDecimal quantity = row.getQuantity();
-            if (quantity == null || quantity.signum() <= 0) {
-                throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于0"));
+            if (quantity == null || quantity.signum() < 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "工程量不能为负数"));
             }
             Long catalogId = row.getCatalogItem() == null ? null : row.getCatalogItem().getItemId();
             if (catalogId == null) {

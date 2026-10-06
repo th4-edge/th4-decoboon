@@ -113,6 +113,55 @@ class DesignItemBatchSaveTest {
     }
 
     @Test
+    void shouldPersistZeroQuantityGiftRow() {
+        Company company = company(1L);
+        Employee designer = employee(10L, company);
+        Design design = design(100L, company);
+        Space space = space(200L, design, company);
+        CatalogItem gift = catalog(301L, company, "赠送项目", "100.00");
+
+        when(designContext.requireDesign(100L, designer)).thenReturn(design);
+        when(spaceRepository.findById(200L)).thenReturn(Optional.of(space));
+        when(catalogRepository.findById(301L)).thenReturn(Optional.of(gift));
+        when(quoteCalcContext.calculate(any(DesignItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(itemRepository.save(any(DesignItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(spaceRepository.findByDesign_DesignIdOrderBySortAsc(100L)).thenReturn(List.of(space));
+        when(itemRepository.findByDesign_DesignIdOrderBySortAsc(100L)).thenReturn(List.of(new DesignItem()));
+
+        ReflectionTestUtils.setField(batchSave, "designId", 100L);
+        ReflectionTestUtils.setField(batchSave, "employee", designer);
+        ReflectionTestUtils.setField(batchSave, "items", List.of(row(space, gift, "0")));
+
+        Design result = batchSave.call(new Design());
+
+        verify(itemRepository, times(1)).save(any(DesignItem.class));
+        assertThat(result.getItems()).hasSize(1);
+    }
+
+    @Test
+    void shouldRejectNegativeQuantityWholeBatch() {
+        Company company = company(1L);
+        Employee designer = employee(10L, company);
+        Design design = design(100L, company);
+        Space space = space(200L, design, company);
+        CatalogItem valid = catalog(301L, company, "拆除--保温墙铲除", "27.40");
+
+        when(designContext.requireDesign(100L, designer)).thenReturn(design);
+        when(spaceRepository.findById(200L)).thenReturn(Optional.of(space));
+        when(catalogRepository.findById(301L)).thenReturn(Optional.of(valid));
+
+        ReflectionTestUtils.setField(batchSave, "designId", 100L);
+        ReflectionTestUtils.setField(batchSave, "employee", designer);
+        ReflectionTestUtils.setField(batchSave, "items", List.of(row(space, valid, "-1")));
+
+        assertThatThrownBy(() -> batchSave.call(new Design()))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("不能为负数");
+
+        verify(itemRepository, never()).save(any(DesignItem.class));
+    }
+
+    @Test
     void shouldRefuseDeletingItemReferencedByQuoteSnapshot() {
         Company company = company(1L);
         Employee designer = employee(10L, company);

@@ -55,9 +55,32 @@ class QuoteCalcContextTest {
     }
 
     @Test
-    void shouldRejectNonPositiveQuantity() {
-        assertThatThrownBy(() -> context.amount(PricingMethod.MaterialOnly, BigDecimal.ZERO,
+    void shouldAllowZeroQuantityAsGiftAndReturnZeroAmount() {
+        // 业务确认（2026-10-06）：设计分项允许数量 0 赠送，金额与成本为 0，单价仍取项目库基价。
+        assertThat(context.amount(PricingMethod.MaterialAndManual, BigDecimal.ZERO,
+                new BigDecimal("80"), new BigDecimal("45"))).isEqualByComparingTo("0.00");
+        assertThat(context.cost(BigDecimal.ZERO, new BigDecimal("25"))).isEqualByComparingTo("0.00");
+        assertThat(context.unitPrice(PricingMethod.MaterialAndManual, BigDecimal.ZERO,
+                new BigDecimal("80"), new BigDecimal("45"))).isEqualByComparingTo("125.00");
+
+        DesignItem gift = new DesignItem();
+        gift.setQuantity(BigDecimal.ZERO);
+        gift.setMaterialPrice(new BigDecimal("80"));
+        gift.setManualPrice(new BigDecimal("45"));
+        gift.setCostPrice(new BigDecimal("25"));
+        gift.setPricingMode(PricingMethod.MaterialAndManual);
+
+        context.calculate(gift);
+
+        assertThat(gift.getAmount()).isEqualByComparingTo("0.00");
+        assertThat(gift.getCost()).isEqualByComparingTo("0.00");
+    }
+
+    @Test
+    void shouldRejectNegativeQuantity() {
+        assertThatThrownBy(() -> context.amount(PricingMethod.MaterialOnly, new BigDecimal("-1"),
                 BigDecimal.TEN, BigDecimal.ZERO))
-                .isInstanceOf(DefinedException.class);
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("不能为负数");
     }
 }

@@ -42,8 +42,8 @@ public class QuoteFormulaContext {
         for (QuoteLine line : ordered) {
             if (formulaByLineId.containsKey(line.getItemId())) {
                 BigDecimal value = sheet.quantity(line.getItemId());
-                if (value.signum() <= 0) {
-                    throw new DefinedException(new DefaultErrorCode("400", "工程量公式结果必须大于零"));
+                if (value.signum() < 0) {
+                    throw new DefinedException(new DefaultErrorCode("400", "工程量公式结果不能为负数"));
                 }
                 result.put(line.getItemId(), value.setScale(3, RoundingMode.HALF_UP));
             }

@@ -53,7 +53,7 @@ public class QuoteWorkbookImportContext {
                 if (item.getQuantityFormula() != null && !item.getQuantityFormula().isBlank()) {
                     formulas.put(item.getItemId(), item.getQuantityFormula());
                 }
-                if (item.getQuantity() != null && item.getQuantity().signum() <= 0) item.getErrors().add("工程量必须大于零");
+                if (item.getQuantity() != null && item.getQuantity().signum() < 0) item.getErrors().add("工程量不能为负数");
                 if (item.getMaterialPrice() != null && item.getMaterialPrice().signum() < 0) item.getErrors().add("材料价不能为负数");
                 if (item.getManualPrice() != null && item.getManualPrice().signum() < 0) item.getErrors().add("人工价不能为负数");
             }

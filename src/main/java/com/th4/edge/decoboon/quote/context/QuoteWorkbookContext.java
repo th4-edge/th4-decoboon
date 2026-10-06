@@ -120,8 +120,8 @@ public class QuoteWorkbookContext {
             } else {
                 quantity = oldQuantity;
             }
-            if (quantity == null || quantity.signum() <= 0) {
-                throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于零"));
+            if (quantity == null || quantity.signum() < 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "工程量不能为负数"));
             }
             target.setQuantity(quantity.setScale(3, RoundingMode.HALF_UP));
             if (hasFormula) {
