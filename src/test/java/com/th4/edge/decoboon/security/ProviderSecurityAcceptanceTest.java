@@ -138,9 +138,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-07 指标口径字典新增 1 条（statistic/metric/dictionary，protected）。
         // => 总数为 384（public 13 + protected 371）。
         // 2026-10-07 员工工资提成 / 企业单据模板版本 · 版式 · 凭证设计器 / 客户退款 在途功能整批上线，
-        // protected 新增 32 条 => 总数为 416（public 13 + protected 403）。
-        assertThat(routes).hasSize(416);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(403);
+        // 2026-10-07 薪酬方案与月度考勤删除新增 2 条（payroll/compensation/delete、attendance/summary/delete）。
+        // protected 新增 34 条 => 总数为 418（public 13 + protected 405）。
+        assertThat(routes).hasSize(418);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(405);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 

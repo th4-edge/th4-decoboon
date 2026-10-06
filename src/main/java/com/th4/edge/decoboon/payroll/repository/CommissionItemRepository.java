@@ -10,5 +10,6 @@ public interface CommissionItemRepository extends JpaRepository<CommissionItem, 
     List<CommissionItem> findByCompany_ComIdAndEmployee_EmpIdOrderByCreateTime_DateTimeDesc(Long comId, Long empId);
     List<CommissionItem> findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(Long comId, Long projectId);
     boolean existsByCompany_ComIdAndEmployee_EmpIdAndStatusIn(Long comId, Long empId, Collection<com.th4.edge.decoboon.payroll.configure.CommissionStatus> statuses);
+    boolean existsByCompany_ComIdAndEmployee_EmpId(Long comId, Long empId);
     List<CommissionItem> findByPayrollItem_ItemIdOrderByCommissionIdAsc(Long itemId);
 }
