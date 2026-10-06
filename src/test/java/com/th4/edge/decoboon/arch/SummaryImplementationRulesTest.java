@@ -37,6 +37,7 @@ class SummaryImplementationRulesTest {
             "statistic/context/",
             "ai/billing/context/",
             "ai/context/AiUsageReportContext.java",
+            "ai/brief/context/AiBossBriefContext.java",
             "carryover/context/CarryoverReconciliationContext.java",
             // 2026-10-07 补漏：材料计划工作台（全场景最慢接口，逐计划查采购单/采购明细）
             "material/context/MaterialPlanWorkbenchContext.java",
@@ -53,6 +54,10 @@ class SummaryImplementationRulesTest {
      */
     private static final java.util.Map<String, Set<String>> LEGACY_BASELINE = java.util.Map.ofEntries(
             java.util.Map.entry("project/context/ProjectCostContext.java", Set.of("A2")),
+            java.util.Map.entry("statistic/context/RiskCenterContext.java", Set.of("A7")),
+            java.util.Map.entry("statistic/context/OrganizationContext.java", Set.of("A7")),
+            java.util.Map.entry("carryover/context/CarryoverReconciliationContext.java", Set.of("A7")),
+            java.util.Map.entry("ai/brief/context/AiBossBriefContext.java", Set.of("A7")),
             java.util.Map.entry("finance/context/FinanceReportContext.java", Set.of("A1")),
             java.util.Map.entry("payroll/context/PayrollWorkbenchContext.java", Set.of("A1")),
             java.util.Map.entry("statistic/context/SiteWorkbenchContext.java", Set.of("A1", "A2b")),
@@ -261,6 +266,36 @@ class SummaryImplementationRulesTest {
         }
         assertThat(uncovered)
                 .as("统计/报表/工作台/驾驶舱类路由必须纳管（Provider 或其委托 Context 登记进 SUMMARY_PACKAGES）")
+                .isEmpty();
+    }
+
+
+    /**
+     * A7：汇总接口嵌套调用汇总接口（把若干重型汇总顺序叠加，耗时相加、SQL 相乘）。
+     *
+     * <p>典型：{@code ai/brief/report} 顺序调用 dashboard + finance.summary + alert。正确做法是复用聚合层
+     * （如 {@code FinanceSummaryAggregateContext}），而不是把整个重接口再跑一遍。</p>
+     */
+    @Test
+    void summaryClassesMustNotNestOtherSummaryContexts() throws IOException {
+        List<String> violations = new ArrayList<>();
+        try (Stream<Path> files = Files.walk(SRC)) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
+                String rel = rel(file);
+                if (!inScope(rel)) {
+                    continue;
+                }
+                String source = Files.readString(file);
+                // 字段名（camelCase）与类型名都要覆盖：financeContext.summary(...) / FinanceReportContext.summary(...)
+                Matcher m = Pattern.compile("\\b(\\w*[Cc]ontext)\\s*\\.\\s*(summary|report|dashboard|workbench|overview)\\s*\\(")
+                        .matcher(source);
+                if (m.find()) {
+                    add(violations, rel, "A7: 汇总嵌套调用 → " + m.group(1) + "." + m.group(2) + "()");
+                }
+            }
+        }
+        assertThat(violations)
+                .as("汇总接口禁止嵌套调用另一汇总接口：应复用聚合层（DEC-036 反模式 A7）")
                 .isEmpty();
     }
 
