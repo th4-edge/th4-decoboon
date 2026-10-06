@@ -1,0 +1,35 @@
+{
+  "role": "Boss",
+  "log": [
+    {
+      "step": "login",
+      "role": "Boss",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "callResult",
+      "v": null
+    },
+    {
+      "step": "callErr",
+      "v": "Error: Uncaught this.create is not a function"
+    },
+    {
+      "step": "inputs",
+      "v": []
+    },
+    {
+      "step": "textareas",
+      "v": []
+    },
+    {
+      "step": "buttons",
+      "v": [
+        "下载 V1.0 模板",
+        "批量导入"
+      ]
+    }
+  ],
+  "console": [],
+  "errors": []
+}

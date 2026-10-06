@@ -60,8 +60,9 @@ public class Import implements com.th4.edge.decoboon.quote.service.workbook.impo
     @Override
     public ImportResult call(@ModelSaveInject QuoteWorkbookImportRequest request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        if (current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师可导入报价工作簿"));
+        boolean boss = current.getRole() == EmployeeRole.Boss;
+        if (!boss && current.getRole() != EmployeeRole.Designer) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可导入报价工作簿"));
         }
         Long requestQuoteId = request == null ? quoteId : request.getQuoteId();
         if (requestQuoteId == null) throw new DefinedException(new DefaultErrorCode("400", "缺少报价编号"));
@@ -69,7 +70,8 @@ public class Import implements com.th4.edge.decoboon.quote.service.workbook.impo
         Specification<Quote> byId = (root, query, builder) -> builder.equal(root.get("quoteId"), requestQuoteId);
         Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
-        if (quote.getCreatedBy() == null || !quote.getCreatedBy().getEmpId().equals(current.getEmpId())) {
+        if (!boss && (quote.getCreatedBy() == null
+                || !quote.getCreatedBy().getEmpId().equals(current.getEmpId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
         }
         if (!com.th4.edge.decoboon.quote.configure.QuoteStatus.Draft.equals(quote.getStatus())) {

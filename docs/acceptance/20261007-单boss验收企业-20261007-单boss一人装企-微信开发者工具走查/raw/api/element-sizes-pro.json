@@ -1,0 +1,38 @@
+{
+  "salaryPro": {
+    ".pay-page": {
+      "width": 390,
+      "height": 753
+    },
+    ".pay-body": {
+      "width": 390,
+      "height": 232.5
+    },
+    ".sheet-card": {
+      "width": 362,
+      "height": 141.5
+    },
+    ".sheet-card__amounts": {
+      "width": 332,
+      "height": 53
+    }
+  },
+  "commissionPro": {
+    ".pay-page": {
+      "width": 390,
+      "height": 753
+    },
+    ".pay-body": {
+      "width": 390,
+      "height": 363
+    },
+    ".commission-card": {
+      "width": 362,
+      "height": 187.5
+    },
+    ".commission-card__amounts": {
+      "width": 332,
+      "height": 100
+    }
+  }
+}

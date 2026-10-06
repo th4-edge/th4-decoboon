@@ -88,6 +88,22 @@ class WorkerInfoAcceptanceTest {
     }
 
     @Test
+    void shouldAllowBossToMaintainWorkerAsInternalRoleSuperset() {
+        Employee boss = employee("负责人", EmployeeRole.Boss, null);
+        Worker worker = worker(boss.getCompany());
+        com.th4.edge.decoboon.labor.service.worker.update.support.Update target = updateTarget();
+        ReflectionTestUtils.setField(target, "employee", boss);
+        ReflectionTestUtils.setField(target, "workerId", worker.getWorkerId());
+        ReflectionTestUtils.setField(target, "name", "张伟（BOSS改）");
+
+        Worker saved = target.call(new Worker());
+
+        assertThat(saved.getName()).isEqualTo("张伟（BOSS改）");
+        assertThat(saved.getIdCardNo()).isEqualTo("341222198803305970");
+        assertThat(saved.getBankAccount()).isEqualTo("662245678901266");
+    }
+
+    @Test
     void shouldClearSensitiveFieldsWhenUpdateSendsBlank() {
         Employee pm = employee("项目经理", EmployeeRole.Pm, null);
         Worker worker = worker(pm.getCompany());

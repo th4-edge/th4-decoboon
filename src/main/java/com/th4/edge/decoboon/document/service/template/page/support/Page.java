@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("单据模板列表")
 @Properties(allow = @AllowProperties(model = DocumentTemplate.class,
         properties = {"templateId", "company", "type", "scope", "name", "version", "baselineVersion",
-                "fieldConfig", "styleConfig", "status", "createTime", "updateTime"}))
+                "fieldConfig", "styleConfig", "layoutConfig", "designerConfig", "status", "presetCode", "presetNote",
+                "publishedVersion", "publishedBy", "publishedAt", "createTime", "updateTime"}))
 @Service("document/template/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.document.service.template.page.Page {

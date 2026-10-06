@@ -33,6 +33,8 @@ public class FinanceProjectReport {
     private BigDecimal laborCost = BigDecimal.ZERO;
     private BigDecimal projectPaymentAmount = BigDecimal.ZERO;
     private BigDecimal projectCost = BigDecimal.ZERO;
+    private BigDecimal employeeSalaryAmount = BigDecimal.ZERO;
+    private BigDecimal employeeCommissionAmount = BigDecimal.ZERO;
     private BigDecimal otherPayableAmount = BigDecimal.ZERO;
     private BigDecimal expenseAllocation = BigDecimal.ZERO;
     private BigDecimal estimatedCost = BigDecimal.ZERO;
@@ -108,6 +110,10 @@ public class FinanceProjectReport {
     public void setProjectPaymentAmount(BigDecimal projectPaymentAmount) { this.projectPaymentAmount = projectPaymentAmount; }
     public BigDecimal getProjectCost() { return projectCost; }
     public void setProjectCost(BigDecimal projectCost) { this.projectCost = projectCost; }
+    public BigDecimal getEmployeeSalaryAmount() { return employeeSalaryAmount; }
+    public void setEmployeeSalaryAmount(BigDecimal employeeSalaryAmount) { this.employeeSalaryAmount = employeeSalaryAmount; }
+    public BigDecimal getEmployeeCommissionAmount() { return employeeCommissionAmount; }
+    public void setEmployeeCommissionAmount(BigDecimal employeeCommissionAmount) { this.employeeCommissionAmount = employeeCommissionAmount; }
     public BigDecimal getOtherPayableAmount() { return otherPayableAmount; }
     public void setOtherPayableAmount(BigDecimal otherPayableAmount) { this.otherPayableAmount = otherPayableAmount; }
     public BigDecimal getExpenseAllocation() { return expenseAllocation; }

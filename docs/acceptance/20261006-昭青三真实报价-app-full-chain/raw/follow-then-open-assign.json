@@ -1,0 +1,62 @@
+{
+  "role": "StoreManager",
+  "log": [
+    {
+      "step": "login",
+      "role": "StoreManager",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "textareaCount",
+      "v": 1
+    },
+    {
+      "step": "tappedSave",
+      "v": "保存跟进"
+    },
+    {
+      "step": "follows",
+      "v": [
+        {
+          "way": {
+            "name": "微信",
+            "key": "Wechat"
+          },
+          "content": "已完成首次电话沟通，客户确认装修意向与预"
+        }
+      ]
+    },
+    {
+      "step": "customer",
+      "v": {
+        "lastFollowAt": "2026-10-06 04:38:30",
+        "stage": {
+          "name": "跟进中",
+          "key": "Following"
+        },
+        "designer": null
+      }
+    },
+    {
+      "step": "tappedAssign",
+      "v": "负责设计师"
+    }
+  ],
+  "console": [
+    {
+      "t": "2026-10-05T20:38:30.794Z",
+      "type": "warn",
+      "args": [
+        "请注意 showLoading 与 hideLoading 必须配对使用"
+      ]
+    },
+    {
+      "t": "2026-10-05T20:38:31.198Z",
+      "type": "error",
+      "args": [
+        "{}"
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -26,6 +26,9 @@ public interface PayableRepository extends JpaRepository<Payable, Long>,
 
     List<Payable> findByPurchaseOrder_PurchaseId(Long purchaseOrderId);
 
+    java.util.Optional<Payable> findByCompany_ComIdAndSourceTypeAndSourceId(
+            Long comId, String sourceType, Long sourceId);
+
     /** 兼容历史数据：早期应付只写 source_no（采购单号），用来源单号去重。 */
     java.util.Optional<Payable> findFirstByCompany_ComIdAndSourceNoAndType(
             Long comId, String sourceNo, com.th4.edge.decoboon.finance.configure.PayableType type);

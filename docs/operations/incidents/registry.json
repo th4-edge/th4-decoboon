@@ -2,7 +2,7 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20261006-a1233597b0",
+      "incidentId": "INC-20261007-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -482,9 +482,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 37,
+      "count": 41,
       "firstSeen": "2026-09-17T23:54:36.942+08:00",
-      "lastSeen": "2026-10-05 18:08:30.801",
+      "lastSeen": "2026-10-07 00:12:43.054",
       "samples": [
         "16438:2026-09-17T23:54:36.942+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
         "[2026-09-20 02:26:19.563] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
@@ -506,7 +506,11 @@
         "2026-10-03/20261003-032939",
         "2026-10-05/20261005-181721",
         "2026-10-05/20261005-190730",
-        "2026-10-05/20261005-192227"
+        "2026-10-05/20261005-192227",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950",
+        "2026-10-07/20261007-003223",
+        "2026-10-07/20261007-012037"
       ]
     },
     {
@@ -595,9 +599,9 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 215,
+      "count": 264,
       "firstSeen": "2026-09-18 13:05:07.158",
-      "lastSeen": "2026-10-06 14:32:59.453",
+      "lastSeen": "2026-10-07 01:03:16.161",
       "samples": [
         "[2026-09-18 13:05:07.158] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ",
         "[2026-09-18 13:05:30.183] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ",
@@ -606,10 +610,6 @@
         "[2026-09-18 13:06:42.060] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ"
       ],
       "reportPaths": [
-        "2026-09-20/20260920-142638",
-        "2026-09-20/20260920-142653",
-        "2026-09-24/20260924-044441",
-        "2026-09-24/20260924-120834",
         "2026-09-24/20260924-122445",
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
@@ -625,7 +625,11 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950",
+        "2026-10-07/20261007-012037"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -1470,15 +1474,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-09-26 01:20:47.724",
-      "lastSeen": "2026-09-26T01:20:47.724+08:00",
+      "lastSeen": "2026-10-07T01:18:27.730+08:00",
       "samples": [
         "[2026-09-26 01:20:47.724] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - 处理失败:找不到对应的处理服务:",
-        "9277:2026-09-26T01:20:47.724+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:"
+        "9277:2026-09-26T01:20:47.724+08:00 ERROR 80532 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:",
+        "[2026-10-07 01:18:27.730] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - 处理失败:找不到对应的处理服务:",
+        "1162:2026-10-07T01:18:27.730+08:00 ERROR 172796 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:"
       ],
       "reportPaths": [
-        "2026-09-26/20260926-022226"
+        "2026-09-26/20260926-022226",
+        "2026-10-07/20261007-012037"
       ]
     },
     {
@@ -1684,7 +1691,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 7,
+      "count": 10,
       "firstSeen": "2026-09-27 11:44:14.948",
       "lastSeen": "2026-10-06 03:58:43.524",
       "samples": [
@@ -1701,7 +1708,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2067,7 +2077,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 34,
+      "count": 52,
       "firstSeen": "2026-10-05 16:37:49.422",
       "lastSeen": "2026-10-06 17:40:02.027",
       "samples": [
@@ -2085,7 +2095,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2188,7 +2201,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 8,
+      "count": 11,
       "firstSeen": "2026-10-05 19:03:00.959",
       "lastSeen": "2026-10-06 17:44:26.525",
       "samples": [
@@ -2205,7 +2218,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2236,7 +2252,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 12,
+      "count": 15,
       "firstSeen": "2026-10-06 00:53:33.913",
       "lastSeen": "2026-10-06 00:53:33.913",
       "samples": [
@@ -2258,7 +2274,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2269,7 +2288,7 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 77,
+      "count": 98,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2290,7 +2309,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ],
       "fixedAt": "2026-10-06 03:43:18",
       "fixedRelease": "20261006-033940",
@@ -2304,7 +2326,7 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 77,
+      "count": 98,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2325,7 +2347,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ],
       "fixedAt": "2026-10-06 03:43:18",
       "fixedRelease": "20261006-033940",
@@ -2339,7 +2364,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 88,
+      "count": 112,
       "firstSeen": "2026-10-06 02:23:27.647",
       "lastSeen": "2026-10-06 02:26:44.919",
       "samples": [
@@ -2360,7 +2385,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ],
       "fixedAt": "2026-10-06 03:43:18",
       "fixedRelease": "20261006-033940",
@@ -2374,7 +2402,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 35,
+      "count": 56,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2389,7 +2417,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2400,7 +2431,7 @@
       "severity": "high",
       "status": "open",
       "actionable": true,
-      "count": 35,
+      "count": 56,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2415,7 +2446,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2426,7 +2460,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 35,
+      "count": 56,
       "firstSeen": "2026-10-06 14:30:07.578",
       "lastSeen": "2026-10-06 14:32:59.361",
       "samples": [
@@ -2441,7 +2475,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2452,7 +2489,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 95,
+      "count": 152,
       "firstSeen": "2026-10-06 14:25:30.207",
       "lastSeen": "2026-10-06 14:26:09.272",
       "samples": [
@@ -2467,7 +2504,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2478,7 +2518,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 90,
+      "count": 144,
       "firstSeen": "2026-10-06 15:09:32.284",
       "lastSeen": "2026-10-06 16:07:18.945",
       "samples": [
@@ -2493,7 +2533,10 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ]
     },
     {
@@ -2504,7 +2547,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 18,
+      "count": 27,
       "firstSeen": "2026-10-06 18:16:32.664",
       "lastSeen": "2026-10-06 18:16:37.395",
       "samples": [
@@ -2518,12 +2561,144 @@
         "2026-10-06/20261006-182001",
         "2026-10-06/20261006-182003",
         "2026-10-06/20261006-182400",
-        "2026-10-06/20261006-182500"
+        "2026-10-06/20261006-182500",
+        "2026-10-06/20261006-182801",
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
       ],
       "fixedAt": "2026-10-06 18:24:18",
       "fixedRelease": "/opt/decoboon/releases/20261006-182214",
       "fixSummary": "Build 不再强制要求方案区域；有分项即可进入 Ready，无区域时保留方案已有面积（提交 c0ea803，测试 DesignSchemeBuildTest）"
+    },
+    {
+      "incidentId": "INC-20261006-5b44ec0c8f",
+      "signature": "找不到对应的处理服务:json",
+      "signatureHash": "5b44ec0c8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-06 18:45:18.464",
+      "lastSeen": "2026-10-06 18:45:18.464",
+      "samples": [
+        "[2026-10-06 18:45:18.464] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - json处理失败:找不到对应的处理服务:json",
+        "931:2026-10-06T18:45:18.464+08:00 ERROR 167091 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : json处理失败:找不到对应的处理服务:json",
+        "[2026-10-06 18:45:18.464] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - json处理失败:找不到对应的处理服务:json"
+      ],
+      "reportPaths": [
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
+      ]
+    },
+    {
+      "incidentId": "INC-20261006-d2d7eee4e6",
+      "signature": "找不到对应的处理服务:mongo",
+      "signatureHash": "d2d7eee4e6",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-06 18:45:15.469",
+      "lastSeen": "2026-10-06 18:45:15.469",
+      "samples": [
+        "[2026-10-06 18:45:15.469] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mongo处理失败:找不到对应的处理服务:mongo",
+        "845:2026-10-06T18:45:15.469+08:00 ERROR 167091 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : mongo处理失败:找不到对应的处理服务:mongo",
+        "[2026-10-06 18:45:15.469] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mongo处理失败:找不到对应的处理服务:mongo"
+      ],
+      "reportPaths": [
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
+      ]
+    },
+    {
+      "incidentId": "INC-20261006-205c0c8ca3",
+      "signature": "找不到对应的处理服务:redis",
+      "signatureHash": "205c0c8ca3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-06 18:45:14.726",
+      "lastSeen": "2026-10-06 18:45:14.726",
+      "samples": [
+        "[2026-10-06 18:45:14.726] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - redis处理失败:找不到对应的处理服务:redis",
+        "759:2026-10-06T18:45:14.726+08:00 ERROR 167091 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : redis处理失败:找不到对应的处理服务:redis",
+        "[2026-10-06 18:45:14.726] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - redis处理失败:找不到对应的处理服务:redis"
+      ],
+      "reportPaths": [
+        "2026-10-06/20261006-184549",
+        "2026-10-06/20261006-184950"
+      ]
+    },
+    {
+      "incidentId": "INC-20261007-896be00185",
+      "signature": "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset",
+      "signatureHash": "896be00185",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted",
+        "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted"
+      ],
+      "reportPaths": [
+        "2026-10-07/20261007-012037"
+      ]
+    },
+    {
+      "incidentId": "INC-20261007-e48ced58b0",
+      "signature": "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]",
+      "signatureHash": "e48ced58b0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": null,
+      "lastSeen": null,
+      "samples": [
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManager",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManager",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManager",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManager",
+        "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManager"
+      ],
+      "reportPaths": [
+        "2026-10-07/20261007-012037"
+      ]
+    },
+    {
+      "incidentId": "INC-20261007-ee1db0bdeb",
+      "signature": "Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code]",
+      "signatureHash": "ee1db0bdeb",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 8,
+      "firstSeen": "2026-10-07 01:00:27.177",
+      "lastSeen": "2026-10-07 01:03:44.581",
+      "samples": [
+        "[2026-10-07 01:00:27.177] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]",
+        "[2026-10-07 01:00:55.168] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]",
+        "[2026-10-07 01:01:23.385] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]",
+        "[2026-10-07 01:01:51.618] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]",
+        "[2026-10-07 01:02:20.459] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [preset_code] in table [db_document_template]"
+      ],
+      "reportPaths": [
+        "2026-10-07/20261007-012037"
+      ]
     }
   ],
-  "updatedAt": "2026-10-06T10:25:01.625947+00:00"
+  "updatedAt": "2026-10-06T17:20:38.382347+00:00"
 }

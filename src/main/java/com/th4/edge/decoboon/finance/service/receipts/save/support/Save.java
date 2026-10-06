@@ -12,6 +12,7 @@ import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
+import com.th4.edge.decoboon.payroll.context.CommissionReleaseContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -82,18 +83,21 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
     private final FinanceAccessContext accessContext;
     private final FinanceIdempotencyContext idempotencyContext;
     private final CarryoverLockContext carryoverLockContext;
+    private final CommissionReleaseContext commissionReleaseContext;
 
 
     public Save(ReceiptRepository receiptRepository,
                 ReceivableRepository receivableRepository,
                 FinanceAccessContext accessContext,
                 FinanceIdempotencyContext idempotencyContext,
-                CarryoverLockContext carryoverLockContext) {
+                CarryoverLockContext carryoverLockContext,
+                CommissionReleaseContext commissionReleaseContext) {
         this.receiptRepository = receiptRepository;
         this.receivableRepository = receivableRepository;
         this.accessContext = accessContext;
         this.idempotencyContext = idempotencyContext;
         this.carryoverLockContext = carryoverLockContext;
+        this.commissionReleaseContext = commissionReleaseContext;
     }
 
     @Override
@@ -172,6 +176,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
                 saved.getAccount(), receivedAt, saved.getPayerName(),
                 "收款 · " + receivable.getName(), remark);
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Receipt, current);
+        if (commissionReleaseContext != null) commissionReleaseContext.releaseForReceipt(current, saved);
         return saved;
     }
 

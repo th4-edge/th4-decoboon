@@ -92,8 +92,8 @@ public class Payable extends AuditModel {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "property_id", nullable = false)
-    @Note("所属房屋")
+    @JoinColumn(name = "property_id")
+    @Note("所属房屋；企业归属员工工资可为空")
     private Property property;
 
     @Note("材料计划来源")
@@ -171,6 +171,14 @@ public class Payable extends AuditModel {
     @Column(length = 64)
     private String sourceNo;
 
+    @Note("来源类型：PayrollItem / CommissionItem")
+    @Column(name = "source_type", length = 32)
+    private String sourceType;
+
+    @Note("来源业务主键")
+    @Column(name = "source_id")
+    private Long sourceId;
+
     @Note("业务说明")
     @Column(length = 500)
     private String remark;
@@ -227,6 +235,10 @@ public Long getPayableId() { return payableId; }
     public void setUrgent(Boolean urgent) { this.urgent = urgent; }
     public String getSourceNo() { return sourceNo; }
     public void setSourceNo(String sourceNo) { this.sourceNo = sourceNo; }
+    public String getSourceType() { return sourceType; }
+    public void setSourceType(String sourceType) { this.sourceType = sourceType; }
+    public Long getSourceId() { return sourceId; }
+    public void setSourceId(Long sourceId) { this.sourceId = sourceId; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
     public Employee getCreatedBy() { return createdBy; }

@@ -23,7 +23,8 @@ public class DesignPromptPrivacyContext {
         if (prompt == null) {
             return;
         }
-        if (employee == null || employee.getRole() != EmployeeRole.Designer) {
+        if (employee == null || (employee.getRole() != EmployeeRole.Designer
+                && employee.getRole() != EmployeeRole.Boss)) {
             prompt.setTalkPrompt(null);
         }
     }

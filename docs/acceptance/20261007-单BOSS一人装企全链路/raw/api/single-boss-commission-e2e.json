@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-10-06T20:26:53.436Z",
+  "tenant": "单BOSS验收企业",
+  "projectId": "8900000000000000304",
+  "results": {
+    "receivable": {
+      "receivableId": "233324152713379840",
+      "amount": 100000,
+      "receivedAmount": 0,
+      "status": {
+        "name": "待收",
+        "key": "Pending"
+      }
+    },
+    "commissionAccrued": {
+      "commissionId": "233324152918900736",
+      "employee": "单人负责人",
+      "project": "单BOSS验收主合同项目",
+      "contractAmount": 100000,
+      "manualRate": 2,
+      "commissionAmount": 2000,
+      "accruedAmount": 2000,
+      "releasedAmount": 0,
+      "paidAmount": 0,
+      "status": {
+        "name": "已计提",
+        "key": "Accrued"
+      }
+    },
+    "payable": {
+      "payableId": "233324152923095040",
+      "type": {
+        "name": "员工提成",
+        "key": "EmployeeCommission"
+      },
+      "amount": 2000,
+      "paidAmount": 0
+    },
+    "preReleasePayment": {
+      "success": false,
+      "code": "400",
+      "message": "发放金额不能超过员工应付未付金额"
+    },
+    "firstReceipt": {
+      "receiptId": "233324153657098240",
+      "amount": 40000,
+      "retrySameReceipt": true,
+      "releasedAmount": 800,
+      "paidAmount": 0,
+      "status": {
+        "name": "已释放",
+        "key": "Released"
+      }
+    },
+    "firstPayment": {
+      "paymentId": "233324154185580544",
+      "amount": 800,
+      "retrySamePayment": true
+    },
+    "secondReceipt": {
+      "receiptId": "233324154407878656",
+      "amount": 60000,
+      "releasedAmount": 2000,
+      "paidAmount": 800,
+      "outstanding": 1200,
+      "status": {
+        "name": "已释放",
+        "key": "Released"
+      }
+    },
+    "final": {
+      "secondPaymentId": "233324154634371072",
+      "paidAmount": 2000,
+      "releasedAmount": 2000,
+      "accruedAmount": 2000,
+      "status": {
+        "name": "已发放",
+        "key": "Paid"
+      }
+    }
+  }
+}

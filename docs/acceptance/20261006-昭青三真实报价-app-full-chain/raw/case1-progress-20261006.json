@@ -1,0 +1,18 @@
+{
+  "case": "HTJY-2026-10",
+  "customer": {"custId":"232960420686594048","name":"荷塘家园-陈先生","tel":"13700001201"},
+  "property": {"propertyId":"232961774796668928","area":118},
+  "designer": {"empId":"1790000000000000105","name":"董夏鹏","assignedAt":"2026-10-06 04:38+08"},
+  "customerStage": "Following（首次跟进已完成 last_follow_at=2026-10-06 04:38:30）",
+  "catalogFixedTotalItems": [
+    {"itemId":"232964005122015232","name":"[验收基准-荷塘] 综合项目","type":"General","unit":"项","pricingMode":"FixedTotal","fixedTotalPrice":670.0},
+    {"itemId":"232964114404605952","name":"[验收基准-荷塘] 主材项目","type":"Material","unit":"项","pricingMode":"FixedTotal","fixedTotalPrice":18962.27},
+    {"itemId":"232964212073168896","name":"[验收基准-荷塘] 施工项目","type":"Construction","unit":"项","pricingMode":"FixedTotal","fixedTotalPrice":27979.9},
+    {"itemId":"232964309980807168","name":"[验收基准-荷塘] 全屋定制橱柜","type":"Custom","unit":"项","pricingMode":"FixedTotal","fixedTotalPrice":14679.35}
+  ],
+  "fixedTotalSum": 62291.52,
+  "expectedTax": 3114.58,
+  "expectedGrandTotal": 65406.1,
+  "design": {"note":"scheme V1 已存在（设计中），0 区域 / 0 分项","needs":"区域 + 4 分项 + 生成报价"},
+  "status": "PARTIAL"
+}

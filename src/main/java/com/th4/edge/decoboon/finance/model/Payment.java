@@ -117,6 +117,15 @@ public class Payment extends AuditModel {
     @JoinColumn(name = "worker_id")
     private Worker worker;
 
+    @Note("员工收款人（员工工资/提成发放时填写）")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payee_emp_id")
+    private Employee payeeEmployee;
+
+    @Note("员工发放批次号")
+    @Column(name = "batch_no", length = 64)
+    private String batchNo;
+
     @Note("转账流水号")
     @Column(length = 128)
     private String transactionNo;
@@ -166,6 +175,10 @@ public class Payment extends AuditModel {
     public void setPartner(Partner partner) { this.partner = partner; }
     public Worker getWorker() { return worker; }
     public void setWorker(Worker worker) { this.worker = worker; }
+    public Employee getPayeeEmployee() { return payeeEmployee; }
+    public void setPayeeEmployee(Employee payeeEmployee) { this.payeeEmployee = payeeEmployee; }
+    public String getBatchNo() { return batchNo; }
+    public void setBatchNo(String batchNo) { this.batchNo = batchNo; }
 
     public String getPayeeName() { return payeeName; }
     public void setPayeeName(String payeeName) { this.payeeName = payeeName; }

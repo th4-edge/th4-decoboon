@@ -1,0 +1,20 @@
+{
+  "role": "StoreManager",
+  "log": [
+    {
+      "step": "login",
+      "role": "StoreManager",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "texts",
+      "v": []
+    },
+    {
+      "step": "buttons",
+      "v": []
+    }
+  ],
+  "console": [],
+  "errors": []
+}

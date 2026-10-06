@@ -146,6 +146,61 @@ class DesignerWorkbenchAggregationTest {
     }
 
     @Test
+    void bossDesignWorkbenchShouldSeeAllCompanyProperties() {
+        Employee boss = employee(99L, EmployeeRole.Boss);
+        Employee designer = employee(10L, EmployeeRole.Designer);
+        Customer customer = customer(20L, designer);
+        Property property = property(101L, customer, designer, PropertyStatus.Measured);
+
+        CustomerRepository customers = mock(CustomerRepository.class);
+        PropertyRepository properties = mock(PropertyRepository.class);
+        DesignRepository designs = mock(DesignRepository.class);
+        RequirementRepository requirements = mock(RequirementRepository.class);
+        MeasureRepository measures = mock(MeasureRepository.class);
+        QuoteRepository quotes = mock(QuoteRepository.class);
+        TenantContext tenant = mock(TenantContext.class);
+        when(tenant.requireEmployee(boss)).thenReturn(boss);
+        when(customers.findByCompany_ComId(1L)).thenReturn(List.of(customer));
+        when(properties.findByCompany_ComIdAndCustomer_CustIdIn(1L, List.of(20L))).thenReturn(List.of(property));
+        when(designs.findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(1L, List.of(101L)))
+                .thenReturn(List.of());
+        when(requirements.findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(1L, List.of(101L)))
+                .thenReturn(List.of());
+        when(measures.findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(1L, List.of(101L)))
+                .thenReturn(List.of());
+        when(quotes.findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
+                1L, List.of(101L), List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
+                .thenReturn(List.of());
+
+        var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
+                tenant, customers, designs, requirements, properties, measures, quotes);
+        List<DesignWorkbenchItem> result = provider.call(boss);
+
+        assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));
+    }
+
+    @Test
+    void bossQuoteWorkbenchShouldSeeAllCompanyQuotes() {
+        Employee boss = employee(99L, EmployeeRole.Boss);
+        Employee designer = employee(10L, EmployeeRole.Designer);
+        Customer customer = customer(20L, designer);
+        Property property = property(101L, customer, designer, PropertyStatus.Quoted);
+        Quote draft = quote(501L, 1, QuoteStatus.Draft, customer, property);
+
+        QuoteRepository quotes = mock(QuoteRepository.class);
+        TenantContext tenant = mock(TenantContext.class);
+        when(tenant.requireEmployee(boss)).thenReturn(boss);
+        when(quotes.findByCompany_ComIdAndStatusInOrderByQuoteIdDesc(
+                1L, List.of(QuoteStatus.Draft, QuoteStatus.Submitted, QuoteStatus.Rejected)))
+                .thenReturn(List.of(draft));
+
+        var provider = new com.th4.edge.decoboon.statistic.service.workbench.quote.page.support.Page(tenant, quotes);
+        List<QuoteWorkbenchItem> result = provider.call(boss);
+
+        assertThat(result).singleElement().satisfies(item -> assertThat(item.getQuoteId()).isEqualTo(501L));
+    }
+
+    @Test
     void signWorkbenchShouldKeepConvertedQuoteAsSignedProject() {
         Employee designer = employee(10L, EmployeeRole.Designer);
         Customer customer = customer(20L, designer);

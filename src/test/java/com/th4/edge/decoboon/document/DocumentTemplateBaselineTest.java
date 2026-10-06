@@ -15,15 +15,21 @@ class DocumentTemplateBaselineTest {
 
     @Test
     void shouldProvideCommonVoucherPresets() {
-        assertThat(baseline.presets()).hasSize(6);
+        assertThat(baseline.presets()).hasSize(28);
         assertThat(baseline.presets())
                 .extracting(DocumentTemplate::getPresetCode)
-                .containsExactlyInAnyOrder("P-SALARY", "P-LABOR", "P-SUPPLIER", "P-EXPENSE",
-                        "R-STANDARD", "R-DEPOSIT");
+                .contains("P-SALARY", "P-LABOR", "P-SUPPLIER", "P-EXPENSE",
+                        "P-SUPPLIER-PREPAY", "P-SUPPLIER-ARRIVAL", "P-SUPPLIER-ACCEPTANCE",
+                        "P-LABOR-PROGRESS", "P-LABOR-SETTLEMENT", "E-REIMBURSEMENT",
+                        "I-PAYMENT-REQUEST", "I-PAYMENT-APPROVAL", "R-CUSTOMER-REFUND",
+                        "F-MANUAL-LEDGER", "F-CORRECTION", "R-STANDARD", "R-DEPOSIT",
+                        "R-CUSTOMER-PROGRESS", "R-CUSTOMER-FINAL", "R-CUSTOMER-CHANGE",
+                        "R-CUSTOMER-WARRANTY");
         assertThat(baseline.presets()).allSatisfy(preset -> {
             assertThat(preset.getScope()).isEqualTo(DocumentTemplateScope.Platform);
             assertThat(preset.getName()).isNotBlank();
             assertThat(preset.getPresetNote()).isNotBlank();
+            assertThat(preset.getLayoutConfig()).contains("A4").contains("portrait");
         });
     }
 

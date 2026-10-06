@@ -1,0 +1,47 @@
+package com.th4.edge.decoboon.payroll.service.attendances.summary.page.support;
+
+import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
+import com.th4.edge.framework.core.ScopeTypes;
+import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+@Note("月度考勤分页")
+@Properties(allow = @AllowProperties(model = AttendanceSummary.class,
+        properties = {"summaryId", "employee", "month", "scheduledDays", "normalDays", "personalLeaveDays", "sickLeaveDays",
+                "absenceDays", "externalDays", "annualLeaveDays", "compLeaveDays", "status", "confirmedBy", "confirmedAt", "createTime"}))
+@Service("attendance/summary/page")
+@Scope(ScopeTypes.PROTOTYPE)
+public class Page implements com.th4.edge.decoboon.payroll.service.attendances.summary.page.Page {
+    @User private Employee employee;
+    @AutoInject private String month;
+    @AutoInject private Integer current;
+    @AutoInject private Integer size;
+    private final AttendanceSummaryRepository repository;
+    private final PayrollAccessContext accessContext;
+    public Page(AttendanceSummaryRepository repository, PayrollAccessContext accessContext) {
+        this.repository = repository; this.accessContext = accessContext;
+    }
+    @Override
+    public org.springframework.data.domain.Page<AttendanceSummary> call(AttendanceSummary request) {
+        Employee currentEmployee = accessContext.requireManager(employee);
+        var items = repository.findAll(accessContext.visible(currentEmployee, AttendanceSummary.class))
+                .stream()
+                .filter(item -> month == null || month.isBlank() || month.equals(item.getPayrollMonth()))
+                .toList();
+        int page = current == null || current < 1 ? 0 : current - 1;
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
+        int from = Math.min(page * pageSize, items.size());
+        int to = Math.min(from + pageSize, items.size());
+        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+    }
+}

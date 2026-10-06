@@ -1,0 +1,51 @@
+[
+  {
+    "kind": "console",
+    "type": "info",
+    "args": [
+      "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+    ]
+  },
+  {
+    "kind": "console",
+    "type": "info",
+    "args": [
+      "preloadSubpackages: success"
+    ]
+  },
+  {
+    "kind": "console",
+    "type": "info",
+    "args": [
+      "preloadSubpackages: subpackages/finance, subpackages/statistic"
+    ]
+  },
+  {
+    "kind": "console",
+    "type": "info",
+    "args": [
+      "preloadSubpackages: success"
+    ]
+  },
+  {
+    "kind": "console",
+    "type": "info",
+    "args": [
+      "preloadSubpackages: subpackages/finance, subpackages/statistic"
+    ]
+  },
+  {
+    "kind": "console",
+    "type": "info",
+    "args": [
+      "preloadSubpackages: success"
+    ]
+  },
+  {
+    "kind": "console",
+    "type": "warn",
+    "args": [
+      "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+    ]
+  }
+]

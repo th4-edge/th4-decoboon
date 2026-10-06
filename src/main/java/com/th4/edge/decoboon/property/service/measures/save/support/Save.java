@@ -171,7 +171,7 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
         return saved;
     }
 
-    /** 解析当前房屋已指派的设计师；设计师本人录入客户时默认由本人承接设计。 */
+    /** 解析当前房屋已指派的设计师；设计师或 BOSS 本人录入时默认由本人承接设计。 */
     private Employee resolveDesigner(Property property, Measure target, Employee current) {
         if (property.getDesigner() != null) {
             return property.getDesigner();
@@ -182,7 +182,8 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
         if (property.getCustomer() != null && property.getCustomer().getDesigner() != null) {
             return property.getCustomer().getDesigner();
         }
-        if (current == null || current.getRole() != EmployeeRole.Designer) {
+        if (current == null || (current.getRole() != EmployeeRole.Designer
+                && current.getRole() != EmployeeRole.Boss)) {
             return null;
         }
         if (sameEmployee(property.getOwner(), current)

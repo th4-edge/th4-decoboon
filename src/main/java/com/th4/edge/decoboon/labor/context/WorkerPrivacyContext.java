@@ -28,9 +28,9 @@ public class WorkerPrivacyContext {
         this.tenantContext = tenantContext;
     }
 
-    /** 维护（新增 / 编辑）：项目经理。 */
+    /** 维护（新增 / 编辑）：项目经理内部能力，BOSS 自动具备。 */
     public Employee requireMaintainer(Employee principal) {
-        return tenantContext.requireRole(principal, EmployeeRole.Pm);
+        return tenantContext.requireInternalRole(principal, EmployeeRole.Pm);
     }
 
     /** 查看：财务、企业负责人、店长、设计师、项目经理。 */

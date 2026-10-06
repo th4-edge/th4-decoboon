@@ -1,0 +1,87 @@
+{
+  "role": "Pm-Xu",
+  "name": "徐勇",
+  "empId": "1790000000000000107",
+  "roleCode": "Pm",
+  "pages": [
+    {
+      "route": "/pages/index/index",
+      "path": "pages/index/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,g,k,l,n,o,p,q,r,s,t,E,V,Z",
+      "screenshot": "Pm-Xu-00-pages-index-index.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/team/pages/workbench",
+      "path": "subpackages/team/pages/workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,ao,e,$eS,$eA,r0,__webviewId__,f,h,i,j,k,l,m,n,o",
+      "screenshot": "Pm-Xu-01-subpackages-team-pages-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/pages/project/list",
+      "path": "pages/project/list",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,f,j,o,q,r,t,x,A,D,G,C,H,O,R",
+      "screenshot": "Pm-Xu-02-pages-project-list.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/plan",
+      "path": "subpackages/project/pages/plan",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Pm-Xu-03-subpackages-project-pages-plan.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/material-plan-workbench",
+      "path": "subpackages/project/pages/material-plan-workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,K,$eS,$eA,r0,__webviewId__,g,h,i,j,k,l,m,n",
+      "screenshot": "Pm-Xu-04-subpackages-project-pages-material-plan-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/material-category",
+      "path": "subpackages/project/pages/material-category",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,$eS,$eA,r0,__webviewId__,g,q,r,s,t",
+      "screenshot": "Pm-Xu-05-subpackages-project-pages-material-category.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/material-batch-order",
+      "path": "subpackages/project/pages/material-batch-order",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,$eS,$eA,r0,__webviewId__,d",
+      "screenshot": "Pm-Xu-06-subpackages-project-pages-material-batch-order.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/selection-board",
+      "path": "subpackages/project/pages/selection-board",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,g,h,l,m,n,o,p,q,t,$eS,$eA,r0,__webviewId__,c,d",
+      "screenshot": "Pm-Xu-07-subpackages-project-pages-selection-board.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/change-workbench",
+      "path": "subpackages/project/pages/change-workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,f,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Pm-Xu-08-subpackages-project-pages-change-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/report/daily",
+      "path": "subpackages/project/pages/report/daily",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,i,k,$eS,$eA,r0,__webviewId__,h",
+      "screenshot": "Pm-Xu-09-subpackages-project-pages-report-daily.png",
+      "err": null
+    },
+    {
+      "route": "/pages/mine/index",
+      "path": "pages/mine/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,e,f,g,h,i,j,k,l,m,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Pm-Xu-10-pages-mine-index.png",
+      "err": null
+    }
+  ],
+  "errors": [],
+  "loginPath": "pages/index/index"
+}

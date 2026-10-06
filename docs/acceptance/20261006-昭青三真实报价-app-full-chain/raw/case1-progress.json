@@ -1,0 +1,81 @@
+{
+  "case": "荷塘家园报价",
+  "baseline": {
+    "subtotal": 62291.522,
+    "tax": 3114.5761,
+    "grand_total": 65406.0981,
+    "app_2dp": {
+      "subtotal": 62291.52,
+      "tax": 3114.58,
+      "grand_total": 65406.1
+    }
+  },
+  "actual": {
+    "subtotal": 62291.52,
+    "taxAmount": 3114.58,
+    "amount": 65406.1,
+    "discount": 1.0
+  },
+  "ids": {
+    "customerId": "232960420686594048",
+    "propertyId": "232961774796668928",
+    "designId": "232965368237260800",
+    "quoteId": "232968463419703296",
+    "contractId": "232968886775971840",
+    "projectId": "232968907537776640",
+    "measureId": "232969160097792000",
+    "contractNo": "C1791233710960",
+    "projectNo": "P1791233715909",
+    "quoteNo": "Q1791233610022",
+    "acceptanceId": "232969522640846848",
+    "taskId": "232968907562942464",
+    "taskEvidencePath": "companies/1790000000000000001/projects/232968907537776640/files/task/2026/10/66a5959f50f84d4e880a6f176d238ec9.png"
+  },
+  "catalogItems": {
+    "综合项目": "232964005122015232",
+    "主材项目": "232964114404605952",
+    "施工项目": "232964212073168896",
+    "全屋定制橱柜": "232964309980807168"
+  },
+  "status": {
+    "quote": "Accepted/Converted",
+    "contract": "Effective",
+    "project": "Accepting",
+    "currentStage": "开工交底",
+    "stageStatus": "Accepting",
+    "stageProgress": 100,
+    "overallProgress": 13,
+    "acceptanceStatus": "Pending"
+  },
+  "ui_steps": [
+    "客户创建",
+    "房屋创建",
+    "店长跟进后指派设计师",
+    "设计空间保存",
+    "施工/综合/主材固定总价分项通过App选择保存",
+    "生成自定义报价",
+    "提交客户确认",
+    "记录客户已接受",
+    "Boss生成合同基线",
+    "Boss确认生效并生成唯一项目",
+    "Boss指定项目经理徐勇",
+    "App开始开工交底",
+    "项目详情显示等待业主确认验收",
+    "开工交底待验收100%"
+  ],
+  "api_assisted": [
+    "全屋定制固定总价设计分项（定制类型标签在模拟器宽度下不可达）",
+    "方案资料推进到Ready",
+    "量房完成事实（simulator无法完成照片/真机选择）"
+  ],
+  "blocked": [
+    "开工交底验收单待业主本人确认：需要真实微信业主授权会话，当前标记BLOCKED_NEEDS_DEVICE/API_SIMULATED",
+    "Case2/Case3尚未按完整链路执行",
+    "真实Excel行级导入仍为LINE_IMPORT=NOT_TESTED/GAP"
+  ],
+  "defects": [
+    "XA-20261006-009 P1 店长报价项目库页空白/无入口",
+    "CatalogPicker 新分类无“全部”入口导致新项目不可选（已修复，待提交）",
+    "定制类型标签在模拟器宽度下不可滑动到达"
+  ]
+}

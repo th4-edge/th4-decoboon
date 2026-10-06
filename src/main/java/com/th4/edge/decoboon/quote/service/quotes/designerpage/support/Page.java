@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
-/** 设计师报价分页实现，禁止在响应中返回任何成本字段。 */
+/** 设计师或 BOSS 报价分页实现，禁止在响应中返回任何成本字段。 */
 @Note("设计师报价分页")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
@@ -75,12 +75,16 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
     @Override
     public org.springframework.data.domain.Page<Quote> call(Quote request) {
         Employee currentEmployee = tenantContext.requireEmployee(employee);
-        if (currentEmployee.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师可访问设计师报价列表"));
+        boolean boss = currentEmployee.getRole() == EmployeeRole.Boss;
+        if (!boss && currentEmployee.getRole() != EmployeeRole.Designer) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可访问设计与报价列表"));
         }
         Long comId = currentEmployee.getCompany().getComId();
         Long empId = currentEmployee.getEmpId();
-        List<Quote> quotes = quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId)
+        List<Quote> visibleQuotes = boss
+                ? quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId)
+                : quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId);
+        List<Quote> quotes = visibleQuotes
                 .stream()
                 .filter(quote -> customerId == null || quote.getCustomer().getCustId().equals(customerId))
                 .filter(quote -> status == null || quote.getStatus() == status)

@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.enums.Enumerable;
 public enum LedgerSource implements Enumerable<String> {
 
     Receipt("客户收款"),
+    Refund("客户退款"),
     Payment("业务付款"),
     Manual("手工记账"),
     Adjustment("调整冲销");

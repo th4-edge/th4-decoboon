@@ -11,6 +11,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -52,10 +53,13 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.q
         Employee current = tenantContext.requireEmployee(employee);
         Long comId = current.getCompany().getComId();
         Long empId = current.getEmpId();
+        boolean boss = current.getRole() == EmployeeRole.Boss;
+        List<QuoteStatus> statuses = List.of(QuoteStatus.Draft, QuoteStatus.Submitted, QuoteStatus.Rejected);
 
-        List<Quote> activeQuotes = quoteRepository
-                .findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
-                        comId, empId, List.of(QuoteStatus.Draft, QuoteStatus.Submitted, QuoteStatus.Rejected));
+        List<Quote> activeQuotes = boss
+                ? quoteRepository.findByCompany_ComIdAndStatusInOrderByQuoteIdDesc(comId, statuses)
+                : quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
+                        comId, empId, statuses);
         if (activeQuotes.isEmpty()) {
             return List.of();
         }

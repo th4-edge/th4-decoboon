@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receivable;
+import com.th4.edge.decoboon.finance.model.ReceiptRefund;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -101,6 +102,12 @@ public class FinanceAccessContext {
                                Employee current, Project project) {
         applyBase(receipt, current, project);
         receipt.setCustomer(project.getCustomer());
+    }
+
+    public void applyOwnership(ReceiptRefund refund, Employee current, Project project) {
+        applyBase(refund, current, project);
+        refund.setProject(project);
+        refund.setCustomer(project.getCustomer());
     }
 
     public void applyOwnership(com.th4.edge.decoboon.finance.model.Payment payment,
@@ -209,6 +216,11 @@ public class FinanceAccessContext {
             receipt.setStore(project.getCustomer().getStore());
             receipt.setTeam(project.getCustomer().getTeam());
             receipt.setOwner(owner);
+        } else if (target instanceof ReceiptRefund refund) {
+            refund.setCompany(current.getCompany());
+            refund.setStore(project.getCustomer().getStore());
+            refund.setTeam(project.getCustomer().getTeam());
+            refund.setOwner(owner);
         } else if (target instanceof com.th4.edge.decoboon.finance.model.Payment payment) {
             payment.setCompany(current.getCompany());
             payment.setStore(project == null ? current.getStore() : project.getCustomer().getStore());

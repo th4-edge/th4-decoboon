@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/** 对外指标口径字典契约：每个数字必须有完整口径说明。 */
+/** 对外指标口径字典契约：每个数字必须有完整、面向装企老板的说明。 */
 class MetricDictionaryContractTest {
 
     private final MetricDictionaryContext context = new MetricDictionaryContext();
@@ -41,24 +41,42 @@ class MetricDictionaryContractTest {
     }
 
     @Test
+    void glossaryCopyMustSpeakPlainChineseWithoutTenantNames() {
+        for (MetricDefinition item : context.definitions()) {
+            List<String> shown = List.of(
+                    item.getName(), item.getUserLabel(), item.getDefinition(), item.getFormula(),
+                    item.getSource(), item.getTimeScope(), item.getDataScope(), item.getIncludes(),
+                    item.getExcludes(), item.getMissingValue(), item.getExample());
+            for (String text : shown) {
+                assertThat(text).as("指标 %s 的对外说明不应出现英文：%s", item.getKey(), text)
+                        .doesNotContainPattern("[A-Za-z]");
+                assertThat(text).as("指标 %s 的对外说明不应出现其他企业名：%s", item.getKey(), text)
+                        .doesNotContain("麦鸿");
+                assertThat(text).as("指标 %s 的对外说明不应出现技术符号：%s", item.getKey(), text)
+                        .doesNotContain("Σ", "null", "false", "≠");
+            }
+        }
+    }
+
+    @Test
     void receiptAndIncomeAndReceivedMustBeDistinct() {
         MetricDefinition receipt = byKey("receiptAmount");
-        assertThat(receipt.getSource()).contains("Receipt");
+        assertThat(receipt.getSource()).contains("收款");
         assertThat(receipt.getExcludes()).contains("手工");
-        assertThat(receipt.getExample()).contains("118,900");
+        assertThat(receipt.getExample()).contains("累计收款");
 
         MetricDefinition income = byKey("monthIncome");
         assertThat(income.getIncludes()).contains("手工");
-        assertThat(income.getExample()).contains("120,900");
+        assertThat(income.getExample()).contains("资金收入");
 
         MetricDefinition received = byKey("receivedAmount");
-        assertThat(received.getDefinition()).contains("核销");
-        assertThat(received.getIncludes()).contains("非归档");
-        assertThat(received.getExample()).contains("80,380");
+        assertThat(received.getDefinition()).contains("已经确认收回");
+        assertThat(received.getIncludes()).contains("在管");
+        assertThat(received.getExample()).contains("已收金额");
 
         MetricDefinition monthReceipt = byKey("monthReceiptAmount");
         assertThat(monthReceipt.getName()).isEqualTo("本月回款");
-        assertThat(monthReceipt.getFormula()).contains("Receipt");
+        assertThat(monthReceipt.getFormula()).contains("收款");
     }
 
     @Test
@@ -68,7 +86,7 @@ class MetricDictionaryContractTest {
         assertThat(byKey("monthOverMonthRate").getMissingValue()).contains("暂无基期");
         assertThat(byKey("yearOverYearRate").getMissingValue()).contains("暂无基期");
         assertThat(byKey("achievementRate").getMissingValue()).contains("未设目标");
-        assertThat(byKey("activeProjectCount").getExcludes()).contains("Settled");
+        assertThat(byKey("activeProjectCount").getExcludes()).contains("已经结算");
         assertThat(byKey("cashBalance").getMissingValue()).contains("期初未承接");
     }
 

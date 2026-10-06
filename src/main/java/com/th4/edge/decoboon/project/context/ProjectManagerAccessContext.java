@@ -33,16 +33,19 @@ public class ProjectManagerAccessContext {
         this.projectRepository = projectRepository;
     }
 
-    /** 重新加载登录员工并强制校验项目经理角色。 */
+    /** 项目经理内部能力；BOSS 依 DEC-032 / BR-028 自动具备。 */
     public Employee requireManager(Employee principal) {
-        return tenantContext.requireRole(principal, EmployeeRole.Pm);
+        return tenantContext.requireInternalRole(principal, EmployeeRole.Pm);
     }
 
-    /** 当前项目经理负责的全部项目。 */
+    /** 项目经理本人负责的项目；BOSS 返回本企业全部项目。 */
     public List<Project> managedProjects(Employee principal) {
         Employee current = requireManager(principal);
         if (current.getCompany() == null || current.getCompany().getComId() == null) {
-            throw new DefinedException(new DefaultErrorCode("403", "当前项目经理未归属企业"));
+            throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
+        }
+        if (current.getRole() == EmployeeRole.Boss) {
+            return projectRepository.findByCompany_ComIdOrderByProjectIdDesc(current.getCompany().getComId());
         }
         return projectRepository.findByCompany_ComIdAndManager_EmpIdOrderByProjectIdDesc(
                 current.getCompany().getComId(), current.getEmpId());

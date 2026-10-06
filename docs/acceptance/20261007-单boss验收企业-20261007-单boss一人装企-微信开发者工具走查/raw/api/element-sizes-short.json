@@ -1,0 +1,38 @@
+{
+  "salaryShort": {
+    ".pay-page": {
+      "width": 375,
+      "height": 599
+    },
+    ".pay-body": {
+      "width": 375,
+      "height": 231.5
+    },
+    ".sheet-card": {
+      "width": 347,
+      "height": 141.5
+    },
+    ".sheet-card__amounts": {
+      "width": 317,
+      "height": 53
+    }
+  },
+  "commissionShort": {
+    ".pay-page": {
+      "width": 375,
+      "height": 599
+    },
+    ".pay-body": {
+      "width": 375,
+      "height": 362
+    },
+    ".commission-card": {
+      "width": 347,
+      "height": 187.5
+    },
+    ".commission-card__amounts": {
+      "width": 317,
+      "height": 100
+    }
+  }
+}

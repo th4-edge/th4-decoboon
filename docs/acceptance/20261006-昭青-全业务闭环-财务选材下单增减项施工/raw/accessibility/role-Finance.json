@@ -1,0 +1,101 @@
+{
+  "role": "Finance",
+  "name": "吴濛濛",
+  "empId": "1790000000000000102",
+  "roleCode": "Finance",
+  "pages": [
+    {
+      "route": "/pages/index/index",
+      "path": "pages/index/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,g,k,l,n,o,p,q,r,s,t,E,V,Z",
+      "screenshot": "Finance-00-pages-index-index.png",
+      "err": null
+    },
+    {
+      "route": "/pages/finance/index",
+      "path": "pages/finance/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q",
+      "screenshot": "Finance-01-pages-finance-index.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/ledger",
+      "path": "subpackages/finance/pages/ledger",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,j,k,o,p,q,r,s,t",
+      "screenshot": "Finance-02-subpackages-finance-pages-ledger.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/receivables",
+      "path": "subpackages/finance/pages/receivables",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,k,m,n,q,r,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Finance-03-subpackages-finance-pages-receivables.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/receipts",
+      "path": "subpackages/finance/pages/receipts",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,j,l,m,n,o,r,s,$eS,$eA,r0",
+      "screenshot": "Finance-04-subpackages-finance-pages-receipts.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/payables",
+      "path": "subpackages/finance/pages/payables",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,j,k,n,p,q,t,v,$eS",
+      "screenshot": "Finance-05-subpackages-finance-pages-payables.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/payments",
+      "path": "subpackages/finance/pages/payments",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,j,l,m,n,o,r,s,$eS,$eA,r0",
+      "screenshot": "Finance-06-subpackages-finance-pages-payments.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/projects",
+      "path": "subpackages/finance/pages/projects",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,j,k,l,m,p,r,s,w",
+      "screenshot": "Finance-07-subpackages-finance-pages-projects.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/entry",
+      "path": "subpackages/finance/pages/entry",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,h,i,j,n,q,r,s,t,v,w,x,y,z,A",
+      "screenshot": "Finance-08-subpackages-finance-pages-entry.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/finance/pages/vouchers",
+      "path": "subpackages/finance/pages/vouchers",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,T,U,V,W,X,Z,aa,ae,af,ag,ah,ai",
+      "screenshot": "Finance-09-subpackages-finance-pages-vouchers.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/supply/pages/index",
+      "path": "subpackages/supply/pages/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q",
+      "screenshot": "Finance-10-subpackages-supply-pages-index.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/material-plan-workbench",
+      "path": "subpackages/project/pages/material-plan-workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,K,$eS,$eA,r0,__webviewId__,g,h,i,j,k,l,m,n",
+      "screenshot": "Finance-11-subpackages-project-pages-material-plan-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/pages/mine/index",
+      "path": "pages/mine/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,e,f,g,h,i,j,k,l,m,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Finance-12-pages-mine-index.png",
+      "err": null
+    }
+  ],
+  "errors": [],
+  "loginPath": "pages/index/index"
+}

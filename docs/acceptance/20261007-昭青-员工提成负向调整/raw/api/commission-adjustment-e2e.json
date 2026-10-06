@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-10-06T19:02:45.461Z",
+  "tenant": "昭青",
+  "originalCommissionId": "233299282130632704",
+  "originalPaidAmount": 1308.12,
+  "refundAmount": 10000,
+  "effectiveReceipt": 55406.1,
+  "cumulativeAllowedRelease": 1108.12,
+  "deductionAmount": 200,
+  "refundRetrySameAdjustment": true,
+  "idempotencyConflict": {
+    "success": false,
+    "code": "409",
+    "message": "该幂等键已被其他收付款占用，请勿复用"
+  },
+  "manualOverAdjustmentBlocked": {
+    "success": false,
+    "code": "400",
+    "message": "抵扣金额不能超过原提成未调整的已发金额"
+  },
+  "nextPeriod": "2026-12",
+  "nextPeriodSheetId": "233302279002783744",
+  "nextPeriodItemId": "233302279409631232",
+  "nextPeriodCommissionAmount": -200,
+  "nextPeriodNetAmount": 5800,
+  "adjustmentStatus": "Included",
+  "adjustmentAppliedAmount": 200,
+  "projectEmployeeCommissionCost": 1108.12,
+  "rebuildIdempotent": true
+}

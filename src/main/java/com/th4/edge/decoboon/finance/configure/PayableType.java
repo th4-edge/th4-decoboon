@@ -9,6 +9,8 @@ public enum PayableType implements Enumerable<String> {
 
     Material("材料款"),
     Salary("工人工资"),
+    EmployeeSalary("员工工资"),
+    EmployeeCommission("员工提成"),
     Project("项目款"),
     Supplier("供应商款"),
     Expense("费用支出"),

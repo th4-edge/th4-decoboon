@@ -100,6 +100,12 @@ public class VoucherContext {
     /** 生成凭证：单笔直接生成，多笔必须满足合并判定。 */
     @Transactional
     public VoucherRecord build(Employee principal, List<Long> ledgerIds) {
+        return build(principal, ledgerIds, null);
+    }
+
+    /** 生成凭证：可指定企业模板预设编码；未指定时使用该类型当前发布版本。 */
+    @Transactional
+    public VoucherRecord build(Employee principal, List<Long> ledgerIds, String presetCode) {
         Employee current = tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
         Long comId = current.getCompany().getComId();
         List<Long> ids = normalizeIds(ledgerIds);
@@ -126,7 +132,7 @@ public class VoucherContext {
         Ledger first = ledgers.get(0);
         DocumentType type = first.getDirection() == LedgerDirection.Income
                 ? DocumentType.Receipt : DocumentType.Payment;
-        DocumentTemplate template = templateContext.template(comId, type);
+        DocumentTemplate template = templateContext.templateForIssue(comId, type, presetCode);
         DocumentProfile profile = profileContext.profile(current);
 
         Payment payment = resolvePayment(comId, first);
@@ -198,8 +204,9 @@ public class VoucherContext {
         VoucherRecord record = linked.get(0).getVoucher();
         List<VoucherItem> items = itemRepository.findByVoucher_VoucherIdOrderByItemId(record.getVoucherId());
         DocumentTemplate template = record.getTemplate() == null
-                ? templateContext.template(comId, record.getType())
-                : record.getTemplate();
+                ? templateContext.templateForIssue(comId, record.getType(), null)
+                : templateContext.templateVersion(comId, record.getTemplate().getTemplateId(),
+                        record.getTemplateVersion());
         DocumentProfile profile = profileContext.profile(current);
         Worker beforeWorker = record.getWorker();
         Worker afterWorker = payment.getWorker();

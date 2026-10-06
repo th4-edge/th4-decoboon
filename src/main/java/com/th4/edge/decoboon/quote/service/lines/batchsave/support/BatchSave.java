@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-/** 设计师 Web 报价工作表的兼容性新增入口。 */
+/** 设计师或 BOSS 的 Web 报价工作表兼容性入口。 */
 @Note("报价工作表批量保存")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
@@ -98,14 +98,16 @@ public class BatchSave implements com.th4.edge.decoboon.quote.service.lines.batc
     @Override
     public Quote call(Quote ignored) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        if (current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师可使用报价工作表编辑"));
+        boolean boss = current.getRole() == EmployeeRole.Boss;
+        if (!boss && current.getRole() != EmployeeRole.Designer) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可使用报价工作表编辑"));
         }
         DataScope scope = dataScopeContext.resolve(current);
         Specification<Quote> byId = (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
         Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
-        if (quote.getCreatedBy() == null || !quote.getCreatedBy().getEmpId().equals(current.getEmpId())) {
+        if (!boss && (quote.getCreatedBy() == null
+                || !quote.getCreatedBy().getEmpId().equals(current.getEmpId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
         }
         Quote updated = workbookContext.update(quote, request, revisionToken);

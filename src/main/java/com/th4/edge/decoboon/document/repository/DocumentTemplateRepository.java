@@ -12,5 +12,13 @@ public interface DocumentTemplateRepository extends JpaRepository<DocumentTempla
     Optional<DocumentTemplate> findFirstByCompany_ComIdAndTypeAndStatusOrderByVersionDesc(
             Long comId, DocumentType type, DocumentStatus status);
 
+    Optional<DocumentTemplate> findFirstByCompany_ComIdAndTypeAndPresetCodeAndStatusOrderByVersionDesc(
+            Long comId, DocumentType type, String presetCode, DocumentStatus status);
+
+    Optional<DocumentTemplate> findByCompany_ComIdAndTemplateId(Long comId, Long templateId);
+
     List<DocumentTemplate> findByCompany_ComIdAndStatusOrderByTypeAscVersionDesc(Long comId, DocumentStatus status);
+
+    List<DocumentTemplate> findByCompany_ComIdAndStatusOrderByTypeAscPresetCodeAscVersionDesc(
+            Long comId, DocumentStatus status);
 }

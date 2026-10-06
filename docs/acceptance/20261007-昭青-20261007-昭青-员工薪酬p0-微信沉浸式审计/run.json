@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "run_id": "20261007-昭青-员工薪酬P0-微信沉浸式审计",
+  "tenant": "昭青",
+  "environment": "local dev 8090 + WeChat DevTools",
+  "mode": "full-role",
+  "created_at": "2026-10-07T01:58:26",
+  "status": "COMPLETED_LOCAL_PAYROLL_AND_COMMISSION_CHAIN",
+  "source": "zhuangdeqing-miniapp-immersion-audit",
+  "notes": [
+    "Mini Program UI evidence is authoritative for experience findings.",
+    "High-impact actions require explicit authorization.",
+    "Local reset and credential switching require current-run authorization, backup, and rollback evidence.",
+    "Raw evidence must not be overwritten by reports.",
+    "2026-10-07 finance payroll read-only subset PASS; role-switch and payroll write chain blocked by missing credentials/authorization.",
+    "2026-10-07 local 昭青 employee payroll write chain PASS; BOSS/Finance/StoreManager/Employee UI evidence collected; credentials restored.",
+    "2026-10-07 local 昭青 commission accrual/release/payment E2E PASS; three cumulative releases, over-release negative, payment idempotency, final Paid, and release payload reduced from 17.8MB to about 2KB.",
+    "Refund, resignation, cross-period negative adjustment, real WeChat authorization, and real-device checks remain NOT_TESTED/BLOCKED."
+  ]
+}

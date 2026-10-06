@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/** 设计师报价工作簿导出。 */
+/** 设计师或 BOSS 报价工作簿导出。 */
 @Note("报价工作簿导出")
 @Properties(allow = @AllowProperties(model = QuoteWorkbookFile.class,
         properties = {"fileName", "contentType", "contentBase64", "sha256"}))
@@ -54,14 +54,16 @@ public class Build implements com.th4.edge.decoboon.quote.service.workbook.build
     @Override
     public QuoteWorkbookFile call(Quote request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        if (current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师可导出报价工作簿"));
+        boolean boss = current.getRole() == EmployeeRole.Boss;
+        if (!boss && current.getRole() != EmployeeRole.Designer) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可导出报价工作簿"));
         }
         DataScope scope = dataScopeContext.resolve(current);
         Specification<Quote> byId = (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
         Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
-        if (quote.getCreatedBy() == null || !quote.getCreatedBy().getEmpId().equals(current.getEmpId())) {
+        if (!boss && (quote.getCreatedBy() == null
+                || !quote.getCreatedBy().getEmpId().equals(current.getEmpId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
         }
         List<QuoteLine> lines = lineRepository.findByQuote(quote);

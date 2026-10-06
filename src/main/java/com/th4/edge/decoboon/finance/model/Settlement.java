@@ -149,6 +149,16 @@ public class Settlement extends AuditModel {
     @Column(precision = 14, scale = 2, nullable = false)
     private BigDecimal salaryAmount = BigDecimal.ZERO;
 
+    @Note("项目归属员工工资")
+    @Unit("元")
+    @Column(name = "employee_salary_amount", precision = 14, scale = 2, nullable = false)
+    private BigDecimal employeeSalaryAmount = BigDecimal.ZERO;
+
+    @Note("项目归属员工提成")
+    @Unit("元")
+    @Column(name = "employee_commission_amount", precision = 14, scale = 2, nullable = false)
+    private BigDecimal employeeCommissionAmount = BigDecimal.ZERO;
+
     @Note("项目款")
     @Unit("元")
     @Column(precision = 14, scale = 2, nullable = false)
@@ -267,6 +277,10 @@ public class Settlement extends AuditModel {
     public void setMaterialAmount(BigDecimal materialAmount) { this.materialAmount = materialAmount; }
     public BigDecimal getSalaryAmount() { return salaryAmount; }
     public void setSalaryAmount(BigDecimal salaryAmount) { this.salaryAmount = salaryAmount; }
+    public BigDecimal getEmployeeSalaryAmount() { return employeeSalaryAmount; }
+    public void setEmployeeSalaryAmount(BigDecimal employeeSalaryAmount) { this.employeeSalaryAmount = employeeSalaryAmount; }
+    public BigDecimal getEmployeeCommissionAmount() { return employeeCommissionAmount; }
+    public void setEmployeeCommissionAmount(BigDecimal employeeCommissionAmount) { this.employeeCommissionAmount = employeeCommissionAmount; }
     public BigDecimal getProjectAmount() { return projectAmount; }
     public void setProjectAmount(BigDecimal projectAmount) { this.projectAmount = projectAmount; }
     public BigDecimal getExpenseAmount() { return expenseAmount; }

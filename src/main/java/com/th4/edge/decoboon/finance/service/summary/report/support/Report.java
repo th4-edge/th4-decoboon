@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = FinanceSummary.class,
                 properties = {"projectCount", "activeProjectCount", "contractAmount", "receivableAmount", "receivedAmount",
                         "outstandingAmount", "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount",
-                        "materialPayableAmount", "salaryPayableAmount", "projectPayableAmount", "otherPayableAmount",
+                        "materialPayableAmount", "salaryPayableAmount", "employeeSalaryPayableAmount", "employeeCommissionPayableAmount", "projectPayableAmount", "otherPayableAmount",
                         "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
                         "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "cashBalance", "openingBalanceAmount", "openingBalanceCaptured", "estimatedCost", "actualCost",
                         "manualIncomeAmount", "manualCostAmount",

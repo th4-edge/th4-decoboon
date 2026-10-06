@@ -1,0 +1,24 @@
+{
+  "role": "Designer-Dong",
+  "log": [
+    {
+      "step": "login",
+      "role": "Designer-Dong",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "formInputs",
+      "v": 1
+    },
+    {
+      "step": "nameFilled",
+      "v": "例：现代简约两房优化方案"
+    },
+    {
+      "step": "moreTap",
+      "v": "更多"
+    }
+  ],
+  "console": [],
+  "errors": []
+}

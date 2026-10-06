@@ -51,9 +51,31 @@ public class TenantContext {
 
     /**
      * 当前员工必须属于指定角色之一。
+     *
+     * <p>该方法是精确角色校验，保留给租户治理、专项报表等必须由特定角色承担的场景。</p>
      */
     public Employee requireRole(Employee principal, EmployeeRole... roles) {
         Employee employee = requireEmployee(principal);
+        for (EmployeeRole role : roles) {
+            if (employee.getRole() == role) {
+                return employee;
+            }
+        }
+        throw new DefinedException(new DefaultErrorCode("403", "当前账号无权执行该操作"));
+    }
+
+    /**
+     * 当前员工必须具备指定内部岗位能力。
+     *
+     * <p>依据 DEC-032 / BR-028，企业负责人 BOSS 是本企业全部内部岗位能力的超集。
+     * 该方法只用于企业内部能力入口，不适用于 requireBoss 等租户治理专属动作，
+     * 也不适用于业主、客户等外部主体确认。</p>
+     */
+    public Employee requireInternalRole(Employee principal, EmployeeRole... roles) {
+        Employee employee = requireEmployee(principal);
+        if (employee.getRole() == EmployeeRole.Boss) {
+            return employee;
+        }
         for (EmployeeRole role : roles) {
             if (employee.getRole() == role) {
                 return employee;

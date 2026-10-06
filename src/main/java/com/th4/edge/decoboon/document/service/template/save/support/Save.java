@@ -18,14 +18,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("单据模板继承与保存")
 @Properties(allow = @AllowProperties(model = DocumentTemplate.class,
         properties = {"templateId", "company", "type", "scope", "name", "version", "baselineVersion",
-                "fieldConfig", "styleConfig", "status", "createTime", "updateTime"}))
+                "fieldConfig", "styleConfig", "layoutConfig", "designerConfig", "status", "presetCode", "presetNote",
+                "publishedVersion", "publishedBy", "publishedAt", "createTime", "updateTime"}))
 @Service("document/template/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.document.service.template.save.Save {
     @AutoInject @NotNull private DocumentType type;
+    @AutoInject private String presetCode;
     @AutoInject private String name;
     @AutoInject @NotNull private String fieldConfig;
     @AutoInject @NotNull private String styleConfig;
+    @AutoInject private String layoutConfig;
+    @AutoInject private String designerConfig;
     @User private Employee employee;
     private final DocumentTemplateContext templateContext;
 
@@ -36,6 +40,6 @@ public class Save implements com.th4.edge.decoboon.document.service.template.sav
     @Override
     @Transactional
     public DocumentTemplate call(Employee request) {
-        return templateContext.save(employee, type, name, fieldConfig, styleConfig);
+        return templateContext.save(employee, type, presetCode, name, fieldConfig, styleConfig, layoutConfig, designerConfig);
     }
 }

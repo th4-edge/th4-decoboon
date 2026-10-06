@@ -43,6 +43,8 @@ public class Build implements com.th4.edge.decoboon.document.service.voucher.bui
     private Employee employee;
     @AutoInject
     private List<Long> ledgerIds;
+    @AutoInject
+    private String presetCode;
 
     private final VoucherContext voucherContext;
 
@@ -53,6 +55,6 @@ public class Build implements com.th4.edge.decoboon.document.service.voucher.bui
     @Override
     @Transactional
     public VoucherRecord call(Ledger request) {
-        return voucherContext.build(employee, ledgerIds);
+        return voucherContext.build(employee, ledgerIds, presetCode);
     }
 }

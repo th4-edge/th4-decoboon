@@ -1,0 +1,59 @@
+{
+  "role": "Marketer",
+  "log": [
+    {
+      "step": "login",
+      "role": "Marketer",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "dateWarnings",
+      "v": 0
+    }
+  ],
+  "console": [
+    {
+      "t": "2026-10-05T20:24:21.471Z",
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "t": "2026-10-05T20:24:27.623Z",
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "t": "2026-10-05T20:24:27.664Z",
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "t": "2026-10-05T20:24:34.398Z",
+      "type": "error",
+      "args": [
+        "{}"
+      ]
+    },
+    {
+      "t": "2026-10-05T20:24:39.893Z",
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "t": "2026-10-05T20:24:39.947Z",
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -23,6 +23,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -90,9 +91,12 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
         Employee current = tenantContext.requireEmployee(employee);
         Long comId = current.getCompany().getComId();
         Long empId = current.getEmpId();
+        boolean boss = current.getRole() == EmployeeRole.Boss;
 
-        List<Customer> assignedCustomers = customerRepository.findByCompany_ComIdAndDesigner_EmpId(comId, empId);
-        List<Property> assignedProperties = propertyRepository
+        List<Customer> assignedCustomers = boss
+                ? customerRepository.findByCompany_ComId(comId)
+                : customerRepository.findByCompany_ComIdAndDesigner_EmpId(comId, empId);
+        List<Property> assignedProperties = boss ? List.of() : propertyRepository
                 .findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(comId, empId);
         if (assignedCustomers.isEmpty() && assignedProperties.isEmpty()) {
             return List.of();
@@ -114,7 +118,7 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
                 .filter(property -> property.getCompany() != null && comId.equals(property.getCompany().getComId()))
                 .filter(property -> !CLOSED_PROPERTY_STATUSES.contains(property.getStatus()))
                 .filter(property -> property.getCustomer() != null)
-                .filter(property -> assignedTo(property, current, customerById))
+                .filter(property -> boss || assignedTo(property, current, customerById))
                 .filter(property -> DESIGN_STAGE_CUSTOMER_STATUSES.contains(property.getCustomer().getStatus()))
                 .sorted(Comparator.comparing(Property::getPropertyId))
                 .toList();

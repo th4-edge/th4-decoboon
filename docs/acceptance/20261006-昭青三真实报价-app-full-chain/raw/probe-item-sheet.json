@@ -1,0 +1,75 @@
+{
+  "role": "Designer-Dong",
+  "log": [
+    {
+      "step": "login",
+      "role": "Designer-Dong",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "tabSpace",
+      "v": null
+    },
+    {
+      "step": "addSpace",
+      "v": null
+    },
+    {
+      "step": ".jz-chip",
+      "v": {
+        "n": 0,
+        "txt": []
+      }
+    },
+    {
+      "step": ".jz-form-input",
+      "v": {
+        "n": 1,
+        "txt": [
+          "ph=例：现代简约两房优化方案"
+        ]
+      }
+    },
+    {
+      "step": "input",
+      "v": {
+        "n": 3,
+        "txt": [
+          "ph=例：现代简约两房优化方案",
+          "ph=现代简约",
+          "ph=图片地址"
+        ]
+      }
+    },
+    {
+      "step": "textarea",
+      "v": {
+        "n": 1,
+        "txt": [
+          "ph=说明户型优化、动线、收纳和家庭成员适"
+        ]
+      }
+    },
+    {
+      "step": ".jz-btn--primary",
+      "v": {
+        "n": 1,
+        "txt": [
+          "生成设计报价"
+        ]
+      }
+    },
+    {
+      "step": "button",
+      "v": {
+        "n": 2,
+        "txt": [
+          "更多",
+          "生成设计报价"
+        ]
+      }
+    }
+  ],
+  "console": [],
+  "errors": []
+}

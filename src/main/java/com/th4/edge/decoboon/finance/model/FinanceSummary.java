@@ -22,6 +22,8 @@ public class FinanceSummary {
     private BigDecimal materialPayableAmount = BigDecimal.ZERO;
     private BigDecimal salaryPayableAmount = BigDecimal.ZERO;
     private BigDecimal projectPayableAmount = BigDecimal.ZERO;
+    private BigDecimal employeeSalaryPayableAmount = BigDecimal.ZERO;
+    private BigDecimal employeeCommissionPayableAmount = BigDecimal.ZERO;
     private BigDecimal otherPayableAmount = BigDecimal.ZERO;
     private BigDecimal monthIncome = BigDecimal.ZERO;
     private BigDecimal monthExpense = BigDecimal.ZERO;
@@ -81,6 +83,10 @@ public class FinanceSummary {
     public void setSalaryPayableAmount(BigDecimal salaryPayableAmount) { this.salaryPayableAmount = salaryPayableAmount; }
     public BigDecimal getProjectPayableAmount() { return projectPayableAmount; }
     public void setProjectPayableAmount(BigDecimal projectPayableAmount) { this.projectPayableAmount = projectPayableAmount; }
+    public BigDecimal getEmployeeSalaryPayableAmount() { return employeeSalaryPayableAmount; }
+    public void setEmployeeSalaryPayableAmount(BigDecimal employeeSalaryPayableAmount) { this.employeeSalaryPayableAmount = employeeSalaryPayableAmount; }
+    public BigDecimal getEmployeeCommissionPayableAmount() { return employeeCommissionPayableAmount; }
+    public void setEmployeeCommissionPayableAmount(BigDecimal employeeCommissionPayableAmount) { this.employeeCommissionPayableAmount = employeeCommissionPayableAmount; }
     public BigDecimal getOtherPayableAmount() { return otherPayableAmount; }
     public void setOtherPayableAmount(BigDecimal otherPayableAmount) { this.otherPayableAmount = otherPayableAmount; }
     public BigDecimal getMonthIncome() { return monthIncome; }

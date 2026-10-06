@@ -1,0 +1,59 @@
+{
+  "role": "Designer-Xie",
+  "name": "谢玲玲",
+  "empId": "1790000000000000106",
+  "roleCode": "Designer",
+  "pages": [
+    {
+      "route": "/pages/index/index",
+      "path": "pages/index/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,g,k,l,n,o,p,q,r,s,t,E,V,Z",
+      "screenshot": "Designer-Xie-00-pages-index-index.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/design/pages/workbench",
+      "path": "subpackages/design/pages/workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,j,k,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Designer-Xie-01-subpackages-design-pages-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/quote/pages/workbench",
+      "path": "subpackages/quote/pages/workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,e,f,g,h,i,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Designer-Xie-02-subpackages-quote-pages-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/selection-board",
+      "path": "subpackages/project/pages/selection-board",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,g,h,l,m,n,o,p,q,t,$eS,$eA,r0,__webviewId__,c,d",
+      "screenshot": "Designer-Xie-03-subpackages-project-pages-selection-board.png",
+      "err": null
+    },
+    {
+      "route": "/subpackages/project/pages/change-workbench",
+      "path": "subpackages/project/pages/change-workbench",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,d,f,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Designer-Xie-04-subpackages-project-pages-change-workbench.png",
+      "err": null
+    },
+    {
+      "route": "/pages/project/list",
+      "path": "pages/project/list",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,f,j,o,q,r,t,x,A,D,E,F,C,H,O",
+      "screenshot": "Designer-Xie-05-pages-project-list.png",
+      "err": null
+    },
+    {
+      "route": "/pages/mine/index",
+      "path": "pages/mine/index",
+      "dataKeys": "eO,uR,uRIF,uI,uT,uP,uS,a,b,c,e,f,g,h,i,j,k,l,m,$eS,$eA,r0,__webviewId__",
+      "screenshot": "Designer-Xie-06-pages-mine-index.png",
+      "err": null
+    }
+  ],
+  "errors": [],
+  "loginPath": "pages/index/index"
+}

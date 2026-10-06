@@ -1,0 +1,60 @@
+{
+  "role": "StoreManager",
+  "log": [
+    {
+      "step": "login",
+      "role": "StoreManager",
+      "path": "pages/index/index"
+    },
+    {
+      "step": "workbench",
+      "v": "subpackages/quote/pages/workbench"
+    },
+    {
+      "step": "wbTexts",
+      "v": [
+        "报价工作台昭青装饰 · 待跟进报价",
+        "全部0草稿0待确认0需调整0",
+        "全部0",
+        "全部",
+        "0",
+        "草稿0",
+        "草稿",
+        "待确认0",
+        "待确认",
+        "需调整0",
+        "需调整",
+        "暂无待跟进报价编制报价或客户反馈后会出现在这里",
+        "工作台客户项目我的"
+      ]
+    },
+    {
+      "step": "tapped",
+      "v": null
+    },
+    {
+      "step": "afterPath",
+      "v": "subpackages/quote/pages/workbench"
+    },
+    {
+      "step": "afterTexts",
+      "v": [
+        "报价工作台昭青装饰 · 待跟进报价",
+        "全部0草稿0待确认0需调整0",
+        "全部0",
+        "全部",
+        "0",
+        "草稿0",
+        "草稿",
+        "待确认0",
+        "待确认",
+        "需调整0",
+        "需调整",
+        "暂无待跟进报价编制报价或客户反馈后会出现在这里",
+        "工作台客户项目我的"
+      ]
+    }
+  ],
+  "console": [],
+  "errors": []
+}

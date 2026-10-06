@@ -73,6 +73,14 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
     @AutoInject
     private Long designerId;
 
+    /** 项目经理筛选（empId），用于项目选择器快速定位。 */
+    @AutoInject
+    private Long managerId;
+
+    /** 门店筛选（storeId），用于项目选择器快速定位。 */
+    @AutoInject
+    private Long storeId;
+
     /** 项目类型筛选：正常业务 / 接管基线。 */
     @AutoInject
     private BusinessOrigin businessOrigin;
@@ -122,6 +130,10 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
                 .filter(project -> statuses == null || statuses.isEmpty() || statuses.contains(project.getStatus()))
                 .filter(project -> designerId == null
                         || (project.getDesigner() != null && designerId.equals(project.getDesigner().getEmpId())))
+                .filter(project -> managerId == null
+                        || (project.getManager() != null && managerId.equals(project.getManager().getEmpId())))
+                .filter(project -> storeId == null
+                        || (project.getStore() != null && storeId.equals(project.getStore().getStoreId())))
                 .filter(project -> businessOrigin == null || project.getBusinessOrigin() == businessOrigin)
                 .filter(project -> kw.isBlank()
                         || project.getName().toLowerCase().contains(kw)

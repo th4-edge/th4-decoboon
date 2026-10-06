@@ -29,7 +29,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-/** 设计师报价详情实现，禁止在响应中返回任何成本字段。 */
+/** 设计师或 BOSS 报价详情实现，禁止在响应中返回任何成本字段。 */
 @Note("设计师报价详情")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
@@ -93,15 +93,17 @@ public class Info implements com.th4.edge.decoboon.quote.service.quotes.designer
     @Override
     public Quote call(Quote request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        if (current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师可访问设计师报价详情"));
+        boolean boss = current.getRole() == EmployeeRole.Boss;
+        if (!boss && current.getRole() != EmployeeRole.Designer) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可访问设计与报价详情"));
         }
         DataScope scope = dataScopeContext.resolve(current);
         org.springframework.data.jpa.domain.Specification<Quote> byId =
                 (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
         Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
-        if (quote.getCreatedBy() == null || !quote.getCreatedBy().getEmpId().equals(current.getEmpId())) {
+        if (!boss && (quote.getCreatedBy() == null
+                || !quote.getCreatedBy().getEmpId().equals(current.getEmpId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
         }
         java.util.List<com.th4.edge.decoboon.quote.model.QuoteLine> lines = quoteLineRepository.findByQuote(quote);

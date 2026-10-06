@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-10-06T18:48:04.429Z",
+  "tenant": "昭青",
+  "projectId": "232968907537776640",
+  "commissionId": "233299282130632704",
+  "contractAmount": 65406.1,
+  "commissionAmount": 1308.12,
+  "beforeRelease": {
+    "success": false,
+    "code": "400",
+    "message": "发放金额不能超过员工应付未付金额"
+  },
+  "firstReleased": 392.44,
+  "overReleaseCents": {
+    "success": false,
+    "code": "400",
+    "message": "发放金额不能超过员工应付未付金额"
+  },
+  "firstPaymentId": "233299283846103040",
+  "firstPaymentAmount": 392.44,
+  "secondReleased": 523.24,
+  "secondPaymentId": "233299284831764480",
+  "secondPaymentAmount": 523.24,
+  "retrySamePayment": true,
+  "thirdReleased": 392.44,
+  "thirdPaymentId": "233299286207496192",
+  "thirdPaymentAmount": 392.44,
+  "finalReleased": 1308.12,
+  "finalPaid": 1308.12,
+  "finalStatus": "Paid",
+  "releaseCount": 3,
+  "reverifiedAt": "2026-10-06T18:48:06.242Z",
+  "reverifiedCommissionId": "233299282130632704",
+  "reverifiedFinalReleased": 1308.12,
+  "reverifiedFinalPaid": 1308.12,
+  "reverifiedFinalStatus": "Paid"
+}

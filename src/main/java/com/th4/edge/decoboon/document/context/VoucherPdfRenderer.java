@@ -59,6 +59,7 @@ public class VoucherPdfRenderer {
         if (record == null) throw new DefinedException(new DefaultErrorCode("400", "凭证不存在"));
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             RenderStyle style = style(template == null ? null : template.getStyleConfig());
+            LayoutSpec layout = layout(template == null ? null : template.getLayoutConfig());
             FontKit fonts = fontKit();
             String config = template == null ? null : template.getFieldConfig();
             Font titleFont = fonts.font(style.fontSize() + 6, Font.BOLD, style.primaryColor());
@@ -66,63 +67,27 @@ public class VoucherPdfRenderer {
             Font bodyFont = fonts.font(style.fontSize(), Font.NORMAL, Color.DARK_GRAY);
             Font smallFont = fonts.font(Math.max(8, style.fontSize() - 1), Font.NORMAL, Color.GRAY);
 
-            Document document = new Document(PageSize.A4, 48, 48, 48, 48);
+            float margin = layout.marginMm() * 2.83465f;
+            Document document = new Document(pageSize(layout), margin, margin, margin, margin);
             PdfWriter.getInstance(document, output);
             document.open();
 
-            if (show(config, "showCompanyName") || show(config, "showServiceHotline")) {
-                String line = join(" · ", show(config, "showCompanyName") && profile != null ? profile.getLegalName() : null,
-                        show(config, "showServiceHotline") && profile != null ? "服务热线 " + value(profile.getServiceHotline()) : null);
-                if (!line.isBlank()) document.add(paragraph(fonts, line, smallFont, Element.ALIGN_CENTER, 0, 6));
-            }
-            document.add(paragraph(fonts, value(record.getTitle()), titleFont, Element.ALIGN_CENTER, 0, 12));
-
-            PdfPTable meta = new PdfPTable(4);
-            meta.setWidthPercentage(100);
-            meta.setWidths(new float[]{18, 32, 18, 32});
-            if (show(config, "showVoucherNo") || show(config, "showVoucherDate")) {
-                addMeta(fonts, meta, "凭证编号", show(config, "showVoucherNo") ? record.getVoucherNo() : "", bodyFont);
-                addMeta(fonts, meta, "开具日期",
-                        show(config, "showVoucherDate") && record.getGeneratedAt() != null
-                                ? record.getGeneratedAt().toLocalDate().format(DATE) : "", bodyFont);
-            }
-            if (show(config, "showPartyName") || show(config, "showWorkerPhone")) {
-                addMeta(fonts, meta, partyLabel(record), show(config, "showPartyName") ? record.getPartyName() : "", bodyFont);
-                addMeta(fonts, meta, "联系电话", show(config, "showWorkerPhone") ? partyPhone(worker, partner) : "", bodyFont);
-            }
-            if (show(config, "showWorkerIdCard") || show(config, "showWorkerTrade")) {
-                addMeta(fonts, meta, "身份证号码",
-                        show(config, "showWorkerIdCard") && worker != null ? value(worker.getIdCardNo()) : "", bodyFont);
-                addMeta(fonts, meta, "工种", show(config, "showWorkerTrade") && worker != null ? value(worker.getTrade()) : "", bodyFont);
-            }
-            if (show(config, "showProject") || show(config, "showDetailTarget")) {
-                addMeta(fonts, meta, "所属项目",
-                        show(config, "showProject") && record.getProject() != null ? value(record.getProject().getName()) : "", bodyFont);
-                addMeta(fonts, meta, "到账账户", show(config, "showDetailTarget") ? targetAccount(worker, partner) : "", bodyFont);
-            }
-            if (meta.size() > 0) document.add(meta);
-            document.add(paragraph(fonts, " ", smallFont, Element.ALIGN_LEFT, 0, 6));
-
-            if (show(config, "showAmount") || show(config, "showAmountWords")) {
-                PdfPTable money = new PdfPTable(4);
-                money.setWidthPercentage(100);
-                money.setWidths(new float[]{18, 32, 18, 32});
-                addMeta(fonts, money, "金额合计", show(config, "showAmount") ? "￥" + money(record.getTotalAmount()) : "", bodyFont);
-                addMeta(fonts, money, "金额大写", show(config, "showAmountWords") ? value(record.getAmountWords()) : "", bodyFont);
-                document.add(money);
-                document.add(paragraph(fonts, " ", smallFont, Element.ALIGN_LEFT, 0, 6));
+            for (BlockSpec block : layout.blocks().stream()
+                    .sorted(java.util.Comparator.comparingInt(BlockSpec::sort)).toList()) {
+                if (!block.visible()) continue;
+                switch (block.key()) {
+                    case "company" -> renderCompany(document, fonts, smallFont, config, profile);
+                    case "title" -> document.add(paragraph(fonts, value(record.getTitle()), titleFont,
+                            Element.ALIGN_CENTER, 0, 12));
+                    case "meta" -> renderMeta(document, fonts, config, record, worker, partner, bodyFont);
+                    case "amount" -> renderAmount(document, fonts, config, record, bodyFont);
+                    case "detail" -> document.add(detailTable(fonts, config, items, headFont, bodyFont, style));
+                    case "sign" -> renderSign(document, fonts, config, record, bodyFont, smallFont, layout);
+                    case "footer" -> renderFooter(document, fonts, smallFont, layout);
+                    default -> { }
+                }
             }
 
-            document.add(detailTable(fonts, config, items, headFont, bodyFont, style));
-
-            if (show(config, "showSignBlock")) {
-                document.add(paragraph(fonts, " ", smallFont, Element.ALIGN_LEFT, 12, 6));
-                String sign = join("        ", "制单：" + value(record.getGeneratedBy() == null ? null : record.getGeneratedBy().getName()),
-                        "审核：____________", "领款人签字：____________");
-                document.add(paragraph(fonts, sign, bodyFont, Element.ALIGN_LEFT, 0, 0));
-            }
-            document.add(paragraph(fonts, "本凭证为款项收付单据打印稿，用于企业留档；不属于会计记账凭证，不替代会计做账。",
-                    smallFont, Element.ALIGN_LEFT, 14, 0));
             document.close();
             return output.toByteArray();
         } catch (DefinedException ex) {
@@ -130,6 +95,135 @@ public class VoucherPdfRenderer {
         } catch (Exception ex) {
             throw new DefinedException(new DefaultErrorCode("500", "凭证生成失败：" + ex.getMessage()));
         }
+    }
+
+    private void renderCompany(Document document, FontKit fonts, Font font, String config,
+                               DocumentProfile profile) throws Exception {
+        if (!show(config, "showCompanyName") && !show(config, "showServiceHotline")) return;
+        String line = join(" · ", show(config, "showCompanyName") && profile != null ? profile.getLegalName() : null,
+                show(config, "showServiceHotline") && profile != null ? "服务热线 " + value(profile.getServiceHotline()) : null);
+        if (!line.isBlank()) document.add(paragraph(fonts, line, font, Element.ALIGN_CENTER, 0, 6));
+    }
+
+    private void renderMeta(Document document, FontKit fonts, String config, VoucherRecord record,
+                            Worker worker, Partner partner, Font font) throws Exception {
+        PdfPTable meta = new PdfPTable(4);
+        meta.setWidthPercentage(100);
+        meta.setWidths(new float[]{18, 32, 18, 32});
+        if (show(config, "showVoucherNo") || show(config, "showVoucherDate")) {
+            addMeta(fonts, meta, "凭证编号", show(config, "showVoucherNo") ? record.getVoucherNo() : "", font);
+            addMeta(fonts, meta, "开具日期",
+                    show(config, "showVoucherDate") && record.getGeneratedAt() != null
+                            ? record.getGeneratedAt().toLocalDate().format(DATE) : "", font);
+        }
+        if (show(config, "showPartyName") || show(config, "showWorkerPhone")) {
+            addMeta(fonts, meta, partyLabel(record), show(config, "showPartyName") ? record.getPartyName() : "", font);
+            addMeta(fonts, meta, "联系电话", show(config, "showWorkerPhone") ? partyPhone(worker, partner) : "", font);
+        }
+        if (show(config, "showWorkerIdCard") || show(config, "showWorkerTrade")) {
+            addMeta(fonts, meta, "身份证号码",
+                    show(config, "showWorkerIdCard") && worker != null ? value(worker.getIdCardNo()) : "", font);
+            addMeta(fonts, meta, "工种", show(config, "showWorkerTrade") && worker != null ? value(worker.getTrade()) : "", font);
+        }
+        if (show(config, "showProject") || show(config, "showDetailTarget")) {
+            addMeta(fonts, meta, "所属项目",
+                    show(config, "showProject") && record.getProject() != null ? value(record.getProject().getName()) : "", font);
+            addMeta(fonts, meta, "到账账户", show(config, "showDetailTarget") ? targetAccount(worker, partner) : "", font);
+        }
+        if (meta.size() > 0) document.add(meta);
+        document.add(paragraph(fonts, " ", font, Element.ALIGN_LEFT, 0, 6));
+    }
+
+    private void renderAmount(Document document, FontKit fonts, String config, VoucherRecord record,
+                              Font font) throws Exception {
+        if (!show(config, "showAmount") && !show(config, "showAmountWords")) return;
+        PdfPTable money = new PdfPTable(4);
+        money.setWidthPercentage(100);
+        money.setWidths(new float[]{18, 32, 18, 32});
+        addMeta(fonts, money, "金额合计", show(config, "showAmount") ? "￥" + money(record.getTotalAmount()) : "", font);
+        addMeta(fonts, money, "金额大写", show(config, "showAmountWords") ? value(record.getAmountWords()) : "", font);
+        document.add(money);
+        document.add(paragraph(fonts, " ", font, Element.ALIGN_LEFT, 0, 6));
+    }
+
+    private void renderSign(Document document, FontKit fonts, String config, VoucherRecord record,
+                            Font bodyFont, Font smallFont, LayoutSpec layout) throws Exception {
+        if (!show(config, "showSignBlock")) return;
+        document.add(paragraph(fonts, " ", smallFont, Element.ALIGN_LEFT, 12, 6));
+        List<String> signatures = new java.util.ArrayList<>();
+        for (String label : layout.signatures()) {
+            if ("制单".equals(label) && record.getGeneratedBy() != null) {
+                signatures.add(label + "：" + value(record.getGeneratedBy().getName()));
+            } else {
+                signatures.add(label + "：____________");
+            }
+        }
+        document.add(paragraph(fonts, join("        ", signatures.toArray(String[]::new)),
+                bodyFont, Element.ALIGN_LEFT, 0, 0));
+    }
+
+    private void renderFooter(Document document, FontKit fonts, Font font, LayoutSpec layout) throws Exception {
+        if (layout.footer() == null || layout.footer().isBlank()) return;
+        document.add(paragraph(fonts, layout.footer(), font, Element.ALIGN_LEFT, 14, 0));
+    }
+
+    private com.lowagie.text.Rectangle pageSize(LayoutSpec layout) {
+        com.lowagie.text.Rectangle size = switch (layout.pageSize()) {
+            case "A3" -> PageSize.A3;
+            case "A5" -> PageSize.A5;
+            default -> PageSize.A4;
+        };
+        return "landscape".equals(layout.orientation()) ? size.rotate() : size;
+    }
+
+    private LayoutSpec layout(String json) {
+        try {
+            JsonNode root = objectMapper.readTree(json == null || json.isBlank()
+                    ? DocumentLayoutDefaults.JSON : json);
+            String pageSize = root.path("pageSize").asText("A4").toUpperCase();
+            if (!List.of("A3", "A4", "A5").contains(pageSize)) pageSize = "A4";
+            String orientation = root.path("orientation").asText("portrait").toLowerCase();
+            if (!List.of("portrait", "landscape").contains(orientation)) orientation = "portrait";
+            int margin = Math.max(8, Math.min(root.path("marginMm").asInt(12), 20));
+            List<BlockSpec> blocks = new java.util.ArrayList<>();
+            int defaultSort = 10;
+            for (String key : List.of("company", "title", "meta", "amount", "detail", "sign", "footer")) {
+                JsonNode source = null;
+                for (JsonNode item : root.path("blocks")) {
+                    if (key.equals(item.path("key").asText(""))) {
+                        source = item;
+                        break;
+                    }
+                }
+                boolean visible = source == null || !source.has("visible") || source.path("visible").asBoolean(true);
+                int sort = source != null && source.has("sort") ? source.path("sort").asInt(defaultSort) : defaultSort;
+                blocks.add(new BlockSpec(key, visible, Math.max(1, Math.min(sort, 999))));
+                defaultSort += 10;
+            }
+            List<String> signatures = new java.util.ArrayList<>();
+            for (JsonNode item : root.path("signatures")) {
+                String label = item.asText("").trim();
+                if (!label.isBlank() && signatures.size() < 4) signatures.add(label);
+            }
+            if (signatures.isEmpty()) signatures.addAll(List.of("制单", "审核", "领款/付款人"));
+            String footer = root.path("footer").asText("").trim();
+            return new LayoutSpec(pageSize, orientation, margin, List.copyOf(blocks), List.copyOf(signatures), footer);
+        } catch (Exception ex) {
+            return new LayoutSpec("A4", "portrait", 12,
+                    List.of(new BlockSpec("company", true, 10), new BlockSpec("title", true, 20),
+                            new BlockSpec("meta", true, 30), new BlockSpec("amount", true, 40),
+                            new BlockSpec("detail", true, 50), new BlockSpec("sign", true, 60),
+                            new BlockSpec("footer", true, 70)),
+                    List.of("制单", "审核", "领款/付款人"),
+                    "本凭证为款项收付单据打印稿，用于企业留档；不属于会计记账凭证，不替代会计做账。");
+        }
+    }
+
+    private record BlockSpec(String key, boolean visible, int sort) {
+    }
+
+    private record LayoutSpec(String pageSize, String orientation, int marginMm,
+                              List<BlockSpec> blocks, List<String> signatures, String footer) {
     }
 
     private PdfPTable detailTable(FontKit fonts, String config, List<VoucherItem> items,
