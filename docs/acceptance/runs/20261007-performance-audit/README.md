@@ -16,7 +16,7 @@ AUDIT-ID: AUD-20261007-001
 - **结论：BLOCK（基线）→ CONDITIONAL（P1 代码已上线，待复测）**
 - 阻断项：
   1. P0/P1 前实测 `material/plan/workbench` P95 0.804s、`statistic/boss/workbench` P95 0.684s，超过核心读取 API P95 ≤500ms；
-  2. 仓库历史上 12 个含 `@Lock(PESSIMISTIC_*)` 的仓储文件、17 处数据库锁用法，违反 `DEC-029/BR-027`「业务并发禁止数据库锁」；Batch 1–5 已迁移 8 个文件 / 11 处，**当前仍剩 4 个文件 / 6 处**；
+  2. 仓库历史上 12 个含 `@Lock(PESSIMISTIC_*)` 的仓储文件、17 处数据库锁用法，违反 `DEC-029/BR-027`「业务并发禁止数据库锁」；Batch 1–6 已迁移 9 个文件 / 12 处，**当前仍剩 3 个文件 / 5 处**；
   3. P1 后认证态 App/Web 页面级复测尚未执行。
 - 已确认改善：P0/P1 已上线 `default_batch_fetch_size=50`、主查询 `@EntityGraph`、材料计划工作台 `IN` 批量查询、App 1.0.24 缓存优先 + onboarding/success 分阶段加载；是否 PASS 必须复测后判定。
 - 审核方不得自我豁免：上述阻断项必须由用户书面豁免或完成整改后复测。
@@ -51,15 +51,14 @@ AUDIT-ID: AUD-20261007-001
 
 ## 4. 锁与 SQL 审核（DEC-029 / BR-027）
 
-- 迁移前全仓扫描：`@Lock(PESSIMISTIC_*)` / `FOR UPDATE` / `LOCK IN SHARE MODE` 共 **17 处，12 个文件**；截至 Batch 5 后实测 `grep -rn "@Lock" src/main` 剩余 **6 处，4 个文件**；
+- 迁移前全仓扫描：`@Lock(PESSIMISTIC_*)` / `FOR UPDATE` / `LOCK IN SHARE MODE` 共 **17 处，12 个文件**；截至 Batch 6 后实测 `grep -rn "@Lock" src/main` 剩余 **5 处，3 个文件**；
 - **Batch 1 已完成**：`CatalogImportBatchRepository` 数据库锁移除，确认导入/撤销改用 `DistributedLock`（生产 `RedissonLock`，测试禁用时 no-op）；release `20261007-022508`，commit `60fabbe`；
 - **Batch 2 已完成**：`CarryoverProjectRepository` 两个数据库锁方法移除，`CarryoverApplyContext`、`CarryoverProjectContext`、`CarryoverAdjustmentContext`、`CarryoverLockContext` 改用 `DistributedLock`；release `20261007-023421`，commit `d952c40`；
 - **Batch 3 已完成**：`ProjectStageRepository`、`AcceptanceRepository` 数据库锁移除，两个 Provider 与 `ProjectContext.submitAcceptance` 改用分布式锁；release `20261007-025828`，commit `95f380d`；
 - **Batch 4 已完成**：`CustomerRepository`、`PropertyRepository` 的公共 finder 移除 `@Lock(PESSIMISTIC_WRITE)`；报价确认/签约建合同/立项改用统一房屋锁 `property:{comId}:{propertyId}`，客户删除改用 `customer:{comId}:{custId}`；release `20261007-032237`，commit `7fb7a42`；
 - **Batch 5 已完成**：`CustomerInviteRepository`、`CustomerAccessRepository` 数据库锁移除；`CustomerInviteContext.accept/cancel` 改为「邀请 + 微信身份×项目」双锁（`@DistributedLocked.extraKeys`）；release `20261007-033446`，commit `b6dda62`；
-- 剩余 **6 处 / 4 个文件**，按下列批次迁移：
-  1. Batch 6：`AiResourceAccountRepository`（1 处，AI 计费）；
-  2. Batch 7：`CredentialsRepository`、`SubscriptionRepository`、`OrderRepository`（5 处，认证与订阅计费，高风险）；
+- **Batch 6 已完成**：`AiResourceAccountRepository` 数据库锁移除；`AiBillingContext` 的 account/grant/reserve/settle/release/refund/adjust 统一按 `ai-resource-account:{comId}` 分布式锁串行；release `20261007-034157`，commit `1511b0b`；
+- 剩余 **5 处 / 3 个文件**，全部为 Batch 7：`CredentialsRepository`（2）、`SubscriptionRepository`（2）、`OrderRepository`（1），认证/订阅/订单，高风险；
 - 结论：按 `DEC-029/BR-027`，业务并发必须使用 `RedissonLock`，剩余数据库锁仍为 **BLOCK**，需继续迁移；
 - 自定义 SQL 例外已批准：框架 API 低效时允许 `@Query`/nativeQuery/JDBC/批量 `IN`/投影/`@EntityGraph`，但必须保留租户/数据权限、参数绑定与金额口径。
 
@@ -74,7 +73,7 @@ AUDIT-ID: AUD-20261007-001
 ## 6. 建议与复测
 
 1. 用真实 BOSS 会话复测 App 首页、财务工作台、Web 财务页：≥20 次采样，输出 P50/P95/P99、SQL 条数、页面瀑布；
-2. 继续迁移剩余 4 个 `@Lock(PESSIMISTIC_*)` 文件（Batch 6–7）到 `RedissonLock` / `@DistributedLocked`，提供 key/wait/lease/幂等/解锁证据；
+2. 继续迁移剩余 3 个 `@Lock(PESSIMISTIC_*)` 文件（Batch 7）到 `RedissonLock` / `@DistributedLocked`，提供 key/wait/lease/幂等/解锁证据；
 3. 若复测仍超预算，P2：`findAll(Specification)` EntityGraph/投影、onboarding/success 合并读模型、请求耗时 + SQL 条数常驻监控、报表分页/异步；
 4. 多租户 10× 数据量与并发验证未执行，属于必测项。
 
