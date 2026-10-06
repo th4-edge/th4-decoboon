@@ -53,13 +53,13 @@ AUDIT-ID: AUD-20261007-001
 
 - 迁移前全仓扫描：`@Lock(PESSIMISTIC_*)` / `FOR UPDATE` / `LOCK IN SHARE MODE` 共 **17 处，12 个文件**；
 - **Batch 1 已完成**：`CatalogImportBatchRepository` 数据库锁移除，确认导入/撤销改用 `DistributedLock`（生产 `RedissonLock`，测试禁用时 no-op）；release `20261007-022508`，commit `60fabbe`；
-- 剩余 **15 处 / 11 个文件**，按下列批次迁移：
-  1. Batch 2：`CarryoverProjectRepository`（2 处，5 个调用点）；
-  2. Batch 3：`ProjectStageRepository`、`AcceptanceRepository`（2 处）；
-  3. Batch 4：`CustomerRepository`、`PropertyRepository`（2 处，公共 finder，需改调用方）；
-  4. Batch 5：`CustomerInviteRepository`、`CustomerAccessRepository`（3 处，邀请/访问）；
-  5. Batch 6：`AiResourceAccountRepository`（1 处，AI 计费）；
-  6. Batch 7：`CredentialsRepository`、`SubscriptionRepository`、`OrderRepository`（5 处，认证与订阅计费，高风险）；
+- **Batch 2 已完成**：`CarryoverProjectRepository` 两个数据库锁方法移除，`CarryoverApplyContext`、`CarryoverProjectContext`、`CarryoverAdjustmentContext`、`CarryoverLockContext` 改用 `DistributedLock`；release `20261007-023421`，commit `d952c40`；
+- 剩余 **13 处 / 10 个文件**，按下列批次迁移：
+  1. Batch 3：`ProjectStageRepository`、`AcceptanceRepository`（2 处）；
+  2. Batch 4：`CustomerRepository`、`PropertyRepository`（2 处，公共 finder，需改调用方）；
+  3. Batch 5：`CustomerInviteRepository`、`CustomerAccessRepository`（3 处，邀请/访问）；
+  4. Batch 6：`AiResourceAccountRepository`（1 处，AI 计费）；
+  5. Batch 7：`CredentialsRepository`、`SubscriptionRepository`、`OrderRepository`（5 处，认证与订阅计费，高风险）；
 - 结论：按 `DEC-029/BR-027`，业务并发必须使用 `RedissonLock`，剩余数据库锁仍为 **BLOCK**，需继续迁移；
 - 自定义 SQL 例外已批准：框架 API 低效时允许 `@Query`/nativeQuery/JDBC/批量 `IN`/投影/`@EntityGraph`，但必须保留租户/数据权限、参数绑定与金额口径。
 
@@ -74,7 +74,7 @@ AUDIT-ID: AUD-20261007-001
 ## 6. 建议与复测
 
 1. 用真实 BOSS 会话复测 App 首页、财务工作台、Web 财务页：≥20 次采样，输出 P50/P95/P99、SQL 条数、页面瀑布；
-2. 继续迁移剩余 11 个 `@Lock(PESSIMISTIC_*)` 文件（Batch 2–7）到 `RedissonLock`，提供 key/wait/lease/幂等/解锁证据；
+2. 继续迁移剩余 10 个 `@Lock(PESSIMISTIC_*)` 文件（Batch 3–7）到 `RedissonLock`，提供 key/wait/lease/幂等/解锁证据；
 3. 若复测仍超预算，P2：`findAll(Specification)` EntityGraph/投影、onboarding/success 合并读模型、请求耗时 + SQL 条数常驻监控、报表分页/异步；
 4. 多租户 10× 数据量与并发验证未执行，属于必测项。
 
