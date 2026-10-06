@@ -36,7 +36,14 @@ class SummaryImplementationRulesTest {
             "project/context/ProjectCostContext.java",
             "statistic/context/",
             "ai/billing/context/",
-            "carryover/context/CarryoverReconciliationContext.java");
+            "ai/context/AiUsageReportContext.java",
+            "carryover/context/CarryoverReconciliationContext.java",
+            // 2026-10-07 补漏：材料计划工作台（全场景最慢接口，逐计划查采购单/采购明细）
+            "material/context/MaterialPlanWorkbenchContext.java",
+            "customer/context/CustomerOverviewContext.java",
+            "finance/context/FinanceSummaryAggregateContext.java",
+            "payroll/context/PayrollWorkbenchContext.java",
+            "project/context/ContractWorkbenchContext.java");
 
     /**
      * 存量违规基线（GAP-027 整改完成后必须逐条删除）。
@@ -47,6 +54,7 @@ class SummaryImplementationRulesTest {
     private static final java.util.Map<String, Set<String>> LEGACY_BASELINE = java.util.Map.ofEntries(
             java.util.Map.entry("project/context/ProjectCostContext.java", Set.of("A2")),
             java.util.Map.entry("finance/context/FinanceReportContext.java", Set.of("A1")),
+            java.util.Map.entry("payroll/context/PayrollWorkbenchContext.java", Set.of("A1")),
             java.util.Map.entry("statistic/context/SiteWorkbenchContext.java", Set.of("A1")),
             java.util.Map.entry("statistic/context/BossContractChangeContext.java", Set.of("A1")),
             java.util.Map.entry("customer/repository/CustomerAccessRepository.java", Set.of("A4")),
@@ -97,6 +105,34 @@ class SummaryImplementationRulesTest {
         }
         assertThat(violations)
                 .as("@EntityGraph 属性不得超过 4 个（DEC-036 反模式 A4）；确需更多必须附 A/B 延迟证据并经评审")
+                .isEmpty();
+    }
+
+
+    /**
+     * 覆盖守卫：所有「汇总/报表/工作台」实现类必须登记进 {@link #SUMMARY_PACKAGES}。
+     *
+     * <p>防止再次出现"规范有了、但某个包漏扫"的情况（2026-10-07 材料计划工作台即因此漏网）。</p>
+     */
+    @Test
+    void everySummaryImplementationMustBeInScope() throws IOException {
+        List<String> uncovered = new ArrayList<>();
+        try (Stream<Path> files = Files.walk(SRC)) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
+                String rel = rel(file);
+                if (!rel.contains("/context/")) {
+                    continue;
+                }
+                String name = file.getFileName().toString();
+                boolean looksLikeSummary = name.matches(".*(Report|Summary|Workbench|Dashboard).*Context\\.java")
+                        || name.matches(".*(Report|Summary|Workbench|Dashboard)\\.java");
+                if (looksLikeSummary && !inScope(rel)) {
+                    uncovered.add(rel);
+                }
+            }
+        }
+        assertThat(uncovered)
+                .as("汇总/报表/工作台实现必须登记进 SUMMARY_PACKAGES 才能受门禁约束（DEC-036 第 5 节）")
                 .isEmpty();
     }
 
