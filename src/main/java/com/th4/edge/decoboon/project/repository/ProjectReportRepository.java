@@ -5,6 +5,8 @@ import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 /** 工地动态仓储。 */
@@ -19,6 +21,10 @@ public interface ProjectReportRepository extends JpaRepository<ProjectReport, Lo
             Long comId, Long projectId, Pageable pageable);
 
     Page<ProjectReport> findByCompany_ComIdOrderByCreateTime_DateTimeDesc(Long comId, Pageable pageable);
+
+    /** 角色报表：一次取多项目日报（时间倒序），替代逐项目分页查询（DEC-036 正模式）。 */
+    List<ProjectReport> findByCompany_ComIdAndProject_ProjectIdInOrderByCreateTime_DateTimeDesc(
+            Long comId, java.util.Collection<Long> projectIds);
 
     long countByProject_ProjectId(Long projectId);
 }

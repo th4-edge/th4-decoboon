@@ -18,6 +18,9 @@ public interface ProjectTaskRepository extends JpaRepository<ProjectTask, Long>,
 
     List<ProjectTask> findByProject(Project project);
 
+    /** 角色报表：一次取多项目任务，替代逐项目查询（DEC-036 正模式）。 */
+    List<ProjectTask> findByProject_ProjectIdIn(java.util.Collection<Long> projectIds);
+
     /** 同一项目 + 阶段 + 工艺条目下的全部任务，用于下发去重。 */
     List<ProjectTask> findByProject_ProjectIdAndStage_StageIdAndCatalogItem_ItemId(
             Long projectId, Long stageId, Long catalogItemId);

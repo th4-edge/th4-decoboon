@@ -32,6 +32,9 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
     @EntityGraph(attributePaths = {"stage", "submittedBy"})
     List<Acceptance> findByProject_ProjectIdOrderByAcceptanceIdDesc(Long projectId);
 
+    /** 角色报表：一次取多项目验收（验收倒序），替代逐项目分页查询（DEC-036 正模式）。 */
+    List<Acceptance> findByProject_ProjectIdInOrderByAcceptanceIdDesc(java.util.Collection<Long> projectIds);
+
     Optional<Acceptance> findByAcceptanceIdAndProject_ProjectId(Long acceptanceId, Long projectId);
 
     @EntityGraph(attributePaths = {
