@@ -7,6 +7,7 @@ import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
@@ -37,6 +38,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     long countByCompany_ComId(Long comId);
 
     List<Employee> findByCompany_ComId(Long comId);
+
+    @EntityGraph(attributePaths = {"store", "team"})
+    List<Employee> findByCompany_ComIdOrderByNameAsc(Long comId);
+
+    @EntityGraph(attributePaths = {"store", "team"})
+    List<Employee> findByCompany_ComIdAndStatusOrderByNameAsc(Long comId, EmployeeStatus status);
 
     List<Employee> findByCompany_ComIdInAndRoleOrderByNameAsc(Collection<Long> comIds, EmployeeRole role);
 

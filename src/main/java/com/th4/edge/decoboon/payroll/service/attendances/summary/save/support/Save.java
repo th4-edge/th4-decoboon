@@ -1,9 +1,12 @@
 package com.th4.edge.decoboon.payroll.service.attendances.summary.save.support;
 
 import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
+import com.th4.edge.decoboon.payroll.configure.CompensationStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
+import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
+import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -28,7 +31,6 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     @User private Employee employee;
     @AutoInject @NotNull private Long empId;
     @AutoInject @NotEmpty private String month;
-    @AutoInject @NotNull private Integer scheduledDays;
     @AutoInject private Integer normalDays;
     @AutoInject private Integer personalLeaveDays;
     @AutoInject private Integer sickLeaveDays;
@@ -38,9 +40,14 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     @AutoInject private Integer compLeaveDays;
     @AutoInject private String remark;
     private final AttendanceSummaryRepository repository;
+    private final CompensationSchemeRepository compensationRepository;
     private final PayrollAccessContext accessContext;
-    public Save(AttendanceSummaryRepository repository, PayrollAccessContext accessContext) {
-        this.repository = repository; this.accessContext = accessContext;
+    public Save(AttendanceSummaryRepository repository,
+                CompensationSchemeRepository compensationRepository,
+                PayrollAccessContext accessContext) {
+        this.repository = repository;
+        this.compensationRepository = compensationRepository;
+        this.accessContext = accessContext;
     }
     @Override @Transactional
     public AttendanceSummary call(@ModelSaveInject AttendanceSummary request) {
@@ -51,9 +58,18 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
             throw new com.th4.edge.framework.exception.DefinedException(
                     new com.th4.edge.framework.exception.DefaultErrorCode("400", "该员工本月考勤已存在"));
         }
+        CompensationScheme scheme = compensationRepository
+                .findByCompany_ComIdAndEmployee_EmpIdAndStatus(
+                        current.getCompany().getComId(), empId, CompensationStatus.Active)
+                .orElseThrow(() -> new com.th4.edge.framework.exception.DefinedException(
+                        new com.th4.edge.framework.exception.DefaultErrorCode("400", "请先为该员工配置薪酬方案")));
+        if (scheme.getScheduledDays() == null || scheme.getScheduledDays() <= 0) {
+            throw new com.th4.edge.framework.exception.DefinedException(
+                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "薪酬方案未设置月应出勤天数"));
+        }
         accessContext.applyOwnership(request, current, target);
         request.setPayrollMonth(month);
-        request.setScheduledDays(scheduledDays);
+        request.setScheduledDays(scheme.getScheduledDays());
         request.setNormalDays(value(normalDays));
         request.setPersonalLeaveDays(value(personalLeaveDays));
         request.setSickLeaveDays(value(sickLeaveDays));

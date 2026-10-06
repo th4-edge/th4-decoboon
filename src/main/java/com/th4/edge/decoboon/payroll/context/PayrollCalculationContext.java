@@ -21,7 +21,7 @@ public class PayrollCalculationContext {
     public BigDecimal dailySalary(BigDecimal baseSalary, Integer scheduledDays) {
         BigDecimal base = money(baseSalary);
         if (scheduledDays == null || scheduledDays <= 0) {
-            throw new DefinedException(new DefaultErrorCode("400", "当月应出勤天数必须大于 0"));
+            throw new DefinedException(new DefaultErrorCode("400", "薪酬方案或当月考勤的应出勤天数必须大于 0"));
         }
         return base.divide(BigDecimal.valueOf(scheduledDays), 6, RoundingMode.HALF_UP);
     }

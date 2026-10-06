@@ -71,6 +71,11 @@ public class CompensationScheme extends AuditModel {
     @Column(precision = 14, scale = 2, nullable = false)
     private BigDecimal baseSalary = BigDecimal.ZERO;
 
+    @Note("月应出勤天数")
+    @Unit("天")
+    @Column(name = "scheduled_days", nullable = false)
+    private Integer scheduledDays = 0;
+
     @Note("生效日期")
     @Column(name = "effective_from", nullable = false)
     private LocalDate effectiveFrom;
@@ -105,6 +110,8 @@ public class CompensationScheme extends AuditModel {
     public void setEmployee(Employee employee) { this.employee = employee; }
     public BigDecimal getBaseSalary() { return baseSalary; }
     public void setBaseSalary(BigDecimal baseSalary) { this.baseSalary = baseSalary; }
+    public Integer getScheduledDays() { return scheduledDays; }
+    public void setScheduledDays(Integer scheduledDays) { this.scheduledDays = scheduledDays; }
     public LocalDate getEffectiveFrom() { return effectiveFrom; }
     public void setEffectiveFrom(LocalDate effectiveFrom) { this.effectiveFrom = effectiveFrom; }
     public LocalDate getEffectiveTo() { return effectiveTo; }
