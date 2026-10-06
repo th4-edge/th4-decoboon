@@ -51,6 +51,12 @@ public class FinanceProjectReport {
     private BigDecimal paymentRate = BigDecimal.ZERO;
     private Boolean receivableCleared = Boolean.FALSE;
     private Boolean payableCleared = Boolean.FALSE;
+    /** 接管基线中的历史已结算项目，只归档展示，不进入当前结算和现金经营口径。 */
+    private Boolean historicalArchive = Boolean.FALSE;
+    private String archiveLabel;
+    private String settlementStatusLabel;
+    /** 历史归档项目不允许生成新的结算快照。 */
+    private Boolean settlementActionable = Boolean.TRUE;
     private Settlement settlement;
     private List<Receivable> receivables = List.of();
     private List<Payable> payables = List.of();
@@ -134,6 +140,14 @@ public class FinanceProjectReport {
     public void setReceivableCleared(Boolean receivableCleared) { this.receivableCleared = receivableCleared; }
     public Boolean getPayableCleared() { return payableCleared; }
     public void setPayableCleared(Boolean payableCleared) { this.payableCleared = payableCleared; }
+    public Boolean getHistoricalArchive() { return historicalArchive; }
+    public void setHistoricalArchive(Boolean historicalArchive) { this.historicalArchive = historicalArchive; }
+    public String getArchiveLabel() { return archiveLabel; }
+    public void setArchiveLabel(String archiveLabel) { this.archiveLabel = archiveLabel; }
+    public String getSettlementStatusLabel() { return settlementStatusLabel; }
+    public void setSettlementStatusLabel(String settlementStatusLabel) { this.settlementStatusLabel = settlementStatusLabel; }
+    public Boolean getSettlementActionable() { return settlementActionable; }
+    public void setSettlementActionable(Boolean settlementActionable) { this.settlementActionable = settlementActionable; }
     public Settlement getSettlement() { return settlement; }
     public void setSettlement(Settlement settlement) { this.settlement = settlement; }
     public List<Receivable> getReceivables() { return receivables; }

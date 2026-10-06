@@ -138,6 +138,10 @@ class FinanceClosedLoopTest {
     @Autowired
     private com.th4.edge.decoboon.finance.service.projects.report.Report financeProjectReport;
     @Autowired
+    private com.th4.edge.decoboon.finance.service.projects.page.Page financeProjectPage;
+    @Autowired
+    private com.th4.edge.decoboon.finance.service.settlements.save.Save settlementSave;
+    @Autowired
     private com.th4.edge.decoboon.finance.service.payables.report.Report payableReport;
     @Autowired
     private com.th4.edge.decoboon.document.service.voucher.report.Report voucherReport;
@@ -337,6 +341,46 @@ class FinanceClosedLoopTest {
         assertThat(voucherResult.getPaymentAmount()).isEqualByComparingTo("0.00");
         assertThat(voucherResult.getMonthlyAmounts()).hasSize(1);
         assertThat(voucherResult.getMonthlyAmounts().get(0).getAmount()).isEqualByComparingTo("3000.00");
+    }
+
+    @Test
+    void shouldIsolateHistoricalSettledCarryoverFromCurrentSettlementWorklist() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+        project.setBusinessOrigin(BusinessOrigin.Carryover);
+        project.setStatus(ProjectStatus.Settled);
+        projectRepository.save(project);
+        entityManager.flush();
+
+        com.th4.edge.decoboon.finance.service.projects.page.support.Page page =
+                AopTestUtils.getTargetObject(financeProjectPage);
+        set(page, "employee", boss);
+        set(page, "current", 1);
+        set(page, "size", 20);
+        set(page, "keyword", null);
+        set(page, "status", null);
+        set(page, "scope", null);
+        assertThat(page.call(new Project()).getContent())
+                .extracting(item -> item.getProject().getProjectId())
+                .doesNotContain(project.getProjectId());
+
+        set(page, "scope", "archive");
+        var archived = page.call(new Project()).getContent().stream()
+                .filter(item -> project.getProjectId().equals(item.getProject().getProjectId()))
+                .findFirst()
+                .orElseThrow();
+        assertThat(archived.getHistoricalArchive()).isTrue();
+        assertThat(archived.getArchiveLabel()).isEqualTo("历史接管项目 / 历史归档");
+        assertThat(archived.getSettlementStatusLabel()).isEqualTo("历史已结算，明细未接管");
+        assertThat(archived.getSettlementActionable()).isFalse();
+
+        com.th4.edge.decoboon.finance.service.settlements.save.support.Save save =
+                AopTestUtils.getTargetObject(settlementSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        assertThatThrownBy(() -> save.call(new com.th4.edge.decoboon.finance.model.Settlement()))
+                .hasMessageContaining("历史接管项目只作归档展示");
     }
 
     @Test

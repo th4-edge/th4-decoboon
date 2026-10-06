@@ -7,6 +7,7 @@ import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.model.Settlement;
+import com.th4.edge.decoboon.project.configure.ProjectArchivePolicy;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -32,9 +33,10 @@ import java.util.List;
                         "laborCost", "projectPaymentAmount", "projectCost", "otherPayableAmount", "expenseAllocation",
                         "estimatedCost", "actualCost", "totalCost", "profitAmount", "costComplete", "costIncompleteCount",
                         "grossProfit", "grossMargin", "collectionRate", "paymentRate",
-                        "receivableCleared", "payableCleared", "settlement"}),
+                        "receivableCleared", "payableCleared", "historicalArchive", "archiveLabel", "settlementStatusLabel",
+                        "settlementActionable", "settlement"}),
         @AllowProperties(model = Project.class,
-                properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status", "progress" }),
+                properties = {"projectId", "businessOrigin", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status", "progress" }),
         @AllowProperties(model = Receivable.class, properties = {"receivableId", "property" }),
         @AllowProperties(model = Payable.class, properties = {"payableId", "property" }),
         @AllowProperties(model = Ledger.class, properties = {"ledgerId"}),
@@ -57,6 +59,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
     private String keyword;
     @AutoInject
     private String status;
+    /** 当前结算工作台默认只看当前项目；archive 用于查看历史接管归档。 */
+    @AutoInject
+    private String scope;
 
     private final FinanceReportContext reportContext;
 
@@ -68,6 +73,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
     public org.springframework.data.domain.Page<FinanceProjectReport> call(Project request) {
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<FinanceProjectReport> items = reportContext.projectReports(employee).stream()
+                .filter(item -> matchesScope(item, scope))
                 .filter(item -> status == null || status.isBlank() || matchesStatus(item, status.trim()))
                 .filter(item -> kw.isBlank()
                         || item.getProject().getName().toLowerCase().contains(kw)
@@ -79,6 +85,17 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
         int from = Math.min(page * pageSize, items.size());
         int to = Math.min(from + pageSize, items.size());
         return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+    }
+
+    private boolean matchesScope(FinanceProjectReport item, String value) {
+        boolean historicalArchive = ProjectArchivePolicy.isHistoricalArchive(item.getProject());
+        if (value == null || value.isBlank() || "current".equalsIgnoreCase(value.trim())) {
+            return !historicalArchive;
+        }
+        if ("archive".equalsIgnoreCase(value.trim())) {
+            return historicalArchive;
+        }
+        return true;
     }
 
     /**

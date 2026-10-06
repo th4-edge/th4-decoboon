@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.context.FinanceReportContext;
 import com.th4.edge.decoboon.finance.model.Settlement;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
+import com.th4.edge.decoboon.project.configure.ProjectArchivePolicy;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
@@ -80,6 +81,10 @@ public class Save implements com.th4.edge.decoboon.finance.service.settlements.s
     public Settlement call(Settlement request) {
         Employee current = accessContext.requireEditor(employee);
         Project project = accessContext.resolveProject(current, projectId);
+        if (ProjectArchivePolicy.isHistoricalArchive(project)) {
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "历史接管项目只作归档展示，不生成结算，历史明细未接管"));
+        }
         Settlement settlement = settlementRepository.findByProject_ProjectIdAndCompany_ComId(
                         projectId, current.getCompany().getComId())
                 .orElseGet(Settlement::new);

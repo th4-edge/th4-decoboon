@@ -20,6 +20,7 @@ import com.th4.edge.decoboon.finance.repository.PaymentRepository;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
+import com.th4.edge.decoboon.project.configure.ProjectArchivePolicy;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
@@ -39,6 +40,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** 财务汇总、项目财务全景与结算快照计算。 */
 @Component
@@ -98,16 +100,32 @@ public class FinanceReportContext {
 
     public FinanceSummary summary(Employee principal) {
         Employee current = accessContext.requireReader(principal);
-        List<Project> projects = projects(current);
-        List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class));
-        List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class));
+        List<Project> allProjects = projects(current);
+        Set<Long> historicalArchiveProjectIds = allProjects.stream()
+                .filter(ProjectArchivePolicy::isHistoricalArchive)
+                .map(Project::getProjectId)
+                .collect(java.util.stream.Collectors.toSet());
+        List<Project> projects = allProjects.stream()
+                .filter(project -> !ProjectArchivePolicy.isHistoricalArchive(project))
+                .toList();
+        List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class)).stream()
+                .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
+                .toList();
+        List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class)).stream()
+                .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
+                .toList();
         List<Ledger> ledgers = ledgerRepository.findAll(accessContext.visible(current, Ledger.class)).stream()
                 .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
+                .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
                 .toList();
         List<Receipt> receipts = receiptRepository == null ? List.of()
-                : receiptRepository.findAll(accessContext.visible(current, Receipt.class));
+                : receiptRepository.findAll(accessContext.visible(current, Receipt.class)).stream()
+                        .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
+                        .toList();
         List<Payment> payments = paymentRepository == null ? List.of()
-                : paymentRepository.findAll(accessContext.visible(current, Payment.class));
+                : paymentRepository.findAll(accessContext.visible(current, Payment.class)).stream()
+                        .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
+                        .toList();
 
         FinanceSummary summary = new FinanceSummary();
         summary.setProjectCount(projects.size());
@@ -342,8 +360,15 @@ public class FinanceReportContext {
                 .allMatch(item -> accessContext.outstanding(item.getAmount(), item.getReceivedAmount()).signum() == 0));
         report.setPayableCleared(payables.stream()
                 .allMatch(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()).signum() == 0));
-        report.setSettlement(settlementRepository.findByProject_ProjectIdAndCompany_ComId(
-                projectId, current.getCompany().getComId()).orElse(null));
+        Settlement settlement = settlementRepository.findByProject_ProjectIdAndCompany_ComId(
+                projectId, current.getCompany().getComId()).orElse(null);
+        boolean historicalArchive = ProjectArchivePolicy.isHistoricalArchive(project);
+        report.setHistoricalArchive(historicalArchive);
+        report.setArchiveLabel(historicalArchive ? ProjectArchivePolicy.ARCHIVE_LABEL : null);
+        report.setSettlementStatusLabel(historicalArchive && settlement == null
+                ? ProjectArchivePolicy.SETTLEMENT_LABEL : null);
+        report.setSettlementActionable(!historicalArchive);
+        report.setSettlement(settlement);
         report.setReceivables(receivables);
         report.setPayables(payables);
         report.setRecentLedgers(ledgers.stream().limit(12).toList());
@@ -442,6 +467,12 @@ public class FinanceReportContext {
         return sum(payables.stream()
                 .filter(item -> item.getType() == type)
                 .map(Payable::getAmount));
+    }
+
+    private boolean belongsToArchivedProject(Project project, Set<Long> historicalArchiveProjectIds) {
+        return project != null
+                && project.getProjectId() != null
+                && historicalArchiveProjectIds.contains(project.getProjectId());
     }
 
     private boolean receivableOverdue(Receivable receivable) {
