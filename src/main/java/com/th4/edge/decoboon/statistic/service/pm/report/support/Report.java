@@ -146,9 +146,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
         report.setNoticeUnreadCount(noticeRepository.countByReceiver_EmpIdAndReadFalse(current.getEmpId()));
 
         List<ProjectTask> allTasks = new ArrayList<>();
-        List<Acceptance> allAcceptances = new ArrayList<>();
         List<MaterialPlan> allMaterials = new ArrayList<>();
-        List<ProjectReport> allReports = new ArrayList<>();
         Map<Long, Customer> customers = new LinkedHashMap<>();
         Map<Long, Quote> quotes = new LinkedHashMap<>();
 
@@ -168,18 +166,6 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
         for (Project project : projects) {
             allTasks.addAll(tasksByProject.getOrDefault(project.getProjectId(), List.of()));
             allMaterials.addAll(materialsByProject.getOrDefault(project.getProjectId(), List.of()));
-            // 有界查询：每项目最多 50 条（原语义）。批量版本会取回远超需要的行，实测导致耗时翻倍。
-            allAcceptances.addAll(acceptanceRepository
-                    .findByProject_ProjectIdOrderByAcceptanceIdDesc(project.getProjectId(), PageRequest.of(0, 50))
-                    .getContent());
-            // 有界查询：每项目最多 30 条（原语义）
-            List<ProjectReport> projectReports = reportRepository
-                    .findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
-                            comId, project.getProjectId(), PageRequest.of(0, 30))
-                    .getContent();
-            allReports.addAll(projectReports);
-            report.setReportTodayCount(report.getReportTodayCount() + countReportsOn(projectReports, today));
-            report.setReportWeekCount(report.getReportWeekCount() + countReportsSince(projectReports, weekStart));
             if (project.getCustomer() != null) {
                 customers.put(project.getCustomer().getCustId(), project.getCustomer());
             }
@@ -211,23 +197,22 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
                 .thenComparing(ProjectTask::getPlannedEnd));
         report.setUrgentTasks(urgentTasks.stream().limit(20).toList());
 
-        long pendingAcceptanceCount = allAcceptances.stream()
-                .filter(item -> item.getStatus() == AcceptStatus.Pending)
-                .count();
-        long rejectedAcceptanceCount = allAcceptances.stream()
-                .filter(item -> item.getStatus() == AcceptStatus.Rejected)
-                .count();
-        long confirmedAcceptanceCount = allAcceptances.stream()
-                .filter(item -> item.getStatus() == AcceptStatus.Confirmed)
-                .count();
+        // 计数：聚合 SQL（DEC-036 正模式，不拉实体行）
+        java.util.Map<AcceptStatus, Integer> acceptanceCounts = new java.util.HashMap<>();
+        if (!projectIds.isEmpty()) {
+            for (Object[] row : acceptanceRepository.countGroupByStatus(projectIds)) {
+                acceptanceCounts.put((AcceptStatus) row[0], ((Number) row[1]).intValue());
+            }
+        }
+        long pendingAcceptanceCount = acceptanceCounts.getOrDefault(AcceptStatus.Pending, 0);
+        long rejectedAcceptanceCount = acceptanceCounts.getOrDefault(AcceptStatus.Rejected, 0);
+        long confirmedAcceptanceCount = acceptanceCounts.getOrDefault(AcceptStatus.Confirmed, 0);
         report.setPendingAcceptanceCount((int) pendingAcceptanceCount);
         report.setRejectedAcceptanceCount((int) rejectedAcceptanceCount);
         report.setAcceptancePassRate(rate(confirmedAcceptanceCount, confirmedAcceptanceCount + rejectedAcceptanceCount));
-        report.setPendingAcceptances(allAcceptances.stream()
-                .filter(item -> item.getStatus() == AcceptStatus.Pending || item.getStatus() == AcceptStatus.Rejected)
-                .sorted(Comparator.comparing(Acceptance::getAcceptanceId).reversed())
-                .limit(20)
-                .toList());
+        report.setPendingAcceptances(projectIds.isEmpty() ? List.of()
+                : acceptanceRepository.findTopByProjectIdsAndStatusIn(projectIds,
+                        List.of(AcceptStatus.Pending, AcceptStatus.Rejected), PageRequest.of(0, 20)));
 
         List<MaterialPlan> materialRisks = allMaterials.stream()
                 .filter(this::isMaterialRisk)
@@ -238,9 +223,15 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
         report.setMaterialDelayedCount((int) materialRisks.stream().filter(this::isMaterialDelayed).count());
         report.setMaterialRisks(materialRisks.stream().limit(20).toList());
 
-        allReports.sort(Comparator.comparing(ProjectReport::getCreateTime,
-                Comparator.nullsLast(Comparator.comparing(com.th4.edge.framework.data.date.model.DateTime::getDateTime))).reversed());
-        report.setRecentReports(allReports.stream().limit(12).toList());
+        // 日报：区间聚合计数 + 全局 TopN 列表（不再逐项目拉取）
+        report.setReportTodayCount(projectIds.isEmpty() ? 0
+                : (int) reportRepository.countCreatedBetween(comId, projectIds,
+                        today.atStartOfDay(), today.plusDays(1).atStartOfDay()));
+        report.setReportWeekCount(projectIds.isEmpty() ? 0
+                : (int) reportRepository.countCreatedBetween(comId, projectIds,
+                        weekStart.atStartOfDay(), today.plusDays(1).atStartOfDay()));
+        report.setRecentReports(projectIds.isEmpty() ? List.of()
+                : reportRepository.findTopByProjectIds(comId, projectIds, PageRequest.of(0, 12)));
 
         report.setCustomerCount(customers.size());
         report.setQuoteCount(quotes.size());

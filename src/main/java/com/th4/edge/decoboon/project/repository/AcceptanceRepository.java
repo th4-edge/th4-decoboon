@@ -40,12 +40,12 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
     List<Object[]> countGroupByStatus(@Param("projectIds") java.util.Collection<Long> projectIds);
 
     /** 角色报表：按状态取全局 TopN（ORDER BY + LIMIT，行数有界）。 */
-    @Query("select a from Acceptance a where a.project.projectId in :projectIds and a.status = :status "
+    @Query("select a from Acceptance a where a.project.projectId in :projectIds and a.status in :statuses "
             + "order by a.acceptanceId desc")
-    List<Acceptance> findTopByProjectIdsAndStatus(@Param("projectIds") java.util.Collection<Long> projectIds,
-                                                  @Param("status")
-                                                  com.th4.edge.decoboon.project.configure.AcceptStatus status,
-                                                  Pageable pageable);
+    List<Acceptance> findTopByProjectIdsAndStatusIn(@Param("projectIds") java.util.Collection<Long> projectIds,
+                                                    @Param("statuses") java.util.Collection<
+                                                            com.th4.edge.decoboon.project.configure.AcceptStatus> statuses,
+                                                    Pageable pageable);
 
     Optional<Acceptance> findByAcceptanceIdAndProject_ProjectId(Long acceptanceId, Long projectId);
 
