@@ -1,6 +1,7 @@
 package com.th4.edge.tenant.billing.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.date.model.DateTime;
 import com.th4.edge.framework.exception.DefaultErrorCode;
@@ -183,6 +184,9 @@ public class SubscriptionContext {
     /**
      * 支付回调后幂等到账。重复回调直接返回已经履约的订单。
      */
+    @DistributedLocked(key = "#root.orderLockKey(#orderNo)",
+            extraKeys = {"#root.orderSubscriptionLockKey(#orderNo)"},
+            message = "该订单正在处理中，请稍后重试")
     @Transactional
     public Order fulfillOrder(String orderNo, String outTradeNo, Long amount, PayChannel payChannel) {
         return fulfillOrder(orderNo, outTradeNo, null, amount, payChannel);
@@ -191,10 +195,13 @@ public class SubscriptionContext {
     /**
      * 支付回调后幂等到账，并记录微信支付交易号。
      */
+    @DistributedLocked(key = "#root.orderLockKey(#orderNo)",
+            extraKeys = {"#root.orderSubscriptionLockKey(#orderNo)"},
+            message = "该订单正在处理中，请稍后重试")
     @Transactional
     public Order fulfillOrder(String orderNo, String outTradeNo, String transactionId,
                               Long amount, PayChannel payChannel) {
-        Order order = orderRepository.findByOrderNoForUpdate(orderNo);
+        Order order = orderRepository.findByOrderNo(orderNo);
         if (order == null) {
             throw new DefinedException(new DefaultErrorCode("404", "订单不存在"));
         }
@@ -294,13 +301,18 @@ public class SubscriptionContext {
     }
 
     /**
-     * 锁定企业订阅行，串行化席位和门店额度校验，避免并发超额。
+     * 读取企业订阅行，用于席位和门店额度校验。
+     *
+     * <p>注意：本方法不再自行加锁。原数据库行锁会持有到调用方事务结束，而分布式锁在方法返回时即释放，
+     * 因此并发保护上移到调用方入口（{@code MembershipContext.createInvite} / {@code accept} 用
+     * {@code @DistributedLocked(key="subscription:{comId}")}，{@code user/store/save} 用显式
+     * {@code DistributedLock}）。调用方必须已在事务外层持有 {@code subscription:{comId}} 锁。</p>
      */
     public Subscription lockCurrent(Company company) {
         if (company == null || company.getComId() == null) {
             return null;
         }
-        return subscriptionRepository.findByCompany_ComIdForUpdate(company.getComId());
+        return subscriptionRepository.findByCompany_ComId(company.getComId());
     }
 
     /**
@@ -461,7 +473,7 @@ public class SubscriptionContext {
     }
 
     private void applyBenefits(Order order) {
-        Subscription subscription = subscriptionRepository.findByCompany_ComIdForUpdate(
+        Subscription subscription = subscriptionRepository.findByCompany_ComId(
                 order.getCompany().getComId());
         if (subscription == null) {
             subscription = new Subscription();
@@ -768,5 +780,23 @@ public class SubscriptionContext {
         private static String modulesOf(PlanModule... modules) {
             return Arrays.stream(modules).map(Enum::name).collect(Collectors.joining(","));
         }
+    }
+
+    /** 支付履约锁键：按订单号串行，保证回调幂等（原 OrderRepository 行级悲观锁迁移而来）。 */
+    public String orderLockKey(String orderNo) {
+        return "order:" + (orderNo == null ? "unknown" : orderNo);
+    }
+
+    /**
+     * 支付履约的订阅锁键：按订单所属企业串行，替代原 applyBenefits 内的订阅行级悲观锁。
+     * 订单不存在或企业缺失时退化为订单维度键，保证锁键非空且不引入无关互斥。
+     */
+    public String orderSubscriptionLockKey(String orderNo) {
+        Order order = orderNo == null ? null : orderRepository.findByOrderNo(orderNo);
+        Company company = order == null ? null : order.getCompany();
+        if (company != null && company.getComId() != null) {
+            return "subscription:" + company.getComId();
+        }
+        return "subscription:order:" + (orderNo == null ? "unknown" : orderNo);
     }
 }

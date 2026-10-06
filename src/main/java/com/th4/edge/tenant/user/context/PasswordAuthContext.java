@@ -1,6 +1,7 @@
 package com.th4.edge.tenant.user.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.CredType;
@@ -49,10 +50,11 @@ public class PasswordAuthContext {
     }
 
     /** 首设只允许存在员工账号且从未设置密码的凭证；没有凭证时创建 Password 行。 */
+    @DistributedLocked(key = "#root.phoneLockKey(#phone)")
     @Transactional
     public Credentials requireSetupCredential(String phone) {
         String normalizedPhone = requiredPhone(phone);
-        Credentials credential = credentialsRepository.findLockedByPhone(normalizedPhone).orElse(null);
+        Credentials credential = credentialsRepository.findByPhone(normalizedPhone).orElse(null);
         Employee employee = credential == null ? null : userContext.activeEmployee(credential);
         if (employee == null) {
             employee = employeeRepository.findFirstByTelNoAndStatusOrderByEmpIdDesc(
@@ -86,10 +88,11 @@ public class PasswordAuthContext {
         return credential;
     }
 
-    /** 登录使用悲观锁，避免并发失败计数丢更新。 */
+    /** 登录按手机号串行，避免并发失败计数丢更新（原行级悲观锁迁移为分布式锁）。 */
+    @DistributedLocked(key = "#root.phoneLockKey(#phone)")
     @Transactional
     public Credentials lockLoginCredential(String phone) {
-        Credentials credential = credentialsRepository.findLockedByPhone(requiredPhone(phone)).orElse(null);
+        Credentials credential = credentialsRepository.findByPhone(requiredPhone(phone)).orElse(null);
         if (credential == null) {
             return null;
         }
@@ -186,5 +189,14 @@ public class PasswordAuthContext {
             throw new DefinedException(new DefaultErrorCode("400", "手机号不能为空"));
         }
         return phone.trim();
+    }
+
+    /**
+     * 凭证手机号锁键：与 {@link #requiredPhone(String)} 同口径 trim 后取键，
+     * 保证「首设凭证」与「登录失败计数」对同一手机号串行；手机号为空时退化为不争用键。
+     */
+    public String phoneLockKey(String phone) {
+        String normalized = phone == null ? "" : phone.trim();
+        return "credential-phone:" + (normalized.isBlank() ? "blank" : normalized);
     }
 }

@@ -2,17 +2,16 @@ package com.th4.edge.tenant.billing.repository;
 
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import com.th4.edge.tenant.billing.model.Subscription;
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Collection;
 
 /**
  * 企业订阅仓储。
+ *
+ * <p>非加锁读取；席位/门店额度校验（{@code subscription:{comId}}）与支付履约（{@code subscription:{comId}}）
+ * 的并发串行由 {@code @DistributedLocked} 承担，替代原行级悲观锁。
  */
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
@@ -24,10 +23,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     @EntityGraph(attributePaths = {"planVersion", "plan", "company"})
     Subscription findByCompany_ComId(Long comId);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select s from Subscription s where s.company.comId = :comId")
-    Subscription findByCompany_ComIdForUpdate(@Param("comId") Long comId);
-
     List<Subscription> findByPlan_PlanIdAndPlanVersionIsNull(Long planId);
 
     @EntityGraph(attributePaths = {"planVersion", "plan", "company"})
@@ -38,9 +33,4 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 
     @EntityGraph(attributePaths = {"planVersion", "plan", "company"})
     Subscription findBySubId(Long subId);
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @EntityGraph(attributePaths = {"planVersion", "plan", "company"})
-    @Query("select s from Subscription s where s.subId = :subId")
-    Subscription findBySubIdForUpdate(@Param("subId") Long subId);
 }

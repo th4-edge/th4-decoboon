@@ -1,6 +1,7 @@
 package com.th4.edge.tenant.user.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.finance.model.Receivable;
@@ -114,6 +115,8 @@ public class MembershipContext {
         updateJoinLimit(user, phone, true);
     }
 
+    @DistributedLocked(key = "#root.subscriptionLockKeyForInviter(#inviter)",
+            message = "该企业订阅正在处理中，请稍后重试")
     @Transactional
     public Invite createInvite(Employee inviter, String inviteName, String phone,
                                EmployeeRole role, Long teamId, String teamName) {
@@ -156,6 +159,8 @@ public class MembershipContext {
         return invite;
     }
 
+    @DistributedLocked(key = "#root.subscriptionLockKeyForInvite(#inviteId)",
+            message = "该企业订阅正在处理中，请稍后重试")
     @Transactional
     public Employee accept(Long inviteId, String openId, String unionId, String phone,
                            String name, boolean confirmSwitch, String reason, String avatarUrl) {
@@ -671,5 +676,23 @@ public class MembershipContext {
     private void blocked(Credentials user, String phone, String reason) {
         userContext.log(user, SecurityAction.LimitTrigger, SecurityResult.Blocked, null, reason, null);
         throw new DefinedException(new DefaultErrorCode("429", reason));
+    }
+
+    /**
+     * 订阅额度锁键：按企业串行席位/门店额度校验。
+     *
+     * <p>原 {@code SubscriptionRepository} 行级悲观锁会持有到调用方事务结束；改为分布式锁后锁在方法返回时释放，
+     * 因此加锁位置从 {@code SubscriptionContext.lockCurrent} 上移到本上下文的事务入口，保证「计数 → 校验 → 落库」
+     * 全程在同一把锁内，且加锁发生在事务首次读取之前。</p>
+     */
+    public String subscriptionLockKeyForInviter(Employee inviter) {
+        Long comId = inviter == null || inviter.getCompany() == null ? null : inviter.getCompany().getComId();
+        return "subscription:" + (comId == null ? "unresolved:inviter" : comId);
+    }
+
+    public String subscriptionLockKeyForInvite(Long inviteId) {
+        Invite invite = inviteId == null ? null : inviteRepository.findByInviteId(inviteId);
+        Long comId = invite == null || invite.getCompany() == null ? null : invite.getCompany().getComId();
+        return comId == null ? "subscription:unresolved:invite:" + inviteId : "subscription:" + comId;
     }
 }

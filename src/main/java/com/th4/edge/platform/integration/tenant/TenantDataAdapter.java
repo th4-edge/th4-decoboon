@@ -1,5 +1,6 @@
 package com.th4.edge.platform.integration.tenant;
 
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.date.model.DateTime;
 import com.th4.edge.framework.exception.DefaultErrorCode;
@@ -227,6 +228,7 @@ public class TenantDataAdapter {
         return metrics;
     }
 
+    @DistributedLocked(key = "'subscription:' + #subId", message = "该订阅正在处理中，请稍后重试")
     @Transactional
     public PlatformSubscription updateSubscription(PlatformUser operator,
                                                    Long subId,
@@ -237,7 +239,7 @@ public class TenantDataAdapter {
                                                    Integer extraStores,
                                                    String reason) {
         subscriptionContext.initializePlans();
-        Subscription subscription = subscriptionRepository.findBySubIdForUpdate(subId);
+        Subscription subscription = subscriptionRepository.findBySubId(subId);
         if (subscription == null || subscription.getCompany() == null) {
             throw new DefinedException(new DefaultErrorCode("404", "订阅不存在"));
         }

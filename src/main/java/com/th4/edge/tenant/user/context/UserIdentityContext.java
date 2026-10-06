@@ -1,6 +1,7 @@
 package com.th4.edge.tenant.user.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.CredType;
@@ -107,9 +108,16 @@ public class UserIdentityContext {
         return credential;
     }
 
+    /**
+     * 读取并串行化指定凭证。
+     *
+     * <p>锁键 {@code credential:{creId}}（Batch 7 由行级悲观锁迁移而来）：调用方在同一事务内的
+     * 首次业务读之前调用本方法，即可保证加锁后的读取不会命中加锁前的旧快照。</p>
+     */
+    @DistributedLocked(key = "'credential:' + #userId")
     @Transactional
     public Credentials lock(Long userId) {
-        return credentialsRepository.findLockedByCreId(userId)
+        return credentialsRepository.findByCreId(userId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("401", "当前用户不存在")));
     }
 
