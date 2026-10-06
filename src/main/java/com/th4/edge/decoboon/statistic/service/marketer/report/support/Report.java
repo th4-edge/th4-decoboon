@@ -270,8 +270,15 @@ public class Report implements com.th4.edge.decoboon.statistic.service.marketer.
 
         int todo = 0;
         int overdue = 0;
+        // DEC-036：任务改为循环外一次批量取数（原为每项目 1 条）
+        List<Long> projectIds = projects.stream().map(Project::getProjectId)
+                .filter(java.util.Objects::nonNull).distinct().toList();
+        java.util.Map<Long, List<ProjectTask>> tasksByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : taskRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
         for (Project project : projects) {
-            for (ProjectTask task : taskRepository.findByProject(project)) {
+            for (ProjectTask task : tasksByProject.getOrDefault(project.getProjectId(), List.of())) {
                 if (task.getStatus() == TaskStatus.Todo || task.getStatus() == TaskStatus.Doing) {
                     todo++;
                 }
