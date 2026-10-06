@@ -169,15 +169,18 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
                 : acceptanceRepository.findByProject_ProjectIdInOrderByAcceptanceIdDesc(projectIds).stream()
                         .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
                         .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, List<ProjectReport>> reportsByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : reportRepository.findByCompany_ComIdAndProject_ProjectIdInOrderByCreateTime_DateTimeDesc(comId, projectIds)
+                        .stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
         for (Project project : projects) {
             allTasks.addAll(tasksByProject.getOrDefault(project.getProjectId(), List.of()));
             allMaterials.addAll(materialsByProject.getOrDefault(project.getProjectId(), List.of()));
             allAcceptances.addAll(acceptancesByProject
                     .getOrDefault(project.getProjectId(), List.of()).stream().limit(50).toList());
-            List<ProjectReport> projectReports = reportRepository
-                    .findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
-                            comId, project.getProjectId(), PageRequest.of(0, 30))
-                    .getContent();
+            List<ProjectReport> projectReports = reportsByProject
+                    .getOrDefault(project.getProjectId(), List.of()).stream().limit(30).toList();
             allReports.addAll(projectReports);
             report.setReportTodayCount(report.getReportTodayCount() + countReportsOn(projectReports, today));
             report.setReportWeekCount(report.getReportWeekCount() + countReportsSince(projectReports, weekStart));
