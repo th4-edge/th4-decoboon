@@ -189,6 +189,17 @@ class SummaryImplementationRulesTest {
                 .isEmpty();
     }
 
+
+    /** 全仓统计类路由基线（2026-10-07 普查，GAP-027 靶子表；新增统计路由必须同步补录）。 */
+    private java.util.Set<String> statisticRouteBaseline() throws IOException {
+        Path file = Path.of("src/test/resources/statistic-routes-baseline.txt");
+        if (!Files.exists(file)) {
+            return Set.of();
+        }
+        return Files.readAllLines(file).stream().map(String::trim)
+                .filter(line -> !line.isEmpty()).collect(java.util.stream.Collectors.toSet());
+    }
+
     /** 基于花括号配平取代码块内容。 */
     private String blockBody(String source, int braceStart) {
         if (braceStart < 0 || braceStart >= source.length()) {
@@ -207,6 +218,50 @@ class SummaryImplementationRulesTest {
             }
         }
         return null;
+    }
+
+
+    /**
+     * 覆盖守卫（按路由）：凡 Provider 路由名含统计语义
+     * （statistic / report / workbench / dashboard / summary / overview / metrics / cockpit），
+     * 该 Provider **或其委托的任一 Context** 必须登记进 {@link #SUMMARY_PACKAGES}。
+     *
+     * <p>这是"不再遗漏"的兜底：上次 material/plan/workbench 漏网，就是因为只按类名和手写包前缀列举，
+     * 新增路由/新增上下文时没人同步登记。改为按路由枚举后，任何统计类新接口都会立刻被要求纳管。</p>
+     */
+    @Test
+    void everyStatisticRouteProviderMustBeGoverned() throws IOException {
+        List<String> uncovered = new ArrayList<>();
+        try (Stream<Path> files = Files.walk(SRC)) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".java")).toList()) {
+                String source = Files.readString(file);
+                Matcher routeMatcher = Pattern.compile("@Service\\(\\s*\"([^\"]+)\"\\s*\\)").matcher(source);
+                while (routeMatcher.find()) {
+                    String route = routeMatcher.group(1);
+                    if (!route.matches("(?i).*(statistic|report|workbench|dashboard|summary|overview|metrics|cockpit).*")) {
+                        continue;
+                    }
+                    boolean governed = inScope(rel(file));
+                    if (!governed) {
+                        Matcher contextMatcher = Pattern
+                                .compile("import com\\.th4\\.edge\\.decoboon\\.[\\w.]+\\.(\\w*Context);")
+                                .matcher(source);
+                        while (contextMatcher.find()) {
+                            if (inScope(contextMatcher.group(1) + ".java")) {
+                                governed = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!governed && !statisticRouteBaseline().contains(route)) {
+                        uncovered.add(route + " → " + rel(file));
+                    }
+                }
+            }
+        }
+        assertThat(uncovered)
+                .as("统计/报表/工作台/驾驶舱类路由必须纳管（Provider 或其委托 Context 登记进 SUMMARY_PACKAGES）")
+                .isEmpty();
     }
 
     // ---------- 扫描实现 ----------
