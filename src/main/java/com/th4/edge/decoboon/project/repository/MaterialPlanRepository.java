@@ -26,6 +26,6 @@ public interface MaterialPlanRepository extends JpaRepository<MaterialPlan, Long
     List<MaterialPlan> findByProjectAndContractLine(Project project, ContractLine contractLine);
 
     /** 企业负责人增减项工作台：按项目集合批量取材料计划，预取来源变更行。 */
-    @EntityGraph(attributePaths = {"changeItem"})
+    @EntityGraph(attributePaths = {"project", "property", "contractLine", "catalogItem", "quoteItem", "packageLine", "task", "changeItem", "selection"})
     List<MaterialPlan> findByProject_ProjectIdIn(Collection<Long> projectIds);
 }

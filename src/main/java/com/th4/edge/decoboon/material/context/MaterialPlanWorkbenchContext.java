@@ -27,7 +27,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 材料计划工作台聚合。
@@ -75,15 +78,23 @@ public class MaterialPlanWorkbenchContext {
         } else {
             projects.addAll(visibleProjects(current));
         }
+        List<Long> projectIds = projects.stream()
+                .map(Project::getProjectId)
+                .filter(Objects::nonNull)
+                .toList();
+        Map<Long, List<MaterialPlan>> plansByProject = projectIds.isEmpty() ? Map.of()
+                : materialPlanRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(plan -> plan.getProject() != null && plan.getProject().getProjectId() != null)
+                        .collect(Collectors.groupingBy(plan -> plan.getProject().getProjectId()));
         return projects.stream()
-                .map(project -> summarizeProject(project, group))
+                .map(project -> summarizeProject(project, group, plansByProject.getOrDefault(project.getProjectId(), List.of())))
                 .filter(workbench -> workbench.getTotalItems() > 0)
                 .sorted(Comparator.comparing(MaterialPlanWorkbench::getProjectId,
                         Comparator.nullsLast(Comparator.reverseOrder())))
                 .toList();
     }
 
-    private MaterialPlanWorkbench summarizeProject(Project project, String group) {
+    private MaterialPlanWorkbench summarizeProject(Project project, String group, List<MaterialPlan> plans) {
         MaterialPlanWorkbench workbench = new MaterialPlanWorkbench();
         workbench.setProjectId(project.getProjectId());
         workbench.setProjectNo(project.getNo());
@@ -95,7 +106,7 @@ public class MaterialPlanWorkbenchContext {
         workbench.setManagerName(project.getManager() == null ? null : project.getManager().getName());
 
         List<MaterialPlanWorkbenchItem> items = new ArrayList<>();
-        for (MaterialPlan plan : materialPlanRepository.findByProject(project)) {
+        for (MaterialPlan plan : plans) {
             if (plan.getStatus() == MaterialPlanStatus.Closed || plan.getStatus() == MaterialPlanStatus.Cancelled) {
                 continue;
             }

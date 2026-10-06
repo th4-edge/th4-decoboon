@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.repository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Collection;
@@ -24,6 +25,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
 
     List<Project> findByCompany_ComIdAndCustomer_CustIdIn(Long comId, Collection<Long> custIds);
 
+    @EntityGraph(attributePaths = {"customer", "property", "store", "manager", "designer", "support", "team", "quote"})
     List<Project> findByCompany_ComIdOrderByProjectIdDesc(Long comId);
 
     long countByCompany_ComId(Long comId);

@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.finance.repository;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface PayableRepository extends JpaRepository<Payable, Long>,
 
     List<Payable> findByCompany_ComIdAndProject_ProjectIdOrderByDueDateAsc(Long comId, Long projectId);
 
+    @EntityGraph(attributePaths = {"project", "property", "store", "owner", "team", "payeeEmployee", "payeePartner"})
     List<Payable> findByCompany_ComIdOrderByDueDateAsc(Long comId);
 
     List<Payable> findByCompany_ComIdAndPayeePartner_PartnerIdOrderByDueDateAsc(Long comId, Long partnerId);

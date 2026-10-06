@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.repository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Collection;
@@ -29,6 +30,7 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
 
     boolean existsByProperty_PropertyId(Long propertyId);
 
+    @EntityGraph(attributePaths = {"project", "customer", "property", "store", "owner", "quote"})
     List<ProjectContract> findByCompany_ComIdOrderByContractIdDesc(Long comId);
 
     long countByCompany_ComId(Long comId);
