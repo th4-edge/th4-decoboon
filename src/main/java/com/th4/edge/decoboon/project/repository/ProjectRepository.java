@@ -25,7 +25,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
 
     List<Project> findByCompany_ComIdAndCustomer_CustIdIn(Long comId, Collection<Long> custIds);
 
-    @EntityGraph(attributePaths = {"contract", "customer", "property", "store", "manager", "designer", "support", "team", "quote"})
+    @EntityGraph(attributePaths = {"customer", "property", "store", "manager", "designer", "support", "team", "quote"})
     List<Project> findByCompany_ComIdOrderByProjectIdDesc(Long comId);
 
     long countByCompany_ComId(Long comId);

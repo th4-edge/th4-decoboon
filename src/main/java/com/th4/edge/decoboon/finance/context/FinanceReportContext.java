@@ -278,51 +278,7 @@ public class FinanceReportContext {
                                 Comparator.nullsLast(Comparator.naturalOrder()))
                         .reversed())
                 .limit(8).toList());
-        prefetchDisplayAssociations(current, summary, receivables);
         return summary;
-    }
-
-    /**
-     * 预取列表展示实体的关联，避免响应序列化阶段逐条懒加载。
-     *
-     * <p>响应里的 urgent/overdue/dueSoon 应收、urgent 应付与 recent 流水最多 32 个实体，原先
-     * 每个实体的 project / property / customer / payeeEmployee / category 等关联在序列化时各自触发一次
-     * 懒加载查询；同一持久化上下文中按 id 带 fetch graph 重取会初始化已托管实体的代理，
-     * 因此这里只做预取，不改变返回对象、顺序与金额口径。</p>
-     */
-    private void prefetchDisplayAssociations(Employee current, FinanceSummary summary,
-                                            List<Receivable> receivables) {
-        Long comId = current.getCompany() == null ? null : current.getCompany().getComId();
-        if (comId == null) {
-            return;
-        }
-        // 汇总计算与响应都会触达应收的 planNode（付款节点）；按 id 批量重取一次即可覆盖全部，
-        // 否则该关联会逐条懒加载（生产实测 33 次，是 finance/summary/report 的头号开销）。
-        Set<Long> receivableIds = Stream.of(receivables)
-                .filter(Objects::nonNull)
-                .flatMap(Collection::stream)
-                .map(Receivable::getReceivableId)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
-        if (!receivableIds.isEmpty()) {
-            receivableRepository.findByCompany_ComIdAndReceivableIdIn(comId, receivableIds);
-        }
-        Set<Long> payableIds = summary.getUrgentPayables() == null ? Set.of()
-                : summary.getUrgentPayables().stream()
-                        .map(Payable::getPayableId)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toSet());
-        if (!payableIds.isEmpty()) {
-            payableRepository.findByCompany_ComIdAndPayableIdIn(comId, payableIds);
-        }
-        Set<Long> ledgerIds = summary.getRecentLedgers() == null ? Set.of()
-                : summary.getRecentLedgers().stream()
-                        .map(Ledger::getLedgerId)
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toSet());
-        if (!ledgerIds.isEmpty()) {
-            ledgerRepository.findByCompany_ComIdAndLedgerIdIn(comId, ledgerIds);
-        }
     }
 
     public List<FinanceProjectReport> projectReports(Employee principal) {
