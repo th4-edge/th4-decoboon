@@ -116,6 +116,8 @@ lane、完整 worklog、shared 和 rules 大段只在事故、大功能、权限
 
 涉及关联的测试必须显式 `open-in-view=false` 且不加 `@Transactional`。详见 `rules.md` §4.5 与错误集 `ECD-*`。
 
+**API 高效 SQL 与并发锁（强制）**：th4-framework 通用 API 低效时允许直接使用更高效 SQL（须保留租户/数据权限、参数绑定与金额口径）；业务并发禁止数据库锁（`@Lock(PESSIMISTIC_*)`、`FOR UPDATE`、表锁/间隙锁），统一使用 `RedissonLock` 分布式锁；详见 `rules.md` §0.3 与 `DEC-029`/`BR-027`。
+
 ## 序列化控制
 
 具体 Provider 用 `@Properties` 按 `page/list/info/save/update` 裁剪响应，通用 `{model}-{service}` 路由才用 `@ServiceProperties`（只管返回，不管权限）。

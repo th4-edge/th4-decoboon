@@ -110,11 +110,43 @@ th4 是一套区别于传统 MVC 的**领域模型驱动设计**架构，任何�
 - 跨企业范围校验必须集中在 `PlatformAccessContext`，禁止散落推断。
 - 平台组织、部门、用户、审计表不得引用租户 `Company/Employee/Credentials`。
 - 租户数据必须通过 `TenantDataAdapter` 转为平台标量快照，平台实体不得持有租户实体。
-- 人工订阅调整必须使用悲观锁、服务端校验套餐/状态/有效期，并写入 `PlatformOperationLog`。
+- 人工订阅调整必须使用 Redisson 分布式锁、服务端校验套餐/状态/有效期，并写入 `PlatformOperationLog`；禁止数据库悲观锁。
 - 平台查询不得返回员工凭证、密码、密钥、连接串和客户隐私正文。
 - 平台域只读接口不得替租户业务绕过数据权限；租户侧 `Company/Store/Team/Self` 规则保持不变。
 
 ---
+
+### 0.3 API效率例外与并发锁规范（强制，2026-10-07 新增）
+
+**API效率例外**
+
+- th4-framework 支持的 JPA/Specification/Provider 通用 API 是默认实现，**不是性能上限**。
+- 当默认 API 产生 N+1、全表扫描、响应超预算时，允许并鼓励直接使用更高效 SQL：
+  `@Query`、nativeQuery、JDBC、批量 `IN`、投影、聚合、`@EntityGraph` / `JOIN FETCH`。
+- 自定义 SQL 必须保留租户与数据权限（`com_id` / Store / Team / Self）、参数绑定（禁止拼接 SQL）、金额/成本口径与测试证据；
+  不得为了性能简化金额语义或绕过数据权限。
+
+**业务并发锁（禁止数据库锁）**
+
+- 业务并发必须使用框架/组件提供的 Redisson 分布式锁：
+  `com.th4.edge.components.lock.RedissonLock.tryLock(name, waitMillis, leaseMillis)`。
+- 锁 key 必须包含租户与业务对象，例如 `th4:lock:{comId}:{business}:{id}:{action}`；
+  必须设置等待时间、租约时间、失败处理与幂等；`unlock` 必须放在 `finally`。
+- **禁止**使用数据库锁实现业务并发：`@Lock(LockModeType.PESSIMISTIC_*)`、`SELECT ... FOR UPDATE`、
+  `LOCK IN SHARE MODE`、表锁、间隙锁；只读事务不得加锁（沿用 ECD-012）。
+- JVM 本地锁只能保护单进程状态，不能替代分布式锁。
+- `@Version` 乐观锁、数据库唯一约束仅用于防重复插入/并发更新，不得退化为数据库悲观锁。
+- 存量 12 个含 `@Lock(PESSIMISTIC_*)` 的仓储文件必须登记迁移；新增/修改不得再引入数据库悲观锁。
+- DDL、迁移、数据修复确需数据库级锁时，必须 DBA 批准、备份、限时、可回滚，且不作为业务并发手段。
+
+**验收与检测**
+
+- 评审必须扫描：`@Lock`、`PESSIMISTIC`、`FOR UPDATE`、`LOCK IN SHARE MODE`；
+- 新增业务并发必须提供分布式锁 key / wait / lease / 失败处理 / 幂等 / 解锁证据；
+- API 性能按 `DEC-027` / `BR-025` / `MET-008` 审核 P95/P99 与 SQL 条数；
+- 由 `zhuangdeqing-performance-audit` 独立复核。
+
+业务事实源：`DEC-029`、`BR-027`。
 
 ## 1. 架构定位：与传统 MVC 的本质差异
 
