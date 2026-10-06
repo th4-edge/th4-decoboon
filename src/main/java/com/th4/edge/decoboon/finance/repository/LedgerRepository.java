@@ -20,7 +20,7 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long>,
     List<Ledger> findByCompany_ComIdAndProject_ProjectIdIn(Long comId, java.util.Collection<Long> projectIds);
 
     /** 财务汇总展示：按 id 批量重取，预取响应实际使用的关联，避免序列化期逐条懒加载。 */
-    @EntityGraph(attributePaths = {"project", "project.property", "project.customer", "category", "categoryNode"})
+    @EntityGraph(attributePaths = {"project", "project.contract", "project.property", "project.customer", "category", "categoryNode", "owner"})
     List<Ledger> findByCompany_ComIdAndLedgerIdIn(Long comId, java.util.Collection<Long> ledgerIds);
 
     java.util.Optional<Ledger> findByCompany_ComIdAndLedgerId(Long comId, Long ledgerId);

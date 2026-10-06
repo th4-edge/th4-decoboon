@@ -13,7 +13,6 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableType;
 import com.th4.edge.decoboon.plan.configure.PaymentTriggerType;
-import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectStage;
@@ -111,10 +110,6 @@ public class Receivable extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "trigger_type", length = 24)
     private PaymentTriggerType triggerType;
-
-    @Note("来源付款节点快照")
-    @OneToOne(mappedBy = "receivable", fetch = FetchType.LAZY)
-    private ContractPaymentNode planNode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id", nullable = false)
@@ -226,6 +221,4 @@ public Long getReceivableId() { return receivableId; }
     public void setStageCode(String stageCode) { this.stageCode = stageCode; }
     public PaymentTriggerType getTriggerType() { return triggerType; }
     public void setTriggerType(PaymentTriggerType triggerType) { this.triggerType = triggerType; }
-    public ContractPaymentNode getPlanNode() { return planNode; }
-    public void setPlanNode(ContractPaymentNode planNode) { this.planNode = planNode; }
 }

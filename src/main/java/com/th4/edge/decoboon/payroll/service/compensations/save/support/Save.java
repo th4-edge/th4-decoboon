@@ -23,7 +23,7 @@ import java.time.LocalDate;
 /** 新增员工薪酬方案。 */
 @Note("薪酬方案新增")
 @Properties(allow = @AllowProperties(model = CompensationScheme.class,
-        properties = {"schemeId", "employee", "baseSalary", "effectiveFrom", "effectiveTo", "status", "remark", "createTime"}))
+        properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status", "remark", "createTime"}))
 @Service("payroll/compensation/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.payroll.service.compensations.save.Save {
@@ -32,6 +32,7 @@ public class Save implements com.th4.edge.decoboon.payroll.service.compensations
     private Employee employee;
     @AutoInject @NotNull private Long empId;
     @AutoInject @NotNull private BigDecimal baseSalary;
+    @AutoInject @NotNull private Integer scheduledDays;
     @AutoInject @NotNull private LocalDate effectiveFrom;
     @AutoInject private LocalDate effectiveTo;
     @AutoInject private String remark;
@@ -51,10 +52,19 @@ public class Save implements com.th4.edge.decoboon.payroll.service.compensations
         Employee target = accessContext.resolveEmployee(current, empId);
         accessContext.applyOwnership(request, current, target);
         request.setBaseSalary(baseSalary);
+        request.setScheduledDays(validScheduledDays(scheduledDays));
         request.setEffectiveFrom(effectiveFrom);
         request.setEffectiveTo(effectiveTo);
         request.setStatus(CompensationStatus.Active);
         request.setRemark(remark);
         return repository.save(request);
+    }
+
+    private int validScheduledDays(Integer value) {
+        if (value == null || value <= 0 || value > 31) {
+            throw new com.th4.edge.framework.exception.DefinedException(
+                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "月应出勤天数必须为 1 至 31 天"));
+        }
+        return value;
     }
 }

@@ -40,6 +40,7 @@ public class ContractWorkbenchContext {
 
     private final ProjectContractContext contractContext;
     private final ReceivableRepository receivableRepository;
+    private final com.th4.edge.decoboon.plan.repository.ContractPaymentNodeRepository paymentNodeRepository;
     private final ProjectCostContext costContext;
     private final ProjectStageRepository stageRepository;
     private final ContractChangeRepository changeRepository;
@@ -48,7 +49,8 @@ public class ContractWorkbenchContext {
     @org.springframework.beans.factory.annotation.Autowired(required = false)
     private com.th4.edge.decoboon.finance.context.ManualLedgerContext manualLedgerContext;
 
-    public ContractWorkbenchContext(ProjectContractContext contractContext,
+    public ContractWorkbenchContext(com.th4.edge.decoboon.plan.repository.ContractPaymentNodeRepository paymentNodeRepository,
+                                    ProjectContractContext contractContext,
                                     ReceivableRepository receivableRepository,
                                     ProjectCostContext costContext,
                                     ProjectStageRepository stageRepository,
@@ -56,6 +58,7 @@ public class ContractWorkbenchContext {
                                     MaterialSelectionRepository selectionRepository) {
         this.contractContext = contractContext;
         this.receivableRepository = receivableRepository;
+        this.paymentNodeRepository = paymentNodeRepository;
         this.costContext = costContext;
         this.stageRepository = stageRepository;
         this.changeRepository = changeRepository;
@@ -119,11 +122,18 @@ public class ContractWorkbenchContext {
         if (plan == null || plan.getNodes() == null) {
             return List.of();
         }
+        // 按应收集合一次取回付款节点（替代原 Receivable 反向 OneToOne 的逐条懒加载，后者每条应收都会打一次库）。
         Map<Long, Receivable> byNode = new HashMap<>();
-        for (Receivable receivable : receivables) {
-            ContractPaymentNode node = receivable.getPlanNode();
-            if (node != null && node.getNodeId() != null) {
-                byNode.putIfAbsent(node.getNodeId(), receivable);
+        List<Long> receivableIds = receivables.stream()
+                .map(Receivable::getReceivableId)
+                .filter(java.util.Objects::nonNull)
+                .distinct()
+                .toList();
+        if (!receivableIds.isEmpty()) {
+            for (ContractPaymentNode node : paymentNodeRepository.findByReceivable_ReceivableIdIn(receivableIds)) {
+                if (node != null && node.getNodeId() != null && node.getReceivable() != null) {
+                    byNode.putIfAbsent(node.getNodeId(), node.getReceivable());
+                }
             }
         }
         List<ContractWorkbench.PaymentNode> nodes = new ArrayList<>();

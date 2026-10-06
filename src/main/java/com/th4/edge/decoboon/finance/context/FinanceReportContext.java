@@ -278,7 +278,7 @@ public class FinanceReportContext {
                                 Comparator.nullsLast(Comparator.naturalOrder()))
                         .reversed())
                 .limit(8).toList());
-        prefetchDisplayAssociations(current, summary);
+        prefetchDisplayAssociations(current, summary, receivables);
         return summary;
     }
 
@@ -290,13 +290,15 @@ public class FinanceReportContext {
      * 懒加载查询；同一持久化上下文中按 id 带 fetch graph 重取会初始化已托管实体的代理，
      * 因此这里只做预取，不改变返回对象、顺序与金额口径。</p>
      */
-    private void prefetchDisplayAssociations(Employee current, FinanceSummary summary) {
+    private void prefetchDisplayAssociations(Employee current, FinanceSummary summary,
+                                            List<Receivable> receivables) {
         Long comId = current.getCompany() == null ? null : current.getCompany().getComId();
         if (comId == null) {
             return;
         }
-        Set<Long> receivableIds = Stream.of(summary.getUrgentReceivables(),
-                        summary.getOverdueReceivables(), summary.getDueSoonReceivables())
+        // 汇总计算与响应都会触达应收的 planNode（付款节点）；按 id 批量重取一次即可覆盖全部，
+        // 否则该关联会逐条懒加载（生产实测 33 次，是 finance/summary/report 的头号开销）。
+        Set<Long> receivableIds = Stream.of(receivables)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .map(Receivable::getReceivableId)

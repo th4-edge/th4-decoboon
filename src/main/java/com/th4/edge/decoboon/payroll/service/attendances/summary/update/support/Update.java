@@ -29,7 +29,6 @@ import java.time.LocalDateTime;
 public class Update implements com.th4.edge.decoboon.payroll.service.attendances.summary.update.Update {
     @User private Employee employee;
     @AutoInject @NotNull private Long summaryId;
-    @AutoInject private Integer scheduledDays;
     @AutoInject private Integer normalDays;
     @AutoInject private Integer personalLeaveDays;
     @AutoInject private Integer sickLeaveDays;
@@ -56,7 +55,6 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
                 || !summary.getStore().getStoreId().equals(current.getStore().getStoreId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "考勤不存在或无权访问"));
         }
-        if (scheduledDays != null) summary.setScheduledDays(scheduledDays);
         if (normalDays != null) summary.setNormalDays(normalDays);
         if (personalLeaveDays != null) summary.setPersonalLeaveDays(personalLeaveDays);
         if (sickLeaveDays != null) summary.setSickLeaveDays(sickLeaveDays);

@@ -25,7 +25,7 @@ public interface PayableRepository extends JpaRepository<Payable, Long>,
     java.util.Optional<Payable> findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(Long comId, Long purchaseOrderId);
 
     /** 财务汇总展示：按 id 批量重取，预取响应实际使用的关联，避免序列化期逐条懒加载。 */
-    @EntityGraph(attributePaths = {"project", "project.property", "project.customer", "property", "payeeEmployee"})
+    @EntityGraph(attributePaths = {"project", "project.contract", "project.property", "project.customer", "property", "payeeEmployee"})
     List<Payable> findByCompany_ComIdAndPayableIdIn(Long comId, java.util.Collection<Long> payableIds);
 
     List<Payable> findByPurchaseOrder_PurchaseId(Long purchaseOrderId);

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Note("薪酬方案详情")
 @Properties(allow = @AllowProperties(model = CompensationScheme.class,
-        properties = {"schemeId", "employee", "baseSalary", "effectiveFrom", "effectiveTo", "status", "remark", "createdBy", "createTime"}))
+        properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status", "remark", "createdBy", "createTime"}))
 @Service("payroll/compensation/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Info implements com.th4.edge.decoboon.payroll.service.compensations.info.Info {
