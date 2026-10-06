@@ -55,7 +55,6 @@ class SummaryImplementationRulesTest {
     private static final java.util.Map<String, Set<String>> LEGACY_BASELINE = java.util.Map.ofEntries(
             java.util.Map.entry("project/context/ProjectCostContext.java", Set.of("A2")),
             java.util.Map.entry("statistic/service/teamleader/report/support/Report.java", Set.of("A2")),
-            java.util.Map.entry("statistic/service/store/report/support/Report.java", Set.of("A2")),
             java.util.Map.entry("statistic/context/RiskCenterContext.java", Set.of("A7")),
             java.util.Map.entry("statistic/context/OrganizationContext.java", Set.of("A7")),
             java.util.Map.entry("carryover/context/CarryoverReconciliationContext.java", Set.of("A7")),

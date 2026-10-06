@@ -159,8 +159,21 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         int todo = 0;
         int overdue = 0;
         int reportCount = 0;
+        // DEC-036：循环外一次批量取数（原为每项目「任务 + 日报计数」两条）
+        List<Long> projectIds = projects.stream().map(Project::getProjectId)
+                .filter(java.util.Objects::nonNull).distinct().toList();
+        java.util.Map<Long, List<ProjectTask>> tasksByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : taskRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, Integer> reportCountByProject = new java.util.HashMap<>();
+        if (!projectIds.isEmpty()) {
+            for (Object[] row : projectReportRepository.countGroupByProject(current.getCompany().getComId(), projectIds)) {
+                reportCountByProject.put((Long) row[0], ((Number) row[1]).intValue());
+            }
+        }
         for (Project project : projects) {
-            for (ProjectTask task : taskRepository.findByProject(project)) {
+            for (ProjectTask task : tasksByProject.getOrDefault(project.getProjectId(), List.of())) {
                 if (task.getStatus() == TaskStatus.Todo || task.getStatus() == TaskStatus.Doing) {
                     todo++;
                 }
@@ -171,7 +184,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
                     overdue++;
                 }
             }
-            reportCount += projectReportRepository.countByProject_ProjectId(project.getProjectId());
+            reportCount += reportCountByProject.getOrDefault(project.getProjectId(), 0);
         }
         report.setTaskTodoCount(todo);
         report.setTaskOverdueCount(overdue);
@@ -249,8 +262,22 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         int todo = 0;
         int overdue = 0;
         int reports = 0;
+        // DEC-036：同上，设计师维度也改循环外批量
+        List<Long> designerProjectIds = designerProjects.stream().map(Project::getProjectId)
+                .filter(java.util.Objects::nonNull).distinct().toList();
+        java.util.Map<Long, List<ProjectTask>> tasksByDesignerProject = designerProjectIds.isEmpty() ? java.util.Map.of()
+                : taskRepository.findByProject_ProjectIdIn(designerProjectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, Integer> reportCountByDesignerProject = new java.util.HashMap<>();
+        if (!designerProjectIds.isEmpty()) {
+            for (Object[] row : projectReportRepository.countGroupByProject(
+                    designer.getCompany().getComId(), designerProjectIds)) {
+                reportCountByDesignerProject.put((Long) row[0], ((Number) row[1]).intValue());
+            }
+        }
         for (Project project : designerProjects) {
-            for (ProjectTask task : taskRepository.findByProject(project)) {
+            for (ProjectTask task : tasksByDesignerProject.getOrDefault(project.getProjectId(), List.of())) {
                 if (task.getStatus() == TaskStatus.Todo || task.getStatus() == TaskStatus.Doing) {
                     todo++;
                 }
@@ -261,7 +288,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
                     overdue++;
                 }
             }
-            reports += projectReportRepository.countByProject_ProjectId(project.getProjectId());
+            reports += reportCountByDesignerProject.getOrDefault(project.getProjectId(), 0);
         }
         performance.setTaskTodoCount(todo);
         performance.setTaskOverdueCount(overdue);
