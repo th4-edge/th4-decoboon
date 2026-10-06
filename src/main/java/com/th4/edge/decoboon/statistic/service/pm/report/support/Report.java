@@ -161,9 +161,13 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
                 : taskRepository.findByProject_ProjectIdIn(projectIds).stream()
                         .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
                         .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, List<MaterialPlan>> materialsByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : materialPlanRepository.findByProject_ProjectIdIn(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
         for (Project project : projects) {
             allTasks.addAll(tasksByProject.getOrDefault(project.getProjectId(), List.of()));
-            allMaterials.addAll(materialPlanRepository.findByProject(project));
+            allMaterials.addAll(materialsByProject.getOrDefault(project.getProjectId(), List.of()));
             allAcceptances.addAll(acceptanceRepository
                     .findByProject_ProjectIdOrderByAcceptanceIdDesc(project.getProjectId(), PageRequest.of(0, 50))
                     .getContent());
