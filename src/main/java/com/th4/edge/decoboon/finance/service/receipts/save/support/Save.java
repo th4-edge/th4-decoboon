@@ -7,6 +7,7 @@ import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
+import com.th4.edge.decoboon.finance.context.FinanceIdempotencyContext;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
@@ -24,15 +25,13 @@ import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.util.HexFormat;
+import java.util.Objects;
 import java.util.Optional;
 
 /** 收款创建实现，收款与应收核销在同一事务内完成，并按幂等键防重。 */
@@ -81,16 +80,19 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
     private final ReceiptRepository receiptRepository;
     private final ReceivableRepository receivableRepository;
     private final FinanceAccessContext accessContext;
+    private final FinanceIdempotencyContext idempotencyContext;
     private final CarryoverLockContext carryoverLockContext;
 
 
     public Save(ReceiptRepository receiptRepository,
                 ReceivableRepository receivableRepository,
                 FinanceAccessContext accessContext,
+                FinanceIdempotencyContext idempotencyContext,
                 CarryoverLockContext carryoverLockContext) {
         this.receiptRepository = receiptRepository;
         this.receivableRepository = receivableRepository;
         this.accessContext = accessContext;
+        this.idempotencyContext = idempotencyContext;
         this.carryoverLockContext = carryoverLockContext;
     }
 
@@ -113,16 +115,24 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
         // 幂等键不替代金额、应收余额、企业/项目归属和权限校验，只用于同企业内业务事实去重。
         // 但重复提交必须先命中幂等分支：余额校验放在其后，否则同一笔收款的网络重试会在
         // 核销完成后被「收款金额不能超过应收余额」拦截，永远拿不到原收款记录（DEF-PROJ37-002）。
-        String key = idempotencyKey(project, receivable, paid, targetAccount, receivedAt, targetPayer);
+        String fingerprintBase = receiptFingerprintBase(project, receivable, paid, targetAccount, receivedAt, targetPayer);
+        String fingerprint = idempotencyContext.fingerprint(fingerprintBase);
+        // 有客户端键时以原始意图 ID 建唯一约束；旧客户端没有键，沿用历史确定性业务键。
+        String key = idempotencyContext.clientKeyOr(idempotencyKey,
+                idempotencyContext.sha256(fingerprintBase + "|"));
         Optional<Receipt> existing = receiptRepository
                 .findByCompany_ComIdAndIdempotencyKey(current.getCompany().getComId(), key);
         if (existing.isPresent()) {
             Receipt found = existing.get();
-            if (sameBusiness(found, project, receivable, paid, targetAccount, receivedAt, targetPayer)) {
+            boolean sameFingerprint = found.getIdempotencyFingerprint() != null
+                    && found.getIdempotencyFingerprint().equals(fingerprint);
+            boolean legacySameBusiness = found.getIdempotencyFingerprint() == null
+                    && sameBusiness(found, project, receivable, paid, targetAccount, receivedAt, targetPayer);
+            if (sameFingerprint || legacySameBusiness) {
                 // 重复提交返回原收款记录，不再新增收款、核销和资金台账。
                 return found;
             }
-            throw new DefinedException(new DefaultErrorCode("409", "该幂等键已被其他收款占用，请勿复用"));
+            throw idempotencyContext.conflict();
         }
         // 非重复提交才校验应收余额，保证超额收款仍被阻断。
         BigDecimal outstanding = accessContext.outstanding(receivable.getAmount(), receivable.getReceivedAmount());
@@ -140,9 +150,19 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
         request.setVoucherUrl(voucherUrl);
         request.setRemark(remark);
         request.setIdempotencyKey(key);
+        request.setIdempotencyFingerprint(fingerprint);
         request.setCreatedBy(current);
         accessContext.applyOwnership(request, current, project);
-        Receipt saved = receiptRepository.save(request);
+        Receipt saved;
+        try {
+            // 先 flush 触发数据库唯一约束，再更新应收和台账；并发输家不会产生第二套副作用。
+            saved = receiptRepository.saveAndFlush(request);
+        } catch (DataIntegrityViolationException exception) {
+            if (idempotencyContext.isDuplicateKey(exception)) {
+                throw idempotencyContext.conflict();
+            }
+            throw exception;
+        }
 
         receivable.setReceivedAmount(accessContext.value(receivable.getReceivedAmount()).add(paid));
         accessContext.refreshReceivableStatus(receivable);
@@ -155,19 +175,17 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
         return saved;
     }
 
-    /** 企业内唯一的幂等键：客户端键 + 项目/应收/金额/账户/业务日期/付款人业务指纹。 */
-    private String idempotencyKey(Project project, Receivable receivable, BigDecimal amount,
-                                  FundAccount account, LocalDate receivedAt, String payerName) {
-        String client = idempotencyKey == null ? "" : idempotencyKey.trim();
-        String base = String.join("|",
+    /** 收款业务指纹：项目/应收/金额/账户/业务日期/付款人。 */
+    private String receiptFingerprintBase(Project project, Receivable receivable, BigDecimal amount,
+                                          FundAccount account, LocalDate receivedAt, String payerName) {
+        return String.join("|",
+                "RECEIPT",
                 String.valueOf(project.getProjectId()),
                 String.valueOf(receivable.getReceivableId()),
-                amount.stripTrailingZeros().toPlainString(),
+                idempotencyContext.amount(amount),
                 account.name(),
                 receivedAt == null ? "" : receivedAt.toString(),
-                payerName,
-                client);
-        return sha256(base);
+                idempotencyContext.text(payerName));
     }
 
     private boolean sameBusiness(Receipt found, Project project, Receivable receivable, BigDecimal amount,
@@ -179,15 +197,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.receipts.save
                 && found.getAmount() != null && found.getAmount().compareTo(amount) == 0
                 && found.getAccount() == account
                 && receivedAt != null && receivedAt.equals(found.getReceivedAt())
-                && payerName.equals(found.getPayerName());
+                && Objects.equals(payerName, found.getPayerName());
     }
 
-    private String sha256(String value) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return HexFormat.of().formatHex(digest.digest(value.getBytes(StandardCharsets.UTF_8)));
-        } catch (NoSuchAlgorithmException exception) {
-            throw new IllegalStateException("SHA-256 不可用", exception);
-        }
-    }
 }

@@ -5,6 +5,7 @@ import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 /** 付款仓储。 */
 public interface PaymentRepository extends JpaRepository<Payment, Long>,
@@ -15,4 +16,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long>,
     List<Payment> findByCompany_ComIdOrderByPaidAtDesc(Long comId);
 
     List<Payment> findTop200ByCompany_ComIdOrderByPaidAtDesc(Long comId);
+
+    Optional<Payment> findByCompany_ComIdAndIdempotencyKey(Long comId, String idempotencyKey);
 }

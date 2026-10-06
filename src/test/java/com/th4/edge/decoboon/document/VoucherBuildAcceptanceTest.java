@@ -3,11 +3,24 @@ package com.th4.edge.decoboon.document;
 import com.th4.edge.decoboon.document.context.VoucherContext;
 import com.th4.edge.decoboon.document.model.VoucherRecord;
 import com.th4.edge.decoboon.document.repository.VoucherRecordRepository;
+import com.th4.edge.decoboon.document.repository.VoucherRevisionRepository;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
+import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.model.Ledger;
+import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.Payment;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
+import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.finance.repository.PaymentRepository;
+import com.th4.edge.decoboon.labor.model.Worker;
+import com.th4.edge.decoboon.property.configure.PropertyStatus;
+import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.property.repository.PropertyRepository;
+import com.th4.edge.decoboon.labor.repository.WorkerRepository;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.configure.Size;
@@ -58,7 +71,14 @@ class VoucherBuildAcceptanceTest {
     @Autowired private StoreRepository storeRepository;
     @Autowired private EmployeeRepository employeeRepository;
     @Autowired private LedgerRepository ledgerRepository;
+    @Autowired private PayableRepository payableRepository;
+    @Autowired private PaymentRepository paymentRepository;
+    @Autowired private CustomerRepository customerRepository;
+    @Autowired private PropertyRepository propertyRepository;
+    @Autowired private WorkerRepository workerRepository;
     @Autowired private VoucherRecordRepository voucherRecordRepository;
+    @Autowired private VoucherRevisionRepository voucherRevisionRepository;
+    @Autowired private org.springframework.beans.factory.ObjectProvider<com.th4.edge.decoboon.finance.service.payments.update.support.Update> paymentWorkerUpdateProvider;
     @Autowired private VoucherContext voucherContext;
     @Autowired private com.th4.edge.decoboon.document.service.voucher.page.Page voucherPage;
 
@@ -143,6 +163,139 @@ class VoucherBuildAcceptanceTest {
 
         assertThatThrownBy(() -> voucherContext.build(boss, List.of(zero.getLedgerId())))
                 .hasMessageContaining("凭证金额不能为 0");
+    }
+
+    @Test
+    void shouldRebuildPaymentVoucherAfterWorkerBackfillWithoutChangingFinancialFacts() {
+        Employee boss = boss();
+        Payable payable = salaryPayable(boss);
+        Payment payment = payment(boss, payable, null);
+        Ledger ledger = paymentLedger(boss, payment, payable.getAmount());
+
+        VoucherRecord before = voucherContext.build(boss, List.of(ledger.getLedgerId()));
+        assertThat(before.getWorker()).isNull();
+        String voucherNo = before.getVoucherNo();
+        String path = before.getPath();
+        String sha = before.getSha256();
+        BigDecimal paymentAmount = payment.getAmount();
+        LocalDate paidAt = payment.getPaidAt();
+        FundAccount account = payment.getAccount();
+        BigDecimal payablePaid = payable.getPaidAmount();
+
+        Worker worker = worker(boss);
+        com.th4.edge.decoboon.finance.service.payments.update.support.Update provider =
+                AopTestUtils.getTargetObject(paymentWorkerUpdateProvider.getObject());
+        ReflectionTestUtils.setField(provider, "employee", boss);
+        ReflectionTestUtils.setField(provider, "paymentId", payment.getPaymentId());
+        ReflectionTestUtils.setField(provider, "workerId", worker.getWorkerId());
+        Payment updatedPayment = provider.call(new Payment());
+        VoucherRecord after = voucherRecordRepository.findById(before.getVoucherId()).orElseThrow();
+
+        assertThat(updatedPayment.getWorker().getWorkerId()).isEqualTo(worker.getWorkerId());
+        assertThat(after).isNotNull();
+        assertThat(after.getVoucherId()).isEqualTo(before.getVoucherId());
+        assertThat(after.getVoucherNo()).isEqualTo(voucherNo);
+        assertThat(after.getPath()).isEqualTo(path);
+        assertThat(after.getWorker().getWorkerId()).isEqualTo(worker.getWorkerId());
+        assertThat(after.getPartyName()).isEqualTo(worker.getName());
+        assertThat(after.getSha256()).isNotEqualTo(sha);
+        assertThat(after.getTotalAmount()).isEqualByComparingTo(paymentAmount);
+        assertThat(voucherRevisionRepository.findByCompany_ComIdAndVoucher_VoucherIdOrderByRevisionIdDesc(
+                boss.getCompany().getComId(), before.getVoucherId())).singleElement().satisfies(revision -> {
+            assertThat(revision.getBeforeWorker()).isNull();
+            assertThat(revision.getAfterWorker().getWorkerId()).isEqualTo(worker.getWorkerId());
+            assertThat(revision.getOperator().getEmpId()).isEqualTo(boss.getEmpId());
+            assertThat(revision.getChangeType()).isEqualTo("WorkerBackfill");
+            assertThat(revision.getChangedAt()).isNotNull();
+        });
+        assertThat(payment.getAmount()).isEqualByComparingTo(paymentAmount);
+        assertThat(payment.getPaidAt()).isEqualTo(paidAt);
+        assertThat(payment.getAccount()).isEqualTo(account);
+        assertThat(payable.getPaidAmount()).isEqualByComparingTo(payablePaid);
+        assertThat(ledgerRepository.findById(ledger.getLedgerId()).orElseThrow().getAmount())
+                .isEqualByComparingTo(paymentAmount);
+    }
+
+    private Payable salaryPayable(Employee owner) {
+        long seq = System.nanoTime();
+        Customer customer = new Customer();
+        customer.setCompany(owner.getCompany());
+        customer.setStore(owner.getStore());
+        customer.setOwner(owner);
+        customer.setName("凭证测试客户");
+        customer.setTelNo("18" + String.format("%09d", Math.abs(seq % 1_000_000_000L)));
+        customer = customerRepository.save(customer);
+
+        Property property = new Property();
+        property.setCompany(owner.getCompany());
+        property.setStore(owner.getStore());
+        property.setOwner(owner);
+        property.setCustomer(customer);
+        property.setPropertyNo("PROP-" + seq);
+        property.setAddress("凭证测试小区 1 栋 101");
+        property.setArea(new BigDecimal("100"));
+        property.setStatus(PropertyStatus.Serving);
+        property = propertyRepository.save(property);
+
+        Payable payable = new Payable();
+        payable.setCompany(owner.getCompany());
+        payable.setStore(owner.getStore());
+        payable.setOwner(owner);
+        payable.setProject(null);
+        payable.setProperty(property);
+        payable.setCreatedBy(owner);
+        payable.setName("工资补录凭证测试");
+        payable.setType(PayableType.Salary);
+        payable.setPayeeName("张师傅");
+        payable.setAmount(new BigDecimal("600.00"));
+        payable.setPaidAmount(new BigDecimal("600.00"));
+        payable.setDueDate(LocalDate.now());
+        return payableRepository.save(payable);
+    }
+
+    private Payment payment(Employee owner, Payable payable, Worker worker) {
+        Payment payment = new Payment();
+        payment.setCompany(owner.getCompany());
+        payment.setStore(owner.getStore());
+        payment.setOwner(owner);
+        payment.setCreatedBy(owner);
+        payment.setPayable(payable);
+        payment.setWorker(worker);
+        payment.setPayeeName("张师傅");
+        payment.setAmount(new BigDecimal("600.00"));
+        payment.setAccount(FundAccount.CompanyBank);
+        payment.setPaidAt(LocalDate.now());
+        return paymentRepository.save(payment);
+    }
+
+    private Ledger paymentLedger(Employee owner, Payment payment, BigDecimal amount) {
+        Ledger ledger = new Ledger();
+        ledger.setCompany(owner.getCompany());
+        ledger.setStore(owner.getStore());
+        ledger.setOwner(owner);
+        ledger.setCreatedBy(owner);
+        ledger.setDirection(LedgerDirection.Expense);
+        ledger.setSource(LedgerSource.Payment);
+        ledger.setSourceId(payment.getPaymentId());
+        ledger.setAccount(FundAccount.CompanyBank);
+        ledger.setAmount(amount);
+        ledger.setCategory("工资");
+        ledger.setOccurredAt(LocalDate.now());
+        ledger.setCounterparty("张师傅");
+        ledger.setSummary("工资发放");
+        return ledgerRepository.save(ledger);
+    }
+
+    private Worker worker(Employee owner) {
+        Worker worker = new Worker();
+        worker.setCompany(owner.getCompany());
+        worker.setName("张师傅");
+        worker.setIdCardNo("340101199001011234");
+        worker.setTrade("水电工");
+        worker.setPhone("13900000000");
+        worker.setBankName("测试银行");
+        worker.setBankAccount("6222000000000000");
+        return workerRepository.save(worker);
     }
 
     private Employee boss() {

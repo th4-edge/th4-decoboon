@@ -114,6 +114,33 @@ class ReceiptIdempotencyTest {
     }
 
     @Test
+    void shouldAllowTwoRealCollectionsWhenSameBusinessUsesDifferentClientKeys() {
+        Fixture fixture = fixture("repeat-real", new BigDecimal("1000.00"));
+
+        Receipt first = collect(fixture, new BigDecimal("400.00"), "client-key-real-1", "业主甲");
+        Receipt second = collect(fixture, new BigDecimal("400.00"), "client-key-real-2", "业主甲");
+
+        assertThat(second.getReceiptId()).isNotEqualTo(first.getReceiptId());
+        assertThat(receiptRepository.count()).isEqualTo(2);
+        assertThat(ledgerRepository.count()).isEqualTo(2);
+        assertThat(receivableRepository.findById(fixture.receivable().getReceivableId()).orElseThrow()
+                .getReceivedAmount()).isEqualByComparingTo("800.00");
+    }
+
+    @Test
+    void shouldRejectReusedClientKeyWhenBusinessFingerprintDiffers() {
+        Fixture fixture = fixture("reuse-client-key", new BigDecimal("1000.00"));
+        collect(fixture, new BigDecimal("300.00"), "client-key-conflict", "业主甲");
+
+        assertDefined(409, "该幂等键已被其他收付款占用",
+                () -> collect(fixture, new BigDecimal("400.00"), "client-key-conflict", "业主甲"));
+        assertThat(receiptRepository.count()).isEqualTo(1);
+        assertThat(ledgerRepository.count()).isEqualTo(1);
+        assertThat(receivableRepository.findById(fixture.receivable().getReceivableId()).orElseThrow()
+                .getReceivedAmount()).isEqualByComparingTo("300.00");
+    }
+
+    @Test
     void shouldStillRejectOverPaymentForNewBusinessFact() {
         Fixture fixture = fixture("over-payment", new BigDecimal("1000.00"));
         collect(fixture, new BigDecimal("600.00"), null, "业主丙");

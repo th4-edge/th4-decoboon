@@ -11,8 +11,10 @@ import com.th4.edge.decoboon.document.model.DocumentProfile;
 import com.th4.edge.decoboon.document.model.DocumentTemplate;
 import com.th4.edge.decoboon.document.model.VoucherItem;
 import com.th4.edge.decoboon.document.model.VoucherRecord;
+import com.th4.edge.decoboon.document.model.VoucherRevision;
 import com.th4.edge.decoboon.document.repository.VoucherItemRepository;
 import com.th4.edge.decoboon.document.repository.VoucherRecordRepository;
+import com.th4.edge.decoboon.document.repository.VoucherRevisionRepository;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.model.Ledger;
@@ -66,6 +68,7 @@ public class VoucherContext {
     private final ObjectKeyContext keyContext;
     private final FileSignatureContext signatureContext;
     private final VoucherRecordRepository recordRepository;
+    private final VoucherRevisionRepository revisionRepository;
     private final VoucherItemRepository itemRepository;
 
     public VoucherContext(TenantContext tenantContext,
@@ -78,6 +81,7 @@ public class VoucherContext {
                           ObjectKeyContext keyContext,
                           FileSignatureContext signatureContext,
                           VoucherRecordRepository recordRepository,
+                          VoucherRevisionRepository revisionRepository,
                           VoucherItemRepository itemRepository) {
         this.tenantContext = tenantContext;
         this.ledgerRepository = ledgerRepository;
@@ -89,6 +93,7 @@ public class VoucherContext {
         this.keyContext = keyContext;
         this.signatureContext = signatureContext;
         this.recordRepository = recordRepository;
+        this.revisionRepository = revisionRepository;
         this.itemRepository = itemRepository;
     }
 
@@ -165,6 +170,57 @@ public class VoucherContext {
         record.setSize((long) content.length);
 
         VoucherRecord saved = recordRepository.save(record);
+        return signed(saved);
+    }
+
+    /**
+     * 工资付款补录工人后，按方案 A 使用原凭证号和原对象键重渲染 PDF。
+     *
+     * <p>只允许单笔工资付款凭证；合并凭证需人工处理，避免把其他付款的对方字段一并覆盖。
+     * 凭证的金额、来源明细、核销和台账事实均不修改。</p>
+     */
+    @Transactional
+    public VoucherRecord rebuildForPayment(Employee principal, Long paymentId) {
+        Employee current = tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
+        Long comId = current.getCompany().getComId();
+        Payment payment = paymentRepository.findById(paymentId)
+                .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
+                .orElseThrow(() -> notFound("付款记录不存在或无权访问"));
+        if (payment.getWorker() == null) throw invalid("请先补录发放工人");
+
+        List<VoucherItem> linked = itemRepository.findByCompany_ComIdAndSourceIdIn(comId, List.of(paymentId)).stream()
+                .filter(item -> item.getSourceType() == DocumentType.Payment)
+                .filter(item -> item.getVoucher() != null && item.getVoucher().getStatus() == DocumentStatus.Active)
+                .toList();
+        if (linked.isEmpty()) return null;
+        if (linked.size() != 1) throw invalid("该工资付款已并入合并凭证，暂不支持自动重打，请人工处理");
+
+        VoucherRecord record = linked.get(0).getVoucher();
+        List<VoucherItem> items = itemRepository.findByVoucher_VoucherIdOrderByItemId(record.getVoucherId());
+        DocumentTemplate template = record.getTemplate() == null
+                ? templateContext.template(comId, record.getType())
+                : record.getTemplate();
+        DocumentProfile profile = profileContext.profile(current);
+        Worker beforeWorker = record.getWorker();
+        Worker afterWorker = payment.getWorker();
+        record.setWorker(afterWorker);
+        record.setPartyName(afterWorker.getName());
+        byte[] content = renderer.render(record, items, template, profile, afterWorker, payment.getPartner());
+        store(record.getPath(), content);
+        record.setSha256(sha256(content));
+        record.setSize((long) content.length);
+        record.setContentType("application/pdf");
+        VoucherRecord saved = recordRepository.save(record);
+
+        VoucherRevision revision = new VoucherRevision();
+        revision.setCompany(current.getCompany());
+        revision.setVoucher(saved);
+        revision.setBeforeWorker(beforeWorker);
+        revision.setAfterWorker(afterWorker);
+        revision.setChangeType("WorkerBackfill");
+        revision.setReason("工资付款补录发放工人");
+        revision.setOperator(current);
+        revisionRepository.save(revision);
         return signed(saved);
     }
 

@@ -26,14 +26,16 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = Payment.class,
                 properties = {"paymentId", "project", "payable", "amount", "account", "paidAt", "payeeName",
-                        "transactionNo", "voucherUrl", "remark", "createdBy", "createTime"}),
+                        "worker", "transactionNo", "voucherUrl", "remark", "createdBy", "createTime"}),
         @AllowProperties(model = Payable.class,
                 properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status", "payeeName", "property" }),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.labor.model.Worker.class,
+                properties = {"workerId", "name", "trade", "phone"})
 })
 @Service("finance/payment/page")
 @Scope(ScopeTypes.PROTOTYPE)

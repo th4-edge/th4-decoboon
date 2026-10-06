@@ -30,6 +30,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -47,6 +48,9 @@ import java.time.LocalDate;
         @Index(name = "idx_fin_payment_store", columnList = "com_id, store_id, payment_id"),
         @Index(name = "idx_fin_payment_team", columnList = "com_id, team_id, payment_id"),
         @Index(name = "idx_fin_payment_owner", columnList = "com_id, owner_id, payment_id")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uk_fin_payment_company_idempotency",
+                columnNames = {"com_id", "idempotency_key"})
 })
 public class Payment extends AuditModel {
 
@@ -125,6 +129,14 @@ public class Payment extends AuditModel {
     @Column(length = 500)
     private String remark;
 
+    @Note("幂等键（客户端提交意图 ID，企业内唯一）")
+    @Column(name = "idempotency_key", length = 128)
+    private String idempotencyKey;
+
+    @Note("业务指纹（用于校验同一幂等键是否对应同一笔业务）")
+    @Column(name = "idempotency_fingerprint", length = 64)
+    private String idempotencyFingerprint;
+
     @Note("经办人")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
@@ -163,6 +175,10 @@ public class Payment extends AuditModel {
     public void setVoucherUrl(String voucherUrl) { this.voucherUrl = voucherUrl; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
+    public String getIdempotencyKey() { return idempotencyKey; }
+    public void setIdempotencyKey(String idempotencyKey) { this.idempotencyKey = idempotencyKey; }
+    public String getIdempotencyFingerprint() { return idempotencyFingerprint; }
+    public void setIdempotencyFingerprint(String idempotencyFingerprint) { this.idempotencyFingerprint = idempotencyFingerprint; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
 }

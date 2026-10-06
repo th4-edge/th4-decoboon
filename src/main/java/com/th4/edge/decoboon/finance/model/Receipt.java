@@ -125,9 +125,13 @@ public class Receipt extends AuditModel {
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee createdBy;
 
-    @Note("幂等键（客户端提交 + 服务端业务指纹，企业内唯一）")
+    @Note("幂等键（客户端提交意图 ID，企业内唯一）")
     @Column(name = "idempotency_key", length = 128)
     private String idempotencyKey;
+
+    @Note("业务指纹（用于校验同一幂等键是否对应同一笔业务）")
+    @Column(name = "idempotency_fingerprint", length = 64)
+    private String idempotencyFingerprint;
 
     public Long getReceiptId() { return receiptId; }
     public void setReceiptId(Long receiptId) { this.receiptId = receiptId; }
@@ -159,6 +163,8 @@ public class Receipt extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public String getIdempotencyKey() { return idempotencyKey; }
     public void setIdempotencyKey(String idempotencyKey) { this.idempotencyKey = idempotencyKey; }
+    public String getIdempotencyFingerprint() { return idempotencyFingerprint; }
+    public void setIdempotencyFingerprint(String idempotencyFingerprint) { this.idempotencyFingerprint = idempotencyFingerprint; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
 }
