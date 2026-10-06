@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @ConditionalOnProperty(prefix = "th4.edge.components.lock", name = "enabled",
         havingValue = "true", matchIfMissing = true)
-public class RedissonLock {
+public class RedissonLock implements DistributedLock {
 
     private static final String LOCK_PREFIX = "th4:lock:";
 

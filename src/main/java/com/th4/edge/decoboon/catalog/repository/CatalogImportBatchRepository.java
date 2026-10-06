@@ -3,11 +3,7 @@ package com.th4.edge.decoboon.catalog.repository;
 import com.th4.edge.decoboon.catalog.configure.CatalogImportStatus;
 import com.th4.edge.decoboon.catalog.model.CatalogImportBatch;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
-import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,8 +24,6 @@ public interface CatalogImportBatchRepository extends JpaRepository<CatalogImpor
 
     List<CatalogImportBatch> findByCompany_ComIdOrderByBatchIdDesc(Long comId);
 
-    /** 行级排他锁：确认导入与撤销串行化，重复提交返回同一批次事实。 */
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select batch from CatalogImportBatch batch where batch.batchId = :batchId")
-    Optional<CatalogImportBatch> findLockedByBatchId(@Param("batchId") Long batchId);
+    /** 非加锁读取；确认导入与撤销的并发由 RedissonLock 串行化。 */
+    Optional<CatalogImportBatch> findByBatchId(Long batchId);
 }

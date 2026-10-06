@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.catalog.context.CatalogImportReferenceContext;
 import com.th4.edge.decoboon.catalog.model.CatalogImportBatch;
 import com.th4.edge.decoboon.catalog.model.CatalogImportRow;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.components.lock.DistributedLock;
 import com.th4.edge.decoboon.catalog.repository.CatalogImportBatchRepository;
 import com.th4.edge.decoboon.catalog.repository.CatalogImportRowRepository;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
@@ -63,26 +64,34 @@ public class Update implements com.th4.edge.decoboon.catalog.service.importbatch
     private final CatalogItemRepository itemRepository;
     private final CatalogDetailContext detailContext;
     private final CatalogImportReferenceContext referenceContext;
+    private final DistributedLock distributedLock;
 
     public Update(CatalogImportContext importContext,
                   CatalogImportBatchRepository batchRepository,
                   CatalogImportRowRepository rowRepository,
                   CatalogItemRepository itemRepository,
                   CatalogDetailContext detailContext,
-                  CatalogImportReferenceContext referenceContext) {
+                  CatalogImportReferenceContext referenceContext,
+                DistributedLock distributedLock) {
         this.importContext = importContext;
         this.batchRepository = batchRepository;
         this.rowRepository = rowRepository;
         this.itemRepository = itemRepository;
         this.detailContext = detailContext;
         this.referenceContext = referenceContext;
+        this.distributedLock = distributedLock;
     }
 
     @Override
     @Transactional
     public CatalogImportBatch call(CatalogImportBatch request) {
         Employee current = importContext.requireBoss(employee);
-        CatalogImportBatch batch = batchRepository.findLockedByBatchId(batchId)
+        String lockKey = "catalog-import-batch:" + current.getCompany().getComId() + ":" + batchId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "导入批次正在处理中，请稍后重试"));
+        }
+        try {
+        CatalogImportBatch batch = batchRepository.findByBatchId(batchId)
                 .filter(item -> item.getCompany() != null
                         && item.getCompany().getComId().equals(current.getCompany().getComId()))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "导入批次不存在或无权访问")));
@@ -134,5 +143,8 @@ public class Update implements com.th4.edge.decoboon.catalog.service.importbatch
         batch.setRevokedAt(LocalDateTime.now());
         batch.setMessage("批次已撤销：删除本批新增项目 " + batch.getImportedRows() + " 条，原文件可重新上传为新批次");
         return batchRepository.save(batch);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 }

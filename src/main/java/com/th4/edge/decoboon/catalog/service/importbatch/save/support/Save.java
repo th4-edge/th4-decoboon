@@ -14,6 +14,7 @@ import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.model.CatalogImportBatch;
 import com.th4.edge.decoboon.catalog.model.CatalogImportRow;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.components.lock.DistributedLock;
 import com.th4.edge.decoboon.catalog.repository.CatalogImportBatchRepository;
 import com.th4.edge.decoboon.catalog.repository.CatalogImportRowRepository;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
@@ -74,6 +75,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
     private final PinyinContext pinyinContext;
     private final CatalogContext catalogContext;
     private final CatalogDetailContext detailContext;
+    private final DistributedLock distributedLock;
 
     public Save(CatalogImportContext importContext,
                 CatalogImportFileContext fileContext,
@@ -84,7 +86,8 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
                 CatalogCodeContext codeContext,
                 PinyinContext pinyinContext,
                 CatalogContext catalogContext,
-                CatalogDetailContext detailContext) {
+                CatalogDetailContext detailContext,
+                DistributedLock distributedLock) {
         this.importContext = importContext;
         this.fileContext = fileContext;
         this.parser = parser;
@@ -95,13 +98,19 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
         this.pinyinContext = pinyinContext;
         this.catalogContext = catalogContext;
         this.detailContext = detailContext;
+        this.distributedLock = distributedLock;
     }
 
     @Override
     @Transactional
     public CatalogImportBatch call(CatalogImportBatch request) {
         Employee current = importContext.requireBoss(employee);
-        CatalogImportBatch batch = batchRepository.findLockedByBatchId(batchId)
+        String lockKey = "catalog-import-batch:" + current.getCompany().getComId() + ":" + batchId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "导入批次正在处理中，请稍后重试"));
+        }
+        try {
+        CatalogImportBatch batch = batchRepository.findByBatchId(batchId)
                 .filter(item -> item.getCompany() != null
                         && item.getCompany().getComId().equals(current.getCompany().getComId()))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "导入批次不存在或无权访问")));
@@ -192,6 +201,9 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
         batch.setFinishedAt(LocalDateTime.now());
         batch.setMessage(buildMessage(batch));
         return batchRepository.save(batch);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     private CatalogItem persist(CatalogItem seed, Employee current, CatalogImportBatch batch, int sort) {
