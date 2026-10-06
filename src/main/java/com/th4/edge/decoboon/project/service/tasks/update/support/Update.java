@@ -97,12 +97,13 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
         if (target == null) {
             throw new DefinedException(new DefaultErrorCode("400", "任务状态或动作不能为空"));
         }
+        boolean reopen = "reopen".equalsIgnoreCase(action);
         task.setStatus(target);
         if (target == TaskStatus.Doing) {
-            task.setProgress(Math.max(task.getProgress(), 10));
+            task.setProgress(nextProgress(target, task.getProgress(), reopen));
             if (task.getActualStart() == null) task.setActualStart(LocalDate.now());
         } else if (target == TaskStatus.Accepting) {
-            task.setProgress(90);
+            task.setProgress(nextProgress(target, task.getProgress(), false));
             if (Boolean.TRUE.equals(task.getConceal())) {
                 throw new DefinedException(new DefaultErrorCode("400", "隐蔽任务请先通过节点留证确认"));
             }
@@ -110,10 +111,10 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
             if (evidenceUrls == null || evidenceUrls.isEmpty()) {
                 throw new DefinedException(new DefaultErrorCode("400", "任务验收前必须上传现场照片或视频"));
             }
-            task.setProgress(100);
+            task.setProgress(nextProgress(target, task.getProgress(), false));
             task.setActualEnd(LocalDate.now());
         } else if (target == TaskStatus.Todo) {
-            task.setProgress(0);
+            task.setProgress(nextProgress(target, task.getProgress(), false));
         }
         if (evidenceUrls != null) {
             task.setEvidenceUrls(new ArrayList<>(evidenceUrls));
@@ -142,14 +143,22 @@ public class Update implements com.th4.edge.decoboon.project.service.tasks.updat
         return employee;
     }
 
-    private TaskStatus statusOf(String value) {
+    static TaskStatus statusOf(String value) {
         if (value == null) return null;
         return switch (value.toLowerCase()) {
-            case "start", "doing" -> TaskStatus.Doing;
+            case "start", "doing", "reopen" -> TaskStatus.Doing;
             case "finish", "accepting" -> TaskStatus.Accepting;
             case "done" -> TaskStatus.Done;
-            case "reopen", "todo" -> TaskStatus.Todo;
+            case "todo" -> TaskStatus.Todo;
             default -> null;
         };
+    }
+
+    static int nextProgress(TaskStatus target, int current, boolean reopen) {
+        if (target == TaskStatus.Doing) return reopen ? 10 : Math.max(current, 10);
+        if (target == TaskStatus.Accepting) return 90;
+        if (target == TaskStatus.Done) return 100;
+        if (target == TaskStatus.Todo) return 0;
+        return current;
     }
 }
