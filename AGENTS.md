@@ -118,6 +118,8 @@ lane、完整 worklog、shared 和 rules 大段只在事故、大功能、权限
 
 **API 高效 SQL 与并发锁（强制）**：th4-framework 通用 API 低效时允许直接使用更高效 SQL（须保留租户/数据权限、参数绑定与金额口径）；业务并发禁止数据库锁（`@Lock(PESSIMISTIC_*)`、`FOR UPDATE`、表锁/间隙锁），统一使用 `RedissonLock` 分布式锁；详见 `rules.md` §0.3 与 `DEC-029`/`BR-027`。
 
+**统计汇总实现逻辑（强制，2026-10-07 新增）**：统计/汇总/看板/报表/排行类接口的返回结果是数字，必须用**聚合/投影 SQL** 直接算出（标量返回 O(1) 行、列表 `ORDER BY ... LIMIT N` 且字段投影）；**禁止**「全量实体 + Java 循环求和」「循环体内查库」「全量后取前 N」「用重 JOIN 换 SQL 条数」「用方法内部读数充当接口验收数」「逾期/未收判定放在 Java 循环」；业务公式类允许内存计算但循环体内零查询，金额口径不得变。验收：端到端 SQL ≤30 条、并发 P95 ≤500ms、10× 数据量下 SQL 条数不增长，未达标即阻断。详见 `rules.md` §0.4 与 `DEC-036`/`BR-031`/`GAP-027`。
+
 ## 序列化控制
 
 具体 Provider 用 `@Properties` 按 `page/list/info/save/update` 裁剪响应，通用 `{model}-{service}` 路由才用 `@ServiceProperties`（只管返回，不管权限）。
