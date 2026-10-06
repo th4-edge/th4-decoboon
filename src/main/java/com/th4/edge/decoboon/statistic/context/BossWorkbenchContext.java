@@ -41,6 +41,7 @@ public class BossWorkbenchContext {
         ));
         workbench.setAttentionProjects(attentionProjects(alerts));
         workbench.setBusinessEvents(events == null ? List.of() : events);
+        workbench.setAlertReport(alerts == null ? new BusinessAlertReport() : alerts);
         return workbench;
     }
 

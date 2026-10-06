@@ -14,6 +14,7 @@ public class BossWorkbench {
     private List<WorkbenchIndicator> indicators = List.of();
     private List<WorkbenchProject> attentionProjects = List.of();
     private List<BusinessEvent> businessEvents = List.of();
+    private BusinessAlertReport alertReport = new BusinessAlertReport();
 
     public LocalDate getAsOf() { return asOf; }
     public void setAsOf(LocalDate asOf) { this.asOf = asOf; }
@@ -25,4 +26,6 @@ public class BossWorkbench {
     public void setAttentionProjects(List<WorkbenchProject> attentionProjects) { this.attentionProjects = attentionProjects; }
     public List<BusinessEvent> getBusinessEvents() { return businessEvents; }
     public void setBusinessEvents(List<BusinessEvent> businessEvents) { this.businessEvents = businessEvents; }
+    public BusinessAlertReport getAlertReport() { return alertReport; }
+    public void setAlertReport(BusinessAlertReport alertReport) { this.alertReport = alertReport; }
 }

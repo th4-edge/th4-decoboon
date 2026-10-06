@@ -6,10 +6,12 @@ import com.th4.edge.decoboon.statistic.context.BusinessAlertContext;
 import com.th4.edge.decoboon.statistic.context.BusinessEventContext;
 import com.th4.edge.decoboon.statistic.model.BossDashboard;
 import com.th4.edge.decoboon.statistic.model.BossDashboardQuery;
+import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.statistic.model.BossWorkbench;
+import com.th4.edge.decoboon.statistic.model.BusinessAlert;
+import com.th4.edge.decoboon.statistic.model.BusinessAlertReport;
 import com.th4.edge.decoboon.statistic.model.BossWorkbenchQuery;
 import com.th4.edge.decoboon.statistic.model.BusinessAlertQuery;
-import com.th4.edge.decoboon.statistic.model.BusinessAlertReport;
 import com.th4.edge.decoboon.statistic.model.BusinessEvent;
 import com.th4.edge.decoboon.statistic.model.WorkbenchIndicator;
 import com.th4.edge.decoboon.statistic.model.WorkbenchProject;
@@ -30,7 +32,17 @@ import java.util.List;
 @Note("企业负责人首页")
 @Properties(allow = {
         @AllowProperties(model = BossWorkbench.class,
-                properties = {"asOf", "month", "indicators", "attentionProjects", "businessEvents"}),
+                properties = {"asOf", "month", "indicators", "attentionProjects", "businessEvents", "alertReport"}),
+        @AllowProperties(model = BusinessAlertReport.class,
+                properties = {"asOf", "totalCount", "highCount", "mediumCount", "lowCount", "overdueReceivables",
+                        "suspensionRisks", "materialOverIssues", "changeAnomalies"}),
+        @AllowProperties(model = BusinessAlert.class,
+                properties = {"type", "level", "title", "message", "businessType", "businessId", "businessNo",
+                        "project", "owner", "amount", "rate", "dueDate"}),
+        @AllowProperties(model = Project.class,
+                properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager",
+                        "siteAddr", "status", "progress", "planEndDate", "actualEndDate"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = WorkbenchIndicator.class,
                 properties = {"key", "label", "value", "valueType", "status", "statusText", "detail"}),
         @AllowProperties(model = WorkbenchProject.class,

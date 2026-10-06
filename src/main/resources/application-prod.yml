@@ -22,7 +22,9 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
+        default_batch_fetch_size: 50
         jdbc:
+          batch_size: 50
           time_zone: Asia/Shanghai
   data:
     redis:

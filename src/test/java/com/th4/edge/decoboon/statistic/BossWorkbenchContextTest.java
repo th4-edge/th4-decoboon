@@ -124,4 +124,19 @@ class BossWorkbenchContextTest {
         alert.setDueDate(dueDate);
         return alert;
     }
+
+    @Test
+    void workbenchMustCarryAlertReportForSingleRequestHome() {
+        BossWorkbenchContext context = new BossWorkbenchContext();
+        BusinessAlertReport alerts = new BusinessAlertReport();
+        alerts.setTotalCount(3);
+        alerts.setHighCount(1);
+
+        BossWorkbench workbench = context.build(new BossDashboard(), alerts, List.of(),
+                LocalDate.of(2026, 10, 1), LocalDate.of(2026, 10, 7));
+
+        assertThat(workbench.getAlertReport()).isSameAs(alerts);
+        assertThat(workbench.getAlertReport().getTotalCount()).isEqualTo(3);
+    }
+
 }
