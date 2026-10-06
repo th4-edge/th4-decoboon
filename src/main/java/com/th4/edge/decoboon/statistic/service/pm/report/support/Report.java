@@ -165,12 +165,15 @@ public class Report implements com.th4.edge.decoboon.statistic.service.pm.report
                 : materialPlanRepository.findByProject_ProjectIdIn(projectIds).stream()
                         .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
                         .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
+        java.util.Map<Long, List<Acceptance>> acceptancesByProject = projectIds.isEmpty() ? java.util.Map.of()
+                : acceptanceRepository.findByProject_ProjectIdInOrderByAcceptanceIdDesc(projectIds).stream()
+                        .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(item -> item.getProject().getProjectId()));
         for (Project project : projects) {
             allTasks.addAll(tasksByProject.getOrDefault(project.getProjectId(), List.of()));
             allMaterials.addAll(materialsByProject.getOrDefault(project.getProjectId(), List.of()));
-            allAcceptances.addAll(acceptanceRepository
-                    .findByProject_ProjectIdOrderByAcceptanceIdDesc(project.getProjectId(), PageRequest.of(0, 50))
-                    .getContent());
+            allAcceptances.addAll(acceptancesByProject
+                    .getOrDefault(project.getProjectId(), List.of()).stream().limit(50).toList());
             List<ProjectReport> projectReports = reportRepository
                     .findByCompany_ComIdAndProject_ProjectIdOrderByCreateTime_DateTimeDesc(
                             comId, project.getProjectId(), PageRequest.of(0, 30))
