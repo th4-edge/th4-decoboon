@@ -1,0 +1,14 @@
+valid_requests=355
+route                                            n     P50     P95     P99     max   maxrt  avgKB status
+POST /api/material/plan/workbench               40   0.568   0.922   1.071   1.071   1.071    1.2 [200]
+POST /api/statistic/boss/workbench              40   0.523   0.766   0.921   0.921   0.922    3.8 [200]
+POST /api/finance/summary/report                36   0.272   0.538   0.901   0.901   0.902    6.0 [200]
+POST /api/statistic/alert/report                40   0.312   0.613   0.656   0.656   0.656    2.4 [200]
+POST /api/statistic/success/report              40   0.372   0.630   0.653   0.653   0.653    1.3 [200]
+POST /api/statistic/onboarding/report           40   0.325   0.586   0.614   0.614   0.614    1.1 [200]
+POST /api/collab/notice/count                   40   0.132   0.227   0.428   0.428   0.428    0.1 [200]
+POST /api/carryover/batch/info                  40   0.059   0.125   0.347   0.347   0.347    0.2 [200]
+POST /api/project/project/overview               1   0.279   0.279   0.279   0.279   0.280    3.4 [200]
+POST /api/auth/session/info                      1   0.198   0.198   0.198   0.198   0.198    0.6 [200]
+POST /api/statistic/boss/quote/report            3   0.074   0.149   0.149   0.149   0.149    1.6 [200]
+GET /api/file/private/download                  34   0.034   0.062   0.108   0.108   0.108    4.9 [200]
