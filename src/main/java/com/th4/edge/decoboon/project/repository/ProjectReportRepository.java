@@ -34,5 +34,23 @@ public interface ProjectReportRepository extends JpaRepository<ProjectReport, Lo
                                        @org.springframework.data.repository.query.Param("projectIds")
                                        java.util.Collection<Long> projectIds);
 
+    /** 角色报表：时间区间内日报数（聚合，替代"取回全部再 Java 计数"）。 */
+    @org.springframework.data.jpa.repository.Query("select count(r) from ProjectReport r "
+            + "where r.company.comId = :comId and r.project.projectId in :projectIds "
+            + "and r.createTime >= :from and r.createTime < :to")
+    long countCreatedBetween(@org.springframework.data.repository.query.Param("comId") Long comId,
+                             @org.springframework.data.repository.query.Param("projectIds")
+                             java.util.Collection<Long> projectIds,
+                             @org.springframework.data.repository.query.Param("from") java.time.LocalDateTime from,
+                             @org.springframework.data.repository.query.Param("to") java.time.LocalDateTime to);
+
+    /** 角色报表：按时间倒序取全局 TopN（ORDER BY + LIMIT，行数有界）。 */
+    @org.springframework.data.jpa.repository.Query("select r from ProjectReport r "
+            + "where r.company.comId = :comId and r.project.projectId in :projectIds order by r.createTime desc")
+    List<ProjectReport> findTopByProjectIds(@org.springframework.data.repository.query.Param("comId") Long comId,
+                                            @org.springframework.data.repository.query.Param("projectIds")
+                                            java.util.Collection<Long> projectIds,
+                                            org.springframework.data.domain.Pageable pageable);
+
     long countByProject_ProjectId(Long projectId);
 }

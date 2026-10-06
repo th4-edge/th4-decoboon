@@ -35,6 +35,18 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
     /** 角色报表：一次取多项目验收（验收倒序），替代逐项目分页查询（DEC-036 正模式）。 */
     List<Acceptance> findByProject_ProjectIdInOrderByAcceptanceIdDesc(java.util.Collection<Long> projectIds);
 
+    /** 角色报表：按状态聚合计数（DEC-036 正模式：计数用聚合 SQL，不拉实体行）。 */
+    @Query("select a.status, count(a) from Acceptance a where a.project.projectId in :projectIds group by a.status")
+    List<Object[]> countGroupByStatus(@Param("projectIds") java.util.Collection<Long> projectIds);
+
+    /** 角色报表：按状态取全局 TopN（ORDER BY + LIMIT，行数有界）。 */
+    @Query("select a from Acceptance a where a.project.projectId in :projectIds and a.status = :status "
+            + "order by a.acceptanceId desc")
+    List<Acceptance> findTopByProjectIdsAndStatus(@Param("projectIds") java.util.Collection<Long> projectIds,
+                                                  @Param("status")
+                                                  com.th4.edge.decoboon.project.configure.AcceptStatus status,
+                                                  Pageable pageable);
+
     Optional<Acceptance> findByAcceptanceIdAndProject_ProjectId(Long acceptanceId, Long projectId);
 
     @EntityGraph(attributePaths = {
