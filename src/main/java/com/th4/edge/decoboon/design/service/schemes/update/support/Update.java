@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.design.service.schemes.update.support;
 
+import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),
+        @AllowProperties(model = Customer.class,
+                properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
 })
 @Service("design/scheme/update")
 @Scope(ScopeTypes.PROTOTYPE)

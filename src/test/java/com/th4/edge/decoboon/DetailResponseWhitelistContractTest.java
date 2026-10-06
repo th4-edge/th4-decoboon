@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon;
 
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
@@ -47,6 +48,20 @@ class DetailResponseWhitelistContractTest {
         assertThat(properties.allow()).anySatisfy(item -> {
             assertThat(item.model()).isEqualTo(CatalogItem.class);
             assertThat(Arrays.asList(item.properties())).contains("itemId", "name", "unit");
+        });
+    }
+
+    @Test
+    void designSchemeUpdateMustWhitelistCustomerAndEmployeeSummary() {
+        Properties properties = com.th4.edge.decoboon.design.service.schemes.update.support.Update.class
+                .getAnnotation(Properties.class);
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(Customer.class);
+            assertThat(Arrays.asList(item.properties())).contains("custId", "name", "community", "addr");
+        });
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(Employee.class);
+            assertThat(Arrays.asList(item.properties())).containsExactly("empId", "name", "role");
         });
     }
 
