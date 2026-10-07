@@ -15,9 +15,12 @@ import org.springframework.stereotype.Service;
 
 /** BOSS 确认工资单。 */
 @Note("工资单确认")
-@Properties(allow = @AllowProperties(model = PayrollSheet.class,
-        properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
-                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = PayrollSheet.class,
+                properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
+                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "createTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
 @Service("payroll/sheet/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.decoboon.payroll.service.sheets.update.Update {

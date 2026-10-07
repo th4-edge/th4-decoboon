@@ -15,6 +15,8 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 /** 删除尚未进入工资单的月度考勤。 */
 @Note("月度考勤删除")
-@Properties(allow = @AllowProperties(model = AttendanceSummary.class,
-        properties = {"summaryId", "employee", "month", "scheduledDays", "normalDays", "personalLeaveDays", "sickLeaveDays",
-                "absenceDays", "externalDays", "annualLeaveDays", "compLeaveDays", "status", "remark"}))
+@Properties(allow = {
+        @AllowProperties(model = AttendanceSummary.class,
+                properties = {"summaryId", "employee", "month", "scheduledDays", "normalDays", "personalLeaveDays", "sickLeaveDays",
+                        "absenceDays", "externalDays", "annualLeaveDays", "compLeaveDays", "status", "remark"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
+        @AllowProperties(model = Team.class, properties = {"teamId", "name"})
+})
 @Service("attendance/summary/delete")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Delete implements com.th4.edge.decoboon.payroll.service.attendances.summary.delete.Delete {

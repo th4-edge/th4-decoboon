@@ -17,14 +17,21 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Note("月度考勤新增")
-@Properties(allow = @AllowProperties(model = AttendanceSummary.class,
-        properties = {"summaryId", "employee", "month", "scheduledDays", "normalDays", "personalLeaveDays", "sickLeaveDays",
-                "absenceDays", "externalDays", "annualLeaveDays", "compLeaveDays", "status", "remark", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = AttendanceSummary.class,
+                properties = {"summaryId", "employee", "month", "scheduledDays", "normalDays", "personalLeaveDays", "sickLeaveDays",
+                        "absenceDays", "externalDays", "annualLeaveDays", "compLeaveDays", "status", "remark", "createTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
+        @AllowProperties(model = Team.class, properties = {"teamId", "name"})
+})
 @Service("attendance/summary/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.payroll.service.attendances.summary.save.Save {

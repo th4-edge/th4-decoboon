@@ -17,10 +17,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Note("店长本店工资详情")
-@Properties(allow = @AllowProperties(model = PayrollItem.class,
-        properties = {"itemId", "employee", "sheet", "project", "attribution", "baseSalaryAmount", "attendanceDeduction",
-                "commissionAmount", "bonusAmount", "allowanceAmount", "socialInsuranceAmount", "taxAmount",
-                "otherDeduction", "grossAmount", "deductionAmount", "netAmount", "status", "remark", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = PayrollItem.class,
+                properties = {"itemId", "employee", "sheet", "project", "attribution", "baseSalaryAmount", "attendanceDeduction",
+                        "commissionAmount", "bonusAmount", "allowanceAmount", "socialInsuranceAmount", "taxAmount",
+                        "otherDeduction", "grossAmount", "deductionAmount", "netAmount", "status", "remark", "createTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.payroll.model.PayrollSheet.class,
+                properties = {"sheetId", "period", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class,
+                properties = {"projectId", "name", "no", "status"})
+})
 @Service("payroll/store-payroll/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Info implements com.th4.edge.decoboon.payroll.service.storepayroll.info.Info {

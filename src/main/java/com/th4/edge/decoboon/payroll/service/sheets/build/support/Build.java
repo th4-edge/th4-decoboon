@@ -17,9 +17,12 @@ import org.springframework.stereotype.Service;
 /** 生成工资单草稿。 */
 @Note("工资单生成")
 @Description("按薪酬方案和已确认考勤生成工资单草稿")
-@Properties(allow = @AllowProperties(model = PayrollSheet.class,
-        properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
-                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = PayrollSheet.class,
+                properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
+                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "createTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
 @Service("payroll/sheet/build")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Build implements com.th4.edge.decoboon.payroll.service.sheets.build.Build {

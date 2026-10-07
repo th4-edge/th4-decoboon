@@ -53,6 +53,51 @@ class PayrollCompensationGuardTest {
     }
 
     @Test
+    void otherPayrollResponsesMustNotExposeFullNestedGraphs() {
+        for (Class<?> provider : List.of(
+                com.th4.edge.decoboon.payroll.service.attendances.summary.page.support.Page.class,
+                com.th4.edge.decoboon.payroll.service.attendances.summary.info.support.Info.class,
+                com.th4.edge.decoboon.payroll.service.attendances.summary.save.support.Save.class,
+                com.th4.edge.decoboon.payroll.service.attendances.summary.update.support.Update.class,
+                com.th4.edge.decoboon.payroll.service.attendances.summary.delete.support.Delete.class,
+                com.th4.edge.decoboon.payroll.service.compensations.delete.support.Delete.class)) {
+            Properties properties = provider.getAnnotation(Properties.class);
+            assertThat(properties).as(provider.getSimpleName() + " 必须声明 @Properties").isNotNull();
+            assertThat(Arrays.asList(allowFor(properties, Employee.class).properties()))
+                    .contains("empId", "name", "avatarUrl", "role", "status", "store", "team")
+                    .doesNotContain("telNo", "invite", "company", "resignReason");
+            assertThat(Arrays.asList(allowFor(properties, Store.class).properties()))
+                    .containsExactly("storeId", "name");
+            assertThat(Arrays.asList(allowFor(properties, Team.class).properties()))
+                    .containsExactly("teamId", "name");
+        }
+
+        for (Class<?> provider : List.of(
+                com.th4.edge.decoboon.payroll.service.sheets.build.support.Build.class,
+                com.th4.edge.decoboon.payroll.service.sheets.info.support.Info.class,
+                com.th4.edge.decoboon.payroll.service.sheets.update.support.Update.class)) {
+            Properties properties = provider.getAnnotation(Properties.class);
+            assertThat(properties).as(provider.getSimpleName() + " 必须声明 @Properties").isNotNull();
+            assertThat(Arrays.asList(allowFor(
+                    properties, com.th4.edge.decoboon.payroll.model.PayrollSheet.class).properties()))
+                    .contains("sheetId", "period", "status", "confirmedBy");
+            assertThat(Arrays.asList(allowFor(properties, Employee.class).properties()))
+                    .containsExactly("empId", "name", "role");
+        }
+
+        Properties storePayrollInfo = com.th4.edge.decoboon.payroll.service.storepayroll.info.support.Info.class
+                .getAnnotation(Properties.class);
+        assertThat(storePayrollInfo).isNotNull();
+        assertThat(Arrays.asList(allowFor(storePayrollInfo, Employee.class).properties()))
+                .containsExactly("empId", "name", "role");
+        assertThat(Arrays.asList(allowFor(
+                storePayrollInfo, com.th4.edge.decoboon.payroll.model.PayrollSheet.class).properties()))
+                .containsExactly("sheetId", "period", "status");
+        assertThat(Arrays.asList(allowFor(storePayrollInfo, com.th4.edge.decoboon.project.model.Project.class).properties()))
+                .containsExactly("projectId", "name", "no", "status");
+    }
+
+    @Test
     void shouldRejectDuplicateEffectiveDateBeforeInsert() {
         Company company = new Company();
         company.setComId(100L);

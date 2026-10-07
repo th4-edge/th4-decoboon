@@ -18,9 +18,12 @@ import org.springframework.stereotype.Service;
 
 /** 工资单详情。 */
 @Note("工资单详情")
-@Properties(allow = @AllowProperties(model = PayrollSheet.class,
-        properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
-                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "createdBy", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = PayrollSheet.class,
+                properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
+                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "createdBy", "createTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
 @Service("payroll/sheet/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Info implements com.th4.edge.decoboon.payroll.service.sheets.info.Info {

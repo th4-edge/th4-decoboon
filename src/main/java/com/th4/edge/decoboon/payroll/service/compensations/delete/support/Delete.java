@@ -16,6 +16,8 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 /** 删除尚未形成考勤、提成或工资事实的薪酬方案。 */
 @Note("薪酬方案删除")
-@Properties(allow = @AllowProperties(model = CompensationScheme.class,
-        properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status"}))
+@Properties(allow = {
+        @AllowProperties(model = CompensationScheme.class,
+                properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
+        @AllowProperties(model = Team.class, properties = {"teamId", "name"})
+})
 @Service("payroll/compensation/delete")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Delete implements com.th4.edge.decoboon.payroll.service.compensations.delete.Delete {
