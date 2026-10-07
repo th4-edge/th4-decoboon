@@ -1,10 +1,6 @@
 ai/account/report
 ai/brief/report
 ai/usage/report
-attendance/summary/info
-attendance/summary/page
-attendance/summary/save
-attendance/summary/update
 carryover/payment-plan/report
 carryover/reconciliation/report
 customer/contract/workbench
