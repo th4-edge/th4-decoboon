@@ -1,0 +1,23 @@
+{
+  "path": "subpackages/finance/pages/ledger-category-picker",
+  "fields": [
+    {
+      "sel": "input",
+      "placeholder": "搜索一级或二级分类",
+      "class": "data-v-7d4fe297",
+      "value": ""
+    },
+    {
+      "sel": "input",
+      "placeholder": "如 展会费用",
+      "class": "data-v-7d4fe297",
+      "value": ""
+    },
+    {
+      "sel": "textarea",
+      "placeholder": "说明适用场景、举例和禁止用途，例如：用于展会摊位、活动物料等企业运营费用；不进入项目成本。",
+      "class": "data-v-7d4fe297",
+      "value": ""
+    }
+  ]
+}

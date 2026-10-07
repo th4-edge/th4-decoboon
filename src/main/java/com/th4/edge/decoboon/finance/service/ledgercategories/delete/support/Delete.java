@@ -22,7 +22,7 @@ import java.util.List;
 /** 企业自定义分类逻辑删除实现。 */
 @Note("删除企业自定义记账分类")
 @Properties(allow = @AllowProperties(model = LedgerCategory.class,
-        properties = {"categoryId", "name", "direction", "builtIn", "sort", "active"}))
+        properties = {"categoryId", "name", "description", "direction", "builtIn", "sort", "active"}))
 @Service("finance/ledger-category/delete")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Delete implements com.th4.edge.decoboon.finance.service.ledgercategories.delete.Delete {
@@ -48,9 +48,13 @@ public class Delete implements com.th4.edge.decoboon.finance.service.ledgercateg
         LedgerCategory category = repository.findByCompany_ComIdAndCategoryId(
                         current.getCompany().getComId(), categoryId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "分类不存在或无权访问")));
-        // 内置一级分组不允许删除；内置二级分类允许按企业逻辑删除（停用）。
-        if (Boolean.TRUE.equals(category.getBuiltIn()) && category.getParent() == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "内置一级分组不可删除"));
+        // 旧两级模板的历史一级分组仍有启用子分类，不允许在本轮扁平化口径下直接停用。
+        boolean legacyGroup = Boolean.TRUE.equals(category.getBuiltIn())
+                && category.getParent() == null
+                && repository.existsByCompany_ComIdAndParent_CategoryIdAndActiveTrue(
+                        current.getCompany().getComId(), category.getCategoryId());
+        if (legacyGroup) {
+            throw new DefinedException(new DefaultErrorCode("400", "旧两级分类分组不可直接停用"));
         }
         category.setActive(false);
         if (category.getParent() == null) {

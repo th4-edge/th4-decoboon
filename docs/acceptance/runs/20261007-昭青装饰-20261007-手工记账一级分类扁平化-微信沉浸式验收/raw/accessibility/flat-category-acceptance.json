@@ -1,0 +1,31 @@
+{
+  "flatList": {
+    "path": "subpackages/finance/pages/ledger-category-picker",
+    "hasProjectOther": true,
+    "hasCompanyOther": true,
+    "hasCapitalOut": true,
+    "hasArAp": true
+  },
+  "bossCreate": {
+    "headerTap": "选择业务分类其他支出类新增",
+    "nameOk": true,
+    "descOk": true,
+    "path": "subpackages/finance/pages/ledger-category-picker"
+  },
+  "financeEdit": {
+    "path": "subpackages/finance/pages/ledger-category-picker",
+    "description": "Finance 已维护：用于本地一级分类验收，仅登记其他支出，不包含应收应付闭环项。"
+  },
+  "ledgerSave": {
+    "path": "subpackages/finance/pages/entry",
+    "amountOk": true,
+    "summaryOk": true,
+    "counterpartOk": true,
+    "descriptionVisible": true
+  },
+  "storeManager": {
+    "path": "subpackages/finance/pages/ledger-category-picker",
+    "headerActions": 0,
+    "rowEdits": 0
+  }
+}

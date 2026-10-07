@@ -59,6 +59,19 @@ class CustomerOwnerAssignmentTest {
     }
 
     @Test
+    void financeCanBeAssignedAsCustomerSalesOwner() {
+        EmployeeRepository repository = mock(EmployeeRepository.class);
+        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class));
+        Company company = company(1L);
+        Store store = store(10L);
+        Employee boss = employee(1L, EmployeeRole.Boss, company, store);
+        Employee finance = employee(7L, EmployeeRole.Finance, company, store);
+        when(repository.findByEmpIdAndCompany_ComId(7L, 1L)).thenReturn(finance);
+
+        assertThat(context.resolveAssignableOwner(boss, 7L)).isSameAs(finance);
+    }
+
+    @Test
     void designerCanBeAssignedAsCustomerSalesOwner() {
         EmployeeRepository repository = mock(EmployeeRepository.class);
         CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class));

@@ -40,11 +40,11 @@ import static org.mockito.Mockito.when;
 class HandoffDesignerChangeTest {
 
     @Test
-    void bossShouldReplaceCustomerDesignerAcrossPropertiesAndActiveDesignFacts() {
+    void bossShouldReplaceCustomerDesignerWithAnyActiveEmployeeAcrossActiveFacts() {
         Company company = company(1L);
         Employee boss = employee(99L, "张伟", EmployeeRole.Boss, company);
         Employee previous = employee(10L, "谢玲玲", EmployeeRole.Designer, company);
-        Employee next = employee(11L, "董夏鹏", EmployeeRole.Designer, company);
+        Employee next = employee(11L, "董夏鹏", EmployeeRole.Marketer, company);
 
         Customer customer = new Customer();
         customer.setCustId(20L);

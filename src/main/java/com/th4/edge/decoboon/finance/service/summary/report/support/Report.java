@@ -42,7 +42,7 @@ import org.springframework.stereotype.Service;
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
         @AllowProperties(model = com.th4.edge.decoboon.finance.model.LedgerCategory.class,
-                properties = {"categoryId", "name", "direction", "builtIn"}),
+                properties = {"categoryId", "name", "description", "direction", "builtIn"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/summary/report")

@@ -12,101 +12,42 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-/** 手工记账两级经营分类：按企业生成行业常用模板，并合并企业自定义分类。 */
+/**
+ * 手工记账“其他账务”一级分类。
+ *
+ * <p>手工记账只承接应收应付闭环之外的、装企日常不常见或个性化账务。分类平铺为一级，
+ * 不使用父子层级，也不把工程款、材料采购、工资、项目款等应收应付业务作为可选项。</p>
+ */
 @Component
 public class LedgerCategoryContext {
 
     /**
-     * 装得清家装经营分类模板 v2。
-     * 仅一级 code 保持稳定；二级可随版本增量补充。该模板不是会计科目或法定口径。
+     * 新手工记账分类模板。旧的 {@code INCOME_PROJECT/EXPENSE_MATERIAL/EXPENSE_LABOR}
+     * 等两级模板仅保留在数据库中用于历史流水，不再作为新记账候选返回。
      */
     private static final List<Template> TEMPLATES = List.of(
-            // 收入
-            top("INCOME_PROJECT", "工程款", LedgerDirection.Income, 10),
-            child("INCOME_PROJECT", "INCOME_PROJECT_FIRST", "首期款", LedgerDirection.Income, 10),
-            child("INCOME_PROJECT", "INCOME_PROJECT_PROGRESS", "进度款", LedgerDirection.Income, 20),
-            child("INCOME_PROJECT", "INCOME_PROJECT_FINAL", "尾款", LedgerDirection.Income, 30),
-            child("INCOME_PROJECT", "INCOME_PROJECT_RETENTION", "质保金", LedgerDirection.Income, 40),
-            child("INCOME_PROJECT", "INCOME_PROJECT_EXTRA", "增项款", LedgerDirection.Income, 50),
-            child("INCOME_PROJECT", "INCOME_PROJECT_OTHER", "其他工程款", LedgerDirection.Income, 90),
-
-            top("INCOME_DESIGN", "设计费", LedgerDirection.Income, 20),
-            child("INCOME_DESIGN", "INCOME_DESIGN_DEPOSIT", "设计定金", LedgerDirection.Income, 10),
-            child("INCOME_DESIGN", "INCOME_DESIGN_FEE", "设计费", LedgerDirection.Income, 20),
-            child("INCOME_DESIGN", "INCOME_DESIGN_DEEPEN", "效果图/深化设计费", LedgerDirection.Income, 30),
-            child("INCOME_DESIGN", "INCOME_DESIGN_OTHER", "其他设计收入", LedgerDirection.Income, 90),
-
-            top("INCOME_MATERIAL_SALE", "材料销售", LedgerDirection.Income, 30),
-            child("INCOME_MATERIAL_SALE", "INCOME_MATERIAL_SALE_MAIN", "主材销售收入", LedgerDirection.Income, 10),
-            child("INCOME_MATERIAL_SALE", "INCOME_MATERIAL_SALE_AUX", "辅材销售收入", LedgerDirection.Income, 20),
-            child("INCOME_MATERIAL_SALE", "INCOME_MATERIAL_SALE_CUSTOM", "定制产品收入", LedgerDirection.Income, 30),
-            child("INCOME_MATERIAL_SALE", "INCOME_MATERIAL_SALE_OTHER", "其他材料收入", LedgerDirection.Income, 90),
-
-            top("INCOME_SERVICE", "服务收入", LedgerDirection.Income, 40),
-            child("INCOME_SERVICE", "INCOME_SERVICE_MEASURE", "量房/验房服务费", LedgerDirection.Income, 10),
-            child("INCOME_SERVICE", "INCOME_SERVICE_MANAGE", "项目管理费", LedgerDirection.Income, 20),
-            child("INCOME_SERVICE", "INCOME_SERVICE_SUPERVISE", "监理服务费", LedgerDirection.Income, 30),
-            child("INCOME_SERVICE", "INCOME_SERVICE_OTHER", "其他服务收入", LedgerDirection.Income, 90),
-
-            top("INCOME_OTHER", "其他收入", LedgerDirection.Income, 90),
-            child("INCOME_OTHER", "INCOME_OTHER_SUBSIDY", "补贴与返利", LedgerDirection.Income, 10),
-            child("INCOME_OTHER", "INCOME_OTHER_COMPENSATION", "赔偿与罚款收入", LedgerDirection.Income, 20),
-            child("INCOME_OTHER", "INCOME_OTHER_INTEREST", "利息收入", LedgerDirection.Income, 30),
-            child("INCOME_OTHER", "INCOME_OTHER_DISPOSAL", "资产处置收入", LedgerDirection.Income, 40),
-            child("INCOME_OTHER", "INCOME_OTHER_MISC", "其他杂项收入", LedgerDirection.Income, 90),
-
-            // 支出
-            top("EXPENSE_MATERIAL", "材料采购", LedgerDirection.Expense, 10),
-            child("EXPENSE_MATERIAL", "EXPENSE_MATERIAL_MAIN", "主材采购", LedgerDirection.Expense, 10),
-            child("EXPENSE_MATERIAL", "EXPENSE_MATERIAL_AUX", "辅材采购", LedgerDirection.Expense, 20),
-            child("EXPENSE_MATERIAL", "EXPENSE_MATERIAL_HARDWARE", "五金采购", LedgerDirection.Expense, 30),
-            child("EXPENSE_MATERIAL", "EXPENSE_MATERIAL_CUSTOM", "定制产品采购", LedgerDirection.Expense, 40),
-            child("EXPENSE_MATERIAL", "EXPENSE_MATERIAL_FREIGHT", "材料运费/搬运", LedgerDirection.Expense, 50),
-            child("EXPENSE_MATERIAL", "EXPENSE_MATERIAL_OTHER", "其他材料", LedgerDirection.Expense, 90),
-
-            top("EXPENSE_LABOR", "人工费用", LedgerDirection.Expense, 20),
-            child("EXPENSE_LABOR", "EXPENSE_LABOR_WORKER", "工人工资", LedgerDirection.Expense, 10),
-            child("EXPENSE_LABOR", "EXPENSE_LABOR_TEAM", "班组结算", LedgerDirection.Expense, 20),
-            child("EXPENSE_LABOR", "EXPENSE_LABOR_PM", "项目经理费用", LedgerDirection.Expense, 30),
-            child("EXPENSE_LABOR", "EXPENSE_LABOR_TEMP", "临时用工", LedgerDirection.Expense, 40),
-            child("EXPENSE_LABOR", "EXPENSE_LABOR_INSURANCE", "社保与意外险", LedgerDirection.Expense, 50),
-            child("EXPENSE_LABOR", "EXPENSE_LABOR_OTHER", "其他人工", LedgerDirection.Expense, 90),
-
-            top("EXPENSE_PROJECT", "项目费用", LedgerDirection.Expense, 30),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_TRANSPORT", "运输费", LedgerDirection.Expense, 10),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_CLEAN", "垃圾清运费", LedgerDirection.Expense, 20),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_PROPERTY", "物业/进场费", LedgerDirection.Expense, 30),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_SITE", "现场杂费", LedgerDirection.Expense, 40),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_EQUIPMENT", "设备租赁", LedgerDirection.Expense, 50),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_PROTECTION", "成品保护", LedgerDirection.Expense, 60),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_INSPECTION", "检测/验收费用", LedgerDirection.Expense, 70),
-            child("EXPENSE_PROJECT", "EXPENSE_PROJECT_AFTERSALE", "售后维修", LedgerDirection.Expense, 80),
-
-            top("EXPENSE_OPERATION", "运营费用", LedgerDirection.Expense, 40),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_RENT", "房租", LedgerDirection.Expense, 10),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_UTILITY", "水电", LedgerDirection.Expense, 20),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_OFFICE", "办公费用", LedgerDirection.Expense, 30),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_TRAVEL", "差旅费", LedgerDirection.Expense, 40),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_MARKETING", "获客推广费", LedgerDirection.Expense, 50),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_CHANNEL", "渠道/返点", LedgerDirection.Expense, 60),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_SOFTWARE", "软件服务", LedgerDirection.Expense, 70),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_FINANCE", "财务费用", LedgerDirection.Expense, 80),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_PAYROLL", "薪酬福利", LedgerDirection.Expense, 90),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_TRAINING", "培训会议", LedgerDirection.Expense, 100),
-            child("EXPENSE_OPERATION", "EXPENSE_OPERATION_OTHER", "其他运营", LedgerDirection.Expense, 990),
-
-            top("EXPENSE_TAX", "税费与其他", LedgerDirection.Expense, 90),
-            child("EXPENSE_TAX", "EXPENSE_TAX_TAX", "税费", LedgerDirection.Expense, 10),
-            child("EXPENSE_TAX", "EXPENSE_TAX_PENALTY", "违约金", LedgerDirection.Expense, 20),
-            child("EXPENSE_TAX", "EXPENSE_TAX_DONATION", "捐赠支出", LedgerDirection.Expense, 30),
-            child("EXPENSE_TAX", "EXPENSE_TAX_LOSS", "资产损失", LedgerDirection.Expense, 40),
-            child("EXPENSE_TAX", "EXPENSE_TAX_OTHER", "其他支出", LedgerDirection.Expense, 90)
+            new Template("MANUAL_PROJECT_INCIDENTAL_COST", "项目零星其他支出", LedgerDirection.Expense, 10,
+                    "项目现场发生的零星、个性化其他支出；必须关联项目，不包含采购、工资、项目款等有来源单据的支出。"),
+            new Template("MANUAL_COMPANY_OTHER_EXPENSE", "企业其他费用", LedgerDirection.Expense, 20,
+                    "装企日常不常见或个性化的其他费用；不包含采购、工资、工程款等已有应收应付闭环项。"),
+            new Template("MANUAL_CAPITAL_TRANSFER_OUT", "资金往来支出", LedgerDirection.Expense, 30,
+                    "借款、还款、押金、备用金、股东往来等资金往来支出；不作为项目成本或利润。"),
+            new Template("MANUAL_OTHER_EXPENSE", "其他支出", LedgerDirection.Expense, 90,
+                    "确实无法归入其他其他账务的兜底支出；不应作为常态分类，长期使用应新增一级分类。"),
+            new Template("MANUAL_OTHER_INCOME", "其他收入", LedgerDirection.Income, 10,
+                    "非工程款、非应收闭环的其他收入；不包含合同款、客户工程款等应收款项。"),
+            new Template("MANUAL_CAPITAL_TRANSFER_IN", "资金往来收入", LedgerDirection.Income, 20,
+                    "借款归还、押金退还、备用金收回、股东往来等资金往来收入；不作为项目收入或利润。")
     );
+
+    private static final Set<String> FLAT_CODES = TEMPLATES.stream()
+            .map(Template::code)
+            .collect(java.util.stream.Collectors.toUnmodifiableSet());
 
     private final LedgerCategoryRepository repository;
 
@@ -114,43 +55,35 @@ public class LedgerCategoryContext {
         this.repository = repository;
     }
 
+    /**
+     * 返回当前企业可选的“其他账务”一级分类。
+     *
+     * <p>旧两级分类、旧应收应付分类和自定义子分类不返回；历史流水仍按原 category 文本和
+     * category_id 回读，不受影响。</p>
+     */
     @Transactional
     public List<LedgerCategory> tree(Employee current) {
         ensureBuiltIns(current.getCompany());
-        List<LedgerCategory> all = repository
-                .findByCompany_ComIdOrderByDirectionAscSortAscCategoryIdAsc(current.getCompany().getComId())
+        return repository.findByCompany_ComIdOrderByDirectionAscSortAscCategoryIdAsc(current.getCompany().getComId())
                 .stream()
                 .filter(item -> Boolean.TRUE.equals(item.getActive()))
+                .filter(this::manualSelectable)
+                .peek(item -> item.setChildren(new ArrayList<>()))
+                .sorted(Comparator.comparing(LedgerCategory::getDirection)
+                        .thenComparing(LedgerCategory::getSort)
+                        .thenComparing(LedgerCategory::getCategoryId))
                 .toList();
-        Map<Long, LedgerCategory> byId = new HashMap<>();
-        for (LedgerCategory category : all) {
-            category.setChildren(new ArrayList<>());
-            byId.put(category.getCategoryId(), category);
-        }
-        List<LedgerCategory> roots = new ArrayList<>();
-        for (LedgerCategory category : all) {
-            if (category.getParent() == null) {
-                roots.add(category);
-            } else {
-                LedgerCategory parent = byId.get(category.getParent().getCategoryId());
-                if (parent != null) parent.getChildren().add(category);
-            }
-        }
-        roots.sort(Comparator.comparing(LedgerCategory::getDirection)
-                .thenComparing(LedgerCategory::getSort)
-                .thenComparing(LedgerCategory::getCategoryId));
-        roots.forEach(root -> root.getChildren().sort(
-                Comparator.comparing(LedgerCategory::getSort).thenComparing(LedgerCategory::getCategoryId)));
-        return roots;
     }
 
     @Transactional
-    public LedgerCategory saveCustom(Employee current, LedgerDirection direction, LedgerCategory parent, String name) {
+    public LedgerCategory saveCustom(Employee current, LedgerDirection direction,
+                                     String name, String description) {
         LedgerCategory category = new LedgerCategory();
         category.setCompany(current.getCompany());
         category.setDirection(direction);
-        category.setParent(parent);
+        category.setParent(null);
         category.setName(name.trim());
+        category.setDescription(description.trim());
         category.setBuiltIn(false);
         category.setActive(true);
         category.setSort(1000);
@@ -159,53 +92,40 @@ public class LedgerCategoryContext {
     }
 
     /**
-     * 幂等补齐内置模板：仅为企业创建缺失的内置编码，不覆盖企业已改名、已停用或已删除的内置二级分类。
+     * 幂等补齐一级内置模板。只补缺失编码和空说明，不覆盖企业改名或说明。
      */
     @Transactional
     public void ensureBuiltIns(Company company) {
         List<LedgerCategory> existing = repository.findByCompany_ComIdAndBuiltInTrue(company.getComId());
         Map<String, LedgerCategory> byCode = new LinkedHashMap<>();
         existing.forEach(item -> byCode.put(codeKey(item.getDirection(), item.getCode()), item));
-        Map<String, LedgerCategory> roots = new HashMap<>();
+        List<LedgerCategory> backfill = new ArrayList<>();
         for (Template template : TEMPLATES) {
-            if (template.parentCode() != null) continue;
             String key = codeKey(template.direction(), template.code());
             LedgerCategory category = byCode.get(key);
             if (category == null) {
                 category = new LedgerCategory();
                 category.setCompany(company);
                 category.setName(template.name());
+                category.setDescription(template.description());
                 category.setDirection(template.direction());
                 category.setCode(template.code());
                 category.setBuiltIn(true);
                 category.setActive(true);
                 category.setSort(template.sort());
                 category.setParent(null);
-                category = repository.save(category);
+                repository.save(category);
                 byCode.put(key, category);
+            } else if (category.getDescription() == null || category.getDescription().isBlank()) {
+                category.setDescription(template.description());
+                backfill.add(category);
             }
-            roots.put(template.code(), category);
         }
-        for (Template template : TEMPLATES) {
-            if (template.parentCode() == null) continue;
-            String key = codeKey(template.direction(), template.code());
-            if (byCode.containsKey(key)) continue;
-            LedgerCategory category = new LedgerCategory();
-            category.setCompany(company);
-            category.setName(template.name());
-            category.setDirection(template.direction());
-            category.setCode(template.code());
-            category.setBuiltIn(true);
-            category.setActive(true);
-            category.setSort(template.sort());
-            category.setParent(roots.get(template.parentCode()));
-            category = repository.save(category);
-            byCode.put(key, category);
-        }
+        if (!backfill.isEmpty()) repository.saveAll(backfill);
     }
 
     /**
-     * 选择可记账分类：必须为本企业启用分类、方向一致，且不能是仍有启用子分类的一级分组。
+     * 选择可记账分类：必须为本企业启用的一级“其他账务”分类，方向一致。
      */
     @Transactional
     public LedgerCategory select(Employee current, Long categoryId, LedgerDirection direction) {
@@ -229,25 +149,26 @@ public class LedgerCategoryContext {
                 || category.getDirection() != direction) {
             throw new DefinedException(new DefaultErrorCode("400", "业务分类不存在、已停用或与收支方向不一致"));
         }
-        boolean grouped = repository.existsByCompany_ComIdAndParent_CategoryIdAndActiveTrue(
-                current.getCompany().getComId(), category.getCategoryId());
-        if (grouped) {
-            throw new DefinedException(new DefaultErrorCode("400", "该分类为一级分组，请选择二级业务分类"));
+        if (!manualSelectable(category)) {
+            throw new DefinedException(new DefaultErrorCode("400", "请选择其他账务的一级业务分类"));
         }
+        boolean hasChildren = repository.existsByCompany_ComIdAndParent_CategoryIdAndActiveTrue(
+                current.getCompany().getComId(), category.getCategoryId());
+        if (hasChildren) {
+            throw new DefinedException(new DefaultErrorCode("400", "手工记账分类只能是一级分类"));
+        }
+    }
+
+    private boolean manualSelectable(LedgerCategory category) {
+        if (category.getParent() != null) return false;
+        if (Boolean.TRUE.equals(category.getBuiltIn())) return FLAT_CODES.contains(category.getCode());
+        return true;
     }
 
     private String codeKey(LedgerDirection direction, String code) {
         return direction.name() + ":" + code;
     }
 
-    private static Template top(String code, String name, LedgerDirection direction, int sort) {
-        return new Template(null, code, name, direction, sort);
-    }
-
-    private static Template child(String parentCode, String code, String name, LedgerDirection direction, int sort) {
-        return new Template(parentCode, code, name, direction, sort);
-    }
-
-    private record Template(String parentCode, String code, String name, LedgerDirection direction, int sort) {
+    private record Template(String code, String name, LedgerDirection direction, int sort, String description) {
     }
 }

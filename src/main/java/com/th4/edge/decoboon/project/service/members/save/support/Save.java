@@ -19,6 +19,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
@@ -80,7 +81,9 @@ public class Save implements com.th4.edge.decoboon.project.service.members.save.
             throw new DefinedException(new DefaultErrorCode("400", "成员和项目角色不能为空"));
         }
         Employee target = employeeRepository.findByEmpIdAndCompany_ComId(empId, current.getCompany().getComId());
-        if (target == null) throw new DefinedException(new DefaultErrorCode("404", "员工不存在"));
+        if (target == null || target.getStatus() != EmployeeStatus.Active) {
+            throw new DefinedException(new DefaultErrorCode("404", "员工不存在或已离职"));
+        }
         String label;
         Employee before;
         if (role == EmployeeRole.Designer) {

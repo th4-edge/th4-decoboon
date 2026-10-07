@@ -42,7 +42,7 @@ import java.time.LocalDate;
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
         @AllowProperties(model = LedgerCategory.class,
-                properties = {"categoryId", "name", "direction", "code", "builtIn", "sort", "active"}),
+                properties = {"categoryId", "name", "description", "direction", "code", "builtIn", "sort", "active"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/ledger/save")

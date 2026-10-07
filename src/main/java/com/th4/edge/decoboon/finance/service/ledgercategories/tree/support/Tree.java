@@ -18,7 +18,7 @@ import java.util.List;
 /** 手工记账业务分类树实现。 */
 @Note("手工记账业务分类树")
 @Properties(allow = @AllowProperties(model = LedgerCategory.class,
-        properties = {"categoryId", "name", "direction", "code", "builtIn", "sort", "active", "children"}))
+        properties = {"categoryId", "name", "description", "direction", "code", "builtIn", "sort", "active", "children"}))
 @Service("finance/ledger-category/tree")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Tree implements com.th4.edge.decoboon.finance.service.ledgercategories.tree.Tree {

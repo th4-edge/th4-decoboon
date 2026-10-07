@@ -1,0 +1,14 @@
+{
+  "flatCategoryNames": [
+    "其他收入",
+    "资金往来收入",
+    "项目零星其他支出",
+    "企业其他费用",
+    "资金往来支出",
+    "其他支出",
+    "本地验收分类",
+    "本地一级验收分类"
+  ],
+  "forbiddenOptionNames": [],
+  "allOneLevel": true
+}

@@ -26,6 +26,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
@@ -105,18 +106,18 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
         }
         Employee designer = employeeRepository.findByEmpIdAndCompany_ComId(
                 designerId, current.getCompany().getComId());
-        if (designer == null || (designer.getRole() != EmployeeRole.Designer && designer.getRole() != EmployeeRole.Boss)) {
-            throw new DefinedException(new DefaultErrorCode("400", "请选择本企业设计师或企业负责人本人"));
+        if (designer == null || designer.getStatus() != EmployeeStatus.Active) {
+            throw new DefinedException(new DefaultErrorCode("400", "请选择本企业在职员工"));
         }
         if (current.getRole() == EmployeeRole.StoreManager
                 && (designer.getStore() == null || current.getStore() == null
                 || !designer.getStore().getStoreId().equals(current.getStore().getStoreId()))) {
-            throw new DefinedException(new DefaultErrorCode("400", "仅可指定本门店设计师"));
+            throw new DefinedException(new DefaultErrorCode("400", "仅可指定本门店在职员工"));
         }
         if (current.getRole() == EmployeeRole.TeamLeader
                 && (designer.getTeam() == null || current.getTeam() == null
                 || !designer.getTeam().getTeamId().equals(current.getTeam().getTeamId()))) {
-            throw new DefinedException(new DefaultErrorCode("400", "仅可指定本团队设计师"));
+            throw new DefinedException(new DefaultErrorCode("400", "仅可指定本团队在职员工"));
         }
         Employee previous = customer.getDesigner();
         if (propertyId != null) {

@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 /** 企业自定义分类保存实现。 */
 @Note("保存企业自定义记账分类")
 @Properties(allow = @AllowProperties(model = LedgerCategory.class,
-        properties = {"categoryId", "name", "direction", "builtIn", "sort", "active"}))
+        properties = {"categoryId", "name", "description", "direction", "builtIn", "sort", "active"}))
 @Service("finance/ledger-category/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.finance.service.ledgercategories.save.Save {
@@ -36,8 +36,13 @@ public class Save implements com.th4.edge.decoboon.finance.service.ledgercategor
     @Length(max = 64)
     private String name;
     @AutoInject
+    @NotEmpty
+    @Length(max = 500)
+    private String description;
+    @AutoInject
     @NotNull
     private LedgerDirection direction;
+    /** 兼容旧客户端：一级分类不再接受 parentId。 */
     @AutoInject
     private Long parentId;
 
@@ -56,26 +61,15 @@ public class Save implements com.th4.edge.decoboon.finance.service.ledgercategor
     @Transactional
     public LedgerCategory call(LedgerCategory request) {
         Employee current = accessContext.requireEditor(employee);
-        LedgerCategory parent = null;
         if (parentId != null) {
-            parent = repository.findByCompany_ComIdAndCategoryId(current.getCompany().getComId(), parentId)
-                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "上级分类不存在或无权访问")));
-            if (!Boolean.TRUE.equals(parent.getActive()) || parent.getDirection() != direction) {
-                throw new DefinedException(new DefaultErrorCode("400", "上级分类已停用或与当前收支方向不一致"));
-            }
-            if (parent.getParent() != null) {
-                throw new DefinedException(new DefaultErrorCode("400", "业务分类最多支持两级"));
-            }
+            throw new DefinedException(new DefaultErrorCode("400", "手工记账分类只支持一级分类"));
         }
         String normalized = name.trim();
-        boolean duplicated = parent == null
-                ? repository.existsByCompany_ComIdAndDirectionAndParentIsNullAndNameAndActiveTrue(
-                        current.getCompany().getComId(), direction, normalized)
-                : repository.existsByCompany_ComIdAndDirectionAndParent_CategoryIdAndNameAndActiveTrue(
-                        current.getCompany().getComId(), direction, parent.getCategoryId(), normalized);
+        boolean duplicated = repository.existsByCompany_ComIdAndDirectionAndParentIsNullAndNameAndActiveTrue(
+                current.getCompany().getComId(), direction, normalized);
         if (duplicated) {
-            throw new DefinedException(new DefaultErrorCode("400", "同级分类名称已存在"));
+            throw new DefinedException(new DefaultErrorCode("400", "分类名称已存在"));
         }
-        return categoryContext.saveCustom(current, direction, parent, normalized);
+        return categoryContext.saveCustom(current, direction, normalized, description.trim());
     }
 }

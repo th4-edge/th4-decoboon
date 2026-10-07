@@ -21,6 +21,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
@@ -128,8 +129,8 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
         Long comId = current.getCompany().getComId();
         if (designerId != null) {
             Employee designer = employeeRepository.findByEmpIdAndCompany_ComId(designerId, comId);
-            if (designer == null || (designer.getRole() != EmployeeRole.Designer && designer.getRole() != EmployeeRole.Boss)) {
-                throw new DefinedException(new DefaultErrorCode("400", "项目设计师必须为设计师或企业负责人"));
+            if (designer == null || designer.getStatus() != EmployeeStatus.Active) {
+                throw new DefinedException(new DefaultErrorCode("400", "项目设计师必须为本企业在职员工"));
             }
             memberChanges.add(memberChangeText("项目设计师", project.getDesigner(), designer));
             project.setDesigner(designer);

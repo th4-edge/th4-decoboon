@@ -17,7 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * 客户归属上下文。
@@ -40,14 +39,6 @@ public class CustomerContext {
         this.customerRepository = customerRepository;
         this.dataScopeContext = dataScopeContext;
     }
-
-    private static final Set<EmployeeRole> ASSIGNABLE_OWNER_ROLES = Set.of(
-            EmployeeRole.Boss,
-            EmployeeRole.StoreManager,
-            EmployeeRole.TeamLeader,
-            EmployeeRole.Marketer,
-            EmployeeRole.Designer
-    );
 
     /**
      * 按数据范围加载客户，并兼容设计师作为业务负责人使用客户档案的场景。
@@ -82,7 +73,7 @@ public class CustomerContext {
      * 解析客户负责人。
      *
      * <p>企业负责人和店长可以明确转交客户；店长只能转交给本门店在职人员。
-     * 其他角色沿用业务回退负责人，不能通过 ownerId 转交客户。</p>
+     * 候选人不限制岗位，其他角色沿用业务回退负责人，不能通过 ownerId 转交客户。</p>
      */
     public Employee resolveOwner(Employee current, Long ownerId, Employee fallback) {
         Long comId = requireCompanyId(current);
@@ -110,9 +101,6 @@ public class CustomerContext {
         Employee owner = employeeRepository.findByEmpIdAndCompany_ComId(ownerId, comId);
         if (owner == null || owner.getStatus() != EmployeeStatus.Active) {
             throw new DefinedException(new DefaultErrorCode("400", "负责人不属于当前企业或已离职"));
-        }
-        if (!ASSIGNABLE_OWNER_ROLES.contains(owner.getRole())) {
-            throw new DefinedException(new DefaultErrorCode("400", "客户负责人只能选择业务员、设计师、团队负责人、店长或企业负责人"));
         }
         if (current.getRole() == EmployeeRole.StoreManager) {
             if (current.getStore() == null || owner.getStore() == null

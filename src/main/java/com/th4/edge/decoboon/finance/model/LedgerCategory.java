@@ -62,6 +62,10 @@ public class LedgerCategory extends AuditModel {
     @Column(length = 64, nullable = false)
     private String name;
 
+    @Note("分类说明：适用场景、举例和禁止用途")
+    @Column(length = 500)
+    private String description;
+
     @Note("收支方向")
     @Enumerated(EnumType.STRING)
     @Column(length = 16, nullable = false)
@@ -100,6 +104,8 @@ public class LedgerCategory extends AuditModel {
     public void setParent(LedgerCategory parent) { this.parent = parent; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public LedgerDirection getDirection() { return direction; }
     public void setDirection(LedgerDirection direction) { this.direction = direction; }
     public String getCode() { return code; }

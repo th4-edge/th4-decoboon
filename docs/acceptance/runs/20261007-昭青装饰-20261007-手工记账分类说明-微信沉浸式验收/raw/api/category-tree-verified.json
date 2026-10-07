@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "items": [
+    {
+      "categoryId": "233260419215523840",
+      "name": "其他杂项收入",
+      "description": "用于登记“其他杂项收入”相关其他账务；不得替代已有应收、应付、工资或项目闭环。",
+      "direction": {
+        "name": "收入",
+        "key": "Income"
+      },
+      "code": "INCOME_OTHER_MISC",
+      "builtIn": true,
+      "sort": 90,
+      "active": true,
+      "children": []
+    },
+    {
+      "categoryId": "233475207501709312",
+      "name": "本地验收分类",
+      "description": "Finance 已维护：本地验收分类仅用于无来源单据的其他账务；分类说明由财务按企业口径维护。",
+      "direction": {
+        "name": "支出",
+        "key": "Expense"
+      },
+      "builtIn": false,
+      "sort": 1000,
+      "active": true,
+      "children": []
+    }
+  ]
+}
