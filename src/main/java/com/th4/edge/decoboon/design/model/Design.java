@@ -52,7 +52,8 @@ import java.util.List;
         @Index(name = "idx_design_company_store", columnList = "com_id, store_id, design_id"),
         @Index(name = "idx_design_company_team", columnList = "com_id, team_id, design_id"),
         @Index(name = "idx_design_company_owner", columnList = "com_id, emp_id, design_id"),
-        @Index(name = "idx_design_company_customer", columnList = "com_id, customer_id, design_id")
+        @Index(name = "idx_design_company_customer", columnList = "com_id, customer_id, design_id"),
+        @Index(name = "idx_design_company_property_status", columnList = "com_id, property_id, status, design_id")
 })
 public class Design extends AuditModel {
 

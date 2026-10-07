@@ -26,34 +26,34 @@ import static org.mockito.Mockito.when;
 /** 合同和项目创建必须同时通过角色能力与报价数据范围。 */
 class ProjectCreationScopeGuardTest {
 
-    private static final String SIGNER_DENIED = "只有企业负责人或店长可以处理合同签约与生效";
+    private static final String PREPARE_DENIED = "只有设计师、店长或企业负责人可以发起合同签约";
 
     @Test
     void marketerMustNotCreateContractEvenWhenQuoteIsPassedByFrontend() {
         ProjectAccessContext access = mock(ProjectAccessContext.class);
         var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
         Employee marketer = employee(EmployeeRole.Marketer);
-        when(access.requireContractSigner(marketer)).thenThrow(denied());
+        when(access.requireContractPreparer(marketer)).thenThrow(denied());
         Save save = new Save(access, contractContext);
         ReflectionTestUtils.setField(save, "employee", marketer);
         ReflectionTestUtils.setField(save, "quoteId", 10L);
 
         assertThatThrownBy(() -> save.call(new ProjectContract()))
-                .hasMessageContaining(SIGNER_DENIED);
+                .hasMessageContaining(PREPARE_DENIED);
 
         verify(access, never()).requireQuote(any(), any());
     }
 
     @Test
-    void storeManagerCanSignButTeamLeaderCannot() {
-        // 店长在用户确认的矩阵内，可继续走报价数据范围。
+    void storeManagerCanPrepareButTeamLeaderCannot() {
+        // 店长在发起/复核矩阵内，可继续走报价数据范围。
         ProjectAccessContext access = mock(ProjectAccessContext.class);
         var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
         Employee storeManager = employee(EmployeeRole.StoreManager);
         Quote quote = accepted(10L);
         ProjectContract created = new ProjectContract();
         created.setContractId(20L);
-        when(access.requireContractSigner(storeManager)).thenReturn(storeManager);
+        when(access.requireContractPreparer(storeManager)).thenReturn(storeManager);
         when(access.requireQuote(10L, storeManager)).thenReturn(quote);
         when(contractContext.createFromQuote(any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(created);
         when(contractContext.enrich(created)).thenReturn(created);
@@ -62,25 +62,26 @@ class ProjectCreationScopeGuardTest {
         ReflectionTestUtils.setField(save, "quoteId", 10L);
         assertThat(save.call(new ProjectContract())).isSameAs(created);
 
-        // 团队负责人不在签约矩阵内，必须在报价查询前被能力门禁拒绝。
+        // 团队负责人不在合同发起矩阵内，必须在报价查询前被能力门禁拒绝。
         ProjectAccessContext deniedAccess = mock(ProjectAccessContext.class);
         Employee teamLeader = employee(EmployeeRole.TeamLeader);
-        when(deniedAccess.requireContractSigner(teamLeader)).thenThrow(denied());
+        when(deniedAccess.requireContractPreparer(teamLeader)).thenThrow(denied());
         Save deniedSave = new Save(deniedAccess, mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class));
         ReflectionTestUtils.setField(deniedSave, "employee", teamLeader);
         ReflectionTestUtils.setField(deniedSave, "quoteId", 10L);
         assertThatThrownBy(() -> deniedSave.call(new ProjectContract()))
-                .hasMessageContaining(SIGNER_DENIED);
+                .hasMessageContaining(PREPARE_DENIED);
         verify(deniedAccess, never()).requireQuote(any(), any());
     }
 
     @Test
     void crossCompanyContractAttemptMustRespectRoleThenReturnNotFound() {
-        for (EmployeeRole role : new EmployeeRole[]{EmployeeRole.Boss, EmployeeRole.StoreManager}) {
+        for (EmployeeRole role : new EmployeeRole[]{
+                EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.Designer}) {
             ProjectAccessContext access = mock(ProjectAccessContext.class);
             var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
             Employee employee = employee(role);
-            when(access.requireContractSigner(employee)).thenReturn(employee);
+            when(access.requireContractPreparer(employee)).thenReturn(employee);
             when(access.requireQuote(10L, employee)).thenThrow(
                     new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
             Save save = new Save(access, contractContext);
@@ -92,30 +93,31 @@ class ProjectCreationScopeGuardTest {
         }
 
         for (EmployeeRole role : new EmployeeRole[]{
-                EmployeeRole.Marketer, EmployeeRole.TeamLeader, EmployeeRole.Designer}) {
+                EmployeeRole.Marketer, EmployeeRole.TeamLeader, EmployeeRole.Pm, EmployeeRole.Finance}) {
             ProjectAccessContext access = mock(ProjectAccessContext.class);
             Employee employee = employee(role);
-            when(access.requireContractSigner(employee)).thenThrow(denied());
+            when(access.requireContractPreparer(employee)).thenThrow(denied());
             Save save = new Save(access, mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class));
             ReflectionTestUtils.setField(save, "employee", employee);
             ReflectionTestUtils.setField(save, "quoteId", 10L);
 
             assertThatThrownBy(() -> save.call(new ProjectContract()))
-                    .hasMessageContaining(SIGNER_DENIED);
+                    .hasMessageContaining(PREPARE_DENIED);
             verify(access, never()).requireQuote(any(), any());
         }
     }
 
     @Test
-    void bossAndStoreManagerCanCreateContractAfterScopedAcceptedQuote() {
-        for (EmployeeRole role : new EmployeeRole[]{EmployeeRole.Boss, EmployeeRole.StoreManager}) {
+    void designerBossAndStoreManagerCanPrepareContractAfterScopedAcceptedQuote() {
+        for (EmployeeRole role : new EmployeeRole[]{
+                EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.Designer}) {
             ProjectAccessContext access = mock(ProjectAccessContext.class);
             var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
             Employee employee = employee(role);
             Quote quote = accepted(10L);
             ProjectContract created = new ProjectContract();
             created.setContractId(20L);
-            when(access.requireContractSigner(employee)).thenReturn(employee);
+            when(access.requireContractPreparer(employee)).thenReturn(employee);
             when(access.requireQuote(10L, employee)).thenReturn(quote);
             when(contractContext.createFromQuote(any(), any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(created);
             when(contractContext.enrich(created)).thenReturn(created);
@@ -128,45 +130,47 @@ class ProjectCreationScopeGuardTest {
     }
 
     @Test
-    void designerMustNotCreateContractEvenWhenScopedAcceptedQuote() {
+    void signedAtMustNotMakeDesignerContractCreationBypassConfirmation() {
         ProjectAccessContext access = mock(ProjectAccessContext.class);
         var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
         Employee designer = employee(EmployeeRole.Designer);
-        when(access.requireContractSigner(designer)).thenThrow(denied());
+        Quote quote = accepted(10L);
+        when(access.requireContractPreparer(designer)).thenReturn(designer);
+        when(access.requireQuote(10L, designer)).thenReturn(quote);
         Save save = new Save(access, contractContext);
         ReflectionTestUtils.setField(save, "employee", designer);
-        ReflectionTestUtils.setField(save, "quoteId", 10L);
-
-        assertThatThrownBy(() -> save.call(new ProjectContract()))
-                .hasMessageContaining(SIGNER_DENIED);
-        verify(access, never()).requireQuote(any(), any());
-        verify(contractContext, never()).createFromQuote(any(), any(), any(), any(), any(), any(), any());
-    }
-
-    @Test
-    void signingDuringContractCreationMustProvideFinalSignedAmount() {
-        ProjectAccessContext access = mock(ProjectAccessContext.class);
-        var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
-        Employee employee = employee(EmployeeRole.Boss);
-        Quote quote = accepted(10L);
-        when(access.requireContractSigner(employee)).thenReturn(employee);
-        when(access.requireQuote(10L, employee)).thenReturn(quote);
-        Save save = new Save(access, contractContext);
-        ReflectionTestUtils.setField(save, "employee", employee);
         ReflectionTestUtils.setField(save, "quoteId", 10L);
         ReflectionTestUtils.setField(save, "signedAt", java.time.LocalDate.now());
 
         assertThatThrownBy(() -> save.call(new ProjectContract()))
-                .hasMessageContaining("签约时必须填写最终签约价格");
+                .hasMessageContaining("合同基线创建不直接完成签约");
         verify(contractContext, never()).createFromQuote(any(), any(), any(), any(), any(), any(), any());
     }
 
     @Test
-    void signerRoleMustStillPassQuoteDataScopeOnContractCreation() {
+    void signedAmountMustNotMakeBossContractCreationBypassConfirmation() {
+        ProjectAccessContext access = mock(ProjectAccessContext.class);
+        var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
+        Employee employee = employee(EmployeeRole.Boss);
+        Quote quote = accepted(10L);
+        when(access.requireContractPreparer(employee)).thenReturn(employee);
+        when(access.requireQuote(10L, employee)).thenReturn(quote);
+        Save save = new Save(access, contractContext);
+        ReflectionTestUtils.setField(save, "employee", employee);
+        ReflectionTestUtils.setField(save, "quoteId", 10L);
+        ReflectionTestUtils.setField(save, "signedAmount", new java.math.BigDecimal("100000"));
+
+        assertThatThrownBy(() -> save.call(new ProjectContract()))
+                .hasMessageContaining("合同基线创建不直接完成签约");
+        verify(contractContext, never()).createFromQuote(any(), any(), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void preparerRoleMustStillPassQuoteDataScopeOnContractCreation() {
         ProjectAccessContext access = mock(ProjectAccessContext.class);
         var contractContext = mock(com.th4.edge.decoboon.project.context.ProjectContractContext.class);
         Employee boss = employee(EmployeeRole.Boss);
-        when(access.requireContractSigner(boss)).thenReturn(boss);
+        when(access.requireContractPreparer(boss)).thenReturn(boss);
         when(access.requireQuote(10L, boss)).thenThrow(
                 new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
         Save save = new Save(access, contractContext);
@@ -203,7 +207,7 @@ class ProjectCreationScopeGuardTest {
     }
 
     private DefinedException denied() {
-        return new DefinedException(new DefaultErrorCode("403", SIGNER_DENIED));
+        return new DefinedException(new DefaultErrorCode("403", PREPARE_DENIED));
     }
 
     private Quote accepted(Long quoteId) {

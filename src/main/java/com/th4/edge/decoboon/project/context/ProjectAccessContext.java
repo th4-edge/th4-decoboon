@@ -40,15 +40,37 @@ public class ProjectAccessContext {
     }
 
     /**
-     * 合同签约/生效角色矩阵（2026-10-05 用户确认）：企业负责人 + 店长。
-     * 其他角色（含设计师）不因页面可点而获得签约权。
+     * 合同发起角色矩阵（2026-10-08 用户确认）：设计师负责发起/登记客户签约，店长和企业负责人可复核。
+     * 设计师不能直接确认签约或生效立项。
      */
-    public Employee requireContractSigner(Employee employee) {
+    public Employee requireContractPreparer(Employee employee) {
+        return requireRoles(employee,
+                "只有设计师、店长或企业负责人可以发起合同签约",
+                EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.Designer);
+    }
+
+    /** 合同确认角色矩阵：企业负责人 + 店长。 */
+    public Employee requireContractConfirmer(Employee employee) {
+        return requireRoles(employee,
+                "只有企业负责人或店长可以确认合同签约",
+                EmployeeRole.Boss, EmployeeRole.StoreManager);
+    }
+
+    /** 合同生效与项目生成角色矩阵：企业负责人 + 店长。 */
+    public Employee requireProjectCreator(Employee employee) {
+        return requireRoles(employee,
+                "只有企业负责人或店长可以确认合同生效并生成项目",
+                EmployeeRole.Boss, EmployeeRole.StoreManager);
+    }
+
+    private Employee requireRoles(Employee employee, String message, EmployeeRole... allowedRoles) {
         Employee current = requireEmployee(employee);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.StoreManager) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或店长可以处理合同签约与生效"));
+        for (EmployeeRole allowed : allowedRoles) {
+            if (current.getRole() == allowed) {
+                return current;
+            }
         }
-        return current;
+        throw new DefinedException(new DefaultErrorCode("403", message));
     }
 
     /** 主键 + 当前数据范围的单次项目查询。 */

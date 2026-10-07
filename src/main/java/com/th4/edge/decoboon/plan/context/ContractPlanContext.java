@@ -94,6 +94,10 @@ public class ContractPlanContext {
                 contract.getContractId(), contract.getCompany().getComId()).orElse(null);
         ContractConstructionPlan construction = constructionPlanRepository.findByContract_ContractIdAndCompany_ComId(
                 contract.getContractId(), contract.getCompany().getComId()).orElse(null);
+        // 合同已生效时 ensure 可能被重复调用；已存在两份快照即幂等返回，不能再次走更换计划校验。
+        if (payment != null && construction != null) {
+            return;
+        }
         select(contract, payment == null ? null : payment.getSourceCode(),
                 construction == null ? null : construction.getSourceCode());
     }

@@ -13,6 +13,9 @@ public interface ContractLineRepository extends JpaRepository<ContractLine, Long
         JpaSpecificationExecutor<ContractLine> {
     List<ContractLine> findByContractOrderBySortAsc(ProjectContract contract);
 
+    /** 合同变更批量录入：一次按合同范围加载原合同行，避免逐行查库。 */
+    List<ContractLine> findByLineIdInAndContract_ContractId(java.util.Collection<Long> lineIds, Long contractId);
+
     @EntityGraph(attributePaths = {"sourceQuoteLine", "sourceQuoteLine.catalogItem"})
     List<ContractLine> findByContract_Project_ProjectIdOrderBySortAsc(Long projectId);
 

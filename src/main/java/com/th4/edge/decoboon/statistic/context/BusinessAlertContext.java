@@ -219,7 +219,8 @@ public class BusinessAlertContext {
                                                 List<ContractChange> changes,
                                                 Set<Long> projectIds) {
         Map<Long, BigDecimal> amountByProject = changes.stream()
-                .filter(change -> change.getStatus() == ContractChangeStatus.Approved)
+                .filter(change -> change.getStatus() == ContractChangeStatus.CustomerConfirmed
+                        || change.getStatus() == ContractChangeStatus.Approved)
                 .filter(change -> change.getProject() != null
                         && projectIds.contains(change.getProject().getProjectId()))
                 .collect(Collectors.groupingBy(change -> change.getProject().getProjectId(),

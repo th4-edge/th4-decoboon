@@ -52,7 +52,8 @@ import com.th4.edge.tenant.user.model.Company;
                 @Index(name = "idx_acceptance_company", columnList = "com_id, acceptance_id"),
                 @Index(name = "idx_acceptance_company_store", columnList = "com_id, store_id, acceptance_id"),
                 @Index(name = "idx_acceptance_company_team", columnList = "com_id, team_id, acceptance_id"),
-                @Index(name = "idx_acceptance_company_owner", columnList = "com_id, owner_id, acceptance_id")
+                @Index(name = "idx_acceptance_company_owner", columnList = "com_id, owner_id, acceptance_id"),
+                @Index(name = "idx_acceptance_company_project_status", columnList = "com_id, project_id, status, acceptance_id")
         }
 )
 public class Acceptance extends AuditModel implements ProjectOwned {

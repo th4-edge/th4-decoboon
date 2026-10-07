@@ -117,6 +117,13 @@ class PurchaseDeliveryModeTest {
     }
 
     @Test
+    void dueDateShouldUseActualArrivalDate() {
+        ReflectionTestUtils.setField(save, "arrivedAt", java.time.LocalDateTime.of(2026, 9, 1, 10, 0));
+        confirmReceipt(DeliveryMode.Direct);
+        verify(dueDateContext).dueDate(any(), eq(LocalDate.of(2026, 9, 1)));
+    }
+
+    @Test
     void materialPlanMustRemainPartialWhenPurchasesDoNotCoverDemand() {
         PurchaseOrder current = confirmReceipt(DeliveryMode.Direct, "2", "1", "1", List.of());
 

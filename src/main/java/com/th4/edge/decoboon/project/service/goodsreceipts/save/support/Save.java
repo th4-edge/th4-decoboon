@@ -175,7 +175,9 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         purchaseRepository.save(purchase);
 
         plan.setStatus(materialPlanStatusContext.resolve(plan));
-        plan.setArrivedAt(LocalDate.now());
+        java.time.LocalDate actualArrivalDate = saved.getArrivedAt() == null
+                ? LocalDate.now() : saved.getArrivedAt().toLocalDate();
+        plan.setArrivedAt(actualArrivalDate);
         BigDecimal actualReceivedCost = receiptRepository.findByPurchaseOrderByReceiptIdDesc(purchase).stream()
                 .map(row -> value(row.getQuantity()).multiply(unitPrice))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -183,7 +185,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         plan.setCost(actualReceivedCost);
         materialPlanRepository.save(plan);
 
-        backfillPayableDueDate(purchase);
+        backfillPayableDueDate(purchase, actualArrivalDate);
         projectContext.refreshProject(purchase.getProject());
         return saved;
     }
@@ -216,7 +218,9 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
                 && current.getEmpId() != null && current.getEmpId().equals(project.getManager().getEmpId());
         boolean isProjectDesigner = project != null && project.getDesigner() != null
                 && current.getEmpId() != null && current.getEmpId().equals(project.getDesigner().getEmpId());
-        boolean fallback = current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance;
+        boolean fallback = current.getRole() == EmployeeRole.Boss
+                || current.getRole() == EmployeeRole.StoreManager
+                || current.getRole() == EmployeeRole.Finance;
         if (!isProjectPm && !isProjectDesigner && !fallback) {
             throw new DefinedException(new DefaultErrorCode("403",
                     "材料到场确认需由本项目项目经理或设计负责人完成"));
@@ -227,8 +231,7 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
      * DEC-MP-01：应付在下单时已形成，到场确认只回填账期起算日与实际到期日。
      * 历史采购单若无应付，则按采购金额补建，保证应付不缺失。
      */
-    private void backfillPayableDueDate(PurchaseOrder purchase) {
-        LocalDate receiptDate = LocalDate.now();
+    private void backfillPayableDueDate(PurchaseOrder purchase, LocalDate receiptDate) {
         Long comId = purchase.getCompany().getComId();
         var existing = payableRepository
                 .findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(comId, purchase.getPurchaseId());

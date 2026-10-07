@@ -103,16 +103,23 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
     @Override
     @Transactional
     public ProjectContract call(ProjectContract request) {
-        // 2026-10-05 用户确认：合同签约/生效角色矩阵 = 企业负责人 + 店长。
-        // 权限判定先于数据加载：无能力角色统一 403，不用 404 掩盖语义（也不泄露对象存在性）。
-        Employee current = accessContext.requireContractSigner(employee);
-        Specification<ProjectContract> byId = (root, query, builder) ->
-                builder.equal(root.get("contractId"), contractId);
-        ProjectContract contract = contractRepository.findOne(byId.and(accessContext.visibleContract(employee)))
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "合同不存在或无权访问")));
         if (status == null) {
             throw new DefinedException(new DefaultErrorCode("400", "合同动作不能为空"));
         }
+        // 2026-10-08 用户确认：设计师可发起合同，但确认签约和确认生效立项只允许企业负责人 + 店长。
+        // 权限判定先于数据加载：无能力角色统一 403，不用 404 掩盖语义（也不泄露对象存在性）。
+        Employee current = status == ContractStatus.Effective
+                ? accessContext.requireProjectCreator(employee)
+                : status == ContractStatus.Signed
+                ? accessContext.requireContractConfirmer(employee)
+                : null;
+        if (current == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "当前仅支持合同签约或生效"));
+        }
+        Specification<ProjectContract> byId = (root, query, builder) ->
+                builder.equal(root.get("contractId"), contractId);
+        ProjectContract contract = contractRepository.findOne(byId.and(accessContext.visibleContract(current)))
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "合同不存在或无权访问")));
         // 幂等：合同已签约（含后续履约状态）时，重复提交 Signed 直接返回同一已签约事实，
         // 不重复推进状态、不重复写数据。
         if (status == ContractStatus.Signed && alreadySigned(contract)) {
@@ -130,7 +137,7 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
             if (signedAmount == null || signedAmount.signum() <= 0) {
                 throw new DefinedException(new DefaultErrorCode("400", "签约时必须填写最终签约价格"));
             }
-            if (paymentPlanCode != null || constructionPlanCode != null) {
+            if (hasText(paymentPlanCode) || hasText(constructionPlanCode)) {
                 planContext.select(contract, paymentPlanCode, constructionPlanCode);
             }
             return contractContext.enrich(contractContext.markSigned(contract, signedAt, signedAmount));
@@ -170,5 +177,9 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
         }
         return contract.getStatus() != ContractStatus.Draft
                 && contract.getStatus() != ContractStatus.PendingSign;
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.isBlank();
     }
 }

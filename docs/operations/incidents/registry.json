@@ -41,7 +41,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 10,
+      "count": 11,
       "firstSeen": "2026-09-16 06:33:46.274",
       "lastSeen": "2026-10-07 07:13:40.587",
       "samples": [
@@ -59,7 +59,8 @@
         "2026-09-17/20260917-184110",
         "2026-09-18/20260918-130145",
         "2026-09-20/20260920-130110",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -107,9 +108,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 64,
+      "count": 69,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-10-07 14:00:14.046",
+      "lastSeen": "2026-10-07T18:57:34.512+08:00",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
         "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
@@ -135,7 +136,8 @@
         "2026-10-05/20261005-181721",
         "2026-10-05/20261005-190730",
         "2026-10-05/20261005-192227",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -440,19 +442,21 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 4,
+      "count": 5,
       "firstSeen": "2026-09-17 07:38:05.182",
       "lastSeen": "2026-10-07 07:37:29.203",
       "samples": [
         "[2026-09-17 07:38:05.182] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - zzcanary-5d0f56892ac10116.env处理失败:找不到对应的实体处理服务[5d0f56892ac10116.env]",
         "3371:2026-09-17T07:38:05.182+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : zzcanary-5d0f56892ac10116.env处理失败:找不到对应的实体处理服务[5d0f56892ac10116.env]",
         "3371:2026-09-17T07:38:05.182+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : zzcanary-5d0f56892ac10116.env处理失败:找不到对应的实体处理服务[5d0f56892ac10116.env]",
+        "[2026-10-07 07:37:29.203] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - zzcanary-55ee6e3e74a270b4.env处理失败:找不到对应的实体处理服务[55ee6e3e74a270b4.env]",
         "[2026-10-07 07:37:29.203] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - zzcanary-55ee6e3e74a270b4.env处理失败:找不到对应的实体处理服务[55ee6e3e74a270b4.env]"
       ],
       "reportPaths": [
         "2026-09-17/20260917-184110",
         "2026-09-18/20260918-130145",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -486,7 +490,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 42,
+      "count": 43,
       "firstSeen": "2026-09-17T23:54:36.942+08:00",
       "lastSeen": "2026-10-07 00:12:43.054",
       "samples": [
@@ -515,7 +519,8 @@
         "2026-10-06/20261006-184950",
         "2026-10-07/20261007-003223",
         "2026-10-07/20261007-012037",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -604,7 +609,7 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 277,
+      "count": 290,
       "firstSeen": "2026-09-18 13:05:07.158",
       "lastSeen": "2026-10-07 05:49:58.370",
       "samples": [
@@ -615,7 +620,6 @@
         "[2026-09-18 13:06:42.060] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ"
       ],
       "reportPaths": [
-        "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-190730",
         "2026-10-05/20261005-192227",
@@ -634,7 +638,8 @@
         "2026-10-06/20261006-184549",
         "2026-10-06/20261006-184950",
         "2026-10-07/20261007-012037",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -1479,7 +1484,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 6,
+      "count": 8,
       "firstSeen": "2026-09-26 01:20:47.724",
       "lastSeen": "2026-10-07 07:07:22.506",
       "samples": [
@@ -1492,7 +1497,8 @@
       "reportPaths": [
         "2026-09-26/20260926-022226",
         "2026-10-07/20261007-012037",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2648,7 +2654,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 14,
+      "count": 21,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2660,7 +2666,8 @@
       ],
       "reportPaths": [
         "2026-10-07/20261007-012037",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2671,7 +2678,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 14,
+      "count": 21,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2683,7 +2690,8 @@
       ],
       "reportPaths": [
         "2026-10-07/20261007-012037",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2694,7 +2702,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 16,
+      "count": 24,
       "firstSeen": "2026-10-07 01:00:27.177",
       "lastSeen": "2026-10-07 01:03:44.581",
       "samples": [
@@ -2706,7 +2714,8 @@
       ],
       "reportPaths": [
         "2026-10-07/20261007-012037",
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2918,7 +2927,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 6,
+      "count": 12,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2929,7 +2938,8 @@
         "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [scheduled_days] in table [db_payroll_compensation_scheme]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2940,7 +2950,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 6,
+      "count": 12,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -2951,7 +2961,8 @@
         "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [scheduled_days] in table [db_payroll_compensation_scheme]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainer"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2962,7 +2973,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 7,
+      "count": 14,
       "firstSeen": "2026-10-07 05:47:29.093",
       "lastSeen": "2026-10-07 05:50:27.406",
       "samples": [
@@ -2973,7 +2984,8 @@
         "[2026-10-07 05:49:28.754] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [scheduled_days] in table [db_payroll_compensation_scheme]"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -2984,9 +2996,9 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 12,
+      "count": 18,
       "firstSeen": "2026-10-07 16:37:41.387",
-      "lastSeen": "2026-10-07T16:38:20.607+08:00",
+      "lastSeen": "2026-10-07 16:38:20.607",
       "samples": [
         "[2026-10-07 16:37:41.387] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/save处理失败:could not execute batch [Duplicate entry '1790066191585976744-1790221396230505495-2026-09-15' for key 'db_payroll_compensation_scheme.uk_payroll_comp_employee_effective'] [insert into db_payroll_compensation_scheme (base_salary,com_id,create_date,create_date_time,create_day,create_hour,create_minute,create_month,create_second,create_time,create_week,create_year,creator_id,effective_from,effective_to,emp_id,remark,scheduled_days,status,store_id,team_id,update_date,update_date_time,update_day,update_hour,update_minute,update_month,update_second,update_time,update_week,update_year,scheme_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; SQL [insert into db_payroll_compensation_scheme (base_salary,com_id,create_date,create_date_time,create_day,create_hour,create_minute,create_month,create_second,create_time,create_week,create_year,creator_id,effective_from,effective_to,emp_id,remark,scheduled_days,status,store_id,team_id,update_date,update_date_time,update_day,update_hour,update_minute,update_month,update_second,update_time,update_week,update_year,scheme_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; constraint [db_payroll_compensation_scheme.uk_payroll_comp_employee_effective]",
         "[2026-10-07 16:38:15.787] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/save处理失败:could not execute batch [Duplicate entry '1790066191585976744-1790221396230505495-2026-09-15' for key 'db_payroll_compensation_scheme.uk_payroll_comp_employee_effective'] [insert into db_payroll_compensation_scheme (base_salary,com_id,create_date,create_date_time,create_day,create_hour,create_minute,create_month,create_second,create_time,create_week,create_year,creator_id,effective_from,effective_to,emp_id,remark,scheduled_days,status,store_id,team_id,update_date,update_date_time,update_day,update_hour,update_minute,update_month,update_second,update_time,update_week,update_year,scheme_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; SQL [insert into db_payroll_compensation_scheme (base_salary,com_id,create_date,create_date_time,create_day,create_hour,create_minute,create_month,create_second,create_time,create_week,create_year,creator_id,effective_from,effective_to,emp_id,remark,scheduled_days,status,store_id,team_id,update_date,update_date_time,update_day,update_hour,update_minute,update_month,update_second,update_time,update_week,update_year,scheme_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; constraint [db_payroll_compensation_scheme.uk_payroll_comp_employee_effective]",
@@ -2995,7 +3007,8 @@
         "[2026-10-07 16:38:20.153] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/save处理失败:could not execute batch [Duplicate entry '1790066191585976744-1790221396230505495-2026-09-15' for key 'db_payroll_compensation_scheme.uk_payroll_comp_employee_effective'] [insert into db_payroll_compensation_scheme (base_salary,com_id,create_date,create_date_time,create_day,create_hour,create_minute,create_month,create_second,create_time,create_week,create_year,creator_id,effective_from,effective_to,emp_id,remark,scheduled_days,status,store_id,team_id,update_date,update_date_time,update_day,update_hour,update_minute,update_month,update_second,update_time,update_week,update_year,scheme_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; SQL [insert into db_payroll_compensation_scheme (base_salary,com_id,create_date,create_date_time,create_day,create_hour,create_minute,create_month,create_second,create_time,create_week,create_year,creator_id,effective_from,effective_to,emp_id,remark,scheduled_days,status,store_id,team_id,update_date,update_date_time,update_day,update_hour,update_minute,update_month,update_second,update_time,update_week,update_year,scheme_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)]; constraint [db_payroll_compensation_scheme.uk_payroll_comp_employee_effective]"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ],
       "fixedAt": "2026-10-07 17:01:31",
       "fixedRelease": "/opt/decoboon/releases/20261007-165929",
@@ -3009,15 +3022,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-10-07 06:47:03.797",
       "lastSeen": "2026-10-07 06:47:03.833",
       "samples": [
         "[2026-10-07 06:47:03.797] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/payment-plan/report处理失败: itemId不能为空",
+        "[2026-10-07 06:47:03.833] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/payment-plan/report处理失败: itemId不能为空",
+        "[2026-10-07 06:47:03.797] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/payment-plan/report处理失败: itemId不能为空",
         "[2026-10-07 06:47:03.833] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/payment-plan/report处理失败: itemId不能为空"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3028,7 +3044,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 6,
+      "count": 12,
       "firstSeen": "2026-10-07 16:37:41.370",
       "lastSeen": "2026-10-07 16:38:20.602",
       "samples": [
@@ -3039,7 +3055,8 @@
         "[2026-10-07 16:38:20.146] [ERROR] [XNIO-1 task-6] [org.hibernate.engine.jdbc.spi.SqlExceptionHelper] [?] [?] - Duplicate entry '1790066191585976744-1790221396230505495-2026-09-15' for key 'db_payroll_compensation_scheme.uk_payroll_comp_employee_effective'"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ],
       "fixedAt": "2026-10-07 17:01:31",
       "fixedRelease": "/opt/decoboon/releases/20261007-165929",
@@ -3053,15 +3070,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-10-07 06:47:06.531",
       "lastSeen": "2026-10-07 06:47:06.665",
       "samples": [
         "[2026-10-07 06:47:06.531] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - partner/statement/report处理失败: partnerId不能为空",
+        "[2026-10-07 06:47:06.665] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - partner/statement/report处理失败: partnerId不能为空",
+        "[2026-10-07 06:47:06.531] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - partner/statement/report处理失败: partnerId不能为空",
         "[2026-10-07 06:47:06.665] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - partner/statement/report处理失败: partnerId不能为空"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3072,15 +3092,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-10-07 06:47:03.660",
       "lastSeen": "2026-10-07 06:47:03.694",
       "samples": [
         "[2026-10-07 06:47:03.660] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/project/report处理失败: projectId不能为空",
+        "[2026-10-07 06:47:03.694] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/project/report处理失败: projectId不能为空",
+        "[2026-10-07 06:47:03.660] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/project/report处理失败: projectId不能为空",
         "[2026-10-07 06:47:03.694] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/project/report处理失败: projectId不能为空"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3091,15 +3114,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-10-07 06:47:03.726",
       "lastSeen": "2026-10-07 06:47:03.762",
       "samples": [
         "[2026-10-07 06:47:03.726] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/reconciliation/report处理失败: reconciliationId不能为空",
+        "[2026-10-07 06:47:03.762] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/reconciliation/report处理失败: reconciliationId不能为空",
+        "[2026-10-07 06:47:03.726] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/reconciliation/report处理失败: reconciliationId不能为空",
         "[2026-10-07 06:47:03.762] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/reconciliation/report处理失败: reconciliationId不能为空"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3110,17 +3136,19 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 4,
+      "count": 8,
       "firstSeen": "2026-10-07 16:31:54.623",
-      "lastSeen": "2026-10-07T16:37:51.298+08:00",
+      "lastSeen": "2026-10-07 17:03:47.665",
       "samples": [
         "[2026-10-07 16:31:54.623] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/delete处理失败:已形成考勤、提成或工资事实，不能删除薪酬方案",
         "[2026-10-07 16:37:51.298] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/delete处理失败:已形成考勤、提成或工资事实，不能删除薪酬方案",
         "2660:2026-10-07T16:31:54.623+08:00 ERROR 191193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/compensation/delete处理失败:已形成考勤、提成或工资事实，不能删除薪酬方案",
-        "2916:2026-10-07T16:37:51.298+08:00 ERROR 191193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/compensation/delete处理失败:已形成考勤、提成或工资事实，不能删除薪酬方案"
+        "2916:2026-10-07T16:37:51.298+08:00 ERROR 191193 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/compensation/delete处理失败:已形成考勤、提成或工资事实，不能删除薪酬方案",
+        "[2026-10-07 16:31:54.623] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/delete处理失败:已形成考勤、提成或工资事实，不能删除薪酬方案"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3131,7 +3159,7 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 5,
+      "count": 10,
       "firstSeen": "2026-10-07 06:47:01.292",
       "lastSeen": "2026-10-07 07:26:40.634",
       "samples": [
@@ -3142,7 +3170,8 @@
         "[2026-10-07 07:26:40.634] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/store/report处理失败:当前账号无权执行该操作"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3153,14 +3182,16 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 1,
+      "count": 2,
       "firstSeen": "2026-10-07 05:18:19.649",
       "lastSeen": "2026-10-07 05:18:19.649",
       "samples": [
+        "[2026-10-07 05:18:19.649] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/payslip/page处理失败:找不到对应的处理服务:payroll/payslip/page",
         "[2026-10-07 05:18:19.649] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/payslip/page处理失败:找不到对应的处理服务:payroll/payslip/page"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3171,15 +3202,18 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-10-07 07:25:13.628",
       "lastSeen": "2026-10-07 07:26:40.795",
       "samples": [
         "[2026-10-07 07:25:13.628] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/teamleader/report处理失败:找不到对应的处理服务:statistic/teamleader/report",
+        "[2026-10-07 07:26:40.795] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/teamleader/report处理失败:找不到对应的处理服务:statistic/teamleader/report",
+        "[2026-10-07 07:25:13.628] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/teamleader/report处理失败:找不到对应的处理服务:statistic/teamleader/report",
         "[2026-10-07 07:26:40.795] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/teamleader/report处理失败:找不到对应的处理服务:statistic/teamleader/report"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3190,14 +3224,16 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 1,
+      "count": 2,
       "firstSeen": "2026-10-07 12:25:06.422",
       "lastSeen": "2026-10-07 12:25:06.422",
       "samples": [
+        "[2026-10-07 12:25:06.422] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/stage/update处理失败:请先指定项目经理再开工",
         "[2026-10-07 12:25:06.422] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/stage/update处理失败:请先指定项目经理再开工"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
       ]
     },
     {
@@ -3208,17 +3244,58 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 4,
       "firstSeen": "2026-10-07 06:47:05.480",
       "lastSeen": "2026-10-07 06:47:05.623",
       "samples": [
         "[2026-10-07 06:47:05.480] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/workbench处理失败:请选择项目或合同",
+        "[2026-10-07 06:47:05.623] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/workbench处理失败:请选择项目或合同",
+        "[2026-10-07 06:47:05.480] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/workbench处理失败:请选择项目或合同",
         "[2026-10-07 06:47:05.623] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/contract/workbench处理失败:请选择项目或合同"
       ],
       "reportPaths": [
-        "2026-10-07/20261007-165437"
+        "2026-10-07/20261007-165437",
+        "2026-10-07/20261007-215347"
+      ]
+    },
+    {
+      "incidentId": "INC-20261007-73448c7d67",
+      "signature": "该员工本月考勤已存在",
+      "signatureHash": "73448c7d67",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-07 17:59:55.208",
+      "lastSeen": "2026-10-07T17:59:55.208+08:00",
+      "samples": [
+        "[2026-10-07 17:59:55.208] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - attendance/summary/save处理失败:该员工本月考勤已存在",
+        "1846:2026-10-07T17:59:55.208+08:00 ERROR 193374 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : attendance/summary/save处理失败:该员工本月考勤已存在"
+      ],
+      "reportPaths": [
+        "2026-10-07/20261007-215347"
+      ]
+    },
+    {
+      "incidentId": "INC-20261007-09ae9b3389",
+      "signature": "请先为该员工配置薪酬方案",
+      "signatureHash": "09ae9b3389",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-07 18:00:31.739",
+      "lastSeen": "2026-10-07T18:00:31.739+08:00",
+      "samples": [
+        "[2026-10-07 18:00:31.739] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - attendance/summary/save处理失败:请先为该员工配置薪酬方案",
+        "1962:2026-10-07T18:00:31.739+08:00 ERROR 193374 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : attendance/summary/save处理失败:请先为该员工配置薪酬方案"
+      ],
+      "reportPaths": [
+        "2026-10-07/20261007-215347"
       ]
     }
   ],
-  "updatedAt": "2026-10-07T17:01:31+08:00"
+  "updatedAt": "2026-10-07T13:53:48.704515+00:00"
 }

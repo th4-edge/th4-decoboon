@@ -86,9 +86,13 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
     @Override
     @Transactional
     public ProjectContract call(ProjectContract request) {
-        Employee current = accessContext.requireContractSigner(employee);
-        // 2026-10-05 用户确认：合同签约角色矩阵 = 企业负责人 + 店长。
-        // 设计师等其他角色不因页面可点而获得签约权。
+        Employee current = accessContext.requireContractPreparer(employee);
+        // 2026-10-08 用户确认：设计师可发起/登记合同，店长和企业负责人负责复核确认。
+        // 本接口只生成待签约合同，不允许携带 signedAt/signedAmount 直接完成签约。
+        if (signedAt != null || signedAmount != null) {
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "合同基线创建不直接完成签约，请提交后由企业负责人或店长确认"));
+        }
         Quote quote;
         try {
             quote = accessContext.requireQuote(quoteId, current);
@@ -103,11 +107,8 @@ public class Save implements com.th4.edge.decoboon.project.service.contract.save
         if (quote.getStatus() != QuoteStatus.Accepted) {
             throw new DefinedException(new DefaultErrorCode("400", "只有客户已确认的报价可以生成合同"));
         }
-        if (signedAt != null && (signedAmount == null || signedAmount.signum() <= 0)) {
-            throw new DefinedException(new DefaultErrorCode("400", "签约时必须填写最终签约价格"));
-        }
         ProjectContract contract = contractContext.createFromQuote(
-                quote, current, signedAt, signedAmount, startDate, planEndDate, remark,
+                quote, current, null, null, startDate, planEndDate, remark,
                 paymentPlanCode, constructionPlanCode);
         if (paymentTerms != null) {
             contract.setPaymentTerms(paymentTerms);

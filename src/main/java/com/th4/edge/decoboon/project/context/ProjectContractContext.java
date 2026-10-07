@@ -216,30 +216,61 @@ public class ProjectContractContext {
         customerRepository.save(quote.getCustomer());
     }
 
+    /**
+     * 审批增减项变更单。
+     *
+     * <p>DEC-041 / BR-035：客户线下确认是创建前置事实，企业审批通过即生效——
+     * 审批通过时在同一事务内完成合同金额、项目合同额、应收、任务、材料与成本联动；
+     * 审批驳回只落状态。历史 {@code Approved}（待客户确认）数据仍由
+     * {@link #confirmCustomer} 兼容处理。</p>
+     */
     @Transactional
     public ContractChange approve(ContractChange change, Employee approver, boolean approved, String conclusion) {
-        change.setStatus(approved ? ContractChangeStatus.Approved : ContractChangeStatus.Rejected);
+        if (change.getStatus() == ContractChangeStatus.CustomerConfirmed) {
+            return change; // 已生效（新口径），幂等返回，不重复结算。
+        }
         change.setApprovedBy(approver);
         change.setConclusion(conclusion);
         change.setApprovedAt(LocalDateTime.now());
-        if (approved) {
-            ProjectContract contract = change.getContract();
-            contract.setStatus(ContractStatus.Changing);
-            contractRepository.save(contract);
+        if (!approved) {
+            change.setStatus(ContractChangeStatus.Rejected);
+            return changeRepository.save(change);
         }
-        return changeRepository.save(change);
+        if (!Boolean.TRUE.equals(change.getCustomerConfirmed())) {
+            throw new DefinedException(new DefaultErrorCode("400", "缺少客户线下确认，不能审批生效"));
+        }
+        return settle(change, approver, ContractChangeStatus.CustomerConfirmed);
     }
 
-    /** 客户确认变更后，更新合同金额和项目预算，并同步应收计划。 */
+    /**
+     * 历史口径兼容：审批通过后再登记客户确认。
+     *
+     * <p>新口径审批通过即生效，不再产生 {@code Approved} 待确认数据；
+     * 此入口仅用于存量单据与旧客户端过渡。重复调用幂等。</p>
+     */
     @Transactional
     public ContractChange confirmCustomer(ContractChange change, Employee operator) {
-        if (change.getStatus() == ContractChangeStatus.CustomerConfirmed
-                || Boolean.TRUE.equals(change.getCustomerConfirmed())) {
+        if (change.getStatus() == ContractChangeStatus.CustomerConfirmed) {
             return change;
+        }
+        if (change.getStatus() == ContractChangeStatus.Approved && Boolean.TRUE.equals(change.getCustomerConfirmed())) {
+            return change; // 新口径已生效，幂等。
         }
         if (change.getStatus() != ContractChangeStatus.Approved) {
             throw new DefinedException(new DefaultErrorCode("400", "变更单审批通过后才能进行客户确认"));
         }
+        change.setCustomerConfirmed(true);
+        change.setCustomerConfirmedAt(LocalDateTime.now());
+        return settle(change, operator, ContractChangeStatus.CustomerConfirmed);
+    }
+
+    /**
+     * 合同变更生效结算：合同当前额、项目合同额、应收、任务、材料、成本一致联动。
+     *
+     * <p>调用方必须先完成客户确认与审批前置校验；本方法只做一次结算，
+     * 通过状态与 {@code customerConfirmed} 双保险避免重复生成应收/任务/材料。</p>
+     */
+    private ContractChange settle(ContractChange change, Employee operator, ContractChangeStatus targetStatus) {
         ProjectContract contract = change.getContract();
         BigDecimal current = value(contract.getCurrentAmount());
         BigDecimal delta = value(change.getAmount());
@@ -256,9 +287,13 @@ public class ProjectContractContext {
         fulfillmentContext.apply(change, operator);
         projectContext.refreshProject(project);
         syncReceivable(change, operator, delta);
-        change.setCustomerConfirmed(true);
-        change.setCustomerConfirmedAt(LocalDateTime.now());
-        change.setStatus(ContractChangeStatus.CustomerConfirmed);
+        if (!Boolean.TRUE.equals(change.getCustomerConfirmed())) {
+            change.setCustomerConfirmed(true);
+        }
+        if (change.getCustomerConfirmedAt() == null) {
+            change.setCustomerConfirmedAt(LocalDateTime.now());
+        }
+        change.setStatus(targetStatus);
         return changeRepository.save(change);
     }
 

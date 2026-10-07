@@ -44,29 +44,8 @@ public class MaterialPlanStatusContext {
         if (need.signum() <= 0) {
             return MaterialPlanStatus.Cancelled;
         }
-        List<PurchaseOrderItem> items = purchaseItemRepository
-                .findByMaterialPlanOrderByPurchaseItemIdAsc(plan);
-        BigDecimal ordered;
-        BigDecimal received;
-        if (!items.isEmpty()) {
-            ordered = items.stream()
-                    .filter(item -> item.getStatus() != null && ACTIVE.contains(item.getStatus()))
-                    .map(item -> value(item.getQuantity()))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            received = items.stream()
-                    .map(item -> value(item.getReceivedQuantity()))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        } else {
-            List<PurchaseOrder> orders = purchaseRepository
-                    .findByMaterialPlanOrderByPurchaseIdAsc(plan);
-            ordered = orders.stream()
-                    .filter(order -> order.getStatus() != null && ACTIVE.contains(order.getStatus()))
-                    .map(order -> value(order.getQuantity()))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            received = orders.stream()
-                    .map(order -> value(order.getReceivedQuantity()))
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        }
+        BigDecimal ordered = orderedQuantity(plan);
+        BigDecimal received = receivedQuantity(plan);
         if (received.compareTo(need) >= 0) {
             return MaterialPlanStatus.Arrived;
         }
@@ -77,6 +56,44 @@ public class MaterialPlanStatusContext {
             return MaterialPlanStatus.ReadyToOrder;
         }
         return ordered.compareTo(need) >= 0 ? MaterialPlanStatus.Ordered : MaterialPlanStatus.PartiallyOrdered;
+    }
+
+    /** 已承诺下单量：优先采购明细，无明细时兼容历史采购单头。 */
+    @Transactional(readOnly = true)
+    public BigDecimal orderedQuantity(MaterialPlan plan) {
+        if (plan == null) {
+            return BigDecimal.ZERO;
+        }
+        List<PurchaseOrderItem> items = purchaseItemRepository
+                .findByMaterialPlanOrderByPurchaseItemIdAsc(plan);
+        if (!items.isEmpty()) {
+            return items.stream()
+                    .filter(item -> item.getStatus() != null && ACTIVE.contains(item.getStatus()))
+                    .map(item -> value(item.getQuantity()))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan).stream()
+                .filter(order -> order.getStatus() != null && ACTIVE.contains(order.getStatus()))
+                .map(order -> value(order.getQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    /** 已到场量：优先采购明细，无明细时兼容历史采购单头。 */
+    @Transactional(readOnly = true)
+    public BigDecimal receivedQuantity(MaterialPlan plan) {
+        if (plan == null) {
+            return BigDecimal.ZERO;
+        }
+        List<PurchaseOrderItem> items = purchaseItemRepository
+                .findByMaterialPlanOrderByPurchaseItemIdAsc(plan);
+        if (!items.isEmpty()) {
+            return items.stream()
+                    .map(item -> value(item.getReceivedQuantity()))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan).stream()
+                .map(order -> value(order.getReceivedQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private BigDecimal value(BigDecimal value) {

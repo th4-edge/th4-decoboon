@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.project.configure.DeliveryMode;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.MaterialSourceType;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
+import com.th4.edge.decoboon.project.context.MaterialPurchaseContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
@@ -33,7 +34,6 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.StoreRepository;
@@ -88,6 +88,7 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
     private final ModelIdentityContext modelIdentityContext;
+    private final MaterialPurchaseContext materialPurchaseContext;
 
     public Batch(MaterialPlanRepository materialPlanRepository,
                  PurchaseOrderRepository purchaseRepository,
@@ -98,7 +99,8 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
                  StoreRepository storeRepository,
                  ProjectAccessContext accessContext,
                  ProjectPermissionContext permissionContext,
-                 ModelIdentityContext modelIdentityContext) {
+                 ModelIdentityContext modelIdentityContext,
+                 MaterialPurchaseContext materialPurchaseContext) {
         this.materialPlanRepository = materialPlanRepository;
         this.purchaseRepository = purchaseRepository;
         this.purchaseItemRepository = purchaseItemRepository;
@@ -109,12 +111,14 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
         this.modelIdentityContext = modelIdentityContext;
+        this.materialPurchaseContext = materialPurchaseContext;
     }
 
     @Override
     @Transactional
     public PurchaseOrder call(PurchaseOrder request) {
         Employee current = accessContext.requireEmployee(employee);
+        materialPurchaseContext.requireOperator(current);
         if (quantities == null || quantities.size() != materialPlanIds.size()) {
             throw new DefinedException(new DefaultErrorCode("400", "材料与数量必须一一对应"));
         }
@@ -122,8 +126,13 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
             throw new DefinedException(new DefaultErrorCode("400", "材料与单价必须一一对应"));
         }
         List<MaterialPlan> plans = new ArrayList<>();
+        java.util.Set<Long> planIdsSeen = new java.util.HashSet<>();
         Project project = null;
-        for (Long planId : materialPlanIds) {
+        for (int i = 0; i < materialPlanIds.size(); i++) {
+            Long planId = materialPlanIds.get(i);
+            if (!planIdsSeen.add(planId)) {
+                throw new DefinedException(new DefaultErrorCode("400", "同一材料计划不能在一张采购单中重复出现"));
+            }
             Specification<MaterialPlan> byId = (root, query, builder) -> builder.equal(root.get("planId"), planId);
             MaterialPlan plan = materialPlanRepository.findOne(byId.and(accessContext.visibleChild(
                             employee, MaterialPlan.class, "project")))
@@ -133,6 +142,7 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
             } else if (!project.getProjectId().equals(plan.getProject().getProjectId())) {
                 throw new DefinedException(new DefaultErrorCode("400", "合并下单的材料必须属于同一项目"));
             }
+            materialPurchaseContext.requireOrderQuantity(plan, quantities.get(i));
             requireOrderable(plan);
             plans.add(plan);
         }
@@ -171,11 +181,10 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
         request.setUnitPrice(BigDecimal.ZERO);
         request.setAmount(totalAmount);
         request.setReceivedQuantity(BigDecimal.ZERO);
-        boolean autoApproved = current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance;
-        request.setStatus(autoApproved ? PurchaseStatus.Approved : PurchaseStatus.Submitted);
-        request.setApprovedBy(autoApproved ? current : null);
-        request.setApprovedAt(autoApproved ? java.time.LocalDateTime.now() : null);
-        request.setApprovalRemark(autoApproved ? "企业负责人/财务直接确认" : null);
+        request.setStatus(PurchaseStatus.Draft);
+        request.setApprovedBy(current);
+        request.setApprovedAt(java.time.LocalDateTime.now());
+        request.setApprovalRemark("购材确认下单");
         request.setExpectedAt(expectedAt);
         request.setCreatedBy(current);
         request.setRemark(remark);
@@ -199,13 +208,10 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
             item.setAmount(quantities.get(i).multiply(unitPrices.get(i)));
             item.setReceivedQuantity(BigDecimal.ZERO);
             item.setStatus(saved.getStatus());
-            item.setPriceSource("财务下单录入");
+            item.setPriceSource(materialPurchaseContext.resolvePriceSource(plan, supplier, unitPrices.get(i)));
             purchaseItemRepository.save(modelIdentityContext.prepare(item));
-
-            plan.setStatus(MaterialPlanStatus.Requested);
-            materialPlanRepository.save(plan);
         }
-        return saved;
+        return materialPurchaseContext.confirmOrder(saved, current);
     }
 
     private void requireOrderable(MaterialPlan plan) {

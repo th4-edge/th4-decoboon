@@ -274,6 +274,73 @@ class ProjectContractContextTest {
     }
 
     @Test
+    void shouldActivateChangeWhenApproved() {
+        Company company = new Company();
+        company.setComId(1L);
+        Project project = new Project();
+        project.setProjectId(10L);
+        project.setCompany(company);
+        project.setProperty(new Property());
+        project.setContractAmount(new BigDecimal("100000"));
+        ProjectContract contract = new ProjectContract();
+        contract.setContractId(20L);
+        contract.setCompany(company);
+        contract.setProject(project);
+        contract.setProperty(project.getProperty());
+        contract.setBaselineAmount(new BigDecimal("100000"));
+        contract.setSignedAmount(new BigDecimal("100000"));
+        contract.setCurrentAmount(new BigDecimal("100000"));
+        ContractChange change = new ContractChange();
+        change.setChangeId(30L);
+        change.setCompany(company);
+        change.setProject(project);
+        change.setContract(contract);
+        change.setProperty(project.getProperty());
+        change.setStatus(ContractChangeStatus.Pending);
+        change.setCustomerConfirmed(true);
+        change.setCustomerConfirmedAt(java.time.LocalDateTime.now().minusDays(1));
+        change.setAmount(new BigDecimal("5000"));
+        Employee operator = new Employee();
+        operator.setEmpId(1L);
+
+        ContractChange effective = context.approve(change, operator, true, "同意变更");
+
+        assertThat(effective.getStatus()).isEqualTo(ContractChangeStatus.CustomerConfirmed);
+        assertThat(effective.getApprovedBy()).isSameAs(operator);
+        assertThat(effective.getCustomerConfirmedAt()).isBefore(java.time.LocalDateTime.now());
+        assertThat(contract.getCurrentAmount()).isEqualByComparingTo("105000");
+        assertThat(project.getContractAmount()).isEqualByComparingTo("105000");
+        verify(receivableRepository).save(any(Receivable.class));
+        verify(fulfillmentContext).apply(change, operator);
+    }
+
+    @Test
+    void shouldRejectApprovalWithoutCustomerSignOff() {
+        Company company = new Company();
+        company.setComId(1L);
+        Project project = new Project();
+        project.setProjectId(10L);
+        project.setCompany(company);
+        ProjectContract contract = new ProjectContract();
+        contract.setContractId(20L);
+        contract.setCompany(company);
+        contract.setProject(project);
+        contract.setCurrentAmount(new BigDecimal("100000"));
+        ContractChange change = new ContractChange();
+        change.setChangeId(30L);
+        change.setCompany(company);
+        change.setProject(project);
+        change.setContract(contract);
+        change.setStatus(ContractChangeStatus.Pending);
+        change.setCustomerConfirmed(false);
+        change.setAmount(new BigDecimal("5000"));
+
+        assertThatThrownBy(() -> context.approve(change, new Employee(), true, "同意"))
+                .hasMessageContaining("缺少客户线下确认");
+        verify(fulfillmentContext, never()).apply(any(), any());
+    }
+
+    @Test
     void shouldReturnConfirmedChangeWithoutDuplicatingSettlement() {
         Company company = new Company();
         company.setComId(1L);

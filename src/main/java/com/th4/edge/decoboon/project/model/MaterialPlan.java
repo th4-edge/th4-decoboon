@@ -55,7 +55,8 @@ import com.th4.edge.tenant.user.model.Team;
                 @Index(name = "idx_material_plan_company_team", columnList = "com_id, team_id, plan_id"),
                 @Index(name = "idx_material_plan_company_owner", columnList = "com_id, owner_id, plan_id"),
                 @Index(name = "idx_material_plan_company_project", columnList = "com_id, project_id, plan_id"),
-                @Index(name = "idx_material_plan_company_material_key", columnList = "com_id, material_key, plan_id")
+                @Index(name = "idx_material_plan_company_material_key", columnList = "com_id, material_key, plan_id"),
+                @Index(name = "idx_material_plan_company_project_status", columnList = "com_id, project_id, status, plan_id")
         }
 )
 public class MaterialPlan extends AuditModel implements ProjectOwned {

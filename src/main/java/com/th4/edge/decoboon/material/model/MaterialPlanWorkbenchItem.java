@@ -36,6 +36,7 @@ public class MaterialPlanWorkbenchItem {
     @Note("选材状态值") private String selectionStatus;
     @Note("选材状态名称") private String selectionStatusName;
     @Note("最新采购单索引") private Long purchaseId;
+    @Note("最新采购明细索引") private Long purchaseItemId;
     @Note("最新采购单号") private String purchaseNo;
     @Note("供应商名称") private String supplierName;
     @Note("是否已逾期") private boolean delayed;
@@ -95,6 +96,8 @@ public class MaterialPlanWorkbenchItem {
     public void setSelectionStatusName(String selectionStatusName) { this.selectionStatusName = selectionStatusName; }
     public Long getPurchaseId() { return purchaseId; }
     public void setPurchaseId(Long purchaseId) { this.purchaseId = purchaseId; }
+    public Long getPurchaseItemId() { return purchaseItemId; }
+    public void setPurchaseItemId(Long purchaseItemId) { this.purchaseItemId = purchaseItemId; }
     public String getPurchaseNo() { return purchaseNo; }
     public void setPurchaseNo(String purchaseNo) { this.purchaseNo = purchaseNo; }
     public String getSupplierName() { return supplierName; }

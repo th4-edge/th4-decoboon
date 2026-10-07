@@ -2,12 +2,12 @@ package com.th4.edge.decoboon.project.service.purchases.save.support;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.project.configure.DeliveryMode;
-import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.MaterialSourceType;
 import com.th4.edge.decoboon.material.configure.SelectionStatus;
 import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
+import com.th4.edge.decoboon.project.context.MaterialPurchaseContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
 import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
@@ -32,9 +32,7 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
-import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.StoreRepository;
@@ -47,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** 采购单创建；企业负责人和财务直接确认，其他角色提交后进入审批。 */
+/** 采购单创建；财务、店长和企业负责人确认后同事务形成应付。 */
 @Note("采购订单创建")
 @Properties(allow = {
         @AllowProperties(model = PurchaseOrder.class,
@@ -85,6 +83,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
     private final MaterialSelectionRepository materialSelectionRepository;
     private final PurchaseOrderItemRepository purchaseItemRepository;
     private final CarryoverLockContext carryoverLockContext;
+    private final MaterialPurchaseContext materialPurchaseContext;
 
     public Save(MaterialPlanRepository materialPlanRepository,
                 ProjectContractRepository contractRepository,
@@ -98,7 +97,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
                 PurchaseOrderItemRepository purchaseItemRepository) {
         this(materialPlanRepository, contractRepository, purchaseRepository, partnerRepository, storeRepository,
                 accessContext, modelIdentityContext, permissionContext, materialSelectionRepository,
-                purchaseItemRepository, null);
+                purchaseItemRepository, null, null);
     }
 
     @Autowired
@@ -112,7 +111,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
                 ProjectPermissionContext permissionContext,
                 MaterialSelectionRepository materialSelectionRepository,
                 PurchaseOrderItemRepository purchaseItemRepository,
-                CarryoverLockContext carryoverLockContext) {
+                CarryoverLockContext carryoverLockContext,
+                MaterialPurchaseContext materialPurchaseContext) {
         this.materialPlanRepository = materialPlanRepository;
         this.contractRepository = contractRepository;
         this.purchaseRepository = purchaseRepository;
@@ -124,12 +124,14 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         this.materialSelectionRepository = materialSelectionRepository;
         this.purchaseItemRepository = purchaseItemRepository;
         this.carryoverLockContext = carryoverLockContext;
+        this.materialPurchaseContext = materialPurchaseContext;
     }
 
     @Override
     @Transactional
     public PurchaseOrder call(PurchaseOrder request) {
         Employee current = accessContext.requireEmployee(employee);
+        materialPurchaseContext.requireOperator(current);
         Specification<com.th4.edge.decoboon.project.model.MaterialPlan> planById = (root, query, builder) ->
                 builder.equal(root.get("planId"), materialPlanId);
         var plan = materialPlanRepository.findOne(planById.and(accessContext.visibleChild(
@@ -139,6 +141,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         if (quantity.signum() <= 0 || unitPrice.signum() < 0) {
             throw new DefinedException(new DefaultErrorCode("400", "采购数量和单价不合法"));
         }
+        materialPurchaseContext.requireOrderQuantity(plan, quantity);
         requireConfirmedSelection(plan);
         if (supplierId == null && (supplierName == null || supplierName.isBlank())) {
             throw new DefinedException(new DefaultErrorCode("400", "请选择供应商或填写供应商名称"));
@@ -146,6 +149,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         ProjectContract contract = contractRepository.findByProject(project)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("400", "材料采购必须来源已生效合同")));
         Partner supplier = resolveSupplier(current, supplierId, supplierName);
+        String priceSource = materialPurchaseContext.resolvePriceSource(plan, supplier, unitPrice);
         DeliveryMode resolvedDeliveryMode = deliveryMode == null ? DeliveryMode.Direct : deliveryMode;
         Store warehouse = resolveWarehouse(current, resolvedDeliveryMode, warehouseId);
 
@@ -166,25 +170,22 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         request.setUnitPrice(unitPrice);
         request.setAmount(quantity.multiply(unitPrice));
         request.setReceivedQuantity(BigDecimal.ZERO);
-        boolean autoApproved = current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance;
-        request.setStatus(autoApproved ? PurchaseStatus.Approved : PurchaseStatus.Submitted);
-        request.setApprovedBy(autoApproved ? current : null);
-        request.setApprovedAt(autoApproved ? java.time.LocalDateTime.now() : null);
-        request.setApprovalRemark(autoApproved ? "企业负责人/财务直接确认" : null);
+        request.setStatus(PurchaseStatus.Draft);
+        request.setApprovedBy(current);
+        request.setApprovedAt(java.time.LocalDateTime.now());
+        request.setApprovalRemark("购材确认下单");
         request.setExpectedAt(expectedAt);
         request.setCreatedBy(current);
         request.setRemark(remark);
-        plan.setStatus(MaterialPlanStatus.Requested);
-        materialPlanRepository.save(plan);
         PurchaseOrder saved = purchaseRepository.save(modelIdentityContext.prepare(request));
-        saveItem(saved, plan, quantity, unitPrice, remark);
+        saveItem(saved, plan, quantity, unitPrice, priceSource, remark);
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Purchase, current);
-        return saved;
+        return materialPurchaseContext.confirmOrder(saved, current);
     }
 
     /** 采购单明细：一采购单至少一条材料需求（多供应商拆单时同计划可有多条）。 */
     private void saveItem(PurchaseOrder purchase, com.th4.edge.decoboon.project.model.MaterialPlan plan,
-                          BigDecimal quantity, BigDecimal unitPrice, String remark) {
+                          BigDecimal quantity, BigDecimal unitPrice, String priceSource, String remark) {
         PurchaseOrderItem item = new PurchaseOrderItem();
         item.setCompany(purchase.getCompany());
         item.setProperty(purchase.getProperty());
@@ -201,7 +202,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         item.setAmount(quantity.multiply(unitPrice));
         item.setReceivedQuantity(BigDecimal.ZERO);
         item.setStatus(purchase.getStatus());
-        item.setPriceSource("采购单录入");
+        item.setPriceSource(priceSource);
         item.setRemark(remark);
         purchaseItemRepository.save(modelIdentityContext.prepare(item));
     }

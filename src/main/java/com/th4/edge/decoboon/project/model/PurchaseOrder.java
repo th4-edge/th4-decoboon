@@ -79,6 +79,7 @@ public class PurchaseOrder extends AuditModel implements ProjectOwned {
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="approver_id") @Note("审批人") private Employee approvedBy;
     @Note("审批时间") private LocalDateTime approvedAt;
     @Column(length=500) @Note("审批意见") private String approvalRemark;
+    @jakarta.persistence.Transient @Note("采购明细（分页响应投影）") private java.util.List<PurchaseOrderItem> items;
     public Long getPurchaseId(){return purchaseId;} public void setPurchaseId(Long v){purchaseId=v;}
     public Company getCompany(){return company;} public void setCompany(Company v){company=v;}
     public Property getProperty(){return property;} public void setProperty(Property v){property=v;}
@@ -104,6 +105,7 @@ public class PurchaseOrder extends AuditModel implements ProjectOwned {
     public Employee getApprovedBy(){return approvedBy;} public void setApprovedBy(Employee v){approvedBy=v;}
     public LocalDateTime getApprovedAt(){return approvedAt;} public void setApprovedAt(LocalDateTime v){approvedAt=v;}
     public String getApprovalRemark(){return approvalRemark;} public void setApprovalRemark(String v){approvalRemark=v;}
+    public java.util.List<PurchaseOrderItem> getItems(){return items;} public void setItems(java.util.List<PurchaseOrderItem> v){items=v;}
     @Override
     public Store getStore() { return store; }
 

@@ -42,7 +42,8 @@ import java.util.List;
 @Table(name = "db_contract_change", indexes = {
         @Index(name = "idx_change_company", columnList = "com_id, change_id"),
         @Index(name = "idx_change_company_contract", columnList = "com_id, contract_id, change_id"),
-        @Index(name = "idx_change_company_project", columnList = "com_id, project_id, change_id")
+        @Index(name = "idx_change_company_project", columnList = "com_id, project_id, change_id"),
+        @Index(name = "idx_contract_change_company_project_status", columnList = "com_id, project_id, status, change_id")
 ,
         @Index(name = "idx_contract_change_company", columnList = "com_id, change_id"),
         @Index(name = "idx_contract_change_company_store", columnList = "com_id, store_id, change_id"),
@@ -137,6 +138,14 @@ public class ContractChange extends AuditModel implements ProjectOwned {
     @Note("客户确认时间")
     private LocalDateTime customerConfirmedAt;
 
+    @Column(length = 64)
+    @Note("客户确认人")
+    private String customerConfirmedBy;
+
+    @Column(length = 32)
+    @Note("客户确认方式")
+    private String customerConfirmMethod;
+
     @ElementCollection
     @CollectionTable(name = "db_contract_change_image", joinColumns = @JoinColumn(name = "change_id"))
     @Column(name = "url", length = 512)
@@ -197,6 +206,10 @@ public class ContractChange extends AuditModel implements ProjectOwned {
     public void setCustomerConfirmed(Boolean customerConfirmed) { this.customerConfirmed = customerConfirmed; }
     public LocalDateTime getCustomerConfirmedAt() { return customerConfirmedAt; }
     public void setCustomerConfirmedAt(LocalDateTime customerConfirmedAt) { this.customerConfirmedAt = customerConfirmedAt; }
+    public String getCustomerConfirmedBy() { return customerConfirmedBy; }
+    public void setCustomerConfirmedBy(String customerConfirmedBy) { this.customerConfirmedBy = customerConfirmedBy; }
+    public String getCustomerConfirmMethod() { return customerConfirmMethod; }
+    public void setCustomerConfirmMethod(String customerConfirmMethod) { this.customerConfirmMethod = customerConfirmMethod; }
     public List<String> getEvidenceImages() { return evidenceImages; }
     public void setEvidenceImages(List<String> evidenceImages) { this.evidenceImages = evidenceImages; }
     public String getSignatureUrl() { return signatureUrl; }

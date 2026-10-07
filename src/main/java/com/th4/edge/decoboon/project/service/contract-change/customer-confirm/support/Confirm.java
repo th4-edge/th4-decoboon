@@ -32,7 +32,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = ContractChange.class,
                 properties = {"changeId", "contract", "project", "no", "type", "reason", "amount", "costDelta",
-                        "status", "customerConfirmed", "customerConfirmedAt", "evidenceImages", "signatureUrl",
+                        "status", "customerConfirmed", "customerConfirmedAt", "customerConfirmedBy", "customerConfirmMethod", "evidenceImages", "signatureUrl",
                         "items", "requestedBy", "approvedBy", "approvedAt", "createTime"}),
         @AllowProperties(model = ContractChangeItem.class,
                 properties = {"changeItemId", "sourceLine", "changeType", "itemType", "name",

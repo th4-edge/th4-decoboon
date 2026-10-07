@@ -34,7 +34,8 @@ import java.util.Objects;
 @Properties(allow = {
         @AllowProperties(model = ContractChange.class,
                 properties = {"changeId", "contract", "project", "no", "reason", "type", "amount", "costDelta",
-                        "status", "customerConfirmed", "requestedBy", "approvedBy", "conclusion",
+                        "status", "customerConfirmed", "customerConfirmedAt", "customerConfirmedBy", "customerConfirmMethod",
+                        "requestedBy", "approvedBy", "conclusion",
                         "approvedAt", "createTime"}),
         @AllowProperties(model = ProjectContract.class,
                 properties = {"contractId", "no", "baselineAmount", "signedAmount", "currentAmount", "status"}),

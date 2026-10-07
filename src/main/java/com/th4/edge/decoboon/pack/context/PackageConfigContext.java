@@ -150,7 +150,14 @@ public class PackageConfigContext {
     private void recalculate(PackageTemplate template) {
         List<PackageLine> lines = lineRepository.findByTemplate_TemplateIdOrderBySortAscItemIdAsc(
                 template.getTemplateId());
-        template.setItems(lines);
+        // 历史坑：FIX-034 items 带 orphanRemoval，直接替换集合会触发 Hibernate
+        // "A collection with orphan deletion was no longer referenced"；必须复用原集合。
+        if (template.getItems() == null) {
+            template.setItems(lines);
+        } else {
+            template.getItems().clear();
+            template.getItems().addAll(lines);
+        }
         template.setCost(packageContext.calculateCost(template));
         templateRepository.save(template);
     }

@@ -54,7 +54,8 @@ import java.util.List;
         @Index(name = "idx_cust_customer_company", columnList = "com_id, cust_id"),
         @Index(name = "idx_cust_customer_company_store", columnList = "com_id, store_id, cust_id"),
         @Index(name = "idx_cust_customer_company_team", columnList = "com_id, team_id, cust_id"),
-        @Index(name = "idx_cust_customer_company_owner", columnList = "com_id, emp_id, cust_id")
+        @Index(name = "idx_cust_customer_company_owner", columnList = "com_id, emp_id, cust_id"),
+        @Index(name = "idx_cust_customer_company_designer", columnList = "com_id, designer_id, cust_id")
 })
 public class Customer extends AuditModel {
 

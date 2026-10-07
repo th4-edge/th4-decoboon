@@ -45,8 +45,10 @@ public class Approve implements com.th4.edge.decoboon.project.service.purchases.
     @Transactional
     public PurchaseOrder call(PurchaseOrder request) {
         Employee current = accessContext.requireEmployee(employee);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Finance) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或财务可以审批采购单"));
+        if (current.getRole() != EmployeeRole.Boss
+                && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或财务可以审批采购单"));
         }
         Specification<PurchaseOrder> byId = (root, query, builder) ->
                 builder.equal(root.get("purchaseId"), purchaseId);

@@ -209,14 +209,28 @@ public class MaterialPlanWorkbenchContext {
         }
         item.setOrderedQuantity(ordered);
         item.setReceivedQuantity(received);
-        purchases.stream()
-                .filter(order -> order.getStatus() != null && COUNTED.contains(order.getStatus()))
-                .max(Comparator.comparing(PurchaseOrder::getPurchaseId))
-                .ifPresent(order -> {
+        // 一条计划可拆多供应商；到场操作取最后一条有效采购明细，避免多明细采购单无法指定验收对象。
+        items.stream()
+                .filter(row -> row.getStatus() != null && COUNTED.contains(row.getStatus()))
+                .filter(row -> row.getPurchaseOrder() != null)
+                .max(Comparator.comparing(PurchaseOrderItem::getPurchaseItemId))
+                .ifPresent(row -> {
+                    PurchaseOrder order = row.getPurchaseOrder();
                     item.setPurchaseId(order.getPurchaseId());
+                    item.setPurchaseItemId(row.getPurchaseItemId());
                     item.setPurchaseNo(order.getNo());
                     item.setSupplierName(order.getSupplierName());
                 });
+        if (item.getPurchaseId() == null) {
+            purchases.stream()
+                    .filter(order -> order.getStatus() != null && COUNTED.contains(order.getStatus()))
+                    .max(Comparator.comparing(PurchaseOrder::getPurchaseId))
+                    .ifPresent(order -> {
+                        item.setPurchaseId(order.getPurchaseId());
+                        item.setPurchaseNo(order.getNo());
+                        item.setSupplierName(order.getSupplierName());
+                    });
+        }
 
         boolean arrivedDone = plan.getStatus() == MaterialPlanStatus.Arrived;
         boolean delayed = !arrivedDone && plan.getRequiredAt() != null

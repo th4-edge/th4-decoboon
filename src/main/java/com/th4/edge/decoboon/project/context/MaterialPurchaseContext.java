@@ -1,0 +1,244 @@
+package com.th4.edge.decoboon.project.context;
+
+import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.decoboon.finance.configure.PayableStatus;
+import com.th4.edge.decoboon.finance.configure.PayableType;
+import com.th4.edge.decoboon.finance.context.PartnerCreditContext;
+import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.project.configure.PurchaseStatus;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
+import com.th4.edge.decoboon.project.model.PurchaseOrder;
+import com.th4.edge.decoboon.project.model.PurchaseOrderItem;
+import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
+import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
+import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
+import com.th4.edge.decoboon.supply.model.MaterialSupplier;
+import com.th4.edge.decoboon.supply.model.Partner;
+import com.th4.edge.decoboon.supply.model.PartnerPrice;
+import com.th4.edge.decoboon.supply.repository.MaterialSupplierRepository;
+import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
+import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+/**
+ * 材料采购确认、数量门禁与应付联动。
+ *
+ * <p>2026-09-23 业务裁决：确认下单即形成应付，到货只确认实际成本和回填账期。
+ * 采购确认与应付生成必须处于同一事务，避免出现“已审批但无应付”的中间态。</p>
+ */
+@Note("材料采购确认与应付联动")
+@Component
+public class MaterialPurchaseContext {
+
+    public static final String PRICE_SOURCE_SUPPLY_RELATION = "供应关系价";
+    public static final String PRICE_SOURCE_PARTNER_PRICE = "目录合作价";
+    public static final String PRICE_SOURCE_MANUAL = "手工录入";
+
+    private final PurchaseOrderRepository purchaseRepository;
+    private final PurchaseOrderItemRepository purchaseItemRepository;
+    private final MaterialPlanRepository materialPlanRepository;
+    private final MaterialPlanStatusContext materialPlanStatusContext;
+    private final PayableRepository payableRepository;
+    private final ModelIdentityContext modelIdentityContext;
+    private final PartnerCreditContext partnerCreditContext;
+    private final MaterialSupplierRepository materialSupplierRepository;
+    private final PartnerPriceRepository partnerPriceRepository;
+
+    public MaterialPurchaseContext(PurchaseOrderRepository purchaseRepository,
+                                   PurchaseOrderItemRepository purchaseItemRepository,
+                                   MaterialPlanRepository materialPlanRepository,
+                                   MaterialPlanStatusContext materialPlanStatusContext,
+                                   PayableRepository payableRepository,
+                                   ModelIdentityContext modelIdentityContext,
+                                   PartnerCreditContext partnerCreditContext,
+                                   MaterialSupplierRepository materialSupplierRepository,
+                                   PartnerPriceRepository partnerPriceRepository) {
+        this.purchaseRepository = purchaseRepository;
+        this.purchaseItemRepository = purchaseItemRepository;
+        this.materialPlanRepository = materialPlanRepository;
+        this.materialPlanStatusContext = materialPlanStatusContext;
+        this.payableRepository = payableRepository;
+        this.modelIdentityContext = modelIdentityContext;
+        this.partnerCreditContext = partnerCreditContext;
+        this.materialSupplierRepository = materialSupplierRepository;
+        this.partnerPriceRepository = partnerPriceRepository;
+    }
+
+    /** 供应商决定权归财务、店长和企业负责人，项目经理只参与履约，不负责锁供应商。 */
+    public void requireOperator(Employee current) {
+        if (current == null || current.getRole() == null) {
+            throw new DefinedException(new DefaultErrorCode("401", "请先登录"));
+        }
+        EmployeeRole role = current.getRole();
+        if (role != EmployeeRole.Boss
+                && role != EmployeeRole.StoreManager
+                && role != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或财务可以确认采购下单"));
+        }
+    }
+
+    /** 下单量不得超过净用量 + 损耗量。 */
+    public void requireOrderQuantity(MaterialPlan plan, BigDecimal quantity) {
+        if (plan == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "材料计划不存在或无权访问"));
+        }
+        BigDecimal value = value(quantity);
+        if (value.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "采购数量必须大于 0"));
+        }
+        BigDecimal remaining = remainingQuantity(plan);
+        if (value.compareTo(remaining) > 0) {
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "本次下单量超过可下单数量 " + remaining.stripTrailingZeros().toPlainString()
+                            + "；如需多备料，请先调整主材分类损耗率或损耗量"));
+        }
+    }
+
+    public BigDecimal remainingQuantity(MaterialPlan plan) {
+        BigDecimal demand = value(plan == null ? null : plan.getQuantity());
+        BigDecimal ordered = materialPlanStatusContext.orderedQuantity(plan);
+        return demand.subtract(ordered).max(BigDecimal.ZERO);
+    }
+
+    /**
+     * 本次执行价的来源只做事实识别，不改变采购执行价。
+     * 优先识别材料—供应商供应关系，其次识别目录合作价，最后记为手工录入。
+     */
+    public String resolvePriceSource(MaterialPlan plan, Partner supplier, BigDecimal executionPrice) {
+        if (plan == null || supplier == null || executionPrice == null) {
+            return PRICE_SOURCE_MANUAL;
+        }
+        Long comId = plan.getCompany() == null ? null : plan.getCompany().getComId();
+        if (comId != null && plan.getMaterialKey() != null && !plan.getMaterialKey().isBlank()
+                && supplier.getPartnerId() != null) {
+            MaterialSupplier relation = materialSupplierRepository
+                    .findFirstByCompany_ComIdAndMaterialKeyAndPartner_PartnerId(
+                            comId, plan.getMaterialKey(), supplier.getPartnerId())
+                    .orElse(null);
+            if (relation != null && Boolean.TRUE.equals(relation.getActive())
+                    && sameMoney(relation.getPurchasePrice(), executionPrice)) {
+                return PRICE_SOURCE_SUPPLY_RELATION;
+            }
+        }
+        if (plan.getCatalogItem() != null) {
+            PartnerPrice partnerPrice = partnerPriceRepository
+                    .findFirstByPartnerAndItemAndActiveTrueOrderByPartnerPriceIdDesc(
+                            supplier, plan.getCatalogItem());
+            if (partnerPrice != null && sameMoney(partnerPrice.getPurchasePrice(), executionPrice)) {
+                return PRICE_SOURCE_PARTNER_PRICE;
+            }
+        }
+        return PRICE_SOURCE_MANUAL;
+    }
+
+    /** 确认采购下单：采购单、计划状态、材料应付和供应商往来抵扣在同一事务完成。 */
+    @Transactional
+    public PurchaseOrder confirmOrder(PurchaseOrder purchase, Employee operator) {
+        requireOperator(operator);
+        if (purchase == null || purchase.getPurchaseId() == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "采购单不存在"));
+        }
+        if (purchase.getSupplier() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "采购单缺少供应商，不能形成应付"));
+        }
+        purchase.setStatus(PurchaseStatus.Ordered);
+        if (purchase.getOrderedAt() == null) {
+            purchase.setOrderedAt(LocalDate.now());
+        }
+        List<PurchaseOrderItem> items = purchaseItemRepository
+                .findByPurchaseOrderOrderByPurchaseItemIdAsc(purchase);
+        if (items.isEmpty()) {
+            MaterialPlan plan = purchase.getMaterialPlan();
+            if (plan != null) {
+                plan.setStatus(materialPlanStatusContext.resolve(plan));
+                materialPlanRepository.save(plan);
+            }
+        } else {
+            for (PurchaseOrderItem item : items) {
+                item.setStatus(PurchaseStatus.Ordered);
+                purchaseItemRepository.save(item);
+                MaterialPlan plan = item.getMaterialPlan();
+                if (plan != null) {
+                    plan.setStatus(materialPlanStatusContext.resolve(plan));
+                    materialPlanRepository.save(plan);
+                }
+            }
+        }
+        PurchaseOrder saved = purchaseRepository.save(purchase);
+        ensurePayable(saved, operator);
+        applyCredits(saved);
+        return saved;
+    }
+
+    private void ensurePayable(PurchaseOrder purchase, Employee operator) {
+        Long comId = purchase.getCompany().getComId();
+        if (payableRepository
+                .findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(comId, purchase.getPurchaseId())
+                .isPresent()) {
+            return;
+        }
+        if (payableRepository
+                .findFirstByCompany_ComIdAndSourceNoAndType(comId, purchase.getNo(), PayableType.Material)
+                .isPresent()) {
+            return;
+        }
+        Payable payable = new Payable();
+        payable.setCompany(purchase.getCompany());
+        payable.setProperty(purchase.getProperty());
+        payable.setProject(purchase.getProject());
+        payable.setMaterialPlan(purchase.getMaterialPlan());
+        payable.setPurchaseOrder(purchase);
+        payable.setOwner(resolveOwner(purchase, operator));
+        payable.setStore(purchase.getStore());
+        payable.setTeam(purchase.getTeam());
+        payable.setName("材料采购 · " + purchase.getSupplierName());
+        payable.setType(PayableType.Material);
+        payable.setPayeePartner(purchase.getSupplier());
+        payable.setPayeeName(purchase.getSupplierName());
+        payable.setAmount(value(purchase.getAmount()));
+        payable.setPaidAmount(BigDecimal.ZERO);
+        payable.setReceiptDate(null);
+        payable.setSettlementMode(purchase.getSupplier().getSettlementMode());
+        payable.setDueDate(null);
+        payable.setStatus(PayableStatus.Pending);
+        payable.setSourceNo(purchase.getNo());
+        payable.setRemark("确认下单自动形成应付");
+        payable.setCreatedBy(operator);
+        payableRepository.save(modelIdentityContext.prepare(payable));
+    }
+
+    private void applyCredits(PurchaseOrder purchase) {
+        payableRepository
+                .findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(
+                        purchase.getCompany().getComId(), purchase.getPurchaseId())
+                .ifPresent(partnerCreditContext::applyTo);
+    }
+
+    private Employee resolveOwner(PurchaseOrder purchase, Employee fallback) {
+        if (purchase.getOwner() != null) {
+            return purchase.getOwner();
+        }
+        if (purchase.getProperty() != null && purchase.getProperty().getOwner() != null) {
+            return purchase.getProperty().getOwner();
+        }
+        return fallback;
+    }
+
+    private boolean sameMoney(BigDecimal left, BigDecimal right) {
+        return value(left).compareTo(value(right)) == 0;
+    }
+
+    private BigDecimal value(BigDecimal value) {
+        return value == null ? BigDecimal.ZERO : value;
+    }
+}

@@ -29,6 +29,7 @@ import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.ContractChange;
+import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -36,6 +37,7 @@ import com.th4.edge.decoboon.project.model.ProjectReport;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.AcceptanceRoundRepository;
+import com.th4.edge.decoboon.project.repository.ContractChangeItemRepository;
 import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
@@ -57,7 +59,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /** 业主项目全生命周期旅程装配。 */
@@ -72,6 +76,7 @@ public class CustomerJourneyContext {
     private final QuoteLineRepository quoteLineRepository;
     private final ProjectContractRepository contractRepository;
     private final ContractChangeRepository changeRepository;
+    private final ContractChangeItemRepository changeItemRepository;
     private final MaterialPlanRepository materialPlanRepository;
     private final MaterialSelectionRepository selectionRepository;
     private final ProjectStageRepository stageRepository;
@@ -89,6 +94,7 @@ public class CustomerJourneyContext {
                                   QuoteLineRepository quoteLineRepository,
                                   ProjectContractRepository contractRepository,
                                   ContractChangeRepository changeRepository,
+                                  ContractChangeItemRepository changeItemRepository,
                                   MaterialPlanRepository materialPlanRepository,
                                   MaterialSelectionRepository selectionRepository,
                                   ProjectStageRepository stageRepository,
@@ -105,6 +111,7 @@ public class CustomerJourneyContext {
         this.quoteLineRepository = quoteLineRepository;
         this.contractRepository = contractRepository;
         this.changeRepository = changeRepository;
+        this.changeItemRepository = changeItemRepository;
         this.materialPlanRepository = materialPlanRepository;
         this.selectionRepository = selectionRepository;
         this.stageRepository = stageRepository;
@@ -246,18 +253,39 @@ public class CustomerJourneyContext {
     }
 
     private CustomerJourney.Section changeSection(List<ContractChange> values) {
-        CustomerJourney.Section section = section("change", "增减项", "范围、金额与客户确认");
-        long pending = values.stream().filter(item -> item.getStatus() == ContractChangeStatus.Approved).count();
-        long confirmed = values.stream().filter(item -> item.getStatus() == ContractChangeStatus.CustomerConfirmed).count();
+        CustomerJourney.Section section = section("change", "增减项", "范围、金额与生效状态");
+        // DEC-041：Pending=客户已线下确认、待企业审批；CustomerConfirmed=已生效；Approved=历史待客户确认。
+        long processing = values.stream().filter(item -> item.getStatus() == ContractChangeStatus.Pending
+                || item.getStatus() == ContractChangeStatus.Approved).count();
         BigDecimal amount = values.stream().filter(item -> item.getStatus() == ContractChangeStatus.CustomerConfirmed)
                 .map(ContractChange::getAmount).filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
-        section.setStatus(pending > 0 ? "pending" : values.isEmpty() ? "none" : "done");
-        section.setStatusName(pending > 0 ? "待客户确认" : values.isEmpty() ? "暂无变更" : "已处理");
-        section.setSummary(pending > 0 ? pending + " 项等待您确认" : "共 " + values.size() + " 项变更");
+        section.setStatus(processing > 0 ? "pending" : values.isEmpty() ? "none" : "done");
+        section.setStatusName(processing > 0 ? "处理中" : values.isEmpty() ? "暂无变更" : "已生效");
+        section.setSummary(processing > 0 ? processing + " 项变更处理中" : "共 " + values.size() + " 项变更");
         section.getFacts().add(fact("total", "变更总数", String.valueOf(values.size()), "count"));
-        section.getFacts().add(fact("pending", "待确认", String.valueOf(pending), "count"));
-        section.getFacts().add(fact("confirmed", "已确认金额", money(amount), "money"));
-        section.setItems(values.stream().limit(20).map(this::changeItem).toList());
+        section.getFacts().add(fact("pending", "处理中", String.valueOf(processing), "count"));
+        section.getFacts().add(fact("confirmed", "已生效金额", money(amount), "money"));
+
+        // 效率：明细与签认证据各一次批量查询，最多 2 次额外 SQL，避免逐单 N+1。
+        List<Long> changeIds = values.stream().map(ContractChange::getChangeId).filter(Objects::nonNull).toList();
+        Map<Long, List<ContractChangeItem>> itemMap = new LinkedHashMap<>();
+        Map<Long, List<String>> imageMap = new LinkedHashMap<>();
+        if (!changeIds.isEmpty()) {
+            for (ContractChangeItem item : changeItemRepository.findByChange_ChangeIdInOrderByChangeItemIdAsc(changeIds)) {
+                if (item.getChange() == null || item.getChange().getChangeId() == null) continue;
+                itemMap.computeIfAbsent(item.getChange().getChangeId(), key -> new ArrayList<>()).add(item);
+            }
+            for (Object[] row : changeRepository.findImageRowsByChangeIds(changeIds)) {
+                if (row == null || row.length < 2 || row[0] == null || row[1] == null) continue;
+                Long changeId = ((Number) row[0]).longValue();
+                imageMap.computeIfAbsent(changeId, key -> new ArrayList<>()).add(String.valueOf(row[1]));
+            }
+        }
+        section.setItems(values.stream().limit(20)
+                .map(change -> changeItem(change,
+                        itemMap.getOrDefault(change.getChangeId(), List.of()),
+                        imageMap.getOrDefault(change.getChangeId(), List.of())))
+                .toList());
         return section;
     }
 
@@ -563,18 +591,40 @@ public class CustomerJourneyContext {
         return item;
     }
 
-    private CustomerJourney.Item changeItem(ContractChange change) {
+    private CustomerJourney.Item changeItem(ContractChange change,
+                                            List<ContractChangeItem> items,
+                                            List<String> evidenceImages) {
         CustomerJourney.Item item = item("change-" + change.getChangeId(), change.getNo());
         item.setSubtitle(change.getReason());
         item.setStatus(change.getStatus() == null ? null : change.getStatus().name());
         item.setStatusName(change.getStatus() == null ? null : change.getStatus().getName());
         item.setAmount(money(change.getAmount()));
-        item.setDate(date(change.getApprovedAt() == null ? change.getCustomerConfirmedAt() : change.getApprovedAt()));
-        if (change.getItems() != null) {
-            change.getItems().stream().limit(100).forEach(detail -> item.getLines().add(
-                    detail.getName() + " · 原数量 " + detail.getNewQuantity() + " · 金额变化 " + money(detail.getAmountDelta())));
+        item.setBusinessType("ContractChange");
+        item.setBusinessId(change.getChangeId());
+        item.setDate(date(change.getCustomerConfirmedAt() != null ? change.getCustomerConfirmedAt() : change.getApprovedAt()));
+        if (Boolean.TRUE.equals(change.getCustomerConfirmed())) {
+            item.getFacts().add(fact("customerConfirmedBy", "客户确认人",
+                    change.getCustomerConfirmedBy() == null || change.getCustomerConfirmedBy().isBlank()
+                            ? "客户" : change.getCustomerConfirmedBy(), "text"));
+            item.getFacts().add(fact("customerConfirmMethod", "确认方式",
+                    change.getCustomerConfirmMethod() == null || change.getCustomerConfirmMethod().isBlank()
+                            ? "线下确认" : change.getCustomerConfirmMethod(), "text"));
         }
-        if (change.getConclusion() != null) item.getLines().add("处理结论：" + change.getConclusion());
+        if (change.getCustomerConfirmedAt() != null) {
+            item.getFacts().add(fact("customerConfirmedAt", "客户线下确认", date(change.getCustomerConfirmedAt()), "date"));
+        }
+        if (change.getApprovedAt() != null) {
+            item.getFacts().add(fact("approvedAt", "生效时间", date(change.getApprovedAt()), "date"));
+        }
+        items.stream().limit(100).forEach(detail -> item.getLines().add(
+                detail.getName() + " · 原数量 " + detail.getOldQuantity() + " → " + detail.getNewQuantity()
+                        + " · 金额变化 " + money(detail.getAmountDelta())));
+        List<String> images = new ArrayList<>(evidenceImages == null ? List.of() : evidenceImages);
+        if (change.getSignatureUrl() != null && !change.getSignatureUrl().isBlank()) {
+            images.add(change.getSignatureUrl());
+        }
+        item.setImages(images.stream().filter(value -> value != null && !value.isBlank()).distinct().toList());
+        // DEC-041 / DEC-015：业主只读可见确认事实与证据，不暴露成本与内部审批意见。
         return item;
     }
 
@@ -768,9 +818,6 @@ public class CustomerJourneyContext {
                 actions.add(new CustomerJourney.Action("acceptance-" + item.getAcceptanceId(), "CONFIRM_ACCEPTANCE",
                         "确认阶段验收", "阶段已提交验收，请您确认或提出整改要求", "AcceptanceStage",
                         item.getStage() == null ? null : item.getStage().getStageId())));
-        changes.stream().filter(item -> item.getStatus() == ContractChangeStatus.Approved).findFirst().ifPresent(item ->
-                actions.add(new CustomerJourney.Action("change-" + item.getChangeId(), "CONFIRM_CHANGE",
-                        "确认合同变更", "有合同变更等待您确认", "ContractChange", item.getChangeId())));
         selections.stream().filter(item -> item.getStatus() == com.th4.edge.decoboon.material.configure.SelectionStatus.PendingConfirm)
                 .findFirst().ifPresent(item ->
                 actions.add(new CustomerJourney.Action("selection-" + item.getSelectionId(), "CONFIRM_SELECTION",

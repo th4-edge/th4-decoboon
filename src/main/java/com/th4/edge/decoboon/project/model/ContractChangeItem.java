@@ -64,6 +64,12 @@ public class ContractChangeItem extends AuditModel implements ProjectOwned {
     @Unit("元") @Column(precision = 14, scale = 2, nullable = false) @Note("成本变化") private BigDecimal costDelta = BigDecimal.ZERO;
     @Column(length = 500) @Note("说明") private String remark;
 
+    /** 批量录入绑定用：原合同行索引；不落库，落库仍走 sourceLine 关联。 */
+    @Transient @Note("原合同行索引") private Long sourceLineId;
+
+    /** 批量录入绑定用：手填新成本；不落库，成本变化仍落 costDelta 字段。 */
+    @Transient @Note("新成本") private BigDecimal newCost;
+
     public Long getChangeItemId() { return changeItemId; }
     public void setChangeItemId(Long changeItemId) { this.changeItemId = changeItemId; }
     public Company getCompany() { return company; }
@@ -92,6 +98,10 @@ public class ContractChangeItem extends AuditModel implements ProjectOwned {
     public void setCostDelta(BigDecimal costDelta) { this.costDelta = costDelta; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
+    public Long getSourceLineId() { return sourceLineId; }
+    public void setSourceLineId(Long sourceLineId) { this.sourceLineId = sourceLineId; }
+    public BigDecimal getNewCost() { return newCost; }
+    public void setNewCost(BigDecimal newCost) { this.newCost = newCost; }
     @Override
     public Store getStore() { return store; }
 

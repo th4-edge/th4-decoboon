@@ -56,7 +56,8 @@ import java.time.LocalDate;
         @Index(name = "idx_project_contract_company", columnList = "com_id, contract_id"),
         @Index(name = "idx_project_contract_company_store", columnList = "com_id, store_id, contract_id"),
         @Index(name = "idx_project_contract_company_team", columnList = "com_id, team_id, contract_id"),
-        @Index(name = "idx_project_contract_company_owner", columnList = "com_id, owner_id, contract_id")
+        @Index(name = "idx_project_contract_company_owner", columnList = "com_id, owner_id, contract_id"),
+        @Index(name = "idx_project_contract_company_customer_status", columnList = "com_id, customer_id, status, contract_id")
 })
 public class ProjectContract extends AuditModel implements ProjectOwned {
 

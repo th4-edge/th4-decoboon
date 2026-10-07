@@ -1,0 +1,4 @@
+contract_id	quote_id	status	signed_amount	effective_at	project_id	no	project_status	contract_amount
+233710002739609600	228668971543429120	Effective	58903.17	2026-10-08 06:01:15.102596	233710289445453824	P1791410475126	Preparing	58903.17
+receivable_count	receivable_total
+3	58903.17

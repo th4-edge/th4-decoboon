@@ -113,4 +113,17 @@ class ContractPlanContextTest {
         assertThat(savedNodes.get(1).getTriggerStageCode()).isEqualTo("PREPARE");
         assertThat(savedNodes.get(2).getTriggerType().name()).isEqualTo("ProjectFinished");
     }
+
+    @Test
+    void ensureMustBeIdempotentWhenEffectiveContractAlreadyHasBothPlans() {
+        context.select(contract, "STANDARD_30_40_30", "RESIDENTIAL_STANDARD_8");
+        int initialNodes = savedNodes.size();
+        int initialStages = savedStages.size();
+        contract.setStatus(ContractStatus.Effective);
+
+        context.ensure(contract);
+
+        assertThat(savedNodes).hasSize(initialNodes);
+        assertThat(savedStages).hasSize(initialStages);
+    }
 }
