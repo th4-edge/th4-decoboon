@@ -14,6 +14,8 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +25,13 @@ import java.time.LocalDate;
 
 /** 更新员工薪酬方案。 */
 @Note("薪酬方案更新")
-@Properties(allow = @AllowProperties(model = CompensationScheme.class,
-        properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status", "remark", "updateTime"}))
+@Properties(allow = {
+        @AllowProperties(model = CompensationScheme.class,
+                properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status", "remark", "updateTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
+        @AllowProperties(model = Team.class, properties = {"teamId", "name"})
+})
 @Service("payroll/compensation/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.decoboon.payroll.service.compensations.update.Update {
