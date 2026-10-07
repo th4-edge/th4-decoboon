@@ -263,10 +263,12 @@ class SummaryImplementationRulesTest {
                     boolean governed = inScope(rel(file));
                     if (!governed) {
                         Matcher contextMatcher = Pattern
-                                .compile("import com\\.th4\\.edge\\.decoboon\\.[\\w.]+\\.(\\w*Context);")
+                                .compile("import com\\.th4\\.edge\\.decoboon\\.([\\w.]+)\\.(\\w*Context);")
                                 .matcher(source);
                         while (contextMatcher.find()) {
-                            if (inScope(contextMatcher.group(1) + ".java")) {
+                            String contextRel = contextMatcher.group(1).replace('.', '/')
+                                    + "/" + contextMatcher.group(2) + ".java";
+                            if (inScope(contextRel)) {
                                 governed = true;
                                 break;
                             }

@@ -131,7 +131,6 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
     @Transactional
     public PurchaseOrder call(PurchaseOrder request) {
         Employee current = accessContext.requireEmployee(employee);
-        materialPurchaseContext.requireOperator(current);
         Specification<com.th4.edge.decoboon.project.model.MaterialPlan> planById = (root, query, builder) ->
                 builder.equal(root.get("planId"), materialPlanId);
         var plan = materialPlanRepository.findOne(planById.and(accessContext.visibleChild(
@@ -170,17 +169,22 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         request.setUnitPrice(unitPrice);
         request.setAmount(quantity.multiply(unitPrice));
         request.setReceivedQuantity(BigDecimal.ZERO);
-        request.setStatus(PurchaseStatus.Draft);
-        request.setApprovedBy(current);
-        request.setApprovedAt(java.time.LocalDateTime.now());
-        request.setApprovalRemark("购材确认下单");
+        // 创建采购不等于确认下单：Boss/店长/财务创建即已审批，其他岗位进入待审批；
+        // 真正下单（Approved→Ordered 并生成应付）由 Order/Batch 调 confirmOrder 完成。
+        boolean directApproval = current.getRole() == com.th4.edge.tenant.user.configure.EmployeeRole.Boss
+                || current.getRole() == com.th4.edge.tenant.user.configure.EmployeeRole.StoreManager
+                || current.getRole() == com.th4.edge.tenant.user.configure.EmployeeRole.Finance;
+        request.setStatus(directApproval ? PurchaseStatus.Approved : PurchaseStatus.Submitted);
+        request.setApprovedBy(directApproval ? current : null);
+        request.setApprovedAt(directApproval ? java.time.LocalDateTime.now() : null);
+        request.setApprovalRemark(directApproval ? "购材确认下单" : null);
         request.setExpectedAt(expectedAt);
         request.setCreatedBy(current);
         request.setRemark(remark);
         PurchaseOrder saved = purchaseRepository.save(modelIdentityContext.prepare(request));
         saveItem(saved, plan, quantity, unitPrice, priceSource, remark);
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Purchase, current);
-        return materialPurchaseContext.confirmOrder(saved, current);
+        return saved;
     }
 
     /** 采购单明细：一采购单至少一条材料需求（多供应商拆单时同计划可有多条）。 */

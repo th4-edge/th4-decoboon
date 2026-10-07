@@ -1,0 +1,355 @@
+- generic [ref=e1]:
+  - generic [ref=e51]:
+    - complementary [ref=e52]:
+      - generic [ref=e53]:
+        - img "装得清 Logo" [ref=e54]
+        - generic [ref=e55]:
+          - strong [ref=e56]: 装得清
+          - generic [ref=e57]: 经营管控中心
+      - generic [ref=e58]:
+        - generic [ref=e59]: 当前角色 · 老板
+        - strong [ref=e60]: 全公司
+        - generic [ref=e61]: Company
+      - menubar [ref=e62]:
+        - menuitem "经营总览" [ref=e63] [cursor=pointer]
+        - menuitem "业务分析" [expanded] [ref=e69]:
+          - menu [ref=e343]:
+            - menuitem "经营驾驶舱" [ref=e344] [cursor=pointer]
+            - menuitem "AI经营助手" [ref=e348] [cursor=pointer]
+        - menuitem "项目监管" [ref=e77] [cursor=pointer]
+        - menuitem "财务经营" [ref=e81] [cursor=pointer]
+        - menuitem "组织效能" [ref=e85] [cursor=pointer]
+        - menuitem "风险中心" [ref=e91] [cursor=pointer]
+    - generic [ref=e95]:
+      - banner [ref=e96]:
+        - button "展开或收起菜单" [ref=e97] [cursor=pointer]
+        - generic [ref=e101]:
+          - generic [ref=e103] [cursor=pointer]:
+            - generic:
+              - combobox "搜索范围" [ref=e105]
+              - generic [ref=e106]: 全部
+          - textbox "搜索对象或旧菜单名称" [ref=e114]
+        - generic [ref=e119]:
+          - generic [ref=e120]: 全公司 · Company
+          - button "消息中心" [ref=e122] [cursor=pointer]
+          - button "伟 张伟 老板" [ref=e126] [cursor=pointer]:
+            - generic [ref=e127]: 伟
+            - generic [ref=e128]:
+              - strong [ref=e129]: 张伟
+              - generic [ref=e130]: 老板
+      - main [ref=e133]:
+        - generic [ref=e1056]:
+          - generic [ref=e1057]:
+            - generic [ref=e1058]:
+              - generic [ref=e1059]:
+                - generic [ref=e1060]: 项目交付 / Project Delivery
+                - heading "谢欣 · 荷塘家园24-2503" [level=1] [ref=e1061]
+                - paragraph [ref=e1062]: P1791283950293 · 荷塘家园
+              - generic [ref=e1063]:
+                - button "返回" [ref=e1064] [cursor=pointer]
+                - button "项目配置" [ref=e1066] [cursor=pointer]
+                - button "发起增减项" [ref=e1072] [cursor=pointer]
+                - button "施工计划" [ref=e1078] [cursor=pointer]
+            - generic [ref=e1086]:
+              - generic [ref=e1087]:
+                - generic [ref=e1088]:
+                  - heading "项目主线" [level=2] [ref=e1089]
+                  - paragraph [ref=e1090]: 按项目工地主线推进
+                - generic [ref=e1091]: 只读状态投影
+              - generic [ref=e1092]:
+                - button "签约立项 合同 已生效" [ref=e1093] [cursor=pointer]:
+                  - generic [ref=e1096]:
+                    - strong [ref=e1097]: 签约立项
+                    - generic [ref=e1098]: 合同 已生效
+                - button "开工交底 todo · 0%" [ref=e1099] [cursor=pointer]:
+                  - generic [ref=e1102]:
+                    - strong [ref=e1103]: 开工交底
+                    - generic [ref=e1104]: todo · 0%
+                - button "拆除改造 todo · 0%" [ref=e1105] [cursor=pointer]:
+                  - generic [ref=e1108]:
+                    - strong [ref=e1109]: 拆除改造
+                    - generic [ref=e1110]: todo · 0%
+                - button "水电施工 todo · 0%" [ref=e1111] [cursor=pointer]:
+                  - generic [ref=e1114]:
+                    - strong [ref=e1115]: 水电施工
+                    - generic [ref=e1116]: todo · 0%
+                - button "泥瓦防水 todo · 0%" [ref=e1117] [cursor=pointer]:
+                  - generic [ref=e1120]:
+                    - strong [ref=e1121]: 泥瓦防水
+                    - generic [ref=e1122]: todo · 0%
+                - button "木作吊顶 todo · 0%" [ref=e1123] [cursor=pointer]:
+                  - generic [ref=e1126]:
+                    - strong [ref=e1127]: 木作吊顶
+                    - generic [ref=e1128]: todo · 0%
+                - button "油漆墙面 todo · 0%" [ref=e1129] [cursor=pointer]:
+                  - generic [ref=e1132]:
+                    - strong [ref=e1133]: 油漆墙面
+                    - generic [ref=e1134]: todo · 0%
+                - button "安装收尾 todo · 0%" [ref=e1135] [cursor=pointer]:
+                  - generic [ref=e1138]:
+                    - strong [ref=e1139]: 安装收尾
+                    - generic [ref=e1140]: todo · 0%
+                - button "竣工保洁验收 todo · 0%" [ref=e1141] [cursor=pointer]:
+                  - generic [ref=e1144]:
+                    - strong [ref=e1145]: 竣工保洁验收
+                    - generic [ref=e1146]: todo · 0%
+                - button "验收 按实际施工阶段推进后进入验收" [ref=e1147] [cursor=pointer]:
+                  - generic [ref=e1150]:
+                    - strong [ref=e1151]: 验收
+                    - generic [ref=e1152]: 按实际施工阶段推进后进入验收
+            - generic [ref=e1153]:
+              - generic [ref=e1154]:
+                - text: 系统下一步
+                - generic [ref=e1155]:
+                  - strong [ref=e1156]: 完成开工准备
+                  - generic [ref=e1157]: 待处理
+                - paragraph [ref=e1159]: 合同已生效，项目仍处于待开工状态。
+                - generic [ref=e1160]:
+                  - generic [ref=e1161]: 责任人项目经理
+                  - generic [ref=e1162]: 前置条件补齐：项目经理
+                  - generic [ref=e1163]: 完成后项目进入施工中
+              - generic [ref=e1164]:
+                - button "查看处理条件" [ref=e1165] [cursor=pointer]
+                - generic [ref=e1167]: 前置条件未满足
+          - generic [ref=e1168]:
+            - generic [ref=e1174]:
+              - generic [ref=e1175]: 合同金额
+              - strong [ref=e1176]: ¥53,000.00
+              - generic [ref=e1177]: 已收 ¥0.00
+            - generic [ref=e1185]:
+              - generic [ref=e1186]: 项目进度
+              - strong [ref=e1187]: 0%
+              - generic [ref=e1188]: 完成产值按正式完成记录计算
+            - generic [ref=e1194]:
+              - generic [ref=e1195]: 待办任务
+              - strong [ref=e1196]: "11"
+              - generic [ref=e1197]: 待验收 0
+            - generic [ref=e1203]:
+              - generic [ref=e1204]: 现场动态
+              - strong [ref=e1205]: "0"
+              - generic [ref=e1206]: 验收记录 0
+          - generic [ref=e1207]:
+            - generic [ref=e1208]:
+              - generic [ref=e1209]:
+                - heading "阻塞与待确认" [level=2] [ref=e1210]
+                - paragraph [ref=e1211]: 集中展示合同、任务、材料、验收和资金中的待处理事项
+              - generic [ref=e1212]: 2 项
+            - generic [ref=e1214]:
+              - article [ref=e1215]:
+                - text: 当前事实
+                - strong [ref=e1216]: 17 项材料到期风险
+                - paragraph [ref=e1217]: 材料需求时间已到，但尚未到货或关闭。
+                - button "查看材料" [ref=e1218] [cursor=pointer]
+              - article [ref=e1220]:
+                - text: 当前事实
+                - strong [ref=e1221]: 项目仍有未回款
+                - paragraph [ref=e1222]: 未回款金额 ¥53,000.00，以合同应收和实收事实计算。
+                - button "查看财务穿透" [ref=e1223] [cursor=pointer]
+          - generic [ref=e1225]:
+            - generic [ref=e1226]:
+              - generic [ref=e1227]:
+                - heading "项目指挥台" [level=2] [ref=e1228]
+                - paragraph [ref=e1229]: 所有履约动作从当前项目进入，不再重复搜索项目编号。
+              - generic [ref=e1230]:
+                - button "任务管理" [ref=e1231] [cursor=pointer]
+                - button "现场汇报" [ref=e1237] [cursor=pointer]
+                - button "验收闭环" [ref=e1243] [cursor=pointer]
+                - button "材料计划" [ref=e1249] [cursor=pointer]
+                - button "合同履约" [ref=e1255] [cursor=pointer]
+            - generic [ref=e1261]:
+              - generic [ref=e1262]: 量房结果已完成
+              - generic [ref=e1266]: 设计负责人已确定
+              - generic [ref=e1270]: 项目经理未确定
+              - generic [ref=e1275]: 开工日期已确认
+              - generic [ref=e1279]: 计划完工已确认
+              - generic [ref=e1283]: 施工计划已生成
+            - generic [ref=e1287]:
+              - text: 开工前仍需完成：项目经理未确定
+              - button "立即配置" [ref=e1288] [cursor=pointer]
+          - generic [ref=e1290]:
+            - generic [ref=e1292]:
+              - heading "今日 / 未来七天" [level=2] [ref=e1293]
+              - paragraph [ref=e1294]: 按项目真实任务和合同变更展示，不生成虚构计划
+            - generic [ref=e1295]:
+              - strong [ref=e1300]: 暂无未来七天事实
+              - generic [ref=e1301]: 任务或变更具备计划时间后才进入这里，不生成推断日程。
+          - generic [ref=e1302]:
+            - table [ref=e1305]:
+              - rowgroup [ref=e1306]:
+                - row [ref=e1307]:
+                  - cell "项目状态" [ref=e1308]
+                  - cell "待开工" [ref=e1309]
+                  - cell "客户" [ref=e1312]
+                  - cell "谢欣" [ref=e1313]
+                  - cell "项目经理" [ref=e1314]
+                  - cell "-" [ref=e1315]
+                  - cell "设计师" [ref=e1316]
+                  - cell "谢玲玲" [ref=e1317]
+                - row [ref=e1318]:
+                  - cell "开工日期" [ref=e1319]
+                  - cell "2026-10-06" [ref=e1320]
+                  - cell "计划完工" [ref=e1321]
+                  - cell "2027-02-03" [ref=e1322]
+                  - cell "当前阶段" [ref=e1323]
+                  - cell "开工交底" [ref=e1324]
+                  - cell "项目面积" [ref=e1325]
+                  - cell "67 ㎡" [ref=e1326]
+            - generic [ref=e1327]:
+              - tablist [ref=e1331]:
+                - tab "阶段计划" [selected] [ref=e1333]
+                - tab "任务清单" [ref=e1334]
+                - tab "现场动态" [ref=e1335]
+                - tab "阶段验收" [ref=e1336]
+                - tab "合同增减项 (0)" [ref=e1337]
+              - tabpanel "阶段计划" [ref=e1339]:
+                - generic [ref=e1340]:
+                  - generic [ref=e1341]:
+                    - generic [ref=e1342]: "1"
+                    - generic [ref=e1343]:
+                      - generic [ref=e1344]:
+                        - strong [ref=e1345]: 开工交底
+                        - generic [ref=e1346]: 未开始
+                      - progressbar [ref=e1348]:
+                        - generic [ref=e1351]: 0%
+                      - generic [ref=e1352]:
+                        - generic [ref=e1353]: 计划：2026-10-06 ~ 2026-10-11
+                        - generic [ref=e1354]: 实际：- ~ -
+                    - button "开工" [ref=e1355] [cursor=pointer]
+                  - generic [ref=e1357]:
+                    - generic [ref=e1358]: "2"
+                    - generic [ref=e1359]:
+                      - generic [ref=e1360]:
+                        - strong [ref=e1361]: 拆除改造
+                        - generic [ref=e1362]: 未开始
+                      - progressbar [ref=e1364]:
+                        - generic [ref=e1367]: 0%
+                      - generic [ref=e1368]:
+                        - generic [ref=e1369]: 计划：2026-10-12 ~ 2026-10-17
+                        - generic [ref=e1370]: 实际：- ~ -
+                    - button "开工" [ref=e1371] [cursor=pointer]
+                  - generic [ref=e1373]:
+                    - generic [ref=e1374]: "3"
+                    - generic [ref=e1375]:
+                      - generic [ref=e1376]:
+                        - strong [ref=e1377]: 水电施工
+                        - generic [ref=e1378]: 未开始
+                      - progressbar [ref=e1380]:
+                        - generic [ref=e1383]: 0%
+                      - generic [ref=e1384]:
+                        - generic [ref=e1385]: 计划：2026-10-18 ~ 2026-11-01
+                        - generic [ref=e1386]: 实际：- ~ -
+                    - button "开工" [ref=e1387] [cursor=pointer]
+                  - generic [ref=e1389]:
+                    - generic [ref=e1390]: "4"
+                    - generic [ref=e1391]:
+                      - generic [ref=e1392]:
+                        - strong [ref=e1393]: 泥瓦防水
+                        - generic [ref=e1394]: 未开始
+                      - progressbar [ref=e1396]:
+                        - generic [ref=e1399]: 0%
+                      - generic [ref=e1400]:
+                        - generic [ref=e1401]: 计划：2026-11-02 ~ 2026-11-25
+                        - generic [ref=e1402]: 实际：- ~ -
+                    - button "开工" [ref=e1403] [cursor=pointer]
+                  - generic [ref=e1405]:
+                    - generic [ref=e1406]: "5"
+                    - generic [ref=e1407]:
+                      - generic [ref=e1408]:
+                        - strong [ref=e1409]: 木作吊顶
+                        - generic [ref=e1410]: 未开始
+                      - progressbar [ref=e1412]:
+                        - generic [ref=e1415]: 0%
+                      - generic [ref=e1416]:
+                        - generic [ref=e1417]: 计划：2026-11-26 ~ 2026-12-17
+                        - generic [ref=e1418]: 实际：- ~ -
+                    - button "开工" [ref=e1419] [cursor=pointer]
+                  - generic [ref=e1421]:
+                    - generic [ref=e1422]: "6"
+                    - generic [ref=e1423]:
+                      - generic [ref=e1424]:
+                        - strong [ref=e1425]: 油漆墙面
+                        - generic [ref=e1426]: 未开始
+                      - progressbar [ref=e1428]:
+                        - generic [ref=e1431]: 0%
+                      - generic [ref=e1432]:
+                        - generic [ref=e1433]: 计划：2026-12-18 ~ 2027-01-08
+                        - generic [ref=e1434]: 实际：- ~ -
+                    - button "开工" [ref=e1435] [cursor=pointer]
+                  - generic [ref=e1437]:
+                    - generic [ref=e1438]: "7"
+                    - generic [ref=e1439]:
+                      - generic [ref=e1440]:
+                        - strong [ref=e1441]: 安装收尾
+                        - generic [ref=e1442]: 未开始
+                      - progressbar [ref=e1444]:
+                        - generic [ref=e1447]: 0%
+                      - generic [ref=e1448]:
+                        - generic [ref=e1449]: 计划：2027-01-09 ~ 2027-01-23
+                        - generic [ref=e1450]: 实际：- ~ -
+                    - button "开工" [ref=e1451] [cursor=pointer]
+                  - generic [ref=e1453]:
+                    - generic [ref=e1454]: "8"
+                    - generic [ref=e1455]:
+                      - generic [ref=e1456]:
+                        - strong [ref=e1457]: 竣工保洁验收
+                        - generic [ref=e1458]: 未开始
+                      - progressbar [ref=e1460]:
+                        - generic [ref=e1463]: 0%
+                      - generic [ref=e1464]:
+                        - generic [ref=e1465]: 计划：2027-01-24 ~ 2027-02-03
+                        - generic [ref=e1466]: 实际：- ~ -
+                    - button "开工" [ref=e1467] [cursor=pointer]
+  - tooltip [ref=e1571]:
+    - listbox [ref=e1575]:
+      - option "张伟 · 老板" [ref=e1576] [cursor=pointer]
+      - option "麦鸿 · 老板" [ref=e1577] [cursor=pointer]
+      - option "董夏鹏 · 设计师" [ref=e1578] [cursor=pointer]
+      - option "王宏文 · 门店店长" [ref=e1579] [cursor=pointer]
+      - option "吴濛濛 · 财务" [ref=e1580] [cursor=pointer]
+      - option "黄贤杰 · 业务员" [ref=e1581] [cursor=pointer]
+      - option "徐勇 · 项目经理" [ref=e1582] [cursor=pointer]
+      - option "谢玲玲 · 设计师" [ref=e1583] [cursor=pointer]
+  - dialog [ref=e1474]:
+    - banner [ref=e1475]:
+      - generic [ref=e1476]:
+        - text: 项目指挥台
+        - heading "项目履约配置" [level=3] [ref=e1477]
+        - paragraph [ref=e1478]: 项目经理、设计负责人和工期是开工前置条件，保存后立即生效。
+      - button "关闭此对话框" [ref=e1479] [cursor=pointer]
+    - generic [ref=e1486]:
+      - generic [ref=e1488]:
+        - generic [ref=e1489]: 项目名称
+        - textbox "项目名称" [ref=e1493]: 谢欣 · 荷塘家园24-2503
+      - generic [ref=e1495]:
+        - generic [ref=e1496]: 工地地址
+        - textbox "工地地址" [ref=e1500]: 荷塘家园24-2503
+      - generic [ref=e1502]:
+        - generic [ref=e1503]: 设计负责人
+        - generic [ref=e1506]:
+          - generic [ref=e1507]:
+            - combobox "设计负责人" [ref=e1509]
+            - generic [ref=e1510]: 谢玲玲 · 设计师
+          - generic [ref=e1512] [cursor=pointer]
+      - generic [ref=e1516]:
+        - generic [ref=e1517]: 项目经理
+        - generic [ref=e1520]:
+          - generic [ref=e1521]:
+            - combobox "项目经理" [expanded] [active] [ref=e1523]
+            - generic [ref=e1524]: 请选择
+          - generic [ref=e1526] [cursor=pointer]
+      - generic [ref=e1530]:
+        - generic [ref=e1531]: 履约专员
+        - generic [ref=e1534]:
+          - generic [ref=e1535]:
+            - combobox "履约专员" [ref=e1537]
+            - generic [ref=e1538]: 请选择
+          - generic [ref=e1540] [cursor=pointer]
+      - generic [ref=e1544]:
+        - generic [ref=e1545]: 开工日期
+        - combobox "开工日期" [ref=e1553]: 2026-10-06
+      - generic [ref=e1555]:
+        - generic [ref=e1556]: 计划完工
+        - combobox "计划完工" [ref=e1564]: 2027-02-03
+    - generic [ref=e1566]:
+      - button "取消" [ref=e1567] [cursor=pointer]
+      - button "保存项目配置" [ref=e1569] [cursor=pointer]

@@ -1,0 +1,30 @@
+[    7387ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at debugWarn (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:9111:37)
+    at watch.immediate (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:10378:7)
+    at callWithErrorHandling (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2448:19)
+    at callWithAsyncErrorHandling (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2455:17)
+    at baseWatchOptions.call (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:3151:47)
+    at job (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2175:18)
+    at watch (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2211:7)
+    at doWatch (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:3179:23)
+    at watch2 (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:3111:10)
+    at useDeprecated (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:10376:3) @ http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:9111
+[    7389ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at debugWarn (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:9111:37)
+    at watch.immediate (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:10378:7)
+    at callWithErrorHandling (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2448:19)
+    at callWithAsyncErrorHandling (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2455:17)
+    at baseWatchOptions.call (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:3151:47)
+    at job (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2175:18)
+    at watch (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:2211:7)
+    at doWatch (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:3179:23)
+    at watch2 (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=6106f041:3111:10)
+    at useDeprecated (http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:10376:3) @ http://127.0.0.1:8080/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=6106f041:9111
+[  394583ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8080/src/components/shell/AccountDrawer.vue?t=1791413296085:0
+[  394584ms] [ERROR] [hmr] Failed to reload /src/components/shell/AccountDrawer.vue. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8080/@vite/client:175
+[  394598ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:8080/src/components/shell/NoticeDrawer.vue?t=1791413296109:0
+[  394598ms] [ERROR] [hmr] Failed to reload /src/components/shell/NoticeDrawer.vue. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8080/@vite/client:175

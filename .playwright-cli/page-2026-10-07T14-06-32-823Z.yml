@@ -1,0 +1,150 @@
+- generic [ref=e51]:
+  - complementary [ref=e52]:
+    - generic [ref=e53]:
+      - img "装得清 Logo" [ref=e54]
+      - generic [ref=e55]:
+        - strong [ref=e56]: 装得清
+        - generic [ref=e57]: 经营管控中心
+    - generic [ref=e58]:
+      - generic [ref=e59]: 当前角色 · 老板
+      - strong [ref=e60]: 全公司
+      - generic [ref=e61]: Company
+    - menubar [ref=e62]:
+      - menuitem "经营总览" [ref=e63] [cursor=pointer]
+      - menuitem "业务分析" [expanded] [ref=e69]:
+        - menu [ref=e343]:
+          - menuitem "经营驾驶舱" [ref=e344] [cursor=pointer]
+          - menuitem "AI经营助手" [ref=e348] [cursor=pointer]
+      - menuitem "项目监管" [ref=e77] [cursor=pointer]
+      - menuitem "财务经营" [ref=e81] [cursor=pointer]
+      - menuitem "组织效能" [ref=e85] [cursor=pointer]
+      - menuitem "风险中心" [ref=e91] [cursor=pointer]
+  - generic [ref=e95]:
+    - banner [ref=e96]:
+      - button "展开或收起菜单" [ref=e97] [cursor=pointer]
+      - generic [ref=e101]:
+        - generic [ref=e103] [cursor=pointer]:
+          - generic:
+            - combobox "搜索范围" [ref=e105]
+            - generic [ref=e106]: 全部
+        - textbox "搜索对象或旧菜单名称" [ref=e114]
+      - generic [ref=e119]:
+        - generic [ref=e120]: 全公司 · Company
+        - button "消息中心" [ref=e122] [cursor=pointer]
+        - button "伟 张伟 老板" [ref=e126] [cursor=pointer]:
+          - generic [ref=e127]: 伟
+          - generic [ref=e128]:
+            - strong [ref=e129]: 张伟
+            - generic [ref=e130]: 老板
+    - main [ref=e133]:
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]: Boss / Company DataScope
+            - heading "经营总览" [level=1] [ref=e138]
+            - paragraph [ref=e139]: 先看经营健康、资金风险、项目异常和当前需要处理的经营事实。
+          - generic [ref=e140]:
+            - button "刷新" [ref=e141] [cursor=pointer]
+            - button "项目监管" [ref=e148] [cursor=pointer]
+        - generic [ref=e154]:
+          - complementary [ref=e155]:
+            - generic [ref=e156]:
+              - text: 经营结论
+              - strong [ref=e157]: 成本未完整，毛利待确认
+              - paragraph [ref=e158]: 按签约、回款、毛利、在营项目和风险事实综合判断；成本不完整时不展示可靠毛利。
+            - generic [ref=e159]:
+              - generic [ref=e165]:
+                - generic [ref=e166]: 本月签约额
+                - strong [ref=e167]: 5.3万
+                - generic [ref=e168]: 目标 0万 · 环比 0%
+              - generic [ref=e173]:
+                - generic [ref=e174]: 本月实收
+                - strong [ref=e175]: 2.8万
+                - generic [ref=e176]: 目标 0万 · 达成 0%
+              - generic [ref=e181]:
+                - generic [ref=e182]: 本月毛利
+                - generic "成本未完整" [ref=e183]:
+                  - generic [ref=e184]: "-"
+                  - img [aria-hidden] [ref=e185]:
+                    - generic [ref=e187]: "?"
+                - generic [ref=e189]: 1 个项目的成本未完整，暂不展示可靠毛利
+              - generic [ref=e195]:
+                - generic [ref=e196]: 在营项目
+                - strong [ref=e197]: "4"
+                - generic [ref=e198]: 目标 0万
+          - main [ref=e199]:
+            - generic [ref=e200]:
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - heading "经营风险雷达" [level=2] [ref=e203]
+                  - paragraph [ref=e204]: 风险只来自已存在的业务事实，数字和责任人可继续下钻。
+                - generic [ref=e205]: 数据截止 2026-10-07
+              - generic [ref=e206]:
+                - button "总风险 2" [ref=e207] [cursor=pointer]:
+                  - generic [ref=e208]: 总风险
+                  - strong [ref=e209]: "2"
+                - button "高风险 0" [ref=e210] [cursor=pointer]:
+                  - generic [ref=e211]: 高风险
+                  - strong [ref=e212]: "0"
+                - button "中风险 1" [ref=e213] [cursor=pointer]:
+                  - generic [ref=e214]: 中风险
+                  - strong [ref=e215]: "1"
+                - button "低风险 1" [ref=e216] [cursor=pointer]:
+                  - generic [ref=e217]: 低风险
+                  - strong [ref=e218]: "1"
+              - generic [ref=e220]:
+                - table [ref=e222]:
+                  - rowgroup [ref=e231]:
+                    - row [ref=e232]:
+                      - columnheader "风险类型" [ref=e233]
+                      - columnheader "风险标题" [ref=e235]
+                      - columnheader "风险说明" [ref=e237]
+                      - columnheader "项目" [ref=e239]
+                      - columnheader "负责人" [ref=e241]
+                      - columnheader "涉及金额" [ref=e243]
+                      - columnheader "等级" [ref=e245]
+                - table [ref=e251]:
+                  - rowgroup [ref=e260]:
+                    - row [ref=e261]:
+                      - cell "逾期应收" [ref=e262]
+                      - cell "逾期应收" [ref=e264]
+                      - cell "尾款 逾期 15 天，待收 130 元" [ref=e266]
+                      - cell "马先生 · 港师傅菠萝包" [ref=e268]
+                      - cell "徐勇" [ref=e270]
+                      - cell "¥130.00" [ref=e272]
+                      - cell "中" [ref=e274]
+                    - row [ref=e278]:
+                      - cell "逾期应收" [ref=e279]
+                      - cell "逾期应收" [ref=e281]
+                      - cell "首期款（开工前，含定金） 逾期 1 天，待收 15900 元" [ref=e283]
+                      - cell "谢欣 · 荷塘家园24-2503" [ref=e285]
+                      - cell [ref=e287]
+                      - cell "¥15,900.00" [ref=e288]
+                      - cell "低" [ref=e290]
+          - complementary [ref=e294]:
+            - generic [ref=e295]:
+              - generic [ref=e297]:
+                - heading "经营下钻" [level=3] [ref=e298]
+                - paragraph [ref=e299]: 从结论到风险，再到具体对象。
+              - button "业务分析 签约、转化和渠道结构" [ref=e300] [cursor=pointer]:
+                - generic [ref=e304]:
+                  - strong [ref=e305]: 业务分析
+                  - generic [ref=e306]: 签约、转化和渠道结构
+              - button "项目监管 交付、进度和停工风险" [ref=e307] [cursor=pointer]:
+                - generic [ref=e312]:
+                  - strong [ref=e313]: 项目监管
+                  - generic [ref=e314]: 交付、进度和停工风险
+              - button "财务经营 回款、应付和毛利" [ref=e315] [cursor=pointer]:
+                - generic [ref=e320]:
+                  - strong [ref=e321]: 财务经营
+                  - generic [ref=e322]: 回款、应付和毛利
+              - button "组织效能 角色、团队和产出" [ref=e323] [cursor=pointer]:
+                - generic [ref=e330]:
+                  - strong [ref=e331]: 组织效能
+                  - generic [ref=e332]: 角色、团队和产出
+              - button "风险中心 应收、停工、材料和变更" [ref=e333] [cursor=pointer]:
+                - generic [ref=e338]:
+                  - strong [ref=e339]: 风险中心
+                  - generic [ref=e340]: 应收、停工、材料和变更
+              - paragraph [ref=e341]: 数据截止：2026-10-07
+              - paragraph [ref=e342]: 成本未完整，毛利暂不展示；利润与毛利率以项目正式指标为准。

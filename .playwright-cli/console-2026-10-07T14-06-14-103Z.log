@@ -1,0 +1,52 @@
+[   66785ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at At (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:1613)
+    at Ka.re.immediate (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2322)
+    at Pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:38)
+    at je (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:108)
+    at l.call (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3580)
+    at M (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16657)
+    at bc (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16871)
+    at _r (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3781)
+    at pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3287)
+    at Ka (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2303) @ https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:13
+[   66786ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at At (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:1613)
+    at Ka.re.immediate (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2322)
+    at Pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:38)
+    at je (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:108)
+    at l.call (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3580)
+    at M (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16657)
+    at bc (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16871)
+    at _r (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3781)
+    at pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3287)
+    at Ka (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2303) @ https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:13
+[   66787ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at At (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:1613)
+    at Ka.re.immediate (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2322)
+    at Pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:38)
+    at je (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:108)
+    at l.call (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3580)
+    at M (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16657)
+    at bc (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16871)
+    at _r (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3781)
+    at pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3287)
+    at Ka (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2303) @ https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:13
+[   66787ms] [WARNING] ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.
+For more detail, please visit: https://element-plus.org/en-US/component/radio.html
+
+    at At (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:1613)
+    at Ka.re.immediate (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2322)
+    at Pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:38)
+    at je (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:108)
+    at l.call (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3580)
+    at M (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16657)
+    at bc (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:9:16871)
+    at _r (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3781)
+    at pn (https://decoboon.joytsing.com/assets/vue-CQffwwgs.js:13:3287)
+    at Ka (https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:14:2303) @ https://decoboon.joytsing.com/assets/element-ChxqYNyC.js:13

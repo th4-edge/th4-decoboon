@@ -1,0 +1,195 @@
+- generic [ref=e51]:
+  - complementary [ref=e52]:
+    - generic [ref=e53]:
+      - img "装得清 Logo" [ref=e54]
+      - generic [ref=e55]:
+        - strong [ref=e56]: 装得清
+        - generic [ref=e57]: 经营管控中心
+    - generic [ref=e58]:
+      - generic [ref=e59]: 当前角色 · 老板
+      - strong [ref=e60]: 全公司
+      - generic [ref=e61]: Company
+    - menubar [ref=e62]:
+      - menuitem "经营总览" [ref=e63] [cursor=pointer]
+      - menuitem "业务分析" [expanded] [ref=e69]:
+        - menu [ref=e343]:
+          - menuitem "经营驾驶舱" [ref=e344] [cursor=pointer]
+          - menuitem "AI经营助手" [ref=e348] [cursor=pointer]
+      - menuitem "项目监管" [ref=e77] [cursor=pointer]
+      - menuitem "财务经营" [ref=e81] [cursor=pointer]
+      - menuitem "组织效能" [active] [ref=e85] [cursor=pointer]
+      - menuitem "风险中心" [ref=e91] [cursor=pointer]
+  - generic [ref=e95]:
+    - banner [ref=e96]:
+      - button "展开或收起菜单" [ref=e97] [cursor=pointer]
+      - generic [ref=e101]:
+        - generic [ref=e103] [cursor=pointer]:
+          - generic:
+            - combobox "搜索范围" [ref=e105]
+            - generic [ref=e106]: 全部
+        - textbox "搜索对象或旧菜单名称" [ref=e114]
+      - generic [ref=e119]:
+        - generic [ref=e120]: 全公司 · Company
+        - button "消息中心" [ref=e122] [cursor=pointer]
+        - button "伟 张伟 老板" [ref=e126] [cursor=pointer]:
+          - generic [ref=e127]: 伟
+          - generic [ref=e128]:
+            - strong [ref=e129]: 张伟
+            - generic [ref=e130]: 老板
+    - main [ref=e133]:
+      - generic [ref=e2140]:
+        - generic [ref=e2141]:
+          - generic [ref=e2142]:
+            - generic [ref=e2143]: Boss / Company DataScope
+            - heading "组织效能" [level=1] [ref=e2144]
+            - paragraph [ref=e2145]: 按角色、门店和团队查看转化、签约、交付与验收结果。
+          - generic [ref=e2146]:
+            - textbox [ref=e2149]: 2026-10
+            - button "刷新" [ref=e2150] [cursor=pointer]
+        - generic [ref=e2157]:
+          - complementary [ref=e2158]:
+            - generic [ref=e2159]:
+              - text: 当前判断
+              - strong [ref=e2160]: 2 名设计师、1 名业务员、1 名项目经理；效能结果见中栏排行与明细
+            - generic [ref=e2161]:
+              - generic [ref=e2169]:
+                - generic [ref=e2170]: 设计师
+                - strong [ref=e2171]: "2"
+                - generic [ref=e2172]: 平均报价转化率 50%
+              - generic [ref=e2180]:
+                - generic [ref=e2181]: 业务员
+                - strong [ref=e2182]: "1"
+                - generic [ref=e2183]: 平均签约率 0%
+              - generic [ref=e2189]:
+                - generic [ref=e2190]: 项目经理
+                - strong [ref=e2191]: "1"
+                - generic [ref=e2192]: 平均准时交付率 0%
+              - generic [ref=e2198]:
+                - generic [ref=e2199]: 项目经理验收通过率
+                - strong [ref=e2200]: 0%
+                - generic [ref=e2201]: 以正式验收事实计算
+          - main [ref=e2202]:
+            - generic [ref=e2203]:
+              - generic [ref=e2204]:
+                - generic [ref=e2206]:
+                  - heading "设计师效能" [level=2] [ref=e2207]
+                  - paragraph [ref=e2208]: 设计师综合结果排行
+                - generic [ref=e2209]:
+                  - generic [ref=e2210]:
+                    - generic [ref=e2211]: "1"
+                    - generic [ref=e2212]:
+                      - strong [ref=e2213]: 谢玲玲
+                      - generic [ref=e2214]: 总店
+                    - generic [ref=e2215]: 100%
+                  - generic [ref=e2216]:
+                    - generic [ref=e2217]: "2"
+                    - generic [ref=e2218]:
+                      - strong [ref=e2219]: 董夏鹏
+                      - generic [ref=e2220]: 总店
+                    - generic [ref=e2221]: 0%
+              - generic [ref=e2222]:
+                - generic [ref=e2224]:
+                  - heading "业务员效能" [level=2] [ref=e2225]
+                  - paragraph [ref=e2226]: 业务员综合结果排行
+                - generic [ref=e2228]:
+                  - generic [ref=e2229]: "1"
+                  - generic [ref=e2230]:
+                    - strong [ref=e2231]: 黄贤杰
+                    - generic [ref=e2232]: 总店
+                  - generic [ref=e2233]: 0%
+              - generic [ref=e2234]:
+                - generic [ref=e2236]:
+                  - heading "项目交付效能" [level=2] [ref=e2237]
+                  - paragraph [ref=e2238]: 项目经理综合结果排行
+                - generic [ref=e2240]:
+                  - generic [ref=e2241]: "1"
+                  - generic [ref=e2242]:
+                    - strong [ref=e2243]: 徐勇
+                    - generic [ref=e2244]: 总店
+                  - generic [ref=e2245]: 0%
+            - generic [ref=e2246]:
+              - generic [ref=e2247]:
+                - generic [ref=e2248]:
+                  - heading "角色绩效明细" [level=2] [ref=e2249]
+                  - paragraph [ref=e2250]: 按角色、门店和团队查看员工实际产出
+                - radiogroup "radio-group" [ref=e2251]:
+                  - generic [ref=e2252]:
+                    - radio "全部" [checked] [ref=e2253]
+                    - generic [ref=e2254] [cursor=pointer]: 全部
+                  - generic [ref=e2255]:
+                    - radio "设计师" [ref=e2256]
+                    - generic [ref=e2257] [cursor=pointer]: 设计师
+                  - generic [ref=e2258]:
+                    - radio "业务员" [ref=e2259]
+                    - generic [ref=e2260] [cursor=pointer]: 业务员
+                  - generic [ref=e2261]:
+                    - radio "项目经理" [ref=e2262]
+                    - generic [ref=e2263] [cursor=pointer]: 项目经理
+              - generic [ref=e2265]:
+                - table [ref=e2267]:
+                  - rowgroup [ref=e2274]:
+                    - row [ref=e2275]:
+                      - columnheader "员工" [ref=e2276]
+                      - columnheader "角色" [ref=e2278]
+                      - columnheader "门店 / 团队" [ref=e2280]
+                      - columnheader "主要结果" [ref=e2282]
+                      - columnheader "明细" [ref=e2284]
+                - table [ref=e2290]:
+                  - rowgroup [ref=e2297]:
+                    - row [ref=e2298]:
+                      - cell "董夏鹏" [ref=e2299]
+                      - cell "设计师" [ref=e2301]
+                      - cell "总店" [ref=e2303]
+                      - cell "0% 报价转化率" [ref=e2305]:
+                        - generic [ref=e2306]:
+                          - text: 0%
+                          - generic [ref=e2307]: 报价转化率
+                      - cell "客户 0 · 报价 0 · 接受 0" [ref=e2308]
+                    - row [ref=e2310]:
+                      - cell "黄贤杰" [ref=e2311]
+                      - cell "业务员" [ref=e2313]
+                      - cell "总店" [ref=e2315]
+                      - cell "0% 签约率" [ref=e2317]:
+                        - generic [ref=e2318]:
+                          - text: 0%
+                          - generic [ref=e2319]: 签约率
+                      - cell "客户 0 · 签约客户 0" [ref=e2320]
+                    - row [ref=e2322]:
+                      - cell "徐勇" [ref=e2323]
+                      - cell "项目经理" [ref=e2325]
+                      - cell "总店" [ref=e2327]
+                      - cell "0% 准时交付率" [ref=e2329]:
+                        - generic [ref=e2330]:
+                          - text: 0%
+                          - generic [ref=e2331]: 准时交付率
+                      - cell "交付 0 · 准时 0 · 验收 0" [ref=e2332]
+                    - row [ref=e2334]:
+                      - cell "谢玲玲" [ref=e2335]
+                      - cell "设计师" [ref=e2337]
+                      - cell "总店" [ref=e2339]
+                      - cell "100% 报价转化率" [ref=e2341]:
+                        - generic [ref=e2342]:
+                          - text: 100%
+                          - generic [ref=e2343]: 报价转化率
+                      - cell "客户 0 · 报价 1 · 接受 1" [ref=e2344]
+          - complementary [ref=e2346]:
+            - generic [ref=e2347]:
+              - generic [ref=e2349]:
+                - heading "下钻入口" [level=3] [ref=e2350]
+                - paragraph [ref=e2351]: 从结论到业务对象。
+              - button "业务分析 经营结果与角色转化" [ref=e2352] [cursor=pointer]:
+                - generic [ref=e2356]:
+                  - strong [ref=e2357]: 业务分析
+                  - generic [ref=e2358]: 经营结果与角色转化
+              - button "项目监管 项目经理交付与风险" [ref=e2359] [cursor=pointer]:
+                - generic [ref=e2363]:
+                  - strong [ref=e2364]: 项目监管
+                  - generic [ref=e2365]: 项目经理交付与风险
+              - button "财务经营 回款与成本完整性" [ref=e2366] [cursor=pointer]:
+                - generic [ref=e2370]:
+                  - strong [ref=e2371]: 财务经营
+                  - generic [ref=e2372]: 回款与成本完整性
+              - button "风险中心 跨角色经营风险" [ref=e2373] [cursor=pointer]:
+                - generic [ref=e2377]:
+                  - strong [ref=e2378]: 风险中心
+                  - generic [ref=e2379]: 跨角色经营风险

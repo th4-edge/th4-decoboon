@@ -139,9 +139,10 @@ class ProviderSecurityAcceptanceTest {
         // => 总数为 384（public 13 + protected 371）。
         // 2026-10-07 员工工资提成 / 企业单据模板版本 · 版式 · 凭证设计器 / 客户退款 在途功能整批上线，
         // 2026-10-07 薪酬方案与月度考勤删除新增 2 条（payroll/compensation/delete、attendance/summary/delete）。
-        // protected 新增 34 条 => 总数为 418（public 13 + protected 405）。
-        assertThat(routes).hasSize(418);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(405);
+        // protected 新增 34 条 => 418（public 13 + protected 405）。
+        // 2026-10-08 设计师业务工作台新增 2 条（statistic/workbench/designer/queue/list、report）=> 420（public 13 + protected 407）。
+        assertThat(routes).hasSize(420);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(407);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 

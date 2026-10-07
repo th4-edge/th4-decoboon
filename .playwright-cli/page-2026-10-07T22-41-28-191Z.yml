@@ -1,0 +1,29 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [aria-hidden] [ref=e5]: 装
+    - paragraph [ref=e6]: DECOB00N · 装企经营协同
+    - heading "让每一个家装项目， 同一张进度页同频共管。" [level=1] [ref=e7]: 让每一个家装项目，同一张进度页同频共管。
+    - paragraph [ref=e8]: 客户、设计、报价、合同、施工、材料、验收与财务，以项目为枢纽形成企业完整经营闭环。
+    - list [ref=e9]:
+      - listitem [ref=e10]: · 全角色工作台
+      - listitem [ref=e11]: · 岗位权限清晰
+      - listitem [ref=e12]: · 项目经营闭环
+      - listitem [ref=e13]: · 财务资金穿透
+  - generic [ref=e15]:
+    - paragraph [ref=e16]: ENTERPRISE WORKSPACE
+    - heading "登录企业工作台" [level=2] [ref=e17]
+    - paragraph [ref=e18]: 使用在小程序“我的 → 账号密码”中设置的手机号与密码登录。
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]: "*手机号"
+        - textbox "*手机号" [ref=e25]:
+          - /placeholder: 请输入手机号码
+      - generic [ref=e26]:
+        - generic [ref=e27]: "*登录密码"
+        - textbox "*登录密码" [ref=e31]:
+          - /placeholder: 请输入登录密码
+      - generic [ref=e32]:
+        - generic [ref=e33]: 登录账号由企业员工手机号确定
+        - generic [ref=e34]: 忘记密码请联系企业管理员
+      - button "进入工作台" [ref=e35] [cursor=pointer]
+    - paragraph [ref=e37]: 密码由小程序设置，仅以加密形式保存，不展示明文密码。

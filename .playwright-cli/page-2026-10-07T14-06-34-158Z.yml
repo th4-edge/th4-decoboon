@@ -1,0 +1,83 @@
+- generic [ref=e51]:
+  - complementary [ref=e52]:
+    - generic [ref=e53]:
+      - img "装得清 Logo" [ref=e54]
+      - generic [ref=e55]:
+        - strong [ref=e56]: 装得清
+        - generic [ref=e57]: 经营管控中心
+    - generic [ref=e58]:
+      - generic [ref=e59]: 当前角色 · 老板
+      - strong [ref=e60]: 全公司
+      - generic [ref=e61]: Company
+    - menubar [ref=e62]:
+      - menuitem "经营总览" [ref=e63] [cursor=pointer]
+      - menuitem "业务分析" [expanded] [ref=e69]:
+        - menu [ref=e343]:
+          - menuitem "经营驾驶舱" [ref=e344] [cursor=pointer]
+          - menuitem "AI经营助手" [ref=e348] [cursor=pointer]
+      - menuitem "项目监管" [ref=e77] [cursor=pointer]
+      - menuitem "财务经营" [ref=e81] [cursor=pointer]
+      - menuitem "组织效能" [ref=e85] [cursor=pointer]
+      - menuitem "风险中心" [active] [ref=e91] [cursor=pointer]
+  - generic [ref=e95]:
+    - banner [ref=e96]:
+      - button "展开或收起菜单" [ref=e97] [cursor=pointer]
+      - generic [ref=e101]:
+        - generic [ref=e103] [cursor=pointer]:
+          - generic:
+            - combobox "搜索范围" [ref=e105]
+            - generic [ref=e106]: 全部
+        - textbox "搜索对象或旧菜单名称" [ref=e114]
+      - generic [ref=e119]:
+        - generic [ref=e120]: 全公司 · Company
+        - button "消息中心" [ref=e122] [cursor=pointer]
+        - button "伟 张伟 老板" [ref=e126] [cursor=pointer]:
+          - generic [ref=e127]: 伟
+          - generic [ref=e128]:
+            - strong [ref=e129]: 张伟
+            - generic [ref=e130]: 老板
+    - main [ref=e133]:
+      - generic [ref=e465]:
+        - generic [ref=e466]:
+          - generic [ref=e467]:
+            - generic [ref=e468]: Boss / Company DataScope
+            - heading "财务经营" [level=1] [ref=e469]
+            - paragraph [ref=e470]: 从合同、应收、实收、应付、实付到项目利润和资金余额；成本不完整时不展示伪利润。
+          - generic [ref=e471]:
+            - button "应收计划" [ref=e472] [cursor=pointer]
+            - button "资金台账" [ref=e474] [cursor=pointer]
+            - button "刷新" [ref=e480] [cursor=pointer]
+        - generic [ref=e487]:
+          - complementary [ref=e488]:
+            - generic [ref=e489]:
+              - text: 当前判断
+              - strong [ref=e490]: 财务数据加载中
+          - main [ref=e491]:
+            - generic [ref=e492]:
+              - strong [ref=e497]: 暂无项目财务数据
+              - generic [ref=e498]: 项目立项并产生合同、应收或资金流水后，这里将形成项目账本。
+          - complementary [ref=e499]:
+            - generic [ref=e500]:
+              - generic [ref=e502]:
+                - heading "下钻入口" [level=3] [ref=e503]
+                - paragraph [ref=e504]: 从结论到业务对象。
+              - button "应收计划 合同回款节点与逾期" [ref=e505] [cursor=pointer]:
+                - generic [ref=e509]:
+                  - strong [ref=e510]: 应收计划
+                  - generic [ref=e511]: 合同回款节点与逾期
+              - button "资金台账 全部资金流水" [ref=e512] [cursor=pointer]:
+                - generic [ref=e516]:
+                  - strong [ref=e517]: 资金台账
+                  - generic [ref=e518]: 全部资金流水
+              - button "应付账款 材料、工资和项目款" [ref=e519] [cursor=pointer]:
+                - generic [ref=e523]:
+                  - strong [ref=e524]: 应付账款
+                  - generic [ref=e525]: 材料、工资和项目款
+              - button "项目结算 项目利润与质保金" [ref=e526] [cursor=pointer]:
+                - generic [ref=e530]:
+                  - strong [ref=e531]: 项目结算
+                  - generic [ref=e532]: 项目利润与质保金
+              - button "风险中心 逾期应收与成本风险" [ref=e533] [cursor=pointer]:
+                - generic [ref=e537]:
+                  - strong [ref=e538]: 风险中心
+                  - generic [ref=e539]: 逾期应收与成本风险

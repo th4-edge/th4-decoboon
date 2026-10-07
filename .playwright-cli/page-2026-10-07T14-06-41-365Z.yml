@@ -1,0 +1,192 @@
+- generic [ref=e51]:
+  - complementary [ref=e52]:
+    - generic [ref=e53]:
+      - img "装得清 Logo" [ref=e54]
+      - generic [ref=e55]:
+        - strong [ref=e56]: 装得清
+        - generic [ref=e57]: 经营管控中心
+    - generic [ref=e58]:
+      - generic [ref=e59]: 当前角色 · 老板
+      - strong [ref=e60]: 全公司
+      - generic [ref=e61]: Company
+    - menubar [ref=e62]:
+      - menuitem "经营总览" [ref=e63] [cursor=pointer]
+      - menuitem "业务分析" [expanded] [ref=e69]:
+        - menu [ref=e343]:
+          - menuitem "经营驾驶舱" [ref=e344] [cursor=pointer]
+          - menuitem "AI经营助手" [ref=e348] [cursor=pointer]
+      - menuitem "项目监管" [active] [ref=e77] [cursor=pointer]
+      - menuitem "财务经营" [ref=e81] [cursor=pointer]
+      - menuitem "组织效能" [ref=e85] [cursor=pointer]
+      - menuitem "风险中心" [ref=e91] [cursor=pointer]
+  - generic [ref=e95]:
+    - banner [ref=e96]:
+      - button "展开或收起菜单" [ref=e97] [cursor=pointer]
+      - generic [ref=e101]:
+        - generic [ref=e103] [cursor=pointer]:
+          - generic:
+            - combobox "搜索范围" [ref=e105]
+            - generic [ref=e106]: 全部
+        - textbox "搜索对象或旧菜单名称" [ref=e114]
+      - generic [ref=e119]:
+        - generic [ref=e120]: 全公司 · Company
+        - button "消息中心" [ref=e122] [cursor=pointer]
+        - button "伟 张伟 老板" [ref=e126] [cursor=pointer]:
+          - generic [ref=e127]: 伟
+          - generic [ref=e128]:
+            - strong [ref=e129]: 张伟
+            - generic [ref=e130]: 老板
+    - main [ref=e133]:
+      - generic [ref=e751]:
+        - generic [ref=e752]:
+          - generic [ref=e753]:
+            - generic [ref=e754]: Boss / Company DataScope
+            - heading "项目监管" [level=1] [ref=e755]
+            - paragraph [ref=e756]: 风险优先查看在营项目、停工、成本完整性和交付负责人。
+          - generic [ref=e757]:
+            - button "项目台账" [ref=e758] [cursor=pointer]
+            - button "刷新" [ref=e764] [cursor=pointer]
+        - generic [ref=e771]:
+          - complementary [ref=e772]:
+            - generic [ref=e773]:
+              - text: 当前判断
+              - strong [ref=e774]: 项目盘子运行正常
+            - generic [ref=e775]:
+              - generic [ref=e781]:
+                - generic [ref=e782]: 项目总数
+                - strong [ref=e783]: "4"
+                - generic [ref=e784]: 当前岗位可见的全部项目
+              - generic [ref=e792]:
+                - generic [ref=e793]: 施工中
+                - strong [ref=e794]: "3"
+                - generic [ref=e795]: 正在履约的项目
+              - generic [ref=e801]:
+                - generic [ref=e802]: 停工项目
+                - strong [ref=e803]: "0"
+                - generic [ref=e804]: 需优先确认停工原因与恢复计划
+              - generic [ref=e810]:
+                - generic [ref=e811]: 高风险事项
+                - strong [ref=e812]: "0"
+                - generic [ref=e813]: 来自经营风险记录
+              - generic [ref=e818]:
+                - generic [ref=e819]: 成本未完整
+                - strong [ref=e820]: "0"
+                - generic [ref=e821]: 成本未完整时不计算可靠利润
+          - main [ref=e822]:
+            - generic [ref=e823]:
+              - generic [ref=e824]:
+                - generic [ref=e825]:
+                  - heading "项目盘子" [level=2] [ref=e826]
+                  - paragraph [ref=e827]: 风险项目优先，项目情况按正式项目与风险记录展示。
+                - generic [ref=e829] [cursor=pointer]:
+                  - generic:
+                    - combobox [ref=e831]
+                    - generic [ref=e832]: 全部状态
+              - generic [ref=e838]:
+                - table [ref=e840]:
+                  - rowgroup [ref=e851]:
+                    - row [ref=e852]:
+                      - columnheader "项目" [ref=e853]
+                      - columnheader "状态" [ref=e855]
+                      - columnheader "当前阶段" [ref=e857]
+                      - columnheader "项目经理" [ref=e859]
+                      - columnheader "进度" [ref=e861]
+                      - columnheader "计划完工" [ref=e863]
+                      - columnheader "合同额" [ref=e865]
+                      - columnheader "成本" [ref=e867]
+                      - columnheader "风险" [ref=e869]
+                - table [ref=e875]:
+                  - rowgroup [ref=e886]:
+                    - row [ref=e887]:
+                      - cell "谢欣 · 荷塘家园24-2503 谢欣 · 荷塘家园" [ref=e888]:
+                        - generic [ref=e890]:
+                          - strong [ref=e892]: 谢欣 · 荷塘家园24-2503
+                          - generic [ref=e893]: 谢欣 · 荷塘家园
+                      - cell "待开工" [ref=e894]
+                      - cell "开工交底" [ref=e898]
+                      - cell "待分配" [ref=e900]
+                      - cell [ref=e902]:
+                        - progressbar [ref=e904]:
+                          - generic [ref=e907]: 0%
+                      - cell "2027-02-03" [ref=e908]
+                      - cell "¥53,000.00" [ref=e910]
+                      - cell "暂不可确认" [ref=e912]
+                      - cell "低风险 逾期应收" [ref=e914]:
+                        - generic [ref=e916]:
+                          - generic [ref=e917]: 低风险
+                          - generic [ref=e919]: 逾期应收
+                    - row [ref=e920]:
+                      - cell "祥泰园2-1102 沈 · 祥泰园2-1102" [ref=e921]:
+                        - generic [ref=e923]:
+                          - strong [ref=e925]: 祥泰园2-1102
+                          - generic [ref=e926]: 沈 · 祥泰园2-1102
+                      - cell "施工中" [ref=e927]
+                      - cell "水电阶段" [ref=e931]
+                      - cell "王宏文" [ref=e933]
+                      - cell [ref=e935]:
+                        - progressbar [ref=e937]:
+                          - generic [ref=e941]: 30%
+                      - cell "待确认" [ref=e942]
+                      - cell "¥32,600.00" [ref=e944]
+                      - cell "暂不可确认" [ref=e946]
+                      - cell "正常 暂无风险" [ref=e948]:
+                        - generic [ref=e950]:
+                          - generic [ref=e951]: 正常
+                          - generic [ref=e953]: 暂无风险
+                    - row [ref=e954]:
+                      - cell "安徽裕洋环保科技有限公司 舒伟 · 安徽裕洋环保科技有限公司" [ref=e955]:
+                        - generic [ref=e957]:
+                          - strong [ref=e959]: 安徽裕洋环保科技有限公司
+                          - generic [ref=e960]: 舒伟 · 安徽裕洋环保科技有限公司
+                      - cell "施工中" [ref=e961]
+                      - cell "安装" [ref=e965]
+                      - cell "王宏文" [ref=e967]
+                      - cell [ref=e969]:
+                        - progressbar [ref=e971]:
+                          - generic [ref=e975]: 50%
+                      - cell "待确认" [ref=e976]
+                      - cell "¥52,500.00" [ref=e978]
+                      - cell "暂不可确认" [ref=e980]
+                      - cell "正常 暂无风险" [ref=e982]:
+                        - generic [ref=e984]:
+                          - generic [ref=e985]: 正常
+                          - generic [ref=e987]: 暂无风险
+                    - row [ref=e988]:
+                      - cell "置地中心19-1802 蒋先生 · 置地中心" [ref=e989]:
+                        - generic [ref=e991]:
+                          - strong [ref=e993]: 置地中心19-1802
+                          - generic [ref=e994]: 蒋先生 · 置地中心
+                      - cell "施工中" [ref=e995]
+                      - cell "瓦木阶段" [ref=e999]
+                      - cell "徐勇" [ref=e1001]
+                      - cell [ref=e1003]:
+                        - progressbar [ref=e1005]:
+                          - generic [ref=e1009]: 50%
+                      - cell "待确认" [ref=e1010]
+                      - cell "¥52,000.00" [ref=e1012]
+                      - cell "暂不可确认" [ref=e1014]
+                      - cell "正常 暂无风险" [ref=e1016]:
+                        - generic [ref=e1018]:
+                          - generic [ref=e1019]: 正常
+                          - generic [ref=e1021]: 暂无风险
+          - complementary [ref=e1022]:
+            - generic [ref=e1023]:
+              - generic [ref=e1025]:
+                - heading "下钻入口" [level=3] [ref=e1026]
+                - paragraph [ref=e1027]: 从结论到业务对象。
+              - button "项目台账 全部项目与对象下钻" [ref=e1028] [cursor=pointer]:
+                - generic [ref=e1032]:
+                  - strong [ref=e1033]: 项目台账
+                  - generic [ref=e1034]: 全部项目与对象下钻
+              - button "风险中心 停工、材料和变更风险" [ref=e1035] [cursor=pointer]:
+                - generic [ref=e1039]:
+                  - strong [ref=e1040]: 风险中心
+                  - generic [ref=e1041]: 停工、材料和变更风险
+              - button "财务经营 回款与成本完整性" [ref=e1042] [cursor=pointer]:
+                - generic [ref=e1046]:
+                  - strong [ref=e1047]: 财务经营
+                  - generic [ref=e1048]: 回款与成本完整性
+              - button "组织效能 项目经理交付与验收" [ref=e1049] [cursor=pointer]:
+                - generic [ref=e1053]:
+                  - strong [ref=e1054]: 组织效能
+                  - generic [ref=e1055]: 项目经理交付与验收
