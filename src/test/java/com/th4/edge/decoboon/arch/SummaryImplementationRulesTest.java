@@ -26,6 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <p>存量违规以 {@link #LEGACY_BASELINE} 白名单登记（GAP-027 分批整改）；
  * 白名单之外出现任何一条即失败，整改完成的文件必须从白名单移除。</p>
+ *
+ * <p><b>定位说明</b>：本门禁是<b>防劣化辅助</b>，不用于决定优化顺序。性能问题的定位方向以
+ * {@code DEC-037} / {@code BR-032} / {@code rules.md §0.5} 为准——必须先分层测量，
+ * 只优化实测占比最大的一段（L1 用户感知 &gt; L2 传输 &gt; L3 服务端 &gt; L4 存储）；
+ * 存量整改排序依据端到端 L1 指标与响应体字节占比，不得按反模式数量排序。</p>
  */
 class SummaryImplementationRulesTest {
 
