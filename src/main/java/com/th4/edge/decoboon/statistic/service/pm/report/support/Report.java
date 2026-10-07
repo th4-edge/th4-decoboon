@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.pm.report.support;
 
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
@@ -65,11 +66,14 @@ import java.util.Objects;
                 properties = {"acceptanceId", "project", "stage", "submittedBy", "status", "conclusion",
                         "confirmedAt", "createTime"}),
         @AllowProperties(model = MaterialPlan.class,
-                properties = {"planId", "project", "material", "quantity", "unit", "status", "requiredAt", "arrivedAt", "createTime" }),
+                properties = {"planId", "project", "catalogItem", "quantity", "unit", "status", "requiredAt",
+                        "arrivedAt", "selectedBrand", "selectedSpec", "createTime" }),
+        @AllowProperties(model = CatalogItem.class,
+                properties = {"itemId", "name", "spec", "brand", "series", "unit"}),
         @AllowProperties(model = ProjectReport.class,
                 properties = {"reportId", "project", "stage", "task", "type", "title", "content", "images",
                         "author", "authorRole", "visibleToCustomer", "createTime"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role", "avatarUrl", "status"})
 })
 @Service("statistic/pm/report")
 @Scope(ScopeTypes.PROTOTYPE)

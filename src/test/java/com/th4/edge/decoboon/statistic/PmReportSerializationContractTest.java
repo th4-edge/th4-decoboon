@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic;
 
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
@@ -45,7 +46,22 @@ class PmReportSerializationContractTest {
     void materialRiskMustNotCarryPropertyOrTaskTree() {
         List<String> allow = allowOf(MaterialPlan.class);
         assertThat(allow).doesNotContain("property", "task");
-        assertThat(allow).contains("planId", "project", "quantity", "unit", "status", "requiredAt");
+        assertThat(allow).contains("planId", "project", "catalogItem", "quantity", "unit", "status", "requiredAt");
+    }
+
+    /** 材料名称长期不显示的根因：MaterialPlan 无 material 字段，名称在 catalogItem。 */
+    @Test
+    void materialMustCarryCatalogItemNameForDisplay() {
+        List<String> allow = allowOf(CatalogItem.class);
+        assertThat(allow).contains("itemId", "name", "spec");
+        assertThat(allowOf(MaterialPlan.class)).contains("catalogItem", "selectedBrand", "selectedSpec");
+    }
+
+    /** 现场动态作者头像/在职状态由页面消费，白名单必须带出。 */
+    @Test
+    void reportAuthorMustCarryAvatarAndStatus() {
+        List<String> allow = allowOf(com.th4.edge.tenant.user.model.Employee.class);
+        assertThat(allow).contains("empId", "name", "role", "avatarUrl", "status");
     }
 
     @Test
