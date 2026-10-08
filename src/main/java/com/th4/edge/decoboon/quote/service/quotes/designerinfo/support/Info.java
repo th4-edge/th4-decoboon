@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Space;
+import com.th4.edge.decoboon.quote.context.QuoteBusinessStateContext;
 import com.th4.edge.decoboon.quote.context.QuoteRevisionContext;
 import com.th4.edge.decoboon.quote.context.QuoteViewContext;
 import com.th4.edge.decoboon.quote.model.Quote;
@@ -36,7 +37,7 @@ import org.springframework.stereotype.Service;
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
                         "area", "subtotal", "amount", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
                         "submittedAt", "rejectedAt", "acceptedAt", "convertedAt", "items", "regionGroups", "constructionGroups",
-                        "materialGroups", "otherGroups", "createTime", "updateTime", "property", "revision"}),
+                        "materialGroups", "otherGroups", "createTime", "updateTime", "property", "revision", "businessStateView"}),
         @AllowProperties(model = QuoteGroup.class,
                 properties = {"key", "name", "type", "category", "unit", "quantity", "amount", "items"}),
         @AllowProperties(model = Design.class,
@@ -77,17 +78,20 @@ public class Info implements com.th4.edge.decoboon.quote.service.quotes.designer
     private final DataScopeContext dataScopeContext;
     private final QuoteViewContext quoteViewContext;
     private final QuoteRevisionContext revisionContext;
+    private final QuoteBusinessStateContext quoteBusinessStateContext;
 
     public Info(QuoteRepository quoteRepository,
                 QuoteLineRepository quoteLineRepository,
                 DataScopeContext dataScopeContext,
                 QuoteViewContext quoteViewContext,
-                    QuoteRevisionContext revisionContext) {
+                QuoteRevisionContext revisionContext,
+                QuoteBusinessStateContext quoteBusinessStateContext) {
         this.quoteRepository = quoteRepository;
         this.quoteLineRepository = quoteLineRepository;
         this.dataScopeContext = dataScopeContext;
         this.quoteViewContext = quoteViewContext;
         this.revisionContext = revisionContext;
+        this.quoteBusinessStateContext = quoteBusinessStateContext;
     }
 
     @Override
@@ -109,6 +113,7 @@ public class Info implements com.th4.edge.decoboon.quote.service.quotes.designer
         java.util.List<com.th4.edge.decoboon.quote.model.QuoteLine> lines = quoteLineRepository.findByQuote(quote);
         Quote view = quoteViewContext.apply(quote, lines);
         view.setRevision(revisionContext.token(quote, lines));
+        quoteBusinessStateContext.enrich(view);
         return view;
     }
 }

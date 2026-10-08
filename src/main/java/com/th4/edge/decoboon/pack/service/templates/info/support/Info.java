@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.pack.service.templates.info.support;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
+import com.th4.edge.decoboon.pack.context.PackageCostContext;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.pack.model.PackageLine;
 import com.th4.edge.decoboon.pack.model.PackageSection;
@@ -55,18 +56,22 @@ public class Info implements com.th4.edge.decoboon.pack.service.templates.info.I
 
     private final PackageTemplateRepository giftPackRepository;
     private final TenantContext tenantContext;
+    private final PackageCostContext costContext;
 
-    public Info(PackageTemplateRepository giftPackRepository, TenantContext tenantContext) {
+    public Info(PackageTemplateRepository giftPackRepository, TenantContext tenantContext,
+                PackageCostContext costContext) {
         this.giftPackRepository = giftPackRepository;
         this.tenantContext = tenantContext;
+        this.costContext = costContext;
     }
 
     @Override
     @Transactional(readOnly = true)
     public PackageTemplate call(PackageTemplate request) {
         Employee current = tenantContext.requireEmployee(employee);
-        return giftPackRepository.findByTemplateIdAndCompany_ComId(
+        PackageTemplate template = giftPackRepository.findByTemplateIdAndCompany_ComId(
                         templateId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
+        return costContext.mask(template, current);
     }
 }

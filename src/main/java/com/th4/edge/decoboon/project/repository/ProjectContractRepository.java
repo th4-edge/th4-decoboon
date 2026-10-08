@@ -33,6 +33,10 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
     @EntityGraph(attributePaths = {"project", "customer", "property", "store", "owner", "quote"})
     List<ProjectContract> findByCompany_ComIdOrderByContractIdDesc(Long comId);
 
+    /** 按客户集合取合同（用于客户经营投影的最新合同，量级 = 当前页客户数）。 */
+    List<ProjectContract> findByCompany_ComIdAndCustomer_CustIdInOrderByContractIdDesc(
+            Long comId, java.util.Collection<Long> custIds);
+
     long countByCompany_ComId(Long comId);
 
     List<ProjectContract> findTop200ByCompany_ComIdOrderByContractIdDesc(Long comId);

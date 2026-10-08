@@ -17,6 +17,10 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
 
     List<Quote> findByCompany_ComIdOrderByQuoteIdDesc(Long comId);
 
+    /** 按客户集合取报价（用于客户经营投影的最新报价，量级 = 当前页客户数）。 */
+    List<Quote> findByCompany_ComIdAndCustomer_CustIdInOrderByQuoteIdDesc(Long comId,
+                                                                        java.util.Collection<Long> custIds);
+
     long countByCompany_ComId(Long comId);
 
     List<Quote> findTop200ByCompany_ComIdOrderByQuoteIdDesc(Long comId);

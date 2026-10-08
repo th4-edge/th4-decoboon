@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.statistic.service.teamleader.report.support;
 
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
@@ -324,6 +325,10 @@ public class Report implements com.th4.edge.decoboon.statistic.service.teamleade
                 return false;
             }
             LocalDate next = customer.getNextFollowAt().toLocalDate();
+            // 跟进逾期只在预约量房前成立；预约量房后仍保留今日/即将到期提醒口径。
+            if (offset == 1 && !CustomerInsightContext.followOverdueEligible(customer)) {
+                return false;
+            }
             return offset == 0 ? next.isEqual(today) : next.isBefore(today);
         }).count();
     }

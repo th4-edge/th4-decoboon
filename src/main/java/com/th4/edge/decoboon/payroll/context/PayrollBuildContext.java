@@ -28,6 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 
 /** 根据薪酬方案和已确认考勤生成工资单草稿。 */
@@ -73,6 +77,11 @@ public class PayrollBuildContext {
         if (period == null || !period.matches("\\d{4}-\\d{2}")) {
             throw new DefinedException(new DefaultErrorCode("400", "工资周期格式必须为 YYYY-MM"));
         }
+        YearMonth yearMonth = YearMonth.parse(period);
+        LocalDate periodStartDate = yearMonth.atDay(1);
+        LocalDate periodEndDate = yearMonth.atEndOfMonth();
+        LocalDateTime periodStart = periodStartDate.atStartOfDay();
+        LocalDateTime periodEnd = periodEndDate.atTime(LocalTime.MAX);
         Long comId = current.getCompany().getComId();
         PayrollSheet sheet = sheetRepository.findByCompany_ComIdAndPeriod(comId, period).orElseGet(PayrollSheet::new);
         if (sheet.getSheetId() == null) {
@@ -89,11 +98,14 @@ public class PayrollBuildContext {
         boolean attendanceComplete = true;
         boolean commissionComplete = true;
         List<Employee> employees = employeeRepository.findByCompany_ComId(comId).stream()
-                .filter(item -> item.getStatus() == EmployeeStatus.Active)
+                .filter(item -> employedInPeriod(item, periodStart, periodEnd))
                 .toList();
         for (Employee employee : employees) {
             CompensationScheme scheme = compensationRepository
-                    .findByCompany_ComIdAndEmployee_EmpIdAndStatus(comId, employee.getEmpId(), CompensationStatus.Active)
+                    .findEffective(comId, employee.getEmpId(), CompensationStatus.Active,
+                            periodStartDate, periodEndDate)
+                    .stream()
+                    .findFirst()
                     .orElse(null);
             if (scheme == null) {
                 continue;
@@ -155,6 +167,13 @@ public class PayrollBuildContext {
         sheet.setTotalNetAmount(sum(items, "net"));
         sheet.setStatus(PayrollSheetStatus.Draft);
         return sheetRepository.save(sheet);
+    }
+
+    private boolean employedInPeriod(Employee employee, LocalDateTime periodStart, LocalDateTime periodEnd) {
+        if (employee.getJoinedAt() != null && employee.getJoinedAt().isAfter(periodEnd)) return false;
+        if (employee.getResignedAt() != null && employee.getResignedAt().isBefore(periodStart)) return false;
+        if (employee.getStatus() == EmployeeStatus.Active) return true;
+        return employee.getJoinedAt() != null;
     }
 
     private BigDecimal sum(List<PayrollItem> items, String field) {

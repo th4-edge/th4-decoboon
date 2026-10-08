@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.quote.service.quotes.designerpage.support;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
+import com.th4.edge.decoboon.quote.context.QuoteBusinessStateContext;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -30,7 +31,7 @@ import java.util.List;
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
                         "area", "subtotal", "amount", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
-                        "submittedAt", "rejectedAt", "acceptedAt", "convertedAt", "createTime", "updateTime", "property"}),
+                        "submittedAt", "rejectedAt", "acceptedAt", "convertedAt", "createTime", "updateTime", "property", "businessStateView"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "area", "budget", "status"}),
         @AllowProperties(model = Design.class,
@@ -66,10 +67,13 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
 
     private final QuoteRepository quoteRepository;
     private final TenantContext tenantContext;
+    private final QuoteBusinessStateContext quoteBusinessStateContext;
 
-    public Page(QuoteRepository quoteRepository, TenantContext tenantContext) {
+    public Page(QuoteRepository quoteRepository, TenantContext tenantContext,
+                QuoteBusinessStateContext quoteBusinessStateContext) {
         this.quoteRepository = quoteRepository;
         this.tenantContext = tenantContext;
+        this.quoteBusinessStateContext = quoteBusinessStateContext;
     }
 
     @Override
@@ -98,6 +102,8 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
         int pageSize = size == null || size < 1 ? 100 : Math.min(size, 200);
         int from = Math.min(page * pageSize, quotes.size());
         int to = Math.min(from + pageSize, quotes.size());
-        return new PageImpl<>(quotes.subList(from, to), PageRequest.of(page, pageSize), quotes.size());
+        List<Quote> pageQuotes = quotes.subList(from, to);
+        pageQuotes.forEach(quoteBusinessStateContext::enrich);
+        return new PageImpl<>(pageQuotes, PageRequest.of(page, pageSize), quotes.size());
     }
 }

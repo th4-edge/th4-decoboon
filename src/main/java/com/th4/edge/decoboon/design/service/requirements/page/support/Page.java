@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.design.configure.RequirementKind;
 import com.th4.edge.decoboon.design.configure.RequirementStatus;
 import com.th4.edge.decoboon.design.model.Requirement;
 import com.th4.edge.decoboon.design.repository.RequirementRepository;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -29,9 +30,10 @@ import java.util.List;
 @Note("客户诉求分页")
 @Properties(allow = {
         @AllowProperties(model = Requirement.class,
-                properties = {"requirementId", "customer", "type", "spaceName", "kind", "category", "priority",
+                properties = {"requirementId", "customer", "property", "type", "spaceName", "kind", "category", "priority",
                         "status", "title", "detail", "response", "source", "confirmedAt", "owner", "createTime"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "community", "addr"}),
+        @AllowProperties(model = Property.class, properties = {"propertyId", "propertyNo", "community", "address", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("design/requirement/page")

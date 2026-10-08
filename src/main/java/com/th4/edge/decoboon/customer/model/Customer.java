@@ -201,8 +201,20 @@ public class Customer extends AuditModel {
     private String riskReason;
 
     @Transient
-    @Note("只读投影：下一步动作")
+    @Note("只读投影：下一步动作（风险驱动，兜底动作）")
     private String nextAction;
+
+    @Transient
+    @Note("只读投影：主链主行动编码")
+    private String mainlineKey;
+
+    @Transient
+    @Note("只读投影：主链主行动")
+    private String mainlineLabel;
+
+    @Transient
+    @Note("只读投影：主链主行动说明")
+    private String mainlineHint;
 
     @Transient
     @Unit("元")
@@ -291,6 +303,13 @@ public class Customer extends AuditModel {
     public void setRiskReason(String riskReason) { this.riskReason = riskReason; }
     public String getNextAction() { return nextAction; }
     public void setNextAction(String nextAction) { this.nextAction = nextAction; }
+
+    public String getMainlineKey() { return mainlineKey; }
+    public void setMainlineKey(String mainlineKey) { this.mainlineKey = mainlineKey; }
+    public String getMainlineLabel() { return mainlineLabel; }
+    public void setMainlineLabel(String mainlineLabel) { this.mainlineLabel = mainlineLabel; }
+    public String getMainlineHint() { return mainlineHint; }
+    public void setMainlineHint(String mainlineHint) { this.mainlineHint = mainlineHint; }
     public BigDecimal getQuoteAmount() { return quoteAmount; }
     public void setQuoteAmount(BigDecimal quoteAmount) { this.quoteAmount = quoteAmount; }
     public BigDecimal getSignedAmount() { return signedAmount; }

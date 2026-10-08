@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
 import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
+import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
@@ -19,12 +20,47 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class CatalogCostMaintenanceTest {
+
+    @Test
+    void catalogCostIsVisibleOnlyToBossAndStoreManager() {
+        CatalogCostContext context = new CatalogCostContext();
+
+        assertThat(context.canViewCost(employee(EmployeeRole.Boss))).isTrue();
+        assertThat(context.canViewCost(employee(EmployeeRole.StoreManager))).isTrue();
+        assertThat(context.canViewCost(employee(EmployeeRole.Finance))).isFalse();
+        assertThat(context.canViewCost(employee(EmployeeRole.Designer))).isFalse();
+
+        CatalogItem financeView = new CatalogItem();
+        financeView.setCostPrice(new BigDecimal("88.00"));
+        context.mask(financeView, employee(EmployeeRole.Finance));
+        assertThat(financeView.getCostPrice()).isNull();
+
+        CatalogItem managerView = new CatalogItem();
+        managerView.setCostPrice(new BigDecimal("88.00"));
+        context.mask(managerView, employee(EmployeeRole.StoreManager));
+        assertThat(managerView.getCostPrice()).isEqualByComparingTo("88.00");
+    }
+
+    @Test
+    void catalogWriteRejectsFinanceAndAllowsStoreManager() {
+        DataScopeContext scope = mock(DataScopeContext.class);
+        CatalogContext context = new CatalogContext(scope);
+        Employee finance = employee(EmployeeRole.Finance);
+        Employee storeManager = employee(EmployeeRole.StoreManager);
+        when(scope.requireEmployee(finance)).thenReturn(finance);
+        when(scope.requireEmployee(storeManager)).thenReturn(storeManager);
+
+        assertThat(context.requireMaintainer(storeManager)).isSameAs(storeManager);
+        assertThatThrownBy(() -> context.requireMaintainer(finance))
+                .hasMessageContaining("无权维护报价项目库");
+    }
 
     @Test
     void storeManagerCanUpdateCatalogCostDirectly() {
@@ -74,5 +110,12 @@ class CatalogCostMaintenanceTest {
         CatalogItem saved = update.call(new CatalogItem());
 
         assertThat(saved.getCostPrice()).isEqualByComparingTo("88.00");
+    }
+
+    private Employee employee(EmployeeRole role) {
+        Employee employee = new Employee();
+        employee.setEmpId((long) role.ordinal() + 1);
+        employee.setRole(role);
+        return employee;
     }
 }

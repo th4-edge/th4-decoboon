@@ -47,6 +47,7 @@ class SummaryImplementationRulesTest {
             // 2026-10-07 补漏：材料计划工作台（全场景最慢接口，逐计划查采购单/采购明细）
             "material/context/MaterialPlanWorkbenchContext.java",
             "customer/context/CustomerOverviewContext.java",
+            "customer/context/MyCustomerOverviewContext.java",
             "finance/context/FinanceSummaryAggregateContext.java",
             "payroll/context/PayrollWorkbenchContext.java",
             "project/context/ContractWorkbenchContext.java");

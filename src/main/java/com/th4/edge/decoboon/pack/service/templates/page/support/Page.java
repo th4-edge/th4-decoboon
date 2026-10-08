@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.pack.service.templates.page.support;
 
+import com.th4.edge.decoboon.pack.context.PackageCostContext;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.pack.repository.PackageTemplateRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -29,16 +30,19 @@ public class Page implements com.th4.edge.decoboon.pack.service.templates.page.P
 
     private final PackageTemplateRepository giftPackRepository;
     private final TenantContext tenantContext;
+    private final PackageCostContext costContext;
 
-    public Page(PackageTemplateRepository giftPackRepository, TenantContext tenantContext) {
+    public Page(PackageTemplateRepository giftPackRepository, TenantContext tenantContext,
+                PackageCostContext costContext) {
         this.giftPackRepository = giftPackRepository;
         this.tenantContext = tenantContext;
+        this.costContext = costContext;
     }
 
     @Override
     public org.springframework.data.domain.Page<PackageTemplate> call(PackageTemplate request) {
         Employee current = tenantContext.requireEmployee(employee);
-        return new PageImpl<>(giftPackRepository
-                .findByCompany_ComIdOrderByTemplateIdDesc(current.getCompany().getComId()));
+        return costContext.mask(new PageImpl<>(giftPackRepository
+                .findByCompany_ComIdOrderByTemplateIdDesc(current.getCompany().getComId())), current);
     }
 }

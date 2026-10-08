@@ -1,0 +1,20 @@
+[
+  {
+    "id": "S01",
+    "label": "current-home",
+    "path": "pages/index/index",
+    "chars": 2455
+  },
+  {
+    "id": "S03",
+    "label": "change-workbench",
+    "path": "subpackages/project/pages/change-workbench",
+    "chars": 128
+  },
+  {
+    "id": "S04",
+    "label": "project-list",
+    "path": "pages/project/list",
+    "chars": 2667
+  }
+]

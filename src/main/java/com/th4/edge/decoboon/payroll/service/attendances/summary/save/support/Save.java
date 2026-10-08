@@ -23,6 +23,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+
 @Note("月度考勤新增")
 @Properties(allow = {
         @AllowProperties(model = AttendanceSummary.class,
@@ -65,11 +68,17 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
             throw new com.th4.edge.framework.exception.DefinedException(
                     new com.th4.edge.framework.exception.DefaultErrorCode("400", "该员工本月考勤已存在"));
         }
+        YearMonth yearMonth = YearMonth.parse(month);
+        LocalDate periodStart = yearMonth.atDay(1);
+        LocalDate periodEnd = yearMonth.atEndOfMonth();
         CompensationScheme scheme = compensationRepository
-                .findByCompany_ComIdAndEmployee_EmpIdAndStatus(
-                        current.getCompany().getComId(), empId, CompensationStatus.Active)
+                .findEffective(current.getCompany().getComId(), empId, CompensationStatus.Active,
+                        periodStart, periodEnd)
+                .stream()
+                .findFirst()
                 .orElseThrow(() -> new com.th4.edge.framework.exception.DefinedException(
-                        new com.th4.edge.framework.exception.DefaultErrorCode("400", "请先为该员工配置薪酬方案")));
+                        new com.th4.edge.framework.exception.DefaultErrorCode(
+                                "400", "该工资月份没有生效薪酬方案，请先配置对应生效期的方案")));
         if (scheme.getScheduledDays() == null || scheme.getScheduledDays() <= 0) {
             throw new com.th4.edge.framework.exception.DefinedException(
                     new com.th4.edge.framework.exception.DefaultErrorCode("400", "薪酬方案未设置月应出勤天数"));

@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,6 +38,7 @@ class CompanyPlanTemplateContextTest {
 
     private CompanyPlanTemplateContext context;
     private Employee boss;
+    private Employee storeManager;
     private CompanyPaymentPlanRepository paymentPlans;
     private CompanyConstructionPlanRepository constructionPlans;
     private AtomicReference<CompanyPaymentPlan> paymentRef;
@@ -60,7 +62,12 @@ class CompanyPlanTemplateContextTest {
         boss.setEmpId(1L);
         boss.setRole(EmployeeRole.Boss);
         boss.setCompany(company);
-        when(tenant.requireBoss(boss)).thenReturn(boss);
+        storeManager = new Employee();
+        storeManager.setEmpId(2L);
+        storeManager.setRole(EmployeeRole.StoreManager);
+        storeManager.setCompany(company);
+        when(tenant.requireRole(eq(boss), eq(EmployeeRole.Boss), eq(EmployeeRole.StoreManager))).thenReturn(boss);
+        when(tenant.requireRole(eq(storeManager), eq(EmployeeRole.Boss), eq(EmployeeRole.StoreManager))).thenReturn(storeManager);
 
         paymentRef = new AtomicReference<>();
         constructionRef = new AtomicReference<>();
@@ -142,6 +149,19 @@ class CompanyPlanTemplateContextTest {
         PaymentPlanTemplate resolved = context.resolvePaymentPlan(100L, paymentRef.get().getCode());
         assertThat(resolved.getSource()).isEqualTo(PlanTemplateSource.Company);
         assertThat(resolved.getTemplateId()).isEqualTo(501L);
+    }
+
+    @Test
+    void storeManagerCanCreateDraftPaymentPlan() {
+        CompanyPaymentPlan request = new CompanyPaymentPlan();
+        request.setSourceBaselineCode("STANDARD_30_40_30");
+        request.setName("店长标准收款");
+
+        PaymentPlanTemplate draft = context.savePayment(storeManager, request);
+
+        assertThat(draft.getTemplateId()).isEqualTo(501L);
+        assertThat(draft.getStatus()).isEqualTo(PlanTemplateStatus.Draft);
+        assertThat(draft.getNodes()).hasSize(3);
     }
 
     @Test

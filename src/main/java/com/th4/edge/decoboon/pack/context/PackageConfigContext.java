@@ -14,6 +14,7 @@ import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
@@ -56,7 +57,7 @@ public class PackageConfigContext {
 
     @Transactional
     public PackageSection saveSection(PackageSection source, Employee principal) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         Long comId = current.getCompany().getComId();
         PackageSection target = source.getGroupId() == null ? new PackageSection()
                 : sectionRepository.findByGroupIdAndCompany_ComId(source.getGroupId(), comId)
@@ -71,7 +72,7 @@ public class PackageConfigContext {
 
     @Transactional
     public void deleteSection(Long groupId, Employee principal) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         PackageSection section = sectionRepository.findByGroupIdAndCompany_ComId(
                         groupId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐分区不存在或无权访问")));
@@ -84,7 +85,7 @@ public class PackageConfigContext {
     @Transactional
     public PackageLine saveLine(PackageLine source, Long templateId, Long sectionId,
                                 Long catalogItemId, Employee principal) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         Long comId = current.getCompany().getComId();
         PackageTemplate template = templateRepository.findByTemplateIdAndCompany_ComId(templateId, comId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
@@ -120,7 +121,7 @@ public class PackageConfigContext {
 
     @Transactional
     public void deleteLine(Long itemId, Employee principal) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         PackageLine line = lineRepository.findByItemIdAndCompany_ComId(itemId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐项目行不存在或无权访问")));
         if (quoteLineRepository.existsByPackageLine_ItemId(itemId)) {
@@ -134,7 +135,7 @@ public class PackageConfigContext {
 
     @Transactional
     public PackageTemplateItem saveTemplateItem(PackageTemplateItem source, Employee principal) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         Long comId = current.getCompany().getComId();
         PackageTemplateItem target = source.getItemId() == null ? new PackageTemplateItem()
                 : templateItemRepository.findByItemIdAndCompany_ComId(source.getItemId(), comId)
@@ -145,6 +146,11 @@ public class PackageConfigContext {
         target.setSpaceTypes(source.getSpaceTypes());
         target.setPriority(source.getPriority() == null ? 0 : source.getPriority());
         return templateItemRepository.save(target);
+    }
+
+    /** 企业负责人、店长可维护企业标准套餐及分区、项目行、差价项。 */
+    private Employee requireMaintainer(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
     }
 
     private void recalculate(PackageTemplate template) {

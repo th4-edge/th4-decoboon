@@ -83,7 +83,8 @@ class ProjectContractContextTest {
                 fulfillmentContext,
                 mock(ProjectContext.class),
                 mock(ContractPlanContext.class),
-                designLifecycleContext);
+                designLifecycleContext,
+                new ContractBusinessStateContext());
     }
 
     @Test

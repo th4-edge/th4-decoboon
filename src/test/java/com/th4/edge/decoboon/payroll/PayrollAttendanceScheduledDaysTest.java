@@ -14,6 +14,8 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,8 +50,9 @@ class PayrollAttendanceScheduledDaysTest {
         doNothing().when(access).applyOwnership(any(AttendanceSummary.class), eq(boss), eq(target));
         when(attendances.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
                 company.getComId(), target.getEmpId(), "2026-10")).thenReturn(Optional.empty());
-        when(compensations.findByCompany_ComIdAndEmployee_EmpIdAndStatus(
-                company.getComId(), target.getEmpId(), CompensationStatus.Active)).thenReturn(Optional.of(scheme));
+        when(compensations.findEffective(
+                company.getComId(), target.getEmpId(), CompensationStatus.Active,
+                LocalDate.of(2026, 10, 1), LocalDate.of(2026, 10, 31))).thenReturn(List.of(scheme));
         when(attendances.save(any(AttendanceSummary.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         AttendanceSummary saved = provider.call(new AttendanceSummary());

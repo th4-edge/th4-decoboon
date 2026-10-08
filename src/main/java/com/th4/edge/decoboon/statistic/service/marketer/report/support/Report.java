@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.statistic.service.marketer.report.support;
 
 import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerFollow;
 import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
@@ -198,7 +199,9 @@ public class Report implements com.th4.edge.decoboon.statistic.service.marketer.
                     && customer.getStatus() != CustStatus.Finished
                     && customer.getNextFollowAt() != null) {
                 LocalDate nextDate = customer.getNextFollowAt().toLocalDate();
-                if (nextDate.isBefore(today)) followOverdue++;
+                // 跟进逾期只在预约量房前成立；预约量房后仍保留今日到期提醒口径。
+                if (nextDate.isBefore(today)
+                        && CustomerInsightContext.followOverdueEligible(customer)) followOverdue++;
                 else if (nextDate.isEqual(today)) followDue++;
             }
             long days = Math.max(0, ChronoUnit.DAYS.between(
