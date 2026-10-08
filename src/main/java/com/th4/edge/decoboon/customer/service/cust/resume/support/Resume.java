@@ -73,12 +73,12 @@ public class Resume implements com.th4.edge.decoboon.customer.service.cust.resum
     public Customer call(Customer request) {
         Employee current = dataScopeContext.requireEmployee(employee);
         dormantContext.requireWritableRole(current);
-        Customer customer = customerContext.requireVisible(customerId, current);
         String lockKey = "customer-status:" + current.getCompany().getComId() + ":" + customerId;
         if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
             throw new DefinedException(new DefaultErrorCode("409", "该客户正在被处理，请稍后重试"));
         }
         try {
+            Customer customer = customerContext.requireVisible(customerId, current);
             return dormantContext.restore(customer, current, restoreStatus, parseDate(nextFollowAt), requestId);
         } finally {
             distributedLock.unlock(lockKey);

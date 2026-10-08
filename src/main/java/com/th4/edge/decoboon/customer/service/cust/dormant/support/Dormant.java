@@ -76,12 +76,12 @@ public class Dormant implements com.th4.edge.decoboon.customer.service.cust.dorm
     public Customer call(Customer request) {
         Employee current = dataScopeContext.requireEmployee(employee);
         dormantContext.requireWritableRole(current);
-        Customer customer = customerContext.requireVisible(customerId, current);
         String lockKey = lockKey(current, customerId);
         if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
             throw new DefinedException(new DefaultErrorCode("409", "该客户正在被处理，请稍后重试"));
         }
         try {
+            Customer customer = customerContext.requireVisible(customerId, current);
             return dormantContext.setDormant(customer, current, reasonCode, reasonText, expectedStatus, requestId);
         } finally {
             distributedLock.unlock(lockKey);
