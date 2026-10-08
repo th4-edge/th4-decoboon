@@ -88,18 +88,19 @@ class TaskNodeSaveAcceptanceTest {
     @Autowired private CatalogItemRepository catalogItemRepository;
     @Autowired private com.th4.edge.decoboon.project.service.tasknodes.save.Save taskNodeSave;
     @Autowired private com.th4.edge.decoboon.project.service.tasks.save.Save taskSave;
+    @Autowired private com.th4.edge.decoboon.project.service.tasks.delete.Delete taskDelete;
 
     @BeforeEach
     void unwrapProviderProxy() {
         taskNodeSave = AopTestUtils.getTargetObject(taskNodeSave);
         taskSave = AopTestUtils.getTargetObject(taskSave);
+        taskDelete = AopTestUtils.getTargetObject(taskDelete);
     }
 
     @Test
-    void shouldPersistTaskPropertyWhenSchedulingByProvider() {
-        Fixture fixture = fixture("task-schedule", false, EmployeeRole.Pm);
+    void shouldRejectManualTaskCreationWithoutContractSource() {
+        Fixture fixture = fixture("task-manual-reject", false, EmployeeRole.Pm);
         CatalogItem catalogItem = catalogItem(fixture.company(), fixture.pm());
-
         ReflectionTestUtils.setField(taskSave, "employee", fixture.pm());
         ReflectionTestUtils.setField(taskSave, "taskId", null);
         ReflectionTestUtils.setField(taskSave, "projectId", fixture.project().getProjectId());
@@ -108,93 +109,60 @@ class TaskNodeSaveAcceptanceTest {
         ReflectionTestUtils.setField(taskSave, "zoneId", "LivingRoom");
         ReflectionTestUtils.setField(taskSave, "quantity", new BigDecimal("2"));
         ReflectionTestUtils.setField(taskSave, "ownerId", null);
-        ReflectionTestUtils.setField(taskSave, "name", "排期新增任务");
-        ReflectionTestUtils.setField(taskSave, "craft", "免漆板柜体");
-        ReflectionTestUtils.setField(taskSave, "spec", "现场制作");
-        ReflectionTestUtils.setField(taskSave, "priority", "normal");
-        ReflectionTestUtils.setField(taskSave, "remark", "DEF-PROJ37-005 回归");
         ReflectionTestUtils.setField(taskSave, "plannedStart", fixture.stage().getPlannedStart());
         ReflectionTestUtils.setField(taskSave, "plannedEnd", fixture.stage().getPlannedEnd());
 
-        ProjectTask scheduled = taskSave.call(new ProjectTask());
-
-        assertThat(scheduled.getTaskId()).isNotNull();
-        assertThat(scheduled.getProperty().getPropertyId()).isEqualTo(fixture.property().getPropertyId());
-        assertThat(scheduled.getProject().getProjectId()).isEqualTo(fixture.project().getProjectId());
-        assertThat(scheduled.getStage().getStageId()).isEqualTo(fixture.stage().getStageId());
-        assertThat(scheduled.getCatalogItem().getItemId()).isEqualTo(catalogItem.getItemId());
-        assertThat(scheduled.getZone()).isEqualTo("客厅");
-        assertThat(scheduled.getOwner().getEmpId()).isEqualTo(fixture.pm().getEmpId());
-        assertThat(scheduled.getStatus()).isEqualTo(TaskStatus.Todo);
-
-        // 新建任务必须能立即进入影像节点留证（两个缺陷的联合回归）
-        confirm(fixture, scheduled, "Start", "排期后开工留证", "upload/project/schedule-start.png");
-        ProjectTask afterStart = taskRepository.findById(scheduled.getTaskId()).orElseThrow();
-        assertThat(afterStart.getStatus()).isEqualTo(TaskStatus.Doing);
-        assertThat(afterStart.getProperty().getPropertyId()).isEqualTo(fixture.property().getPropertyId());
+        // DEC-049：施工任务只能来自本合同施工行或已生效增减项，排期页不得手工新增。
+        assertTaskSaveDefined(400, "不能手工新增");
+        assertThat(taskRepository.findByProject(fixture.project())).hasSize(1);
     }
 
     @Test
-    void shouldRejectDuplicateDispatchOfSameCraftInSameStageAndZone() {
-        Fixture fixture = fixture("task-duplicate", false, EmployeeRole.Pm);
-        CatalogItem catalogItem = catalogItem(fixture.company(), fixture.pm());
-        dispatch(fixture, catalogItem, "LivingRoom", new BigDecimal("2"));
-
-        // 同一「项目 × 阶段 × 区域 × 工艺」重复下发必须阻断，提示改为在原任务上调整数量
-        ReflectionTestUtils.setField(taskSave, "ownerId", null);
-        assertDefined(400, "已在「", "请在原任务上调整数量");
-        assertThat(taskRepository.findByProject(fixture.project())).hasSize(2);
-
-        // 换区域仍可下发
-        dispatch(fixture, catalogItem, "Kitchen", new BigDecimal("1"));
-        assertThat(taskRepository.findByProject(fixture.project())).hasSize(3);
-    }
-
-    private void dispatch(Fixture fixture, CatalogItem catalogItem, String zoneId, BigDecimal quantity) {
+    void shouldRejectSchedulingTaskWithoutContractOrChangeSource() {
+        Fixture fixture = fixture("task-source-reject", false, EmployeeRole.Pm);
         ReflectionTestUtils.setField(taskSave, "employee", fixture.pm());
-        ReflectionTestUtils.setField(taskSave, "taskId", null);
+        ReflectionTestUtils.setField(taskSave, "taskId", fixture.task().getTaskId());
         ReflectionTestUtils.setField(taskSave, "projectId", fixture.project().getProjectId());
         ReflectionTestUtils.setField(taskSave, "stageId", fixture.stage().getStageId());
-        ReflectionTestUtils.setField(taskSave, "catalogId", catalogItem.getItemId());
-        ReflectionTestUtils.setField(taskSave, "zoneId", zoneId);
-        ReflectionTestUtils.setField(taskSave, "quantity", quantity);
-        ReflectionTestUtils.setField(taskSave, "ownerId", null);
-        ReflectionTestUtils.setField(taskSave, "name", null);
-        ReflectionTestUtils.setField(taskSave, "craft", null);
-        ReflectionTestUtils.setField(taskSave, "spec", null);
-        ReflectionTestUtils.setField(taskSave, "priority", "normal");
-        ReflectionTestUtils.setField(taskSave, "remark", null);
+        ReflectionTestUtils.setField(taskSave, "zoneId", "LivingRoom");
         ReflectionTestUtils.setField(taskSave, "plannedStart", fixture.stage().getPlannedStart());
         ReflectionTestUtils.setField(taskSave, "plannedEnd", fixture.stage().getPlannedEnd());
-        taskSave.call(new ProjectTask());
+
+        // DEC-049：无来源的历史手工任务不能排期。
+        assertTaskSaveDefined(400, "缺少合同/变更来源");
     }
 
     @Test
-    void shouldUpdateExistingTaskInsteadOfCreatingDuplicate() {
-        Fixture fixture = fixture("task-schedule-update", false, EmployeeRole.Pm);
-        CatalogItem catalogItem = catalogItem(fixture.company(), fixture.pm());
+    void shouldRejectTaskDeletionAndRequireChange() {
+        Fixture fixture = fixture("task-delete-reject", false, EmployeeRole.Pm);
+        ReflectionTestUtils.setField(taskDelete, "employee", fixture.pm());
+        ReflectionTestUtils.setField(taskDelete, "taskId", fixture.task().getTaskId());
 
+        // DEC-049：施工任务不能物理删除，取消范围必须走增减项。
+        assertThatThrownBy(() -> taskDelete.call(new ProjectTask()))
+                .isInstanceOfSatisfying(DefinedException.class, error -> {
+                    assertThat(error.getErrorCode().getCode()).isEqualTo("400");
+                    assertThat(error.getMessage()).contains("请发起增减项");
+                });
+        assertThat(taskRepository.findByProject(fixture.project())).hasSize(1);
+    }
+
+    @Test
+    void shouldRejectQuantityEditThroughScheduling() {
+        Fixture fixture = fixture("task-quantity-reject", false, EmployeeRole.Pm);
         ReflectionTestUtils.setField(taskSave, "employee", fixture.pm());
-        ReflectionTestUtils.setField(taskSave, "taskId", null);
+        ReflectionTestUtils.setField(taskSave, "taskId", fixture.task().getTaskId());
         ReflectionTestUtils.setField(taskSave, "projectId", fixture.project().getProjectId());
         ReflectionTestUtils.setField(taskSave, "stageId", fixture.stage().getStageId());
-        ReflectionTestUtils.setField(taskSave, "catalogId", catalogItem.getItemId());
         ReflectionTestUtils.setField(taskSave, "zoneId", "Kitchen");
-        ReflectionTestUtils.setField(taskSave, "quantity", BigDecimal.ONE);
+        ReflectionTestUtils.setField(taskSave, "quantity", new BigDecimal("5"));
         ReflectionTestUtils.setField(taskSave, "ownerId", null);
         ReflectionTestUtils.setField(taskSave, "priority", "normal");
         ReflectionTestUtils.setField(taskSave, "plannedStart", fixture.stage().getPlannedStart());
         ReflectionTestUtils.setField(taskSave, "plannedEnd", fixture.stage().getPlannedEnd());
-        ProjectTask created = taskSave.call(new ProjectTask());
 
-        ReflectionTestUtils.setField(taskSave, "taskId", created.getTaskId());
-        ReflectionTestUtils.setField(taskSave, "quantity", new BigDecimal("5"));
-        ReflectionTestUtils.setField(taskSave, "name", "排期任务（调整总量）");
-        ProjectTask updated = taskSave.call(new ProjectTask());
-
-        assertThat(updated.getTaskId()).isEqualTo(created.getTaskId());
-        assertThat(updated.getQuantity()).isEqualByComparingTo("5");
-        assertThat(taskRepository.findByProject(fixture.project())).hasSize(2);
+        // DEC-049：数量变化必须走增减项；无来源任务在来源校验处即被拒绝。
+        assertTaskSaveDefined(400, "缺少合同/变更来源");
     }
 
     @Test
@@ -354,6 +322,14 @@ class TaskNodeSaveAcceptanceTest {
 
     private void assertDefined(int code, String messagePart) {
         assertThatThrownBy(() -> taskNodeSave.call(new TaskNode()))
+                .isInstanceOfSatisfying(DefinedException.class, error -> {
+                    assertThat(error.getErrorCode().getCode()).isEqualTo(String.valueOf(code));
+                    assertThat(error.getMessage()).contains(messagePart);
+                });
+    }
+
+    private void assertTaskSaveDefined(int code, String messagePart) {
+        assertThatThrownBy(() -> taskSave.call(new ProjectTask()))
                 .isInstanceOfSatisfying(DefinedException.class, error -> {
                     assertThat(error.getErrorCode().getCode()).isEqualTo(String.valueOf(code));
                     assertThat(error.getMessage()).contains(messagePart);

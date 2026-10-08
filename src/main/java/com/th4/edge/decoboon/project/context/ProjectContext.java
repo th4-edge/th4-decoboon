@@ -634,6 +634,37 @@ public class ProjectContext {
     }
 
     /**
+     * 排期驱动：仅刷新项目“预计完工日”，不回写合同基准完工日、不回写合同施工计划快照。
+     *
+     * <p>DEC-048：合同基准计划锁定；任务排期属于执行层，只产生预计完工；
+     * 预计完工日超过合同基准完工日时由 ProjectPlanDeviation 承载“计划偏差”待确认。
+     * 在跑项目承接（BR-010）继续使用 {@link #recalculatePlanFromSchedule(Project)}。</p>
+     */
+    @Transactional
+    public Project refreshExpectedEndFromSchedule(Project project) {
+        if (project == null || project.getProjectId() == null) {
+            return project;
+        }
+        List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
+        if (stages.isEmpty()) {
+            return project;
+        }
+        java.time.LocalDate expectedEnd = null;
+        for (ProjectStage stage : stages) {
+            List<ProjectTask> tasks = taskRepository.findByStage(stage);
+            java.time.LocalDate end = tasks.stream().map(ProjectTask::getPlannedEnd)
+                    .filter(Objects::nonNull).max(java.time.LocalDate::compareTo).orElse(null);
+            if (end != null && (expectedEnd == null || end.isAfter(expectedEnd))) {
+                expectedEnd = end;
+            }
+        }
+        if (expectedEnd != null) {
+            project.setExpectedEndDate(expectedEnd);
+        }
+        return projectRepository.save(project);
+    }
+
+    /**
      * 按阶段权重将项目总工期拆分到各施工阶段。
      */
     @Transactional

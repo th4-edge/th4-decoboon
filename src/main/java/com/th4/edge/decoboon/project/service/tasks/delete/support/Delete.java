@@ -63,13 +63,9 @@ public class Delete implements com.th4.edge.decoboon.project.service.tasks.delet
         ProjectTask task = taskRepository.findOne(((Specification<ProjectTask>) (root, query, builder) -> builder.equal(root.get("taskId"), taskId)).and(accessContext.visibleChild(employee, ProjectTask.class, "project")))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "任务不存在")));
         accessContext.requirePlanEditor(task.getProject(), employee);
-        if (task.getProgress() != null && task.getProgress() > 0) {
-            throw new DefinedException(new DefaultErrorCode("400", "已开工任务不能删除"));
-        }
-        com.th4.edge.decoboon.project.model.Project project = task.getProject();
-        taskRepository.delete(task);
-        // 删除排期任务后同样按剩余排期重算计划
-        projectContext.recalculatePlanFromSchedule(project);
-        return task;
+        // DEC-049：施工任务不能物理删除；取消施工范围必须发起增减项，
+        // 由 ContractChangeFulfillmentContext 将原任务置 Cancelled 并保留事实。
+        throw new DefinedException(new DefaultErrorCode(
+                "400", "施工任务不能删除；如需取消施工范围，请发起增减项"));
     }
 }

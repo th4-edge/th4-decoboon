@@ -178,6 +178,7 @@ public class CompanyPlanTemplateContext {
             plan.setName(hasText(request.getName()) ? request.getName() : baseline.getName() + "（企业版）");
             plan.setDescription(hasText(request.getDescription()) ? request.getDescription() : baseline.getDescription());
             plan.setSort(request.getSort() == null ? baseline.getSort() : request.getSort());
+            // DEC-048 T-02：复制基线时保留模板声明的标准总工期（如八阶段 120 天），不得被阶段汇总覆盖。
             plan.setTotalDays(baseline.getTotalDays());
             plan.setSourceBaselineCode(baseline.getCode());
             plan.setSourceBaselineVersion(baseline.getVersion());
@@ -185,9 +186,10 @@ public class CompanyPlanTemplateContext {
         } else {
             applyConstruction(plan, request);
             stages = constructionStages(plan, request.getStages());
+            // 空白新建没有可继承的声明总工期，按阶段 defaultDays 汇总作为默认值。
+            plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
         }
         validateConstruction(plan, stages);
-        plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
         plan = constructionPlanRepository.save(plan);
         replaceConstructionStages(plan, stages);
         return constructionView(plan);
@@ -199,7 +201,10 @@ public class CompanyPlanTemplateContext {
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         List<CompanyConstructionStage> stages = constructionStages(plan, request.getStages());
         applyConstruction(plan, request);
-        plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
+        // DEC-048 T-02：保留模板已声明的标准总工期；仅历史数据为空时兜底。
+        if (plan.getTotalDays() == null) {
+            plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
+        }
         if (plan.getStatus() == PlanTemplateStatus.Enabled) {
             plan.setVersion(Math.max(1, value(plan.getVersion())) + 1);
             plan.setPublishedAt(LocalDateTime.now());
@@ -215,8 +220,10 @@ public class CompanyPlanTemplateContext {
         Employee current = tenantContext.requireBoss(principal);
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         List<CompanyConstructionStage> stages = constructionStageRepository.findByPlan_TemplateIdOrderBySortAscStageIdAsc(plan.getTemplateId());
+        if (plan.getTotalDays() == null) {
+            plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
+        }
         validateConstruction(plan, stages);
-        plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
         plan.setStatus(PlanTemplateStatus.Enabled);
         plan.setPublishedAt(LocalDateTime.now());
         if (plan.getVersion() == null || plan.getVersion() < 1) plan.setVersion(1);
@@ -508,6 +515,7 @@ public class CompanyPlanTemplateContext {
 
     private void validateConstruction(CompanyConstructionPlan plan, List<CompanyConstructionStage> stages) {
         if (!hasText(plan.getName())) throw invalid("施工计划模板名称不能为空");
+        if (plan.getTotalDays() == null || plan.getTotalDays() < 1) throw invalid("施工计划标准总工期必须大于0");
         if (stages == null || stages.isEmpty()) throw invalid("施工计划至少需要一个施工阶段");
         if (stages.size() > 20) throw invalid("施工计划最多支持二十个阶段");
         long unique = stages.stream().map(CompanyConstructionStage::getCode).filter(this::hasText).distinct().count();

@@ -129,64 +129,48 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
         Employee current = accessContext.requireEmployee(employee);
         Project project = accessContext.requireProject(projectId, current);
         accessContext.requirePlanEditor(project, current);
+        if (taskId == null) {
+            // DEC-049：施工任务只能由合同施工行或已生效的合同变更生成，排期页不得手工造任务。
+            throw new DefinedException(new DefaultErrorCode(
+                    "400", "施工任务只能来自本项目合同施工行或已生效的增减项，不能手工新增"));
+        }
+        Specification<ProjectTask> taskById = (root, query, builder) ->
+                builder.equal(root.get("taskId"), taskId);
+        ProjectTask task = taskRepository.findOne(taskById.and((root, query, builder) ->
+                        builder.equal(root.get("project").get("projectId"), projectId)))
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "任务不存在或无权访问")));
+        if (task.getContractLine() == null && task.getChangeItem() == null) {
+            // DEC-049：无来源的历史手工任务不能排期（本地环境直接清理，线上无此类数据）。
+            throw new DefinedException(new DefaultErrorCode("400", "该施工任务缺少合同/变更来源，不能排期"));
+        }
         Specification<ProjectStage> stageById = (root, query, builder) ->
                 builder.equal(root.get("stageId"), stageId);
         ProjectStage stage = stageRepository.findOne(stageById.and((root, query, builder) ->
                         builder.equal(root.get("project").get("projectId"), projectId)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "阶段不存在或不属于当前项目")));
-
-        ProjectTask task;
-        if (taskId == null) {
-            task = new ProjectTask();
-        } else {
-            Specification<ProjectTask> taskById = (root, query, builder) ->
-                    builder.equal(root.get("taskId"), taskId);
-            task = taskRepository.findOne(taskById.and((root, query, builder) ->
-                            builder.equal(root.get("project").get("projectId"), projectId)))
-                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "任务不存在或无权访问")));
-        }
-        if (catalogId != null) {
-            CatalogItem catalogItem = catalogItemRepository.findById(catalogId)
-                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "工艺任务不存在")));
-            if (catalogItem.getCompany() == null
-                    || !catalogItem.getCompany().getComId().equals(current.getCompany().getComId())) {
-                throw new DefinedException(new DefaultErrorCode("404", "工艺任务不存在或无权访问"));
-            }
-            task.setCatalogItem(catalogItem);
-            task.setName(name == null || name.isBlank() ? catalogItem.getName() : name);
-            task.setUnit(catalogItem.getUnit());
-            task.setCraft(craft == null || craft.isBlank() ? catalogItem.getCraft() : craft);
-            task.setSpec(spec == null ? catalogItem.getSpec() : spec);
-            task.setConceal(isConceal(catalogItem));
-        } else if (task.getCatalogItem() == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "工艺任务不能为空"));
-        }
-        if (name != null && !name.isBlank()) task.setName(name);
-        if (craft != null) task.setCraft(craft);
-        if (spec != null) task.setSpec(spec);
-        task.setCompany(current.getCompany());
+        // DEC-049：排期只允许调整阶段、区域、计划起止、责任人、优先级与备注；
+        // 数量、名称、工艺、金额与成本由合同施工行/变更行决定，变化须走增减项。
         task.setProject(project);
-        // ProjectTask.property 为非空列：新建任务必须显式带上项目房屋，
-        // 否则真实排期接口在落库时抛 not-null 约束错误（DEF-PROJ37-005）。
         task.setProperty(project.getProperty());
         task.setStage(stage);
-        permissionContext.apply(task, project);
         task.setZone(resolveZone(zoneId));
-        task.setQuantity(quantity == null || quantity.signum() <= 0 ? BigDecimal.ONE : quantity);
-        task.setPriority(priority == null || priority.isBlank() ? "normal" : priority);
-        task.setRemark(remark);
         task.setPlannedStart(plannedStart);
         task.setPlannedEnd(plannedEnd);
-        task.setCreator(task.getCreator() == null ? current : task.getCreator());
-        Employee owner = ownerId == null ? project.getManager() : employeeRepository.findByEmpIdAndCompany_ComId(ownerId, current.getCompany().getComId());
-        task.setOwner(owner);
-        if (task.getEvidenceUrls() == null) task.setEvidenceUrls(new ArrayList<>());
-        if (task.getTaskId() == null) {
-            requireNotDispatched(project, stage, task);
+        if (ownerId != null) {
+            Employee owner = employeeRepository.findByEmpIdAndCompany_ComId(ownerId, current.getCompany().getComId());
+            if (owner == null) {
+                throw new DefinedException(new DefaultErrorCode("400", "任务责任人不存在或不属于当前企业"));
+            }
+            task.setOwner(owner);
+        } else if (task.getOwner() == null) {
+            task.setOwner(project.getManager() == null ? project.getOwner() : project.getManager());
         }
+        if (priority != null && !priority.isBlank()) task.setPriority(priority);
+        if (remark != null) task.setRemark(remark);
+        if (task.getEvidenceUrls() == null) task.setEvidenceUrls(new ArrayList<>());
         ProjectTask saved = taskRepository.save(task);
-        // 排期即计划：任务计划起止变化后按排期重算阶段/项目计划并回写合同施工计划快照。
-        projectContext.recalculatePlanFromSchedule(project);
+        // DEC-048：排期只刷新项目预计完工日，不回写合同基准完工日与合同施工计划快照。
+        projectContext.refreshExpectedEndFromSchedule(project);
         return saved;
     }
 
