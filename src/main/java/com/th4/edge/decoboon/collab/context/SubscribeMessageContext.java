@@ -10,6 +10,8 @@ import com.th4.edge.decoboon.customer.model.CustomerAccess;
 import com.th4.edge.decoboon.customer.repository.CustomerAccessRepository;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.project.configure.PlanDeviationStatus;
+import com.th4.edge.decoboon.project.model.ProjectPlanDeviation;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.tenant.user.configure.CredType;
 import com.th4.edge.tenant.user.model.Credentials;
@@ -90,6 +92,39 @@ public class SubscribeMessageContext {
         data.put("time3", TIME_FORMATTER.format(LocalDateTime.now()));
         data.put("thing4", thing("请进入小程序确认或发起整改"));
         String page = "subpackages/project/pages/owner-acceptance?projectId=" + project.getProjectId();
+        for (CustomerAccess access : accesses) {
+            dispatch(access.getCredential(), scenario, templateId, page, data);
+        }
+    }
+
+    /**
+     * 业主：计划偏差已确认（DEC-051 DEV-01「需要客户知晓」）。
+     *
+     * <p>仅在偏差确认/转合同工期变更后触达，且只发给显式授权该项目且在 Deviation 上
+     * {@code visibleToCustomer=true} 的业主身份。模板字段约定：thing1=项目、phrase2=结论、
+     * date3=新合同基准完工日、thing4=当前预计完工日；未配置模板 ID 时跳过发送。</p>
+     */
+    public void ownerPlanDeviationConfirmed(ProjectPlanDeviation deviation) {
+        String scenario = WechatSubscribeScenario.OWNER_PLAN_DEVIATION_CONFIRMED;
+        String templateId = configure.subscribeTemplate(scenario);
+        if (templateId == null || deviation == null || deviation.getProject() == null
+                || !Boolean.TRUE.equals(deviation.getVisibleToCustomer())) {
+            return;
+        }
+        Project project = deviation.getProject();
+        List<CustomerAccess> accesses = customerAccessRepository
+                .findByProject_ProjectIdAndStatus(project.getProjectId(), CustomerAccessStatus.Active);
+        if (accesses.isEmpty()) {
+            return;
+        }
+        Map<String, String> data = new LinkedHashMap<>();
+        data.put("thing1", thing(project.getName()));
+        data.put("phrase2", deviation.getStatus() == PlanDeviationStatus.RoutedToChange
+                ? "已转合同工期变更" : "计划偏差已确认");
+        data.put("date3", String.valueOf(deviation.getNewBaseEndDate() == null
+                ? deviation.getBaseEndDate() : deviation.getNewBaseEndDate()));
+        data.put("thing4", thing("当前预计完工 " + deviation.getExpectedEndDate()));
+        String page = "subpackages/project/pages/plan?id=" + project.getProjectId();
         for (CustomerAccess access : accesses) {
             dispatch(access.getCredential(), scenario, templateId, page, data);
         }

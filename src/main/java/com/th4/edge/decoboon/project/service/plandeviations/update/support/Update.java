@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.project.configure.PlanDeviationStrategy;
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
+import com.th4.edge.decoboon.collab.context.SubscribeMessageContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -72,6 +73,7 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
     private final ProjectPermissionContext permissionContext;
     private final ContractPlanContext contractPlanContext;
     private final ProjectContext projectContext;
+    private final SubscribeMessageContext subscribeMessageContext;
 
     public Update(ProjectPlanDeviationRepository deviationRepository,
                   ProjectContractRepository contractRepository,
@@ -79,7 +81,8 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
                   ProjectAccessContext accessContext,
                   ProjectPermissionContext permissionContext,
                   ContractPlanContext contractPlanContext,
-                  ProjectContext projectContext) {
+                  ProjectContext projectContext,
+                  SubscribeMessageContext subscribeMessageContext) {
         this.deviationRepository = deviationRepository;
         this.contractRepository = contractRepository;
         this.reportRepository = reportRepository;
@@ -87,6 +90,7 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
         this.permissionContext = permissionContext;
         this.contractPlanContext = contractPlanContext;
         this.projectContext = projectContext;
+        this.subscribeMessageContext = subscribeMessageContext;
     }
 
     @Override
@@ -124,6 +128,7 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
             deviation.setConfirmedBy(current);
             deviation.setConfirmedAt(LocalDateTime.now());
             ProjectPlanDeviation saved = deviationRepository.save(deviation);
+            subscribeMessageContext.ownerPlanDeviationConfirmed(saved);
             writeReport(saved, current, "计划偏差已确认",
                     "合同基准完工日调整为 " + newBaseEnd + "（方式：" + scheduleStrategy.getName()
                             + "，重算应收 " + recalculated + " 条）");
@@ -145,6 +150,7 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
             deviation.setConfirmedAt(LocalDateTime.now());
             deviation.setReason(reason == null ? deviation.getReason() : reason);
             ProjectPlanDeviation saved = deviationRepository.save(deviation);
+            subscribeMessageContext.ownerPlanDeviationConfirmed(saved);
             writeReport(saved, current, "计划偏差转合同工期变更",
                     "客户原因超窗，须走合同工期变更；原合同基准完工日 " + deviation.getBaseEndDate());
             return saved;

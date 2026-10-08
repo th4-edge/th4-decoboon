@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.project.configure.PlanDeviationStatus;
 import com.th4.edge.decoboon.project.configure.PlanDeviationStrategy;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
+import com.th4.edge.decoboon.collab.context.SubscribeMessageContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -41,6 +42,7 @@ class PlanDeviationUpdateTest {
     private ProjectPermissionContext permissionContext;
     private ContractPlanContext contractPlanContext;
     private ProjectContext projectContext;
+    private SubscribeMessageContext subscribeMessageContext;
     private Update update;
     private Employee boss;
     private ProjectPlanDeviation deviation;
@@ -55,8 +57,9 @@ class PlanDeviationUpdateTest {
         permissionContext = mock(ProjectPermissionContext.class);
         contractPlanContext = mock(ContractPlanContext.class);
         projectContext = mock(ProjectContext.class);
+        subscribeMessageContext = mock(SubscribeMessageContext.class);
         update = new Update(deviationRepository, contractRepository, reportRepository,
-                accessContext, permissionContext, contractPlanContext, projectContext);
+                accessContext, permissionContext, contractPlanContext, projectContext, subscribeMessageContext);
 
         Company company = new Company();
         company.setComId(100L);
@@ -104,6 +107,7 @@ class PlanDeviationUpdateTest {
         assertThat(contract.getPlanEndDate()).isEqualTo(LocalDate.of(2026, 12, 21));
         verify(contractPlanContext).updateBaselineEndDate(eq(contract), eq(LocalDate.of(2026, 12, 21)));
         verify(projectContext).recalculateReceivableDueDates(contract);
+        verify(subscribeMessageContext).ownerPlanDeviationConfirmed(result);
         assertThat(result.getReceivableRecalculated()).isTrue();
         verify(reportRepository).save(any());
     }

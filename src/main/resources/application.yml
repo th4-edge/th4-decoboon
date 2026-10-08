@@ -92,6 +92,7 @@ th4:
             "employee.acceptance-decision": ${WECHAT_TEMPLATE_EMPLOYEE_ACCEPTANCE_DECISION:}
             "employee.task-overdue": ${WECHAT_TEMPLATE_EMPLOYEE_TASK_OVERDUE:}
             "employee.material-arrival": ${WECHAT_TEMPLATE_EMPLOYEE_MATERIAL_ARRIVAL:}
+            "owner.plan-deviation-confirmed": ${WECHAT_TEMPLATE_OWNER_PLAN_DEVIATION_CONFIRMED:}
         pay:
           # 微信支付 API v3；商户私钥、API v3 密钥和回调地址只允许通过环境变量注入
           enabled: ${WECHAT_PAY_ENABLED:false}

@@ -18,6 +18,9 @@ public final class WechatSubscribeScenario {
     /** 员工：施工任务逾期 */
     public static final String EMPLOYEE_TASK_OVERDUE = "employee.task-overdue";
 
+    /** 业主：计划偏差已确认（超窗处理结论需客户知晓） */
+    public static final String OWNER_PLAN_DEVIATION_CONFIRMED = "owner.plan-deviation-confirmed";
+
     /** 员工：材料到货待确认 */
     public static final String EMPLOYEE_MATERIAL_ARRIVAL = "employee.material-arrival";
 
