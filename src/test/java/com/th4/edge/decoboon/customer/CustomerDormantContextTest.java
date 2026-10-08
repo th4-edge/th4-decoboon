@@ -57,8 +57,8 @@ class CustomerDormantContextTest {
 
         when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(logRepository.save(any(CustomerStatusLog.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusIn(
-                anyLong(), anyLong(), any(Collection.class))).thenReturn(false);
+        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
+                anyLong(), anyLong(), any(MeasureStatus.class), any(LocalDateTime.class))).thenReturn(false);
         when(contractRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusNotIn(
                 anyLong(), anyLong(), any(Collection.class))).thenReturn(false);
     }
@@ -101,13 +101,21 @@ class CustomerDormantContextTest {
 
     @Test
     void shouldBlockWhenFutureMeasureExists() {
-        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusIn(
-                anyLong(), anyLong(), any(Collection.class))).thenReturn(true);
+        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
+                anyLong(), anyLong(), any(MeasureStatus.class), any(LocalDateTime.class))).thenReturn(true);
 
         assertThatThrownBy(() -> context.setDormant(customer(CustStatus.PendingMeasure), marketer,
                 CustomerDormantReason.PlanPostponed, null, CustStatus.PendingMeasure, null))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("未完成量房预约");
+                .hasMessageContaining("未来量房预约");
+    }
+
+    @Test
+    void shouldAllowWhenOnlyPastMeasureExists() {
+        Customer saved = context.setDormant(customer(CustStatus.PendingMeasure), marketer,
+                CustomerDormantReason.PlanPostponed, null, CustStatus.PendingMeasure, null);
+
+        assertThat(saved.getStatus()).isEqualTo(CustStatus.Dormant);
     }
 
     @Test

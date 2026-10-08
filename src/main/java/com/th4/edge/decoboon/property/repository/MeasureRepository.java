@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.property.model.Measure;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,9 +28,10 @@ public interface MeasureRepository extends JpaRepository<Measure, Long>,
     List<Measure> findByCompany_ComIdAndCustomer_CustIdInAndStatus(Long comId, Collection<Long> customerIds,
                                                                   MeasureStatus status);
 
-    /** 指定客户是否存在指定状态的量房事实。 */
-    boolean existsByCompany_ComIdAndCustomer_CustIdAndStatusIn(Long comId, Long customerId,
-                                                               Collection<MeasureStatus> statuses);
+    /** 指定客户是否存在指定状态且在给定时间之后仍有效的量房事实。 */
+    boolean existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(Long comId, Long customerId,
+                                                                                MeasureStatus status,
+                                                                                LocalDateTime scheduledAt);
 
     /** 指定客户集合内的全部量房事实（客户经营指标使用）。 */
     List<Measure> findByCompany_ComIdAndCustomer_CustIdInOrderByMeasureIdDesc(Long comId,
