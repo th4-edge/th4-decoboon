@@ -214,6 +214,7 @@ public class ContractWorkbenchContext {
         view.setCurrentStageName(project.getCurrentStageName());
         view.setStartDate(project.getStartDate());
         view.setPlanEndDate(project.getPlanEndDate());
+        view.setExpectedEndDate(project.getExpectedEndDate());
         List<ProjectStage> stages = stageRepository.findByProjectOrderBySort(project);
         view.setStageTotal(stages.size());
         view.setStageDone((int) stages.stream()

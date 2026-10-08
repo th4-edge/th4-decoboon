@@ -111,8 +111,10 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
         Employee current = accessContext.requireEmployee(employee);
         Project project = accessContext.requireProject(projectId, current);
         boolean memberChange = designerId != null || managerId != null || supportId != null;
-        if (memberChange) {
-            // 成员切换仅限企业负责人或本门店店长；项目经理不得自行改派（用户 2026-09-23 裁决）。
+        boolean dateChange = startDate != null || planEndDate != null;
+        if (memberChange || dateChange) {
+            // 成员切换仅限企业负责人或本门店店长（用户 2026-09-23 裁决）；
+            // 合同基准开工/完工日期变更同样限 Boss/店长，项目经理不得改合同基准（DEC-048 T-06）。
             accessContext.requireMemberEditor(project, current);
         } else if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
             throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以调整项目状态"));

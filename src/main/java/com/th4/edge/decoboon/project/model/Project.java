@@ -186,6 +186,9 @@ public class Project extends AuditModel implements ProjectOwned {
     @Note("计划完工日期")
     private LocalDate planEndDate;
 
+    @Note("预计完工日（动态，任务排期驱动；合同基准完工日见 ProjectContract.planEndDate）")
+    private LocalDate expectedEndDate;
+
     @Note("实际完工日期")
     private LocalDate actualEndDate;
 
@@ -402,6 +405,14 @@ public Long getProjectId() {
 
     public void setPlanEndDate(LocalDate planEndDate) {
         this.planEndDate = planEndDate;
+    }
+
+    public LocalDate getExpectedEndDate() {
+        return expectedEndDate;
+    }
+
+    public void setExpectedEndDate(LocalDate expectedEndDate) {
+        this.expectedEndDate = expectedEndDate;
     }
 
     public LocalDate getActualEndDate() {

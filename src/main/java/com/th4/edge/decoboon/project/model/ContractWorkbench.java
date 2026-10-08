@@ -163,8 +163,9 @@ public class ContractWorkbench {
         @Note("阶段总数") private Integer stageTotal = 0;
         @Note("已完成阶段数") private Integer stageDone = 0;
         @Note("待验收数量") private Integer pendingAcceptanceCount = 0;
-        @Note("计划开工") private LocalDate startDate;
-        @Note("计划完工") private LocalDate planEndDate;
+        @Note("合同基准开工") private LocalDate startDate;
+        @Note("合同基准完工") private LocalDate planEndDate;
+        @Note("预计完工（动态，排期驱动）") private LocalDate expectedEndDate;
 
         public Long getProjectId() { return projectId; }
         public void setProjectId(Long projectId) { this.projectId = projectId; }
@@ -190,6 +191,8 @@ public class ContractWorkbench {
         public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
         public LocalDate getPlanEndDate() { return planEndDate; }
         public void setPlanEndDate(LocalDate planEndDate) { this.planEndDate = planEndDate; }
+        public LocalDate getExpectedEndDate() { return expectedEndDate; }
+        public void setExpectedEndDate(LocalDate expectedEndDate) { this.expectedEndDate = expectedEndDate; }
     }
 
     /** 变更汇总：只统计真实变更单状态。 */

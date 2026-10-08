@@ -1,0 +1,61 @@
+-- 94-项目计划偏差.sql
+-- DEC-051：合同基准完工日锁定后，任务排期导致“预计完工日 > 合同基准完工日”时生成计划偏差单。
+-- 任何超窗都生成；确认人 Boss/店长；顺延方式由发起人选择；客户原因强制走合同工期变更。
+-- 注意：本文件尚未对目标 MySQL 或生产库执行。
+
+CREATE TABLE IF NOT EXISTS db_project_plan_deviation (
+    deviation_id BIGINT NOT NULL,
+    com_id BIGINT NOT NULL,
+    store_id BIGINT NULL,
+    team_id BIGINT NULL,
+    owner_id BIGINT NULL,
+    project_id BIGINT NOT NULL,
+    property_id BIGINT NOT NULL,
+    contract_id BIGINT NULL,
+    base_end_date DATE NOT NULL COMMENT '合同基准完工日（发起时快照）',
+    expected_end_date DATE NOT NULL COMMENT '当前预计完工日',
+    deviation_days INT NULL COMMENT '偏差天数',
+    reason_type VARCHAR(16) NULL COMMENT '原因分类 Customer/Internal',
+    reason VARCHAR(512) NULL COMMENT '偏差原因说明',
+    schedule_strategy VARCHAR(16) NULL COMMENT '顺延方式 Extend/Compress',
+    responsible_id BIGINT NULL COMMENT '发起人/责任人',
+    due_date DATE NULL COMMENT '确认截止日期',
+    status VARCHAR(24) NOT NULL COMMENT 'Pending/Confirmed/Rejected/RoutedToChange/Superseded',
+    confirmed_by BIGINT NULL COMMENT '确认人',
+    confirmed_at DATETIME(6) NULL COMMENT '确认时间',
+    new_base_end_date DATE NULL COMMENT '确认后新的合同基准完工日',
+    receivable_recalculated TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已重算应收触发日',
+    visible_to_customer TINYINT(1) NOT NULL DEFAULT 1 COMMENT '业主是否可见',
+    create_date_time BIGINT NULL,
+    create_date INT NULL,
+    create_time INT NULL,
+    create_year INT NULL,
+    create_month INT NULL,
+    create_day INT NULL,
+    create_hour INT NULL,
+    create_minute INT NULL,
+    create_second INT NULL,
+    create_week TINYINT NULL,
+    update_date_time BIGINT NULL,
+    update_date INT NULL,
+    update_time INT NULL,
+    update_year INT NULL,
+    update_month INT NULL,
+    update_day INT NULL,
+    update_hour INT NULL,
+    update_minute INT NULL,
+    update_second INT NULL,
+    update_week TINYINT NULL,
+    PRIMARY KEY (deviation_id),
+    KEY idx_plan_deviation_company (com_id, deviation_id),
+    KEY idx_plan_deviation_company_store (com_id, store_id, deviation_id),
+    KEY idx_plan_deviation_company_team (com_id, team_id, deviation_id),
+    KEY idx_plan_deviation_company_owner (com_id, owner_id, deviation_id),
+    KEY idx_plan_deviation_company_project_status (com_id, project_id, status, deviation_id),
+    CONSTRAINT fk_plan_deviation_company FOREIGN KEY (com_id) REFERENCES db_tenant_company (com_id),
+    CONSTRAINT fk_plan_deviation_project FOREIGN KEY (project_id) REFERENCES db_project (project_id),
+    CONSTRAINT fk_plan_deviation_property FOREIGN KEY (property_id) REFERENCES db_property (property_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目计划偏差单';
+
+ALTER TABLE db_project
+    ADD KEY idx_project_company_expected_end (com_id, expected_end_date, project_id);
