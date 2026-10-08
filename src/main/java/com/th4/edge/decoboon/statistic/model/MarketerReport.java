@@ -11,6 +11,7 @@ import java.util.List;
 public class MarketerReport {
 
     private Integer customerCount = 0;
+    private Integer dormantCustomerCount = 0;
     private Integer newCustomerCount = 0;
     private Integer followingCustomerCount = 0;
     private Integer signedCustomerCount = 0;
@@ -57,6 +58,8 @@ public class MarketerReport {
 
     public Integer getCustomerCount() { return customerCount; }
     public void setCustomerCount(Integer customerCount) { this.customerCount = customerCount; }
+    public Integer getDormantCustomerCount() { return dormantCustomerCount; }
+    public void setDormantCustomerCount(Integer dormantCustomerCount) { this.dormantCustomerCount = dormantCustomerCount; }
     public Integer getNewCustomerCount() { return newCustomerCount; }
     public void setNewCustomerCount(Integer newCustomerCount) { this.newCustomerCount = newCustomerCount; }
     public Integer getFollowingCustomerCount() { return followingCustomerCount; }

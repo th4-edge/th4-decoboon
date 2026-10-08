@@ -112,7 +112,7 @@ public class CustomerOverviewContext {
 
     private void enrich(Customer customer, LocalDate today, Quote quote, ProjectContract contract) {
         LocalDateTime lastActivity = latest(customer.getLastFollowAt(), customer.getLastVisitAt(),
-                customer.getMeasureAt(), customer.getHandedOffAt(), created(customer));
+                customer.getMeasureAt(), customer.getHandedOffAt(), customer.getRestoredAt(), created(customer));
         LocalDate lastDate = lastActivity == null ? null : lastActivity.toLocalDate();
         customer.setIdleDays(lastDate == null ? 0 : (int) Math.max(0, ChronoUnit.DAYS.between(lastDate, today)));
         if (quote != null) customer.setQuoteAmount(value(quote.getAmount()));
@@ -131,7 +131,10 @@ public class CustomerOverviewContext {
         CustomerRiskLevel level = CustomerRiskLevel.Normal;
         String reason = null;
         String action = defaultAction(customer);
-        if (customer.getStatus() == CustStatus.Lost) {
+        if (customer.getStatus() == CustStatus.Dormant) {
+            reason = "客户已休眠，暂不进入风险跟进";
+            action = "恢复跟进";
+        } else if (customer.getStatus() == CustStatus.Lost) {
             reason = "客户已流失";
             action = "查看流失原因";
         } else if (customer.getOwner() == null) {
@@ -165,6 +168,7 @@ public class CustomerOverviewContext {
 
     private String defaultAction(Customer customer) {
         return switch (customer.getStatus()) {
+            case Dormant -> "恢复跟进";
             case Lost -> "查看流失原因";
             case Finished -> "维护老客户关系";
             case Signed -> "推进合同和项目交付";
@@ -183,7 +187,8 @@ public class CustomerOverviewContext {
 
     private boolean openStatus(CustStatus status) {
         return status != CustStatus.Signed && status != CustStatus.Serving
-                && status != CustStatus.Finished && status != CustStatus.Lost;
+                && status != CustStatus.Finished && status != CustStatus.Lost
+                && status != CustStatus.Dormant;
     }
 
     private List<CustomerMetricCard> metrics(List<Customer> customers,
@@ -358,6 +363,7 @@ public class CustomerOverviewContext {
         result.add(new CustomerStageCount("construction", "施工", count(customers, CustStatus.Serving)));
         result.add(new CustomerStageCount("done", "完工", count(customers, CustStatus.Finished)));
         result.add(new CustomerStageCount("lost", "流失", count(customers, CustStatus.Lost)));
+        result.add(new CustomerStageCount("dormant", "休眠", count(customers, CustStatus.Dormant)));
         return result;
     }
 
@@ -452,18 +458,27 @@ public class CustomerOverviewContext {
             case Serving -> "construction";
             case Finished -> "done";
             case Lost -> "lost";
+            case Dormant -> "dormant";
         };
     }
 
     private Comparator<Customer> comparator(String sort) {
-        if ("idle".equals(sort)) return Comparator.comparing(Customer::getIdleDays, Comparator.nullsLast(Comparator.reverseOrder()));
+        if ("idle".equals(sort)) {
+            return Comparator.comparingInt(this::dormantRank)
+                    .thenComparing(Customer::getIdleDays, Comparator.nullsLast(Comparator.reverseOrder()));
+        }
         if ("value".equals(sort)) return Comparator.comparing(this::businessValue, Comparator.reverseOrder());
         if ("newest".equals(sort)) return Comparator.comparing(this::created, Comparator.nullsLast(Comparator.reverseOrder()));
         return Comparator.comparingInt((Customer item) -> switch (item.getRiskLevel()) {
             case High -> 0;
             case Attention -> 1;
             case Normal -> 2;
-        }).thenComparing(Customer::getIdleDays, Comparator.nullsLast(Comparator.reverseOrder()));
+        }).thenComparingInt(this::dormantRank)
+                .thenComparing(Customer::getIdleDays, Comparator.nullsLast(Comparator.reverseOrder()));
+    }
+
+    private int dormantRank(Customer customer) {
+        return customer != null && customer.getStatus() == CustStatus.Dormant ? 1 : 0;
     }
 
     private BigDecimal businessValue(Customer customer) {

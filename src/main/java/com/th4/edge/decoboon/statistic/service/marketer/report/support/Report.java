@@ -128,6 +128,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.marketer.
 
         MarketerReport report = new MarketerReport();
         report.setCustomerCount(customers.size());
+        report.setDormantCustomerCount(count(customers, CustStatus.Dormant));
         report.setNewCustomerCount(count(customers, CustStatus.New));
         report.setFollowingCustomerCount(count(customers, CustStatus.Following, CustStatus.Quoted));
         report.setSignedCustomerCount(count(customers, CustStatus.Signed, CustStatus.Serving, CustStatus.Finished));
@@ -190,7 +191,9 @@ public class Report implements com.th4.edge.decoboon.statistic.service.marketer.
         int followOverdue = 0;
         LocalDate today = LocalDate.now();
         for (Customer customer : customers) {
-            if (customer.getStatus() == CustStatus.Lost || customer.getCreateTime() == null) {
+            if (customer.getStatus() == CustStatus.Lost
+                    || customer.getStatus() == CustStatus.Dormant
+                    || customer.getCreateTime() == null) {
                 continue;
             }
             if (customer.getStatus() != CustStatus.Signed

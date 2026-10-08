@@ -18,6 +18,7 @@ public class TeamLeaderReport {
     private Integer designerCount = 0;
     private Integer projectManagerCount = 0;
     private Integer customerCount = 0;
+    private Integer dormantCustomerCount = 0;
     private Integer followingCustomerCount = 0;
     private Integer pendingMeasureCount = 0;
     private Integer unassignedDesignerCount = 0;
@@ -69,6 +70,8 @@ public class TeamLeaderReport {
     public void setProjectManagerCount(Integer projectManagerCount) { this.projectManagerCount = projectManagerCount; }
     public Integer getCustomerCount() { return customerCount; }
     public void setCustomerCount(Integer customerCount) { this.customerCount = customerCount; }
+    public Integer getDormantCustomerCount() { return dormantCustomerCount; }
+    public void setDormantCustomerCount(Integer dormantCustomerCount) { this.dormantCustomerCount = dormantCustomerCount; }
     public Integer getFollowingCustomerCount() { return followingCustomerCount; }
     public void setFollowingCustomerCount(Integer followingCustomerCount) { this.followingCustomerCount = followingCustomerCount; }
     public Integer getPendingMeasureCount() { return pendingMeasureCount; }

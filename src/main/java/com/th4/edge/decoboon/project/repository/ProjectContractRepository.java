@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.project.repository;
 
+import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,10 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
     Optional<ProjectContract> findByContractIdAndCompany_ComId(Long contractId, Long comId);
 
     boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);
+
+    /** 指定客户是否存在不在终态集合内的正式合同。 */
+    boolean existsByCompany_ComIdAndCustomer_CustIdAndStatusNotIn(
+            Long comId, Long customerId, Collection<ContractStatus> statuses);
 
     boolean existsByProject_ProjectId(Long projectId);
 

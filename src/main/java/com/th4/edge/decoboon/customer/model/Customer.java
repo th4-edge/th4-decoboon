@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.configure.CustomerSource;
+import com.th4.edge.decoboon.customer.configure.CustomerDormantReason;
 import com.th4.edge.decoboon.customer.configure.CustomerRiskLevel;
 import com.th4.edge.decoboon.customer.configure.Gender;
 import com.th4.edge.framework.core.annotation.Description;
@@ -144,6 +145,38 @@ public class Customer extends AuditModel {
     @Note("下次跟进时间")
     private LocalDateTime nextFollowAt;
 
+    @Note("休眠前客户状态")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_before_dormant", length = 16)
+    private CustStatus statusBeforeDormant;
+
+    @Note("休眠原因")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dormant_reason", length = 32)
+    private CustomerDormantReason dormantReason;
+
+    @Note("休眠原因说明")
+    @Column(name = "dormant_reason_text", length = 200)
+    private String dormantReasonText;
+
+    @Note("休眠时间")
+    @Column(name = "dormant_at")
+    private LocalDateTime dormantAt;
+
+    @Note("休眠操作人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dormant_by")
+    private Employee dormantBy;
+
+    @Note("最近恢复时间")
+    @Column(name = "restored_at")
+    private LocalDateTime restoredAt;
+
+    @Note("最近恢复操作人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restored_by")
+    private Employee restoredBy;
+
     @Note("是否已加微信")
     @Column(nullable = false)
     private Boolean wechatAdded = Boolean.FALSE;
@@ -258,6 +291,20 @@ public class Customer extends AuditModel {
     public void setLastFollowAt(LocalDateTime lastFollowAt) { this.lastFollowAt = lastFollowAt; }
     public LocalDateTime getNextFollowAt() { return nextFollowAt; }
     public void setNextFollowAt(LocalDateTime nextFollowAt) { this.nextFollowAt = nextFollowAt; }
+    public CustStatus getStatusBeforeDormant() { return statusBeforeDormant; }
+    public void setStatusBeforeDormant(CustStatus statusBeforeDormant) { this.statusBeforeDormant = statusBeforeDormant; }
+    public CustomerDormantReason getDormantReason() { return dormantReason; }
+    public void setDormantReason(CustomerDormantReason dormantReason) { this.dormantReason = dormantReason; }
+    public String getDormantReasonText() { return dormantReasonText; }
+    public void setDormantReasonText(String dormantReasonText) { this.dormantReasonText = dormantReasonText; }
+    public LocalDateTime getDormantAt() { return dormantAt; }
+    public void setDormantAt(LocalDateTime dormantAt) { this.dormantAt = dormantAt; }
+    public Employee getDormantBy() { return dormantBy; }
+    public void setDormantBy(Employee dormantBy) { this.dormantBy = dormantBy; }
+    public LocalDateTime getRestoredAt() { return restoredAt; }
+    public void setRestoredAt(LocalDateTime restoredAt) { this.restoredAt = restoredAt; }
+    public Employee getRestoredBy() { return restoredBy; }
+    public void setRestoredBy(Employee restoredBy) { this.restoredBy = restoredBy; }
     public Boolean getWechatAdded() { return wechatAdded; }
     public void setWechatAdded(Boolean wechatAdded) { this.wechatAdded = wechatAdded; }
     public String getWechatNo() { return wechatNo; }

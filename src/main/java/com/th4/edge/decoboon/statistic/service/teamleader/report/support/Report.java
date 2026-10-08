@@ -117,6 +117,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.teamleade
         report.setDesignerCount(countRole(members, EmployeeRole.Designer));
         report.setProjectManagerCount(countRole(members, EmployeeRole.Pm));
         report.setCustomerCount(customers.size());
+        report.setDormantCustomerCount(countCustomers(customers, CustStatus.Dormant));
         report.setFollowingCustomerCount(countCustomers(customers,
                 CustStatus.Following, CustStatus.Quoted, CustStatus.PendingMeasure));
         report.setPendingMeasureCount(countCustomers(customers, CustStatus.PendingMeasure));
@@ -320,7 +321,8 @@ public class Report implements com.th4.edge.decoboon.statistic.service.teamleade
                     || customer.getStatus() == CustStatus.Signed
                     || customer.getStatus() == CustStatus.Serving
                     || customer.getStatus() == CustStatus.Finished
-                    || customer.getStatus() == CustStatus.Lost) {
+                    || customer.getStatus() == CustStatus.Lost
+                    || customer.getStatus() == CustStatus.Dormant) {
                 return false;
             }
             LocalDate next = customer.getNextFollowAt().toLocalDate();

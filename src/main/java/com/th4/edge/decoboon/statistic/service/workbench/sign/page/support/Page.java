@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.workbench.sign.page.support;
 
+import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.model.Project;
@@ -106,7 +107,7 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.s
         for (Quote quote : quotes) {
             Customer customer = quote.getCustomer();
             Property property = quote.getProperty();
-            if (customer == null || property == null) {
+            if (customer == null || property == null || customer.getStatus() == CustStatus.Dormant) {
                 continue;
             }
             ProjectContract contract = contractByQuote.get(quote.getQuoteId());

@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
                         "pendingMeasureCount", "signedCustomerCount", "quoteAmount", "signedAmount"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "gender", "source", "community", "addr", "area", "budget",
-                        "status", "owner", "designer", "remark", "lastFollowAt", "nextFollowAt", "wechatAdded", "wechatNo",
+                        "status", "statusBeforeDormant", "dormantReason", "dormantReasonText", "dormantAt", "dormantBy", "restoredAt", "restoredBy", "owner", "designer", "remark", "lastFollowAt", "nextFollowAt", "wechatAdded", "wechatNo",
                         "wechatAddedAt", "visitCount", "lastVisitAt", "pendingMeasureAt", "measureAt", "measureRequestedAt",
                         "handedOffAt", "tags", "portrait", "grade", "idleDays", "riskLevel", "riskReason", "nextAction",
                         "quoteAmount", "signedAmount", "projectId", "projectName", "createTime"}),

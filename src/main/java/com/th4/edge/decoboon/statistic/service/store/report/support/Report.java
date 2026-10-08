@@ -115,6 +115,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         report.setMarketerCount(countRole(members, EmployeeRole.Marketer));
         report.setProjectManagerCount(countRole(members, EmployeeRole.Pm));
         report.setCustomerCount(customers.size());
+        report.setDormantCustomerCount(countCustomers(customers, CustStatus.Dormant));
         report.setNewCustomerCount(countCustomers(customers, CustStatus.New));
         report.setFollowingCustomerCount(countCustomers(customers,
                 CustStatus.Following, CustStatus.Quoted));

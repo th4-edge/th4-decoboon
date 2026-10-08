@@ -137,7 +137,7 @@ public class CustomerTagContext {
     }
 
     private boolean isClosed(CustStatus status) {
-        return status == CustStatus.Lost || status == CustStatus.Finished;
+        return status == CustStatus.Lost || status == CustStatus.Finished || status == CustStatus.Dormant;
     }
 
     private CustomerTag systemTag(long id, String name, TagCategory category, String key) {

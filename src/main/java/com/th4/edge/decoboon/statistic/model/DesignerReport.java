@@ -13,6 +13,7 @@ import java.util.List;
 public class DesignerReport {
 
     private Integer customerCount = 0;
+    private Integer dormantCustomerCount = 0;
     private Integer followingCustomerCount = 0;
     private Integer signedCustomerCount = 0;
     private Integer quoteCount = 0;
@@ -47,6 +48,8 @@ public class DesignerReport {
 
     public Integer getCustomerCount() { return customerCount; }
     public void setCustomerCount(Integer customerCount) { this.customerCount = customerCount; }
+    public Integer getDormantCustomerCount() { return dormantCustomerCount; }
+    public void setDormantCustomerCount(Integer dormantCustomerCount) { this.dormantCustomerCount = dormantCustomerCount; }
     public Integer getFollowingCustomerCount() { return followingCustomerCount; }
     public void setFollowingCustomerCount(Integer followingCustomerCount) { this.followingCustomerCount = followingCustomerCount; }
     public Integer getSignedCustomerCount() { return signedCustomerCount; }

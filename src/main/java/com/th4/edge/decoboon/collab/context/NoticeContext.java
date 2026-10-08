@@ -119,7 +119,8 @@ public class NoticeContext {
             if (customer.getStatus() == CustStatus.Lost
                     || customer.getStatus() == CustStatus.Signed
                     || customer.getStatus() == CustStatus.Serving
-                    || customer.getStatus() == CustStatus.Finished) {
+                    || customer.getStatus() == CustStatus.Finished
+                    || customer.getStatus() == CustStatus.Dormant) {
                 continue;
             }
             LocalDate nextDate = customer.getNextFollowAt() == null ? null : customer.getNextFollowAt().toLocalDate();
@@ -148,7 +149,9 @@ public class NoticeContext {
         }
 
         for (Quote quote : quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId)) {
-            if (quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Submitted) {
+            if ((quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Submitted)
+                    && quote.getCustomer() != null
+                    && quote.getCustomer().getStatus() != CustStatus.Dormant) {
                 upsert(employee, null, quote.getCustomer(), quote, "quote:" + quote.getQuoteId(), NoticeType.Quote,
                         "报价待推进", quote.getNo() + " · " + quote.getCustomer().getName()
                                 + " · ¥" + quote.getAmount());
@@ -197,7 +200,9 @@ public class NoticeContext {
         List<Quote> quotes = quoteRepository
                 .findByCompany_ComIdAndCustomer_Store_StoreIdOrderByQuoteIdDesc(comId, storeId);
         for (Quote quote : quotes) {
-            if (quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Submitted) {
+            if ((quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Submitted)
+                    && quote.getCustomer() != null
+                    && quote.getCustomer().getStatus() != CustStatus.Dormant) {
                 upsert(manager, null, quote.getCustomer(), quote, "manager-quote:" + quote.getQuoteId(),
                         NoticeType.Quote, quote.getStatus() == QuoteStatus.Draft ? "门店报价未提交" : "客户报价待确认",
                         quote.getNo() + " · " + quote.getCustomer().getName() + " · ¥" + quote.getAmount()
@@ -249,7 +254,9 @@ public class NoticeContext {
         List<Quote> quotes = quoteRepository
                 .findByCompany_ComIdAndCustomer_Team_TeamIdOrderByQuoteIdDesc(comId, teamId);
         for (Quote quote : quotes) {
-            if (quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Submitted) {
+            if ((quote.getStatus() == QuoteStatus.Draft || quote.getStatus() == QuoteStatus.Submitted)
+                    && quote.getCustomer() != null
+                    && quote.getCustomer().getStatus() != CustStatus.Dormant) {
                 upsert(leader, null, quote.getCustomer(), quote, "team-quote:" + quote.getQuoteId(),
                         NoticeType.Quote, quote.getStatus() == QuoteStatus.Draft ? "团队报价未提交" : "团队报价待确认",
                         quote.getNo() + " · " + quote.getCustomer().getName() + " · ¥" + quote.getAmount()

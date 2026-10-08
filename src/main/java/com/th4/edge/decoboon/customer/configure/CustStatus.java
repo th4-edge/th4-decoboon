@@ -15,7 +15,8 @@ public enum CustStatus implements Enumerable<String> {
     Signed("已签约"),
     Serving("履约中"),
     Finished("已完工"),
-    Lost("已流失");
+    Lost("已流失"),
+    Dormant("休眠客户");
 
     private final String name;
 

@@ -1,8 +1,10 @@
 package com.th4.edge.decoboon.customer.service.follows.save.support;
 
+import com.th4.edge.components.lock.DistributedLock;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.configure.FollowWay;
 import com.th4.edge.decoboon.customer.context.CustomerContext;
+import com.th4.edge.decoboon.customer.context.CustomerDormantContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerFollow;
 import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
@@ -60,41 +62,57 @@ public class Save implements com.th4.edge.decoboon.customer.service.follows.save
     private final CustomerFollowRepository followRepository;
     private final CustomerRepository customerRepository;
     private final CustomerContext customerContext;
+    private final CustomerDormantContext dormantContext;
     private final DataScopeContext dataScopeContext;
+    private final DistributedLock distributedLock;
 
     public Save(CustomerFollowRepository followRepository,
                 CustomerRepository customerRepository,
                 CustomerContext customerContext,
-                DataScopeContext dataScopeContext) {
+                CustomerDormantContext dormantContext,
+                DataScopeContext dataScopeContext,
+                DistributedLock distributedLock) {
         this.followRepository = followRepository;
         this.customerRepository = customerRepository;
         this.customerContext = customerContext;
+        this.dormantContext = dormantContext;
         this.dataScopeContext = dataScopeContext;
+        this.distributedLock = distributedLock;
     }
 
     @Override
     @Transactional
     public CustomerFollow call(CustomerFollow request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        Customer customer = customerContext.requireVisible(customerId, current);
-
-        CustomerFollow follow = new CustomerFollow();
-        follow.setCompany(current.getCompany());
-        follow.setStore(customer.getStore());
-        follow.setTeam(customer.getTeam());
-        follow.setCustomer(customer);
-        follow.setEmp(current);
-        follow.setWay(way == null ? FollowWay.Other : way);
-        follow.setContent(content);
-        LocalDateTime next = parseDate(nextFollowAt);
-        follow.setNextFollowAt(next);
-        customer.setLastFollowAt(LocalDateTime.now());
-        customer.setNextFollowAt(next);
-        if (customer.getStatus() == CustStatus.New) {
-            customer.setStatus(CustStatus.Following);
+        String lockKey = "customer-status:" + current.getCompany().getComId() + ":" + customerId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "该客户正在被处理，请稍后重试"));
         }
-        customerRepository.save(customer);
-        return followRepository.save(follow);
+        try {
+            Customer customer = customerContext.requireVisible(customerId, current);
+            CustomerFollow follow = new CustomerFollow();
+            follow.setCompany(current.getCompany());
+            follow.setStore(customer.getStore());
+            follow.setTeam(customer.getTeam());
+            follow.setCustomer(customer);
+            follow.setEmp(current);
+            follow.setWay(way == null ? FollowWay.Other : way);
+            follow.setContent(content);
+            LocalDateTime next = parseDate(nextFollowAt);
+            follow.setNextFollowAt(next);
+            if (customer.getStatus() == CustStatus.Dormant) {
+                customer = dormantContext.wakeByFollow(customer, current);
+            }
+            customer.setLastFollowAt(LocalDateTime.now());
+            customer.setNextFollowAt(next);
+            if (customer.getStatus() == CustStatus.New) {
+                customer.setStatus(CustStatus.Following);
+            }
+            customerRepository.save(customer);
+            return followRepository.save(follow);
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
     private LocalDateTime parseDate(String value) {

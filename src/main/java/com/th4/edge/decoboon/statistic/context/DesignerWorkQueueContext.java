@@ -62,6 +62,7 @@ public class DesignerWorkQueueContext {
                   ON d.com_id = p.com_id
                  AND d.property_id = p.property_id
                 WHERE c.com_id = :comId
+                  AND c.status <> 'Dormant'
                   AND c.designer_id = :empId
                   AND d.status IN ('Draft','Ready','Presented')
                   AND NOT EXISTS (
@@ -129,6 +130,7 @@ public class DesignerWorkQueueContext {
                   ON q.com_id = c.com_id
                  AND q.customer_id = c.cust_id
                 WHERE c.com_id = :comId
+                  AND c.status <> 'Dormant'
                   AND q.emp_id = :empId
                   AND q.status IN ('Draft','Rejected')
                 ORDER BY FIELD(q.status, 'Rejected', 'Draft'),
@@ -191,6 +193,7 @@ public class DesignerWorkQueueContext {
                   ON ct.com_id = c.com_id
                  AND ct.customer_id = c.cust_id
                 WHERE c.com_id = :comId
+                  AND c.status <> 'Dormant'
                   AND c.designer_id = :empId
                   AND ct.status IN ('PendingSign','Signed')
                 ORDER BY FIELD(ct.status, 'Signed', 'PendingSign'),

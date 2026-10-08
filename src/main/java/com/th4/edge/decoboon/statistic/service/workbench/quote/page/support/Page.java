@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.workbench.quote.page.support;
 
+import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
@@ -69,7 +70,7 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.q
         for (Quote quote : activeQuotes) {
             Customer customer = quote.getCustomer();
             Property property = quote.getProperty();
-            if (customer == null || property == null) {
+            if (customer == null || property == null || customer.getStatus() == CustStatus.Dormant) {
                 continue;
             }
 

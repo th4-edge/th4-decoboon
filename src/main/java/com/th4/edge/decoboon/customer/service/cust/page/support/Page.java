@@ -52,7 +52,7 @@ import java.util.Set;
 @Properties(allow = {
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "gender", "source", "community", "addr", "area",
-                        "budget", "status", "owner", "wechatAdded", "wechatNo", "wechatAddedAt", "visitCount", "lastVisitAt", "lastFollowAt",
+                        "budget", "status", "statusBeforeDormant", "dormantReason", "dormantReasonText", "dormantAt", "dormantBy", "restoredAt", "restoredBy", "owner", "wechatAdded", "wechatNo", "wechatAddedAt", "visitCount", "lastVisitAt", "lastFollowAt",
                         "nextFollowAt", "pendingMeasureAt", "measureAt", "measureRequestedAt", "handedOffAt", "designer", "createTime",
                         "tags", "grade"}),
         @AllowProperties(model = Employee.class,

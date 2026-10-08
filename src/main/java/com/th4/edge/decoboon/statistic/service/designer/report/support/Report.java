@@ -97,6 +97,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.designer.
 
         DesignerReport report = new DesignerReport();
         report.setCustomerCount(customers.size());
+        report.setDormantCustomerCount(count(customers, CustStatus.Dormant));
         report.setFollowingCustomerCount(count(customers, CustStatus.New, CustStatus.Following, CustStatus.Quoted));
         report.setSignedCustomerCount(count(customers, CustStatus.Signed, CustStatus.Serving, CustStatus.Finished));
         long effectiveQuoteCount = quotes.stream()

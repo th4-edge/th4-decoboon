@@ -18,6 +18,7 @@ public class StoreManagerReport {
     private Integer marketerCount = 0;
     private Integer projectManagerCount = 0;
     private Integer customerCount = 0;
+    private Integer dormantCustomerCount = 0;
     private Integer newCustomerCount = 0;
     private Integer followingCustomerCount = 0;
     private Integer pendingMeasureCount = 0;
@@ -67,6 +68,8 @@ public class StoreManagerReport {
     public void setProjectManagerCount(Integer projectManagerCount) { this.projectManagerCount = projectManagerCount; }
     public Integer getCustomerCount() { return customerCount; }
     public void setCustomerCount(Integer customerCount) { this.customerCount = customerCount; }
+    public Integer getDormantCustomerCount() { return dormantCustomerCount; }
+    public void setDormantCustomerCount(Integer dormantCustomerCount) { this.dormantCustomerCount = dormantCustomerCount; }
     public Integer getNewCustomerCount() { return newCustomerCount; }
     public void setNewCustomerCount(Integer newCustomerCount) { this.newCustomerCount = newCustomerCount; }
     public Integer getFollowingCustomerCount() { return followingCustomerCount; }
