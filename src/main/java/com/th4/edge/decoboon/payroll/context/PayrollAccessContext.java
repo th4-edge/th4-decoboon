@@ -50,6 +50,11 @@ public class PayrollAccessContext {
     public Employee requireEditor(Employee principal) {
         return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
     }
+    /** 工资单草稿删除：仅 BOSS。 */
+    public Employee requireBoss(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss);
+    }
+
 
     /** 店长只看本店薪酬。 */
     public Employee requireStoreManager(Employee principal) {

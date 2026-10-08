@@ -141,8 +141,9 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-07 薪酬方案与月度考勤删除新增 2 条（payroll/compensation/delete、attendance/summary/delete）。
         // protected 新增 34 条 => 418（public 13 + protected 405）。
         // 2026-10-08 设计师业务工作台新增 2 条（statistic/workbench/designer/queue/list、report）=> 420（public 13 + protected 407）。
-        assertThat(routes).hasSize(420);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(407);
+        // 2026-10-08 工资单草稿删除新增 1 条（payroll/sheet/delete，protected）=> 421（public 13 + protected 408）。
+        assertThat(routes).hasSize(421);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(408);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
