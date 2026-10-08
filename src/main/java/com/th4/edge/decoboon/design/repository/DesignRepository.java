@@ -12,6 +12,8 @@ public interface DesignRepository extends JpaRepository<Design, Long>,
         JpaSpecificationExecutor<Design> {
 
     List<Design> findByCompany_ComIdOrderByDesignIdDesc(Long comId);
+    java.util.Optional<Design> findFirstByCompany_ComIdAndProperty_PropertyIdAndDesignTemplateVersion_VersionId(
+            Long comId, Long propertyId, Long versionId);
 
     List<Design> findByCompany_ComIdAndCustomer_CustIdOrderByVersionDesc(Long comId, Long customerId);
 
