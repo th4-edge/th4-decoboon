@@ -36,6 +36,13 @@ import com.th4.edge.decoboon.project.model.ProjectTask;
 import com.th4.edge.decoboon.project.model.ProjectPlanDeviation;
 import com.th4.edge.decoboon.project.configure.PlanDeviationStatus;
 import com.th4.edge.decoboon.project.repository.ProjectPlanDeviationRepository;
+import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
+import com.th4.edge.decoboon.plan.model.ContractPaymentPlan;
+import com.th4.edge.decoboon.plan.model.ContractConstructionPlan;
+import com.th4.edge.decoboon.plan.model.ContractConstructionStage;
+import com.th4.edge.decoboon.plan.configure.PaymentTriggerType;
+import com.th4.edge.decoboon.plan.repository.ContractPaymentNodeRepository;
+import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.project.model.AcceptanceRound;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.AcceptanceRoundRepository;
@@ -68,6 +75,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +98,7 @@ public class ProjectContext {
     private final ProjectStageRepository stageRepository;
     private final ProjectTaskRepository taskRepository;
     private final ProjectPlanDeviationRepository deviationRepository;
+    private final ContractPaymentNodeRepository paymentNodeRepository;
     private final MaterialPlanRepository materialPlanRepository;
     private final ReceivableRepository receivableRepository;
     private final AcceptanceRepository acceptanceRepository;
@@ -113,6 +122,7 @@ public class ProjectContext {
                           ProjectStageRepository stageRepository,
                           ProjectTaskRepository taskRepository,
                           ProjectPlanDeviationRepository deviationRepository,
+                          ContractPaymentNodeRepository paymentNodeRepository,
                           MaterialPlanRepository materialPlanRepository,
                           ReceivableRepository receivableRepository,
                           AcceptanceRepository acceptanceRepository,
@@ -137,6 +147,7 @@ public class ProjectContext {
         this.stageRepository = stageRepository;
         this.taskRepository = taskRepository;
         this.deviationRepository = deviationRepository;
+        this.paymentNodeRepository = paymentNodeRepository;
         this.materialPlanRepository = materialPlanRepository;
         this.receivableRepository = receivableRepository;
         this.acceptanceRepository = acceptanceRepository;
@@ -707,6 +718,59 @@ public class ProjectContext {
         deviation.setReceivableRecalculated(Boolean.FALSE);
         deviation.setVisibleToCustomer(Boolean.TRUE);
         return deviationRepository.save(deviation);
+    }
+
+    /**
+     * DEC-048 T-08 / DEC-051：合同基准完工日变更后，重算未收款应收的到期日。
+     *
+     * <p>触发日口径与付款计划节点一致：ContractSigned 取签约日；ProjectFinished 取合同基准完工日；
+     * StageStarted 取阶段计划开工日；其余阶段触发取阶段计划完工日；再叠加节点 offsetDays。
+     * 已收款/部分收款等历史事实不改，只重算 Pending 应收。</p>
+     */
+    @Transactional
+    public int recalculateReceivableDueDates(ProjectContract contract) {
+        if (contract == null || contract.getContractId() == null) {
+            return 0;
+        }
+        ContractPaymentPlan plan = contractPlanContext.paymentPlan(contract);
+        if (plan == null || plan.getNodes().isEmpty()) {
+            return 0;
+        }
+        Map<String, ContractConstructionStage> stages = new HashMap<>();
+        ContractConstructionPlan construction = contractPlanContext.constructionPlan(contract);
+        if (construction != null && construction.getStages() != null) {
+            for (ContractConstructionStage stage : construction.getStages()) {
+                if (stage.getCode() != null) stages.put(stage.getCode(), stage);
+            }
+        }
+        int updated = 0;
+        for (ContractPaymentNode node : plan.getNodes()) {
+            ContractConstructionStage stage = node.getTriggerStageCode() == null
+                    ? null : stages.get(node.getTriggerStageCode());
+            LocalDate base;
+            if (node.getTriggerType() == PaymentTriggerType.ContractSigned) {
+                base = contract.getSignedAt() == null ? LocalDate.now() : contract.getSignedAt();
+            } else if (node.getTriggerType() == PaymentTriggerType.ProjectFinished) {
+                base = contract.getPlanEndDate() == null ? LocalDate.now().plusDays(90) : contract.getPlanEndDate();
+            } else if (stage == null) {
+                base = contract.getStartDate() == null ? LocalDate.now() : contract.getStartDate();
+            } else if (node.getTriggerType() == PaymentTriggerType.StageStarted) {
+                base = stage.getPlannedStart();
+            } else {
+                base = stage.getPlannedEnd();
+            }
+            LocalDate due = base.plusDays(node.getOffsetDays() == null ? 0 : node.getOffsetDays());
+            node.setDueDate(due);
+            paymentNodeRepository.save(node);
+            Receivable receivable = node.getReceivable();
+            if (receivable != null && receivable.getStatus() == ReceivableStatus.Pending
+                    && !Objects.equals(due, receivable.getDueDate())) {
+                receivable.setDueDate(due);
+                receivableRepository.save(receivable);
+                updated++;
+            }
+        }
+        return updated;
     }
 
     /**

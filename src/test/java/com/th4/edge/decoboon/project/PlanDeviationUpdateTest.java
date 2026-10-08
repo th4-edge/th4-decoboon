@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.plan.context.ContractPlanContext;
 import com.th4.edge.decoboon.project.configure.PlanDeviationStatus;
 import com.th4.edge.decoboon.project.configure.PlanDeviationStrategy;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -39,6 +40,7 @@ class PlanDeviationUpdateTest {
     private ProjectAccessContext accessContext;
     private ProjectPermissionContext permissionContext;
     private ContractPlanContext contractPlanContext;
+    private ProjectContext projectContext;
     private Update update;
     private Employee boss;
     private ProjectPlanDeviation deviation;
@@ -52,8 +54,9 @@ class PlanDeviationUpdateTest {
         accessContext = mock(ProjectAccessContext.class);
         permissionContext = mock(ProjectPermissionContext.class);
         contractPlanContext = mock(ContractPlanContext.class);
+        projectContext = mock(ProjectContext.class);
         update = new Update(deviationRepository, contractRepository, reportRepository,
-                accessContext, permissionContext, contractPlanContext);
+                accessContext, permissionContext, contractPlanContext, projectContext);
 
         Company company = new Company();
         company.setComId(100L);
@@ -100,6 +103,8 @@ class PlanDeviationUpdateTest {
         assertThat(result.getNewBaseEndDate()).isEqualTo(LocalDate.of(2026, 12, 21));
         assertThat(contract.getPlanEndDate()).isEqualTo(LocalDate.of(2026, 12, 21));
         verify(contractPlanContext).updateBaselineEndDate(eq(contract), eq(LocalDate.of(2026, 12, 21)));
+        verify(projectContext).recalculateReceivableDueDates(contract);
+        assertThat(result.getReceivableRecalculated()).isTrue();
         verify(reportRepository).save(any());
     }
 

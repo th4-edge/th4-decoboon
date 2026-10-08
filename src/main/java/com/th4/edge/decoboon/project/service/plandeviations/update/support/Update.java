@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.project.configure.PlanDeviationStatus;
 import com.th4.edge.decoboon.project.configure.PlanDeviationStrategy;
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -70,19 +71,22 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
     private final ContractPlanContext contractPlanContext;
+    private final ProjectContext projectContext;
 
     public Update(ProjectPlanDeviationRepository deviationRepository,
                   ProjectContractRepository contractRepository,
                   ProjectReportRepository reportRepository,
                   ProjectAccessContext accessContext,
                   ProjectPermissionContext permissionContext,
-                  ContractPlanContext contractPlanContext) {
+                  ContractPlanContext contractPlanContext,
+                  ProjectContext projectContext) {
         this.deviationRepository = deviationRepository;
         this.contractRepository = contractRepository;
         this.reportRepository = reportRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
         this.contractPlanContext = contractPlanContext;
+        this.projectContext = projectContext;
     }
 
     @Override
@@ -112,12 +116,17 @@ public class Update implements com.th4.edge.decoboon.project.service.plandeviati
                     : deviation.getBaseEndDate();
             deviation.setNewBaseEndDate(newBaseEnd);
             applyBaseline(deviation, newBaseEnd, reason);
+            // DEC-048 T-08：基准完工日变更后重算未收款应收的到期日。
+            int recalculated = deviation.getContract() == null
+                    ? 0 : projectContext.recalculateReceivableDueDates(deviation.getContract());
+            deviation.setReceivableRecalculated(true);
             deviation.setStatus(PlanDeviationStatus.Confirmed);
             deviation.setConfirmedBy(current);
             deviation.setConfirmedAt(LocalDateTime.now());
             ProjectPlanDeviation saved = deviationRepository.save(deviation);
             writeReport(saved, current, "计划偏差已确认",
-                    "合同基准完工日调整为 " + newBaseEnd + "（方式：" + scheduleStrategy.getName() + "）");
+                    "合同基准完工日调整为 " + newBaseEnd + "（方式：" + scheduleStrategy.getName()
+                            + "，重算应收 " + recalculated + " 条）");
             return saved;
         }
         if (target == PlanDeviationStatus.Rejected) {
