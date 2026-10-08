@@ -176,6 +176,54 @@ public class ContractPlanContext {
         constructionPlanRepository.save(plan);
     }
 
+    /**
+     * DEC-051：计划偏差确认后更新合同基准完工日，并按阶段 defaultDays 相对权重重新展开阶段计划。
+     *
+     * <p>仅允许“计划偏差确认（Extend）”与“合同工期变更”调用；排期链路不得调用本方法。</p>
+     */
+    @Transactional
+    public void updateBaselineEndDate(ProjectContract contract, LocalDate newEndDate) {
+        if (contract == null || contract.getContractId() == null || newEndDate == null) {
+            return;
+        }
+        ContractConstructionPlan plan = constructionPlanRepository
+                .findByContract_ContractIdAndCompany_ComId(contract.getContractId(), contract.getCompany().getComId())
+                .orElse(null);
+        if (plan == null) {
+            return;
+        }
+        LocalDate start = plan.getStartDate() == null ? contract.getStartDate() : plan.getStartDate();
+        if (start == null || newEndDate.isBefore(start)) {
+            return;
+        }
+        plan.setEndDate(newEndDate);
+        constructionPlanRepository.save(plan);
+        List<ContractConstructionStage> stages =
+                constructionStageRepository.findByPlan_PlanIdOrderBySortAsc(plan.getPlanId());
+        if (stages.isEmpty()) {
+            return;
+        }
+        int totalTemplateDays = stages.stream()
+                .mapToInt(item -> Math.max(1, item.getDefaultDays() == null ? 1 : item.getDefaultDays())).sum();
+        long actualDays = Math.max(1, ChronoUnit.DAYS.between(start, newEndDate) + 1);
+        LocalDate cursor = start;
+        for (int index = 0; index < stages.size(); index++) {
+            ContractConstructionStage stage = stages.get(index);
+            int defaultDays = Math.max(1, stage.getDefaultDays() == null ? 1 : stage.getDefaultDays());
+            int days = index == stages.size() - 1
+                    ? Math.max(1, (int) ChronoUnit.DAYS.between(cursor, newEndDate) + 1)
+                    : Math.max(1, BigDecimal.valueOf(actualDays)
+                            .multiply(BigDecimal.valueOf(defaultDays))
+                            .divide(BigDecimal.valueOf(totalTemplateDays), 0, RoundingMode.HALF_UP).intValue());
+            days = Math.min(days, Math.max(1, (int) ChronoUnit.DAYS.between(cursor, newEndDate) + 1));
+            LocalDate stageEnd = cursor.plusDays(days - 1L);
+            stage.setPlannedStart(cursor);
+            stage.setPlannedEnd(stageEnd);
+            cursor = stageEnd.plusDays(1);
+        }
+        constructionStageRepository.saveAll(stages);
+    }
+
     /** 签约价格确认后按最终签约价重算计划节点金额。 */
     @Transactional
     public void repricePaymentPlan(ProjectContract contract) {

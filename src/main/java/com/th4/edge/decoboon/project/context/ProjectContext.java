@@ -33,6 +33,9 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.model.ProjectTask;
+import com.th4.edge.decoboon.project.model.ProjectPlanDeviation;
+import com.th4.edge.decoboon.project.configure.PlanDeviationStatus;
+import com.th4.edge.decoboon.project.repository.ProjectPlanDeviationRepository;
 import com.th4.edge.decoboon.project.model.AcceptanceRound;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.AcceptanceRoundRepository;
@@ -86,6 +89,7 @@ public class ProjectContext {
     private final ContractLineRepository contractLineRepository;
     private final ProjectStageRepository stageRepository;
     private final ProjectTaskRepository taskRepository;
+    private final ProjectPlanDeviationRepository deviationRepository;
     private final MaterialPlanRepository materialPlanRepository;
     private final ReceivableRepository receivableRepository;
     private final AcceptanceRepository acceptanceRepository;
@@ -108,6 +112,7 @@ public class ProjectContext {
                           ProjectRepository projectRepository,
                           ProjectStageRepository stageRepository,
                           ProjectTaskRepository taskRepository,
+                          ProjectPlanDeviationRepository deviationRepository,
                           MaterialPlanRepository materialPlanRepository,
                           ReceivableRepository receivableRepository,
                           AcceptanceRepository acceptanceRepository,
@@ -131,6 +136,7 @@ public class ProjectContext {
         this.projectRepository = projectRepository;
         this.stageRepository = stageRepository;
         this.taskRepository = taskRepository;
+        this.deviationRepository = deviationRepository;
         this.materialPlanRepository = materialPlanRepository;
         this.receivableRepository = receivableRepository;
         this.acceptanceRepository = acceptanceRepository;
@@ -661,7 +667,46 @@ public class ProjectContext {
         if (expectedEnd != null) {
             project.setExpectedEndDate(expectedEnd);
         }
-        return projectRepository.save(project);
+        Project saved = projectRepository.save(project);
+        maybeCreatePlanDeviation(saved, expectedEnd);
+        return saved;
+    }
+
+    /**
+     * DEC-051：任何超窗（预计完工日 &gt; 合同基准完工日）都生成计划偏差单；
+     * 同一项目已有待确认偏差时不重复生成。合同基准完工日以合同主档为准。
+     */
+    @Transactional
+    public ProjectPlanDeviation maybeCreatePlanDeviation(Project project, LocalDate expectedEnd) {
+        if (project == null || project.getProjectId() == null || expectedEnd == null) {
+            return null;
+        }
+        ProjectContract contract = projectContractRepository
+                .findByProject_ProjectIdAndCompany_ComId(project.getProjectId(), project.getCompany().getComId())
+                .orElse(null);
+        if (contract == null || contract.getPlanEndDate() == null) {
+            return null;
+        }
+        if (!expectedEnd.isAfter(contract.getPlanEndDate())) {
+            return null;
+        }
+        if (deviationRepository.existsByProject_ProjectIdAndStatus(
+                project.getProjectId(), PlanDeviationStatus.Pending)) {
+            return null;
+        }
+        ProjectPlanDeviation deviation = new ProjectPlanDeviation();
+        deviation.setProject(project);
+        deviation.setProperty(project.getProperty());
+        deviation.setContract(contract);
+        permissionContext.apply(deviation, project);
+        deviation.setBaseEndDate(contract.getPlanEndDate());
+        deviation.setExpectedEndDate(expectedEnd);
+        deviation.setDeviationDays((int) ChronoUnit.DAYS.between(contract.getPlanEndDate(), expectedEnd));
+        deviation.setStatus(PlanDeviationStatus.Pending);
+        deviation.setResponsible(project.getManager() == null ? project.getOwner() : project.getManager());
+        deviation.setReceivableRecalculated(Boolean.FALSE);
+        deviation.setVisibleToCustomer(Boolean.TRUE);
+        return deviationRepository.save(deviation);
     }
 
     /**
