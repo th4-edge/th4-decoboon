@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.designtemplate.model.DesignTemplateVersion;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -101,6 +102,11 @@ public class Design extends AuditModel {
     @JoinColumn(name = "property_id", nullable = false)
     @Note("所属房屋")
     private Property property;
+
+    @Note("实例化来源：设计模版版本（同房屋同版本唯一，用于幂等）")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "design_template_version_id")
+    private DesignTemplateVersion designTemplateVersion;
 
     @Note("方案版本")
     @Column(nullable = false)
@@ -252,4 +258,10 @@ public class Design extends AuditModel {
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }
+
+    public DesignTemplateVersion getDesignTemplateVersion() { return designTemplateVersion; }
+
+    public void setDesignTemplateVersion(DesignTemplateVersion designTemplateVersion) {
+        this.designTemplateVersion = designTemplateVersion;
+    }
 }
