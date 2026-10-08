@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.quote.model;
 
 import com.th4.edge.decoboon.common.configure.BusinessOrigin;
+import com.th4.edge.decoboon.common.model.BusinessStateView;
 import com.th4.edge.decoboon.property.model.Property;
 
 import jakarta.persistence.EntityListeners;
@@ -220,6 +221,10 @@ public class Quote extends AuditModel {
     @Transient
     private List<QuoteGroup> otherGroups;
 
+    @Note("只读投影：服务端业务状态视图")
+    @Transient
+    private BusinessStateView businessStateView;
+
         public BusinessOrigin getBusinessOrigin() { return businessOrigin; }
     public void setBusinessOrigin(BusinessOrigin businessOrigin) { this.businessOrigin = businessOrigin; }
 public Long getQuoteId() { return quoteId; }
@@ -292,4 +297,6 @@ public Long getQuoteId() { return quoteId; }
 
     public String getRevision() { return revision; }
     public void setRevision(String revision) { this.revision = revision; }
+    public BusinessStateView getBusinessStateView() { return businessStateView; }
+    public void setBusinessStateView(BusinessStateView businessStateView) { this.businessStateView = businessStateView; }
 }

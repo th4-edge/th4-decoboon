@@ -108,7 +108,7 @@ public class CustomerTagContext {
         } else if (hasMeasureScheduled) {
             tags.add(systemTag(--seq, "已预约量房", TagCategory.Behavior, "measure:scheduled"));
         }
-        if (isFollowOverdue(customer)) {
+        if (isFollowOverdue(customer, hasMeasure, hasMeasureScheduled)) {
             tags.add(systemTag(--seq, "跟进已逾期", TagCategory.Risk, "risk:followOverdue"));
         }
         if (isGoldenNoContact(customer)) {
@@ -117,10 +117,12 @@ public class CustomerTagContext {
         return tags;
     }
 
-    /** 跟进是否已逾期（自然日口径）。 */
-    public boolean isFollowOverdue(Customer customer) {
+    /** 跟进是否已逾期（自然日口径，仅预约量房前成立）。 */
+    public boolean isFollowOverdue(Customer customer, boolean hasMeasure, boolean hasMeasureScheduled) {
         if (customer == null || customer.getNextFollowAt() == null) return false;
-        if (isClosed(customer.getStatus())) return false;
+        // 已存在量房完成或量房预约事实，一律不再判跟进逾期。
+        if (hasMeasure || hasMeasureScheduled) return false;
+        if (!CustomerInsightContext.followOverdueEligible(customer)) return false;
         return customer.getNextFollowAt().toLocalDate().isBefore(LocalDate.now());
     }
 

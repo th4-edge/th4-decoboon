@@ -143,8 +143,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-08 设计师业务工作台新增 2 条（statistic/workbench/designer/queue/list、report）=> 420（public 13 + protected 407）。
         // 2026-10-08 工资单草稿删除新增 1 条（payroll/sheet/delete，protected）=> 421（public 13 + protected 408）。
         // 2026-10-08 客户休眠与恢复新增 3 条（customer/customer/dormant、resume、status-log/page）=> 424（public 13 + protected 411）。
-        assertThat(routes).hasSize(424);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(411);
+        // 2026-10-08 客户休眠与恢复新增 3 条；2026-10-09 设计师待量房任务新增 1 条，
+        // 合并后当前 Provider 面板为 427（public 13 + protected 414）。
+        assertThat(routes).hasSize(427);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(414);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 

@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.project.model;
 
 import com.th4.edge.decoboon.common.configure.BusinessOrigin;
+import com.th4.edge.decoboon.common.model.BusinessStateView;
 import com.th4.edge.decoboon.property.model.Property;
 
 import com.th4.edge.components.data.listener.SnowflakeEntityListener;
@@ -196,6 +197,10 @@ public class ProjectContract extends AuditModel implements ProjectOwned {
     @Note("施工计划快照")
     private ContractConstructionPlan constructionPlan;
 
+    @Transient
+    @Note("只读投影：服务端业务状态视图")
+    private BusinessStateView businessStateView;
+
         public BusinessOrigin getBusinessOrigin() { return businessOrigin; }
     public void setBusinessOrigin(BusinessOrigin businessOrigin) { this.businessOrigin = businessOrigin; }
 public Long getContractId() { return contractId; }
@@ -240,6 +245,8 @@ public Long getContractId() { return contractId; }
     public void setPaymentPlan(ContractPaymentPlan paymentPlan) { this.paymentPlan = paymentPlan; }
     public ContractConstructionPlan getConstructionPlan() { return constructionPlan; }
     public void setConstructionPlan(ContractConstructionPlan constructionPlan) { this.constructionPlan = constructionPlan; }
+    public BusinessStateView getBusinessStateView() { return businessStateView; }
+    public void setBusinessStateView(BusinessStateView businessStateView) { this.businessStateView = businessStateView; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

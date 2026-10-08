@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
                         "signedAmount", "currentAmount", "status", "signedAt", "startDate", "planEndDate", "effectiveAt",
                         "paymentTerms", "createdBy", "remark", "receivableCount", "receivableAmount",
                         "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "paymentPlan",
-                        "constructionPlan", "createTime"}),
+                        "constructionPlan", "createTime", "businessStateView"}),
         @AllowProperties(model = ContractPaymentPlan.class,
                 properties = {"planId", "sourceCode", "sourceVersion", "name", "totalAmount", "status", "nodes"}),
         @AllowProperties(model = ContractPaymentNode.class,

@@ -56,6 +56,7 @@ public class ProjectContractContext {
     private final ProjectContext projectContext;
     private final ContractPlanContext contractPlanContext;
     private final DesignLifecycleContext designLifecycleContext;
+    private final ContractBusinessStateContext contractBusinessStateContext;
 
     public ProjectContractContext(ProjectContractRepository contractRepository,
                                   ContractChangeRepository changeRepository,
@@ -71,7 +72,8 @@ public class ProjectContractContext {
                                   ContractChangeFulfillmentContext fulfillmentContext,
                                   ProjectContext projectContext,
                                   ContractPlanContext contractPlanContext,
-                                  DesignLifecycleContext designLifecycleContext) {
+                                  DesignLifecycleContext designLifecycleContext,
+                                  ContractBusinessStateContext contractBusinessStateContext) {
         this.contractRepository = contractRepository;
         this.changeRepository = changeRepository;
         this.lineRepository = lineRepository;
@@ -87,6 +89,7 @@ public class ProjectContractContext {
         this.projectContext = projectContext;
         this.contractPlanContext = contractPlanContext;
         this.designLifecycleContext = designLifecycleContext;
+        this.contractBusinessStateContext = contractBusinessStateContext;
     }
 
     /** 客户确认报价后先创建合同草稿/待签，不创建项目。 */
@@ -323,6 +326,7 @@ public class ProjectContractContext {
         contract.setCostComplete(complete);
         contract.setPaymentPlan(contractPlanContext.paymentPlan(contract));
         contract.setConstructionPlan(contractPlanContext.constructionPlan(contract));
+        contractBusinessStateContext.enrich(contract);
         return contract;
     }
 

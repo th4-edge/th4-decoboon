@@ -17,6 +17,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.security.annotation.User;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +73,7 @@ public class Update implements com.th4.edge.decoboon.pack.service.templates.upda
     @Override
     @Transactional
     public PackageTemplate call(@ModelSaveInject PackageTemplate request) {
-        Employee current = tenantContext.requireBoss(employee);
+        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
         PackageTemplate pack = giftPackRepository.findByTemplateIdAndCompany_ComId(
                         templateId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));

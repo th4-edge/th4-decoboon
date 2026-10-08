@@ -15,6 +15,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +68,7 @@ public class Save implements com.th4.edge.decoboon.pack.service.templates.save.S
     @Override
     @Transactional
     public PackageTemplate call(@ModelSaveInject PackageTemplate request) {
-        Employee current = tenantContext.requireBoss(employee);
+        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
         request.setCompany(current.getCompany());
         request.setName(name);
         request.setArea(area);

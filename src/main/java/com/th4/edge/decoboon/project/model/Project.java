@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.project.model;
 
 import com.th4.edge.decoboon.common.configure.BusinessOrigin;
+import com.th4.edge.decoboon.common.model.BusinessStateView;
 import com.th4.edge.decoboon.property.model.Property;
 
 import jakarta.persistence.EntityListeners;
@@ -213,6 +214,10 @@ public class Project extends AuditModel implements ProjectOwned {
     private String nextAction;
 
     @Transient
+    @Note("只读投影：服务端业务状态视图")
+    private BusinessStateView businessStateView;
+
+    @Transient
     @Unit("元")
     @Note("只读投影：已收工程款（来源于应收计划）")
     private BigDecimal receivedAmount = BigDecimal.ZERO;
@@ -420,6 +425,8 @@ public Long getProjectId() {
     public void setRiskReason(String riskReason) { this.riskReason = riskReason; }
     public String getNextAction() { return nextAction; }
     public void setNextAction(String nextAction) { this.nextAction = nextAction; }
+    public BusinessStateView getBusinessStateView() { return businessStateView; }
+    public void setBusinessStateView(BusinessStateView businessStateView) { this.businessStateView = businessStateView; }
     public BigDecimal getReceivedAmount() { return receivedAmount; }
     public void setReceivedAmount(BigDecimal receivedAmount) { this.receivedAmount = receivedAmount; }
     public BigDecimal getReceivableAmount() { return receivableAmount; }

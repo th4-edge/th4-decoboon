@@ -20,6 +20,7 @@ import com.th4.edge.decoboon.plan.repository.CompanyPaymentNodeRepository;
 import com.th4.edge.decoboon.plan.repository.CompanyPaymentPlanRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
@@ -65,27 +66,33 @@ public class CompanyPlanTemplateContext {
 
     @Transactional(readOnly = true)
     public PlanTemplateCatalog managementCatalog(Employee principal) {
-        Employee current = tenantContext.requireBoss(principal);
+        // 所有内部岗位均可进入模板管理页；非负责人/店长仅由 Provider 写权限和后端维护动作阻止修改。
+        Employee current = tenantContext.requireEmployee(principal);
         return catalog(current, true);
     }
 
     @Transactional(readOnly = true)
     public PaymentPlanTemplate paymentInfo(Employee principal, CompanyPaymentPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = tenantContext.requireEmployee(principal);
         CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
         return paymentView(plan);
     }
 
     @Transactional(readOnly = true)
     public ConstructionPlanTemplate constructionInfo(Employee principal, CompanyConstructionPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = tenantContext.requireEmployee(principal);
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         return constructionView(plan);
     }
 
+    /** 企业负责人、店长可维护付款与施工计划模板；其他内部岗位仅可查看。 */
+    private Employee requireMaintainer(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
+    }
+
     @Transactional
     public PaymentPlanTemplate savePayment(Employee principal, CompanyPaymentPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyPaymentPlan plan = new CompanyPaymentPlan();
         plan.setCompany(current.getCompany());
         plan.setCode("PAY_CUSTOM_" + token());
@@ -113,7 +120,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public PaymentPlanTemplate updatePayment(Employee principal, CompanyPaymentPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
         List<CompanyPaymentNode> nodes = paymentNodes(plan, request.getNodes());
         applyPayment(plan, request);
@@ -129,7 +136,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public PaymentPlanTemplate publishPayment(Employee principal, CompanyPaymentPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
         List<CompanyPaymentNode> nodes = paymentNodeRepository.findByPlan_TemplateIdOrderBySortAscNodeIdAsc(plan.getTemplateId());
         validatePayment(plan, nodes);
@@ -143,7 +150,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public PaymentPlanTemplate disablePayment(Employee principal, CompanyPaymentPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
         plan.setStatus(PlanTemplateStatus.Disabled);
         plan.setDefaultPlan(Boolean.FALSE);
@@ -153,7 +160,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public PaymentPlanTemplate defaultPayment(Employee principal, CompanyPaymentPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
         requireEnabled(plan.getStatus(), "只有已启用的付款计划模板可以设为默认");
         for (CompanyPaymentPlan item : paymentPlanRepository.findByCompany_ComIdOrderByDefaultPlanDescSortAscTemplateIdAsc(current.getCompany().getComId())) {
@@ -165,7 +172,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public ConstructionPlanTemplate saveConstruction(Employee principal, CompanyConstructionPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyConstructionPlan plan = new CompanyConstructionPlan();
         plan.setCompany(current.getCompany());
         plan.setCode("CON_CUSTOM_" + token());
@@ -195,7 +202,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public ConstructionPlanTemplate updateConstruction(Employee principal, CompanyConstructionPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         List<CompanyConstructionStage> stages = constructionStages(plan, request.getStages());
         applyConstruction(plan, request);
@@ -212,7 +219,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public ConstructionPlanTemplate publishConstruction(Employee principal, CompanyConstructionPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         List<CompanyConstructionStage> stages = constructionStageRepository.findByPlan_TemplateIdOrderBySortAscStageIdAsc(plan.getTemplateId());
         validateConstruction(plan, stages);
@@ -227,7 +234,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public ConstructionPlanTemplate disableConstruction(Employee principal, CompanyConstructionPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         plan.setStatus(PlanTemplateStatus.Disabled);
         plan.setDefaultPlan(Boolean.FALSE);
@@ -237,7 +244,7 @@ public class CompanyPlanTemplateContext {
 
     @Transactional
     public ConstructionPlanTemplate defaultConstruction(Employee principal, CompanyConstructionPlan request) {
-        Employee current = tenantContext.requireBoss(principal);
+        Employee current = requireMaintainer(principal);
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
         requireEnabled(plan.getStatus(), "只有已启用的施工计划模板可以设为默认");
         for (CompanyConstructionPlan item : constructionPlanRepository.findByCompany_ComIdOrderByDefaultPlanDescSortAscTemplateIdAsc(current.getCompany().getComId())) {

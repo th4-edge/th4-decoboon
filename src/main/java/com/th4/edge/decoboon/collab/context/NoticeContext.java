@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.collab.configure.NoticeType;
 import com.th4.edge.decoboon.collab.model.Notice;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
@@ -124,7 +125,9 @@ public class NoticeContext {
                 continue;
             }
             LocalDate nextDate = customer.getNextFollowAt() == null ? null : customer.getNextFollowAt().toLocalDate();
-            if (nextDate != null && nextDate.isBefore(today)) {
+            // 跟进逾期只在预约量房前成立；预约量房后不再生成逾期通知（今日/超期未跟进另按原口径）。
+            if (nextDate != null && nextDate.isBefore(today)
+                    && CustomerInsightContext.followOverdueEligible(customer)) {
                 upsert(employee, null, customer, null,
                         "follow-overdue:" + customer.getCustId() + ":" + today,
                         NoticeType.Overdue, "客户跟进已逾期",

@@ -48,19 +48,22 @@ public class CustomerOverviewContext {
     private final QuoteRepository quoteRepository;
     private final ProjectContractRepository contractRepository;
     private final MeasureRepository measureRepository;
+    private final CustomerInsightContext insight;
 
     public CustomerOverviewContext(TenantContext tenantContext,
                                    CustomerRepository customerRepository,
                                    CustomerFollowRepository followRepository,
                                    QuoteRepository quoteRepository,
                                    ProjectContractRepository contractRepository,
-                                   MeasureRepository measureRepository) {
+                                   MeasureRepository measureRepository,
+                                   CustomerInsightContext insight) {
         this.tenantContext = tenantContext;
         this.customerRepository = customerRepository;
         this.followRepository = followRepository;
         this.quoteRepository = quoteRepository;
         this.contractRepository = contractRepository;
         this.measureRepository = measureRepository;
+        this.insight = insight;
     }
 
     @Transactional(readOnly = true)
@@ -111,84 +114,12 @@ public class CustomerOverviewContext {
     }
 
     private void enrich(Customer customer, LocalDate today, Quote quote, ProjectContract contract) {
-        LocalDateTime lastActivity = latest(customer.getLastFollowAt(), customer.getLastVisitAt(),
-                customer.getMeasureAt(), customer.getHandedOffAt(), customer.getRestoredAt(), created(customer));
-        LocalDate lastDate = lastActivity == null ? null : lastActivity.toLocalDate();
-        customer.setIdleDays(lastDate == null ? 0 : (int) Math.max(0, ChronoUnit.DAYS.between(lastDate, today)));
-        if (quote != null) customer.setQuoteAmount(value(quote.getAmount()));
-        if (contract != null) {
-            BigDecimal signed = value(contract.getSignedAmount());
-            customer.setSignedAmount(signed.signum() == 0 ? value(contract.getCurrentAmount()) : signed);
-            if (contract.getProject() != null) {
-                customer.setProjectId(contract.getProject().getProjectId());
-                customer.setProjectName(contract.getProject().getName());
-            }
-        }
-        riskAndAction(customer, customer.getIdleDays(), today);
-    }
-
-    private void riskAndAction(Customer customer, int idleDays, LocalDate today) {
-        CustomerRiskLevel level = CustomerRiskLevel.Normal;
-        String reason = null;
-        String action = defaultAction(customer);
-        if (customer.getStatus() == CustStatus.Dormant) {
-            reason = "客户已休眠，暂不进入风险跟进";
-            action = "恢复跟进";
-        } else if (customer.getStatus() == CustStatus.Lost) {
-            reason = "客户已流失";
-            action = "查看流失原因";
-        } else if (customer.getOwner() == null) {
-            level = CustomerRiskLevel.High;
-            reason = "未分配负责人";
-            action = "先分配负责人";
-        } else if (overdue(customer, today)) {
-            level = CustomerRiskLevel.High;
-            long days = ChronoUnit.DAYS.between(customer.getNextFollowAt().toLocalDate(), today);
-            reason = "跟进已逾期 " + days + " 天";
-            action = "立即处理逾期跟进";
-        } else if (customer.getStatus() == CustStatus.PendingMeasure && customer.getDesigner() == null) {
-            level = customer.getMeasureAt() != null && customer.getMeasureAt().toLocalDate().isBefore(today)
-                    ? CustomerRiskLevel.High : CustomerRiskLevel.Attention;
-            reason = customer.getMeasureAt() != null && customer.getMeasureAt().toLocalDate().isBefore(today)
-                    ? "量房时间已过但未指派设计师" : "待量房但未指派设计师";
-            action = "指定设计师并确认量房安排";
-        } else if (idleDays >= 15 && openStatus(customer.getStatus())) {
-            level = CustomerRiskLevel.High;
-            reason = "连续 " + idleDays + " 天未推进";
-            action = "重新激活客户或评估流失";
-        } else if (idleDays >= 7 && openStatus(customer.getStatus())) {
-            level = CustomerRiskLevel.Attention;
-            reason = "已 " + idleDays + " 天没有新的推进";
-            action = "安排下一次跟进";
-        }
-        customer.setRiskLevel(level);
-        customer.setRiskReason(reason);
-        customer.setNextAction(action);
-    }
-
-    private String defaultAction(Customer customer) {
-        return switch (customer.getStatus()) {
-            case Dormant -> "恢复跟进";
-            case Lost -> "查看流失原因";
-            case Finished -> "维护老客户关系";
-            case Signed -> "推进合同和项目交付";
-            case Serving -> "同步项目履约进度";
-            case Quoted -> "推进客户确认报价";
-            case PendingMeasure -> "按计划完成量房";
-            case Following, New -> customer.getLastFollowAt() == null ? "完成首次联系"
-                    : customer.getNextFollowAt() == null ? "安排下一次跟进" : "按计划完成下一次跟进";
-        };
-    }
-
-    private boolean overdue(Customer customer, LocalDate today) {
-        return openStatus(customer.getStatus()) && customer.getNextFollowAt() != null
-                && customer.getNextFollowAt().toLocalDate().isBefore(today);
+        insight.enrich(customer, today, quote, contract);
+        insight.mainline(customer, false, customer.getMeasureAt() != null);
     }
 
     private boolean openStatus(CustStatus status) {
-        return status != CustStatus.Signed && status != CustStatus.Serving
-                && status != CustStatus.Finished && status != CustStatus.Lost
-                && status != CustStatus.Dormant;
+        return CustomerInsightContext.openStatus(status);
     }
 
     private List<CustomerMetricCard> metrics(List<Customer> customers,
@@ -223,7 +154,7 @@ public class CustomerOverviewContext {
         Set<Long> monthActiveIds = activeCustomerIds(customers, follows, monthStart, now);
         long dueToday = customers.stream().filter(item -> openStatus(item.getStatus()) && item.getNextFollowAt() != null
                 && item.getNextFollowAt().toLocalDate().equals(today)).count();
-        long overdue = customers.stream().filter(item -> overdue(item, today)).count();
+        long overdue = customers.stream().filter(item -> insight.overdue(item, today)).count();
 
         List<ProjectContract> signedContracts = contracts.stream()
                 .filter(item -> item.getSignedAt() != null && YearMonth.from(item.getSignedAt()).equals(YearMonth.from(month)))
