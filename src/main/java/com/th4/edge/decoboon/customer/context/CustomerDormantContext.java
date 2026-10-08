@@ -29,7 +29,6 @@ public class CustomerDormantContext {
             CustStatus.New, CustStatus.Following, CustStatus.PendingMeasure, CustStatus.Quoted);
     private static final Set<CustStatus> ALLOWED_RESTORE_STATUSES = EnumSet.of(
             CustStatus.New, CustStatus.Following, CustStatus.PendingMeasure, CustStatus.Quoted);
-    private static final Set<MeasureStatus> BLOCKING_MEASURE_STATUSES = EnumSet.of(MeasureStatus.Scheduled);
     private static final Set<ContractStatus> TERMINAL_CONTRACT_STATUSES = EnumSet.of(
             ContractStatus.Closed, ContractStatus.Terminated);
 
@@ -84,16 +83,16 @@ public class CustomerDormantContext {
         if (!ALLOWED_SOURCE_STATUSES.contains(customer.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("409", "当前客户状态不允许设置休眠"));
         }
-        if (measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusIn(
-                comId, customer.getCustId(), BLOCKING_MEASURE_STATUSES)) {
-            throw new DefinedException(new DefaultErrorCode("409", "客户存在未完成量房预约，请先处理预约后休眠"));
+        LocalDateTime now = LocalDateTime.now();
+        if (measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
+                comId, customer.getCustId(), MeasureStatus.Scheduled, now)) {
+            throw new DefinedException(new DefaultErrorCode("409", "客户存在未来量房预约，请先处理预约后休眠"));
         }
         if (contractRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusNotIn(
                 comId, customer.getCustId(), TERMINAL_CONTRACT_STATUSES)) {
             throw new DefinedException(new DefaultErrorCode("409", "客户存在未结束正式合同，不能设置休眠"));
         }
 
-        LocalDateTime now = LocalDateTime.now();
         CustStatus from = customer.getStatus();
         customer.setStatusBeforeDormant(from);
         customer.setDormantReason(reason);
