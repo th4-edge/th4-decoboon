@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,8 +70,9 @@ class PayrollBuildContextScheduledDaysTest {
         doNothing().when(access).applyCompanyOwnership(any(PayrollSheet.class), eq(boss));
         doNothing().when(access).applyOwnership(any(PayrollItem.class), eq(boss), eq(target), any(PayrollSheet.class), isNull());
         when(employees.findByCompany_ComId(company.getComId())).thenReturn(List.of(target));
-        when(compensations.findByCompany_ComIdAndEmployee_EmpIdAndStatus(
-                company.getComId(), target.getEmpId(), CompensationStatus.Active)).thenReturn(Optional.of(scheme));
+        when(compensations.findEffective(
+                company.getComId(), target.getEmpId(), CompensationStatus.Active,
+                LocalDate.of(2026, 10, 1), LocalDate.of(2026, 10, 31))).thenReturn(List.of(scheme));
         when(attendances.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
                 company.getComId(), target.getEmpId(), "2026-10")).thenReturn(Optional.of(attendance));
         when(commissions.existsByCompany_ComIdAndEmployee_EmpIdAndStatusIn(any(), any(), anyList())).thenReturn(false);

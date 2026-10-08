@@ -43,7 +43,7 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
     @AutoInject private Integer externalDays;
     @AutoInject private Integer annualLeaveDays;
     @AutoInject private Integer compLeaveDays;
-    @AutoInject private AttendanceStatus status;
+    @AutoInject private String status;
     @AutoInject private String remark;
     private final AttendanceSummaryRepository repository;
     private final PayrollAccessContext accessContext;
@@ -70,13 +70,23 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
         if (annualLeaveDays != null) summary.setAnnualLeaveDays(annualLeaveDays);
         if (compLeaveDays != null) summary.setCompLeaveDays(compLeaveDays);
         if (remark != null) summary.setRemark(remark);
-        if (status != null) {
-            summary.setStatus(status);
-            if (status == AttendanceStatus.Confirmed) {
+        AttendanceStatus nextStatus = parseStatus();
+        if (nextStatus != null) {
+            summary.setStatus(nextStatus);
+            if (nextStatus == AttendanceStatus.Confirmed) {
                 summary.setConfirmedBy(current);
                 summary.setConfirmedAt(LocalDateTime.now());
             }
         }
         return repository.save(summary);
+    }
+
+    private AttendanceStatus parseStatus() {
+        if (status == null || status.isBlank()) return null;
+        try {
+            return AttendanceStatus.valueOf(status.trim());
+        } catch (IllegalArgumentException ignored) {
+            throw new DefinedException(new DefaultErrorCode("400", "考勤状态值无效"));
+        }
     }
 }
