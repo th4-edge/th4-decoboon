@@ -46,7 +46,7 @@ public class PayrollAccessContext {
                 EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
     }
 
-    /** 薪酬编辑、确认和发放：BOSS、财务。 */
+    /** 薪酬制单与发放：BOSS、财务；工资单确认另走 requireBoss。 */
     public Employee requireEditor(Employee principal) {
         return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
     }

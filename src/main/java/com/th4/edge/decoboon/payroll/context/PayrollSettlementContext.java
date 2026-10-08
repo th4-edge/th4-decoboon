@@ -51,7 +51,8 @@ public class PayrollSettlementContext {
 
     @Transactional
     public PayrollSheet confirm(Employee principal, Long sheetId) {
-        Employee current = accessContext.requireEditor(principal);
+        // DEC-046 APP-PAY-03：工资单确认动作人为 BOSS，财务只负责制单/复核与发放。
+        Employee current = accessContext.requireBoss(principal);
         Long comId = current.getCompany().getComId();
         PayrollSheet sheet = sheetRepository.findById(sheetId)
                 .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
