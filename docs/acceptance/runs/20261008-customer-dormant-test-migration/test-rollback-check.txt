@@ -1,0 +1,2 @@
+status	enum('Finished','Following','Lost','New','PendingMeasure','Quoted','Serving','Signed')	NO		NULL	
+0

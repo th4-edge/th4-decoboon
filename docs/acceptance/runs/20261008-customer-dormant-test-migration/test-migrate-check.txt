@@ -1,0 +1,4 @@
+status	enum('Finished','Following','Lost','New','PendingMeasure','Quoted','Serving','Signed','Dormant')	NO		NULL	
+status_before_dormant	enum('Finished','Following','Lost','New','PendingMeasure','Quoted','Serving','Signed','Dormant')	YES		NULL	
+cust_customer_status_log
+3
