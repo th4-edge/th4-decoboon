@@ -24,7 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
                 properties = {"stageId", "project", "property", "name", "stageCode", "sort", "weight", "status", "progress",
-                        "plannedStart", "plannedEnd", "actualStart", "actualEnd"}),
+                        "plannedStart", "plannedEnd", "actualStart", "actualEnd",
+                        "notApplicableReason", "notApplicableBy", "notApplicableAt"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "roomNo", "address"})

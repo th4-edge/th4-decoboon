@@ -22,9 +22,11 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
                 properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status", "progress",
-                        "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
+                        "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime",
+                        "notApplicableReason", "notApplicableBy", "notApplicableAt"}),
         // 阶段页只需要项目摘要；property 会带出门店/团队/负责人循环对象，曾生成 240KB+ 非法 JSON。
-        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr" })
+        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr" }),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("project/stage/info")
 @Scope(ScopeTypes.PROTOTYPE)

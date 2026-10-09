@@ -27,6 +27,7 @@ import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
 import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
+import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
@@ -240,6 +241,15 @@ class DecoboonClosedLoopTest {
         assertThat(receivables.get(2).getTriggerType().name()).isEqualTo("ProjectFinished");
         assertThat(stages.get(0).getPlannedStart()).isEqualTo(project.getStartDate());
         assertThat(stages.get(stages.size() - 1).getPlannedEnd()).isEqualTo(project.getPlanEndDate());
+        // GAP-039 / DEC-057：模板阶段无合同施工行时，系统自动判为本项不涉及（无人工判定人）。
+        List<ProjectStage> tasklessStages = stages.stream()
+                .filter(s -> taskRepository.findByStage(s).isEmpty()).toList();
+        assertThat(tasklessStages).isNotEmpty();
+        assertThat(tasklessStages).allSatisfy(s -> {
+            assertThat(s.getStatus()).isEqualTo(StageStatus.NotApplicable);
+            assertThat(s.getNotApplicableReason()).contains("系统自动判定");
+            assertThat(s.getNotApplicableBy()).isNull();
+        });
         assertThat(materialPlans).isNotEmpty();
         Company otherCompany = new Company();
         otherCompany.setTitle("其他闭环企业");
@@ -266,6 +276,10 @@ class DecoboonClosedLoopTest {
         assertThat(project.getStatus()).isEqualTo(ProjectStatus.Accepting);
 
         for (ProjectStage stage : stages) {
+            if (taskRepository.findByStage(stage).isEmpty()) {
+                // 空的模板里程碑阶段已由立项自动判定为「本项不涉及」，不走阶段验收。
+                continue;
+            }
             Acceptance acceptance = projectContext.submitAcceptance(
                     company.getComId(), project.getProjectId(), stage.getStageId(), employee,
                     "施工完成，申请确认", List.of(), List.of("https://example.com/accept.jpg"));

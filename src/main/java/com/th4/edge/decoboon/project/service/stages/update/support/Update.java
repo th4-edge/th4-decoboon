@@ -12,6 +12,7 @@ import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectReport;
@@ -20,6 +21,7 @@ import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
+import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -37,14 +39,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /** 项目经理开启阶段，自动同步项目状态并发布对业主可见动态。 */
 @Note("项目阶段推进")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
                 properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status", "progress",
-                        "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime"}),
-        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" })
+                        "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime",
+                        "notApplicableReason", "notApplicableBy", "notApplicableAt"}),
+        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("project/stage/update")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -60,10 +65,15 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
     @AutoInject
     private String content;
 
+    @AutoInject
+    private String reason;
+
     @User
     private Employee employee;
 
     private final ProjectStageRepository stageRepository;
+    private final ProjectTaskRepository taskRepository;
+    private final ProjectContext projectContext;
     private final ProjectRepository projectRepository;
     private final ProjectReportRepository reportRepository;
     private final ProjectAccessContext accessContext;
@@ -75,6 +85,8 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
     private final DistributedLock distributedLock;
 
     public Update(ProjectStageRepository stageRepository,
+                  ProjectTaskRepository taskRepository,
+                  ProjectContext projectContext,
                   ProjectRepository projectRepository,
                   ProjectReportRepository reportRepository,
                   ProjectAccessContext accessContext,
@@ -84,6 +96,8 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
                   CarryoverLockContext carryoverLockContext,
                 DistributedLock distributedLock) {
         this.stageRepository = stageRepository;
+        this.taskRepository = taskRepository;
+        this.projectContext = projectContext;
         this.projectRepository = projectRepository;
         this.reportRepository = reportRepository;
         this.accessContext = accessContext;
@@ -115,8 +129,18 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
             throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或项目经理可以开启施工阶段"));
         }
         StageStatus target = status == null ? StageStatus.Doing : status;
+        // GAP-039 / DEC-057：空阶段先分类，本项不涉及与撤销走独立分支。
+        if (target == StageStatus.NotApplicable) {
+            return markNotApplicable(stage, current);
+        }
+        if (target == StageStatus.Todo && StageStatus.NotApplicable.equals(stage.getStatus())) {
+            return restoreApplicable(stage, current);
+        }
         if (target != StageStatus.Doing) {
-            throw new DefinedException(new DefaultErrorCode("400", "只有待开始阶段可以开工"));
+            throw new DefinedException(new DefaultErrorCode("400", "不支持的阶段操作"));
+        }
+        if (StageStatus.NotApplicable.equals(stage.getStatus())) {
+            throw new DefinedException(new DefaultErrorCode("400", "该阶段已判定为本项不涉及，请先撤销判定再开工"));
         }
         // 幂等：重复开工返回同一最终事实，不再写动态、任务或覆盖实际开工时间。
         if (stage.getStatus() == StageStatus.Doing) {
@@ -124,6 +148,10 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         }
         if (stage.getStatus() != StageStatus.Todo) {
             throw new DefinedException(new DefaultErrorCode("400", "当前阶段状态不能开工"));
+        }
+        // GAP-039 / DEC-057：非本项不涉及阶段必须有合同施工任务，空阶段不得开工。
+        if (taskRepository.findByStage(stage).isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400", "该阶段无合同施工任务，请先核对报价与合同施工行，或判定为本项不涉及"));
         }
         Project project = stage.getProject();
         if (project.getStatus() == ProjectStatus.Finished || project.getStatus() == ProjectStatus.Settled) {
@@ -187,6 +215,43 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         }
     }
 
+    /**
+     * GAP-039 / DEC-057：把未开始且无施工任务的阶段判定为「本项不涉及」。
+     * 判定留痕（原因、判定人、时间），并从项目进度分母与阶段权重剔除。
+     */
+    private ProjectStage markNotApplicable(ProjectStage stage, Employee current) {
+        if (StageStatus.NotApplicable.equals(stage.getStatus())) {
+            return snapshot(stage);
+        }
+        if (stage.getStatus() != StageStatus.Todo) {
+            throw new DefinedException(new DefaultErrorCode("400", "只有未开始的阶段可以判定为本项不涉及"));
+        }
+        if (reason == null || reason.isBlank()) {
+            throw new DefinedException(new DefaultErrorCode("400", "请填写本项不涉及的判定依据"));
+        }
+        stage.setStatus(StageStatus.NotApplicable);
+        stage.setNotApplicableReason(reason.trim());
+        stage.setNotApplicableBy(current);
+        stage.setNotApplicableAt(LocalDateTime.now());
+        ProjectStage saved = stageRepository.save(stage);
+        projectContext.refreshProject(saved.getProject());
+        return snapshot(saved);
+    }
+
+    /** GAP-039 / DEC-057：撤销「本项不涉及」判定，阶段回到未开始，由报价/合同施工行补齐后重排。 */
+    private ProjectStage restoreApplicable(ProjectStage stage, Employee current) {
+        if (!StageStatus.NotApplicable.equals(stage.getStatus())) {
+            return snapshot(stage);
+        }
+        stage.setStatus(StageStatus.Todo);
+        stage.setNotApplicableReason(null);
+        stage.setNotApplicableBy(null);
+        stage.setNotApplicableAt(null);
+        ProjectStage saved = stageRepository.save(stage);
+        projectContext.refreshProject(saved.getProject());
+        return snapshot(saved);
+    }
+
     /** 开工前置：项目必须绑定已生效合同（Effective 及之后的履约状态均视为已生效）。 */
     private boolean effectiveContract(Project project) {
         if (project == null || project.getProjectId() == null || project.getCompany() == null) {
@@ -229,6 +294,9 @@ public class Update implements com.th4.edge.decoboon.project.service.stages.upda
         view.setPlannedEnd(stage.getPlannedEnd());
         view.setActualStart(stage.getActualStart());
         view.setActualEnd(stage.getActualEnd());
+        view.setNotApplicableReason(stage.getNotApplicableReason());
+        view.setNotApplicableBy(stage.getNotApplicableBy());
+        view.setNotApplicableAt(stage.getNotApplicableAt());
         view.setCreateTime(stage.getCreateTime());
         Project project = stage.getProject();
         if (project != null) {

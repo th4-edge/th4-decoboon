@@ -139,6 +139,15 @@ public class Save implements com.th4.edge.decoboon.project.service.tasks.save.Sa
         ProjectTask task = taskRepository.findOne(taskById.and((root, query, builder) ->
                         builder.equal(root.get("project").get("projectId"), projectId)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "任务不存在或无权访问")));
+        if (task.getStage() != null && com.th4.edge.decoboon.project.configure.StageStatus.NotApplicable.equals(task.getStage().getStatus())) {
+            // DEC-057：任务落回被自动判定为「本项不涉及」的阶段时，自动恢复该阶段。
+            ProjectStage source = task.getStage();
+            source.setStatus(com.th4.edge.decoboon.project.configure.StageStatus.Todo);
+            source.setNotApplicableReason(null);
+            source.setNotApplicableBy(null);
+            source.setNotApplicableAt(null);
+            stageRepository.save(source);
+        }
         if (task.getContractLine() == null && task.getChangeItem() == null) {
             // DEC-049：无来源的历史手工任务不能排期（本地环境直接清理，线上无此类数据）。
             throw new DefinedException(new DefaultErrorCode("400", "该施工任务缺少合同/变更来源，不能排期"));

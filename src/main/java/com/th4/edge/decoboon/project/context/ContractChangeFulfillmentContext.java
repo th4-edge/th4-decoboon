@@ -180,6 +180,14 @@ public class ContractChangeFulfillmentContext {
             stage = stageRepository.save(stage);
             stages.put(category, stage);
         }
+        if (StageStatus.NotApplicable.equals(stage.getStatus())) {
+            // DEC-057：增减项为「本项不涉及」阶段补回施工内容时，自动恢复为未开始。
+            stage.setStatus(StageStatus.Todo);
+            stage.setNotApplicableReason(null);
+            stage.setNotApplicableBy(null);
+            stage.setNotApplicableAt(null);
+            stage = stageRepository.save(stage);
+        }
 
         ProjectTask task = new ProjectTask();
         task.setProject(project);

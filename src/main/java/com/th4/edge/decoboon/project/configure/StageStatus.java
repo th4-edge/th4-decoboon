@@ -11,7 +11,8 @@ public enum StageStatus implements Enumerable<String> {
     Todo("未开始"),
     Doing("施工中"),
     Accepting("待验收"),
-    Done("已完成");
+    Done("已完成"),
+    NotApplicable("本项不涉及");
 
     private final String name;
 

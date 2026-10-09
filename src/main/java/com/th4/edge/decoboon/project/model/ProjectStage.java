@@ -27,6 +27,7 @@ import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
@@ -134,6 +135,19 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
     @Note("实际结束日期")
     private LocalDate actualEnd;
 
+    @Note("本项不涉及判定原因")
+    @Column(name = "not_applicable_reason", length = 255)
+    private String notApplicableReason;
+
+    @Note("本项不涉及判定人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "not_applicable_by")
+    private Employee notApplicableBy;
+
+    @Note("本项不涉及判定时间")
+    @Column(name = "not_applicable_at")
+    private LocalDateTime notApplicableAt;
+
     public Long getStageId() {
         return stageId;
     }
@@ -236,6 +250,30 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
 
     public void setActualEnd(LocalDate actualEnd) {
         this.actualEnd = actualEnd;
+    }
+
+    public String getNotApplicableReason() {
+        return notApplicableReason;
+    }
+
+    public void setNotApplicableReason(String notApplicableReason) {
+        this.notApplicableReason = notApplicableReason;
+    }
+
+    public Employee getNotApplicableBy() {
+        return notApplicableBy;
+    }
+
+    public void setNotApplicableBy(Employee notApplicableBy) {
+        this.notApplicableBy = notApplicableBy;
+    }
+
+    public LocalDateTime getNotApplicableAt() {
+        return notApplicableAt;
+    }
+
+    public void setNotApplicableAt(LocalDateTime notApplicableAt) {
+        this.notApplicableAt = notApplicableAt;
     }
 
 

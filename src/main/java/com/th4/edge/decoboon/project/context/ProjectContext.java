@@ -382,6 +382,13 @@ public class ProjectContext {
         }
 
         List<ProjectTask> tasks = taskRepository.findByStage(stage);
+        // GAP-039 / DEC-057：空阶段不得用「开工 + 拍照」走成完成；本项不涉及也不走验收。
+        if (StageStatus.NotApplicable.equals(stage.getStatus())) {
+            throw new DefinedException(new DefaultErrorCode("400", "该阶段已判定为本项不涉及，不能提交验收"));
+        }
+        if (tasks.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400", "该阶段无合同施工任务，不能提交验收，请先核对报价与合同施工行"));
+        }
         boolean unfinished = tasks.stream().anyMatch(task -> !TaskStatus.Done.equals(task.getStatus()));
         if (unfinished) {
             throw new DefinedException(new DefaultErrorCode("400", "阶段内仍有未完成施工任务"));
@@ -833,8 +840,16 @@ public class ProjectContext {
         boolean allDone = !stages.isEmpty();
         boolean anyStarted = false;
         boolean anyAccepting = false;
+        boolean hasApplicableStage = false;
 
         for (ProjectStage stage : stages) {
+            // GAP-039 / DEC-057：本项不涉及阶段不参与施工推导，不占项目进度分母与阶段权重。
+            if (StageStatus.NotApplicable.equals(stage.getStatus())) {
+                stage.setProgress(0);
+                stageRepository.save(stage);
+                continue;
+            }
+            hasApplicableStage = true;
             List<ProjectTask> tasks = taskRepository.findByStage(stage);
             int rawProgress = averageTaskProgress(tasks);
             int progress = blendProgress(stage.getBaselineProgress(), rawProgress);
@@ -882,7 +897,9 @@ public class ProjectContext {
                     : weightedProgress.divide(totalWeight, 0, RoundingMode.HALF_UP).intValue();
         }
         // 防高估：计划内仍有阶段未完成（包括无任务阶段）时，项目整体不得显示 100%。
-        // 阶段权重可以按任务/成本动态计算，但 100% 必须同时满足“所有阶段 Done”。
+        // 阶段权重可以按任务/成本动态计算，但 100% 必须同时满足“所有参与阶段 Done”。
+        // GAP-039 / DEC-057：全部阶段都判为「本项不涉及」时不自动完工，避免静默把项目置为已完工。
+        allDone = allDone && hasApplicableStage;
         calculatedProgress = capProjectProgress(allDone, calculatedProgress);
         project.setProgress(calculatedProgress);
         project.setCost(calculateProjectCost(project));
@@ -1054,6 +1071,16 @@ public class ProjectContext {
             }
         }
         assignPlanStageWeights(stages, stageCosts);
+        // GAP-039 / DEC-057：模板阶段在本项目没有合同施工行时，系统自动判定为本项不涉及。
+        // 只判定、不删除阶段；PM 可在 App 复核撤销，增减项补回施工内容时自动恢复。
+        for (ProjectStage stage : stages.values()) {
+            if (StageStatus.Todo.equals(stage.getStatus()) && taskRepository.findByStage(stage).isEmpty()) {
+                stage.setStatus(StageStatus.NotApplicable);
+                stage.setNotApplicableReason("系统自动判定：该阶段无合同施工行（本项不涉及）");
+                stage.setNotApplicableAt(LocalDateTime.now());
+                stageRepository.save(stage);
+            }
+        }
     }
 
     private ProjectStage stageFor(ContractLine item, Map<String, ProjectStage> stages) {
