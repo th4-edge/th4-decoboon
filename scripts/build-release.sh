@@ -46,9 +46,9 @@ cp docs/design/migrations/19-生产发布基线.md "$RELEASE_DIR/"
 cp docs/design/migrations/22-OSS对象存储部署说明.md "$RELEASE_DIR/"
 cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
 # 增量迁移范围：新迁移必须同步上调 MIGRATION_END，否则 DBA 会拿不到待执行脚本。
-# 2026-10-10 修正：发布包覆盖 24-100；同号迁移由下方守卫拦截。
+# 2026-10-10 修正：发布包覆盖 24-104；同号迁移由下方守卫拦截。
 MIGRATION_START=24
-MIGRATION_END=100
+MIGRATION_END=104
 # 已知历史同号迁移：内容不同、早已应用且被文档引用，保持原编号不改名。
 # 新增迁移若与既有编号重复，必须立刻改名，不得加入本清单；否则下列守卫会直接终止构建。
 KNOWN_SHARED_NUMBERS="24 25"
