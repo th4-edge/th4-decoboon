@@ -32,7 +32,8 @@ public class ProviderSecurityValidator implements ApplicationRunner {
             "order/callback",
             "file/private/download",
             "platform/auth/login",
-            "site/lead/submit"
+            "site/lead/submit",
+            "site/lead/douyin/submit"
     );
 
     private final ApplicationContext applicationContext;

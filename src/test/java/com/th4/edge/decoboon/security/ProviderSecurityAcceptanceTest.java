@@ -146,13 +146,43 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-08 客户休眠与恢复新增 3 条；2026-10-09 设计师待量房任务新增 1 条；
         // 2026-10-09 计划偏差（DEC-051）新增 3 条（project/plan-deviation/page、update，customer/plan-deviation/page，protected）。
         // 合并后当前 Provider 面板为 430（public 13 + protected 417）。
-        assertThat(routes).hasSize(442);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(429);
+        // 2026-10-10 内容获客 P0-1 新增 7 条（content/asset page/info/save/status、content/authorization list/save/revoke，protected）。
+        // => 当前 Provider 面板为 449（public 13 + protected 436）。
+        // 2026-10-10 内容任务 P0-2 新增 7 条（content/template/list、content/task page/info/save/publish/claim/close，protected）。
+        // => 当前 Provider 面板为 456（public 13 + protected 443）。
+        // 2026-10-10 员工成片与发布回填 P0-3 新增 5 条（content/employee-content page/info/generate/review、content/publication/backfill，protected）。
+        // => 当前 Provider 面板为 461（public 13 + protected 448）。
+        // 2026-10-10 内容线索归因 P0-4 新增 3 条（content/lead-touch save/list、content/dashboard/report，protected）。
+        // => 当前 Provider 面板为 464（public 13 + protected 451）。
+        assertThat(routes).hasSize(464);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(451);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
     @Test
     void protectedRepresentativeRoutesMustReturnUnauthorizedWithoutToken() throws Exception {
+        assertUnauthorized("content/template/list");
+        assertUnauthorized("content/lead-touch/save");
+        assertUnauthorized("content/lead-touch/list");
+        assertUnauthorized("content/dashboard/report");
+        assertUnauthorized("content/employee-content/page");
+        assertUnauthorized("content/employee-content/info");
+        assertUnauthorized("content/employee-content/generate");
+        assertUnauthorized("content/employee-content/review");
+        assertUnauthorized("content/publication/backfill");
+        assertUnauthorized("content/task/page");
+        assertUnauthorized("content/task/info");
+        assertUnauthorized("content/task/save");
+        assertUnauthorized("content/task/publish");
+        assertUnauthorized("content/task/claim");
+        assertUnauthorized("content/task/close");
+        assertUnauthorized("content/asset/page");
+        assertUnauthorized("content/asset/info");
+        assertUnauthorized("content/asset/save");
+        assertUnauthorized("content/asset/status");
+        assertUnauthorized("content/authorization/list");
+        assertUnauthorized("content/authorization/save");
+        assertUnauthorized("content/authorization/revoke");
         assertUnauthorized("project/project/page");
         assertUnauthorized("project/project/overview");
         assertUnauthorized("finance/aging/report");

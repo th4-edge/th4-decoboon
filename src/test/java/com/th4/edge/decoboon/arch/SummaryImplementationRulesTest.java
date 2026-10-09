@@ -50,7 +50,9 @@ class SummaryImplementationRulesTest {
             "customer/context/MyCustomerOverviewContext.java",
             "finance/context/FinanceSummaryAggregateContext.java",
             "payroll/context/PayrollWorkbenchContext.java",
-            "project/context/ContractWorkbenchContext.java");
+            "project/context/ContractWorkbenchContext.java",
+            // 2026-10-10 内容经营 P0-4：内容线索与已发布内容的经营聚合。
+            "content/context/ContentDashboardContext.java");
 
     /**
      * 存量违规基线（GAP-027 整改完成后必须逐条删除）。
