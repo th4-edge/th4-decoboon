@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.design.service.items.batchsave.support;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
+import com.th4.edge.decoboon.design.configure.QuantitySource;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
@@ -47,7 +48,7 @@ import java.util.List;
                         "spaces", "items", "updateTime"}),
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "space", "type", "category", "catalogItem", "name", "brand", "spec", "unit",
-                        "quantity", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "pricingMode",
+                        "quantity", "quantitySource", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "pricingMode",
                         "amount", "cost", "formula", "criterion", "craft", "remark", "sort", "images"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "sort", "remark"}),
@@ -113,6 +114,7 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
         for (PreparedRow row : toWrite) {
             applyCatalog(row.target(), row.catalog());
             row.target().setQuantity(row.quantity());
+            row.target().setQuantitySource(row.quantitySource());
             row.target().setRemark(row.remark());
             row.target().setSort(row.sort());
             quoteCalcContext.calculate(row.target());
@@ -161,14 +163,24 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
                 throw new DefinedException(new DefaultErrorCode("400",
                         "请从企业报价项目库选择施工、主材、软装、定制、电器或综合项目"));
             }
+            CatalogItem catalog = requireCatalog(design, catalogId);
+            QuantitySource quantitySource = row.getQuantitySource();
+            if (quantitySource == null) {
+                quantitySource = target.getQuantitySource();
+            }
+            if (quantitySource == null) {
+                quantitySource = catalog.getFormula() == null || catalog.getFormula().isBlank()
+                        ? QuantitySource.Manual : QuantitySource.Formula;
+            }
             prepared.add(new PreparedRow(
                     target,
                     row,
                     quantity,
                     row.getRemark(),
                     row.getSort() == null ? 0 : row.getSort(),
-                    requireCatalog(design, catalogId),
-                    requireSpace(design, row.getSpace())));
+                    catalog,
+                    requireSpace(design, row.getSpace()),
+                    quantitySource));
         }
         return prepared;
     }
@@ -245,6 +257,7 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
             String remark,
             Integer sort,
             CatalogItem catalog,
-            Space space) {
+            Space space,
+            QuantitySource quantitySource) {
     }
 }

@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.common.file.context;
 import com.th4.edge.decoboon.carryover.model.CarryoverAttachment;
 import com.th4.edge.decoboon.carryover.repository.CarryoverAttachmentRepository;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.material.model.MaterialSelection;
+import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.common.file.configure.FileScope;
 import com.th4.edge.decoboon.customer.context.CustomerAccessContext;
@@ -77,6 +79,7 @@ public class FileAuthorizationContext {
     private final StockMovementRepository stockMovementRepository;
     private final CatalogItemRepository catalogItemRepository;
     private final CarryoverAttachmentRepository carryoverAttachmentRepository;
+    private final MaterialSelectionRepository materialSelectionRepository;
 
     public FileAuthorizationContext(FileSignatureContext signatureContext,
                                     TenantContext tenantContext,
@@ -98,7 +101,8 @@ public class FileAuthorizationContext {
                                     GoodsReceiptRepository goodsReceiptRepository,
                                     StockMovementRepository stockMovementRepository,
                                     CatalogItemRepository catalogItemRepository,
-                                    CarryoverAttachmentRepository carryoverAttachmentRepository) {
+                                    CarryoverAttachmentRepository carryoverAttachmentRepository,
+                                    MaterialSelectionRepository materialSelectionRepository) {
         this.signatureContext = signatureContext;
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
@@ -120,6 +124,7 @@ public class FileAuthorizationContext {
         this.stockMovementRepository = stockMovementRepository;
         this.catalogItemRepository = catalogItemRepository;
         this.carryoverAttachmentRepository = carryoverAttachmentRepository;
+        this.materialSelectionRepository = materialSelectionRepository;
     }
 
     public Authorization authorize(User<?> principal, FileScope scope, Long businessId,
@@ -236,6 +241,19 @@ public class FileAuthorizationContext {
                 }
                 add(allowed, movement.getImages());
             }
+            case MaterialSelection -> {
+                MaterialSelection selection = materialSelectionRepository.findById(businessId)
+                        .orElseThrow(this::notFound);
+                if (selection.getCompany() == null
+                        || !employee.getCompany().getComId().equals(selection.getCompany().getComId())) {
+                    throw notFound();
+                }
+                if (selection.getProject() != null) {
+                    projectId = selection.getProject().getProjectId();
+                    projectAccessContext.requireProject(projectId, employee);
+                }
+                add(allowed, selection.getAttachments());
+            }
             case Catalog -> {
                 CatalogItem item = catalogItemRepository.findById(businessId).orElseThrow(this::notFound);
                 if (item.getCompany() == null
@@ -311,6 +329,15 @@ public class FileAuthorizationContext {
                     add(allowed, item.getImages());
                 }
                 addAiRenderPaths(allowed, requestedPaths, design.getDesignId());
+                projectId = null;
+            }
+            case MaterialSelection -> {
+                MaterialSelection selection = materialSelectionRepository.findById(businessId)
+                        .orElseThrow(this::notFound);
+                if (!ownerHasCustomerOrPropertyAccess(credential, selection.getCustomer(), selection.getProperty())) {
+                    throw notFound();
+                }
+                add(allowed, selection.getAttachments());
                 projectId = null;
             }
             case Feedback -> {

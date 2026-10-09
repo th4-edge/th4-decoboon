@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.design.service.items.save.support;
 
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
+import com.th4.edge.decoboon.design.configure.QuantitySource;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 @Properties(allow = {
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "design", "space", "type", "category", "catalogItem",
-                        "name", "brand", "spec", "unit", "quantity", "materialPrice", "manualPrice",
+                        "name", "brand", "spec", "unit", "quantity", "quantitySource", "materialPrice", "manualPrice",
                         "costPrice", "pricingMode", "amount", "cost", "formula", "criterion", "craft", "remark", "sort",
                         "images", "createTime", "updateTime"}),
         @AllowProperties(model = Design.class,
@@ -97,6 +98,7 @@ public class Save implements com.th4.edge.decoboon.design.service.items.save.Sav
         applyCatalog(target, requireCatalog(design, catalogItemId));
 
         target.setQuantity(quantity);
+        target.setQuantitySource(QuantitySource.Manual);
         target.setRemark(remark);
         target.setSort(sort == null ? 0 : sort);
         quoteCalcContext.calculate(target);

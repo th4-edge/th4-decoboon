@@ -146,6 +146,8 @@ public class DesignerMeasureTaskContext {
         task.setCompletionHint("房屋建档后重新进入待量房队列，再安排量房。");
         task.setAllowed(Boolean.TRUE);
         task.setBlockReason("先建立房屋档案，不能以客户地址代替房屋。");
+        task.setScheduleStateKey("none");
+        task.setScheduleStateName("未预约");
         task.setPriority(20);
         return task;
     }
@@ -190,8 +192,8 @@ public class DesignerMeasureTaskContext {
                 : scheduled != null ? scheduled.getMeasureId() : cancelled == null ? null : cancelled.getMeasureId());
         task.setMeasureStatus(completed != null ? "Completed" : scheduled != null ? "Scheduled"
                 : cancelled == null ? null : "Cancelled");
-        task.setScheduledAt(scheduled == null ? null : effectiveScheduledAt(scheduled));
         task.setCompletedAt(completed == null ? null : effectiveCompletedAt(completed));
+        applyScheduleState(task, completed, scheduled, cancelled);
 
         if (completed != null) {
             LocalDateTime completedAt = effectiveCompletedAt(completed);
@@ -259,6 +261,49 @@ public class DesignerMeasureTaskContext {
         task.setCompletionHint("安排后进入已预约待上门。");
         task.setPriority(15);
         return task;
+    }
+
+    private void applyScheduleState(DesignerMeasureTask task,
+                                    Measure completed,
+                                    Measure scheduled,
+                                    Measure cancelled) {
+        if (completed != null) {
+            LocalDateTime completedAt = effectiveCompletedAt(completed);
+            LocalDateTime completedScheduledAt = effectiveScheduledAt(completed);
+            LocalDateTime plannedScheduledAt = scheduled == null ? null : effectiveScheduledAt(scheduled);
+            LocalDateTime rawScheduledAt = completedScheduledAt != null ? completedScheduledAt : plannedScheduledAt;
+            if (rawScheduledAt != null && completedAt != null && rawScheduledAt.isAfter(completedAt)) {
+                task.setScheduledAt(null);
+                task.setScheduleStateKey("invalid_history");
+                task.setScheduleStateName("预约记录异常，暂不可确认");
+                return;
+            }
+            if (rawScheduledAt == null) {
+                task.setScheduledAt(null);
+                task.setScheduleStateKey("completed_without_schedule");
+                task.setScheduleStateName("未预约（直接登记量房）");
+                return;
+            }
+            task.setScheduledAt(rawScheduledAt);
+            task.setScheduleStateKey("scheduled");
+            task.setScheduleStateName("已预约");
+            return;
+        }
+        if (scheduled != null) {
+            task.setScheduledAt(effectiveScheduledAt(scheduled));
+            task.setScheduleStateKey("scheduled");
+            task.setScheduleStateName("已预约");
+            return;
+        }
+        if (cancelled != null) {
+            task.setScheduledAt(effectiveScheduledAt(cancelled));
+            task.setScheduleStateKey("cancelled");
+            task.setScheduleStateName("已取消");
+            return;
+        }
+        task.setScheduledAt(null);
+        task.setScheduleStateKey("none");
+        task.setScheduleStateName("未预约");
     }
 
     private DesignerMeasureTask base(Customer customer, Property property) {

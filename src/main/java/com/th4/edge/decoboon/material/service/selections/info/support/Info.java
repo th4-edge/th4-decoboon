@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = MaterialSelection.class, properties = {
                 "selectionId", "version", "status", "title", "content", "attachments", "remark",
                 "customer", "property", "contract", "project", "designer", "owner",
-                "confirmerName", "confirmedBy", "confirmedAt", "createTime", "updateTime"}),
+                "createTime", "updateTime"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),

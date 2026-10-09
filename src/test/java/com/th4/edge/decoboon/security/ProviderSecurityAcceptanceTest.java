@@ -146,8 +146,8 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-08 客户休眠与恢复新增 3 条；2026-10-09 设计师待量房任务新增 1 条；
         // 2026-10-09 计划偏差（DEC-051）新增 3 条（project/plan-deviation/page、update，customer/plan-deviation/page，protected）。
         // 合并后当前 Provider 面板为 430（public 13 + protected 417）。
-        assertThat(routes).hasSize(430);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(417);
+        assertThat(routes).hasSize(442);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(429);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
     }
 
@@ -199,7 +199,6 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("material/selection/page");
         assertUnauthorized("material/selection/info");
         assertUnauthorized("material/selection/save");
-        assertUnauthorized("material/selection/confirm");
         assertUnauthorized("material/selection/board");
         assertUnauthorized("material/selection/item/page");
         assertUnauthorized("material/selection/item/info");

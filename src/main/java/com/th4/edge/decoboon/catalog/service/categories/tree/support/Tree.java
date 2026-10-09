@@ -27,7 +27,7 @@ import java.util.Set;
 @Note("家装材料库分类树")
 @Properties(allow = {
         @AllowProperties(model = CatalogTree.class,
-                properties = {"type", "categories", "brands", "specs", "total"})
+                properties = {"type", "categories", "brands", "specs", "seriesByBrand", "specsBySeries", "total"})
 })
 @Service("catalog/item/tree")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -60,14 +60,17 @@ public class Tree implements com.th4.edge.decoboon.catalog.service.categories.tr
         Map<String, Map<String, Map<String, List<String>>>> specsBySeries = new LinkedHashMap<>();
         for (Object[] facet : facets) {
             String category = text((String) facet[0]);
-            String brand = text((String) facet[1]);
-            String series = text((String) facet[2]);
-            String spec = text((String) facet[3]);
+            String brand = value((String) facet[1]);
+            String series = value((String) facet[2]);
+            String spec = value((String) facet[3]);
             categories.add(category);
             brands.computeIfAbsent(category, ignored -> new ArrayList<>());
             specs.computeIfAbsent(category, ignored -> new ArrayList<>());
-            add(brands.get(category), brand);
             add(specs.get(category), spec);
+            if (brand.isBlank()) {
+                continue;
+            }
+            add(brands.get(category), brand);
             Map<String, List<String>> brandSeries = seriesByBrand.computeIfAbsent(category, ignored -> new LinkedHashMap<>());
             add(brandSeries.computeIfAbsent(brand, ignored -> new ArrayList<>()), series);
             Map<String, Map<String, List<String>>> brandSpecs = specsBySeries
@@ -96,6 +99,11 @@ public class Tree implements com.th4.edge.decoboon.catalog.service.categories.tr
     }
 
     private String text(String value) {
-        return value == null || value.isBlank() ? "其他" : value;
+        return value == null || value.isBlank() ? "其他" : value.trim();
+    }
+
+    /** 品牌、系列、规格缺省时保持空白，由 add 忽略，禁止伪装成“其他”后又被精确查询。 */
+    private String value(String value) {
+        return value == null ? "" : value.trim();
     }
 }

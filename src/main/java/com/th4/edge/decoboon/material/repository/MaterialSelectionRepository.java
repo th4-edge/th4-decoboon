@@ -20,19 +20,19 @@ public interface MaterialSelectionRepository extends JpaRepository<MaterialSelec
         JpaSpecificationExecutor<MaterialSelection> {
 
     @EntityGraph(attributePaths = {"company", "store", "team", "owner", "customer", "property",
-            "contract", "project", "sourceContractLine", "designer", "confirmedBy", "attachments"})
+            "contract", "project", "sourceContractLine", "designer", "attachments"})
     Optional<MaterialSelection> findBySelectionId(Long selectionId);
 
     @EntityGraph(attributePaths = {"company", "store", "team", "owner", "customer", "property",
-            "contract", "project", "sourceContractLine", "designer", "confirmedBy", "attachments"})
+            "contract", "project", "sourceContractLine", "designer", "attachments"})
     List<MaterialSelection> findByCompany_ComIdAndProperty_PropertyIdOrderByVersionDesc(Long comId, Long propertyId);
 
     @EntityGraph(attributePaths = {"company", "store", "team", "owner", "customer", "property",
-            "contract", "project", "sourceContractLine", "designer", "confirmedBy", "attachments"})
+            "contract", "project", "sourceContractLine", "designer", "attachments"})
     List<MaterialSelection> findByCompany_ComIdAndProject_ProjectIdOrderByVersionDesc(Long comId, Long projectId);
 
     @EntityGraph(attributePaths = {"company", "store", "team", "owner", "customer", "property",
-            "contract", "project", "sourceContractLine", "designer", "confirmedBy", "attachments"})
+            "contract", "project", "sourceContractLine", "designer", "attachments"})
     List<MaterialSelection> findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(Long comId,
                                                                                           Collection<Long> propertyIds);
 
@@ -45,12 +45,12 @@ public interface MaterialSelectionRepository extends JpaRepository<MaterialSelec
             Long comId, Long propertyId);
 
     @EntityGraph(attributePaths = {"company", "store", "team", "owner", "customer", "property",
-            "contract", "project", "sourceContractLine", "designer", "confirmedBy", "attachments"})
+            "contract", "project", "sourceContractLine", "designer", "attachments"})
     Optional<MaterialSelection> findFirstByCompany_ComIdAndSourceContractLine_LineIdOrderByVersionDesc(
             Long comId, Long contractLineId);
 
     @EntityGraph(attributePaths = {"company", "store", "team", "owner", "customer", "property",
-            "contract", "project", "sourceContractLine", "designer", "confirmedBy", "attachments"})
+            "contract", "project", "sourceContractLine", "designer", "attachments"})
     List<MaterialSelection> findByCompany_ComIdAndProject_ProjectIdAndSourceContractLineIsNotNullOrderByVersionDesc(
             Long comId, Long projectId);
 

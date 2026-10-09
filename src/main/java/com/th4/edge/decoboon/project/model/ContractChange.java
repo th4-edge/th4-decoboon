@@ -127,9 +127,9 @@ public class ContractChange extends AuditModel implements ProjectOwned {
     private ContractLine sourceLine;
 
     @Unit("元")
-    @Column(precision = 14, scale = 2, nullable = false)
-    @Note("成本变化")
-    private BigDecimal costDelta = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2)
+    @Note("成本变化；null 表示存在成本未完整")
+    private BigDecimal costDelta;
 
     @Column(nullable = false)
     @Note("客户是否确认")

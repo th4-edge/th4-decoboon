@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.service.projects.info.support;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectBusinessStateContext;
+import com.th4.edge.decoboon.project.context.ProjectFinanceProgressContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
@@ -27,7 +28,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "businessOrigin", "no", "name", "property", "customer", "quote", "designer", "manager",
                         "siteAddr", "area", "contractAmount", "cost", "status", "progress", "startDate",
-                        "planEndDate", "actualEndDate", "currentStageName", "businessStateView", "createTime" }),
+                        "planEndDate", "actualEndDate", "currentStageName", "businessStateView", "receivedAmount", "receivableAmount", "createTime" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status", "owner"}),
         @AllowProperties(model = Quote.class,
@@ -53,15 +54,18 @@ public class Info implements com.th4.edge.decoboon.project.service.projects.info
     private final ProjectStageRepository stageRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectBusinessStateContext projectBusinessStateContext;
+    private final ProjectFinanceProgressContext projectFinanceProgressContext;
 
     public Info(ProjectRepository projectRepository,
                 ProjectStageRepository stageRepository,
                 ProjectAccessContext accessContext,
-                ProjectBusinessStateContext projectBusinessStateContext) {
+                ProjectBusinessStateContext projectBusinessStateContext,
+                ProjectFinanceProgressContext projectFinanceProgressContext) {
         this.projectRepository = projectRepository;
         this.stageRepository = stageRepository;
         this.accessContext = accessContext;
         this.projectBusinessStateContext = projectBusinessStateContext;
+        this.projectFinanceProgressContext = projectFinanceProgressContext;
     }
 
     @Override
@@ -74,6 +78,7 @@ public class Info implements com.th4.edge.decoboon.project.service.projects.info
                 .findFirst()
                 .or(() -> stages.stream().findFirst())
                 .ifPresent(stage -> project.setCurrentStageName(stage.getName()));
+        projectFinanceProgressContext.enrich(java.util.List.of(project));
         projectBusinessStateContext.enrich(project);
         return project;
     }

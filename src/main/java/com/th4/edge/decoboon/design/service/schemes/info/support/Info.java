@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
                         "materialPrice", "manualPrice", "costPrice", "pricingMode", "craft", "criterion"}),
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "space", "type", "category", "catalogItem", "name", "brand",
-                        "spec", "unit", "quantity", "materialPrice", "manualPrice", "costPrice", "pricingMode",
+                        "spec", "unit", "quantity", "quantitySource", "materialPrice", "manualPrice", "costPrice", "pricingMode",
                         "amount", "cost", "formula", "criterion", "craft", "remark", "sort", "images"}),
         @AllowProperties(model = Requirement.class,
                 properties = {"requirementId", "type", "spaceName", "kind", "category", "priority", "status",

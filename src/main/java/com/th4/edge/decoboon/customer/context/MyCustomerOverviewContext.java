@@ -4,7 +4,10 @@ import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerMetricCard;
 import com.th4.edge.decoboon.customer.model.CustomerOverviewReport;
+import com.th4.edge.decoboon.customer.model.CustomerPortrait;
 import com.th4.edge.decoboon.customer.model.CustomerStageCount;
+import com.th4.edge.decoboon.customer.model.CustomerTag;
+import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerPortraitRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.project.model.ProjectContract;
@@ -66,19 +69,28 @@ public class MyCustomerOverviewContext {
     private final ProjectContractRepository contractRepository;
     private final MeasureRepository measureRepository;
     private final CustomerInsightContext insight;
+    private final CustomerFollowRepository followRepository;
+    private final CustomerTagContext tagContext;
+    private final CustomerGradeContext gradeContext;
 
     public MyCustomerOverviewContext(CustomerRepository customerRepository,
                                      CustomerPortraitRepository portraitRepository,
                                      QuoteRepository quoteRepository,
                                      ProjectContractRepository contractRepository,
                                      MeasureRepository measureRepository,
-                                     CustomerInsightContext insight) {
+                                     CustomerInsightContext insight,
+                                     CustomerFollowRepository followRepository,
+                                     CustomerTagContext tagContext,
+                                     CustomerGradeContext gradeContext) {
         this.customerRepository = customerRepository;
         this.portraitRepository = portraitRepository;
         this.quoteRepository = quoteRepository;
         this.contractRepository = contractRepository;
         this.measureRepository = measureRepository;
         this.insight = insight;
+        this.followRepository = followRepository;
+        this.tagContext = tagContext;
+        this.gradeContext = gradeContext;
     }
 
     @Transactional(readOnly = true)
@@ -279,13 +291,36 @@ public class MyCustomerOverviewContext {
         Map<Long, List<Measure>> measuresByCustomer = measureRepository
                 .findByCompany_ComIdAndCustomer_CustIdInOrderByMeasureIdDesc(comId, ids).stream()
                 .collect(Collectors.groupingBy(item -> item.getCustomer().getCustId()));
+        Set<Long> measuredCustomerIds = measuresByCustomer.entrySet().stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(item -> item.getStatus() == MeasureStatus.Completed))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+        Set<Long> scheduledCustomerIds = measuresByCustomer.entrySet().stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(item -> item.getStatus() == MeasureStatus.Scheduled))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+        Map<Long, List<CustomerTag>> tagsByCustomer = tagContext.assembleBatch(
+                comId, rows, measuredCustomerIds, scheduledCustomerIds);
+        Map<Long, Integer> followCounts = followRepository.countGroupByCustomer(comId, ids).stream()
+                .collect(Collectors.toMap(CustomerFollowRepository.CustomerFollowCount::getCustomerId,
+                        row -> row.getTotal() == null ? 0 : row.getTotal().intValue()));
         for (Customer customer : rows) {
-            customer.setPortrait(portraits.get(customer.getCustId()));
+            CustomerPortrait portrait = portraits.get(customer.getCustId());
+            customer.setPortrait(portrait);
+            List<CustomerTag> tags = tagsByCustomer.getOrDefault(customer.getCustId(), List.of());
+            customer.setTags(tags);
+            Set<String> tagKeys = tags.stream()
+                    .map(CustomerTag::getKey)
+                    .filter(key -> key != null && !key.isBlank())
+                    .collect(Collectors.toSet());
             insight.enrich(customer, today, latestQuotes.get(customer.getCustId()),
                     latestContracts.get(customer.getCustId()));
             List<Measure> measures = measuresByCustomer.getOrDefault(customer.getCustId(), List.of());
             boolean measured = measures.stream().anyMatch(item -> item.getStatus() == MeasureStatus.Completed);
             boolean scheduled = measures.stream().anyMatch(item -> item.getStatus() == MeasureStatus.Scheduled);
+            customer.setGrade(gradeContext.compute(
+                    customer, portrait, measured, followCounts.getOrDefault(customer.getCustId(), 0),
+                    customer.getLastFollowAt(), tagKeys));
             insight.mainline(customer, measured, scheduled || customer.getMeasureAt() != null);
         }
     }

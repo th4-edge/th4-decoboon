@@ -85,6 +85,24 @@ class DesignTemplateFormulaContextTest {
     }
 
     @Test
+    void countRoomUsesScopeBasedRoomCount() {
+        DesignTemplateRoom room = masterBedroom();
+        // 区域分项：COUNT(room) 只统计当前区域，返回 1
+        assertThat(context.evaluate(room, "=COUNT(room)")).isEqualByComparingTo("1.000");
+        // 全屋共享项：COUNT(room) 返回模版区域数（由调用方传入）
+        Map<String, BigDecimal> wholeHouse = new HashMap<>();
+        wholeHouse.put(DesignTemplateFormulaContext.ROOM_COUNT_KEY, new BigDecimal("8"));
+        assertThat(context.evaluateWith("=COUNT(room)*50", wholeHouse)).isEqualByComparingTo("400.000");
+        // 只支持 COUNT(room)，不支持 COUNT(A)
+        assertThatThrownBy(() -> context.evaluate(room, "=COUNT(A)"))
+                .hasMessageContaining("只支持 COUNT(room)");
+        // 计数单位允许 COUNT(room)；面积单位不匹配
+        context.requireDimension(Unit.Count, "=COUNT(room)");
+        assertThatThrownBy(() -> context.requireDimension(Unit.Area, "=COUNT(room)"))
+                .hasMessageContaining("维度不一致");
+    }
+
+    @Test
     void resultMustBePositiveAndScaleIsThreeDecimals() {
         assertThatThrownBy(() -> context.evaluate(masterBedroom(), "=L-L"))
                 .hasMessageContaining("必须大于 0");

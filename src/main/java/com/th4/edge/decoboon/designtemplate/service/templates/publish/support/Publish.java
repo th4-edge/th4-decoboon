@@ -94,10 +94,16 @@ public class Publish implements com.th4.edge.decoboon.designtemplate.service.tem
         DesignTemplate template = templateRepository.findByTemplateIdAndCompany_ComId(templateId, comId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "模版不存在")));
         accessContext.requireMaintain(me, template);
+        if (template.getStatus() == DesignTemplate.Status.Disabled) {
+            throw new DefinedException(new DefaultErrorCode("400", "模版已停用，不能发布"));
+        }
 
         DesignTemplateVersion version = template.getCurrentVersion();
         if (version == null) {
             throw new DefinedException(new DefaultErrorCode("400", "模版没有可发布版本"));
+        }
+        if (version.getStatus() == DesignTemplate.Status.Disabled) {
+            throw new DefinedException(new DefaultErrorCode("400", "当前版本已停用，不能发布"));
         }
         if (version.getStatus() == DesignTemplate.Status.Published) {
             throw new DefinedException(new DefaultErrorCode("400", "当前版本已发布；修改模版请新建版本"));

@@ -96,6 +96,45 @@ class DesignerMeasureTaskContextTest {
         DesignerMeasureTask task = context.list(designer, new DesignerMeasureQuery()).get(0);
         assertThat(task.getStateKey()).isEqualTo("completed_pending_handoff");
         assertThat(task.getMainActionKey()).isEqualTo("create_scheme");
+        assertThat(task.getScheduleStateKey()).isEqualTo("scheduled");
+        assertThat(task.getScheduledAt()).isNotNull();
+    }
+
+    @Test
+    void shouldMarkCompletedMeasureWithoutSchedule() {
+        ContextFixture fixture = context();
+        Company company = company(10L);
+        Employee designer = employee(20L, company);
+        Customer customer = customer(100L, company, CustStatus.PendingMeasure);
+        Property property = property(200L, company, customer, PropertyStatus.Measured);
+        LocalDateTime completedAt = LocalDateTime.now().minusDays(2);
+
+        stubTaskLookup(fixture, company, designer, customer, property,
+                measure(301L, property, MeasureStatus.Completed, null, completedAt));
+
+        DesignerMeasureTask task = fixture.context().list(designer, new DesignerMeasureQuery()).get(0);
+        assertThat(task.getScheduleStateKey()).isEqualTo("completed_without_schedule");
+        assertThat(task.getScheduleStateName()).isEqualTo("未预约（直接登记量房）");
+        assertThat(task.getScheduledAt()).isNull();
+    }
+
+    @Test
+    void shouldMarkCompletedMeasureWithInvalidScheduleHistory() {
+        ContextFixture fixture = context();
+        Company company = company(10L);
+        Employee designer = employee(20L, company);
+        Customer customer = customer(100L, company, CustStatus.PendingMeasure);
+        Property property = property(200L, company, customer, PropertyStatus.Measured);
+        LocalDateTime completedAt = LocalDateTime.now().minusDays(2);
+        LocalDateTime invalidScheduledAt = completedAt.plusHours(3);
+
+        stubTaskLookup(fixture, company, designer, customer, property,
+                measure(301L, property, MeasureStatus.Completed, invalidScheduledAt, completedAt));
+
+        DesignerMeasureTask task = fixture.context().list(designer, new DesignerMeasureQuery()).get(0);
+        assertThat(task.getScheduleStateKey()).isEqualTo("invalid_history");
+        assertThat(task.getScheduleStateName()).isEqualTo("预约记录异常，暂不可确认");
+        assertThat(task.getScheduledAt()).isNull();
     }
 
     @Test
@@ -129,6 +168,50 @@ class DesignerMeasureTaskContextTest {
                 .thenReturn(List.of(design));
 
         assertThat(context.list(designer, new DesignerMeasureQuery())).isEmpty();
+    }
+
+    private ContextFixture context() {
+        CustomerRepository customerRepository = mock(CustomerRepository.class);
+        PropertyRepository propertyRepository = mock(PropertyRepository.class);
+        MeasureRepository measureRepository = mock(MeasureRepository.class);
+        RequirementRepository requirementRepository = mock(RequirementRepository.class);
+        DesignRepository designRepository = mock(DesignRepository.class);
+        return new ContextFixture(
+                new DesignerMeasureTaskContext(customerRepository, propertyRepository, measureRepository,
+                        requirementRepository, designRepository),
+                customerRepository,
+                propertyRepository,
+                measureRepository,
+                requirementRepository,
+                designRepository);
+    }
+
+    private void stubTaskLookup(ContextFixture fixture,
+                                Company company,
+                                Employee designer,
+                                Customer customer,
+                                Property property,
+                                Measure measure) {
+        when(fixture.customerRepository().findByCompany_ComIdAndOwner_EmpId(company.getComId(), designer.getEmpId()))
+                .thenReturn(List.of(customer));
+        when(fixture.customerRepository().findByCompany_ComIdAndDesigner_EmpId(company.getComId(), designer.getEmpId()))
+                .thenReturn(List.of());
+        when(fixture.propertyRepository().findByCompany_ComIdAndCustomer_CustIdIn(company.getComId(), List.of(customer.getCustId())))
+                .thenReturn(List.of(property));
+        when(fixture.measureRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(anyLong(), any()))
+                .thenReturn(List.of(measure));
+        when(fixture.requirementRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(anyLong(), any()))
+                .thenReturn(List.of());
+        when(fixture.designRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(anyLong(), any()))
+                .thenReturn(List.of());
+    }
+
+    private record ContextFixture(DesignerMeasureTaskContext context,
+                                  CustomerRepository customerRepository,
+                                  PropertyRepository propertyRepository,
+                                  MeasureRepository measureRepository,
+                                  RequirementRepository requirementRepository,
+                                  DesignRepository designRepository) {
     }
 
     private Company company(Long id) {

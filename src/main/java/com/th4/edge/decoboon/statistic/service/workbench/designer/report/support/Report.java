@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = DesignerWorkbenchReport.class, properties = {
                 "role", "employeeId", "employeeName", "companyId", "storeId", "dataScope",
-                "generatedAt", "month", "trendStart", "trendEnd", "status", "summary", "cards", "pipeline", "charts", "warnings"
+                "generatedAt", "month", "trendStart", "trendEnd", "status", "summary", "cards", "pipeline", "charts", "warnings", "performanceRanking"
         }),
         @AllowProperties(model = DesignerWorkbenchReport.SummaryMetric.class,
                 properties = {"key", "value", "unit", "previousValue", "changeRate", "comparisonState", "comparisonLabel"}),
@@ -33,7 +33,14 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = DesignerWorkbenchReport.Chart.class, properties = {"key", "type", "series"}),
         @AllowProperties(model = DesignerWorkbenchReport.ChartSeries.class, properties = {"key", "value", "points"}),
         @AllowProperties(model = DesignerWorkbenchReport.TrendPoint.class, properties = {"date", "value"}),
-        @AllowProperties(model = DesignerWorkbenchReport.Warning.class, properties = {"key", "scopeKey", "message"})
+        @AllowProperties(model = DesignerWorkbenchReport.Warning.class, properties = {"key", "scopeKey", "message"}),
+        @AllowProperties(model = DesignerWorkbenchReport.PerformanceRanking.class, properties = {
+                "metricKey", "metricLabel", "periodLabel", "rank", "designerCount", "sampleSufficient",
+                "myValue", "topValue", "peerAverage", "gapToTop", "gapToAverage", "topDesigners"
+        }),
+        @AllowProperties(model = DesignerWorkbenchReport.RankingItem.class, properties = {
+                "employeeId", "employeeName", "rank", "value", "signedProjectCount", "currentEmployee"
+        })
 })
 @Service("statistic/workbench/designer/report")
 @Scope(ScopeTypes.PROTOTYPE)

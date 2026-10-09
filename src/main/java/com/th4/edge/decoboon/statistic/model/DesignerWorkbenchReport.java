@@ -65,6 +65,9 @@ public class DesignerWorkbenchReport {
     @Note("数据警告")
     private List<Warning> warnings = new ArrayList<>();
 
+    @Note("本企业设计师本月签约额排名投影")
+    private PerformanceRanking performanceRanking = new PerformanceRanking();
+
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
     public Long getEmployeeId() { return employeeId; }
@@ -97,6 +100,10 @@ public class DesignerWorkbenchReport {
     public void setCharts(List<Chart> charts) { this.charts = charts == null ? new ArrayList<>() : new ArrayList<>(charts); }
     public List<Warning> getWarnings() { return warnings; }
     public void setWarnings(List<Warning> warnings) { this.warnings = warnings == null ? new ArrayList<>() : new ArrayList<>(warnings); }
+    public PerformanceRanking getPerformanceRanking() { return performanceRanking; }
+    public void setPerformanceRanking(PerformanceRanking performanceRanking) {
+        this.performanceRanking = performanceRanking == null ? new PerformanceRanking() : performanceRanking;
+    }
 
     /** 当月概览指标。 */
     @Note("当月概览指标")
@@ -311,5 +318,73 @@ public class DesignerWorkbenchReport {
         public void setScopeKey(String scopeKey) { this.scopeKey = scopeKey; }
         public String getMessage() { return message; }
         public void setMessage(String message) { this.message = message; }
+    }
+
+    /** 设计师本人排名与激励投影。 */
+    @Note("设计师本月签约额排名")
+    public static class PerformanceRanking {
+        private String metricKey = "designerMonthSignedAmount";
+        private String metricLabel = "本月签约金额";
+        private String periodLabel = "本月";
+        private Integer rank = 0;
+        private Integer designerCount = 0;
+        private Boolean sampleSufficient = Boolean.TRUE;
+        private BigDecimal myValue = BigDecimal.ZERO;
+        private BigDecimal topValue = BigDecimal.ZERO;
+        private BigDecimal peerAverage = BigDecimal.ZERO;
+        private BigDecimal gapToTop = BigDecimal.ZERO;
+        private BigDecimal gapToAverage = BigDecimal.ZERO;
+        private List<RankingItem> topDesigners = new ArrayList<>();
+
+        public String getMetricKey() { return metricKey; }
+        public void setMetricKey(String metricKey) { this.metricKey = metricKey; }
+        public String getMetricLabel() { return metricLabel; }
+        public void setMetricLabel(String metricLabel) { this.metricLabel = metricLabel; }
+        public String getPeriodLabel() { return periodLabel; }
+        public void setPeriodLabel(String periodLabel) { this.periodLabel = periodLabel; }
+        public Integer getRank() { return rank; }
+        public void setRank(Integer rank) { this.rank = rank; }
+        public Integer getDesignerCount() { return designerCount; }
+        public void setDesignerCount(Integer designerCount) { this.designerCount = designerCount; }
+        public Boolean getSampleSufficient() { return sampleSufficient; }
+        public void setSampleSufficient(Boolean sampleSufficient) { this.sampleSufficient = sampleSufficient; }
+        public BigDecimal getMyValue() { return myValue; }
+        public void setMyValue(BigDecimal myValue) { this.myValue = myValue; }
+        public BigDecimal getTopValue() { return topValue; }
+        public void setTopValue(BigDecimal topValue) { this.topValue = topValue; }
+        public BigDecimal getPeerAverage() { return peerAverage; }
+        public void setPeerAverage(BigDecimal peerAverage) { this.peerAverage = peerAverage; }
+        public BigDecimal getGapToTop() { return gapToTop; }
+        public void setGapToTop(BigDecimal gapToTop) { this.gapToTop = gapToTop; }
+        public BigDecimal getGapToAverage() { return gapToAverage; }
+        public void setGapToAverage(BigDecimal gapToAverage) { this.gapToAverage = gapToAverage; }
+        public List<RankingItem> getTopDesigners() { return topDesigners; }
+        public void setTopDesigners(List<RankingItem> topDesigners) {
+            this.topDesigners = topDesigners == null ? new ArrayList<>() : new ArrayList<>(topDesigners);
+        }
+    }
+
+    /** 排名摘要，仅返回员工姓名和本月签约额。 */
+    @Note("设计师签约额排名项")
+    public static class RankingItem {
+        private Long employeeId;
+        private String employeeName;
+        private Integer rank = 0;
+        private BigDecimal value = BigDecimal.ZERO;
+        private Integer signedProjectCount = 0;
+        private Boolean currentEmployee = Boolean.FALSE;
+
+        public Long getEmployeeId() { return employeeId; }
+        public void setEmployeeId(Long employeeId) { this.employeeId = employeeId; }
+        public String getEmployeeName() { return employeeName; }
+        public void setEmployeeName(String employeeName) { this.employeeName = employeeName; }
+        public Integer getRank() { return rank; }
+        public void setRank(Integer rank) { this.rank = rank; }
+        public BigDecimal getValue() { return value; }
+        public void setValue(BigDecimal value) { this.value = value; }
+        public Integer getSignedProjectCount() { return signedProjectCount; }
+        public void setSignedProjectCount(Integer signedProjectCount) { this.signedProjectCount = signedProjectCount; }
+        public Boolean getCurrentEmployee() { return currentEmployee; }
+        public void setCurrentEmployee(Boolean currentEmployee) { this.currentEmployee = currentEmployee; }
     }
 }

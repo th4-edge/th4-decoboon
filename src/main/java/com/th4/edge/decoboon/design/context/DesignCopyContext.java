@@ -124,6 +124,7 @@ public class DesignCopyContext {
         copy.setSpec(source.getSpec());
         copy.setUnit(source.getUnit());
         copy.setQuantity(source.getQuantity());
+        copy.setQuantitySource(source.getQuantitySource());
         copy.setMaterialPrice(zero(source.getMaterialPrice()));
         copy.setManualPrice(zero(source.getManualPrice()));
         copy.setFixedTotalPrice(source.getFixedTotalPrice());

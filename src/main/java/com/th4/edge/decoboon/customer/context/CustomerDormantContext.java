@@ -8,9 +8,9 @@ import com.th4.edge.decoboon.customer.model.CustomerStatusLog;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerStatusLogRepository;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
-import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
+import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -34,25 +34,26 @@ public class CustomerDormantContext {
 
     private final CustomerRepository customerRepository;
     private final CustomerStatusLogRepository statusLogRepository;
-    private final MeasureRepository measureRepository;
     private final ProjectContractRepository contractRepository;
+    private final MeasureRepository measureRepository;
 
     public CustomerDormantContext(CustomerRepository customerRepository,
                                   CustomerStatusLogRepository statusLogRepository,
-                                  MeasureRepository measureRepository,
-                                  ProjectContractRepository contractRepository) {
+                                  ProjectContractRepository contractRepository,
+                                  MeasureRepository measureRepository) {
         this.customerRepository = customerRepository;
         this.statusLogRepository = statusLogRepository;
-        this.measureRepository = measureRepository;
         this.contractRepository = contractRepository;
+        this.measureRepository = measureRepository;
     }
 
     public void requireWritableRole(Employee current) {
         if (current == null || current.getRole() == null
                 || (current.getRole() != EmployeeRole.Boss
                 && current.getRole() != EmployeeRole.StoreManager
-                && current.getRole() != EmployeeRole.Marketer)) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅业务员、店长或企业负责人可以设置休眠客户"));
+                && current.getRole() != EmployeeRole.Marketer
+                && current.getRole() != EmployeeRole.Designer)) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅业务员、店长、企业负责人或设计师可以设置休眠客户"));
         }
     }
 
@@ -84,13 +85,13 @@ public class CustomerDormantContext {
             throw new DefinedException(new DefaultErrorCode("409", "当前客户状态不允许设置休眠"));
         }
         LocalDateTime now = LocalDateTime.now();
-        if (measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
-                comId, customer.getCustId(), MeasureStatus.Scheduled, now)) {
-            throw new DefinedException(new DefaultErrorCode("409", "客户存在未来量房预约，请先处理预约后休眠"));
-        }
         if (contractRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusNotIn(
                 comId, customer.getCustId(), TERMINAL_CONTRACT_STATUSES)) {
             throw new DefinedException(new DefaultErrorCode("409", "客户存在未结束正式合同，不能设置休眠"));
+        }
+        if (measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
+                comId, customer.getCustId(), MeasureStatus.Scheduled, now)) {
+            throw new DefinedException(new DefaultErrorCode("409", "客户存在未来量房预约，请先处理预约后休眠"));
         }
 
         CustStatus from = customer.getStatus();

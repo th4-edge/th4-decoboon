@@ -130,13 +130,18 @@ public class Save implements com.th4.edge.decoboon.property.service.measures.sav
             target.setCompletedAt(null);
             target.setMeasureTime(target.getScheduledAt());
         } else if (measureStatus == MeasureStatus.Completed) {
-            LocalDateTime scheduledValue = target.getScheduledAt() != null
-                    ? target.getScheduledAt() : (scheduledAt != null ? scheduledAt : legacyTime);
             LocalDateTime completedValue = completedAt != null ? completedAt : legacyTime;
-            if (scheduledValue != null) {
-                target.setScheduledAt(scheduledValue);
+            if (completedValue == null) {
+                completedValue = LocalDateTime.now();
             }
-            target.setCompletedAt(completedValue == null ? LocalDateTime.now() : completedValue);
+            // 历史坑：量房时间兼容字段不能回填为预约时间；直接登记完成必须保留“无预约”事实。
+            LocalDateTime scheduledValue = target.getScheduledAt() != null
+                    ? target.getScheduledAt() : scheduledAt;
+            if (scheduledValue != null && scheduledValue.isAfter(completedValue)) {
+                throw new DefinedException(new DefaultErrorCode("400", "量房完成时间不能早于预约时间"));
+            }
+            target.setScheduledAt(scheduledValue);
+            target.setCompletedAt(completedValue);
             target.setMeasureTime(target.getCompletedAt());
         } else {
             LocalDateTime scheduledValue = target.getScheduledAt() != null

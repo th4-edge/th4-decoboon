@@ -10,6 +10,7 @@ import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
+import com.th4.edge.decoboon.design.configure.QuantitySource;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.field.annotation.LogicField;
@@ -132,6 +133,11 @@ public class DesignItem extends AuditModel {
     @Column(precision = 12, scale = 3, nullable = false)
     private BigDecimal quantity = BigDecimal.ONE;
 
+    @Note("工程量来源")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, nullable = false)
+    private QuantitySource quantitySource = QuantitySource.Formula;
+
     @Note("材料单价")
     @com.th4.edge.framework.core.annotation.Unit("元")
     @Column(precision = 12, scale = 2, nullable = false)
@@ -174,7 +180,7 @@ public class DesignItem extends AuditModel {
     private String formula;
 
     @Note("工艺说明")
-    @Column(length = 512)
+    @Lob
     private String criterion;
 
     @Note("施工工艺快照（来自材料库，签约口径以分项为准）")
@@ -225,6 +231,8 @@ public class DesignItem extends AuditModel {
     public void setUnit(Unit unit) { this.unit = unit; }
     public BigDecimal getQuantity() { return quantity; }
     public void setQuantity(BigDecimal quantity) { this.quantity = quantity; }
+    public QuantitySource getQuantitySource() { return quantitySource; }
+    public void setQuantitySource(QuantitySource quantitySource) { this.quantitySource = quantitySource; }
     public BigDecimal getMaterialPrice() { return materialPrice; }
     public void setMaterialPrice(BigDecimal materialPrice) { this.materialPrice = materialPrice; }
     public BigDecimal getManualPrice() { return manualPrice; }

@@ -9,7 +9,6 @@ import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.customer.repository.CustomerStatusLogRepository;
 import com.th4.edge.decoboon.project.configure.ContractStatus;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
-import com.th4.edge.decoboon.property.configure.MeasureStatus;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -35,8 +34,8 @@ class CustomerDormantContextTest {
 
     private CustomerRepository customerRepository;
     private CustomerStatusLogRepository logRepository;
-    private MeasureRepository measureRepository;
     private ProjectContractRepository contractRepository;
+    private MeasureRepository measureRepository;
     private CustomerDormantContext context;
     private Employee marketer;
 
@@ -44,9 +43,9 @@ class CustomerDormantContextTest {
     void setUp() {
         customerRepository = mock(CustomerRepository.class);
         logRepository = mock(CustomerStatusLogRepository.class);
-        measureRepository = mock(MeasureRepository.class);
         contractRepository = mock(ProjectContractRepository.class);
-        context = new CustomerDormantContext(customerRepository, logRepository, measureRepository, contractRepository);
+        measureRepository = mock(MeasureRepository.class);
+        context = new CustomerDormantContext(customerRepository, logRepository, contractRepository, measureRepository);
 
         Company company = new Company();
         company.setComId(10L);
@@ -57,10 +56,10 @@ class CustomerDormantContextTest {
 
         when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(logRepository.save(any(CustomerStatusLog.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
-                anyLong(), anyLong(), any(MeasureStatus.class), any(LocalDateTime.class))).thenReturn(false);
         when(contractRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusNotIn(
                 anyLong(), anyLong(), any(Collection.class))).thenReturn(false);
+        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
+                anyLong(), anyLong(), any(), any())).thenReturn(false);
     }
 
     @Test
@@ -100,14 +99,12 @@ class CustomerDormantContextTest {
     }
 
     @Test
-    void shouldBlockWhenFutureMeasureExists() {
-        when(measureRepository.existsByCompany_ComIdAndCustomer_CustIdAndStatusAndScheduledAtAfter(
-                anyLong(), anyLong(), any(MeasureStatus.class), any(LocalDateTime.class))).thenReturn(true);
+    void shouldAllowWithFutureMeasureExists() {
+        Customer saved = context.setDormant(customer(CustStatus.PendingMeasure), marketer,
+                CustomerDormantReason.PlanPostponed, null, CustStatus.PendingMeasure, null);
 
-        assertThatThrownBy(() -> context.setDormant(customer(CustStatus.PendingMeasure), marketer,
-                CustomerDormantReason.PlanPostponed, null, CustStatus.PendingMeasure, null))
-                .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("未来量房预约");
+        assertThat(saved.getStatus()).isEqualTo(CustStatus.Dormant);
+        assertThat(saved.getStatusBeforeDormant()).isEqualTo(CustStatus.PendingMeasure);
     }
 
     @Test
@@ -144,16 +141,17 @@ class CustomerDormantContextTest {
     }
 
     @Test
-    void shouldRejectDesignerRole() {
+    void shouldAllowDesignerRole() {
         Employee designer = new Employee();
         designer.setEmpId(21L);
         designer.setRole(EmployeeRole.Designer);
         designer.setCompany(marketer.getCompany());
 
-        assertThatThrownBy(() -> context.setDormant(customer(CustStatus.Following), designer,
-                CustomerDormantReason.PlanPostponed, null, CustStatus.Following, null))
-                .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("仅业务员、店长或企业负责人");
+        Customer saved = context.setDormant(customer(CustStatus.Following), designer,
+                CustomerDormantReason.PlanPostponed, null, CustStatus.Following, null);
+
+        assertThat(saved.getStatus()).isEqualTo(CustStatus.Dormant);
+        assertThat(saved.getDormantBy()).isSameAs(designer);
     }
 
     private Customer customer(CustStatus status) {

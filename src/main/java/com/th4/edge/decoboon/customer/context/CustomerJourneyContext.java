@@ -645,7 +645,7 @@ public class CustomerJourneyContext {
         item.setSubtitle("主材选材 V" + value(selection.getVersion(), 1));
         item.setStatus(selection.getStatus() == null ? null : selection.getStatus().name());
         item.setStatusName(selection.getStatus() == null ? null : selection.getStatus().getName());
-        item.setDate(date(selection.getConfirmedAt()));
+        item.setDate(date(selection.getUpdateTime()));
         // 历史坑：这里原本直接把 selectionJson 塞进 lines，业主端会把
         // {"color":"...","spec":"..."} 一长串原样渲染出来。选材结果必须是"标签 + 值"的结构化字段，
         // JSON 只用于回显表单，可读文本仅作兜底。
@@ -818,11 +818,6 @@ public class CustomerJourneyContext {
                 actions.add(new CustomerJourney.Action("acceptance-" + item.getAcceptanceId(), "CONFIRM_ACCEPTANCE",
                         "确认阶段验收", "阶段已提交验收，请您确认或提出整改要求", "AcceptanceStage",
                         item.getStage() == null ? null : item.getStage().getStageId())));
-        selections.stream().filter(item -> item.getStatus() == com.th4.edge.decoboon.material.configure.SelectionStatus.PendingConfirm)
-                .findFirst().ifPresent(item ->
-                actions.add(new CustomerJourney.Action("selection-" + item.getSelectionId(), "CONFIRM_SELECTION",
-                        "确认主材选材", "主材选材等待您确认", "MaterialSelection",
-                        item.getProperty() == null ? null : item.getProperty().getPropertyId())));
         feedbacks.stream().filter(item -> item.getStatus() != CustomerFeedbackStatus.Closed).findFirst().ifPresent(item ->
                 actions.add(new CustomerJourney.Action("feedback-" + item.getFeedbackId(), "VIEW_FEEDBACK",
                         "跟踪我的意见", item.getTitle(), "CustomerFeedback", item.getFeedbackId())));

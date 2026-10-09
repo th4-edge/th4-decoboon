@@ -15,6 +15,7 @@ public enum FileScope implements Enumerable<String> {
     Talk("谈单PPT"),
     Measure("量房记录"),
     Task("施工任务"),
+    MaterialSelection("主材选材"),
     GoodsReceipt("材料到场"),
     StockMovement("库存流水"),
     Catalog("材料库"),

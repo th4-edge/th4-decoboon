@@ -5,9 +5,13 @@ import com.th4.edge.decoboon.material.configure.SelectionStatus;
 import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
 import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
+import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.context.MaterialPlanContext;
 import com.th4.edge.decoboon.project.model.ContractLine;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
@@ -29,19 +33,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 保存签约后主材选材文本。
+ * 保存签约后主材选材结果（现场代录）。
  *
- * <p>业务口径（SCN-006 / BR-004 / DEC-003）：选材结果以文本保存，不拆逐材料结构化字段；
- * 同一房屋与合同下保留历史版本，已确认版本不被覆盖，需要变更时形成新版本；
- * 保存动作不改变报价、合同、成本、材料计划和采购事实。</p>
+ * <p>业务口径（SCN-006 / BR-004 / DEC-003 / DEC-056）：设计师现场或逐项沟通与客户确认后，
+ * 由具备维护权限的角色代录选材结果，保存即"已选材（现场确认）"，不再有草稿/待确认/客户确认动作；
+ * 选材结果以文本保存，不拆逐材料结构化字段；保存动作不改变报价、合同、成本、材料计划和采购事实。</p>
+ *
+ * <p>当 {@code deliver=true} 时，将对应材料计划行推进为 {@code ReadyToOrder}（待财务下单）；
+ * 交付不等于下单，供应商/价格/数量仍由财务在下单时决定（DEC-MP-03）。</p>
  */
 @Note("主材选材记录保存")
-@Description("设计师整理主材选材文本并保存，进行中版本原地保存，已确认版本后变更形成新版本")
+@Description("设计师现场代录主材选材结果；可选交付财务下单，将材料计划行推进为可下单")
 @Properties(allow = {
         @AllowProperties(model = MaterialSelection.class, properties = {
                 "selectionId", "version", "status", "title", "content", "selectionJson", "attachments", "remark",
                 "customer", "property", "contract", "project", "designer", "owner",
-                "confirmerName", "confirmedBy", "confirmedAt", "createTime", "updateTime"}),
+                "createTime", "updateTime"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
@@ -62,15 +69,22 @@ public class Save implements com.th4.edge.decoboon.material.service.selections.s
     @AutoInject private String selectionJson;
     @AutoInject private List<String> attachments;
     @AutoInject @Length(max = 500) private String remark;
-    @AutoInject private SelectionStatus status;
+    /** 是否同时交付财务下单：true 时把材料计划行由 Planned 推进为 ReadyToOrder。 */
+    @AutoInject private Boolean deliver;
     @User private Employee employee;
     private final MaterialSelectionContext materialSelectionContext;
     private final MaterialSelectionRepository materialSelectionRepository;
+    private final MaterialPlanRepository materialPlanRepository;
+    private final MaterialPlanContext materialPlanContext;
 
     public Save(MaterialSelectionContext materialSelectionContext,
-                MaterialSelectionRepository materialSelectionRepository) {
+                MaterialSelectionRepository materialSelectionRepository,
+                MaterialPlanRepository materialPlanRepository,
+                MaterialPlanContext materialPlanContext) {
         this.materialSelectionContext = materialSelectionContext;
         this.materialSelectionRepository = materialSelectionRepository;
+        this.materialPlanRepository = materialPlanRepository;
+        this.materialPlanContext = materialPlanContext;
     }
 
     @Override
@@ -94,10 +108,9 @@ public class Save implements com.th4.edge.decoboon.material.service.selections.s
             contract = project.getContract();
         }
         // 门禁：材料已进入采购（已请购/已下单/已到场等）后不得再改选材，更换材料必须走增减项
-        materialSelectionContext.requireSelectionEditable(
-                materialSelectionContext.plansOf(project, contractLine));
-        SelectionStatus targetStatus = status == SelectionStatus.PendingConfirm
-                ? SelectionStatus.PendingConfirm : SelectionStatus.Draft;
+        List<MaterialPlan> plans = materialSelectionContext.plansOf(project, contractLine);
+        materialSelectionContext.requireSelectionEditable(plans);
+
         Long comId = property.getCompany().getComId();
         MaterialSelection ongoing;
         if (contractLine != null) {
@@ -113,13 +126,9 @@ public class Save implements com.th4.edge.decoboon.material.service.selections.s
                     .findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(
                             comId, property.getPropertyId(), contract.getContractId()).orElse(null);
         }
-        MaterialSelection target;
-        if (ongoing != null && !ongoing.getStatus().locked()) {
-            // 未确认的当前版本允许原地保存，避免每次编辑都堆积版本。
-            target = ongoing;
-        } else {
-            target = new MaterialSelection();
-            target.setVersion((ongoing == null ? 0 : ongoing.getVersion()) + 1);
+        MaterialSelection target = ongoing != null ? ongoing : new MaterialSelection();
+        if (ongoing == null) {
+            target.setVersion(1);
         }
         target.setCompany(property.getCompany());
         target.setStore(property.getStore());
@@ -131,14 +140,41 @@ public class Save implements com.th4.edge.decoboon.material.service.selections.s
         target.setProject(project);
         target.setSourceContractLine(contractLine);
         target.setDesigner(resolveDesigner(property, current));
-        target.setStatus(targetStatus);
+        target.setStatus(SelectionStatus.Selected);
         target.setTitle(title == null || title.isBlank() ? (contractLine == null ? title : contractLine.getName()) : title);
         target.setContent(content);
         target.setSelectionJson(selectionJson);
         target.setAttachments(attachments);
         target.setRemark(remark);
         MaterialSelection saved = materialSelectionRepository.saveAndFlush(target);
+        syncLinkedPlan(saved, plans, Boolean.TRUE.equals(deliver));
         return materialSelectionRepository.findBySelectionId(saved.getSelectionId()).orElse(saved);
+    }
+
+    /**
+     * 回填材料计划行的选材快照；交付财务时把 Planned 推进为 ReadyToOrder。
+     *
+     * <p>已进入采购的计划行不回写快照（selectionLocked 已在入口拦截，这里再做一层防御）。</p>
+     */
+    private void syncLinkedPlan(MaterialSelection selection, List<MaterialPlan> plans, boolean deliver) {
+        if (plans == null || plans.isEmpty()) {
+            return;
+        }
+        for (MaterialPlan plan : plans) {
+            if (materialSelectionContext.selectionLocked(plan)) {
+                continue;
+            }
+            plan.setSelection(selection);
+            if (selection.getSourceContractLine() != null) {
+                plan.setSelectedBrand(selection.getSourceContractLine().getBrand());
+                plan.setSelectedSpec(selection.getSourceContractLine().getSpec());
+            }
+            if (deliver && (plan.getStatus() == null || plan.getStatus() == MaterialPlanStatus.Planned)) {
+                plan.setStatus(MaterialPlanStatus.ReadyToOrder);
+            }
+            materialPlanContext.applyDerived(plan);
+            materialPlanRepository.save(plan);
+        }
     }
 
     /** 选材事实的设计责任人：优先取房屋已指派设计师，未指派时记为当前维护人。 */

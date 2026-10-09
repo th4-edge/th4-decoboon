@@ -142,6 +142,9 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         if (!accessContext.visible(me, template)) {
             throw new DefinedException(new DefaultErrorCode("403", "无权使用该模版"));
         }
+        if (template.getStatus() == DesignTemplate.Status.Disabled) {
+            throw new DefinedException(new DefaultErrorCode("400", "模版已停用，不能实例化"));
+        }
         DesignTemplateVersion version = versionId == null ? template.getCurrentVersion()
                 : versionRepository.findByVersionIdAndCompany_ComId(versionId, comId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "模版版本不存在")));
@@ -225,7 +228,6 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         // 分项：名称/单位/价格读 catalogItem；工程量按区域专业变量服务端求值（初算，最终以报价主链为准）
         List<DesignTemplateItem> templateItems = templateItemRepository
                 .findByVersion_VersionIdAndCompany_ComIdOrderBySortNoAsc(version.getVersionId(), comId);
-        Map<String, BigDecimal> wholeHouse = wholeHouseVariables(rooms);
         List<DesignItem> items = new ArrayList<>();
         for (DesignTemplateItem templateItem : templateItems) {
             CatalogItem catalogItem = templateItem.getCatalogItem();
@@ -234,10 +236,24 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
                     : rooms.stream().filter(r -> r.getRoomKey().equals(templateItem.getRoomKey())).findFirst().orElse(null);
 
             BigDecimal quantity;
-            if (templateItem.getQuantityFormula() != null && !templateItem.getQuantityFormula().isBlank()) {
-                quantity = room != null
-                        ? formulaContext.evaluate(room, templateItem.getQuantityFormula())
-                        : formulaContext.evaluateWith(templateItem.getQuantityFormula(), wholeHouse);
+            boolean pendingMeasure = false;
+            String templateFormula = templateItem.getQuantityFormula();
+            if (templateFormula != null && !templateFormula.isBlank()) {
+                try {
+                    quantity = room != null
+                            ? formulaContext.evaluate(room, templateFormula)
+                            : formulaContext.evaluateWith(templateFormula, wholeHouseVariables(rooms, templateFormula));
+                } catch (DefinedException exception) {
+                    // BR-040 §7 / 2026-10-10 用户裁决：尺寸未填不再整单失败；
+                    // 用 quantity=0 + formula 前缀标记“待补尺寸”，与“0=赠送”并存。
+                    if (exception.getErrorCode() != null
+                            && "TEMPLATE_SIZE_MISSING".equals(exception.getErrorCode().getCode())) {
+                        quantity = BigDecimal.ZERO;
+                        pendingMeasure = true;
+                    } else {
+                        throw exception;
+                    }
+                }
             } else {
                 quantity = templateItem.getDefaultQuantity() == null ? BigDecimal.ZERO : templateItem.getDefaultQuantity();
             }
@@ -261,13 +277,20 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             item.setMaterialPrice(catalogItem.getMaterialPrice());
             item.setManualPrice(catalogItem.getManualPrice());
             item.setFixedTotalPrice(catalogItem.getFixedTotalPrice());
-            item.setFormula(templateItem.getQuantityFormula());
+            item.setFormula(pendingMeasure
+                    ? DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|"
+                            + (templateFormula == null ? "" : templateFormula)
+                    : templateFormula);
             item.setCriterion(catalogItem.getCriterion());
             item.setCraft(catalogItem.getCraft());
             item.setRemark(templateItem.getRemark());
             item.setSort(templateItem.getSortNo() == null ? 0 : templateItem.getSortNo());
             item.setQuantity(quantity);
-            item.setAmount(amountOf(item));
+            item.setQuantitySource(templateFormula == null || templateFormula.isBlank()
+                    ? com.th4.edge.decoboon.design.configure.QuantitySource.Manual
+                    : com.th4.edge.decoboon.design.configure.QuantitySource.Formula);
+            // 待补项不按固定总价等计价方式出金额；先落 0，等设计师调整或按“0=赠送”处理。
+            item.setAmount(pendingMeasure ? BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) : amountOf(item));
             items.add(item);
         }
         if (!items.isEmpty()) {
@@ -278,7 +301,19 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
     }
 
     /** 全屋共享分项的变量：按区域聚合，不做建筑面积换算（BR-040 §4）。 */
-    private Map<String, BigDecimal> wholeHouseVariables(List<DesignTemplateRoom> rooms) {
+    private Map<String, BigDecimal> wholeHouseVariables(List<DesignTemplateRoom> rooms, String formula) {
+        java.util.Set<String> used = formulaContext.variablesUsed(formula);
+        boolean needsArea = used.stream().anyMatch(name -> java.util.Set.of("A", "CP", "P", "WP").contains(name));
+        boolean needsHeight = used.contains("WP");
+        if (needsArea) {
+            for (DesignTemplateRoom room : rooms) {
+                if (room.getLength() == null || room.getWidth() == null
+                        || (needsHeight && room.getHeight() == null)) {
+                    throw new DefinedException(new DefaultErrorCode("TEMPLATE_SIZE_MISSING",
+                            "全屋聚合项所需尺寸未填：" + room.getName()));
+                }
+            }
+        }
         BigDecimal area = BigDecimal.ZERO;
         BigDecimal perimeter = BigDecimal.ZERO;
         BigDecimal walls = BigDecimal.ZERO;
@@ -294,6 +329,7 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         whole.put("P", perimeter);
         whole.put("WP", walls);
         whole.put("N", BigDecimal.ONE);
+        whole.put(DesignTemplateFormulaContext.ROOM_COUNT_KEY, BigDecimal.valueOf(rooms.size()));
         return whole;
     }
 

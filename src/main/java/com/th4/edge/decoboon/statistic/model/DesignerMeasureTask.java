@@ -28,6 +28,8 @@ public class DesignerMeasureTask {
     @Note("量房记录编号") private Long measureId;
     @Note("量房事实状态") private String measureStatus;
     @Note("预约时间") private LocalDateTime scheduledAt;
+    @Note("预约状态 key") private String scheduleStateKey;
+    @Note("预约状态中文") private String scheduleStateName;
     @Note("完成时间") private LocalDateTime completedAt;
     @Note("任务状态 key") private String stateKey;
     @Note("任务状态中文") private String stateLabel;
@@ -86,6 +88,10 @@ public class DesignerMeasureTask {
     public void setMeasureStatus(String measureStatus) { this.measureStatus = measureStatus; }
     public LocalDateTime getScheduledAt() { return scheduledAt; }
     public void setScheduledAt(LocalDateTime scheduledAt) { this.scheduledAt = scheduledAt; }
+    public String getScheduleStateKey() { return scheduleStateKey; }
+    public void setScheduleStateKey(String scheduleStateKey) { this.scheduleStateKey = scheduleStateKey; }
+    public String getScheduleStateName() { return scheduleStateName; }
+    public void setScheduleStateName(String scheduleStateName) { this.scheduleStateName = scheduleStateName; }
     public LocalDateTime getCompletedAt() { return completedAt; }
     public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
     public String getStateKey() { return stateKey; }

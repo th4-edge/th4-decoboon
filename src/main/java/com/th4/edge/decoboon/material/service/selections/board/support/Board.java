@@ -33,7 +33,7 @@ import java.util.Set;
  * 主材选材跟进台。
  *
  * <p>按当前员工数据范围取出「已签约进入履约」的在跑项目，左连该房屋最新一版选材记录，
- * 只返回尚未客户确认（未创建 / 草稿 / 待客户确认）的项目，并给出责任设计师与下一步动作。</p>
+ * 只返回尚未完成逐项选材的项目，并给出责任设计师与下一步动作（DEC-056：现场代录，无客户确认动作）。</p>
  */
 @Note("主材选材跟进台")
 @Description("按数据范围列出尚未客户确认主材选材的在跑项目，含当前状态、责任设计师与下一步")
@@ -98,46 +98,35 @@ public class Board implements com.th4.edge.decoboon.material.service.selections.
             List<MaterialSelectionItem> materialItems = materialSelectionContext.listProjectItems(project, current);
             int totalItems = materialItems.size();
             int selectedItems = 0;
-            int confirmedItems = 0;
-            int pendingConfirmItems = 0;
+            int deliveredItems = 0;
             int orderedItems = 0;
             for (MaterialSelectionItem materialItem : materialItems) {
                 if (materialItem.getStatus() != null) {
                     selectedItems++;
                 }
-                if ("Confirmed".equals(materialItem.getStatus())) {
-                    confirmedItems++;
-                }
-                if ("PendingConfirm".equals(materialItem.getStatus())) {
-                    pendingConfirmItems++;
-                }
                 if (!"none".equals(materialItem.getOrderStatus())) {
+                    deliveredItems++;
+                }
+                if (isPurchasing(materialItem.getOrderStatus())) {
                     orderedItems++;
                 }
             }
-            if (totalItems > 0 && confirmedItems >= totalItems) {
+            if (totalItems > 0 && selectedItems >= totalItems) {
                 continue;
             }
             SelectionBoardItem item = toItem(project, property, selection);
             item.setTotalItems(totalItems);
             item.setSelectedItems(selectedItems);
-            item.setConfirmedItems(confirmedItems);
-            item.setPendingConfirmItems(pendingConfirmItems);
+            item.setDeliveredItems(deliveredItems);
             item.setNotSelectedItems(Math.max(0, totalItems - selectedItems));
             item.setOrderedItems(orderedItems);
-            item.setProgress(totalItems > 0 ? (int) Math.round(confirmedItems * 100.0 / totalItems) : 0);
+            item.setProgress(totalItems > 0 ? (int) Math.round(selectedItems * 100.0 / totalItems) : 0);
             if (totalItems == 0) {
                 item.setSelectionStatusName("未配置主材");
                 item.setNextAction("检查合同主材分项");
-            } else if (confirmedItems >= totalItems) {
-                item.setSelectionStatusName("已完成");
-                item.setNextAction("查看选材与材料状态");
-            } else if (pendingConfirmItems > 0) {
-                item.setSelectionStatusName("待客户确认");
-                item.setNextAction("推动客户确认主材选材");
             } else if (selectedItems > 0) {
                 item.setSelectionStatusName("选材中");
-                item.setNextAction("完善草稿并提交客户确认");
+                item.setNextAction("完善选材并交付财务下单");
             } else {
                 item.setSelectionStatusName("未发起");
                 item.setNextAction("开始逐项主材选材");
@@ -163,7 +152,7 @@ public class Board implements com.th4.edge.decoboon.material.service.selections.
         item.setDesignerName(resolveDesignerName(property, project));
         if (selection == null) {
             item.setSelectionStatusName("未创建");
-            item.setNextAction("发起主材选材并提交客户确认");
+            item.setNextAction("发起主材选材");
             return item;
         }
         SelectionStatus status = selection.getStatus();
@@ -172,9 +161,15 @@ public class Board implements com.th4.edge.decoboon.material.service.selections.
         item.setSelectionStatusName(status == null ? "未创建" : status.getName());
         item.setVersion(selection.getVersion());
         item.setUpdatedAt(selection.getUpdateTime() == null ? null : selection.getUpdateTime().getDateTime());
-        item.setNextAction(status == SelectionStatus.PendingConfirm
-                ? "推动客户现场确认选材" : "完善选材文本并提交客户确认");
+        item.setNextAction("完善选材并交付财务下单");
         return item;
+    }
+
+    /** 是否已进入采购（用于跟进台区分已交付与已下单）。 */
+    private boolean isPurchasing(String orderStatus) {
+        return "ordering".equals(orderStatus) || "partiallyOrdered".equals(orderStatus)
+                || "ordered".equals(orderStatus) || "partiallyArrived".equals(orderStatus)
+                || "arrived".equals(orderStatus);
     }
 
     /** 选材责任设计师：优先房屋已指派设计师，其次项目设计师。 */

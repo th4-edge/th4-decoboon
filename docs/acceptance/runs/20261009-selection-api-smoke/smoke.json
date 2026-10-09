@@ -1,0 +1,3499 @@
+{
+  "result": {
+    "at": "2026-10-09 23:41:24",
+    "accounts": {
+      "finance": {
+        "phone": "19900000005",
+        "name": "吴濛濛"
+      },
+      "designer": {
+        "phone": "19900000003",
+        "name": "谢玲玲"
+      },
+      "pm": {
+        "phone": "19900000006",
+        "name": "徐勇"
+      }
+    },
+    "scan": [
+      {
+        "projectId": "233710289445453824",
+        "projectName": "彭静（演示30） · 高新云谷1栋1101（主房）",
+        "items": 1,
+        "editable": 1
+      }
+    ],
+    "target": {
+      "projectId": "233710289445453824",
+      "projectName": "彭静（演示30） · 高新云谷1栋1101（主房）",
+      "propertyId": "228668969349808128",
+      "contractLineId": "233710002844467203",
+      "materialName": "石材--管仲新三层地板（1.4）",
+      "beforeOrderStatus": "none",
+      "beforeStatus": null
+    },
+    "save": {
+      "success": true,
+      "errorCode": null,
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-09 23:41:26"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-09 23:41:26"
+        },
+        "selectionId": "234339482512392192",
+        "owner": {
+          "empId": "1790000000000000104",
+          "name": "黄贤杰",
+          "role": {
+            "name": "业务员",
+            "value": "Marketer",
+            "key": "Marketer"
+          }
+        },
+        "customer": {
+          "custId": "228668969219784704",
+          "name": "彭静（演示30）",
+          "telNo": "13910000030"
+        },
+        "property": {
+          "propertyId": "228668969349808128",
+          "propertyNo": "H1790208530757",
+          "community": "高新云谷",
+          "building": "1栋",
+          "roomNo": "1101",
+          "address": "高新云谷1栋1101（主房）",
+          "area": 110.0,
+          "layout": "四室两厅两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "contract": {
+          "contractId": "233710002739609600",
+          "no": "C1791410406775",
+          "baselineAmount": 58903.17,
+          "signedAmount": 58903.17
+        },
+        "project": {
+          "projectId": "233710289445453824",
+          "no": "P1791410475126",
+          "name": "彭静（演示30） · 高新云谷1栋1101（主房）"
+        },
+        "version": 1,
+        "status": {
+          "name": "已选材",
+          "key": "Selected"
+        },
+        "title": "石材--管仲新三层地板（1.4）",
+        "content": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+        "selectionJson": "{\"color\": \"暖灰石纹\", \"spec\": \"750×1500\", \"brand\": \"马可波罗\", \"craft\": \"哑光防滑\", \"remark\": \"接口冒烟\"}",
+        "attachments": [],
+        "designer": {
+          "empId": "1790000000000000105",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        }
+      }
+    },
+    "savedSelectionId": "234339482512392192",
+    "afterSave": {
+      "status": "Selected",
+      "statusName": "已选材",
+      "orderStatus": "none",
+      "orderStatusName": "未下单",
+      "selectionText": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟"
+    },
+    "upload": {
+      "httpStatus": 200,
+      "success": true,
+      "path": "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png"
+    },
+    "deliver": {
+      "success": true,
+      "errorCode": null,
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-09 23:41:26"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-09 23:41:26"
+        },
+        "selectionId": "234339482512392192",
+        "owner": {
+          "empId": "1790000000000000104",
+          "name": "黄贤杰",
+          "role": {
+            "name": "业务员",
+            "value": "Marketer",
+            "key": "Marketer"
+          }
+        },
+        "customer": {
+          "custId": "228668969219784704",
+          "name": "彭静（演示30）",
+          "telNo": "13910000030"
+        },
+        "property": {
+          "propertyId": "228668969349808128",
+          "propertyNo": "H1790208530757",
+          "community": "高新云谷",
+          "building": "1栋",
+          "roomNo": "1101",
+          "address": "高新云谷1栋1101（主房）",
+          "area": 110.0,
+          "layout": "四室两厅两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "contract": {
+          "contractId": "233710002739609600",
+          "no": "C1791410406775",
+          "baselineAmount": 58903.17,
+          "signedAmount": 58903.17
+        },
+        "project": {
+          "projectId": "233710289445453824",
+          "no": "P1791410475126",
+          "name": "彭静（演示30） · 高新云谷1栋1101（主房）"
+        },
+        "version": 1,
+        "status": {
+          "name": "已选材",
+          "key": "Selected"
+        },
+        "title": "石材--管仲新三层地板（1.4）",
+        "content": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+        "selectionJson": "{\"color\": \"暖灰石纹\", \"spec\": \"750×1500\", \"brand\": \"马可波罗\", \"craft\": \"哑光防滑\", \"remark\": \"接口冒烟\"}",
+        "attachments": [
+          "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png"
+        ],
+        "designer": {
+          "empId": "1790000000000000105",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        }
+      }
+    },
+    "afterDeliver": {
+      "status": "Selected",
+      "orderStatus": "ready",
+      "orderStatusName": "待财务下单",
+      "attachments": [
+        "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png"
+      ],
+      "nextAction": "等待财务下单"
+    },
+    "photoGrant": {
+      "httpStatus": 200,
+      "success": true,
+      "urlPresent": true
+    },
+    "plans": [],
+    "pmNegative": {
+      "httpStatus": 200,
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "房屋不存在或无权访问",
+        "system": false
+      }
+    }
+  },
+  "log": [
+    {
+      "step": "project/page",
+      "route": "project/project/page",
+      "request": null,
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-10-08 06:01:15"
+              },
+              "projectId": "233710289445453824",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1791410475126",
+              "name": "彭静（演示30） · 高新云谷1栋1101（主房）",
+              "customer": {
+                "custId": "228668969219784704",
+                "name": "彭静（演示30）",
+                "telNo": "13910000030",
+                "community": "高新云谷",
+                "addr": "高新云谷1栋1101（主房）",
+                "area": 88.0,
+                "budget": 36.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228668969349808128",
+                "customer": {
+                  "custId": "228668969219784704",
+                  "name": "彭静（演示30）",
+                  "telNo": "13910000030",
+                  "community": "高新云谷",
+                  "addr": "高新云谷1栋1101（主房）",
+                  "area": 88.0,
+                  "budget": 36.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790208530757",
+                "community": "高新云谷",
+                "building": "1栋",
+                "roomNo": "1101",
+                "address": "高新云谷1栋1101（主房）",
+                "area": 110.0,
+                "layout": "四室两厅两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-06 08:08:50"
+              },
+              "quote": {
+                "quoteId": "228668971543429120",
+                "no": "Q1790208531280",
+                "property": {
+                  "propertyId": "228668969349808128",
+                  "customer": {
+                    "custId": "228668969219784704",
+                    "name": "彭静（演示30）",
+                    "telNo": "13910000030",
+                    "community": "高新云谷",
+                    "addr": "高新云谷1栋1101（主房）",
+                    "area": 88.0,
+                    "budget": 36.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790208530757",
+                  "community": "高新云谷",
+                  "building": "1栋",
+                  "roomNo": "1101",
+                  "address": "高新云谷1栋1101（主房）",
+                  "area": 110.0,
+                  "layout": "四室两厅两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-06 08:08:50"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 0.94,
+                "amount": 58903.17,
+                "cost": 59679.0,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "siteAddr": "高新云谷1栋1101（主房）",
+              "area": 110.0,
+              "contractAmount": 59670.27,
+              "cost": 59679.0,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              },
+              "progress": 0,
+              "startDate": "2026-10-07",
+              "planEndDate": "2027-02-04",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "233710289445453824",
+                "status": "Preparing",
+                "statusLabel": "待开工",
+                "statusTone": "info",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/start-preparation",
+                  "label": "开工准备",
+                  "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+                  "ownerRole": "项目经理 / 店长",
+                  "fromStatus": "Preparing",
+                  "toStatus": "Ongoing",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "contract"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-08 06:40:53",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-10-06 04:55:15"
+              },
+              "projectId": "232968907537776640",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1791233715909",
+              "name": "荷塘家园-陈先生 · 合肥市蜀山区荷塘家园3栋1202室",
+              "customer": {
+                "custId": "232960420686594048",
+                "name": "荷塘家园-陈先生",
+                "telNo": "13700001201",
+                "community": "荷塘家园",
+                "addr": "合肥市蜀山区荷塘家园3栋1202室",
+                "area": 118.0,
+                "budget": 65.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "232961774796668928",
+                "customer": {
+                  "custId": "232960420686594048",
+                  "name": "荷塘家园-陈先生",
+                  "telNo": "13700001201",
+                  "community": "荷塘家园",
+                  "addr": "合肥市蜀山区荷塘家园3栋1202室",
+                  "area": 118.0,
+                  "budget": 65.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1791232015331",
+                "community": "荷塘家园",
+                "building": "3栋",
+                "roomNo": "1202",
+                "address": "合肥市蜀山区荷塘家园3栋1202室",
+                "area": 118.0,
+                "layout": "",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000106",
+                  "name": "谢玲玲",
+                  "telNo": "19900000006",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-10-05 09:00:00"
+              },
+              "quote": {
+                "quoteId": "232968463419703296",
+                "no": "Q1791233610022",
+                "property": {
+                  "propertyId": "232961774796668928",
+                  "customer": {
+                    "custId": "232960420686594048",
+                    "name": "荷塘家园-陈先生",
+                    "telNo": "13700001201",
+                    "community": "荷塘家园",
+                    "addr": "合肥市蜀山区荷塘家园3栋1202室",
+                    "area": 118.0,
+                    "budget": 65.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1791232015331",
+                  "community": "荷塘家园",
+                  "building": "3栋",
+                  "roomNo": "1202",
+                  "address": "合肥市蜀山区荷塘家园3栋1202室",
+                  "area": 118.0,
+                  "layout": "",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000106",
+                    "name": "谢玲玲",
+                    "telNo": "19900000006",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-10-05 09:00:00"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 1.0,
+                "amount": 65406.1,
+                "cost": 0.0,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000107",
+                "name": "徐勇",
+                "telNo": "19900000007",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "合肥市蜀山区荷塘家园3栋1202室",
+              "area": 118.0,
+              "contractAmount": 65406.1,
+              "cost": 0.0,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              },
+              "progress": 13,
+              "startDate": "2026-10-05",
+              "planEndDate": "2027-02-02",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "232968907537776640",
+                "status": "Accepting",
+                "statusLabel": "待验收",
+                "statusTone": "pending",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "13%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/handle-acceptance",
+                  "label": "处理阶段验收",
+                  "hint": "提交验收或等待业主确认，驳回后回到施工整改。",
+                  "ownerRole": "项目经理 / 业主",
+                  "fromStatus": "Accepting",
+                  "toStatus": "Finished",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "acceptance",
+                    "acceptanceRound",
+                    "projectStage",
+                    "projectTask",
+                    "project"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-06 04:57:34",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-10-03 02:41:24"
+              },
+              "projectId": "231848057782665216",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790966484499",
+              "name": "荷塘家园业主 · 荷塘家园 3栋 1802室",
+              "customer": {
+                "custId": "231845338615382016",
+                "name": "荷塘家园业主",
+                "telNo": "13800001001",
+                "community": "荷塘家园",
+                "addr": "荷塘家园 3栋 1802室",
+                "area": 118.0,
+                "budget": 26.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000101",
+                  "name": "张伟",
+                  "telNo": "19900000001",
+                  "role": {
+                    "name": "企业负责人",
+                    "value": "Boss",
+                    "key": "Boss"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "231845419045355520",
+                "customer": {
+                  "custId": "231845338615382016",
+                  "name": "荷塘家园业主",
+                  "telNo": "13800001001",
+                  "community": "荷塘家园",
+                  "addr": "荷塘家园 3栋 1802室",
+                  "area": 118.0,
+                  "budget": 26.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000101",
+                    "name": "张伟",
+                    "telNo": "19900000001",
+                    "role": {
+                      "name": "企业负责人",
+                      "value": "Boss",
+                      "key": "Boss"
+                    }
+                  }
+                },
+                "propertyNo": "H1790965855379",
+                "community": "荷塘家园",
+                "building": "3栋2单元",
+                "roomNo": "1802",
+                "address": "荷塘家园 3栋 1802室",
+                "area": 118.0,
+                "layout": "三室两厅",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000101",
+                  "name": "张伟",
+                  "telNo": "19900000001",
+                  "role": {
+                    "name": "企业负责人",
+                    "value": "Boss",
+                    "key": "Boss"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-10-03 02:34:19"
+              },
+              "quote": {
+                "quoteId": "231847600754524160",
+                "no": "Q1790966375536",
+                "property": {
+                  "propertyId": "231845419045355520",
+                  "customer": {
+                    "custId": "231845338615382016",
+                    "name": "荷塘家园业主",
+                    "telNo": "13800001001",
+                    "community": "荷塘家园",
+                    "addr": "荷塘家园 3栋 1802室",
+                    "area": 118.0,
+                    "budget": 26.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000101",
+                      "name": "张伟",
+                      "telNo": "19900000001",
+                      "role": {
+                        "name": "企业负责人",
+                        "value": "Boss",
+                        "key": "Boss"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790965855379",
+                  "community": "荷塘家园",
+                  "building": "3栋2单元",
+                  "roomNo": "1802",
+                  "address": "荷塘家园 3栋 1802室",
+                  "area": 118.0,
+                  "layout": "三室两厅",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000101",
+                    "name": "张伟",
+                    "telNo": "19900000001",
+                    "role": {
+                      "name": "企业负责人",
+                      "value": "Boss",
+                      "key": "Boss"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-10-03 02:34:19"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 1.0,
+                "amount": 37385.33,
+                "cost": 35605.08,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000107",
+                "name": "徐勇",
+                "telNo": "19900000007",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "荷塘家园 3栋 1802室",
+              "area": 118.0,
+              "contractAmount": 37385.33,
+              "cost": 35605.08,
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              },
+              "progress": 0,
+              "startDate": "2026-10-03",
+              "planEndDate": "2027-01-04",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "231848057782665216",
+                "status": "Ongoing",
+                "statusLabel": "施工中",
+                "statusTone": "alert",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/advance-tasks",
+                  "label": "推进施工任务",
+                  "hint": "按阶段推进任务、材料和现场汇报。",
+                  "ownerRole": "项目经理",
+                  "fromStatus": "Ongoing",
+                  "toStatus": "Accepting",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "materials"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-04 04:38:04",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-10-01 17:51:44"
+              },
+              "projectId": "231352376261345280",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790848304815",
+              "name": "周启航（审计B） · 翡翠湖畔18栋2301室",
+              "customer": {
+                "custId": "231350025186181120",
+                "name": "周启航（审计B）",
+                "telNo": "13900001002",
+                "community": "翡翠湖畔",
+                "addr": "翡翠湖畔18栋2301室",
+                "area": 186.0,
+                "budget": 120.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "231350697621192704",
+                "customer": {
+                  "custId": "231350025186181120",
+                  "name": "周启航（审计B）",
+                  "telNo": "13900001002",
+                  "community": "翡翠湖畔",
+                  "addr": "翡翠湖畔18栋2301室",
+                  "area": 186.0,
+                  "budget": 120.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790847904600",
+                "community": "翡翠湖畔",
+                "building": "18栋1单元",
+                "roomNo": "2301",
+                "address": "翡翠湖畔18栋2301室",
+                "area": 186.0,
+                "layout": "",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-10-01 09:45:33"
+              },
+              "quote": {
+                "quoteId": "231352022165618688",
+                "no": "Q1790848220390",
+                "property": {
+                  "propertyId": "231350697621192704",
+                  "customer": {
+                    "custId": "231350025186181120",
+                    "name": "周启航（审计B）",
+                    "telNo": "13900001002",
+                    "community": "翡翠湖畔",
+                    "addr": "翡翠湖畔18栋2301室",
+                    "area": 186.0,
+                    "budget": 120.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000105",
+                      "name": "董夏鹏",
+                      "telNo": "19900000005",
+                      "role": {
+                        "name": "设计师",
+                        "value": "Designer",
+                        "key": "Designer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790847904600",
+                  "community": "翡翠湖畔",
+                  "building": "18栋1单元",
+                  "roomNo": "2301",
+                  "address": "翡翠湖畔18栋2301室",
+                  "area": 186.0,
+                  "layout": "",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-10-01 09:45:33"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 1.0,
+                "amount": 21429.14,
+                "cost": 20408.7,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000108",
+                "name": "王昌富",
+                "telNo": "19900000008",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "翡翠湖畔18栋2301室",
+              "area": 186.0,
+              "contractAmount": 21429.14,
+              "cost": 20408.7,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              },
+              "progress": 0,
+              "startDate": "2026-10-10",
+              "planEndDate": "2027-02-10",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "231352376261345280",
+                "status": "Preparing",
+                "statusLabel": "待开工",
+                "statusTone": "info",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/start-preparation",
+                  "label": "开工准备",
+                  "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+                  "ownerRole": "项目经理 / 店长",
+                  "fromStatus": "Preparing",
+                  "toStatus": "Ongoing",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "contract"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-01 17:52:46",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-10-01 17:51:23"
+              },
+              "projectId": "231352287052693504",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790848283546",
+              "name": "李安然（审计A） · 滨湖云谷7栋1602",
+              "customer": {
+                "custId": "231349995851218944",
+                "name": "李安然（审计A）",
+                "telNo": "13900001001",
+                "community": "滨湖云谷",
+                "addr": "滨湖云谷7栋1602",
+                "area": 118.0,
+                "budget": 45.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "231350115581820928",
+                "customer": {
+                  "custId": "231349995851218944",
+                  "name": "李安然（审计A）",
+                  "telNo": "13900001001",
+                  "community": "滨湖云谷",
+                  "addr": "滨湖云谷7栋1602",
+                  "area": 118.0,
+                  "budget": 45.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790847765831",
+                "community": "滨湖云谷",
+                "building": "7栋1单元",
+                "roomNo": "1602",
+                "address": "滨湖云谷7栋1602",
+                "area": 118.0,
+                "layout": "",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-10-01 09:43:17"
+              },
+              "quote": {
+                "quoteId": "231351524058464256",
+                "no": "Q1790848101634",
+                "property": {
+                  "propertyId": "231350115581820928",
+                  "customer": {
+                    "custId": "231349995851218944",
+                    "name": "李安然（审计A）",
+                    "telNo": "13900001001",
+                    "community": "滨湖云谷",
+                    "addr": "滨湖云谷7栋1602",
+                    "area": 118.0,
+                    "budget": 45.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000105",
+                      "name": "董夏鹏",
+                      "telNo": "19900000005",
+                      "role": {
+                        "name": "设计师",
+                        "value": "Designer",
+                        "key": "Designer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790847765831",
+                  "community": "滨湖云谷",
+                  "building": "7栋1单元",
+                  "roomNo": "1602",
+                  "address": "滨湖云谷7栋1602",
+                  "area": 118.0,
+                  "layout": "",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-10-01 09:43:17"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 1.0,
+                "amount": 10294.83,
+                "cost": 9804.6,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000107",
+                "name": "徐勇",
+                "telNo": "19900000007",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "滨湖云谷7栋1602",
+              "area": 118.0,
+              "contractAmount": 10294.83,
+              "cost": 9804.6,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              },
+              "progress": 100,
+              "startDate": "2026-10-01",
+              "planEndDate": "2026-12-31",
+              "currentStageName": "拆除改造",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "231352287052693504",
+                "status": "Accepting",
+                "statusLabel": "待验收",
+                "statusTone": "pending",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "拆除改造",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "100%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/handle-acceptance",
+                  "label": "处理阶段验收",
+                  "hint": "提交验收或等待业主确认，驳回后回到施工整改。",
+                  "ownerRole": "项目经理 / 业主",
+                  "fromStatus": "Accepting",
+                  "toStatus": "Finished",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "acceptance",
+                    "acceptanceRound",
+                    "projectStage",
+                    "projectTask",
+                    "project"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-01 17:56:09",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-10-01 13:28:07"
+              },
+              "projectId": "231286033658937344",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790832487510",
+              "name": "UI测试客户 · 融创城8栋1801室",
+              "customer": {
+                "custId": "228676037641240576",
+                "name": "UI测试客户",
+                "telNo": "13800009901",
+                "community": "融创城",
+                "addr": "融创城8栋1801室",
+                "area": 128.0,
+                "budget": 28.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228676409940246528",
+                "customer": {
+                  "custId": "228676037641240576",
+                  "name": "UI测试客户",
+                  "telNo": "13800009901",
+                  "community": "融创城",
+                  "addr": "融创城8栋1801室",
+                  "area": 128.0,
+                  "budget": 28.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790210304732",
+                "community": "融创城",
+                "building": "8栋",
+                "roomNo": "1801",
+                "address": "融创城8栋1801室",
+                "area": 128.0,
+                "layout": "",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-25 10:30:00"
+              },
+              "quote": {
+                "quoteId": "231285626694008832",
+                "no": "Q1790832390474",
+                "property": {
+                  "propertyId": "228676409940246528",
+                  "customer": {
+                    "custId": "228676037641240576",
+                    "name": "UI测试客户",
+                    "telNo": "13800009901",
+                    "community": "融创城",
+                    "addr": "融创城8栋1801室",
+                    "area": 128.0,
+                    "budget": 28.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790210304732",
+                  "community": "融创城",
+                  "building": "8栋",
+                  "roomNo": "1801",
+                  "address": "融创城8栋1801室",
+                  "area": 128.0,
+                  "layout": "",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-25 10:30:00"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 1.0,
+                "amount": 28.77,
+                "cost": 27.4,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "siteAddr": "融创城8栋1801室",
+              "area": 128.0,
+              "contractAmount": 28.77,
+              "cost": 27.4,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              },
+              "progress": 0,
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "231286033658937344",
+                "status": "Preparing",
+                "statusLabel": "待开工",
+                "statusTone": "info",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/start-preparation",
+                  "label": "开工准备",
+                  "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+                  "ownerRole": "项目经理 / 店长",
+                  "fromStatus": "Preparing",
+                  "toStatus": "Ongoing",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "contract"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-01 13:28:07",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-10-01 13:23:45"
+              },
+              "projectId": "231284936101855232",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790832225830",
+              "name": "蒋涛（演示36） · 翡翠湖畔7栋1701（主房）",
+              "customer": {
+                "custId": "228668988710715392",
+                "name": "蒋涛（演示36）",
+                "telNo": "13910000036",
+                "community": "翡翠湖畔",
+                "addr": "翡翠湖畔7栋1701（主房）",
+                "area": 88.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228668988874293248",
+                "customer": {
+                  "custId": "228668988710715392",
+                  "name": "蒋涛（演示36）",
+                  "telNo": "13910000036",
+                  "community": "翡翠湖畔",
+                  "addr": "翡翠湖畔7栋1701（主房）",
+                  "area": 88.0,
+                  "budget": 30.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790208535412",
+                "community": "翡翠湖畔",
+                "building": "7栋",
+                "roomNo": "1701",
+                "address": "翡翠湖畔7栋1701（主房）",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-06 08:08:55"
+              },
+              "quote": {
+                "quoteId": "228668990845616128",
+                "no": "Q1790208535881",
+                "property": {
+                  "propertyId": "228668988874293248",
+                  "customer": {
+                    "custId": "228668988710715392",
+                    "name": "蒋涛（演示36）",
+                    "telNo": "13910000036",
+                    "community": "翡翠湖畔",
+                    "addr": "翡翠湖畔7栋1701（主房）",
+                    "area": 88.0,
+                    "budget": 30.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790208535412",
+                  "community": "翡翠湖畔",
+                  "building": "7栋",
+                  "roomNo": "1701",
+                  "address": "翡翠湖畔7栋1701（主房）",
+                  "area": 100.0,
+                  "layout": "三室两厅一厨两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-06 08:08:55"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 0.94,
+                "amount": 51839.21,
+                "cost": 57032.0,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "siteAddr": "翡翠湖畔7栋1701（主房）",
+              "area": 100.0,
+              "contractAmount": 51839.21,
+              "cost": 52522.0,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              },
+              "progress": 0,
+              "startDate": "2026-10-05",
+              "planEndDate": "2027-01-08",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "231284936101855232",
+                "status": "Preparing",
+                "statusLabel": "待开工",
+                "statusTone": "info",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/start-preparation",
+                  "label": "开工准备",
+                  "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+                  "ownerRole": "项目经理 / 店长",
+                  "fromStatus": "Preparing",
+                  "toStatus": "Ongoing",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "contract"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-10-01 13:23:46",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-24 08:09:05"
+              },
+              "projectId": "228669029517099008",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790208545100",
+              "name": "昭青演示项目 44",
+              "customer": {
+                "custId": "228669026186821632",
+                "name": "沈悦（演示44）",
+                "telNo": "13910000044",
+                "community": "翡翠湖畔",
+                "addr": "翡翠湖畔5栋503（主房）",
+                "area": 112.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228669026371371008",
+                "customer": {
+                  "custId": "228669026186821632",
+                  "name": "沈悦（演示44）",
+                  "telNo": "13910000044",
+                  "community": "翡翠湖畔",
+                  "addr": "翡翠湖畔5栋503（主房）",
+                  "area": 112.0,
+                  "budget": 30.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790208544352",
+                "community": "翡翠湖畔",
+                "building": "5栋",
+                "roomNo": "503",
+                "address": "翡翠湖畔5栋503（主房）",
+                "area": 110.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-08 08:09:04"
+              },
+              "quote": {
+                "quoteId": "228669028321722368",
+                "no": "Q1790208544816",
+                "property": {
+                  "propertyId": "228669026371371008",
+                  "customer": {
+                    "custId": "228669026186821632",
+                    "name": "沈悦（演示44）",
+                    "telNo": "13910000044",
+                    "community": "翡翠湖畔",
+                    "addr": "翡翠湖畔5栋503（主房）",
+                    "area": 112.0,
+                    "budget": 30.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790208544352",
+                  "community": "翡翠湖畔",
+                  "building": "5栋",
+                  "roomNo": "503",
+                  "address": "翡翠湖畔5栋503（主房）",
+                  "area": 110.0,
+                  "layout": "三室两厅一厨两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-08 08:09:04"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 0.94,
+                "amount": 12502.73,
+                "cost": 30047.4,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000108",
+                "name": "王昌富",
+                "telNo": "19900000008",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "support": {
+                "empId": "1790000000000000102",
+                "name": "吴濛濛",
+                "telNo": "19900000002",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "siteAddr": "演示项目工地 44",
+              "area": 110.0,
+              "contractAmount": 16157.73,
+              "cost": 30047.4,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              },
+              "progress": 0,
+              "startDate": "2026-09-16",
+              "planEndDate": "2026-12-20",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "228669029517099008",
+                "status": "Accepting",
+                "statusLabel": "待验收",
+                "statusTone": "pending",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/handle-acceptance",
+                  "label": "处理阶段验收",
+                  "hint": "提交验收或等待业主确认，驳回后回到施工整改。",
+                  "ownerRole": "项目经理 / 业主",
+                  "fromStatus": "Accepting",
+                  "toStatus": "Finished",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "acceptance",
+                    "acceptanceRound",
+                    "projectStage",
+                    "projectTask",
+                    "project"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-09-24 08:42:26",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-24 08:09:02"
+              },
+              "projectId": "228669019656290304",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790208542749",
+              "name": "昭青演示项目 42",
+              "customer": {
+                "custId": "228669016640585728",
+                "name": "苏杭（演示42）",
+                "telNo": "13910000042",
+                "community": "望江府",
+                "addr": "望江府3栋301（主房）",
+                "area": 88.0,
+                "budget": 24.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228669016778997760",
+                "customer": {
+                  "custId": "228669016640585728",
+                  "name": "苏杭（演示42）",
+                  "telNo": "13910000042",
+                  "community": "望江府",
+                  "addr": "望江府3栋301（主房）",
+                  "area": 88.0,
+                  "budget": 24.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790208542065",
+                "community": "望江府",
+                "building": "3栋",
+                "roomNo": "301",
+                "address": "望江府3栋301（主房）",
+                "area": 90.0,
+                "layout": "四室两厅两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-06 08:09:02"
+              },
+              "quote": {
+                "quoteId": "228669018532216832",
+                "no": "Q1790208542482",
+                "property": {
+                  "propertyId": "228669016778997760",
+                  "customer": {
+                    "custId": "228669016640585728",
+                    "name": "苏杭（演示42）",
+                    "telNo": "13910000042",
+                    "community": "望江府",
+                    "addr": "望江府3栋301（主房）",
+                    "area": 88.0,
+                    "budget": 24.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790208542065",
+                  "community": "望江府",
+                  "building": "3栋",
+                  "roomNo": "301",
+                  "address": "望江府3栋301（主房）",
+                  "area": 90.0,
+                  "layout": "四室两厅两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-06 08:09:02"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 0.94,
+                "amount": 16547.06,
+                "cost": 18580.0,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000108",
+                "name": "王昌富",
+                "telNo": "19900000008",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "support": {
+                "empId": "1790000000000000102",
+                "name": "吴濛濛",
+                "telNo": "19900000002",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "siteAddr": "演示项目工地 42",
+              "area": 90.0,
+              "contractAmount": 20067.06,
+              "cost": 18580.0,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              },
+              "progress": 0,
+              "startDate": "2026-09-16",
+              "planEndDate": "2026-12-20",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "228669019656290304",
+                "status": "Accepting",
+                "statusLabel": "待验收",
+                "statusTone": "pending",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/handle-acceptance",
+                  "label": "处理阶段验收",
+                  "hint": "提交验收或等待业主确认，驳回后回到施工整改。",
+                  "ownerRole": "项目经理 / 业主",
+                  "fromStatus": "Accepting",
+                  "toStatus": "Finished",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "acceptance",
+                    "acceptanceRound",
+                    "projectStage",
+                    "projectTask",
+                    "project"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-09-24 08:42:24",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-24 08:09:00"
+              },
+              "projectId": "228669010604982272",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790208540592",
+              "name": "昭青演示项目 40",
+              "customer": {
+                "custId": "228669007203401728",
+                "name": "叶青（演示40）",
+                "telNo": "13910000040",
+                "community": "滨湖世纪城",
+                "addr": "滨湖世纪城1栋105（主房）",
+                "area": 136.0,
+                "budget": 18.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228669007455059968",
+                "customer": {
+                  "custId": "228669007203401728",
+                  "name": "叶青（演示40）",
+                  "telNo": "13910000040",
+                  "community": "滨湖世纪城",
+                  "addr": "滨湖世纪城1栋105（主房）",
+                  "area": 136.0,
+                  "budget": 18.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790208539842",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "105",
+                "address": "滨湖世纪城1栋105（主房）",
+                "area": 140.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-10 08:08:59"
+              },
+              "quote": {
+                "quoteId": "228669009409605632",
+                "no": "Q1790208540307",
+                "property": {
+                  "propertyId": "228669007455059968",
+                  "customer": {
+                    "custId": "228669007203401728",
+                    "name": "叶青（演示40）",
+                    "telNo": "13910000040",
+                    "community": "滨湖世纪城",
+                    "addr": "滨湖世纪城1栋105（主房）",
+                    "area": 136.0,
+                    "budget": 18.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790208539842",
+                  "community": "滨湖世纪城",
+                  "building": "1栋",
+                  "roomNo": "105",
+                  "address": "滨湖世纪城1栋105（主房）",
+                  "area": 140.0,
+                  "layout": "三室两厅一厨两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-10 08:08:59"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 0.94,
+                "amount": 12918.84,
+                "cost": 14409.0,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000108",
+                "name": "王昌富",
+                "telNo": "19900000008",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "support": {
+                "empId": "1790000000000000102",
+                "name": "吴濛濛",
+                "telNo": "19900000002",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "siteAddr": "演示项目工地 40",
+              "area": 140.0,
+              "contractAmount": 16198.84,
+              "cost": 14409.0,
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              },
+              "progress": 0,
+              "startDate": "2026-09-16",
+              "planEndDate": "2026-12-20",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "228669010604982272",
+                "status": "Ongoing",
+                "statusLabel": "施工中",
+                "statusTone": "alert",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/advance-tasks",
+                  "label": "推进施工任务",
+                  "hint": "按阶段推进任务、材料和现场汇报。",
+                  "ownerRole": "项目经理",
+                  "fromStatus": "Ongoing",
+                  "toStatus": "Accepting",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "materials"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-09-24 08:42:24",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            },
+            {
+              "createTime": {
+                "dateTime": "2026-09-24 08:08:58"
+              },
+              "projectId": "228669001515925504",
+              "businessOrigin": {
+                "name": "正常业务",
+                "value": "New",
+                "key": "New"
+              },
+              "no": "P1790208538424",
+              "name": "昭青演示项目 38",
+              "customer": {
+                "custId": "228668997762023424",
+                "name": "余凡（演示38）",
+                "telNo": "13910000038",
+                "community": "高新云谷",
+                "addr": "高新云谷9栋1903（主房）",
+                "area": 112.0,
+                "budget": 36.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "property": {
+                "propertyId": "228668997900435456",
+                "customer": {
+                  "custId": "228668997762023424",
+                  "name": "余凡（演示38）",
+                  "telNo": "13910000038",
+                  "community": "高新云谷",
+                  "addr": "高新云谷9栋1903（主房）",
+                  "area": 112.0,
+                  "budget": 36.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1790208537563",
+                "community": "高新云谷",
+                "building": "9栋",
+                "roomNo": "1903",
+                "address": "高新云谷9栋1903（主房）",
+                "area": 120.0,
+                "layout": "四室两厅两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "1790000000000000104",
+                  "name": "黄贤杰",
+                  "telNo": "19900000004",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-09-08 08:08:57"
+              },
+              "quote": {
+                "quoteId": "228668999834009600",
+                "no": "Q1790208538024",
+                "property": {
+                  "propertyId": "228668997900435456",
+                  "customer": {
+                    "custId": "228668997762023424",
+                    "name": "余凡（演示38）",
+                    "telNo": "13910000038",
+                    "community": "高新云谷",
+                    "addr": "高新云谷9栋1903（主房）",
+                    "area": 112.0,
+                    "budget": 36.0,
+                    "status": {
+                      "name": "履约中",
+                      "key": "Serving"
+                    },
+                    "owner": {
+                      "empId": "1790000000000000104",
+                      "name": "黄贤杰",
+                      "telNo": "19900000004",
+                      "role": {
+                        "name": "业务员",
+                        "value": "Marketer",
+                        "key": "Marketer"
+                      }
+                    }
+                  },
+                  "propertyNo": "H1790208537563",
+                  "community": "高新云谷",
+                  "building": "9栋",
+                  "roomNo": "1903",
+                  "address": "高新云谷9栋1903（主房）",
+                  "area": 120.0,
+                  "layout": "四室两厅两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  },
+                  "salesman": {
+                    "empId": "1790000000000000104",
+                    "name": "黄贤杰",
+                    "telNo": "19900000004",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  },
+                  "designer": {
+                    "empId": "1790000000000000105",
+                    "name": "董夏鹏",
+                    "telNo": "19900000005",
+                    "role": {
+                      "name": "设计师",
+                      "value": "Designer",
+                      "key": "Designer"
+                    }
+                  },
+                  "latestMeasureAt": "2026-09-08 08:08:57"
+                },
+                "createdBy": {
+                  "empId": "1790000000000000105",
+                  "name": "董夏鹏",
+                  "telNo": "19900000005",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "discount": 0.94,
+                "amount": 32470.53,
+                "cost": 34218.2,
+                "status": {
+                  "name": "已转项目",
+                  "key": "Converted"
+                }
+              },
+              "designer": {
+                "empId": "1790000000000000105",
+                "name": "董夏鹏",
+                "telNo": "19900000005",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "manager": {
+                "empId": "1790000000000000108",
+                "name": "王昌富",
+                "telNo": "19900000008",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "support": {
+                "empId": "1790000000000000102",
+                "name": "吴濛濛",
+                "telNo": "19900000002",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "siteAddr": "演示项目工地 38",
+              "area": 120.0,
+              "contractAmount": 35510.53,
+              "cost": 34218.2,
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              },
+              "progress": 0,
+              "startDate": "2026-09-16",
+              "planEndDate": "2026-12-20",
+              "currentStageName": "开工交底",
+              "businessStateView": {
+                "objectKey": "project",
+                "objectId": "228669001515925504",
+                "status": "Ongoing",
+                "statusLabel": "施工中",
+                "statusTone": "alert",
+                "derivedLabels": [
+                  {
+                    "key": "currentStage",
+                    "label": "开工交底",
+                    "tone": "info"
+                  },
+                  {
+                    "key": "progress",
+                    "label": "0%",
+                    "tone": "progress"
+                  },
+                  {
+                    "key": "risk",
+                    "label": "正常",
+                    "tone": "alert"
+                  }
+                ],
+                "nextAction": {
+                  "key": "project/advance-tasks",
+                  "label": "推进施工任务",
+                  "hint": "按阶段推进任务、材料和现场汇报。",
+                  "ownerRole": "项目经理",
+                  "fromStatus": "Ongoing",
+                  "toStatus": "Accepting",
+                  "enabled": true,
+                  "blockedReasons": [],
+                  "missingFields": [],
+                  "reloadScopes": [
+                    "project",
+                    "projectStage",
+                    "projectTask",
+                    "materials"
+                  ],
+                  "businessRefs": [
+                    "BR-008",
+                    "BR-010",
+                    "SCN-003"
+                  ]
+                },
+                "blockedReasons": [],
+                "nextOwner": "项目经理",
+                "updatedAt": "2026-09-24 08:42:22",
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              }
+            }
+          ],
+          "last": true,
+          "totalElements": "11",
+          "totalPages": 1,
+          "first": true,
+          "size": 100
+        }
+      }
+    },
+    {
+      "step": "item/page:233710289445453824",
+      "route": "material/selection/item/page",
+      "request": {
+        "projectId": "233710289445453824"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "content": [
+            {
+              "itemId": "233710002844467203",
+              "projectId": "233710289445453824",
+              "projectNo": "P1791410475126",
+              "projectName": "彭静（演示30） · 高新云谷1栋1101（主房）",
+              "propertyId": "228668969349808128",
+              "propertyAddress": "高新云谷1栋1101（主房）",
+              "customerName": "彭静（演示30）",
+              "designerName": "董夏鹏",
+              "contractId": "233710002739609600",
+              "contractNo": "C1791410406775",
+              "spaceName": "客餐厅",
+              "category": "地板",
+              "materialName": "石材--管仲新三层地板（1.4）",
+              "brand": "管仲",
+              "unit": "m²",
+              "quantity": 30.0,
+              "sort": 3,
+              "required": true,
+              "orderStatus": "none",
+              "orderStatusName": "未下单",
+              "nextAction": "开始选材"
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 1
+        }
+      }
+    },
+    {
+      "step": "designer save(不交付)",
+      "route": "material/selection/save",
+      "request": {
+        "propertyId": "228668969349808128",
+        "projectId": "233710289445453824",
+        "contractLineId": "233710002844467203",
+        "title": "石材--管仲新三层地板（1.4）",
+        "content": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+        "attachments": [],
+        "deliver": false
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "createTime": {
+            "dateTime": "2026-10-09 23:41:26"
+          },
+          "updateTime": {
+            "dateTime": "2026-10-09 23:41:26"
+          },
+          "selectionId": "234339482512392192",
+          "owner": {
+            "empId": "1790000000000000104",
+            "name": "黄贤杰",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "customer": {
+            "custId": "228668969219784704",
+            "name": "彭静（演示30）",
+            "telNo": "13910000030"
+          },
+          "property": {
+            "propertyId": "228668969349808128",
+            "propertyNo": "H1790208530757",
+            "community": "高新云谷",
+            "building": "1栋",
+            "roomNo": "1101",
+            "address": "高新云谷1栋1101（主房）",
+            "area": 110.0,
+            "layout": "四室两厅两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "contract": {
+            "contractId": "233710002739609600",
+            "no": "C1791410406775",
+            "baselineAmount": 58903.17,
+            "signedAmount": 58903.17
+          },
+          "project": {
+            "projectId": "233710289445453824",
+            "no": "P1791410475126",
+            "name": "彭静（演示30） · 高新云谷1栋1101（主房）"
+          },
+          "version": 1,
+          "status": {
+            "name": "已选材",
+            "key": "Selected"
+          },
+          "title": "石材--管仲新三层地板（1.4）",
+          "content": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+          "selectionJson": "{\"color\": \"暖灰石纹\", \"spec\": \"750×1500\", \"brand\": \"马可波罗\", \"craft\": \"哑光防滑\", \"remark\": \"接口冒烟\"}",
+          "attachments": [],
+          "designer": {
+            "empId": "1790000000000000105",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        }
+      }
+    },
+    {
+      "step": "item/info 回读",
+      "route": "material/selection/item/info",
+      "request": {
+        "projectId": "233710289445453824",
+        "contractLineId": "233710002844467203"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "itemId": "233710002844467203",
+          "projectId": "233710289445453824",
+          "projectNo": "P1791410475126",
+          "projectName": "彭静（演示30） · 高新云谷1栋1101（主房）",
+          "propertyId": "228668969349808128",
+          "propertyAddress": "高新云谷1栋1101（主房）",
+          "customerName": "彭静（演示30）",
+          "designerName": "董夏鹏",
+          "contractId": "233710002739609600",
+          "contractNo": "C1791410406775",
+          "spaceName": "客餐厅",
+          "category": "地板",
+          "materialName": "石材--管仲新三层地板（1.4）",
+          "brand": "管仲",
+          "unit": "m²",
+          "quantity": 30.0,
+          "sort": 3,
+          "required": true,
+          "selectionId": "234339482512392192",
+          "version": 1,
+          "status": "Selected",
+          "statusName": "已选材",
+          "selectionText": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+          "selectionJson": "{\"color\": \"暖灰石纹\", \"spec\": \"750×1500\", \"brand\": \"马可波罗\", \"craft\": \"哑光防滑\", \"remark\": \"接口冒烟\"}",
+          "attachments": [],
+          "updatedAt": "20261009234126",
+          "orderStatus": "none",
+          "orderStatusName": "未下单",
+          "nextAction": "交付财务下单"
+        }
+      }
+    },
+    {
+      "step": "upload(MaterialSelection)",
+      "route": "file/private/grant",
+      "request": {
+        "businessType": "MaterialSelection",
+        "projectId": "233710289445453824",
+        "file": "smoke-selection.png"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": [
+          {
+            "businessType": {
+              "name": "主材选材",
+              "value": "MaterialSelection",
+              "key": "MaterialSelection"
+            },
+            "projectId": "233710289445453824",
+            "path": "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png",
+            "url": "https://decoboon.oss-cn-hangzhou.aliyuncs.com/companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png?Expires=1791560786&OSSAccessKeyId=LTAI5t8Yo1La1RfA6qtJoDt8&Signature=Aqn0%2FET%2FOxzY7US4FKmAX%2Fgod8c%3D",
+            "expiresAt": "2026-10-09 23:46:26",
+            "name": "smoke-selection.png",
+            "contentType": "image/png",
+            "size": "69"
+          }
+        ]
+      }
+    },
+    {
+      "step": "designer save(带图并交付)",
+      "route": "material/selection/save",
+      "request": {
+        "propertyId": "228668969349808128",
+        "projectId": "233710289445453824",
+        "contractLineId": "233710002844467203",
+        "title": "石材--管仲新三层地板（1.4）",
+        "content": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+        "attachments": [
+          "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png"
+        ],
+        "deliver": true
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "createTime": {
+            "dateTime": "2026-10-09 23:41:26"
+          },
+          "updateTime": {
+            "dateTime": "2026-10-09 23:41:26"
+          },
+          "selectionId": "234339482512392192",
+          "owner": {
+            "empId": "1790000000000000104",
+            "name": "黄贤杰",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "customer": {
+            "custId": "228668969219784704",
+            "name": "彭静（演示30）",
+            "telNo": "13910000030"
+          },
+          "property": {
+            "propertyId": "228668969349808128",
+            "propertyNo": "H1790208530757",
+            "community": "高新云谷",
+            "building": "1栋",
+            "roomNo": "1101",
+            "address": "高新云谷1栋1101（主房）",
+            "area": 110.0,
+            "layout": "四室两厅两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "contract": {
+            "contractId": "233710002739609600",
+            "no": "C1791410406775",
+            "baselineAmount": 58903.17,
+            "signedAmount": 58903.17
+          },
+          "project": {
+            "projectId": "233710289445453824",
+            "no": "P1791410475126",
+            "name": "彭静（演示30） · 高新云谷1栋1101（主房）"
+          },
+          "version": 1,
+          "status": {
+            "name": "已选材",
+            "key": "Selected"
+          },
+          "title": "石材--管仲新三层地板（1.4）",
+          "content": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+          "selectionJson": "{\"color\": \"暖灰石纹\", \"spec\": \"750×1500\", \"brand\": \"马可波罗\", \"craft\": \"哑光防滑\", \"remark\": \"接口冒烟\"}",
+          "attachments": [
+            "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png"
+          ],
+          "designer": {
+            "empId": "1790000000000000105",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        }
+      }
+    },
+    {
+      "step": "item/info 回读(交付后)",
+      "route": "material/selection/item/info",
+      "request": {
+        "projectId": "233710289445453824",
+        "contractLineId": "233710002844467203"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "itemId": "233710002844467203",
+          "projectId": "233710289445453824",
+          "projectNo": "P1791410475126",
+          "projectName": "彭静（演示30） · 高新云谷1栋1101（主房）",
+          "propertyId": "228668969349808128",
+          "propertyAddress": "高新云谷1栋1101（主房）",
+          "customerName": "彭静（演示30）",
+          "designerName": "董夏鹏",
+          "contractId": "233710002739609600",
+          "contractNo": "C1791410406775",
+          "spaceName": "客餐厅",
+          "category": "地板",
+          "materialName": "石材--管仲新三层地板（1.4）",
+          "brand": "管仲",
+          "unit": "m²",
+          "quantity": 30.0,
+          "sort": 3,
+          "required": true,
+          "selectionId": "234339482512392192",
+          "version": 1,
+          "status": "Selected",
+          "statusName": "已选材",
+          "selectionText": "颜色/花色：暖灰石纹；规格/型号：750×1500；品牌/系列：马可波罗；工艺：哑光防滑；备注：接口冒烟",
+          "selectionJson": "{\"color\": \"暖灰石纹\", \"spec\": \"750×1500\", \"brand\": \"马可波罗\", \"craft\": \"哑光防滑\", \"remark\": \"接口冒烟\"}",
+          "attachments": [
+            "companies/1790000000000000001/projects/233710289445453824/files/materialselection/2026/10/e4f7daececfd4b40be0cca0ad5de1c3c.png"
+          ],
+          "updatedAt": "20261009234126",
+          "orderStatus": "ready",
+          "orderStatusName": "待财务下单",
+          "nextAction": "等待财务下单"
+        }
+      }
+    },
+    {
+      "step": "plan/page",
+      "route": "project/material-plan/page",
+      "request": {
+        "projectId": "233710289445453824"
+      },
+      "httpStatus": 200,
+      "response": {
+        "success": true,
+        "errorCode": null,
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-10-08 06:01:15"
+              },
+              "planId": "233710289621614592",
+              "project": {
+                "projectId": "233710289445453824",
+                "no": "P1791410475126",
+                "name": "彭静（演示30） · 高新云谷1栋1101（主房）",
+                "siteAddr": "高新云谷1栋1101（主房）"
+              },
+              "catalogItem": {
+                "itemId": "228668590105034752",
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "brand": "管仲",
+                "name": "石材--管仲新三层地板（1.4）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                }
+              },
+              "quantity": 30.0,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "unitPrice": 135.6,
+              "cost": 4068.0,
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              },
+              "requiredAt": "2026-10-07",
+              "selectedBrand": "管仲",
+              "materialKey": "ci:228668590105034752|brand:管仲|unit:Area",
+              "netQuantity": 30.0,
+              "lossRate": 0.0,
+              "lossQuantity": 0.0
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 1
+        }
+      }
+    }
+  ]
+}

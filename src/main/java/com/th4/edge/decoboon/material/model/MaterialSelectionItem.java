@@ -2,8 +2,9 @@ package com.th4.edge.decoboon.material.model;
 
 import com.th4.edge.framework.core.annotation.Note;
 
+import java.util.List;
+
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * 项目主材选材分项读模型。
@@ -39,9 +40,7 @@ public class MaterialSelectionItem {
     @Note("选材状态名称") private String statusName;
     @Note("可读选材文本") private String selectionText;
     @Note("选材 JSON 快照") private String selectionJson;
-    @Note("客户确认人姓名") private String confirmerName;
-    @Note("确认操作员工姓名") private String confirmedByName;
-    @Note("客户确认时间") private LocalDateTime confirmedAt;
+    @Note("选材图片附件") private List<String> attachments;
     @Note("最近更新时间（毫秒时间戳）") private Long updatedAt;
     @Note("下单状态值") private String orderStatus;
     @Note("下单状态名称") private String orderStatusName;
@@ -97,12 +96,8 @@ public class MaterialSelectionItem {
     public void setSelectionText(String selectionText) { this.selectionText = selectionText; }
     public String getSelectionJson() { return selectionJson; }
     public void setSelectionJson(String selectionJson) { this.selectionJson = selectionJson; }
-    public String getConfirmerName() { return confirmerName; }
-    public void setConfirmerName(String confirmerName) { this.confirmerName = confirmerName; }
-    public String getConfirmedByName() { return confirmedByName; }
-    public void setConfirmedByName(String confirmedByName) { this.confirmedByName = confirmedByName; }
-    public LocalDateTime getConfirmedAt() { return confirmedAt; }
-    public void setConfirmedAt(LocalDateTime confirmedAt) { this.confirmedAt = confirmedAt; }
+    public List<String> getAttachments() { return attachments; }
+    public void setAttachments(List<String> attachments) { this.attachments = attachments; }
     public Long getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Long updatedAt) { this.updatedAt = updatedAt; }
     public String getOrderStatus() { return orderStatus; }

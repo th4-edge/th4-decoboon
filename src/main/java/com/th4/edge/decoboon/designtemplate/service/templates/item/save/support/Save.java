@@ -42,7 +42,7 @@ import java.math.BigDecimal;
                         "catalogItem"}),
         // 返回给前端只允许销售侧字段，绝不返回 costPrice（BR-003 / BR-037）
         @AllowProperties(model = CatalogItem.class,
-                properties = {"itemId", "name", "unit", "pricingMode", "category", "brand", "spec",
+                properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
                         "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"})
 })

@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.design.service.spaces.save.support;
 
 import com.th4.edge.decoboon.design.context.DesignContext;
+import com.th4.edge.decoboon.design.context.DesignFormulaRecalcContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
@@ -22,6 +23,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -78,16 +80,20 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
     private final SpaceRepository spaceRepository;
     private final DesignRepository designRepository;
     private final DataScopeContext dataScopeContext;
+    private final DesignFormulaRecalcContext formulaRecalcContext;
 
     public Save(DesignContext designContext, SpaceRepository spaceRepository,
-                DesignRepository designRepository, DataScopeContext dataScopeContext) {
+                DesignRepository designRepository, DataScopeContext dataScopeContext,
+                DesignFormulaRecalcContext formulaRecalcContext) {
         this.designContext = designContext;
         this.spaceRepository = spaceRepository;
         this.designRepository = designRepository;
         this.dataScopeContext = dataScopeContext;
+        this.formulaRecalcContext = formulaRecalcContext;
     }
 
     @Override
+    @Transactional
     public Space call(Space request) {
         Design design = designContext.requireDesign(designId, employee);
         designContext.requireEditable(design);
@@ -105,6 +111,7 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
         Space saved = spaceRepository.save(target);
         updateDesignArea(design);
         designRepository.save(design);
+        formulaRecalcContext.recalculate(design);
         return saved;
     }
 

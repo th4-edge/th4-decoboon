@@ -39,7 +39,13 @@ public class DesignTemplateFormulaContext {
     /** 专业变量（模版层唯一合法命名空间）。 */
     public static final Set<String> INPUT_VARIABLES = Set.of("L", "W", "H", "DW", "DA", "WA", "WR", "N");
     public static final Set<String> DERIVED_VARIABLES = Set.of("A", "P", "WP", "CP");
-    public static final Set<String> FUNCTIONS = Set.of("SUM", "MIN", "MAX", "ROUND");
+    public static final Set<String> FUNCTIONS = Set.of("SUM", "MIN", "MAX", "ROUND", "COUNT");
+
+    /** 实例化“待补尺寸”标记：quantity=0 且 formula 以该前缀开头；不新增 DDL。 */
+    public static final String PENDING_MEASURE_MARKER = "__PENDING_MEASURE__";
+
+    /** 区域数量内部变量键（只允许通过 COUNT(room) 使用，避免裸 ROOM 进入公式）。 */
+    public static final String ROOM_COUNT_KEY = "#ROOM_COUNT#";
 
     /** 单元格引用（F2 / AB12）——模版层必须拒绝。 */
     private static final Pattern CELL_REFERENCE = Pattern.compile("(?<![A-Za-z0-9_])([A-Za-z]{1,3}[0-9]{1,7})(?![A-Za-z0-9_])");
@@ -62,6 +68,7 @@ public class DesignTemplateFormulaContext {
         putIfReady(variables, "WA", room.getWindowAreaTotal());
         putIfReady(variables, "WR", room.getWallRise());
         variables.put("N", BigDecimal.valueOf(room.getCount() == null ? 1 : room.getCount()));
+        variables.put(ROOM_COUNT_KEY, BigDecimal.ONE);
 
         BigDecimal length = room.getLength();
         BigDecimal width = room.getWidth();
@@ -109,6 +116,7 @@ public class DesignTemplateFormulaContext {
         probe.put("P", BigDecimal.ONE);
         probe.put("WP", BigDecimal.ONE);
         probe.put("CP", BigDecimal.ONE);
+        probe.put(ROOM_COUNT_KEY, BigDecimal.ONE);
         new Parser(normalized, probe).parseAll();
     }
 
@@ -297,6 +305,21 @@ public class DesignTemplateFormulaContext {
             String name = source.substring(start, position).toUpperCase(Locale.ROOT);
             skipSpace();
             if (eat('(')) {
+                if (name.equals("COUNT")) {
+                    int argumentStart = position;
+                    while (position < source.length() && source.charAt(position) != ')') {
+                        position++;
+                    }
+                    if (position >= source.length()) {
+                        throw error("TEMPLATE_FORMULA_SYNTAX", "COUNT 缺少右括号");
+                    }
+                    String argument = source.substring(argumentStart, position).trim();
+                    position++;
+                    if (!argument.equalsIgnoreCase("room")) {
+                        throw error("TEMPLATE_FORMULA_SYNTAX", "COUNT 只支持 COUNT(room)");
+                    }
+                    return 0;
+                }
                 // SUM/MIN/MAX/ROUND：参数同维，函数不改变量纲
                 int dimension = -1;
                 skipSpace();
@@ -439,6 +462,26 @@ public class DesignTemplateFormulaContext {
         private BigDecimal function(String name, String raw) {
             if (!FUNCTIONS.contains(name)) {
                 throw error("TEMPLATE_FUNCTION_UNKNOWN", "未识别的函数：" + raw);
+            }
+            if (name.equals("COUNT")) {
+                skipSpace();
+                int argumentStart = position;
+                while (position < source.length() && source.charAt(position) != ')') {
+                    position++;
+                }
+                if (position >= source.length()) {
+                    throw error("TEMPLATE_FORMULA_SYNTAX", "COUNT 缺少右括号");
+                }
+                String argument = source.substring(argumentStart, position).trim();
+                position++;
+                if (!argument.equalsIgnoreCase("room")) {
+                    throw error("TEMPLATE_FORMULA_SYNTAX", "COUNT 只支持 COUNT(room)");
+                }
+                BigDecimal count = variables.get(ROOM_COUNT_KEY);
+                if (count == null) {
+                    throw error("TEMPLATE_SIZE_MISSING", "区域数量不可用，暂不可计算");
+                }
+                return count;
             }
             List<BigDecimal> arguments = new ArrayList<>();
             skipSpace();

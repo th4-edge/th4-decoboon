@@ -228,8 +228,8 @@ public class Batch implements com.th4.edge.decoboon.project.service.purchases.ba
                                 plan.getCompany().getComId(), plan.getContractLine().getLineId())
                         .orElse(null);
             }
-            if (selection == null || selection.getStatus() != SelectionStatus.Confirmed) {
-                throw new DefinedException(new DefaultErrorCode("400", "该材料尚未完成客户选材确认，确认后方可下单"));
+            if (selection == null || selection.getStatus() != SelectionStatus.Selected) {
+                throw new DefinedException(new DefaultErrorCode("400", "该材料尚未完成主材选材，完成后方可下单"));
             }
         }
     }

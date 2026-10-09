@@ -5,9 +5,13 @@ import com.th4.edge.decoboon.material.configure.SelectionStatus;
 import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
 import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
+import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.context.MaterialPlanContext;
 import com.th4.edge.decoboon.project.model.ContractLine;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.model.Company;
@@ -20,44 +24,46 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/** 主材选材业务流程单元测试：版本保留、确认幂等、上下文门禁与金额不变。 */
+/**
+ * 主材选材现场代录流程单元测试（DEC-056）：保存即已选材、交付财务下单、上下文门禁与金额不变。
+ */
 @ExtendWith(MockitoExtension.class)
 class MaterialSelectionFlowTest {
 
     @Mock private MaterialSelectionContext context;
     @Mock private MaterialSelectionRepository repository;
+    @Mock private MaterialPlanRepository planRepository;
     @Mock private Employee employee;
 
     private com.th4.edge.decoboon.material.service.selections.save.support.Save save;
-    private com.th4.edge.decoboon.material.service.selections.confirm.support.Confirm confirm;
     /** 模拟持久化上下文返回的同一条记录。 */
     private MaterialSelection persisted;
 
     @BeforeEach
     void setUp() {
-        save = new com.th4.edge.decoboon.material.service.selections.save.support.Save(context, repository);
-        confirm = new com.th4.edge.decoboon.material.service.selections.confirm.support.Confirm(context, repository, mock(com.th4.edge.decoboon.project.repository.MaterialPlanRepository.class), new com.th4.edge.decoboon.project.context.MaterialPlanContext());
+        save = new com.th4.edge.decoboon.material.service.selections.save.support.Save(
+                context, repository, planRepository, mock(MaterialPlanContext.class));
         persisted = null;
     }
 
     @Test
-    void firstSaveCreatesVersionOneDraftWithoutTouchingContractAmount() throws Exception {
+    void firstSaveMarksSelectedWithoutTouchingContractAmount() throws Exception {
         Property property = property();
         ProjectContract contract = contract(property);
         stubMaintain(property, contract);
+        when(context.plansOf(null, null)).thenReturn(List.of());
         when(repository.findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(1L, 7L, 9L))
                 .thenReturn(Optional.empty());
         stubPersist(101L);
@@ -70,59 +76,86 @@ class MaterialSelectionFlowTest {
         MaterialSelection result = save.call(new MaterialSelection());
 
         assertEquals(1, result.getVersion());
-        assertEquals(SelectionStatus.Draft, result.getStatus());
+        assertEquals(SelectionStatus.Selected, result.getStatus());
         assertEquals(0, new BigDecimal("120000.00").compareTo(contract.getSignedAmount()),
                 "保存选材文本不得改动合同签约金额");
     }
 
     @Test
-    void ongoingDraftIsSavedInPlaceInsteadOfStackingVersions() throws Exception {
+    void ongoingSelectionIsSavedInPlaceInsteadOfStackingVersions() throws Exception {
         Property property = property();
         ProjectContract contract = contract(property);
         stubMaintain(property, contract);
-        MaterialSelection draft = new MaterialSelection();
-        draft.setSelectionId(50L);
-        draft.setVersion(1);
-        draft.setStatus(SelectionStatus.Draft);
+        MaterialSelection ongoing = new MaterialSelection();
+        ongoing.setSelectionId(50L);
+        ongoing.setVersion(1);
+        ongoing.setStatus(SelectionStatus.Selected);
+        when(context.plansOf(null, null)).thenReturn(List.of());
         when(repository.findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(1L, 7L, 9L))
-                .thenReturn(Optional.of(draft));
+                .thenReturn(Optional.of(ongoing));
         stubPersist(50L);
 
         inject(save, "propertyId", 7L);
         inject(save, "contractId", 9L);
-        inject(save, "status", SelectionStatus.PendingConfirm);
         inject(save, "content", "客厅地板：原木色多层实木");
         inject(save, "employee", employee);
 
         MaterialSelection result = save.call(new MaterialSelection());
 
-        assertEquals(1, result.getVersion(), "未确认版本原地保存，不产生新版本");
-        assertEquals(SelectionStatus.PendingConfirm, result.getStatus());
+        assertEquals(1, result.getVersion(), "同一分项原地保存，不产生新版本");
+        assertEquals(SelectionStatus.Selected, result.getStatus());
     }
 
     @Test
-    void confirmedVersionIsKeptAndChangeFormsNewVersion() throws Exception {
+    void saveWithDeliverPromotesPlannedPlanToReadyToOrder() throws Exception {
         Property property = property();
         ProjectContract contract = contract(property);
         stubMaintain(property, contract);
-        MaterialSelection confirmed = new MaterialSelection();
-        confirmed.setSelectionId(80L);
-        confirmed.setVersion(3);
-        confirmed.setStatus(SelectionStatus.Confirmed);
+        MaterialPlan plan = new MaterialPlan();
+        plan.setPlanId(1L);
+        plan.setStatus(MaterialPlanStatus.Planned);
+        when(context.plansOf(null, null)).thenReturn(List.of(plan));
+        when(context.selectionLocked(plan)).thenReturn(false);
         when(repository.findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(1L, 7L, 9L))
-                .thenReturn(Optional.of(confirmed));
-        stubPersist(81L);
+                .thenReturn(Optional.empty());
+        stubPersist(70L);
 
         inject(save, "propertyId", 7L);
         inject(save, "contractId", 9L);
-        inject(save, "content", "主卧地板改为深胡桃色");
+        inject(save, "content", "主卧地板：深胡桃色");
+        inject(save, "deliver", Boolean.TRUE);
         inject(save, "employee", employee);
 
         MaterialSelection result = save.call(new MaterialSelection());
 
-        assertEquals(4, result.getVersion(), "已确认版本保留，变更形成新版本");
-        assertEquals(3, confirmed.getVersion(), "历史已确认版本不被覆盖");
-        assertEquals(SelectionStatus.Confirmed, confirmed.getStatus());
+        assertEquals(SelectionStatus.Selected, result.getStatus());
+        assertEquals(MaterialPlanStatus.ReadyToOrder, plan.getStatus(), "交付财务下单后计划行进入可下单");
+        assertEquals(result, plan.getSelection());
+        verify(planRepository).save(plan);
+    }
+
+    @Test
+    void saveWithoutDeliverKeepsPlanPlanned() throws Exception {
+        Property property = property();
+        ProjectContract contract = contract(property);
+        stubMaintain(property, contract);
+        MaterialPlan plan = new MaterialPlan();
+        plan.setPlanId(2L);
+        plan.setStatus(MaterialPlanStatus.Planned);
+        when(context.plansOf(null, null)).thenReturn(List.of(plan));
+        when(context.selectionLocked(plan)).thenReturn(false);
+        when(repository.findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(1L, 7L, 9L))
+                .thenReturn(Optional.empty());
+        stubPersist(71L);
+
+        inject(save, "propertyId", 7L);
+        inject(save, "contractId", 9L);
+        inject(save, "content", "次卧地板：浅橡木色");
+        inject(save, "employee", employee);
+
+        save.call(new MaterialSelection());
+
+        assertEquals(MaterialPlanStatus.Planned, plan.getStatus(), "仅保存不交付时不推进计划行");
     }
 
     @Test
@@ -142,6 +175,7 @@ class MaterialSelectionFlowTest {
         when(context.requireProperty(7L, employee)).thenReturn(property);
         when(context.requireProject(20L, property, employee)).thenReturn(project);
         when(context.requireContractLine(30L, project, employee)).thenReturn(line);
+        when(context.plansOf(project, line)).thenReturn(List.of());
         when(repository.findFirstByCompany_ComIdAndSourceContractLine_LineIdOrderByVersionDesc(1L, 30L))
                 .thenReturn(Optional.empty());
         stubPersist(90L);
@@ -161,49 +195,30 @@ class MaterialSelectionFlowTest {
     }
 
     @Test
-    void confirmIsIdempotentAndRecordsClientName() throws Exception {
-        MaterialSelection pending = new MaterialSelection();
-        pending.setSelectionId(60L);
-        pending.setStatus(SelectionStatus.PendingConfirm);
-        pending.setContract(new ProjectContract());
-        when(context.requireEmployee(employee)).thenReturn(employee);
-        when(context.require(60L, employee)).thenReturn(pending);
-        stubPersist(60L);
-        when(repository.findBySelectionId(60L)).thenAnswer(invocation -> Optional.of(pending));
-
-        inject(confirm, "selectionId", 60L);
-        inject(confirm, "confirmerName", "王先生");
-        inject(confirm, "employee", employee);
-
-        MaterialSelection result = confirm.call(new MaterialSelection());
-        assertEquals(SelectionStatus.Confirmed, result.getStatus());
-        assertEquals("王先生", result.getConfirmerName());
-        assertNotNull(result.getConfirmedAt());
-
-        MaterialSelection again = confirm.call(new MaterialSelection());
-        assertEquals(SelectionStatus.Confirmed, again.getStatus());
-        verify(repository, times(1)).saveAndFlush(any(MaterialSelection.class));
-    }
-
-    @Test
-    void confirmWithoutContractOrProjectIsRejected() throws Exception {
-        MaterialSelection draft = new MaterialSelection();
-        draft.setSelectionId(61L);
-        draft.setStatus(SelectionStatus.Draft);
-        when(context.requireEmployee(employee)).thenReturn(employee);
-        when(context.require(61L, employee)).thenReturn(draft);
-
-        inject(confirm, "selectionId", 61L);
-        inject(confirm, "confirmerName", "李女士");
-        inject(confirm, "employee", employee);
-
-        assertThrows(DefinedException.class, () -> confirm.call(new MaterialSelection()));
+    void blankContentIsRejectedBeforeAnyWrite() throws Exception {
+        inject(save, "content", "   ");
+        assertThrows(DefinedException.class, () -> save.call(new MaterialSelection()));
         verify(repository, never()).saveAndFlush(any(MaterialSelection.class));
     }
 
     @Test
-    void blankContentIsRejectedBeforeAnyWrite() throws Exception {
-        inject(save, "content", "   ");
+    void lockedPlanRejectsSelectionChange() throws Exception {
+        Property property = property();
+        ProjectContract contract = contract(property);
+        stubMaintain(property, contract);
+        MaterialPlan ordered = new MaterialPlan();
+        ordered.setPlanId(9L);
+        ordered.setStatus(MaterialPlanStatus.Ordered);
+        when(context.plansOf(null, null)).thenReturn(List.of(ordered));
+        org.mockito.Mockito.doThrow(new DefinedException(
+                        new com.th4.edge.framework.exception.DefaultErrorCode("400", "该材料已进入采购，不能再修改选材")))
+                .when(context).requireSelectionEditable(any());
+
+        inject(save, "propertyId", 7L);
+        inject(save, "contractId", 9L);
+        inject(save, "content", "试图改已下单材料");
+        inject(save, "employee", employee);
+
         assertThrows(DefinedException.class, () -> save.call(new MaterialSelection()));
         verify(repository, never()).saveAndFlush(any(MaterialSelection.class));
     }

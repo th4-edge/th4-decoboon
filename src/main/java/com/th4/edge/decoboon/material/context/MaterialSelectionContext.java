@@ -264,9 +264,7 @@ public class MaterialSelectionContext {
             item.setStatusName(selection.getStatus() == null ? null : selection.getStatus().getName());
             item.setSelectionText(selection.getContent());
             item.setSelectionJson(selection.getSelectionJson());
-            item.setConfirmerName(selection.getConfirmerName());
-            item.setConfirmedByName(selection.getConfirmedBy() == null ? null : selection.getConfirmedBy().getName());
-            item.setConfirmedAt(selection.getConfirmedAt());
+            item.setAttachments(selection.getAttachments());
             item.setUpdatedAt(selection.getUpdateTime() == null ? null : selection.getUpdateTime().getDateTime());
         }
         applyOrderStatus(item, plan);
@@ -315,6 +313,11 @@ public class MaterialSelectionContext {
             item.setOrderStatusName("已到场");
             return;
         }
+        if (status == MaterialPlanStatus.ReadyToOrder) {
+            item.setOrderStatus("ready");
+            item.setOrderStatusName("待财务下单");
+            return;
+        }
         item.setOrderStatus("none");
         item.setOrderStatusName("未下单");
     }
@@ -361,17 +364,14 @@ public class MaterialSelectionContext {
         if (item.getStatus() == null) {
             return "开始选材";
         }
-        if ("Draft".equals(item.getStatus())) {
-            return "提交客户确认";
-        }
-        if ("PendingConfirm".equals(item.getStatus())) {
-            return "记录客户确认";
-        }
         if ("ordered".equals(item.getOrderStatus()) || "partiallyArrived".equals(item.getOrderStatus())
                 || "arrived".equals(item.getOrderStatus())) {
             return "查看选材与材料状态";
         }
-        return "前往材料计划并下单";
+        if ("ready".equals(item.getOrderStatus())) {
+            return "等待财务下单";
+        }
+        return "交付财务下单";
     }
 
     public boolean sameCompany(Company company, Employee current) {

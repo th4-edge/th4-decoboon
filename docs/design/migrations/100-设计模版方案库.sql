@@ -1,4 +1,4 @@
--- 92-设计模版方案库.sql
+-- 100-设计模版方案库.sql
 -- 目的：DEC-050 / BR-040 设计模版（方案库）——区域骨架 + 报价分项 + 专业变量工程量公式。
 -- 影响表：新增 design_template / design_template_version / design_template_room / design_template_item。
 -- 前置：catalog_item、db_tenant_company / store / employee 已存在。

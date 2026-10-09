@@ -259,8 +259,8 @@ public class MaterialPlanWorkbenchContext {
             return "确认材料状态";
         }
         return switch (status) {
-            case Planned -> selection == null || selection.getStatus() != SelectionStatus.Confirmed
-                    ? "待设计师选材、客户确认" : "待财务下单";
+            case Planned -> selection == null || selection.getStatus() != SelectionStatus.Selected
+                    ? "待设计师选材" : "待财务下单";
             case ReadyToOrder -> "待财务下单";
             case Requested, Approved -> "待财务下单";
             case PartiallyOrdered -> "继续下单尾量";

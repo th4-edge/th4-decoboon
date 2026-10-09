@@ -36,7 +36,8 @@ class DesignTemplateWhitelistContractTest {
     void templateInfoAndItemSaveMustNotExposeCatalogCost() {
         for (Class<?> provider : List.of(
                 com.th4.edge.decoboon.designtemplate.service.templates.info.support.Info.class,
-                com.th4.edge.decoboon.designtemplate.service.templates.item.save.support.Save.class)) {
+                com.th4.edge.decoboon.designtemplate.service.templates.item.save.support.Save.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.item.delete.support.Delete.class)) {
             List<String> catalog = propertiesOf(provider, CatalogItem.class);
             assertThat(catalog).as(provider.getSimpleName() + " 必须白名单 CatalogItem").isNotEmpty();
             assertThat(catalog).doesNotContain("costPrice", "purchasePrice");
@@ -59,7 +60,8 @@ class DesignTemplateWhitelistContractTest {
         // 分项的名称/单位/计价方式/价格都来自 catalogItem，模版分项自身不得再暴露这些字段
         for (Class<?> provider : List.of(
                 com.th4.edge.decoboon.designtemplate.service.templates.info.support.Info.class,
-                com.th4.edge.decoboon.designtemplate.service.templates.item.save.support.Save.class)) {
+                com.th4.edge.decoboon.designtemplate.service.templates.item.save.support.Save.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.item.delete.support.Delete.class)) {
             List<String> item = propertiesOf(provider, DesignTemplateItem.class);
             assertThat(item).doesNotContain("name", "unit", "pricingMode", "materialPrice", "manualPrice");
         }
@@ -69,7 +71,8 @@ class DesignTemplateWhitelistContractTest {
     void templateRoomNeverExposesOwnershipChain() {
         for (Class<?> provider : List.of(
                 com.th4.edge.decoboon.designtemplate.service.templates.info.support.Info.class,
-                com.th4.edge.decoboon.designtemplate.service.templates.room.save.support.Save.class)) {
+                com.th4.edge.decoboon.designtemplate.service.templates.room.save.support.Save.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.room.delete.support.Delete.class)) {
             List<String> room = propertiesOf(provider, DesignTemplateRoom.class);
             assertThat(room).doesNotContain("company", "version", "store", "team", "owner");
             assertThat(room).contains("roomKey", "length", "width", "height");

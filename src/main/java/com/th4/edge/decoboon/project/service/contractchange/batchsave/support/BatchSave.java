@@ -1,11 +1,13 @@
 package com.th4.edge.decoboon.project.service.contractchange.batchsave.support;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
-import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
-import com.th4.edge.decoboon.project.configure.ContractChangeType;
 import com.th4.edge.decoboon.carryover.configure.CarryoverBusinessType;
 import com.th4.edge.decoboon.carryover.context.CarryoverLockContext;
+import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
+import com.th4.edge.decoboon.project.configure.ContractChangeType;
 import com.th4.edge.decoboon.project.context.ContractChangeAmountContext;
+import com.th4.edge.decoboon.project.context.ContractChangeRangeContext;
+import com.th4.edge.decoboon.project.context.ContractChangeTargetContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.ContractChange;
@@ -34,15 +36,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /** 一次事务保存一张包含多行增减项的合同变更单。 */
 @Note("批量发起合同变更")
-@Description("面向连续录入场景，一次提交多行增减项并汇总合同变更金额")
+@Description("新增分项/减项/替换逐条录入，一张单统一提交审批")
 @Properties(allow = {
         @AllowProperties(model = ContractChange.class,
                 properties = {"changeId", "contract", "project", "no", "reason", "type",
@@ -50,8 +54,15 @@ import java.util.Objects;
                         "customerConfirmedBy", "customerConfirmMethod", "evidenceImages",
                         "signatureUrl", "items", "requestedBy", "createTime"}),
         @AllowProperties(model = ContractChangeItem.class,
-                properties = {"changeItemId", "changeType", "itemType", "name", "oldQuantity", "newQuantity",
-                        "oldPrice", "newPrice", "amountDelta", "costDelta", "remark"}),
+                properties = {"changeItemId", "sourceLineId", "sourceChangeItemId", "targetCatalogItemId",
+                        "reduceQuantity", "changeType", "itemType", "name", "oldQuantity", "newQuantity",
+                        "oldPrice", "newPrice", "amountDelta", "costDelta", "remark",
+                        "sourceRemainingQuantity", "sourceRemainingAmount", "sourceUnitPrice", "sourceBaselineTime",
+                        "targetName", "targetType", "targetCategory", "targetBrand", "targetSeries",
+                        "targetSpec", "targetUnit", "targetPricingMode", "targetMaterialPrice",
+                        "targetManualPrice", "targetFixedTotalPrice", "targetFormula", "targetCraft",
+                        "targetCriterion", "targetQuantity", "targetAmount", "targetCostPrice",
+                        "targetCostAmount", "targetCostComplete"}),
         @AllowProperties(model = ProjectContract.class,
                 properties = {"contractId", "no", "baselineAmount", "signedAmount", "currentAmount", "status", "signedAt"}),
         @AllowProperties(model = Project.class,
@@ -72,6 +83,7 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
     @NotEmpty
     private String reason;
 
+    /** 兼容旧请求的默认行类型；新页面每行显式传 changeType。 */
     @AutoInject
     private ContractChangeType type;
 
@@ -102,6 +114,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
     private final ContractChangeItemRepository itemRepository;
     private final ProjectAccessContext accessContext;
     private final ContractChangeAmountContext amountContext;
+    private final ContractChangeRangeContext rangeContext;
+    private final ContractChangeTargetContext targetContext;
     private final ProjectPermissionContext permissionContext;
     private final CarryoverLockContext carryoverLockContext;
     private final ModelIdentityContext modelIdentityContext;
@@ -111,6 +125,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
                      ContractChangeItemRepository itemRepository,
                      ProjectAccessContext accessContext,
                      ContractChangeAmountContext amountContext,
+                     ContractChangeRangeContext rangeContext,
+                     ContractChangeTargetContext targetContext,
                      ProjectPermissionContext permissionContext,
                      ModelIdentityContext modelIdentityContext,
                      CarryoverLockContext carryoverLockContext) {
@@ -119,6 +135,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         this.itemRepository = itemRepository;
         this.accessContext = accessContext;
         this.amountContext = amountContext;
+        this.rangeContext = rangeContext;
+        this.targetContext = targetContext;
         this.permissionContext = permissionContext;
         this.carryoverLockContext = carryoverLockContext;
         this.modelIdentityContext = modelIdentityContext;
@@ -138,90 +156,76 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         }
         Project project = accessContext.requireProject(contract.getProject().getProjectId(), current);
         accessContext.requirePlanEditor(project, current);
-
         requireCustomerSignOff();
 
         ContractChangeType batchType = type == null ? ContractChangeType.Add : type;
-        // 效率：一次按合同范围加载本批原合同行，避免逐行查库。
         List<Long> sourceLineIds = items.stream()
                 .map(ContractChangeItem::getSourceLineId).filter(Objects::nonNull).distinct().toList();
         Map<Long, ContractLine> sourceLines = amountContext.lines(contract, sourceLineIds);
+        Map<Long, ContractChangeItem> sourceChangeItems = loadSourceChangeItems(project.getCompany().getComId(), items);
+
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal cost = BigDecimal.ZERO;
+        boolean costComplete = true;
+        Map<String, BigDecimal> batchReserved = new HashMap<>();
         List<ContractChangeItem> preparedItems = new ArrayList<>();
+
         for (int index = 0; index < items.size(); index++) {
             ContractChangeItem item = items.get(index);
-            String name = item.getName() == null ? "" : item.getName().trim();
-            if (name.isBlank()) {
-                throw new DefinedException(new DefaultErrorCode("400", "第 " + (index + 1) + " 行项目名称不能为空"));
-            }
+            int rowNo = index + 1;
             ContractChangeType rowType = item.getChangeType() == null ? batchType : item.getChangeType();
+            if (rowType == ContractChangeType.Price) {
+                throw new DefinedException(new DefaultErrorCode("400", "新口径不再支持调价，请使用新增分项或替换"));
+            }
+
             ContractLine sourceLine = item.getSourceLineId() == null ? null : sourceLines.get(item.getSourceLineId());
             if (item.getSourceLineId() != null && sourceLine == null) {
-                throw new DefinedException(new DefaultErrorCode("404", "第 " + (index + 1) + " 行原合同行不存在"));
+                throw new DefinedException(new DefaultErrorCode("404", "第 " + rowNo + " 行原合同行不存在"));
             }
-            // 金额服务端重算：替换/数量/价格必须关联原合同行，由服务端按原合同行计算，忽略前端金额；
-            // 增项/减项才允许手填金额，且仍由服务端汇总，不信任前端总额。
-            // 批量行实体字段默认 0，这里按变更类型规范化入参，避免 0 被误当成“显式零价/零量”。
-            BigDecimal rowNewQuantity = item.getNewQuantity();
-            BigDecimal rowNewPrice = item.getNewPrice();
-            BigDecimal rowNewCost = item.getNewCost();
-            if (sourceLine != null && rowType == ContractChangeType.Quantity
-                    && (rowNewQuantity == null || rowNewQuantity.signum() <= 0)) {
-                throw new DefinedException(new DefaultErrorCode("400", "第 " + (index + 1) + " 行数量变更必须填写大于 0 的新数量"));
+            ContractChangeItem sourceChangeItem = item.getSourceChangeItemId() == null
+                    ? null : sourceChangeItems.get(item.getSourceChangeItemId());
+            if (item.getSourceChangeItemId() != null && sourceChangeItem == null) {
+                throw new DefinedException(new DefaultErrorCode("404", "第 " + rowNo + " 行变更来源不存在"));
             }
-            if (sourceLine != null && rowType == ContractChangeType.Replace
-                    && (rowNewQuantity == null || rowNewQuantity.signum() <= 0
-                    || rowNewPrice == null || rowNewPrice.signum() <= 0)) {
-                throw new DefinedException(new DefaultErrorCode("400", "第 " + (index + 1) + " 行替换必须填写新数量与新单价"));
+            if (sourceLine != null && sourceChangeItem != null) {
+                throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行来源只能选择一个"));
             }
-            if (sourceLine != null && rowType == ContractChangeType.Price
-                    && (rowNewPrice == null || rowNewPrice.signum() <= 0)) {
-                throw new DefinedException(new DefaultErrorCode("400", "第 " + (index + 1) + " 行价格变更必须填写大于 0 的新单价"));
-            }
-            if (rowType == ContractChangeType.Quantity) {
-                rowNewPrice = null;
-                rowNewCost = null;
-            } else if (rowType == ContractChangeType.Price) {
-                rowNewQuantity = null;
-            }
-            if ((rowType == ContractChangeType.Replace || rowType == ContractChangeType.Price)
-                    && rowNewCost != null && rowNewCost.signum() <= 0) {
-                rowNewCost = null; // 未填成本时按原合同行单位成本计算，避免默认 0 被当成零成本。
-            }
-            boolean recompute = sourceLine != null
-                    && (rowType == ContractChangeType.Quantity
-                    || rowType == ContractChangeType.Replace
-                    || rowType == ContractChangeType.Price);
-            ContractChangeAmountContext.Computed computed = amountContext.compute(
-                    rowType, sourceLine,
-                    recompute ? null : item.getAmountDelta(),
-                    recompute ? null : item.getCostDelta(),
-                    rowNewQuantity, rowNewPrice, rowNewCost);
-            BigDecimal amountDelta = computed.amountDelta();
-            BigDecimal costDelta = computed.costDelta();
-            if (amountDelta.signum() == 0 && costDelta.signum() == 0) {
-                throw new DefinedException(new DefaultErrorCode("400", "第 " + (index + 1) + " 行金额或成本不能同时为 0"));
-            }
-            if (rowType == ContractChangeType.Add && amountDelta.signum() < 0) {
-                throw new DefinedException(new DefaultErrorCode("400", "增项金额不能为负数"));
-            }
-            if (rowType == ContractChangeType.Remove && amountDelta.signum() > 0) {
-                throw new DefinedException(new DefaultErrorCode("400", "减项金额不能为正数"));
-            }
-            amount = amount.add(amountDelta);
-            cost = cost.add(costDelta);
 
-            item.setName(name);
+            if (rowType == ContractChangeType.Add && item.getTargetCatalogItemId() != null) {
+                prepareAdd(project, item, rowNo);
+                amount = add(amount, item.getAmountDelta());
+                cost = addCost(cost, item.getCostDelta());
+                costComplete = costComplete && item.getCostDelta() != null;
+            } else if (rowType == ContractChangeType.Quantity
+                    && (item.getReduceQuantity() != null || sourceChangeItem != null)) {
+                prepareReduce(project, contract, item, sourceLine, sourceChangeItem,
+                        sourceKey(sourceLine, sourceChangeItem), batchReserved, rowNo);
+                amount = add(amount, item.getAmountDelta());
+                cost = addCost(cost, item.getCostDelta());
+                costComplete = costComplete && item.getCostDelta() != null;
+            } else if (rowType == ContractChangeType.Remove) {
+                prepareRemove(project, contract, item, sourceLine, sourceChangeItem,
+                        sourceKey(sourceLine, sourceChangeItem), batchReserved, rowNo);
+                amount = add(amount, item.getAmountDelta());
+                cost = addCost(cost, item.getCostDelta());
+                costComplete = costComplete && item.getCostDelta() != null;
+            } else if (rowType == ContractChangeType.Replace && item.getTargetCatalogItemId() != null) {
+                prepareReplace(project, contract, item, sourceLine, sourceChangeItem,
+                        sourceKey(sourceLine, sourceChangeItem), batchReserved, rowNo);
+                amount = add(amount, item.getAmountDelta());
+                cost = addCost(cost, item.getCostDelta());
+                costComplete = costComplete && item.getCostDelta() != null;
+            } else {
+                // 兼容旧 Quantity/旧手动 Add 请求；新 App 不从这里创建。
+                LegacyPrepared legacy = prepareLegacy(project, item, sourceLine, rowType, rowNo);
+                amount = add(amount, legacy.amountDelta());
+                cost = addCost(cost, legacy.costDelta());
+                costComplete = costComplete && legacy.costDelta() != null;
+            }
+
             item.setChangeType(rowType);
             item.setSourceLine(sourceLine);
-            if (item.getItemType() == null && sourceLine != null) item.setItemType(sourceLine.getType());
-            item.setOldQuantity(computed.oldQuantity());
-            item.setNewQuantity(computed.newQuantity());
-            item.setOldPrice(computed.oldPrice());
-            item.setNewPrice(computed.newPrice());
-            item.setAmountDelta(amountDelta);
-            item.setCostDelta(costDelta);
+            item.setSourceChangeItem(sourceChangeItem);
             permissionContext.apply(item, project);
             preparedItems.add(item);
         }
@@ -235,9 +239,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         request.setReason(reason.trim());
         request.setType(batchType);
         request.setAmount(amount);
-        request.setCostDelta(cost);
+        request.setCostDelta(costComplete ? cost : null);
         request.setStatus(ContractChangeStatus.Pending);
-        // 新口径（DEC-041）：客户线下确认是创建前置事实；审批通过即生效。
         request.setCustomerConfirmed(true);
         request.setCustomerConfirmedAt(customerConfirmedAt);
         request.setCustomerConfirmedBy(customerConfirmedBy.trim());
@@ -247,7 +250,6 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         request.setSignatureUrl(signatureUrl);
         ContractChange saved = changeRepository.save(modelIdentityContext.prepare(request));
 
-        // 效率：多行明细一次 saveAll，避免逐行 save 的 N 次往返。
         List<ContractChangeItem> toSave = new ArrayList<>(preparedItems.size());
         for (ContractChangeItem item : preparedItems) {
             item.setChange(saved);
@@ -257,6 +259,271 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         saved.setItems(preparedItems);
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.ContractChange, current);
         return saved;
+    }
+
+    private void prepareAdd(Project project, ContractChangeItem item, int rowNo) {
+        BigDecimal quantity = firstPositive(item.getTargetQuantity(), item.getNewQuantity());
+        ContractChangeTargetContext.TargetSnapshot target =
+                targetContext.resolve(project.getCompany().getComId(), item.getTargetCatalogItemId(), quantity);
+        targetContext.apply(item, target);
+        item.setTargetCatalogItemId(target.catalog().getItemId());
+        item.setName(target.catalog().getName());
+        item.setItemType(target.catalog().getType());
+        item.setSourceLine(null);
+        item.setSourceChangeItem(null);
+        item.setSourceRemainingQuantity(BigDecimal.ZERO);
+        item.setSourceRemainingAmount(BigDecimal.ZERO);
+        item.setSourceUnitPrice(BigDecimal.ZERO);
+        item.setSourceBaselineTime(LocalDateTime.now());
+        item.setOldQuantity(BigDecimal.ZERO);
+        item.setNewQuantity(quantity);
+        item.setOldPrice(BigDecimal.ZERO);
+        item.setNewPrice(target.unitPrice());
+        item.setAmountDelta(target.amount());
+        item.setCostDelta(target.costAmount());
+        requireNonZero(item, rowNo);
+    }
+
+    private void prepareReduce(Project project, ProjectContract contract, ContractChangeItem item,
+                               ContractLine sourceLine, ContractChangeItem sourceChangeItem,
+                               String sourceKey, Map<String, BigDecimal> batchReserved, int rowNo) {
+        if (sourceKey == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行减项必须选择来源分项"));
+        }
+        ContractChangeRangeContext.RangeSnapshot snapshot = snapshot(contract, sourceLine, sourceChangeItem, rowNo);
+        BigDecimal reduction = reductionQuantity(item, snapshot);
+        BigDecimal reserved = batchReserved.getOrDefault(sourceKey, BigDecimal.ZERO);
+        BigDecimal available = snapshot.availableQuantity().subtract(reserved);
+        if (reduction.compareTo(available) > 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行减少工程量超过当前可变更剩余"));
+        }
+        BigDecimal remaining = snapshot.effectiveRemainingQuantity().subtract(reduction);
+        BigDecimal sourceRemainingCost = sourceRemainingCost(sourceLine, sourceChangeItem, snapshot);
+        BigDecimal costReduction = sourceRemainingCost == null
+                ? null
+                : snapshot.effectiveRemainingQuantity().signum() == 0
+                ? BigDecimal.ZERO
+                : money(sourceRemainingCost.multiply(reduction)
+                .divide(snapshot.effectiveRemainingQuantity(), 6, RoundingMode.HALF_UP));
+        setSourceSnapshot(item, snapshot, sourceLine, sourceChangeItem, sourceKey, batchReserved, reduction);
+        item.setName(sourceName(sourceLine, sourceChangeItem));
+        item.setItemType(sourceItemType(sourceLine, sourceChangeItem));
+        item.setOldQuantity(snapshot.effectiveRemainingQuantity());
+        item.setNewQuantity(remaining);
+        item.setOldPrice(snapshot.currentUnitPrice());
+        item.setNewPrice(snapshot.currentUnitPrice());
+        item.setAmountDelta(money(reduction.multiply(snapshot.currentUnitPrice()).negate()));
+        item.setCostDelta(costReduction == null ? null : costReduction.negate());
+        requireNonZero(item, rowNo);
+    }
+
+    private void prepareRemove(Project project, ProjectContract contract, ContractChangeItem item,
+                               ContractLine sourceLine, ContractChangeItem sourceChangeItem,
+                               String sourceKey, Map<String, BigDecimal> batchReserved, int rowNo) {
+        if (sourceKey == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行整项取消必须选择来源分项"));
+        }
+        if (batchReserved.getOrDefault(sourceKey, BigDecimal.ZERO).signum() > 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行同一来源不能重复减项和整项取消"));
+        }
+        ContractChangeRangeContext.RangeSnapshot snapshot = snapshot(contract, sourceLine, sourceChangeItem, rowNo);
+        BigDecimal sourceRemainingCost = sourceRemainingCost(sourceLine, sourceChangeItem, snapshot);
+        setSourceSnapshot(item, snapshot, sourceLine, sourceChangeItem, sourceKey, batchReserved,
+                snapshot.effectiveRemainingQuantity());
+        item.setName(sourceName(sourceLine, sourceChangeItem));
+        item.setItemType(sourceItemType(sourceLine, sourceChangeItem));
+        item.setOldQuantity(snapshot.effectiveRemainingQuantity());
+        item.setNewQuantity(BigDecimal.ZERO);
+        item.setOldPrice(snapshot.currentUnitPrice());
+        item.setNewPrice(snapshot.currentUnitPrice());
+        item.setAmountDelta(snapshot.effectiveRemainingAmount().negate());
+        item.setCostDelta(sourceRemainingCost == null ? null : sourceRemainingCost.negate());
+        requireNonZero(item, rowNo);
+    }
+
+    private void prepareReplace(Project project, ProjectContract contract, ContractChangeItem item,
+                                ContractLine sourceLine, ContractChangeItem sourceChangeItem,
+                                String sourceKey, Map<String, BigDecimal> batchReserved, int rowNo) {
+        if (sourceKey == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行替换必须选择来源分项"));
+        }
+        if (batchReserved.getOrDefault(sourceKey, BigDecimal.ZERO).signum() > 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行同一来源不能重复替换"));
+        }
+        ContractChangeRangeContext.RangeSnapshot snapshot = snapshot(contract, sourceLine, sourceChangeItem, rowNo);
+        BigDecimal quantity = firstPositive(item.getTargetQuantity(), item.getNewQuantity());
+        ContractChangeTargetContext.TargetSnapshot target =
+                targetContext.resolve(project.getCompany().getComId(), item.getTargetCatalogItemId(), quantity);
+        BigDecimal sourceRemainingCost = sourceRemainingCost(sourceLine, sourceChangeItem, snapshot);
+        setSourceSnapshot(item, snapshot, sourceLine, sourceChangeItem, sourceKey, batchReserved,
+                snapshot.effectiveRemainingQuantity());
+        targetContext.apply(item, target);
+        item.setTargetCatalogItemId(target.catalog().getItemId());
+        item.setName(target.catalog().getName());
+        item.setItemType(target.catalog().getType());
+        item.setOldQuantity(snapshot.effectiveRemainingQuantity());
+        item.setNewQuantity(quantity);
+        item.setOldPrice(snapshot.currentUnitPrice());
+        item.setNewPrice(target.unitPrice());
+        item.setAmountDelta(money(target.amount().subtract(snapshot.effectiveRemainingAmount())));
+        item.setCostDelta(target.costAmount() == null || sourceRemainingCost == null
+                ? null : money(target.costAmount().subtract(sourceRemainingCost)));
+        requireNonZero(item, rowNo);
+    }
+
+    private LegacyPrepared prepareLegacy(Project project, ContractChangeItem item, ContractLine sourceLine,
+                                         ContractChangeType rowType, int rowNo) {
+        if (rowType == ContractChangeType.Replace && item.getTargetCatalogItemId() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行替换必须选择报价项目库目标分项"));
+        }
+        boolean recompute = sourceLine != null
+                && (rowType == ContractChangeType.Quantity || rowType == ContractChangeType.Price);
+        BigDecimal legacyNewQuantity = rowType == ContractChangeType.Price ? null : item.getNewQuantity();
+        BigDecimal legacyNewPrice = rowType == ContractChangeType.Quantity ? null : item.getNewPrice();
+        ContractChangeAmountContext.Computed computed = amountContext.compute(
+                rowType, sourceLine,
+                recompute ? null : item.getAmountDelta(),
+                recompute ? null : item.getCostDelta(),
+                legacyNewQuantity, legacyNewPrice, item.getNewCost());
+        item.setName(item.getName() == null ? "" : item.getName().trim());
+        item.setSourceLine(sourceLine);
+        item.setOldQuantity(computed.oldQuantity());
+        item.setNewQuantity(computed.newQuantity());
+        item.setOldPrice(computed.oldPrice());
+        item.setNewPrice(computed.newPrice());
+        item.setAmountDelta(computed.amountDelta());
+        item.setCostDelta(computed.costDelta());
+        if (item.getName().isBlank()) {
+            item.setName(computed.oldQuantity().signum() == 0 ? "合同变更" : "合同变更调量");
+        }
+        if (item.getItemType() == null && sourceLine != null) item.setItemType(sourceLine.getType());
+        requireNonZero(item, rowNo);
+        return new LegacyPrepared(item.getAmountDelta(), item.getCostDelta());
+    }
+
+    private ContractChangeRangeContext.RangeSnapshot snapshot(ProjectContract contract, ContractLine sourceLine,
+                                                               ContractChangeItem sourceChangeItem, int rowNo) {
+        ContractChangeRangeContext.RangeSnapshot snapshot = sourceLine != null
+                ? rangeContext.snapshot(contract, sourceLine)
+                : rangeContext.snapshot(contract, sourceChangeItem);
+        if (!snapshot.confirmable()) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行" + snapshot.blockReason()));
+        }
+        if (sourceLine == null && sourceChangeItem == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行来源不能为空"));
+        }
+        return snapshot;
+    }
+
+    private BigDecimal reductionQuantity(ContractChangeItem item,
+                                         ContractChangeRangeContext.RangeSnapshot snapshot) {
+        if (item.getReduceQuantity() != null) {
+            if (item.getReduceQuantity().signum() <= 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "减少工程量必须大于 0"));
+            }
+            return item.getReduceQuantity();
+        }
+        if (item.getNewQuantity() == null || item.getNewQuantity().signum() < 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "请填写减少工程量"));
+        }
+        BigDecimal reduction = snapshot.effectiveRemainingQuantity().subtract(item.getNewQuantity());
+        if (reduction.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "减少工程量必须大于 0"));
+        }
+        return reduction;
+    }
+
+    private BigDecimal sourceRemainingCost(ContractLine sourceLine, ContractChangeItem sourceChangeItem,
+                                           ContractChangeRangeContext.RangeSnapshot snapshot) {
+        if (sourceLine != null) {
+            return targetContext.sourceRemainingCost(
+                    new ContractChangeTargetContext.ContractLineSnapshot(sourceLine.getQuantity(), sourceLine.getCost()),
+                    snapshot.effectiveRemainingQuantity());
+        }
+        if (sourceChangeItem == null || sourceChangeItem.getTargetCostAmount() == null
+                || sourceChangeItem.getTargetQuantity() == null) {
+            return null;
+        }
+        return targetContext.sourceRemainingCost(
+                new ContractChangeTargetContext.ContractLineSnapshot(sourceChangeItem.getTargetQuantity(),
+                        sourceChangeItem.getTargetCostAmount()),
+                snapshot.effectiveRemainingQuantity());
+    }
+
+    private void setSourceSnapshot(ContractChangeItem item,
+                                   ContractChangeRangeContext.RangeSnapshot snapshot,
+                                   ContractLine sourceLine, ContractChangeItem sourceChangeItem,
+                                   String sourceKey, Map<String, BigDecimal> batchReserved,
+                                   BigDecimal reservedQuantity) {
+        item.setSourceLine(sourceLine);
+        item.setSourceChangeItem(sourceChangeItem);
+        item.setSourceLineId(sourceLine == null ? null : sourceLine.getLineId());
+        item.setSourceChangeItemId(sourceChangeItem == null ? null : sourceChangeItem.getChangeItemId());
+        item.setSourceRemainingQuantity(snapshot.effectiveRemainingQuantity());
+        item.setSourceRemainingAmount(snapshot.effectiveRemainingAmount());
+        item.setSourceUnitPrice(snapshot.currentUnitPrice());
+        item.setSourceBaselineTime(LocalDateTime.now());
+        batchReserved.merge(sourceKey, reservedQuantity, BigDecimal::add);
+    }
+
+    private String sourceKey(ContractLine sourceLine, ContractChangeItem sourceChangeItem) {
+        if (sourceLine != null) return "line:" + sourceLine.getLineId();
+        if (sourceChangeItem != null) return "item:" + sourceChangeItem.getChangeItemId();
+        return null;
+    }
+
+    private String sourceName(ContractLine sourceLine, ContractChangeItem sourceChangeItem) {
+        if (sourceLine != null) return sourceLine.getName();
+        if (sourceChangeItem != null && sourceChangeItem.getTargetName() != null) return sourceChangeItem.getTargetName();
+        if (sourceChangeItem != null) return sourceChangeItem.getName();
+        return "合同变更";
+    }
+
+    private com.th4.edge.decoboon.catalog.configure.ItemType sourceItemType(ContractLine sourceLine,
+                                                                            ContractChangeItem sourceChangeItem) {
+        if (sourceLine != null) return sourceLine.getType();
+        if (sourceChangeItem != null && sourceChangeItem.getTargetType() != null) {
+            return sourceChangeItem.getTargetType();
+        }
+        return sourceChangeItem == null ? null : sourceChangeItem.getItemType();
+    }
+
+    private BigDecimal firstPositive(BigDecimal first, BigDecimal second) {
+        BigDecimal value = first == null ? second : first;
+        if (value == null || value.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "工程量必须大于 0"));
+        }
+        return value;
+    }
+
+    private void requireNonZero(ContractChangeItem item, int rowNo) {
+        if (zero(item.getAmountDelta()).signum() == 0 && zero(item.getCostDelta()).signum() == 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "第 " + rowNo + " 行金额或成本不能同时为 0"));
+        }
+    }
+
+    private BigDecimal add(BigDecimal left, BigDecimal right) {
+        return left.add(zero(right));
+    }
+
+    private BigDecimal addCost(BigDecimal left, BigDecimal right) {
+        return right == null ? left : left.add(right);
+    }
+
+    private BigDecimal money(BigDecimal value) {
+        return value == null ? BigDecimal.ZERO : value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private Map<Long, ContractChangeItem> loadSourceChangeItems(Long companyId, List<ContractChangeItem> rows) {
+        Map<Long, ContractChangeItem> result = new HashMap<>();
+        for (ContractChangeItem row : rows) {
+            if (row.getSourceChangeItemId() == null || result.containsKey(row.getSourceChangeItemId())) continue;
+            ContractChangeItem source = itemRepository
+                    .findByChangeItemIdAndCompany_ComId(row.getSourceChangeItemId(), companyId)
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "变更目标来源不存在或无权访问")));
+            result.put(row.getSourceChangeItemId(), source);
+        }
+        return result;
     }
 
     /** DEC-041/BR-035：无客户线下确认时间、确认人、方式与签认证据，不得形成增减项变更单。 */
@@ -283,5 +550,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
 
     private BigDecimal zero(BigDecimal value) {
         return value == null ? BigDecimal.ZERO : value;
+    }
+
+    private record LegacyPrepared(BigDecimal amountDelta, BigDecimal costDelta) {
     }
 }

@@ -1,0 +1,138 @@
+Window: "装得清", App: 微信开发者工具.
+0 标准窗口 装得清, Secondary Actions: Raise
+	1 HTML 内容 file:///Applications/wechatwebdevtools.app/Contents/Resources/app.asar/html/electron-project-lite.html?projectpath=%2FUsers%2Fzhangwei%2FFutureFiles%2F%E5%AE%89%E5%BE%BD%E6%98%AD%E9%9D%92%2F%E5%AE%B6%E8%A3%85%E8%A3%85%E4%BF%AE%2F%E8%A3%85%E5%AE%A2%E5%AE%9D%2F%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%2Fth4-decoboon-app%2Fdist%2Fdev%2Fmp-weixin&projectname=%E8%A3%85%E5%BE%97%E6%B8%85&projectid=%2FUsers%2Fzhangwei%2FFutureFiles%2F%E5%AE%89%E5%BE%BD%E6%98%AD%E9%9D%92%2F%E5%AE%B6%E8%A3%85%E8%A3%85%E4%BF%AE%2F%E8%A3%85%E5%AE%A2%E5%AE%9D%2F%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%2Fth4-decoboon-app%2Fdist%2Fdev%2Fmp-weixin&theme=dark&skeletonPath=%2FUsers%2Fzhangwei%2FLibrary%2FApplication%20Support%2F%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%2Fd1e8765721a6c23d43b14c95b1843e6b%2FWeappCache%2FskeletonCache%2F82a0e25bf6c73bc31cd73bad2fbf4a73%2Fpageskeleton.html&appid=wxe5cc5fec9e50a9a9&windowMode=liteMode&compileType=weapp&trustProject=1&openSource=cli&frame=0&liteProject=1&devid=s0&runtimeid=0&devtype=miniprogram&proxyPort=49285&userDataPath=%2FUsers%2Fzhangwei%2FLibrary%2FApplication%2520Support%2F%25E5%25BE%25AE%25E4%25BF%25A1%25E5%25BC%2580%25E5%258F%2591%25E8%2580%2585%25E5%25B7%25A5%25E5%2585%25B7%2Fd1e8765721a6c23d43b14c95b1843e6b&appVersion=2.02.2609231&appVersionType=1
+		2 container
+			3 文本 预览
+			4 文本 真机调试
+			5 未加标签的图片 要获取缺失的图片说明，请打开上下文菜单。
+			6 container
+				7 container
+					8 文本 普通编译
+					9 container
+						10 文本 WeChat 
+						11 container
+							12 text 22 : 20
+						13 container
+							14 text 40 %
+						15 container
+							16 链接
+							17 标题 客户详情, Value: 3
+								18 文本 客户详情
+							19 链接
+							20 链接
+						21 HTML 内容 Webview: subpackages/customer/pages/detail, URL: 127.0.0.1:59090/__pageframe__/subpackages/customer/pages/detail
+							22 文本 1）
+							23 文本 王芳（演示01）
+							24 文本 休眠客户
+							25 文本 评级 C · 20
+							26 图像
+							27 图像
+							28 文本 13910000001
+							29 文本 转介绍
+							30 图像
+							31 文本 标签
+							32 文本 客户负责人
+							33 container
+								34 文本 贤杰
+							35 文本 黄贤杰
+							36 文本 负责设计师
+							37 文本 待指派
+							38 按钮 打电话
+								39 图像
+								40 文本 打电话
+							41 按钮 复制号码
+								42 图像
+								43 文本 复制号码
+							44 按钮 恢复跟进
+							45 文本 销售阶段
+							46 文本 当前：到店
+							47 container
+								48 文本 1
+								49 文本 到店
+							50 container
+								51 文本 2
+								52 文本 跟进
+							53 container
+								54 文本 3
+								55 文本 量房
+							56 container
+								57 文本 4
+								58 文本 设计
+							59 container
+								60 文本 5
+								61 文本 报价
+							62 文本 装修房屋（1）
+							63 图像
+							64 文本 新增房屋
+							65 container
+								66 text 房号 901 待量房 合肥市 100㎡ · 三室两厅 未量房 编号 H1791…6351
+								67 图像
+								68 图像
+								69 文本 编辑房屋
+							70 文本 客户信息
+							71 文本 来源
+							72 文本 转介绍
+							73 文本 房屋地址
+							74 文本 合肥市验收房屋150327小区9栋901室
+							75 文本 营销进度
+							76 文本 已休眠
+							77 文本 意向小区
+							78 文本 香樟花园
+							79 文本 户型面积
+							80 文本 100㎡
+							81 文本 预算
+							82 文本 21 万
+							83 文本 备注
+							84 文本 —
+							85 文本 谈单材料
+							86 文本 0 份
+							87 文本 转化项目
+							88 文本 —
+							89 文本 客户画像
+							90 图像
+							91 文本 完善画像
+							92 文本 尚未填写画像，补充决策角色、装修动机与工期后可提升跟进针对性。
+							93 文本 跟进记录
+							94 按钮 记录加微信
+								95 图像
+								96 文本 记录加微信
+							97 按钮 记录到店 · 0 次
+								98 图像
+								99 文本 记录到店 · 0 次
+							100 container
+								101 图像
+								102 text 暂无跟进记录 记录每次沟通，保持客户转化上下文
+						103 HTML 内容 小程序渲染层, URL: 127.0.0.1:59090/__pageframe__/instanceframe.html
+						104 HTML 内容 小程序逻辑层, URL: 127.0.0.1:59090/appservice/s0/_sessionId/simulator-app-session-s0/mainframe?load
+							105 container
+								106 HTML 内容 小程序逻辑层, URL: 127.0.0.1:59090/appservice/instanceframe?s=1791555466479&autoload#id_1
+								107 HTML 内容 127.0.0.1:59090/appservice/appContext?contextName=app&id=ifr-1_2#id_1
+								108 HTML 内容 127.0.0.1:59090/appservice/app_xrframe_renderContext?contextName=app_xrframe_render&id=ifr-1_3&empty=true#id_1
+								109 HTML 内容 127.0.0.1:59090/appservice/app_sub_debugContext?contextName=app_sub_debug&id=ifr-1_4&empty=true#id_1
+								110 HTML 内容 小程序逻辑层, URL: 127.0.0.1:59090/appservice/instanceframe?s=1791555466479#id_2
+						111 container
+							112 链接
+							113 链接
+					114 container
+						115 text Mac 13-inch and below 104% 16
+					116 container
+						117 文本 页面路径
+					118 文本 subpackages/customer/pages/detail
+					119 链接 复制
+				120 container
+					121 文本 调试器已设置启动时不加载，点此启动
+		122 container
+	123 关闭按钮
+	124 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	125 最小化按钮
+126 menu bar
+	127 微信开发者工具
+	128 项目
+	129 编辑
+	130 工具
+	131 界面
+	132 设置
+	133 插件
+	134 帮助
+
+The focused UI element is 21 HTML 内容 Webview: subpackages/customer/pages/detail, URL: 127.0.0.1:59090/__pageframe__/subpackages/customer/pages/detail

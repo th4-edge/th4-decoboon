@@ -46,17 +46,15 @@ public class SelectionBoardItem {
     private String selectionStatusName;
     @Note("主材分项总数")
     private Integer totalItems;
-    @Note("已选择分项数")
+    @Note("已选材分项数")
     private Integer selectedItems;
-    @Note("已客户确认分项数")
-    private Integer confirmedItems;
-    @Note("待客户确认分项数")
-    private Integer pendingConfirmItems;
+    @Note("已交付财务分项数")
+    private Integer deliveredItems;
     @Note("待选材分项数")
     private Integer notSelectedItems;
     @Note("已下单分项数")
     private Integer orderedItems;
-    @Note("客户确认进度（0-100）")
+    @Note("选材进度（0-100）")
     private Integer progress;
     @Note("选材版本号")
     private Integer version;
@@ -181,10 +179,8 @@ public class SelectionBoardItem {
     public void setTotalItems(Integer totalItems) { this.totalItems = totalItems; }
     public Integer getSelectedItems() { return selectedItems; }
     public void setSelectedItems(Integer selectedItems) { this.selectedItems = selectedItems; }
-    public Integer getConfirmedItems() { return confirmedItems; }
-    public void setConfirmedItems(Integer confirmedItems) { this.confirmedItems = confirmedItems; }
-    public Integer getPendingConfirmItems() { return pendingConfirmItems; }
-    public void setPendingConfirmItems(Integer pendingConfirmItems) { this.pendingConfirmItems = pendingConfirmItems; }
+    public Integer getDeliveredItems() { return deliveredItems; }
+    public void setDeliveredItems(Integer deliveredItems) { this.deliveredItems = deliveredItems; }
     public Integer getNotSelectedItems() { return notSelectedItems; }
     public void setNotSelectedItems(Integer notSelectedItems) { this.notSelectedItems = notSelectedItems; }
     public Integer getOrderedItems() { return orderedItems; }

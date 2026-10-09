@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectBusinessStateContext;
+import com.th4.edge.decoboon.project.context.ProjectFinanceProgressContext;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
@@ -33,7 +34,7 @@ import java.util.List;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "businessOrigin", "no", "name", "property", "customer", "quote", "designer", "manager", "support",
                         "siteAddr", "area", "contractAmount", "cost", "status", "progress", "startDate",
-                        "planEndDate", "actualEndDate", "currentStageName", "businessStateView", "createTime" }),
+                        "planEndDate", "actualEndDate", "currentStageName", "businessStateView", "receivedAmount", "receivableAmount", "createTime" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status", "owner"}),
         @AllowProperties(model = Quote.class,
@@ -90,15 +91,18 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
     private final ProjectStageRepository stageRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectBusinessStateContext projectBusinessStateContext;
+    private final ProjectFinanceProgressContext projectFinanceProgressContext;
 
     public Page(ProjectRepository projectRepository,
                 ProjectStageRepository stageRepository,
                 ProjectAccessContext accessContext,
-                ProjectBusinessStateContext projectBusinessStateContext) {
+                ProjectBusinessStateContext projectBusinessStateContext,
+                ProjectFinanceProgressContext projectFinanceProgressContext) {
         this.projectRepository = projectRepository;
         this.stageRepository = stageRepository;
         this.accessContext = accessContext;
         this.projectBusinessStateContext = projectBusinessStateContext;
+        this.projectFinanceProgressContext = projectFinanceProgressContext;
     }
 
     @Override
@@ -147,12 +151,14 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
                 .sorted(Comparator.comparing(Project::getProjectId).reversed())
                 .toList();
         projects.forEach(this::fillCurrentStage);
+        projectFinanceProgressContext.enrich(projects);
         projects.forEach(projectBusinessStateContext::enrich);
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 100 : Math.min(size, 200);
         int from = Math.min(page * pageSize, projects.size());
         int to = Math.min(from + pageSize, projects.size());
-        return new PageImpl<>(projects.subList(from, to), PageRequest.of(page, pageSize), projects.size());
+        List<Project> pageItems = projects.subList(from, to);
+        return new PageImpl<>(pageItems, PageRequest.of(page, pageSize), projects.size());
     }
 
     private void fillCurrentStage(Project project) {

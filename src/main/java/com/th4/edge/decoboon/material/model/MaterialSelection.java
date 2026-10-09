@@ -35,7 +35,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -118,13 +117,13 @@ public class MaterialSelection extends AuditModel implements ProjectOwned {
     private ContractLine sourceContractLine;
 
     @Column(nullable = false)
-    @Note("版本号（同一房屋与合同下从 1 递增，已确认版本不被覆盖）")
+    @Note("版本号（同一分项从 1 递增；进入采购后快照不再回写）")
     private Integer version = 1;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 24, nullable = false)
     @Note("选材状态")
-    private SelectionStatus status = SelectionStatus.Draft;
+    private SelectionStatus status = SelectionStatus.Selected;
 
     @Keyword
     @Column(length = 128)
@@ -150,18 +149,6 @@ public class MaterialSelection extends AuditModel implements ProjectOwned {
     @JoinColumn(name = "designer_id")
     @Note("维护设计师")
     private Employee designer;
-
-    @Column(length = 64)
-    @Note("客户确认人姓名（线下确认时按客户签名记录）")
-    private String confirmerName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "confirmed_by_id")
-    @Note("确认操作人（线上客户自助确认或设计师代录时的员工）")
-    private Employee confirmedBy;
-
-    @Note("客户确认时间")
-    private LocalDateTime confirmedAt;
 
     @Column(length = 500)
     @Note("备注")
@@ -309,30 +296,6 @@ public class MaterialSelection extends AuditModel implements ProjectOwned {
 
     public void setDesigner(Employee designer) {
         this.designer = designer;
-    }
-
-    public String getConfirmerName() {
-        return confirmerName;
-    }
-
-    public void setConfirmerName(String confirmerName) {
-        this.confirmerName = confirmerName;
-    }
-
-    public Employee getConfirmedBy() {
-        return confirmedBy;
-    }
-
-    public void setConfirmedBy(Employee confirmedBy) {
-        this.confirmedBy = confirmedBy;
-    }
-
-    public LocalDateTime getConfirmedAt() {
-        return confirmedAt;
-    }
-
-    public void setConfirmedAt(LocalDateTime confirmedAt) {
-        this.confirmedAt = confirmedAt;
     }
 
     public String getRemark() {

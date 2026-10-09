@@ -149,7 +149,94 @@ public class DesignerWorkbenchContext {
                 distributionChart(cards)
         ));
         report.setWarnings(List.of());
+        report.setPerformanceRanking(buildPerformanceRanking(
+                performanceRankingRows(comId, monthStartDate, monthEndDate), empId));
         return report;
+    }
+
+    /** 本月签约额排名：设计是客户归属设计师，签约额口径与本月签约金额完全一致。 */
+    private List<Object[]> performanceRankingRows(Long comId,
+                                                   LocalDate monthStart,
+                                                   LocalDate monthEnd) {
+        return rows("""
+                SELECT
+                  e.emp_id,
+                  e.name,
+                  COALESCE(SUM(CASE WHEN (ct.business_origin = 'New' OR ct.business_origin IS NULL)
+                       AND ct.signed_at >= :monthStart
+                       AND ct.signed_at < :monthEnd
+                      THEN COALESCE(NULLIF(ct.current_amount, 0), ct.baseline_amount, 0) ELSE 0 END), 0)
+                    AS month_signed_amount,
+                  COUNT(DISTINCT CASE WHEN (ct.business_origin = 'New' OR ct.business_origin IS NULL)
+                       AND ct.signed_at >= :monthStart
+                       AND ct.signed_at < :monthEnd
+                      THEN ct.contract_id END) AS signed_project_count
+                FROM db_tenant_employee e
+                LEFT JOIN cust_customer c
+                  ON c.com_id = e.com_id
+                 AND c.designer_id = e.emp_id
+                LEFT JOIN db_project_contract ct
+                  ON ct.com_id = c.com_id
+                 AND ct.customer_id = c.cust_id
+                WHERE e.com_id = :comId
+                  AND e.role = 'Designer'
+                  AND e.status = 'Active'
+                GROUP BY e.emp_id, e.name
+                ORDER BY month_signed_amount DESC, signed_project_count DESC, e.emp_id ASC
+                """, Map.of(
+                "comId", comId,
+                "monthStart", monthStart,
+                "monthEnd", monthEnd
+        ));
+    }
+
+    static DesignerWorkbenchReport.PerformanceRanking buildPerformanceRanking(List<Object[]> rows,
+                                                                               Long currentEmpId) {
+        DesignerWorkbenchReport.PerformanceRanking ranking = new DesignerWorkbenchReport.PerformanceRanking();
+        if (rows == null || rows.isEmpty()) {
+            ranking.setSampleSufficient(false);
+            return ranking;
+        }
+        List<DesignerWorkbenchReport.RankingItem> items = new ArrayList<>();
+        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal previousValue = null;
+        int currentRank = 0;
+        for (int index = 0; index < rows.size(); index += 1) {
+            Object[] row = rows.get(index);
+            BigDecimal value = row.length > 2 && row[2] != null
+                    ? new BigDecimal(String.valueOf(row[2])).setScale(2, RoundingMode.HALF_UP)
+                    : BigDecimal.ZERO;
+            if (previousValue == null || value.compareTo(previousValue) != 0) {
+                currentRank = index + 1;
+                previousValue = value;
+            }
+            DesignerWorkbenchReport.RankingItem item = new DesignerWorkbenchReport.RankingItem();
+            item.setEmployeeId(row.length > 0 && row[0] != null ? Long.valueOf(String.valueOf(row[0])) : null);
+            item.setEmployeeName(row.length > 1 && row[1] != null ? String.valueOf(row[1]) : "");
+            item.setRank(currentRank);
+            item.setValue(value);
+            item.setSignedProjectCount(row.length > 3 && row[3] != null ? Integer.parseInt(String.valueOf(row[3])) : 0);
+            item.setCurrentEmployee(item.getEmployeeId() != null && item.getEmployeeId().equals(currentEmpId));
+            items.add(item);
+            total = total.add(value);
+        }
+        DesignerWorkbenchReport.RankingItem mine = items.stream()
+                .filter(item -> Boolean.TRUE.equals(item.getCurrentEmployee()))
+                .findFirst()
+                .orElse(null);
+        BigDecimal myValue = mine == null ? BigDecimal.ZERO : mine.getValue();
+        BigDecimal topValue = items.get(0).getValue();
+        BigDecimal peerAverage = total.divide(BigDecimal.valueOf(items.size()), 2, RoundingMode.HALF_UP);
+        ranking.setRank(mine == null ? 0 : mine.getRank());
+        ranking.setDesignerCount(items.size());
+        ranking.setSampleSufficient(items.size() >= 3);
+        ranking.setMyValue(myValue);
+        ranking.setTopValue(topValue);
+        ranking.setPeerAverage(peerAverage);
+        ranking.setGapToTop(topValue.subtract(myValue).max(BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP));
+        ranking.setGapToAverage(myValue.subtract(peerAverage).setScale(2, RoundingMode.HALF_UP));
+        ranking.setTopDesigners(items.subList(0, Math.min(5, items.size())));
+        return ranking;
     }
 
     /**

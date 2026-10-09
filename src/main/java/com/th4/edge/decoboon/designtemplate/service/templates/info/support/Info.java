@@ -44,7 +44,7 @@ import java.util.List;
                         "catalogItem"}),
         // 名称/单位/计价方式/价格来自项目库；必须显式白名单且不含 costPrice（BR-003 / BR-037）
         @AllowProperties(model = CatalogItem.class,
-                properties = {"itemId", "name", "unit", "pricingMode", "category", "brand", "spec",
+                properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
                         "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),

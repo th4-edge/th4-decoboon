@@ -118,6 +118,18 @@ public class DesignTemplate extends AuditModel {
     @Transient
     private List<DesignTemplateItem> items = new ArrayList<>();
 
+    @Note("当前版本区域数（列表派生，不落库）")
+    @Transient
+    private Long roomCount = 0L;
+
+    @Note("当前版本分项数（列表派生，不落库）")
+    @Transient
+    private Long itemCount = 0L;
+
+    @Note("使用次数（按实例化方案数派生，不落库）")
+    @Transient
+    private Long usageCount = 0L;
+
     public Company getCompany() { return company; }
 
     public void setCompany(Company company) { this.company = company; }
@@ -161,4 +173,16 @@ public class DesignTemplate extends AuditModel {
     public List<DesignTemplateItem> getItems() { return items; }
 
     public void setItems(List<DesignTemplateItem> items) { this.items = items; }
+
+    public Long getRoomCount() { return roomCount; }
+
+    public void setRoomCount(Long roomCount) { this.roomCount = roomCount; }
+
+    public Long getItemCount() { return itemCount; }
+
+    public void setItemCount(Long itemCount) { this.itemCount = itemCount; }
+
+    public Long getUsageCount() { return usageCount; }
+
+    public void setUsageCount(Long usageCount) { this.usageCount = usageCount; }
 }

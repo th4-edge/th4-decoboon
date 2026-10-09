@@ -280,8 +280,6 @@ public class ContractWorkbenchContext {
         view.setTitle(latest.getTitle());
         view.setSummary(summary(latest.getContent()));
         view.setDesignerName(latest.getDesigner() == null ? null : latest.getDesigner().getName());
-        view.setConfirmerName(latest.getConfirmerName());
-        view.setConfirmedAt(latest.getConfirmedAt());
         return view;
     }
 

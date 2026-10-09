@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.property.model.Measure;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.verify;
@@ -100,5 +106,72 @@ class MeasureStateGuardTest {
         assertEquals(designer, result.getDesigner());
         assertEquals(designer, property.getDesigner());
         assertEquals(designer, customer.getDesigner());
+    }
+
+    @Test
+    void directCompletionDoesNotFabricateScheduledAt() {
+        Employee designer = new Employee();
+        designer.setEmpId(9L);
+        designer.setRole(EmployeeRole.Designer);
+        Customer customer = new Customer();
+        customer.setDesigner(designer);
+        Property property = new Property();
+        property.setPropertyId(4L);
+        property.setCustomer(customer);
+        property.setDesigner(designer);
+        property.setStatus(PropertyStatus.PendingMeasure);
+        when(propertyContext.requireEmployee(employee)).thenReturn(designer);
+        when(propertyContext.require(nullable(Long.class), nullable(Employee.class))).thenReturn(property);
+        when(measureRepository.findByPropertyOrderByMeasureTimeDesc(property)).thenReturn(List.of());
+        when(measureRepository.save(any(Measure.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        com.th4.edge.decoboon.property.service.measures.save.support.Save save =
+                new com.th4.edge.decoboon.property.service.measures.save.support.Save(
+                        propertyContext, propertyRepository, measureRepository);
+        LocalDateTime completedAt = LocalDateTime.of(2026, 10, 1, 9, 8);
+        ReflectionTestUtils.setField(save, "employee", employee);
+        ReflectionTestUtils.setField(save, "propertyId", 4L);
+        ReflectionTestUtils.setField(save, "status", MeasureStatus.Completed);
+        ReflectionTestUtils.setField(save, "measureTime", completedAt);
+
+        Measure result = save.call(new Measure());
+
+        assertNull(result.getScheduledAt());
+        assertEquals(completedAt, result.getCompletedAt());
+        assertEquals(completedAt, result.getMeasureTime());
+        assertEquals(PropertyStatus.Measured, property.getStatus());
+    }
+
+    @Test
+    void completionRejectsScheduledAtAfterCompletedAt() {
+        Employee designer = new Employee();
+        designer.setEmpId(9L);
+        designer.setRole(EmployeeRole.Designer);
+        Customer customer = new Customer();
+        customer.setDesigner(designer);
+        Property property = new Property();
+        property.setPropertyId(5L);
+        property.setCustomer(customer);
+        property.setDesigner(designer);
+        property.setStatus(PropertyStatus.Measured);
+        Measure scheduled = new Measure();
+        scheduled.setMeasureId(6L);
+        scheduled.setProperty(property);
+        scheduled.setCustomer(customer);
+        scheduled.setStatus(MeasureStatus.Scheduled);
+        LocalDateTime completedAt = LocalDateTime.of(2026, 10, 1, 9, 8);
+        scheduled.setScheduledAt(completedAt.plusDays(2));
+        when(propertyContext.requireEmployee(employee)).thenReturn(designer);
+        when(propertyContext.require(nullable(Long.class), nullable(Employee.class))).thenReturn(property);
+        when(measureRepository.findByPropertyOrderByMeasureTimeDesc(property)).thenReturn(List.of(scheduled));
+        com.th4.edge.decoboon.property.service.measures.save.support.Save save =
+                new com.th4.edge.decoboon.property.service.measures.save.support.Save(
+                        propertyContext, propertyRepository, measureRepository);
+        ReflectionTestUtils.setField(save, "employee", employee);
+        ReflectionTestUtils.setField(save, "propertyId", 5L);
+        ReflectionTestUtils.setField(save, "status", MeasureStatus.Completed);
+        ReflectionTestUtils.setField(save, "completedAt", completedAt);
+        ReflectionTestUtils.setField(save, "measureTime", completedAt);
+
+        assertThrows(DefinedException.class, () -> save.call(new Measure()));
     }
 }
