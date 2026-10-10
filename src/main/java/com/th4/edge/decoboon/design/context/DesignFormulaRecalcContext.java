@@ -38,10 +38,22 @@ public class DesignFormulaRecalcContext {
         this.quoteCalcContext = quoteCalcContext;
     }
 
+    /**
+     * 重算方案：先按区域**实测面积**汇总方案面积，再重算公式分项工程量。
+     *
+     * <p>{@code DEC-062}：方案面积 = 已录入区域实测面积合计（估算值与未录入不参与），
+     * 区域新增、修改、删除都必须经过本方法，避免方案面积与区域事实脱节
+     * （方案面积会作为混合报价的面积比例基数）。</p>
+     */
     @Transactional
     public void recalculate(Design design) {
         List<Space> spaces = spaceRepository.findByDesign_DesignIdOrderBySortAsc(design.getDesignId());
         List<DesignItem> items = itemRepository.findByDesign_DesignIdOrderBySortAsc(design.getDesignId());
+        design.setArea(spaces.stream()
+                .filter(space -> space.getAreaSource() == AreaSource.Measured)
+                .map(Space::getArea)
+                .filter(java.util.Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
         Map<Long, Space> spacesById = new HashMap<>();
         for (Space space : spaces) {
             spacesById.put(space.getSpaceId(), space);

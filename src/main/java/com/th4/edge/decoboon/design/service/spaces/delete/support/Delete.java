@@ -3,6 +3,9 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.design.context.DesignContext;
+import com.th4.edge.decoboon.design.model.Design;
+import com.th4.edge.decoboon.design.repository.DesignRepository;
+import com.th4.edge.decoboon.design.context.DesignFormulaRecalcContext;
 import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
@@ -20,6 +23,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** 方案区域删除实现。区域下有分项时禁止删除。 */
 @Note("方案区域删除")
@@ -41,16 +45,22 @@ public class Delete implements com.th4.edge.decoboon.design.service.spaces.delet
     private final DesignItemRepository itemRepository;
     private final DataScopeContext dataScopeContext;
     private final DesignContext designContext;
+    private final DesignRepository designRepository;
+    private final DesignFormulaRecalcContext formulaRecalcContext;
 
     public Delete(SpaceRepository spaceRepository, DesignItemRepository itemRepository,
-                  DataScopeContext dataScopeContext, DesignContext designContext) {
+                  DataScopeContext dataScopeContext, DesignContext designContext,
+                  DesignRepository designRepository, DesignFormulaRecalcContext formulaRecalcContext) {
         this.spaceRepository = spaceRepository;
         this.itemRepository = itemRepository;
         this.dataScopeContext = dataScopeContext;
         this.designContext = designContext;
+        this.designRepository = designRepository;
+        this.formulaRecalcContext = formulaRecalcContext;
     }
 
     @Override
+    @Transactional
     public Space call(Space request) {
         DataScope scope = dataScopeContext.requireScope(employee);
         Specification<Space> byId = (root, query, builder) -> builder.equal(root.get("spaceId"), spaceId);
@@ -62,6 +72,12 @@ public class Delete implements com.th4.edge.decoboon.design.service.spaces.delet
             throw new DefinedException(new DefaultErrorCode("400", "区域下存在分项，请先删除分项"));
         }
         spaceRepository.delete(space);
+        // 删除区域后必须重算方案面积（实测面积合计）与全屋聚合分项，否则方案面积会残留旧值
+        // 并作为混合报价的面积比例基数（DEC-062）。
+        Design design = space.getDesign();
+        spaceRepository.flush();
+        formulaRecalcContext.recalculate(design);
+        designRepository.save(design);
         return space;
     }
 }

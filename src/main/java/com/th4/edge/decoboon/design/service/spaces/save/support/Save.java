@@ -116,9 +116,9 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
         applyMeasured(target);
         designContext.apply(target, design);
         Space saved = spaceRepository.save(target);
-        updateDesignArea(design);
-        designRepository.save(design);
+        // 方案面积与公式分项统一由重算上下文处理（DEC-062），避免两处口径
         formulaRecalcContext.recalculate(design);
+        designRepository.save(design);
         return saved;
     }
 
@@ -164,13 +164,4 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
         }
     }
 
-    /** 方案面积 = 已录入区域**实测面积**合计；估算值与未录入不参与汇总（DEC-062）。 */
-    private void updateDesignArea(Design design) {
-        BigDecimal total = spaceRepository.findByDesign_DesignIdOrderBySortAsc(design.getDesignId()).stream()
-                .filter(space -> space.getAreaSource() == AreaSource.Measured)
-                .map(Space::getArea)
-                .filter(java.util.Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        design.setArea(total);
-    }
 }

@@ -8,6 +8,8 @@ import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
+import com.th4.edge.decoboon.designtemplate.context.DesignTemplateFormulaContext;
+import com.th4.edge.decoboon.quote.context.QuoteCalcContext;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
@@ -41,7 +43,11 @@ class DesignSpaceSaveMeasuredTest {
     private final SpaceRepository spaceRepository = mock(SpaceRepository.class);
     private final DesignRepository designRepository = mock(DesignRepository.class);
     private final DataScopeContext dataScopeContext = mock(DataScopeContext.class);
-    private final DesignFormulaRecalcContext formulaRecalcContext = mock(DesignFormulaRecalcContext.class);
+    private final QuoteCalcContext quoteCalcContext = mock(QuoteCalcContext.class);
+    /** 用真实重算上下文覆盖「方案面积只汇总实测面积」的口径。 */
+    private final DesignFormulaRecalcContext formulaRecalcContext =
+            new DesignFormulaRecalcContext(spaceRepository, mock(com.th4.edge.decoboon.design.repository.DesignItemRepository.class),
+                    new DesignTemplateFormulaContext(), quoteCalcContext);
 
     private final com.th4.edge.decoboon.design.service.spaces.save.support.Save save =
             new com.th4.edge.decoboon.design.service.spaces.save.support.Save(
@@ -67,7 +73,8 @@ class DesignSpaceSaveMeasuredTest {
         assertThat(saved.getArea()).isEqualByComparingTo("12.04");
         assertThat(saved.getPerimeter()).isEqualByComparingTo("15.90");
         assertThat(saved.getAreaSource()).isEqualTo(AreaSource.Measured);
-        verify(formulaRecalcContext).recalculate(design);
+        // 方案面积由重算上下文汇总（本用例无既有区域 → 0）
+        assertThat(design.getArea()).isEqualByComparingTo("0");
     }
 
     @Test
@@ -128,6 +135,32 @@ class DesignSpaceSaveMeasuredTest {
         assertThat(saved.getArea()).isNull();
         assertThat(saved.getPerimeter()).isEqualByComparingTo("18.40");
         assertThat(saved.getAreaSource()).isEqualTo(AreaSource.Measured);
+    }
+
+    @Test
+    void deletingSpaceRecomputesDesignAreaFromMeasuredSpaces() {
+        Company company = company(1L);
+        Employee designer = employee(10L, company);
+        Design design = design(100L, company);
+        Space measured = space(201L, "12.04", "15.90", AreaSource.Measured);
+        measured.setDesign(design);
+        measured.setName("主卧");
+        when(dataScopeContext.requireScope(designer))
+                .thenReturn(new DataScope(DataScopeType.Self, 1L, null, null, 10L));
+        when(spaceRepository.findOne(any(Specification.class))).thenReturn(Optional.of(measured));
+        when(spaceRepository.findByDesign_DesignIdOrderBySortAsc(100L)).thenReturn(List.of());
+        when(designRepository.save(any(Design.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        var delete = new com.th4.edge.decoboon.design.service.spaces.delete.support.Delete(
+                spaceRepository, mock(com.th4.edge.decoboon.design.repository.DesignItemRepository.class),
+                dataScopeContext, designContext, designRepository, formulaRecalcContext);
+        ReflectionTestUtils.setField(delete, "spaceId", 201L);
+        ReflectionTestUtils.setField(delete, "employee", designer);
+
+        delete.call(new Space());
+
+        // 删除区域后方案面积必须回到 0，不能残留旧值作为混合报价比例基数
+        assertThat(design.getArea()).isEqualByComparingTo("0");
     }
 
     @Test

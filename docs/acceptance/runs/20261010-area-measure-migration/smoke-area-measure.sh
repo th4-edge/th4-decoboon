@@ -48,13 +48,15 @@ echo "   OK"
 cleanup() {
   if [ -n "${SPACE_ID:-}" ]; then
     post design/space/delete "{\"spaceId\":\"$SPACE_ID\"}" "$TOKEN" >/dev/null 2>&1 || true
-    echo "   （已清理临时区域 $SPACE_ID）"
+    echo "   （已清理临时区域 ${SPACE_ID}）"
   fi
 }
 trap cleanup EXIT
 
 echo "== 2. 新建区域：写入实测面积 12.04㎡ / 周长 15.90m（快照 3.60×4.20×2.80）"
 SAVED="$(post design/space/save "{\"designId\":\"$DESIGN_ID\",\"type\":\"Bedroom\",\"name\":\"冒烟-区域实测\",\"length\":3.60,\"width\":4.20,\"height\":2.80,\"area\":12.04,\"perimeter\":15.90}" "$TOKEN")"
+# 先取回 spaceId，保证后续任一断言失败也能被 trap 清理
+SPACE_ID="$(printf '%s' "$SAVED" | json 'import json,sys; d=json.load(sys.stdin); print((d.get("data") or {}).get("spaceId") or "")' || true)"
 printf '%s' "$SAVED" | json '
 import json,sys
 d = json.load(sys.stdin)
@@ -62,10 +64,12 @@ assert d.get("success"), d
 s = d["data"]
 assert float(s["area"]) == 12.04, s
 assert float(s["perimeter"]) == 15.90, s
-assert s.get("areaSource") == "Measured", s
-print("   面积/周长/来源 =", s["area"], s["perimeter"], s.get("areaSource"))
+# 枚举在框架里序列化为 {name,value,key}，这里取 key
+src = s.get("areaSource")
+key = src.get("key") if isinstance(src, dict) else src
+assert key == "Measured", s
+print("   面积/周长/来源 =", s["area"], s["perimeter"], key)
 ' || { echo "区域保存失败：$SAVED"; exit 1; }
-SPACE_ID="$(printf '%s' "$SAVED" | json 'import json,sys; print(json.load(sys.stdin)["data"]["spaceId"])')"
 
 echo "== 3. 只改量房快照长宽（9.99×9.99），实测值不变"
 post design/space/save "{\"designId\":\"$DESIGN_ID\",\"spaceId\":\"$SPACE_ID\",\"type\":\"Bedroom\",\"name\":\"冒烟-区域实测\",\"length\":9.99,\"width\":9.99,\"height\":2.80,\"area\":12.04,\"perimeter\":15.90}" "$TOKEN" | json '
