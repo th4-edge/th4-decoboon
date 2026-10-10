@@ -2,9 +2,12 @@ package com.th4.edge.decoboon.customer.service.cust.update.support;
 
 import com.th4.edge.decoboon.customer.context.CustomerContext;
 import com.th4.edge.decoboon.customer.configure.CustomerSource;
+import com.th4.edge.decoboon.customer.configure.CustomerStatusChangeType;
 import com.th4.edge.decoboon.customer.configure.Gender;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.customer.model.CustomerStatusLog;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.customer.repository.CustomerStatusLogRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 客户编辑 Provider。
@@ -88,16 +92,24 @@ public class Update implements com.th4.edge.decoboon.customer.service.cust.updat
     @AutoInject
     private Long ownerId;
 
+    /** 负责人实际发生变化时必须填写，并写入客户变更日志。 */
+    @AutoInject
+    @Length(max = 200)
+    private String reason;
+
     private final CustomerRepository customerRepository;
     private final CustomerContext customerContext;
     private final DataScopeContext dataScopeContext;
+    private final CustomerStatusLogRepository statusLogRepository;
 
     public Update(CustomerRepository customerRepository,
                   CustomerContext customerContext,
-                  DataScopeContext dataScopeContext) {
+                  DataScopeContext dataScopeContext,
+                  CustomerStatusLogRepository statusLogRepository) {
         this.customerRepository = customerRepository;
         this.customerContext = customerContext;
         this.dataScopeContext = dataScopeContext;
+        this.statusLogRepository = statusLogRepository;
     }
 
     @Override
@@ -137,7 +149,28 @@ public class Update implements com.th4.edge.decoboon.customer.service.cust.updat
             customer.setRemark(remark);
         }
         Employee owner = customerContext.resolveOwner(current, ownerId, customer.getOwner());
+        Employee previousOwner = customer.getOwner();
+        boolean ownerChanged = previousOwner == null || owner.getEmpId() == null
+                || !owner.getEmpId().equals(previousOwner.getEmpId());
+        String normalizedReason = reason == null ? null : reason.trim();
+        if (ownerChanged && (normalizedReason == null || normalizedReason.isEmpty())) {
+            throw new DefinedException(new DefaultErrorCode("400", "变更客户负责人必须填写原因"));
+        }
         customerContext.applyOwnership(customer, owner);
-        return customerRepository.save(customer);
+        Customer saved = customerRepository.save(customer);
+        if (ownerChanged) {
+            CustomerStatusLog log = new CustomerStatusLog();
+            log.setCompany(current.getCompany());
+            log.setCustomer(saved);
+            log.setFromStatus(saved.getStatus());
+            log.setToStatus(saved.getStatus());
+            log.setChangeType(CustomerStatusChangeType.OwnerChange);
+            log.setReasonText(normalizedReason);
+            log.setOperator(current);
+            log.setOperatorRole(current.getRole());
+            log.setChangedAt(LocalDateTime.now());
+            statusLogRepository.save(log);
+        }
+        return saved;
     }
 }

@@ -20,6 +20,7 @@ public enum FileScope implements Enumerable<String> {
     StockMovement("库存流水"),
     Catalog("材料库"),
     Carryover("业务承接"),
+    CustomerFollow("客户跟进图片"),
     Document("单据归档"),
     Content("内容素材");
 

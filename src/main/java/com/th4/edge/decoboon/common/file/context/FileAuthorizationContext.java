@@ -8,8 +8,11 @@ import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.common.file.configure.FileScope;
 import com.th4.edge.decoboon.customer.context.CustomerAccessContext;
+import com.th4.edge.decoboon.customer.context.CustomerContext;
 import com.th4.edge.decoboon.customer.model.CustomerFeedback;
+import com.th4.edge.decoboon.customer.model.CustomerFollow;
 import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
+import com.th4.edge.decoboon.customer.repository.CustomerFollowRepository;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.model.Space;
@@ -49,6 +52,7 @@ import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -63,9 +67,11 @@ public class FileAuthorizationContext {
     private final DataScopeContext dataScopeContext;
     private final ProjectAccessContext projectAccessContext;
     private final CustomerAccessContext customerAccessContext;
+    private final CustomerContext customerContext;
     private final ProjectReportRepository reportRepository;
     private final AcceptanceRepository acceptanceRepository;
     private final CustomerFeedbackRepository feedbackRepository;
+    private final CustomerFollowRepository customerFollowRepository;
     private final ContractChangeRepository changeRepository;
     private final DesignRepository designRepository;
     private final DesignItemRepository designItemRepository;
@@ -86,9 +92,11 @@ public class FileAuthorizationContext {
                                     DataScopeContext dataScopeContext,
                                     ProjectAccessContext projectAccessContext,
                                     CustomerAccessContext customerAccessContext,
+                                    CustomerContext customerContext,
                                     ProjectReportRepository reportRepository,
                                     AcceptanceRepository acceptanceRepository,
                                     CustomerFeedbackRepository feedbackRepository,
+                                    CustomerFollowRepository customerFollowRepository,
                                     ContractChangeRepository changeRepository,
                                     DesignRepository designRepository,
                                     DesignItemRepository designItemRepository,
@@ -108,9 +116,11 @@ public class FileAuthorizationContext {
         this.dataScopeContext = dataScopeContext;
         this.projectAccessContext = projectAccessContext;
         this.customerAccessContext = customerAccessContext;
+        this.customerContext = customerContext;
         this.reportRepository = reportRepository;
         this.acceptanceRepository = acceptanceRepository;
         this.feedbackRepository = feedbackRepository;
+        this.customerFollowRepository = customerFollowRepository;
         this.changeRepository = changeRepository;
         this.designRepository = designRepository;
         this.designItemRepository = designItemRepository;
@@ -127,6 +137,7 @@ public class FileAuthorizationContext {
         this.materialSelectionRepository = materialSelectionRepository;
     }
 
+    @Transactional(readOnly = true)
     public Authorization authorize(User<?> principal, FileScope scope, Long businessId,
                                    Set<String> requestedPaths) {
         if (principal instanceof Employee employee) {
@@ -270,6 +281,17 @@ public class FileAuthorizationContext {
                     throw notFound();
                 }
                 add(allowed, attachment.getFileUrl());
+            }
+            case CustomerFollow -> {
+                CustomerFollow follow = customerFollowRepository.findById(businessId)
+                        .orElseThrow(this::notFound);
+                if (follow.getCompany() == null
+                        || !employee.getCompany().getComId().equals(follow.getCompany().getComId())) {
+                    throw notFound();
+                }
+                // 与 customer/customer-follow/page 同口径：能看客户即可看该客户的跟进图片。
+                customerContext.requireVisible(follow.getCustomer().getCustId(), employee);
+                add(allowed, follow.getImages());
             }
         }
         return new Authorization(projectId, requested(allowed, requestedPaths));

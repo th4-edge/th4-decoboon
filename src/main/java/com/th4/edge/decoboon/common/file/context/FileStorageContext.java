@@ -16,9 +16,15 @@ import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
+import java.util.Set;
+
 /** 私有文件上传：员工可上传业务文件，业主仅可上传已授权项目的验收整改图片。 */
 @Component
 public class FileStorageContext {
+
+    private static final long CUSTOMER_FOLLOW_IMAGE_MAX_BYTES = 10 * 1024 * 1024L;
+    private static final Set<String> CUSTOMER_FOLLOW_IMAGE_EXTENSIONS = Set.of("jpg", "jpeg", "png", "webp");
 
     private final ObjectStorage storage;
     private final ObjectKeyContext keyContext;
@@ -73,6 +79,7 @@ public class FileStorageContext {
             throw new DefinedException(new DefaultErrorCode("400", "文件超过允许的最大大小"));
         }
         String originalName = file.getOriginalFilename();
+        validateBusinessFile(businessType, originalName, file);
         String key = keyContext.file(companyId, projectId, businessType, originalName);
         try (var input = file.getInputStream()) {
             StoredObject stored = storage.put(key, input, file.getSize(), file.getContentType());
@@ -90,6 +97,22 @@ public class FileStorageContext {
             throw ex;
         } catch (Exception ex) {
             throw new DefinedException(new DefaultErrorCode("500", "文件上传失败：" + ex.getMessage()));
+        }
+    }
+
+    private void validateBusinessFile(FileScope businessType, String originalName, StreamFile file) {
+        if (businessType != FileScope.CustomerFollow) return;
+        String extension = keyContext.extension(originalName);
+        if (!CUSTOMER_FOLLOW_IMAGE_EXTENSIONS.contains(extension)) {
+            throw new DefinedException(new DefaultErrorCode("400", "仅支持 JPG、PNG、WEBP 图片"));
+        }
+        String contentType = file.getContentType();
+        if (contentType != null && !contentType.isBlank()
+                && !contentType.toLowerCase(Locale.ROOT).startsWith("image/")) {
+            throw new DefinedException(new DefaultErrorCode("400", "仅支持 JPG、PNG、WEBP 图片"));
+        }
+        if (file.getSize() > CUSTOMER_FOLLOW_IMAGE_MAX_BYTES) {
+            throw new DefinedException(new DefaultErrorCode("400", "单张图片不能超过 10MB"));
         }
     }
 }

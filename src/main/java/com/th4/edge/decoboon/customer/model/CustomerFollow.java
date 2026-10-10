@@ -15,7 +15,9 @@ import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Team;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,9 +28,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /** 客户跟进记录。 */
 @Note("客户跟进记录")
@@ -40,7 +47,7 @@ import java.time.LocalDateTime;
         @Index(name = "idx_customer_follow_company", columnList = "com_id, follow_id"),
         @Index(name = "idx_customer_follow_company_customer", columnList = "com_id, customer_id, follow_id"),
         @Index(name = "idx_customer_follow_company_owner", columnList = "com_id, emp_id, follow_id")
-})
+}, uniqueConstraints = @UniqueConstraint(name = "uk_customer_follow_company_request", columnNames = {"com_id", "request_id"}))
 public class CustomerFollow extends AuditModel {
 
     @Id
@@ -86,6 +93,21 @@ public class CustomerFollow extends AuditModel {
     @Note("下次跟进时间")
     private LocalDateTime nextFollowAt;
 
+    @Note("跟进图片OSS对象键")
+    @ElementCollection
+    @CollectionTable(name = "cust_customer_follow_image", joinColumns = @JoinColumn(name = "follow_id"))
+    @OrderColumn(name = "sort_no")
+    @Column(name = "url", length = 512, nullable = false)
+    private List<String> images = new ArrayList<>();
+
+    @Note("请求幂等号")
+    @Column(name = "request_id", length = 64)
+    private String requestId;
+
+    @Transient
+    @Note("图片短期访问地址")
+    private List<String> imageUrls = new ArrayList<>();
+
     public Long getFollowId() { return followId; }
     public void setFollowId(Long followId) { this.followId = followId; }
     public Company getCompany() { return company; }
@@ -104,4 +126,12 @@ public class CustomerFollow extends AuditModel {
     public void setContent(String content) { this.content = content; }
     public LocalDateTime getNextFollowAt() { return nextFollowAt; }
     public void setNextFollowAt(LocalDateTime nextFollowAt) { this.nextFollowAt = nextFollowAt; }
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images == null ? new ArrayList<>() : new ArrayList<>(images); }
+    public String getRequestId() { return requestId; }
+    public void setRequestId(String requestId) { this.requestId = requestId; }
+    public List<String> getImageUrls() { return imageUrls; }
+    public void setImageUrls(List<String> imageUrls) { this.imageUrls = imageUrls == null ? new ArrayList<>() : new ArrayList<>(imageUrls); }
+    @Transient
+    public int getImageCount() { return images == null ? 0 : images.size(); }
 }

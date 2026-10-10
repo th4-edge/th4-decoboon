@@ -22,6 +22,7 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Team;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -92,7 +93,7 @@ class BusinessAlertContextTest {
         change.setStatus(ContractChangeStatus.Approved);
         change.setAmount(new BigDecimal("1500.00"));
 
-        when(tenant.requireRole(boss, EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager))
+        when(tenant.requireRole(boss, EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager, EmployeeRole.TeamLeader))
                 .thenReturn(boss);
         when(projects.findByCompany_ComIdOrderByProjectIdDesc(1L)).thenReturn(List.of(project));
         when(contracts.findByCompany_ComIdOrderByContractIdDesc(1L)).thenReturn(List.of(contract));
@@ -112,5 +113,56 @@ class BusinessAlertContextTest {
                 .containsExactly(BusinessAlertType.ProjectSuspensionRisk);
         assertThat(report.getMaterialOverIssues().get(0).getRate()).isEqualByComparingTo("20.0");
         assertThat(report.getChangeAnomalies().get(0).getRate()).isEqualByComparingTo("15.0");
+    }
+
+    @Test
+    void teamLeaderSeesOnlyOwnTeamRiskQueue() {
+        TenantContext tenant = mock(TenantContext.class);
+        ProjectRepository projects = mock(ProjectRepository.class);
+        ProjectContractRepository contracts = mock(ProjectContractRepository.class);
+        ReceivableRepository receivables = mock(ReceivableRepository.class);
+        StockMovementRepository movements = mock(StockMovementRepository.class);
+        ContractChangeRepository changes = mock(ContractChangeRepository.class);
+        BusinessAlertContext context = new BusinessAlertContext(tenant, projects, contracts,
+                receivables, movements, changes);
+
+        Company company = new Company();
+        company.setComId(1L);
+        Team teamA = new Team();
+        teamA.setTeamId(10L);
+        Team teamB = new Team();
+        teamB.setTeamId(20L);
+        Employee leader = new Employee();
+        leader.setEmpId(2L);
+        leader.setRole(EmployeeRole.TeamLeader);
+        leader.setCompany(company);
+        leader.setTeam(teamA);
+
+        Project ownTeam = new Project();
+        ownTeam.setProjectId(3L);
+        ownTeam.setNo("P-A");
+        ownTeam.setName("本团队项目");
+        ownTeam.setCompany(company);
+        ownTeam.setTeam(teamA);
+        ownTeam.setStatus(ProjectStatus.Suspended);
+        Project otherTeam = new Project();
+        otherTeam.setProjectId(4L);
+        otherTeam.setNo("P-B");
+        otherTeam.setName("跨团队项目");
+        otherTeam.setCompany(company);
+        otherTeam.setTeam(teamB);
+        otherTeam.setStatus(ProjectStatus.Suspended);
+
+        when(tenant.requireRole(leader, EmployeeRole.Boss, EmployeeRole.Finance,
+                EmployeeRole.StoreManager, EmployeeRole.TeamLeader)).thenReturn(leader);
+        when(projects.findByCompany_ComIdOrderByProjectIdDesc(1L)).thenReturn(List.of(otherTeam, ownTeam));
+        when(contracts.findByCompany_ComIdOrderByContractIdDesc(1L)).thenReturn(List.of());
+        when(receivables.findByCompany_ComIdOrderByDueDateAsc(1L)).thenReturn(List.of());
+        when(movements.findByCompany_ComIdOrderByMovementIdDesc(1L)).thenReturn(List.of());
+        when(changes.findByCompany_ComIdOrderByChangeIdDesc(1L)).thenReturn(List.of());
+
+        BusinessAlertReport report = context.report(leader, new BusinessAlertQuery());
+
+        assertThat(report.getSuspensionRisks()).extracting("project.projectId").containsExactly(3L);
     }
 }

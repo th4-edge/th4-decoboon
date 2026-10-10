@@ -8,7 +8,8 @@ import com.th4.edge.framework.data.enums.Enumerable;
 public enum CustomerStatusChangeType implements Enumerable<String> {
     Dormant("设为休眠"),
     Restore("恢复跟进"),
-    FollowWake("写跟进唤醒");
+    FollowWake("写跟进唤醒"),
+    OwnerChange("变更负责人");
 
     private final String name;
 

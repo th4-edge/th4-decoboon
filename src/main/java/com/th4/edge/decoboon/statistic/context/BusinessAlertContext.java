@@ -70,7 +70,7 @@ public class BusinessAlertContext {
 
     public BusinessAlertReport report(Employee principal, BusinessAlertQuery query) {
         Employee current = tenantContext.requireRole(principal,
-                EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
+                EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager, EmployeeRole.TeamLeader);
         if (current.getCompany() == null || current.getCompany().getComId() == null) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
         }
@@ -259,6 +259,16 @@ public class BusinessAlertContext {
     private List<Project> visibleProjects(Employee current, List<Project> projects) {
         if (current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance) {
             return projects;
+        }
+        if (current.getRole() == EmployeeRole.TeamLeader) {
+            Long teamId = current.getTeam() == null ? null : current.getTeam().getTeamId();
+            if (teamId == null) {
+                return List.of();
+            }
+            return projects.stream()
+                    .filter(project -> project.getTeam() != null
+                            && teamId.equals(project.getTeam().getTeamId()))
+                    .toList();
         }
         Long storeId = current.getStore() == null ? null : current.getStore().getStoreId();
         if (storeId == null) {

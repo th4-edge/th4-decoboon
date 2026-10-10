@@ -54,7 +54,8 @@ class ProviderSecurityAcceptanceTest {
             "order/callback",
             "file/private/download",
             "platform/auth/login",
-            "site/lead/submit"
+            "site/lead/submit",
+            "site/lead/douyin/submit"
     );
 
     @Autowired private ApplicationContext applicationContext;
@@ -153,10 +154,11 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-10 员工成片与发布回填 P0-3 新增 5 条（content/employee-content page/info/generate/review、content/publication/backfill，protected）。
         // => 当前 Provider 面板为 461（public 13 + protected 448）。
         // 2026-10-10 内容线索归因 P0-4 新增 3 条（content/lead-touch save/list、content/dashboard/report，protected）。
-        // => 当前 Provider 面板为 464（public 13 + protected 451）。
-        assertThat(routes).hasSize(464);
+        // 2026-10-10 抖音公开留资新增 1 条（site/lead/douyin/submit，public）。
+        // => 当前 Provider 面板为 465（public 14 + protected 451）。
+        assertThat(routes).hasSize(465);
         assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(451);
-        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(13);
+        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(14);
     }
 
     @Test

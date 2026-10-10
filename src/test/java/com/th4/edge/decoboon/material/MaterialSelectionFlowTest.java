@@ -82,7 +82,7 @@ class MaterialSelectionFlowTest {
     }
 
     @Test
-    void ongoingSelectionIsSavedInPlaceInsteadOfStackingVersions() throws Exception {
+    void ongoingSelectionCreatesNewVersionInsteadOfOverwritingHistory() throws Exception {
         Property property = property();
         ProjectContract contract = contract(property);
         stubMaintain(property, contract);
@@ -93,7 +93,7 @@ class MaterialSelectionFlowTest {
         when(context.plansOf(null, null)).thenReturn(List.of());
         when(repository.findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(1L, 7L, 9L))
                 .thenReturn(Optional.of(ongoing));
-        stubPersist(50L);
+        stubPersist(51L);
 
         inject(save, "propertyId", 7L);
         inject(save, "contractId", 9L);
@@ -102,7 +102,7 @@ class MaterialSelectionFlowTest {
 
         MaterialSelection result = save.call(new MaterialSelection());
 
-        assertEquals(1, result.getVersion(), "同一分项原地保存，不产生新版本");
+        assertEquals(2, result.getVersion(), "同一分项再次保存必须追加新版本");
         assertEquals(SelectionStatus.Selected, result.getStatus());
     }
 

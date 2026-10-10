@@ -126,10 +126,10 @@ public class Save implements com.th4.edge.decoboon.material.service.selections.s
                     .findFirstByCompany_ComIdAndProperty_PropertyIdAndContract_ContractIdOrderByVersionDesc(
                             comId, property.getPropertyId(), contract.getContractId()).orElse(null);
         }
-        MaterialSelection target = ongoing != null ? ongoing : new MaterialSelection();
-        if (ongoing == null) {
-            target.setVersion(1);
-        }
+        // DEC-056：进入采购前允许继续修改；每次保存追加新版本，历史版本只读保留。
+        MaterialSelection target = new MaterialSelection();
+        target.setVersion(ongoing == null || ongoing.getVersion() == null
+                ? 1 : ongoing.getVersion() + 1);
         target.setCompany(property.getCompany());
         target.setStore(property.getStore());
         target.setTeam(property.getTeam());
