@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = QuoteGroup.class,
                 properties = {"key", "name", "type", "category", "unit", "quantity", "amount", "cost", "items"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter"}),
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",
                         "pricingMode", "materialPrice", "manualPrice", "formula", "craft", "criterion"}),

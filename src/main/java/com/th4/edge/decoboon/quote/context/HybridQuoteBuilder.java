@@ -150,7 +150,9 @@ public class HybridQuoteBuilder {
             throw new DefinedException(new DefaultErrorCode("403", "设计方案与套餐不属于同一企业"));
         }
         if (design.getArea() == null || design.getArea().signum() <= 0) {
-            throw new DefinedException(new DefaultErrorCode("400", "设计方案面积无效"));
+            // DEC-062：方案面积只汇总区域实测面积；未录入时不能按面积比例出混合报价，也不得用 0 伪装完成。
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "设计方案暂无实测面积合计，请先在方案区域录入实测面积后再生成混合报价"));
         }
         Long propertyId = design.getProperty().getPropertyId();
         Long comId = design.getCompany().getComId();

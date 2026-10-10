@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.design.context;
 
+import com.th4.edge.decoboon.design.configure.AreaSource;
 import com.th4.edge.decoboon.design.configure.QuantitySource;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
@@ -61,7 +62,8 @@ public class DesignFormulaRecalcContext {
                 Space space = item.getSpace() == null ? null : spacesById.get(item.getSpace().getSpaceId());
                 BigDecimal quantity = space == null
                         ? formulaContext.evaluateWith(expression, wholeHouseVariables(spaces, expression))
-                        : formulaContext.evaluate(toTemplateRoom(space), expression);
+                        : formulaContext.evaluate(toTemplateRoom(space), expression,
+                                measuredArea(space), measuredPerimeter(space));
                 item.setQuantity(quantity);
                 item.setFormula(expression);
             } catch (DefinedException exception) {
@@ -88,6 +90,21 @@ public class DesignFormulaRecalcContext {
         return item.getFormula() != null && !item.getFormula().isBlank();
     }
 
+    /**
+     * 可用于工程量计算的实测面积。
+     *
+     * <p>{@code DEC-062}：只有设计师实测录入（{@code AreaSource.Measured}）的值才允许作为工程量基数；
+     * 历史按长宽推算的估算值只用于提示复核，返回 {@code null} 让公式按「未就绪」处理。</p>
+     */
+    private BigDecimal measuredArea(Space space) {
+        return space.getAreaSource() == AreaSource.Measured ? space.getArea() : null;
+    }
+
+    /** 可用于工程量计算的实测周长，口径同 {@link #measuredArea(Space)}。 */
+    private BigDecimal measuredPerimeter(Space space) {
+        return space.getAreaSource() == AreaSource.Measured ? space.getPerimeter() : null;
+    }
+
     private DesignTemplateRoom toTemplateRoom(Space space) {
         DesignTemplateRoom room = new DesignTemplateRoom();
         room.setRoomKey(String.valueOf(space.getSpaceId()));
@@ -104,24 +121,37 @@ public class DesignFormulaRecalcContext {
         return room;
     }
 
+    /**
+     * 全屋共享分项变量：按区域**实测值**聚合。
+     *
+     * <p>{@code DEC-062}：任一区域缺少实测面积/周长时，全屋聚合按「未就绪」处理（整项待补），
+     * 不允许用部分区域求和的偏小值冒充已完成工程量。</p>
+     */
     private Map<String, BigDecimal> wholeHouseVariables(List<Space> spaces, String formula) {
         java.util.Set<String> used = formulaContext.variablesUsed(formula);
-        boolean needsArea = used.stream().anyMatch(name -> java.util.Set.of("A", "CP", "P", "WP").contains(name));
+        boolean needsArea = used.contains("A") || used.contains("CP");
+        boolean needsPerimeter = used.contains("P") || used.contains("WP");
         boolean needsHeight = used.contains("WP");
-        if (needsArea) {
-            for (Space space : spaces) {
-                if (space.getLength() == null || space.getWidth() == null
-                        || (needsHeight && space.getHeight() == null)) {
-                    throw new DefinedException(new com.th4.edge.framework.exception.DefaultErrorCode(
-                            "TEMPLATE_SIZE_MISSING", "全屋聚合项所需尺寸未填：" + space.getName()));
-                }
+        for (Space space : spaces) {
+            if (needsArea && measuredArea(space) == null) {
+                throw new DefinedException(new com.th4.edge.framework.exception.DefaultErrorCode(
+                        "TEMPLATE_SIZE_MISSING", "全屋聚合项所需实测面积未录入：" + space.getName()));
+            }
+            if (needsPerimeter && measuredPerimeter(space) == null) {
+                throw new DefinedException(new com.th4.edge.framework.exception.DefaultErrorCode(
+                        "TEMPLATE_SIZE_MISSING", "全屋聚合项所需实测周长未录入：" + space.getName()));
+            }
+            if (needsHeight && space.getHeight() == null) {
+                throw new DefinedException(new com.th4.edge.framework.exception.DefaultErrorCode(
+                        "TEMPLATE_SIZE_MISSING", "全屋聚合项所需层高未录入：" + space.getName()));
             }
         }
         BigDecimal area = BigDecimal.ZERO;
         BigDecimal perimeter = BigDecimal.ZERO;
         BigDecimal walls = BigDecimal.ZERO;
         for (Space space : spaces) {
-            Map<String, BigDecimal> variables = formulaContext.variablesOf(toTemplateRoom(space));
+            Map<String, BigDecimal> variables = formulaContext.variablesOf(toTemplateRoom(space),
+                    measuredArea(space), measuredPerimeter(space));
             area = area.add(variables.getOrDefault("A", BigDecimal.ZERO));
             perimeter = perimeter.add(variables.getOrDefault("P", BigDecimal.ZERO));
             walls = walls.add(variables.getOrDefault("WP", BigDecimal.ZERO));

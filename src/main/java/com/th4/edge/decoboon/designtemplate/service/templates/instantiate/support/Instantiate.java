@@ -60,12 +60,12 @@ import java.util.Map;
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout",
                         "description", "spaces", "items", "designTemplateVersion", "createTime", "owner", "store", "team"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter",
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource",
                         "sort", "remark"}),
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "type", "category", "name", "brand", "spec", "unit", "quantity",
                         "materialPrice", "manualPrice", "fixedTotalPrice", "pricingMode", "amount",
-                        "formula", "criterion", "craft", "remark", "sort"}),
+                        "formula", "pendingMeasure", "criterion", "craft", "remark", "sort"}),
         @AllowProperties(model = DesignTemplateVersion.class,
                 properties = {"versionId", "version", "status", "name", "houseType", "areaMin", "areaMax",
                         "tags", "publishedAt"}),
@@ -193,7 +193,6 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
 
         List<Space> spaces = new ArrayList<>();
         Map<String, Space> spaceByRoomKey = new HashMap<>();
-        BigDecimal totalArea = BigDecimal.ZERO;
         for (DesignTemplateRoom room : rooms) {
             Space space = new Space();
             space.setCompany(me.getCompany());
@@ -209,20 +208,15 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             space.setHeight(room.getHeight());
             space.setSort(room.getSortNo() == null ? 0 : room.getSortNo());
             space.setRemark(room.getRemark());
-            if (room.getLength() != null && room.getWidth() != null) {
-                BigDecimal area = room.getLength().multiply(room.getWidth()).setScale(2, RoundingMode.HALF_UP);
-                BigDecimal perimeter = room.getLength().add(room.getWidth())
-                        .multiply(BigDecimal.valueOf(2)).setScale(2, RoundingMode.HALF_UP);
-                space.setArea(area);
-                space.setPerimeter(perimeter);
-                totalArea = totalArea.add(area);
-            }
+            // BR-040 §4 / DEC-062（EV-213）：区域面积与周长只能由设计师实测量房后经 CAD 计算录入，
+            // 模版实例化只生成区域骨架；长宽是量房快照，绝不据此推算面积/周长。
             spaces.add(space);
             spaceByRoomKey.put(room.getRoomKey(), space);
         }
         spaceRepository.saveAll(spaces);
 
-        saved.setArea(totalArea.setScale(2, RoundingMode.HALF_UP));
+        // 方案面积为区域实测面积合计（DEC-062）：实例化阶段尚无实测值，保持 0（前端显示「面积待补充」），
+        // 设计师录入区域实测面积后由 design/space/save → DesignFormulaRecalcContext 重算。
         saved.setSpaces(spaces);
 
         // 分项：名称/单位/价格读 catalogItem；工程量按区域专业变量服务端求值（初算，最终以报价主链为准）
@@ -241,8 +235,9 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             if (templateFormula != null && !templateFormula.isBlank()) {
                 try {
                     quantity = room != null
-                            ? formulaContext.evaluate(room, templateFormula)
-                            : formulaContext.evaluateWith(templateFormula, wholeHouseVariables(rooms, templateFormula));
+                            // 模版层不承载实测面积/周长：A/P/CP/WP 一律未就绪，引用它们的分项落「待补」。
+                            ? formulaContext.evaluate(room, templateFormula, null, null)
+                            : formulaContext.evaluateWith(templateFormula, wholeHouseVariables(rooms));
                 } catch (DefinedException exception) {
                     // BR-040 §7 / 2026-10-10 用户裁决：尺寸未填不再整单失败；
                     // 用 quantity=0 + formula 前缀标记“待补尺寸”，与“0=赠送”并存。
@@ -300,34 +295,15 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         return designRepository.save(saved);
     }
 
-    /** 全屋共享分项的变量：按区域聚合，不做建筑面积换算（BR-040 §4）。 */
-    private Map<String, BigDecimal> wholeHouseVariables(List<DesignTemplateRoom> rooms, String formula) {
-        java.util.Set<String> used = formulaContext.variablesUsed(formula);
-        boolean needsArea = used.stream().anyMatch(name -> java.util.Set.of("A", "CP", "P", "WP").contains(name));
-        boolean needsHeight = used.contains("WP");
-        if (needsArea) {
-            for (DesignTemplateRoom room : rooms) {
-                if (room.getLength() == null || room.getWidth() == null
-                        || (needsHeight && room.getHeight() == null)) {
-                    throw new DefinedException(new DefaultErrorCode("TEMPLATE_SIZE_MISSING",
-                            "全屋聚合项所需尺寸未填：" + room.getName()));
-                }
-            }
-        }
-        BigDecimal area = BigDecimal.ZERO;
-        BigDecimal perimeter = BigDecimal.ZERO;
-        BigDecimal walls = BigDecimal.ZERO;
-        for (DesignTemplateRoom room : rooms) {
-            Map<String, BigDecimal> variables = formulaContext.variablesOf(room);
-            area = area.add(variables.getOrDefault("A", BigDecimal.ZERO));
-            perimeter = perimeter.add(variables.getOrDefault("P", BigDecimal.ZERO));
-            walls = walls.add(variables.getOrDefault("WP", BigDecimal.ZERO));
-        }
+    /**
+     * 全屋共享分项的变量。
+     *
+     * <p>模版层不承载实测面积/周长（{@code DEC-062}），因此 {@code A/P/CP/WP} 一律不放入变量表：
+     * 引用它们的全屋分项会报「未就绪」并按「待补尺寸」落库；等设计师在方案区域录入实测值后，
+     * 由 {@code design/space/save} 触发的重算再求值。只提供计数类变量 {@code COUNT(room)}。</p>
+     */
+    private Map<String, BigDecimal> wholeHouseVariables(List<DesignTemplateRoom> rooms) {
         Map<String, BigDecimal> whole = new HashMap<>();
-        whole.put("A", area);
-        whole.put("CP", area);
-        whole.put("P", perimeter);
-        whole.put("WP", walls);
         whole.put("N", BigDecimal.ONE);
         whole.put(DesignTemplateFormulaContext.ROOM_COUNT_KEY, BigDecimal.valueOf(rooms.size()));
         return whole;

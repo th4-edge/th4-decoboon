@@ -77,9 +77,10 @@ public class Build implements com.th4.edge.decoboon.design.service.schemes.build
                 throw new DefinedException(new DefaultErrorCode("400", "请先配置施工或材料分项"));
             }
             // 区域是可选的设计组织维度：允许无区域但有综合项目的方案完成；
-            // 有区域时仍按区域面积汇总，无区域时保留方案已有面积，不强制改写为 0。
+            // 有区域时按区域**实测面积**汇总（DEC-062：估算值不参与），无区域时保留方案已有面积。
             if (!spaces.isEmpty()) {
                 design.setArea(spaces.stream()
+                        .filter(space -> space.getAreaSource() == com.th4.edge.decoboon.design.configure.AreaSource.Measured)
                         .map(Space::getArea)
                         .filter(java.util.Objects::nonNull)
                         .reduce(BigDecimal.ZERO, BigDecimal::add));

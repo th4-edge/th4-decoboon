@@ -42,12 +42,12 @@ import java.util.ArrayList;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "design", "space", "type", "category", "catalogItem",
                         "name", "brand", "spec", "unit", "quantity", "quantitySource", "materialPrice", "manualPrice",
-                        "costPrice", "pricingMode", "amount", "cost", "formula", "criterion", "craft", "remark", "sort",
+                        "costPrice", "pricingMode", "amount", "cost", "formula", "pendingMeasure", "criterion", "craft", "remark", "sort",
                         "images", "createTime", "updateTime"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "status", "area", "layout"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter"}),
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit", "formula"})
 })

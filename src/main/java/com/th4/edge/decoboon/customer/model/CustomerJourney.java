@@ -219,6 +219,7 @@ public class CustomerJourney {
         @Note("高") private String height;
         @Note("面积") private String area;
         @Note("周长") private String perimeter;
+        @Note("面积口径来源") private String areaSource;
         @Note("设计数量") private Integer itemCount = 0;
         @Note("区域图片") private List<String> images = new ArrayList<>();
         @Note("设计说明") private String remark;
@@ -239,6 +240,8 @@ public class CustomerJourney {
         public void setArea(String area) { this.area = area; }
         public String getPerimeter() { return perimeter; }
         public void setPerimeter(String perimeter) { this.perimeter = perimeter; }
+        public String getAreaSource() { return areaSource; }
+        public void setAreaSource(String areaSource) { this.areaSource = areaSource; }
         public Integer getItemCount() { return itemCount; }
         public void setItemCount(Integer itemCount) { this.itemCount = itemCount; }
         public List<String> getImages() { return images; }

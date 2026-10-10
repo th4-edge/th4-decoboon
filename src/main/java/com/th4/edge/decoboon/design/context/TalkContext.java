@@ -231,8 +231,18 @@ public class TalkContext {
     }
 
     private String dimensionText(Space space) {
-        return value(space.getLength()) + "m × " + value(space.getWidth()) + "m × " + value(space.getHeight())
-                + "m，面积 " + value(space.getArea()) + "㎡，周长 " + value(space.getPerimeter()) + "m";
+        // DEC-062：长宽高是量房快照；面积/周长必须是设计师实测录入值，未录入时如实说明而不是显示 0。
+        return "量房快照 " + value(space.getLength()) + "m × " + value(space.getWidth()) + "m × "
+                + value(space.getHeight()) + "m，实测面积 " + measured(space.getArea())
+                + "，实测周长 " + measured(space.getPerimeter(), "m");
+    }
+
+    private String measured(BigDecimal number) {
+        return measured(number, "㎡");
+    }
+
+    private String measured(BigDecimal number, String unit) {
+        return number == null ? "未录入" : number.stripTrailingZeros().toPlainString() + unit;
     }
 
     private List<String> roomText(List<DesignItem> items) {

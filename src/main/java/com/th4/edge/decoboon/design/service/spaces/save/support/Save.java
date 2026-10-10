@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.design.service.spaces.save.support;
 
+import com.th4.edge.decoboon.design.configure.AreaSource;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.context.DesignFormulaRecalcContext;
 import com.th4.edge.decoboon.design.model.Design;
@@ -28,12 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/** 方案区域保存实现。面积与周长由长宽自动计算。 */
+/** 方案区域保存实现。面积与周长是设计师实测录入值，服务端不推算（BR-040 §4 / DEC-062）。 */
 @Note("方案区域保存")
 @Properties(allow = {
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "design", "type", "name", "length", "width", "height", "area",
-                        "perimeter", "sort", "remark", "images", "createTime", "updateTime"}),
+                        "perimeter", "areaSource", "sort", "remark", "images", "createTime", "updateTime"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "status", "area", "layout"}),
 })
@@ -63,6 +64,12 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
 
     @AutoInject
     private BigDecimal height;
+
+    @AutoInject
+    private BigDecimal area;
+
+    @AutoInject
+    private BigDecimal perimeter;
 
     @AutoInject
     private Integer sort;
@@ -106,7 +113,7 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
         target.setSort(sort == null ? 0 : sort);
         target.setRemark(remark);
         target.setImages(images);
-        calculate(target);
+        applyMeasured(target);
         designContext.apply(target, design);
         Space saved = spaceRepository.save(target);
         updateDesignArea(design);
@@ -122,23 +129,45 @@ public class Save implements com.th4.edge.decoboon.design.service.spaces.save.Sa
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "方案区域不存在或无权访问")));
     }
 
-    private void calculate(Space space) {
-        BigDecimal length = space.getLength();
-        BigDecimal width = space.getWidth();
-        if (length != null && width != null) {
-            space.setArea(length.multiply(width).setScale(2, RoundingMode.HALF_UP));
-            space.setPerimeter(length.add(width).multiply(new BigDecimal("2")).setScale(2, RoundingMode.HALF_UP));
+    /**
+     * 落库区域实测面积/周长。
+     *
+     * <p>BR-040 §4 / {@code DEC-062}（{@code EV-213}）：区域面积与周长只能由设计师实测量房后经 CAD
+     * 计算录入，服务端**一律不推算**；长宽只作为量房快照保存，变化不触发面积/周长重算。</p>
+     *
+     * <p>未提供的值表示「未录入」而不是 0：新建区域保持为空，公式引用 {@code A/P} 的分项按「待补尺寸」
+     * 处理。历史按长宽推算的估算值（{@code Estimated}）不允许继续充当工程量基数，因此首次录入实测值时
+     * 以本次提交为准，未同步提交的那一项按未录入处理。</p>
+     */
+    private void applyMeasured(Space space) {
+        boolean firstMeasured = space.getAreaSource() != AreaSource.Measured;
+        if (firstMeasured) {
+            space.setArea(null);
+            space.setPerimeter(null);
         }
-        if (space.getArea() == null) {
-            space.setArea(BigDecimal.ZERO);
+        if (area != null) {
+            requirePositive(area, "实测面积");
+            space.setArea(area.setScale(2, RoundingMode.HALF_UP));
         }
-        if (space.getPerimeter() == null) {
-            space.setPerimeter(BigDecimal.ZERO);
+        if (perimeter != null) {
+            requirePositive(perimeter, "实测周长");
+            space.setPerimeter(perimeter.setScale(2, RoundingMode.HALF_UP));
+        }
+        if (space.getArea() != null || space.getPerimeter() != null) {
+            space.setAreaSource(AreaSource.Measured);
         }
     }
 
+    private void requirePositive(BigDecimal value, String label) {
+        if (value.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", label + "必须大于 0（实测值由设计师按 CAD 录入）"));
+        }
+    }
+
+    /** 方案面积 = 已录入区域**实测面积**合计；估算值与未录入不参与汇总（DEC-062）。 */
     private void updateDesignArea(Design design) {
         BigDecimal total = spaceRepository.findByDesign_DesignIdOrderBySortAsc(design.getDesignId()).stream()
+                .filter(space -> space.getAreaSource() == AreaSource.Measured)
                 .map(Space::getArea)
                 .filter(java.util.Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

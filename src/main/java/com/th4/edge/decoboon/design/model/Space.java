@@ -8,9 +8,9 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.bim.Area;
 import com.th4.edge.decoboon.bim.configure.SpaceType;
+import com.th4.edge.decoboon.design.configure.AreaSource;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.framework.core.annotation.Note;
-import com.th4.edge.framework.data.field.annotation.LogicField;
 import com.th4.edge.framework.data.jpa.annotation.Model;
 import com.th4.edge.framework.data.jpa.keyword.annotation.Keyword;
 import com.th4.edge.tenant.user.access.annotation.DataPermission;
@@ -108,15 +108,18 @@ public class Space extends AuditModel implements Area {
     @Column(precision = 10, scale = 3)
     private BigDecimal height;
 
-    @Note("面积")
-    @LogicField
-    @Column(precision = 12, scale = 2, nullable = false)
-    private BigDecimal area = BigDecimal.ZERO;
+    @Note("实测面积")
+    @Column(precision = 12, scale = 2)
+    private BigDecimal area;
 
-    @Note("周长")
-    @LogicField
-    @Column(precision = 12, scale = 2, nullable = false)
-    private BigDecimal perimeter = BigDecimal.ZERO;
+    @Note("实测周长")
+    @Column(precision = 12, scale = 2)
+    private BigDecimal perimeter;
+
+    @Note("面积口径来源")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "area_source", length = 16)
+    private AreaSource areaSource;
 
     @Note("排序")
     @Column(nullable = false)
@@ -138,6 +141,8 @@ public class Space extends AuditModel implements Area {
     @Override
     public BigDecimal getPerimeter() { return perimeter; }
     public void setPerimeter(BigDecimal perimeter) { this.perimeter = perimeter; }
+    public AreaSource getAreaSource() { return areaSource; }
+    public void setAreaSource(AreaSource areaSource) { this.areaSource = areaSource; }
     public Long getSpaceId() { return spaceId; }
     public void setSpaceId(Long spaceId) { this.spaceId = spaceId; }
     public Company getCompany() { return company; }

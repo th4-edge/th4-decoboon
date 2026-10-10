@@ -23,8 +23,11 @@ import java.util.regex.Pattern;
 /**
  * 设计模版工程量公式上下文（BR-040 §2 / DEC-050 ④）。
  *
- * <p>模版层只允许**专业变量**：输入 {@code L/W/H/DW/DA/WA/WR/N}，派生 {@code A/P/WP/CP}；
+ * <p>模版层只允许**专业变量**：输入 {@code H/DW/DA/WA/WR/N}，实测/派生 {@code A/P/WP/CP}；
  * 支持 {@code + - * / ( )} 与 {@code SUM/MIN/MAX/ROUND}。</p>
+ *
+ * <p>{@code L}/{@code W}（开间/进深）自 {@code DEC-062}（{@code EV-213}）起**不再是公式变量**：
+ * 它们是量房快照，不能用于推算面积/周长；引用它们会在校验和求值阶段被阻断并提示改用实测值。</p>
  *
  * <p><b>禁止单元格引用</b>（如 {@code =F2*2}）：模版面向业务变量而不是表格位置。
  * 实例化进入报价工作区后仍可使用既有单元格引用，由报价侧公式上下文负责。</p>
@@ -37,12 +40,19 @@ import java.util.regex.Pattern;
 public class DesignTemplateFormulaContext {
 
     /** 专业变量（模版层唯一合法命名空间）。 */
-    public static final Set<String> INPUT_VARIABLES = Set.of("L", "W", "H", "DW", "DA", "WA", "WR", "N");
+    public static final Set<String> INPUT_VARIABLES = Set.of("H", "DW", "DA", "WA", "WR", "N");
+    /** 实测输入与派生变量：{@code A}/{@code P}/{@code CP} 取设计师实测值，{@code WP} 由实测周长与层高派生。 */
     public static final Set<String> DERIVED_VARIABLES = Set.of("A", "P", "WP", "CP");
+    /**
+     * 量房快照变量：只记录现场粗测尺寸，**禁止**出现在工程量公式里（{@code DEC-062} / {@code EV-213}）。
+     */
+    public static final Set<String> SNAPSHOT_VARIABLES = Set.of("L", "W");
+    private static final String SNAPSHOT_FORBIDDEN_MESSAGE =
+            "「L/W」是量房快照，不能用于推算面积/周长；请录入区域实测值后引用 A/P/CP/WP（DEC-062）";
     public static final Set<String> FUNCTIONS = Set.of("SUM", "MIN", "MAX", "ROUND", "COUNT");
 
     /** 实例化“待补尺寸”标记：quantity=0 且 formula 以该前缀开头；不新增 DDL。 */
-    public static final String PENDING_MEASURE_MARKER = "__PENDING_MEASURE__";
+    public static final String PENDING_MEASURE_MARKER = com.th4.edge.decoboon.design.model.DesignItem.PENDING_MEASURE_MARKER;
 
     /** 区域数量内部变量键（只允许通过 COUNT(room) 使用，避免裸 ROOM 进入公式）。 */
     public static final String ROOM_COUNT_KEY = "#ROOM_COUNT#";
@@ -57,11 +67,20 @@ public class DesignTemplateFormulaContext {
         return value != null;
     }
 
-    /** 计算一个区域的全部专业变量；未就绪的变量不放入结果（由求值时报「未就绪」）。 */
-    public Map<String, BigDecimal> variablesOf(DesignTemplateRoom room) {
+    /**
+     * 计算一个区域的全部专业变量；未就绪的变量不放入结果（由求值时报「未就绪」）。
+     *
+     * <p>BR-040 §4 / {@code DEC-062}（{@code EV-213}）：{@code A}（面积）、{@code P}（周长）、{@code CP}
+     * 是**设计师实测录入值**，由调用方传入；系统不得由开间/进深推算，{@code L}/{@code W} 只保留
+     * 量房快照语义。实测值未录入时 {@code A/P/CP/WP} 视为未就绪，由调用方按「待补尺寸」处理。</p>
+     *
+     * @param measuredArea      区域实测面积（㎡）；未录入或非实测来源传 {@code null}
+     * @param measuredPerimeter 区域实测周长（m）；未录入或非实测来源传 {@code null}
+     */
+    public Map<String, BigDecimal> variablesOf(DesignTemplateRoom room,
+                                               BigDecimal measuredArea,
+                                               BigDecimal measuredPerimeter) {
         Map<String, BigDecimal> variables = new HashMap<>();
-        putIfReady(variables, "L", room.getLength());
-        putIfReady(variables, "W", room.getWidth());
         putIfReady(variables, "H", room.getHeight());
         putIfReady(variables, "DW", room.getDoorWidthTotal());
         putIfReady(variables, "DA", room.getDoorAreaTotal());
@@ -70,21 +89,15 @@ public class DesignTemplateFormulaContext {
         variables.put("N", BigDecimal.valueOf(room.getCount() == null ? 1 : room.getCount()));
         variables.put(ROOM_COUNT_KEY, BigDecimal.ONE);
 
-        BigDecimal length = room.getLength();
-        BigDecimal width = room.getWidth();
+        putIfReady(variables, "A", measuredArea);
+        putIfReady(variables, "CP", measuredArea);
+        putIfReady(variables, "P", measuredPerimeter);
         BigDecimal height = room.getHeight();
-        if (ready(length) && ready(width)) {
-            BigDecimal area = length.multiply(width, MATH);
-            BigDecimal perimeter = length.add(width, MATH).multiply(BigDecimal.valueOf(2), MATH);
-            variables.put("A", area);
-            variables.put("CP", area);
-            variables.put("P", perimeter);
-            if (ready(height)) {
-                BigDecimal walls = perimeter.multiply(height, MATH)
-                        .subtract(zero(room.getDoorAreaTotal()), MATH)
-                        .subtract(zero(room.getWindowAreaTotal()), MATH);
-                variables.put("WP", walls);
-            }
+        if (ready(measuredPerimeter) && ready(height)) {
+            BigDecimal walls = measuredPerimeter.multiply(height, MATH)
+                    .subtract(zero(room.getDoorAreaTotal()), MATH)
+                    .subtract(zero(room.getWindowAreaTotal()), MATH);
+            variables.put("WP", walls);
         }
         return variables;
     }
@@ -120,11 +133,17 @@ public class DesignTemplateFormulaContext {
         new Parser(normalized, probe).parseAll();
     }
 
-    /** 按区域求值；返回 3 位小数结果，结果必须大于 0。 */
-    public BigDecimal evaluate(DesignTemplateRoom room, String formula) {
+    /**
+     * 按区域求值；返回 3 位小数结果，结果必须大于 0。
+     *
+     * <p>实测面积/周长由调用方传入（{@code DEC-062}）；模版层没有实测值时传 {@code null}，
+     * 引用 {@code A/P/CP/WP} 的公式会报「未就绪」，由调用方标记「待补尺寸」。</p>
+     */
+    public BigDecimal evaluate(DesignTemplateRoom room, String formula,
+                               BigDecimal measuredArea, BigDecimal measuredPerimeter) {
         String normalized = normalize(formula);
         rejectCellReference(normalized);
-        BigDecimal value = new Parser(normalized, variablesOf(room)).parseAll();
+        BigDecimal value = new Parser(normalized, variablesOf(room, measuredArea, measuredPerimeter)).parseAll();
         if (value.signum() <= 0) {
             throw error("TEMPLATE_FORMULA_NOT_POSITIVE", "工程量公式结果必须大于 0");
         }
@@ -160,7 +179,7 @@ public class DesignTemplateFormulaContext {
     /** 面积型单位允许的业务变量。 */
     private static final Set<String> AREA_VARIABLES = Set.of("A", "WP", "CP", "DA", "WA");
     /** 长度型单位允许的业务变量。 */
-    private static final Set<String> LENGTH_VARIABLES = Set.of("L", "W", "H", "DW", "WR", "P");
+    private static final Set<String> LENGTH_VARIABLES = Set.of("H", "DW", "WR", "P");
     /** 计数型单位不允许出现业务变量（只能用固定数量）。 */
     private static final Set<String> COUNT_UNITS = Set.of("Count", "Item", "Place", "Set", "House",
             "Plate", "Block", "Root", "Hole", "Pcs", "Stick", "Grid", "Step");
@@ -175,7 +194,8 @@ public class DesignTemplateFormulaContext {
         Matcher matcher = Pattern.compile("[A-Za-z_][A-Za-z0-9_]*").matcher(normalized);
         while (matcher.find()) {
             String name = matcher.group().toUpperCase(Locale.ROOT);
-            if (INPUT_VARIABLES.contains(name) || DERIVED_VARIABLES.contains(name)) {
+            if (INPUT_VARIABLES.contains(name) || DERIVED_VARIABLES.contains(name)
+                    || SNAPSHOT_VARIABLES.contains(name)) {
                 used.add(name);
             }
         }
@@ -333,6 +353,9 @@ public class DesignTemplateFormulaContext {
                 }
                 return dimension < 0 ? 0 : dimension;
             }
+            if (SNAPSHOT_VARIABLES.contains(name)) {
+                throw error("TEMPLATE_VARIABLE_FORBIDDEN", SNAPSHOT_FORBIDDEN_MESSAGE);
+            }
             if (AREA_VARIABLES.contains(name)) return 2;
             if (LENGTH_VARIABLES.contains(name)) return 1;
             if (name.equals("N")) return 0;
@@ -449,6 +472,9 @@ public class DesignTemplateFormulaContext {
             String name = raw.toUpperCase(Locale.ROOT);
             skipSpace();
             if (eat('(')) return function(name, raw);
+            if (SNAPSHOT_VARIABLES.contains(name)) {
+                throw error("TEMPLATE_SIZE_MISSING", SNAPSHOT_FORBIDDEN_MESSAGE);
+            }
             BigDecimal value = variables.get(name);
             if (value == null) {
                 if (DERIVED_VARIABLES.contains(name) || INPUT_VARIABLES.contains(name)) {

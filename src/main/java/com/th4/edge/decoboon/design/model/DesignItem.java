@@ -36,6 +36,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -179,6 +180,13 @@ public class DesignItem extends AuditModel {
     @Column(length = 256)
     private String formula;
 
+    /** 待补尺寸标记（DEC-058）：与 DesignTemplateFormulaContext 共用同一字面量。 */
+    public static final String PENDING_MEASURE_MARKER = "__PENDING_MEASURE__";
+
+    @Transient
+    @Note("只读投影：待补尺寸")
+    private Boolean pendingMeasure;
+
     @Note("工艺说明")
     @Lob
     private String criterion;
@@ -247,6 +255,14 @@ public class DesignItem extends AuditModel {
     public void setAmount(BigDecimal amount) { this.amount = amount; }
     public BigDecimal getCost() { return cost; }
     public void setCost(BigDecimal cost) { this.cost = cost; }
+    public Boolean getPendingMeasure() {
+        if (pendingMeasure != null) {
+            return pendingMeasure;
+        }
+        // 由实例化写入的公式前缀派生（DEC-058）：0=待补 与 0=赠送 并存，不新增 DDL 字段。
+        return formula != null && formula.startsWith(PENDING_MEASURE_MARKER + "|");
+    }
+    public void setPendingMeasure(Boolean pendingMeasure) { this.pendingMeasure = pendingMeasure; }
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
     public String getCriterion() { return criterion; }

@@ -441,6 +441,8 @@ public class CustomerJourneyContext {
             region.setHeight(decimal(space.getHeight()));
             region.setArea(decimal(space.getArea()));
             region.setPerimeter(decimal(space.getPerimeter()));
+            // DEC-062：未录入为 null；历史推算值标记为「估算」，业主侧只作参考提示，不作为工程量依据。
+            region.setAreaSource(space.getAreaSource() == null ? null : space.getAreaSource().getName());
             region.setRemark(space.getRemark());
             if (space.getImages() != null) region.getImages().addAll(space.getImages());
             long count = designItems.stream()
