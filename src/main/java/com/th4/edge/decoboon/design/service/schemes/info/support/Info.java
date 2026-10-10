@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.design.model.Requirement;
 import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
 import com.th4.edge.decoboon.design.repository.RequirementRepository;
+import com.th4.edge.decoboon.designtemplate.context.DesignTemplateFormulaContext;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -20,6 +21,8 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /** 设计方案详情实现。 */
 @Note("设计方案详情")
@@ -38,7 +41,8 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "space", "type", "category", "catalogItem", "name", "brand",
                         "spec", "unit", "quantity", "quantitySource", "materialPrice", "manualPrice", "costPrice", "pricingMode",
-                        "amount", "cost", "formula", "pendingMeasure", "criterion", "craft", "remark", "sort", "images"}),
+                        "amount", "cost", "formula", "pendingMeasure", "formulaRevisionNeeded", "criterion", "craft",
+                        "remark", "sort", "images"}),
         @AllowProperties(model = Requirement.class,
                 properties = {"requirementId", "type", "spaceName", "kind", "category", "priority", "status",
                         "title", "detail", "response", "source", "confirmedAt"}),
@@ -64,22 +68,30 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
     private final SpaceRepository spaceRepository;
     private final DesignItemRepository itemRepository;
     private final RequirementRepository requirementRepository;
+    private final DesignTemplateFormulaContext formulaContext;
 
     public Info(DesignContext designContext,
                 SpaceRepository spaceRepository,
                 DesignItemRepository itemRepository,
-                RequirementRepository requirementRepository) {
+                RequirementRepository requirementRepository,
+                DesignTemplateFormulaContext formulaContext) {
         this.designContext = designContext;
         this.spaceRepository = spaceRepository;
         this.itemRepository = itemRepository;
         this.requirementRepository = requirementRepository;
+        this.formulaContext = formulaContext;
     }
 
     @Override
     public Design call(Design request) {
         Design design = designContext.requireReadableDesign(designId, employee);
         design.setSpaces(spaceRepository.findByDesign_DesignIdOrderBySortAsc(designId));
-        design.setItems(itemRepository.findByDesign_DesignIdOrderBySortAsc(designId));
+        List<DesignItem> items = itemRepository.findByDesign_DesignIdOrderBySortAsc(designId);
+        // GAP-042：历史中文公式分项无法按专业变量重算，服务端投影「公式待修订」供设计师识别与修复。
+        for (DesignItem item : items) {
+            item.setFormulaRevisionNeeded(!formulaContext.isSupportedFormula(item.getFormula()));
+        }
+        design.setItems(items);
         design.setRequirements(requirementRepository.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(
                 design.getCompany().getComId(), design.getCustomer().getCustId()));
         return design;

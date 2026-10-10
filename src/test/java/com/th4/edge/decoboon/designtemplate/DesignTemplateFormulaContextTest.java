@@ -65,6 +65,16 @@ class DesignTemplateFormulaContextTest {
     }
 
     @Test
+    void pendingMarkerIsNotTreatedAsUnsupportedFormula() {
+        // 待补标记是服务端包装层，剥离后仍是专业变量公式（GAP-042 只针对历史中文公式）
+        assertThat(context.isSupportedFormula(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|=A")).isTrue();
+        assertThat(context.isSupportedFormula("=A")).isTrue();
+        assertThat(context.isSupportedFormula("")).isTrue();
+        assertThat(context.isSupportedFormula("(人工单价) × 工程量")).isFalse();
+        assertThat(context.isSupportedFormula("固定总价，不乘工程量")).isFalse();
+    }
+
+    @Test
     void missingMeasuredValuesAreNotTreatedAsZero() {
         DesignTemplateRoom room = masterBedroom();
         assertThatThrownBy(() -> context.evaluate(room, "=A", null, null))

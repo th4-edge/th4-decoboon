@@ -97,9 +97,12 @@ d = json.load(sys.stdin)
 assert d.get("success"), d
 items = d["data"].get("items") or []
 pending = [i["name"] for i in items if i.get("pendingMeasure")]
-print("   分项 %d 项，待补 %d 项" % (len(items), len(pending)))
+revision = [i["name"] for i in items if i.get("formulaRevisionNeeded")]
+print("   分项 %d 项，待补 %d 项，公式待修订 %d 项" % (len(items), len(pending), len(revision)))
 if pending:
     print("   待补示例：", "、".join(pending[:3]))
+if revision:
+    print("   待修订示例：", "、".join(revision[:3]))
 '
 
 echo "== 冒烟通过"

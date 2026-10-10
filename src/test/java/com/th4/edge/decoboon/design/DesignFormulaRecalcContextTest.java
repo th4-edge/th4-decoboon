@@ -105,6 +105,26 @@ class DesignFormulaRecalcContextTest {
     }
 
     @Test
+    void skipsLegacyChineseFormulaInsteadOfFailingWholeRecalc() {
+        Design design = design(7L);
+        Space space = measuredSpace(70L, design, "客厅", "4", "5", "2.8", "20.50", "18.00");
+        DesignItem legacy = item(700L, design, space, "(人工单价) × 工程量", QuantitySource.Formula, "7.5");
+        DesignItem measured = item(701L, design, space, "=A", QuantitySource.Formula, "0");
+
+        stub(7L, List.of(space), List.of(legacy, measured));
+        context.recalculate(design);
+
+        // GAP-042：历史中文公式降级为「不参与重算」，工程量与公式保持既有快照并标记待修订
+        assertEquals(new BigDecimal("7.5"), legacy.getQuantity());
+        assertEquals("(人工单价) × 工程量", legacy.getFormula());
+        assertTrue(legacy.getFormulaRevisionNeeded());
+        verify(quoteCalcContext, never()).calculate(legacy);
+        // 同一批次里的专业变量分项照常重算
+        assertEquals(new BigDecimal("20.500"), measured.getQuantity());
+        assertEquals(Boolean.FALSE, measured.getFormulaRevisionNeeded());
+    }
+
+    @Test
     void recalculatesWholeHouseAggregateFromMeasuredAreas() {
         Design design = design(5L);
         Space living = measuredSpace(50L, design, "客厅", "4", "5", "2.8", "20.50", "18.00");

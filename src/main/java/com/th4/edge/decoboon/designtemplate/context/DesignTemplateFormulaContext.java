@@ -134,6 +134,32 @@ public class DesignTemplateFormulaContext {
     }
 
     /**
+     * 判断公式是否为**可用的专业变量公式**。
+     *
+     * <p>用于历史上沿用报价工作区早期中文口径的分项（如 {@code (人工单价) × 工程量}）：
+     * 这类公式无法按专业变量解析，重算时**降级为「不参与重算」**并标记「公式待修订」，
+     * 不得因为一条历史公式让整笔区域保存失败（{@code GAP-042}）。</p>
+     *
+     * <p>本法只做只读判定，不修改任何数据；返回 {@code false} 时工程量与金额保持既有快照。</p>
+     */
+    public boolean isSupportedFormula(String formula) {
+        String probe = formula == null ? "" : formula.trim();
+        // 待补标记（DEC-058）是服务端包装层，不是公式本体：先剥离再判定，避免把待补项误判为「公式待修订」
+        if (probe.startsWith(PENDING_MEASURE_MARKER + "|")) {
+            probe = probe.substring(PENDING_MEASURE_MARKER.length() + 1).trim();
+        }
+        if (normalize(probe).isBlank()) {
+            return true;
+        }
+        try {
+            validate(probe);
+            return true;
+        } catch (DefinedException exception) {
+            return false;
+        }
+    }
+
+    /**
      * 按区域求值；返回 3 位小数结果，结果必须大于 0。
      *
      * <p>实测面积/周长由调用方传入（{@code DEC-062}）；模版层没有实测值时传 {@code null}，

@@ -70,6 +70,12 @@ public class DesignFormulaRecalcContext {
             if (expression.isBlank()) {
                 continue;
             }
+            if (!formulaContext.isSupportedFormula(expression)) {
+                // GAP-042：历史中文公式（如「(人工单价) × 工程量」）无法按专业变量解析，
+                // 降级为不参与重算并标记「公式待修订」，保留既有工程量与金额，不阻断保存。
+                item.setFormulaRevisionNeeded(true);
+                continue;
+            }
             try {
                 Space space = item.getSpace() == null ? null : spacesById.get(item.getSpace().getSpaceId());
                 BigDecimal quantity = space == null
@@ -78,6 +84,7 @@ public class DesignFormulaRecalcContext {
                                 measuredArea(space), measuredPerimeter(space));
                 item.setQuantity(quantity);
                 item.setFormula(expression);
+                item.setFormulaRevisionNeeded(false);
             } catch (DefinedException exception) {
                 if (exception.getErrorCode() != null
                         && "TEMPLATE_SIZE_MISSING".equals(exception.getErrorCode().getCode())) {

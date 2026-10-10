@@ -187,6 +187,10 @@ public class DesignItem extends AuditModel {
     @Note("只读投影：待补尺寸")
     private Boolean pendingMeasure;
 
+    @Transient
+    @Note("只读投影：公式待修订")
+    private Boolean formulaRevisionNeeded;
+
     @Note("工艺说明")
     @Lob
     private String criterion;
@@ -263,6 +267,10 @@ public class DesignItem extends AuditModel {
         return formula != null && formula.startsWith(PENDING_MEASURE_MARKER + "|");
     }
     public void setPendingMeasure(Boolean pendingMeasure) { this.pendingMeasure = pendingMeasure; }
+    public Boolean getFormulaRevisionNeeded() { return formulaRevisionNeeded; }
+    public void setFormulaRevisionNeeded(Boolean formulaRevisionNeeded) {
+        this.formulaRevisionNeeded = formulaRevisionNeeded;
+    }
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
     public String getCriterion() { return criterion; }
