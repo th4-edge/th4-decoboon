@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.service.feedback.page.support;
 
 import com.th4.edge.decoboon.customer.model.CustomerFeedback;
 import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.property.model.Property;
@@ -11,9 +12,6 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
-import com.th4.edge.tenant.user.access.DataScope;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
-import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,20 +38,20 @@ public class Page implements com.th4.edge.decoboon.project.service.feedback.page
     @User private Employee employee;
     @AutoInject private Long projectId;
 
-    private final DataScopeContext dataScopeContext;
+    private final ProjectAccessContext accessContext;
     private final CustomerFeedbackRepository feedbackRepository;
 
-    public Page(DataScopeContext dataScopeContext, CustomerFeedbackRepository feedbackRepository) {
-        this.dataScopeContext = dataScopeContext;
+    public Page(ProjectAccessContext accessContext, CustomerFeedbackRepository feedbackRepository) {
+        this.accessContext = accessContext;
         this.feedbackRepository = feedbackRepository;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<CustomerFeedback> call(CustomerFeedback request) {
-        Employee current = dataScopeContext.requireEmployee(employee);
-        DataScope scope = dataScopeContext.requireScope(current);
-        Specification<CustomerFeedback> spec = DataScopeSpecification.visible(CustomerFeedback.class, scope);
+        accessContext.requireEmployee(employee);
+        // 与 contract-change / acceptance / rectify 等其它项目子对象一致：数据范围之外的「项目参与人」也能看到本项目事实。
+        Specification<CustomerFeedback> spec = accessContext.visibleChild(employee, CustomerFeedback.class, "project");
         if (projectId != null) {
             spec = spec.and((root, query, builder) -> builder.equal(root.get("project").get("projectId"), projectId));
         }

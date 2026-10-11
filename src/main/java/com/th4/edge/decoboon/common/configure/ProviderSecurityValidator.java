@@ -24,6 +24,8 @@ public class ProviderSecurityValidator implements ApplicationRunner {
             "auth/session/password-login",
             "auth/session/password-setup",
             "auth/session/register",
+            // 本地开发业主会话：仅 dev + 显式开关时才签发，见 DevOwnerLogin 的安全边界说明。
+            "auth/session/dev-owner-login",
             "identity/customer-invite/accept",
             "identity/customer-invite/info",
             "invite/invitation/accept",

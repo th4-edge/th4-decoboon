@@ -16,4 +16,7 @@ public interface CustomerInviteRepository extends JpaRepository<CustomerInvite, 
     Optional<CustomerInvite> findByToken(String token);
 
     List<CustomerInvite> findByProject_ProjectIdOrderByInviteIdDesc(Long projectId);
+
+    /** 按业主手机号读取邀请（本地开发业主会话判定是否有待接受邀请）。 */
+    List<CustomerInvite> findByTelNoOrderByInviteIdDesc(String telNo);
 }

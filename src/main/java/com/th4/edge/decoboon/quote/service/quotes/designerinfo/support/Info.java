@@ -97,18 +97,30 @@ public class Info implements com.th4.edge.decoboon.quote.service.quotes.designer
     @Override
     public Quote call(Quote request) {
         Employee current = dataScopeContext.requireEmployee(employee);
-        boolean boss = current.getRole() == EmployeeRole.Boss;
-        if (!boss && current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可访问设计与报价详情"));
+        EmployeeRole role = current.getRole();
+        boolean boss = role == EmployeeRole.Boss;
+        // DEC-040：店长确认签约/生效前需要核对报价详情；BR-033：店长数据范围为本门店。
+        if (!boss && role != EmployeeRole.Designer && role != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师、店长或企业负责人可访问设计与报价详情"));
         }
         DataScope scope = dataScopeContext.resolve(current);
         org.springframework.data.jpa.domain.Specification<Quote> byId =
                 (root, query, builder) -> builder.equal(root.get("quoteId"), quoteId);
         Quote quote = quoteRepository.findOne(byId.and(DataScopeSpecification.visible(Quote.class, scope)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问")));
-        if (!boss && (quote.getCreatedBy() == null
-                || !quote.getCreatedBy().getEmpId().equals(current.getEmpId()))) {
-            throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
+        if (role == EmployeeRole.Designer) {
+            if (quote.getCreatedBy() == null
+                    || !quote.getCreatedBy().getEmpId().equals(current.getEmpId())) {
+                throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
+            }
+        } else if (role == EmployeeRole.StoreManager) {
+            Long storeId = current.getStore() == null ? null : current.getStore().getStoreId();
+            Long quoteStoreId = quote.getCustomer() == null || quote.getCustomer().getStore() == null
+                    ? null
+                    : quote.getCustomer().getStore().getStoreId();
+            if (storeId == null || !storeId.equals(quoteStoreId)) {
+                throw new DefinedException(new DefaultErrorCode("404", "报价不存在或无权访问"));
+            }
         }
         java.util.List<com.th4.edge.decoboon.quote.model.QuoteLine> lines = quoteLineRepository.findByQuote(quote);
         Quote view = quoteViewContext.apply(quote, lines);

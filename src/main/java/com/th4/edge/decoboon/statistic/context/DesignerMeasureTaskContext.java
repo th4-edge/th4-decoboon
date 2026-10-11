@@ -15,6 +15,7 @@ import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.decoboon.statistic.model.DesignerMeasureQuery;
 import com.th4.edge.decoboon.statistic.model.DesignerMeasureTask;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,10 +63,17 @@ public class DesignerMeasureTaskContext {
         LocalDateTime now = LocalDateTime.now();
 
         Map<Long, Customer> customerMap = new LinkedHashMap<>();
-        customerRepository.findByCompany_ComIdAndOwner_EmpId(comId, empId)
-                .forEach(customer -> customerMap.put(customer.getCustId(), customer));
-        customerRepository.findByCompany_ComIdAndDesigner_EmpId(comId, empId)
-                .forEach(customer -> customerMap.put(customer.getCustId(), customer));
+        if (current.getRole() == EmployeeRole.Boss) {
+            // DEC-032 / BR-028 / ANS-BIZ-20261011-002：BOSS 为内部岗位能力超集，数据范围为 Company，
+            // 因此量房队列按企业全量客户呈现（不等于把他人待办归到本人名下，仍按责任人与状态展示）。
+            customerRepository.findByCompany_ComId(comId)
+                    .forEach(customer -> customerMap.put(customer.getCustId(), customer));
+        } else {
+            customerRepository.findByCompany_ComIdAndOwner_EmpId(comId, empId)
+                    .forEach(customer -> customerMap.put(customer.getCustId(), customer));
+            customerRepository.findByCompany_ComIdAndDesigner_EmpId(comId, empId)
+                    .forEach(customer -> customerMap.put(customer.getCustId(), customer));
+        }
 
         List<Customer> customers = customerMap.values().stream()
                 .filter(customer -> customer.getStatus() != null && OPEN_STATUSES.contains(customer.getStatus()))

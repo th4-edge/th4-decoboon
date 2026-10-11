@@ -47,7 +47,7 @@ public class List implements com.th4.edge.decoboon.statistic.service.designer.me
     @Override
     @Transactional(readOnly = true)
     public java.util.List<DesignerMeasureTask> call(DesignerMeasureQuery request) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Designer);
+        Employee current = tenantContext.requireInternalRole(employee, EmployeeRole.Designer); // DEC-032 / BR-028：BOSS 是内部岗位能力超集，企业内部能力入口按超集放行（ANS-BIZ-20261011-002）
         if (current.getCompany() == null || current.getCompany().getComId() == null) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
         }

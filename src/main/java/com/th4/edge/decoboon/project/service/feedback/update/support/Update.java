@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.service.feedback.update.support;
 import com.th4.edge.decoboon.customer.configure.CustomerFeedbackStatus;
 import com.th4.edge.decoboon.customer.model.CustomerFeedback;
 import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -14,9 +15,6 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.access.DataScope;
-import com.th4.edge.tenant.user.access.DataScopeSpecification;
-import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
@@ -44,22 +42,22 @@ public class Update implements com.th4.edge.decoboon.project.service.feedback.up
     @AutoInject private CustomerFeedbackStatus status;
     @AutoInject private String response;
 
-    private final DataScopeContext dataScopeContext;
+    private final ProjectAccessContext accessContext;
     private final CustomerFeedbackRepository feedbackRepository;
 
-    public Update(DataScopeContext dataScopeContext, CustomerFeedbackRepository feedbackRepository) {
-        this.dataScopeContext = dataScopeContext;
+    public Update(ProjectAccessContext accessContext, CustomerFeedbackRepository feedbackRepository) {
+        this.accessContext = accessContext;
         this.feedbackRepository = feedbackRepository;
     }
 
     @Override
     @Transactional
     public CustomerFeedback call(CustomerFeedback request) {
-        Employee current = dataScopeContext.requireEmployee(employee);
-        DataScope scope = dataScopeContext.requireScope(current);
+        Employee current = accessContext.requireEmployee(employee);
         Specification<CustomerFeedback> byId = (root, query, builder) -> builder.equal(root.get("feedbackId"), feedbackId);
+        // 能看到的范围与 project/feedback/page 完全一致（数据范围 + 项目参与人），避免「看得见但答复不了」。
         CustomerFeedback feedback = feedbackRepository.findOne(
-                        byId.and(DataScopeSpecification.visible(CustomerFeedback.class, scope)))
+                        byId.and(accessContext.visibleChild(current, CustomerFeedback.class, "project")))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "意见或投诉不存在或无权访问")));
         if (status == null) {
             throw new DefinedException(new DefaultErrorCode("400", "处理状态不能为空"));

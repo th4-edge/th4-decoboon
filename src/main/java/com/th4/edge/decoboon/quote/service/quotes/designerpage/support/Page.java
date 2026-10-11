@@ -79,15 +79,26 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
     @Override
     public org.springframework.data.domain.Page<Quote> call(Quote request) {
         Employee currentEmployee = tenantContext.requireEmployee(employee);
-        boolean boss = currentEmployee.getRole() == EmployeeRole.Boss;
-        if (!boss && currentEmployee.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅设计师或企业负责人可访问设计与报价列表"));
+        EmployeeRole role = currentEmployee.getRole();
+        boolean boss = role == EmployeeRole.Boss;
+        // DEC-040：店长负责确认签约与确认生效，必须能读到本店待签约报价队列；
+        // DEC-040 与 BR-033：店长数据范围为本门店（Store），不能看到跨门店对象。
+        if (!boss && role != EmployeeRole.Designer && role != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅设计师、店长或企业负责人可访问设计与报价列表"));
         }
         Long comId = currentEmployee.getCompany().getComId();
         Long empId = currentEmployee.getEmpId();
-        List<Quote> visibleQuotes = boss
-                ? quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId)
-                : quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId);
+        List<Quote> visibleQuotes;
+        if (boss) {
+            visibleQuotes = quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId);
+        } else if (role == EmployeeRole.StoreManager) {
+            Long storeId = currentEmployee.getStore() == null ? null : currentEmployee.getStore().getStoreId();
+            visibleQuotes = storeId == null
+                    ? List.of()
+                    : quoteRepository.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByQuoteIdDesc(comId, storeId);
+        } else {
+            visibleQuotes = quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId);
+        }
         List<Quote> quotes = visibleQuotes
                 .stream()
                 .filter(quote -> customerId == null || quote.getCustomer().getCustId().equals(customerId))

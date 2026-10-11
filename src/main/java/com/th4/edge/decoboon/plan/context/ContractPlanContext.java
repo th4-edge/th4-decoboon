@@ -55,6 +55,26 @@ public class ContractPlanContext {
         this.constructionStageRepository = constructionStageRepository;
     }
 
+    /**
+     * DEC-048 CONTRACT-TERM-01/02/T-03：签约时锁定合同基准工期。
+     *
+     * <p>计划开工日期必填；基准完工日不由人工录入，按施工计划模板标准总工期自动生成
+     * （未指定模板时使用平台基线，如 {@code RESIDENTIAL_STANDARD_8} = 120 天），生成后即锁定；
+     * 后续只有 Boss/店长按 CONTRACT-TERM-03 特批覆盖才会形成新基准。</p>
+     */
+    @Transactional
+    public void lockBaselineTerm(ProjectContract contract, String constructionPlanCode) {
+        if (contract.getStartDate() == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "确认签约必须填写计划开工日期"));
+        }
+        if (contract.getPlanEndDate() == null) {
+            ConstructionPlanTemplate template = templateContext.resolveConstructionPlan(
+                    contract.getCompany().getComId(), constructionPlanCode);
+            long standardDays = Math.max(1, template.getTotalDays());
+            contract.setPlanEndDate(contract.getStartDate().plusDays(standardDays - 1L));
+        }
+    }
+
     @Transactional
     public void select(ProjectContract contract, String paymentPlanCode, String constructionPlanCode) {
         if (contract == null || contract.getContractId() == null) {

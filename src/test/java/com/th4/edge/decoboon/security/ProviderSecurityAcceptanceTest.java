@@ -46,6 +46,8 @@ class ProviderSecurityAcceptanceTest {
             "auth/session/password-login",
             "auth/session/password-setup",
             "auth/session/register",
+            // 本地开发业主会话（仅 dev + 显式开关；默认关闭），用于业主侧链路端到端验证。
+            "auth/session/dev-owner-login",
             "identity/customer-invite/accept",
             "identity/customer-invite/info",
             "invite/invitation/accept",
@@ -156,9 +158,11 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-10 内容线索归因 P0-4 新增 3 条（content/lead-touch save/list、content/dashboard/report，protected）。
         // 2026-10-10 抖音公开留资新增 1 条（site/lead/douyin/submit，public）。
         // => 当前 Provider 面板为 465（public 14 + protected 451）。
-        assertThat(routes).hasSize(465);
+        // 2026-10-11 本地开发业主会话新增 1 条（auth/session/dev-owner-login，public，仅 dev + 显式开关生效）。
+        // => 当前 Provider 面板为 466（public 15 + protected 451）。
+        assertThat(routes).hasSize(466);
         assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(451);
-        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(14);
+        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(15);
     }
 
     @Test

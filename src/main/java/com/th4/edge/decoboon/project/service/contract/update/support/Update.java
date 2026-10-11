@@ -137,6 +137,8 @@ public class Update implements com.th4.edge.decoboon.project.service.contract.up
             if (signedAmount == null || signedAmount.signum() <= 0) {
                 throw new DefinedException(new DefaultErrorCode("400", "签约时必须填写最终签约价格"));
             }
+            // DEC-048：签约时锁定合同基准工期（计划开工日期必填，基准完工日按施工计划模板/平台基线自动生成）。
+            planContext.lockBaselineTerm(contract, constructionPlanCode);
             if (hasText(paymentPlanCode) || hasText(constructionPlanCode)) {
                 planContext.select(contract, paymentPlanCode, constructionPlanCode);
             }

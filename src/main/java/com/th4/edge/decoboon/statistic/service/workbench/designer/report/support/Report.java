@@ -57,7 +57,7 @@ public class Report implements com.th4.edge.decoboon.statistic.service.workbench
     @Override
     @Transactional(readOnly = true)
     public DesignerWorkbenchReport call(@User Employee employee) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Designer);
+        Employee current = tenantContext.requireInternalRole(employee, EmployeeRole.Designer); // DEC-032 / BR-028：BOSS 是内部岗位能力超集，企业内部能力入口按超集放行（ANS-BIZ-20261011-002）
         if (current.getCompany() == null || current.getCompany().getComId() == null) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
         }
