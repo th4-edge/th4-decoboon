@@ -1,4 +1,4 @@
--- 64-报价工程量公式.sql
+-- 69-报价工程量公式.sql
 -- Web Excel 式报价：为报价行增加独立工程量公式，保留既有 formula 字段与 App 兼容性。
 SET @db_name = DATABASE();
 SET @has_quantity_formula = (
