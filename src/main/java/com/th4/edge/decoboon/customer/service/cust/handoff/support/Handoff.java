@@ -96,8 +96,10 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
                 && current.getRole() != EmployeeRole.TeamLeader) {
             throw new DefinedException(new DefaultErrorCode("403", "仅团队负责人、店长或企业负责人可以指定设计师"));
         }
-        if (customer.getStatus() == CustStatus.New || customer.getStatus() == CustStatus.Lost) {
-            throw new DefinedException(new DefaultErrorCode("400", "客户尚未跟进或已流失，不能指定设计师"));
+        // DEC-066（2026-10-12 用户裁决）：新客户（待首联）允许直接指定设计师——自然到店客户由店长/团队负责人
+        // 当场派单，首次跟进由接手的设计师完成；状态不随派单推进。仅"已流失"客户必须先恢复再指派。
+        if (customer.getStatus() == CustStatus.Lost) {
+            throw new DefinedException(new DefaultErrorCode("400", "客户已流失，请先恢复客户后再指定设计师"));
         }
         if (current.getRole() == EmployeeRole.StoreManager
                 && (current.getStore() == null || customer.getStore() == null

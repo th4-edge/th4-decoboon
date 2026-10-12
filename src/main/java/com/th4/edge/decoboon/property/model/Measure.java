@@ -122,23 +122,27 @@ public class Measure extends AuditModel {
     @Note("量房附件")
     private List<String> attachments;
 
-    @Lob
-    @Column
+    // ECD-009 / 迁移 70：生产已把该列升级为 LONGTEXT；@Lob 在 MySQL 上期望 tinytext，
+    // 与已执行的迁移冲突会导致 ddl-auto: validate 启动失败。与本工程既有长文本写法一致。
+    @Column(columnDefinition = "longtext")
     @Note("原始结构说明")
     private String originalStructure;
 
-    @Lob
-    @Column
+    // ECD-009 / 迁移 70：生产已把该列升级为 LONGTEXT；@Lob 在 MySQL 上期望 tinytext，
+    // 与已执行的迁移冲突会导致 ddl-auto: validate 启动失败。与本工程既有长文本写法一致。
+    @Column(columnDefinition = "longtext")
     @Note("量房尺寸")
     private String dimensions;
 
-    @Lob
-    @Column
+    // ECD-009 / 迁移 70：生产已把该列升级为 LONGTEXT；@Lob 在 MySQL 上期望 tinytext，
+    // 与已执行的迁移冲突会导致 ddl-auto: validate 启动失败。与本工程既有长文本写法一致。
+    @Column(columnDefinition = "longtext")
     @Note("客户诉求")
     private String customerRequirements;
 
-    @Lob
-    @Column
+    // ECD-009 / 迁移 70：生产已把该列升级为 LONGTEXT；@Lob 在 MySQL 上期望 tinytext，
+    // 与已执行的迁移冲突会导致 ddl-auto: validate 启动失败。与本工程既有长文本写法一致。
+    @Column(columnDefinition = "longtext")
     @Note("设计师结论")
     private String designerConclusion;
 

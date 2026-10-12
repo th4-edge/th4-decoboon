@@ -23,6 +23,7 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -112,6 +114,102 @@ class HandoffDesignerChangeTest {
         verify(notices).designerSubmitted(customer, boss, next);
     }
 
+    /** DEC-065：新客户（待首联）允许店长当场派单，客户状态不随派单推进。 */
+    @Test
+    void storeManagerShouldAssignDesignerForNewCustomerBeforeFirstFollowUp() {
+        Company company = company(1L);
+        Store store = store(7L);
+        Employee manager = employee(9L, "王宏文", EmployeeRole.StoreManager, company);
+        manager.setStore(store);
+        Employee designer = employee(11L, "董夏鹏", EmployeeRole.Designer, company);
+        designer.setStore(store);
+
+        Customer customer = new Customer();
+        customer.setCustId(20L);
+        customer.setName("陈女士");
+        customer.setCompany(company);
+        customer.setStore(store);
+        customer.setStatus(CustStatus.New);
+
+        Property property = property(101L, customer, null);
+        property.setStore(store);
+
+        CustomerRepository customers = mock(CustomerRepository.class);
+        EmployeeRepository employees = mock(EmployeeRepository.class);
+        DataScopeContext dataScope = mock(DataScopeContext.class);
+        NoticeContext notices = mock(NoticeContext.class);
+        PropertyContext properties = mock(PropertyContext.class);
+        PropertyRepository propertyRepository = mock(PropertyRepository.class);
+        MeasureRepository measures = mock(MeasureRepository.class);
+        DesignRepository designs = mock(DesignRepository.class);
+        RequirementRepository requirements = mock(RequirementRepository.class);
+
+        when(dataScope.requireEmployee(manager)).thenReturn(manager);
+        when(dataScope.resolve(manager)).thenReturn(new DataScope(DataScopeType.Store, 1L, 7L, null, 9L));
+        when(customers.findOne(any(Specification.class))).thenReturn(Optional.of(customer));
+        when(employees.findByEmpIdAndCompany_ComId(11L, 1L)).thenReturn(designer);
+        when(properties.resolve(101L, customer, manager)).thenReturn(property);
+        when(propertyRepository.findByCompany_ComIdAndCustomer_CustIdOrderByPropertyIdAsc(1L, 20L))
+                .thenReturn(List.of(property));
+        when(properties.assignDesigner(any(), any())).thenAnswer(invocation -> {
+            Property target = invocation.getArgument(0);
+            Employee assigned = invocation.getArgument(1);
+            target.setDesigner(assigned);
+            return target;
+        });
+        when(measures.findByPropertyOrderByMeasureTimeDesc(property)).thenReturn(List.of());
+        when(designs.findByCompany_ComIdAndCustomer_CustIdOrderByVersionDesc(1L, 20L)).thenReturn(List.of());
+        when(requirements.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(1L, 20L)).thenReturn(List.of());
+        when(customers.save(customer)).thenReturn(customer);
+
+        Handoff handoff = new Handoff(customers, employees, dataScope, notices, properties,
+                propertyRepository, measures, designs, requirements);
+        ReflectionTestUtils.setField(handoff, "employee", manager);
+        ReflectionTestUtils.setField(handoff, "customerId", 20L);
+        ReflectionTestUtils.setField(handoff, "propertyId", 101L);
+        ReflectionTestUtils.setField(handoff, "designerId", 11L);
+
+        Customer saved = handoff.call(customer);
+
+        assertThat(saved.getDesigner()).isSameAs(designer);
+        assertThat(saved.getStatus()).isEqualTo(CustStatus.New);
+        assertThat(saved.getHandedOffAt()).isNotNull();
+        assertThat(property.getDesigner()).isSameAs(designer);
+        verify(notices).designerSubmitted(customer, manager, designer);
+    }
+
+    /** 已流失客户仍需先恢复再指派，提示语不得再与"待首联"混淆。 */
+    @Test
+    void lostCustomerShouldNotAcceptDesignerUntilRestored() {
+        Company company = company(1L);
+        Store store = store(7L);
+        Employee manager = employee(9L, "王宏文", EmployeeRole.StoreManager, company);
+        manager.setStore(store);
+
+        Customer customer = new Customer();
+        customer.setCustId(20L);
+        customer.setName("陈女士");
+        customer.setCompany(company);
+        customer.setStore(store);
+        customer.setStatus(CustStatus.Lost);
+
+        CustomerRepository customers = mock(CustomerRepository.class);
+        DataScopeContext dataScope = mock(DataScopeContext.class);
+        when(dataScope.requireEmployee(manager)).thenReturn(manager);
+        when(dataScope.resolve(manager)).thenReturn(new DataScope(DataScopeType.Store, 1L, 7L, null, 9L));
+        when(customers.findOne(any(Specification.class))).thenReturn(Optional.of(customer));
+
+        Handoff handoff = new Handoff(customers, mock(EmployeeRepository.class), dataScope,
+                mock(NoticeContext.class), mock(PropertyContext.class), mock(PropertyRepository.class),
+                mock(MeasureRepository.class), mock(DesignRepository.class), mock(RequirementRepository.class));
+        ReflectionTestUtils.setField(handoff, "employee", manager);
+        ReflectionTestUtils.setField(handoff, "customerId", 20L);
+        ReflectionTestUtils.setField(handoff, "designerId", 11L);
+
+        assertThatThrownBy(() -> handoff.call(customer))
+                .hasMessageContaining("客户已流失");
+    }
+
     private Company company(Long id) {
         Company company = new Company();
         company.setComId(id);
@@ -126,6 +224,12 @@ class HandoffDesignerChangeTest {
         employee.setStatus(EmployeeStatus.Active);
         employee.setCompany(company);
         return employee;
+    }
+
+    private Store store(Long id) {
+        Store store = new Store();
+        store.setStoreId(id);
+        return store;
     }
 
     private Property property(Long id, Customer customer, Employee designer) {
