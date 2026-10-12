@@ -19,8 +19,9 @@ import json, subprocess
 from decimal import Decimal
 from pathlib import Path
 
-BASE = "http://127.0.0.1:8090/api"
-DB = ["mysql", "-h127.0.0.1", "-P3306", "-uroot", "-pmysqladmin", "decoboon", "-N", "-B"]
+import os
+BASE = os.environ.get("DECOBOON_API_BASE", "http://127.0.0.1:8090/api")
+DB = ["mysql", "-h127.0.0.1", "-P3306", "-uroot", "-pmysqladmin", os.environ.get("DECOBOON_DB", "decoboon"), "-N", "-B"]
 COM = "999200000000000001"
 MONTH = "2026-10-01"
 SCOPES = [("全部门店", None), ("A 店", 999200000000000011), ("B 店", 999200000000000012)]

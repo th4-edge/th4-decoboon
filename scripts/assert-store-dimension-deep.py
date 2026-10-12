@@ -5,11 +5,11 @@
 说明: 除 A5/A5b 需要真实调用 `customer/customer/handoff` 与 `customer/customer/update`（幂等，可重复执行）外全部只读；
       断言口径见 DESIGN-BIZ-20261013-008 §3：「不回溯」= 房屋/项目/合同/历史单据门店不变。
 """
-import json, subprocess, sys
+import json, os, subprocess, sys
 from pathlib import Path
 
-DB = ["mysql", "-h127.0.0.1", "-P3306", "-uroot", "-pmysqladmin", "decoboon", "-N", "-B"]
-BASE = "http://127.0.0.1:8090/api"
+DB = ["mysql", "-h127.0.0.1", "-P3306", "-uroot", "-pmysqladmin", os.environ.get("DECOBOON_DB", "decoboon"), "-N", "-B"]
+BASE = os.environ.get("DECOBOON_API_BASE", "http://127.0.0.1:8090/api")
 COM = "999200000000000001"
 STORE_A, STORE_B = "999200000000000011", "999200000000000012"
 MANIFEST = Path("docs/operations/data-changes/2026-10-13-门店维度造数manifest.json")
@@ -92,7 +92,8 @@ print("=" * 100)
 print("A4 应付同源（HTTP 应付分页，按项目比对 采购到货自动应付 与 手工应付 的门店）")
 print("=" * 100)
 state = json.loads(Path("docs/operations/data-changes/2026-10-13-门店维度造数-chain-state.json").read_text(encoding="utf-8"))
-targets = [k for k in state if k.endswith("-50")]
+# 任意一次数据集重建后 state 会变化：取「每个门店最后一条已建项目的链路」作为 A4/A5 样本，保证脚本可重复执行
+targets = [k for k in sorted(state) if (state[k] or {}).get("projectId")][-3:]
 for key in sorted(targets):
     rec = state[key]
     pid = str(rec["projectId"])
@@ -113,7 +114,7 @@ print("=" * 100)
 manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 emps = (manifest.get("companies") or {}).get(COM, {}).get("employees") or []
 b_designer = next(e for e in emps if e.get("role") == "Designer" and int(e.get("storeId") or 0) == int(STORE_B))
-key = "999200000000000011-50"
+key = [k for k in sorted(state) if str(k).startswith("999200000000000011") and (state[k] or {}).get("projectId")][-1]
 rec = state[key]
 cust, prop, proj = str(rec["customerId"]), str(rec["propertyId"]), str(rec["projectId"])
 

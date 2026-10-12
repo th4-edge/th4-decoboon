@@ -13,8 +13,9 @@ from __future__ import annotations
 import json, subprocess, sys, time
 from pathlib import Path
 
-BASE = "http://127.0.0.1:8090/api"
-DB = ["mysql", "-h127.0.0.1", "-P3306", "-uroot", "-pmysqladmin", "decoboon", "-N", "-B"]
+import os
+BASE = os.environ.get("DECOBOON_API_BASE", "http://127.0.0.1:8090/api")
+DB = ["mysql", "-h127.0.0.1", "-P3306", "-uroot", "-pmysqladmin", os.environ.get("DECOBOON_DB", "decoboon"), "-N", "-B"]
 ENDPOINTS = [
     ("statistic/boss/dashboard", {"month": "2026-10-01"}),
     ("statistic/boss/business/report", {"month": "2026-10-01", "topN": 5}),
