@@ -24,37 +24,38 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * 房屋区域实测档案（区域实测面积/周长的**唯一事实源**）。
+ * 量房原始区域（原始结构实测）。
  *
- * <p>{@code DEC-064} / {@code OBJ-007} / {@code EV-222}：同一房屋的区域实测值只需录入一次，
- * 该房屋的多个设计方案实例化时按 {@code roomKey} → 「区域类型 + 标准化名称」匹配继承，
- * 免去重复录入；修改本档案的实测值时，引用它的**草稿态**方案自动重算，
- * 非草稿方案只提示复核（不静默改金额）。</p>
+ * <p>{@code DEC-066}（用户 2026-10-12 裁决）：量房测的是**房屋原始结构**——布局与区域基本固定；
+ * 而装修设计会破坏结构（砌墙隔出新卧室、砸墙打通客厅），**设计后结构随方案不同而不同**。
+ * 因此原始区域只有「原始结构事实」语义，挂在**量房单**下：</p>
  *
- * <p>面积/周长可空表示未录入，不得用 0 表达未录入；{@code areaSource} 只有 {@code Measured}
- * 才能作为工程量基数（{@code DEC-062}）。</p>
+ * <ul>
+ *   <li>新建方案/实例化时可**继承**原始区域作为起点（复制实测值），但**不联动**；</li>
+ *   <li>量房结束后（量房单已完成）原始区域**禁止修改**，需要修正必须重新量房（复尺）；</li>
+ *   <li>方案区域以方案为准，可有新增/改尺寸/拆除，与原始区域不同是常态。</li>
+ * </ul>
  */
-@Note("房屋区域实测档案")
+@Note("量房原始区域")
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_property_region", indexes = {
-        @Index(name = "idx_property_region_company", columnList = "com_id, region_id"),
-        @Index(name = "idx_property_region_company_property", columnList = "com_id, property_id, region_id"),
-        @Index(name = "idx_property_region_company_store", columnList = "com_id, store_id, region_id"),
-        @Index(name = "idx_property_region_company_team", columnList = "com_id, team_id, region_id"),
-        @Index(name = "idx_property_region_company_owner", columnList = "com_id, emp_id, region_id")
+@Table(name = "db_measure_region", indexes = {
+        @Index(name = "idx_measure_region_company", columnList = "com_id, region_id"),
+        @Index(name = "idx_measure_region_company_measure", columnList = "com_id, measure_id, region_id"),
+        @Index(name = "idx_measure_region_company_property", columnList = "com_id, property_id, region_id"),
+        @Index(name = "idx_measure_region_company_store", columnList = "com_id, store_id, region_id"),
+        @Index(name = "idx_measure_region_company_owner", columnList = "com_id, emp_id, region_id")
 })
-public class PropertyRegion extends AuditModel {
+public class MeasureRegion extends AuditModel {
 
-    @Note("房屋区域")
+    @Note("量房原始区域")
     @Id
     @SnowflakeId
     private Long regionId;
@@ -78,6 +79,11 @@ public class PropertyRegion extends AuditModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_id", nullable = false)
     private Employee owner;
+
+    @Note("所属量房记录")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "measure_id", nullable = false)
+    private Measure measure;
 
     @Note("所属房屋")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -110,11 +116,11 @@ public class PropertyRegion extends AuditModel {
     @Column(precision = 10, scale = 3)
     private BigDecimal height;
 
-    @Note("实测面积（㎡）：设计师按 CAD 录入，区域分项工程量基数")
+    @Note("原始结构实测面积（㎡，可空=未录入）")
     @Column(precision = 12, scale = 2)
     private BigDecimal area;
 
-    @Note("实测周长（m）：设计师按 CAD 录入")
+    @Note("原始结构实测周长（m，可空=未录入）")
     @Column(precision = 12, scale = 2)
     private BigDecimal perimeter;
 
@@ -139,14 +145,6 @@ public class PropertyRegion extends AuditModel {
     @Column(length = 512)
     private String remark;
 
-    @Transient
-    @Note("只读投影：本次保存联动重算的草稿方案数")
-    private Integer linkedDesignCount;
-
-    @Transient
-    @Note("只读投影：引用该区域但未自动重算的方案数（非草稿，需显式同步）")
-    private Integer pendingDesignCount;
-
     public Long getRegionId() { return regionId; }
 
     public void setRegionId(Long regionId) { this.regionId = regionId; }
@@ -166,6 +164,10 @@ public class PropertyRegion extends AuditModel {
     public Employee getOwner() { return owner; }
 
     public void setOwner(Employee owner) { this.owner = owner; }
+
+    public Measure getMeasure() { return measure; }
+
+    public void setMeasure(Measure measure) { this.measure = measure; }
 
     public Property getProperty() { return property; }
 
@@ -222,12 +224,4 @@ public class PropertyRegion extends AuditModel {
     public String getRemark() { return remark; }
 
     public void setRemark(String remark) { this.remark = remark; }
-
-    public Integer getLinkedDesignCount() { return linkedDesignCount; }
-
-    public void setLinkedDesignCount(Integer linkedDesignCount) { this.linkedDesignCount = linkedDesignCount; }
-
-    public Integer getPendingDesignCount() { return pendingDesignCount; }
-
-    public void setPendingDesignCount(Integer pendingDesignCount) { this.pendingDesignCount = pendingDesignCount; }
 }

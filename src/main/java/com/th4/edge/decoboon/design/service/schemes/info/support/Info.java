@@ -9,9 +9,6 @@ import com.th4.edge.decoboon.design.model.Requirement;
 import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
 import com.th4.edge.decoboon.design.repository.RequirementRepository;
-import com.th4.edge.decoboon.property.context.PropertyRegionSyncContext;
-import com.th4.edge.decoboon.property.model.PropertyRegion;
-import com.th4.edge.decoboon.property.repository.PropertyRegionRepository;
 import com.th4.edge.decoboon.designtemplate.context.DesignTemplateFormulaContext;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -36,7 +33,7 @@ import java.util.List;
                         "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "originalPlanImages", "spaces", "items",
                         "requirements", "createTime", "updateTime", "property"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale",
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "sourceMeasureRegionId",
                         "sort", "remark", "images"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit", "formula",
@@ -72,23 +69,17 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
     private final DesignItemRepository itemRepository;
     private final RequirementRepository requirementRepository;
     private final DesignTemplateFormulaContext formulaContext;
-    private final PropertyRegionRepository regionRepository;
-    private final PropertyRegionSyncContext regionSyncContext;
 
     public Info(DesignContext designContext,
                 SpaceRepository spaceRepository,
                 DesignItemRepository itemRepository,
                 RequirementRepository requirementRepository,
-                DesignTemplateFormulaContext formulaContext,
-                PropertyRegionRepository regionRepository,
-                PropertyRegionSyncContext regionSyncContext) {
+                DesignTemplateFormulaContext formulaContext) {
         this.designContext = designContext;
         this.spaceRepository = spaceRepository;
         this.itemRepository = itemRepository;
         this.requirementRepository = requirementRepository;
         this.formulaContext = formulaContext;
-        this.regionRepository = regionRepository;
-        this.regionSyncContext = regionSyncContext;
     }
 
     @Override
@@ -103,29 +94,6 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
         design.setItems(items);
         design.setRequirements(requirementRepository.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(
                 design.getCompany().getComId(), design.getCustomer().getCustId()));
-        // DEC-064：房屋区域实测值变更后，方案区域投影「房屋实测值已变更」，
-        // 由设计师复核或显式同步（非草稿方案不自动改金额，只提示）。
-        applyHouseValueStale(design);
         return design;
-    }
-
-    private void applyHouseValueStale(Design design) {
-        if (design.getProperty() == null || design.getSpaces() == null || design.getSpaces().isEmpty()) {
-            return;
-        }
-        Long comId = design.getCompany() == null ? null : design.getCompany().getComId();
-        if (comId == null) {
-            return;
-        }
-        java.util.Map<Long, PropertyRegion> regions = new java.util.HashMap<>();
-        for (PropertyRegion region : regionRepository
-                .findByCompany_ComIdAndProperty_PropertyIdOrderBySortAscRegionIdAsc(
-                        comId, design.getProperty().getPropertyId())) {
-            regions.put(region.getRegionId(), region);
-        }
-        for (com.th4.edge.decoboon.design.model.Space space : design.getSpaces()) {
-            PropertyRegion region = space.getHouseRegionId() == null ? null : regions.get(space.getHouseRegionId());
-            space.setHouseValueStale(regionSyncContext.isStale(space, region));
-        }
     }
 }

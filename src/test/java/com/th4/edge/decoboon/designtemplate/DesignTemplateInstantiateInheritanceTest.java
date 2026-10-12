@@ -17,9 +17,12 @@ import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateItemReposit
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateRepository;
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateRoomRepository;
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateVersionRepository;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
+import com.th4.edge.decoboon.property.model.Measure;
+import com.th4.edge.decoboon.property.model.MeasureRegion;
 import com.th4.edge.decoboon.property.model.Property;
-import com.th4.edge.decoboon.property.model.PropertyRegion;
-import com.th4.edge.decoboon.property.repository.PropertyRegionRepository;
+import com.th4.edge.decoboon.property.repository.MeasureRegionRepository;
+import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Company;
@@ -38,11 +41,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * 模版实例化的区域实测值继承（DEC-064 / OBJ-007）。
+ * 模版实例化的区域取值（DEC-066 / DEC-062）。
  *
- * <p>覆盖三条继承顺位与金额门禁：① 房屋区域实测档案有 Measured 值 → 继承并计入方案面积；
- * ② 房屋无实测值但有模版参考值 → 落 TemplateReference + Estimated（不进金额）；
- * ③ 匹配歧义（同类型同名多条）→ 不静默择一；④ 无任何来源 → 保持未录入。</p>
+ * <p>覆盖：① 最近一次**已完成**量房的原始区域实测值 → 继承为方案起点（可作工程量基数、计入方案面积）；
+ * ② 量房已建但未录实测值 + 模版参考值 → 参考值打底（TemplateReference + Estimated，不进入金额）；
+ * ③ 量房未完成 → 不继承（原始结构尚未量定）；④ 匹配歧义（同类型同名多条）→ 不静默择一；
+ * ⑤ 无任何来源 → 保持未录入（待补）。</p>
  */
 class DesignTemplateInstantiateInheritanceTest {
 
@@ -55,18 +59,19 @@ class DesignTemplateInstantiateInheritanceTest {
     private final DesignItemRepository designItemRepository = mock(DesignItemRepository.class);
     private final DesignTemplateItemRepository templateItemRepository = mock(DesignTemplateItemRepository.class);
     private final DesignTemplateAccessContext accessContext = mock(DesignTemplateAccessContext.class);
-    private final PropertyRegionRepository propertyRegionRepository = mock(PropertyRegionRepository.class);
+    private final MeasureRepository measureRepository = mock(MeasureRepository.class);
+    private final MeasureRegionRepository measureRegionRepository = mock(MeasureRegionRepository.class);
 
     private final com.th4.edge.decoboon.designtemplate.service.templates.instantiate.support.Instantiate instantiate =
             new com.th4.edge.decoboon.designtemplate.service.templates.instantiate.support.Instantiate(
                     templateRepository, versionRepository, roomRepository, propertyRepository, designRepository,
                     spaceRepository, designItemRepository, templateItemRepository,
-                    new DesignTemplateFormulaContext(), accessContext, propertyRegionRepository);
+                    new DesignTemplateFormulaContext(), accessContext, measureRepository, measureRegionRepository);
 
     @Test
-    void inheritsMeasuredHouseRegionAndCountsDesignArea() {
-        Fixture fixture = fixture(List.of(
-                region(900L, SpaceType.Bedroom, "主卧", "15.30", "16.20", AreaSource.Measured)));
+    void inheritsOriginalRegionFromLatestCompletedMeasure() {
+        Fixture fixture = fixture(MeasureStatus.Completed, List.of(
+                region(900L, SpaceType.Bedroom, "主卧", "15.30", "16.20")));
 
         Design design = instantiate.call(new Design());
 
@@ -74,17 +79,30 @@ class DesignTemplateInstantiateInheritanceTest {
         assertThat(space.getArea()).isEqualByComparingTo("15.30");
         assertThat(space.getPerimeter()).isEqualByComparingTo("16.20");
         assertThat(space.getAreaSource()).isEqualTo(AreaSource.Measured);
-        assertThat(space.getValueOrigin()).isEqualTo(SpaceValueOrigin.House);
-        assertThat(space.getHouseRegionId()).isEqualTo(900L);
-        assertThat(space.getInheritedArea()).isEqualByComparingTo("15.30");
-        // 方案面积 = 继承到的实测面积合计
+        assertThat(space.getValueOrigin()).isEqualTo(SpaceValueOrigin.Measure);
+        assertThat(space.getSourceMeasureRegionId()).isEqualTo(900L);
+        // 方案面积 = 继承到的原始结构实测面积合计（起点）
         assertThat(design.getArea()).isEqualByComparingTo("15.30");
         assertThat(fixture.savedDesign).isSameAs(design);
     }
 
     @Test
+    void doesNotInheritBeforeMeasureCompleted() {
+        Fixture fixture = fixture(MeasureStatus.Scheduled, List.of(
+                region(900L, SpaceType.Bedroom, "主卧", "15.30", "16.20")));
+
+        Design design = instantiate.call(new Design());
+
+        Space space = design.getSpaces().get(0);
+        // 原始结构尚未量定：不得把未完成的量房当成原始结构事实
+        assertThat(space.getArea()).isNull();
+        assertThat(space.getValueOrigin()).isNull();
+        assertThat(design.getArea()).isEqualByComparingTo("0");
+    }
+
+    @Test
     void fallsBackToTemplateReferenceWithoutCountingIntoAmount() {
-        Fixture fixture = fixture(List.of());
+        Fixture fixture = fixture(MeasureStatus.Completed, List.of());
         fixture.room.setReferenceArea(new BigDecimal("14.60"));
         fixture.room.setReferencePerimeter(new BigDecimal("15.80"));
 
@@ -92,61 +110,47 @@ class DesignTemplateInstantiateInheritanceTest {
 
         Space space = design.getSpaces().get(0);
         assertThat(space.getArea()).isEqualByComparingTo("14.60");
-        // 参考值只是打底：来源标记为模版参考值且按估算处理，不得作为工程量基数
+        // 参考值只是打底：模版参考值 + 估算来源，不得作为工程量基数
         assertThat(space.getValueOrigin()).isEqualTo(SpaceValueOrigin.TemplateReference);
         assertThat(space.getAreaSource()).isEqualTo(AreaSource.Estimated);
         assertThat(design.getArea()).isEqualByComparingTo("0");
     }
 
     @Test
-    void leavesAreaEmptyWhenNothingToInherit() {
-        Fixture fixture = fixture(List.of());
-
-        Design design = instantiate.call(new Design());
-
-        Space space = design.getSpaces().get(0);
-        assertThat(space.getArea()).isNull();
-        assertThat(space.getPerimeter()).isNull();
-        assertThat(space.getAreaSource()).isNull();
-        assertThat(space.getValueOrigin()).isNull();
-        assertThat(design.getArea()).isEqualByComparingTo("0");
-    }
-
-    @Test
-    void doesNotPickOneValueWhenHouseRegionsAreAmbiguous() {
-        Fixture fixture = fixture(List.of(
-                region(900L, SpaceType.Bedroom, "主卧", "15.30", "16.20", AreaSource.Measured),
-                region(901L, SpaceType.Bedroom, "主卧", "16.10", "17.00", AreaSource.Measured)));
-
-        Design design = instantiate.call(new Design());
-
-        Space space = design.getSpaces().get(0);
-        // 同类型同名两条视为歧义：不静默择一，留待设计师在方案内显式关联
-        assertThat(space.getArea()).isNull();
-        assertThat(space.getHouseRegionId()).isNull();
-    }
-
-    @Test
-    void recordsHouseRegionLinkWhenHouseHasNoMeasuredValueYet() {
-        Fixture fixture = fixture(List.of(region(900L, SpaceType.Bedroom, "主卧", null, null, null)));
+    void leavesAreaEmptyWhenMeasureRegionHasNoMeasuredValueYet() {
+        Fixture fixture = fixture(MeasureStatus.Completed, List.of(
+                region(900L, SpaceType.Bedroom, "主卧", null, null)));
         fixture.room.setReferenceArea(new BigDecimal("14.60"));
 
         Design design = instantiate.call(new Design());
 
         Space space = design.getSpaces().get(0);
-        assertThat(space.getHouseRegionId()).isEqualTo(900L);
+        // 关联到原始区域但尚未录入实测值：仍走模版参考值打底（待实测确认），不计金额
+        assertThat(space.getSourceMeasureRegionId()).isEqualTo(900L);
         assertThat(space.getValueOrigin()).isEqualTo(SpaceValueOrigin.TemplateReference);
         assertThat(space.getAreaSource()).isEqualTo(AreaSource.Estimated);
         assertThat(design.getArea()).isEqualByComparingTo("0");
     }
 
-    /** 测试夹具：模版已发布、房屋存在、区域仅「主卧」一条，房屋区域档案由用例注入。 */
+    @Test
+    void doesNotPickOneValueWhenMeasureRegionsAreAmbiguous() {
+        Fixture fixture = fixture(MeasureStatus.Completed, List.of(
+                region(900L, SpaceType.Bedroom, "主卧", "15.30", "16.20"),
+                region(901L, SpaceType.Bedroom, "主卧", "16.10", "17.00")));
+
+        Design design = instantiate.call(new Design());
+
+        Space space = design.getSpaces().get(0);
+        assertThat(space.getArea()).isNull();
+        assertThat(space.getSourceMeasureRegionId()).isNull();
+    }
+
     private static final class Fixture {
         final DesignTemplateRoom room = new DesignTemplateRoom();
         Design savedDesign;
     }
 
-    private Fixture fixture(List<PropertyRegion> houseRegions) {
+    private Fixture fixture(MeasureStatus measureStatus, List<MeasureRegion> regions) {
         Fixture fixture = new Fixture();
         Company company = new Company();
         company.setComId(1L);
@@ -175,6 +179,14 @@ class DesignTemplateInstantiateInheritanceTest {
         property.setCompany(company);
         when(propertyRepository.findByPropertyIdAndCompany_ComId(700L, 1L)).thenReturn(Optional.of(property));
 
+        Measure measure = new Measure();
+        measure.setMeasureId(800L);
+        measure.setStatus(measureStatus);
+        measure.setProperty(property);
+        when(measureRepository.findByPropertyOrderByMeasureTimeDesc(property)).thenReturn(List.of(measure));
+        when(measureRegionRepository.findByCompany_ComIdAndMeasure_MeasureIdOrderBySortAscRegionIdAsc(1L, 800L))
+                .thenReturn(regions);
+
         fixture.room.setRoomKey("R1");
         fixture.room.setName("主卧");
         fixture.room.setRoomType(SpaceType.Bedroom);
@@ -183,13 +195,11 @@ class DesignTemplateInstantiateInheritanceTest {
                 .thenReturn(List.of(fixture.room));
         when(templateItemRepository.findByVersion_VersionIdAndCompany_ComIdOrderBySortNoAsc(600L, 1L))
                 .thenReturn(List.of());
-        when(propertyRegionRepository.findByCompany_ComIdAndProperty_PropertyIdOrderBySortAscRegionIdAsc(1L, 700L))
-                .thenAnswer(invocation -> houseRegions);
         when(designRepository.findFirstByCompany_ComIdAndProperty_PropertyIdAndDesignTemplateVersion_VersionId(
                 1L, 700L, 600L)).thenReturn(Optional.empty());
         when(designRepository.save(any(Design.class))).thenAnswer(invocation -> {
             Design saved = invocation.getArgument(0);
-            saved.setDesignId(800L);
+            saved.setDesignId(900L);
             fixture.savedDesign = saved;
             return saved;
         });
@@ -202,15 +212,16 @@ class DesignTemplateInstantiateInheritanceTest {
         return fixture;
     }
 
-    private PropertyRegion region(Long id, SpaceType type, String name, String area, String perimeter,
-                                  AreaSource source) {
-        PropertyRegion region = new PropertyRegion();
+    private MeasureRegion region(Long id, SpaceType type, String name, String area, String perimeter) {
+        MeasureRegion region = new MeasureRegion();
         region.setRegionId(id);
         region.setRoomType(type);
         region.setName(name);
-        region.setArea(area == null ? null : new BigDecimal(area));
-        region.setPerimeter(perimeter == null ? null : new BigDecimal(perimeter));
-        region.setAreaSource(source);
+        if (area != null) {
+            region.setArea(new BigDecimal(area));
+            region.setPerimeter(new BigDecimal(perimeter));
+            region.setAreaSource(AreaSource.Measured);
+        }
         return region;
     }
 }

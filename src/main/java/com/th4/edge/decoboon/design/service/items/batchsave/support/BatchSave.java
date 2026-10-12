@@ -51,7 +51,7 @@ import java.util.List;
                         "quantity", "quantitySource", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "pricingMode",
                         "amount", "cost", "formula", "pendingMeasure", "criterion", "craft", "remark", "sort", "images"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale", "sort", "remark"}),
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "sourceMeasureRegionId", "sort", "remark"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",
                         "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "pricingMode",

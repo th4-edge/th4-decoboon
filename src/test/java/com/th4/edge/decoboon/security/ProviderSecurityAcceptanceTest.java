@@ -160,10 +160,10 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 465（public 14 + protected 451）。
         // 2026-10-11 本地开发业主会话新增 1 条（auth/session/dev-owner-login，public，仅 dev + 显式开关生效）。
         // => 当前 Provider 面板为 466（public 15 + protected 451）。
-        // 2026-10-12 房屋区域实测档案（DEC-064 第 2 期）新增 4 条（property/region list/save/delete/candidates，protected）。
-        // => 当前 Provider 面板为 470（public 15 + protected 455）。
-        assertThat(routes).hasSize(470);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(455);
+        // 2026-10-12 量房原始区域（DEC-066）新增 3 条（property/measure/region list/save/delete，protected）。
+        // => 当前 Provider 面板为 469（public 15 + protected 454）。
+        assertThat(routes).hasSize(469);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(454);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(15);
     }
 

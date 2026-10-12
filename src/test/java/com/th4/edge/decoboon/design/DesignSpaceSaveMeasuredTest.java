@@ -49,15 +49,9 @@ class DesignSpaceSaveMeasuredTest {
             new DesignFormulaRecalcContext(spaceRepository, mock(com.th4.edge.decoboon.design.repository.DesignItemRepository.class),
                     new DesignTemplateFormulaContext(), quoteCalcContext);
 
-    private final com.th4.edge.decoboon.property.repository.PropertyRegionRepository regionRepository =
-            mock(com.th4.edge.decoboon.property.repository.PropertyRegionRepository.class);
-    private final com.th4.edge.decoboon.property.context.PropertyRegionSyncContext regionSyncContext =
-            mock(com.th4.edge.decoboon.property.context.PropertyRegionSyncContext.class);
-
     private final com.th4.edge.decoboon.design.service.spaces.save.support.Save save =
             new com.th4.edge.decoboon.design.service.spaces.save.support.Save(
-                    designContext, spaceRepository, designRepository, dataScopeContext, formulaRecalcContext,
-                    regionRepository, regionSyncContext);
+                    designContext, spaceRepository, designRepository, dataScopeContext, formulaRecalcContext);
 
     @Test
     void savesMeasuredValuesAndNeverDerivesFromSnapshotLengthWidth() {

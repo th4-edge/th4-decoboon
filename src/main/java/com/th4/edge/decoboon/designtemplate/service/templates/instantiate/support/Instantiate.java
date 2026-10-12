@@ -22,9 +22,12 @@ import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateRepository;
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateItemRepository;
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateRoomRepository;
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateVersionRepository;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
+import com.th4.edge.decoboon.property.model.Measure;
+import com.th4.edge.decoboon.property.model.MeasureRegion;
 import com.th4.edge.decoboon.property.model.Property;
-import com.th4.edge.decoboon.property.model.PropertyRegion;
-import com.th4.edge.decoboon.property.repository.PropertyRegionRepository;
+import com.th4.edge.decoboon.property.repository.MeasureRegionRepository;
+import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
@@ -64,7 +67,7 @@ import java.util.Map;
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout",
                         "description", "spaces", "items", "designTemplateVersion", "createTime", "owner", "store", "team"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale",
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "sourceMeasureRegionId",
                         "sort", "remark"}),
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "type", "category", "name", "brand", "spec", "unit", "quantity",
@@ -106,7 +109,8 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
     private final DesignTemplateItemRepository templateItemRepository;
     private final DesignTemplateFormulaContext formulaContext;
     private final DesignTemplateAccessContext accessContext;
-    private final PropertyRegionRepository propertyRegionRepository;
+    private final MeasureRepository measureRepository;
+    private final MeasureRegionRepository measureRegionRepository;
 
     public Instantiate(DesignTemplateRepository templateRepository,
                        DesignTemplateVersionRepository versionRepository,
@@ -118,7 +122,8 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
                        DesignTemplateItemRepository templateItemRepository,
                        DesignTemplateFormulaContext formulaContext,
                        DesignTemplateAccessContext accessContext,
-                       PropertyRegionRepository propertyRegionRepository) {
+                       MeasureRepository measureRepository,
+                       MeasureRegionRepository measureRegionRepository) {
         this.templateRepository = templateRepository;
         this.versionRepository = versionRepository;
         this.roomRepository = roomRepository;
@@ -129,7 +134,8 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         this.templateItemRepository = templateItemRepository;
         this.formulaContext = formulaContext;
         this.accessContext = accessContext;
-        this.propertyRegionRepository = propertyRegionRepository;
+        this.measureRepository = measureRepository;
+        this.measureRegionRepository = measureRegionRepository;
     }
 
     @Override
@@ -198,10 +204,15 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         design.setArea(BigDecimal.ZERO);
         Design saved = designRepository.save(design);
 
-        // DEC-064：区域实测值的事实源是房屋区域实测档案；实例化按 roomKey → 「区域类型+标准化名称」继承，
-        // 免去同一房屋多个方案重复录入。匹配歧义（同类型同名多条）不静默择一，留待设计师在方案内显式关联。
-        List<PropertyRegion> houseRegions = propertyRegionRepository
-                .findByCompany_ComIdAndProperty_PropertyIdOrderBySortAscRegionIdAsc(comId, propertyId);
+        // DEC-066：原始区域挂在量房单上（量房完成后冻结），实例化时从**最近一次已完成的量房**继承，
+        // 作为设计方案的结构起点（一次性复制，之后不联动）。匹配歧义（同类型同名多条）不静默择一。
+        Measure latestMeasure = measureRepository.findByPropertyOrderByMeasureTimeDesc(property).stream()
+                .filter(item -> item.getStatus() == MeasureStatus.Completed)
+                .findFirst()
+                .orElse(null);
+        List<MeasureRegion> measureRegions = latestMeasure == null ? List.of()
+                : measureRegionRepository.findByCompany_ComIdAndMeasure_MeasureIdOrderBySortAscRegionIdAsc(
+                        comId, latestMeasure.getMeasureId());
         List<Space> spaces = new ArrayList<>();
         Map<String, Space> spaceByRoomKey = new HashMap<>();
         for (DesignTemplateRoom room : rooms) {
@@ -222,7 +233,7 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             // BR-040 §4 / DEC-062（EV-213）：长宽是量房快照，绝不据此推算面积/周长。
             // DEC-064：房屋档案已有实测值则继承（可作工程量基数）；无实测值时用模版参考值打底
             //（来源标记 TemplateReference 且 areaSource=Estimated，不进入工程量与金额）；都没有则待补。
-            applyInheritedMeasured(space, room, houseRegions);
+            applyInheritedMeasured(space, room, measureRegions);
             spaces.add(space);
             spaceByRoomKey.put(room.getRoomKey(), space);
         }
@@ -368,18 +379,16 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         return whole;
     }
 
-    /** DEC-064 继承：房屋档案实测值优先，其次模版参考值打底（待实测确认，不进金额）。 */
-    private void applyInheritedMeasured(Space space, DesignTemplateRoom room, List<PropertyRegion> houseRegions) {
-        PropertyRegion region = matchHouseRegion(houseRegions, room, space.getType(), space.getName());
+    /** DEC-066 继承：量房原始区域实测值优先（起点），其次模版参考值打底（待实测确认，不进金额）。 */
+    private void applyInheritedMeasured(Space space, DesignTemplateRoom room, List<MeasureRegion> measureRegions) {
+        MeasureRegion region = matchMeasureRegion(measureRegions, room, space.getType(), space.getName());
         if (region != null) {
-            space.setHouseRegionId(region.getRegionId());
-            space.setInheritedArea(region.getArea());
-            space.setInheritedPerimeter(region.getPerimeter());
+            space.setSourceMeasureRegionId(region.getRegionId());
             if (region.getArea() != null || region.getPerimeter() != null) {
                 space.setArea(region.getArea());
                 space.setPerimeter(region.getPerimeter());
                 space.setAreaSource(region.getAreaSource() == null ? AreaSource.Estimated : region.getAreaSource());
-                space.setValueOrigin(SpaceValueOrigin.House);
+                space.setValueOrigin(SpaceValueOrigin.Measure);
                 return;
             }
         }
@@ -393,24 +402,24 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
     }
 
     /**
-     * 房屋区域匹配（DEC-064 / OBJ-007）：先按区域键精确匹配，再按「区域类型 + 标准化名称」；
+     * 量房原始区域匹配（DEC-066）：先按区域键精确匹配，再按「区域类型 + 标准化名称」；
      * 同名多条视为歧义并返回 {@code null}（不静默择一）。
      */
-    private PropertyRegion matchHouseRegion(List<PropertyRegion> regions, DesignTemplateRoom room,
-                                            SpaceType type, String name) {
+    private MeasureRegion matchMeasureRegion(List<MeasureRegion> regions, DesignTemplateRoom room,
+                                             SpaceType type, String name) {
         if (regions.isEmpty()) {
             return null;
         }
         if (room.getRoomKey() != null && !room.getRoomKey().isBlank()) {
-            for (PropertyRegion region : regions) {
+            for (MeasureRegion region : regions) {
                 if (region.getRoomKey() != null && room.getRoomKey().equalsIgnoreCase(region.getRoomKey())) {
                     return region;
                 }
             }
         }
         String normalized = normalizeName(name);
-        PropertyRegion matched = null;
-        for (PropertyRegion region : regions) {
+        MeasureRegion matched = null;
+        for (MeasureRegion region : regions) {
             if (region.getRoomType() == type && normalizeName(region.getName()).equals(normalized)) {
                 if (matched != null) {
                     return null;
