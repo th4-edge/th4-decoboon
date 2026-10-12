@@ -1,0 +1,1820 @@
+[
+  {
+    "provider": "auth/session/password-login",
+    "request": {
+      "phone": "18225940242",
+      "password": "Design2026!"
+    },
+    "response": {
+      "data": {
+        "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzkwMjIxMzk2MjMwNTA1NDk1IiwiYXVkIjoiY29tLnRoNC5lZGdlLnRlbmFudC51c2VyLm1vZGVsLkVtcGxveWVlIn0.aT-3pZTlLshoNAX3ljleuYndAKL4Waq2LXmXs_1_g-E"
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "auth/session/info",
+    "request": {},
+    "response": {
+      "data": {
+        "creId": "1790221395995253196",
+        "employee": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "telNo": "18225940242",
+          "avatarUrl": "https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132",
+          "store": {
+            "storeId": "1790066191588014876",
+            "name": "总店",
+            "defaultStore": true
+          },
+          "company": {
+            "comId": "1790066191585976744",
+            "title": "安徽麦鸿装饰设计工程有限公司",
+            "name": "麦鸿装饰",
+            "addr": "",
+            "setting": {
+              "enableStore": false
+            }
+          },
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          },
+          "joinedAt": "2026-09-24 11:43:16",
+          "createTime": {
+            "dateTime": "2026-09-24 11:43:16"
+          }
+        },
+        "phone": "18225940242",
+        "status": {
+          "name": "正常",
+          "key": "Active"
+        },
+        "lastTime": "2026-10-13 00:08:06",
+        "mustChangePassword": false,
+        "sessionType": {
+          "name": "企业员工",
+          "value": "Employee",
+          "key": "Employee"
+        },
+        "customerAccesses": [],
+        "passwordSet": true
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/save",
+    "request": {
+      "propertyId": 228771992327684096,
+      "status": "Scheduled",
+      "originalStructure": "走查：原始结构（DEC-069）"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "measureId": "235433355414339584",
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642"
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "scheduledAt": "2026-10-13 00:08:06",
+        "measureTime": "2026-10-13 00:08:06",
+        "status": {
+          "name": "已预约",
+          "key": "Scheduled"
+        },
+        "originalStructure": "走查：原始结构（DEC-069）"
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/region/save",
+    "request": {
+      "measureId": "235433355414339584",
+      "roomKey": "R1",
+      "roomType": "Bedroom",
+      "name": "主卧",
+      "area": 15.3,
+      "perimeter": 16.2
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "regionId": "235433355590500352",
+        "roomKey": "R1",
+        "roomType": {
+          "name": "卧室",
+          "value": "Bedroom",
+          "key": "Bedroom"
+        },
+        "name": "主卧",
+        "area": 15.3,
+        "perimeter": 16.2,
+        "areaSource": {
+          "name": "实测",
+          "value": "Measured",
+          "key": "Measured"
+        },
+        "measuredBy": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measuredAt": "2026-10-13 00:08:06",
+        "sort": 0
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/region/save",
+    "request": {
+      "measureId": "235433355414339584",
+      "roomKey": "R2",
+      "roomType": "LivingRoom",
+      "name": "客厅",
+      "area": 26.0,
+      "perimeter": 24.0
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "regionId": "235433355716329472",
+        "roomKey": "R2",
+        "roomType": {
+          "name": "客厅",
+          "value": "LivingRoom",
+          "key": "LivingRoom"
+        },
+        "name": "客厅",
+        "area": 26.0,
+        "perimeter": 24.0,
+        "areaSource": {
+          "name": "实测",
+          "value": "Measured",
+          "key": "Measured"
+        },
+        "measuredBy": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measuredAt": "2026-10-13 00:08:06",
+        "sort": 0
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/region/list",
+    "request": {
+      "measureId": "235433355414339584"
+    },
+    "response": {
+      "data": [
+        {
+          "createTime": {
+            "dateTime": "2026-10-13 00:08:06"
+          },
+          "updateTime": {
+            "dateTime": "2026-10-13 00:08:06"
+          },
+          "regionId": "235433355590500352",
+          "roomKey": "R1",
+          "roomType": {
+            "name": "卧室",
+            "value": "Bedroom",
+            "key": "Bedroom"
+          },
+          "name": "主卧",
+          "area": 15.3,
+          "perimeter": 16.2,
+          "areaSource": {
+            "name": "实测",
+            "value": "Measured",
+            "key": "Measured"
+          },
+          "measuredBy": {
+            "empId": "1790221396230505495",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "measuredAt": "2026-10-13 00:08:06",
+          "sort": 0
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-13 00:08:06"
+          },
+          "updateTime": {
+            "dateTime": "2026-10-13 00:08:06"
+          },
+          "regionId": "235433355716329472",
+          "roomKey": "R2",
+          "roomType": {
+            "name": "客厅",
+            "value": "LivingRoom",
+            "key": "LivingRoom"
+          },
+          "name": "客厅",
+          "area": 26.0,
+          "perimeter": 24.0,
+          "areaSource": {
+            "name": "实测",
+            "value": "Measured",
+            "key": "Measured"
+          },
+          "measuredBy": {
+            "empId": "1790221396230505495",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "measuredAt": "2026-10-13 00:08:06",
+          "sort": 0
+        }
+      ],
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/save",
+    "request": {
+      "propertyId": 228771992327684096,
+      "status": "Completed"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "measureId": "235433355414339584",
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642"
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "scheduledAt": "2026-10-13 00:08:06",
+        "completedAt": "2026-10-13 00:08:06",
+        "measureTime": "2026-10-13 00:08:06",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/region/save",
+    "request": {
+      "measureId": "235433355414339584",
+      "roomKey": "R1",
+      "roomType": "Bedroom",
+      "name": "主卧",
+      "area": 18.0,
+      "perimeter": 17.0
+    },
+    "response": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "该量房已完成，原始结构不可再修改；如需修正请重新量房（复尺）",
+        "system": false
+      }
+    }
+  },
+  {
+    "provider": "property/measure/region/delete",
+    "request": {
+      "regionId": "235433355590500352"
+    },
+    "response": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "该量房已完成，原始结构不可再修改；如需修正请重新量房（复尺）",
+        "system": false
+      }
+    }
+  },
+  {
+    "provider": "design/template/save",
+    "request": {
+      "name": "走查-DEC069-继承",
+      "houseType": "三室两厅",
+      "scope": "Personal"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "templateId": "235433356429361152",
+        "scope": {
+          "name": "个人",
+          "value": "Personal",
+          "key": "Personal"
+        },
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "currentVersion": {
+          "versionId": "235433356446138368",
+          "version": 1,
+          "status": {
+            "name": "草稿",
+            "value": "Draft",
+            "key": "Draft"
+          },
+          "name": "走查-DEC069-继承",
+          "houseType": "三室两厅"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/room/save",
+    "request": {
+      "versionId": "235433356446138368",
+      "roomKey": "R1",
+      "name": "主卧",
+      "roomType": "Bedroom",
+      "sortNo": 0,
+      "count": 1
+    },
+    "response": {
+      "data": {
+        "roomId": "235433356634882048",
+        "roomKey": "R1",
+        "name": "主卧",
+        "roomType": {
+          "name": "卧室",
+          "value": "Bedroom",
+          "key": "Bedroom"
+        },
+        "sortNo": 0,
+        "count": 1
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/items/batchsave",
+    "request": {
+      "versionId": "235433356446138368",
+      "deletedItemIds": [],
+      "items": [
+        {
+          "roomKey": "R1",
+          "catalogItem": {
+            "itemId": 102080338905269488
+          },
+          "quantityFormula": "=A",
+          "sortNo": 0
+        }
+      ]
+    },
+    "response": {
+      "data": {
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "templateId": "235433356429361152",
+        "scope": {
+          "name": "个人",
+          "value": "Personal",
+          "key": "Personal"
+        },
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "currentVersion": {
+          "versionId": "235433356446138368",
+          "version": 1,
+          "status": {
+            "name": "草稿",
+            "value": "Draft",
+            "key": "Draft"
+          },
+          "name": "走查-DEC069-继承",
+          "houseType": "三室两厅"
+        },
+        "rooms": [],
+        "items": [
+          {
+            "itemId": "235433356832014336",
+            "roomKey": "R1",
+            "catalogItem": {
+              "itemId": "102080338905269488",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "formula": "",
+              "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+              "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。"
+            },
+            "quantityFormula": "=A",
+            "sortNo": 0
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/publish",
+    "request": {
+      "templateId": "235433356429361152"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "templateId": "235433356429361152",
+        "scope": {
+          "name": "个人",
+          "value": "Personal",
+          "key": "Personal"
+        },
+        "status": {
+          "name": "已发布",
+          "value": "Published",
+          "key": "Published"
+        },
+        "currentVersion": {
+          "versionId": "235433356446138368",
+          "version": 1,
+          "status": {
+            "name": "已发布",
+            "value": "Published",
+            "key": "Published"
+          },
+          "name": "走查-DEC069-继承",
+          "houseType": "三室两厅",
+          "publishedAt": "2026-10-13 00:08:06"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/instantiate",
+    "request": {
+      "templateId": "235433356429361152",
+      "propertyId": 228771992327684096
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "designId": "235433357192724480",
+        "no": "D1791821286494",
+        "name": "走查-DEC069-继承",
+        "store": {
+          "storeId": "1790066191588014876",
+          "name": "总店"
+        },
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "designTemplateVersion": {
+          "versionId": "235433356446138368",
+          "version": 1,
+          "status": {
+            "name": "已发布",
+            "value": "Published",
+            "key": "Published"
+          },
+          "name": "走查-DEC069-继承",
+          "houseType": "三室两厅",
+          "publishedAt": "2026-10-13 00:08:06"
+        },
+        "version": 1,
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "area": 15.3,
+        "spaces": [
+          {
+            "spaceId": "235433357222084608",
+            "type": {
+              "name": "卧室",
+              "value": "Bedroom",
+              "key": "Bedroom"
+            },
+            "name": "主卧",
+            "area": 15.3,
+            "perimeter": 16.2,
+            "areaSource": {
+              "name": "实测",
+              "value": "Measured",
+              "key": "Measured"
+            },
+            "valueOrigin": {
+              "name": "量房原始结构继承",
+              "value": "Measure",
+              "key": "Measure"
+            },
+            "sourceMeasureRegionId": "235433355590500352",
+            "sort": 0
+          }
+        ],
+        "items": [
+          {
+            "itemId": "235433357247250432",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 15.3,
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 104.04,
+            "formula": "=A",
+            "pendingMeasure": false,
+            "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "sort": 0
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/scheme/info",
+    "request": {
+      "designId": "235433357192724480"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "designId": "235433357192724480",
+        "no": "D1791821286494",
+        "name": "走查-DEC069-继承",
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642",
+          "addr": "矿机二村4栋103",
+          "area": 60.0,
+          "status": {
+            "name": "待量房",
+            "key": "PendingMeasure"
+          }
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "customer": {
+            "custId": "228771555587391488",
+            "name": "陈",
+            "telNo": "13003087642",
+            "addr": "矿机二村4栋103",
+            "area": 60.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            }
+          },
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          },
+          "salesman": {
+            "empId": "1790222057930837664",
+            "name": "黄贤杰",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "1790221396230505495",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "version": 1,
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "area": 15.3,
+        "originalPlanImages": [],
+        "sitePhotos": [],
+        "surveyPhotos": [],
+        "spaces": [
+          {
+            "spaceId": "235433357222084608",
+            "type": {
+              "name": "卧室",
+              "value": "Bedroom",
+              "key": "Bedroom"
+            },
+            "name": "主卧",
+            "area": 15.3,
+            "perimeter": 16.2,
+            "areaSource": {
+              "name": "实测",
+              "value": "Measured",
+              "key": "Measured"
+            },
+            "valueOrigin": {
+              "name": "量房原始结构继承",
+              "value": "Measure",
+              "key": "Measure"
+            },
+            "sourceMeasureRegionId": "235433355590500352",
+            "sort": 0,
+            "images": []
+          }
+        ],
+        "items": [
+          {
+            "itemId": "235433357247250432",
+            "space": {
+              "spaceId": "235433357222084608",
+              "type": {
+                "name": "卧室",
+                "value": "Bedroom",
+                "key": "Bedroom"
+              },
+              "name": "主卧",
+              "area": 15.3,
+              "perimeter": 16.2,
+              "areaSource": {
+                "name": "实测",
+                "value": "Measured",
+                "key": "Measured"
+              },
+              "valueOrigin": {
+                "name": "量房原始结构继承",
+                "value": "Measure",
+                "key": "Measure"
+              },
+              "sourceMeasureRegionId": "235433355590500352",
+              "sort": 0,
+              "images": []
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "catalogItem": {
+              "itemId": "102080338905269488",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "costPrice": 6.8,
+              "formula": "",
+              "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+              "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。"
+            },
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 15.3,
+            "quantitySource": {
+              "name": "公式",
+              "value": "Formula",
+              "key": "Formula"
+            },
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 104.04,
+            "cost": 0.0,
+            "formula": "=A",
+            "pendingMeasure": false,
+            "formulaRevisionNeeded": false,
+            "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "sort": 0,
+            "images": []
+          }
+        ],
+        "requirements": []
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/save",
+    "request": {
+      "propertyId": 228771992327684096,
+      "status": "Scheduled"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "measureId": "235433357930921984",
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642"
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "scheduledAt": "2026-10-13 00:08:06",
+        "measureTime": "2026-10-13 00:08:06",
+        "status": {
+          "name": "已预约",
+          "key": "Scheduled"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/region/save",
+    "request": {
+      "measureId": "235433357930921984",
+      "roomKey": "R1",
+      "roomType": "Bedroom",
+      "name": "主卧",
+      "area": 18.0,
+      "perimeter": 17.0
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "regionId": "235433358035779584",
+        "roomKey": "R1",
+        "roomType": {
+          "name": "卧室",
+          "value": "Bedroom",
+          "key": "Bedroom"
+        },
+        "name": "主卧",
+        "area": 18.0,
+        "perimeter": 17.0,
+        "areaSource": {
+          "name": "实测",
+          "value": "Measured",
+          "key": "Measured"
+        },
+        "measuredBy": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "measuredAt": "2026-10-13 00:08:06",
+        "sort": 0
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "property/measure/save",
+    "request": {
+      "propertyId": 228771992327684096,
+      "status": "Completed"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "measureId": "235433357930921984",
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642"
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          }
+        },
+        "designer": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "executor": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "scheduledAt": "2026-10-13 00:08:06",
+        "completedAt": "2026-10-13 00:08:06",
+        "measureTime": "2026-10-13 00:08:06",
+        "status": {
+          "name": "已完成",
+          "key": "Completed"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/scheme/info",
+    "request": {
+      "designId": "235433357192724480"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "designId": "235433357192724480",
+        "no": "D1791821286494",
+        "name": "走查-DEC069-继承",
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642",
+          "addr": "矿机二村4栋103",
+          "area": 60.0,
+          "status": {
+            "name": "待量房",
+            "key": "PendingMeasure"
+          }
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "customer": {
+            "custId": "228771555587391488",
+            "name": "陈",
+            "telNo": "13003087642",
+            "addr": "矿机二村4栋103",
+            "area": 60.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            }
+          },
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          },
+          "salesman": {
+            "empId": "1790222057930837664",
+            "name": "黄贤杰",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "1790221396230505495",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "version": 1,
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "area": 15.3,
+        "originalPlanImages": [],
+        "sitePhotos": [],
+        "surveyPhotos": [],
+        "spaces": [
+          {
+            "spaceId": "235433357222084608",
+            "type": {
+              "name": "卧室",
+              "value": "Bedroom",
+              "key": "Bedroom"
+            },
+            "name": "主卧",
+            "area": 15.3,
+            "perimeter": 16.2,
+            "areaSource": {
+              "name": "实测",
+              "value": "Measured",
+              "key": "Measured"
+            },
+            "valueOrigin": {
+              "name": "量房原始结构继承",
+              "value": "Measure",
+              "key": "Measure"
+            },
+            "sourceMeasureRegionId": "235433355590500352",
+            "sort": 0,
+            "images": []
+          }
+        ],
+        "items": [
+          {
+            "itemId": "235433357247250432",
+            "space": {
+              "spaceId": "235433357222084608",
+              "type": {
+                "name": "卧室",
+                "value": "Bedroom",
+                "key": "Bedroom"
+              },
+              "name": "主卧",
+              "area": 15.3,
+              "perimeter": 16.2,
+              "areaSource": {
+                "name": "实测",
+                "value": "Measured",
+                "key": "Measured"
+              },
+              "valueOrigin": {
+                "name": "量房原始结构继承",
+                "value": "Measure",
+                "key": "Measure"
+              },
+              "sourceMeasureRegionId": "235433355590500352",
+              "sort": 0,
+              "images": []
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "catalogItem": {
+              "itemId": "102080338905269488",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "costPrice": 6.8,
+              "formula": "",
+              "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+              "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。"
+            },
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 15.3,
+            "quantitySource": {
+              "name": "公式",
+              "value": "Formula",
+              "key": "Formula"
+            },
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 104.04,
+            "cost": 0.0,
+            "formula": "=A",
+            "pendingMeasure": false,
+            "formulaRevisionNeeded": false,
+            "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "sort": 0,
+            "images": []
+          }
+        ],
+        "requirements": []
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/save",
+    "request": {
+      "name": "走查-DEC069-参考值",
+      "houseType": "三室两厅",
+      "scope": "Personal"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "templateId": "235433358375518208",
+        "scope": {
+          "name": "个人",
+          "value": "Personal",
+          "key": "Personal"
+        },
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "currentVersion": {
+          "versionId": "235433358375518209",
+          "version": 1,
+          "status": {
+            "name": "草稿",
+            "value": "Draft",
+            "key": "Draft"
+          },
+          "name": "走查-DEC069-参考值",
+          "houseType": "三室两厅"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/room/save",
+    "request": {
+      "versionId": "235433358375518209",
+      "roomKey": "R9",
+      "name": "次卧",
+      "roomType": "Bedroom",
+      "sortNo": 0,
+      "count": 1,
+      "referenceArea": 14.6,
+      "referencePerimeter": 15.8
+    },
+    "response": {
+      "data": {
+        "roomId": "235433358505541632",
+        "roomKey": "R9",
+        "name": "次卧",
+        "roomType": {
+          "name": "卧室",
+          "value": "Bedroom",
+          "key": "Bedroom"
+        },
+        "sortNo": 0,
+        "referenceArea": 14.6,
+        "referencePerimeter": 15.8,
+        "count": 1
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/items/batchsave",
+    "request": {
+      "versionId": "235433358375518209",
+      "deletedItemIds": [],
+      "items": [
+        {
+          "roomKey": "R9",
+          "catalogItem": {
+            "itemId": 102080338905269488
+          },
+          "quantityFormula": "=A",
+          "sortNo": 0
+        }
+      ]
+    },
+    "response": {
+      "data": {
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "templateId": "235433358375518208",
+        "scope": {
+          "name": "个人",
+          "value": "Personal",
+          "key": "Personal"
+        },
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "currentVersion": {
+          "versionId": "235433358375518209",
+          "version": 1,
+          "status": {
+            "name": "草稿",
+            "value": "Draft",
+            "key": "Draft"
+          },
+          "name": "走查-DEC069-参考值",
+          "houseType": "三室两厅"
+        },
+        "rooms": [],
+        "items": [
+          {
+            "itemId": "235433358631370752",
+            "roomKey": "R9",
+            "catalogItem": {
+              "itemId": "102080338905269488",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "formula": "",
+              "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+              "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。"
+            },
+            "quantityFormula": "=A",
+            "sortNo": 0
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/publish",
+    "request": {
+      "templateId": "235433358375518208"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "templateId": "235433358375518208",
+        "scope": {
+          "name": "个人",
+          "value": "Personal",
+          "key": "Personal"
+        },
+        "status": {
+          "name": "已发布",
+          "value": "Published",
+          "key": "Published"
+        },
+        "currentVersion": {
+          "versionId": "235433358375518209",
+          "version": 1,
+          "status": {
+            "name": "已发布",
+            "value": "Published",
+            "key": "Published"
+          },
+          "name": "走查-DEC069-参考值",
+          "houseType": "三室两厅",
+          "publishedAt": "2026-10-13 00:08:06"
+        }
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/template/instantiate",
+    "request": {
+      "templateId": "235433358375518208",
+      "propertyId": 228771992327684096
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "designId": "235433358862057472",
+        "no": "D1791821286893",
+        "name": "走查-DEC069-参考值",
+        "store": {
+          "storeId": "1790066191588014876",
+          "name": "总店"
+        },
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "designTemplateVersion": {
+          "versionId": "235433358375518209",
+          "version": 1,
+          "status": {
+            "name": "已发布",
+            "value": "Published",
+            "key": "Published"
+          },
+          "name": "走查-DEC069-参考值",
+          "houseType": "三室两厅",
+          "publishedAt": "2026-10-13 00:08:06"
+        },
+        "version": 1,
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "area": 0,
+        "spaces": [
+          {
+            "spaceId": "235433358887223296",
+            "type": {
+              "name": "卧室",
+              "value": "Bedroom",
+              "key": "Bedroom"
+            },
+            "name": "次卧",
+            "area": 14.6,
+            "perimeter": 15.8,
+            "areaSource": {
+              "name": "估算",
+              "value": "Estimated",
+              "key": "Estimated"
+            },
+            "valueOrigin": {
+              "name": "模版参考值",
+              "value": "TemplateReference",
+              "key": "TemplateReference"
+            },
+            "sort": 0
+          }
+        ],
+        "items": [
+          {
+            "itemId": "235433358899806208",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 0,
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 0.0,
+            "formula": "__PENDING_MEASURE__|=A",
+            "pendingMeasure": true,
+            "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "sort": 0
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  {
+    "provider": "design/scheme/info",
+    "request": {
+      "designId": "235433358862057472"
+    },
+    "response": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-13 00:08:06"
+        },
+        "designId": "235433358862057472",
+        "no": "D1791821286893",
+        "name": "走查-DEC069-参考值",
+        "owner": {
+          "empId": "1790221396230505495",
+          "name": "董夏鹏",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "customer": {
+          "custId": "228771555587391488",
+          "name": "陈",
+          "telNo": "13003087642",
+          "addr": "矿机二村4栋103",
+          "area": 60.0,
+          "status": {
+            "name": "待量房",
+            "key": "PendingMeasure"
+          }
+        },
+        "property": {
+          "propertyId": "228771992327684096",
+          "customer": {
+            "custId": "228771555587391488",
+            "name": "陈",
+            "telNo": "13003087642",
+            "addr": "矿机二村4栋103",
+            "area": 60.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            }
+          },
+          "propertyNo": "H1790233093349",
+          "community": "",
+          "building": "4",
+          "roomNo": "103",
+          "address": "矿机二村4栋103",
+          "area": 60.0,
+          "layout": "",
+          "status": {
+            "name": "已量房",
+            "key": "Measured"
+          },
+          "salesman": {
+            "empId": "1790222057930837664",
+            "name": "黄贤杰",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "1790221396230505495",
+            "name": "董夏鹏",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "version": 1,
+        "status": {
+          "name": "草稿",
+          "value": "Draft",
+          "key": "Draft"
+        },
+        "area": 0.0,
+        "originalPlanImages": [],
+        "sitePhotos": [],
+        "surveyPhotos": [],
+        "spaces": [
+          {
+            "spaceId": "235433358887223296",
+            "type": {
+              "name": "卧室",
+              "value": "Bedroom",
+              "key": "Bedroom"
+            },
+            "name": "次卧",
+            "area": 14.6,
+            "perimeter": 15.8,
+            "areaSource": {
+              "name": "估算",
+              "value": "Estimated",
+              "key": "Estimated"
+            },
+            "valueOrigin": {
+              "name": "模版参考值",
+              "value": "TemplateReference",
+              "key": "TemplateReference"
+            },
+            "sort": 0,
+            "images": []
+          }
+        ],
+        "items": [
+          {
+            "itemId": "235433358899806208",
+            "space": {
+              "spaceId": "235433358887223296",
+              "type": {
+                "name": "卧室",
+                "value": "Bedroom",
+                "key": "Bedroom"
+              },
+              "name": "次卧",
+              "area": 14.6,
+              "perimeter": 15.8,
+              "areaSource": {
+                "name": "估算",
+                "value": "Estimated",
+                "key": "Estimated"
+              },
+              "valueOrigin": {
+                "name": "模版参考值",
+                "value": "TemplateReference",
+                "key": "TemplateReference"
+              },
+              "sort": 0,
+              "images": []
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "catalogItem": {
+              "itemId": "102080338905269488",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "costPrice": 6.8,
+              "formula": "",
+              "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+              "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。"
+            },
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 0.0,
+            "quantitySource": {
+              "name": "公式",
+              "value": "Formula",
+              "key": "Formula"
+            },
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 0.0,
+            "cost": 0.0,
+            "formula": "__PENDING_MEASURE__|=A",
+            "pendingMeasure": true,
+            "formulaRevisionNeeded": false,
+            "criterion": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "craft": "1.铲除垃圾袋装清理归堆。 2.如需机器铲除需另加10元/每平方（如北城世纪城原有墙顶面基础白灰）。 3.原墙面乳胶漆/墙纸铲除加8元/平方。",
+            "sort": 0,
+            "images": []
+          }
+        ],
+        "requirements": []
+      },
+      "success": true
+    }
+  }
+]
