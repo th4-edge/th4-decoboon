@@ -7,6 +7,15 @@ spring:
     username: root
     password: mysqladmin
     driver-class-name: com.mysql.cj.jdbc.Driver
+  # Redis（test 环境本地实例需要口令；与 dev 一致，可用环境变量覆盖）
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:123456}
+      database: ${REDIS_DATABASE:0}
+      timeout: ${REDIS_TIMEOUT_MS:1000}
+
   # jpa配置
   jpa:
     show-sql: true
