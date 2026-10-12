@@ -51,7 +51,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout", "coverUrl"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource"}),
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",
                         "pricingMode", "materialPrice", "manualPrice", "formula", "craft", "criterion"}),

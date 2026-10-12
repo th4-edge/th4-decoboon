@@ -33,7 +33,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
                         "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "quantityFormula", "role",
                         "differenceType", "differenceStatus", "included", "discountAmount", "components", "craft", "sort"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource"}),
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale"}),
         @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteComponent.class,
                 properties = {"type", "name", "saleAmount", "costAmount", "formula", "sort"})
 })

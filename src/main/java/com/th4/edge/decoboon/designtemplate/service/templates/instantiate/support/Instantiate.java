@@ -1,7 +1,9 @@
 package com.th4.edge.decoboon.designtemplate.service.templates.instantiate.support;
 
 import com.th4.edge.decoboon.bim.configure.SpaceType;
+import com.th4.edge.decoboon.design.configure.AreaSource;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.design.configure.SpaceValueOrigin;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.model.Space;
@@ -21,6 +23,8 @@ import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateItemReposit
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateRoomRepository;
 import com.th4.edge.decoboon.designtemplate.repository.DesignTemplateVersionRepository;
 import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.property.model.PropertyRegion;
+import com.th4.edge.decoboon.property.repository.PropertyRegionRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
@@ -60,7 +64,7 @@ import java.util.Map;
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout",
                         "description", "spaces", "items", "designTemplateVersion", "createTime", "owner", "store", "team"}),
         @AllowProperties(model = Space.class,
-                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource",
+                properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale",
                         "sort", "remark"}),
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "type", "category", "name", "brand", "spec", "unit", "quantity",
@@ -102,6 +106,7 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
     private final DesignTemplateItemRepository templateItemRepository;
     private final DesignTemplateFormulaContext formulaContext;
     private final DesignTemplateAccessContext accessContext;
+    private final PropertyRegionRepository propertyRegionRepository;
 
     public Instantiate(DesignTemplateRepository templateRepository,
                        DesignTemplateVersionRepository versionRepository,
@@ -112,7 +117,8 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
                        DesignItemRepository designItemRepository,
                        DesignTemplateItemRepository templateItemRepository,
                        DesignTemplateFormulaContext formulaContext,
-                       DesignTemplateAccessContext accessContext) {
+                       DesignTemplateAccessContext accessContext,
+                       PropertyRegionRepository propertyRegionRepository) {
         this.templateRepository = templateRepository;
         this.versionRepository = versionRepository;
         this.roomRepository = roomRepository;
@@ -123,6 +129,7 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         this.templateItemRepository = templateItemRepository;
         this.formulaContext = formulaContext;
         this.accessContext = accessContext;
+        this.propertyRegionRepository = propertyRegionRepository;
     }
 
     @Override
@@ -191,6 +198,10 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         design.setArea(BigDecimal.ZERO);
         Design saved = designRepository.save(design);
 
+        // DEC-064：区域实测值的事实源是房屋区域实测档案；实例化按 roomKey → 「区域类型+标准化名称」继承，
+        // 免去同一房屋多个方案重复录入。匹配歧义（同类型同名多条）不静默择一，留待设计师在方案内显式关联。
+        List<PropertyRegion> houseRegions = propertyRegionRepository
+                .findByCompany_ComIdAndProperty_PropertyIdOrderBySortAscRegionIdAsc(comId, propertyId);
         List<Space> spaces = new ArrayList<>();
         Map<String, Space> spaceByRoomKey = new HashMap<>();
         for (DesignTemplateRoom room : rooms) {
@@ -208,8 +219,10 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             space.setHeight(room.getHeight());
             space.setSort(room.getSortNo() == null ? 0 : room.getSortNo());
             space.setRemark(room.getRemark());
-            // BR-040 §4 / DEC-062（EV-213）：区域面积与周长只能由设计师实测量房后经 CAD 计算录入，
-            // 模版实例化只生成区域骨架；长宽是量房快照，绝不据此推算面积/周长。
+            // BR-040 §4 / DEC-062（EV-213）：长宽是量房快照，绝不据此推算面积/周长。
+            // DEC-064：房屋档案已有实测值则继承（可作工程量基数）；无实测值时用模版参考值打底
+            //（来源标记 TemplateReference 且 areaSource=Estimated，不进入工程量与金额）；都没有则待补。
+            applyInheritedMeasured(space, room, houseRegions);
             spaces.add(space);
             spaceByRoomKey.put(room.getRoomKey(), space);
         }
@@ -235,9 +248,11 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             if (templateFormula != null && !templateFormula.isBlank()) {
                 try {
                     quantity = room != null
-                            // 模版层不承载实测面积/周长：A/P/CP/WP 一律未就绪，引用它们的分项落「待补」。
-                            ? formulaContext.evaluate(room, templateFormula, null, null)
-                            : formulaContext.evaluateWith(templateFormula, wholeHouseVariables(rooms));
+                            // DEC-064：按本区域继承到的实测值求值；未继承到（待补/仅参考值）则抛「未就绪」落待补。
+                            ? formulaContext.evaluate(room, templateFormula,
+                                    measuredArea(spaceByRoomKey.get(room.getRoomKey())),
+                                    measuredPerimeter(spaceByRoomKey.get(room.getRoomKey())))
+                            : formulaContext.evaluateWith(templateFormula, wholeHouseVariables(rooms, spaces));
                 } catch (DefinedException exception) {
                     // BR-040 §7 / 2026-10-10 用户裁决：尺寸未填不再整单失败；
                     // 用 quantity=0 + formula 前缀标记“待补尺寸”，与“0=赠送”并存。
@@ -291,6 +306,12 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
         if (!items.isEmpty()) {
             designItemRepository.saveAll(items);
         }
+        // 方案面积 = 区域实测面积合计（只算 Measured；参考值与未录入不参与，DEC-062 / DEC-064）
+        saved.setArea(spaces.stream()
+                .filter(space -> space.getAreaSource() == AreaSource.Measured)
+                .map(Space::getArea)
+                .filter(java.util.Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add));
         saved.setItems(items);
         return designRepository.save(saved);
     }
@@ -298,15 +319,120 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
     /**
      * 全屋共享分项的变量。
      *
-     * <p>模版层不承载实测面积/周长（{@code DEC-062}），因此 {@code A/P/CP/WP} 一律不放入变量表：
-     * 引用它们的全屋分项会报「未就绪」并按「待补尺寸」落库；等设计师在方案区域录入实测值后，
-     * 由 {@code design/space/save} 触发的重算再求值。只提供计数类变量 {@code COUNT(room)}。</p>
+     * <p>{@code COUNT(room)} 恒可用；{@code A/P/WP} 只在**全部区域都继承到实测值**时聚合
+     * （与前端 {@code variablesOfWholeHouse} 同口径）。任一区域未就绪则整项按「未就绪」处理，
+     * 由 {@code design/space/save} 触发的重算在设计师补齐实测值后再求值。</p>
      */
-    private Map<String, BigDecimal> wholeHouseVariables(List<DesignTemplateRoom> rooms) {
+    private Map<String, BigDecimal> wholeHouseVariables(List<DesignTemplateRoom> rooms, List<Space> spaces) {
         Map<String, BigDecimal> whole = new HashMap<>();
         whole.put("N", BigDecimal.ONE);
         whole.put(DesignTemplateFormulaContext.ROOM_COUNT_KEY, BigDecimal.valueOf(rooms.size()));
+        if (spaces.isEmpty()) {
+            return whole;
+        }
+        boolean areaReady = true;
+        boolean perimeterReady = true;
+        boolean wallsReady = true;
+        BigDecimal area = BigDecimal.ZERO;
+        BigDecimal perimeter = BigDecimal.ZERO;
+        BigDecimal walls = BigDecimal.ZERO;
+        for (Space space : spaces) {
+            BigDecimal measured = measuredArea(space);
+            BigDecimal measuredRound = measuredPerimeter(space);
+            if (measured == null) {
+                areaReady = false;
+            } else {
+                area = area.add(measured);
+            }
+            if (measuredRound == null) {
+                perimeterReady = false;
+            } else {
+                perimeter = perimeter.add(measuredRound);
+            }
+            if (measuredRound == null || space.getHeight() == null) {
+                wallsReady = false;
+            } else {
+                walls = walls.add(measuredRound.multiply(space.getHeight()));
+            }
+        }
+        if (areaReady) {
+            whole.put("A", area);
+            whole.put("CP", area);
+        }
+        if (perimeterReady) {
+            whole.put("P", perimeter);
+        }
+        if (wallsReady) {
+            whole.put("WP", walls);
+        }
         return whole;
+    }
+
+    /** DEC-064 继承：房屋档案实测值优先，其次模版参考值打底（待实测确认，不进金额）。 */
+    private void applyInheritedMeasured(Space space, DesignTemplateRoom room, List<PropertyRegion> houseRegions) {
+        PropertyRegion region = matchHouseRegion(houseRegions, room, space.getType(), space.getName());
+        if (region != null) {
+            space.setHouseRegionId(region.getRegionId());
+            space.setInheritedArea(region.getArea());
+            space.setInheritedPerimeter(region.getPerimeter());
+            if (region.getArea() != null || region.getPerimeter() != null) {
+                space.setArea(region.getArea());
+                space.setPerimeter(region.getPerimeter());
+                space.setAreaSource(region.getAreaSource() == null ? AreaSource.Estimated : region.getAreaSource());
+                space.setValueOrigin(SpaceValueOrigin.House);
+                return;
+            }
+        }
+        if (room.getReferenceArea() != null || room.getReferencePerimeter() != null) {
+            space.setArea(room.getReferenceArea());
+            space.setPerimeter(room.getReferencePerimeter());
+            // 参考值不承载房屋实测事实：标 Estimated 使其无法作为工程量基数（DesignFormulaRecalcContext 只接受 Measured）
+            space.setAreaSource(AreaSource.Estimated);
+            space.setValueOrigin(SpaceValueOrigin.TemplateReference);
+        }
+    }
+
+    /**
+     * 房屋区域匹配（DEC-064 / OBJ-007）：先按区域键精确匹配，再按「区域类型 + 标准化名称」；
+     * 同名多条视为歧义并返回 {@code null}（不静默择一）。
+     */
+    private PropertyRegion matchHouseRegion(List<PropertyRegion> regions, DesignTemplateRoom room,
+                                            SpaceType type, String name) {
+        if (regions.isEmpty()) {
+            return null;
+        }
+        if (room.getRoomKey() != null && !room.getRoomKey().isBlank()) {
+            for (PropertyRegion region : regions) {
+                if (region.getRoomKey() != null && room.getRoomKey().equalsIgnoreCase(region.getRoomKey())) {
+                    return region;
+                }
+            }
+        }
+        String normalized = normalizeName(name);
+        PropertyRegion matched = null;
+        for (PropertyRegion region : regions) {
+            if (region.getRoomType() == type && normalizeName(region.getName()).equals(normalized)) {
+                if (matched != null) {
+                    return null;
+                }
+                matched = region;
+            }
+        }
+        return matched;
+    }
+
+    private String normalizeName(String name) {
+        return name == null ? "" : name.replaceAll("\\s+", "");
+    }
+
+    /** 可作为工程量基数的实测面积：只有 Measured 来源可用（DEC-062）。 */
+    private BigDecimal measuredArea(Space space) {
+        return space != null && space.getAreaSource() == AreaSource.Measured ? space.getArea() : null;
+    }
+
+    /** 可作为工程量基数的实测周长：口径同 {@link #measuredArea(Space)}。 */
+    private BigDecimal measuredPerimeter(Space space) {
+        return space != null && space.getAreaSource() == AreaSource.Measured ? space.getPerimeter() : null;
     }
 
     /** 分项金额初算：按计价方式对销售侧单价求值（成本与利润不在此处产生）。 */

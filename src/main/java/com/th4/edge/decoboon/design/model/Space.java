@@ -9,6 +9,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.decoboon.bim.Area;
 import com.th4.edge.decoboon.bim.configure.SpaceType;
 import com.th4.edge.decoboon.design.configure.AreaSource;
+import com.th4.edge.decoboon.design.configure.SpaceValueOrigin;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jpa.annotation.Model;
@@ -32,8 +33,10 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /** 设计方案内的区域尺寸。 */
@@ -121,6 +124,35 @@ public class Space extends AuditModel implements Area {
     @Column(name = "area_source", length = 16)
     private AreaSource areaSource;
 
+    @Note("区域值来源：房屋档案继承 / 方案覆盖 / 模版参考值（DEC-064）")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "value_origin", length = 24)
+    private SpaceValueOrigin valueOrigin;
+
+    @Note("来源房屋区域（房屋区域实测档案 regionId；无关联为 null）")
+    @Column(name = "house_region_id")
+    private Long houseRegionId;
+
+    @Note("最近一次同步时的房屋实测面积（㎡）：用于识别「房屋值已变更」（DEC-064）")
+    @Column(name = "inherited_area", precision = 12, scale = 2)
+    private BigDecimal inheritedArea;
+
+    @Note("最近一次同步时的房屋实测周长（m）")
+    @Column(name = "inherited_perimeter", precision = 12, scale = 2)
+    private BigDecimal inheritedPerimeter;
+
+    @Note("覆盖录入人（方案内覆盖房屋实测值时留痕）")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "override_by_id")
+    private Employee overrideBy;
+
+    @Note("覆盖录入时间")
+    private LocalDateTime overrideAt;
+
+    @Transient
+    @Note("只读投影：房屋实测值已变更、需要设计师复核或显式同步")
+    private Boolean houseValueStale;
+
     @Note("排序")
     @Column(nullable = false)
     private Integer sort = 0;
@@ -143,6 +175,20 @@ public class Space extends AuditModel implements Area {
     public void setPerimeter(BigDecimal perimeter) { this.perimeter = perimeter; }
     public AreaSource getAreaSource() { return areaSource; }
     public void setAreaSource(AreaSource areaSource) { this.areaSource = areaSource; }
+    public SpaceValueOrigin getValueOrigin() { return valueOrigin; }
+    public void setValueOrigin(SpaceValueOrigin valueOrigin) { this.valueOrigin = valueOrigin; }
+    public Long getHouseRegionId() { return houseRegionId; }
+    public void setHouseRegionId(Long houseRegionId) { this.houseRegionId = houseRegionId; }
+    public BigDecimal getInheritedArea() { return inheritedArea; }
+    public void setInheritedArea(BigDecimal inheritedArea) { this.inheritedArea = inheritedArea; }
+    public BigDecimal getInheritedPerimeter() { return inheritedPerimeter; }
+    public void setInheritedPerimeter(BigDecimal inheritedPerimeter) { this.inheritedPerimeter = inheritedPerimeter; }
+    public Employee getOverrideBy() { return overrideBy; }
+    public void setOverrideBy(Employee overrideBy) { this.overrideBy = overrideBy; }
+    public LocalDateTime getOverrideAt() { return overrideAt; }
+    public void setOverrideAt(LocalDateTime overrideAt) { this.overrideAt = overrideAt; }
+    public Boolean getHouseValueStale() { return houseValueStale; }
+    public void setHouseValueStale(Boolean houseValueStale) { this.houseValueStale = houseValueStale; }
     public Long getSpaceId() { return spaceId; }
     public void setSpaceId(Long spaceId) { this.spaceId = spaceId; }
     public Company getCompany() { return company; }

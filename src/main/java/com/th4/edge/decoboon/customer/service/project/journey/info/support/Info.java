@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = CustomerJourney.Media.class, properties = {
                 "key", "url", "kind", "title", "time", "room"}),
         @AllowProperties(model = CustomerJourney.Region.class, properties = {
-                "key", "name", "type", "length", "width", "height", "area", "perimeter", "areaSource", "itemCount",
+                "key", "name", "type", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "houseRegionId", "inheritedArea", "inheritedPerimeter", "houseValueStale", "itemCount",
                 "images", "remark"}),
         @AllowProperties(model = CustomerJourney.PriceGroup.class, properties = {
                 "key", "name", "total", "summary", "rows"}),
