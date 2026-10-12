@@ -254,16 +254,17 @@ public class CustomerJourneyContext {
 
     private CustomerJourney.Section changeSection(List<ContractChange> values) {
         CustomerJourney.Section section = section("change", "增减项", "范围、金额与生效状态");
-        // DEC-041：Pending=客户已线下确认、待企业审批；CustomerConfirmed=已生效；Approved=历史待客户确认。
+        // DEC-068：Pending=待企业审批（业主端显示“审批中”）；CustomerConfirmed=已生效；
+        // Approved=历史遗留“待客户确认”，按未生效处理。业主确认不再作为系统事实。
         long processing = values.stream().filter(item -> item.getStatus() == ContractChangeStatus.Pending
                 || item.getStatus() == ContractChangeStatus.Approved).count();
         BigDecimal amount = values.stream().filter(item -> item.getStatus() == ContractChangeStatus.CustomerConfirmed)
                 .map(ContractChange::getAmount).filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
         section.setStatus(processing > 0 ? "pending" : values.isEmpty() ? "none" : "done");
-        section.setStatusName(processing > 0 ? "处理中" : values.isEmpty() ? "暂无变更" : "已生效");
-        section.setSummary(processing > 0 ? processing + " 项变更处理中" : "共 " + values.size() + " 项变更");
+        section.setStatusName(processing > 0 ? "审批中" : values.isEmpty() ? "暂无变更" : "已生效");
+        section.setSummary(processing > 0 ? processing + " 项变更审批中" : "共 " + values.size() + " 项变更");
         section.getFacts().add(fact("total", "变更总数", String.valueOf(values.size()), "count"));
-        section.getFacts().add(fact("pending", "处理中", String.valueOf(processing), "count"));
+        section.getFacts().add(fact("pending", "审批中", String.valueOf(processing), "count"));
         section.getFacts().add(fact("confirmed", "已生效金额", money(amount), "money"));
 
         // 效率：明细与签认证据各一次批量查询，最多 2 次额外 SQL，避免逐单 N+1。
@@ -597,26 +598,21 @@ public class CustomerJourneyContext {
                                             List<ContractChangeItem> items,
                                             List<String> evidenceImages) {
         CustomerJourney.Item item = item("change-" + change.getChangeId(), change.getNo());
+        boolean effective = change.getStatus() == ContractChangeStatus.CustomerConfirmed;
         item.setSubtitle(change.getReason());
         item.setStatus(change.getStatus() == null ? null : change.getStatus().name());
-        item.setStatusName(change.getStatus() == null ? null : change.getStatus().getName());
-        item.setAmount(money(change.getAmount()));
+        item.setStatusName(effective ? "已生效" : "审批中");
+        // DEC-068 业主端两态：待审批不返回金额，避免未生效金额被业主当作已定的钱；
+        // 已生效才返回变更金额与生效时间。
+        item.setAmount(effective ? money(change.getAmount()) : null);
         item.setBusinessType("ContractChange");
         item.setBusinessId(change.getChangeId());
-        item.setDate(date(change.getCustomerConfirmedAt() != null ? change.getCustomerConfirmedAt() : change.getApprovedAt()));
-        if (Boolean.TRUE.equals(change.getCustomerConfirmed())) {
-            item.getFacts().add(fact("customerConfirmedBy", "客户确认人",
-                    change.getCustomerConfirmedBy() == null || change.getCustomerConfirmedBy().isBlank()
-                            ? "客户" : change.getCustomerConfirmedBy(), "text"));
-            item.getFacts().add(fact("customerConfirmMethod", "确认方式",
-                    change.getCustomerConfirmMethod() == null || change.getCustomerConfirmMethod().isBlank()
-                            ? "线下确认" : change.getCustomerConfirmMethod(), "text"));
-        }
-        if (change.getCustomerConfirmedAt() != null) {
-            item.getFacts().add(fact("customerConfirmedAt", "客户线下确认", date(change.getCustomerConfirmedAt()), "date"));
-        }
-        if (change.getApprovedAt() != null) {
+        item.setDate(effective ? date(change.getApprovedAt()) : null);
+        if (effective) {
             item.getFacts().add(fact("approvedAt", "生效时间", date(change.getApprovedAt()), "date"));
+        } else {
+            item.getFacts().add(fact("pendingNotice", "说明",
+                    "审批通过后自动更新合同金额与施工、材料计划", "text"));
         }
         items.stream().limit(100).forEach(detail -> item.getLines().add(
                 detail.getName() + " · 原数量 " + detail.getOldQuantity() + " → " + detail.getNewQuantity()
@@ -626,7 +622,8 @@ public class CustomerJourneyContext {
             images.add(change.getSignatureUrl());
         }
         item.setImages(images.stream().filter(value -> value != null && !value.isBlank()).distinct().toList());
-        // DEC-041 / DEC-015：业主只读可见确认事实与证据，不暴露成本与内部审批意见。
+        // DEC-068：业主只读可见变更结果（原因、明细、状态、已生效金额），
+        // 不暴露成本、成本变化、内部审批意见与内部备注；业主端零可编辑控件。
         return item;
     }
 

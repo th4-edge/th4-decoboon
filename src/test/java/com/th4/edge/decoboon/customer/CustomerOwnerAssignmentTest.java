@@ -12,7 +12,10 @@ import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.decoboon.common.context.StoreAttributionContext;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -25,10 +28,15 @@ import static org.mockito.Mockito.when;
 
 class CustomerOwnerAssignmentTest {
 
+    private static StoreAttributionContext storeAttribution() {
+        return new StoreAttributionContext(mock(StoreRepository.class), mock(StoreFilterContext.class));
+    }
+
+
     @Test
     void bossCanAssignCompanyMarketer() {
         EmployeeRepository repository = mock(EmployeeRepository.class);
-        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class));
+        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class), storeAttribution());
         Company company = company(1L);
         Store first = store(10L);
         Store second = store(20L);
@@ -42,7 +50,7 @@ class CustomerOwnerAssignmentTest {
     @Test
     void storeManagerCanOnlyAssignSameStoreMarketer() {
         EmployeeRepository repository = mock(EmployeeRepository.class);
-        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class));
+        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class), storeAttribution());
         Company company = company(1L);
         Store first = store(10L);
         Store second = store(20L);
@@ -61,7 +69,7 @@ class CustomerOwnerAssignmentTest {
     @Test
     void financeCanBeAssignedAsCustomerSalesOwner() {
         EmployeeRepository repository = mock(EmployeeRepository.class);
-        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class));
+        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class), storeAttribution());
         Company company = company(1L);
         Store store = store(10L);
         Employee boss = employee(1L, EmployeeRole.Boss, company, store);
@@ -74,7 +82,7 @@ class CustomerOwnerAssignmentTest {
     @Test
     void designerCanBeAssignedAsCustomerSalesOwner() {
         EmployeeRepository repository = mock(EmployeeRepository.class);
-        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class));
+        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class), storeAttribution());
         Company company = company(1L);
         Store store = store(10L);
         Employee boss = employee(1L, EmployeeRole.Boss, company, store);
@@ -89,7 +97,7 @@ class CustomerOwnerAssignmentTest {
         EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         CustomerRepository customerRepository = mock(CustomerRepository.class);
         DataScopeContext dataScopeContext = mock(DataScopeContext.class);
-        CustomerContext context = new CustomerContext(employeeRepository, customerRepository, dataScopeContext);
+        CustomerContext context = new CustomerContext(employeeRepository, customerRepository, dataScopeContext, storeAttribution());
         Company company = company(1L);
         Store store = store(10L);
         Employee designer = employee(6L, EmployeeRole.Designer, company, store);

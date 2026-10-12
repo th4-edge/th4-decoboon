@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Collection;
@@ -47,4 +49,24 @@ List<Project> findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(L
     Optional<Project> findByProjectIdAndCompany_ComId(Long projectId, Long comId);
 
     Optional<Project> findFirstByCompany_ComIdAndQuote_QuoteIdOrderByProjectIdDesc(Long comId, Long quoteId);
+
+
+    /**
+     * 门店维度项目（`DEC-067` BOSS-STORE-09）：全部门店不过滤（含 `store` 为空的未归属项目）；
+     * 单店按「项目 `store` 缺失回退客户门店」收窄。SQL 内完成门店条件，不再全量加载后 Java 过滤。
+     *
+     * <p>`contract` 必须列入 {@code @EntityGraph}（P0B-02 续：`BR-031`/`DEC-036` 循环内零查询）：
+     * {@code Project.contract} 是 `@OneToOne(mappedBy = "project", fetch = LAZY)` 的**反向**一对一，
+     * Hibernate 无法为反向一对一建代理（无法在不查库的前提下判断「是否无合同」），因此**每加载一行
+     * Project 都会补发一条 `select ... from db_project_contract where project_id = ?`**；
+     * 实测 `statistic/performance/report` 在这个关联上随项目数线性增长（18 项目 → 18 条）。
+     * 预先 JOIN FETCH 后该关联已初始化，不再逐行补查。</p>
+     */
+    @EntityGraph(attributePaths = {"customer", "property", "store", "manager", "contract"})
+    @Query("select p from Project p left join p.store ps left join p.customer pcu left join pcu.store pcs "
+            + "where p.company.comId = :comId and (:allStores = true or coalesce(ps.storeId, pcs.storeId) = :storeId) "
+            + "order by p.projectId desc")
+    List<Project> findByCompanyStoreScope(@Param("comId") Long comId,
+                                          @Param("allStores") boolean allStores,
+                                          @Param("storeId") Long storeId);
 }

@@ -22,12 +22,17 @@ import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
+import com.th4.edge.tenant.user.repository.StoreRepository;
+import com.th4.edge.decoboon.statistic.context.StatisticStoreAggregateContext;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +48,11 @@ class PerformanceReportContextTest {
         TenantContext tenant = new TenantContext(employeeRepository);
         PerformanceReportContext context = new PerformanceReportContext(tenant, employeeRepository,
                 quoteRepository, customerRepository, projectRepository, acceptanceRepository);
+        // DEC-067 范围标注（P1-a2 补）：直接 new 的上下文不经过 Spring 注入，补 mock 依赖。
+        StatisticStoreAggregateContext aggregate = mock(StatisticStoreAggregateContext.class);
+        when(aggregate.unassignedEmployees(any())).thenReturn(0L);
+        ReflectionTestUtils.setField(context, "aggregateContext", aggregate);
+        ReflectionTestUtils.setField(context, "storeRepository", mock(StoreRepository.class));
 
         LocalDate month = LocalDate.of(2026, 9, 1);
         LocalDate day = month.plusDays(9);
@@ -75,11 +85,14 @@ class PerformanceReportContextTest {
         acceptance.setCreateTime(new DateTime(day.atTime(12, 0)));
 
         when(employeeRepository.findByEmpId(10L)).thenReturn(boss);
-        when(employeeRepository.findByCompany_ComId(1L)).thenReturn(List.of(boss, designer, marketer, pm));
-        when(quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(1L)).thenReturn(List.of(quote));
-        when(customerRepository.findByCompany_ComId(1L)).thenReturn(List.of(customer));
-        when(projectRepository.findByCompany_ComIdOrderByProjectIdDesc(1L)).thenReturn(List.of(project));
-        when(acceptanceRepository.findByCompany_ComId(1L)).thenReturn(List.of(acceptance));
+        // P0B-02：门店条件在 SQL 侧完成（全部门店 → 不带门店条件），故按新的门店范围查询打桩
+        when(employeeRepository.findByCompanyStoreScope(eq(1L), eq(true), eq(0L)))
+                .thenReturn(List.of(boss, designer, marketer, pm));
+        when(quoteRepository.findOpportunityQuotesByStoreScope(eq(1L), any(), any(), any(), eq(true), eq(0L)))
+                .thenReturn(List.of(quote));
+        when(customerRepository.findByCompanyStoreScope(eq(1L), eq(true), eq(0L))).thenReturn(List.of(customer));
+        when(projectRepository.findByCompanyStoreScope(eq(1L), eq(true), eq(0L))).thenReturn(List.of(project));
+        when(acceptanceRepository.findByCompanyAndProjectIds(eq(1L), any())).thenReturn(List.of(acceptance));
 
         PerformanceQuery query = new PerformanceQuery();
         query.setMonth(month);

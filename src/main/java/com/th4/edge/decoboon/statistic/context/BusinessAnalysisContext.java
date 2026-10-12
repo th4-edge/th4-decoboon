@@ -27,6 +27,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.th4.edge.decoboon.common.context.StoreScope;
+import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 
 /**
  * 业务分析聚合：渠道 · 区域 · 客单 · 转化漏斗 + 报价接受率双指标。
@@ -45,18 +49,18 @@ public class BusinessAnalysisContext {
     private static final int MAX_TOP_N = 20;
 
     private final TenantContext tenantContext;
-    private final CustomerRepository customerRepository;
     private final QuoteRepository quoteRepository;
-    private final ProjectContractRepository contractRepository;
+    private final StoreRepository storeRepository;
+    private final StatisticStoreAggregateContext aggregateContext;
 
     public BusinessAnalysisContext(TenantContext tenantContext,
-                                   CustomerRepository customerRepository,
                                    QuoteRepository quoteRepository,
-                                   ProjectContractRepository contractRepository) {
+                                   StoreRepository storeRepository,
+                                   StatisticStoreAggregateContext aggregateContext) {
         this.tenantContext = tenantContext;
-        this.customerRepository = customerRepository;
         this.quoteRepository = quoteRepository;
-        this.contractRepository = contractRepository;
+        this.storeRepository = storeRepository;
+        this.aggregateContext = aggregateContext;
     }
 
     public BusinessAnalysisReport report(Employee principal, BusinessAnalysisQuery query) {
@@ -65,70 +69,56 @@ public class BusinessAnalysisContext {
         LocalDate month = query == null || query.getMonth() == null
                 ? LocalDate.now().withDayOfMonth(1)
                 : query.getMonth().withDayOfMonth(1);
-        Long storeId = query == null ? null : query.getStoreId();
+        Long storeId = StoreScope.normalize(query == null ? null : query.getStoreId());
+        boolean allStores = StoreScope.isAllStores(storeId);
         int topN = topN(query);
 
-        List<Customer> customers = customerRepository.findByCompany_ComId(comId).stream()
-                .filter(item -> matchesStore(item.getStore() == null ? null : item.getStore().getStoreId(), storeId))
-                .toList();
-        List<Quote> quotes = quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId).stream()
-                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
-                .filter(item -> matchesStore(quoteStoreId(item), storeId))
-                .toList();
-        List<ProjectContract> contracts = contractRepository.findByCompany_ComIdOrderByContractIdDesc(comId).stream()
-                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
-                .filter(item -> matchesStore(contractStoreId(item), storeId))
-                .toList();
-
-        List<ProjectContract> monthContracts = contracts.stream()
-                .filter(item -> inMonth(item.getSignedAt(), month))
-                .toList();
-        List<Customer> monthCustomers = customers.stream()
-                .filter(item -> inMonth(customerCreatedAt(item), month))
-                .toList();
-        List<Quote> monthQuotes = quotes.stream()
-                .filter(item -> inMonth(item.getSubmittedAt(), month))
-                .toList();
+        // P0B-02 聚合下推：门店条件（null/0/不传 = 全部门店）与漏斗、渠道、区域、客单等
+        // 计数/求和/Top-N 全部在 SQL 侧完成（DEC-036 / BR-031）；报价机会比率仍由唯一口径
+        // QuoteAcceptanceContext 计算（输入集合已由 SQL 收窄）。
+        StatisticStoreAggregateContext.CustomerFunnel funnelCounts =
+                aggregateContext.customerFunnel(comId, storeId, month);
+        StatisticStoreAggregateContext.QuoteCounts quoteCounts =
+                aggregateContext.monthQuoteCounts(comId, storeId, month);
+        long signedContracts = aggregateContext.monthSignedContractCount(comId, storeId, month);
+        List<Quote> opportunityQuotes = quoteRepository.findOpportunityQuotesByStoreScope(
+                comId, com.th4.edge.decoboon.common.configure.BusinessOrigin.New,
+                QuoteStatus.Draft, QuoteStatus.Superseded, allStores, storeId);
+        List<BigDecimal> monthContractAmounts = aggregateContext.contractAmountsAsc(comId, storeId, month);
 
         BusinessAnalysisReport report = new BusinessAnalysisReport();
         report.setMonth(month);
-        report.setFunnel(funnel(customers, monthCustomers, monthQuotes, monthContracts));
-        report.setOverallConversionRate(rate(monthContracts.size(), monthCustomers.size()));
-        report.setQuoteConversion(quoteConversion(quotes, monthQuotes));
-        report.setChannels(channels(customers, monthCustomers, monthContracts));
-        report.setRegions(regions(monthContracts, topN));
-        report.setOrderSizes(orderSizes(monthContracts));
-        report.setMedianOrderAmount(median(monthContracts));
-        report.setMaxOrderAmount(monthContracts.stream().map(this::contractAmount)
-                .max(Comparator.naturalOrder()).orElse(BigDecimal.ZERO));
+        report.setStoreScope(storeScopeInfo(comId, storeId, allStores));
+        report.setFunnel(List.of(
+                new BusinessAnalysisReport.FunnelStage("lead", "线索", funnelCounts.leads(), "条"),
+                new BusinessAnalysisReport.FunnelStage("visit", "到店", funnelCounts.visits(), "位"),
+                new BusinessAnalysisReport.FunnelStage("measure", "量房", funnelCounts.measures(), "户"),
+                new BusinessAnalysisReport.FunnelStage("quote", "报价", quoteCounts.total(), "份"),
+                new BusinessAnalysisReport.FunnelStage("sign", "签约", (int) signedContracts, "单")));
+        report.setOverallConversionRate(rate((int) signedContracts, funnelCounts.leads()));
+        report.setQuoteConversion(quoteConversion(opportunityQuotes, quoteCounts));
+        report.setChannels(channels(comId, storeId, month));
+        report.setRegions(regions(comId, storeId, month, topN));
+        report.setOrderSizes(orderSizes(comId, storeId, month));
+        report.setMedianOrderAmount(median(monthContractAmounts));
+        report.setMaxOrderAmount(monthContractAmounts.isEmpty()
+                ? BigDecimal.ZERO : monthContractAmounts.get(monthContractAmounts.size() - 1));
         return report;
     }
 
-    // ------------------------------------------------------------------ 漏斗
-
-    private List<BusinessAnalysisReport.FunnelStage> funnel(List<Customer> allCustomers,
-                                                            List<Customer> monthCustomers,
-                                                            List<Quote> monthQuotes,
-                                                            List<ProjectContract> monthContracts) {
-        long visits = monthCustomers.stream().filter(item -> item.getLastVisitAt() != null).count();
-        long measures = monthCustomers.stream().filter(item -> item.getMeasureAt() != null).count();
-        return List.of(
-                new BusinessAnalysisReport.FunnelStage("lead", "线索", monthCustomers.size(), "条"),
-                new BusinessAnalysisReport.FunnelStage("visit", "到店", (int) visits, "位"),
-                new BusinessAnalysisReport.FunnelStage("measure", "量房", (int) measures, "户"),
-                new BusinessAnalysisReport.FunnelStage("quote", "报价", monthQuotes.size(), "份"),
-                new BusinessAnalysisReport.FunnelStage("sign", "签约", monthContracts.size(), "单"));
-    }
+    // ------------------------------------------------------------------ 漏斗（SQL 标量）
 
     // ------------------------------------------------------------------ 报价双指标
 
-    private BusinessAnalysisReport.QuoteConversion quoteConversion(List<Quote> allQuotes, List<Quote> monthQuotes) {
-        // 统一口径：机会按客户 + 房屋聚合，草稿、待决策、已被替代不进正式分母（MET-001 / DEC-001 决策一）。
-        QuoteAcceptanceContext.Result result = QuoteAcceptanceContext.summarize(
-                QuoteAcceptanceContext.opportunities(allQuotes), monthQuotes);
+    /** 报价双指标：机会口径（客户 + 房屋）由唯一实现计算，本月报价量由 SQL 标量提供。 */
+    private BusinessAnalysisReport.QuoteConversion quoteConversion(
+            List<Quote> opportunityQuotes,
+            StatisticStoreAggregateContext.QuoteCounts quoteCounts) {
+        QuoteAcceptanceContext.Result result =
+                QuoteAcceptanceContext.summarize(QuoteAcceptanceContext.opportunities(opportunityQuotes), List.of());
         BusinessAnalysisReport.QuoteConversion conversion = new BusinessAnalysisReport.QuoteConversion();
-        conversion.setSubmittedQuoteCount(result.submittedQuoteCount());
-        conversion.setPendingDecisionQuoteCount(result.pendingDecisionQuoteCount());
+        conversion.setSubmittedQuoteCount(quoteCounts.submitted());
+        conversion.setPendingDecisionQuoteCount(quoteCounts.pendingDecision());
         conversion.setDecidedOpportunityCount(result.decidedOpportunityCount());
         conversion.setFinalQuoteAcceptanceRate(result.finalAcceptanceRate());
         conversion.setFirstQuoteAcceptanceRate(result.firstAcceptanceRate());
@@ -137,9 +127,8 @@ public class BusinessAnalysisContext {
 
     // ------------------------------------------------------------------ 渠道
 
-    private List<BusinessAnalysisReport.ChannelMetric> channels(List<Customer> allCustomers,
-                                                                List<Customer> monthCustomers,
-                                                                List<ProjectContract> monthContracts) {
+    /** 渠道结构：线索/到店/签约/签约额由 SQL 分组聚合；比率与均值按服务端口径换算。 */
+    private List<BusinessAnalysisReport.ChannelMetric> channels(Long comId, Long storeId, LocalDate month) {
         Map<CustomerSource, BusinessAnalysisReport.ChannelMetric> metrics = new LinkedHashMap<>();
         for (CustomerSource source : CustomerSource.values()) {
             BusinessAnalysisReport.ChannelMetric metric = new BusinessAnalysisReport.ChannelMetric();
@@ -147,22 +136,17 @@ public class BusinessAnalysisContext {
             metric.setLabel(source.getName());
             metrics.put(source, metric);
         }
-        for (Customer customer : monthCustomers) {
-            CustomerSource source = customer.getSource() == null ? CustomerSource.Other : customer.getSource();
-            BusinessAnalysisReport.ChannelMetric metric = metrics.get(source);
-            metric.setLeadCount(metric.getLeadCount() + 1);
-            if (customer.getLastVisitAt() != null) {
-                metric.setVisitCount(metric.getVisitCount() + 1);
-            }
+        for (Object[] row : aggregateContext.customerChannelCounts(comId, storeId, month)) {
+            BusinessAnalysisReport.ChannelMetric metric = metrics.get(sourceOf(row[0]));
+            metric.setLeadCount(metric.getLeadCount() + number(row[1]));
+            metric.setVisitCount(metric.getVisitCount() + number(row[2]));
         }
         Map<CustomerSource, BigDecimal> amountBySource = new LinkedHashMap<>();
-        for (ProjectContract contract : monthContracts) {
-            Customer customer = contractCustomer(contract);
-            CustomerSource source = customer == null || customer.getSource() == null
-                    ? CustomerSource.Other : customer.getSource();
+        for (Object[] row : aggregateContext.contractChannelMetrics(comId, storeId, month)) {
+            CustomerSource source = sourceOf(row[0]);
             BusinessAnalysisReport.ChannelMetric metric = metrics.get(source);
-            metric.setSignedCount(metric.getSignedCount() + 1);
-            amountBySource.merge(source, contractAmount(contract), BigDecimal::add);
+            metric.setSignedCount(metric.getSignedCount() + number(row[1]));
+            amountBySource.merge(source, money(row[2]), BigDecimal::add);
         }
         metrics.values().forEach(metric -> {
             metric.setSignRate(rate(metric.getSignedCount(), metric.getLeadCount()));
@@ -178,109 +162,71 @@ public class BusinessAnalysisContext {
 
     // ------------------------------------------------------------------ 区域与客单
 
-    private List<BusinessAnalysisReport.RegionMetric> regions(List<ProjectContract> monthContracts, int topN) {
-        Map<String, int[]> counts = new LinkedHashMap<>();
-        Map<String, BigDecimal> amounts = new LinkedHashMap<>();
-        for (ProjectContract contract : monthContracts) {
-            String community = communityOf(contract);
-            counts.computeIfAbsent(community, key -> new int[1])[0]++;
-            amounts.merge(community, contractAmount(contract), BigDecimal::add);
+    /** 区域结构：`GROUP BY` 小区 + `ORDER BY` 签约额倒序 + `LIMIT topN` 全部在 SQL 完成。 */
+    private List<BusinessAnalysisReport.RegionMetric> regions(Long comId, Long storeId, LocalDate month, int topN) {
+        List<BusinessAnalysisReport.RegionMetric> metrics = new ArrayList<>();
+        for (Object[] row : aggregateContext.regionMetrics(comId, storeId, month, topN)) {
+            metrics.add(new BusinessAnalysisReport.RegionMetric(
+                    row[0] == null ? "未标注区域" : String.valueOf(row[0]), number(row[1]), money(row[2])));
         }
-        return amounts.entrySet().stream()
-                .map(entry -> new BusinessAnalysisReport.RegionMetric(entry.getKey(),
-                        counts.get(entry.getKey())[0], entry.getValue()))
-                .sorted(Comparator.comparing(BusinessAnalysisReport.RegionMetric::getSignedAmount).reversed())
-                .limit(topN)
-                .toList();
+        return metrics;
     }
 
-    private String communityOf(ProjectContract contract) {
-        Customer customer = contractCustomer(contract);
-        if (customer != null && customer.getCommunity() != null && !customer.getCommunity().isBlank()) {
-            return customer.getCommunity();
-        }
-        if (contract.getProject() != null && contract.getProject().getProperty() != null
-                && contract.getProject().getProperty().getCommunity() != null
-                && !contract.getProject().getProperty().getCommunity().isBlank()) {
-            return contract.getProject().getProperty().getCommunity();
-        }
-        return "未标注区域";
-    }
-
-    private List<BusinessAnalysisReport.OrderSizeBucket> orderSizes(List<ProjectContract> monthContracts) {
-        int[] buckets = new int[5];
-        for (ProjectContract contract : monthContracts) {
-            buckets[indexOf(contractAmount(contract))]++;
-        }
+    /** 客单分布：5 个桶的计数在 SQL 侧完成（阈值与整改前万元 HALF_UP 口径等价）。 */
+    private List<BusinessAnalysisReport.OrderSizeBucket> orderSizes(Long comId, Long storeId, LocalDate month) {
+        long[] buckets = aggregateContext.orderSizeBuckets(comId, storeId, month);
         return List.of(
-                new BusinessAnalysisReport.OrderSizeBucket("lt100k", "10 万以下", buckets[0]),
-                new BusinessAnalysisReport.OrderSizeBucket("100kTo200k", "10-20 万", buckets[1]),
-                new BusinessAnalysisReport.OrderSizeBucket("200kTo300k", "20-30 万", buckets[2]),
-                new BusinessAnalysisReport.OrderSizeBucket("300kTo500k", "30-50 万", buckets[3]),
-                new BusinessAnalysisReport.OrderSizeBucket("gte500k", "50 万以上", buckets[4]));
+                new BusinessAnalysisReport.OrderSizeBucket("lt100k", "10 万以下", (int) buckets[0]),
+                new BusinessAnalysisReport.OrderSizeBucket("100kTo200k", "10-20 万", (int) buckets[1]),
+                new BusinessAnalysisReport.OrderSizeBucket("200kTo300k", "20-30 万", (int) buckets[2]),
+                new BusinessAnalysisReport.OrderSizeBucket("300kTo500k", "30-50 万", (int) buckets[3]),
+                new BusinessAnalysisReport.OrderSizeBucket("gte500k", "50 万以上", (int) buckets[4]));
     }
 
-    private int indexOf(BigDecimal amount) {
-        BigDecimal wan = amount.divide(BigDecimal.valueOf(10000), 2, RoundingMode.HALF_UP);
-        if (wan.compareTo(BigDecimal.TEN) < 0) return 0;
-        if (wan.compareTo(BigDecimal.valueOf(20)) < 0) return 1;
-        if (wan.compareTo(BigDecimal.valueOf(30)) < 0) return 2;
-        if (wan.compareTo(BigDecimal.valueOf(50)) < 0) return 3;
-        return 4;
-    }
-
-    private BigDecimal median(List<ProjectContract> contracts) {
-        if (contracts.isEmpty()) {
+    /** 中位数：金额由 SQL 单列投影并 `ORDER BY` 排序（分布统计，SQL 无法用 SUM/COUNT 表达）。 */
+    private BigDecimal median(List<BigDecimal> sortedAmounts) {
+        if (sortedAmounts.isEmpty()) {
             return BigDecimal.ZERO;
         }
-        List<BigDecimal> amounts = contracts.stream().map(this::contractAmount).sorted().toList();
-        int size = amounts.size();
+        int size = sortedAmounts.size();
         if (size % 2 == 1) {
-            return amounts.get(size / 2);
+            return sortedAmounts.get(size / 2);
         }
-        return amounts.get(size / 2 - 1).add(amounts.get(size / 2))
+        return sortedAmounts.get(size / 2 - 1).add(sortedAmounts.get(size / 2))
                 .divide(BigDecimal.valueOf(2), 2, RoundingMode.HALF_UP);
     }
 
     // ------------------------------------------------------------------ 工具
 
-    private BigDecimal contractAmount(ProjectContract contract) {
-        BigDecimal current = contract.getCurrentAmount();
-        return current == null || current.signum() == 0
-                ? value(contract.getBaselineAmount()) : current;
-    }
-
-    private Customer contractCustomer(ProjectContract contract) {
-        if (contract.getProject() != null && contract.getProject().getCustomer() != null) {
-            return contract.getProject().getCustomer();
+    /**
+     * 门店维度范围标注（`DEC-067` BOSS-STORE-03）：全部门店口径的未归属条数由 SQL `COUNT` 提供；
+     * 单店视图不含未归属 → `unassignedCount = 0`。
+     */
+    private StoreScopeInfo storeScopeInfo(Long comId, Long storeId, boolean allStores) {
+        StoreScopeInfo info = new StoreScopeInfo();
+        info.setScopeType(allStores ? "AllStores" : "Store");
+        if (!allStores) {
+            info.setStoreId(storeId);
+            Store store = storeRepository.findByStoreId(storeId);
+            if (store != null) {
+                info.setStoreName(store.getName());
+            }
+            return info;
         }
-        return null;
+        info.setUnassignedCount((int) aggregateContext.unassignedCustomers(comId));
+        return info;
     }
 
-    private Long quoteStoreId(Quote quote) {
-        return quote.getCustomer() != null && quote.getCustomer().getStore() != null
-                ? quote.getCustomer().getStore().getStoreId() : null;
+    private CustomerSource sourceOf(Object raw) {
+        return raw instanceof CustomerSource source ? source : CustomerSource.Other;
     }
 
-    private Long contractStoreId(ProjectContract contract) {
-        return contract.getProject() != null && contract.getProject().getStore() != null
-                ? contract.getProject().getStore().getStoreId() : null;
+    private int number(Object value) {
+        return value == null ? 0 : ((Number) value).intValue();
     }
 
-    private LocalDateTime customerCreatedAt(Customer customer) {
-        return customer.getCreateTime() == null ? null : customer.getCreateTime().toLocalDateTime();
-    }
-
-    private boolean matchesStore(Long storeIdOfRecord, Long storeId) {
-        return storeId == null || Objects.equals(storeIdOfRecord, storeId);
-    }
-
-    private boolean inMonth(LocalDateTime dateTime, LocalDate month) {
-        return dateTime != null && YearMonth.from(dateTime).equals(YearMonth.from(month));
-    }
-
-    private boolean inMonth(LocalDate date, LocalDate month) {
-        return date != null && YearMonth.from(date).equals(YearMonth.from(month));
+    private BigDecimal money(Object value) {
+        return value == null ? BigDecimal.ZERO : ((BigDecimal) value).setScale(2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal rate(int numerator, int denominator) {
@@ -289,10 +235,6 @@ public class BusinessAnalysisContext {
         }
         return BigDecimal.valueOf(numerator).multiply(BigDecimal.valueOf(100))
                 .divide(BigDecimal.valueOf(denominator), 1, RoundingMode.HALF_UP);
-    }
-
-    private BigDecimal value(BigDecimal value) {
-        return value == null ? BigDecimal.ZERO : value;
     }
 
     private int topN(BusinessAnalysisQuery query) {

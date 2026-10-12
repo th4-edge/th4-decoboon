@@ -5,6 +5,7 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.configure.DataScopeType;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
@@ -57,6 +58,14 @@ public class DataScopeContext {
         DataScopeType type = current.getRole() == null
                 ? DataScopeType.Self
                 : current.getRole().getDataScopeType();
+        // DEC-065 FIN-STORE-03：多门店企业保留「总部财务」，归属默认总店的财务按企业范围，
+        // 承载跨店汇总、合并与公司经营利润；其余财务按归属门店（FIN-STORE-01/02）。
+        if (type == DataScopeType.Store
+                && current.getRole() == EmployeeRole.Finance
+                && store != null
+                && Boolean.TRUE.equals(store.getDefaultStore())) {
+            type = DataScopeType.Company;
+        }
 
         if (type == DataScopeType.Store && (store == null || store.getStoreId() == null)) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属门店"));

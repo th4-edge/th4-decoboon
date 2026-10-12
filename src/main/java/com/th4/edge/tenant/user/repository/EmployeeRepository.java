@@ -68,4 +68,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByCompany_ComIdAndTeam_TeamIdAndRoleOrderByName(Long comId, Long teamId, EmployeeRole role);
 
     List<Employee> findByCompany_ComIdAndTeam_TeamIdAndRoleInOrderByName(Long comId, Long teamId, java.util.Collection<EmployeeRole> roles);
+
+    /** 门店维度员工（`DEC-067`）：全部门店不过滤，单店按员工 `store` 收窄（SQL 内完成）。 */
+    @Query("select e from Employee e left join e.store es where e.company.comId = :comId "
+            + "and (:allStores = true or es.storeId = :storeId)")
+    List<Employee> findByCompanyStoreScope(@Param("comId") Long comId,
+                                           @Param("allStores") boolean allStores,
+                                           @Param("storeId") Long storeId);
+
+    /** 团队 + 门店维度（门店维度收窄时把门店条件一并下推 SQL）。 */
+    List<Employee> findByCompany_ComIdAndTeam_TeamIdAndStore_StoreIdOrderByName(
+            Long comId, Long teamId, Long storeId);
 }

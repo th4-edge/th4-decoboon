@@ -1,0 +1,55 @@
+{
+  "comId": 999400000000000001,
+  "title": "门店状态验收企业T",
+  "plan": "annual-pro",
+  "stores": [
+    {
+      "storeId": 999400000000000011,
+      "name": "T 一店",
+      "default": true,
+      "status": "Active",
+      "sort": 0
+    },
+    {
+      "storeId": 999400000000000012,
+      "name": "T 二店",
+      "default": false,
+      "status": "Active",
+      "sort": 0
+    },
+    {
+      "storeId": 999400000000000013,
+      "name": "T 三店",
+      "default": false,
+      "status": "Active",
+      "sort": 0
+    }
+  ],
+  "employees": [
+    {
+      "empId": 999400000000000022,
+      "name": "造数T负责人",
+      "role": "Boss",
+      "tel": "13910000300",
+      "storeId": 999400000000000011,
+      "creId": 999400000000000802
+    },
+    {
+      "empId": 999400000000000023,
+      "name": "T 二店店长",
+      "role": "StoreManager",
+      "tel": "13910000311",
+      "storeId": 999400000000000012,
+      "creId": 999400000000000803
+    },
+    {
+      "empId": 999400000000000024,
+      "name": "T 三店财务",
+      "role": "Finance",
+      "tel": "13910000321",
+      "storeId": 999400000000000013,
+      "creId": 999400000000000804
+    }
+  ],
+  "password": "Zdq123456"
+}

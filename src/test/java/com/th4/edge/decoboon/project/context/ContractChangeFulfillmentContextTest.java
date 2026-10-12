@@ -22,6 +22,7 @@ import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -68,13 +69,13 @@ class ContractChangeFulfillmentContextTest {
         var planStatusContext = new MaterialPlanStatusContext(purchaseRepository, purchaseItemRepository);
         var deductionContext = new MaterialDeductionContext(returnRepository, purchaseRepository,
                 purchaseItemRepository, materialPlanRepository, payableRepository, partnerCreditRepository,
-                planStatusContext, new ProjectPermissionContext(),
+                planStatusContext, StoreAttributionTestSupport.inject(new ProjectPermissionContext()),
                 mock(com.th4.edge.components.data.context.ModelIdentityContext.class),
                 mock(com.th4.edge.decoboon.supply.context.InventoryContext.class),
                 mock(com.th4.edge.decoboon.supply.repository.InventoryStockRepository.class));
         context = new ContractChangeFulfillmentContext(itemRepository, stageRepository,
                 taskRepository, materialPlanRepository, reportRepository,
-                new ProjectPermissionContext(), new MaterialPlanContext(), deductionContext,
+                StoreAttributionTestSupport.inject(new ProjectPermissionContext()), new MaterialPlanContext(), deductionContext,
                 mock(com.th4.edge.decoboon.material.context.MaterialCategoryContext.class));
     }
 

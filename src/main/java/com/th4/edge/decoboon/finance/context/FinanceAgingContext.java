@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import com.th4.edge.decoboon.common.context.StoreScope;
 
 /**
  * 应收/应付账龄计算。
@@ -43,12 +44,19 @@ public class FinanceAgingContext {
         this.payableRepository = payableRepository;
     }
 
-    public FinanceAgingReport report(Employee principal, FinanceAgingQuery query) {
+    public FinanceAgingReport report(Employee principal, FinanceAgingQuery query, Long requestedStoreId) {
         Employee current = accessContext.requireReader(principal);
         LocalDate asOf = query == null || query.getAsOf() == null ? LocalDate.now() : query.getAsOf();
 
-        List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class));
-        List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class));
+        Long storeFilter = accessContext.resolveStoreFilter(current, requestedStoreId);
+        List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class))
+                .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+                .toList();
+        List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class))
+                .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+                .toList();
 
         FinanceAgingReport report = new FinanceAgingReport();
         report.setAsOf(asOf);

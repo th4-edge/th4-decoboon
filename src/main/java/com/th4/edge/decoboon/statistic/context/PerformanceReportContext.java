@@ -16,6 +16,9 @@ import com.th4.edge.decoboon.statistic.context.QuoteAcceptanceContext;
 import com.th4.edge.decoboon.statistic.model.EmployeePerformance;
 import com.th4.edge.decoboon.statistic.model.PerformanceQuery;
 import com.th4.edge.decoboon.statistic.model.PerformanceReport;
+import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -31,6 +34,7 @@ import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import com.th4.edge.decoboon.common.context.StoreScope;
 
 /** 人员绩效自动考核计算。 */
 @Component
@@ -47,6 +51,13 @@ public class PerformanceReportContext {
     private final CustomerRepository customerRepository;
     private final ProjectRepository projectRepository;
     private final AcceptanceRepository acceptanceRepository;
+
+    /** 门店维度范围标注与未归属员工计数（本批新增只读补充，不改绩效口径）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private StatisticStoreAggregateContext aggregateContext;
+
+    @org.springframework.beans.factory.annotation.Autowired
+    private StoreRepository storeRepository;
 
     public PerformanceReportContext(TenantContext tenantContext,
                                     EmployeeRepository employeeRepository,
@@ -77,27 +88,26 @@ public class PerformanceReportContext {
         }
 
         Long comId = current.getCompany().getComId();
-        Long storeId = query == null ? null : query.getStoreId();
-        List<Employee> employees = employees(current).stream()
+        // 门店维度（DEC-067）：不传 / null / 0 等价为全部门店
+        Long storeId = StoreScope.normalize(query == null ? null : query.getStoreId());
+        // P0B-02 聚合下推：员工、报价、客户、项目、验收的门店条件全部在 SQL 侧完成
+        // （`DEC-067` 门店维度；全部门店时 SQL 中不出现门店条件，含未归属记录），
+        // 人员绩效的比率公式仍在内存计算（`BR-031` 业务公式例外，循环体内零查询）。
+        boolean allStores = StoreScope.isAllStores(storeId);
+        Long scopedStoreId = allStores ? 0L : storeId;
+        List<Employee> employees = employees(current, scopedStoreId, allStores).stream()
                 .filter(employee -> PERFORMANCE_ROLES.contains(employee.getRole()))
                 .filter(employee -> requestedRole == null || employee.getRole() == requestedRole)
-                .filter(employee -> storeId == null
-                        || (employee.getStore() != null && storeId.equals(employee.getStore().getStoreId())))
                 .toList();
-        // 门店维度：人员与业绩口径同时限定在指定门店（用 final 变量保证后续 lambda 可引用）
-        List<Quote> rawQuotes = quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId);
-        List<Customer> rawCustomers = customerRepository.findByCompany_ComId(comId);
-        List<Project> rawProjects = projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
-        final List<Quote> quotes = storeId == null ? rawQuotes : rawQuotes.stream()
-                .filter(item -> item.getStore() != null && storeId.equals(item.getStore().getStoreId()))
-                .toList();
-        final List<Customer> customers = storeId == null ? rawCustomers : rawCustomers.stream()
-                .filter(item -> item.getStore() != null && storeId.equals(item.getStore().getStoreId()))
-                .toList();
-        final List<Project> projects = storeId == null ? rawProjects : rawProjects.stream()
-                .filter(item -> item.getStore() != null && storeId.equals(item.getStore().getStoreId()))
-                .toList();
-        List<Acceptance> acceptances = acceptanceRepository.findByCompany_ComId(comId);
+        final List<Quote> quotes = quoteRepository.findOpportunityQuotesByStoreScope(comId,
+                com.th4.edge.decoboon.common.configure.BusinessOrigin.New,
+                QuoteStatus.Draft, QuoteStatus.Superseded, allStores, scopedStoreId);
+        final List<Customer> customers = customerRepository.findByCompanyStoreScope(comId, allStores, scopedStoreId);
+        final List<Project> projects = projectRepository.findByCompanyStoreScope(comId, allStores, scopedStoreId);
+        List<Long> scopedProjectIds = projects.stream().map(Project::getProjectId).toList();
+        List<Acceptance> acceptances = scopedProjectIds.isEmpty()
+                ? List.of()
+                : acceptanceRepository.findByCompanyAndProjectIds(comId, scopedProjectIds);
 
         List<EmployeePerformance> performances = employees.stream()
                 .map(employee -> performance(employee, quotes, customers, projects, acceptances, month))
@@ -116,6 +126,7 @@ public class PerformanceReportContext {
         report.setAveragePmAcceptancePassRate(average(performances, EmployeeRole.Pm,
                 EmployeePerformance::getPmAcceptancePassRate));
         report.setPerformances(performances);
+        report.setStoreScope(storeScopeInfo(comId, storeId, allStores));
         return report;
     }
 
@@ -196,17 +207,26 @@ public class PerformanceReportContext {
         return performance;
     }
 
-    private List<Employee> employees(Employee current) {
+    /**
+     * 在范围内的员工：BOSS 按企业 + 门店维度（SQL 门店条件）；店长锁定本店；团队负责人按团队
+     * （门店维度为单店时一并下推 SQL，全部门店时按团队）。
+     */
+    private List<Employee> employees(Employee current, Long storeId, boolean allStores) {
+        Long comId = current.getCompany().getComId();
         if (current.getRole() == EmployeeRole.Boss) {
-            return employeeRepository.findByCompany_ComId(current.getCompany().getComId());
+            return employeeRepository.findByCompanyStoreScope(comId, allStores, storeId);
         }
         if (current.getRole() == EmployeeRole.StoreManager && current.getStore() != null) {
             return employeeRepository.findByCompany_ComIdAndStore_StoreIdOrderByName(
-                    current.getCompany().getComId(), current.getStore().getStoreId());
+                    comId, current.getStore().getStoreId());
         }
         if (current.getRole() == EmployeeRole.TeamLeader && current.getTeam() != null) {
-            return employeeRepository.findByCompany_ComIdAndTeam_TeamIdOrderByName(
-                    current.getCompany().getComId(), current.getTeam().getTeamId());
+            if (allStores) {
+                return employeeRepository.findByCompany_ComIdAndTeam_TeamIdOrderByName(
+                        comId, current.getTeam().getTeamId());
+            }
+            return employeeRepository.findByCompany_ComIdAndTeam_TeamIdAndStore_StoreIdOrderByName(
+                    comId, current.getTeam().getTeamId(), storeId);
         }
         return List.of();
     }
@@ -245,5 +265,21 @@ public class PerformanceReportContext {
         }
         return BigDecimal.valueOf(numerator).multiply(BigDecimal.valueOf(100))
                 .divide(BigDecimal.valueOf(denominator), 1, RoundingMode.HALF_UP);
+    }
+
+    /** 门店维度范围标注（`DEC-067` BOSS-STORE-03）：未归属员工数由 SQL `COUNT` 提供，单店视图恒 0。 */
+    private StoreScopeInfo storeScopeInfo(Long comId, Long storeId, boolean allStores) {
+        StoreScopeInfo info = new StoreScopeInfo();
+        info.setScopeType(allStores ? "AllStores" : "Store");
+        if (!allStores) {
+            info.setStoreId(storeId);
+            Store store = storeRepository.findByStoreId(storeId);
+            if (store != null) {
+                info.setStoreName(store.getName());
+            }
+            return info;
+        }
+        info.setUnassignedCount((int) aggregateContext.unassignedEmployees(comId));
+        return info;
     }
 }

@@ -1,18 +1,18 @@
 package com.th4.edge.decoboon.statistic.context;
 
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.common.context.BusinessOriginFilter;
 
-import com.th4.edge.decoboon.finance.model.Payable;
-import com.th4.edge.decoboon.finance.model.Receipt;
-import com.th4.edge.decoboon.finance.repository.PayableRepository;
-import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
-import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.statistic.model.BossDashboard;
+import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 import com.th4.edge.decoboon.statistic.model.BossDashboardQuery;
 import com.th4.edge.decoboon.statistic.model.BusinessTarget;
 import com.th4.edge.decoboon.statistic.model.DashboardMetric;
@@ -26,6 +26,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,30 +36,28 @@ import java.util.Objects;
 public class BossDashboardContext {
 
     private final TenantContext tenantContext;
-    private final ProjectRepository projectRepository;
     private final ProjectContractRepository contractRepository;
-    private final ReceiptRepository receiptRepository;
-    private final PayableRepository payableRepository;
     private final BusinessTargetRepository targetRepository;
     private final ProjectCostContext projectCostContext;
+    private final StatisticStoreAggregateContext aggregateContext;
 
     @org.springframework.beans.factory.annotation.Autowired(required = false)
     private com.th4.edge.decoboon.finance.context.ManualLedgerContext manualLedgerContext;
 
+    /** 门店维度范围标注所需（范围标注为本批新增的只读补充，不改口径）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private StoreRepository storeRepository;
+
     public BossDashboardContext(TenantContext tenantContext,
-                                ProjectRepository projectRepository,
                                 ProjectContractRepository contractRepository,
-                                ReceiptRepository receiptRepository,
-                                PayableRepository payableRepository,
                                 BusinessTargetRepository targetRepository,
-                                ProjectCostContext projectCostContext) {
+                                ProjectCostContext projectCostContext,
+                                StatisticStoreAggregateContext aggregateContext) {
         this.tenantContext = tenantContext;
-        this.projectRepository = projectRepository;
         this.contractRepository = contractRepository;
-        this.receiptRepository = receiptRepository;
-        this.payableRepository = payableRepository;
         this.targetRepository = targetRepository;
         this.projectCostContext = projectCostContext;
+        this.aggregateContext = aggregateContext;
     }
 
     public BossDashboard dashboard(Employee principal, BossDashboardQuery query) {
@@ -70,34 +69,26 @@ public class BossDashboardContext {
         LocalDate previousMonth = month.minusMonths(1);
         LocalDate previousYear = month.minusYears(1);
 
-        Long storeId = query == null ? null : query.getStoreId();
-        List<Project> projects = projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
-        List<ProjectContract> contracts = contractRepository.findByCompany_ComIdOrderByContractIdDesc(comId);
-        List<Receipt> receipts = receiptRepository.findByCompany_ComIdOrderByReceivedAtDesc(comId);
-        List<Payable> payables = payableRepository.findByCompany_ComIdOrderByDueDateAsc(comId);
-        if (storeId != null) {
-            // 门店维度：仅统计指定门店的合同、回款、应付与项目
-            projects = projects.stream().filter(item -> inStore(item.getStore(), storeId)).toList();
-            contracts = contracts.stream().filter(item -> inStore(item.getStore(), storeId)).toList();
-            receipts = receipts.stream().filter(item -> inStore(item.getStore(), storeId)).toList();
-            payables = payables.stream().filter(item -> inStore(item.getStore(), storeId)).toList();
-        }
+        // 门店维度（DEC-067）：不传 / null / 0 等价为全部门店；单店视图不含未归属门店记录。
+        // P0B-02 聚合下推：门店条件与全部标量（签约额/收款额/在建项目数）都在 SQL 侧完成，
+        // 不再「全量加载 + 内存 filter/sum」（DEC-036 / BR-031）。
+        Long storeFilter = StoreScope.normalize(query == null ? null : query.getStoreId());
         BusinessTarget target = targetRepository.findByCompany_ComIdAndTargetMonth(comId, month)
                 .orElseGet(BusinessTarget::new);
         boolean targetSet = target.getTargetId() != null;
 
-        BigDecimal signed = signedAmount(contracts, month);
-        BigDecimal previousMonthSigned = signedAmount(contracts, previousMonth);
-        BigDecimal previousYearSigned = signedAmount(contracts, previousYear);
-        BigDecimal received = receivedAmount(receipts, month);
-        BigDecimal previousMonthReceived = receivedAmount(receipts, previousMonth);
-        BigDecimal previousYearReceived = receivedAmount(receipts, previousYear);
-        ProfitResult profit = grossProfit(contracts, payables, month);
-        ProfitResult previousMonthProfit = grossProfit(contracts, payables, previousMonth);
-        ProfitResult previousYearProfit = grossProfit(contracts, payables, previousYear);
-        BigDecimal active = activeProjectCount(projects, contracts, month);
-        BigDecimal previousMonthActive = activeProjectCount(projects, contracts, previousMonth);
-        BigDecimal previousYearActive = activeProjectCount(projects, contracts, previousYear);
+        BigDecimal signed = aggregateContext.signedContractAmount(comId, storeFilter, month);
+        BigDecimal previousMonthSigned = aggregateContext.signedContractAmount(comId, storeFilter, previousMonth);
+        BigDecimal previousYearSigned = aggregateContext.signedContractAmount(comId, storeFilter, previousYear);
+        BigDecimal received = aggregateContext.receiptAmount(comId, storeFilter, month);
+        BigDecimal previousMonthReceived = aggregateContext.receiptAmount(comId, storeFilter, previousMonth);
+        BigDecimal previousYearReceived = aggregateContext.receiptAmount(comId, storeFilter, previousYear);
+        ProfitResult profit = grossProfit(comId, storeFilter, month);
+        ProfitResult previousMonthProfit = grossProfit(comId, storeFilter, previousMonth);
+        ProfitResult previousYearProfit = grossProfit(comId, storeFilter, previousYear);
+        BigDecimal active = BigDecimal.valueOf(aggregateContext.activeProjectCount(comId, storeFilter, month));
+        BigDecimal previousMonthActive = BigDecimal.valueOf(aggregateContext.activeProjectCount(comId, storeFilter, previousMonth));
+        BigDecimal previousYearActive = BigDecimal.valueOf(aggregateContext.activeProjectCount(comId, storeFilter, previousYear));
 
         BossDashboard dashboard = new BossDashboard();
         dashboard.setMonth(month);
@@ -118,7 +109,29 @@ public class BossDashboardContext {
         dashboard.setGrossProfit(profitMetric);
         dashboard.setActiveProjectCount(metric(active, BigDecimal.valueOf(value(target.getActiveProjectCount())),
                 previousMonthActive, previousYearActive, targetSet));
+        dashboard.setStoreScope(storeScopeInfo(comId, storeFilter));
         return dashboard;
+    }
+
+    /** 门店维度范围标注（`DEC-067` BOSS-STORE-03）：未归属条数由 SQL `COUNT` 提供，单店视图恒 0。 */
+    private StoreScopeInfo storeScopeInfo(Long comId, Long storeFilter) {
+        StoreScopeInfo info = new StoreScopeInfo();
+        boolean allStores = StoreScope.isAllStores(storeFilter);
+        info.setScopeType(allStores ? "AllStores" : "Store");
+        if (!allStores) {
+            info.setStoreId(storeFilter);
+            Store store = storeRepository.findByStoreId(storeFilter);
+            if (store != null) {
+                info.setStoreName(store.getName());
+            }
+            return info;
+        }
+        info.setUnassignedCount((int) unassignedCount(comId));
+        return info;
+    }
+
+    private long unassignedCount(Long comId) {
+        return aggregateContext.unassignedCustomers(comId);
     }
 
     private DashboardMetric metric(BigDecimal value, BigDecimal target, BigDecimal previousMonth, BigDecimal previousYear, boolean targetSet) {
@@ -136,50 +149,72 @@ public class BossDashboardContext {
         return metric;
     }
 
-    private BigDecimal signedAmount(List<ProjectContract> contracts, LocalDate month) {
-        return contracts.stream()
-                .filter(contract -> BusinessOriginFilter.isNormal(contract.getBusinessOrigin()))
-                .filter(contract -> sameMonth(contract.getSignedAt(), month))
-                .map(this::contractRevenue)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private BigDecimal receivedAmount(List<Receipt> receipts, LocalDate month) {
-        return receipts.stream()
-                .filter(receipt -> sameMonth(receipt.getReceivedAt(), month))
-                .map(Receipt::getAmount)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private ProfitResult grossProfit(List<ProjectContract> contracts, List<Payable> payables, LocalDate month) {
-        Map<Long, BigDecimal> costByProject = new HashMap<>();
-        for (Payable payable : payables) {
-            if (payable.getProject() == null || payable.getProject().getProjectId() == null) {
-                continue;
-            }
-            costByProject.merge(payable.getProject().getProjectId(), value(payable.getAmount()), BigDecimal::add);
+    /**
+     * 毛利公式（`BR-031` 第二类：成本/毛利类业务公式允许内存计算，但**循环体内零查询**）。
+     *
+     * <p>取数全部批量：本月合同一次 SQL（区间 + 来源 + 门店条件下推）；应付按项目一次 `GROUP BY`；
+     * 成本完整性用 {@link ProjectCostContext#summarizeAll}（批量）；手工账用
+     * {@link com.th4.edge.decoboon.finance.context.ManualLedgerContext#amountsAll}（批量）。</p>
+     */
+    private ProfitResult grossProfit(Long comId, Long storeFilter, LocalDate month) {
+        LocalDate from = month.withDayOfMonth(1);
+        LocalDate to = YearMonth.from(month).atEndOfMonth();
+        List<ProjectContract> contracts = contractRepository.findNormalSignedBetweenByStoreScope(
+                comId, from, to, BusinessOrigin.New, StoreScope.isAllStores(storeFilter), storeFilter);
+        if (contracts.isEmpty()) {
+            return new ProfitResult(BigDecimal.ZERO, true, null);
         }
+        List<Project> projects = contracts.stream().map(ProjectContract::getProject)
+                .filter(project -> project != null && project.getProjectId() != null)
+                .collect(java.util.stream.Collectors.toMap(Project::getProjectId, project -> project,
+                        (left, right) -> left, LinkedHashMap::new))
+                .values().stream().toList();
+        Map<Long, BigDecimal> costByProject = aggregateContext.payableAmountByProject(comId, storeFilter,
+                projects.stream().map(Project::getProjectId).toList());
+        Map<Long, ProjectCostContext.CostSummary> costSummaries = projectCostContext.summarizeAll(projects);
+        Map<Long, com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts> manualByProject =
+                manualLedgerContext == null
+                        ? Map.of()
+                        : manualLedgerContext.amountsAll(projects);
+
+        return profitOf(contracts, month, costByProject, costSummaries, manualByProject);
+    }
+
+    /**
+     * 毛利口径（**唯一实现**，供经营总览与门店对比矩阵共用；`P0D-05`）。
+     *
+     * <p>逐合同：非正常经营来源跳过、非本月签约跳过；成本取「实际成本 vs 采购应付」较大者 + 手工账成本；
+     * 任一项目成本不完整 → 整体不完整（返回 {@code null} + 提示，禁止展示伪利润）。</p>
+     */
+    public static ProfitResult profitOf(List<ProjectContract> contracts, LocalDate month,
+                                        Map<Long, BigDecimal> costByProject,
+                                        Map<Long, ProjectCostContext.CostSummary> costSummaries,
+                                        Map<Long, com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts> manualByProject) {
         BigDecimal profit = BigDecimal.ZERO;
         int incomplete = 0;
         for (ProjectContract contract : contracts) {
             if (!BusinessOriginFilter.isNormal(contract.getBusinessOrigin())) {
                 continue;
             }
-            if (!sameMonth(contract.getSignedAt(), month)) {
+            if (!sameMonthStatic(contract.getSignedAt(), month)) {
                 continue;
             }
             Project project = contract.getProject();
-            BigDecimal payableCost = project == null ? BigDecimal.ZERO
-                    : costByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
-            ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
-            com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = manualAmounts(project);
-            BigDecimal cost = costSummary.actualCost().max(payableCost).add(manual.cost());
-            if (!costSummary.complete()) {
+            Long projectId = project == null ? null : project.getProjectId();
+            BigDecimal payableCost = projectId == null
+                    ? BigDecimal.ZERO
+                    : costByProject.getOrDefault(projectId, BigDecimal.ZERO);
+            ProjectCostContext.CostSummary costSummary = projectId == null ? null : costSummaries.get(projectId);
+            com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = projectId == null
+                    ? com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO
+                    : manualByProject.getOrDefault(projectId,
+                            com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO);
+            if (costSummary == null || !costSummary.complete()) {
                 incomplete++;
                 continue;
             }
-            profit = profit.add(contractRevenue(contract).add(manual.income()).subtract(cost));
+            BigDecimal cost = costSummary.actualCost().max(payableCost).add(manual.cost());
+            profit = profit.add(contractRevenueStatic(contract).add(manual.income()).subtract(cost));
         }
         if (incomplete > 0) {
             return new ProfitResult(null, false, incomplete + " 个项目的成本未完整，暂不展示可靠毛利");
@@ -187,35 +222,19 @@ public class BossDashboardContext {
         return new ProfitResult(profit, true, null);
     }
 
-    private record ProfitResult(BigDecimal value, boolean complete, String warning) {}
-
-    private com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manualAmounts(Project project) {
-        return manualLedgerContext == null
-                ? com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO
-                : manualLedgerContext.amounts(project);
+    private static boolean sameMonthStatic(LocalDate date, LocalDate month) {
+        return date != null && YearMonth.from(date).equals(YearMonth.from(month));
     }
 
-    private BigDecimal activeProjectCount(List<Project> projects, List<ProjectContract> contracts, LocalDate month) {
-        LocalDate end = YearMonth.from(month).atEndOfMonth();
-        Map<Long, LocalDate> signedByProject = new HashMap<>();
-        for (ProjectContract contract : contracts) {
-            if (contract.getProject() != null && contract.getSignedAt() != null) {
-                signedByProject.put(contract.getProject().getProjectId(), contract.getSignedAt());
-            }
-        }
-        long count = projects.stream().filter(project -> {
-            if (project.getStatus() == ProjectStatus.Finished || project.getStatus() == ProjectStatus.Settled) {
-                return false;
-            }
-            LocalDate started = signedByProject.get(project.getProjectId());
-            if (started == null && project.getCreateTime() != null) {
-                started = project.getCreateTime().toLocalDate();
-            }
-            LocalDate ended = project.getActualEndDate();
-            return started != null && !started.isAfter(end) && (ended == null || ended.isAfter(end));
-        }).count();
-        return BigDecimal.valueOf(count);
+    private static BigDecimal contractRevenueStatic(ProjectContract contract) {
+        BigDecimal current = contract.getCurrentAmount() == null ? BigDecimal.ZERO : contract.getCurrentAmount();
+        return current.signum() == 0
+                ? (contract.getBaselineAmount() == null ? BigDecimal.ZERO : contract.getBaselineAmount())
+                : current;
     }
+
+    public record ProfitResult(BigDecimal value, boolean complete, String warning) {}
+
 
     private BigDecimal contractRevenue(ProjectContract contract) {
         return value(contract.getCurrentAmount()).signum() == 0
@@ -251,11 +270,4 @@ public class BossDashboardContext {
         return value == null ? 0 : value;
     }
 
-    /** 门店范围判定：storeId 为空表示全部门店。 */
-    private boolean inStore(com.th4.edge.tenant.user.model.Store store, Long storeId) {
-        if (storeId == null) {
-            return true;
-        }
-        return store != null && storeId.equals(store.getStoreId());
-    }
 }

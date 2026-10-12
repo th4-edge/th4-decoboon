@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.customer.context;
 
+import com.th4.edge.decoboon.common.context.StoreAttributionContext;
+import com.th4.edge.decoboon.common.context.StoreAttributionContext.AttributedStore;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.framework.core.annotation.Note;
@@ -28,16 +30,20 @@ import java.util.Optional;
 @Component
 public class CustomerContext {
 
+    private final StoreAttributionContext storeAttributionContext;
+
     private final EmployeeRepository employeeRepository;
     private final CustomerRepository customerRepository;
     private final DataScopeContext dataScopeContext;
 
     public CustomerContext(EmployeeRepository employeeRepository,
                            CustomerRepository customerRepository,
-                           DataScopeContext dataScopeContext) {
+                           DataScopeContext dataScopeContext,
+                           StoreAttributionContext storeAttributionContext) {
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
         this.dataScopeContext = dataScopeContext;
+        this.storeAttributionContext = storeAttributionContext;
     }
 
     /**
@@ -120,16 +126,19 @@ public class CustomerContext {
     }
 
     /**
-     * 从负责人复制客户归属快照，前端提交的 store/team/company 不参与落库。
+     * 从负责人解析客户归属快照（`DEC-070` 门店归属单一解析器），前端提交的 store/team/company 不参与落库。
+     *
+     * <p>负责人有门店 → 该门店；负责人无门店 → 单门店企业默认落该门店、多门店企业**阻断**（可读 400），
+     * 不得静默写空（`DEC-065` FIN-STORE-02 结构阻断项）。</p>
      */
     public void applyOwnership(Customer customer, Employee owner) {
         if (owner == null || owner.getCompany() == null
                 || owner.getCompany().getComId() == null) {
             throw new DefinedException(new DefaultErrorCode("403", "客户负责人未归属企业"));
         }
-        Company company = owner.getCompany();
-        customer.setCompany(company);
-        customer.setStore(owner.getStore());
+        AttributedStore attributed = storeAttributionContext.forCustomerOwner(owner);
+        customer.setCompany(owner.getCompany());
+        customer.setStore(attributed.store());
         customer.setTeam(owner.getTeam());
         customer.setOwner(owner);
     }

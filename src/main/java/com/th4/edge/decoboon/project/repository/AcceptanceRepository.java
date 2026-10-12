@@ -75,4 +75,9 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
     @Query("select a from Acceptance a where a.stage = :stage order by a.acceptanceId desc")
     Optional<Acceptance> findFirstForCustomerByStage(@Param("stage") ProjectStage stage);
 
+
+    /** 指定项目集合的验收单（门店维度下先由 SQL 限定项目范围，避免全企业加载）。 */
+    @Query("select a from Acceptance a where a.company.comId = :comId and a.project.projectId in :projectIds")
+    List<Acceptance> findByCompanyAndProjectIds(@Param("comId") Long comId,
+                                                @Param("projectIds") java.util.Collection<Long> projectIds);
 }

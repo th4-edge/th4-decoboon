@@ -1,5 +1,8 @@
 package com.th4.edge.decoboon.payroll.service.sheets.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
+
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
@@ -33,6 +36,12 @@ public class Page implements com.th4.edge.decoboon.payroll.service.sheets.page.P
     @AutoInject
     private Integer size;
 
+    /** 门店维度（`DEC-065` / `P1-a2`）：不传 / 0 = 全部门店；门店范围角色恒锁本店，传他店 403。 */
+    @AutoInject
+    private Long storeId;
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreFilterContext storeFilterContext;
+
     private final PayrollSheetRepository repository;
     private final PayrollAccessContext accessContext;
 
@@ -44,8 +53,10 @@ public class Page implements com.th4.edge.decoboon.payroll.service.sheets.page.P
     @Override
     public org.springframework.data.domain.Page<PayrollSheet> call(PayrollSheet request) {
         Employee currentEmployee = accessContext.requireManager(employee);
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
         var items = repository.findAll(accessContext.visible(currentEmployee, PayrollSheet.class))
                 .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .sorted(Comparator.comparing(PayrollSheet::getPeriod,
                         Comparator.nullsLast(Comparator.naturalOrder())).reversed())
                 .toList();

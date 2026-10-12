@@ -1,0 +1,251 @@
+{
+  "generatedAt": null,
+  "password": "Zdq123456",
+  "companies": {
+    "999200000000000001": {
+      "comId": 999200000000000001,
+      "title": "多门店数据集造数企业M",
+      "stores": [
+        {
+          "storeId": 999200000000000011,
+          "name": "A 总店",
+          "default": true
+        },
+        {
+          "storeId": 999200000000000012,
+          "name": "B 店",
+          "default": false
+        },
+        {
+          "storeId": 999200000000000013,
+          "name": "C 店",
+          "default": false
+        }
+      ],
+      "subscriptionId": 999200000000000901,
+      "employees": [
+        {
+          "empId": 999200000000000025,
+          "name": "造数M负责人",
+          "role": "Boss",
+          "tel": "13910000100",
+          "storeId": 999200000000000011,
+          "creId": 999200000000000805
+        },
+        {
+          "empId": 999200000000000026,
+          "name": "A 总店店长",
+          "role": "StoreManager",
+          "tel": "13910000110",
+          "storeId": 999200000000000011,
+          "creId": 999200000000000806
+        },
+        {
+          "empId": 999200000000000027,
+          "name": "A 总店设计",
+          "role": "Designer",
+          "tel": "13910000111",
+          "storeId": 999200000000000011,
+          "creId": 999200000000000807
+        },
+        {
+          "empId": 999200000000000028,
+          "name": "A 总店业务",
+          "role": "Marketer",
+          "tel": "13910000112",
+          "storeId": 999200000000000011,
+          "creId": 999200000000000808
+        },
+        {
+          "empId": 999200000000000029,
+          "name": "A 总店项目经理",
+          "role": "Pm",
+          "tel": "13910000113",
+          "storeId": 999200000000000011,
+          "creId": 999200000000000809
+        },
+        {
+          "empId": 999200000000000030,
+          "name": "A 总店门店财务",
+          "role": "Finance",
+          "tel": "13910000114",
+          "storeId": 999200000000000011,
+          "creId": 999200000000000810
+        },
+        {
+          "empId": 999200000000000031,
+          "name": "B 店店长",
+          "role": "StoreManager",
+          "tel": "13910000120",
+          "storeId": 999200000000000012,
+          "creId": 999200000000000811
+        },
+        {
+          "empId": 999200000000000032,
+          "name": "B 店设计",
+          "role": "Designer",
+          "tel": "13910000121",
+          "storeId": 999200000000000012,
+          "creId": 999200000000000812
+        },
+        {
+          "empId": 999200000000000033,
+          "name": "B 店业务",
+          "role": "Marketer",
+          "tel": "13910000122",
+          "storeId": 999200000000000012,
+          "creId": 999200000000000813
+        },
+        {
+          "empId": 999200000000000034,
+          "name": "B 店项目经理",
+          "role": "Pm",
+          "tel": "13910000123",
+          "storeId": 999200000000000012,
+          "creId": 999200000000000814
+        },
+        {
+          "empId": 999200000000000035,
+          "name": "B 店门店财务",
+          "role": "Finance",
+          "tel": "13910000124",
+          "storeId": 999200000000000012,
+          "creId": 999200000000000815
+        },
+        {
+          "empId": 999200000000000036,
+          "name": "C 店店长",
+          "role": "StoreManager",
+          "tel": "13910000130",
+          "storeId": 999200000000000013,
+          "creId": 999200000000000816
+        },
+        {
+          "empId": 999200000000000037,
+          "name": "C 店设计",
+          "role": "Designer",
+          "tel": "13910000131",
+          "storeId": 999200000000000013,
+          "creId": 999200000000000817
+        },
+        {
+          "empId": 999200000000000038,
+          "name": "C 店业务",
+          "role": "Marketer",
+          "tel": "13910000132",
+          "storeId": 999200000000000013,
+          "creId": 999200000000000818
+        },
+        {
+          "empId": 999200000000000039,
+          "name": "C 店项目经理",
+          "role": "Pm",
+          "tel": "13910000133",
+          "storeId": 999200000000000013,
+          "creId": 999200000000000819
+        },
+        {
+          "empId": 999200000000000040,
+          "name": "C 店门店财务",
+          "role": "Finance",
+          "tel": "13910000134",
+          "storeId": 999200000000000013,
+          "creId": 999200000000000820
+        }
+      ]
+    },
+    "999300000000000001": {
+      "comId": 999300000000000001,
+      "title": "单门店数据集造数企业S",
+      "stores": [
+        {
+          "storeId": 999300000000000011,
+          "name": "唯一门店",
+          "default": true
+        }
+      ],
+      "subscriptionId": 999300000000000901,
+      "employees": [
+        {
+          "empId": 999300000000000042,
+          "name": "造数S负责人",
+          "role": "Boss",
+          "tel": "13910000200",
+          "storeId": 999300000000000011,
+          "creId": 999300000000000822
+        },
+        {
+          "empId": 999300000000000043,
+          "name": "唯一门店店长",
+          "role": "StoreManager",
+          "tel": "13910000210",
+          "storeId": 999300000000000011,
+          "creId": 999300000000000823
+        },
+        {
+          "empId": 999300000000000044,
+          "name": "唯一门店设计",
+          "role": "Designer",
+          "tel": "13910000211",
+          "storeId": 999300000000000011,
+          "creId": 999300000000000824
+        },
+        {
+          "empId": 999300000000000045,
+          "name": "唯一门店业务",
+          "role": "Marketer",
+          "tel": "13910000212",
+          "storeId": 999300000000000011,
+          "creId": 999300000000000825
+        },
+        {
+          "empId": 999300000000000046,
+          "name": "唯一门店项目经理",
+          "role": "Pm",
+          "tel": "13910000213",
+          "storeId": 999300000000000011,
+          "creId": 999300000000000826
+        },
+        {
+          "empId": 999300000000000047,
+          "name": "唯一门店门店财务",
+          "role": "Finance",
+          "tel": "13910000214",
+          "storeId": 999300000000000011,
+          "creId": 999300000000000827
+        }
+      ]
+    }
+  },
+  "note": "dev 专用夹具骨架（SQL）",
+  "productGaps": [
+    {
+      "key": "NO_STORE_EMPLOYEE_IMPOSSIBLE",
+      "title": "无门店归属员工无法构造（A9 运行时不可覆盖）",
+      "detail": "db_tenant_employee.store_id 为 NOT NULL 且无默认值；全库无 store_id 为空/0 的员工行。故 DEC-070「负责人无门店 → 单门店企业默认该门店 / 多门店企业 400 阻断」在真实数据下不可达（仅 StoreAttributionContextTest 用 mock 员工覆盖）。可能的真实触发路径只有「门店被删除/停用」——属 P0D-04 批次（门店启用/停用 + 迁移）范围。",
+      "affects": [
+        "A9"
+      ]
+    }
+  ],
+  "subscriptionEvidence": {
+    "note": "db_tenant_subscription 无 end_date 列：到期日由派生列组合表示（YYYYMMDD / HHMMSS / YYYYMMDDHHMMSS）",
+    "columns": [
+      "service_end_year",
+      "service_end_month",
+      "service_end_day",
+      "service_end_hour",
+      "service_end_minute",
+      "service_end_second",
+      "service_end_date",
+      "service_end_time",
+      "service_end_date_time"
+    ],
+    "rows": [
+      "999200000000000001\t1789938403852923458\t1789938403867323587\tTrial\t2027\t10\t5\t5\t15\t43\t20271005\t51543\t20271005051543",
+      "999300000000000001\t1789938403810574092\t1789938403823339446\tTrial\t2027\t10\t5\t5\t15\t43\t20271005\t51543\t20271005051543"
+    ],
+    "templateRowWas": "service_end_date=20261005 / service_end_time=51543 / service_end_date_time=20261005051543（2026-10-05，已过期 → 造成 SUBSCRIPTION_EXPIRED）",
+    "fixedTo": "2027-10-05 05:15:43 → service_end_date=20271005 / service_end_time=51543 / service_end_date_time=20271005051543"
+  }
+}

@@ -1,5 +1,8 @@
 package com.th4.edge.decoboon.document.service.voucher.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
+
 import com.th4.edge.decoboon.document.configure.DocumentStatus;
 import com.th4.edge.decoboon.document.context.VoucherContext;
 import com.th4.edge.decoboon.document.model.VoucherItem;
@@ -68,6 +71,12 @@ public class Page implements com.th4.edge.decoboon.document.service.voucher.page
     @AutoInject
     private LocalDate endDate;
 
+    /** 门店维度（`DEC-065` / `P1-a2`）：不传 / 0 = 全部门店；门店范围角色恒锁本店，传他店 403。 */
+    @AutoInject
+    private Long storeId;
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreFilterContext storeFilterContext;
+
     private final VoucherRecordRepository recordRepository;
     private final VoucherContext voucherContext;
     private final TenantContext tenantContext;
@@ -90,7 +99,9 @@ public class Page implements com.th4.edge.decoboon.document.service.voucher.page
                 || viewer.getRole() == EmployeeRole.Finance
                 ? (root, query, builder) -> builder.equal(root.get("company").get("comId"), comId)
                 : DataScopeSpecification.visible(VoucherRecord.class, dataScopeContext.resolve(viewer));
+        Long storeFilter = storeFilterContext.resolve(viewer, storeId);
         List<VoucherRecord> items = recordRepository.findAll(visible).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> projectId == null
                         || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> status == null || status.isBlank() || item.getStatus().name().equalsIgnoreCase(status))

@@ -16,6 +16,7 @@ import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -41,9 +42,10 @@ class MaterialPurchaseContextTest {
     private final PartnerPriceRepository partnerPriceRepository = mock(PartnerPriceRepository.class);
 
     private MaterialPurchaseContext context() {
-        return new MaterialPurchaseContext(purchaseRepository, purchaseItemRepository, materialPlanRepository,
+        return StoreAttributionTestSupport.inject(new MaterialPurchaseContext(purchaseRepository,
+                purchaseItemRepository, materialPlanRepository,
                 materialPlanStatusContext, payableRepository, modelIdentityContext, partnerCreditContext,
-                materialSupplierRepository, partnerPriceRepository);
+                materialSupplierRepository, partnerPriceRepository));
     }
 
     @Test

@@ -1,0 +1,283 @@
+{
+  "note": "A7/A8 跨页对账原始响应关键字段（三档门店范围，真实 HTTP）",
+  "scopes": {
+    "全部门店": {
+      "storeId": null,
+      "dashboard": {
+        "activeProjectCount": {
+          "value": 19,
+          "target": 0,
+          "achievementRate": 0,
+          "previousMonthValue": 0,
+          "previousYearValue": 0,
+          "monthOverMonthRate": 0,
+          "yearOverYearRate": 0,
+          "targetSet": false,
+          "monthOverMonthComparable": false,
+          "yearOverYearComparable": false,
+          "complete": true
+        },
+        "storeScope": {
+          "scopeType": "AllStores",
+          "unassignedCount": 3
+        }
+      },
+      "projectPage": {
+        "totalElements": 19,
+        "returned": 19
+      },
+      "businessReport": {
+        "funnel": [
+          {
+            "key": "lead",
+            "label": "线索",
+            "count": 21,
+            "unit": "条"
+          },
+          {
+            "key": "visit",
+            "label": "到店",
+            "count": 0,
+            "unit": "位"
+          },
+          {
+            "key": "measure",
+            "label": "量房",
+            "count": 21,
+            "unit": "户"
+          },
+          {
+            "key": "quote",
+            "label": "报价",
+            "count": 19,
+            "unit": "份"
+          },
+          {
+            "key": "sign",
+            "label": "签约",
+            "count": 19,
+            "unit": "单"
+          }
+        ],
+        "storeScope": {
+          "scopeType": "AllStores",
+          "unassignedCount": 3
+        }
+      },
+      "financeSummary": {
+        "projectCount": 19,
+        "activeProjectCount": 19,
+        "contractAmount": 47419.25,
+        "receivableAmount": 135672.23,
+        "receivedAmount": 14225.87,
+        "outstandingAmount": 121446.36,
+        "receiptCount": 18
+      },
+      "receivablePage": {
+        "totalElements": 73,
+        "amountSum": "135672.23",
+        "receivedSum": "14225.87"
+      },
+      "financeProjectPage": {
+        "rows": 19,
+        "receivableSum": "135672.23",
+        "receivedSum": "14225.87"
+      },
+      "sql": {
+        "projectsAll": 19,
+        "projectsActive": 19,
+        "receivableCount": 73,
+        "receivableAmount": "135672.23",
+        "receivedAmount": "14225.87"
+      }
+    },
+    "A 店": {
+      "storeId": 999200000000000011,
+      "dashboard": {
+        "activeProjectCount": {
+          "value": 5,
+          "target": 0,
+          "achievementRate": 0,
+          "previousMonthValue": 0,
+          "previousYearValue": 0,
+          "monthOverMonthRate": 0,
+          "yearOverYearRate": 0,
+          "targetSet": false,
+          "monthOverMonthComparable": false,
+          "yearOverYearComparable": false,
+          "complete": true
+        },
+        "storeScope": {
+          "scopeType": "Store",
+          "storeId": "999200000000000011",
+          "storeName": "A 总店",
+          "unassignedCount": 0
+        }
+      },
+      "projectPage": {
+        "totalElements": 5,
+        "returned": 5
+      },
+      "businessReport": {
+        "funnel": [
+          {
+            "key": "lead",
+            "label": "线索",
+            "count": 5,
+            "unit": "条"
+          },
+          {
+            "key": "visit",
+            "label": "到店",
+            "count": 0,
+            "unit": "位"
+          },
+          {
+            "key": "measure",
+            "label": "量房",
+            "count": 5,
+            "unit": "户"
+          },
+          {
+            "key": "quote",
+            "label": "报价",
+            "count": 5,
+            "unit": "份"
+          },
+          {
+            "key": "sign",
+            "label": "签约",
+            "count": 5,
+            "unit": "单"
+          }
+        ],
+        "storeScope": {
+          "scopeType": "Store",
+          "storeId": "999200000000000011",
+          "storeName": "A 总店",
+          "unassignedCount": 0
+        }
+      },
+      "financeSummary": {
+        "projectCount": 5,
+        "activeProjectCount": 5,
+        "contractAmount": 12478.75,
+        "receivableAmount": 37478.75,
+        "receivedAmount": 3743.65,
+        "outstandingAmount": 33735.1,
+        "receiptCount": 5
+      },
+      "receivablePage": {
+        "totalElements": 20,
+        "amountSum": "37478.75",
+        "receivedSum": "3743.65"
+      },
+      "financeProjectPage": {
+        "rows": 5,
+        "receivableSum": "37478.75",
+        "receivedSum": "3743.65"
+      },
+      "sql": {
+        "projectsAll": 5,
+        "projectsActive": 5,
+        "receivableCount": 20,
+        "receivableAmount": "37478.75",
+        "receivedAmount": "3743.65"
+      }
+    },
+    "B 店": {
+      "storeId": 999200000000000012,
+      "dashboard": {
+        "activeProjectCount": {
+          "value": 6,
+          "target": 0,
+          "achievementRate": 0,
+          "previousMonthValue": 0,
+          "previousYearValue": 0,
+          "monthOverMonthRate": 0,
+          "yearOverYearRate": 0,
+          "targetSet": false,
+          "monthOverMonthComparable": false,
+          "yearOverYearComparable": false,
+          "complete": true
+        },
+        "storeScope": {
+          "scopeType": "Store",
+          "storeId": "999200000000000012",
+          "storeName": "B 店",
+          "unassignedCount": 0
+        }
+      },
+      "projectPage": {
+        "totalElements": 6,
+        "returned": 6
+      },
+      "businessReport": {
+        "funnel": [
+          {
+            "key": "lead",
+            "label": "线索",
+            "count": 6,
+            "unit": "条"
+          },
+          {
+            "key": "visit",
+            "label": "到店",
+            "count": 0,
+            "unit": "位"
+          },
+          {
+            "key": "measure",
+            "label": "量房",
+            "count": 6,
+            "unit": "户"
+          },
+          {
+            "key": "quote",
+            "label": "报价",
+            "count": 6,
+            "unit": "份"
+          },
+          {
+            "key": "sign",
+            "label": "签约",
+            "count": 6,
+            "unit": "单"
+          }
+        ],
+        "storeScope": {
+          "scopeType": "Store",
+          "storeId": "999200000000000012",
+          "storeName": "B 店",
+          "unassignedCount": 0
+        }
+      },
+      "financeSummary": {
+        "projectCount": 6,
+        "activeProjectCount": 6,
+        "contractAmount": 14974.5,
+        "receivableAmount": 44974.5,
+        "receivedAmount": 4492.38,
+        "outstandingAmount": 40482.12,
+        "receiptCount": 6
+      },
+      "receivablePage": {
+        "totalElements": 24,
+        "amountSum": "44974.50",
+        "receivedSum": "4492.38"
+      },
+      "financeProjectPage": {
+        "rows": 6,
+        "receivableSum": "44974.50",
+        "receivedSum": "4492.38"
+      },
+      "sql": {
+        "projectsAll": 6,
+        "projectsActive": 6,
+        "receivableCount": 24,
+        "receivableAmount": "44974.50",
+        "receivedAmount": "4492.38"
+      }
+    }
+  }
+}

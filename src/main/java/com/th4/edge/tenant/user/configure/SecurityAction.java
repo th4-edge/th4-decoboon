@@ -20,7 +20,9 @@ public enum SecurityAction implements Enumerable<String> {
     CompanyResign("退出企业"),
     CompanySwitch("切换企业"),
     BossTransfer("负责人转让"),
-    LimitTrigger("触发风控限制");
+    LimitTrigger("触发风控限制"),
+    /** P0D-04：门店启用/停用（BOSS 动作，审计留痕，可在企业「安全日志」中查看）。 */
+    StoreStatusChange("门店启用停用");
 
     private final String name;
 

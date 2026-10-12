@@ -54,7 +54,17 @@ import java.util.List;
 })
 @Service("project/goods-receipt/save")
 @Scope(ScopeTypes.PROTOTYPE)
-public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts.save.Save {
+public class Save implements
+        com.th4.edge.decoboon.project.service.goodsreceipts.save.Save {
+    /** 收付/单据归属统一写入（`DEC-070`：应付三路径同源）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.finance.context.FinanceAccessContext financeAccessContext;
+
+
+    /** 门店归属唯一写入解析器（`DEC-070`）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
+
     @AutoInject @NotNull private Long purchaseId;
     @AutoInject @NotNull private BigDecimal quantity;
     @AutoInject private Long purchaseItemId;
@@ -257,7 +267,11 @@ public class Save implements com.th4.edge.decoboon.project.service.goodsreceipts
         payable.setMaterialPlan(purchase.getMaterialPlan());
         payable.setPurchaseOrder(purchase);
         payable.setOwner(resolveOwner(purchase));
-        payable.setStore(purchase.getProperty().getStore());
+        // DEC-070：到货补建应付与采购/手工同源（财务域同一写入方法）
+        financeAccessContext.applyPayableStore(payable,
+                purchase.getProject() == null ? null : purchase.getProject().getCustomer(),
+                purchase.getOwner() == null ? employee : purchase.getOwner(),
+                purchase.getProperty().getStore());
         payable.setTeam(purchase.getProperty().getTeam());
         payable.setName("材料采购 · " + purchase.getSupplierName());
         payable.setType(PayableType.Material);

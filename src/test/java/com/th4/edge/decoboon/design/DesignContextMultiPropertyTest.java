@@ -7,6 +7,7 @@ import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +19,8 @@ class DesignContextMultiPropertyTest {
     @Test
     void requirementApplyShouldKeepExplicitPropertyWhenCustomerHasMultipleProperties() {
         PropertyContext propertyContext = mock(PropertyContext.class);
-        DesignContext context = new DesignContext(null, null, null, null, null, null, propertyContext);
+        DesignContext context = StoreAttributionTestSupport.inject(
+                new DesignContext(null, null, null, null, null, null, propertyContext));
 
         Company company = new Company();
         company.setComId(1L);

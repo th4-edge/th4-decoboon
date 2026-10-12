@@ -38,6 +38,11 @@ import java.util.Set;
 @Component
 public class DesignContext {
 
+    /** 门店归属唯一写入解析器（`DEC-070`）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
+
+
     private static final Set<EmployeeRole> DESIGN_WRITE_ROLES = EnumSet.of(
             EmployeeRole.Boss,
             EmployeeRole.StoreManager,
@@ -167,7 +172,8 @@ public class DesignContext {
             throw new DefinedException(new DefaultErrorCode("400", "设计方案必须绑定客户所属房屋"));
         }
         design.setCompany(owner.getCompany());
-        design.setStore(owner.getStore());
+        // DEC-070：设计门店由「负责人门店」改为「客户门店快照」（单一事实源 = 客户门店）
+        design.setStore(storeAttributionContext.forCustomerSnapshot(customer, owner, owner.getStore()).store());
         design.setTeam(owner.getTeam());
         design.setOwner(owner);
         design.setCustomer(customer);
@@ -181,7 +187,8 @@ public class DesignContext {
     public void apply(Requirement requirement, Customer customer, Employee owner, Property property) {
         requireSameCompany(customer == null ? null : customer.getCompany(), owner == null ? null : owner.getCompany());
         requirement.setCompany(owner.getCompany());
-        requirement.setStore(owner.getStore());
+        // DEC-070：需求单门店同步为客户门店快照
+        requirement.setStore(storeAttributionContext.forCustomerSnapshot(customer, owner, owner.getStore()).store());
         requirement.setTeam(owner.getTeam());
         requirement.setOwner(owner);
         requirement.setCustomer(customer);

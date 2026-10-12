@@ -8,6 +8,7 @@ import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
@@ -30,6 +31,10 @@ public class Report implements com.th4.edge.decoboon.finance.service.aging.repor
     @User
     private Employee employee;
 
+    /** 门店维度（DEC-065）：框架只对 provider 的 {@code @AutoInject} 字段做请求绑定。 */
+    @AutoInject
+    private Long storeId;
+
     private final FinanceAgingContext agingContext;
 
     public Report(FinanceAgingContext agingContext) {
@@ -39,6 +44,6 @@ public class Report implements com.th4.edge.decoboon.finance.service.aging.repor
     @Override
     @Transactional(readOnly = true)
     public FinanceAgingReport call(FinanceAgingQuery request) {
-        return agingContext.report(employee, request);
+        return agingContext.report(employee, request, storeId);
     }
 }

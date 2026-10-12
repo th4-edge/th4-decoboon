@@ -14,6 +14,9 @@ public class BossDashboard {
     private DashboardMetric grossProfit = new DashboardMetric();
     private DashboardMetric activeProjectCount = new DashboardMetric();
 
+    /** 门店维度范围标注（`DEC-067` BOSS-STORE-03）：全部门店视图带未归属条数，单店恒 0。 */
+    private StoreScopeInfo storeScope;
+
     public LocalDate getMonth() { return month; }
     public void setMonth(LocalDate month) { this.month = month; }
     public DashboardMetric getSignedAmount() { return signedAmount; }
@@ -24,4 +27,7 @@ public class BossDashboard {
     public void setGrossProfit(DashboardMetric grossProfit) { this.grossProfit = grossProfit; }
     public DashboardMetric getActiveProjectCount() { return activeProjectCount; }
     public void setActiveProjectCount(DashboardMetric activeProjectCount) { this.activeProjectCount = activeProjectCount; }
+
+    public StoreScopeInfo getStoreScope() { return storeScope; }
+    public void setStoreScope(StoreScopeInfo storeScope) { this.storeScope = storeScope; }
 }

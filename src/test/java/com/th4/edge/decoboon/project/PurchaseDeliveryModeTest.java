@@ -24,6 +24,7 @@ import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -75,6 +76,7 @@ class PurchaseDeliveryModeTest {
                 mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class),
                 new com.th4.edge.decoboon.project.context.MaterialPlanStatusContext(
                         purchaseRepository, mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class)));
+        StoreAttributionTestSupport.inject(save);
         ReflectionTestUtils.setField(save, "purchaseId", 1L);
         ReflectionTestUtils.setField(save, "quantity", new BigDecimal("5"));
         ReflectionTestUtils.setField(save, "employee", new Employee());

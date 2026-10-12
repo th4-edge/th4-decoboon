@@ -73,6 +73,7 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
     @AutoInject private BigDecimal newPrice;
     @AutoInject private BigDecimal newCost;
     @AutoInject private BigDecimal costDelta;
+    // 历史入参：老版本客户端可能仍然提交客户确认信息，服务端忽略、不校验、不落库（DEC-068）。
     @AutoInject private List<String> evidenceImages;
     @AutoInject private String signatureUrl;
     @AutoInject private LocalDateTime customerConfirmedAt;
@@ -147,8 +148,6 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
         if (amountDelta.signum() == 0 && costChange.signum() == 0) {
             throw new DefinedException(new DefaultErrorCode("400", "变更金额或成本不能同时为 0"));
         }
-        requireCustomerSignOff();
-
         request.setCompany(project.getCompany());
         request.setContract(contract);
         request.setProject(project);
@@ -161,14 +160,8 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
         request.setAmount(amountDelta);
         request.setCostDelta(costChange);
         request.setStatus(ContractChangeStatus.Pending);
-        // 新口径（DEC-041）：客户线下确认是创建前置事实，由设计师登记；企业审批通过即生效。
-        request.setCustomerConfirmed(true);
-        request.setCustomerConfirmedAt(customerConfirmedAt);
-        request.setCustomerConfirmedBy(customerConfirmedBy.trim());
-        request.setCustomerConfirmMethod(customerConfirmMethod.trim());
+        // DEC-068：业主确认不建模为系统事实；建单只留痕发起人、时间与明细，审批通过即生效。
         request.setRequestedBy(current);
-        request.setEvidenceImages(evidenceImages);
-        request.setSignatureUrl(signatureUrl);
         ContractChange saved = changeRepository.save(modelIdentityContext.prepare(request));
 
         ContractChangeItem item = changeItem(saved, sourceLine, changeType, computed);
@@ -184,24 +177,6 @@ public class Save implements com.th4.edge.decoboon.project.service.contractchang
         }
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.ContractChange, current);
         return saved;
-    }
-
-    /** DEC-041/BR-035：无客户线下确认时间、确认人、方式与签认证据，不得形成增减项变更单。 */
-    private void requireCustomerSignOff() {
-        if (customerConfirmedAt == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "请登记客户线下确认时间"));
-        }
-        if (customerConfirmedBy == null || customerConfirmedBy.isBlank()) {
-            throw new DefinedException(new DefaultErrorCode("400", "请登记客户确认人"));
-        }
-        if (customerConfirmMethod == null || customerConfirmMethod.isBlank()) {
-            throw new DefinedException(new DefaultErrorCode("400", "请选择客户确认方式"));
-        }
-        boolean hasEvidence = (evidenceImages != null && !evidenceImages.isEmpty())
-                || (signatureUrl != null && !signatureUrl.isBlank());
-        if (!hasEvidence) {
-            throw new DefinedException(new DefaultErrorCode("400", "请上传客户签认证据"));
-        }
     }
 
     private ContractChangeItem changeItem(ContractChange change, ContractLine source, ContractChangeType type,

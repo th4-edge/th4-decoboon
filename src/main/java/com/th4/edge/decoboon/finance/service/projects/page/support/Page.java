@@ -62,6 +62,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
     /** 当前结算工作台默认只看当前项目；archive 用于查看历史接管归档。 */
     @AutoInject
     private String scope;
+    /** 门店维度（DEC-065）：为空表示不限门店（企业范围）或本店（门店范围）。 */
+    @AutoInject
+    private Long storeId;
 
     private final FinanceReportContext reportContext;
 
@@ -72,7 +75,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.projects.page
     @Override
     public org.springframework.data.domain.Page<FinanceProjectReport> call(Project request) {
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
-        List<FinanceProjectReport> items = reportContext.projectReports(employee).stream()
+        List<FinanceProjectReport> items = reportContext.projectReports(employee, storeId).stream()
                 .filter(item -> matchesScope(item, scope))
                 .filter(item -> status == null || status.isBlank() || matchesStatus(item, status.trim()))
                 .filter(item -> kw.isBlank()

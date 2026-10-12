@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.finance.model.FinanceSummary;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receivable;
+import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -20,10 +21,10 @@ import org.springframework.stereotype.Service;
 @Note("财务工作台汇总")
 @Properties(allow = {
         @AllowProperties(model = FinanceSummary.class,
-                properties = {"projectCount", "activeProjectCount", "contractAmount", "receivableAmount", "receivedAmount",
+                properties = {"projectCount", "activeProjectCount", "contractAmount", "receivableAmount", "receivableCount", "receivedAmount",
                         "outstandingAmount", "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount",
                         "materialPayableAmount", "salaryPayableAmount", "employeeSalaryPayableAmount", "employeeCommissionPayableAmount", "projectPayableAmount", "otherPayableAmount",
-                        "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
+                        "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receivableCount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
                         "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "cashBalance", "openingBalanceAmount", "openingBalanceCaptured", "estimatedCost", "actualCost",
                         "manualIncomeAmount", "manualCostAmount",
                         "costComplete", "costIncompleteProjectCount", "costIncompleteItemCount",
@@ -52,6 +53,16 @@ public class Report implements com.th4.edge.decoboon.finance.service.summary.rep
     @User
     private Employee employee;
 
+    /**
+     * 门店维度（DEC-065）。
+     *
+     * <p>注意：框架对 Provider 的请求模型（{@code Provider<Request, Response>} 的 Request）
+     * 不做请求体/查询参数绑定，只对 provider 实例上的 {@code @AutoInject} 字段注入请求参数，
+     * 因此门店维度必须落在字段上，不能放在请求模型里。</p>
+     */
+    @AutoInject
+    private Long storeId;
+
     private final FinanceReportContext reportContext;
 
     public Report(FinanceReportContext reportContext) {
@@ -60,6 +71,6 @@ public class Report implements com.th4.edge.decoboon.finance.service.summary.rep
 
     @Override
     public FinanceSummary call(Project request) {
-        return reportContext.summary(employee);
+        return reportContext.summary(employee, storeId);
     }
 }

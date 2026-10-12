@@ -22,6 +22,8 @@ import java.time.YearMonth;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import com.th4.edge.decoboon.common.context.StoreScope;
+import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
 
 /**
  * 企业组织效能聚合。
@@ -37,18 +39,18 @@ public class OrganizationContext {
     private static final int MIN_SAMPLE = 3;
 
     private final TenantContext tenantContext;
-    private final EmployeeRepository employeeRepository;
-    private final ProjectContractRepository contractRepository;
+    private final com.th4.edge.tenant.user.repository.StoreRepository storeRepository;
     private final PerformanceReportContext performanceReportContext;
+    private final StatisticStoreAggregateContext aggregateContext;
 
     public OrganizationContext(TenantContext tenantContext,
-                               EmployeeRepository employeeRepository,
-                               ProjectContractRepository contractRepository,
-                               PerformanceReportContext performanceReportContext) {
+                               com.th4.edge.tenant.user.repository.StoreRepository storeRepository,
+                               PerformanceReportContext performanceReportContext,
+                               StatisticStoreAggregateContext aggregateContext) {
         this.tenantContext = tenantContext;
-        this.employeeRepository = employeeRepository;
-        this.contractRepository = contractRepository;
+        this.storeRepository = storeRepository;
         this.performanceReportContext = performanceReportContext;
+        this.aggregateContext = aggregateContext;
     }
 
     public OrganizationReport report(Employee principal, OrganizationQuery query) {
@@ -57,46 +59,29 @@ public class OrganizationContext {
         LocalDate month = query == null || query.getMonth() == null
                 ? LocalDate.now().withDayOfMonth(1)
                 : query.getMonth().withDayOfMonth(1);
-        Long storeId = query == null ? null : query.getStoreId();
+        Long storeId = StoreScope.normalize(query == null ? null : query.getStoreId());
         int topN = topN(query);
 
-        List<Employee> employees = employeeRepository.findByCompany_ComId(comId).stream()
-                .filter(item -> matchesStore(item, storeId))
-                .toList();
-        List<Employee> active = employees.stream()
-                .filter(item -> item.getStatus() == EmployeeStatus.Active)
-                .toList();
-        long newHires = active.stream()
-                .filter(item -> sameMonth(item.getJoinedAt(), month))
-                .count();
-
-        List<ProjectContract> contracts = contractRepository.findByCompany_ComIdOrderByContractIdDesc(comId)
-                .stream()
-                .filter(item -> matchesStore(item.getProject(), storeId))
-                .toList();
-        BigDecimal signedAmount = contracts.stream()
-                .filter(item -> sameMonth(item.getSignedAt(), month))
-                .map(this::contractRevenue)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        long newProjectCount = contracts.stream()
-                .filter(item -> sameMonth(item.getSignedAt(), month))
-                .map(item -> item.getProject() == null ? null : item.getProject().getProjectId())
-                .filter(Objects::nonNull)
-                .distinct()
-                .count();
+        // P0B-02 聚合下推（DEC-036 / BR-031）：人力计数、本月入职、角色在编、签约额与新项目数
+        // 全部在 SQL 侧完成；门店条件（null/0/不传 = 全部门店）同样在 SQL 的 WHERE 里。
+        StatisticStoreAggregateContext.OrganizationCounts counts =
+                aggregateContext.organizationCounts(comId, storeId, month);
+        BigDecimal signedAmount = aggregateContext.organizationSignedAmount(comId, storeId, month);
+        long newProjectCount = aggregateContext.organizationNewProjectCount(comId, storeId, month);
 
         OrganizationReport report = new OrganizationReport();
         report.setMonth(month);
-        report.setHeadcount(active.size());
-        report.setNewHires((int) newHires);
+        report.setStoreScope(storeScopeInfo(comId, storeId));
+        report.setHeadcount(counts.headcount());
+        report.setNewHires(counts.newHires());
         report.setSignedAmount(signedAmount);
         report.setNewProjectCount((int) newProjectCount);
-        report.setPerCapitaOutput(perCapita(signedAmount, active.size()));
-        report.setPerCapitaOrders(perCapita(BigDecimal.valueOf(newProjectCount), active.size()));
+        report.setPerCapitaOutput(perCapita(signedAmount, counts.headcount()));
+        report.setPerCapitaOrders(perCapita(BigDecimal.valueOf(newProjectCount), counts.headcount()));
 
         PerformanceReport performance = performanceReportContext.report(principal,
                 performanceQuery(month, storeId, null));
-        report.setRoleCapacities(roleCapacities(active, performance));
+        report.setRoleCapacities(roleCapacities(counts.roleCounts(), performance));
         report.setDesignerRanking(ranking(performance, EmployeeRole.Designer, topN));
         report.setMarketerRanking(ranking(performance, EmployeeRole.Marketer, topN));
         report.setPmRanking(ranking(performance, EmployeeRole.Pm, topN));
@@ -109,25 +94,27 @@ public class OrganizationContext {
 
     // ------------------------------------------------------------------ 角色产能
 
-    private List<RoleCapacity> roleCapacities(List<Employee> active, PerformanceReport performance) {
+    private List<RoleCapacity> roleCapacities(java.util.Map<Object, Long> roleCounts, PerformanceReport performance) {
         return List.of(
                 new RoleCapacity(EmployeeRole.Designer.name(), EmployeeRole.Designer.getName(),
-                        countRole(active, EmployeeRole.Designer),
+                        roleCount(roleCounts, EmployeeRole.Designer),
                         "designerConversionRate", "最终报价接受率",
                         average(performance == null ? null : performance.getAverageDesignerConversionRate())),
                 new RoleCapacity(EmployeeRole.Marketer.name(), EmployeeRole.Marketer.getName(),
-                        countRole(active, EmployeeRole.Marketer),
+                        roleCount(roleCounts, EmployeeRole.Marketer),
                         "marketerSignRate", "签约率",
                         average(performance == null ? null : performance.getAverageMarketerSignRate())),
                 new RoleCapacity(EmployeeRole.Pm.name(), EmployeeRole.Pm.getName(),
-                        countRole(active, EmployeeRole.Pm),
+                        roleCount(roleCounts, EmployeeRole.Pm),
                         "pmOnTimeDeliveryRate", "准时交付率",
                         average(performance == null ? null : performance.getAveragePmOnTimeDeliveryRate()))
         );
     }
 
-    private int countRole(List<Employee> active, EmployeeRole role) {
-        return (int) active.stream().filter(item -> item.getRole() == role).count();
+    /** 角色在编人数（SQL `GROUP BY role` 结果）。 */
+    private int roleCount(java.util.Map<Object, Long> roleCounts, EmployeeRole role) {
+        Long value = roleCounts.get(role);
+        return value == null ? 0 : value.intValue();
     }
 
     // ------------------------------------------------------------------ 排行
@@ -156,6 +143,27 @@ public class OrganizationContext {
     }
 
     // ------------------------------------------------------------------ 工具
+
+
+    /**
+     * 门店维度范围标注（`DEC-067` BOSS-STORE-03）：全部门店计入「未归属门店」记录并显式标注；
+     * 单店视图不含未归属 → `unassignedCount = 0`。`storeName` 取自当前范围内任一带门店的记录。
+     */
+    private StoreScopeInfo storeScopeInfo(Long comId, Long storeId) {
+        StoreScopeInfo info = new StoreScopeInfo();
+        boolean allStores = StoreScope.isAllStores(storeId);
+        info.setScopeType(allStores ? "AllStores" : "Store");
+        if (!allStores) {
+            info.setStoreId(storeId);
+            com.th4.edge.tenant.user.model.Store store = storeRepository.findByStoreId(storeId);
+            if (store != null) {
+                info.setStoreName(store.getName());
+            }
+            return info;
+        }
+        info.setUnassignedCount((int) aggregateContext.unassignedEmployees(comId));
+        return info;
+    }
 
     private PerformanceQuery performanceQuery(LocalDate month, Long storeId, EmployeeRole role) {
         PerformanceQuery query = new PerformanceQuery();
@@ -188,19 +196,7 @@ public class OrganizationContext {
                 ? value(contract.getBaselineAmount()) : value(contract.getCurrentAmount());
     }
 
-    private boolean matchesStore(Employee employee, Long storeId) {
-        if (storeId == null) {
-            return true;
-        }
-        return employee.getStore() != null && storeId.equals(employee.getStore().getStoreId());
-    }
 
-    private boolean matchesStore(com.th4.edge.decoboon.project.model.Project project, Long storeId) {
-        if (storeId == null) {
-            return true;
-        }
-        return project != null && project.getStore() != null && storeId.equals(project.getStore().getStoreId());
-    }
 
     private boolean sameMonth(java.time.LocalDateTime date, LocalDate month) {
         return date != null && sameMonth(date.toLocalDate(), month);

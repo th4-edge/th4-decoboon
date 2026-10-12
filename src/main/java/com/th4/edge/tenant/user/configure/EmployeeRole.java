@@ -14,7 +14,9 @@ public enum EmployeeRole implements Enumerable<String> {
     Designer("设计师", DataScopeType.Self),
     Marketer("业务员", DataScopeType.Self),
     Pm("项目经理", DataScopeType.Self),
-    Finance("财务", DataScopeType.Company),
+    // DEC-065 FIN-STORE-01：财务数据范围由企业收窄为归属门店；
+    // 归属「默认总店」的财务由 DataScopeContext 升为总部财务（企业范围，FIN-STORE-03）。
+    Finance("财务", DataScopeType.Store),
     TeamLeader("团队负责人", DataScopeType.Team);
 
     private final String name;

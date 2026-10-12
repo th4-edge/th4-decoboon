@@ -156,7 +156,6 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         }
         Project project = accessContext.requireProject(contract.getProject().getProjectId(), current);
         accessContext.requirePlanEditor(project, current);
-        requireCustomerSignOff();
 
         ContractChangeType batchType = type == null ? ContractChangeType.Add : type;
         List<Long> sourceLineIds = items.stream()
@@ -241,13 +240,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         request.setAmount(amount);
         request.setCostDelta(costComplete ? cost : null);
         request.setStatus(ContractChangeStatus.Pending);
-        request.setCustomerConfirmed(true);
-        request.setCustomerConfirmedAt(customerConfirmedAt);
-        request.setCustomerConfirmedBy(customerConfirmedBy.trim());
-        request.setCustomerConfirmMethod(customerConfirmMethod.trim());
+        // DEC-068：业主确认不建模为系统事实；建单只留痕发起人、时间与明细，审批通过即生效。
         request.setRequestedBy(current);
-        request.setEvidenceImages(evidenceImages);
-        request.setSignatureUrl(signatureUrl);
         ContractChange saved = changeRepository.save(modelIdentityContext.prepare(request));
 
         List<ContractChangeItem> toSave = new ArrayList<>(preparedItems.size());
@@ -526,23 +520,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         return result;
     }
 
-    /** DEC-041/BR-035：无客户线下确认时间、确认人、方式与签认证据，不得形成增减项变更单。 */
-    private void requireCustomerSignOff() {
-        if (customerConfirmedAt == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "请登记客户线下确认时间"));
-        }
-        if (customerConfirmedBy == null || customerConfirmedBy.isBlank()) {
-            throw new DefinedException(new DefaultErrorCode("400", "请登记客户确认人"));
-        }
-        if (customerConfirmMethod == null || customerConfirmMethod.isBlank()) {
-            throw new DefinedException(new DefaultErrorCode("400", "请选择客户确认方式"));
-        }
-        boolean hasEvidence = (evidenceImages != null && !evidenceImages.isEmpty())
-                || (signatureUrl != null && !signatureUrl.isBlank());
-        if (!hasEvidence) {
-            throw new DefinedException(new DefaultErrorCode("400", "请上传客户签认证据"));
-        }
-    }
+    // DEC-068：删除客户线下确认门禁（原 requireCustomerSignOff）。
+    // 老版本客户端可能仍提交 customerConfirmedAt/By/Method、signatureUrl、evidenceImages，服务端忽略不校验。
 
     private BigDecimal value(BigDecimal value) {
         return value == null ? BigDecimal.ZERO : value;

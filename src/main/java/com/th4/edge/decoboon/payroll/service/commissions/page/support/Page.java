@@ -1,5 +1,8 @@
 package com.th4.edge.decoboon.payroll.service.commissions.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
+
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.CommissionItem;
 import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
@@ -31,6 +34,12 @@ public class Page implements com.th4.edge.decoboon.payroll.service.commissions.p
     @User private Employee employee;
     @AutoInject private Integer current;
     @AutoInject private Integer size;
+    /** 门店维度（`DEC-065` / `P1-a2`）：不传 / 0 = 全部门店；门店范围角色恒锁本店，传他店 403。 */
+    @AutoInject
+    private Long storeId;
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreFilterContext storeFilterContext;
+
     private final CommissionItemRepository repository;
     private final PayrollAccessContext accessContext;
     public Page(CommissionItemRepository repository, PayrollAccessContext accessContext) {
@@ -39,7 +48,10 @@ public class Page implements com.th4.edge.decoboon.payroll.service.commissions.p
     @Override
     public org.springframework.data.domain.Page<CommissionItem> call(CommissionItem request) {
         Employee currentEmployee = accessContext.requireManager(employee);
-        var items = repository.findAll(accessContext.visible(currentEmployee, CommissionItem.class));
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
+        var items = repository.findAll(accessContext.visible(currentEmployee, CommissionItem.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+                .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
         int from = Math.min(page * pageSize, items.size());

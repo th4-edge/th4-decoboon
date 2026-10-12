@@ -28,6 +28,9 @@ public class FinanceSummary {
     private BigDecimal monthIncome = BigDecimal.ZERO;
     private BigDecimal monthExpense = BigDecimal.ZERO;
     private BigDecimal monthNetCashFlowAmount = BigDecimal.ZERO;
+    /** 应收条数（P1 契约补齐：与 receivableAmount 同一过滤清单计数，供跨页对账）。 */
+    private Integer receivableCount = 0;
+
     private Integer receiptCount = 0;
     private Integer paymentCount = 0;
     private BigDecimal receiptAmount = BigDecimal.ZERO;
@@ -95,6 +98,8 @@ public class FinanceSummary {
     public void setMonthExpense(BigDecimal monthExpense) { this.monthExpense = monthExpense; }
     public BigDecimal getMonthNetCashFlowAmount() { return monthNetCashFlowAmount; }
     public void setMonthNetCashFlowAmount(BigDecimal monthNetCashFlowAmount) { this.monthNetCashFlowAmount = monthNetCashFlowAmount; }
+    public Integer getReceivableCount() { return receivableCount; }
+    public void setReceivableCount(Integer receivableCount) { this.receivableCount = receivableCount; }
     public Integer getReceiptCount() { return receiptCount; }
     public void setReceiptCount(Integer receiptCount) { this.receiptCount = receiptCount; }
     public Integer getPaymentCount() { return paymentCount; }

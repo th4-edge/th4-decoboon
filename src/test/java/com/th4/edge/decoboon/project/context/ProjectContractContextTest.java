@@ -235,7 +235,7 @@ class ProjectContractContextTest {
     }
 
     @Test
-    void shouldApplyApprovedChangeAndCreateReceivableAfterCustomerConfirmation() {
+    void shouldSettleLegacyApprovedChangeOnceThroughLegacyEntry() {
         Company company = new Company();
         company.setComId(1L);
         Property property = new Property();
@@ -298,8 +298,7 @@ class ProjectContractContextTest {
         change.setContract(contract);
         change.setProperty(project.getProperty());
         change.setStatus(ContractChangeStatus.Pending);
-        change.setCustomerConfirmed(true);
-        change.setCustomerConfirmedAt(java.time.LocalDateTime.now().minusDays(1));
+        // DEC-068：审批通过即生效，不再要求任何客户线下确认信息。
         change.setAmount(new BigDecimal("5000"));
         Employee operator = new Employee();
         operator.setEmpId(1L);
@@ -308,7 +307,10 @@ class ProjectContractContextTest {
 
         assertThat(effective.getStatus()).isEqualTo(ContractChangeStatus.CustomerConfirmed);
         assertThat(effective.getApprovedBy()).isSameAs(operator);
-        assertThat(effective.getCustomerConfirmedAt()).isBefore(java.time.LocalDateTime.now());
+        assertThat(effective.getApprovedAt()).isNotNull();
+        // customerConfirmed 仅作“已结算”幂等标志，不再写“客户确认时间”语义。
+        assertThat(effective.getCustomerConfirmed()).isTrue();
+        assertThat(effective.getCustomerConfirmedAt()).isNull();
         assertThat(contract.getCurrentAmount()).isEqualByComparingTo("105000");
         assertThat(project.getContractAmount()).isEqualByComparingTo("105000");
         verify(receivableRepository).save(any(Receivable.class));
@@ -316,7 +318,7 @@ class ProjectContractContextTest {
     }
 
     @Test
-    void shouldRejectApprovalWithoutCustomerSignOff() {
+    void shouldActivateChangeWithoutAnyCustomerSignOff() {
         Company company = new Company();
         company.setComId(1L);
         Project project = new Project();
@@ -335,10 +337,14 @@ class ProjectContractContextTest {
         change.setStatus(ContractChangeStatus.Pending);
         change.setCustomerConfirmed(false);
         change.setAmount(new BigDecimal("5000"));
+        Employee operator = new Employee();
+        operator.setEmpId(9L);
 
-        assertThatThrownBy(() -> context.approve(change, new Employee(), true, "同意"))
-                .hasMessageContaining("缺少客户线下确认");
-        verify(fulfillmentContext, never()).apply(any(), any());
+        // DEC-068：不因缺少客户确认信息而拒绝；审批通过即生效并联动履约。
+        ContractChange effective = context.approve(change, operator, true, "同意");
+        assertThat(effective.getStatus()).isEqualTo(ContractChangeStatus.CustomerConfirmed);
+        assertThat(contract.getCurrentAmount()).isEqualByComparingTo("105000");
+        verify(fulfillmentContext).apply(change, operator);
     }
 
     @Test

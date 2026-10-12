@@ -222,10 +222,10 @@ public class ProjectContractContext {
     /**
      * 审批增减项变更单。
      *
-     * <p>DEC-041 / BR-035：客户线下确认是创建前置事实，企业审批通过即生效——
-     * 审批通过时在同一事务内完成合同金额、项目合同额、应收、任务、材料与成本联动；
-     * 审批驳回只落状态。历史 {@code Approved}（待客户确认）数据仍由
-     * {@link #confirmCustomer} 兼容处理。</p>
+     * <p>DEC-068：企业审批是<strong>唯一生效门槛</strong>——审批通过时在同一事务内完成合同金额、
+     * 项目合同额、应收、任务、材料与成本联动；审批驳回只落状态。系统不再校验、不再要求任何
+     * “客户线下确认”信息（业主确认属线下流程规范，业务逻辑无法校验，不建模为系统事实）。
+     * 历史 {@code Approved}（旧“待客户确认”）存量单仍由 {@link #confirmCustomer} 一次性收口。</p>
      */
     @Transactional
     public ContractChange approve(ContractChange change, Employee approver, boolean approved, String conclusion) {
@@ -239,17 +239,14 @@ public class ProjectContractContext {
             change.setStatus(ContractChangeStatus.Rejected);
             return changeRepository.save(change);
         }
-        if (!Boolean.TRUE.equals(change.getCustomerConfirmed())) {
-            throw new DefinedException(new DefaultErrorCode("400", "缺少客户线下确认，不能审批生效"));
-        }
         return settle(change, approver, ContractChangeStatus.CustomerConfirmed);
     }
 
     /**
-     * 历史口径兼容：审批通过后再登记客户确认。
+     * 历史口径兼容：对存量 {@code Approved}（旧“待客户确认”）单据做一次性收口结算。
      *
-     * <p>新口径审批通过即生效，不再产生 {@code Approved} 待确认数据；
-     * 此入口仅用于存量单据与旧客户端过渡。重复调用幂等。</p>
+     * <p>DEC-068 后新单据审批通过即生效，不会再产生 {@code Approved} 待确认数据；
+     * 本入口只服务历史数据与旧客户端过渡，不在 App/Web 暴露为业务动作。重复调用幂等。</p>
      */
     @Transactional
     public ContractChange confirmCustomer(ContractChange change, Employee operator) {
@@ -260,7 +257,7 @@ public class ProjectContractContext {
             return change; // 新口径已生效，幂等。
         }
         if (change.getStatus() != ContractChangeStatus.Approved) {
-            throw new DefinedException(new DefaultErrorCode("400", "变更单审批通过后才能进行客户确认"));
+            throw new DefinedException(new DefaultErrorCode("400", "仅历史待收口变更单可执行一次性收口"));
         }
         change.setCustomerConfirmed(true);
         change.setCustomerConfirmedAt(LocalDateTime.now());
@@ -270,8 +267,9 @@ public class ProjectContractContext {
     /**
      * 合同变更生效结算：合同当前额、项目合同额、应收、任务、材料、成本一致联动。
      *
-     * <p>调用方必须先完成客户确认与审批前置校验；本方法只做一次结算，
-     * 通过状态与 {@code customerConfirmed} 双保险避免重复生成应收/任务/材料。</p>
+     * <p>调用方只需完成企业审批前置校验；本方法只做一次结算，通过状态与
+     * {@code customerConfirmed} 双保险避免重复生成应收/任务/材料。生效时间以
+     * {@code approvedAt} 为准（不再产生“客户确认时间”语义，见 DEC-068）。</p>
      */
     private ContractChange settle(ContractChange change, Employee operator, ContractChangeStatus targetStatus) {
         ProjectContract contract = change.getContract();
@@ -290,11 +288,9 @@ public class ProjectContractContext {
         fulfillmentContext.apply(change, operator);
         projectContext.refreshProject(project);
         syncReceivable(change, operator, delta);
+        // customerConfirmed 为历史字段名，此处仅作“已结算”幂等标志，不再表示客户确认（DEC-068）。
         if (!Boolean.TRUE.equals(change.getCustomerConfirmed())) {
             change.setCustomerConfirmed(true);
-        }
-        if (change.getCustomerConfirmedAt() == null) {
-            change.setCustomerConfirmedAt(LocalDateTime.now());
         }
         change.setStatus(targetStatus);
         return changeRepository.save(change);

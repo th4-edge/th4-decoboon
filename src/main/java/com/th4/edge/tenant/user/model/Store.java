@@ -2,6 +2,7 @@ package com.th4.edge.tenant.user.model;
 import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 
 import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.tenant.user.configure.StoreStatus;
 import com.th4.edge.framework.data.jpa.annotation.Model;
 import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.framework.data.model.AbstractModel;
@@ -37,6 +38,15 @@ public class Store extends AbstractModel {
     @Column(nullable = false)
     private Boolean defaultStore = Boolean.FALSE;
 
+    @Note("状态（P0D-04）")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, nullable = false)
+    private StoreStatus status = StoreStatus.Active;
+
+    @Note("排序（升序；同值按门店索引升序）")
+    @Column(nullable = false)
+    private Integer sort = 0;
+
     @Note("品牌色")
     @Column(length = 12)
     private String color;
@@ -44,6 +54,27 @@ public class Store extends AbstractModel {
     @Note("地址")
     @Column(length = 256)
     private String addr;
+
+    public StoreStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(StoreStatus status) {
+        this.status = status;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    /** 是否可用于新建归属（停用门店不得承接新业务）。 */
+    public boolean attributable() {
+        return status == null || status.attributable();
+    }
 
     @Note("创建时间")
     @CreateTime

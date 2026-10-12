@@ -1,11 +1,8 @@
 package com.th4.edge.decoboon.statistic;
 
-import com.th4.edge.decoboon.project.configure.ContractStatus;
-import com.th4.edge.decoboon.project.model.Project;
-import com.th4.edge.decoboon.project.model.ProjectContract;
-import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.statistic.context.OrganizationContext;
 import com.th4.edge.decoboon.statistic.context.PerformanceReportContext;
+import com.th4.edge.decoboon.statistic.context.StatisticStoreAggregateContext;
 import com.th4.edge.decoboon.statistic.model.EmployeePerformance;
 import com.th4.edge.decoboon.statistic.model.OrganizationQuery;
 import com.th4.edge.decoboon.statistic.model.OrganizationReport;
@@ -16,13 +13,13 @@ import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
-import com.th4.edge.tenant.user.repository.EmployeeRepository;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -30,12 +27,15 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * 组织效能聚合：
- * 在职/新增口径、人均产值与人均单产、角色产能（角色 + 人数 + 该角色绩效均值）、三张排行与样本量提示。
+ * 组织效能聚合（P0B-02 聚合下推后）：
+ * 在职/入职/角色在编、签约额、新项目数来自 SQL 聚合；角色绩效均值与排行仍复用唯一实现
+ * {@link PerformanceReportContext}。本类验证组织效能的组装、人均口径与排行。
  */
 class OrganizationContextTest {
 
@@ -43,12 +43,12 @@ class OrganizationContextTest {
     private static final LocalDate MONTH = LocalDate.of(2026, 9, 1);
 
     private final TenantContext tenantContext = mock(TenantContext.class);
-    private final EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-    private final ProjectContractRepository contractRepository = mock(ProjectContractRepository.class);
+    private final StoreRepository storeRepository = mock(StoreRepository.class);
     private final PerformanceReportContext performanceContext = mock(PerformanceReportContext.class);
+    private final StatisticStoreAggregateContext aggregate = mock(StatisticStoreAggregateContext.class);
 
-    private final OrganizationContext context = new OrganizationContext(tenantContext, employeeRepository,
-            contractRepository, performanceContext);
+    private final OrganizationContext context =
+            new OrganizationContext(tenantContext, storeRepository, performanceContext, aggregate);
 
     private Employee boss;
 
@@ -64,39 +64,30 @@ class OrganizationContextTest {
     }
 
     @Test
-    void shouldAggregateHeadcountPerCapitaAndRoleCapacity() {
-        Employee designerA = employee(2L, "李设计", EmployeeRole.Designer, EmployeeStatus.Active, MONTH.plusDays(3));
-        Employee designerB = employee(3L, "王设计", EmployeeRole.Designer, EmployeeStatus.Active, MONTH.minusMonths(6));
-        Employee marketer = employee(4L, "王芳", EmployeeRole.Marketer, EmployeeStatus.Active, MONTH.minusMonths(8));
-        Employee pm = employee(5L, "张工", EmployeeRole.Pm, EmployeeStatus.Active, MONTH.minusMonths(3));
-        Employee resigned = employee(6L, "离职设计", EmployeeRole.Designer, EmployeeStatus.Resigned, MONTH.minusMonths(14));
-        Employee suspended = employee(7L, "停用业务", EmployeeRole.Marketer, EmployeeStatus.Suspended, MONTH.minusMonths(2));
+    void shouldAssembleHeadcountPerCapitaAndRoleCapacityFromSqlAggregates() {
+        Map<Object, Long> roleCounts = new LinkedHashMap<>();
+        roleCounts.put(EmployeeRole.Designer, 2L);
+        roleCounts.put(EmployeeRole.Marketer, 1L);
+        roleCounts.put(EmployeeRole.Pm, 1L);
 
-        when(employeeRepository.findByCompany_ComId(COM_ID))
-                .thenReturn(List.of(designerA, designerB, marketer, pm, resigned, suspended));
-
-        Project projectA = project(101L);
-        Project projectB = project(102L);
-        when(contractRepository.findByCompany_ComIdOrderByContractIdDesc(COM_ID)).thenReturn(List.of(
-                contract(projectA, "100000", MONTH.plusDays(5)),
-                contract(projectB, "300000", MONTH.plusDays(12)),
-                // 上个月签约，不计入本月
-                contract(project(103L), "900000", MONTH.minusMonths(1).plusDays(4))));
-
+        when(aggregate.organizationCounts(eq(COM_ID), anyLong(), eq(MONTH)))
+                .thenReturn(new StatisticStoreAggregateContext.OrganizationCounts(4, 1, roleCounts));
+        when(aggregate.organizationSignedAmount(eq(COM_ID), anyLong(), eq(MONTH)))
+                .thenReturn(new BigDecimal("400000"));
+        when(aggregate.organizationNewProjectCount(eq(COM_ID), anyLong(), eq(MONTH))).thenReturn(2L);
+        when(aggregate.unassignedEmployees(COM_ID)).thenReturn(0L);
         when(performanceContext.report(any(), any())).thenReturn(performance());
 
         OrganizationReport report = context.report(boss, query(MONTH, null));
 
         assertThat(report.getMonth()).isEqualTo(MONTH);
-        // 在职 4 人：离职、停用不计入
+        assertThat(report.getStoreScope().getScopeType()).isEqualTo("AllStores");
+        assertThat(report.getStoreScope().getUnassignedCount()).isZero();
         assertThat(report.getHeadcount()).isEqualTo(4);
-        // 本月新增 1 人（joinedAt 落在本月）
         assertThat(report.getNewHires()).isEqualTo(1);
         assertThat(report.getSignedAmount()).isEqualByComparingTo("400000");
         assertThat(report.getNewProjectCount()).isEqualTo(2);
-        // 人均产值 = 400000 / 4 = 100000
         assertThat(report.getPerCapitaOutput()).isEqualByComparingTo("100000.00");
-        // 人均单产 = 2 / 4 = 0.50
         assertThat(report.getPerCapitaOrders()).isEqualByComparingTo("0.50");
 
         Map<String, RoleCapacity> capacities = report.getRoleCapacities().stream()
@@ -113,26 +104,43 @@ class OrganizationContextTest {
     }
 
     @Test
-    void shouldRankByRoleSpecificMetricAndLimitTopN() {
-        when(employeeRepository.findByCompany_ComId(COM_ID)).thenReturn(List.of(
-                employee(2L, "李设计", EmployeeRole.Designer, EmployeeStatus.Active, MONTH),
-                employee(3L, "王设计", EmployeeRole.Designer, EmployeeStatus.Active, MONTH)));
+    void shouldAnnotateSingleStoreScopeWithStoreName() {
+        com.th4.edge.tenant.user.model.Store store = new com.th4.edge.tenant.user.model.Store();
+        store.setStoreId(99L);
+        store.setName("城南店");
+        when(storeRepository.findByStoreId(99L)).thenReturn(store);
+        when(aggregate.organizationCounts(eq(COM_ID), eq(99L), eq(MONTH)))
+                .thenReturn(new StatisticStoreAggregateContext.OrganizationCounts(0, 0, Map.of()));
+        when(aggregate.organizationSignedAmount(eq(COM_ID), eq(99L), eq(MONTH))).thenReturn(BigDecimal.ZERO);
+        when(aggregate.organizationNewProjectCount(eq(COM_ID), eq(99L), eq(MONTH))).thenReturn(0L);
+        when(performanceContext.report(any(), any())).thenReturn(performance());
 
-        when(contractRepository.findByCompany_ComIdOrderByContractIdDesc(COM_ID)).thenReturn(List.of());
+        OrganizationQuery query = query(MONTH, null);
+        query.setStoreId(99L);
+        OrganizationReport report = context.report(boss, query);
+
+        assertThat(report.getStoreScope().getScopeType()).isEqualTo("Store");
+        assertThat(report.getStoreScope().getStoreId()).isEqualTo(99L);
+        assertThat(report.getStoreScope().getStoreName()).isEqualTo("城南店");
+        assertThat(report.getStoreScope().getUnassignedCount()).isZero();
+    }
+
+    @Test
+    void shouldRankByRoleSpecificMetricAndLimitTopN() {
+        when(aggregate.organizationCounts(anyLong(), anyLong(), any()))
+                .thenReturn(new StatisticStoreAggregateContext.OrganizationCounts(2, 0, Map.of(EmployeeRole.Designer, 2L)));
+        when(aggregate.organizationSignedAmount(anyLong(), anyLong(), any())).thenReturn(BigDecimal.ZERO);
+        when(aggregate.organizationNewProjectCount(anyLong(), anyLong(), any())).thenReturn(0L);
         when(performanceContext.report(any(), any())).thenReturn(performance());
 
         OrganizationReport report = context.report(boss, query(MONTH, 2));
 
-        // 设计师按最终报价接受率倒序
         assertThat(report.getDesignerRanking()).extracting(item -> item.getEmployee().getName())
                 .containsExactly("李设计", "王设计");
-        // 业务员按签约率倒序
         assertThat(report.getMarketerRanking()).extracting(item -> item.getEmployee().getName())
                 .containsExactly("王芳", "赵敏");
-        // 项目经理按准时交付率倒序
         assertThat(report.getPmRanking()).extracting(item -> item.getEmployee().getName())
                 .containsExactly("张工", "李工");
-        // topN 生效
         assertThat(report.getDesignerRanking()).hasSize(2);
     }
 
@@ -153,23 +161,6 @@ class OrganizationContextTest {
         employee.setStatus(status);
         employee.setJoinedAt(joinedAt.atStartOfDay());
         return employee;
-    }
-
-    private Project project(Long id) {
-        Project project = new Project();
-        project.setProjectId(id);
-        project.setName("项目 " + id);
-        return project;
-    }
-
-    private ProjectContract contract(Project project, String amount, LocalDate signedAt) {
-        ProjectContract contract = new ProjectContract();
-        contract.setProject(project);
-        contract.setCurrentAmount(new BigDecimal(amount));
-        contract.setBaselineAmount(new BigDecimal(amount));
-        contract.setSignedAt(signedAt);
-        contract.setStatus(ContractStatus.Effective);
-        return contract;
     }
 
     private EmployeePerformance performance(Long id, String name, EmployeeRole role,

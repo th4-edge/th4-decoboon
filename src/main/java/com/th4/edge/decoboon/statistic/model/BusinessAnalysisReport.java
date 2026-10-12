@@ -25,6 +25,13 @@ public class BusinessAnalysisReport {
     @Note("统计月份")
     private LocalDate month;
 
+    /** 门店维度范围标注（DEC-067 BOSS-STORE-03）。 */
+    private StoreScopeInfo storeScope = new StoreScopeInfo();
+
+    public StoreScopeInfo getStoreScope() { return storeScope; }
+    public void setStoreScope(StoreScopeInfo storeScope) { this.storeScope = storeScope; }
+
+
     @Note("转化漏斗（线索 → 到店 → 量房 → 报价 → 签约）")
     private List<FunnelStage> funnel = List.of();
 

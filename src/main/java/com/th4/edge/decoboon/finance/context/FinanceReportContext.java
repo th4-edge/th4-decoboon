@@ -25,7 +25,6 @@ import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.context.ProjectCostContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
-import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +44,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Map;
 import java.util.Set;
+import com.th4.edge.decoboon.common.context.StoreScope;
 
 /** 财务汇总、项目财务全景与结算快照计算。 */
 @Component
@@ -102,9 +102,22 @@ public class FinanceReportContext {
         this.openingBalanceContext = openingBalanceContext;
     }
 
+    /** 企业范围全量汇总（沿用旧签名：BOSS/总部财务视角，不限门店）。 */
     public FinanceSummary summary(Employee principal) {
+        return summary(principal, null);
+    }
+
+    /**
+     * 财务工作台汇总（DEC-065 门店维度）。
+     *
+     * <p>门店范围主体只能用本店；企业范围主体缺省为全部门店，可按 {@code storeId} 下钻单店。</p>
+     */
+    public FinanceSummary summary(Employee principal, Long requestedStoreId) {
         Employee current = accessContext.requireReader(principal);
-        List<Project> allProjects = projects(current);
+        Long storeFilter = accessContext.resolveStoreFilter(current, requestedStoreId);
+        List<Project> allProjects = projects(current, storeFilter).stream()
+                .filter(project -> StoreScope.inStore(StoreScope.storeIdOf(project), storeFilter))
+                .toList();
         Set<Long> historicalArchiveProjectIds = allProjects.stream()
                 .filter(ProjectArchivePolicy::isHistoricalArchive)
                 .map(Project::getProjectId)
@@ -113,18 +126,25 @@ public class FinanceReportContext {
                 .filter(project -> !ProjectArchivePolicy.isHistoricalArchive(project))
                 .toList();
         List<Receivable> receivables = receivableRepository.findAll(accessContext.visible(current, Receivable.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
                 .toList();
         List<Payable> payables = payableRepository.findAll(accessContext.visible(current, Payable.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> !belongsToArchivedProject(item.getProject(), historicalArchiveProjectIds))
                 .toList();
         List<Ledger> ledgers = ledgerRepository.findAll(accessContext.visible(current, Ledger.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
                 .toList();
         List<Receipt> receipts = receiptRepository == null ? List.of()
-                : receiptRepository.findAll(accessContext.visible(current, Receipt.class)).stream().toList();
+                : receiptRepository.findAll(accessContext.visible(current, Receipt.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+                .toList();
         List<Payment> payments = paymentRepository == null ? List.of()
-                : paymentRepository.findAll(accessContext.visible(current, Payment.class)).stream().toList();
+                : paymentRepository.findAll(accessContext.visible(current, Payment.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+                .toList();
 
         FinanceSummary summary = new FinanceSummary();
         summary.setProjectCount(projects.size());
@@ -135,6 +155,7 @@ public class FinanceReportContext {
                 .count());
         summary.setContractAmount(sum(projects.stream().map(Project::getContractAmount)));
         summary.setReceivableAmount(sum(receivables.stream().map(Receivable::getAmount)));
+        summary.setReceivableCount(receivables.size());
         summary.setReceivedAmount(sum(receivables.stream().map(Receivable::getReceivedAmount)));
         summary.setOutstandingAmount(receivables.stream()
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getReceivedAmount()))
@@ -282,8 +303,14 @@ public class FinanceReportContext {
     }
 
     public List<FinanceProjectReport> projectReports(Employee principal) {
+        return projectReports(principal, null);
+    }
+
+    /** 项目账本（DEC-065 门店维度）：企业范围可下钻单店，门店范围恒为本店。 */
+    public List<FinanceProjectReport> projectReports(Employee principal, Long storeId) {
         Employee current = accessContext.requireReader(principal);
-        return projects(current).stream()
+        Long storeFilter = accessContext.resolveStoreFilter(current, storeId);
+        return projects(current, storeFilter).stream()
                 .map(project -> project(current, project.getProjectId()))
                 .toList();
     }
@@ -460,16 +487,19 @@ public class FinanceReportContext {
                 .allMatch(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()).signum() == 0);
     }
 
-    private List<Project> projects(Employee current) {
-        if (current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance) {
-            return projectRepository.findByCompany_ComIdOrderByProjectIdDesc(current.getCompany().getComId());
+    /**
+     * 按门店维度取项目（DEC-065）。
+     *
+     * <p>{@code storeFilter} 由 {@code resolveStoreFilter} 裁决：为 {@code null} 表示企业范围（全部门店），
+     * 非空表示指定门店——门店范围主体的取值恒为其本店，不可能为空。因此无需再按角色硬编码，
+     * 也不会出现「财务=全企业」与门店口径分叉。</p>
+     */
+    private List<Project> projects(Employee current, Long storeFilter) {
+        Long comId = current.getCompany().getComId();
+        if (storeFilter == null || storeFilter == StoreScope.ALL_STORES) {
+            return projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
         }
-        if (current.getRole() == EmployeeRole.StoreManager
-                && current.getStore() != null && current.getStore().getStoreId() != null) {
-            return projectRepository.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(
-                    current.getCompany().getComId(), current.getStore().getStoreId());
-        }
-        return List.of();
+        return projectRepository.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(comId, storeFilter);
     }
 
     /**

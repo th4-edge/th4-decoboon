@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.finance.service.payables.page.support;
 import com.th4.edge.decoboon.customer.model.Customer;
 
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.project.model.Project;
@@ -59,6 +60,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
     private Long partnerId;
     @AutoInject
     private String keyword;
+    /** 门店维度（DEC-065）：为空表示不限门店（企业范围）或本店（门店范围）。 */
+    @AutoInject
+    private Long storeId;
 
     private final PayableRepository payableRepository;
     private final FinanceAccessContext accessContext;
@@ -71,9 +75,11 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
     @Override
     public org.springframework.data.domain.Page<Payable> call(Payable request) {
         Employee currentEmployee = accessContext.requireReader(employee);
+        Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<Payable> items = payableRepository.findAll(accessContext.visible(currentEmployee, Payable.class))
                 .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
                 .filter(item -> type == null || type.isBlank() || item.getType().name().equalsIgnoreCase(type))
                 .filter(item -> status == null || status.isBlank() || item.getStatus().name().equalsIgnoreCase(status))

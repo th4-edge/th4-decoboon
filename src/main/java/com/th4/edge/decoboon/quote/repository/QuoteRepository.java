@@ -3,7 +3,10 @@ package com.th4.edge.decoboon.quote.repository;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
@@ -96,4 +99,21 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
 
     long countByCompany_ComIdAndProperty_PropertyIdAndPackageTemplate_TemplateId(
             Long comId, Long propertyId, Long templateId);
+
+
+    /**
+     * 正常经营来源、可构成报价机会的报价（排除草稿与已被替代）：门店按**报价自身门店**收窄，
+     * 来源与状态条件在 SQL 完成；机会分组口径仍由 `QuoteAcceptanceContext` 统一计算。
+     */
+    @EntityGraph(attributePaths = {"customer", "property", "createdBy", "store"})
+    @Query("select q from Quote q left join q.store qs where q.company.comId = :comId "
+            + "and (:allStores = true or qs.storeId = :storeId) "
+            + "and (q.businessOrigin is null or q.businessOrigin = :normal) "
+            + "and (q.status is null or q.status not in (:draft, :superseded)) order by q.quoteId desc")
+    List<Quote> findOpportunityQuotesByStoreScope(@Param("comId") Long comId,
+                                                  @Param("normal") com.th4.edge.decoboon.common.configure.BusinessOrigin normal,
+                                                  @Param("draft") com.th4.edge.decoboon.quote.configure.QuoteStatus draft,
+                                                  @Param("superseded") com.th4.edge.decoboon.quote.configure.QuoteStatus superseded,
+                                                  @Param("allStores") boolean allStores,
+                                                  @Param("storeId") Long storeId);
 }

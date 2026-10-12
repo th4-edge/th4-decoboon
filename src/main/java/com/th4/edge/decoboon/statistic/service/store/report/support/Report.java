@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.statistic.service.store.report.support;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
@@ -14,6 +16,7 @@ import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
 import com.th4.edge.decoboon.statistic.context.QuoteAcceptanceContext;
 import com.th4.edge.decoboon.statistic.model.DesignerPerformance;
 import com.th4.edge.decoboon.statistic.model.StoreManagerReport;
+import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -24,11 +27,13 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -40,7 +45,6 @@ import java.util.Comparator;
 import java.util.List;
 
 /** 店长经营报告，所有数据严格限定在登录店长所属企业、门店。 */
-@Note("门店经营报告")
 @Description("聚合门店成员、客户、报价、项目、施工风险、通知与设计师工作量")
 @Properties(allow = {
         @AllowProperties(model = Customer.class,
@@ -55,11 +59,22 @@ import java.util.List;
                         "area", "contractAmount", "cost", "status", "progress", "startDate", "planEndDate", "createTime" }),
         @AllowProperties(model = Employee.class,
                 properties = {"empId", "name", "telNo", "role", "store"}),
-        @AllowProperties(model = Store.class, properties = {"storeId", "name"})
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
+        // 门店维度范围标注（DEC-067 BOSS-STORE-03 / P0B-04 同构）
+        @AllowProperties(model = StoreScopeInfo.class,
+                properties = {"scopeType", "storeId", "storeName", "unassignedCount"})
 })
+@Note("门店经营报告（BOSS / 总部财务 / 店长 / 门店财务）")
 @Service("statistic/store/report")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Report implements com.th4.edge.decoboon.statistic.service.store.report.Report {
+
+    /**
+     * 门店维度（`DESIGN-BIZ-20261013-003` P0D-02 / `GAP-048`）：框架只对 provider 实例的
+     * {@code @AutoInject} 字段做请求绑定，请求模型不承载 HTTP 参数，因此门店维度必须落在字段上。
+     */
+    @AutoInject
+    private Long storeId;
 
     private final TenantContext tenantContext;
     private final EmployeeRepository employeeRepository;
@@ -69,6 +84,8 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
     private final ProjectTaskRepository taskRepository;
     private final ProjectReportRepository projectReportRepository;
     private final NoticeRepository noticeRepository;
+    private final StoreRepository storeRepository;
+    private final StoreFilterContext storeFilterContext;
 
     public Report(TenantContext tenantContext,
                   EmployeeRepository employeeRepository,
@@ -77,7 +94,9 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
                   ProjectRepository projectRepository,
                   ProjectTaskRepository taskRepository,
                   ProjectReportRepository projectReportRepository,
-                  NoticeRepository noticeRepository) {
+                  NoticeRepository noticeRepository,
+                  StoreRepository storeRepository,
+                  StoreFilterContext storeFilterContext) {
         this.tenantContext = tenantContext;
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
@@ -86,30 +105,49 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         this.taskRepository = taskRepository;
         this.projectReportRepository = projectReportRepository;
         this.noticeRepository = noticeRepository;
+        this.storeRepository = storeRepository;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Override
     @Transactional(readOnly = true)
     public StoreManagerReport call(@User Employee employee) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.StoreManager);
-        if (current.getCompany() == null || current.getStore() == null
-                || current.getStore().getStoreId() == null) {
-            throw new DefinedException(new DefaultErrorCode("403", "当前店长未归属企业或门店"));
+        // 角色门禁（DESIGN-BIZ-20261013-003 P0D-02）：BOSS / 总部财务 / 店长 / 门店财务。
+        // 店长与门店财务由 StoreFilterContext 锁定本店（传他店 403）；BOSS 与总部财务可按门店收窄。
+        Employee current = tenantContext.requireRole(employee,
+                EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
+        if (current.getCompany() == null) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号未归属企业"));
         }
 
         Long comId = current.getCompany().getComId();
-        Long storeId = current.getStore().getStoreId();
+        // 门店维度：解析 + 越权校验（他企业 / 不存在的门店 → 403）。
+        Long scopeStoreId = storeFilterContext.resolve(current, storeId);
+        if (StoreScope.isAllStores(scopeStoreId)) {
+            // 「全部门店」视图：本页是门店经营概览（含人员结构与比率），**不提供全部门店合计**
+            // （比率与人员结构不可简单相加，避免与经营总览/财务口径重叠造成误读）。
+            // 只回范围标注，由前端给「请先选择门店」引导。
+            StoreManagerReport guide = new StoreManagerReport();
+            StoreScopeInfo allStores = new StoreScopeInfo();
+            allStores.setScopeType("AllStores");
+            guide.setStoreScope(allStores);
+            return guide;
+        }
+        Store store = storeRepository.findByStoreId(scopeStoreId);
+        if (store == null) {
+            throw new DefinedException(new DefaultErrorCode("403", "门店不存在或无权访问"));
+        }
         List<Employee> members = employeeRepository
-                .findByCompany_ComIdAndStore_StoreIdOrderByName(comId, storeId);
+                .findByCompany_ComIdAndStore_StoreIdOrderByName(comId, scopeStoreId);
         List<Customer> customers = customerRepository
-                .findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(comId, storeId);
+                .findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(comId, scopeStoreId);
         List<Quote> quotes = quoteRepository
-                .findByCompany_ComIdAndCustomer_Store_StoreIdOrderByQuoteIdDesc(comId, storeId);
+                .findByCompany_ComIdAndCustomer_Store_StoreIdOrderByQuoteIdDesc(comId, scopeStoreId);
         List<Project> projects = projectRepository
-                .findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(comId, storeId);
+                .findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(comId, scopeStoreId);
 
         StoreManagerReport report = new StoreManagerReport();
-        report.setStoreName(current.getStore().getName());
+        report.setStoreName(store.getName());
         report.setMemberCount(members.size());
         report.setDesignerCount(countRole(members, EmployeeRole.Designer));
         report.setMarketerCount(countRole(members, EmployeeRole.Marketer));
@@ -202,6 +240,13 @@ public class Report implements com.th4.edge.decoboon.statistic.service.store.rep
         report.setRecentCustomers(customers.stream().limit(8).toList());
         report.setRecentQuotes(quotes.stream().limit(8).toList());
         report.setRecentProjects(projects.stream().limit(8).toList());
+        StoreScopeInfo scopeInfo = new StoreScopeInfo();
+        scopeInfo.setScopeType("Store");
+        scopeInfo.setStoreId(scopeStoreId);
+        scopeInfo.setStoreName(store.getName());
+        // 单店视图不含未归属门店（未归属只在「全部门店」口径下出现，DEC-067 BOSS-STORE-03）。
+        scopeInfo.setUnassignedCount(0);
+        report.setStoreScope(scopeInfo);
         return report;
     }
 

@@ -20,10 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * <p>企业负责人可见企业全部门店；店长/团队长/普通员工仅可见本人门店。
  * 前端据此判断是否需要展示"门店维度"筛选（仅一个门店时无需展示）。</p>
+ *
+ * <p>`P0D-04`：企业负责人视角**包含已停用门店**（历史查看需要），并返回 `status` / `sort`；
+ * 排序按 `sort` 升序、同值按 `storeId` 升序。前端对 `status=Disabled` 的选项展示「已停用」标记，
+ * 并禁止把停用门店作为**新建归属**（服务端另有 {@code StoreAttributionContext} 兜底拦截）。</p>
  */
 @Note("门店列表")
 @Properties(allow = {
-        @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore", "addr"}),
+        @AllowProperties(model = Store.class,
+                properties = {"storeId", "name", "defaultStore", "addr", "status", "sort"}),
         @AllowProperties(model = Company.class, properties = {"comId", "title", "name"})
 })
 @Service("user/store/list")
@@ -53,7 +58,8 @@ public class List implements com.th4.edge.tenant.user.service.user.store.list.Li
             return current.getStore() == null ? java.util.List.of() : java.util.List.of(current.getStore());
         }
         Long comId = current.getCompany() == null ? null : current.getCompany().getComId();
-        return comId == null ? java.util.List.of() : storeRepository.findByCompany_ComId(comId);
+        return comId == null ? java.util.List.of()
+                : storeRepository.findByCompany_ComIdOrderBySortAscStoreIdAsc(comId);
     }
 
     /** 仅企业负责人具备跨门店视角。 */

@@ -20,6 +20,9 @@ public class PerformanceReport {
     private BigDecimal averagePmAcceptancePassRate = BigDecimal.ZERO;
     private List<EmployeePerformance> performances = List.of();
 
+    /** 门店维度范围标注（`DEC-067` BOSS-STORE-03）：全部门店视图带未归属条数，单店恒 0。 */
+    private StoreScopeInfo storeScope;
+
     public LocalDate getMonth() { return month; }
     public void setMonth(LocalDate month) { this.month = month; }
     public Integer getDesignerCount() { return designerCount; }
@@ -38,4 +41,7 @@ public class PerformanceReport {
     public void setAveragePmAcceptancePassRate(BigDecimal averagePmAcceptancePassRate) { this.averagePmAcceptancePassRate = averagePmAcceptancePassRate; }
     public List<EmployeePerformance> getPerformances() { return performances; }
     public void setPerformances(List<EmployeePerformance> performances) { this.performances = performances; }
+
+    public StoreScopeInfo getStoreScope() { return storeScope; }
+    public void setStoreScope(StoreScopeInfo storeScope) { this.storeScope = storeScope; }
 }

@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.finance.service.receipts.page.support;
 
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
@@ -48,6 +49,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.receipts.page
     private Long projectId;
     @AutoInject
     private String keyword;
+    /** 门店维度（DEC-065）：为空表示不限门店（企业范围）或本店（门店范围）。 */
+    @AutoInject
+    private Long storeId;
 
     private final ReceiptRepository receiptRepository;
     private final FinanceAccessContext accessContext;
@@ -60,9 +64,11 @@ public class Page implements com.th4.edge.decoboon.finance.service.receipts.page
     @Override
     public org.springframework.data.domain.Page<Receipt> call(Receipt request) {
         Employee currentEmployee = accessContext.requireReader(employee);
+        Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<Receipt> items = receiptRepository.findAll(accessContext.visible(currentEmployee, Receipt.class))
                 .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> projectId == null || projectId.equals(item.getProject().getProjectId()))
                 .filter(item -> kw.isBlank()
                         || item.getProject().getName().toLowerCase().contains(kw)

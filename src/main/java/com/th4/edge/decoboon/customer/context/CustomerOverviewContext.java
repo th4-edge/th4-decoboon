@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.th4.edge.decoboon.common.context.StoreScope;
 
 /** 企业负责人客户经营聚合。 */
 @Component
@@ -92,7 +93,7 @@ public class CustomerOverviewContext {
         LocalDate month = today.withDayOfMonth(1);
 
         List<Customer> customers = customerRepository.findByCompany_ComId(comId).stream()
-                .filter(item -> storeId == null || item.getStore() != null && storeId.equals(item.getStore().getStoreId()))
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeId))
                 .toList();
         List<CustomerFollow> follows = followRepository.findByCompany_ComId(comId);
         List<ProjectContract> contracts = contractRepository.findByCompany_ComIdOrderByContractIdDesc(comId);

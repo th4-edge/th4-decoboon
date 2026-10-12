@@ -1,5 +1,8 @@
 package com.th4.edge.decoboon.finance.service.partnerledger.report.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
+
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.PartnerLedger;
 import com.th4.edge.decoboon.finance.model.PartnerLedgerReport;
@@ -56,6 +59,12 @@ public class Report implements com.th4.edge.decoboon.finance.service.partnerledg
     @AutoInject
     private Boolean overdueOnly;
 
+    /** 门店维度（`DEC-065` / `P1-a2`）：不传 / 0 = 全部门店；门店范围角色恒锁本店，传他店 403。 */
+    @AutoInject
+    private Long storeId;
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreFilterContext storeFilterContext;
+
     private final PayableRepository payableRepository;
     private final FinanceAccessContext accessContext;
 
@@ -68,9 +77,13 @@ public class Report implements com.th4.edge.decoboon.finance.service.partnerledg
     @Transactional(readOnly = true)
     public PartnerLedgerReport call(Payable request) {
         Employee current = accessContext.requireReader(employee);
+        Long storeFilter = storeFilterContext.resolve(current, storeId);
         LocalDate today = LocalDate.now();
         Map<Long, PartnerLedger> aggregated = new LinkedHashMap<>();
         for (Payable item : payableRepository.findAll(accessContext.visible(current, Payable.class))) {
+            if (!StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter)) {
+                continue;
+            }
             Partner partner = item.getPayeePartner();
             if (partner == null || partner.getPartnerId() == null) {
                 continue;

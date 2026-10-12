@@ -39,6 +39,15 @@ import java.util.List;
 @Note("材料采购确认与应付联动")
 @Component
 public class MaterialPurchaseContext {
+    /** 收付/单据归属统一写入（`DEC-070`：应付三路径同源）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.finance.context.FinanceAccessContext financeAccessContext;
+
+
+    /** 门店归属唯一写入解析器（`DEC-070`）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
+
 
     public static final String PRICE_SOURCE_SUPPLY_RELATION = "供应关系价";
     public static final String PRICE_SOURCE_PARTNER_PRICE = "目录合作价";
@@ -199,7 +208,11 @@ public class MaterialPurchaseContext {
         payable.setMaterialPlan(purchase.getMaterialPlan());
         payable.setPurchaseOrder(purchase);
         payable.setOwner(resolveOwner(purchase, operator));
-        payable.setStore(purchase.getStore());
+        // DEC-070：应付门店统一走财务域同一方法（客户门店快照；采购/到货/手工三路径同源）
+        financeAccessContext.applyPayableStore(payable,
+                purchase.getProject() == null ? null : purchase.getProject().getCustomer(),
+                purchase.getOwner() == null ? operator : purchase.getOwner(),
+                purchase.getStore());
         payable.setTeam(purchase.getTeam());
         payable.setName("材料采购 · " + purchase.getSupplierName());
         payable.setType(PayableType.Material);

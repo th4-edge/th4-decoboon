@@ -27,6 +27,7 @@ import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +41,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 
 /**
  * 客户分页（显式实现，支持门店维度）。
@@ -54,7 +57,11 @@ import java.util.Set;
                 properties = {"custId", "name", "telNo", "gender", "source", "community", "addr", "area",
                         "budget", "status", "statusBeforeDormant", "dormantReason", "dormantReasonText", "dormantAt", "dormantBy", "restoredAt", "restoredBy", "owner", "wechatAdded", "wechatNo", "wechatAddedAt", "visitCount", "lastVisitAt", "lastFollowAt",
                         "nextFollowAt", "pendingMeasureAt", "measureAt", "measureRequestedAt", "handedOffAt", "designer", "createTime",
-                        "tags", "grade"}),
+                        "tags", "grade",
+                        // 门店归属（DEC-070 单一事实源=客户门店）：BOSS「全部客户」需要按门店解释每一行，
+                        // 并标注「未归属门店」；只给摘要（storeId/name），不展开门店其他字段（响应体最小白名单）。
+                        "store"}),
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
         @AllowProperties(model = Employee.class,
                 properties = {"empId", "name"}),
         @AllowProperties(model = CustomerTag.class,
@@ -95,6 +102,7 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
     private final PropertyRepository propertyRepository;
     private final MeasureRepository measureRepository;
     private final CustomerTagContext tagContext;
+    private final StoreFilterContext storeFilterContext;
     private final CustomerGradeContext gradeContext;
 
     public Page(TenantContext tenantContext,
@@ -105,7 +113,7 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
                 PropertyRepository propertyRepository,
                 MeasureRepository measureRepository,
                 CustomerTagContext tagContext,
-                CustomerGradeContext gradeContext) {
+                CustomerGradeContext gradeContext, StoreFilterContext storeFilterContext) {
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
         this.customerRepository = customerRepository;
@@ -114,6 +122,7 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
         this.propertyRepository = propertyRepository;
         this.measureRepository = measureRepository;
         this.tagContext = tagContext;
+        this.storeFilterContext = storeFilterContext;
         this.gradeContext = gradeContext;
     }
 
@@ -131,10 +140,11 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
             assigned.forEach(item -> merged.put(item.getCustId(), item));
             all = new java.util.ArrayList<>(merged.values());
         }
-        Long effectiveStoreId = resolveStoreId(scope, storeId);
-        if (effectiveStoreId != null) {
+        // 门店维度（DEC-067）：共享解析 + 越权校验；不传 / null / 0 等价为全部门店
+        Long effectiveStoreId = storeFilterContext.resolve(currentEmployee, storeId);
+        if (!StoreScope.isAllStores(effectiveStoreId)) {
             all = all.stream()
-                    .filter(item -> item.getStore() != null && effectiveStoreId.equals(item.getStore().getStoreId()))
+                    .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), effectiveStoreId))
                     .toList();
         }
         String normalizedKeyword = keyword == null ? "" : keyword.trim().toLowerCase(Locale.ROOT);
@@ -234,14 +244,4 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
         };
     }
 
-    /** 门店维度：企业负责人可跨门店，其他角色固定本门店，避免越权。 */
-    private Long resolveStoreId(DataScope scope, Long requested) {
-        if (requested == null) {
-            return null;
-        }
-        if (scope.type() != DataScopeType.Company) {
-            return scope.storeId();
-        }
-        return requested;
-    }
 }

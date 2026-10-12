@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.finance.context;
 
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
@@ -15,10 +16,12 @@ import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
+import com.th4.edge.tenant.user.repository.StoreRepository;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -30,19 +33,35 @@ import java.time.LocalDate;
 @Component
 public class FinanceAccessContext {
 
+    /** 门店归属唯一写入解析器（`DEC-070`）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
+
+
     private final TenantContext tenantContext;
     private final DataScopeContext dataScopeContext;
     private final ProjectRepository projectRepository;
     private final LedgerRepository ledgerRepository;
+    private final StoreRepository storeRepository;
 
     public FinanceAccessContext(TenantContext tenantContext,
                                 DataScopeContext dataScopeContext,
                                 ProjectRepository projectRepository,
                                 LedgerRepository ledgerRepository) {
+        this(tenantContext, dataScopeContext, projectRepository, ledgerRepository, null);
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public FinanceAccessContext(TenantContext tenantContext,
+                                DataScopeContext dataScopeContext,
+                                ProjectRepository projectRepository,
+                                LedgerRepository ledgerRepository,
+                                StoreRepository storeRepository) {
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
         this.projectRepository = projectRepository;
         this.ledgerRepository = ledgerRepository;
+        this.storeRepository = storeRepository;
     }
 
     public Employee requireReader(Employee principal) {
@@ -50,8 +69,10 @@ public class FinanceAccessContext {
                 EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
     }
 
+    /** 财务/店长可记账（DEC-065 FIN-STORE-06：店长写权限边界与门店财务一致）。 */
     public Employee requireEditor(Employee principal) {
-        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
+        return tenantContext.requireRole(principal,
+                EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
     }
 
     /** 手工作废、更正和冲正重记仅允许企业负责人执行。 */
@@ -62,8 +83,9 @@ public class FinanceAccessContext {
     public Project resolveProject(Employee current, Long projectId) {
         Project project = projectRepository.findByProjectIdAndCompany_ComId(projectId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目不存在或无权访问")));
-        if (current.getRole() == EmployeeRole.StoreManager) {
-            Long storeId = current.getStore() == null ? null : current.getStore().getStoreId();
+        // DEC-065：门店范围主体（门店财务、店长）只能访问本店项目；总部财务/BOSS 为企业范围。
+        if (scope(current).type() == DataScopeType.Store) {
+            Long storeId = scope(current).storeId();
             Long projectStoreId = project.getCustomer() == null || project.getCustomer().getStore() == null
                     ? null : project.getCustomer().getStore().getStoreId();
             if (storeId == null || !storeId.equals(projectStoreId)) {
@@ -73,14 +95,38 @@ public class FinanceAccessContext {
         return project;
     }
 
+    /**
+     * 财务域可见范围（DEC-065）。
+     *
+     * <p>BOSS 与企业范围主体按 {@code comId}；门店财务与店长按 {@code comId AND storeId}。
+     * BOSS 之外的判定统一交给数据范围解析，避免「角色硬编码 + 数据范围」两套口径。</p>
+     */
     public <T> Specification<T> visible(Employee principal, Class<T> modelClass) {
         Employee current = tenantContext.requireEmployee(principal);
-        if (current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.Finance) {
+        if (current.getRole() == EmployeeRole.Boss) {
             Long comId = current.getCompany().getComId();
             return (root, query, builder) -> builder.equal(root.get("company").get("comId"), comId);
         }
-        DataScope scope = dataScopeContext.resolve(current);
-        return DataScopeSpecification.visible(modelClass, scope);
+        return DataScopeSpecification.visible(modelClass, dataScopeContext.resolve(current));
+    }
+
+    /** 当前登录人的数据范围（DEC-065：门店财务/店长为门店，总部财务/BOSS 为企业）。 */
+    public DataScope scope(Employee principal) {
+        return dataScopeContext.resolve(tenantContext.requireEmployee(principal));
+    }
+
+    /**
+     * 解析「门店维度」过滤值（DEC-065 FIN-STORE-05 / DEC-067 BOSS-STORE-10）。
+     *
+     * <p>实现统一收敛到 {@link StoreScope#resolve}（全产品唯一门店哨兵与判定）：
+     * 企业范围（BOSS、总部财务）可选「全部门店」或本企业任一门店；
+     * 门店范围（门店财务、店长）恒为本店；非法门店一律 403「门店不存在或无权访问」，不静默忽略。</p>
+     *
+     * @return 生效门店 ID；{@link StoreScope#ALL_STORES} 表示不限门店
+     */
+    public Long resolveStoreFilter(Employee principal, Long requestedStoreId) {
+        Employee current = tenantContext.requireEmployee(principal);
+        return StoreScope.resolve(dataScopeContext.resolve(current), requestedStoreId, storeRepository);
     }
 
     public void applyOwnership(Receivable receivable, Employee current, Project project) {
@@ -184,10 +230,32 @@ public class FinanceAccessContext {
         return result.signum() < 0 ? BigDecimal.ZERO : result;
     }
 
+    /**
+     * 收付/单据归属统一写入（`DEC-070`）：门店一律经唯一解析器取值。
+     *
+     * <ul>
+     *   <li>项目单：**客户门店快照**（应收/应付/收款/付款/结算/退款/台账同一来源，双/三路径收敛）；</li>
+     *   <li>无项目手工流水：**操作人门店 → 当前门店维度的门店 → 阻断**（操作人无门店时）；</li>
+     * </ul>
+     */
+    /**
+     * 应付门店归属（采购下单 / 到货补建 / 手工三条路径**同源**，`DEC-070` §2）：
+     * 一律经唯一解析器取「客户门店快照」（客户无门店时按负责人 → 单门店默认 → 历史回退 → 告警）。
+     */
+    public void applyPayableStore(Payable payable,
+                                  com.th4.edge.decoboon.customer.model.Customer customer,
+                                  Employee fallbackOwner,
+                                  com.th4.edge.tenant.user.model.Store legacyFallbackStore) {
+        payable.setStore(storeAttributionContext.forCustomerSnapshot(customer, fallbackOwner, legacyFallbackStore).store());
+    }
+
     private void applyBase(Object target, Employee current, Project project) {
         Long storeId = null;
         Long teamId = null;
         Employee owner = current;
+        com.th4.edge.tenant.user.model.Store attributedStore = project == null
+                ? storeAttributionContext.forOperator(current, null).store()
+                : storeAttributionContext.forCustomerSnapshot(project.getCustomer(), current, null).store();
         if (project != null && project.getCustomer() != null) {
             if (project.getCustomer().getStore() != null) {
                 storeId = project.getCustomer().getStore().getStoreId();
@@ -201,40 +269,40 @@ public class FinanceAccessContext {
         }
         if (target instanceof Receivable receivable) {
             receivable.setCompany(current.getCompany());
-            receivable.setStore(project == null ? current.getStore() : project.getCustomer().getStore());
+            receivable.setStore(attributedStore);
             receivable.setTeam(project == null ? current.getTeam()
                     : project.getCustomer().getTeam());
             receivable.setOwner(owner);
         } else if (target instanceof Payable payable) {
             payable.setCompany(current.getCompany());
-            payable.setStore(project == null ? current.getStore() : project.getCustomer().getStore());
+            payable.setStore(attributedStore);
             payable.setTeam(project == null ? current.getTeam()
                     : project.getCustomer().getTeam());
             payable.setOwner(owner);
         } else if (target instanceof com.th4.edge.decoboon.finance.model.Receipt receipt) {
             receipt.setCompany(current.getCompany());
-            receipt.setStore(project.getCustomer().getStore());
+            receipt.setStore(attributedStore);
             receipt.setTeam(project.getCustomer().getTeam());
             receipt.setOwner(owner);
         } else if (target instanceof ReceiptRefund refund) {
             refund.setCompany(current.getCompany());
-            refund.setStore(project.getCustomer().getStore());
+            refund.setStore(attributedStore);
             refund.setTeam(project.getCustomer().getTeam());
             refund.setOwner(owner);
         } else if (target instanceof com.th4.edge.decoboon.finance.model.Payment payment) {
             payment.setCompany(current.getCompany());
-            payment.setStore(project == null ? current.getStore() : project.getCustomer().getStore());
+            payment.setStore(attributedStore);
             payment.setTeam(project == null ? current.getTeam()
                     : project.getCustomer().getTeam());
             payment.setOwner(owner);
         } else if (target instanceof com.th4.edge.decoboon.finance.model.Settlement settlement) {
             settlement.setCompany(current.getCompany());
-            settlement.setStore(project.getCustomer().getStore());
+            settlement.setStore(attributedStore);
             settlement.setTeam(project.getCustomer().getTeam());
             settlement.setOwner(owner);
         } else if (target instanceof Ledger ledger) {
             ledger.setCompany(current.getCompany());
-            ledger.setStore(project == null ? current.getStore() : project.getCustomer().getStore());
+            ledger.setStore(attributedStore);
             ledger.setTeam(project == null ? current.getTeam() : project.getCustomer().getTeam());
             ledger.setOwner(owner);
         }

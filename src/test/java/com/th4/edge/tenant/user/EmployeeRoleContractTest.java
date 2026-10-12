@@ -24,7 +24,11 @@ class EmployeeRoleContractTest {
     }
 
     @Test
-    void financeKeepsCompanyDataScopeAfterRoleMerge() {
-        assertThat(EmployeeRole.Finance.getDataScopeType()).isEqualTo(DataScopeType.Company);
+    void financeDataScopeIsStoreAfterDec065() {
+        // DEC-065 FIN-STORE-01：财务数据范围由「企业」收窄为「归属门店」；
+        // 归属默认总店的财务由 DataScopeContext 升为总部财务（企业范围，FIN-STORE-03）。
+        assertThat(EmployeeRole.Finance.getDataScopeType()).isEqualTo(DataScopeType.Store);
+        assertThat(EmployeeRole.StoreManager.getDataScopeType()).isEqualTo(DataScopeType.Store);
+        assertThat(EmployeeRole.Boss.getDataScopeType()).isEqualTo(DataScopeType.Company);
     }
 }

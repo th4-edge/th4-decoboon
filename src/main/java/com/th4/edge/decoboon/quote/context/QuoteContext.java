@@ -47,6 +47,11 @@ import java.util.List;
 @Component
 public class QuoteContext {
 
+    /** 门店归属唯一写入解析器（`DEC-070`）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
+
+
     private final QuoteRepository quoteRepository;
     private final QuoteLineRepository quoteItemRepository;
     private final PackageContext giftPackContext;
@@ -116,7 +121,9 @@ public class QuoteContext {
         quote.setNo("Q" + System.currentTimeMillis());
         quote.setTitle(design.getName() + "设计报价");
         quote.setCompany(design.getCompany());
-        quote.setStore(design.getStore());
+        // DEC-070：报价门店统一为客户门店快照（不再跟随 design/负责人门店）
+        quote.setStore(storeAttributionContext.forCustomerSnapshot(
+                design.getCustomer(), design.getOwner(), design.getStore()).store());
         quote.setTeam(design.getTeam());
         quote.setProperty(designProperty);
         quote.setCustomer(design.getCustomer());
@@ -183,7 +190,9 @@ public class QuoteContext {
             throw new DefinedException(new DefaultErrorCode("400", "套餐报价必须绑定客户所属房屋"));
         }
         quote.setCompany(customer.getCompany());
-        quote.setStore(property.getStore() == null ? employee.getStore() : property.getStore());
+        // DEC-070：套餐报价同样取客户门店快照（不再用「房屋门店 ?? 操作人门店」）
+        quote.setStore(storeAttributionContext.forCustomerSnapshot(customer, employee,
+                property.getStore() == null ? employee.getStore() : property.getStore()).store());
         quote.setTeam(property.getTeam() == null ? employee.getTeam() : property.getTeam());
         quote.setProperty(property);
         quote.setCustomer(customer);

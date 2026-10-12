@@ -6,6 +6,7 @@ import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -124,4 +125,16 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
     List<Customer> findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(Long comId, Long storeId);
 
     List<Customer> findByCompany_ComIdAndTeam_TeamIdOrderByCustIdDesc(Long comId, Long teamId);
+
+
+    /** 门店维度客户（`DEC-067`）：全部门店不过滤（含未归属门店客户），单店按客户 `store` 收窄。 */
+    @EntityGraph(attributePaths = {"store", "owner", "designer"})
+    @Query("select c from Customer c left join c.store cs where c.company.comId = :comId "
+            + "and (:allStores = true or cs.storeId = :storeId)")
+    List<Customer> findByCompanyStoreScope(@Param("comId") Long comId,
+                                          @Param("allStores") boolean allStores,
+                                          @Param("storeId") Long storeId);
+
+    /** 未归属门店客户数（`DEC-067` BOSS-STORE-03：全部门店口径需显式标注）。 */
+    long countByCompany_ComIdAndStoreIsNull(Long comId);
 }

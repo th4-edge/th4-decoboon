@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 
 /** 项目分页实现，按登录员工实际参与关系过滤。 */
 @Note("项目分页")
@@ -92,17 +94,19 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
     private final ProjectAccessContext accessContext;
     private final ProjectBusinessStateContext projectBusinessStateContext;
     private final ProjectFinanceProgressContext projectFinanceProgressContext;
+    private final StoreFilterContext storeFilterContext;
 
     public Page(ProjectRepository projectRepository,
                 ProjectStageRepository stageRepository,
                 ProjectAccessContext accessContext,
                 ProjectBusinessStateContext projectBusinessStateContext,
-                ProjectFinanceProgressContext projectFinanceProgressContext) {
+                ProjectFinanceProgressContext projectFinanceProgressContext, StoreFilterContext storeFilterContext) {
         this.projectRepository = projectRepository;
         this.stageRepository = stageRepository;
         this.accessContext = accessContext;
         this.projectBusinessStateContext = projectBusinessStateContext;
         this.projectFinanceProgressContext = projectFinanceProgressContext;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Override
@@ -110,6 +114,8 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
         Employee currentEmployee = accessContext.requireEmployee(employee);
         Long comId = currentEmployee.getCompany().getComId();
         Long empId = currentEmployee.getEmpId();
+        // 门店维度（DEC-067）：经 @AutoInject 绑定（GAP-048），解析 + 越权校验
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
         List<Project> projects = switch (currentEmployee.getRole()) {
             case Boss, Finance -> projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
             case StoreManager -> {
@@ -140,8 +146,7 @@ public class Page implements com.th4.edge.decoboon.project.service.projects.page
                         || (project.getDesigner() != null && designerId.equals(project.getDesigner().getEmpId())))
                 .filter(project -> managerId == null
                         || (project.getManager() != null && managerId.equals(project.getManager().getEmpId())))
-                .filter(project -> storeId == null
-                        || (project.getStore() != null && storeId.equals(project.getStore().getStoreId())))
+                .filter(project -> StoreScope.inStore(StoreScope.storeIdOf(project.getStore()), storeFilter))
                 .filter(project -> businessOrigin == null || project.getBusinessOrigin() == businessOrigin)
                 .filter(project -> kw.isBlank()
                         || project.getName().toLowerCase().contains(kw)

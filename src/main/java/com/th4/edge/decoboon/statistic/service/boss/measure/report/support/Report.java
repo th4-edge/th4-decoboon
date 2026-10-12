@@ -48,6 +48,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
+import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 
 /** 企业负责人量房经营与预约转化聚合。 */
 @Note("企业负责人量房经营报告")
@@ -86,25 +89,54 @@ public class Report implements com.th4.edge.decoboon.statistic.service.boss.meas
     private static final long HANDOFF_HOURS = 48L;
     @User private Employee employee;
 
+    /**
+     * 门店维度（DEC-067 / `GAP-048`）。框架只对 provider 实例的 {@code @AutoInject} 字段做请求绑定，
+     * 请求模型不承载 HTTP 参数；因此门店维度落在字段上，解析+越权校验后在本 Provider 内使用。
+     */
+    @AutoInject
+    private Long storeId;
+
+    /**
+     * 其余筛选参数（`GAP-048`：请求模型不承载 HTTP 参数，必须落在 provider 的 @AutoInject 字段上）。
+     * 修复前 `month/marketerId/source/keyword/status/designerId` 经 HTTP 全部不生效
+     * （App 考核页的月份与筛选项形同虚设）。
+     */
+    @AutoInject
+    private LocalDate month;
+    @AutoInject
+    private String status;
+    @AutoInject
+    private Long marketerId;
+    @AutoInject
+    private Long designerId;
+    @AutoInject
+    private CustomerSource source;
+    @AutoInject
+    private String keyword;
+
+
     private final TenantContext tenantContext;
     private final CustomerRepository customerRepository;
     private final PropertyRepository propertyRepository;
     private final MeasureRepository measureRepository;
     private final RequirementRepository requirementRepository;
     private final DesignRepository designRepository;
+    private final StoreFilterContext storeFilterContext;
 
     public Report(TenantContext tenantContext,
                   CustomerRepository customerRepository,
                   PropertyRepository propertyRepository,
                   MeasureRepository measureRepository,
                   RequirementRepository requirementRepository,
-                  DesignRepository designRepository) {
+                  DesignRepository designRepository,
+                  StoreFilterContext storeFilterContext) {
         this.tenantContext = tenantContext;
         this.customerRepository = customerRepository;
         this.propertyRepository = propertyRepository;
         this.measureRepository = measureRepository;
         this.requirementRepository = requirementRepository;
         this.designRepository = designRepository;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Override
@@ -113,19 +145,18 @@ public class Report implements com.th4.edge.decoboon.statistic.service.boss.meas
         Employee current = tenantContext.requireEmployee(employee);
         Long comId = current.getCompany().getComId();
         LocalDateTime now = LocalDateTime.now();
+        // 门店维度（DEC-067）：经 @AutoInject 绑定（GAP-048），解析 + 越权校验
+        Long storeFilter = storeFilterContext.resolve(employee, storeId);
 
         List<Customer> customers = scopedCustomers(comId, current).stream()
                 // 全企业日期窗口必须保留已签约/服务中/已完工客户的历史量房事实，
                 // 不能先按客户当前状态截断，否则 periods 与人员绩效会漏记真实事件。
-                .filter(customer -> request == null || request.getStoreId() == null
-                        || (customer.getOwner() != null && customer.getOwner().getStore() != null
-                        && request.getStoreId().equals(customer.getOwner().getStore().getStoreId())))
-                .filter(customer -> request == null || request.getMarketerId() == null
-                        || (customer.getOwner() != null && request.getMarketerId().equals(customer.getOwner().getEmpId())))
-                .filter(customer -> request == null || request.getSource() == null
-                        || request.getSource() == customer.getSource())
-                .filter(customer -> request == null || blank(request.getKeyword())
-                        || matches(customer, request.getKeyword()))
+                // 归属基准（DEC-067 BOSS-STORE-09）：量房经营客户按 `Customer.store`，不按负责人门店
+                .filter(customer -> StoreScope.inStore(StoreScope.storeIdOf(customer.getStore()), storeFilter))
+                .filter(customer -> marketerId == null
+                        || (customer.getOwner() != null && marketerId.equals(customer.getOwner().getEmpId())))
+                .filter(customer -> source == null || source == customer.getSource())
+                .filter(customer -> blank(keyword) || matches(customer, keyword))
                 .toList();
         List<Long> customerIds = customers.stream().map(Customer::getCustId).toList();
         if (customerIds.isEmpty()) {
@@ -152,10 +183,9 @@ public class Report implements com.th4.edge.decoboon.statistic.service.boss.meas
             boolean handoff = !requirementsByProperty.getOrDefault(property.getPropertyId(), List.of()).isEmpty()
                     || !designsByProperty.getOrDefault(property.getPropertyId(), List.of()).isEmpty();
             BossMeasureItem item = buildItem(property, customer, measures, handoff, now);
-            if (matchesStatus(item, request == null ? null : request.getStatus())
-                    && (request == null || request.getMonth() == null || inMonth(item, request.getMonth()))
-                    && (request == null || request.getDesignerId() == null
-                    || Objects.equals(request.getDesignerId(), item.getDesignerId()))) {
+            if (matchesStatus(item, status)
+                    && (month == null || inMonth(item, month))
+                    && (designerId == null || Objects.equals(designerId, item.getDesignerId()))) {
                 items.add(item);
             }
         }

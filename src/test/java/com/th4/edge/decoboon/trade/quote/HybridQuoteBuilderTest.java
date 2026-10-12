@@ -25,6 +25,7 @@ import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -47,9 +48,9 @@ class HybridQuoteBuilderTest {
     private final QuoteCalcContext calcContext = new QuoteCalcContext();
     private final ProjectRepository projectRepository = mock(ProjectRepository.class);
     private final DesignItemRepository designItemRepository = mock(DesignItemRepository.class);
-    private final HybridQuoteBuilder builder = new HybridQuoteBuilder(
+    private final HybridQuoteBuilder builder = StoreAttributionTestSupport.inject(new HybridQuoteBuilder(
             quoteRepository, lineRepository, packageLineRepository, packageContext,
-            calcContext, projectRepository, designItemRepository);
+            calcContext, projectRepository, designItemRepository));
 
     @Test
     void shouldBuildHybridQuoteAndRecordDesignDifferences() {

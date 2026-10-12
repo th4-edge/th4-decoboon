@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.customer.model;
 
+import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
 import com.th4.edge.framework.core.annotation.Note;
 
 import java.time.LocalDate;
@@ -18,6 +19,11 @@ public class CustomerOverviewReport {
     private Integer size = 20;
     private Long total = 0L;
     private Boolean hasMore = Boolean.FALSE;
+    /**
+     * 门店维度范围标注（`DEC-067` BOSS-STORE-03，与 `P0B-04` 同构）：
+     * 全部门店口径的 `unassignedCount` 由 SQL `COUNT` 提供，单店视图恒为 0。
+     */
+    private StoreScopeInfo storeScope = new StoreScopeInfo();
 
     public LocalDate getAsOf() { return asOf; }
     public void setAsOf(LocalDate asOf) { this.asOf = asOf; }
@@ -39,6 +45,8 @@ public class CustomerOverviewReport {
     public void setSize(Integer size) { this.size = size; }
     public Long getTotal() { return total; }
     public void setTotal(Long total) { this.total = total; }
+    public StoreScopeInfo getStoreScope() { return storeScope; }
+    public void setStoreScope(StoreScopeInfo storeScope) { this.storeScope = storeScope; }
     public Boolean getHasMore() { return hasMore; }
     public void setHasMore(Boolean hasMore) { this.hasMore = hasMore; }
 }

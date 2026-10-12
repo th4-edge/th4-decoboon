@@ -12,6 +12,8 @@ import java.util.List;
 @Note("门店经营报告")
 public class StoreManagerReport {
 
+    /** 门店维度范围标注（DEC-067 BOSS-STORE-03）。 */
+    private StoreScopeInfo storeScope = new StoreScopeInfo();
     private String storeName;
     private Integer memberCount = 0;
     private Integer designerCount = 0;
@@ -56,6 +58,8 @@ public class StoreManagerReport {
     private List<Quote> recentQuotes = List.of();
     private List<Project> recentProjects = List.of();
 
+    public StoreScopeInfo getStoreScope() { return storeScope; }
+    public void setStoreScope(StoreScopeInfo storeScope) { this.storeScope = storeScope; }
     public String getStoreName() { return storeName; }
     public void setStoreName(String storeName) { this.storeName = storeName; }
     public Integer getMemberCount() { return memberCount; }

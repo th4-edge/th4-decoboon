@@ -3,6 +3,7 @@ import com.th4.edge.decoboon.customer.model.Customer;
 
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.project.model.Project;
@@ -67,6 +68,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
     private LocalDate endDate;
     @AutoInject
     private String keyword;
+    /** 门店维度（DEC-065）：为空表示不限门店（企业范围）或本店（门店范围）。 */
+    @AutoInject
+    private Long storeId;
 
     private final LedgerRepository ledgerRepository;
     private final FinanceAccessContext accessContext;
@@ -80,9 +84,11 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Ledger> call(Ledger request) {
         Employee currentEmployee = accessContext.requireReader(employee);
+        Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         List<Ledger> items = ledgerRepository.findAll(accessContext.visible(currentEmployee, Ledger.class))
                 .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
                 .filter(item -> ledgerId == null || ledgerId.equals(item.getLedgerId()))
                 .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))

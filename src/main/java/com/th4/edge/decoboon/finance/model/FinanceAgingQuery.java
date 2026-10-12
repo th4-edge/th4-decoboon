@@ -13,4 +13,5 @@ public class FinanceAgingQuery {
 
     public LocalDate getAsOf() { return asOf; }
     public void setAsOf(LocalDate asOf) { this.asOf = asOf; }
+
 }

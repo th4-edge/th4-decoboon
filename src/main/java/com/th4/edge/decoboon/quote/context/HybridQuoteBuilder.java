@@ -41,6 +41,11 @@ import java.util.Set;
 @Component
 public class HybridQuoteBuilder {
 
+    /** 门店归属唯一写入解析器（`DEC-070`）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
+
+
     private final QuoteRepository quoteRepository;
     private final QuoteLineRepository lineRepository;
     private final PackageLineRepository packageLineRepository;
@@ -86,7 +91,9 @@ public class HybridQuoteBuilder {
         quote.setNo("Q" + System.currentTimeMillis());
         quote.setTitle(design.getName() + "·" + template.getName() + "混合报价");
         quote.setCompany(design.getCompany());
-        quote.setStore(design.getStore());
+        // DEC-070：混合报价门店取客户门店快照
+        quote.setStore(storeAttributionContext.forCustomerSnapshot(
+                design.getCustomer(), design.getOwner(), design.getStore()).store());
         quote.setTeam(design.getTeam());
         quote.setProperty(design.getProperty());
         quote.setCustomer(design.getCustomer());

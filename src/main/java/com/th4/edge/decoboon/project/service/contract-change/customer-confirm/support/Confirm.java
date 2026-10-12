@@ -27,8 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/** 记录客户对变更报价的确认。 */
-@Note("客户确认变更")
+/**
+ * 历史兼容入口（DEC-068）：仅对存量 {@code Approved}（旧“待客户确认”）变更单做一次性收口。
+ *
+ * <p>新流程审批通过即生效，App / Web 已不再暴露该动作；此入口保留用于存量数据收口与旧客户端过渡。
+ * 收口复用合同变更生效结算：合同当前额、项目合同额、应收、任务、材料与成本在同一事务内联动。</p>
+ */
+@Note("历史变更单收口（旧客户确认入口）")
 @Properties(allow = {
         @AllowProperties(model = ContractChange.class,
                 properties = {"changeId", "contract", "project", "no", "type", "reason", "amount", "costDelta",
@@ -76,7 +81,7 @@ public class Confirm implements com.th4.edge.decoboon.project.service.contractch
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "变更单不存在或无权访问")));
         if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm
                 && current.getRole() != EmployeeRole.Designer) {
-            throw new DefinedException(new DefaultErrorCode("403", "当前角色不能登记客户确认"));
+            throw new DefinedException(new DefaultErrorCode("403", "当前角色不能执行历史变更单收口"));
         }
         if (signatureUrl != null) change.setSignatureUrl(signatureUrl);
         if (evidenceImages != null) change.setEvidenceImages(evidenceImages);

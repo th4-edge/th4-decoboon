@@ -332,7 +332,8 @@ public class BossContractChangeContext {
         item.setApprovedByName(change.getApprovedBy() == null ? null : change.getApprovedBy().getName());
         item.setCreateTime(change.getCreateTime() == null ? null : change.getCreateTime().toLocalDateTime());
         item.setApprovedAt(change.getApprovedAt());
-        item.setCustomerConfirmedAt(change.getCustomerConfirmedAt());
+        // DEC-068：报表不再表达“客户确认时间”，该字段承载**生效时间**（历史数据回退旧值）。
+        item.setCustomerConfirmedAt(effectiveAt(change));
         item.setEvidenceImageCount(change.getEvidenceImages() == null ? 0 : change.getEvidenceImages().size());
         item.setHasSignature(change.getSignatureUrl() != null && !change.getSignatureUrl().isBlank());
         item.setLineSummary(lineSummary(lines));
@@ -599,10 +600,10 @@ public class BossContractChangeContext {
                 .filter(change -> inRange(createdAt(change), start, end)).count());
         period.setConfirmedCount((int) changes.stream()
                 .filter(change -> change.getStatus() == ContractChangeStatus.CustomerConfirmed
-                        && inRange(change.getCustomerConfirmedAt(), start, end)).count());
+                        && inRange(effectiveAt(change), start, end)).count());
         period.setConfirmedAmount(money(changes.stream()
                 .filter(change -> change.getStatus() == ContractChangeStatus.CustomerConfirmed
-                        && inRange(change.getCustomerConfirmedAt(), start, end))
+                        && inRange(effectiveAt(change), start, end))
                 .map(ContractChange::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add)));
         return period;
     }
@@ -673,6 +674,14 @@ public class BossContractChangeContext {
 
     private LocalDateTime createdAt(ContractChange change) {
         return change.getCreateTime() == null ? null : change.getCreateTime().toLocalDateTime();
+    }
+
+    /**
+     * 生效时间（DEC-068）：审批通过即生效，以 {@code approvedAt} 为准；
+     * 历史数据回退到旧 {@code customerConfirmedAt}，保证存量统计口径不出现空档。
+     */
+    private LocalDateTime effectiveAt(ContractChange change) {
+        return change.getApprovedAt() != null ? change.getApprovedAt() : change.getCustomerConfirmedAt();
     }
 
     private String customerName(Project project, ProjectContract contract) {

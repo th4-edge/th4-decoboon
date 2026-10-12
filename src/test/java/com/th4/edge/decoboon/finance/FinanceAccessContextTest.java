@@ -17,6 +17,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -41,12 +42,12 @@ class FinanceAccessContextTest {
         projectRepository = mock(ProjectRepository.class);
         ledgerRepository = mock(LedgerRepository.class);
         TenantContext tenantContext = new TenantContext(employeeRepository);
-        accessContext = new FinanceAccessContext(
+        accessContext = StoreAttributionTestSupport.inject(new FinanceAccessContext(
                 tenantContext,
                 mock(DataScopeContext.class),
                 projectRepository,
                 ledgerRepository
-        );
+        ));
     }
 
     @Test
@@ -89,6 +90,7 @@ class FinanceAccessContextTest {
         store.setStoreId(20L);
         Employee owner = employee(EmployeeRole.Marketer);
         Customer customer = new Customer();
+        customer.setCompany(company);
         customer.setStore(store);
         customer.setOwner(owner);
         Project project = new Project();

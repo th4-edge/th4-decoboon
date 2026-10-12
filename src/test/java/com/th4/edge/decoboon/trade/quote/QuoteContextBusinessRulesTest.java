@@ -23,6 +23,7 @@ import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -48,9 +49,9 @@ class QuoteContextBusinessRulesTest {
     private final PropertyContext propertyContext = mock(PropertyContext.class);
     private final PropertyRepository propertyRepository = mock(PropertyRepository.class);
     private final DesignLifecycleContext designLifecycleContext = mock(DesignLifecycleContext.class);
-    private final QuoteContext context = new QuoteContext(
+    private final QuoteContext context = StoreAttributionTestSupport.inject(new QuoteContext(
             quoteRepository, lineRepository, packageContext, customerRepository, designItemRepository,
-            designLifecycleContext, quoteCalcContext, projectRepository, propertyContext, propertyRepository);
+            designLifecycleContext, quoteCalcContext, projectRepository, propertyContext, propertyRepository));
 
     @Test
     void shouldRejectUnfinishedDesignQuote() {

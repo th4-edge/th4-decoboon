@@ -92,7 +92,7 @@ class FinanceAgingContextTest {
                 receivable("80000", "0", ReceivableStatus.Closed, AS_OF.minusDays(10)));
         mockPayables();
 
-        FinanceAgingReport report = context.report(boss, query());
+        FinanceAgingReport report = context.report(boss, query(), null);
         Map<String, AgingBucket> buckets = byKey(report.getReceivableBuckets());
 
         assertThat(buckets.get("notDue").getAmount()).isEqualByComparingTo("10000");
@@ -126,7 +126,7 @@ class FinanceAgingContextTest {
                 payable("90000", "90000", PayableStatus.Paid, AS_OF.minusDays(40)),
                 payable("95000", "0", PayableStatus.Closed, AS_OF.minusDays(40)));
 
-        FinanceAgingReport report = context.report(boss, query());
+        FinanceAgingReport report = context.report(boss, query(), null);
         Map<String, AgingBucket> buckets = byKey(report.getPayableBuckets());
 
         assertThat(buckets).containsOnlyKeys("notDue", "days0to30", "days31to60", "days60plus", "unknown");

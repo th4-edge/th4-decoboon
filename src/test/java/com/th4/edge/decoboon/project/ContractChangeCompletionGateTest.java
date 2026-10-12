@@ -184,6 +184,7 @@ class ContractChangeCompletionGateTest {
         ReflectionTestUtils.setField(batchSave, "reason", "批量增减项（服务端重算回归）");
         ReflectionTestUtils.setField(batchSave, "type", ContractChangeType.Quantity);
         ReflectionTestUtils.setField(batchSave, "items", List.of(item));
+        // 兼容回归：老版本客户端仍提交客户确认信息，服务端忽略、不校验、不落库（DEC-068）。
         ReflectionTestUtils.setField(batchSave, "evidenceImages", List.of("evidence.jpg"));
         ReflectionTestUtils.setField(batchSave, "signatureUrl", null);
         ReflectionTestUtils.setField(batchSave, "customerConfirmedAt", LocalDateTime.now().minusDays(1));
@@ -196,7 +197,8 @@ class ContractChangeCompletionGateTest {
         assertThat(change.getAmount()).isEqualByComparingTo("200");
         assertThat(change.getCostDelta()).isEqualByComparingTo("120");
         assertThat(change.getStatus()).isEqualTo(ContractChangeStatus.Pending);
-        assertThat(change.getCustomerConfirmed()).isTrue();
+        // DEC-068：建单不再标记客户确认，仅留痕发起人与明细；审批通过即生效。
+        assertThat(change.getCustomerConfirmed()).isNotEqualTo(Boolean.TRUE);
         assertThat(change.getItems()).hasSize(1);
         assertThat(change.getItems().get(0).getAmountDelta()).isEqualByComparingTo("200");
         assertThat(change.getItems().get(0).getSourceLine().getLineId()).isEqualTo(line.getLineId());
@@ -213,6 +215,7 @@ class ContractChangeCompletionGateTest {
         ReflectionTestUtils.setField(contractChangeSave, "newPrice", null);
         ReflectionTestUtils.setField(contractChangeSave, "newCost", null);
         ReflectionTestUtils.setField(contractChangeSave, "costDelta", null);
+        // 兼容回归：老版本客户端仍提交客户确认信息，服务端忽略、不校验、不落库（DEC-068）。
         ReflectionTestUtils.setField(contractChangeSave, "evidenceImages", List.of("evidence.jpg"));
         ReflectionTestUtils.setField(contractChangeSave, "signatureUrl", null);
         ReflectionTestUtils.setField(contractChangeSave, "customerConfirmedAt", LocalDateTime.now().minusDays(1));

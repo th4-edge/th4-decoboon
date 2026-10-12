@@ -386,6 +386,11 @@ public class MembershipContext {
                     || !Objects.equals(store.getCompany().getComId(), operator.getCompany().getComId())) {
                 throw new DefinedException(new DefaultErrorCode("404", "门店不存在"));
             }
+            // P0D-04 / GAP-051：停用门店不得承接新归属（员工也是归属对象之一），避免「员工挂在已失效门店」中间态
+            if (!store.attributable()) {
+                throw new DefinedException(new DefaultErrorCode("400",
+                        "门店「" + store.getName() + "」已停用，不能将员工归属到该门店"));
+            }
             target.setStore(store);
         }
         if (teamId != null) {

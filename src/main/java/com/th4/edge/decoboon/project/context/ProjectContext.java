@@ -90,6 +90,11 @@ import java.util.Objects;
 @Component
 public class ProjectContext {
 
+    /** 收付单据统一归属写入（`DEC-070` §2：应收双路径收敛到同一写入方法）。 */
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.th4.edge.decoboon.finance.context.FinanceAccessContext financeAccessContext;
+
+
     private final QuoteRepository quoteRepository;
     private final QuoteLineRepository quoteItemRepository;
     private final ProjectRepository projectRepository;
@@ -985,9 +990,8 @@ public class ProjectContext {
         receivable.setStageCode(stage == null ? node.getTriggerStageCode() : stage.getStageCode());
         receivable.setTriggerType(node.getTriggerType());
         receivable.setCustomer(project.getCustomer());
-        receivable.setOwner(project.getProperty().getOwner());
-        receivable.setStore(project.getProperty().getStore());
-        receivable.setTeam(project.getProperty().getTeam());
+        // DEC-070：应收归属（含门店）与手工应收走同一写入方法（客户门店快照）
+        financeAccessContext.applyOwnership(receivable, contract.getCreatedBy(), project);
         receivable.setName(node.getName());
         receivable.setStageName(stage == null ? node.getTriggerStageName() : stage.getName());
         receivable.setType(node.getType());
@@ -1010,9 +1014,8 @@ public class ProjectContext {
         receivable.setProject(project);
         receivable.setContract(contract);
         receivable.setCustomer(project.getCustomer());
-        receivable.setOwner(project.getProperty().getOwner());
-        receivable.setStore(project.getProperty().getStore());
-        receivable.setTeam(project.getProperty().getTeam());
+        // DEC-070：与合同节点应收同源（同一写入方法）
+        financeAccessContext.applyOwnership(receivable, contract.getCreatedBy(), project);
         receivable.setName(name);
         receivable.setStageName(name.replace("款", ""));
         receivable.setType(type);

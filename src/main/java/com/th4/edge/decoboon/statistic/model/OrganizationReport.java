@@ -24,6 +24,13 @@ public class OrganizationReport {
     @Note("统计月份")
     private LocalDate month;
 
+    /** 门店维度范围标注（DEC-067 BOSS-STORE-03）。 */
+    private StoreScopeInfo storeScope = new StoreScopeInfo();
+
+    public StoreScopeInfo getStoreScope() { return storeScope; }
+    public void setStoreScope(StoreScopeInfo storeScope) { this.storeScope = storeScope; }
+
+
     @Note("在职员工数")
     private Integer headcount = 0;
 
