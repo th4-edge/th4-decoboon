@@ -162,6 +162,10 @@ for name in before2:
     flag = "**变了**" if before2[name] != after2[name] else "不变"
     print("  %-12s %-22s %-22s %s" % (name, before2[name], after2[name], flag))
 
+# A5b 复位：把客户负责人改回 A 店业务，避免夹具把客户门店永久留在 B 店（影响后续对账）
+api(boss, "customer/customer/update", {"customerId": int(cust), "ownerId": int(a_marketer["empId"]),
+                                       "reason": "造数 A5b 复位：负责人改回 A 店"})
+
 print()
 print("=" * 100)
 print("A4b 门店维度越权（负向）：B 店店长读取 A 店项目的应付")
