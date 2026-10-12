@@ -63,7 +63,15 @@ class DesignerMeasureTaskContextTest {
         assertThat(tasks).hasSize(1);
         assertThat(tasks.get(0).getPropertyId()).isEqualTo(200L);
         assertThat(tasks.get(0).getStateKey()).isEqualTo("overdue");
-        assertThat(tasks.get(0).getMainActionKey()).isEqualTo("reschedule_measure");
+        assertThat(tasks.get(0).getStateLabel()).isEqualTo("预约逾期");
+        assertThat(tasks.get(0).getRiskLevel()).isEqualTo("high");
+        // 逾期是风险提示，不是「不能录入」：主行动必须是登记量房结论（2026-10-12 修复）。
+        assertThat(tasks.get(0).getMainActionKey()).isEqualTo("complete_measure");
+        assertThat(tasks.get(0).getMainActionLabel()).isEqualTo("登记量房结论");
+        // 改约/重排降级为并列动作，必须仍然可达。
+        assertThat(tasks.get(0).getNextActionKey()).isEqualTo("measure/reschedule");
+        assertThat(tasks.get(0).getNextActionLabel()).isEqualTo("联系客户改约");
+        assertThat(tasks.get(0).getPriority()).isEqualTo(1);
     }
 
     @Test
@@ -168,6 +176,41 @@ class DesignerMeasureTaskContextTest {
                 .thenReturn(List.of(design));
 
         assertThat(context.list(designer, new DesignerMeasureQuery())).isEmpty();
+    }
+
+    @Test
+    void shouldKeepRecordMeasureActionWhenAppointmentNotOverdue() {
+        ContextFixture fixture = context();
+        Company company = company(10L);
+        Employee designer = employee(20L, company);
+        Customer customer = customer(100L, company, CustStatus.PendingMeasure);
+        Property property = property(200L, company, customer, PropertyStatus.PendingMeasure);
+
+        stubTaskLookup(fixture, company, designer, customer, property,
+                measure(302L, property, MeasureStatus.Scheduled, LocalDateTime.now().plusHours(2), null));
+
+        DesignerMeasureTask task = fixture.context().list(designer, new DesignerMeasureQuery()).get(0);
+        assertThat(task.getStateKey()).isEqualTo("scheduled");
+        assertThat(task.getMainActionKey()).isEqualTo("complete_measure");
+        assertThat(task.getNextActionKey()).isEqualTo("measure/complete");
+    }
+
+    @Test
+    void shouldKeepRecordMeasureActionWhenAppointmentOverdue() {
+        ContextFixture fixture = context();
+        Company company = company(10L);
+        Employee designer = employee(20L, company);
+        Customer customer = customer(100L, company, CustStatus.PendingMeasure);
+        Property property = property(200L, company, customer, PropertyStatus.PendingMeasure);
+
+        stubTaskLookup(fixture, company, designer, customer, property,
+                measure(303L, property, MeasureStatus.Scheduled, LocalDateTime.now().minusHours(6), null));
+
+        DesignerMeasureTask task = fixture.context().list(designer, new DesignerMeasureQuery()).get(0);
+        assertThat(task.getStateKey()).isEqualTo("overdue");
+        assertThat(task.getMainActionKey()).isEqualTo("complete_measure");
+        assertThat(task.getMainActionLabel()).isEqualTo("登记量房结论");
+        assertThat(task.getNextActionKey()).isEqualTo("measure/reschedule");
     }
 
     private ContextFixture context() {

@@ -231,14 +231,16 @@ public class DesignerMeasureTaskContext {
             task.setStateLabel(overdue ? "预约逾期" : "已预约·待上门");
             task.setRiskLevel(overdue ? "high" : "normal");
             task.setRiskReason(overdue
-                    ? "预约时间已超过 4 小时，量房仍未完成。"
+                    ? "预约时间已超过 4 小时，量房仍未完成；现场已量请直接登记量房结论，未上门请先联系客户改约。"
                     : "已约定量房时间，按预约完成现场事实。");
-            task.setMainActionKey(overdue ? "reschedule_measure" : "complete_measure");
-            task.setMainActionLabel(overdue ? "联系客户改约" : "登记量房结论");
+            // 逾期只是风险提示，不是「不能录入」：已预约未完成时主行动始终是登记量房结论，
+            // 改约降级为并列动作（中栏「调整预约时间」），避免设计师已上门却无处录入（2026-10-12 修复）。
+            task.setMainActionKey("complete_measure");
+            task.setMainActionLabel("登记量房结论");
             task.setNextActionKey(overdue ? "measure/reschedule" : "measure/complete");
-            task.setNextActionLabel(overdue ? "重新安排量房" : "录入量房事实");
+            task.setNextActionLabel(overdue ? "联系客户改约" : "录入量房事实");
             task.setCompletionHint(overdue
-                    ? "改约后重新进入已预约待上门。"
+                    ? "登记量房结论后进入待交设计；未上门时先联系客户改约，再用「调整预约时间」重新约定。"
                     : "量房完成后进入待交设计，形成诉求或方案。");
             task.setPriority(overdue ? 1 : 8);
             return task;
