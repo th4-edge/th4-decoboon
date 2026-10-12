@@ -28,13 +28,17 @@ import java.math.BigDecimal;
  * 设计模版区域保存（按 roomKey 新增或更新）。
  *
  * <p>只有草稿版本可写：已发布版本不可变（BR-040 §5）。区域尺寸允许留空表示待量房。</p>
+ *
+ * <p>{@code referenceArea}/{@code referencePerimeter} 为模版层**参考实测值**（DEC-064）：仅供模版内
+ * 公式校验与实例化打底；不承载任何房屋的实测事实，不得作为工程量基数或进入报价金额。</p>
  */
 @Note("设计模版区域保存")
 @Description("在草稿版本上新增/更新区域骨架")
 @Properties(allow = {
         @AllowProperties(model = DesignTemplateRoom.class,
                 properties = {"roomId", "roomKey", "name", "roomType", "sortNo", "length", "width", "height",
-                        "doorWidthTotal", "doorAreaTotal", "windowAreaTotal", "wallRise", "count", "remark"})
+                        "doorWidthTotal", "doorAreaTotal", "windowAreaTotal", "wallRise",
+                        "referenceArea", "referencePerimeter", "count", "remark"})
 })
 @Service("design/template/room/save")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -79,6 +83,12 @@ public class Save implements com.th4.edge.decoboon.designtemplate.service.templa
     private BigDecimal wallRise;
 
     @AutoInject
+    private BigDecimal referenceArea;
+
+    @AutoInject
+    private BigDecimal referencePerimeter;
+
+    @AutoInject
     private Integer count;
 
     @AutoInject
@@ -114,6 +124,13 @@ public class Save implements com.th4.edge.decoboon.designtemplate.service.templa
         if (version.getStatus() != DesignTemplate.Status.Draft) {
             throw new DefinedException(new DefaultErrorCode("400", "已发布版本不可修改，请新建版本"));
         }
+        // 参考实测值（DEC-064）：可留空；填了必须 > 0，且不进入工程量与金额
+        if (referenceArea != null && referenceArea.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "参考实测面积必须大于 0（留空表示不填）"));
+        }
+        if (referencePerimeter != null && referencePerimeter.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "参考实测周长必须大于 0（留空表示不填）"));
+        }
 
         DesignTemplateRoom room = roomRepository
                 .findByVersion_VersionIdAndCompany_ComIdAndRoomKey(versionId, comId, roomKey)
@@ -131,6 +148,8 @@ public class Save implements com.th4.edge.decoboon.designtemplate.service.templa
         room.setDoorAreaTotal(doorAreaTotal);
         room.setWindowAreaTotal(windowAreaTotal);
         room.setWallRise(wallRise);
+        room.setReferenceArea(referenceArea);
+        room.setReferencePerimeter(referencePerimeter);
         room.setCount(count == null || count < 1 ? 1 : count);
         room.setRemark(remark);
         return roomRepository.save(room);

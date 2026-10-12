@@ -23,7 +23,10 @@ import java.math.BigDecimal;
 /**
  * 设计模版区域骨架。
  *
- * <p>尺寸为默认值可留空；公式专业变量：L/W/H/DW/DA/WA/WR/N（BR-040 §2 / §4）。</p>
+ * <p>尺寸为默认值可留空；公式专业变量：H/DW/DA/WA/WR/N + 实测 A/P/CP/WP（BR-040 §2 / §4）。</p>
+ *
+ * <p><b>参考实测面积/周长（DEC-064）</b>：仅用于模版内公式校验与实例化打底，
+ * 不承载任何房屋的实测事实，不得作为工程量基数或进入报价金额；未填不影响发布（DEC-058）。</p>
  */
 @Note("设计模版区域")
 @Model
@@ -92,6 +95,14 @@ public class DesignTemplateRoom extends AuditModel {
     @Column(name = "wall_rise", precision = 10, scale = 3)
     private BigDecimal wallRise;
 
+    @Note("参考实测面积（㎡）：仅用于模版内公式校验与实例化打底，不作工程量基数（DEC-064）")
+    @Column(name = "reference_area", precision = 12, scale = 3)
+    private BigDecimal referenceArea;
+
+    @Note("参考实测周长（m）：仅用于模版内公式校验与实例化打底，不作工程量基数（DEC-064）")
+    @Column(name = "reference_perimeter", precision = 12, scale = 3)
+    private BigDecimal referencePerimeter;
+
     @Note("同型区域数量")
     @Column(name = "room_count", nullable = false)
     private Integer count = 1;
@@ -155,6 +166,14 @@ public class DesignTemplateRoom extends AuditModel {
     public BigDecimal getWallRise() { return wallRise; }
 
     public void setWallRise(BigDecimal wallRise) { this.wallRise = wallRise; }
+
+    public BigDecimal getReferenceArea() { return referenceArea; }
+
+    public void setReferenceArea(BigDecimal referenceArea) { this.referenceArea = referenceArea; }
+
+    public BigDecimal getReferencePerimeter() { return referencePerimeter; }
+
+    public void setReferencePerimeter(BigDecimal referencePerimeter) { this.referencePerimeter = referencePerimeter; }
 
     public Integer getCount() { return count; }
 
