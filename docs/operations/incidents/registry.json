@@ -2,7 +2,7 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
-      "incidentId": "INC-20261008-a1233597b0",
+      "incidentId": "INC-20261013-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -3020,9 +3020,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 11,
+      "count": 12,
       "firstSeen": "2026-10-07 06:47:01.292",
-      "lastSeen": "2026-10-08 20:18:07.650",
+      "lastSeen": "2026-10-13 02:45:40.027",
       "samples": [
         "[2026-10-07 06:47:01.292] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/store/report处理失败:当前账号无权执行该操作",
         "[2026-10-07 06:47:01.416] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/store/report处理失败:当前账号无权执行该操作",
@@ -3033,7 +3033,8 @@
       "reportPaths": [
         "2026-10-07/20261007-165437",
         "2026-10-07/20261007-215347",
-        "2026-10-08/20261008-203107"
+        "2026-10-08/20261008-203107",
+        "2026-10-13/20261013-070629"
       ]
     },
     {
@@ -3271,7 +3272,151 @@
       "fixedAt": "2026-10-08 20:20:53",
       "fixedRelease": "/opt/decoboon/releases/20261008-201837",
       "fixSummary": "根因：休眠门禁按 Scheduled 状态拦截，未按 BR-036 要求检查 scheduledAt 是否在未来；两个 PendingMeasure 客户仅有已过期预约且无合同，被误拦截。修复：查询改为 status=Scheduled AND scheduledAt>now；回归 CustomerDormantContextTest、CustomerDormantMeasureWindowTest；全量 573/0/0；release 20261008-201837 部署，健康检查通过，部署后未再出现新指纹。"
+    },
+    {
+      "incidentId": "INC-20261013-d34acc1ab2",
+      "signature": "找不到对应的处理服务:chat",
+      "signatureHash": "d34acc1ab2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:21.473",
+      "lastSeen": "2026-10-13 04:06:21.473",
+      "samples": [
+        "[2026-10-13 04:06:21.473] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - chat处理失败:找不到对应的处理服务:chat"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-5cc442b712",
+      "signature": "找不到对应的处理服务:cluster_status",
+      "signatureHash": "5cc442b712",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:17.624",
+      "lastSeen": "2026-10-13 04:06:17.624",
+      "samples": [
+        "[2026-10-13 04:06:17.624] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - cluster_status处理失败:找不到对应的处理服务:cluster_status"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-796c9739f8",
+      "signature": "找不到对应的处理服务:deployments",
+      "signatureHash": "796c9739f8",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:21.452",
+      "lastSeen": "2026-10-13 04:06:21.452",
+      "samples": [
+        "[2026-10-13 04:06:21.452] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - deployments处理失败:找不到对应的处理服务:deployments"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-7b8c639979",
+      "signature": "找不到对应的处理服务:generate",
+      "signatureHash": "7b8c639979",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:18.317",
+      "lastSeen": "2026-10-13 04:06:18.317",
+      "samples": [
+        "[2026-10-13 04:06:18.317] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - generate处理失败:找不到对应的处理服务:generate"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-88cb58bc86",
+      "signature": "找不到对应的处理服务:models",
+      "signatureHash": "88cb58bc86",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:21.332",
+      "lastSeen": "2026-10-13 04:06:21.332",
+      "samples": [
+        "[2026-10-13 04:06:21.332] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - models处理失败:找不到对应的处理服务:models"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-a1c8e8cad5",
+      "signature": "找不到对应的处理服务:tags",
+      "signatureHash": "a1c8e8cad5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:17.655",
+      "lastSeen": "2026-10-13 04:06:17.655",
+      "samples": [
+        "[2026-10-13 04:06:17.655] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - tags处理失败:找不到对应的处理服务:tags"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-0a17dd40a9",
+      "signature": "找不到对应的处理服务:v1/nodes",
+      "signatureHash": "0a17dd40a9",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:17.468",
+      "lastSeen": "2026-10-13 04:06:17.468",
+      "samples": [
+        "[2026-10-13 04:06:17.468] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/nodes处理失败:找不到对应的处理服务:v1/nodes"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
+    },
+    {
+      "incidentId": "INC-20261013-e65acbe89a",
+      "signature": "找不到对应的处理服务:v1/pods",
+      "signatureHash": "e65acbe89a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-13 04:06:17.497",
+      "lastSeen": "2026-10-13 04:06:17.497",
+      "samples": [
+        "[2026-10-13 04:06:17.497] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/pods处理失败:找不到对应的处理服务:v1/pods"
+      ],
+      "reportPaths": [
+        "2026-10-13/20261013-070629"
+      ]
     }
   ],
-  "updatedAt": "2026-10-08T12:31:08.630938+00:00"
+  "updatedAt": "2026-10-12T23:06:30.868812+00:00"
 }
