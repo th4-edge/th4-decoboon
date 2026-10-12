@@ -65,12 +65,13 @@ class DesignerMeasureTaskContextTest {
         assertThat(tasks.get(0).getStateKey()).isEqualTo("overdue");
         assertThat(tasks.get(0).getStateLabel()).isEqualTo("预约逾期");
         assertThat(tasks.get(0).getRiskLevel()).isEqualTo("high");
-        // 逾期是风险提示，不是「不能录入」：主行动必须是登记量房结论（2026-10-12 修复）。
-        assertThat(tasks.get(0).getMainActionKey()).isEqualTo("complete_measure");
-        assertThat(tasks.get(0).getMainActionLabel()).isEqualTo("登记量房结论");
-        // 改约/重排降级为并列动作，必须仍然可达。
-        assertThat(tasks.get(0).getNextActionKey()).isEqualTo("measure/reschedule");
-        assertThat(tasks.get(0).getNextActionLabel()).isEqualTo("联系客户改约");
+        // 逾期主行动＝改约（用户裁决 2026-10-12）。
+        assertThat(tasks.get(0).getMainActionKey()).isEqualTo("reschedule_measure");
+        assertThat(tasks.get(0).getMainActionLabel()).isEqualTo("联系客户改约");
+        // 「登记量房结论」降级为并列动作，但必须真实可达：覆盖已上门未登记的场景。
+        assertThat(tasks.get(0).getSecondaryActionKey()).isEqualTo("complete_measure");
+        assertThat(tasks.get(0).getSecondaryActionLabel()).isEqualTo("登记量房结论");
+        assertThat(tasks.get(0).getNextActionKey()).isEqualTo("measure/complete");
         assertThat(tasks.get(0).getPriority()).isEqualTo(1);
     }
 
@@ -193,6 +194,8 @@ class DesignerMeasureTaskContextTest {
         assertThat(task.getStateKey()).isEqualTo("scheduled");
         assertThat(task.getMainActionKey()).isEqualTo("complete_measure");
         assertThat(task.getNextActionKey()).isEqualTo("measure/complete");
+        // 未逾期没有并列动作：改约由中栏「调整预约时间」承担。
+        assertThat(task.getSecondaryActionKey()).isNull();
     }
 
     @Test
@@ -208,9 +211,10 @@ class DesignerMeasureTaskContextTest {
 
         DesignerMeasureTask task = fixture.context().list(designer, new DesignerMeasureQuery()).get(0);
         assertThat(task.getStateKey()).isEqualTo("overdue");
-        assertThat(task.getMainActionKey()).isEqualTo("complete_measure");
-        assertThat(task.getMainActionLabel()).isEqualTo("登记量房结论");
-        assertThat(task.getNextActionKey()).isEqualTo("measure/reschedule");
+        assertThat(task.getMainActionKey()).isEqualTo("reschedule_measure");
+        assertThat(task.getMainActionLabel()).isEqualTo("联系客户改约");
+        assertThat(task.getSecondaryActionKey()).isEqualTo("complete_measure");
+        assertThat(task.getSecondaryActionLabel()).isEqualTo("登记量房结论");
     }
 
     private ContextFixture context() {

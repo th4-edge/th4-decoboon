@@ -25,7 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
                 "propertyId", "propertyLabel", "community", "building", "roomNo", "address", "area", "layout",
                 "propertyStatus", "propertyStatusName", "measureId", "measureStatus", "scheduledAt", "completedAt",
                 "scheduleStateKey", "scheduleStateName", "stateKey", "stateLabel", "riskLevel", "riskReason", "mainActionKey", "mainActionLabel",
-                "nextActionKey", "nextActionLabel", "completionHint", "route", "allowed", "blockReason",
+                "nextActionKey", "nextActionLabel", "secondaryActionKey", "secondaryActionLabel",
+                "completionHint", "route", "allowed", "blockReason",
                 "sitePhotoCount", "structureImageCount", "attachmentCount", "requirementCount", "designCount", "priority"
         })
 })

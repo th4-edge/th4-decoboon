@@ -39,6 +39,8 @@ public class DesignerMeasureTask {
     @Note("主行动中文") private String mainActionLabel;
     @Note("下一步动作 key") private String nextActionKey;
     @Note("下一步动作中文") private String nextActionLabel;
+    @Note("降级并列动作 key（主行动不适用但现场事实已发生时的第二动作）") private String secondaryActionKey;
+    @Note("降级并列动作中文") private String secondaryActionLabel;
     @Note("完成后去向说明") private String completionHint;
     @Note("进入完整推进工作区的路由") private String route;
     @Note("是否允许执行主行动") private Boolean allowed = Boolean.TRUE;
@@ -110,6 +112,10 @@ public class DesignerMeasureTask {
     public void setNextActionKey(String nextActionKey) { this.nextActionKey = nextActionKey; }
     public String getNextActionLabel() { return nextActionLabel; }
     public void setNextActionLabel(String nextActionLabel) { this.nextActionLabel = nextActionLabel; }
+    public String getSecondaryActionKey() { return secondaryActionKey; }
+    public void setSecondaryActionKey(String secondaryActionKey) { this.secondaryActionKey = secondaryActionKey; }
+    public String getSecondaryActionLabel() { return secondaryActionLabel; }
+    public void setSecondaryActionLabel(String secondaryActionLabel) { this.secondaryActionLabel = secondaryActionLabel; }
     public String getCompletionHint() { return completionHint; }
     public void setCompletionHint(String completionHint) { this.completionHint = completionHint; }
     public String getRoute() { return route; }
