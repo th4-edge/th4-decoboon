@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.project;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
@@ -14,6 +16,7 @@ import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.decoboon.project.model.ContractLine;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.service.contractchange.preview.support.Preview;
 import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
@@ -83,11 +86,14 @@ class ContractChangeCompletionGateTest {
     @Autowired private com.th4.edge.decoboon.project.service.contractchange.batchsave.BatchSave batchSave;
     @Autowired private ContractLineRepository contractLineRepository;
     @Autowired private QuoteLineRepository quoteLineRepository;
+    @Autowired private CatalogItemRepository catalogItemRepository;
+    @Autowired private Preview preview;
 
     @BeforeEach
     void unwrapProviderProxy() {
         contractChangeSave = AopTestUtils.getTargetObject(contractChangeSave);
         batchSave = AopTestUtils.getTargetObject(batchSave);
+        preview = AopTestUtils.getTargetObject(preview);
     }
 
     @Test
@@ -202,6 +208,158 @@ class ContractChangeCompletionGateTest {
         assertThat(change.getItems()).hasSize(1);
         assertThat(change.getItems().get(0).getAmountDelta()).isEqualByComparingTo("200");
         assertThat(change.getItems().get(0).getSourceLine().getLineId()).isEqualTo(line.getLineId());
+    }
+
+    @Test
+    void previewAndSaveAddCatalogItemMustUseTargetSnapshot() {
+        Fixture fixture = fixture("new-add", ProjectStatus.Ongoing, ContractStatus.Effective);
+        CatalogItem target = catalog(fixture, "新增灯带", "200", "80");
+
+        ContractChangeItem add = new ContractChangeItem();
+        add.setChangeType(ContractChangeType.Add);
+        add.setTargetCatalogItemId(target.getItemId());
+        add.setTargetQuantity(new BigDecimal("3"));
+
+        setPreviewFields(fixture, ContractChangeType.Add, List.of(add));
+        ContractChange previewResult = preview.call(new ContractChange());
+        assertThat(previewResult.getAmount()).isEqualByComparingTo("600.00");
+        assertThat(previewResult.getItems().get(0).getTargetName()).isEqualTo("新增灯带");
+        assertThat(previewResult.getItems().get(0).getTargetCostAmount()).isEqualByComparingTo("240.00");
+        assertThat(changeRepository.count()).isZero();
+
+        ContractChangeItem savedItem = new ContractChangeItem();
+        savedItem.setChangeType(ContractChangeType.Add);
+        savedItem.setTargetCatalogItemId(target.getItemId());
+        savedItem.setTargetQuantity(new BigDecimal("3"));
+        ContractChange saved = batchSave(fixture, List.of(savedItem));
+        assertThat(saved.getAmount()).isEqualByComparingTo("600.00");
+        assertThat(saved.getCostDelta()).isEqualByComparingTo("240.00");
+        assertThat(saved.getItems().get(0).getTargetName()).isEqualTo("新增灯带");
+    }
+
+    @Test
+    void previewAndSavePartialReductionMustUseCurrentEffectiveRemaining() {
+        Fixture fixture = fixture("new-reduce", ProjectStatus.Ongoing, ContractStatus.Effective);
+        ContractLine line = contractLine(fixture, "10", "1000", "600");
+
+        ContractChangeItem reduce = new ContractChangeItem();
+        reduce.setChangeType(ContractChangeType.Quantity);
+        reduce.setSourceLineId(line.getLineId());
+        reduce.setReduceQuantity(new BigDecimal("3"));
+
+        setPreviewFields(fixture, ContractChangeType.Quantity, List.of(reduce));
+        ContractChange previewResult = preview.call(new ContractChange());
+        assertThat(previewResult.getAmount()).isEqualByComparingTo("-300.00");
+        assertThat(previewResult.getItems().get(0).getSourceRemainingQuantity()).isEqualByComparingTo("10");
+
+        ContractChangeItem savedItem = new ContractChangeItem();
+        savedItem.setChangeType(ContractChangeType.Quantity);
+        savedItem.setSourceLineId(line.getLineId());
+        savedItem.setReduceQuantity(new BigDecimal("3"));
+        ContractChange saved = batchSave(fixture, List.of(savedItem));
+        assertThat(saved.getAmount()).isEqualByComparingTo("-300.00");
+        assertThat(saved.getItems().get(0).getNewQuantity()).isEqualByComparingTo("7");
+    }
+
+    @Test
+    void previewAndSaveReplaceMustUseTargetAmountMinusSourceRemaining() {
+        Fixture fixture = fixture("new-replace", ProjectStatus.Ongoing, ContractStatus.Effective);
+        ContractLine line = contractLine(fixture, "10", "1000", "600");
+        CatalogItem target = catalog(fixture, "替换木饰面", "180", "100");
+
+        ContractChangeItem replace = new ContractChangeItem();
+        replace.setChangeType(ContractChangeType.Replace);
+        replace.setSourceLineId(line.getLineId());
+        replace.setTargetCatalogItemId(target.getItemId());
+        replace.setTargetQuantity(new BigDecimal("6"));
+
+        setPreviewFields(fixture, ContractChangeType.Replace, List.of(replace));
+        ContractChange previewResult = preview.call(new ContractChange());
+        assertThat(previewResult.getAmount()).isEqualByComparingTo("80.00");
+        assertThat(previewResult.getItems().get(0).getTargetName()).isEqualTo("替换木饰面");
+
+        ContractChangeItem savedItem = new ContractChangeItem();
+        savedItem.setChangeType(ContractChangeType.Replace);
+        savedItem.setSourceLineId(line.getLineId());
+        savedItem.setTargetCatalogItemId(target.getItemId());
+        savedItem.setTargetQuantity(new BigDecimal("6"));
+        ContractChange saved = batchSave(fixture, List.of(savedItem));
+        assertThat(saved.getAmount()).isEqualByComparingTo("80.00");
+        assertThat(saved.getItems().get(0).getSourceRemainingQuantity()).isEqualByComparingTo("10");
+    }
+
+    private void setPreviewFields(Fixture fixture, ContractChangeType type, List<ContractChangeItem> items) {
+        ReflectionTestUtils.setField(preview, "employee", fixture.pm());
+        ReflectionTestUtils.setField(preview, "contractId", fixture.contract().getContractId());
+        ReflectionTestUtils.setField(preview, "type", type);
+        ReflectionTestUtils.setField(preview, "items", items);
+    }
+
+    private ContractChange batchSave(Fixture fixture, List<ContractChangeItem> items) {
+        ReflectionTestUtils.setField(batchSave, "employee", fixture.pm());
+        ReflectionTestUtils.setField(batchSave, "contractId", fixture.contract().getContractId());
+        ReflectionTestUtils.setField(batchSave, "reason", "增减项三类动作回归");
+        ReflectionTestUtils.setField(batchSave, "type", items.get(0).getChangeType());
+        ReflectionTestUtils.setField(batchSave, "items", items);
+        ReflectionTestUtils.setField(batchSave, "evidenceImages", List.of("evidence.jpg"));
+        ReflectionTestUtils.setField(batchSave, "signatureUrl", null);
+        ReflectionTestUtils.setField(batchSave, "customerConfirmedAt", LocalDateTime.now().minusDays(1));
+        ReflectionTestUtils.setField(batchSave, "customerConfirmedBy", "业主李女士");
+        ReflectionTestUtils.setField(batchSave, "customerConfirmMethod", "当面确认");
+        return batchSave.call(new ContractChange());
+    }
+
+    private CatalogItem catalog(Fixture fixture, String name, String materialPrice, String costPrice) {
+        CatalogItem item = new CatalogItem();
+        item.setCompany(fixture.company());
+        item.setType(ItemType.Construction);
+        item.setCategory("合同变更");
+        item.setName(name);
+        item.setUnit(Unit.Area);
+        item.setPricingMode(PricingMethod.MaterialAndManual);
+        item.setMaterialPrice(new BigDecimal(materialPrice));
+        item.setManualPrice(BigDecimal.ZERO);
+        item.setCostPrice(new BigDecimal(costPrice));
+        item.setFormula("材料单价 × 工程量");
+        item.setActive(true);
+        item.setSort(0);
+        return catalogItemRepository.save(item);
+    }
+
+    private ContractLine contractLine(Fixture fixture, String quantity, String amount, String cost) {
+        QuoteLine source = new QuoteLine();
+        source.setQuote(fixture.quote());
+        source.setCompany(fixture.company());
+        source.setProperty(fixture.property());
+        source.setType(ItemType.Construction);
+        source.setCategory("墙面施工");
+        source.setName("原墙面施工");
+        source.setUnit(Unit.Area);
+        source.setQuantity(new BigDecimal(quantity));
+        source.setMaterialPrice(new BigDecimal("100"));
+        source.setManualPrice(BigDecimal.ZERO);
+        source.setPricingMode(PricingMethod.MaterialAndManual);
+        source.setAmount(new BigDecimal(amount));
+        source.setCost(new BigDecimal(cost));
+        source.setFormula("材料单价 × 工程量");
+        source = quoteLineRepository.save(source);
+
+        ContractLine line = new ContractLine();
+        line.setSourceQuoteLine(source);
+        line.setCompany(fixture.company());
+        line.setProperty(fixture.property());
+        line.setContract(fixture.contract());
+        line.setType(ItemType.Construction);
+        line.setCategory("墙面施工");
+        line.setName("原墙面施工");
+        line.setUnit(Unit.Area);
+        line.setQuantity(new BigDecimal(quantity));
+        line.setMaterialPrice(new BigDecimal("100"));
+        line.setManualPrice(BigDecimal.ZERO);
+        line.setAmount(new BigDecimal(amount));
+        line.setCost(new BigDecimal(cost));
+        line.setSort(0);
+        return contractLineRepository.save(line);
     }
 
     private ContractChange request(Fixture fixture, BigDecimal amount) {

@@ -1,8 +1,11 @@
 package com.th4.edge.decoboon.project.repository;
 
+import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
 import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Collection;
@@ -24,4 +27,15 @@ public interface ContractChangeItemRepository extends JpaRepository<ContractChan
     /** 按企业范围加载已生效变更目标来源。 */
     @EntityGraph(attributePaths = {"change", "sourceLine", "sourceChangeItem", "targetCatalogItem"})
     Optional<ContractChangeItem> findByChangeItemIdAndCompany_ComId(Long changeItemId, Long comId);
+
+    /** 项目成本汇总：批量加载已生效变更明细，避免按项目循环查询。 */
+    @Query("""
+            select item from ContractChangeItem item
+            join fetch item.change change
+            join fetch change.project project
+            where project.projectId in :projectIds and change.status = :status
+            order by item.changeItemId
+            """)
+    List<ContractChangeItem> findEffectiveByProjectIds(@Param("projectIds") Collection<Long> projectIds,
+                                                       @Param("status") ContractChangeStatus status);
 }

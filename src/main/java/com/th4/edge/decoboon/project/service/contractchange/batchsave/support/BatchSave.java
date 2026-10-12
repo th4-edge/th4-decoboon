@@ -157,11 +157,45 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         Project project = accessContext.requireProject(contract.getProject().getProjectId(), current);
         accessContext.requirePlanEditor(project, current);
 
-        ContractChangeType batchType = type == null ? ContractChangeType.Add : type;
-        List<Long> sourceLineIds = items.stream()
+        ContractChange draft = prepareDraft(contract, project, type, items);
+        request.setCompany(draft.getCompany());
+        request.setContract(draft.getContract());
+        request.setProject(draft.getProject());
+        request.setProperty(draft.getProperty());
+        permissionContext.apply(request, project);
+        request.setNo("BC" + System.currentTimeMillis());
+        request.setReason(reason.trim());
+        request.setType(draft.getType());
+        request.setAmount(draft.getAmount());
+        request.setCostDelta(draft.getCostDelta());
+        request.setStatus(draft.getStatus());
+        // DEC-068：业主确认不建模为系统事实；建单只留痕发起人、时间与明细，审批通过即生效。
+        request.setRequestedBy(current);
+        ContractChange saved = changeRepository.save(modelIdentityContext.prepare(request));
+
+        List<ContractChangeItem> toSave = new ArrayList<>(draft.getItems().size());
+        for (ContractChangeItem item : draft.getItems()) {
+            item.setChange(saved);
+            toSave.add(modelIdentityContext.prepare(item));
+        }
+        itemRepository.saveAll(toSave);
+        saved.setItems(draft.getItems());
+        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.ContractChange, current);
+        return saved;
+    }
+
+
+    /**
+     * 执行新增/减项/替换的行级校验、目标快照与差额计算，但不写库。
+     * batch-save 与 preview 共用本方法，禁止两条链路各自计算（预览即所得）。
+     */
+    public ContractChange prepareDraft(ProjectContract contract, Project project,
+                                       ContractChangeType defaultType, List<ContractChangeItem> rows) {
+        ContractChangeType batchType = defaultType == null ? ContractChangeType.Add : defaultType;
+        List<Long> sourceLineIds = rows.stream()
                 .map(ContractChangeItem::getSourceLineId).filter(Objects::nonNull).distinct().toList();
         Map<Long, ContractLine> sourceLines = amountContext.lines(contract, sourceLineIds);
-        Map<Long, ContractChangeItem> sourceChangeItems = loadSourceChangeItems(project.getCompany().getComId(), items);
+        Map<Long, ContractChangeItem> sourceChangeItems = loadSourceChangeItems(project.getCompany().getComId(), rows);
 
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal cost = BigDecimal.ZERO;
@@ -169,8 +203,8 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
         Map<String, BigDecimal> batchReserved = new HashMap<>();
         List<ContractChangeItem> preparedItems = new ArrayList<>();
 
-        for (int index = 0; index < items.size(); index++) {
-            ContractChangeItem item = items.get(index);
+        for (int index = 0; index < rows.size(); index++) {
+            ContractChangeItem item = rows.get(index);
             int rowNo = index + 1;
             ContractChangeType rowType = item.getChangeType() == null ? batchType : item.getChangeType();
             if (rowType == ContractChangeType.Price) {
@@ -229,30 +263,18 @@ public class BatchSave implements com.th4.edge.decoboon.project.service.contract
             preparedItems.add(item);
         }
 
-        request.setCompany(project.getCompany());
-        request.setContract(contract);
-        request.setProject(project);
-        request.setProperty(project.getProperty());
-        permissionContext.apply(request, project);
-        request.setNo("BC" + System.currentTimeMillis());
-        request.setReason(reason.trim());
-        request.setType(batchType);
-        request.setAmount(amount);
-        request.setCostDelta(costComplete ? cost : null);
-        request.setStatus(ContractChangeStatus.Pending);
-        // DEC-068：业主确认不建模为系统事实；建单只留痕发起人、时间与明细，审批通过即生效。
-        request.setRequestedBy(current);
-        ContractChange saved = changeRepository.save(modelIdentityContext.prepare(request));
-
-        List<ContractChangeItem> toSave = new ArrayList<>(preparedItems.size());
-        for (ContractChangeItem item : preparedItems) {
-            item.setChange(saved);
-            toSave.add(modelIdentityContext.prepare(item));
-        }
-        itemRepository.saveAll(toSave);
-        saved.setItems(preparedItems);
-        if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.ContractChange, current);
-        return saved;
+        ContractChange draft = new ContractChange();
+        draft.setCompany(project.getCompany());
+        draft.setContract(contract);
+        draft.setProject(project);
+        draft.setProperty(project.getProperty());
+        permissionContext.apply(draft, project);
+        draft.setType(batchType);
+        draft.setAmount(amount);
+        draft.setCostDelta(costComplete ? cost : null);
+        draft.setStatus(ContractChangeStatus.Pending);
+        draft.setItems(preparedItems);
+        return draft;
     }
 
     private void prepareAdd(Project project, ContractChangeItem item, int rowNo) {

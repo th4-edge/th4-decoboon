@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.context;
 
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.configure.ContractChangeType;
 import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
 import com.th4.edge.decoboon.project.configure.TaskStatus;
@@ -142,6 +143,24 @@ class ContractChangeFulfillmentContextTest {
                 new BigDecimal("4"), new BigDecimal("120"), new BigDecimal("180"), new BigDecimal("100"));
         ContractChangeItem material = item(2L, ContractChangeType.Replace, ItemType.Material, line,
                 new BigDecimal("4"), new BigDecimal("70"), new BigDecimal("120"), new BigDecimal("80"));
+        CatalogItem targetCatalog = new CatalogItem();
+        targetCatalog.setItemId(99L);
+        construction.setTargetType(ItemType.Construction);
+        construction.setTargetCategory("目标墙面");
+        construction.setTargetCraft("新施工工艺");
+        construction.setTargetSpec("新施工规格");
+        construction.setTargetUnit(Unit.Item);
+        construction.setTargetQuantity(new BigDecimal("4"));
+        construction.setTargetAmount(new BigDecimal("480"));
+        construction.setTargetCostAmount(new BigDecimal("200"));
+        material.setTargetCatalogItem(targetCatalog);
+        material.setTargetType(ItemType.Material);
+        material.setTargetBrand("目标品牌");
+        material.setTargetSpec("目标规格");
+        material.setTargetUnit(Unit.Item);
+        material.setTargetQuantity(new BigDecimal("4"));
+        material.setTargetAmount(new BigDecimal("280"));
+        material.setTargetCostAmount(new BigDecimal("200"));
         when(itemRepository.findByChange_ChangeIdOrderByChangeItemIdAsc(10L))
                 .thenReturn(List.of(construction, material));
         when(stageRepository.findByProjectOrderBySort(fixture.project())).thenReturn(List.of());
@@ -158,8 +177,17 @@ class ContractChangeFulfillmentContextTest {
         verify(materialPlanRepository, times(2)).save(plans.capture());
         assertThat(tasks.getAllValues().get(1).getChangeItem()).isSameAs(construction);
         assertThat(tasks.getAllValues().get(1).getSalePrice()).isEqualByComparingTo("480");
+        assertThat(tasks.getAllValues().get(1).getCost()).isEqualByComparingTo("200");
+        assertThat(tasks.getAllValues().get(1).getCraft()).isEqualTo("新施工工艺");
+        assertThat(tasks.getAllValues().get(1).getSpec()).isEqualTo("新施工规格");
+        assertThat(tasks.getAllValues().get(1).getUnit()).isEqualTo(Unit.Item);
         assertThat(plans.getAllValues().get(1).getChangeItem()).isSameAs(material);
+        assertThat(plans.getAllValues().get(1).getCatalogItem()).isSameAs(targetCatalog);
         assertThat(plans.getAllValues().get(1).getQuantity()).isEqualByComparingTo("4");
+        assertThat(plans.getAllValues().get(1).getSelectedBrand()).isEqualTo("目标品牌");
+        assertThat(plans.getAllValues().get(1).getSelectedSpec()).isEqualTo("目标规格");
+        assertThat(plans.getAllValues().get(1).getUnit()).isEqualTo(Unit.Item);
+        assertThat(plans.getAllValues().get(1).getCost()).isEqualByComparingTo("200");
     }
 
     @Test

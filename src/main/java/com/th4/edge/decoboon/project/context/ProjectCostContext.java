@@ -6,10 +6,13 @@ import com.th4.edge.decoboon.carryover.repository.CarryoverCostSnapshotRepositor
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
+import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.decoboon.project.model.ContractLine;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
+import com.th4.edge.decoboon.project.repository.ContractChangeItemRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
@@ -29,22 +32,32 @@ public class ProjectCostContext {
     private final ContractLineRepository contractLineRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final CarryoverCostSnapshotRepository carryoverCostRepository;
+    private final ContractChangeItemRepository changeItemRepository;
 
     public ProjectCostContext(QuoteLineRepository quoteLineRepository,
                               ContractLineRepository contractLineRepository,
                               PurchaseOrderRepository purchaseOrderRepository) {
-        this(quoteLineRepository, contractLineRepository, purchaseOrderRepository, null);
+        this(quoteLineRepository, contractLineRepository, purchaseOrderRepository, null, null);
+    }
+
+    public ProjectCostContext(QuoteLineRepository quoteLineRepository,
+                              ContractLineRepository contractLineRepository,
+                              PurchaseOrderRepository purchaseOrderRepository,
+                              CarryoverCostSnapshotRepository carryoverCostRepository) {
+        this(quoteLineRepository, contractLineRepository, purchaseOrderRepository, carryoverCostRepository, null);
     }
 
     @Autowired
     public ProjectCostContext(QuoteLineRepository quoteLineRepository,
                               ContractLineRepository contractLineRepository,
                               PurchaseOrderRepository purchaseOrderRepository,
-                              CarryoverCostSnapshotRepository carryoverCostRepository) {
+                              CarryoverCostSnapshotRepository carryoverCostRepository,
+                              ContractChangeItemRepository changeItemRepository) {
         this.quoteLineRepository = quoteLineRepository;
         this.contractLineRepository = contractLineRepository;
         this.purchaseOrderRepository = purchaseOrderRepository;
         this.carryoverCostRepository = carryoverCostRepository;
+        this.changeItemRepository = changeItemRepository;
     }
 
     public CostSummary summarize(Project project) {
@@ -87,6 +100,12 @@ public class ProjectCostContext {
                         .filter(item -> item.getContract() != null && item.getContract().getProject() != null)
                         .collect(java.util.stream.Collectors.groupingBy(
                                 item -> item.getContract().getProject().getProjectId()));
+        java.util.Map<Long, List<ContractChangeItem>> changesByProject = changeItemRepository == null
+                ? java.util.Map.of()
+                : changeItemRepository.findEffectiveByProjectIds(projectIds, ContractChangeStatus.CustomerConfirmed).stream()
+                        .filter(item -> item.getChange() != null && item.getChange().getProject() != null)
+                        .collect(java.util.stream.Collectors.groupingBy(
+                                item -> item.getChange().getProject().getProjectId()));
         // 未签约项目（无合同行）才回退到报价行，属低频路径：仅对这类项目按报价查询，
         // 保持与原实现完全相同的回退语义；有合同行的项目不再触碰报价行。
         java.util.Map<Long, CostSummary> result = new java.util.LinkedHashMap<>();
@@ -98,6 +117,7 @@ public class ProjectCostContext {
                     contractLinesByProject.containsKey(project.getProjectId()) || project.getQuote() == null
                             ? List.of()
                             : quoteLineRepository.findByQuote(project.getQuote()));
+            post = applyChangeItems(post, changesByProject.getOrDefault(project.getProjectId(), List.of()));
             if (snapshot == null) {
                 result.put(project.getProjectId(), post);
                 continue;
@@ -220,6 +240,25 @@ public class ProjectCostContext {
             return left.getItemId().equals(right.getItemId());
         }
         return left == right;
+    }
+
+    /** 已生效变更成本并入项目预计/实际成本；null 成本视为待维护，不伪造 0。 */
+    private CostSummary applyChangeItems(CostSummary base, List<ContractChangeItem> changes) {
+        if (changes == null || changes.isEmpty()) {
+            return base;
+        }
+        BigDecimal estimated = base.estimatedCost();
+        BigDecimal actual = base.actualCost();
+        int incomplete = base.incompleteItemCount();
+        for (ContractChangeItem item : changes) {
+            if (item.getCostDelta() == null) {
+                incomplete++;
+                continue;
+            }
+            estimated = estimated.add(item.getCostDelta());
+            actual = actual.add(item.getCostDelta());
+        }
+        return new CostSummary(money(estimated), money(actual), incomplete);
     }
 
     private BigDecimal contractEstimatedCost(ContractLine line) {

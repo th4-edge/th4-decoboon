@@ -162,8 +162,11 @@ public class ContractChangeFulfillmentContext {
     private ProjectTask newTask(ContractChange change, ContractChangeItem item, Project project,
                                 Map<String, ProjectStage> stages, Employee operator) {
         ContractLine source = item.getSourceLine();
-        String category = source == null || source.getCategory() == null || source.getCategory().isBlank()
-                ? "合同变更" : source.getCategory();
+        String category = targetCategory(item);
+        if (category == null || category.isBlank()) {
+            category = source == null || source.getCategory() == null || source.getCategory().isBlank()
+                    ? "合同变更" : source.getCategory();
+        }
         ProjectStage stage = stages.get(category);
         if (stage == null) {
             stage = new ProjectStage();
@@ -198,12 +201,10 @@ public class ContractChangeFulfillmentContext {
         task.setChangeItem(item);
         task.setName(change.getNo() + " · " + item.getName());
         task.setZone(source == null ? null : source.getSpaceName());
-        // 施工工艺以报价行冻结的快照为准，历史行缺快照时兜底材料库主数据。
-        QuoteLine craftSource = source == null ? null : source.getSourceQuoteLine();
-        task.setCraft(craftSource == null ? null : CraftText.firstNonBlank(craftSource.getCraft(),
-                craftSource.getCatalogItem() == null ? null : craftSource.getCatalogItem().getCraft()));
-        task.setSpec(source == null ? null : source.getSpec());
-        task.setUnit(source == null ? Unit.Area : source.getUnit());
+        // 新增/替换优先使用目标报价项目快照；历史调量才回退原合同行快照。
+        task.setCraft(item.getTargetCraft() != null ? item.getTargetCraft() : sourceCraft(source));
+        task.setSpec(item.getTargetSpec() != null ? item.getTargetSpec() : source == null ? null : source.getSpec());
+        task.setUnit(item.getTargetUnit() != null ? item.getTargetUnit() : source == null ? Unit.Area : source.getUnit());
         task.setStatus(TaskStatus.Todo);
         task.setProgress(0);
         task.setPriority("normal");
@@ -298,7 +299,10 @@ public class ContractChangeFulfillmentContext {
     /** 按变更来源的主材分类解析默认损耗率（DEC-MP-09）。 */
     private java.math.BigDecimal categoryLoss(Project project, ContractChangeItem item) {
         ContractLine source = item == null ? null : item.getSourceLine();
-        String category = source == null ? null : source.getCategory();
+        String category = targetCategory(item);
+        if (category == null || category.isBlank()) {
+            category = source == null ? null : source.getCategory();
+        }
         return materialCategoryContext.lossRate(project == null ? null : project.getCompany(), category);
     }
 
@@ -313,11 +317,13 @@ public class ContractChangeFulfillmentContext {
         plan.setContractLine(source);
         plan.setChangeItem(item);
         plan.setQuoteItem(source == null ? null : source.getSourceQuoteLine());
-        plan.setCatalogItem(source == null || source.getSourceQuoteLine() == null
+        plan.setCatalogItem(item.getTargetCatalogItem() != null
+                ? item.getTargetCatalogItem()
+                : source == null || source.getSourceQuoteLine() == null
                 ? null : source.getSourceQuoteLine().getCatalogItem());
-        plan.setUnit(source == null ? Unit.Area : source.getUnit());
-        plan.setSelectedBrand(source == null ? null : source.getBrand());
-        plan.setSelectedSpec(source == null ? null : source.getSpec());
+        plan.setUnit(item.getTargetUnit() != null ? item.getTargetUnit() : source == null ? Unit.Area : source.getUnit());
+        plan.setSelectedBrand(item.getTargetBrand() != null ? item.getTargetBrand() : source == null ? null : source.getBrand());
+        plan.setSelectedSpec(item.getTargetSpec() != null ? item.getTargetSpec() : source == null ? null : source.getSpec());
         plan.setSourceType(MaterialSourceType.ChangeAdd);
         plan.setStatus(MaterialPlanStatus.ReadyToOrder);
         plan.setRequiredAt(project.getStartDate() == null ? LocalDate.now() : project.getStartDate());
@@ -356,6 +362,9 @@ public class ContractChangeFulfillmentContext {
     }
 
     private ItemType resolveItemType(ContractChangeItem item) {
+        if (item.getTargetType() != null) {
+            return item.getTargetType();
+        }
         if (item.getItemType() != null) {
             return item.getItemType();
         }
@@ -363,6 +372,9 @@ public class ContractChangeFulfillmentContext {
     }
 
     private BigDecimal quantityForReplacement(ContractChangeItem item) {
+        if (item.getTargetQuantity() != null && item.getTargetQuantity().signum() >= 0) {
+            return item.getTargetQuantity();
+        }
         if (item.getNewQuantity() != null && item.getNewQuantity().signum() >= 0) {
             return item.getNewQuantity();
         }
@@ -381,6 +393,9 @@ public class ContractChangeFulfillmentContext {
     }
 
     private BigDecimal fullSaleAmount(ContractChangeItem item) {
+        if (item.getTargetAmount() != null) {
+            return item.getTargetAmount();
+        }
         BigDecimal quantity = quantityForReplacement(item);
         BigDecimal price = item.getNewPrice() == null
                 ? (item.getSourceLine() == null ? BigDecimal.ZERO : unitPrice(item, null))
@@ -389,6 +404,9 @@ public class ContractChangeFulfillmentContext {
     }
 
     private BigDecimal fullCost(ContractChangeItem item) {
+        if (item.getTargetCostAmount() != null) {
+            return item.getTargetCostAmount();
+        }
         if (item.getSourceLine() != null && item.getSourceLine().getCost() != null) {
             return value(item.getSourceLine().getCost()).add(value(item.getCostDelta()));
         }
@@ -407,6 +425,16 @@ public class ContractChangeFulfillmentContext {
             return BigDecimal.ZERO;
         }
         return value(source.getSourceQuoteLine().getPrice());
+    }
+
+    private String targetCategory(ContractChangeItem item) {
+        return item == null ? null : item.getTargetCategory();
+    }
+
+    private String sourceCraft(ContractLine source) {
+        QuoteLine craftSource = source == null ? null : source.getSourceQuoteLine();
+        return craftSource == null ? null : CraftText.firstNonBlank(craftSource.getCraft(),
+                craftSource.getCatalogItem() == null ? null : craftSource.getCatalogItem().getCraft());
     }
 
     private void report(ContractChange change, Project project, Employee operator,

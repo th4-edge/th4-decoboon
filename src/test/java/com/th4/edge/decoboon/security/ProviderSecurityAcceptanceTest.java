@@ -162,13 +162,19 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 466（public 15 + protected 451）。
         // 2026-10-12 量房原始区域（DEC-066）新增 3 条（property/measure/region list/save/delete，protected）。
         // => 当前 Provider 面板为 469（public 15 + protected 454）。
-        assertThat(routes).hasSize(469);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(454);
+        // 2026-10-13 门店维度补登记 3 条（user/store/status、user/store/update、statistic/store-comparison/report，protected）——
+        // 该批路由此前未登记，导致基线自 2026-10-13 起失败（469 vs 实际 472）。
+        // => 当前 Provider 面板为 472（public 15 + protected 457）。
+        // 2026-10-13 增减项草稿预览（DEC-055）新增 1 条（project/contract-change/preview，protected）。
+        // => 当前 Provider 面板为 473（public 15 + protected 458）。
+        assertThat(routes).hasSize(473);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(458);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(15);
     }
 
     @Test
     void protectedRepresentativeRoutesMustReturnUnauthorizedWithoutToken() throws Exception {
+        assertUnauthorized("project/contract-change/preview");
         assertUnauthorized("content/template/list");
         assertUnauthorized("content/lead-touch/save");
         assertUnauthorized("content/lead-touch/list");

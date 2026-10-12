@@ -7,7 +7,12 @@ import com.th4.edge.decoboon.common.configure.BusinessOrigin;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
+import com.th4.edge.decoboon.project.configure.ContractChangeType;
+import com.th4.edge.decoboon.project.model.ContractChange;
+import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.project.repository.ContractChangeItemRepository;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
@@ -61,6 +66,39 @@ class ProjectCostContextTest {
         assertThat(summary.actualCost()).isEqualByComparingTo("150.00");
         assertThat(summary.incompleteItemCount()).isEqualTo(1);
         assertThat(summary.complete()).isFalse();
+    }
+
+    @Test
+    void effectiveChangeCostMustJoinProjectCostAndMissingCostMustRemainIncomplete() {
+        QuoteLine line = line(item("100.00", ItemType.Material, PricingMethod.MaterialAndManual),
+                "1", "100.00", "0");
+        Project project = project(line);
+        project.setProjectId(990L);
+        ContractChangeItemRepository changeItemRepository = mock(ContractChangeItemRepository.class);
+        ProjectCostContext costContext = new ProjectCostContext(quoteLines, contractLines,
+                purchaseOrders, null, changeItemRepository);
+
+        ContractChange change = new ContractChange();
+        change.setProject(project);
+        change.setStatus(ContractChangeStatus.CustomerConfirmed);
+        ContractChangeItem effective = new ContractChangeItem();
+        effective.setChangeType(ContractChangeType.Add);
+        effective.setChange(change);
+        effective.setCostDelta(new BigDecimal("50.00"));
+        when(changeItemRepository.findEffectiveByProjectIds(any(), any()))
+                .thenReturn(List.of(effective));
+
+        ProjectCostContext.CostSummary withCost = costContext.summarize(project);
+        assertThat(withCost.estimatedCost()).isEqualByComparingTo("150.00");
+        assertThat(withCost.actualCost()).isEqualByComparingTo("150.00");
+        assertThat(withCost.complete()).isTrue();
+
+        effective.setCostDelta(null);
+        ProjectCostContext.CostSummary missingCost = costContext.summarize(project);
+        assertThat(missingCost.estimatedCost()).isEqualByComparingTo("100.00");
+        assertThat(missingCost.actualCost()).isEqualByComparingTo("100.00");
+        assertThat(missingCost.incompleteItemCount()).isEqualTo(1);
+        assertThat(missingCost.complete()).isFalse();
     }
 
     @Test
