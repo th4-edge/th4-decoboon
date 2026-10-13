@@ -71,8 +71,14 @@ public class ContractChangeRange {
         @Note("规格")
         private String spec;
 
-        @Note("单位")
+        @Note("区域（房屋区域名，原合同行自带；已生效变更目标取其来源行区域，无来源时为 null）")
+        private String spaceName;
+
+        @Note("单位文案（展示用；单位枚举名称，如 Area → m²）")
         private String unit;
+
+        @Note("单位枚举键（供前端按既有映射转换展示文案，如 Area → ㎡）")
+        private String unitKey;
 
         @Note("范围初始有效量")
         private BigDecimal initialQuantity;
@@ -125,8 +131,14 @@ public class ContractChangeRange {
         public String getSpec() { return spec; }
         public void setSpec(String spec) { this.spec = spec; }
 
+        public String getSpaceName() { return spaceName; }
+        public void setSpaceName(String spaceName) { this.spaceName = spaceName; }
+
         public String getUnit() { return unit; }
         public void setUnit(String unit) { this.unit = unit; }
+
+        public String getUnitKey() { return unitKey; }
+        public void setUnitKey(String unitKey) { this.unitKey = unitKey; }
 
         public BigDecimal getInitialQuantity() { return initialQuantity; }
         public void setInitialQuantity(BigDecimal initialQuantity) { this.initialQuantity = initialQuantity; }

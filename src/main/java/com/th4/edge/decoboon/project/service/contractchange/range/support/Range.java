@@ -44,7 +44,7 @@ import java.util.List;
                 properties = {"contract", "sources", "selected", "confirmable"}),
         @AllowProperties(model = ContractChangeRange.Source.class,
                 properties = {"group", "sourceLineId", "sourceChangeItemId", "changeId", "changeNo",
-                        "name", "itemType", "brand", "spec", "unit",
+                        "name", "itemType", "brand", "spec", "spaceName", "unit", "unitKey",
                         "initialQuantity", "effectiveRemainingQuantity", "pendingReservedQuantity",
                         "availableQuantity", "effectiveRemainingAmount", "currentUnitPrice",
                         "confirmable", "blockReason"}),
@@ -151,7 +151,9 @@ public class Range implements com.th4.edge.decoboon.project.service.contractchan
             source.setItemType(line.getType() == null ? null : line.getType().name());
             source.setBrand(line.getBrand());
             source.setSpec(line.getSpec());
+            source.setSpaceName(line.getSpaceName());
             source.setUnit(line.getUnit() == null ? null : line.getUnit().getName());
+            source.setUnitKey(line.getUnit() == null ? null : line.getUnit().name());
         } else {
             source.setGroup("effective");
             source.setSourceChangeItemId(changeItem.getChangeItemId());
@@ -163,9 +165,12 @@ public class Range implements com.th4.edge.decoboon.project.service.contractchan
                     : (changeItem.getItemType() == null ? null : changeItem.getItemType().name()));
             source.setBrand(changeItem.getTargetBrand());
             source.setSpec(changeItem.getTargetSpec());
-            source.setUnit(changeItem.getTargetUnit() != null
-                    ? changeItem.getTargetUnit().getName()
-                    : source.getUnit());
+            // 区域：已生效变更目标优先取来源行区域（Add 类无来源行时为 null → 前端归入「未标注区域」）
+            source.setSpaceName(changeItem.getSourceLine() == null ? null : changeItem.getSourceLine().getSpaceName());
+            if (changeItem.getTargetUnit() != null) {
+                source.setUnit(changeItem.getTargetUnit().getName());
+                source.setUnitKey(changeItem.getTargetUnit().name());
+            }
         }
         source.setInitialQuantity(snapshot.initialQuantity());
         source.setEffectiveRemainingQuantity(snapshot.effectiveRemainingQuantity());

@@ -86,6 +86,8 @@ class RangeProviderTest {
         ContractChangeRange.Source fromContract = view.getSources().get(0);
         assertThat(fromContract.getGroup()).isEqualTo("contract");
         assertThat(fromContract.getSourceLineId()).isEqualTo(101L);
+        assertThat(fromContract.getSpaceName()).isEqualTo("卫生间");
+        assertThat(fromContract.getUnitKey()).isEqualTo("Area");
         assertThat(fromContract.getEffectiveRemainingQuantity()).isEqualByComparingTo("22.5");
         assertThat(fromContract.getAvailableQuantity()).isEqualByComparingTo("22.5");
         assertThat(fromContract.getConfirmable()).isTrue();
@@ -93,6 +95,8 @@ class RangeProviderTest {
         ContractChangeRange.Source fromEffective = view.getSources().get(1);
         assertThat(fromEffective.getGroup()).isEqualTo("effective");
         assertThat(fromEffective.getSourceChangeItemId()).isEqualTo(201L);
+        assertThat(fromEffective.getSpaceName()).isEqualTo("卫生间");
+        assertThat(fromEffective.getUnitKey()).isEqualTo("Area");
         assertThat(fromEffective.getPendingReservedQuantity()).isEqualByComparingTo("4");
         assertThat(fromEffective.getAvailableQuantity()).isEqualByComparingTo("4");
         assertThat(view.getConfirmable()).isTrue();
@@ -148,6 +152,7 @@ class RangeProviderTest {
         ContractLine line = new ContractLine();
         line.setLineId(id);
         line.setName(name);
+        line.setSpaceName("卫生间");
         line.setQuantity(new BigDecimal("22.5"));
         line.setAmount(new BigDecimal("2925"));
         return line;
@@ -161,9 +166,31 @@ class RangeProviderTest {
         ContractChangeItem item = new ContractChangeItem();
         item.setChangeItemId(id);
         item.setChange(change);
+        item.setSourceLine(contractLine(900L + id, "来源行"));
         item.setTargetName("阳台防水");
         item.setTargetUnit(com.th4.edge.decoboon.bim.configure.Unit.Area);
         return item;
+    }
+
+    @Test
+    @DisplayName("新增分项类已生效目标无来源行时，区域为 null（前端归入「未标注区域」）")
+    void shouldReturnNullSpaceWhenEffectiveTargetHasNoSourceLine() {
+        ProjectContract contract = contract();
+        when(contractRepository.findOne(any(Specification.class))).thenReturn(Optional.of(contract));
+        when(lineRepository.findByContractOrderBySortAsc(contract)).thenReturn(List.of());
+        ContractChangeItem addTarget = effectiveItem(301L);
+        addTarget.setSourceLine(null);
+        when(itemRepository.findByChange_Contract_ContractIdOrderByChangeItemIdAsc(20L)).thenReturn(List.of(addTarget));
+        when(rangeContext.snapshot(contract, addTarget)).thenReturn(
+                new ContractChangeRangeContext.RangeSnapshot(new BigDecimal("5"), new BigDecimal("5"),
+                        BigDecimal.ZERO, new BigDecimal("5"), new BigDecimal("440"), new BigDecimal("88"),
+                        true, null));
+
+        ContractChangeRange view = provider.call(new ContractChange());
+
+        assertThat(view.getSources()).hasSize(1);
+        assertThat(view.getSources().get(0).getSpaceName()).isNull();
+        assertThat(view.getSources().get(0).getUnitKey()).isEqualTo("Area");
     }
 
     private ContractChangeItem pendingItem(Long id) {
