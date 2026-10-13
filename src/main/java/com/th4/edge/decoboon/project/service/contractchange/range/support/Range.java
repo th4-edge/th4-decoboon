@@ -165,7 +165,7 @@ public class Range implements com.th4.edge.decoboon.project.service.contractchan
                     : (changeItem.getItemType() == null ? null : changeItem.getItemType().name()));
             source.setBrand(changeItem.getTargetBrand());
             source.setSpec(changeItem.getTargetSpec());
-            // 区域：已生效变更目标优先取来源行区域（Add 类无来源行时为 null → 前端归入「未标注区域」）
+            // 区域：已生效变更目标优先取来源行区域（Add 类无来源行时为 null → 前端归入「综合项目」，与报价视图/工作簿导出同一术语）
             source.setSpaceName(changeItem.getSourceLine() == null ? null : changeItem.getSourceLine().getSpaceName());
             if (changeItem.getTargetUnit() != null) {
                 source.setUnit(changeItem.getTargetUnit().getName());
