@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.trade.quote;
 
+import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Space;
+import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.context.QuoteAdjustmentContext;
 import com.th4.edge.decoboon.quote.context.QuoteRevisionContext;
@@ -41,13 +43,14 @@ class QuoteWorkbookApplyTest {
 
     private final QuoteRepository quoteRepository = mock(QuoteRepository.class);
     private final QuoteLineRepository lineRepository = mock(QuoteLineRepository.class);
+    private final SpaceRepository spaceRepository = mock(SpaceRepository.class);
     private final QuoteWorkbookImportContext importContext = mock(QuoteWorkbookImportContext.class);
     private final QuoteAdjustmentContext adjustmentContext = mock(QuoteAdjustmentContext.class);
     private final QuoteRevisionContext revisionContext = new QuoteRevisionContext();
     private final QuoteViewContext viewContext = mock(QuoteViewContext.class);
     private final DataScopeContext dataScopeContext = mock(DataScopeContext.class);
 
-    private final Apply apply = new Apply(quoteRepository, lineRepository, importContext,
+    private final Apply apply = new Apply(quoteRepository, lineRepository, spaceRepository, importContext,
             adjustmentContext, revisionContext, viewContext, dataScopeContext);
 
     private Employee designer() {
@@ -164,6 +167,55 @@ class QuoteWorkbookApplyTest {
         assertThatThrownBy(() -> apply.call(new Quote()))
                 .hasMessageContaining("区域不匹配");
         verify(adjustmentContext, never()).recalculate(any());
+    }
+
+    // ───────── 区域可选：工作簿「区域列」落地（USER-DECISION-20261013-002）─────────
+
+    @Test
+    void shouldFillRegionFromWorkbookWhenLineHasNoSpace() {
+        Quote quote = draftQuote(QuoteStatus.Draft);
+        Design design = new Design();
+        design.setDesignId(77L);
+        quote.setDesign(design);
+        Space master = new Space();
+        master.setSpaceId(501L);
+        master.setName("主卧");
+        when(spaceRepository.findByDesign_DesignIdOrderBySortAsc(77L)).thenReturn(List.of(master));
+
+        QuoteLine noSpace = line(2L, null, true);
+        noSpace.setSpace(null);
+        wire(quote, List.of(noSpace));
+        when(importContext.parse(any(QuoteWorkbookImportRequest.class), anyList()))
+                .thenReturn(result(row(2L, "主卧", true)));
+        setFields(1L, "MERGE");
+
+        apply.call(new Quote());
+
+        assertThat(noSpace.getSpace()).isNotNull();
+        assertThat(noSpace.getSpace().getName()).isEqualTo("主卧");
+        assertThat(noSpace.getSpace().getSpaceId()).isEqualTo(501L);
+    }
+
+    @Test
+    void shouldKeepSpaceEmptyWhenWorkbookRegionDoesNotMatchAnySpace() {
+        Quote quote = draftQuote(QuoteStatus.Draft);
+        Design design = new Design();
+        design.setDesignId(77L);
+        quote.setDesign(design);
+        when(spaceRepository.findByDesign_DesignIdOrderBySortAsc(77L)).thenReturn(List.of());
+
+        QuoteLine noSpace = line(2L, null, true);
+        noSpace.setSpace(null);
+        wire(quote, List.of(noSpace));
+        when(importContext.parse(any(QuoteWorkbookImportRequest.class), anyList()))
+                .thenReturn(result(row(2L, "阁楼", true)));
+        setFields(1L, "MERGE");
+
+        apply.call(new Quote());
+
+        // 不新建区域、不因匹配不到而阻断：保持无区域
+        assertThat(noSpace.getSpace()).isNull();
+        verify(lineRepository).save(noSpace);
     }
 
     // ───────── MERGE 保留未出现行 ─────────

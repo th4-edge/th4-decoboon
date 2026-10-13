@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.quote.service.workbook.apply.support;
 
+import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Space;
+import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.context.QuoteAdjustmentContext;
 import com.th4.edge.decoboon.quote.context.QuoteRevisionContext;
@@ -82,6 +84,7 @@ public class Apply implements com.th4.edge.decoboon.quote.service.workbook.apply
 
     private final QuoteRepository quoteRepository;
     private final QuoteLineRepository lineRepository;
+    private final SpaceRepository spaceRepository;
     private final QuoteWorkbookImportContext importContext;
     private final QuoteAdjustmentContext adjustmentContext;
     private final QuoteRevisionContext revisionContext;
@@ -89,12 +92,14 @@ public class Apply implements com.th4.edge.decoboon.quote.service.workbook.apply
     private final DataScopeContext dataScopeContext;
 
     public Apply(QuoteRepository quoteRepository, QuoteLineRepository lineRepository,
+                 SpaceRepository spaceRepository,
                  QuoteWorkbookImportContext importContext, QuoteAdjustmentContext adjustmentContext,
                  QuoteRevisionContext revisionContext,
                  com.th4.edge.decoboon.quote.context.QuoteViewContext viewContext,
                  DataScopeContext dataScopeContext) {
         this.quoteRepository = quoteRepository;
         this.lineRepository = lineRepository;
+        this.spaceRepository = spaceRepository;
         this.importContext = importContext;
         this.adjustmentContext = adjustmentContext;
         this.revisionContext = revisionContext;
@@ -181,11 +186,28 @@ public class Apply implements com.th4.edge.decoboon.quote.service.workbook.apply
             }
         }
 
+        // 区域列落地（USER-DECISION-20261013-002：区域为可选维度，不得因区域而阻断）：
+        // 仅当「原行没有区域」且「工作簿区域名匹配到当前设计已存在的区域」时补写；
+        // 不新建区域、不改动已有区域（两者不一致仍按上方校验阻断）、匹配不到则保持原样。
+        Map<String, Space> spacesByName = new LinkedHashMap<>();
+        Design design = quote.getDesign();
+        if (design != null && design.getDesignId() != null) {
+            for (Space space : spaceRepository.findByDesign_DesignIdOrderBySortAsc(design.getDesignId())) {
+                if (space.getName() != null && !space.getName().isBlank()) {
+                    spacesByName.putIfAbsent(space.getName().trim(), space);
+                }
+            }
+        }
+
         // 落库：以工作簿为准更新量价与公式（未提供的字段保留原值）
         for (ImportResult.Row row : parsed.getRows()) {
             QuoteLine target = lineById.get(row.getItemId());
             if (target == null) continue;
             target.setIncluded(true);
+            if (target.getSpace() == null && row.getRegion() != null && !row.getRegion().isBlank()) {
+                Space matched = spacesByName.get(row.getRegion().trim());
+                if (matched != null) target.setSpace(matched);
+            }
             if (row.getQuantityFormula() != null && !row.getQuantityFormula().isBlank()) {
                 target.setQuantityFormula(row.getQuantityFormula().trim());
             }
