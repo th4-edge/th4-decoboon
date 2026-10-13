@@ -167,8 +167,10 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 472（public 15 + protected 457）。
         // 2026-10-13 增减项草稿预览（DEC-055）新增 1 条（project/contract-change/preview，protected）。
         // => 当前 Provider 面板为 473（public 15 + protected 458）。
-        assertThat(routes).hasSize(473);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(458);
+        // 2026-10-13 增减项可变更来源与当前有效剩余（DEC-055/BR-041）新增 1 条（project/contract-change/range，protected）。
+        // => 当前 Provider 面板为 474（public 15 + protected 459）。
+        assertThat(routes).hasSize(474);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(459);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(15);
     }
 
