@@ -170,6 +170,11 @@ public class Range implements com.th4.edge.decoboon.project.service.contractchan
             if (changeItem.getTargetUnit() != null) {
                 source.setUnit(changeItem.getTargetUnit().getName());
                 source.setUnitKey(changeItem.getTargetUnit().name());
+            } else if (changeItem.getSourceLine() != null && changeItem.getSourceLine().getUnit() != null) {
+                // 数量变更类不写 target_unit（DB 为空）→ 回退取来源行单位，与本组 spaceName 的回退口径一致。
+                // 独立验收 P2：此前 unit/unitKey 为 null，三端一致地显示「单价/单位 · 剩余量 9」这类裸数字。
+                source.setUnit(changeItem.getSourceLine().getUnit().getName());
+                source.setUnitKey(changeItem.getSourceLine().getUnit().name());
             }
         }
         source.setInitialQuantity(snapshot.initialQuantity());
