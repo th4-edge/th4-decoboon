@@ -123,7 +123,7 @@
           {
             "key": "lead",
             "label": "线索",
-            "count": 5,
+            "count": 4,
             "unit": "条"
           },
           {
@@ -135,7 +135,7 @@
           {
             "key": "measure",
             "label": "量房",
-            "count": 5,
+            "count": 4,
             "unit": "户"
           },
           {
@@ -159,9 +159,9 @@
         }
       },
       "financeSummary": {
-        "projectCount": 5,
-        "activeProjectCount": 5,
-        "contractAmount": 12478.75,
+        "projectCount": 4,
+        "activeProjectCount": 4,
+        "contractAmount": 9983.0,
         "receivableAmount": 37478.75,
         "receivedAmount": 3743.65,
         "outstandingAmount": 33735.1,
@@ -173,9 +173,9 @@
         "receivedSum": "3743.65"
       },
       "financeProjectPage": {
-        "rows": 5,
-        "receivableSum": "37478.75",
-        "receivedSum": "3743.65"
+        "rows": 4,
+        "receivableSum": "29983.00",
+        "receivedSum": "2994.92"
       },
       "sql": {
         "projectsAll": 5,
@@ -217,7 +217,7 @@
           {
             "key": "lead",
             "label": "线索",
-            "count": 6,
+            "count": 7,
             "unit": "条"
           },
           {
@@ -229,7 +229,7 @@
           {
             "key": "measure",
             "label": "量房",
-            "count": 6,
+            "count": 7,
             "unit": "户"
           },
           {
@@ -267,9 +267,9 @@
         "receivedSum": "4492.38"
       },
       "financeProjectPage": {
-        "rows": 6,
-        "receivableSum": "44974.50",
-        "receivedSum": "4492.38"
+        "rows": 7,
+        "receivableSum": "52470.25",
+        "receivedSum": "5241.11"
       },
       "sql": {
         "projectsAll": 6,
