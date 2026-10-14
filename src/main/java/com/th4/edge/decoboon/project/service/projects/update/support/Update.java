@@ -7,6 +7,7 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
+import com.th4.edge.decoboon.project.context.ProjectMemberChangeContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.ProjectReport;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
@@ -87,6 +88,7 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
     private final ProjectContractRepository contractRepository;
     private final ProjectContext projectContext;
     private final ProjectReportRepository reportRepository;
+    private final ProjectMemberChangeContext memberChangeContext;
     private final ProjectPermissionContext permissionContext;
 
     public Update(ProjectRepository projectRepository,
@@ -95,7 +97,8 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
                   ProjectContractRepository contractRepository,
                   ProjectContext projectContext,
                   ProjectReportRepository reportRepository,
-                  ProjectPermissionContext permissionContext) {
+                  ProjectPermissionContext permissionContext,
+                  ProjectMemberChangeContext memberChangeContext) {
         this.projectRepository = projectRepository;
         this.accessContext = accessContext;
         this.employeeRepository = employeeRepository;
@@ -103,6 +106,7 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
         this.projectContext = projectContext;
         this.reportRepository = reportRepository;
         this.permissionContext = permissionContext;
+        this.memberChangeContext = memberChangeContext;
     }
 
     @Override
@@ -119,7 +123,7 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
         } else if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
             throw new DefinedException(new DefaultErrorCode("403", "只有项目经理或企业负责人可以调整项目状态"));
         }
-        List<String> memberChanges = new ArrayList<>();
+        List<ProjectMemberChangeContext.Change> memberChanges = new ArrayList<>();
         if (name != null && !name.isBlank()) project.setName(name.trim());
         if (siteAddr != null && !siteAddr.isBlank()) project.setSiteAddr(siteAddr.trim());
         if (startDate != null) project.setStartDate(startDate);
@@ -134,7 +138,7 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
             if (designer == null || designer.getStatus() != EmployeeStatus.Active) {
                 throw new DefinedException(new DefaultErrorCode("400", "项目设计师必须为本企业在职员工"));
             }
-            memberChanges.add(memberChangeText("项目设计师", project.getDesigner(), designer));
+            memberChanges.add(memberChangeContext.change("项目设计师", project.getDesigner(), designer));
             project.setDesigner(designer);
         }
         if (managerId != null) {
@@ -142,7 +146,7 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
             if (manager == null || (manager.getRole() != EmployeeRole.Pm && manager.getRole() != EmployeeRole.Boss)) {
                 throw new DefinedException(new DefaultErrorCode("400", "项目经理必须为项目经理或企业负责人"));
             }
-            memberChanges.add(memberChangeText("项目经理", project.getManager(), manager));
+            memberChanges.add(memberChangeContext.change("项目经理", project.getManager(), manager));
             project.setManager(manager);
         }
         if (supportId != null) {
@@ -150,11 +154,11 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
             if (support == null || (support.getRole() != EmployeeRole.Finance && support.getRole() != EmployeeRole.Boss)) {
                 throw new DefinedException(new DefaultErrorCode("400", "履约负责人必须为财务或企业负责人"));
             }
-            memberChanges.add(memberChangeText("履约负责人", project.getSupport(), support));
+            memberChanges.add(memberChangeContext.change("履约负责人", project.getSupport(), support));
             project.setSupport(support);
         }
         Project saved = projectRepository.save(project);
-        recordMemberChange(saved, current, memberChanges.stream().filter(java.util.Objects::nonNull).toList());
+        memberChangeContext.record(saved, current, memberChanges);
         projectContext.scheduleStages(saved);
         saved = projectContext.refreshProject(saved);
         contractRepository.findByProject_ProjectIdAndCompany_ComId(saved.getProjectId(), comId)
@@ -167,34 +171,5 @@ public class Update implements com.th4.edge.decoboon.project.service.projects.up
     }
 
     /** 生成「原 → 新」文案；未发生变化时返回 null（不写动态）。 */
-    private String memberChangeText(String label, Employee before, Employee after) {
-        if (after == null) {
-            return null;
-        }
-        String beforeName = before == null ? "未指定" : before.getName();
-        if (before != null && before.getEmpId() != null && before.getEmpId().equals(after.getEmpId())) {
-            return null;
-        }
-        return label + "：" + beforeName + " → " + after.getName();
-    }
 
-    /** 成员切换写一条对内项目动态（含原→新、操作人与时间），不做接手确认、立即生效。 */
-    private void recordMemberChange(Project project, Employee operator, List<String> changes) {
-        if (changes == null || changes.isEmpty()) {
-            return;
-        }
-        ProjectReport report = new ProjectReport();
-        report.setCompany(project.getCompany());
-        report.setProject(project);
-        report.setProperty(project.getProperty());
-        permissionContext.apply(report, project);
-        report.setType(ReportType.Notice);
-        report.setTitle("项目成员调整");
-        report.setContent(String.join("；", changes)
-                + "（操作人：" + operator.getName() + "，时间：" + LocalDateTime.now() + "，立即生效）");
-        report.setAuthor(operator);
-        report.setAuthorRole(operator.getRole());
-        report.setVisibleToCustomer(false);
-        reportRepository.save(report);
-    }
 }

@@ -118,6 +118,10 @@ public class ProjectReport extends AuditModel implements ProjectOwned {
     @Note("内容")
     private String content;
 
+    @Note("业主可见摘要（业主口吻，不含内部操作人；为空则业主端不展示该条）")
+    @Column(length = 255)
+    private String customerSummary;
+
     @ElementCollection
     @CollectionTable(name = "db_project_report_image", joinColumns = @JoinColumn(name = "report_id"))
     @Column(name = "url", length = 512)
@@ -156,6 +160,8 @@ public class ProjectReport extends AuditModel implements ProjectOwned {
     public void setTitle(String title) { this.title = title; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+    public String getCustomerSummary() { return customerSummary; }
+    public void setCustomerSummary(String customerSummary) { this.customerSummary = customerSummary; }
     public List<String> getImages() { return images; }
     public void setImages(List<String> images) { this.images = images; }
     public Employee getAuthor() { return author; }

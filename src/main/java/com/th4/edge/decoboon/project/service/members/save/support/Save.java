@@ -5,6 +5,7 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.project.configure.ReportType;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectMemberChangeContext;
 import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectMember;
@@ -56,18 +57,21 @@ public class Save implements com.th4.edge.decoboon.project.service.members.save.
     private final EmployeeRepository employeeRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectReportRepository reportRepository;
+    private final ProjectMemberChangeContext memberChangeContext;
     private final ProjectPermissionContext permissionContext;
 
     public Save(ProjectRepository projectRepository,
                 EmployeeRepository employeeRepository,
                 ProjectAccessContext accessContext,
                 ProjectReportRepository reportRepository,
-                ProjectPermissionContext permissionContext) {
+                ProjectPermissionContext permissionContext,
+                ProjectMemberChangeContext memberChangeContext) {
         this.projectRepository = projectRepository;
         this.employeeRepository = employeeRepository;
         this.accessContext = accessContext;
         this.reportRepository = reportRepository;
         this.permissionContext = permissionContext;
+        this.memberChangeContext = memberChangeContext;
     }
 
     @Override
@@ -109,25 +113,10 @@ public class Save implements com.th4.edge.decoboon.project.service.members.save.
         return member;
     }
 
-    /** 成员切换写一条对内项目动态（原→新 + 操作人 + 时间），立即生效、无接手确认。 */
+    /** 成员切换记录：统一委托 ProjectMemberChangeContext（内部口吻 + 业主口吻两份文案）。 */
     private void recordMemberChange(Project project, Employee operator, String label,
                                     Employee before, Employee after) {
-        if (after == null || (before != null && before.getEmpId() != null
-                && before.getEmpId().equals(after.getEmpId()))) {
-            return;
-        }
-        ProjectReport report = new ProjectReport();
-        report.setCompany(project.getCompany());
-        report.setProject(project);
-        report.setProperty(project.getProperty());
-        permissionContext.apply(report, project);
-        report.setType(ReportType.Notice);
-        report.setTitle("项目成员调整");
-        report.setContent(label + "：" + (before == null ? "未指定" : before.getName()) + " → " + after.getName()
-                + "（操作人：" + operator.getName() + "，时间：" + java.time.LocalDateTime.now() + "，立即生效）");
-        report.setAuthor(operator);
-        report.setAuthorRole(operator.getRole());
-        report.setVisibleToCustomer(false);
-        reportRepository.save(report);
+        memberChangeContext.record(project, operator,
+                java.util.Collections.singletonList(memberChangeContext.change(label, before, after)));
     }
 }
