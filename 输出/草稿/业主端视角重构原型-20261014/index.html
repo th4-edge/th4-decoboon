@@ -1,0 +1,2432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>装得清 · 业主端视角重构原型</title>
+<style>
+:root{
+  --primary:#0E8A7D; --primary-base:#16A394; --primary-light:#2BC4B4;
+  --primary-lighter:#E8F7F5; --primary-lightest:#F2FBFA;
+  --success:#07A35A; --success-soft:#EAF8F0;
+  --warning:#E67E22; --warning-soft:#FFF4E8;
+  --danger:#E5484D; --danger-soft:#FDECEC;
+  --purple:#6958C8; --purple-soft:#F0EEFC;
+  --t1:#17212B; --t2:#465260; --t3:#778390; --t4:#AEB8C2;
+  --bg-page:#F4F7F8; --card:#FFFFFF; --hover:#F8FAFB;
+  --line:#EDF1F3; --line-2:#E2E8EB;
+  --st-doing:#13C2C2; --st-pending:#FF7D00; --st-done:#00B42A; --st-blocked:#F53F3F;
+  --st-idle:#C9CDD4; --st-special:#722ED1;
+  --r-lg:18px; --r-md:14px; --r-sm:10px;
+  --sh:0 2px 10px rgba(23,33,43,.05);
+  --sh-up:0 -2px 12px rgba(23,33,43,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:radial-gradient(1200px 600px at 20% -10%,#E9F5F3 0%,#F4F7F8 45%,#EEF2F4 100%);
+  color:var(--t1); min-height:100vh; padding:32px 24px 56px;
+  display:flex; gap:36px; justify-content:center; align-items:flex-start;
+  font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+/* ---------- 左侧说明栏 ---------- */
+.rail{width:390px;flex:0 0 390px;padding-top:8px}
+.rail h1{font-size:20px;margin:0 0 6px;letter-spacing:-.2px}
+.rail .sub{color:var(--t3);font-size:12.5px;margin-bottom:20px;line-height:1.7}
+.rail .card{background:#fff;border-radius:16px;padding:16px 18px;box-shadow:var(--sh);margin-bottom:12px}
+.rail .card h2{font-size:13px;margin:0 0 10px;color:var(--primary);letter-spacing:.4px;font-weight:700}
+.rail ul{margin:0;padding-left:16px;color:var(--t2);font-size:12.5px;line-height:1.85}
+.rail ul li::marker{color:var(--primary-light)}
+.rail .pair{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;line-height:1.6;padding:7px 0;border-bottom:1px dashed var(--line-2)}
+.rail .pair:last-child{border-bottom:none}
+.rail .from{color:var(--t4);text-decoration:line-through;flex:0 0 132px;word-break:break-all}
+.rail .to{color:var(--t1);font-weight:600}
+.rail .note{font-size:11.5px;color:var(--t4);line-height:1.7;margin-top:14px}
+/* ---------- 手机 ---------- */
+.stage{position:sticky;top:32px}
+.phone{
+  width:390px;height:844px;background:#fff;border-radius:46px;position:relative;
+  box-shadow:0 30px 70px rgba(14,60,55,.22),0 0 0 11px #10171C,0 0 0 13px #2A343B;
+  overflow:hidden;display:flex;flex-direction:column;
+}
+.glare{position:absolute;inset:0;border-radius:46px;pointer-events:none;z-index:60;
+  background:linear-gradient(135deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 26%)}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:104px;height:28px;background:#10171C;border-radius:16px;z-index:55}
+/* 状态栏 */
+.statusbar{height:50px;flex:0 0 50px;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 24px 6px;font-size:13.5px;font-weight:600;letter-spacing:.2px;z-index:40;position:relative}
+.statusbar .icons{display:flex;gap:5px;align-items:center}
+/* 导航栏 */
+.navbar{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;position:relative;z-index:40}
+.navbar .title{font-size:16.5px;font-weight:600;letter-spacing:.2px}
+.capsule{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:82px;height:30px;border-radius:15px;
+  display:flex;align-items:center;justify-content:space-around;
+  border:1px solid rgba(0,0,0,.09);background:rgba(255,255,255,.72);backdrop-filter:blur(6px)}
+.capsule .dots{display:flex;gap:3px}
+.capsule .dots i{width:3.6px;height:3.6px;border-radius:50%;background:#1C1C1E;display:block}
+.capsule .circle{width:14px;height:14px;border-radius:50%;border:1.6px solid #1C1C1E;position:relative}
+.capsule .circle::after{content:"";position:absolute;inset:3px;border-radius:50%;border:1.4px solid #1C1C1E}
+.capsule.on-dark{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.16)}
+.capsule.on-dark .dots i{background:#fff}
+.capsule.on-dark .circle,.capsule.on-dark .circle::after{border-color:#fff}
+/* 页面容器 */
+.viewport{flex:1;position:relative;overflow:hidden;background:var(--bg-page)}
+.page{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.page::-webkit-scrollbar{display:none}
+.page.active{display:block;animation:slide .26s cubic-bezier(.22,.61,.36,1)}
+@keyframes slide{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pad-b{height:26px}
+/* 底部 tab */
+.tabbar{flex:0 0 62px;display:flex;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);box-shadow:var(--sh-up);z-index:45;padding-bottom:4px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--t4);font-size:10.5px;cursor:pointer;user-select:none;transition:color .18s;position:relative}
+.tab svg{width:23px;height:23px;stroke-width:1.7}
+.tab.on{color:var(--primary)}
+.tab .dot{position:absolute;top:8px;right:calc(50% - 20px);min-width:16px;height:16px;border-radius:8px;
+  background:var(--st-pending);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;
+  justify-content:center;padding:0 4px;box-shadow:0 0 0 2px #fff}
+/* ---------- 通用组件 ---------- */
+.hd{padding:14px 20px 6px;display:flex;align-items:baseline;justify-content:space-between}
+.hd .t{font-size:16px;font-weight:700;letter-spacing:-.1px}
+.hd .s{font-size:11.5px;color:var(--t3)}
+.card{background:var(--card);border-radius:var(--r-md);box-shadow:var(--sh);margin:0 16px 12px;padding:16px}
+.card.tight{padding:13px 16px}
+.card.warn{background:linear-gradient(180deg,#FFF8F0 0%,#FFFFFF 60%);box-shadow:0 2px 10px rgba(230,126,34,.13);border:1px solid rgba(230,126,34,.18)}
+.card.ok{background:linear-gradient(180deg,#F1FBF5 0%,#FFFFFF 62%);border:1px solid rgba(7,163,90,.16)}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.grow{flex:1;min-width:0}
+.muted{color:var(--t3)}
+.tiny{font-size:11.5px}
+.sm{font-size:12.5px}
+.b{font-weight:700}
+.strong{font-weight:600}
+.tnum{font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;height:21px;padding:0 8px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap}
+.tag.done{background:var(--success-soft);color:var(--success)}
+.tag.pending{background:var(--warning-soft);color:#C25E00}
+.tag.doing{background:#E6FAFA;color:#0A9A9A}
+.tag.blocked{background:var(--danger-soft);color:var(--danger)}
+.tag.idle{background:#F2F4F6;color:#8B93A1}
+.tag.special{background:var(--purple-soft);color:var(--purple)}
+.tag.brand{background:var(--primary-lighter);color:var(--primary)}
+.btn{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:15px;font-weight:600;cursor:pointer;user-select:none;transition:transform .12s,opacity .12s}
+.btn:active{transform:scale(.985);opacity:.9}
+.btn.primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-base) 100%);color:#fff;
+  box-shadow:0 6px 16px rgba(14,138,125,.26)}
+.btn.ghost{background:#fff;color:var(--primary);border:1.4px solid var(--primary-light)}
+.btn.soft{background:var(--primary-lighter);color:var(--primary)}
+.btn.sm2{height:34px;font-size:13px;border-radius:9px;padding:0 14px;font-weight:600}
+.btn.plain{background:#F5F7F8;color:var(--t2)}
+.chev{width:7px;height:7px;border-right:1.7px solid var(--t4);border-bottom:1.7px solid var(--t4);
+  transform:rotate(-45deg);flex:0 0 7px;margin-left:2px}
+.ic{width:18px;height:18px;flex:0 0 18px;stroke-width:1.8}
+.divide{height:1px;background:var(--line);margin:12px -16px}
+/* Hero */
+.hero{background:linear-gradient(150deg,#0B7A6E 0%,var(--primary) 45%,var(--primary-base) 100%);
+  color:#fff;padding:6px 20px 74px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(43,196,180,.45) 0%,rgba(43,196,180,0) 70%);right:-90px;top:-110px}
+.hero .addr{font-size:12px;opacity:.85;margin-top:2px}
+.hero .now{font-size:22px;font-weight:700;margin-top:16px;letter-spacing:-.3px;position:relative;z-index:2}
+.hero .nowsub{font-size:12.5px;opacity:.9;margin-top:7px;position:relative;z-index:2;line-height:1.6}
+.hero .bar{height:7px;border-radius:4px;background:rgba(255,255,255,.26);margin-top:16px;overflow:hidden;position:relative;z-index:2}
+.hero .bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#7FE7DA,#fff);width:37%}
+.hero .foot{display:flex;justify-content:space-between;font-size:11.5px;opacity:.92;margin-top:11px;position:relative;z-index:2}
+.pull{margin-top:-62px;position:relative;z-index:5}
+/* 时间轴 */
+.tl{position:relative;padding-left:2px}
+.tl-item{display:flex;gap:12px;padding:11px 0;position:relative}
+.tl-item:not(:last-child)::before{content:"";position:absolute;left:9px;top:32px;bottom:-8px;width:1.5px;background:var(--line-2)}
+.tl-dot{width:19px;height:19px;border-radius:50%;flex:0 0 19px;display:flex;align-items:center;justify-content:center;
+  background:#fff;border:1.6px solid var(--line-2);z-index:2;margin-top:3px}
+.tl-dot.done{background:var(--success);border-color:var(--success)}
+.tl-dot.doing{background:#fff;border-color:var(--st-doing);box-shadow:0 0 0 3px rgba(19,194,194,.15)}
+.tl-dot.doing::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--st-doing)}
+.tl-dot.pending{background:#fff;border-color:var(--st-pending)}
+.tl-dot.idle{background:#fff;border-color:var(--line-2)}
+.tl-dot svg{width:11px;height:11px;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.tl-body{flex:1;min-width:0;padding-bottom:2px}
+.tl-day{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.tl-day .w{font-size:11px;color:var(--t4);font-weight:500}
+.tl-what{font-size:12.5px;color:var(--t2);margin-top:2px}
+.tl-who{font-size:11.5px;color:var(--t3);margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;height:19px;padding:0 7px;border-radius:5px;font-size:10.5px;font-weight:600}
+.chip.me{background:var(--danger-soft);color:var(--danger)}
+.chip.free{background:#F2F4F6;color:#8B93A1}
+.chip.info{background:var(--primary-lighter);color:var(--primary)}
+/* 待办 */
+.todo{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.todo:last-child{border-bottom:none}
+.todo-ic{width:38px;height:38px;border-radius:11px;flex:0 0 38px;display:flex;align-items:center;justify-content:center}
+.todo-ic.a{background:var(--warning-soft)} .todo-ic.a svg{stroke:#C25E00}
+.todo-ic.b{background:var(--primary-lighter)} .todo-ic.b svg{stroke:var(--primary)}
+.todo-ic.c{background:var(--purple-soft)} .todo-ic.c svg{stroke:var(--purple)}
+/* 相册 */
+.gallery{display:flex;gap:9px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+.gallery::-webkit-scrollbar{display:none}
+.shot{flex:0 0 112px}
+.shot .img{width:112px;height:104px;border-radius:11px;background:#E7EDEF;position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;padding:6px}
+.shot .img .lb{background:rgba(23,33,43,.62);color:#fff;font-size:10px;padding:2px 6px;border-radius:5px;backdrop-filter:blur(4px)}
+.shot .cap{font-size:11px;color:var(--t2);margin-top:5px;line-height:1.4}
+/* 档案 */
+.file{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line)}
+.file:last-child{border-bottom:none}
+.file .fi{width:36px;height:36px;border-radius:10px;background:var(--primary-lighter);display:flex;align-items:center;justify-content:center;flex:0 0 36px}
+.file .fi svg{stroke:var(--primary)}
+.warranty{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line-2)}
+.warranty:last-child{border-bottom:none}
+.ring{width:34px;height:34px;border-radius:50%;flex:0 0 34px;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;background:conic-gradient(var(--primary) var(--p),#EDF1F3 0);color:var(--primary)}
+.ring i{width:26px;height:26px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-style:normal}
+/* 金额 */
+.money{display:flex;gap:8px}
+.money > div{flex:1;background:#fff;border-radius:var(--r-sm);padding:11px 10px;text-align:center;border:1px solid var(--line)}
+.money .k{font-size:10.5px;color:var(--t3)}
+.money .v{font-size:15px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+.quote-line{display:flex;justify-content:space-between;padding:7px 0;font-size:12.5px;border-bottom:1px dashed var(--line-2)}
+.quote-line:last-child{border-bottom:none}
+.plus{color:var(--danger);font-weight:700}
+/* 验收 */
+.chk{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.chk:last-child{border-bottom:none}
+.chk-n{width:21px;height:21px;border-radius:50%;background:var(--primary-lighter);color:var(--primary);
+  font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:0 0 21px;margin-top:1px}
+.chk-b{flex:1;min-width:0}
+.chk-t{font-size:13px;font-weight:600;line-height:1.5}
+.chk-d{font-size:11.5px;color:var(--t3);margin-top:3px;line-height:1.55}
+.vote{display:flex;gap:7px;margin-top:9px}
+.vote span{height:29px;padding:0 13px;border-radius:8px;font-size:12px;font-weight:600;display:flex;align-items:center;
+  border:1.3px solid var(--line-2);color:var(--t2);cursor:pointer;transition:.15s}
+.vote span.y.on{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.vote span.n.on{background:var(--danger-soft);border-color:var(--danger);color:var(--danger)}
+/* 底部固定条 */
+.fixedbar{position:sticky;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);padding:12px 16px 16px;display:flex;gap:10px}
+/* 遮罩页 */
+.locked{background:linear-gradient(165deg,#F8FBFB 0%,#FFFFFF 70%);border:1.3px dashed var(--line-2);box-shadow:none}
+.locked .lk{width:38px;height:38px;border-radius:11px;background:#EEF2F4;display:flex;align-items:center;justify-content:center;flex:0 0 38px}
+.locked .lk svg{stroke:var(--t4)}
+.monthbar{display:flex;align-items:center;gap:9px;margin:15px 0 10px}
+.monthbar .m{font-size:12.5px;font-weight:700;color:var(--t2)}
+.monthbar .l{flex:1;height:1px;background:var(--line)}
+.monthbar .c{font-size:11px;color:var(--t4)}
+.sheet{position:absolute;inset:0;background:var(--bg-page);z-index:50;display:none;flex-direction:column}
+.sheet.show{display:flex;animation:slide .24s cubic-bezier(.22,.61,.36,1)}
+.sheet .sheet-hd{height:50px;flex:0 0 50px;display:flex;align-items:center;padding:0 16px;gap:10px;background:#fff;border-bottom:1px solid var(--line)}
+.sheet .sheet-hd .back{display:flex;align-items:center;color:var(--t2);font-size:14px;cursor:pointer;gap:2px}
+.sheet .sheet-bd{flex:1;overflow-y:auto;scrollbar-width:none}
+.sheet .sheet-bd::-webkit-scrollbar{display:none}
+textarea{width:100%;border:1.3px solid var(--line-2);border-radius:11px;padding:12px;font-size:13.5px;
+  font-family:inherit;resize:none;height:104px;outline:none;color:var(--t1)}
+textarea:focus{border-color:var(--primary-light)}
+.opt{display:flex;align-items:center;gap:9px;padding:12px 14px;border:1.3px solid var(--line-2);border-radius:11px;
+  font-size:13.5px;margin-bottom:9px;cursor:pointer;transition:.15s;color:var(--t2)}
+.opt.on{border-color:var(--primary-light);background:var(--primary-lightest);color:var(--primary);font-weight:600}
+.opt i{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line-2);flex:0 0 18px;display:block;position:relative}
+.opt.on i{border-color:var(--primary);background:var(--primary)}
+.opt.on i::after{content:"";position:absolute;left:5px;top:2.5px;width:5px;height:9px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(42deg)}
+.hint{background:var(--primary-lightest);border-radius:var(--r-sm);padding:11px 13px;font-size:12px;color:var(--t2);line-height:1.7}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--t3);padding:0 20px 8px}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:8px;height:8px;border-radius:50%;display:block}
+.toast{position:absolute;left:50%;bottom:104px;transform:translate(-50%,10px);background:rgba(23,33,43,.9);color:#fff;
+  font-size:12.5px;padding:10px 18px;border-radius:11px;opacity:0;pointer-events:none;transition:.24s;z-index:70;max-width:290px;text-align:center;line-height:1.5}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:1080px){.rail{display:none}body{padding:20px 12px 40px}}
+
+/* ============================================================
+   价值能力 · 装修历程（唯美 / 动态 / 沉浸）
+   与业务能力页面完全分离：业务页=浅色信息层，价值页=暗色记忆层
+   ============================================================ */
+.tabbar{counter-reset:none}
+.tabbar.dark{background:rgba(9,23,21,.94);border-top-color:rgba(255,255,255,.07)}
+.tabbar.dark .tab{color:#54726D}
+.tabbar.dark .tab.on{color:var(--primary-light)}
+.tabbar.dark .fab{box-shadow:0 10px 24px rgba(0,0,0,.55),0 0 0 5px #091715,0 0 0 7px rgba(43,196,180,.28)}
+/* 中间凸起按钮 */
+.tab.center{justify-content:flex-start;padding-top:34px;position:relative}
+.tab .fab{position:absolute;top:-24px;left:50%;transform:translateX(-50%);
+  width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#3ED0BF 0%,#16A394 45%,#0B7A6E 100%);
+  box-shadow:0 10px 22px rgba(14,138,125,.42),0 0 0 5px #fff,0 0 0 6.5px rgba(43,196,180,.22);
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1)}
+.tab.center:active .fab{transform:translateX(-50%) scale(.93)}
+.tab .fab svg{width:27px;height:27px;stroke:#fff;stroke-width:1.7;fill:none;stroke-linejoin:round}
+.tab .fab .halo{position:absolute;inset:-3px;border-radius:50%;border:1px solid rgba(43,196,180,.55);opacity:0}
+.tab.center.on .fab .halo{animation:ring 2.6s ease-out infinite}
+@keyframes ring{0%{opacity:.75;transform:scale(.92)}100%{opacity:0;transform:scale(1.5)}}
+.tab.center.on .fab{background:linear-gradient(150deg,#5FE3D2 0%,#1FB8A7 45%,#0E8A7D 100%);
+  box-shadow:0 10px 26px rgba(31,184,167,.55),0 0 0 5px #fff,0 0 0 7px rgba(43,196,180,.32)}
+.tab.center .lbl{font-size:10.5px;font-weight:600;letter-spacing:.4px}
+
+/* ---------- 历程页：暗色沉浸 ---------- */
+.chrome.deep{background:#0F332D;color:#E6F0EE}
+.chrome.deep .statusbar,.chrome.deep .navbar{color:#E6F0EE}
+.story{background:#091715;color:#E6F0EE}
+.story .pad-b{height:34px}
+.story-hero{position:relative;padding:10px 26px 46px;overflow:hidden;
+  background:linear-gradient(180deg,#0F332D 0%,#0C2621 46%,#091715 100%)}
+.story-hero::before,.story-hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.story-hero::before{width:340px;height:340px;left:-120px;top:-140px;
+  background:radial-gradient(closest-side,rgba(43,196,180,.28),transparent 72%);animation:drift 19s ease-in-out infinite alternate}
+.story-hero::after{width:300px;height:300px;right:-110px;top:60px;
+  background:radial-gradient(closest-side,rgba(232,197,138,.18),transparent 72%);animation:drift2 23s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(38px,26px,0)}}
+@keyframes drift2{from{transform:translate3d(0,0,0)}to{transform:translate3d(-34px,34px,0)}}
+.dust{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.dust i{position:absolute;width:2px;height:2px;border-radius:50%;background:rgba(180,240,232,.5);
+  animation:float linear infinite}
+@keyframes float{0%{transform:translateY(0);opacity:0}12%{opacity:.9}100%{transform:translateY(-260px);opacity:0}}
+.story-eyebrow{position:relative;z-index:2;font-size:11.5px;letter-spacing:2.6px;color:#7FB8AF;margin-top:8px}
+.story-h1{position:relative;z-index:2;font-size:27px;font-weight:600;letter-spacing:-.4px;line-height:1.42;margin-top:16px}
+.story-h1 em{font-style:normal;color:#7FE7DA}
+.story-h2{position:relative;z-index:2;font-size:12.5px;color:#9FBDB7;line-height:1.9;margin-top:14px;letter-spacing:.3px}
+.story-stats{position:relative;z-index:2;display:flex;gap:0;margin-top:30px;padding-top:20px;border-top:1px solid rgba(255,255,255,.09)}
+.story-stats > div{flex:1;text-align:center;position:relative}
+.story-stats > div + div::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;background:rgba(255,255,255,.09)}
+.story-stats .n{font-size:21px;font-weight:600;color:#EAF6F4;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.story-stats .n span{font-size:12px;font-weight:500;color:#8FB0AA;margin-left:2px}
+.story-stats .k{font-size:10.5px;color:#7C9C97;margin-top:5px;letter-spacing:.6px}
+.scroll-hint{position:relative;z-index:2;display:flex;justify-content:center;margin-top:26px}
+.scroll-hint svg{width:20px;height:20px;stroke:#4E7B75;fill:none;stroke-width:1.6;animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(7px);opacity:1}}
+.music-btn{position:absolute;right:20px;top:12px;z-index:6;width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);
+  transition:background .25s,border-color .25s}
+.music-btn svg{width:19px;height:19px;stroke:#9FC4BE;fill:none;stroke-width:1.7;stroke-linecap:round}
+.music-btn .ring{position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(43,196,180,.5);opacity:0}
+.music-btn.on{background:rgba(43,196,180,.2);border-color:rgba(43,196,180,.46)}
+.music-btn.on svg{stroke:#7FE7DA}
+.music-btn.on .ring{animation:ring 2.4s ease-out infinite}
+.music-tip{position:absolute;right:22px;top:62px;z-index:6;font-size:10.5px;color:#6F9C95;letter-spacing:.4px;
+  opacity:0;transition:opacity .4s}
+.music-tip.show{opacity:1}
+/* 段落 */
+.st-sec{padding:34px 24px 0}
+.st-sec-title{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.st-sec-title .bar{width:2px;height:15px;border-radius:2px;background:linear-gradient(180deg,#5FE3D2,#0E8A7D)}
+.st-sec-title .t{font-size:14.5px;font-weight:600;letter-spacing:1.2px;color:#DCEBE8}
+.st-sec-title .s{font-size:10.5px;color:#6E918B;letter-spacing:.6px;margin-left:auto}
+/* 时间轴 */
+.st-tl{position:relative;padding-left:24px}
+.st-tl::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(180deg,rgba(95,227,210,.75) 0%,rgba(95,227,210,.28) 55%,rgba(95,227,210,.04) 100%)}
+.st-node{position:relative;padding-bottom:30px}
+.st-node:last-child{padding-bottom:6px}
+.st-dot{position:absolute;left:-24px;top:4px;width:11px;height:11px;border-radius:50%;
+  background:#091715;border:1.5px solid rgba(95,227,210,.6)}
+.st-dot.now{background:#5FE3D2;border-color:#5FE3D2;box-shadow:0 0 0 0 rgba(95,227,210,.5);animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(95,227,210,.42)}70%{box-shadow:0 0 0 16px rgba(95,227,210,0)}100%{box-shadow:0 0 0 0 rgba(95,227,210,0)}}
+.st-node .date{font-size:11px;color:#6E9992;letter-spacing:1.6px;font-variant-numeric:tabular-nums}
+.st-node .ti{font-size:15px;font-weight:600;color:#E8F3F1;margin-top:5px;letter-spacing:.2px}
+.st-node .de{font-size:12.5px;color:#9CBAB5;line-height:1.8;margin-top:6px}
+.st-node .who{font-size:11px;color:#6E9992;margin-top:7px}
+.st-pill{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:6px;
+  font-size:10.5px;font-weight:600;margin-left:7px;vertical-align:middle}
+.st-pill.me{background:rgba(232,197,138,.14);color:#E8C58A}
+.st-pill.ok{background:rgba(95,227,210,.13);color:#7FE7DA}
+.st-pill.now{background:rgba(95,227,210,.18);color:#8FF0E2}
+.st-photos{display:flex;gap:9px;margin-top:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.st-photos::-webkit-scrollbar{display:none}
+.st-ph{position:relative;flex:0 0 auto;width:104px;height:84px;border-radius:11px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.09)}
+.st-ph.w2{width:132px}
+.st-ph .im{position:absolute;inset:0;transform:scale(1.14);transition:transform 1.5s cubic-bezier(.22,.61,.36,1)}
+.rv.in .st-ph .im{transform:scale(1)}
+.st-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,23,21,0) 40%,rgba(9,23,21,.62) 100%)}
+.st-ph .cap{position:absolute;left:8px;bottom:7px;z-index:2;font-size:10px;color:#DCEFEC;letter-spacing:.3px}
+/* 画面墙 */
+.st-wall{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.st-wall .w{position:relative;aspect-ratio:1/1;border-radius:11px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.st-wall .w .im{position:absolute;inset:0;transform:scale(1.18);transition:transform 1.6s cubic-bezier(.22,.61,.36,1)}
+.rv.in .st-wall .w .im{transform:scale(1)}
+.st-wall .w::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,23,21,.05),rgba(9,23,21,.42))}
+.st-quote{padding:2px 0 22px}
+.st-quote .q{font-size:15px;line-height:1.85;color:#E8F3F1;letter-spacing:.2px;position:relative;padding-left:16px}
+.st-quote .q::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:2px;border-radius:2px;
+  background:linear-gradient(180deg,#E8C58A,rgba(232,197,138,.1))}
+.st-quote .m{font-size:11px;color:#6E9992;margin-top:8px;padding-left:16px;letter-spacing:.6px}
+.st-glass{position:relative;margin-top:4px;padding:22px;border-radius:16px;overflow:hidden;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(10px)}
+.st-glass .lock{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.st-glass .lock svg{width:19px;height:19px;stroke:#7FA9A3;fill:none;stroke-width:1.7;stroke-linecap:round}
+.st-glass .h{font-size:14.5px;font-weight:600;color:#E4F0EE}
+.st-glass .p{font-size:12px;color:#96B4AF;line-height:1.85;margin-top:9px}
+.st-glass .badge{position:absolute;right:18px;top:20px;font-size:10.5px;color:#6E9992;
+  border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:3px 10px}
+.st-book{position:relative;height:126px;border-radius:14px;margin-top:4px;overflow:hidden;
+  background:linear-gradient(120deg,rgba(232,197,138,.16) 0%,rgba(43,196,180,.14) 100%);
+  border:1px solid rgba(232,197,138,.22)}
+.st-book::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(0,0,0,.28)}
+.st-book .cov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.st-book .cov svg{width:26px;height:26px;stroke:#E8C58A;fill:none;stroke-width:1.6;stroke-linecap:round}
+.st-book .cov .t{font-size:13px;color:#F0E2C8;letter-spacing:2.4px}
+.st-book .cov .s{font-size:10.5px;color:#A9967A;letter-spacing:1px}
+.st-end{padding:36px 24px 10px;text-align:center}
+.st-end .l{font-size:12.5px;color:#8FAFAA;letter-spacing:1.4px;line-height:2}
+.st-btn{display:inline-flex;align-items:center;gap:7px;height:42px;padding:0 22px;border-radius:22px;margin-top:18px;
+  background:linear-gradient(135deg,rgba(95,227,210,.18),rgba(14,138,125,.24));border:1px solid rgba(95,227,210,.34);
+  color:#8FF0E2;font-size:13.5px;font-weight:600;letter-spacing:.6px;cursor:pointer}
+.st-btn:active{transform:scale(.97)}
+/* 截图/长图模式：冻结动效，避免无头截图抓到过渡中间帧 */
+.no-anim *, .no-anim *::before, .no-anim *::after{animation:none !important;transition:none !important}
+.no-anim .page{opacity:1 !important;transform:none !important}
+.no-anim .rv{opacity:1 !important;transform:none !important}
+.no-anim .st-ph .im, .no-anim .st-wall .w .im{transform:none !important}
+/* 滚动揭示 */
+.rv{opacity:0;transform:translateY(26px);
+  transition:opacity .85s cubic-bezier(.22,.61,.36,1),transform .85s cubic-bezier(.22,.61,.36,1)}
+.rv.in{opacity:1;transform:none}
+.st-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.14),rgba(255,255,255,0))}
+.story .jz-tabbar-gap{height:20px}
+
+/* ============================================================
+   对外门面 · 装企名片（公开落地页 / 陌生人视角）
+   ============================================================ */
+.card-hero{position:relative;padding:22px 22px 26px;color:#fff;overflow:hidden;
+  background:linear-gradient(150deg,#1E3A5F 0%,#2A4E7C 55%,#33598C 100%)}
+.card-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(255,255,255,.16),transparent 72%)}
+.ch-logo{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;
+  font-size:21px;font-weight:700;letter-spacing:1px;position:relative;z-index:2}
+.ch-name{font-size:20px;font-weight:700;margin-top:13px;position:relative;z-index:2;letter-spacing:.3px}
+.ch-slogan{font-size:12.5px;opacity:.9;margin-top:7px;position:relative;z-index:2;line-height:1.6}
+.ch-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;position:relative;z-index:2}
+.ch-chip{height:23px;padding:0 10px;border-radius:12px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.22);font-size:11px;display:flex;align-items:center}
+.sharecard{margin:14px 16px 0;border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--sh);
+  border:1px solid var(--line)}
+.sharecard .sc-top{display:flex;gap:10px;padding:13px 14px;align-items:center}
+.sharecard .sc-thumb{width:46px;height:46px;border-radius:11px;flex:0 0 46px;
+  background:linear-gradient(150deg,#2A4E7C,#1E3A5F);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:15px;font-weight:700}
+.sharecard .sc-t{font-size:13.5px;font-weight:600;line-height:1.45}
+.sharecard .sc-s{font-size:11px;color:var(--t3);margin-top:4px;display:flex;align-items:center;gap:6px}
+.sharecard .sc-badge{display:inline-flex;align-items:center;gap:3px;height:16px;padding:0 5px;border-radius:4px;
+  background:var(--primary-lighter);color:var(--primary);font-size:9.5px;font-weight:600}
+.sharecard .sc-foot{border-top:1px solid var(--line);padding:9px 14px;font-size:10.5px;color:var(--t4);
+  display:flex;align-items:center;justify-content:space-between;background:var(--bg-hover)}
+.kv{display:flex;gap:0}
+.kv > div{flex:1;text-align:center;position:relative}
+.kv > div + div::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:1px;background:var(--line)}
+.kv .n{font-size:19px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums}
+.kv .n span{font-size:11px;font-weight:500;color:var(--t3);margin-left:1px}
+.kv .k{font-size:10.5px;color:var(--t3);margin-top:4px}
+.gate{display:flex;align-items:flex-start;gap:7px;background:var(--primary-lightest);border-radius:9px;
+  padding:10px 12px;font-size:11px;color:var(--t2);line-height:1.65;margin-top:13px}
+.gate svg{width:14px;height:14px;flex:0 0 14px;stroke:var(--primary);fill:none;stroke-width:1.8;margin-top:1px}
+.case{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.case:last-child{border-bottom:none}
+.case .pic{width:76px;height:62px;border-radius:10px;flex:0 0 76px;position:relative;overflow:hidden}
+.case .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.22))}
+.auth{display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 6px;border-radius:5px;
+  background:var(--success-soft);color:var(--success);font-size:9.5px;font-weight:600;margin-top:6px}
+.cta-fixed{position:sticky;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);padding:12px 16px 16px;display:flex;gap:10px}
+.footnote{padding:16px 22px 6px;text-align:center;font-size:10.5px;color:var(--t4);line-height:1.8}
+
+/* ============================================================
+   业务能力侧 · 人（服务团队 / 责任人）
+   ============================================================ */
+.people{display:flex;gap:10px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none;margin:0 -2px}
+.people::-webkit-scrollbar{display:none}
+.pcard{flex:0 0 108px;background:#fff;border-radius:13px;padding:13px 10px;text-align:center;
+  box-shadow:var(--sh);cursor:pointer;transition:transform .16s}
+.pcard:active{transform:scale(.97)}
+.pcard .av{width:46px;height:46px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700;color:#fff;letter-spacing:.5px}
+.pcard .nm{font-size:12.5px;font-weight:700;margin-top:9px}
+.pcard .rl{font-size:10.5px;color:var(--t3);margin-top:2px}
+.pcard .dy{font-size:10px;color:var(--t4);margin-top:7px;line-height:1.45}
+.pcard .ph{display:inline-flex;align-items:center;gap:3px;margin-top:8px;font-size:10px;font-weight:600;
+  color:var(--primary);background:var(--primary-lighter);height:19px;padding:0 7px;border-radius:5px}
+.av-a{background:linear-gradient(145deg,#3E7BFA,#2C5FD0)}
+.av-b{background:linear-gradient(145deg,#16A394,#0B7A6E)}
+.av-c{background:linear-gradient(145deg,#E8A33D,#C9821B)}
+.av-d{background:linear-gradient(145deg,#8A5CC7,#6A3FA8)}
+.av-e{background:linear-gradient(145deg,#5B6B7C,#3D4A57)}
+.p-hero{display:flex;gap:14px;align-items:center;padding:18px 18px 20px;
+  background:linear-gradient(150deg,#0E8A7D,#15A092);color:#fff}
+.p-hero .av2{width:62px;height:62px;border-radius:50%;flex:0 0 62px;display:flex;align-items:center;
+  justify-content:center;font-size:24px;font-weight:700;background:rgba(255,255,255,.2);
+  border:2px solid rgba(255,255,255,.4)}
+.p-hero .nm2{font-size:19px;font-weight:700}
+.p-hero .rl2{font-size:12px;opacity:.9;margin-top:4px}
+.p-hero .dy2{font-size:11.5px;opacity:.86;margin-top:8px;line-height:1.6}
+.p-kv{display:flex;gap:0}
+.p-kv > div{flex:1;text-align:center;position:relative}
+.p-kv > div + div::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:1px;background:var(--line)}
+.p-kv .n{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.p-kv .n span{font-size:11px;font-weight:500;color:var(--t3);margin-left:1px}
+.p-kv .k{font-size:10.5px;color:var(--t3);margin-top:4px}
+.team{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.team:last-child{border-bottom:none}
+.team .av3{width:36px;height:36px;border-radius:50%;flex:0 0 36px;display:flex;align-items:center;
+  justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.vendor{display:flex;gap:12px;align-items:center}
+.vendor .vl{width:48px;height:48px;border-radius:12px;flex:0 0 48px;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:15px;font-weight:700;
+  background:linear-gradient(150deg,#1E3A5F,#2A4E7C)}
+
+/* ---------- 服务方知情：企业抬头与企业信息页 ---------- */
+.vmark{width:19px;height:19px;border-radius:6px;flex:0 0 19px;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:10px;font-weight:700;
+  background:linear-gradient(150deg,#1E3A5F,#2A4E7C);letter-spacing:0}
+.secttl .vname{font-size:14.5px;font-weight:700}
+.secttl .vsub{font-size:11px;color:var(--t3);font-weight:500;margin-left:2px}
+.co-hero{padding:22px 20px 24px;color:#fff;
+  background:linear-gradient(150deg,#1E3A5F 0%,#2A4E7C 60%,#33598C 100%)}
+.co-hero .lg{width:56px;height:56px;border-radius:15px;background:rgba(255,255,255,.17);
+  border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700}
+.co-hero .nm{font-size:20px;font-weight:700;margin-top:13px}
+.co-hero .sl{font-size:12px;opacity:.88;margin-top:7px;line-height:1.65}
+.co-hero .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.co-hero .tags span{height:22px;padding:0 9px;border-radius:11px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.22);font-size:10.5px;display:flex;align-items:center}
+.co-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;
+  border-bottom:1px solid var(--line)}
+.co-row:last-child{border-bottom:none}
+.co-row .k{font-size:12.5px;color:var(--t3)}
+.co-row .v{font-size:12.5px;font-weight:600;text-align:right;max-width:62%}
+
+/* ============================================================
+   P1 第一批 · 六项功能高保真
+   ============================================================ */
+/* 每日现场 */
+.daily{display:flex;gap:9px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+.daily::-webkit-scrollbar{display:none}
+.dcard{flex:0 0 118px}
+.dcard .din{width:118px;height:110px;border-radius:11px;position:relative;overflow:hidden;
+  border:1px solid var(--line)}
+.dcard .din::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.3))}
+.dcard .din .dt{position:absolute;left:7px;top:7px;z-index:2;background:rgba(255,255,255,.92);
+  color:var(--t2);font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px}
+.dcard .din .dl{position:absolute;left:7px;bottom:6px;z-index:2;color:#fff;font-size:10px;font-weight:600;
+  text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.dcard .dc{font-size:10.5px;color:var(--t3);margin-top:5px}
+/* 倒计时 */
+.cd{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:7px;
+  background:var(--warning-soft);color:#C25E00;font-size:11.5px;font-weight:700}
+.cd.hot{background:var(--danger-soft);color:var(--danger)}
+.cd svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+/* 对比表 */
+.cmp{margin-top:12px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.cmp .h{display:flex;background:var(--bg-page);font-size:10.5px;color:var(--t3);font-weight:600}
+.cmp .h > div,.cmp .r > div{flex:1;padding:8px 10px}
+.cmp .h > div + div,.cmp .r > div + div{border-left:1px solid var(--line)}
+.cmp .r{display:flex;font-size:12px;border-top:1px solid var(--line);background:#fff}
+.cmp .r .k{color:var(--t3);flex:0 0 74px}
+.cmp .r .v{font-weight:600}
+.cmp .ok{color:var(--success)}
+/* 全景 */
+.pano{position:relative;height:190px;border-radius:13px;overflow:hidden;background:#111;cursor:grab;
+  touch-action:none;user-select:none}
+.pano.grab{cursor:grabbing}
+.pano .bg{position:absolute;top:0;left:0;height:100%;width:300%;
+  background:
+    linear-gradient(180deg,#4A5A66 0%,#6E7F8A 42%,#586973 43%,#3E4C56 100%),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 2px,transparent 2px 42px);
+  background-blend-mode:normal}
+.pano .ov{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:space-between;padding:10px 12px}
+.pano .tagline{display:flex;gap:6px}
+.pano .tagline span{background:rgba(23,33,43,.62);backdrop-filter:blur(4px);color:#fff;font-size:10px;
+  padding:3px 8px;border-radius:6px}
+.pano .hint2{display:flex;align-items:center;justify-content:center;gap:6px;color:#fff;font-size:11px;
+  opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.pano .hint2 svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:1.8}
+.rooms{display:flex;gap:7px;margin-top:11px}
+.rooms span{height:28px;padding:0 12px;border-radius:8px;font-size:12px;font-weight:600;display:flex;
+  align-items:center;border:1.3px solid var(--line-2);color:var(--t2);cursor:pointer}
+.rooms span.on{background:var(--primary-lighter);border-color:var(--primary-light);color:var(--primary)}
+/* 确认记录 */
+.cflist{position:relative;padding-left:22px}
+.cflist::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1px;background:var(--line-2)}
+.cf{position:relative;padding:0 0 16px}
+.cf:last-child{padding-bottom:2px}
+.cf .dot{position:absolute;left:-22px;top:5px;width:11px;height:11px;border-radius:50%;
+  background:#fff;border:2px solid var(--primary-light)}
+.cf .when{font-size:11px;color:var(--t3);font-variant-numeric:tabular-nums}
+.cf .what{font-size:13px;font-weight:600;margin-top:3px;line-height:1.5}
+.cf .amt{font-size:12px;color:var(--t2);margin-top:3px;font-variant-numeric:tabular-nums}
+.cf .kind{display:inline-flex;align-items:center;height:18px;padding:0 6px;border-radius:5px;
+  font-size:9.5px;font-weight:700;margin-right:6px}
+.cf .kind.mine{background:var(--primary-lighter);color:var(--primary)}
+.cf .kind.signed{background:#F2F4F6;color:#8B93A1}
+.cf .src{font-size:10px;color:var(--t4);margin-top:3px}
+.switchrow{display:flex;align-items:center;justify-content:space-between;background:var(--bg-page);
+  border-radius:10px;padding:11px 13px;font-size:12.5px}
+.switch{width:42px;height:24px;border-radius:13px;background:var(--line-2);position:relative;
+  cursor:pointer;transition:background .2s;flex:0 0 42px}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.switch.on{background:var(--primary)}
+.switch.on::after{transform:translateX(18px)}
+/* 误项清单 */
+.grp{font-size:11px;font-weight:700;color:var(--t3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.grp::after{content:"";flex:1;height:1px;background:var(--line)}
+.ck{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.ck:last-child{border-bottom:none}
+.ck .nm{font-size:13px;font-weight:600;line-height:1.5}
+.ck .ds{font-size:11px;color:var(--t3);margin-top:3px;line-height:1.6}
+.ck .ops{display:flex;gap:6px;margin-top:8px}
+.ck .ops span{height:26px;padding:0 10px;border-radius:7px;font-size:11.5px;font-weight:600;
+  display:flex;align-items:center;border:1.2px solid var(--line-2);color:var(--t2);cursor:pointer}
+.ck .ops span.on{background:var(--primary-lighter);border-color:var(--primary-light);color:var(--primary)}
+.ck .ops span.unsure.on{background:var(--warning-soft);border-color:#F0B27A;color:#C25E00}
+/* 投诉 */
+.note{background:#FFF8F0;border:1px solid rgba(230,126,34,.2);border-radius:10px;padding:11px 13px;
+  font-size:11.5px;color:var(--t2);line-height:1.7}
+.sla{display:flex;align-items:center;gap:10px;background:var(--primary-lightest);border-radius:11px;padding:12px 14px}
+.sla .ring2{width:42px;height:42px;border-radius:50%;flex:0 0 42px;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:700;background:conic-gradient(var(--primary) 66%,#DDE7E6 0);color:var(--primary)}
+.sla .ring2 i{width:32px;height:32px;border-radius:50%;background:var(--primary-lightest);display:flex;
+  align-items:center;justify-content:center;font-style:normal;font-size:11px}
+.steps{display:flex;align-items:flex-start;gap:0;margin-top:4px}
+.steps > div{flex:1;text-align:center;position:relative}
+.steps .d2{width:16px;height:16px;border-radius:50%;margin:0 auto;background:var(--line-2);position:relative;z-index:2}
+.steps .d2.on{background:var(--primary)}
+.steps .d2.doing{background:var(--st-doing);box-shadow:0 0 0 3px rgba(19,194,194,.18)}
+.steps > div:not(:last-child)::after{content:"";position:absolute;top:7.5px;left:50%;width:100%;height:1.5px;background:var(--line-2);z-index:1}
+.steps > div.done::after{background:var(--primary)}
+.steps .lb{font-size:10px;color:var(--t3);margin-top:6px}
+.steps .lb.on{color:var(--primary);font-weight:600}
+</style>
+</head>
+<body>
+<style>
+.chrome{flex:0 0 auto;position:relative;z-index:41;background:#fff;transition:background .25s}
+.chrome.dark{background:linear-gradient(150deg,#0B7A6E 0%,#12897C 55%,var(--primary-base) 100%);color:#fff}
+.chrome.dark .statusbar,.chrome.dark .navbar{color:#fff}
+.seg{display:flex;gap:6px;background:#EDF1F3;border-radius:11px;padding:4px;margin:0 16px 12px}
+.seg span{flex:1;text-align:center;height:32px;line-height:32px;border-radius:8px;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;transition:.16s}
+.seg span.on{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(23,33,43,.1)}
+.secttl{padding:16px 20px 8px;font-size:14.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.secttl .bar{width:3px;height:14px;border-radius:2px;background:var(--primary);display:block}
+.secttl .more{margin-left:auto;font-size:12px;color:var(--t3);font-weight:500}
+.bigcard{margin:0 16px 12px;background:linear-gradient(160deg,#0E8A7D 0%,#15A092 100%);border-radius:var(--r-lg);padding:18px;color:#fff;box-shadow:0 10px 24px rgba(14,138,125,.24)}
+.bigcard .k{font-size:11.5px;opacity:.86}
+.bigcard .v{font-size:27px;font-weight:700;letter-spacing:-.5px;margin-top:5px;font-variant-numeric:tabular-nums}
+.bigcard .r{display:flex;gap:14px;margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.2)}
+.bigcard .r > div{flex:1}
+.bigcard .r .kk{font-size:11px;opacity:.82}
+.bigcard .r .vv{font-size:15px;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums}
+.photo{border-radius:12px;position:relative;overflow:hidden;background:#DDE5E8}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.28))}
+.photo .pl{position:absolute;left:8px;bottom:7px;z-index:2;color:#fff;font-size:10.5px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.photo .pt{position:absolute;right:8px;top:7px;z-index:2;background:rgba(255,255,255,.9);color:var(--t2);font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px}
+.p1{background:linear-gradient(140deg,#9FB3BF,#6C8391)}
+.p2{background:linear-gradient(140deg,#B8C4C9,#7F929B)}
+.p3{background:linear-gradient(140deg,#A9BAB4,#6E847D)}
+.p4{background:linear-gradient(140deg,#C2CCC6,#8A9A93)}
+.p5{background:linear-gradient(140deg,#B5BFC6,#7B8A94)}
+</style>
+<div class="rail">
+  <h1>业主端视角重构原型</h1>
+  <div class="sub">装得清 · 微信小程序业主端　v1 原型<br>演示数据为虚构示例，不代表真实项目</div>
+
+  <div class="card">
+    <h2>这次改的是什么</h2>
+    <div class="pair"><span class="from">进度 62%</span><span class="to">水电改造已完成，等你验收</span></div>
+    <div class="pair"><span class="from">待我处理 2（点不开）</span><span class="to">3 件可执行的事，点进去就能做</span></div>
+    <div class="pair"><span class="from">验收单 · 待确认</span><span class="to">这 6 项，请你逐条看</span></div>
+    <div class="pair"><span class="from">整改中 1 · 截止 10-14</span><span class="to">李工已返工，等你复验</span></div>
+    <div class="pair"><span class="from">应收 / 已收 / 未收</span><span class="to">应付 / 已付 / 待付</span></div>
+    <div class="pair"><span class="from">报价 V1 / V2 / V3</span><span class="to">这版比上版贵 ¥2,340，贵在哪</span></div>
+    <div class="pair"><span class="from">材料计划：已下单</span><span class="to">你选的瓷砖 10-22 到场，到场拍照给你确认</span></div>
+    <div class="pair"><span class="from">（无）</span><span class="to">未来 7 天每天干什么、要不要你在场</span></div>
+    <div class="pair"><span class="from">（无）</span><span class="to">装完之后：隐蔽工程 · 主材 · 质保</span></div>
+  </div>
+
+  <div class="card">
+    <h2>不越界的三条底线</h2>
+    <ul>
+      <li>不出现成本、利润、供应商价、内部预警</li>
+      <li>金额换算成业主口径：应付 / 已付 / 待付</li>
+      <li>增减项只在审批通过后生效，文案写明"请您确认后再执行"</li>
+    </ul>
+  </div>
+
+  <div class="note">点击手机内元素可交互：4 个底部 Tab、验收逐项勾选、发起诉求、分享。</div>
+</div>
+
+<div class="stage">
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="glare"></div>
+
+    <div class="chrome dark" id="chrome">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 9.4 5.6 7a3.4 3.4 0 0 1 4.8 0zM8 4.6c-1.6 0-3 .6-4.1 1.6L2.5 4.8A8 8 0 0 1 8 2.6c2.1 0 4 .8 5.5 2.2l-1.4 1.4A5.9 5.9 0 0 0 8 4.6z"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12"><rect x=".5" y=".5" width="20" height="11" rx="3" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><path d="M22 4.2v3.6c1-.3 1.6-.9 1.6-1.8S23 4.5 22 4.2z" fill="currentColor" opacity=".5"/></svg>
+        </span>
+      </div>
+      <div class="navbar">
+        <span class="title" id="navTitle">我的家</span>
+        <div class="capsule on-dark" id="capsule">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="circle"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="viewport">
+
+      <!-- ================= 我的家 ================= -->
+      <div class="page active" id="p-home">
+        <div class="hero" style="padding-top:0">
+          <div class="addr">滨湖云谷 · 3 栋 1602 · 三室两厅 89㎡</div>
+          <div class="now">水电改造已完成，等你验收</div>
+          <div class="nowsub">今天 15:20 项目经理张伟提交验收，共 6 项<br>确认后进入防水工程</div>
+          <div class="bar"><i></i></div>
+          <div class="foot"><span>第 3 阶段 · 共 8 阶段</span><span>预计 12-19 完工 · 还有 66 天</span></div>
+        </div>
+
+        <div class="pull">
+          <!-- 等你确认 -->
+          <div class="card warn">
+            <div class="between">
+              <div class="row">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#C25E00" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.2l3.2 1.9"/></svg>
+                <div class="grow">
+                  <div class="strong" style="font-size:14.5px">等你确认：水电验收</div>
+                  <div class="tiny muted" style="margin-top:2px">6 项验收点 · 建议 10-16 前看完</div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top:13px;gap:9px">
+              <div class="btn primary grow" style="height:40px;font-size:14px" onclick="openSheet('s-accept')">去验收</div>
+              <div class="btn plain" style="height:40px;font-size:13.5px;padding:0 16px" onclick="toast('已提醒项目经理，稍后会与你电话确认')">先问问</div>
+            </div>
+          </div>
+
+          <!-- 接下来 7 天 -->
+          <div class="secttl"><span class="bar"></span>接下来 7 天<span class="more" onclick="go('p-progress')">看全部 ›</span></div>
+          <div class="card">
+            <div class="tl">
+              <div class="tl-item">
+                <div class="tl-dot doing"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-15 <span class="w">明天 · 周四</span><span class="tag doing" style="margin-left:auto">施工</span></div>
+                  <div class="tl-what">线盒加盖、现场清理、拍照留档</div>
+                  <div class="tl-who">电工 王建国 <span class="chip free">无需你到现场</span></div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot pending"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-16 <span class="w">周五</span></div>
+                  <div class="tl-what">防水材料到场（比计划晚 1 天）</div>
+                  <div class="tl-who">材料员 陈斌 <span class="chip info">到场后拍照给你确认</span></div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot idle"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-17 <span class="w">周六</span></div>
+                  <div class="tl-what">卫生间防水第一遍</div>
+                  <div class="tl-who">防水工 张卫东 <span class="chip free">无需你到现场</span></div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot idle"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-18 <span class="w">周日</span></div>
+                  <div class="tl-what">防水第二遍 · 闭水试验开始（48 小时）</div>
+                  <div class="tl-who">防水工 张卫东</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot pending"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-19 <span class="w">周一</span><span class="tag pending" style="margin-left:auto">需要你</span></div>
+                  <div class="tl-what">主材选材确认（客厅瓷砖三选一）</div>
+                  <div class="tl-who">设计师 徐勇 · 约 2 小时 <span class="chip me">需要你到现场</span></div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot idle"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-20 <span class="w">周二</span></div>
+                  <div class="tl-what">闭水试验结束，检查楼下是否渗水</div>
+                  <div class="tl-who">项目经理 张伟</div>
+                </div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-dot idle"></div>
+                <div class="tl-body">
+                  <div class="tl-day">10-21 <span class="w">周三</span></div>
+                  <div class="tl-what">泥瓦工进场，墙地砖铺贴开始</div>
+                  <div class="tl-who">泥瓦工 李国强</div>
+                </div>
+              </div>
+            </div>
+            <div class="divide"></div>
+            <div class="tiny muted" style="line-height:1.7">计划是装企的安排，遇到材料、天气或工艺需要调整时，我们会在这里更新并提前告诉你。</div>
+          </div>
+
+          <!-- 要我做 -->
+          <div class="secttl"><span class="bar"></span>要我做 <span class="more">3 件</span></div>
+          <div class="card">
+
+            <div class="todo" onclick="openSheet('s-accept')">
+              <div class="todo-ic a"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11.5l2.2 2.2L15.5 9"/><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2.5V6M16 2.5V6"/></svg></div>
+              <div class="grow"><div class="strong sm">确认水电验收</div><div class="tiny muted">6 项 · 建成后 <span class="tnum">10-16</span> 前</div></div>
+              <span class="chev"></span>
+            </div>
+            <div class="todo" onclick="toast('已打开选材清单：蒙娜丽莎 / 马可波罗 / 东鹏')">
+              <div class="todo-ic b"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></div>
+              <div class="grow"><div class="strong sm">客厅瓷砖选一款</div><div class="tiny muted">三选一 · 10-19 前确定</div></div>
+              <span class="chev"></span>
+            </div>
+            <div class="todo" onclick="go('p-money')">
+              <div class="todo-ic c"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="3"/><path d="M2.5 10.5h19"/><circle cx="16.5" cy="15" r="1.2"/></svg></div>
+              <div class="grow"><div class="strong sm">第三期付款 ¥25,360</div><div class="tiny muted">验收确认后 3 日内 · 10-20 到期</div></div>
+              <span class="chev"></span>
+            </div>
+          </div>
+
+<!-- 首页「管我这件事的人」 -->
+          <div class="secttl"><span class="bar"></span><span class="vmark">栖</span><span class="vname">栖岸装饰</span><span class="vsub">· 为你家服务的人</span><span class="more">点开可联系</span></div>
+          <div style="padding:0 16px 12px">
+            <div class="people">
+              <div class="pcard" onclick="openPerson('xu')">
+                <div class="av av-a">徐</div><div class="nm">徐勇</div><div class="rl">设计师</div>
+                <div class="dy">负责设计<br>与报价</div><div class="ph">联系他</div>
+              </div>
+              <div class="pcard" onclick="openPerson('zhang')">
+                <div class="av av-b">张</div><div class="nm">张伟</div><div class="rl">项目经理</div>
+                <div class="dy">负责工地<br>进度验收</div><div class="ph">联系他</div>
+              </div>
+              <div class="pcard" onclick="openPerson('chen')">
+                <div class="av av-c">陈</div><div class="nm">陈斌</div><div class="rl">材料员</div>
+                <div class="dy">负责材料<br>下单到场</div><div class="ph">联系他</div>
+              </div>
+              <div class="pcard" onclick="openPerson('li')">
+                <div class="av av-d">李</div><div class="nm">李国强</div><div class="rl">泥瓦班组长</div>
+                <div class="dy">负责拆改<br>与泥瓦</div><div class="ph">联系他</div>
+              </div>
+            </div>
+            <div class="tiny muted" style="margin-top:9px;line-height:1.65;padding:0 2px">这些是栖岸装饰为这一户安排的服务人员。中途换人我们会在这里告诉你。</div>
+          </div>
+          <!-- 进度正常吗 -->
+          <div class="card ok">
+            <div class="row">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+              <div class="grow"><div class="strong" style="font-size:14px">与计划持平</div></div>
+            </div>
+            <div class="tiny" style="color:var(--t2);margin-top:9px;line-height:1.75">
+              已完成 2 个阶段，当前水电阶段<b>比计划提前 1 天</b>。<br>
+              防水材料预计 10-16 到场，比计划晚 1 天，<b>不影响 12-19 的完工日期</b>。
+            </div>
+          </div>
+
+          <!-- 相册 -->
+          <div class="secttl"><span class="bar"></span>家的相册<span class="more" onclick="go('p-progress')">全部 26 张 ›</span></div>
+          <div class="card" style="padding:14px 16px">
+            <div class="gallery">
+              <div class="shot"><div class="photo p1" style="height:104px"><span class="pt">今天</span><span class="pl">强弱电布线</span></div><div class="cap">水电改造 · 王建国</div></div>
+              <div class="shot"><div class="photo p2" style="height:104px"><span class="pl">线盒加盖</span></div><div class="cap">10-13 · 王建国</div></div>
+              <div class="shot"><div class="photo p3" style="height:104px"><span class="pl">拆改完成</span></div><div class="cap">10-10 · 张伟</div></div>
+              <div class="shot"><div class="photo p4" style="height:104px"><span class="pl">开工交底</span></div><div class="cap">10-08 · 张伟</div></div>
+            </div>
+            <div class="divide"></div>
+            <div class="between">
+              <div class="tiny muted">想给家人看进度？</div>
+              <div class="btn soft sm2" onclick="toast('已生成亲友观看链接（脱敏 · 7 天有效 · 默认不含金额）')">分享给家人</div>
+            </div>
+          </div>
+
+          <!-- 档案引导 -->
+          <div class="card" onclick="go('p-profile')" style="cursor:pointer;background:linear-gradient(135deg,#0E8A7D 0%,#14A294 100%);color:#fff">
+            <div class="between">
+              <div class="row" style="gap:11px">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;flex:0 0 22px"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <div>
+                  <div class="strong" style="font-size:14px">隐蔽工程已归档</div>
+                  <div class="tiny" style="opacity:.88;margin-top:3px">水电管线走向已拍照存档，装完也能随时查</div>
+                </div>
+              </div>
+              <span class="chev" style="border-color:rgba(255,255,255,.85)"></span>
+            </div>
+          </div>
+        </div>
+        <div class="pad-b"></div>
+      </div>
+
+      <!-- ================= 进度 ================= -->
+      <div class="page" id="p-progress">
+        <div class="secttl" style="padding-top:18px"><span class="bar"></span>8 个施工阶段</div>
+        <div class="legend">
+          <span><i style="background:var(--st-done)"></i>已完成</span>
+          <span><i style="background:var(--st-doing)"></i>进行中</span>
+          <span><i style="background:var(--st-pending)"></i>等你确认</span>
+          <span><i style="background:var(--st-idle)"></i>未开始</span>
+        </div>
+        <div class="card">
+          <div class="tl">
+            <div class="tl-item"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <div class="tl-body"><div class="tl-day">1 · 开工交底 <span class="w">10-08 完成</span></div><div class="tl-what">现场交底、成品保护、施工许可</div><div class="tl-who">项目经理 张伟 · 与计划一致</div></div></div>
+            <div class="tl-item"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <div class="tl-body"><div class="tl-day">2 · 拆除改造 <span class="w">10-10 完成</span></div><div class="tl-what">墙体拆除、垃圾清运、遗留空鼓返工</div><div class="tl-who">李国强 · 曾延期 1 天，已补齐</div></div></div>
+            <div class="tl-item"><div class="tl-dot pending"></div>
+              <div class="tl-body"><div class="tl-day">3 · 水电改造 <span class="tag pending" style="margin-left:6px">等你确认</span></div>
+                <div class="tl-what">强弱电布线、给排水改造、打压试验</div>
+                <div class="tl-who">王建国 · 10-14 完工，<b style="color:var(--success)">比计划提前 1 天</b></div>
+                <div class="btn ghost sm2" style="margin-top:9px;display:inline-flex" onclick="openSheet('s-accept')">查看 6 项验收点</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">4 · 防水工程 <span class="w">计划 10-17 ~ 10-20</span></div><div class="tl-what">卫生间防水、闭水试验</div><div class="tl-who">张卫东 · 防水材料 10-16 到场（原计划 10-15，晚 1 天）</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">5 · 泥瓦工程 <span class="w">计划 10-21 ~ 11-05</span></div><div class="tl-what">墙地砖铺贴、地面找平</div><div class="tl-who">李国强</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">6 · 木作工程 <span class="w">计划 11-06 ~ 11-20</span></div><div class="tl-what">吊顶、柜体定制、门套</div><div class="tl-who">木工班</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">7 · 油漆涂装 <span class="w">计划 11-21 ~ 12-05</span></div><div class="tl-what">墙面腻子、底漆、面漆</div><div class="tl-who">油漆班</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">8 · 安装收尾 <span class="w">计划 12-06 ~ 12-19</span></div><div class="tl-what">洁具、开关插座、灯具、保洁交付</div><div class="tl-who">张伟</div></div></div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.75">
+            <b>进度是怎么算的？</b><br>按已完成的阶段数计算，不是按天数。<br>每个阶段完成后，你确认了才算真正完成。
+          </div>
+        </div>
+
+
+        <div class="secttl"><span class="bar"></span>每日现场<span class="more">每天一张全景</span></div>
+        <div class="card">
+          <div class="daily">
+            <div class="dcard"><div class="din p1"><span class="dt">今天</span><span class="dl">水电布线</span></div><div class="dc">10-14 · 王建国</div></div>
+            <div class="dcard"><div class="din p5"><span class="dt">10-13</span><span class="dl">线盒加盖</span></div><div class="dc">王建国</div></div>
+            <div class="dcard"><div class="din p2"><span class="dt">10-12</span><span class="dl">返工完成</span></div><div class="dc">李国强</div></div>
+            <div class="dcard"><div class="din p3"><span class="dt">10-11</span><span class="dl">水电进场</span></div><div class="dc">王建国</div></div>
+            <div class="dcard"><div class="din p4"><span class="dt">10-10</span><span class="dl">拆改完成</span></div><div class="dc">张伟</div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.7">每天一张全景，记录现场状态。拍摄人、日期与阶段都会一起留存。</div>
+        </div>
+        <div class="secttl"><span class="bar"></span>现场记录<span class="more">共 26 张照片</span></div>
+        <div class="card">
+          <div class="gallery" style="flex-wrap:wrap;gap:10px">
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p1" style="height:120px;width:100%"><span class="pt">今天</span><span class="pl">强弱电布线</span></div><div class="cap">水电改造 · 王建国</div></div>
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p5" style="height:120px;width:100%"><span class="pl">给水管打压</span></div><div class="cap">水电改造 · 王建国</div></div>
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p2" style="height:120px;width:100%"><span class="pl">线盒加盖</span></div><div class="cap">10-13 · 王建国</div></div>
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p3" style="height:120px;width:100%"><span class="pl">拆改完成</span></div><div class="cap">10-10 · 张伟</div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.7">每张照片都记录了日期、阶段和拍摄人，可以作为施工过程的凭证。</div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>整改记录</div>
+        <div class="card warn">
+          <div class="between">
+            <div>
+              <div class="strong" style="font-size:14px">客卫墙面空鼓 · 已返工</div>
+              <div class="tiny muted" style="margin-top:3px">责任人 李国强（泥瓦）· 承诺 10-14 完成</div>
+            </div>
+            <span class="tag done">待复验</span>
+          </div>
+          <div class="tiny" style="color:var(--t2);margin-top:10px;line-height:1.7">10-10 你提出的问题，已于今天完成返工。请你现场看一下，确认没问题我才会进入下一道工序。</div>
+          <div class="btn primary" style="height:40px;font-size:14px;margin-top:12px" onclick="toast('已确认复验通过，进入下一道工序')">我去复验</div>
+        </div>
+        <div class="pad-b"></div>
+      </div>
+
+      <!-- ================= 我的钱 ================= -->
+      <div class="page" id="p-money">
+        <div style="height:16px"></div>
+        <div class="bigcard">
+          <div class="k">待付金额</div>
+          <div class="v">¥53,960</div>
+          <div class="r">
+            <div><div class="kk">应付总额</div><div class="vv">¥130,040</div></div>
+            <div><div class="kk">已付</div><div class="vv">¥76,080</div></div>
+          </div>
+          <div class="tiny" style="opacity:.84;margin-top:11px">含已生效增减项 ¥3,240</div>
+        </div>
+
+        <div class="card warn">
+          <div class="between">
+            <div>
+              <div class="tiny muted">下一笔</div>
+              <div class="strong" style="font-size:16px;margin-top:2px">第三期 · 水电验收款 <span class="tnum">¥25,360</span></div>
+              <div class="tiny" style="color:#C25E00;margin-top:4px">10-20 到期 · 还剩 6 天</div>
+            </div>
+            <div class="btn primary sm2" onclick="toast('已复制收款信息，请在微信中完成支付')">去付款</div>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>付款计划</div>
+        <div class="card">
+          <div class="tl">
+            <div class="tl-item"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <div class="tl-body"><div class="between"><div class="tl-day">签约首付 <span class="w">30%</span></div><div class="strong tnum">¥38,040</div></div>
+              <div class="tiny muted" style="margin-top:2px">10-05 已付</div></div></div>
+            <div class="tl-item"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <div class="tl-body"><div class="between"><div class="tl-day">开工款 <span class="w">30%</span></div><div class="strong tnum">¥38,040</div></div>
+              <div class="tiny muted" style="margin-top:2px">10-08 已付</div></div></div>
+            <div class="tl-item"><div class="tl-dot pending"></div>
+              <div class="tl-body"><div class="between"><div class="tl-day">水电验收款 <span class="w">20%</span></div><div class="strong tnum" style="color:#C25E00">¥25,360</div></div>
+              <div class="tiny" style="color:#C25E00;margin-top:2px">10-20 到期 · 验收确认后 3 日内</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="between"><div class="tl-day">中期款 <span class="w">15%</span></div><div class="strong tnum">¥22,260</div></div>
+              <div class="tiny muted" style="margin-top:2px">含已生效增减项 ¥3,240 · 计划 11-20</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="between"><div class="tl-day">尾款 <span class="w">5%</span></div><div class="strong tnum">¥6,340</div></div>
+              <div class="tiny muted" style="margin-top:2px">竣工验收后 · 计划 12-19</div></div></div>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>这版报价比上版贵在哪<span class="more" onclick="toast('可查看 V1 / V2 / V3 三版完整报价单')">三版对比 ›</span></div>
+        <div class="card">
+          <div class="between" style="margin-bottom:11px">
+            <div><div class="strong">报价 V3</div><div class="tiny muted" style="margin-top:2px">10-10 确认 · 当前生效版本</div></div>
+            <div style="text-align:right"><div class="strong tnum" style="font-size:17px">¥130,040</div><div class="tiny" style="color:var(--danger);margin-top:2px">比 V2 多 ¥2,340</div></div>
+          </div>
+          <div class="divide" style="margin:0 -16px 10px"></div>
+          <div class="quote-line"><span style="color:var(--t2)">主卧衣柜铰链升级（百隆）</span><span class="plus tnum">+¥1,480</span></div>
+          <div class="quote-line"><span style="color:var(--t2)">卫生间增加等电位联结</span><span class="plus tnum">+¥860</span></div>
+          <div class="quote-line"><span style="color:var(--t2)">减少项目</span><span class="tnum">无</span></div>
+          <div class="tiny muted" style="margin-top:11px;line-height:1.7">两处都是你 10-10 现场同意后加进去的，已形成正式增减项单。</div>
+        </div>
+
+        <div class="card tight" style="cursor:pointer" onclick="openSheet('s-checklist')">
+          <div class="between">
+            <div class="row" style="gap:10px">
+              <div style="width:34px;height:34px;border-radius:10px;background:var(--primary-lighter);display:flex;align-items:center;justify-content:center;flex:0 0 34px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1.2 1.2L7.5 5"/><path d="M4 12l1.2 1.2L7.5 11"/></svg>
+              </div>
+              <div><div class="strong sm">开工前你对了 26 项漏项</div>
+                <div class="tiny muted" style="margin-top:3px">10-03 报价确认前 · 3 项当时标了"不确定"</div></div>
+            </div>
+            <span class="chev"></span>
+          </div>
+        </div>
+
+
+        <div class="secttl"><span class="bar"></span>增减项</div>
+        <div class="card">
+          <div class="todo" onclick="toast('阳台封窗改推拉门 · 正在审批，通过后会通知你')">
+            <div class="todo-ic a"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div class="grow"><div class="strong sm">阳台封窗改推拉门</div><div class="tiny muted">审批中 · 金额待确定</div></div>
+            <span class="tag pending">审批中</span>
+          </div>
+          <div class="todo" onclick="toast('厨房增加吊柜 · 正在审批，通过后会通知你')">
+            <div class="todo-ic a"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div class="grow"><div class="strong sm">厨房增加吊柜</div><div class="tiny muted">审批中 · 金额待确定</div></div>
+            <span class="tag pending">审批中</span>
+          </div>
+          <div class="todo">
+            <div class="todo-ic b"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg></div>
+            <div class="grow"><div class="strong sm">主卧衣柜铰链升级 · 卫生间等电位联结</div><div class="tiny muted">10-10 生效</div></div>
+            <div class="strong tnum" style="color:var(--danger)">+¥3,240</div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.75">所有增减项都会形成正式增减项单，<b>经企业审批通过后才生效</b>，生效金额会计入你的付款计划。</div>
+        </div>
+        <div class="pad-b"></div>
+      </div>
+
+      <!-- ================= 家档案 ================= -->
+      <div class="page" id="p-profile">
+        <div style="height:16px"></div>
+        <div class="card" style="background:linear-gradient(160deg,#0E8A7D 0%,#15A092 100%);color:#fff;box-shadow:0 10px 24px rgba(14,138,125,.24)">
+          <div class="row" style="gap:12px">
+            <div style="width:46px;height:46px;border-radius:13px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px"><path d="M3 10.2 12 3l9 7.2V21H3z"/><path d="M9.5 21v-6h5v6"/></svg>
+            </div>
+            <div>
+              <div class="strong" style="font-size:16px">滨湖云谷 3 栋 1602</div>
+              <div class="tiny" style="opacity:.88;margin-top:3px">三室两厅 · 套内 89㎡ · 2026-10-08 开工</div>
+            </div>
+          </div>
+          <div class="tiny" style="opacity:.86;margin-top:13px;line-height:1.7">这里存的是你这套房子的档案。装修结束以后，这些记录会一直保留。</div>
+        </div>
+
+
+        <div class="card tight" style="cursor:pointer;background:linear-gradient(135deg,#0E8A7D 0%,#14A294 100%);color:#fff" onclick="go('p-confirm')">
+          <div class="between">
+            <div class="row" style="gap:11px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;flex:0 0 22px"><path d="M20 6.5 9.5 17 4 11.5"/><rect x="3" y="4" width="18" height="17" rx="3" style="display:none"/></svg>
+              <div><div class="strong" style="font-size:14px">我的确认与签认</div>
+                <div class="tiny" style="opacity:.88;margin-top:3px">我确认的、线下确认的，共 8 条，按时间倒序</div></div>
+            </div>
+            <span class="chev" style="border-color:rgba(255,255,255,.85)"></span>
+          </div>
+        </div>
+        <div class="secttl"><span class="bar"></span>隐蔽工程存档<span class="more">已归档 3 项</span></div>
+        <div class="card">
+          <div class="file" onclick="openSheet('s-pano')" style="cursor:pointer">
+            <div class="fi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2z"/><path d="M14 4v6h6"/></svg></div>
+            <div class="grow"><div class="strong sm">水电管线走向图</div><div class="tiny muted">卫生间 / 厨房 / 客厅 · 10-14</div></div>
+            <span class="tag brand">查看</span>
+          </div>
+          <div class="file">
+            <div class="fi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+            <div class="grow"><div class="strong sm">水电施工照片</div><div class="tiny muted">12 张 · 含打压试验记录</div></div>
+            <span class="tag brand">查看</span>
+          </div>
+          <div class="file">
+            <div class="fi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+            <div class="grow"><div class="strong sm">原始结构 · 量房数据</div><div class="tiny muted">含套内尺寸与原始结构图</div></div>
+            <span class="tag brand">查看</span>
+          </div>
+          <div class="tiny" style="color:var(--t2);margin-top:12px;line-height:1.75;background:var(--primary-lightest);border-radius:10px;padding:10px 12px">
+            为什么要留这个：以后打孔挂电视、装晾衣杆、修水管，都要知道墙里管线在哪。很多装修完就找不到了。
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>我家的材料清单</div>
+        <div class="card">
+          <div class="file" onclick="openSheet('s-arrival')" style="cursor:pointer"><div class="fi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg></div>
+            <div class="grow"><div class="strong sm">客厅地砖 · 蒙娜丽莎 750×1500</div><div class="tiny muted">云灰 · 42 片 · 10-15 到场</div></div>
+            <span class="tag done">已到场</span></div>
+          <div class="file"><div class="fi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+            <div class="grow"><div class="strong sm">主卧衣柜 · 欧派 定制</div><div class="tiny muted">哑光白 · 3.6 延米 · 百隆铰链</div></div>
+            <span class="tag special">定制中</span></div>
+          <div class="file"><div class="fi"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5h4.2a1.9 1.9 0 0 1 0 3.8H9.8a1.9 1.9 0 0 0 0 3.8H14"/></svg></div>
+            <div class="grow"><div class="strong sm">卫浴 · 箭牌</div><div class="tiny muted">马桶 / 花洒 / 台盆 · 待选型</div></div>
+            <span class="tag idle">待选</span></div>
+          <div class="tiny muted" style="margin-top:12px;line-height:1.7">材料到场时我们会拍照留档，<b>不需要你确认</b>。你随时可以在这一页回看到场记录；如果发现和选的不一样，随时告诉我们。</div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>质保与售后</div>
+        <div class="card">
+          <div class="warranty">
+            <div class="ring" style="--p:100%"><i>5年</i></div>
+            <div class="grow"><div class="strong sm">防水工程</div><div class="tiny muted">竣工验收后起算 · 待生效</div></div>
+          </div>
+          <div class="warranty">
+            <div class="ring" style="--p:100%"><i>5年</i></div>
+            <div class="grow"><div class="strong sm">水电工程</div><div class="tiny muted">竣工验收后起算 · 待生效</div></div>
+          </div>
+          <div class="warranty">
+            <div class="ring" style="--p:100%"><i>2年</i></div>
+            <div class="grow"><div class="strong sm">墙面与饰面</div><div class="tiny muted">竣工验收后起算 · 待生效</div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny" style="color:var(--t2);line-height:1.75;background:var(--primary-lightest);border-radius:10px;padding:10px 12px">
+            质保期从<b>竣工验收那天</b>开始算，不是从开工算。现在项目还在施工，所以下面暂时是"待生效"；竣工确认后，这里会自动变成"还剩 N 年"并开始提醒你。
+          </div>
+          <div class="between" style="margin-top:12px">
+            <div class="tiny muted" style="flex:1;line-height:1.65">质保期内有问题，直接在这里报修。<span style="color:var(--t4)">具体年限以合同约定为准。</span></div>
+            <div class="btn ghost sm2" onclick="toast('已发起报修，客服会在 2 小时内联系你')">我要报修</div>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>我的装修总花费</div>
+        <div class="card">
+          <div class="between"><span class="sm muted">已付</span><span class="strong tnum">¥76,080</span></div>
+          <div class="divide" style="margin:10px -16px"></div>
+          <div class="between"><span class="sm muted">待付</span><span class="strong tnum">¥53,960</span></div>
+          <div class="divide" style="margin:10px -16px"></div>
+          <div class="between"><span class="strong">合同总额</span><span class="strong tnum" style="font-size:17px;color:var(--primary)">¥130,040</span></div>
+          <div class="tiny muted" style="margin-top:11px;line-height:1.7">签约金额 ¥126,800 + 已生效增减项 ¥3,240</div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>凭证归档</div>
+        <div class="card">
+          <div class="gallery" style="flex-wrap:wrap;gap:9px">
+            <div style="flex:0 0 calc(50% - 5px);background:var(--bg-page);border-radius:11px;padding:12px">
+              <div class="strong sm">施工合同</div><div class="tiny muted" style="margin-top:2px">1 份</div></div>
+            <div style="flex:0 0 calc(50% - 5px);background:var(--bg-page);border-radius:11px;padding:12px">
+              <div class="strong sm">报价单</div><div class="tiny muted" style="margin-top:2px">3 版</div></div>
+            <div style="flex:0 0 calc(50% - 5px);background:var(--bg-page);border-radius:11px;padding:12px">
+              <div class="strong sm">增减项单</div><div class="tiny muted" style="margin-top:2px">4 张</div></div>
+            <div style="flex:0 0 calc(50% - 5px);background:var(--bg-page);border-radius:11px;padding:12px">
+              <div class="strong sm">验收单</div><div class="tiny muted" style="margin-top:2px">1 张</div></div>
+          </div>
+          <div class="btn plain" style="margin-top:12px" onclick="toast('已生成打包文件，可在微信中发送或保存')">打包下载全部凭证</div>
+        </div>
+        <div class="secttl"><span class="bar"></span>我的服务团队<span class="more">6 人</span></div>
+        <div class="card">
+          <div class="team" onclick="openPerson('xu')"><div class="av3 av-a">徐</div><div class="grow"><div class="strong sm">徐勇 · 设计师</div><div class="tiny muted">量房 · 方案 · 报价 · 选材</div></div><span class="chev"></span></div>
+          <div class="team" onclick="openPerson('zhang')"><div class="av3 av-b">张</div><div class="grow"><div class="strong sm">张伟 · 项目经理</div><div class="tiny muted">开工交底 · 进度 · 验收</div></div><span class="chev"></span></div>
+          <div class="team" onclick="openPerson('li')"><div class="av3 av-d">李</div><div class="grow"><div class="strong sm">李国强 · 泥瓦班组长</div><div class="tiny muted">拆改 · 空鼓返工</div></div><span class="chev"></span></div>
+          <div class="team" onclick="openPerson('wang')"><div class="av3 av-e">王</div><div class="grow"><div class="strong sm">王建国 · 电工</div><div class="tiny muted">水电改造 · 打压试验</div></div><span class="chev"></span></div>
+          <div class="team" onclick="openPerson('zw')"><div class="av3 av-e">张</div><div class="grow"><div class="strong sm">张卫东 · 防水工</div><div class="tiny muted">防水 · 闭水试验</div></div><span class="chev"></span></div>
+          <div class="team" onclick="openPerson('chen')"><div class="av3 av-c">陈</div><div class="grow"><div class="strong sm">陈斌 · 材料员</div><div class="tiny muted">材料下单 · 到场核对</div></div><span class="chev"></span></div>
+          <div class="tiny muted" style="margin-top:12px;line-height:1.7">这些是在您家服务过的<b>全部人员</b>。谁做了哪一段，以后都查得到；中途换人我们会主动告诉你。</div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>服务方</div>
+        <div class="card">
+          <div class="vendor" onclick="openSheet('s-company')" style="cursor:pointer">
+            <div class="vl">栖岸</div>
+            <div class="grow"><div class="strong" style="font-size:15px">栖岸装饰</div><div class="tiny muted" style="margin-top:3px">合肥本土家装 · 滨湖 · 政务 · 高新</div></div>
+            <span class="chev"></span>
+          </div>
+          <div class="tiny" style="color:var(--primary);margin-top:8px;font-weight:600">查看企业完整信息 ›</div>
+          <div class="divide"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">联系方式</span><span class="sm strong">0551-6xxx xxx</span></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">本小区已完工</span><span class="sm strong">12 户</span></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">同户型做过</span><span class="sm strong">7 户</span></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">资质</span><span class="sm strong">建筑装饰装修二级</span></div>
+          <div class="tiny muted" style="margin-top:10px;line-height:1.7">以上由 栖岸装饰 提供并审核。本页记录由装得清系统存证与保管。</div>
+        </div>
+
+        <div class="card tight" style="cursor:pointer" onclick="openSheet('s-complaint')">
+          <div class="between">
+            <div class="row" style="gap:10px">
+              <div style="width:34px;height:34px;border-radius:10px;background:#FFF4E8;display:flex;align-items:center;justify-content:center;flex:0 0 34px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C25E00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+              </div>
+              <div><div class="strong sm">提出意见或投诉</div>
+                <div class="tiny muted" style="margin-top:3px">直接送达栖岸装饰负责人 · 48 小时内回复</div></div>
+            </div>
+            <span class="chev"></span>
+          </div>
+        </div>
+
+        <div class="pad-b"></div>
+      </div>
+      <!-- ========== ④ 我的确认记录（业务能力侧 · 不占 Tab） ========== -->
+      <div class="page" id="p-confirm" data-title="我的确认与签认" data-nobar="1">
+        <div class="row" onclick="go('p-profile')" style="padding:14px 20px 6px;gap:4px;cursor:pointer">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          <span class="sm" style="color:var(--t2)">返回家档案</span>
+        </div>
+
+        <div class="card" style="margin-top:10px;background:linear-gradient(160deg,#0E8A7D 0%,#15A092 100%);color:#fff">
+          <div class="strong" style="font-size:16px">我的确认与签认</div>
+          <div class="tiny" style="opacity:.9;margin-top:9px;line-height:1.78">
+            你在装修过程中参与过的关键节点，按时间倒序。<br>
+            其中<b>只有阶段验收是你在小程序里确认的</b>；<br>
+            报价、合同、增减项是你<b>线下达成一致</b>后由栖岸装饰在系统里登记的。<br>
+            记录不可修改，也不可删除。
+          </div>
+        </div>
+
+        <div style="padding:0 16px 12px">
+          <div class="switchrow">
+            <span>显示金额</span>
+            <span class="switch on" onclick="toggleAmt(this)"></span>
+          </div>
+          <div class="tiny muted" style="margin-top:8px;line-height:1.65;padding:0 2px">关掉以后，这一页和分享出去的记录里都不会出现金额。</div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>记录<span class="more">共 8 条</span></div>
+        <div class="card">
+          <div class="cflist">
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-12 16:40</div>
+              <div class="what"><span class="kind mine">我确认</span>客卫墙面空鼓返工复验</div>
+              <div class="amt">复验结果：通过</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-10 09:30</div>
+              <div class="what"><span class="kind signed">线下确认</span>主卧衣柜铰链升级（百隆）</div>
+              <div class="amt">+¥1,480 · 已生效</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-10 09:28</div>
+              <div class="what"><span class="kind signed">线下确认</span>卫生间增加等电位联结</div>
+              <div class="amt">+¥860 · 已生效</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-08 09:15</div>
+              <div class="what"><span class="kind mine">我到现场</span>开工交底 · 施工范围与成品保护</div>
+              <div class="amt">你到过现场</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-05 16:40</div>
+              <div class="what"><span class="kind signed">线下确认</span>施工合同签署</div>
+              <div class="amt">签约金额 ¥126,800 · 约定 12-19 完工</div>
+              <div class="src">由 张伟（项目经理）在系统中登记 · 线下已签字</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-03 20:12</div>
+              <div class="what"><span class="kind signed">线下确认</span>报价 V1 确认</div>
+              <div class="amt">¥126,800 · 当天你先做过一次漏项自查</div>
+              <div class="src">由 徐勇（设计师）在系统中登记 · 线下已达成一致</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">10-02 18:30</div>
+              <div class="what"><span class="kind signed">线下确认</span>选定 B 案（开放式厨房）</div>
+              <div class="amt">3 套方案中由你和家人共同选定</div>
+              <div class="src">由 徐勇（设计师）登记</div>
+            </div>
+            <div class="cf"><span class="dot"></span>
+              <div class="when">09-28 10:15</div>
+              <div class="what"><span class="kind signed">线下确认</span>量房记录与现场条件</div>
+              <div class="amt">含原始结构与尺寸记录</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>「我确认」</b>是你在小程序里亲自点的；<br>
+            <b>「线下确认」</b>是你和栖岸装饰线下达成一致后，由他们在系统里登记的。<br><br>
+            这些记录由 <b>栖岸装饰</b> 通过装得清系统留存；系统只做<b>存证与保管</b>，不对你的装修过程作出评价。
+          </div>
+        </div>
+        <div class="pad-b"></div>
+      </div>
+      <!-- ============================================================
+           价值能力 · 装修历程（不占用业务 Tab 位置，由中间凸起按钮承载）
+           ============================================================ -->
+      <div class="page story" id="p-story">
+        <div class="story-hero">
+          <div class="dust" id="dust"></div>
+          <div class="music-btn" id="musicBtn" onclick="toggleMusic()">
+            <span class="ring"></span>
+            <svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.6"/><circle cx="16.5" cy="16" r="2.6"/></svg>
+          </div>
+          <div class="music-tip" id="musicTip">轻触开启音乐</div>
+
+          <div class="story-eyebrow">滨湖云谷 · 3 栋 1602</div>
+          <div class="story-h1">从一间空房子，<br>慢慢长成<em>家的样子</em></div>
+          <div class="story-h2">2026-09-28 第一次量房　—　2026-12-19 预计竣工</div>
+
+          <div class="story-stats rv">
+            <div><div class="n" data-count="16">0<span>天</span></div><div class="k">走过</div></div>
+            <div><div class="n" data-count="26">0<span>张</span></div><div class="k">照片</div></div>
+            <div><div class="n" data-count="3">0<span>/8</span></div><div class="k">阶段</div></div>
+          </div>
+
+          <div class="scroll-hint">
+            <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+
+        <div class="st-sec">
+          <div class="st-sec-title rv"><span class="bar"></span><span class="t">走过的路</span><span class="s">16 天</span></div>
+          <div class="st-tl">
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">09-28</div>
+              <div class="ti">第一次量房</div>
+              <div class="de">徐勇带着卷尺和相机上门，把客餐厅、主卧、次卧、卫生间量了一遍。那天你问得最多的是"这面墙能不能动"。</div>
+              <div class="who">徐勇 · 设计师<span class="st-pill me">你在场</span></div>
+              <div class="st-photos">
+                <div class="st-ph"><div class="im p3"></div><span class="cap">量房</span></div>
+                <div class="st-ph"><div class="im p4"></div><span class="cap">原始结构</span></div>
+              </div>
+            </div>
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">10-02</div>
+              <div class="ti">方案定下来了</div>
+              <div class="de">3 套平面方案摆在桌上，你和家人一起挑了 B 案——开放式厨房。挑完那天你说："就它了，看着敞亮。"</div>
+              <div class="who">徐勇 · 设计师<span class="st-pill me">你选的 B 案</span></div>
+              <div class="st-photos">
+                <div class="st-ph w2"><div class="im p2"></div><span class="cap">B 案 · 平面方案</span></div>
+              </div>
+            </div>
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">10-03</div>
+              <div class="ti">报价确认</div>
+              <div class="de">首版报价 ¥126,800。你说"比预想的高一点"，于是把两处非必要项目拿掉，重新算了一遍。</div>
+              <div class="who">徐勇 · 设计师<span class="st-pill me">你提过调整</span></div>
+            </div>
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">10-05</div>
+              <div class="ti">签约</div>
+              <div class="de">合同签下来，约定 12 月 19 日完工。首付 ¥38,040 已付。</div>
+              <div class="who">张伟 · 项目经理<span class="st-pill ok">你确认过合同</span></div>
+            </div>
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">10-08</div>
+              <div class="ti">开工交底</div>
+              <div class="de">你请了半天假到现场，跟师傅们确认了施工范围、成品保护和每天的施工时间。</div>
+              <div class="who">张伟 · 项目经理<span class="st-pill me">你到过现场</span></div>
+              <div class="st-photos">
+                <div class="st-ph"><div class="im p4"></div><span class="cap">开工交底</span></div>
+                <div class="st-ph"><div class="im p1"></div><span class="cap">成品保护</span></div>
+              </div>
+            </div>
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">10-10</div>
+              <div class="ti">拆改完成，你发现了一个问题</div>
+              <div class="de">墙拆完那天你敲了敲客卫的墙面，觉得声音不对——空鼓。当天下午就安排了返工。</div>
+              <div class="who">李国强 · 泥瓦<span class="st-pill me">你提出问题</span></div>
+            </div>
+            <div class="st-node rv"><span class="st-dot"></span>
+              <div class="date">10-12</div>
+              <div class="ti">返工完成</div>
+              <div class="de">重新抹灰、养护到位。你去现场看过，确认没问题。</div>
+              <div class="who">李国强 · 泥瓦<span class="st-pill ok">你复验通过</span></div>
+            </div>
+            <div class="st-node rv"><span class="st-dot now"></span>
+              <div class="date">10-14 · 今天</div>
+              <div class="ti">水电改造完成</div>
+              <div class="de">强弱电布线、给排水改造、打压试验全部做完，26 张照片留在档案里。接下来等你确认这 6 项。</div>
+              <div class="who">王建国 · 电工<span class="st-pill now">等你确认</span></div>
+              <div class="st-photos">
+                <div class="st-ph"><div class="im p1"></div><span class="cap">强弱电布线</span></div>
+                <div class="st-ph"><div class="im p5"></div><span class="cap">给水管打压</span></div>
+                <div class="st-ph"><div class="im p2"></div><span class="cap">线盒加盖</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="st-sec">
+          <div class="st-sec-title rv"><span class="bar"></span><span class="t">曾经的画面</span><span class="s">26 张</span></div>
+          <div class="st-wall rv">
+            <div class="w"><div class="im p3"></div></div>
+            <div class="w"><div class="im p4"></div></div>
+            <div class="w"><div class="im p2"></div></div>
+            <div class="w"><div class="im p4"></div></div>
+            <div class="w"><div class="im p1"></div></div>
+            <div class="w"><div class="im p5"></div></div>
+            <div class="w"><div class="im p1"></div></div>
+            <div class="w"><div class="im p2"></div></div>
+            <div class="w"><div class="im p5"></div></div>
+          </div>
+          <div class="st-quote rv" style="margin-top:20px">
+            <div class="q">9 月，房子还是空的；10 月，墙被敲开，电线走了进去。</div>
+            <div class="m">— 截至今天</div>
+          </div>
+        </div>
+
+        <div class="st-sec">
+          <div class="st-sec-title rv"><span class="bar"></span><span class="t">你说过的话</span><span class="s">留在这里</span></div>
+          <div class="st-quote rv">
+            <div class="q">这套方案我爱人周末也要来看一下，我们再定。</div>
+            <div class="m">10-02 · 选方案那天</div>
+          </div>
+          <div class="st-quote rv">
+            <div class="q">这个价格比预想的高一点，但这两处我想留着。</div>
+            <div class="m">10-03 · 报价确认</div>
+          </div>
+          <div class="st-quote rv">
+            <div class="q">这面墙敲起来是空的，你们听一下。</div>
+            <div class="m">10-10 · 拆改现场</div>
+          </div>
+        </div>
+
+        <div class="st-sec">
+          <div class="st-sec-title rv"><span class="bar"></span><span class="t">等你住进来</span><span class="s">未完待续</span></div>
+          <div class="st-glass rv">
+            <div class="badge">竣工后解锁</div>
+            <div class="lock"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+            <div class="h">入住感受</div>
+            <div class="p">搬进去住上一段时间之后，你可以回来写点感受、传几张新家的照片。<br>
+              默认只有你自己和家人能看见，我们不会拿它对外使用；以后要是想放到案例里，会单独再问你一次。</div>
+          </div>
+          <div class="st-glass rv" style="margin-top:12px">
+            <div class="badge">12-19 解锁</div>
+            <div class="lock"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M9 7.5h6M9 11h6"/></svg></div>
+            <div class="h">装修纪念册</div>
+            <div class="p">这 16 天的照片、每一次确认、每一次改动，会整理成一本电子纪念册。<br>
+              从毛坯到新家的对比、每道工序的现场、你说过的话，都在里面。</div>
+          </div>
+        </div>
+
+        <div class="st-sec">
+          <div class="st-sec-title rv"><span class="bar"></span><span class="t">封面预览</span><span class="s">示意</span></div>
+          <div class="st-book rv">
+            <div class="cov">
+              <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/></svg>
+              <div class="t">我家装修记</div>
+              <div class="s">2026 · 滨湖云谷 1602</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="st-end">
+          <div class="l">这一页会一直留着。<br>等你住进去，它会变成一本完整的册子。</div>
+          <div class="st-btn" onclick="go('p-visit')">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2"/></svg>
+            分享给好友 / 看看装企名片
+          </div>
+        </div>
+        <div class="pad-b"></div>
+      </div>
+
+      <!-- ============================================================
+           对外门面 · 装企名片（陌生人视角，由业主分享进入）
+           ============================================================ -->
+      <div class="page" id="p-visit" data-title="栖岸装饰" data-nobar="1">
+        <div class="sharecard" style="margin-top:14px">
+          <div class="sc-top">
+            <div class="sc-thumb">栖岸</div>
+            <div class="grow">
+              <div class="sc-t">朋友家的装修实录 · 滨湖云谷 1602</div>
+              <div class="sc-s">
+                <span class="sc-badge">小程序</span>
+                <span>栖岸装饰 · 全程记录</span>
+              </div>
+            </div>
+          </div>
+          <div class="sc-foot">
+            <span>微信分享卡片样式（5:4）</span>
+            <span>装得清 · 记录存证</span>
+          </div>
+        </div>
+
+        <div class="card-hero" style="margin:14px 16px 0;border-radius:16px">
+          <div class="ch-logo">栖岸</div>
+          <div class="ch-name">栖岸装饰</div>
+          <div class="ch-slogan">合肥本土家装 · 主做 89–140㎡ 改善型三居<br>先出方案后谈钱，报价一次报清</div>
+          <div class="ch-meta">
+            <span class="ch-chip">滨湖 · 政务 · 高新</span>
+            <span class="ch-chip">成立 12 年</span>
+            <span class="ch-chip">自有施工队</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar" style="background:#1E3A5F"></span>这家的情况</div>
+        <div class="card">
+          <div class="kv">
+            <div><div class="n">386<span>户</span></div><div class="k">已完工</div></div>
+            <div><div class="n">7<span>个</span></div><div class="k">在施工地</div></div>
+            <div><div class="n">5<span>年</span></div><div class="k">水电质保</div></div>
+          </div>
+          <div class="gate">
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+            <span>以上数字由 <b>栖岸装饰</b> 自行填写，并经企业负责人审核发布。平台不代填、不推算、不背书。</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar" style="background:#1E3A5F"></span>做的活</div>
+        <div class="card">
+          <div class="case">
+            <div class="pic p3"></div>
+            <div class="grow">
+              <div class="strong sm">滨湖云谷 · 89㎡ 三居</div>
+              <div class="tiny muted" style="margin-top:3px">工期 72 天 · 水电验收一次通过</div>
+              <div class="auth">已获业主书面授权 · 已脱敏</div>
+            </div>
+          </div>
+          <div class="case">
+            <div class="pic p5"></div>
+            <div class="grow">
+              <div class="strong sm">柏悦府 · 126㎡ 四居</div>
+              <div class="tiny muted" style="margin-top:3px">工期 96 天 · 全程 0 投诉</div>
+              <div class="auth">已获业主书面授权 · 已脱敏</div>
+            </div>
+          </div>
+          <div class="gate" style="margin-top:14px">
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+            <span>案例必须同时满足：真实项目、有交付结果、企业审核、<b>业主书面授权</b>、完成脱敏、在授权渠道与期限内。</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar" style="background:#1E3A5F"></span>你朋友家的这一段</div>
+        <div class="card" onclick="go('p-story')" style="cursor:pointer">
+          <div class="between">
+            <div class="row" style="gap:11px">
+              <div style="width:40px;height:40px;border-radius:12px;background:var(--primary-lighter);display:flex;align-items:center;justify-content:center;flex:0 0 40px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M3 10.2 12 3l9 7.2V21H3z"/><path d="M9.5 21v-6h5v6"/></svg>
+              </div>
+              <div>
+                <div class="strong sm">滨湖云谷 1602 · 装修实录</div>
+                <div class="tiny muted" style="margin-top:3px">16 天 · 26 张现场照片 · 由业主授权公开</div>
+              </div>
+            </div>
+            <span class="chev"></span>
+          </div>
+          <div class="tiny muted" style="margin-top:11px;line-height:1.7">只展示业主同意公开的部分，不含金额、联系方式与家庭成员信息。</div>
+        </div>
+
+        <div class="secttl"><span class="bar" style="background:#1E3A5F"></span>服务与保障</div>
+        <div class="card">
+          <div class="row between" style="padding:9px 0"><span class="sm muted">主营范围</span><span class="sm strong">整装 · 半包 · 局部改造</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:9px 0"><span class="sm muted">施工标准</span><span class="sm strong">水电分槽 · 防水 48h 闭水</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:9px 0"><span class="sm muted">质保</span><span class="sm strong">防水/水电 5 年 · 饰面 2 年</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:9px 0"><span class="sm muted">联系方式</span><span class="sm strong">0551-6xxx xxx</span></div>
+        </div>
+
+        <div class="footnote">
+          本页内容由 栖岸装饰 提供并审核发布<br>
+          记录存证与保管 · 装得清
+        </div>
+        <div style="height:12px"></div>
+
+        <div class="cta-fixed">
+          <div class="btn plain" style="flex:0 0 100px" onclick="toast('已复制企业联系方式')">打电话</div>
+          <div class="btn primary grow" onclick="toast('已提交预约意向，栖岸装饰 会尽快联系你')">预约量房</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 验收（遮罩页） ================= -->
+    <div class="sheet" id="s-accept">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-accept')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">水电验收</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.75">
+            水电改造今天完工。下面是这一阶段需要你核对的 <b>6 项</b>，<br>可以只看你在意的，也可以全部确认。
+          </div>
+        </div>
+
+        <div class="secttl" style="padding-top:6px"><span class="bar"></span>请逐项核对</div>
+        <div class="card">
+          <div class="chk"><div class="chk-n">1</div><div class="chk-b">
+            <div class="chk-t">强弱电线管分槽铺设，间距 ≥ 15cm</div>
+            <div class="chk-d">避免强弱电互相干扰，影响网速和信号</div>
+            <div class="vote"><span class="y" onclick="vote(this,'y')">没问题</span><span class="n" onclick="vote(this,'n')">有问题</span></div>
+          </div></div>
+          <div class="chk"><div class="chk-n">2</div><div class="chk-b">
+            <div class="chk-t">所有线盒已加盖，无裸露线头</div>
+            <div class="chk-d">后续施工不会碰伤电线，也防止触电</div>
+            <div class="vote"><span class="y" onclick="vote(this,'y')">没问题</span><span class="n" onclick="vote(this,'n')">有问题</span></div>
+          </div></div>
+          <div class="chk"><div class="chk-n">3</div><div class="chk-b">
+            <div class="chk-t">卫生间、阳台插座配防溅盒</div>
+            <div class="chk-d">潮湿区域用电安全的基本要求</div>
+            <div class="vote"><span class="y" onclick="vote(this,'y')">没问题</span><span class="n" onclick="vote(this,'n')">有问题</span></div>
+          </div></div>
+          <div class="chk"><div class="chk-n">4</div><div class="chk-b">
+            <div class="chk-t">给水管打压试验：0.8MPa 保持 30 分钟无渗漏</div>
+            <div class="chk-d">压力表读数记录已上传，可查看照片</div>
+            <div class="row" style="margin-top:8px;gap:9px">
+              <div class="photo p5" style="width:96px;height:72px"><span class="pl">压力表</span></div>
+              <div class="photo p1" style="width:96px;height:72px"><span class="pl">管线走向</span></div>
+            </div>
+            <div class="vote"><span class="y" onclick="vote(this,'y')">没问题</span><span class="n" onclick="vote(this,'n')">有问题</span></div>
+          </div></div>
+          <div class="chk"><div class="chk-n">5</div><div class="chk-b">
+            <div class="chk-t">排水管坡度符合要求，无倒坡</div>
+            <div class="chk-d">坡度不对会造成排水慢、积水返味</div>
+            <div class="vote"><span class="y" onclick="vote(this,'y')">没问题</span><span class="n" onclick="vote(this,'n')">有问题</span></div>
+          </div></div>
+          <div class="chk"><div class="chk-n">6</div><div class="chk-b">
+            <div class="chk-t">管线走向已拍照留档，装完也能查</div>
+            <div class="chk-d">已存入「家档案 → 隐蔽工程」，以后打孔、维修都能查</div>
+            <div class="vote"><span class="y" onclick="vote(this,'y')">没问题</span><span class="n" onclick="vote(this,'n')">有问题</span></div>
+          </div></div>
+        </div>
+
+        <div class="card" style="background:#FFF8F0;box-shadow:none;border:1px solid rgba(230,126,34,.18)">
+          <div class="tiny" style="color:var(--t2);line-height:1.75">
+            <b>不确定怎么看？</b><br>点右下角"先问问"，或者直接打电话给项目经理张伟 138****6021，请他带你现场看一遍。
+          </div>
+        </div>
+        <div style="height:20px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn plain grow" onclick="toast('已提交 2 项疑问，张伟会在 2 小时内回复你')">提交疑问</div>
+        <div class="btn primary grow" onclick="acceptAll()">确认验收</div>
+      </div>
+    </div>
+
+    <!-- ================= 我有个想法（遮罩页） ================= -->
+    <div class="sheet" id="s-idea">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-idea')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">我有个想法</div>
+      </div>
+      <div class="sheet-bd" id="ideaBody">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.75">
+            现场看到什么、想改什么，都可以在这里说。<br>你的想法会直接送到设计师和项目经理手上，<b>15 天内 18:00 前</b>会回复你。
+          </div>
+        </div>
+        <div class="secttl" style="padding-top:6px"><span class="bar"></span>常见想法</div>
+        <div style="padding:0 16px">
+          <div class="opt" onclick="pick(this)"><i></i>想在这里加一个插座</div>
+          <div class="opt" onclick="pick(this)"><i></i>想换掉某个材料或颜色</div>
+          <div class="opt" onclick="pick(this)"><i></i>想问这面墙能不能拆 / 能不能改</div>
+          <div class="opt" onclick="pick(this)"><i></i>想看看现在的进度安排</div>
+        </div>
+        <div class="secttl" style="padding-top:6px"><span class="bar"></span>具体说说</div>
+        <div style="padding:0 16px 6px">
+          <textarea id="ideaText" placeholder="例如：客厅沙发旁边想加两个插座，方便给手机充电。"></textarea>
+        </div>
+        <div style="padding:0 16px">
+          <div class="hint">
+            <b>说明：</b>增加或改动会形成正式增减项单，<b>经你确认金额后才执行</b>；施工已完成的部位可能需要拆改，我们会先告诉你代价和工期影响。
+          </div>
+        </div>
+        <div style="height:20px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="submitIdea()">提交给设计师</div>
+      </div>
+    </div>
+
+    <!-- ================= 责任人详情（遮罩页） ================= -->
+    <div class="sheet" id="s-person">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-person')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px" id="personTitle">责任人</div>
+      </div>
+      <div class="sheet-bd" id="personBody"></div>
+      <div class="fixedbar" id="personFoot"></div>
+    </div>
+    <!-- ================= 服务方企业信息（遮罩页） ================= -->
+    <div class="sheet" id="s-company">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-company')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">服务方</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="co-hero">
+          <div class="lg">栖岸</div>
+          <div class="nm">栖岸装饰</div>
+          <div class="sl">合肥本土家装企业 · 承接 89–140㎡ 改善型三居<br>为您家提供设计、施工与售后</div>
+          <div class="tags">
+            <span>滨湖 · 政务 · 高新</span>
+            <span>成立 12 年</span>
+            <span>自有施工队</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>基本信息</div>
+        <div class="card">
+          <div class="co-row"><span class="k">企业全称</span><span class="v">合肥栖岸建筑装饰工程有限公司</span></div>
+          <div class="co-row"><span class="k">统一社会信用代码</span><span class="v tnum">91340100MA2xxxxxxx</span></div>
+          <div class="co-row"><span class="k">资质</span><span class="v">建筑装饰装修工程二级</span></div>
+          <div class="co-row"><span class="k">服务区域</span><span class="v">滨湖 · 政务 · 高新 · 经开</span></div>
+          <div class="co-row"><span class="k">客服电话</span><span class="v">0551-6xxx xxx</span></div>
+          <div class="co-row"><span class="k">售后专线</span><span class="v">0551-6xxx xxx 转 2</span></div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>与您这一户有关</div>
+        <div class="card">
+          <div class="kv">
+            <div><div class="n">6<span>人</span></div><div class="k">服务人员</div></div>
+            <div><div class="n">12<span>户</span></div><div class="k">本小区已完工</div></div>
+            <div><div class="n">7<span>户</span></div><div class="k">同户型做过</div></div>
+          </div>
+          <div class="gate" style="margin-top:13px">
+            <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+            <span>以上由 <b>栖岸装饰</b> 自行填写并审核发布。平台不代填、不推算、不背书。</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>服务保障</div>
+        <div class="card">
+          <div class="co-row"><span class="k">施工标准</span><span class="v">水电分槽 · 防水 48h 闭水</span></div>
+          <div class="co-row"><span class="k">质保</span><span class="v">防水/水电 5 年 · 饰面 2 年</span></div>
+          <div class="co-row"><span class="k">质保起算</span><span class="v">竣工验收之日起</span></div>
+          <div class="co-row"><span class="k">报修通道</span><span class="v">本小程序 → 家档案 → 我要报修</span></div>
+          <div class="co-row"><span class="k">投诉通道</span><span class="v">本小程序 → 提出意见或投诉</span></div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>您这一户的记录由谁保管？</b><br>
+            从量房到质保的全部记录，由 <b>栖岸装饰</b> 通过装得清系统留存；系统只做存证与保管，不对您的装修过程作出评价。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn plain" style="flex:0 0 108px" onclick="toast('正在拨号…')">打客服电话</div>
+        <div class="btn primary grow" onclick="closeSheet('s-company');go('p-profile')">看我的装修档案</div>
+      </div>
+    </div>
+    <!-- ========== ① 漏项自查表 ========== -->
+    <div class="sheet" id="s-checklist">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-checklist')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">开工前漏项自查</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>滨湖云谷 89㎡ 三室两厅</b> · 行业常见项 v2026.1<br>
+            这些是这类户型最容易漏掉的项目，<b>不是你的报价内容</b>。你可以拿着报价单一项项对。
+          </div>
+        </div>
+
+        <div style="padding:0 16px">
+          <div class="grp">水电</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">强电箱移位</div><div class="ds">原始位置不方便时常被漏</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">弱电箱扩容</div><div class="ds">光纤、路由器、电视分配</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no on" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">等电位联结</div><div class="ds">卫生间安全必备，报价里常被省略</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure on" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+          <div class="grp">泥瓦</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">地面找平</div><div class="ds">铺木地板前几乎必做，很多人签合同时没注意</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure on" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">美缝</div><div class="ds">通常不含在贴砖里，后期单独收费</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no on" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">过门石 / 挡水条</div><div class="ds">卫生间与厨房门口</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+          <div class="grp">木作与安装</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">门窗套 / 包管</div><div class="ds">常见漏项，后期单算</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure on" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">开关插座面板</div><div class="ds">数量是否按实际点位算</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+          <div class="grp">主材</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">五金件（铰链 / 滑轨 / 拉手）</div><div class="ds">品牌与等级差异很大</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">灯具与浴霸</div><div class="ds">是否含安装</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no on" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:14px 16px 0;background:#FFF8F0;box-shadow:none;border:1px solid rgba(230,126,34,.18)">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>这份清单只作提醒。</b><br>
+            它<b>不会自动加进你的报价</b>，也不作为减少项目的依据。要不要调整，由你和设计师当面确认。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn plain" style="flex:0 0 118px" onclick="toast('已生成要问设计师的问题清单')">问设计师</div>
+        <div class="btn primary grow" onclick="submitChecklist()">对完了，记下来</div>
+      </div>
+    </div>
+
+    <!-- ========== ③ 材料到场记录（告知 + 留痕，非确认门禁） ========== -->
+    <div class="sheet" id="s-arrival">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-arrival')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">材料到场记录</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            材料到场后，项目经理会拍照记录，你可以随时回看。<br>
+            <b>不需要你确认</b>，也不会因为没有确认而影响施工。<br>
+            核对是项目经理和材料员的职责。
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="between">
+            <div><div class="strong" style="font-size:15px">客厅地砖</div>
+              <div class="tiny muted" style="margin-top:3px">蒙娜丽莎 750×1500 · 42 片</div></div>
+            <span class="tag done">已到场</span>
+          </div>
+          <div class="cmp">
+            <div class="h"><div>项目</div><div>你选的</div><div>现场到的</div></div>
+            <div class="r"><div class="k">品牌</div><div class="v">蒙娜丽莎</div><div class="v">蒙娜丽莎</div></div>
+            <div class="r"><div class="k">型号</div><div class="v">750×1500</div><div class="v">750×1500</div></div>
+            <div class="r"><div class="k">色号</div><div class="v">云灰</div><div class="v">云灰</div></div>
+            <div class="r"><div class="k">批次</div><div class="v">—</div><div class="v">B20261014</div></div>
+          </div>
+          <div class="row" style="margin-top:12px;gap:8px">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+            <span class="sm strong" style="color:var(--success)">与你所选一致</span>
+          </div>
+          <div class="divide"></div>
+          <div class="between" style="cursor:pointer" onclick="toast('已记录你的疑问，材料员会当面和你核对')">
+            <span class="sm" style="color:var(--t2)">我发现和选的不一样</span>
+            <span class="chev"></span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>到场照片<span class="more">自然光 · 未加滤镜</span></div>
+        <div class="card">
+          <div class="gallery" style="gap:9px">
+            <div class="shot" style="flex:0 0 140px"><div class="photo p3" style="height:110px;width:140px"><span class="pt">未加滤镜</span><span class="pl">外包装</span></div></div>
+            <div class="shot" style="flex:0 0 140px"><div class="photo p4" style="height:110px;width:140px"><span class="pt">未加滤镜</span><span class="pl">开箱验色</span></div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.7">10-15 10:20 到场 · 材料员 陈斌拍照记录</div>
+        </div>
+
+        <div class="card" style="background:#FFF8F0;box-shadow:none;border:1px solid rgba(230,126,34,.18)">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>这两件事要分清：</b><br>
+            到场记录 = 留个证据，以后能查当时到的是什么；<br>
+            它<b>不等于质量验收</b>，质量问题另有验收流程。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="closeSheet('s-arrival')">知道了</div>
+      </div>
+    </div>
+
+    <!-- ========== ⑤ 360 全景隐蔽工程 ========== -->
+    <div class="sheet" id="s-pano">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-pano')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">隐蔽工程 · 全景</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px">
+          <div class="pano" id="panoBox"
+               onmousedown="panoDown(event)" onmousemove="panoMove(event)" onmouseup="panoUp()" onmouseleave="panoUp()"
+               ontouchstart="panoDown(event)" ontouchmove="panoMove(event)" ontouchend="panoUp()">
+            <div class="bg"></div>
+            <div class="ov">
+              <div class="tagline"><span>卫生间</span><span>水电改造</span><span>10-14 15:05</span></div>
+              <div class="hint2">
+                <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M9 12h6M7 12H4M20 12h-3"/><path d="M7 8v8M17 8v8"/></svg>
+                按住左右拖动，可以转一圈看
+              </div>
+            </div>
+          </div>
+          <div class="rooms">
+            <span class="on" onclick="pickRoom(this)">卫生间</span>
+            <span onclick="pickRoom(this)">厨房</span>
+            <span onclick="pickRoom(this)">客厅</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>这张影像什么时候拍的</div>
+        <div class="card">
+          <div class="row between" style="padding:8px 0"><span class="sm muted">拍摄时间</span><span class="sm strong tnum">2026-10-14 15:05</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">拍摄人</span><span class="sm strong">王建国 · 电工</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">阶段</span><span class="sm strong">水电改造（封槽前）</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">验收条件</span><span class="tag done">已满足</span></div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>为什么要留这一张：</b><br>
+            水电封槽以后就再也看不到了。以后要在墙上打孔挂电视、装晾衣杆、修水管，回来打开这一页就知道墙里管线在哪。<br><br>
+            它记录的是<b>当时的现场事实</b>，不代替质量验收。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="toast('已存入「家档案 · 隐蔽工程」，长期保留')">存进我的家档案</div>
+      </div>
+    </div>
+
+    <!-- ========== ⑥ 一键投诉 ========== -->
+    <div class="sheet" id="s-complaint">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-complaint')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">提出意见或投诉</div>
+      </div>
+      <div class="sheet-bd" id="cpBody">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            提交后会<b>直接送达栖岸装饰负责人</b>，48 小时内必须有回复。<br>
+            超过 48 小时未回复，系统会自动升级并留下记录。
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>投诉对象</div>
+        <div style="padding:0 16px">
+          <div class="opt" onclick="pickComplaint(this)"><i></i>项目经理 张伟</div>
+          <div class="opt" onclick="pickComplaint(this)"><i></i>设计师 徐勇</div>
+          <div class="opt" onclick="pickComplaint(this)"><i></i>施工班组</div>
+          <div class="opt" onclick="pickComplaint(this)"><i></i>栖岸装饰 公司</div>
+        </div>
+
+        <div class="secttl" style="padding-top:6px"><span class="bar"></span>发生了什么</div>
+        <div style="padding:0 16px 6px">
+          <textarea id="cpText" placeholder="例如：约好周二上门，连着两次没来也没提前说。"></textarea>
+        </div>
+        <div style="padding:0 16px">
+          <div class="note">
+            <b>你会看到：</b>处理进度、承诺时限、倒计时。<br>
+            <b>你不会看到：</b>企业内部的处理与考核记录。<br>
+            平台只做记录与保管，不介入企业与你的处理过程。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="submitComplaint()">提交给负责人</div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <div class="tabbar">
+      <div class="tab on" data-page="p-home" data-title="我的家" data-dark="1" onclick="go('p-home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.2 12 3l9 7.2V21H3z"/><path d="M9.5 21v-6h5v6"/></svg>
+        <span>我的家</span>
+      </div>
+      <div class="tab" data-page="p-progress" data-title="施工进度" data-dark="0" onclick="go('p-progress')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4v16"/><circle cx="5" cy="8" r="2"/><circle cx="5" cy="16" r="2"/><path d="M10 8h9M10 16h9"/></svg>
+        <span>进度</span>
+      </div>
+      <div class="tab center" data-page="p-story" data-title="装修历程" data-dark="0" data-theme="ink" onclick="go('p-story')">
+        <span class="fab"><span class="halo"></span>
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <path d="M11 3.6l1.75 4.65L17.4 10l-4.65 1.75L11 16.4 9.25 11.75 4.6 10l4.65-1.75z"/>
+            <path d="M17.9 14.4l.8 2.15 2.15.8-2.15.8-.8 2.15-.8-2.15-2.15-.8 2.15-.8z"/>
+          </svg>
+        </span>
+        <span class="lbl">历程</span>
+      </div>
+      <div class="tab" data-page="p-money" data-title="我的钱" data-dark="0" onclick="go('p-money')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="3"/><path d="M2.5 10.5h19"/><circle cx="16.5" cy="15" r="1.2"/></svg>
+        <span>我的钱</span>
+      </div>
+      <div class="tab" data-page="p-profile" data-title="家档案" data-dark="0" onclick="go('p-profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>家档案</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var toastTimer = null;
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2400);
+}
+function go(id) {
+  document.querySelectorAll('.page').forEach(function (p) { p.classList.toggle('active', p.id === id); });
+  document.querySelectorAll('.tab').forEach(function (t) { t.classList.toggle('on', t.dataset.page === id); });
+  var tab = document.querySelector('.tab[data-page="' + id + '"]');
+  var pageEl = document.getElementById(id);
+  document.getElementById('navTitle').textContent =
+    (tab && tab.dataset.title) || (pageEl && pageEl.dataset.title) || '';
+  document.querySelector('.tabbar').style.display = (pageEl && pageEl.dataset.nobar === '1') ? 'none' : 'flex';
+  var dark = tab && tab.dataset.dark === '1';
+  var ink = tab && tab.dataset.theme === 'ink';
+  var chromeEl = document.getElementById('chrome');
+  chromeEl.classList.toggle('dark', !!dark);
+  chromeEl.classList.toggle('deep', !!ink);
+  document.getElementById('capsule').classList.toggle('on-dark', !!dark || !!ink);
+  document.querySelector('.tabbar').classList.toggle('dark', !!ink);
+  if (id === 'p-story') { initStory(); startMusic(); } else { stopMusic(); }
+  document.getElementById(id).scrollTop = 0;
+  try { history.replaceState(null, '', '#' + id); } catch (e) {}
+}
+// 支持 #p-money 这类直达，便于演示与截图
+window.addEventListener('DOMContentLoaded', function () {
+  var h = (location.hash || '').replace('#', '');
+  // hash 支持多个标记： #p-home!shot、#p-story!tall、#p-story!tall!shot
+  var flags = h.split('!');
+  h = flags[0];
+  var tall = flags.indexOf('tall') >= 0;
+  var shot = flags.indexOf('shot') >= 0;
+  if (document.getElementById(h) && h.indexOf('p-') === 0) go(h);
+  if (document.getElementById(h) && h.indexOf('s-') === 0) openSheet(h);
+  if (h === 's-person') openPerson('zhang');
+  if (['s-checklist','s-arrival','s-pano','s-complaint'].indexOf(h) >= 0) openSheet(h);   // 责任人详情需先渲染数据
+  if (tall) {
+    document.querySelector('.phone').style.height = '4300px';
+    document.querySelector('.phone').style.borderRadius = '0';
+    document.querySelector('.glare').style.display = 'none';
+  }
+  // 数字标记 = 初始滚动位置，形如 #p-visit!shot!600
+  var scrollTo = 0;
+  flags.forEach(function (f) { if (/^\d+$/.test(f)) scrollTo = parseInt(f, 10); });
+  if (scrollTo) {
+    var pg = document.getElementById(h);
+    if (pg) pg.scrollTop = scrollTo;
+  }
+  if (tall || shot) {
+    document.documentElement.classList.add('no-anim');
+    // 静态截图没有滚动，直接揭示全部并跑一遍数字
+    Array.prototype.forEach.call(document.querySelectorAll('#p-story .rv'), function (el) {
+      el.style.transitionDelay = '0ms';
+      el.classList.add('in');
+      runCount(el);
+    });
+  }
+});
+function openSheet(id) { document.getElementById(id).classList.add('show'); }
+function closeSheet(id) { document.getElementById(id).classList.remove('show'); }
+function vote(el, type) {
+  var box = el.parentElement;
+  box.querySelectorAll('span').forEach(function (s) { s.classList.remove('on'); });
+  el.classList.add('on');
+  var n = box.querySelector('.n');
+  if (type === 'n') toast('已记录，请补充说明或拍照，方便我们安排整改');
+}
+function acceptAll() {
+  var total = document.querySelectorAll('#s-accept .chk').length;
+  var done = document.querySelectorAll('#s-accept .vote span.on').length;
+  if (done < total) { toast('还有 ' + (total - done) + ' 项没核对完，可以只看你在意的几项'); return; }
+  closeSheet('s-accept');
+  toast('已确认水电验收，进入防水工程');
+}
+function pick(el) {
+  el.parentElement.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('on'); });
+  el.classList.add('on');
+  var t = document.getElementById('ideaText');
+  if (!t.value.trim()) t.value = el.textContent.trim();
+}
+function submitIdea() {
+  var t = document.getElementById('ideaText').value.trim();
+  if (!t) { toast('先说说你的想法吧'); return; }
+  document.getElementById('ideaBody').innerHTML =
+    '<div style="padding:26px 20px 0;text-align:center">' +
+      '<div style="width:62px;height:62px;border-radius:50%;background:var(--success-soft);margin:14px auto 0;display:flex;align-items:center;justify-content:center">' +
+        '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>' +
+      '</div>' +
+      '<div style="font-size:17px;font-weight:700;margin-top:16px">已经收到你的想法</div>' +
+      '<div class="tiny muted" style="margin-top:8px;line-height:1.7">设计师 徐勇 会在 10-15 18:00 前回复你<br>如果需要加钱或改动工期，会先告诉你会增加多少、延后几天</div>' +
+    '</div>' +
+    '<div style="padding:20px 16px 0"><div class="card" style="margin:0">' +
+      '<div class="tiny muted">你的想法</div>' +
+      '<div style="font-size:13.5px;margin-top:6px;line-height:1.6">' + t.replace(/</g, '&lt;') + '</div>' +
+      '<div class="divide"></div>' +
+      '<div class="row between"><div class="tiny muted">处理人</div><div class="strong sm">徐勇 · 设计师</div></div>' +
+      '<div class="row between" style="margin-top:8px"><div class="tiny muted">承诺回复</div><div class="strong sm tnum">10-15 18:00 前</div></div>' +
+    '</div></div>' +
+    '<div style="height:20px"></div>';
+  document.querySelector('#s-idea .fixedbar').innerHTML =
+    '<div class="btn plain grow" onclick="closeSheet(\'s-idea\')">知道了</div>' +
+    '<div class="btn ghost grow" onclick="closeSheet(\'s-idea\');go(\'p-progress\')">去看进度</div>';
+  toast('已提交给设计师 徐勇');
+}
+/* ============================================================
+   价值能力 · 装修历程：环境音乐 / 粒子 / 滚动揭示 / 数字滚动
+   ============================================================ */
+var musicPref = null;   // null=未表态（进页自动开） true=开 false=关
+
+/* ---------- 环境音乐：Web Audio 现场合成，不依赖任何音频文件 ---------- */
+var Ambient = (function () {
+  var ac = null, master = null, step = 0, timer = null, on = false;
+  var BASE = 196; // G3
+  var CHORDS = [[-5, 0, 4, 7], [-3, 2, 5, 9], [0, 4, 7, 11], [-1, 4, 7, 12]];
+
+  function ensure() {
+    if (ac) return;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    ac = new AC();
+    master = ac.createGain();
+    master.gain.value = 0.0001;
+    var lp = ac.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 1500; lp.Q.value = 0.3;
+    var dly = ac.createDelay(1.5); dly.delayTime.value = 0.45;
+    var fb = ac.createGain(); fb.gain.value = 0.36;
+    var wet = ac.createGain(); wet.gain.value = 0.30;
+    master.connect(lp);
+    lp.connect(ac.destination);
+    lp.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(wet); wet.connect(ac.destination);
+  }
+  function pad(freqs, t, dur) {
+    freqs.forEach(function (f, i) {
+      var o = ac.createOscillator();
+      o.type = i === 0 ? 'sine' : 'triangle';
+      o.frequency.value = f;
+      var g = ac.createGain();
+      g.gain.value = 0.0001;
+      o.connect(g); g.connect(master);
+      var peak = 0.085 / (1 + i * 0.75);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(peak, t + 2.6);
+      g.gain.linearRampToValueAtTime(0.0001, t + dur);
+      o.start(t); o.stop(t + dur + 0.06);
+    });
+  }
+  function bell(f, t) {
+    var o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+    var g = ac.createGain(); g.gain.value = 0.0001;
+    o.connect(g); g.connect(master);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.07, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0002, t + 3.2);
+    o.start(t); o.stop(t + 3.4);
+  }
+  function schedule() {
+    if (!on || !ac) return;
+    var t = ac.currentTime + 0.12;
+    var c = CHORDS[step % CHORDS.length];
+    pad(c.map(function (n) { return BASE * Math.pow(2, n / 12); }), t, 11);
+    if (Math.random() < 0.62) {
+      var pick = c[1 + Math.floor(Math.random() * 3)];
+      bell(BASE * Math.pow(2, (pick + 12) / 12), t + 2.4 + Math.random() * 3.4);
+    }
+    step++;
+    timer = setTimeout(schedule, 9000);
+  }
+  return {
+    start: function () {
+      ensure();
+      if (!ac) return;
+      if (ac.state === 'suspended') { try { var rp = ac.resume(); if (rp && rp.catch) rp.catch(function () {}); } catch (e) {} }
+      if (on) return;
+      on = true;
+      master.gain.cancelScheduledValues(ac.currentTime);
+      master.gain.setTargetAtTime(0.5, ac.currentTime, 0.9);
+      schedule();
+    },
+    stop: function () {
+      if (!ac || !on) return;
+      on = false;
+      clearTimeout(timer);
+      master.gain.cancelScheduledValues(ac.currentTime);
+      master.gain.setTargetAtTime(0.0001, ac.currentTime, 0.5);
+    },
+    isOn: function () { return on; }
+  };
+})();
+
+function startMusic() {
+  if (musicPref === false) return;
+  Ambient.start();
+  var b = document.getElementById('musicBtn');
+  if (b) b.classList.add('on');
+}
+function stopMusic() {
+  Ambient.stop();
+  var b = document.getElementById('musicBtn');
+  if (b) b.classList.remove('on');
+}
+function toggleMusic() {
+  var btn = document.getElementById('musicBtn');
+  var tip = document.getElementById('musicTip');
+  if (Ambient.isOn()) {
+    Ambient.stop(); musicPref = false;
+    if (btn) btn.classList.remove('on');
+    if (tip) { tip.textContent = '音乐已关闭'; tip.classList.add('show'); }
+    setTimeout(function () { if (tip) tip.classList.remove('show'); }, 1800);
+  } else {
+    Ambient.start(); musicPref = true;
+    if (btn) btn.classList.add('on');
+    if (tip) tip.classList.remove('show');
+  }
+}
+
+/* ---------- 光尘粒子 ---------- */
+function makeDust() {
+  var box = document.getElementById('dust');
+  if (!box || box.dataset.done) return;
+  box.dataset.done = '1';
+  var html = '';
+  for (var i = 0; i < 14; i++) {
+    var l = Math.random() * 100;
+    var b = Math.random() * 45;
+    var dur = 9 + Math.random() * 11;
+    var delay = -Math.random() * 18;
+    var sz = Math.random() < 0.3 ? 3 : 2;
+    html += '<i style="left:' + l.toFixed(1) + '%;bottom:' + b.toFixed(0) + '%;width:' + sz + 'px;height:' + sz +
+      'px;animation-duration:' + dur.toFixed(1) + 's;animation-delay:' + delay.toFixed(1) + 's"></i>';
+  }
+  box.innerHTML = html;
+}
+
+/* ---------- 滚动揭示 + 数字滚动 ---------- */
+var storyIO = null;
+function runCount(el) {
+  if (!el.querySelector) return;
+  var t = el.querySelector('[data-count]');
+  if (!t) return;
+  var to = parseFloat(t.dataset.count || '0');
+  var unit = t.querySelector('span');
+  var unitHTML = unit ? unit.outerHTML : '';
+  var t0 = performance.now();
+  function frame(now) {
+    var p = Math.min(1, (now - t0) / 1100);
+    var v = Math.round(to * (1 - Math.pow(1 - p, 3)));
+    t.innerHTML = v + unitHTML;
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function initStory() {
+  var page = document.getElementById('p-story');
+  if (!page) return;
+  makeDust();
+  if (storyIO || page.dataset.ready) return;
+  page.dataset.ready = '1';
+  storyIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      runCount(e.target);
+      storyIO.unobserve(e.target);
+    });
+  }, { root: page, threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
+  Array.prototype.forEach.call(page.querySelectorAll('.rv'), function (el, i) {
+    el.style.transitionDelay = ((i % 3) * 90) + 'ms';
+    storyIO.observe(el);
+  });
+}
+
+/* ============================================================
+   业务能力侧 · 人：责任人详情
+   说明：从业年限、服务户数、擅长、服务承诺均由【装企后台自填并审核】，
+        平台不推算、不评分、不做跨企业对比。
+   ============================================================ */
+var PEOPLE = {
+  xu:   { n:'徐勇',   r:'设计师',      c:'av-a', duty:'负责您家的设计与报价', good:'小户型改造 · 动线优化',
+          y:9,  h:126, promise:'工作日 2 小时内回复',
+          did:[['09-28','上门量房，量了客餐厅、主卧、次卧、卫生间'],['10-02','出了 3 套平面方案，和你一起定了 B 案'],['10-03','改了报价里两处，把总额调到你能接受的范围'],['10-19','约你到店确认客厅瓷砖']] },
+  zhang:{ n:'张伟',   r:'项目经理',    c:'av-b', duty:'负责您家的工地现场、进度与验收', good:'水电与防水工艺',
+          y:12, h:210, promise:'全天可联系（夜间请留言）',
+          did:[['10-08','开工交底，和你确认了施工范围与成品保护'],['10-10','你发现客卫空鼓，当天安排返工'],['10-14','水电改造完成，提交 6 项验收']] },
+  chen: { n:'陈斌',   r:'材料员',      c:'av-c', duty:'负责您家的材料下单、到场与核对', good:'主材比价与到场核验',
+          y:6,  h:88,  promise:'材料到场当天同步给你',
+          did:[['10-10','客厅瓷砖下单，预计 10-22 到场'],['10-16','防水材料到场，到场后拍照给你确认']] },
+  li:   { n:'李国强', r:'泥瓦班组长',  c:'av-d', duty:'负责您家的拆改与泥瓦工程', good:'墙地砖与防水基层',
+          y:15, h:150, promise:'按排期进场，进度同步给你',
+          did:[['10-10','完成墙体拆除与垃圾清运'],['10-12','客卫空鼓返工完成，你复验通过']] },
+  wang: { n:'王建国', r:'电工',        c:'av-e', duty:'负责您家的水电改造', good:'强弱电分槽与给排水',
+          y:11, h:163, promise:'施工期间每天在群里报进度',
+          did:[['10-11','进场开始强弱电布管'],['10-14','布线收尾、线盒加盖、打压试验完成']] },
+  zw:   { n:'张卫东', r:'防水工',      c:'av-e', duty:'负责您家的防水工程', good:'卫生间防水与闭水试验',
+          y:8,  h:112, promise:'闭水试验全程拍照留档',
+          did:[['10-17','计划进场，卫生间防水第一遍']] }
+};
+function openPerson(k) {
+  var p = PEOPLE[k];
+  if (!p) return;
+  document.getElementById('personTitle').textContent = p.n + ' · ' + p.r;
+  var did = p.did.map(function (d) {
+    return '<div class="tl-item" style="padding:9px 0"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>'
+      + '<div class="tl-body"><div class="tl-day tnum" style="font-size:12.5px">' + d[0] + '</div>'
+      + '<div class="tl-what" style="font-size:12.5px">' + d[1] + '</div></div></div>';
+  }).join('');
+  document.getElementById('personBody').innerHTML =
+    '<div class="p-hero">'
+    + '<div class="av2 ' + p.c + '">' + p.n.charAt(0) + '</div>'
+    + '<div><div class="nm2">' + p.n + '</div>'
+    + '<div class="rl2">' + p.r + ' · 栖岸装饰</div>'
+    + '<div class="dy2">' + p.duty + '</div></div></div>'
+    + '<div class="secttl"><span class="bar"></span>他的情况</div>'
+    + '<div class="card"><div class="p-kv">'
+    + '<div><div class="n">' + p.y + '<span>年</span></div><div class="k">从业年限</div></div>'
+    + '<div><div class="n">' + p.h + '<span>户</span></div><div class="k">服务过</div></div>'
+    + '<div><div class="n">' + p.did.length + '<span>次</span></div><div class="k">在你家</div></div>'
+    + '</div>'
+    + '<div class="gate" style="margin-top:14px"><svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>'
+    + '<span>以上信息由 <b>栖岸装饰</b> 自行填写并审核。平台不推算、不评分、不与其它公司比较。</span></div></div>'
+    + '<div class="secttl"><span class="bar"></span>擅长与承诺</div>'
+    + '<div class="card">'
+    + '<div class="row between" style="padding:8px 0"><span class="sm muted">擅长</span><span class="sm strong">' + p.good + '</span></div>'
+    + '<div class="divide" style="margin:8px -16px"></div>'
+    + '<div class="row between" style="padding:8px 0"><span class="sm muted">服务承诺</span><span class="sm strong">' + p.promise + '</span></div>'
+    + '</div>'
+    + '<div class="secttl"><span class="bar"></span>他为您家做了什么</div>'
+    + '<div class="card"><div class="tl">' + did + '</div></div>'
+    + '<div style="height:18px"></div>';
+  document.getElementById('personFoot').innerHTML =
+    '<div class="btn plain" style="flex:0 0 96px" onclick="toast(\'正在拨号…\')">打电话</div>'
+    + '<div class="btn primary grow" onclick="toast(\'已复制他的企业微信\')">在微信里找他</div>';
+  openSheet('s-person');
+}
+
+/* ============================================================
+   P1 第一批 · 六项功能交互
+   ============================================================ */
+function toggleAmt(el) {
+  el.classList.toggle('on');
+  var on = el.classList.contains('on');
+  Array.prototype.forEach.call(document.querySelectorAll('#p-confirm .cf .amt'), function (a) {
+    a.style.display = on ? '' : 'none';
+  });
+  toast(on ? '已显示金额' : '已隐藏金额（仅你自己可见）');
+}
+function pick(op, group) {
+  op.parentElement.querySelectorAll('span').forEach(function (s) { s.classList.remove('on'); });
+  op.classList.add('on');
+}
+function submitChecklist() {
+  var unsure = document.querySelectorAll('#s-checklist .ops span.unsure.on').length;
+  closeSheet('s-checklist');
+  toast(unsure ? '已记录，还有 ' + unsure + ' 项待确认，可随时问设计师' : '已记录，26 项已全部对完');
+}
+function confirmArrival(ok) {
+  closeSheet('s-arrival');
+  toast(ok ? '已确认与所选一致，可以开封使用' : '已提交异议，材料员会与你核对');
+}
+function pickComplaint(el) {
+  el.parentElement.querySelectorAll('.opt').forEach(function (o) { o.classList.remove('on'); });
+  el.classList.add('on');
+}
+function submitComplaint() {
+  var t = document.getElementById('cpText').value.trim();
+  var who = document.querySelector('#s-complaint .opt.on');
+  if (!who) { toast('先选一下你要投诉的对象'); return; }
+  if (!t) { toast('简单说一句发生了什么，方便负责人判断'); return; }
+  document.getElementById('cpBody').innerHTML =
+    '<div style="padding:22px 16px 0">' +
+      '<div class="card" style="margin:0;text-align:center;padding:22px 18px">' +
+        '<div style="width:56px;height:56px;border-radius:50%;background:var(--success-soft);margin:0 auto;display:flex;align-items:center;justify-content:center">' +
+          '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg></div>' +
+        '<div style="font-size:16.5px;font-weight:700;margin-top:14px">已送达栖岸装饰负责人</div>' +
+        '<div class="tiny muted" style="margin-top:8px;line-height:1.7">48 小时内必须有回复<br>超时系统会自动升级并留下记录</div>' +
+      '</div>' +
+      '<div class="card" style="margin:12px 0 0">' +
+        '<div class="sla"><div class="ring2"><i>48h</i></div>' +
+        '<div class="grow"><div class="strong sm">处理时限</div>' +
+        '<div class="tiny muted" style="margin-top:3px">还剩 47 小时 58 分</div></div>' +
+        '<span class="tag pending">处理中</span></div>' +
+        '<div class="steps" style="margin-top:16px">' +
+          '<div class="done"><div class="d2 on"></div><div class="lb on">已送达</div></div>' +
+          '<div><div class="d2 doing"></div><div class="lb on">处理中</div></div>' +
+          '<div><div class="d2"></div><div class="lb">已回复</div></div>' +
+          '<div><div class="d2"></div><div class="lb">已关闭</div></div>' +
+        '</div></div>' +
+      '<div class="card" style="margin:12px 0 0"><div class="note"><b>你看得到的：</b>处理进度、承诺时限、倒计时。<br>' +
+      '<b>你看不到的：</b>企业内部的处理与考核记录。<br>平台只做记录与保管，不介入企业与你的处理过程。</div></div>' +
+      '<div style="height:20px"></div></div>';
+  document.querySelector('#s-complaint .fixedbar').innerHTML =
+    '<div class="btn plain grow" onclick="closeSheet(\'s-complaint\')">知道了</div>';
+  toast('投诉已送达负责人');
+}
+/* 全景拖动 */
+var panoDrag = null;
+function panoDown(e) {
+  var box = document.getElementById('panoBox');
+  var x = (e.touches ? e.touches[0].clientX : e.clientX);
+  panoDrag = { box: box, startX: x, startPos: panoPos };
+  box.classList.add('grab');
+}
+function panoMove(e) {
+  if (!panoDrag) return;
+  var x = (e.touches ? e.touches[0].clientX : e.clientX);
+  var d = panoDrag.startX - x;
+  var max = panoDrag.box.clientWidth * 2;   // 背景宽 300%
+  panoPos = Math.max(0, Math.min(max, panoDrag.startPos + d));
+  panoDrag.box.querySelector('.bg').style.transform = 'translateX(-' + panoPos + 'px)';
+}
+function panoUp() {
+  if (panoDrag) { panoDrag.box.classList.remove('grab'); panoDrag = null; }
+}
+var panoPos = 0;
+function pickRoom(el) {
+  el.parentElement.querySelectorAll('span').forEach(function (s) { s.classList.remove('on'); });
+  el.classList.add('on');
+  var bg = document.getElementById('panoBox').querySelector('.bg');
+  var tone = { '卫生间': '#5A6C78', '厨房': '#6B7280', '客厅': '#4E6070' }[el.textContent.trim()] || '#5A6C78';
+  bg.style.background = 'linear-gradient(180deg,' + tone + ' 0%,#7C8D98 42%,#66757F 43%,#414F59 100%)';
+  panoPos = 0; bg.style.transform = 'translateX(0)';
+}
+
+</script>
+</body>
+</html>

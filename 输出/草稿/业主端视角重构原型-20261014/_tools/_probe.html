@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0}pre{font:11px monospace;padding:8px;white-space:pre-wrap}</style></head>
+<body><pre id="out">…</pre>
+<iframe id="f" src="index.html#s-accept" style="width:390px;height:844px;border:0"></iframe>
+<script>
+document.getElementById('f').onload=function(){setTimeout(function(){
+var w=document.getElementById('f').contentWindow,d=w.document,o=[];
+var sheet=d.getElementById('s-accept');
+o.push('sheet class="'+sheet.className+'" display='+w.getComputedStyle(sheet).display);
+o.push('sheet bg='+w.getComputedStyle(sheet).backgroundColor);
+var bd=sheet.querySelector('.sheet-bd');
+o.push('sheet-bd bg='+w.getComputedStyle(bd).backgroundColor+' scrollH='+bd.scrollHeight);
+var hd=sheet.querySelector('.sheet-hd');
+o.push('sheet-hd h='+hd.getBoundingClientRect().height+' bg='+w.getComputedStyle(hd).backgroundColor);
+[[195,10],[195,60],[195,110],[195,150],[195,200],[195,300],[195,420]].forEach(function(p){
+  var el=d.elementFromPoint(p[0],p[1]);
+  var chain=[],e=el;
+  while(e&&e!==d.documentElement){chain.push((e.className&&e.className.toString().slice(0,22)||e.tagName));e=e.parentElement}
+  o.push('pt('+p[0]+','+p[1]+') -> '+chain.slice(0,3).join(' < '));
+});
+document.getElementById('out').textContent=o.join('\n');
+},700)};
+</script></body></html>

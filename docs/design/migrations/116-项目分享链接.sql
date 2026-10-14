@@ -30,11 +30,26 @@ CREATE TABLE IF NOT EXISTS cust_project_share_link (
   create_minute INTEGER      NULL,
   create_second INTEGER      NULL,
   create_week   TINYINT      NULL,
+  update_date_time BIGINT    NULL,
+  update_time   INTEGER      NULL,
+  update_date   INTEGER      NULL,
+  update_year   INTEGER      NULL,
+  update_month  INTEGER      NULL,
+  update_day    INTEGER      NULL,
+  update_hour   INTEGER      NULL,
+  update_minute INTEGER      NULL,
+  update_second INTEGER      NULL,
+  update_week   TINYINT      NULL,
   PRIMARY KEY (share_id),
   UNIQUE KEY uk_share_link_token (token),
   KEY idx_share_link_company_project (com_id, project_id),
   KEY idx_share_link_company_status_expire (com_id, status, expire_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 2026-10-15 事故修复：本表实体继承 AuditModel，**必须同时具备 create_* 与 update_* 两组审计列**。
+-- 初版漏建 10 个 update_* 列，导致生产 ddl-auto=validate 报
+-- 「Schema-validation: missing column [update_date] in table [cust_project_share_link]」而启动失败（重启循环）。
+-- 已在生产用 ALTER TABLE 补齐；本文件同步修正，避免新环境重演。
 
 -- 回滚：
 -- DROP TABLE IF EXISTS cust_project_share_link;

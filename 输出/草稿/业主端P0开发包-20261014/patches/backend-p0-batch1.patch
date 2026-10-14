@@ -1,0 +1,334 @@
+diff --git a/scripts/build-release.sh b/scripts/build-release.sh
+index cca9934..7252399 100755
+--- a/scripts/build-release.sh
++++ b/scripts/build-release.sh
+@@ -53,8 +53,10 @@ cp docs/design/migrations/23-微信支付配置.md "$RELEASE_DIR/"
+ #   108 模版区域参考实测值 / 109 量房原始区域与方案区域来源）。
+ # 2026-10-13 上调：发布包覆盖 24-110（新增 110 门店启用/停用与排序 = P0D-04，DDL）。
+ # 2026-10-14 上调：发布包覆盖 24-111（新增 111 阶段状态补充本项不涉及 = GAP-054，DDL）。
++# 2026-10-14 上调：发布包覆盖 24-112（新增 112 报价接受登记人 = DEC-071，DDL）。
++# 2026-10-14 上调：发布包覆盖 24-113（新增 113 企业品牌与署名配置 = USER-DECISION-20261014-002，DDL）。
+ MIGRATION_START=24
+-MIGRATION_END=111
++MIGRATION_END=113
+ # 已知历史同号迁移：内容不同、早已应用且被文档引用，保持原编号不改名。
+ # 新增迁移若与既有编号重复，必须立刻改名，不得加入本清单；否则下列守卫会直接终止构建。
+ KNOWN_SHARED_NUMBERS="24 25"
+diff --git a/src/main/java/com/th4/edge/decoboon/customer/context/CustomerJourneyContext.java b/src/main/java/com/th4/edge/decoboon/customer/context/CustomerJourneyContext.java
+index 6c833f3..61b1020 100644
+--- a/src/main/java/com/th4/edge/decoboon/customer/context/CustomerJourneyContext.java
++++ b/src/main/java/com/th4/edge/decoboon/customer/context/CustomerJourneyContext.java
+@@ -161,6 +161,16 @@ public class CustomerJourneyContext {
+         journey.setCurrentStageName(currentStageName(stages));
+         journey.setPropertyAddress(project.getProperty().getAddress());
+         journey.setAsOf(LocalDateTime.now());
++        // 服务方品牌：叙事主体归装企；平台署名受企业配置控制（ANS-BIZ-20261010-004 §8、USER-DECISION-20261014-002）
++        com.th4.edge.tenant.user.model.Company company = project.getCompany();
++        if (company != null) {
++            CustomerJourney.Vendor vendor = new CustomerJourney.Vendor();
++            vendor.setName(company.getTitle() == null ? company.getName() : company.getTitle());
++            vendor.setLogo(company.getLogo());
++            vendor.setColor(company.getColor());
++            vendor.setCustodianCredit(company.getSetting() != null && Boolean.TRUE.equals(company.getSetting().getCustodianCredit()));
++            journey.setVendor(vendor);
++        }
+         journey.setSections(List.of(
+                 measureSection(measures),
+                 designSection(designs),
+diff --git a/src/main/java/com/th4/edge/decoboon/customer/model/CustomerJourney.java b/src/main/java/com/th4/edge/decoboon/customer/model/CustomerJourney.java
+index 76f3b65..0171695 100644
+--- a/src/main/java/com/th4/edge/decoboon/customer/model/CustomerJourney.java
++++ b/src/main/java/com/th4/edge/decoboon/customer/model/CustomerJourney.java
+@@ -23,6 +23,7 @@ public class CustomerJourney {
+     @Note("待业主操作") private List<Action> actions = new ArrayList<>();
+     @Note("未关闭反馈数") private Integer openFeedbackCount = 0;
+     @Note("待办数量") private Integer pendingActionCount = 0;
++    @Note("服务方（装企品牌与署名配置）") private Vendor vendor = new Vendor();
+ 
+     public Long getProjectId() { return projectId; }
+     public void setProjectId(Long projectId) { this.projectId = projectId; }
+@@ -48,6 +49,8 @@ public class CustomerJourney {
+     public void setActions(List<Action> actions) { this.actions = actions; }
+     public Integer getOpenFeedbackCount() { return openFeedbackCount; }
+     public void setOpenFeedbackCount(Integer openFeedbackCount) { this.openFeedbackCount = openFeedbackCount; }
++    public Vendor getVendor() { return vendor; }
++    public void setVendor(Vendor vendor) { this.vendor = vendor; }
+     public Integer getPendingActionCount() { return pendingActionCount; }
+     public void setPendingActionCount(Integer pendingActionCount) { this.pendingActionCount = pendingActionCount; }
+ 
+@@ -155,6 +158,24 @@ public class CustomerJourney {
+     }
+ 
+     /** 待操作的业务动作。 */
++    /** 服务方品牌投影。叙事主体归装企（ANS-BIZ-20261010-004 §4）。 */
++    public static class Vendor {
++        @Note("企业名称") private String name;
++        @Note("企业Logo") private String logo;
++        @Note("品牌色") private String color;
++        @Note("是否显示「记录存证与保管 · 装得清」署名，默认关闭") private Boolean custodianCredit = false;
++
++        public Vendor() {}
++        public String getName() { return name; }
++        public void setName(String name) { this.name = name; }
++        public String getLogo() { return logo; }
++        public void setLogo(String logo) { this.logo = logo; }
++        public String getColor() { return color; }
++        public void setColor(String color) { this.color = color; }
++        public Boolean getCustodianCredit() { return custodianCredit; }
++        public void setCustodianCredit(Boolean custodianCredit) { this.custodianCredit = custodianCredit; }
++    }
++
+     public static class Action {
+         private String key;
+         private String type;
+diff --git a/src/main/java/com/th4/edge/decoboon/quote/context/QuoteContext.java b/src/main/java/com/th4/edge/decoboon/quote/context/QuoteContext.java
+index ffc450f..be89abf 100644
+--- a/src/main/java/com/th4/edge/decoboon/quote/context/QuoteContext.java
++++ b/src/main/java/com/th4/edge/decoboon/quote/context/QuoteContext.java
+@@ -248,7 +248,7 @@ public class QuoteContext {
+ 
+     @DistributedLocked(key = "#root.acceptLockKey(#quoteId)")
+     @Transactional
+-    public Quote accept(Long quoteId) {
++    public Quote accept(Long quoteId, Employee operator) {
+         Quote quote = requireQuote(quoteId);
+         if (!QuoteStatus.Submitted.equals(quote.getStatus())) {
+             throw new DefinedException(new DefaultErrorCode("400", "只有已提交报价可以接受"));
+@@ -265,6 +265,8 @@ public class QuoteContext {
+         quote.setCustomer(customer);
+         quote.setStatus(QuoteStatus.Accepted);
+         quote.setAcceptedAt(java.time.LocalDateTime.now());
++        // DEC-071：仅记录置位操作人，不新增门禁校验、不要求来源与证据
++        quote.setAcceptedBy(operator);
+         customer.setStatus(CustStatus.Quoted);
+         customerRepository.save(customer);
+         Quote accepted = quoteRepository.save(quote);
+diff --git a/src/main/java/com/th4/edge/decoboon/quote/model/Quote.java b/src/main/java/com/th4/edge/decoboon/quote/model/Quote.java
+index ce7c6a5..a959900 100644
+--- a/src/main/java/com/th4/edge/decoboon/quote/model/Quote.java
++++ b/src/main/java/com/th4/edge/decoboon/quote/model/Quote.java
+@@ -194,6 +194,11 @@ public class Quote extends AuditModel {
+     @Note("客户接受时间")
+     private LocalDateTime acceptedAt;
+ 
++    @Note("接受登记人")
++    @ManyToOne(fetch = FetchType.LAZY)
++    @JoinColumn(name = "accepted_by")
++    private Employee acceptedBy;
++
+     @Note("转项目时间")
+     private LocalDateTime convertedAt;
+ 
+@@ -279,6 +284,8 @@ public Long getQuoteId() { return quoteId; }
+     public void setRejectedAt(LocalDateTime rejectedAt) { this.rejectedAt = rejectedAt; }
+     public LocalDateTime getAcceptedAt() { return acceptedAt; }
+     public void setAcceptedAt(LocalDateTime acceptedAt) { this.acceptedAt = acceptedAt; }
++    public Employee getAcceptedBy() { return acceptedBy; }
++    public void setAcceptedBy(Employee acceptedBy) { this.acceptedBy = acceptedBy; }
+     public LocalDateTime getConvertedAt() { return convertedAt; }
+     public void setConvertedAt(LocalDateTime convertedAt) { this.convertedAt = convertedAt; }
+     public List<QuoteLine> getItems() { return items; }
+diff --git a/src/main/java/com/th4/edge/decoboon/quote/service/quotes/update/support/Update.java b/src/main/java/com/th4/edge/decoboon/quote/service/quotes/update/support/Update.java
+index e232f16..88c4d71 100644
+--- a/src/main/java/com/th4/edge/decoboon/quote/service/quotes/update/support/Update.java
++++ b/src/main/java/com/th4/edge/decoboon/quote/service/quotes/update/support/Update.java
+@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
+         @AllowProperties(model = Quote.class,
+                 properties = {"quoteId", "no", "title", "mode", "version", "status", "area", "subtotal", "discount",
+                         "taxRate", "taxAmount", "amount", "designFee", "managementFee", "submittedAt", "rejectedAt",
+-                        "acceptedAt", "convertedAt", "updateTime", "property"}),
++                        "acceptedAt", "acceptedBy", "convertedAt", "updateTime", "property"}),
+         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
+                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
+                         "area", "layout", "status", "salesman", "designer"}),
+@@ -76,7 +76,7 @@ public class Update implements com.th4.edge.decoboon.quote.service.quotes.update
+         }
+         return switch (status) {
+             case Submitted -> quoteContext.submit(quoteId);
+-            case Accepted -> quoteContext.accept(quoteId);
++            case Accepted -> quoteContext.accept(quoteId, current);
+             case Rejected -> quoteContext.reject(quoteId);
+             case Converted -> throw new DefinedException(new DefaultErrorCode("400", "请通过合同签署并生效生成项目，不能直接转换报价"));
+             case Draft -> quote;
+diff --git a/src/main/java/com/th4/edge/tenant/user/model/Setting.java b/src/main/java/com/th4/edge/tenant/user/model/Setting.java
+index c1bc243..5de9952 100644
+--- a/src/main/java/com/th4/edge/tenant/user/model/Setting.java
++++ b/src/main/java/com/th4/edge/tenant/user/model/Setting.java
+@@ -17,6 +17,14 @@ public class Setting {
+     @Column(name = "grade_config", length = 512)
+     private String gradeConfig;
+ 
++    @Note("叙事主品牌：Company=装企（默认）/ Platform=平台")
++    @Column(name = "brand_primary", length = 16)
++    private String brandPrimary = "Company";
++
++    @Note("是否显示「记录存证与保管 · 装得清」署名，默认关闭")
++    @Column(name = "custodian_credit")
++    private Boolean custodianCredit = false;
++
+ 
+     public Boolean getEnableStore() {
+         return enableStore;
+@@ -26,6 +34,22 @@ public class Setting {
+         this.enableStore = enableStore;
+     }
+ 
++    public String getBrandPrimary() {
++        return brandPrimary;
++    }
++
++    public void setBrandPrimary(String brandPrimary) {
++        this.brandPrimary = brandPrimary;
++    }
++
++    public Boolean getCustodianCredit() {
++        return custodianCredit;
++    }
++
++    public void setCustodianCredit(Boolean custodianCredit) {
++        this.custodianCredit = custodianCredit;
++    }
++
+     public String getGradeConfig() {
+         return gradeConfig;
+     }
+diff --git a/src/main/java/com/th4/edge/tenant/user/service/company/company/update/support/Update.java b/src/main/java/com/th4/edge/tenant/user/service/company/company/update/support/Update.java
+index a765764..3121f25 100644
+--- a/src/main/java/com/th4/edge/tenant/user/service/company/company/update/support/Update.java
++++ b/src/main/java/com/th4/edge/tenant/user/service/company/company/update/support/Update.java
+@@ -4,6 +4,7 @@ import com.th4.edge.framework.core.annotation.Note;
+ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+ import com.th4.edge.framework.data.jackson.annotation.Properties;
+ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
++import com.th4.edge.tenant.user.model.Setting;
+ import com.th4.edge.framework.provider.security.annotation.User;
+ import com.th4.edge.framework.provider.validation.annotation.Length;
+ import com.th4.edge.tenant.user.context.TenantContext;
+@@ -24,6 +25,8 @@ public class Update implements com.th4.edge.tenant.user.service.company.company.
+     @AutoInject @Length(max = 256) private String logo;
+     @AutoInject @Length(max = 12) private String color;
+     @AutoInject @Length(max = 256) private String addr;
++    /** 品牌与署名配置（字段级合并，不整体覆盖既有 enableStore / gradeConfig）。 */
++    @AutoInject private Setting setting;
+     private final TenantContext tenantContext;
+     private final CompanyRepository companyRepository;
+     public Update(TenantContext tenantContext, CompanyRepository companyRepository) { this.tenantContext = tenantContext; this.companyRepository = companyRepository; }
+@@ -36,6 +39,19 @@ public class Update implements com.th4.edge.tenant.user.service.company.company.
+         if (logo != null) company.setLogo(logo);
+         if (color != null) company.setColor(color);
+         if (addr != null) company.setAddr(addr);
++        if (setting != null) {
++            Setting target = company.getSetting() == null ? new Setting() : company.getSetting();
++            if (setting.getBrandPrimary() != null) {
++                String brandPrimary = setting.getBrandPrimary().trim();
++                if (!"Company".equals(brandPrimary) && !"Platform".equals(brandPrimary)) {
++                    throw new com.th4.edge.framework.exception.DefinedException(
++                            new com.th4.edge.framework.exception.DefaultErrorCode("400", "brandPrimary 只允许 Company 或 Platform"));
++                }
++                target.setBrandPrimary(brandPrimary);
++            }
++            if (setting.getCustodianCredit() != null) target.setCustodianCredit(setting.getCustodianCredit());
++            company.setSetting(target);
++        }
+         return companyRepository.save(company);
+     }
+ }
+diff --git a/src/test/java/com/th4/edge/decoboon/DecoboonClosedLoopTest.java b/src/test/java/com/th4/edge/decoboon/DecoboonClosedLoopTest.java
+index 39fd0ea..aa50014 100644
+--- a/src/test/java/com/th4/edge/decoboon/DecoboonClosedLoopTest.java
++++ b/src/test/java/com/th4/edge/decoboon/DecoboonClosedLoopTest.java
+@@ -195,7 +195,7 @@ class DecoboonClosedLoopTest {
+         assertThat(quoteItemRepository.findByQuote(quote)).isNotEmpty();
+ 
+         quoteContext.submit(quote.getQuoteId());
+-        quoteContext.accept(quote.getQuoteId());
++        quoteContext.accept(quote.getQuoteId(), null);
+         assertThat(customer.getStatus()).isEqualTo(CustStatus.Quoted);
+         BigDecimal finalSignedAmount = quote.getAmount().subtract(new BigDecimal("1000.00"));
+         ProjectContract contract = projectContractContext.createFromQuote(
+diff --git a/src/test/java/com/th4/edge/decoboon/design/DesignLifecycleClosureTest.java b/src/test/java/com/th4/edge/decoboon/design/DesignLifecycleClosureTest.java
+index 0854471..ec4ea96 100644
+--- a/src/test/java/com/th4/edge/decoboon/design/DesignLifecycleClosureTest.java
++++ b/src/test/java/com/th4/edge/decoboon/design/DesignLifecycleClosureTest.java
+@@ -208,7 +208,7 @@ class DesignLifecycleClosureTest {
+         quoteContext.submit(quote.getQuoteId());
+         assertThat(reload(design).getStatus()).isEqualTo(DesignStatus.Ready);
+ 
+-        quoteContext.accept(quote.getQuoteId());
++        quoteContext.accept(quote.getQuoteId(), null);
+         assertThat(reload(design).getStatus())
+                 .as("客户接受报价后设计方案必须进入客户选中")
+                 .isEqualTo(DesignStatus.Selected);
+diff --git a/src/test/java/com/th4/edge/decoboon/trade/quote/QuoteContextBusinessRulesTest.java b/src/test/java/com/th4/edge/decoboon/trade/quote/QuoteContextBusinessRulesTest.java
+index 14f7026..051996d 100644
+--- a/src/test/java/com/th4/edge/decoboon/trade/quote/QuoteContextBusinessRulesTest.java
++++ b/src/test/java/com/th4/edge/decoboon/trade/quote/QuoteContextBusinessRulesTest.java
+@@ -152,9 +152,67 @@ class QuoteContextBusinessRulesTest {
+         when(quoteRepository.findByProperty_PropertyIdOrderByQuoteIdDesc(3L)).thenReturn(List.of());
+         when(quoteRepository.save(any(Quote.class))).thenAnswer(invocation -> invocation.getArgument(0));
+ 
+-        context.accept(4L);
++        context.accept(4L, null);
+ 
+         verify(designLifecycleContext).markSelected(design);
+         assertThat(quote.getStatus()).isEqualTo(QuoteStatus.Accepted);
+     }
++
++    /**
++     * DEC-071：报价接受不要求客户本人产生，由员工在既有报价上直接置 Accepted；
++     * 系统仅记录置位操作人，不要求来源标记与签认证据。
++     */
++    @Test
++    void acceptingQuoteMustRecordAcceptedByOperator() {
++        Company company = new Company();
++        company.setComId(1L);
++        Customer customer = new Customer();
++        customer.setCustId(2L);
++        customer.setCompany(company);
++        Property property = new Property();
++        property.setPropertyId(3L);
++        property.setCompany(company);
++        property.setCustomer(customer);
++        Design design = new Design();
++        design.setDesignId(7L);
++        design.setStatus(DesignStatus.Ready);
++        Quote quote = new Quote();
++        quote.setQuoteId(4L);
++        quote.setStatus(QuoteStatus.Submitted);
++        quote.setCompany(company);
++        quote.setCustomer(customer);
++        quote.setProperty(property);
++        quote.setDesign(design);
++        Employee designer = new Employee();
++        designer.setEmpId(9L);
++        designer.setName("徐勇");
++
++        when(quoteRepository.findById(4L)).thenReturn(Optional.of(quote));
++        when(propertyRepository.findByPropertyIdAndCompany_ComId(3L, 1L)).thenReturn(Optional.of(property));
++        when(customerRepository.findByCustIdAndCompany_ComId(2L, 1L)).thenReturn(Optional.of(customer));
++        when(quoteRepository.findByProperty_PropertyIdOrderByQuoteIdDesc(3L)).thenReturn(List.of());
++        when(quoteRepository.save(any(Quote.class))).thenAnswer(invocation -> invocation.getArgument(0));
++
++        context.accept(4L, designer);
++
++        assertThat(quote.getAcceptedBy()).as("必须记录置位操作人").isSameAs(designer);
++        assertThat(quote.getAcceptedAt()).as("必须记录接受时间").isNotNull();
++    }
++
++    /** 重复置位不覆盖首次操作人（幂等由状态机保证：Accepted 后不再进入 accept）。 */
++    @Test
++    void acceptingAlreadyAcceptedQuoteMustBeRejected() {
++        Company company = new Company();
++        company.setComId(1L);
++        Quote quote = new Quote();
++        quote.setQuoteId(4L);
++        quote.setStatus(QuoteStatus.Accepted);
++        quote.setCompany(company);
++
++        when(quoteRepository.findById(4L)).thenReturn(Optional.of(quote));
++
++        assertThatThrownBy(() -> context.accept(4L, null))
++                .isInstanceOf(DefinedException.class)
++                .hasMessageContaining("只有已提交报价可以接受");
++    }
+ }

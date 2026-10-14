@@ -1,0 +1,22 @@
+
+/* ---------- 服务方知情：企业抬头与企业信息页 ---------- */
+.vmark{width:19px;height:19px;border-radius:6px;flex:0 0 19px;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:10px;font-weight:700;
+  background:linear-gradient(150deg,#1E3A5F,#2A4E7C);letter-spacing:0}
+.secttl .vname{font-size:14.5px;font-weight:700}
+.secttl .vsub{font-size:11px;color:var(--t3);font-weight:500;margin-left:2px}
+.co-hero{padding:22px 20px 24px;color:#fff;
+  background:linear-gradient(150deg,#1E3A5F 0%,#2A4E7C 60%,#33598C 100%)}
+.co-hero .lg{width:56px;height:56px;border-radius:15px;background:rgba(255,255,255,.17);
+  border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700}
+.co-hero .nm{font-size:20px;font-weight:700;margin-top:13px}
+.co-hero .sl{font-size:12px;opacity:.88;margin-top:7px;line-height:1.65}
+.co-hero .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.co-hero .tags span{height:22px;padding:0 9px;border-radius:11px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.22);font-size:10.5px;display:flex;align-items:center}
+.co-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;
+  border-bottom:1px solid var(--line)}
+.co-row:last-child{border-bottom:none}
+.co-row .k{font-size:12.5px;color:var(--t3)}
+.co-row .v{font-size:12.5px;font-weight:600;text-align:right;max-width:62%}

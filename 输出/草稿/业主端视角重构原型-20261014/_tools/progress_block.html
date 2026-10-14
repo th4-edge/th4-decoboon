@@ -1,0 +1,65 @@
+      <!-- ================= 进度 ================= -->
+      <div class="page" id="p-progress">
+        <div class="secttl" style="padding-top:18px"><span class="bar"></span>8 个施工阶段</div>
+        <div class="legend">
+          <span><i style="background:var(--st-done)"></i>已完成</span>
+          <span><i style="background:var(--st-doing)"></i>进行中</span>
+          <span><i style="background:var(--st-pending)"></i>等你确认</span>
+          <span><i style="background:var(--st-idle)"></i>未开始</span>
+        </div>
+        <div class="card">
+          <div class="tl">
+            <div class="tl-item"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <div class="tl-body"><div class="tl-day">1 · 开工交底 <span class="w">10-08 完成</span></div><div class="tl-what">现场交底、成品保护、施工许可</div><div class="tl-who">项目经理 张伟 · 与计划一致</div></div></div>
+            <div class="tl-item"><div class="tl-dot done"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <div class="tl-body"><div class="tl-day">2 · 拆除改造 <span class="w">10-10 完成</span></div><div class="tl-what">墙体拆除、垃圾清运、遗留空鼓返工</div><div class="tl-who">李国强 · 曾延期 1 天，已补齐</div></div></div>
+            <div class="tl-item"><div class="tl-dot pending"></div>
+              <div class="tl-body"><div class="tl-day">3 · 水电改造 <span class="tag pending" style="margin-left:6px">等你确认</span></div>
+                <div class="tl-what">强弱电布线、给排水改造、打压试验</div>
+                <div class="tl-who">王建国 · 10-14 完工，<b style="color:var(--success)">比计划提前 1 天</b></div>
+                <div class="btn ghost sm2" style="margin-top:9px;display:inline-flex" onclick="openSheet('s-accept')">查看 6 项验收点</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">4 · 防水工程 <span class="w">计划 10-17 ~ 10-20</span></div><div class="tl-what">卫生间防水、闭水试验</div><div class="tl-who">张卫东 · 防水材料 10-16 到场（原计划 10-15，晚 1 天）</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">5 · 泥瓦工程 <span class="w">计划 10-21 ~ 11-05</span></div><div class="tl-what">墙地砖铺贴、地面找平</div><div class="tl-who">李国强</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">6 · 木作工程 <span class="w">计划 11-06 ~ 11-20</span></div><div class="tl-what">吊顶、柜体定制、门套</div><div class="tl-who">木工班</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">7 · 油漆涂装 <span class="w">计划 11-21 ~ 12-05</span></div><div class="tl-what">墙面腻子、底漆、面漆</div><div class="tl-who">油漆班</div></div></div>
+            <div class="tl-item"><div class="tl-dot idle"></div>
+              <div class="tl-body"><div class="tl-day">8 · 安装收尾 <span class="w">计划 12-06 ~ 12-19</span></div><div class="tl-what">洁具、开关插座、灯具、保洁交付</div><div class="tl-who">张伟</div></div></div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.75">
+            <b>进度是怎么算的？</b><br>按已完成的阶段数计算，不是按天数。<br>每个阶段完成后，你确认了才算真正完成。
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>现场记录<span class="more">共 26 张照片</span></div>
+        <div class="card">
+          <div class="gallery" style="flex-wrap:wrap;gap:10px">
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p1" style="height:120px;width:100%"><span class="pt">今天</span><span class="pl">强弱电布线</span></div><div class="cap">水电改造 · 王建国</div></div>
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p5" style="height:120px;width:100%"><span class="pl">给水管打压</span></div><div class="cap">水电改造 · 王建国</div></div>
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p2" style="height:120px;width:100%"><span class="pl">线盒加盖</span></div><div class="cap">10-13 · 王建国</div></div>
+            <div class="shot" style="flex:0 0 calc(50% - 5px)"><div class="photo p3" style="height:120px;width:100%"><span class="pl">拆改完成</span></div><div class="cap">10-10 · 张伟</div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.7">每张照片都记录了日期、阶段和拍摄人，可以作为施工过程的凭证。</div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>整改记录</div>
+        <div class="card warn">
+          <div class="between">
+            <div>
+              <div class="strong" style="font-size:14px">客卫墙面空鼓 · 已返工</div>
+              <div class="tiny muted" style="margin-top:3px">责任人 李国强（泥瓦）· 承诺 10-14 完成</div>
+            </div>
+            <span class="tag done">待复验</span>
+          </div>
+          <div class="tiny" style="color:var(--t2);margin-top:10px;line-height:1.7">10-10 你提出的问题，已于今天完成返工。请你现场看一下，确认没问题我才会进入下一道工序。</div>
+          <div class="btn primary" style="height:40px;font-size:14px;margin-top:12px" onclick="toast('已确认复验通过，进入下一道工序')">我去复验</div>
+        </div>
+        <div class="pad-b"></div>
+      </div>

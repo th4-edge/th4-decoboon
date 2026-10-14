@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0}pre{font:12px monospace;padding:8px;white-space:pre-wrap}</style></head>
+<body><pre id="out">…</pre>
+<iframe id="f" src="index.html" style="width:430px;height:940px;border:0"></iframe>
+<script>
+document.getElementById('f').onload=function(){setTimeout(function(){
+var w=document.getElementById('f').contentWindow,d=w.document,o=[];
+o.push('viewport '+w.innerWidth+'x'+w.innerHeight);
+o.push('body padding '+w.getComputedStyle(d.body).padding);
+var rail=d.querySelector('.rail');o.push('rail display '+w.getComputedStyle(rail).display+' w='+rail.getBoundingClientRect().width);
+var st=d.querySelector('.stage'),ph=d.querySelector('.phone');
+var sr=st.getBoundingClientRect(),pr=ph.getBoundingClientRect();
+o.push('stage left='+sr.left.toFixed(1)+' w='+sr.width.toFixed(1));
+o.push('phone left='+pr.left.toFixed(1)+' right='+pr.right.toFixed(1)+' w='+pr.width.toFixed(1));
+var vp=d.querySelector('.viewport').getBoundingClientRect();
+o.push('viewport left='+vp.left.toFixed(1)+' right='+vp.right.toFixed(1));
+document.getElementById('out').textContent=o.join('\n');
+},600)};
+</script></body></html>

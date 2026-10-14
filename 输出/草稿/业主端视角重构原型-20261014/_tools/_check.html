@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0}pre{font:11px monospace;padding:6px;white-space:pre-wrap}</style></head>
+<body><pre id="out">…</pre>
+<iframe id="f" src="../index.html" style="width:430px;height:940px;border:0"></iframe>
+<script>
+var logs=[];window.addEventListener('error',function(e){logs.push('ERR '+e.message)});
+document.getElementById('f').onload=function(){setTimeout(function(){
+var w=document.getElementById('f').contentWindow,d=w.document,o=[];
+var pr=d.querySelector('.phone').getBoundingClientRect();
+['p-home','p-progress','p-story','p-money','p-profile','p-visit','p-confirm'].forEach(function(id){
+  var pg=d.getElementById(id); if(!pg){o.push(id+' MISSING');return}
+  pg.classList.add('active'); w.go(id);
+  var over=0; pg.querySelectorAll('*').forEach(function(el){var r=el.getBoundingClientRect();
+    if(r.width>0&&r.right>pr.right+.6&&!el.closest('.gallery')&&!el.closest('.st-photos')&&!el.closest('.people')&&!el.closest('.daily')&&!el.closest('.pano'))over++});
+  o.push(id.padEnd(11)+' scrollH='+String(pg.scrollHeight).padEnd(5)+' 溢出='+over+' tabbar='+(d.querySelector('.tabbar').style.display||'flex'));
+  pg.classList.remove('active');
+});
+w.go('p-home');
+o.push('要我做条数='+d.querySelectorAll('#p-home .todo').length);
+o.push('进度页每日现场='+d.querySelectorAll('#p-progress .dcard').length+' 张');
+o.push('确认记录条目='+d.querySelectorAll('#p-confirm .cf').length);
+w.openSheet('s-checklist'); o.push('自查表: chk项='+d.querySelectorAll('#s-checklist .ck').length+' 组='+d.querySelectorAll('#s-checklist .grp').length); w.closeSheet('s-checklist');
+w.openSheet('s-arrival'); o.push('到场确认: 对比行='+d.querySelectorAll('#s-arrival .cmp .r').length+' 倒计时='+d.querySelectorAll('#s-arrival .cd').length); w.closeSheet('s-arrival');
+w.openSheet('s-pano'); o.push('全景: 房间标签='+d.querySelectorAll('#s-pano .rooms span').length+' 拖动区='+d.querySelectorAll('#s-pano .pano').length); w.closeSheet('s-pano');
+w.openSheet('s-complaint'); o.push('投诉: 对象='+d.querySelectorAll('#s-complaint .opt').length+' 表单='+(d.getElementById('cpText')?'有':'无')); w.closeSheet('s-complaint');
+o.push('jsErrors='+logs.length+(logs.length?': '+logs.join('; '):''));
+document.getElementById('out').textContent=o.join('\n');
+},900)};
+</script></body></html>

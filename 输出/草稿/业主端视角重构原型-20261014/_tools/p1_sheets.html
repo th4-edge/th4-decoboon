@@ -1,0 +1,218 @@
+    <!-- ========== ① 漏项自查表 ========== -->
+    <div class="sheet" id="s-checklist">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-checklist')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">开工前漏项自查</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>滨湖云谷 89㎡ 三室两厅</b> · 行业常见项 v2026.1<br>
+            这些是这类户型最容易漏掉的项目，<b>不是你的报价内容</b>。你可以拿着报价单一项项对。
+          </div>
+        </div>
+
+        <div style="padding:0 16px">
+          <div class="grp">水电</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">强电箱移位</div><div class="ds">原始位置不方便时常被漏</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">弱电箱扩容</div><div class="ds">光纤、路由器、电视分配</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no on" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">等电位联结</div><div class="ds">卫生间安全必备，报价里常被省略</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure on" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+          <div class="grp">泥瓦</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">地面找平</div><div class="ds">铺木地板前几乎必做，很多人签合同时没注意</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure on" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">美缝</div><div class="ds">通常不含在贴砖里，后期单独收费</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no on" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">过门石 / 挡水条</div><div class="ds">卫生间与厨房门口</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+          <div class="grp">木作与安装</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">门窗套 / 包管</div><div class="ds">常见漏项，后期单算</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure on" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">开关插座面板</div><div class="ds">数量是否按实际点位算</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+          <div class="grp">主材</div>
+          <div class="card" style="margin:0 0 4px">
+            <div class="ck"><div><div class="nm">五金件（铰链 / 滑轨 / 拉手）</div><div class="ds">品牌与等级差异很大</div>
+              <div class="ops"><span class="yes on" onclick="pick(this)">我家有</span><span class="no" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+            <div class="ck"><div><div class="nm">灯具与浴霸</div><div class="ds">是否含安装</div>
+              <div class="ops"><span class="yes" onclick="pick(this)">我家有</span><span class="no on" onclick="pick(this)">没有</span><span class="unsure" onclick="pick(this)">不确定</span></div></div></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin:14px 16px 0;background:#FFF8F0;box-shadow:none;border:1px solid rgba(230,126,34,.18)">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>这份清单只作提醒。</b><br>
+            它<b>不会自动加进你的报价</b>，也不作为减少项目的依据。要不要调整，由你和设计师当面确认。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn plain" style="flex:0 0 118px" onclick="toast('已生成要问设计师的问题清单')">问设计师</div>
+        <div class="btn primary grow" onclick="submitChecklist()">对完了，记下来</div>
+      </div>
+    </div>
+
+    <!-- ========== ③ 材料到场确认 ========== -->
+    <div class="sheet" id="s-arrival">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-arrival')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">材料到场确认</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px">
+          <div class="between">
+            <div><div class="strong" style="font-size:15px">客厅地砖</div>
+              <div class="tiny muted" style="margin-top:3px">蒙娜丽莎 750×1500 · 42 片</div></div>
+            <span class="cd"><svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5l3 1.8"/></svg>还剩 18 小时</span>
+          </div>
+          <div class="cmp">
+            <div class="h"><div>项目</div><div>你选的</div><div>现场到的</div></div>
+            <div class="r"><div class="k">品牌</div><div class="v">蒙娜丽莎</div><div class="v">蒙娜丽莎</div></div>
+            <div class="r"><div class="k">型号</div><div class="v">750×1500</div><div class="v">750×1500</div></div>
+            <div class="r"><div class="k">色号</div><div class="v">云灰</div><div class="v">云灰</div></div>
+            <div class="r"><div class="k">批次</div><div class="v">—</div><div class="v">B20261014</div></div>
+          </div>
+          <div class="row" style="margin-top:12px;gap:8px">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+            <span class="sm strong" style="color:var(--success)">与你选的完全一致</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>现场照片<span class="more">自然光 · 未加滤镜</span></div>
+        <div class="card">
+          <div class="gallery" style="gap:9px">
+            <div class="shot" style="flex:0 0 140px"><div class="photo p3" style="height:110px;width:140px"><span class="pt">未加滤镜</span><span class="pl">外包装</span></div></div>
+            <div class="shot" style="flex:0 0 140px"><div class="photo p4" style="height:110px;width:140px"><span class="pt">未加滤镜</span><span class="pl">开箱验色</span></div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.7">拍摄于 10-15 10:20 · 材料员 陈斌</div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>这两件事要分清：</b><br>
+            确认到场材料 = 确认<b>是不是你选的那一款</b>；<br>
+            它<b>不等于质量验收</b>，质量问题另有验收流程。<br><br>
+            如果 18 小时内没有确认，将由项目经理现场核对后放行，并留下记录。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn plain grow" onclick="confirmArrival(false)">不是我选的</div>
+        <div class="btn primary grow" onclick="confirmArrival(true)">确认一致</div>
+      </div>
+    </div>
+
+    <!-- ========== ⑤ 360 全景隐蔽工程 ========== -->
+    <div class="sheet" id="s-pano">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-pano')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">隐蔽工程 · 全景</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px">
+          <div class="pano" id="panoBox"
+               onmousedown="panoDown(event)" onmousemove="panoMove(event)" onmouseup="panoUp()" onmouseleave="panoUp()"
+               ontouchstart="panoDown(event)" ontouchmove="panoMove(event)" ontouchend="panoUp()">
+            <div class="bg"></div>
+            <div class="ov">
+              <div class="tagline"><span>卫生间</span><span>水电改造</span><span>10-14 15:05</span></div>
+              <div class="hint2">
+                <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M9 12h6M7 12H4M20 12h-3"/><path d="M7 8v8M17 8v8"/></svg>
+                按住左右拖动，可以转一圈看
+              </div>
+            </div>
+          </div>
+          <div class="rooms">
+            <span class="on" onclick="pickRoom(this)">卫生间</span>
+            <span onclick="pickRoom(this)">厨房</span>
+            <span onclick="pickRoom(this)">客厅</span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>这张影像什么时候拍的</div>
+        <div class="card">
+          <div class="row between" style="padding:8px 0"><span class="sm muted">拍摄时间</span><span class="sm strong tnum">2026-10-14 15:05</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">拍摄人</span><span class="sm strong">王建国 · 电工</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">阶段</span><span class="sm strong">水电改造（封槽前）</span></div>
+          <div class="divide" style="margin:8px -16px"></div>
+          <div class="row between" style="padding:8px 0"><span class="sm muted">验收条件</span><span class="tag done">已满足</span></div>
+        </div>
+
+        <div class="card" style="background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>为什么要留这一张：</b><br>
+            水电封槽以后就再也看不到了。以后要在墙上打孔挂电视、装晾衣杆、修水管，回来打开这一页就知道墙里管线在哪。<br><br>
+            它记录的是<b>当时的现场事实</b>，不代替质量验收。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="toast('已存入「家档案 · 隐蔽工程」，长期保留')">存进我的家档案</div>
+      </div>
+    </div>
+
+    <!-- ========== ⑥ 一键投诉 ========== -->
+    <div class="sheet" id="s-complaint">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-complaint')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">提出意见或投诉</div>
+      </div>
+      <div class="sheet-bd" id="cpBody">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            提交后会<b>直接送达栖岸装饰负责人</b>，48 小时内必须有回复。<br>
+            超过 48 小时未回复，系统会自动升级并留下记录。
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>投诉对象</div>
+        <div style="padding:0 16px">
+          <div class="opt" onclick="pickComplaint(this)"><i></i>项目经理 张伟</div>
+          <div class="opt" onclick="pickComplaint(this)"><i></i>设计师 徐勇</div>
+          <div class="opt" onclick="pickComplaint(this)"><i></i>施工班组</div>
+          <div class="opt" onclick="pickComplaint(this)"><i></i>栖岸装饰 公司</div>
+        </div>
+
+        <div class="secttl" style="padding-top:6px"><span class="bar"></span>发生了什么</div>
+        <div style="padding:0 16px 6px">
+          <textarea id="cpText" placeholder="例如：约好周二上门，连着两次没来也没提前说。"></textarea>
+        </div>
+        <div style="padding:0 16px">
+          <div class="note">
+            <b>你会看到：</b>处理进度、承诺时限、倒计时。<br>
+            <b>你不会看到：</b>企业内部的处理与考核记录。<br>
+            平台只做记录与保管，不介入企业与你的处理过程。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="submitComplaint()">提交给负责人</div>
+      </div>
+    </div>

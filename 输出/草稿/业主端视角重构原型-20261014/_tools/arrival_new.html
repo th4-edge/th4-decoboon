@@ -1,0 +1,65 @@
+    <!-- ========== ③ 材料到场记录（告知 + 留痕，非确认门禁） ========== -->
+    <div class="sheet" id="s-arrival">
+      <div class="sheet-hd">
+        <div class="back" onclick="closeSheet('s-arrival')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
+          返回
+        </div>
+        <div style="font-size:15.5px;font-weight:600;margin-left:6px">材料到场记录</div>
+      </div>
+      <div class="sheet-bd">
+        <div class="card" style="margin-top:14px;background:var(--primary-lightest);box-shadow:none">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            材料到场后，项目经理会拍照记录，你可以随时回看。<br>
+            <b>不需要你确认</b>，也不会因为没有确认而影响施工。<br>
+            核对是项目经理和材料员的职责。
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="between">
+            <div><div class="strong" style="font-size:15px">客厅地砖</div>
+              <div class="tiny muted" style="margin-top:3px">蒙娜丽莎 750×1500 · 42 片</div></div>
+            <span class="tag done">已到场</span>
+          </div>
+          <div class="cmp">
+            <div class="h"><div>项目</div><div>你选的</div><div>现场到的</div></div>
+            <div class="r"><div class="k">品牌</div><div class="v">蒙娜丽莎</div><div class="v">蒙娜丽莎</div></div>
+            <div class="r"><div class="k">型号</div><div class="v">750×1500</div><div class="v">750×1500</div></div>
+            <div class="r"><div class="k">色号</div><div class="v">云灰</div><div class="v">云灰</div></div>
+            <div class="r"><div class="k">批次</div><div class="v">—</div><div class="v">B20261014</div></div>
+          </div>
+          <div class="row" style="margin-top:12px;gap:8px">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6.5 9.5 17 4 11.5"/></svg>
+            <span class="sm strong" style="color:var(--success)">与你所选一致</span>
+          </div>
+          <div class="divide"></div>
+          <div class="between" style="cursor:pointer" onclick="toast('已记录你的疑问，材料员会当面和你核对')">
+            <span class="sm" style="color:var(--t2)">我发现和选的不一样</span>
+            <span class="chev"></span>
+          </div>
+        </div>
+
+        <div class="secttl"><span class="bar"></span>到场照片<span class="more">自然光 · 未加滤镜</span></div>
+        <div class="card">
+          <div class="gallery" style="gap:9px">
+            <div class="shot" style="flex:0 0 140px"><div class="photo p3" style="height:110px;width:140px"><span class="pt">未加滤镜</span><span class="pl">外包装</span></div></div>
+            <div class="shot" style="flex:0 0 140px"><div class="photo p4" style="height:110px;width:140px"><span class="pt">未加滤镜</span><span class="pl">开箱验色</span></div></div>
+          </div>
+          <div class="divide"></div>
+          <div class="tiny muted" style="line-height:1.7">10-15 10:20 到场 · 材料员 陈斌拍照记录</div>
+        </div>
+
+        <div class="card" style="background:#FFF8F0;box-shadow:none;border:1px solid rgba(230,126,34,.18)">
+          <div class="tiny" style="color:var(--t2);line-height:1.78">
+            <b>这两件事要分清：</b><br>
+            到场记录 = 留个证据，以后能查当时到的是什么；<br>
+            它<b>不等于质量验收</b>，质量问题另有验收流程。
+          </div>
+        </div>
+        <div style="height:18px"></div>
+      </div>
+      <div class="fixedbar">
+        <div class="btn primary grow" onclick="closeSheet('s-arrival')">知道了</div>
+      </div>
+    </div>

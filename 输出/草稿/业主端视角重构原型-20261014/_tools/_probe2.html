@@ -1,0 +1,23 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0}pre{font:11px monospace;padding:8px;white-space:pre-wrap}</style></head>
+<body><pre id="out">…</pre>
+<iframe id="f" src="../index.html#p-story!tall" style="width:560px;height:4360px;border:0"></iframe>
+<script>
+document.getElementById('f').onload=function(){setTimeout(function(){
+var w=document.getElementById('f').contentWindow,d=w.document,o=[];
+o.push('glare display='+w.getComputedStyle(d.querySelector('.glare')).display);
+o.push('phone h='+d.querySelector('.phone').getBoundingClientRect().height);
+o.push('viewport rect h='+d.querySelector('.viewport').getBoundingClientRect().height);
+var pg=d.getElementById('p-story'), r=pg.getBoundingClientRect();
+o.push('p-story rect='+Math.round(r.left)+','+Math.round(r.top)+' '+Math.round(r.width)+'x'+Math.round(r.height)+' scrollH='+pg.scrollHeight);
+o.push('p-story bg='+w.getComputedStyle(pg).backgroundColor+' opacity='+w.getComputedStyle(pg).opacity);
+var rvs=pg.querySelectorAll('.rv');
+o.push('.rv 数='+rvs.length+' 已揭示='+pg.querySelectorAll('.rv.in').length);
+o.push('前 3 个 .rv opacity='+Array.prototype.slice.call(rvs,0,3).map(function(e){return w.getComputedStyle(e).opacity}).join(','));
+[[280,600],[280,2000],[280,4000]].forEach(function(p){
+  var el=d.elementFromPoint(p[0],p[1]); var ch=[],e=el;
+  while(e&&e!==d.documentElement&&ch.length<4){ch.push((e.className&&e.className.toString().slice(0,26))||e.tagName);e=e.parentElement}
+  o.push('pt('+p[0]+','+p[1]+') -> '+ch.join(' < '));
+});
+document.getElementById('out').textContent=o.join('\n');
+},1400)};
+</script></body></html>
