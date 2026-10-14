@@ -4,6 +4,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.tenant.user.model.Setting;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.tenant.user.context.TenantContext;
@@ -24,6 +25,8 @@ public class Update implements com.th4.edge.tenant.user.service.company.company.
     @AutoInject @Length(max = 256) private String logo;
     @AutoInject @Length(max = 12) private String color;
     @AutoInject @Length(max = 256) private String addr;
+    /** 品牌与署名配置（字段级合并，不整体覆盖既有 enableStore / gradeConfig）。 */
+    @AutoInject private Setting setting;
     private final TenantContext tenantContext;
     private final CompanyRepository companyRepository;
     public Update(TenantContext tenantContext, CompanyRepository companyRepository) { this.tenantContext = tenantContext; this.companyRepository = companyRepository; }
@@ -36,6 +39,19 @@ public class Update implements com.th4.edge.tenant.user.service.company.company.
         if (logo != null) company.setLogo(logo);
         if (color != null) company.setColor(color);
         if (addr != null) company.setAddr(addr);
+        if (setting != null) {
+            Setting target = company.getSetting() == null ? new Setting() : company.getSetting();
+            if (setting.getBrandPrimary() != null) {
+                String brandPrimary = setting.getBrandPrimary().trim();
+                if (!"Company".equals(brandPrimary) && !"Platform".equals(brandPrimary)) {
+                    throw new com.th4.edge.framework.exception.DefinedException(
+                            new com.th4.edge.framework.exception.DefaultErrorCode("400", "brandPrimary 只允许 Company 或 Platform"));
+                }
+                target.setBrandPrimary(brandPrimary);
+            }
+            if (setting.getCustodianCredit() != null) target.setCustodianCredit(setting.getCustodianCredit());
+            company.setSetting(target);
+        }
         return companyRepository.save(company);
     }
 }

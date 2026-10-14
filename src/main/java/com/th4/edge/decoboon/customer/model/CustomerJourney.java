@@ -23,6 +23,7 @@ public class CustomerJourney {
     @Note("待业主操作") private List<Action> actions = new ArrayList<>();
     @Note("未关闭反馈数") private Integer openFeedbackCount = 0;
     @Note("待办数量") private Integer pendingActionCount = 0;
+    @Note("服务方（装企品牌与署名配置）") private Vendor vendor = new Vendor();
 
     public Long getProjectId() { return projectId; }
     public void setProjectId(Long projectId) { this.projectId = projectId; }
@@ -48,6 +49,8 @@ public class CustomerJourney {
     public void setActions(List<Action> actions) { this.actions = actions; }
     public Integer getOpenFeedbackCount() { return openFeedbackCount; }
     public void setOpenFeedbackCount(Integer openFeedbackCount) { this.openFeedbackCount = openFeedbackCount; }
+    public Vendor getVendor() { return vendor; }
+    public void setVendor(Vendor vendor) { this.vendor = vendor; }
     public Integer getPendingActionCount() { return pendingActionCount; }
     public void setPendingActionCount(Integer pendingActionCount) { this.pendingActionCount = pendingActionCount; }
 
@@ -155,6 +158,24 @@ public class CustomerJourney {
     }
 
     /** 待操作的业务动作。 */
+    /** 服务方品牌投影。叙事主体归装企（ANS-BIZ-20261010-004 §4）。 */
+    public static class Vendor {
+        @Note("企业名称") private String name;
+        @Note("企业Logo") private String logo;
+        @Note("品牌色") private String color;
+        @Note("是否显示「记录存证与保管 · 装得清」署名，默认关闭") private Boolean custodianCredit = false;
+
+        public Vendor() {}
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        public String getLogo() { return logo; }
+        public void setLogo(String logo) { this.logo = logo; }
+        public String getColor() { return color; }
+        public void setColor(String color) { this.color = color; }
+        public Boolean getCustodianCredit() { return custodianCredit; }
+        public void setCustodianCredit(Boolean custodianCredit) { this.custodianCredit = custodianCredit; }
+    }
+
     public static class Action {
         private String key;
         private String type;

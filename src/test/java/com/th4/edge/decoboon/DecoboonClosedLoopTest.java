@@ -195,7 +195,7 @@ class DecoboonClosedLoopTest {
         assertThat(quoteItemRepository.findByQuote(quote)).isNotEmpty();
 
         quoteContext.submit(quote.getQuoteId());
-        quoteContext.accept(quote.getQuoteId());
+        quoteContext.accept(quote.getQuoteId(), null);
         assertThat(customer.getStatus()).isEqualTo(CustStatus.Quoted);
         BigDecimal finalSignedAmount = quote.getAmount().subtract(new BigDecimal("1000.00"));
         ProjectContract contract = projectContractContext.createFromQuote(

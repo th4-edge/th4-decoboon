@@ -248,7 +248,7 @@ public class QuoteContext {
 
     @DistributedLocked(key = "#root.acceptLockKey(#quoteId)")
     @Transactional
-    public Quote accept(Long quoteId) {
+    public Quote accept(Long quoteId, Employee operator) {
         Quote quote = requireQuote(quoteId);
         if (!QuoteStatus.Submitted.equals(quote.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "只有已提交报价可以接受"));
@@ -265,6 +265,8 @@ public class QuoteContext {
         quote.setCustomer(customer);
         quote.setStatus(QuoteStatus.Accepted);
         quote.setAcceptedAt(java.time.LocalDateTime.now());
+        // DEC-071：仅记录置位操作人，不新增门禁校验、不要求来源与证据
+        quote.setAcceptedBy(operator);
         customer.setStatus(CustStatus.Quoted);
         customerRepository.save(customer);
         Quote accepted = quoteRepository.save(quote);

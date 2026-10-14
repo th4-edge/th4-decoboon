@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "mode", "version", "status", "area", "subtotal", "discount",
                         "taxRate", "taxAmount", "amount", "designFee", "managementFee", "submittedAt", "rejectedAt",
-                        "acceptedAt", "convertedAt", "updateTime", "property"}),
+                        "acceptedAt", "acceptedBy", "convertedAt", "updateTime", "property"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),
@@ -76,7 +76,7 @@ public class Update implements com.th4.edge.decoboon.quote.service.quotes.update
         }
         return switch (status) {
             case Submitted -> quoteContext.submit(quoteId);
-            case Accepted -> quoteContext.accept(quoteId);
+            case Accepted -> quoteContext.accept(quoteId, current);
             case Rejected -> quoteContext.reject(quoteId);
             case Converted -> throw new DefinedException(new DefaultErrorCode("400", "请通过合同签署并生效生成项目，不能直接转换报价"));
             case Draft -> quote;

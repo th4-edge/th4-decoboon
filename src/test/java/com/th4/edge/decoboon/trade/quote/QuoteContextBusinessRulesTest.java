@@ -152,9 +152,67 @@ class QuoteContextBusinessRulesTest {
         when(quoteRepository.findByProperty_PropertyIdOrderByQuoteIdDesc(3L)).thenReturn(List.of());
         when(quoteRepository.save(any(Quote.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        context.accept(4L);
+        context.accept(4L, null);
 
         verify(designLifecycleContext).markSelected(design);
         assertThat(quote.getStatus()).isEqualTo(QuoteStatus.Accepted);
+    }
+
+    /**
+     * DEC-071：报价接受不要求客户本人产生，由员工在既有报价上直接置 Accepted；
+     * 系统仅记录置位操作人，不要求来源标记与签认证据。
+     */
+    @Test
+    void acceptingQuoteMustRecordAcceptedByOperator() {
+        Company company = new Company();
+        company.setComId(1L);
+        Customer customer = new Customer();
+        customer.setCustId(2L);
+        customer.setCompany(company);
+        Property property = new Property();
+        property.setPropertyId(3L);
+        property.setCompany(company);
+        property.setCustomer(customer);
+        Design design = new Design();
+        design.setDesignId(7L);
+        design.setStatus(DesignStatus.Ready);
+        Quote quote = new Quote();
+        quote.setQuoteId(4L);
+        quote.setStatus(QuoteStatus.Submitted);
+        quote.setCompany(company);
+        quote.setCustomer(customer);
+        quote.setProperty(property);
+        quote.setDesign(design);
+        Employee designer = new Employee();
+        designer.setEmpId(9L);
+        designer.setName("徐勇");
+
+        when(quoteRepository.findById(4L)).thenReturn(Optional.of(quote));
+        when(propertyRepository.findByPropertyIdAndCompany_ComId(3L, 1L)).thenReturn(Optional.of(property));
+        when(customerRepository.findByCustIdAndCompany_ComId(2L, 1L)).thenReturn(Optional.of(customer));
+        when(quoteRepository.findByProperty_PropertyIdOrderByQuoteIdDesc(3L)).thenReturn(List.of());
+        when(quoteRepository.save(any(Quote.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        context.accept(4L, designer);
+
+        assertThat(quote.getAcceptedBy()).as("必须记录置位操作人").isSameAs(designer);
+        assertThat(quote.getAcceptedAt()).as("必须记录接受时间").isNotNull();
+    }
+
+    /** 重复置位不覆盖首次操作人（幂等由状态机保证：Accepted 后不再进入 accept）。 */
+    @Test
+    void acceptingAlreadyAcceptedQuoteMustBeRejected() {
+        Company company = new Company();
+        company.setComId(1L);
+        Quote quote = new Quote();
+        quote.setQuoteId(4L);
+        quote.setStatus(QuoteStatus.Accepted);
+        quote.setCompany(company);
+
+        when(quoteRepository.findById(4L)).thenReturn(Optional.of(quote));
+
+        assertThatThrownBy(() -> context.accept(4L, null))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("只有已提交报价可以接受");
     }
 }

@@ -208,7 +208,7 @@ class DesignLifecycleClosureTest {
         quoteContext.submit(quote.getQuoteId());
         assertThat(reload(design).getStatus()).isEqualTo(DesignStatus.Ready);
 
-        quoteContext.accept(quote.getQuoteId());
+        quoteContext.accept(quote.getQuoteId(), null);
         assertThat(reload(design).getStatus())
                 .as("客户接受报价后设计方案必须进入客户选中")
                 .isEqualTo(DesignStatus.Selected);

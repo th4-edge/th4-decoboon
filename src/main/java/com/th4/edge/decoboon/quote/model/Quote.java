@@ -194,6 +194,11 @@ public class Quote extends AuditModel {
     @Note("客户接受时间")
     private LocalDateTime acceptedAt;
 
+    @Note("接受登记人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accepted_by")
+    private Employee acceptedBy;
+
     @Note("转项目时间")
     private LocalDateTime convertedAt;
 
@@ -279,6 +284,8 @@ public Long getQuoteId() { return quoteId; }
     public void setRejectedAt(LocalDateTime rejectedAt) { this.rejectedAt = rejectedAt; }
     public LocalDateTime getAcceptedAt() { return acceptedAt; }
     public void setAcceptedAt(LocalDateTime acceptedAt) { this.acceptedAt = acceptedAt; }
+    public Employee getAcceptedBy() { return acceptedBy; }
+    public void setAcceptedBy(Employee acceptedBy) { this.acceptedBy = acceptedBy; }
     public LocalDateTime getConvertedAt() { return convertedAt; }
     public void setConvertedAt(LocalDateTime convertedAt) { this.convertedAt = convertedAt; }
     public List<QuoteLine> getItems() { return items; }

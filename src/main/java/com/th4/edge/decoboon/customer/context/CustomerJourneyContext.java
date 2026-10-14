@@ -161,6 +161,16 @@ public class CustomerJourneyContext {
         journey.setCurrentStageName(currentStageName(stages));
         journey.setPropertyAddress(project.getProperty().getAddress());
         journey.setAsOf(LocalDateTime.now());
+        // 服务方品牌：叙事主体归装企；平台署名受企业配置控制（ANS-BIZ-20261010-004 §8、USER-DECISION-20261014-002）
+        com.th4.edge.tenant.user.model.Company company = project.getCompany();
+        if (company != null) {
+            CustomerJourney.Vendor vendor = new CustomerJourney.Vendor();
+            vendor.setName(company.getTitle() == null ? company.getName() : company.getTitle());
+            vendor.setLogo(company.getLogo());
+            vendor.setColor(company.getColor());
+            vendor.setCustodianCredit(company.getSetting() != null && Boolean.TRUE.equals(company.getSetting().getCustodianCredit()));
+            journey.setVendor(vendor);
+        }
         journey.setSections(List.of(
                 measureSection(measures),
                 designSection(designs),
