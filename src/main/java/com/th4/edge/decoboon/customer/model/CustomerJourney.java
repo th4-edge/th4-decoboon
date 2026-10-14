@@ -24,6 +24,7 @@ public class CustomerJourney {
     @Note("未关闭反馈数") private Integer openFeedbackCount = 0;
     @Note("待办数量") private Integer pendingActionCount = 0;
     @Note("服务方（装企品牌与署名配置）") private Vendor vendor = new Vendor();
+    @Note("为这一户服务的人（不含个人手机号）") private List<Member> team = new ArrayList<>();
 
     public Long getProjectId() { return projectId; }
     public void setProjectId(Long projectId) { this.projectId = projectId; }
@@ -51,6 +52,8 @@ public class CustomerJourney {
     public void setOpenFeedbackCount(Integer openFeedbackCount) { this.openFeedbackCount = openFeedbackCount; }
     public Vendor getVendor() { return vendor; }
     public void setVendor(Vendor vendor) { this.vendor = vendor; }
+    public List<Member> getTeam() { return team; }
+    public void setTeam(List<Member> team) { this.team = team; }
     public Integer getPendingActionCount() { return pendingActionCount; }
     public void setPendingActionCount(Integer pendingActionCount) { this.pendingActionCount = pendingActionCount; }
 
@@ -164,6 +167,12 @@ public class CustomerJourney {
         @Note("企业Logo") private String logo;
         @Note("品牌色") private String color;
         @Note("是否显示「记录存证与保管 · 装得清」署名，默认关闭") private Boolean custodianCredit = false;
+        @Note("服务区域") private String serviceArea;
+        @Note("企业统一客服电话（非员工个人号码）") private String serviceTel;
+        @Note("售后专线") private String afterSaleTel;
+        @Note("统一社会信用代码") private String uscc;
+        @Note("资质") private String qualification;
+        @Note("一句话简介") private String intro;
 
         public Vendor() {}
         public String getName() { return name; }
@@ -174,6 +183,36 @@ public class CustomerJourney {
         public void setColor(String color) { this.color = color; }
         public Boolean getCustodianCredit() { return custodianCredit; }
         public void setCustodianCredit(Boolean custodianCredit) { this.custodianCredit = custodianCredit; }
+        public String getServiceArea() { return serviceArea; }
+        public void setServiceArea(String serviceArea) { this.serviceArea = serviceArea; }
+        public String getServiceTel() { return serviceTel; }
+        public void setServiceTel(String serviceTel) { this.serviceTel = serviceTel; }
+        public String getAfterSaleTel() { return afterSaleTel; }
+        public void setAfterSaleTel(String afterSaleTel) { this.afterSaleTel = afterSaleTel; }
+        public String getUscc() { return uscc; }
+        public void setUscc(String uscc) { this.uscc = uscc; }
+        public String getQualification() { return qualification; }
+        public void setQualification(String qualification) { this.qualification = qualification; }
+        public String getIntro() { return intro; }
+        public void setIntro(String intro) { this.intro = intro; }
+    }
+
+    /**
+     * 为这一户服务的员工投影。
+     *
+     * 硬边界（USER-DECISION-20261014-002）：只投姓名与岗位，
+     * **不得投员工个人手机号**；联络走企业统一客服电话。
+     */
+    public static class Member {
+        @Note("姓名") private String name;
+        @Note("岗位名称") private String roleName;
+
+        public Member() {}
+        public Member(String name, String roleName) { this.name = name; this.roleName = roleName; }
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        public String getRoleName() { return roleName; }
+        public void setRoleName(String roleName) { this.roleName = roleName; }
     }
 
     public static class Action {

@@ -25,6 +25,32 @@ public class Setting {
     @Column(name = "custodian_credit")
     private Boolean custodianCredit = false;
 
+    // 以下对外信息属「服务主体知情权」范围（USER-DECISION-20261014-002）：
+    // 由企业自行填写并审核发布，平台不代填、不推算、不背书。
+    @Note("服务区域")
+    @Column(name = "service_area", length = 128)
+    private String serviceArea;
+
+    @Note("企业统一客服电话（非员工个人号码）")
+    @Column(name = "service_tel", length = 32)
+    private String serviceTel;
+
+    @Note("售后专线")
+    @Column(name = "after_sale_tel", length = 32)
+    private String afterSaleTel;
+
+    @Note("统一社会信用代码")
+    @Column(name = "uscc", length = 32)
+    private String uscc;
+
+    @Note("资质")
+    @Column(name = "qualification", length = 128)
+    private String qualification;
+
+    @Note("一句话简介")
+    @Column(name = "intro", length = 512)
+    private String intro;
+
 
     public Boolean getEnableStore() {
         return enableStore;
@@ -49,6 +75,19 @@ public class Setting {
     public void setCustodianCredit(Boolean custodianCredit) {
         this.custodianCredit = custodianCredit;
     }
+
+    public String getServiceArea() { return serviceArea; }
+    public void setServiceArea(String serviceArea) { this.serviceArea = serviceArea; }
+    public String getServiceTel() { return serviceTel; }
+    public void setServiceTel(String serviceTel) { this.serviceTel = serviceTel; }
+    public String getAfterSaleTel() { return afterSaleTel; }
+    public void setAfterSaleTel(String afterSaleTel) { this.afterSaleTel = afterSaleTel; }
+    public String getUscc() { return uscc; }
+    public void setUscc(String uscc) { this.uscc = uscc; }
+    public String getQualification() { return qualification; }
+    public void setQualification(String qualification) { this.qualification = qualification; }
+    public String getIntro() { return intro; }
+    public void setIntro(String intro) { this.intro = intro; }
 
     public String getGradeConfig() {
         return gradeConfig;

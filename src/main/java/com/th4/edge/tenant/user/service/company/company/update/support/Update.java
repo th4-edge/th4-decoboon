@@ -50,6 +50,12 @@ public class Update implements com.th4.edge.tenant.user.service.company.company.
                 target.setBrandPrimary(brandPrimary);
             }
             if (setting.getCustodianCredit() != null) target.setCustodianCredit(setting.getCustodianCredit());
+            if (setting.getServiceArea() != null) target.setServiceArea(setting.getServiceArea());
+            if (setting.getServiceTel() != null) target.setServiceTel(setting.getServiceTel());
+            if (setting.getAfterSaleTel() != null) target.setAfterSaleTel(setting.getAfterSaleTel());
+            if (setting.getUscc() != null) target.setUscc(setting.getUscc());
+            if (setting.getQualification() != null) target.setQualification(setting.getQualification());
+            if (setting.getIntro() != null) target.setIntro(setting.getIntro());
             company.setSetting(target);
         }
         return companyRepository.save(company);

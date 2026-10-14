@@ -321,6 +321,26 @@ class CustomerJourneyEnrichmentTest {
         assertThat(group.getRows()).hasSize(1);
         assertThat(group.getRows().get(0).getName()).isEqualTo("墙面施工");
         assertThat(group.getRows().get(0).getAmount()).isEqualTo("3200.00");
+
+        // 服务主体知情权（USER-DECISION-20261014-002）：
+        // 业主端可以看到服务方与为这一户服务的人，但**不得出现员工个人手机号**。
+        assertThat(journey.getVendor()).isNotNull();
+        assertThat(journey.getVendor().getName()).isEqualTo("业主事实页测试企业");
+        assertThat(journey.getVendor().getCustodianCredit())
+                .as("平台署名默认关闭（ANS-BIZ-20261010-004 §8）").isFalse();
+        assertThat(journey.getTeam()).isNotEmpty();
+        assertThat(journey.getTeam()).allSatisfy(member -> {
+            assertThat(member.getName()).isNotBlank();
+            assertThat(member.getRoleName()).isNotBlank();
+        });
+        String ownerFacing = journey.getVendor().getServiceTel() + "|" + journey.getVendor().getAfterSaleTel()
+                + "|" + journey.getTeam().stream()
+                .map(member -> member.getName() + "/" + member.getRoleName())
+                .collect(java.util.stream.Collectors.joining(","));
+        assertThat(ownerFacing)
+                .as("业主端投影不得出现员工个人手机号")
+                .doesNotContain("19900000021")
+                .doesNotContain("19900000022");
     }
 
     private CustomerJourney.Section section(CustomerJourney journey, String key) {

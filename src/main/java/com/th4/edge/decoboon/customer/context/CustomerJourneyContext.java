@@ -168,9 +168,31 @@ public class CustomerJourneyContext {
             vendor.setName(company.getTitle() == null ? company.getName() : company.getTitle());
             vendor.setLogo(company.getLogo());
             vendor.setColor(company.getColor());
-            vendor.setCustodianCredit(company.getSetting() != null && Boolean.TRUE.equals(company.getSetting().getCustodianCredit()));
+            com.th4.edge.tenant.user.model.Setting setting = company.getSetting();
+            vendor.setCustodianCredit(setting != null && Boolean.TRUE.equals(setting.getCustodianCredit()));
+            if (setting != null) {
+                vendor.setServiceArea(setting.getServiceArea());
+                vendor.setServiceTel(setting.getServiceTel());
+                vendor.setAfterSaleTel(setting.getAfterSaleTel());
+                vendor.setUscc(setting.getUscc());
+                vendor.setQualification(setting.getQualification());
+                vendor.setIntro(setting.getIntro());
+            }
             journey.setVendor(vendor);
         }
+        // 为这一户服务的人：从 Project 的既有关联实时派生（不含个人手机号）。
+        // 与 project/members/list 的派生口径同源，此处不新增授权真源。
+        java.util.Map<Long, CustomerJourney.Member> team = new java.util.LinkedHashMap<>();
+        java.util.function.Consumer<com.th4.edge.tenant.user.model.Employee> addMember = emp -> {
+            if (emp == null || emp.getEmpId() == null) return;
+            String roleName = emp.getRole() == null ? null : emp.getRole().getName();
+            team.putIfAbsent(emp.getEmpId(), new CustomerJourney.Member(emp.getName(), roleName));
+        };
+        addMember.accept(project.getDesigner());
+        addMember.accept(project.getManager());
+        if (project.getQuote() != null) addMember.accept(project.getQuote().getCreatedBy());
+        if (project.getCustomer() != null) addMember.accept(project.getCustomer().getOwner());
+        journey.setTeam(new java.util.ArrayList<>(team.values()));
         journey.setSections(List.of(
                 measureSection(measures),
                 designSection(designs),
