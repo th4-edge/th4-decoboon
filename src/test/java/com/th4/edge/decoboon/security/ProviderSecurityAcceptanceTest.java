@@ -57,7 +57,11 @@ class ProviderSecurityAcceptanceTest {
             "file/private/download",
             "platform/auth/login",
             "site/lead/submit",
-            "site/lead/douyin/submit"
+            "site/lead/douyin/submit",
+            // 2026-10-15 亲友只读通道 1 条（customer/shareview/info）：
+            // 业主分享给家人/好友后对方没有账号，登录墙会让分享功能失效；
+            // 安全由令牌承担（唯一 + 带时效 + 可撤销 + 服务端脱敏 + 不区分失效原因）。
+            "customer/shareview/info"
     );
 
     @Autowired private ApplicationContext applicationContext;
@@ -169,9 +173,12 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 473（public 15 + protected 458）。
         // 2026-10-13 增减项可变更来源与当前有效剩余（DEC-055/BR-041）新增 1 条（project/contract-change/range，protected）。
         // => 当前 Provider 面板为 474（public 15 + protected 459）。
-        assertThat(routes).hasSize(474);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(459);
-        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(15);
+        // 2026-10-15 亲友免登录只读通道新增 3 条：customer/sharelink/save、customer/sharelink/update（protected，业主本人）
+        // 与 customer/shareview/info（**public**，凭带时效令牌免登录）。
+        // => 当前 Provider 面板为 477（public 16 + protected 461）。
+        assertThat(routes).hasSize(477);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(461);
+        assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
     @Test

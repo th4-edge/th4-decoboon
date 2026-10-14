@@ -35,7 +35,11 @@ public class ProviderSecurityValidator implements ApplicationRunner {
             "file/private/download",
             "platform/auth/login",
             "site/lead/submit",
-            "site/lead/douyin/submit"
+            "site/lead/douyin/submit",
+            // 亲友只读通道：业主分享给家人/好友后，对方没有账号，登录墙会让分享功能失效。
+            // 安全由令牌承担：唯一 + 带时效 + 可撤销 + 服务端脱敏 + 不区分失效原因；
+            // 仅返回 ShareJourneyView 白名单字段（无房号/姓名/电话，Friend 范围无金额）。
+            "customer/shareview/info"
     );
 
     private final ApplicationContext applicationContext;
