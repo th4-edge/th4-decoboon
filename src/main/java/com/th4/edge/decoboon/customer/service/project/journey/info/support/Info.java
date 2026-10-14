@@ -22,7 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = CustomerJourney.class, properties = {
                 "projectId", "projectNo", "projectName", "projectStatus", "projectStatusName", "progress",
                 "currentStageName", "propertyAddress", "asOf", "sections", "actions", "openFeedbackCount",
-                "pendingActionCount"}),
+                "pendingActionCount", "vendor", "team"}),
+        // 服务主体知情权（USER-DECISION-20261014-002）：
+        // 企业对外信息 + 为这一户服务的人。team 只含姓名与岗位，不含个人手机号。
+        @AllowProperties(model = CustomerJourney.Vendor.class, properties = {
+                "name", "logo", "color", "custodianCredit", "serviceArea", "serviceTel", "afterSaleTel",
+                "uscc", "qualification", "intro"}),
+        @AllowProperties(model = CustomerJourney.Member.class, properties = {"name", "roleName"}),
         @AllowProperties(model = CustomerJourney.Section.class, properties = {
                 "key", "title", "subtitle", "status", "statusName", "summary", "facts", "actions", "items"}),
         @AllowProperties(model = CustomerJourney.Item.class, properties = {
