@@ -706,7 +706,8 @@ public class CustomerJourneyContext {
 
     private CustomerJourney.Item reportItem(ProjectReport report) {
         CustomerJourney.Item item = item("report-" + report.getReportId(), report.getTitle());
-        item.setSubtitle(report.getContent());
+        // 有业主口吻摘要时只用摘要，不透出内部动态原文（含操作人）。
+        item.setSubtitle(report.getCustomerSummary() != null ? report.getCustomerSummary() : report.getContent());
         item.setDate(date(report.getCreateTime()));
         item.setBusinessType("Report"); item.setBusinessId(report.getReportId());
         if (report.getImages() != null) item.getImages().addAll(report.getImages());
