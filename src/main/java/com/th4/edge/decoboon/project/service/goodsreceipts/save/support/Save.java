@@ -88,6 +88,8 @@ public class Save implements
     private final ProjectContext projectContext;
     private final PurchaseOrderItemRepository purchaseItemRepository;
     private final MaterialPlanStatusContext materialPlanStatusContext;
+    /** 作业单状态回写（OBJ-008）：到场事实推进作业单 Ordered → PartiallyArrived → Arrived。 */
+    private final com.th4.edge.decoboon.material.context.MaterialSheetContext materialSheetContext;
 
     public Save(PurchaseOrderRepository purchaseRepository,
                 GoodsReceiptRepository receiptRepository,
@@ -100,7 +102,8 @@ public class Save implements
                 ProjectPermissionContext permissionContext,
                 ProjectContext projectContext,
                 PurchaseOrderItemRepository purchaseItemRepository,
-                MaterialPlanStatusContext materialPlanStatusContext) {
+                MaterialPlanStatusContext materialPlanStatusContext,
+                com.th4.edge.decoboon.material.context.MaterialSheetContext materialSheetContext) {
         this.purchaseRepository = purchaseRepository;
         this.receiptRepository = receiptRepository;
         this.materialPlanRepository = materialPlanRepository;
@@ -113,6 +116,7 @@ public class Save implements
         this.projectContext = projectContext;
         this.purchaseItemRepository = purchaseItemRepository;
         this.materialPlanStatusContext = materialPlanStatusContext;
+        this.materialSheetContext = materialSheetContext;
     }
 
     @Override
@@ -201,6 +205,9 @@ public class Save implements
         materialPlanRepository.save(plan);
 
         backfillPayableDueDate(purchase, actualArrivalDate);
+        if (materialSheetContext != null) {
+            materialSheetContext.applyReceipt(plan);
+        }
         projectContext.refreshProject(purchase.getProject());
         return saved;
     }

@@ -75,7 +75,8 @@ class PurchaseDeliveryModeTest {
                 dueDateContext, accessContext, inventoryContext, identityContext, permissionContext, projectContext,
                 mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class),
                 new com.th4.edge.decoboon.project.context.MaterialPlanStatusContext(
-                        purchaseRepository, mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class)));
+                        purchaseRepository, mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class)),
+                null);
         StoreAttributionTestSupport.inject(save);
         ReflectionTestUtils.setField(save, "purchaseId", 1L);
         ReflectionTestUtils.setField(save, "quantity", new BigDecimal("5"));

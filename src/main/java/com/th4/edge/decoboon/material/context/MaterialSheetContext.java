@@ -344,6 +344,44 @@ public class MaterialSheetContext {
         return sheetRepository.save(sheet);
     }
 
+    /**
+     * 到场后回写作业单状态（OBJ-008 映射表：Ordered → PartiallyArrived → Arrived）。
+     *
+     * <p>**单向推进、只进不退**：由采购到场事实驱动，作业单不反向改写采购或计划事实。
+     * 到场量达到该行已下单量即视为已到场；未下单的行不受影响。</p>
+     */
+    public void applyReceipt(MaterialPlan plan) {
+        if (plan == null || plan.getPlanId() == null) {
+            return;
+        }
+        List<com.th4.edge.decoboon.project.model.PurchaseOrder> orders =
+                purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan);
+        BigDecimal received = orders.stream()
+                .map(order -> value(order.getReceivedQuantity()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (received.signum() <= 0) {
+            return;
+        }
+        for (MaterialOrderSheetItem line : itemRepository.findByMaterialPlan_PlanId(plan.getPlanId())) {
+            MaterialOrderSheet sheet = line.getSheet();
+            if (sheet == null) continue;
+            MaterialSheetStatus status = sheet.getStatus();
+            if (status != MaterialSheetStatus.Ordered && status != MaterialSheetStatus.PartiallyOrdered
+                    && status != MaterialSheetStatus.PartiallyArrived) {
+                continue;
+            }
+            BigDecimal ordered = value(line.getOrderedQuantity());
+            if (ordered.signum() <= 0) continue;
+            MaterialSheetStatus next = received.compareTo(ordered) >= 0
+                    ? MaterialSheetStatus.Arrived : MaterialSheetStatus.PartiallyArrived;
+            if (next == MaterialSheetStatus.PartiallyArrived && status == MaterialSheetStatus.PartiallyArrived) {
+                continue;
+            }
+            sheet.setStatus(next);
+            sheetRepository.save(sheet);
+        }
+    }
+
     // ------------------------------------------------------------------ 校验
 
     /** 单行校验：安装位置、数量、单位与损耗口径。 */
