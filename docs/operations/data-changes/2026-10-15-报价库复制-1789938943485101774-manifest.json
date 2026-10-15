@@ -1,0 +1,20 @@
+{
+  "stamp": "20261015-050459",
+  "sourceCom": 1790066191585976744,
+  "targetCom": 1789938943485101774,
+  "targetMaintainer": 1789938943545297099,
+  "snowflakeBase": 236232845046050816,
+  "backup": "ce413f2e980484e959886c5ae579561efaf7b0789de753ac95bfa7ba3c0865d7  /opt/backups/th4-decoboon/catalog-copy-20261015-050459.sql.gz",
+  "sql": "docs/operations/data-changes/2026-10-15-报价库复制-1790066191585976744-到-1789938943485101774.sql",
+  "rollback": "docs/operations/data-changes/2026-10-15-报价库复制-1789938943485101774-回滚.sql",
+  "planned": {
+    "total": 550,
+    "byType": {
+      "Construction": 160,
+      "Custom": 108,
+      "General": 15,
+      "Material": 254,
+      "Soft": 13
+    }
+  }
+}
