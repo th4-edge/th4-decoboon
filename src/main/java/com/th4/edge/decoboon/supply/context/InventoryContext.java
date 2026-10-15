@@ -153,10 +153,17 @@ public class InventoryContext {
         movement.setImages(images);
         movement.setRemark(remark);
         movement = movementRepository.save(modelIdentityContext.prepare(movement));
-        if (quoteLine != null) {
+        // BR-045 / DEC-072：未定价采购的金额是"未知"而非 0，禁止累计成 0 实际成本（会造成伪利润）；
+        // 数量与库存事实照常登记，成本待结算价回填后再收敛。
+        if (quoteLine != null && !unpriced(purchase)) {
             applyQuoteLineActualCost(quoteLine, type, amount);
         }
         return movement;
+    }
+
+    private boolean unpriced(PurchaseOrder purchase) {
+        return purchase != null
+                && purchase.getPriceState() == com.th4.edge.decoboon.material.configure.SheetPriceState.Unpriced;
     }
 
     private void applyQuoteLineActualCost(QuoteLine line, StockMovementType type, BigDecimal amount) {

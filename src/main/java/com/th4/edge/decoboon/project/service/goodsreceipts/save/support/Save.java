@@ -191,8 +191,13 @@ public class Save implements
         BigDecimal actualReceivedCost = receiptRepository.findByPurchaseOrderByReceiptIdDesc(purchase).stream()
                 .map(row -> value(row.getQuantity()).multiply(unitPrice))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        plan.setUnitPrice(unitPrice);
-        plan.setCost(actualReceivedCost);
+        // BR-045 / DEC-072：无价（未定价）采购到场时价格未知，**不得把 0 当作真实单价/成本**写回计划行；
+        // 实际成本待结算价回填后收敛，期间由 ProjectCostContext 判定"成本不完整"→ 利润为 null。
+        boolean unpriced = purchase.getPriceState() == com.th4.edge.decoboon.material.configure.SheetPriceState.Unpriced;
+        if (!unpriced) {
+            plan.setUnitPrice(unitPrice);
+            plan.setCost(actualReceivedCost);
+        }
         materialPlanRepository.save(plan);
 
         backfillPayableDueDate(purchase, actualArrivalDate);

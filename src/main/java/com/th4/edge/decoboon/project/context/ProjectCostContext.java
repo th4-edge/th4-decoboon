@@ -14,6 +14,7 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
 import com.th4.edge.decoboon.project.repository.ContractChangeItemRepository;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
+import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
@@ -149,6 +150,7 @@ public class ProjectCostContext {
                 signedEstimated = signedEstimated.add(estimatedLine);
                 signedActual = signedActual.add(actualLine);
                 if (hasIncompletePurchaseCoverage(line.getSourceQuoteLine(), line.getQuantity(), purchaseOrders)
+                        || hasUnpricedPurchase(line.getSourceQuoteLine(), purchaseOrders)
                         || (requiresCost(line.getType())
                         && estimatedLine.signum() <= 0
                         && actualLine.signum() <= 0)
@@ -175,6 +177,7 @@ public class ProjectCostContext {
             estimated = estimated.add(estimatedLine);
             actual = actual.add(actualLine);
             if (hasIncompletePurchaseCoverage(line, line.getQuantity(), purchaseOrders)
+                    || hasUnpricedPurchase(line, purchaseOrders)
                     || (requiresCost(line.getType())
                     && estimatedLine.signum() <= 0
                     && value(line.getActualCost()).signum() <= 0)
@@ -206,6 +209,20 @@ public class ProjectCostContext {
         }
         BigDecimal catalogCost = catalogCost(line);
         return money(catalogCost.signum() > 0 ? catalogCost : fallbackEstimated);
+    }
+
+    /**
+     * 是否存在**未定价**采购（BR-045 / DEC-072 第 1 项）：
+     * 无价下单时价格留空并形成暂估应付，实际成本要等结算价回填才收敛；
+     * 在此之前成本视为不完整，利润与毛利率必须为 null，禁止按 0 成本计算伪利润。
+     */
+    private boolean hasUnpricedPurchase(QuoteLine line, List<PurchaseOrder> purchaseOrders) {
+        if (line == null || purchaseOrders == null || purchaseOrders.isEmpty()) {
+            return false;
+        }
+        return purchaseOrders.stream().anyMatch(order -> order != null
+                && sameQuoteLine(line, order.getQuoteLine())
+                && order.getPriceState() == SheetPriceState.Unpriced);
     }
 
     private boolean hasIncompletePurchaseCoverage(QuoteLine line,
