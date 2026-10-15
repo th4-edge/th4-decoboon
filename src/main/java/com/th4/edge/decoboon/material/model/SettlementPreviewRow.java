@@ -14,6 +14,7 @@ public class SettlementPreviewRow {
     @Note("采购明细索引") private Long purchaseItemId;
     @Note("采购单索引") private Long purchaseOrderId;
     @Note("采购单号") private String purchaseNo;
+    @Note("供应商索引") private Long supplierId;
     @Note("供应商名称") private String supplierName;
     @Note("材料名称") private String materialName;
     @Note("采购数量") private java.math.BigDecimal quantity;
@@ -26,6 +27,8 @@ public class SettlementPreviewRow {
     public void setPurchaseItemId(Long purchaseItemId) { this.purchaseItemId = purchaseItemId; }
     public Long getPurchaseOrderId() { return purchaseOrderId; }
     public void setPurchaseOrderId(Long purchaseOrderId) { this.purchaseOrderId = purchaseOrderId; }
+    public Long getSupplierId() { return supplierId; }
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
     public String getPurchaseNo() { return purchaseNo; }
     public void setPurchaseNo(String purchaseNo) { this.purchaseNo = purchaseNo; }
     public String getSupplierName() { return supplierName; }

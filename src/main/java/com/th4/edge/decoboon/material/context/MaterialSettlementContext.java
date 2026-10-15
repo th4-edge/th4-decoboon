@@ -387,6 +387,7 @@ public class MaterialSettlementContext {
         row.setPurchaseItemId(item.getPurchaseItemId());
         row.setPurchaseOrderId(order == null ? null : order.getPurchaseId());
         row.setPurchaseNo(order == null ? null : order.getNo());
+        row.setSupplierId(order == null || order.getSupplier() == null ? null : order.getSupplier().getPartnerId());
         row.setSupplierName(order == null ? null : order.getSupplierName());
         row.setMaterialName(item.getMaterialPlan() == null || item.getMaterialPlan().getCatalogItem() == null
                 ? null : item.getMaterialPlan().getCatalogItem().getName());
