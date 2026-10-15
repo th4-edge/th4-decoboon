@@ -16,4 +16,7 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Lon
  /** 材料计划工作台：一次取多计划的采购单，替代逐计划查询。 */
  List<PurchaseOrder> findByMaterialPlan_PlanIdIn(java.util.Collection<Long> planIds);
  List<PurchaseOrder> findByCompany_ComIdOrderByPurchaseIdDesc(Long comId);
+
+ /** 供应商 + 企业维度取采购单（月结候选集用）。 */
+ List<PurchaseOrder> findByCompany_ComIdAndSupplier_PartnerIdOrderByPurchaseIdDesc(Long comId, Long partnerId);
 }

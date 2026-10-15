@@ -188,8 +188,12 @@ class ProviderSecurityAcceptanceTest {
         // material/sheet page、info、save、update、delete、submit、measure、order、report
         // （作业单生命周期与下单编排；作业单与采购单为两张单，DEC-073）。
         // => 当前 Provider 面板为 495（public 16 + protected 479）。
-        assertThat(routes).hasSize(495);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(479);
+        // 2026-10-15 主材采购结算 P3（BR-045 / DEC-072 / DEC-073）新增 4 条 protected：
+        // material/settlement page、info、preview、confirm
+        // （逐单结算与月结并存；互斥 + 逐单优先 + 月结兜底；结算价回填与暂估应付修正）。
+        // => 当前 Provider 面板为 499（public 16 + protected 483）。
+        assertThat(routes).hasSize(499);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(483);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 

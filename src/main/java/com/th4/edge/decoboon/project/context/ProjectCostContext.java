@@ -220,9 +220,11 @@ public class ProjectCostContext {
         if (line == null || purchaseOrders == null || purchaseOrders.isEmpty()) {
             return false;
         }
+        // Unpriced＝整单未定价；Mixed＝部分明细已结算、仍有未定价明细 → 两者都属"成本尚未收敛"。
         return purchaseOrders.stream().anyMatch(order -> order != null
                 && sameQuoteLine(line, order.getQuoteLine())
-                && order.getPriceState() == SheetPriceState.Unpriced);
+                && (order.getPriceState() == SheetPriceState.Unpriced
+                || order.getPriceState() == SheetPriceState.Mixed));
     }
 
     private boolean hasIncompletePurchaseCoverage(QuoteLine line,
