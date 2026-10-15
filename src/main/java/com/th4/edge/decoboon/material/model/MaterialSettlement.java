@@ -112,6 +112,19 @@ public class MaterialSettlement extends AuditModel {
     @JoinColumn(name = "confirmer_id", nullable = false)
     private Employee confirmer;
 
+    @Note("撤销人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cancelled_by")
+    private Employee cancelledBy;
+
+    @Note("撤销时间")
+    @Column(name = "cancelled_at")
+    private java.time.LocalDateTime cancelledAt;
+
+    @Note("撤销原因")
+    @Column(name = "cancel_reason", length = 500)
+    private String cancelReason;
+
     @jakarta.persistence.Transient
     @Note("结算明细（响应投影，不落库）")
     private List<MaterialSettlementItem> items;
@@ -147,6 +160,12 @@ public class MaterialSettlement extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public Employee getConfirmer() { return confirmer; }
     public void setConfirmer(Employee confirmer) { this.confirmer = confirmer; }
+    public Employee getCancelledBy() { return cancelledBy; }
+    public void setCancelledBy(Employee cancelledBy) { this.cancelledBy = cancelledBy; }
+    public java.time.LocalDateTime getCancelledAt() { return cancelledAt; }
+    public void setCancelledAt(java.time.LocalDateTime cancelledAt) { this.cancelledAt = cancelledAt; }
+    public String getCancelReason() { return cancelReason; }
+    public void setCancelReason(String cancelReason) { this.cancelReason = cancelReason; }
     public List<MaterialSettlementItem> getItems() { return items; }
     public void setItems(List<MaterialSettlementItem> items) { this.items = items; }
 }

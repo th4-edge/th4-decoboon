@@ -231,6 +231,73 @@ public class MaterialSettlementContext {
         return settlementRepository.save(saved);
     }
 
+    /**
+     * 撤销结算（本轮开放）。
+     *
+     * <p><b>口径</b>：撤销是纠错动作——结算头保留（置 `Cancelled` 并记录撤销人/时间/原因），
+     * 结算明细删除以**释放"同一采购明细只能结算一次"的唯一约束**，允许重新结算；
+     * 同时按原结算价**冲回**采购明细结算价、价格状态、应付与已补记的实际成本，
+     * 使链路回到"未结算"状态（成本重新判为不完整）。</p>
+     *
+     * <p>不覆盖历史事实：原结算单的确认人、确认时间与金额仍保留在结算头上可追溯。</p>
+     */
+    public MaterialSettlement cancel(Employee principal, Long settlementId, String reason) {
+        Employee current = accessContext.requireEmployee(principal);
+        materialPurchaseContext.requireOperator(current);
+        MaterialSettlement settlement = requireSettlement(current, settlementId);
+        if (settlement.getStatus() == SettlementStatus.Cancelled) {
+            return settlement;
+        }
+        List<MaterialSettlementItem> items =
+                settlementItemRepository.findBySettlement_SettlementIdOrderBySettlementItemIdAsc(settlementId);
+        Map<Long, BigDecimal> deltaByQuoteLine = new LinkedHashMap<>();
+        Map<Long, PurchaseOrder> orders = new LinkedHashMap<>();
+        for (MaterialSettlementItem item : items) {
+            PurchaseOrderItem purchaseItem = item.getPurchaseItem();
+            if (purchaseItem == null) {
+                continue;
+            }
+            // 冲回实际成本差额（结算价 − 采购价），方向相反
+            if (purchaseItem.getMaterialPlan() != null && purchaseItem.getMaterialPlan().getQuoteItem() != null) {
+                Long quoteLineId = purchaseItem.getMaterialPlan().getQuoteItem().getItemId();
+                BigDecimal delta = money(value(item.getSettlementPrice()).subtract(value(purchaseItem.getUnitPrice()))
+                        .multiply(value(item.getQuantity())));
+                deltaByQuoteLine.merge(quoteLineId, delta.negate(), BigDecimal::add);
+            }
+            purchaseItem.setSettlementPrice(null);
+            purchaseItem.setPriceState(purchaseItem.getUnitPrice() != null && purchaseItem.getUnitPrice().signum() > 0
+                    ? SheetPriceState.Priced : SheetPriceState.Unpriced);
+            purchaseItemRepository.save(purchaseItem);
+            PurchaseOrder order = purchaseItem.getPurchaseOrder();
+            if (order != null && order.getPurchaseId() != null) {
+                orders.put(order.getPurchaseId(), order);
+            }
+        }
+        // 释放互斥约束：删除结算明细（结算头保留审计留痕）
+        settlementItemRepository.deleteAll(items);
+        for (PurchaseOrder order : orders.values()) {
+            List<PurchaseOrderItem> orderItems =
+                    purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(order);
+            boolean anyUnpriced = orderItems.stream()
+                    .anyMatch(item -> item.getPriceState() == SheetPriceState.Unpriced);
+            boolean anyUnsettled = orderItems.stream()
+                    .anyMatch(item -> item.getPriceState() != SheetPriceState.Settled);
+            order.setPriceState(anyUnpriced ? SheetPriceState.Unpriced
+                    : (anyUnsettled ? SheetPriceState.Mixed : SheetPriceState.Settled));
+            purchaseOrderRepository.save(order);
+            // 应付回到暂估：金额回退为采购价口径，estimated 恢复
+            settlePayableBackToEstimated(current, order);
+        }
+        applyCostDeltaByQuoteLine(deltaByQuoteLine);
+
+        settlement.setStatus(SettlementStatus.Cancelled);
+        settlement.setCancelledBy(current);
+        settlement.setCancelledAt(java.time.LocalDateTime.now());
+        settlement.setCancelReason(reason == null || reason.isBlank() ? "撤销结算" : reason.trim());
+        settlement.setItems(items);
+        return settlementRepository.save(settlement);
+    }
+
     // ------------------------------------------------------------------ 内部
 
     private List<PurchaseOrderItem> candidates(Employee current, Long supplierId, SettlementScope scope,
@@ -326,6 +393,44 @@ public class MaterialSettlementContext {
                 ? "结算确认：金额以结算价为准（原暂估已修正）"
                 : "结算确认：部分明细已结算，仍有未定价明细，应付仍为暂估");
         payableRepository.save(payable);
+    }
+
+    /** 应付回退为暂估（撤销结算用）：金额回到采购价口径，estimated 恢复为 true。 */
+    private void settlePayableBackToEstimated(Employee current, PurchaseOrder order) {
+        Long comId = current.getCompany().getComId();
+        Payable payable = payableRepository
+                .findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(comId, order.getPurchaseId())
+                .orElse(null);
+        if (payable == null) {
+            return;
+        }
+        BigDecimal amount = purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(order).stream()
+                .map(item -> money(value(item.getUnitPrice()).multiply(value(item.getQuantity()))))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        payable.setAmount(money(amount));
+        payable.setSettledAmount(null);
+        payable.setEstimated(Boolean.TRUE);
+        payable.setRemark("结算已撤销：应付回退为暂估，成本重新判为不完整");
+        payableRepository.save(payable);
+    }
+
+    private void applyCostDeltaByQuoteLine(Map<Long, BigDecimal> deltaByQuoteLine) {
+        if (deltaByQuoteLine.isEmpty()) {
+            return;
+        }
+        List<QuoteLine> quoteLines = quoteLineRepository.findAllById(new ArrayList<>(deltaByQuoteLine.keySet()));
+        for (QuoteLine line : quoteLines) {
+            BigDecimal delta = deltaByQuoteLine.get(line.getItemId());
+            if (delta == null || delta.signum() == 0) {
+                continue;
+            }
+            BigDecimal actualMaterial = value(line.getActualMaterialCost()).add(delta).max(BigDecimal.ZERO);
+            line.setActualMaterialCost(actualMaterial);
+            line.setActualCost(actualMaterial
+                    .add(value(line.getActualLaborCost()))
+                    .add(value(line.getActualOtherCost())));
+            quoteLineRepository.save(line);
+        }
     }
 
     /** 实际成本按结算价重算差额：结算价 − 采购价，差额计入报价行实际材料成本。 */

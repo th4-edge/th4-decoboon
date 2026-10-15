@@ -196,8 +196,10 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 500（public 16 + protected 484）。
         // 2026-10-15 App 建单需要品类清单新增 1 条 protected：material/sheet/enums
         // => 当前 Provider 面板为 501（public 16 + protected 485）。
-        assertThat(routes).hasSize(501);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(485);
+        // 2026-10-15 结算撤销（用户裁决本轮做）新增 1 条 protected：material/settlement/cancel
+        // => 当前 Provider 面板为 502（public 16 + protected 486）。
+        assertThat(routes).hasSize(502);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(486);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 

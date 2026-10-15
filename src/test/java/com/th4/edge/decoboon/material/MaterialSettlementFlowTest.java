@@ -166,6 +166,58 @@ class MaterialSettlementFlowTest {
                 .thenReturn(Optional.of(payable));
         when(quoteLineRepository.findAllById(any())).thenReturn(List.of(quoteLine));
         when(quoteLineRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(settlementRepository.findFirstBySettlementIdAndCompany_ComId(any(), any()))
+                .thenReturn(Optional.of(settlement()));
+        when(settlementItemRepository.findBySettlement_SettlementIdOrderBySettlementItemIdAsc(any()))
+                .thenReturn(List.of(existingItem()));
+    }
+
+    /** 已确认的结算单（撤销用例夹具）。 */
+    private MaterialSettlement settlement() {
+        MaterialSettlement settlement = new MaterialSettlement();
+        settlement.setSettlementId(900L);
+        settlement.setCompany(company);
+        settlement.setNo("ST-1");
+        settlement.setSupplier(supplier);
+        settlement.setStatus(SettlementStatus.Confirmed);
+        settlement.setTotalAmount(new BigDecimal("700"));
+        return settlement;
+    }
+
+    /** 撤销用例夹具：一条已结算明细（采购明细 21）。 */
+    private MaterialSettlementItem existingItem() {
+        MaterialSettlementItem item = new MaterialSettlementItem();
+        item.setSettlementItemId(1L);
+        item.setCompany(company);
+        item.setPurchaseItem(itemPriced);
+        item.setQuantity(new BigDecimal("10"));
+        item.setSettlementPrice(new BigDecimal("70"));
+        item.setAmount(new BigDecimal("700"));
+        return item;
+    }
+
+    @Test
+    void cancelShouldRollBackSettlementAndAllowResettle() {
+        itemPriced.setSettlementPrice(new BigDecimal("70"));
+        itemPriced.setPriceState(SheetPriceState.Settled);
+        quoteLine.setActualMaterialCost(new BigDecimal("20"));
+
+        MaterialSettlement cancelled = context.cancel(finance, 900L, "对账口径有误");
+
+        assertThat(cancelled.getStatus()).isEqualTo(SettlementStatus.Cancelled);
+        assertThat(cancelled.getCancelReason()).isEqualTo("对账口径有误");
+        assertThat(cancelled.getCancelledAt()).isNotNull();
+        assertThat(itemPriced.getSettlementPrice())
+                .as("撤销后采购明细结算价应清空，允许重新结算")
+                .isNull();
+        assertThat(itemPriced.getPriceState()).isEqualTo(SheetPriceState.Priced);
+        assertThat(payable.getEstimated())
+                .as("撤销后应付回到暂估，成本重新判为不完整")
+                .isTrue();
+        assertThat(quoteLine.getActualMaterialCost())
+                .as("已补记的实际成本差额应被冲回")
+                .isEqualByComparingTo("0");
+        org.mockito.Mockito.verify(settlementItemRepository).deleteAll(any());
     }
 
     private MaterialSettlementItem command(Long purchaseItemId, String price) {
