@@ -52,7 +52,9 @@ class SummaryImplementationRulesTest {
             "payroll/context/PayrollWorkbenchContext.java",
             "project/context/ContractWorkbenchContext.java",
             // 2026-10-10 内容经营 P0-4：内容线索与已发布内容的经营聚合。
-            "content/context/ContentDashboardContext.java");
+            "content/context/ContentDashboardContext.java",
+            // 2026-10-15 主材下单作业单报表（BR-031）：品类汇总改为聚合投影 SQL，返回行数 = 品类数。
+            "material/context/MaterialSheetContext.java");
 
     /**
      * 存量违规基线（GAP-027 整改完成后必须逐条删除）。

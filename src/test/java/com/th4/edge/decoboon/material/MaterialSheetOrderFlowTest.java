@@ -182,7 +182,7 @@ class MaterialSheetOrderFlowTest {
         MaterialPlan plan = plan(1L, new BigDecimal("10"), new BigDecimal("0.08"), true);
         stubPlan(plan);
 
-        MaterialOrderSheet sheet = context.save(designer, 9L, "Tile", "诗尔曼", null, null, null, null, null,
+        MaterialOrderSheet sheet = context.create(designer, 9L, "Tile", "诗尔曼", null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
 
         assertThat(sheet.getStatus()).isEqualTo(MaterialSheetStatus.Draft);
@@ -200,7 +200,7 @@ class MaterialSheetOrderFlowTest {
         MaterialPlan plan = plan(2L, new BigDecimal("10"), BigDecimal.ZERO, false);
         stubPlan(plan);
 
-        assertThatThrownBy(() -> context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+        assertThatThrownBy(() -> context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("5"), "厨房地砖"))))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("尚未完成主材选材");
@@ -211,7 +211,7 @@ class MaterialSheetOrderFlowTest {
         MaterialPlan plan = plan(3L, new BigDecimal("10"), BigDecimal.ZERO, true);
         stubPlan(plan);
 
-        assertThatThrownBy(() -> context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+        assertThatThrownBy(() -> context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10.5"), "阳台地砖"))))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("超过可下单数量");
@@ -221,7 +221,7 @@ class MaterialSheetOrderFlowTest {
     void submitShouldRequireMeasuredGateAndMoveToSubmitted() {
         MaterialPlan plan = plan(4L, new BigDecimal("10"), BigDecimal.ZERO, true);
         stubPlan(plan);
-        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
 
         MaterialOrderSheet submitted = context.submit(designer, currentSheet.getSheetId());
@@ -233,7 +233,7 @@ class MaterialSheetOrderFlowTest {
     void unpricedOrderShouldCreateUnpricedPurchaseAndEstimatedPayable() {
         MaterialPlan plan = plan(5L, new BigDecimal("10"), BigDecimal.ZERO, true);
         stubPlan(plan);
-        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
 
         ArgumentCaptor<PurchaseOrder> purchases = ArgumentCaptor.forClass(PurchaseOrder.class);
@@ -271,7 +271,7 @@ class MaterialSheetOrderFlowTest {
     void pricedOrderShouldCreatePayableWithAmount() {
         MaterialPlan plan = plan(6L, new BigDecimal("10"), BigDecimal.ZERO, true);
         stubPlan(plan);
-        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
 
         MaterialOrderSheetItem command = new MaterialOrderSheetItem();
@@ -294,13 +294,31 @@ class MaterialSheetOrderFlowTest {
     void deleteAfterOrderedMustBeRejected() {
         MaterialPlan plan = plan(7L, new BigDecimal("10"), BigDecimal.ZERO, true);
         stubPlan(plan);
-        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
         currentSheet.setStatus(MaterialSheetStatus.Ordered);
 
         assertThatThrownBy(() -> context.delete(designer, currentSheet.getSheetId()))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("不能删除");
+    }
+
+    @Test
+    void reportShouldUseAggregateProjection() {
+        when(tenantContext.requireEmployee(any())).thenReturn(designer);
+        when(sheetRepository.aggregateBySheetType(any(), any(), any())).thenReturn(List.of(
+                new Object[]{"Tile", 3L, 1L, 2L},
+                new Object[]{"WoodDoor", 1L, 0L, 1L}));
+
+        var rows = context.report(designer, null);
+
+        assertThat(rows).hasSize(2);
+        assertThat(rows.get(0).getSheetType()).isEqualTo("Tile");
+        assertThat(rows.get(0).getSheetCount()).isEqualTo(3);
+        assertThat(rows.get(0).getUnpricedSheetCount())
+                .as("未定价单据数＝成本待结算规模")
+                .isEqualTo(1);
+        assertThat(rows.get(0).getOrderedSheetCount()).isEqualTo(2);
     }
 
     // ------------------------------------------------------------------ 夹具
@@ -355,7 +373,10 @@ class MaterialSheetOrderFlowTest {
     }
 
     private void stubPlan(MaterialPlan plan) {
-        when(planRepository.findOne(org.mockito.ArgumentMatchers.<org.springframework.data.jpa.domain.Specification<MaterialPlan>>any())).thenReturn(Optional.of(plan));
+        when(planRepository.findOne(org.mockito.ArgumentMatchers.<org.springframework.data.jpa.domain.Specification<MaterialPlan>>any()))
+                .thenReturn(Optional.of(plan));
+        // 写单/下单路径改为循环外批量取数（DEC-036 A2b）
+        when(planRepository.findByProject_ProjectIdAndPlanIdIn(any(), any())).thenReturn(List.of(plan));
     }
 
     private MaterialOrderSheetItem line(MaterialPlan plan, BigDecimal quantity, String location) {

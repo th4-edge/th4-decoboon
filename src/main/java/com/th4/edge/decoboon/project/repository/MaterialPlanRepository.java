@@ -19,6 +19,9 @@ public interface MaterialPlanRepository extends JpaRepository<MaterialPlan, Long
 
     List<MaterialPlan> findByProject(Project project);
 
+    /** 批量按主键取计划（写单/下单路径循环外一次取数，DEC-036 A2b）。 */
+    List<MaterialPlan> findByProject_ProjectIdAndPlanIdIn(Long projectId, Collection<Long> planIds);
+
     @EntityGraph(attributePaths = {"contractLine"})
     Optional<MaterialPlan> findFirstByProjectAndContractLine(Project project, ContractLine contractLine);
 

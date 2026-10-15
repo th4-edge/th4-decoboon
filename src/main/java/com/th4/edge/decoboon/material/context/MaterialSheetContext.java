@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.material.configure.MaterialSheetStatus;
 import com.th4.edge.decoboon.material.configure.SheetItemSource;
 import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheet;
+import com.th4.edge.decoboon.material.model.MaterialSheetReportRow;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
 import com.th4.edge.decoboon.material.model.MaterialSheetTemplate;
 import com.th4.edge.decoboon.material.repository.MaterialOrderSheetItemRepository;
@@ -27,6 +28,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -121,37 +123,39 @@ public class MaterialSheetContext {
         return itemRepository.findBySheet_SheetIdOrderBySortAscItemIdAsc(sheetId);
     }
 
-    /** 品类维度汇总（聚合口径，供工作台/报表使用）。 */
-    public List<com.th4.edge.decoboon.material.model.MaterialSheetReportRow> report(Employee principal, Long projectId) {
+    /** 已进入采购的作业单状态（聚合口径的过滤条件，避免把枚举判断放进 Java 循环）。 */
+    private static final List<MaterialSheetStatus> ORDERED_STATUSES = List.of(
+            MaterialSheetStatus.Ordered, MaterialSheetStatus.PartiallyOrdered,
+            MaterialSheetStatus.PartiallyArrived, MaterialSheetStatus.Arrived,
+            MaterialSheetStatus.Settled, MaterialSheetStatus.Closed);
+
+    /**
+     * 品类维度汇总（BR-031 / DEC-036）。
+     *
+     * <p>用**聚合 SQL 直接算出**：返回行数 = 品类数，不加载实体、不做 Java 循环求和。</p>
+     */
+    public List<MaterialSheetReportRow> report(Employee principal, Long projectId) {
         Employee current = tenantContext.requireEmployee(principal);
-        List<MaterialOrderSheet> sheets = projectId == null
-                ? sheetRepository.findByCompany_ComIdOrderBySheetIdDesc(current.getCompany().getComId())
-                : sheetRepository.findByProject_ProjectIdOrderBySheetIdDesc(projectId);
-        Map<String, com.th4.edge.decoboon.material.model.MaterialSheetReportRow> grouped = new LinkedHashMap<>();
-        for (MaterialOrderSheet sheet : sheets) {
-            if (sheet.getCompany() == null || !sheet.getCompany().getComId().equals(current.getCompany().getComId())) continue;
-            com.th4.edge.decoboon.material.model.MaterialSheetReportRow row =
-                    grouped.computeIfAbsent(sheet.getSheetType(), key -> {
-                        com.th4.edge.decoboon.material.model.MaterialSheetReportRow created =
-                                new com.th4.edge.decoboon.material.model.MaterialSheetReportRow();
-                        created.setSheetType(key);
-                        return created;
-                    });
-            row.setSheetCount(row.getSheetCount() + 1);
-            if (sheet.getPriceState() == null || sheet.getPriceState() == SheetPriceState.Unpriced) {
-                row.setUnpricedSheetCount(row.getUnpricedSheetCount() + 1);
-            }
-            if (sheet.getStatus() != null && sheet.getStatus().ordered()) {
-                row.setOrderedSheetCount(row.getOrderedSheetCount() + 1);
-            }
+        Long comId = current.getCompany().getComId();
+        List<Object[]> rows = projectId == null
+                ? sheetRepository.aggregateBySheetType(comId, SheetPriceState.Unpriced, ORDERED_STATUSES)
+                : sheetRepository.aggregateBySheetTypeAndProject(comId, projectId, SheetPriceState.Unpriced, ORDERED_STATUSES);
+        List<MaterialSheetReportRow> result = new ArrayList<>(rows.size());
+        for (Object[] row : rows) {
+            MaterialSheetReportRow item = new MaterialSheetReportRow();
+            item.setSheetType(row[0] == null ? null : String.valueOf(row[0]));
+            item.setSheetCount(((Number) row[1]).intValue());
+            item.setUnpricedSheetCount(((Number) row[2]).intValue());
+            item.setOrderedSheetCount(((Number) row[3]).intValue());
+            result.add(item);
         }
-        return new ArrayList<>(grouped.values());
+        return result;
     }
 
     // ------------------------------------------------------------------ 单据生命周期
 
     /** 新建作业单（草稿）：行只能挂材料计划行，且立即执行门禁校验。 */
-    public MaterialOrderSheet save(Employee principal, Long projectId, String sheetType, String manufacturerName,
+    public MaterialOrderSheet create(Employee principal, Long projectId, String sheetType, String manufacturerName,
                                    Long supplierId, LocalDate groupChatAt, LocalDate installAt, String remark,
                                    List<String> attachments, List<MaterialOrderSheetItem> lines) {
         Employee current = requireDesignerOrManager(principal);
@@ -233,9 +237,10 @@ public class MaterialSheetContext {
         if (lines.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400", "作业单还没有材料行"));
         }
-        for (MaterialOrderSheetItem line : lines) {
-            requireOrderablePlan(current, line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId());
-        }
+        List<Long> planIds = lines.stream()
+                .map(line -> line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId())
+                .toList();
+        loadOrderablePlans(current, sheet.getProject().getProjectId(), planIds);
         sheet.setStatus(defaultAfter(sheet, MaterialSheetStatus.Submitted));
         return sheetRepository.save(sheet);
     }
@@ -292,14 +297,24 @@ public class MaterialSheetContext {
             throw new DefinedException(new DefaultErrorCode("400", "请选择要下单的材料行"));
         }
         var supplier = requireSupplier(current, supplierId, supplierName);
+        // 循环外一次性批量取材料计划（DEC-036 反模式 A2b：禁止循环体内查库）
+        Map<Long, MaterialOrderSheetItem> lineById = new LinkedHashMap<>();
+        sheetLines.forEach(line -> lineById.put(line.getItemId(), line));
+        List<Long> orderPlanIds = lines.stream()
+                .map(command -> lineById.get(command.getItemId()))
+                .filter(java.util.Objects::nonNull)
+                .map(line -> line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId())
+                .filter(java.util.Objects::nonNull)
+                .toList();
+        Map<Long, MaterialPlan> orderPlans = loadOrderablePlans(current, sheet.getProject().getProjectId(), orderPlanIds);
         List<MaterialOrderSheetItem> targets = new ArrayList<>();
         for (MaterialOrderSheetItem command : lines) {
-            MaterialOrderSheetItem line = sheetLines.stream()
-                    .filter(item -> item.getItemId().equals(command.getItemId()))
-                    .findFirst()
-                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "作业单行不存在或不属于本单")));
+            MaterialOrderSheetItem line = lineById.get(command.getItemId());
+            if (line == null) {
+                throw new DefinedException(new DefaultErrorCode("404", "作业单行不存在或不属于本单"));
+            }
             BigDecimal quantity = command.getQuantity() == null ? line.getQuantity() : command.getQuantity();
-            MaterialPlan plan = requireOrderablePlan(current, line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId());
+            MaterialPlan plan = orderPlans.get(line.getMaterialPlan().getPlanId());
             materialPurchaseContext.requireOrderQuantity(plan, quantity);
 
             BigDecimal unitPrice = command.getPurchasePrice();
@@ -403,7 +418,36 @@ public class MaterialSheetContext {
         }
     }
 
-    /** 行所属计划必须可见且满足选材门禁。 */
+    /**
+     * 批量取材料计划并逐条校验（**一次查询**）：可见性 + 选材门禁。
+     *
+     * <p>循环体内禁止查库（DEC-036 A2b），因此写单/下单路径统一走本方法在循环外取数。</p>
+     */
+    private Map<Long, MaterialPlan> loadOrderablePlans(Employee current, Long projectId, List<Long> planIds) {
+        if (projectId == null || planIds == null || planIds.isEmpty()) {
+            return Map.of();
+        }
+        List<Long> distinct = planIds.stream().distinct().toList();
+        // 项目上下文已由 requireProject 做过可见性校验；此处再按企业 + 项目双重限定，避免跨租户取数。
+        List<MaterialPlan> plans = materialPlanRepository.findByProject_ProjectIdAndPlanIdIn(projectId, distinct).stream()
+                .filter(plan -> plan.getCompany() != null
+                        && current.getCompany() != null
+                        && plan.getCompany().getComId().equals(current.getCompany().getComId()))
+                .toList();
+        Map<Long, MaterialPlan> byId = new LinkedHashMap<>();
+        for (MaterialPlan plan : plans) {
+            materialSelectionContext.requireOrderableSelection(plan);
+            byId.put(plan.getPlanId(), plan);
+        }
+        for (Long id : distinct) {
+            if (!byId.containsKey(id)) {
+                throw new DefinedException(new DefaultErrorCode("404", "材料计划不存在或无权访问"));
+            }
+        }
+        return byId;
+    }
+
+    /** 行所属计划必须可见且满足选材门禁（单条路径：提交请购校验、外部校验入口）。 */
     public MaterialPlan requireOrderablePlan(Employee current, Long planId) {
         if (planId == null) {
             throw new DefinedException(new DefaultErrorCode("400", "缺少材料计划"));
@@ -420,12 +464,17 @@ public class MaterialSheetContext {
 
     private void replaceLines(Employee current, MaterialOrderSheet sheet, List<MaterialOrderSheetItem> lines) {
         if (lines == null) return;
+        // 循环外一次性批量取材料计划（DEC-036 反模式 A2b：禁止循环体内查库）
+        List<Long> planIds = lines.stream()
+                .map(line -> line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId())
+                .filter(java.util.Objects::nonNull)
+                .toList();
+        Map<Long, MaterialPlan> plans = loadOrderablePlans(current, sheet.getProject().getProjectId(), planIds);
         itemRepository.deleteBySheet_SheetId(sheet.getSheetId());
         int sort = 0;
         for (MaterialOrderSheetItem line : lines) {
-            MaterialPlan plan = requireOrderablePlan(current, line.getMaterialPlan() == null
-                    ? null : line.getMaterialPlan().getPlanId());
             validateLine(line);
+            MaterialPlan plan = plans.get(line.getMaterialPlan().getPlanId());
             materialPurchaseContext.requireOrderQuantity(plan, line.getQuantity());
             MaterialOrderSheetItem target = new MaterialOrderSheetItem();
             target.setCompany(sheet.getCompany());

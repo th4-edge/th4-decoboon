@@ -64,7 +64,7 @@ public class Save implements com.th4.edge.decoboon.material.service.sheet.save.S
     @Override
     @Transactional
     public MaterialOrderSheet call(Employee request) {
-        return context.save(employee, projectId, sheetType, manufacturerName, supplierId, groupChatAt,
+        return context.create(employee, projectId, sheetType, manufacturerName, supplierId, groupChatAt,
                 installAt, remark, attachments, items);
     }
 }
