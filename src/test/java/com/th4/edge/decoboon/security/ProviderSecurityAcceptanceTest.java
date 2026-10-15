@@ -180,8 +180,12 @@ class ProviderSecurityAcceptanceTest {
         // project/owner-qrcode/build（项目码生成，员工 + 项目可见性）与
         // identity/customer-access/scan-enter（扫码开通业主授权，微信登录态 + 手机号一致）。
         // => 当前 Provider 面板为 479（public 16 + protected 463）。
-        assertThat(routes).hasSize(479);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(463);
+        // 2026-10-15 主材下单作业单 P0-2 第一批（SOL-014 / OBJ-008 / BR-044）新增 7 条 protected：
+        // material/template build、page、info、save、update、publish、delete
+        // （模板配置权限：Boss / StoreManager；作业单与采购单为两张单，DEC-073）。
+        // => 当前 Provider 面板为 486（public 16 + protected 470）。
+        assertThat(routes).hasSize(486);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(470);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
