@@ -97,12 +97,19 @@ public class MaterialSettlementContext {
      * 结算预演：列出该供应商在本方式下**可结算**的采购明细（已结算明细自动剔除，体现互斥与月结兜底）。
      */
     public List<com.th4.edge.decoboon.material.model.SettlementPreviewRow> preview(
-            Employee principal, Long supplierId, SettlementScope scope, String period, Long purchaseOrderId) {
+            Employee principal, Long supplierId, SettlementScope scope, String period, Long purchaseOrderId,
+            Long projectId) {
         Employee current = accessContext.requireEmployee(principal);
         materialPurchaseContext.requireOperator(current);
-        return candidates(current, supplierId, scope, period, purchaseOrderId).stream()
+        return candidates(current, supplierId, scope, period, purchaseOrderId, projectId).stream()
                 .map(this::toCandidate)
                 .toList();
+    }
+
+    /** 兼容旧签名（无项目过滤）。 */
+    public List<com.th4.edge.decoboon.material.model.SettlementPreviewRow> preview(
+            Employee principal, Long supplierId, SettlementScope scope, String period, Long purchaseOrderId) {
+        return preview(principal, supplierId, scope, period, purchaseOrderId, null);
     }
 
     /**
@@ -300,8 +307,14 @@ public class MaterialSettlementContext {
 
     // ------------------------------------------------------------------ 内部
 
+    /**
+     * 结算候选集。
+     *
+     * <p>scope 为空＝**财务工作台用**：返回该企业（可按项目/供应商/期间过滤）全部可结算明细，
+     * 财务无需先选供应商或采购单即可看到"哪些明细可以结"。</p>
+     */
     private List<PurchaseOrderItem> candidates(Employee current, Long supplierId, SettlementScope scope,
-                                               String period, Long purchaseOrderId) {
+                                               String period, Long purchaseOrderId, Long projectId) {
         Long comId = current.getCompany().getComId();
         List<PurchaseOrder> orders;
         if (scope == SettlementScope.Monthly) {
@@ -312,7 +325,7 @@ public class MaterialSettlementContext {
                     .stream()
                     .filter(order -> inPeriod(order, period))
                     .toList();
-        } else {
+        } else if (scope == SettlementScope.PerPurchaseOrder) {
             if (purchaseOrderId == null) {
                 throw new DefinedException(new DefaultErrorCode("400", "逐单结算必须指定采购单"));
             }
@@ -320,11 +333,23 @@ public class MaterialSettlementContext {
                     .filter(item -> item.getCompany() != null && item.getCompany().getComId().equals(comId))
                     .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "采购单不存在或无权访问")));
             orders = List.of(order);
+        } else {
+            orders = (projectId == null
+                    ? purchaseOrderRepository.findByCompany_ComIdOrderByPurchaseIdDesc(comId)
+                    : purchaseOrderRepository.findByProject_ProjectIdInOrderByPurchaseIdDesc(List.of(projectId)))
+                    .stream()
+                    .filter(order -> order.getCompany() != null && order.getCompany().getComId().equals(comId))
+                    .filter(order -> supplierId == null || (order.getSupplier() != null
+                            && supplierId.equals(order.getSupplier().getPartnerId())))
+                    .filter(order -> inPeriod(order, period))
+                    .toList();
         }
-        List<PurchaseOrderItem> items = new ArrayList<>();
-        for (PurchaseOrder order : orders) {
-            items.addAll(purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(order));
+        if (orders.isEmpty()) {
+            return List.of();
         }
+        // 一次批量取明细（不逐单查库）
+        List<PurchaseOrderItem> items = purchaseItemRepository
+                .findByPurchaseOrderInOrderByPurchaseItemIdAsc(orders);
         if (items.isEmpty()) {
             return List.of();
         }

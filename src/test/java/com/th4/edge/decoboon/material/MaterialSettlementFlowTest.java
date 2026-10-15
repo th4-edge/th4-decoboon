@@ -158,6 +158,8 @@ class MaterialSettlementFlowTest {
         when(purchaseItemRepository.findAllById(any())).thenReturn(List.of(itemPriced, itemUnpriced));
         when(purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(any()))
                 .thenReturn(List.of(itemPriced, itemUnpriced));
+        when(purchaseItemRepository.findByPurchaseOrderInOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(itemPriced, itemUnpriced));
         when(purchaseItemRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(purchaseOrderRepository.findById(2000L)).thenReturn(Optional.of(order));
         when(purchaseOrderRepository.findByCompany_ComIdAndSupplier_PartnerIdOrderByPurchaseIdDesc(any(), any()))
@@ -218,6 +220,33 @@ class MaterialSettlementFlowTest {
                 .as("已补记的实际成本差额应被冲回")
                 .isEqualByComparingTo("0");
         org.mockito.Mockito.verify(settlementItemRepository).deleteAll(any());
+    }
+
+    @Test
+    void financeQueueShouldListAllSettleableItemsWithoutSupplier() {
+        when(purchaseOrderRepository.findByCompany_ComIdOrderByPurchaseIdDesc(any())).thenReturn(List.of(order));
+        when(purchaseItemRepository.findByPurchaseOrderInOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(itemPriced, itemUnpriced));
+
+        List<SettlementPreviewRow> rows = context.preview(finance, null, null, null, null, null);
+
+        assertThat(rows)
+                .as("财务工作台无需先选供应商：返回企业全部可结算明细")
+                .hasSize(2);
+        assertThat(rows).anyMatch(row -> row.getPurchaseItemId().equals(22L) && row.isUnpriced());
+    }
+
+    @Test
+    void financeQueueShouldExcludeAlreadySettledItems() {
+        when(purchaseOrderRepository.findByCompany_ComIdOrderByPurchaseIdDesc(any())).thenReturn(List.of(order));
+        when(purchaseItemRepository.findByPurchaseOrderInOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(itemPriced, itemUnpriced));
+        when(settlementItemRepository.findByPurchaseItem_PurchaseItemIdIn(any())).thenReturn(List.of(existingItem()));
+
+        List<SettlementPreviewRow> rows = context.preview(finance, null, null, null, null, null);
+
+        assertThat(rows).hasSize(1);
+        assertThat(rows.get(0).getPurchaseItemId()).isEqualTo(22L);
     }
 
     private MaterialSettlementItem command(Long purchaseItemId, String price) {
