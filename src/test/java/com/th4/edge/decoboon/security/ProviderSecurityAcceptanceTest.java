@@ -176,8 +176,12 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-15 亲友免登录只读通道新增 3 条：customer/sharelink/save、customer/sharelink/update（protected，业主本人）
         // 与 customer/shareview/info（**public**，凭带时效令牌免登录）。
         // => 当前 Provider 面板为 477（public 16 + protected 461）。
-        assertThat(routes).hasSize(477);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(461);
+        // 2026-10-15 业主端开通方式改为「项目码扫码 + 手机号验证」（USER-DECISION-20261015-001）新增 2 条 protected：
+        // project/owner-qrcode/build（项目码生成，员工 + 项目可见性）与
+        // identity/customer-access/scan-enter（扫码开通业主授权，微信登录态 + 手机号一致）。
+        // => 当前 Provider 面板为 479（public 16 + protected 463）。
+        assertThat(routes).hasSize(479);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(463);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -238,6 +242,8 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("risk/item/close");
         assertUnauthorized("project/task/update");
         assertUnauthorized("identity/customer-invite/save");
+        assertUnauthorized("identity/customer-access/scan-enter");
+        assertUnauthorized("project/owner-qrcode/build");
         assertUnauthorized("customer/project/album/page");
         assertUnauthorized("file/private/grant");
         assertUnauthorized("finance/receivable/page");

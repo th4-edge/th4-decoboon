@@ -20,6 +20,14 @@ public interface ProjectRepository extends JpaRepository<Project, Long>,
 
     boolean existsByQuote(Quote quote);
 
+    /**
+     * 按项目编号查询：业主项目码的 scene 使用项目编号（对外已可读、长度 ≤32、不含敏感信息）。
+     *
+     * <p>带 {@link EntityGraph} 预取业主指纹所需关联，避免扫码进入在事务外读懒加载。</p>
+     */
+    @EntityGraph(attributePaths = {"customer", "property", "property.customer", "company"})
+    Optional<Project> findByNo(String no);
+
     boolean existsByCompany_ComIdAndProperty_PropertyId(Long comId, Long propertyId);
     boolean existsByCompany_ComIdAndProperty_PropertyIdAndManager_EmpId(Long comId, Long propertyId, Long empId);
 

@@ -81,6 +81,7 @@ th4:
         key-prefix: ${ALIYUN_OSS_KEY_PREFIX:}
       wechat:
         mini-program:
+          qr-code-env-version: ${WECHAT_QR_ENV_VERSION:release}
           enabled: ${WECHAT_MINI_ENABLED}
           app-id: ${WECHAT_MINI_APP_ID}
           app-secret: ${WECHAT_MINI_APP_SECRET}

@@ -197,6 +197,22 @@ public class Project extends AuditModel implements ProjectOwned {
     private String currentStageName;
 
     @Transient
+    @Note("只读投影：业主项目码 scene（= 项目编号，扫码进入参数）")
+    private String ownerQrcodeScene;
+
+    @Transient
+    @Note("只读投影：业主项目码对象键（私有存储，不对外长期暴露）")
+    private String ownerQrcodePath;
+
+    @Transient
+    @Note("只读投影：业主项目码短期签名地址（展示/打印用，过期需重新生成）")
+    private String ownerQrcodeUrl;
+
+    @Transient
+    @Note("只读投影：业主项目码指向的版本环境（release/trial/develop）")
+    private String ownerQrcodeEnvVersion;
+
+    @Transient
     @Note("只读投影：项目风险等级")
     private ProjectRiskLevel riskLevel = ProjectRiskLevel.Normal;
 
@@ -480,5 +496,20 @@ public Long getProjectId() {
     @Override
     public void setOwner(Employee owner) { this.owner = owner; }
 
+    public String getOwnerQrcodeScene() { return ownerQrcodeScene; }
+
+    public void setOwnerQrcodeScene(String ownerQrcodeScene) { this.ownerQrcodeScene = ownerQrcodeScene; }
+
+    public String getOwnerQrcodePath() { return ownerQrcodePath; }
+
+    public void setOwnerQrcodePath(String ownerQrcodePath) { this.ownerQrcodePath = ownerQrcodePath; }
+
+    public String getOwnerQrcodeUrl() { return ownerQrcodeUrl; }
+
+    public void setOwnerQrcodeUrl(String ownerQrcodeUrl) { this.ownerQrcodeUrl = ownerQrcodeUrl; }
+
+    public String getOwnerQrcodeEnvVersion() { return ownerQrcodeEnvVersion; }
+
+    public void setOwnerQrcodeEnvVersion(String ownerQrcodeEnvVersion) { this.ownerQrcodeEnvVersion = ownerQrcodeEnvVersion; }
 
 }

@@ -16,6 +16,14 @@ public class WechatMiniProgramConfigure {
     private int readTimeoutMs = 5000;
 
     /**
+     * 小程序码指向的版本环境：`release`（正式版，默认）/ `trial`（体验版）/ `develop`（开发版）。
+     *
+     * <p>正式版尚未发布时，`release` 码扫不开（小程序端会提示无可用版本），
+     * 此时由运维把 {@code WECHAT_QR_ENV_VERSION=trial} 临时切到体验版；正式发布后恢复 `release`。</p>
+     */
+    private String qrCodeEnvVersion = "release";
+
+    /**
      * 订阅消息模板 ID，键为 {@link WechatSubscribeScenario} 中的场景键。
      *
      * <p>未配置（或配置为空串）的场景一律跳过发送，便于按场景逐步灰度上线。</p>
@@ -50,6 +58,10 @@ public class WechatMiniProgramConfigure {
     public void setConnectTimeoutMs(int connectTimeoutMs) { this.connectTimeoutMs = connectTimeoutMs; }
     public int getReadTimeoutMs() { return readTimeoutMs; }
     public void setReadTimeoutMs(int readTimeoutMs) { this.readTimeoutMs = readTimeoutMs; }
+    public String getQrCodeEnvVersion() { return qrCodeEnvVersion; }
+    public void setQrCodeEnvVersion(String qrCodeEnvVersion) {
+        this.qrCodeEnvVersion = qrCodeEnvVersion == null || qrCodeEnvVersion.isBlank() ? "release" : qrCodeEnvVersion.trim();
+    }
     public Map<String, String> getSubscribeTemplates() { return subscribeTemplates; }
     public void setSubscribeTemplates(Map<String, String> subscribeTemplates) {
         this.subscribeTemplates = subscribeTemplates == null ? new LinkedHashMap<>() : subscribeTemplates;

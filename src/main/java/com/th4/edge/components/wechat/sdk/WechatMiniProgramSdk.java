@@ -13,6 +13,8 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -29,6 +31,8 @@ import java.time.Instant;
 @Configuration
 @EnableConfigurationProperties(WechatMiniProgramConfigure.class)
 public class WechatMiniProgramSdk implements WechatMiniProgramClient {
+
+    private static final Logger log = LoggerFactory.getLogger(WechatMiniProgramSdk.class);
 
     private final WechatMiniProgramConfigure configure;
     private final ObjectMapper objectMapper;
@@ -66,6 +70,65 @@ public class WechatMiniProgramSdk implements WechatMiniProgramClient {
         String phone = body.path("phone_info").path("purePhoneNumber").asText("");
         if (phone.isBlank()) throw new DefinedException(new DefaultErrorCode("400", "未获得微信授权手机号"));
         return new WechatPhone(phone);
+    }
+
+    @Override
+    public byte[] unlimitedQrCode(String scene, String page, String envVersion) {
+        requireConfigured();
+        if (scene == null || scene.isBlank()) {
+            throw new DefinedException(new DefaultErrorCode("400", "小程序码 scene 不能为空"));
+        }
+        String normalizedScene = scene.trim();
+        if (normalizedScene.length() > 32) {
+            // 微信硬限制：scene 最多 32 个可见字符，超长会返回 41030/invalid length。
+            throw new DefinedException(new DefaultErrorCode("400", "小程序码 scene 最长 32 个字符"));
+        }
+        ObjectNode payload = objectMapper.createObjectNode();
+        payload.put("scene", normalizedScene);
+        if (page != null && !page.isBlank()) {
+            payload.put("page", page.trim());
+        }
+        // check_path=false：页面在已发布版本里尚未存在时仍可生成（发布前预览与体验版验证必需）。
+        payload.put("check_path", false);
+        payload.put("width", 430);
+        payload.put("is_hyaline", false);
+        if (envVersion != null && !envVersion.isBlank()) {
+            payload.put("env_version", envVersion.trim());
+        }
+        byte[] body = postBinary("https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" + accessToken(),
+                payload.toString());
+        if (body == null || body.length == 0) {
+            throw new DefinedException(new DefaultErrorCode("502", "微信未返回小程序码"));
+        }
+        if (body[0] == '{') {
+            // 失败时微信返回 JSON（如 40164 IP 未白名单 / 41030 参数非法），必须显式失败而不是把 JSON 当图片存下来。
+            try {
+                JsonNode error = objectMapper.readTree(body);
+                int code = error.path("errcode").asInt(-1);
+                String message = error.path("errmsg").asText("未知错误");
+                log.warn("微信小程序码生成失败: errcode={} errmsg={}", code, message);
+                throw new DefinedException(new DefaultErrorCode("502", "微信小程序码生成失败：" + message));
+            } catch (DefinedException exception) {
+                throw exception;
+            } catch (Exception exception) {
+                throw new DefinedException(new DefaultErrorCode("502", "微信小程序码生成失败：响应无法解析"));
+            }
+        }
+        return body;
+    }
+
+    private byte[] postBinary(String url, String body) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder(URI.create(url))
+                    .timeout(Duration.ofMillis(configure.getReadTimeoutMs()))
+                    .header("Content-Type", "application/json; charset=UTF-8")
+                    .POST(HttpRequest.BodyPublishers.ofString(body, StandardCharsets.UTF_8))
+                    .build();
+            HttpResponse<byte[]> response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            return response.body();
+        } catch (Exception exception) {
+            throw new DefinedException(new DefaultErrorCode("502", "微信小程序码请求异常：" + exception.getMessage()));
+        }
     }
 
     @Override
