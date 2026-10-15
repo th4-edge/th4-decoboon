@@ -16,6 +16,7 @@ public enum MaterialSheetStatus implements Enumerable<String> {
     Measuring("待测量"),
     Measured("已测量"),
     Submitted("已提交请购"),
+    PartiallyOrdered("部分下单"),
     Pricing("财务核价"),
     Ordered("已下单"),
     PartiallyArrived("部分到场"),
@@ -37,7 +38,7 @@ public enum MaterialSheetStatus implements Enumerable<String> {
 
     /** 是否已进入采购（进入后锁定选材，换材走增减项，DEC-008 / DEC-056）。 */
     public boolean ordered() {
-        return this == Ordered || this == PartiallyArrived || this == Arrived
+        return this == Ordered || this == PartiallyOrdered || this == PartiallyArrived || this == Arrived
                 || this == Settled || this == Closed;
     }
 

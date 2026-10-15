@@ -164,6 +164,13 @@ public class MaterialOrderSheet extends AuditModel implements ProjectOwned {
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee createdBy;
 
+    @jakarta.persistence.Transient
+    @Note("作业单行（分页/详情响应投影，不落库）")
+    private List<MaterialOrderSheetItem> items;
+
+    public List<MaterialOrderSheetItem> getItems() { return items; }
+    public void setItems(List<MaterialOrderSheetItem> items) { this.items = items; }
+
     public Long getSheetId() { return sheetId; }
     public void setSheetId(Long sheetId) { this.sheetId = sheetId; }
     public Company getCompany() { return company; }

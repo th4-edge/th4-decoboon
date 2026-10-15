@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.material.context;
 
 import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.material.configure.SelectionStatus;
 import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.material.model.MaterialSelectionItem;
 import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
@@ -340,6 +341,30 @@ public class MaterialSelectionContext {
     /** 同一合同行可能同时存在原计划与变更计划：任一条已进入采购即锁定选材。 */
     public boolean selectionLocked(List<MaterialPlan> plans) {
         return plans != null && plans.stream().anyMatch(this::selectionLocked);
+    }
+
+    /**
+     * 下单前选材门禁（DEC-008 / DEC-056 / DEC-MP-05）：合同选材来源的计划行必须有"已选材（现场确认）"记录。
+     *
+     * <p>采购下单与作业单下单共用本方法，避免门禁出现两份实现而漂移。</p>
+     */
+    public void requireOrderableSelection(MaterialPlan plan) {
+        if (plan == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "材料计划不存在"));
+        }
+        if (plan.getSourceType() != com.th4.edge.decoboon.project.configure.MaterialSourceType.Selection) {
+            return;
+        }
+        MaterialSelection selection = plan.getSelection();
+        if (selection == null && plan.getContractLine() != null && plan.getCompany() != null) {
+            selection = repository
+                    .findFirstByCompany_ComIdAndSourceContractLine_LineIdOrderByVersionDesc(
+                            plan.getCompany().getComId(), plan.getContractLine().getLineId())
+                    .orElse(null);
+        }
+        if (selection == null || selection.getStatus() != SelectionStatus.Selected) {
+            throw new DefinedException(new DefaultErrorCode("400", "该材料尚未完成主材选材，完成后方可下单"));
+        }
     }
 
     public void requireSelectionEditable(List<MaterialPlan> plans) {

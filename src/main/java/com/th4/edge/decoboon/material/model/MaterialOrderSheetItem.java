@@ -168,6 +168,10 @@ public class MaterialOrderSheetItem extends AuditModel implements ProjectOwned {
     @Column(name = "settlement_price", precision = 12, scale = 2)
     private BigDecimal settlementPrice;
 
+    @Note("已下单数量（可分批/分供应商）")
+    @Column(name = "ordered_quantity", precision = 12, scale = 2, nullable = false)
+    private BigDecimal orderedQuantity = BigDecimal.ZERO;
+
     @Note("价格状态")
     @Enumerated(EnumType.STRING)
     @Column(name = "price_state", length = 16, nullable = false)
@@ -243,6 +247,8 @@ public class MaterialOrderSheetItem extends AuditModel implements ProjectOwned {
     public void setPurchasePrice(BigDecimal purchasePrice) { this.purchasePrice = purchasePrice; }
     public BigDecimal getSettlementPrice() { return settlementPrice; }
     public void setSettlementPrice(BigDecimal settlementPrice) { this.settlementPrice = settlementPrice; }
+    public BigDecimal getOrderedQuantity() { return orderedQuantity; }
+    public void setOrderedQuantity(BigDecimal orderedQuantity) { this.orderedQuantity = orderedQuantity; }
     public SheetPriceState getPriceState() { return priceState; }
     public void setPriceState(SheetPriceState priceState) { this.priceState = priceState; }
     public Integer getSort() { return sort; }

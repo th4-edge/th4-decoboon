@@ -63,7 +63,9 @@ class PurchaseCreationPolicyTest {
                 mock(com.th4.edge.decoboon.material.repository.MaterialSelectionRepository.class),
                 mock(com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository.class),
                 null,
-                mock(com.th4.edge.decoboon.project.context.MaterialPurchaseContext.class));
+                mock(com.th4.edge.decoboon.project.context.MaterialPurchaseContext.class),
+                // 选材门禁已抽取到 MaterialSelectionContext.requireOrderableSelection（采购与作业单共用）
+                mock(com.th4.edge.decoboon.material.context.MaterialSelectionContext.class));
         when(identityContext.prepare(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(purchaseRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(planRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));

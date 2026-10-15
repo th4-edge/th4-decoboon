@@ -24,5 +24,8 @@ public interface MaterialOrderSheetRepository extends JpaRepository<MaterialOrde
 
     boolean existsByCompany_ComIdAndSheetNo(Long comId, String sheetNo);
 
+    java.util.Optional<MaterialOrderSheet> findFirstByCompany_ComIdAndSheetNoStartingWithOrderBySheetNoDesc(
+            Long comId, String prefix);
+
     long countByProject_ProjectIdAndStatusIn(Long projectId, Collection<com.th4.edge.decoboon.material.configure.MaterialSheetStatus> statuses);
 }

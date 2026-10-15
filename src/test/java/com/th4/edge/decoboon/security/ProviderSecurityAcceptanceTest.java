@@ -184,8 +184,12 @@ class ProviderSecurityAcceptanceTest {
         // material/template build、page、info、save、update、publish、delete
         // （模板配置权限：Boss / StoreManager；作业单与采购单为两张单，DEC-073）。
         // => 当前 Provider 面板为 486（public 16 + protected 470）。
-        assertThat(routes).hasSize(486);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(470);
+        // 2026-10-15 主材下单作业单 P0-2 第二批新增 9 条 protected：
+        // material/sheet page、info、save、update、delete、submit、measure、order、report
+        // （作业单生命周期与下单编排；作业单与采购单为两张单，DEC-073）。
+        // => 当前 Provider 面板为 495（public 16 + protected 479）。
+        assertThat(routes).hasSize(495);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(479);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 

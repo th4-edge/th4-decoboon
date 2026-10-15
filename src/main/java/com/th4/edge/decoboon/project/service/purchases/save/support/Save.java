@@ -84,21 +84,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
     private final PurchaseOrderItemRepository purchaseItemRepository;
     private final CarryoverLockContext carryoverLockContext;
     private final MaterialPurchaseContext materialPurchaseContext;
-
-    public Save(MaterialPlanRepository materialPlanRepository,
-                ProjectContractRepository contractRepository,
-                PurchaseOrderRepository purchaseRepository,
-                PartnerRepository partnerRepository,
-                StoreRepository storeRepository,
-                ProjectAccessContext accessContext,
-                ModelIdentityContext modelIdentityContext,
-                ProjectPermissionContext permissionContext,
-                MaterialSelectionRepository materialSelectionRepository,
-                PurchaseOrderItemRepository purchaseItemRepository) {
-        this(materialPlanRepository, contractRepository, purchaseRepository, partnerRepository, storeRepository,
-                accessContext, modelIdentityContext, permissionContext, materialSelectionRepository,
-                purchaseItemRepository, null, null);
-    }
+    private final com.th4.edge.decoboon.material.context.MaterialSelectionContext materialSelectionContext;
 
     @Autowired
     public Save(MaterialPlanRepository materialPlanRepository,
@@ -112,7 +98,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
                 MaterialSelectionRepository materialSelectionRepository,
                 PurchaseOrderItemRepository purchaseItemRepository,
                 CarryoverLockContext carryoverLockContext,
-                MaterialPurchaseContext materialPurchaseContext) {
+                MaterialPurchaseContext materialPurchaseContext,
+                com.th4.edge.decoboon.material.context.MaterialSelectionContext materialSelectionContext) {
         this.materialPlanRepository = materialPlanRepository;
         this.contractRepository = contractRepository;
         this.purchaseRepository = purchaseRepository;
@@ -125,6 +112,7 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
         this.purchaseItemRepository = purchaseItemRepository;
         this.carryoverLockContext = carryoverLockContext;
         this.materialPurchaseContext = materialPurchaseContext;
+        this.materialSelectionContext = materialSelectionContext;
     }
 
     @Override
@@ -216,19 +204,8 @@ public class Save implements com.th4.edge.decoboon.project.service.purchases.sav
      * 增减项来源的计划行在客户确认变更时生成，天然满足门禁。
      */
     private void requireConfirmedSelection(com.th4.edge.decoboon.project.model.MaterialPlan plan) {
-        if (plan.getSourceType() != MaterialSourceType.Selection) {
-            return;
-        }
-        MaterialSelection selection = plan.getSelection();
-        if (selection == null && plan.getContractLine() != null && plan.getCompany() != null) {
-            selection = materialSelectionRepository
-                    .findFirstByCompany_ComIdAndSourceContractLine_LineIdOrderByVersionDesc(
-                            plan.getCompany().getComId(), plan.getContractLine().getLineId())
-                    .orElse(null);
-        }
-        if (selection == null || selection.getStatus() != SelectionStatus.Selected) {
-            throw new DefinedException(new DefaultErrorCode("400", "该材料尚未完成主材选材，完成后方可下单"));
-        }
+        // 门禁唯一实现在 MaterialSelectionContext.requireOrderableSelection（作业单下单共用），此处仅委托。
+        materialSelectionContext.requireOrderableSelection(plan);
     }
 
     private Partner resolveSupplier(Employee current, Long supplierId, String supplierName) {

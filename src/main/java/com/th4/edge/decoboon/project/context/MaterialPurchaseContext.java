@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
+import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.context.PartnerCreditContext;
 import com.th4.edge.decoboon.finance.model.Payable;
@@ -218,14 +219,19 @@ public class MaterialPurchaseContext {
         payable.setType(PayableType.Material);
         payable.setPayeePartner(purchase.getSupplier());
         payable.setPayeeName(purchase.getSupplierName());
+        // DEC-072 第 1 项：无价下单形成**暂估应付**（金额待定，结算时修正留痕）。
+        // 既有 amount 为 NOT NULL，暂估期 amount=0 且 estimated=true；禁止把 0 当作真实价参与成本与利润。
+        boolean unpriced = purchase.getPriceState() == SheetPriceState.Unpriced;
         payable.setAmount(value(purchase.getAmount()));
+        payable.setEstimated(unpriced);
+        payable.setSettledAmount(null);
         payable.setPaidAmount(BigDecimal.ZERO);
         payable.setReceiptDate(null);
         payable.setSettlementMode(purchase.getSupplier().getSettlementMode());
         payable.setDueDate(null);
         payable.setStatus(PayableStatus.Pending);
         payable.setSourceNo(purchase.getNo());
-        payable.setRemark("确认下单自动形成应付");
+        payable.setRemark(unpriced ? "确认下单自动形成暂估应付（未定价，结算后修正）" : "确认下单自动形成应付");
         payable.setCreatedBy(operator);
         payableRepository.save(modelIdentityContext.prepare(payable));
     }
