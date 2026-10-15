@@ -41,6 +41,11 @@ cp docs/deploy/admin-decoboon.joytsing.com.conf "$RELEASE_DIR/"
 cp docs/deploy/certbot-renew.service "$RELEASE_DIR/"
 cp docs/deploy/certbot-renew.timer "$RELEASE_DIR/"
 cp docs/design/migrations/00-迁移账本.sql "$RELEASE_DIR/"
+# 2026-10-15 补：回滚脚本必须随发布包一同交付（DDL 变更要求可回滚；此前发布包只有正迁移、无回滚脚本）
+if [ -d docs/design/migrations/rollback ]; then
+  mkdir -p "$RELEASE_DIR/rollback"
+  cp docs/design/migrations/rollback/*.sql "$RELEASE_DIR/rollback/"
+fi
 cp docs/design/migrations/01-空库基线.sql "$RELEASE_DIR/"
 cp docs/design/migrations/19-生产发布基线.md "$RELEASE_DIR/"
 cp docs/design/migrations/22-OSS对象存储部署说明.md "$RELEASE_DIR/"
