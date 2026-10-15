@@ -1,0 +1,369 @@
+package com.th4.edge.decoboon.material;
+
+import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.decoboon.bim.configure.Unit;
+import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.common.access.StoreAttributionTestSupport;
+import com.th4.edge.decoboon.finance.configure.PayableStatus;
+import com.th4.edge.decoboon.finance.context.PartnerCreditContext;
+import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.material.configure.MaterialSheetStatus;
+import com.th4.edge.decoboon.material.configure.SelectionStatus;
+import com.th4.edge.decoboon.material.configure.SheetPriceState;
+import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
+import com.th4.edge.decoboon.material.context.MaterialSheetContext;
+import com.th4.edge.decoboon.material.context.MaterialSheetTemplateContext;
+import com.th4.edge.decoboon.material.model.MaterialOrderSheet;
+import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
+import com.th4.edge.decoboon.material.model.MaterialSelection;
+import com.th4.edge.decoboon.material.repository.MaterialOrderSheetItemRepository;
+import com.th4.edge.decoboon.material.repository.MaterialOrderSheetRepository;
+import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
+import com.th4.edge.decoboon.project.configure.MaterialPlanStatus;
+import com.th4.edge.decoboon.project.configure.MaterialSourceType;
+import com.th4.edge.decoboon.project.configure.PurchaseStatus;
+import com.th4.edge.decoboon.project.context.MaterialPlanStatusContext;
+import com.th4.edge.decoboon.project.context.MaterialPurchaseContext;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
+import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
+import com.th4.edge.decoboon.project.model.ContractLine;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
+import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.project.model.PurchaseOrder;
+import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
+import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
+import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
+import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
+import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.supply.configure.PartnerStatus;
+import com.th4.edge.decoboon.supply.configure.PartnerType;
+import com.th4.edge.decoboon.supply.model.Partner;
+import com.th4.edge.decoboon.supply.repository.MaterialSupplierRepository;
+import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
+import com.th4.edge.decoboon.supply.repository.PartnerRepository;
+import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.context.TenantContext;
+import com.th4.edge.tenant.user.model.Company;
+import com.th4.edge.tenant.user.model.Employee;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+/**
+ * 主材下单作业单端到端定向流程（SOL-014 / OBJ-008 / DEC-072 / DEC-073）。
+ *
+ * <p>覆盖：建单（成本快照与损耗继承）→ 三道门禁（未选材、超量）→ 提交请购 →
+ * 无价下单（priceState=Unpriced + 暂估应付）与有价下单 → 已下单后禁止删除。</p>
+ */
+class MaterialSheetOrderFlowTest {
+
+    private final MaterialOrderSheetRepository sheetRepository = mock(MaterialOrderSheetRepository.class);
+    private final MaterialOrderSheetItemRepository itemRepository = mock(MaterialOrderSheetItemRepository.class);
+    private final MaterialPlanRepository planRepository = mock(MaterialPlanRepository.class);
+    private final ProjectContractRepository contractRepository = mock(ProjectContractRepository.class);
+    private final PurchaseOrderRepository purchaseRepository = mock(PurchaseOrderRepository.class);
+    private final PartnerRepository partnerRepository = mock(PartnerRepository.class);
+    private final PayableRepository payableRepository = mock(PayableRepository.class);
+    private final ProjectAccessContext accessContext = mock(ProjectAccessContext.class);
+    private final ProjectPermissionContext permissionContext = mock(ProjectPermissionContext.class);
+    private final ModelIdentityContext identityContext = mock(ModelIdentityContext.class);
+    private final TenantContext tenantContext = mock(TenantContext.class);
+    private final MaterialSheetTemplateContext templateContext = mock(MaterialSheetTemplateContext.class);
+    private final MaterialPlanStatusContext planStatusContext = mock(MaterialPlanStatusContext.class);
+    private final MaterialSelectionRepository selectionRepository = mock(MaterialSelectionRepository.class);
+
+    private final MaterialPurchaseContext purchaseContext = StoreAttributionTestSupport.inject(
+            new MaterialPurchaseContext(purchaseRepository, mock(PurchaseOrderItemRepository.class),
+                    planRepository, planStatusContext, payableRepository, identityContext,
+                    mock(PartnerCreditContext.class), mock(MaterialSupplierRepository.class),
+                    mock(PartnerPriceRepository.class)));
+    private final MaterialSelectionContext selectionContext =
+            new MaterialSelectionContext(selectionRepository, null, null, null, null, null, null);
+
+    private final MaterialSheetContext context = new MaterialSheetContext(
+            sheetRepository, itemRepository, planRepository, contractRepository, purchaseRepository,
+            partnerRepository, accessContext, permissionContext, identityContext, tenantContext,
+            purchaseContext, selectionContext, templateContext);
+
+    private Company company;
+    private Project project;
+    private ProjectContract contract;
+    private Employee designer;
+    private Employee boss;
+    private Partner supplier;
+    private final List<MaterialOrderSheetItem> savedItems = new ArrayList<>();
+
+    @BeforeEach
+    void setUp() {
+        company = new Company();
+        company.setComId(1L);
+        company.setName("麦鸿装饰");
+
+        Property property = new Property();
+        property.setPropertyId(7L);
+        property.setCompany(company);
+
+        project = new Project();
+        project.setProjectId(9L);
+        project.setCompany(company);
+        project.setProperty(property);
+
+        contract = new ProjectContract();
+        contract.setContractId(11L);
+        contract.setProject(project);
+
+        designer = employee(EmployeeRole.Designer);
+        boss = employee(EmployeeRole.Boss);
+
+        supplier = new Partner();
+        supplier.setPartnerId(3L);
+        supplier.setCompany(company);
+        supplier.setName("利家福");
+        supplier.setType(PartnerType.Supplier);
+        supplier.setStatus(PartnerStatus.Active);
+
+        // 下单编排会以财务/BOSS 身份进入，requireEmployee 必须返回调用方传入的身份
+        when(accessContext.requireEmployee(any())).thenAnswer(invocation ->
+                invocation.getArgument(0) == null ? designer : invocation.getArgument(0));
+        when(accessContext.requireProject(any(), any())).thenReturn(project);
+        when(accessContext.visibleChild(any(), any(), any())).thenReturn((root, query, builder) -> builder.conjunction());
+        when(tenantContext.requireEmployee(any())).thenAnswer(invocation ->
+                invocation.getArgument(0) == null ? designer : invocation.getArgument(0));
+        when(contractRepository.findByProject(project)).thenReturn(Optional.of(contract));
+        when(partnerRepository.findById(3L)).thenReturn(Optional.of(supplier));
+        when(identityContext.prepare(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(sheetRepository.save(any())).thenAnswer(invocation -> {
+            MaterialOrderSheet sheet = invocation.getArgument(0);
+            if (sheet.getSheetId() == null) sheet.setSheetId(1000L);
+            return sheet;
+        });
+        when(sheetRepository.findOne(org.mockito.ArgumentMatchers.<org.springframework.data.jpa.domain.Specification<MaterialOrderSheet>>any())).thenAnswer(invocation -> Optional.of(currentSheet));
+        when(itemRepository.save(any())).thenAnswer(invocation -> {
+            MaterialOrderSheetItem item = invocation.getArgument(0);
+            if (item.getItemId() == null) item.setItemId((long) (500 + savedItems.size()));
+            savedItems.add(item);
+            return item;
+        });
+        when(itemRepository.findBySheet_SheetIdOrderBySortAscItemIdAsc(any()))
+                .thenAnswer(invocation -> new ArrayList<>(savedItems));
+        when(purchaseRepository.save(any())).thenAnswer(invocation -> {
+            PurchaseOrder order = invocation.getArgument(0);
+            if (order.getPurchaseId() == null) order.setPurchaseId(2000L);
+            return order;
+        });
+        when(payableRepository.findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(any(), any()))
+                .thenReturn(Optional.empty());
+        when(payableRepository.findFirstByCompany_ComIdAndSourceNoAndType(any(), any(), any()))
+                .thenReturn(Optional.empty());
+        when(payableRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(planStatusContext.orderedQuantity(any())).thenReturn(BigDecimal.ZERO);
+        when(planStatusContext.resolve(any())).thenReturn(MaterialPlanStatus.PartiallyOrdered);
+    }
+
+    private MaterialOrderSheet currentSheet;
+
+    @Test
+    void saveShouldCopyCostSnapshotAndLossFromPlan() {
+        MaterialPlan plan = plan(1L, new BigDecimal("10"), new BigDecimal("0.08"), true);
+        stubPlan(plan);
+
+        MaterialOrderSheet sheet = context.save(designer, 9L, "Tile", "诗尔曼", null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+
+        assertThat(sheet.getStatus()).isEqualTo(MaterialSheetStatus.Draft);
+        assertThat(sheet.getSheetNo()).startsWith("TILE-");
+        assertThat(savedItems).hasSize(1);
+        MaterialOrderSheetItem saved = savedItems.get(0);
+        assertThat(saved.getQuoteCostPrice()).isEqualByComparingTo("100");
+        assertThat(saved.getLossRate()).isEqualByComparingTo("0.08");
+        assertThat(saved.getPriceState()).isEqualTo(SheetPriceState.Unpriced);
+        assertThat(saved.getOrderedQuantity()).isEqualByComparingTo("0");
+    }
+
+    @Test
+    void lineWithoutConfirmedSelectionMustBeRejected() {
+        MaterialPlan plan = plan(2L, new BigDecimal("10"), BigDecimal.ZERO, false);
+        stubPlan(plan);
+
+        assertThatThrownBy(() -> context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("5"), "厨房地砖"))))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("尚未完成主材选材");
+    }
+
+    @Test
+    void quantityAboveNetPlusLossMustBeRejected() {
+        MaterialPlan plan = plan(3L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+
+        assertThatThrownBy(() -> context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10.5"), "阳台地砖"))))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("超过可下单数量");
+    }
+
+    @Test
+    void submitShouldRequireMeasuredGateAndMoveToSubmitted() {
+        MaterialPlan plan = plan(4L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+
+        MaterialOrderSheet submitted = context.submit(designer, currentSheet.getSheetId());
+
+        assertThat(submitted.getStatus()).isEqualTo(MaterialSheetStatus.Submitted);
+    }
+
+    @Test
+    void unpricedOrderShouldCreateUnpricedPurchaseAndEstimatedPayable() {
+        MaterialPlan plan = plan(5L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+
+        ArgumentCaptor<PurchaseOrder> purchases = ArgumentCaptor.forClass(PurchaseOrder.class);
+        ArgumentCaptor<Payable> payables = ArgumentCaptor.forClass(Payable.class);
+
+        MaterialOrderSheetItem command = new MaterialOrderSheetItem();
+        command.setItemId(savedItems.get(0).getItemId());
+        command.setQuantity(new BigDecimal("10"));
+        command.setPurchasePrice(null);
+
+        MaterialOrderSheet ordered = context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null,
+                List.of(command));
+
+        assertThat(ordered.getStatus()).isEqualTo(MaterialSheetStatus.Ordered);
+        assertThat(ordered.getPriceState()).isEqualTo(SheetPriceState.Unpriced);
+        assertThat(savedItems.get(0).getOrderedQuantity()).isEqualByComparingTo("10");
+
+        org.mockito.Mockito.verify(purchaseRepository, org.mockito.Mockito.atLeastOnce()).save(purchases.capture());
+        PurchaseOrder purchase = purchases.getAllValues().get(0);
+        assertThat(purchase.getPriceState()).isEqualTo(SheetPriceState.Unpriced);
+        assertThat(purchase.getAmount()).isEqualByComparingTo("0");
+        assertThat(purchase.getStatus()).isEqualTo(PurchaseStatus.Ordered);
+
+        org.mockito.Mockito.verify(payableRepository).save(payables.capture());
+        Payable payable = payables.getValue();
+        assertThat(payable.getEstimated())
+                .as("无价下单必须形成暂估应付（DEC-072 第 1 项）")
+                .isTrue();
+        assertThat(payable.getAmount()).isEqualByComparingTo("0");
+        assertThat(payable.getStatus()).isEqualTo(PayableStatus.Pending);
+        assertThat(payable.getRemark()).contains("暂估");
+    }
+
+    @Test
+    void pricedOrderShouldCreatePayableWithAmount() {
+        MaterialPlan plan = plan(6L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+
+        MaterialOrderSheetItem command = new MaterialOrderSheetItem();
+        command.setItemId(savedItems.get(0).getItemId());
+        command.setQuantity(new BigDecimal("10"));
+        command.setPurchasePrice(new BigDecimal("68"));
+
+        ArgumentCaptor<Payable> payables = ArgumentCaptor.forClass(Payable.class);
+        MaterialOrderSheet ordered = context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null,
+                List.of(command));
+
+        assertThat(ordered.getPriceState()).isEqualTo(SheetPriceState.Priced);
+        assertThat(savedItems.get(0).getPurchasePrice()).isEqualByComparingTo("68");
+        org.mockito.Mockito.verify(payableRepository).save(payables.capture());
+        assertThat(payables.getValue().getEstimated()).isFalse();
+        assertThat(payables.getValue().getAmount()).isEqualByComparingTo("680");
+    }
+
+    @Test
+    void deleteAfterOrderedMustBeRejected() {
+        MaterialPlan plan = plan(7L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.save(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Ordered);
+
+        assertThatThrownBy(() -> context.delete(designer, currentSheet.getSheetId()))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("不能删除");
+    }
+
+    // ------------------------------------------------------------------ 夹具
+
+    private Employee employee(EmployeeRole role) {
+        Employee employee = new Employee();
+        employee.setEmpId(role == EmployeeRole.Boss ? 2L : 1L);
+        employee.setName(role.getName());
+        employee.setRole(role);
+        employee.setCompany(company);
+        return employee;
+    }
+
+    private MaterialPlan plan(Long planId, BigDecimal quantity, BigDecimal lossRate, boolean selected) {
+        MaterialPlan plan = new MaterialPlan();
+        plan.setPlanId(planId);
+        plan.setCompany(company);
+        plan.setProject(project);
+        plan.setProperty(project.getProperty());
+        plan.setSourceType(MaterialSourceType.Selection);
+        plan.setQuantity(quantity);
+        plan.setNetQuantity(quantity);
+        plan.setLossRate(lossRate);
+        plan.setLossQuantity(BigDecimal.ZERO);
+        plan.setUnit(Unit.Sheet);
+        plan.setUnitPrice(new BigDecimal("68"));
+        plan.setStatus(MaterialPlanStatus.ReadyToOrder);
+
+        CatalogItem catalogItem = new CatalogItem();
+        catalogItem.setItemId(77L);
+        catalogItem.setType(ItemType.Material);
+        catalogItem.setCostPrice(new BigDecimal("100"));
+        catalogItem.setMaterialPrice(new BigDecimal("200"));
+        catalogItem.setManualPrice(BigDecimal.ZERO);
+        plan.setCatalogItem(catalogItem);
+
+        if (selected) {
+            MaterialSelection selection = new MaterialSelection();
+            selection.setSelectionId(31L);
+            selection.setCompany(company);
+            selection.setStatus(SelectionStatus.Selected);
+            plan.setSelection(selection);
+        } else {
+            ContractLine contractLine = new ContractLine();
+            contractLine.setLineId(41L);
+            contractLine.setContract(contract);
+            plan.setContractLine(contractLine);
+            when(selectionRepository.findFirstByCompany_ComIdAndSourceContractLine_LineIdOrderByVersionDesc(any(), any()))
+                    .thenReturn(Optional.empty());
+        }
+        return plan;
+    }
+
+    private void stubPlan(MaterialPlan plan) {
+        when(planRepository.findOne(org.mockito.ArgumentMatchers.<org.springframework.data.jpa.domain.Specification<MaterialPlan>>any())).thenReturn(Optional.of(plan));
+    }
+
+    private MaterialOrderSheetItem line(MaterialPlan plan, BigDecimal quantity, String location) {
+        MaterialOrderSheetItem item = new MaterialOrderSheetItem();
+        item.setMaterialPlan(plan);
+        item.setQuantity(quantity);
+        item.setUnit(Unit.Sheet);
+        item.setLocationName(location);
+        return item;
+    }
+}
