@@ -194,8 +194,10 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 499（public 16 + protected 483）。
         // 2026-10-15 主材下单作业单 Excel 单据导出（P2）新增 1 条 protected：material/sheet/export
         // => 当前 Provider 面板为 500（public 16 + protected 484）。
-        assertThat(routes).hasSize(500);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(484);
+        // 2026-10-15 App 建单需要品类清单新增 1 条 protected：material/sheet/enums
+        // => 当前 Provider 面板为 501（public 16 + protected 485）。
+        assertThat(routes).hasSize(501);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(485);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
