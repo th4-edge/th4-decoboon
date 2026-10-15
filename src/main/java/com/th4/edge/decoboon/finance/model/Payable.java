@@ -145,6 +145,20 @@ public class Payable extends AuditModel {
     @Column(precision = 14, scale = 2, nullable = false)
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
+    /**
+     * DEC-072 第 1 项：无价下单**形成暂估应付**。
+     * 暂估期 {@code amount=0}（既有 NOT NULL 约束）且 {@code estimated=true}，结算后回填 {@code settledAmount}，
+     * 修正留痕，不覆盖历史。
+     */
+    @Note("是否暂估应付（无价下单）")
+    @Column(nullable = false)
+    private Boolean estimated = Boolean.FALSE;
+
+    @Note("结算确定金额")
+    @Unit("元")
+    @Column(name = "settled_amount", precision = 14, scale = 2)
+    private BigDecimal settledAmount;
+
     @Note("收货日（账期起算）")
     @Column(name = "receipt_date")
     private LocalDate receiptDate;
@@ -220,6 +234,10 @@ public Long getPayableId() { return payableId; }
     public void setPeriod(String period) { this.period = period; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
+    public Boolean getEstimated() { return estimated; }
+    public void setEstimated(Boolean estimated) { this.estimated = estimated; }
+    public BigDecimal getSettledAmount() { return settledAmount; }
+    public void setSettledAmount(BigDecimal settledAmount) { this.settledAmount = settledAmount; }
     public BigDecimal getPaidAmount() { return paidAmount; }
     public void setPaidAmount(BigDecimal paidAmount) { this.paidAmount = paidAmount; }
     public LocalDate getReceiptDate() { return receiptDate; }

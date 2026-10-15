@@ -75,10 +75,11 @@ javac -cp "$CP" -d "$TMP_DIR" "$TMP_DIR/GenerateSchema.java"
 java -cp "$TMP_DIR:$CP" GenerateSchema "$TMP_DIR/baseline.sql"
 
 TARGET="$BACKEND_ROOT/docs/design/migrations/01-空库基线.sql"
-cat > "$TARGET" <<'HEADER'
+GENERATED_AT="$(date +%F)"
+cat > "$TARGET" <<HEADER
 -- th4-decoboon 空库基线 DDL
 -- 生成方式：Hibernate 6.6 MetadataSources + CamelCaseToUnderscoresNamingStrategy + MySQLDialect
--- 生成时间：2026-09-15
+-- 生成时间：${GENERATED_AT}
 -- 适用范围：MySQL 8+ 空数据库首次初始化
 -- 注意：不含 DROP；禁止对非空库执行。执行后由 db_schema_migration 标记 10/11/12/17/21 基线已包含。
 

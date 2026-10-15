@@ -4,6 +4,7 @@ import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.project.configure.DeliveryMode;
+import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.supply.model.Partner;
@@ -72,6 +73,8 @@ public class PurchaseOrder extends AuditModel implements ProjectOwned {
     @Column(precision=14,scale=2,nullable=false) @Note("采购金额") private BigDecimal amount=BigDecimal.ZERO;
     @Column(precision=12,scale=3,nullable=false) @Note("已到场数量") private BigDecimal receivedQuantity=BigDecimal.ZERO;
     @Enumerated(EnumType.STRING) @Column(length=24,nullable=false) @Note("采购状态") private PurchaseStatus status=PurchaseStatus.Submitted;
+    /** BR-045 / DEC-072：下单时可能没有价格；无价时形成暂估应付，价格留空而**不是 0**。 */
+    @Enumerated(EnumType.STRING) @Column(name="price_state", length=16, nullable=false) @Note("价格状态") private SheetPriceState priceState=SheetPriceState.Priced;
     @Note("要求到场日期") private LocalDate expectedAt;
     @Note("实际下单日期") private LocalDate orderedAt;
     @ManyToOne(fetch=FetchType.LAZY) @JoinColumn(name="creator_id",nullable=false) @Note("创建人") private Employee createdBy;
@@ -98,6 +101,7 @@ public class PurchaseOrder extends AuditModel implements ProjectOwned {
     public BigDecimal getAmount(){return amount;} public void setAmount(BigDecimal v){amount=v;}
     public BigDecimal getReceivedQuantity(){return receivedQuantity;} public void setReceivedQuantity(BigDecimal v){receivedQuantity=v;}
     public PurchaseStatus getStatus(){return status;} public void setStatus(PurchaseStatus v){status=v;}
+    public SheetPriceState getPriceState(){return priceState;} public void setPriceState(SheetPriceState v){priceState=v;}
     public LocalDate getExpectedAt(){return expectedAt;} public void setExpectedAt(LocalDate v){expectedAt=v;}
     public LocalDate getOrderedAt(){return orderedAt;} public void setOrderedAt(LocalDate v){orderedAt=v;}
     public Employee getCreatedBy(){return createdBy;} public void setCreatedBy(Employee v){createdBy=v;}

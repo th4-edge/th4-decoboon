@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.project.model;
 
 import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.decoboon.bim.configure.Unit;
+import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.property.model.Property;
@@ -118,6 +119,17 @@ public class PurchaseOrderItem extends AuditModel implements ProjectOwned {
     @Note("价格来源：供应关系价/历史成交价/手工录入")
     private String priceSource;
 
+    /** BR-045：未定价（Unpriced）时 unitPrice 可为空并以暂估应付承载。 */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "price_state", length = 16, nullable = false)
+    @Note("价格状态")
+    private SheetPriceState priceState = SheetPriceState.Priced;
+
+    /** BR-045 / DEC-073：结算价是对账结算确认的真实价，实际成本唯一计价来源（P3 > P2）。 */
+    @Column(name = "settlement_price", precision = 12, scale = 2)
+    @Note("结算价")
+    private BigDecimal settlementPrice;
+
     @Column(length = 500)
     @Note("数量/价格调整原因")
     private String remark;
@@ -156,6 +168,10 @@ public class PurchaseOrderItem extends AuditModel implements ProjectOwned {
     public void setStatus(PurchaseStatus status) { this.status = status; }
     public String getPriceSource() { return priceSource; }
     public void setPriceSource(String priceSource) { this.priceSource = priceSource; }
+    public SheetPriceState getPriceState() { return priceState; }
+    public void setPriceState(SheetPriceState priceState) { this.priceState = priceState; }
+    public BigDecimal getSettlementPrice() { return settlementPrice; }
+    public void setSettlementPrice(BigDecimal settlementPrice) { this.settlementPrice = settlementPrice; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
 }
