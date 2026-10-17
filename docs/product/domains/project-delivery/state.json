@@ -6,7 +6,7 @@
   "owner": "codex",
   "phase": "SCENARIOS_READY",
   "batch": "B1",
-  "nextAction": "完成 B1 业务对齐：裁决 GAP-034 未决子项，核对任务来源、阶段算法、现场汇报角色和阶段验收模式，准备 BIZ_ALIGNED",
+  "nextAction": "请用户裁决 GAP-034 五项（推荐 1A/2A/3A/4A/5A），裁决后完成 BIZ_ALIGNED",
   "openDecisions": [
     "GAP-034：阶段计划两套算法如何统一",
     "GAP-034 G-01：acceptanceMode 是否落到 ProjectStage",
@@ -14,7 +14,9 @@
     "GAP-034 G-07：取消任务是否参与阶段验收门禁",
     "GAP-034 G-02/G-06：工艺库与阶段/区域绑定形态"
   ],
-  "blockers": [],
+  "blockers": [
+    "B1 业务对齐等待 GAP-034 五项业务裁决；裁决前不得进入编码"
+  ],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -30,7 +32,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-17T22:33:38+08:00",
-  "updatedAt": "2026-10-17T22:34:16+08:00",
+  "updatedAt": "2026-10-17T22:45:00+08:00",
   "history": [
     {
       "at": "2026-10-17T22:33:38+08:00",
@@ -43,6 +45,12 @@
       "phase": "SCENARIOS_READY",
       "batch": "B1",
       "note": "project-delivery charter, two real scenarios, business sync, initial blueprint and reconciliation seeded; read-only batch, no code changed"
+    },
+    {
+      "at": "2026-10-17T22:45:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "GAP-034 decision packet created; B1 waiting for user decision"
     }
   ]
 }
