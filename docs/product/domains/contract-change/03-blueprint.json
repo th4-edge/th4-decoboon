@@ -1,0 +1,697 @@
+{
+  "id": "contract-change.end-to-end",
+  "title": "合同与增减项履约",
+  "version": "1.0.0",
+  "status": "ready-for-implementation",
+  "sourceRefs": [
+    "OBJ-001",
+    "OBJ-008",
+    "BR-035",
+    "BR-041",
+    "BR-045",
+    "SCN-004",
+    "SCN-021",
+    "DEC-055",
+    "DEC-068",
+    "DEC-072",
+    "DEC-073",
+    "GAP-038",
+    "GAP-049"
+  ],
+  "audience": [
+    "boss",
+    "storeManager",
+    "finance",
+    "designer",
+    "pm",
+    "customer"
+  ],
+  "layers": [
+    "standard",
+    "tenant",
+    "project"
+  ],
+  "objects": [
+    {
+      "id": "ContractChange",
+      "name": "合同变更单",
+      "meaning": "合同生效后新增/减项/替换的审批与留痕载体",
+      "keyFields": [
+        "changeId",
+        "project",
+        "contract",
+        "no",
+        "type",
+        "status",
+        "reason",
+        "amount",
+        "costDelta",
+        "requestedBy",
+        "approvedBy",
+        "approvedAt"
+      ],
+      "sources": [
+        "BR-035",
+        "DEC-055",
+        "DEC-068"
+      ]
+    },
+    {
+      "id": "ContractChangeItem",
+      "name": "变更明细",
+      "meaning": "一条来源范围、动作、目标快照、剩余快照和差额",
+      "keyFields": [
+        "changeItemId",
+        "change",
+        "sourceLine",
+        "sourceChangeItem",
+        "changeType",
+        "sourceRemainingQuantity",
+        "sourceRemainingAmount",
+        "sourceUnitPrice",
+        "targetCatalogItemId",
+        "targetQuantity",
+        "targetAmount",
+        "targetCostComplete",
+        "amountDelta"
+      ],
+      "sources": [
+        "BR-041",
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "ProjectContract",
+      "name": "项目合同",
+      "meaning": "合同基线金额、签约金额和当前金额",
+      "keyFields": [
+        "contractId",
+        "project",
+        "baselineAmount",
+        "signedAmount",
+        "currentAmount",
+        "status"
+      ],
+      "sources": [
+        "OBJ-001",
+        "BR-002"
+      ]
+    },
+    {
+      "id": "ContractLine",
+      "name": "合同行",
+      "meaning": "合同原始执行范围，不被变更直接改写",
+      "keyFields": [
+        "lineId",
+        "contract",
+        "type",
+        "name",
+        "quantity",
+        "amount",
+        "cost"
+      ],
+      "sources": [
+        "BR-041",
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "CatalogItem",
+      "name": "报价项目",
+      "meaning": "新增/替换目标分项的唯一来源",
+      "keyFields": [
+        "catalogItemId",
+        "name",
+        "type",
+        "brand",
+        "spec",
+        "unit",
+        "pricingMode",
+        "costPrice",
+        "status"
+      ],
+      "sources": [
+        "BR-041",
+        "BR-045"
+      ]
+    },
+    {
+      "id": "Receivable",
+      "name": "应收计划",
+      "meaning": "合同额变化后的应收重算事实",
+      "keyFields": [
+        "receivableId",
+        "project",
+        "amount",
+        "status"
+      ],
+      "sources": [
+        "BR-035",
+        "OBJ-001"
+      ]
+    },
+    {
+      "id": "ProjectTask",
+      "name": "施工任务",
+      "meaning": "变更目标或减项范围对应的施工执行",
+      "keyFields": [
+        "taskId",
+        "project",
+        "sourceChangeItem",
+        "name",
+        "quantity",
+        "status"
+      ],
+      "sources": [
+        "BR-041",
+        "SCN-004"
+      ]
+    },
+    {
+      "id": "MaterialPlan",
+      "name": "材料计划",
+      "meaning": "变更目标或减项范围对应的材料需求",
+      "keyFields": [
+        "planId",
+        "project",
+        "sourceChangeItem",
+        "catalogItem",
+        "quantity",
+        "status"
+      ],
+      "sources": [
+        "BR-041",
+        "OBJ-008"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "source-select",
+      "no": "01",
+      "name": "选择来源与动作",
+      "system": "展示当前有效剩余和待审批占用；动作仅新增/减项/替换",
+      "sources": [
+        "BR-041",
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "draft",
+      "no": "02",
+      "name": "形成一张变更单",
+      "system": "逐条明细合并为一张 ContractChange，冻结来源与目标快照",
+      "sources": [
+        "BR-035",
+        "BR-041"
+      ]
+    },
+    {
+      "id": "pending",
+      "no": "03",
+      "name": "提交待审批",
+      "system": "进入 Pending；客户同频显示审批中且不显示金额",
+      "sources": [
+        "BR-035",
+        "DEC-068"
+      ]
+    },
+    {
+      "id": "approve",
+      "no": "04",
+      "name": "企业审批",
+      "system": "Boss/财务/本店店长审批；复核权限、范围、金额和来源基线",
+      "sources": [
+        "BR-035",
+        "DEC-068"
+      ]
+    },
+    {
+      "id": "link",
+      "no": "05",
+      "name": "同事务联动",
+      "system": "更新合同额、应收、任务、材料计划和成本；失败不产生半套数据",
+      "sources": [
+        "BR-035",
+        "BR-041",
+        "BR-045"
+      ]
+    },
+    {
+      "id": "effective",
+      "no": "06",
+      "name": "已生效与同频",
+      "system": "客户只读可见结果；已生效不可修改或撤回",
+      "sources": [
+        "DEC-068",
+        "BR-035"
+      ]
+    },
+    {
+      "id": "reverse",
+      "no": "07",
+      "name": "异议与反向变更",
+      "system": "客户异议新建反向变更，不修改原已生效事实",
+      "sources": [
+        "BR-035"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "object": "ContractChange",
+      "field": "type",
+      "label": "变更类型",
+      "meaning": "新增分项/减项/替换；Quantity/Price 仅历史兼容",
+      "owner": "designer/authorized proxy",
+      "impact": "决定目标与来源规则",
+      "sources": [
+        "DEC-055",
+        "BR-041"
+      ]
+    },
+    {
+      "object": "ContractChange",
+      "field": "status",
+      "label": "状态",
+      "meaning": "Pending→已生效；历史 Approved 仅存量兼容；Rejected/Cancelled",
+      "owner": "system/approver",
+      "impact": "审批幂等与客户同频",
+      "sources": [
+        "DEC-068"
+      ]
+    },
+    {
+      "object": "ContractChange",
+      "field": "amount/costDelta",
+      "label": "变更额/成本差",
+      "meaning": "一张单聚合全部明细的合同差额与成本差",
+      "owner": "system",
+      "impact": "合同额、应收与成本联动，成本缺失为 null",
+      "sources": [
+        "BR-035",
+        "BR-045"
+      ]
+    },
+    {
+      "object": "ContractChange",
+      "field": "requestedBy/approvedBy/approvedAt",
+      "label": "发起/审批人/时间",
+      "meaning": "实际操作人与审批留痕；业主确认不作为系统事实",
+      "owner": "system",
+      "impact": "审计、权限与同频",
+      "sources": [
+        "DEC-068"
+      ]
+    },
+    {
+      "object": "ContractChangeItem",
+      "field": "changeType",
+      "label": "明细动作",
+      "meaning": "新增、减项（部分/整项取消）、替换",
+      "owner": "designer/authorized proxy",
+      "impact": "决定目标快照和差额公式",
+      "sources": [
+        "DEC-055"
+      ]
+    },
+    {
+      "object": "ContractChangeItem",
+      "field": "sourceLine/sourceChangeItem",
+      "label": "来源范围",
+      "meaning": "原合同行或此前已生效新增/替换目标",
+      "owner": "system",
+      "impact": "当前有效剩余与连带变更的唯一来源",
+      "sources": [
+        "BR-041"
+      ]
+    },
+    {
+      "object": "ContractChangeItem",
+      "field": "sourceRemainingQuantity/sourceRemainingAmount/sourceUnitPrice/sourceBaselineTime",
+      "label": "来源剩余快照",
+      "meaning": "创建时冻结的当前有效剩余、单价与基线时间",
+      "owner": "system",
+      "impact": "审批时复核；基线变化拒绝重做",
+      "sources": [
+        "DEC-055"
+      ]
+    },
+    {
+      "object": "ContractChangeItem",
+      "field": "targetCatalogItemId/name/brand/spec/unit/pricingMode",
+      "label": "目标目录项与业务快照",
+      "meaning": "必须来自启用 CatalogItem，不接受手填事实",
+      "owner": "system from catalog",
+      "impact": "审批后任务、材料、成本同源",
+      "sources": [
+        "BR-041",
+        "BR-045"
+      ]
+    },
+    {
+      "object": "ContractChangeItem",
+      "field": "targetQuantity/targetAmount/targetCostPrice/targetCostAmount/targetCostComplete",
+      "label": "目标数量/金额/成本",
+      "meaning": "目标工程量、金额和成本完整性快照",
+      "owner": "system",
+      "impact": "成本缺失时利润 null；不得用 0 冒充",
+      "sources": [
+        "BR-045"
+      ]
+    },
+    {
+      "object": "ContractChangeItem",
+      "field": "amountDelta/costDelta",
+      "label": "本条差额",
+      "meaning": "新增 +目标金额；减少负差额；替换=目标金额-来源剩余金额",
+      "owner": "system",
+      "impact": "合同额与成本聚合",
+      "sources": [
+        "DEC-055"
+      ]
+    },
+    {
+      "object": "ContractChangeRange",
+      "field": "initialQuantity/effectiveRemainingQuantity/pendingReservedQuantity/availableQuantity",
+      "label": "范围投影",
+      "meaning": "初始量、有效剩余、待审批占用、可变更量",
+      "owner": "system",
+      "impact": "前端只展示，提交与审批重新计算",
+      "sources": [
+        "BR-041"
+      ]
+    },
+    {
+      "object": "ContractChangeRange",
+      "field": "effectiveRemainingAmount/currentUnitPrice/confirmable/blockReason",
+      "label": "剩余金额/单价/可确认性",
+      "meaning": "来源剩余金额、当前单价和阻断原因",
+      "owner": "system",
+      "impact": "历史不可推导时显式阻断",
+      "sources": [
+        "BR-041"
+      ]
+    },
+    {
+      "object": "ContractLine",
+      "field": "lineId/quantity/amount",
+      "label": "原合同行",
+      "meaning": "原始合同执行范围，不被变更直接改写",
+      "owner": "contract",
+      "impact": "作为来源范围参与当前有效剩余投影",
+      "sources": [
+        "DEC-055"
+      ]
+    },
+    {
+      "object": "Receivable",
+      "field": "amount/receivedAmount/status",
+      "label": "应收计划",
+      "meaning": "变更额生效后同事务调整未收应收",
+      "owner": "finance/system",
+      "impact": "减项不得把已收部分直接改掉",
+      "sources": [
+        "BR-035"
+      ]
+    },
+    {
+      "object": "ProjectTask",
+      "field": "sourceChangeItem/name/quantity/status",
+      "label": "变更施工任务",
+      "meaning": "新增/替换目标或减项范围的施工执行",
+      "owner": "fulfillment",
+      "impact": "与变更明细同源",
+      "sources": [
+        "BR-041"
+      ]
+    },
+    {
+      "object": "MaterialPlan",
+      "field": "sourceChangeItem/catalogItem/quantity/status",
+      "label": "变更材料计划",
+      "meaning": "新增/替换目标或减项范围的材料需求",
+      "owner": "fulfillment",
+      "impact": "已采购部分不删除事实，走调整/退货",
+      "sources": [
+        "BR-041",
+        "DEC-073"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "R-CC-THREE-ACTIONS",
+      "text": "仅新增分项、减项、替换；新入口无调价",
+      "sources": [
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "R-CC-REMAINING",
+      "text": "可变更量=当前有效剩余-待审批占用",
+      "sources": [
+        "BR-041"
+      ]
+    },
+    {
+      "id": "R-CC-REPLACE",
+      "text": "替换差额=目标金额-来源当前有效剩余金额",
+      "sources": [
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "R-CC-SNAPSHOT",
+      "text": "目标 CatalogItem 与来源剩余必须冻结快照",
+      "sources": [
+        "BR-041"
+      ]
+    },
+    {
+      "id": "R-CC-EFFECT",
+      "text": "审批通过即生效，合同/应收/任务/材料/成本同事务联动",
+      "sources": [
+        "BR-035",
+        "DEC-068"
+      ]
+    },
+    {
+      "id": "R-CC-COST",
+      "text": "成本缺失时 costComplete=false，利润和毛利率为 null",
+      "sources": [
+        "BR-045"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "CHK-CC-OVER-REDUCE",
+      "label": "超当前可变更量",
+      "severity": "P0",
+      "nextAction": "阻断提交并刷新来源范围",
+      "refs": [
+        "BR-041"
+      ]
+    },
+    {
+      "id": "CHK-CC-BASELINE",
+      "label": "审批时来源基线变化",
+      "severity": "P0",
+      "nextAction": "拒绝审批并要求撤回重做",
+      "refs": [
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "CHK-CC-DUPLICATE",
+      "label": "重复提交或重复生效",
+      "severity": "P0",
+      "nextAction": "幂等返回，不重复生成派生对象",
+      "refs": [
+        "BR-035"
+      ]
+    },
+    {
+      "id": "CHK-CC-NEGATIVE",
+      "label": "变更后合同额为负",
+      "severity": "P0",
+      "nextAction": "阻断审批",
+      "refs": [
+        "BR-035"
+      ]
+    },
+    {
+      "id": "CHK-CC-HISTORY",
+      "label": "历史范围不可推导",
+      "severity": "P1",
+      "nextAction": "显示暂不可确认并阻断新变更",
+      "refs": [
+        "BR-041"
+      ]
+    },
+    {
+      "id": "CHK-CC-COST",
+      "label": "成本不完整",
+      "severity": "P1",
+      "nextAction": "利润保持 null",
+      "refs": [
+        "BR-045",
+        "MET-002"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "EX-CC-AFTER-PURCHASE",
+      "text": "已采购部分不删除事实，走采购调整或退货",
+      "refs": [
+        "DEC-073"
+      ]
+    },
+    {
+      "id": "EX-CC-CUSTOMER",
+      "text": "客户只读同频，不形成系统确认事实",
+      "refs": [
+        "DEC-068"
+      ]
+    },
+    {
+      "id": "EX-CC-HISTORY",
+      "text": "历史 Price/Quantity 与缺目标快照记录只读，不按新公式重算",
+      "refs": [
+        "DEC-055"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "id": "MET-CC-SYNC",
+      "label": "联动一致率",
+      "meaning": "合同、应收、任务、材料、成本同源一致的比例"
+    },
+    {
+      "id": "MET-CC-BLOCK",
+      "label": "超减阻断率",
+      "meaning": "非法减项/替换被服务端阻断的比例"
+    }
+  ],
+  "uiBindings": [
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/change-create",
+      "objectType": "ContractChange",
+      "blueprintNode": "contract-change.draft",
+      "roles": [
+        "designer",
+        "pm",
+        "boss",
+        "storeManager"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/change-detail",
+      "objectType": "ContractChange",
+      "blueprintNode": "contract-change.effective",
+      "roles": [
+        "designer",
+        "pm",
+        "boss",
+        "storeManager",
+        "finance"
+      ]
+    },
+    {
+      "surface": "web",
+      "route": "/designer/projects/:projectId/changes",
+      "objectType": "ContractChange",
+      "blueprintNode": "contract-change.draft",
+      "roles": [
+        "designer",
+        "boss",
+        "storeManager"
+      ]
+    }
+  ],
+  "agentTools": [
+    {
+      "name": "contract.change.range",
+      "provider": "project/contract-change/range",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "contract.change.info",
+      "provider": "project/contractchange/info",
+      "readOnly": true,
+      "scope": "current user/project"
+    }
+  ],
+  "lastReviewedCommit": "working-tree-audit-20261017",
+  "implementationEvidence": {
+    "canonicalDraftProviders": [
+      "project/contract-change/batch-save",
+      "project/contract-change/preview",
+      "project/contract-change/range"
+    ],
+    "approvalProvider": "project/contract-change/update",
+    "legacyPaths": [
+      "project/contract-change/save",
+      "project/contract-change/customer-confirm"
+    ],
+    "appPages": [
+      "subpackages/project/pages/change-create",
+      "subpackages/project/pages/change-detail",
+      "subpackages/project/pages/change-workbench",
+      "subpackages/quote/pages/detail"
+    ],
+    "webPages": [
+      "views/designer/DesignerContractChangesView.vue",
+      "views/designer/DesignerContractChangeBoardView.vue"
+    ],
+    "tests": [
+      "ContractChangeAmountContextTest",
+      "ContractChangeFulfillmentContextTest",
+      "ContractChangeRangeContextTest",
+      "RangeProviderTest",
+      "PreviewProviderTest",
+      "ContractChangeCompletionGateTest",
+      "ProjectContractContextTest"
+    ]
+  },
+  "gaps": [
+    {
+      "id": "GAP-CC-DUAL-ENTRY",
+      "label": "旧 save 与新 batch-save 双入口",
+      "status": "open-implementation-reconciliation",
+      "currentImplementation": "App 变更发起页/Web 工作台使用 batch-save；App 报价详情仍可调用旧 save",
+      "whyNotClosed": "双路径可能产生不同快照与金额语义",
+      "refs": [
+        "BR-041",
+        "DEC-055"
+      ]
+    },
+    {
+      "id": "GAP-CC-CUSTOMER-CONFIRM-LEGACY",
+      "label": "历史 customer-confirm 接口与状态字面量",
+      "status": "historical-compatibility",
+      "currentImplementation": "审批直接生效，customerConfirmed 仅作幂等标志；旧接口保留历史收口",
+      "whyNotClosed": "存量 Approved 单和三端历史展示仍需独立验收",
+      "refs": [
+        "DEC-068",
+        "GAP-049"
+      ]
+    },
+    {
+      "id": "GAP-CC-WEB-RANGE",
+      "label": "Web 是否全面使用 range",
+      "status": "implementation-verified-pending-ui-acceptance",
+      "currentImplementation": "Web 变更页 API 已接 batch-save/preview/range",
+      "whyNotClosed": "页面使用与真实数据证据待 B3 验证",
+      "refs": [
+        "BR-041"
+      ]
+    }
+  ]
+}
