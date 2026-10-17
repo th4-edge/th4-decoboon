@@ -14,6 +14,14 @@
   `docs/operations/试运营单人轻量协作与发版规范.md` 为准。
 
 
+## 复杂业务域交付协议（强制）
+
+- 当用户要求“启动 / 继续 / 恢复 / 审查 / 对账某个业务域”时，必须先读取 `.agents/skills/domain-delivery-orchestrator/SKILL.md`，以及 `docs/product/domains/<domain>/state.json`、`00-charter.md`、`10-reconciliation.md`。
+- 不得依赖聊天记忆推进复杂业务域；一次只做一个垂直切片批次，按 `INTAKE → ... → LEARNED` 门禁推进。
+- 业务对象、状态、权限、金额、成本和对外口径必须先经 `zhuangdeqing-business` 裁决；没有 `BIZ_ALIGNED` 不得进入编码。
+- 每批必须更新状态账本、对账矩阵和证据；没有真实页面/真机证据不得声称 UI 通过，开发自测不得冒充独立验收。
+- 初始化领域包使用：`python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py init ...`；恢复时使用 `show`，门禁前使用 `validate`。
+
 ## StarWork 与轻量入口
 
 默认只读：

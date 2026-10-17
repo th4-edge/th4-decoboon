@@ -1,0 +1,3 @@
+interface:
+  display_name: "业务域交付编排"
+  short_description: "复杂业务域的可恢复交付、门禁、对账与批次调度"

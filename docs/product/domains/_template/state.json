@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "domain": "{{DOMAIN}}",
+  "title": "{{TITLE}}",
+  "northStar": "{{NORTH_STAR}}",
+  "owner": "{{OWNER}}",
+  "phase": "INTAKE",
+  "batch": "B0",
+  "nextAction": "完成 charter、场景和业务问题，提交业务智能体同步",
+  "openDecisions": [],
+  "blockers": [],
+  "artifacts": {
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md"
+  },
+  "createdAt": "{{CREATED_AT}}",
+  "updatedAt": "{{CREATED_AT}}",
+  "history": []
+}
