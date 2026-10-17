@@ -190,3 +190,14 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - App H5 `/subpackages/finance/pages/payables` 390×844：显示“待定价 / 暂估/待定价 / 结算后安排付款”；Console Errors 0，`scrollWidth=innerWidth=390`；
 - 截图：`evidence/B6.1/screenshots/b61-web-payables-estimated.png`、`b61-app-payables-estimated.png`；
 - 本记录是实现者 UI 自测，B6.2 仍需独立验收。
+
+
+---
+
+# B6.2 独立复验 UI 记录
+
+- Web `/finance/payables` 1440×900：暂估应付“待结算”，安排付款禁用；`scrollWidth=innerWidth=1440`，Console Errors 0；
+- App H5 390×844：应付页“待定价/暂估/待结算”、空态、Designer 权限态、主材下单工作台、旧路由；
+- App `scrollWidth=innerWidth=390`，Console Errors 0；
+- 截图：`evidence/B6.2/screenshots/`；
+- UI 通过，但 B62-DEF-001 仍阻断 B6.2 整体通过。

@@ -15,7 +15,9 @@
 | B5 | App 单端材料下单与结算闭环 | Designer/PM/Finance/Boss/StoreManager | Plan/Sheet/Purchase/Payable/Receipt/Settlement | sheet/order 编排、PurchaseOrderItem、旧直采下线 | App | 下单/到场/结算/成本完整 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE (2026-10-17) |
 | B6 | 独立验收与对账 | independent | 全部 | 无实现 | App/Web | 正向/反向/越权/幂等/边界 | ACCEPTED | FAIL（2026-10-17；121/127） |
 | B6.1 | 修复 B6 独立验收缺陷 | Finance/Designer/PM | Sheet/Purchase/Settlement/Payable | 字段投影、角色门禁、幂等、到场门禁、暂估应付投影 | App/Web | 权限/金额/幂等/边界 | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
-| B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | NEXT |
+| B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；149/150） |
+| B6.3 | 修复 B62-DEF-001 多供应商价格投影 | Finance/Designer/PM | Sheet/Purchase/Settlement | 价格状态与采购明细聚合读模型 | App/Web | Mixed/Priced/Settled/Unpriced | DEV_VERIFIED + RECONCILED | NEXT |
+| B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | PENDING |
 | B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
 | B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
 | B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
@@ -27,7 +29,7 @@
 - B3 的上下文助手不能直接查库。
 - B4 必须依赖 B1 的蓝图、B2 的校核和 B3 的对象上下文。
 - B5 完成 App 单端闭环后，B6 必须独立于实现，不能由执行者自验。
-- B6.1 只修复 B6 已证实的缺陷，不扩业务范围；B6.2 独立复验通过后才可进入助手 UI。
+- B6.1 只修复 B6 已证实的缺陷；B6.2 独立复验确认 6 项关闭并发现 B62-DEF-001；B6.3/B6.4 修复并复验后才可进入助手 UI。
 - B7/B8 完成材料助手上下文入口及聚焦独立验收；B9 只做体验版，正式版由用户完成。
 
 ## 回滚
@@ -247,3 +249,19 @@
 - 测试：后端全量 871/0/0/0 PASS；App type-check/MP 构建/UI/分包 PASS；Web type-check/构建 PASS；
 - UI：Web 1440×900 与 App H5 390×844 真实渲染，暂估文案可见、无横向溢出、Console Errors 0；
 - 证据：`evidence/B6.1/`；停在 `RECONCILED`，B6.2 独立复验。
+
+
+## B6.2 独立复验结果（2026-10-17）
+
+- 独立任务在精确提交上执行：后端 `8cc1d11`、App `46a5be4`、Web `04ba3b4`；
+- 150 项：149 PASS / 1 FAIL；原 B6 六个缺陷 6/6 独立验证关闭；
+- 新缺陷 `B62-DEF-001`（P2）：同一作业单行拆为 Priced 3@100 与 Unpriced/后续 Settled 5 后，作业单投影仍为 `Unpriced`，采购明细本身正确；
+- 影响 SCN-021 多供应商价格分批的读模型提示；采购/应付金额事实未错；
+- 证据：`evidence/B6.2/`；不得进入 `ACCEPTED`，下一批 B6.3。
+
+## B6.3 修复门槛（NEXT）
+
+- 只在读模型中按采购明细聚合作业单行价格状态：Priced / Unpriced / Settled / Mixed 的组合要正确；
+- 不改变采购、应付、结算金额公式，不做 DDL；
+- 增加多供应商拆单、部分/全部结算、撤销后读模型回归；
+- 定向测试 + 全量测试 + App/Web 构建；停在 `RECONCILED`，B6.4 独立复验。

@@ -1,0 +1,128 @@
+{
+  "batch": "B6.2",
+  "domain": "material",
+  "date": "2026-10-17",
+  "conclusion": "FAIL",
+  "conclusionScope": "Independent black-box verification only; final ACCEPTED decision remains with the user/supervisor.",
+  "totals": {
+    "total": 150,
+    "pass": 149,
+    "fail": 1
+  },
+  "byCategory": {
+    "defect-verification": {
+      "total": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    "main-chain": {
+      "total": 18,
+      "pass": 18,
+      "fail": 0
+    },
+    "permission": {
+      "total": 28,
+      "pass": 28,
+      "fail": 0
+    },
+    "idempotency": {
+      "total": 5,
+      "pass": 5,
+      "fail": 0
+    },
+    "boundary": {
+      "total": 10,
+      "pass": 9,
+      "fail": 1
+    },
+    "assistant": {
+      "total": 56,
+      "pass": 56,
+      "fail": 0
+    },
+    "old-route": {
+      "total": 4,
+      "pass": 4,
+      "fail": 0
+    },
+    "cross-boundary": {
+      "total": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    "ui": {
+      "total": 11,
+      "pass": 11,
+      "fail": 0
+    },
+    "cleanup": {
+      "total": 6,
+      "pass": 6,
+      "fail": 0
+    }
+  },
+  "sixOriginalDefects": {
+    "total": 6,
+    "pass": 6,
+    "fail": 0,
+    "status": "All six B6 defects independently verified closed"
+  },
+  "newDefects": [
+    {
+      "id": "B62-DEF-001",
+      "severity": "P2",
+      "title": "多供应商拆单后作业单价格投影仍停留为 Unpriced",
+      "status": "OPEN"
+    }
+  ],
+  "requirements": {
+    "REQ-MAT-013": "PASS：幂等、多供应商拆单与采购/应付生成本轮独立验证通过",
+    "REQ-MAT-014": "PASS：角色读权限、到场门禁、逐单/月结互斥、撤销回退本轮独立验证通过",
+    "REQ-MAT-015": "PASS：旧 Provider 与服务旧入口不可达，历史采购/到场仍可读"
+  },
+  "cleanup": {
+    "sheets": 0,
+    "sheetItems": 0,
+    "purchases": 6,
+    "purchaseItems": 6,
+    "payables": 11,
+    "receipts": 3,
+    "settlements": 0,
+    "settlementItems": 0,
+    "selections": 0,
+    "tempSupplier": 0,
+    "plans": [
+      {
+        "planId": "228669029559042048",
+        "status": "ReadyToOrder",
+        "arrivedAt": null,
+        "selectionId": null,
+        "unitPrice": 35,
+        "cost": 945
+      },
+      {
+        "planId": "231848058021740544",
+        "status": "ReadyToOrder",
+        "arrivedAt": null,
+        "selectionId": null,
+        "unitPrice": 85.6,
+        "cost": 4964.8
+      }
+    ],
+    "managerRestored": {
+      "projectId": "228669029517099008",
+      "managerId": "1790000000000000108"
+    },
+    "ddl": false,
+    "productionTouched": false,
+    "formalMiniProgramRelease": false,
+    "auditRows": "50 golden-question audit records and 1 idempotency probe remain in the append-only AI usage ledger; no business rows were retained."
+  },
+  "limitations": [
+    "8090 JVM classpath pointed at main-repo target/classes rather than /tmp checkout. Independent SHA-256 comparison found 133/133 material classes, 8/8 finance payables-page classes and 6/6 project purchase-page classes byte-identical to the exact 8cc1d11 checkout; material source worktree is clean.",
+    "The supplied StoreManager account belongs to a single-store tenant; a same-tenant cross-store negative was not independently executable. A foreign-company/foreign-store project returned 404.",
+    "Screenshots were captured from real Playwright render; image pixels were not visually re-opened by the agent, but DOM text, viewport width, overflow, button disabled state and console metrics were independently checked.",
+    "55 B6.2 assistant audit records remain in the append-only AI usage ledger (50 golden questions + 5 auxiliary probes); no temporary material business rows remain."
+  ],
+  "recommendation": "Do not mark B6.2 ACCEPTED yet. The six B6 defects have independent closure evidence, but B62-DEF-001 must be triaged/fixed and re-verified because B6 main-chain regression includes multi-supplier split pricing."
+}

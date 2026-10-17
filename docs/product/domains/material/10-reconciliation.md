@@ -16,8 +16,8 @@
 | REQ-MAT-010 | 全场景 | domain protocol | material.reconciliation | state/evidence | 无 | 矩阵完整性 | B6 独立验收 | PASS（B2 范围） |
 | REQ-MAT-011 | B | OBJ-008/BR-044 | material.order-sheet | material/sheet/enums headerFields/lineFields | App/Web 建单/详情 | 模板字段定向测试 PASS；App 建单来源说明与模板字段提示 PASS | B6 独立验收 | PASS（B3 范围，验收待 B6） |
 | REQ-MAT-012 | B | OBJ-008/DEC-MP-02 | material.order-sheet.sheet-cancel | material/sheet/cancel | App/Web 作业单详情 | 取消/拒绝取消测试 PASS；App 取消边界说明 PASS | B6 独立验收 | PASS（B3 范围，验收待 B6） |
-| REQ-MAT-013 | A/B | SCN-021/DEC-072/DEC-073 | material.order-sheet.order | material/sheet/order | App 主材下单工作台/下单页 | B6.1 幂等/采购/应付自测 PASS | B6.2 独立复验 | PASS（B6.1，B6.2待验） |
-| REQ-MAT-014 | A/B | BR-045/DEC-073/DEC-074 | material.settlement | material/settlement/preview|confirm|cancel | App 主材结算 | B6.1 角色门禁/到场门禁/成本收敛自测 PASS | B6.2 独立复验 | PASS（B6.1，B6.2待验） |
+| REQ-MAT-013 | A/B | SCN-021/DEC-072/DEC-073 | material.order-sheet.order | material/sheet/order | App 主材下单工作台/下单页 | B6.2 幂等/多供应商主链 PASS；新发现价格投影 B62-DEF-001 | B6.4 聚焦复验 | FAIL（B62-DEF-001） |
+| REQ-MAT-014 | A/B | BR-045/DEC-073/DEC-074 | material.settlement | material/settlement/preview|confirm|cancel | App 主材结算 | B6.2 角色门禁/到场门禁/逐单月结/撤销独立 PASS | B6.4 回归 | PASS（B6.2 独立） |
 | REQ-MAT-015 | 全场景 | 2026-10-17 用户裁决 | material.single-route | 旧 `project/purchase/save`/`batch` 下线 | App 材料计划/供应商 | Provider 已删除，App 入口已清理 | B6 独立验收 | PASS（B6 独立验证） |
 | REQ-MAT-016 | 全场景 | BR-045/OBJ-008 | material.assistant-context | `material/assistant/ask` + 上下文入口 | App/Web 统一问材料抽屉 | 单轮/证据/拒答/权限/跨端 | B8 独立验收 | PENDING（B7） |
 
@@ -37,6 +37,13 @@
 - `B6-DEF-006`：暂估应付返回 `estimated=true`，App/Web 显示“待定价/待结算”；
 - 全量后端 871/0/0/0 PASS；App/Web 构建 PASS；证据 `evidence/B6.1/`；
 - 无 `UNMAPPED`/`STALE`；B6.2 独立复验待执行。
+
+## B6.2 独立复验结果（2026-10-17）
+
+- 150 项：149 PASS / 1 FAIL；原 B6 六项缺陷 6/6 独立关闭；
+- 新 P2 `B62-DEF-001`：多供应商拆单后作业单行 `priceState` 仍为 `Unpriced`，采购明细事实为 Priced + Settled；
+- 证据：`evidence/B6.2/`；无 `UNMAPPED`/`STALE`，但 B62-DEF-001 为开放 FAIL；
+- 下一批：B6.3 修复，B6.4 聚焦独立复验。
 
 ## 已对齐
 
@@ -76,11 +83,12 @@
 - B3：`DEV_VERIFIED + UI_REVIEWED + RECONCILED`；
 - B4：`DEV_VERIFIED + RECONCILED`（无新增 UI 表面）；
 - B5：App 单端材料下单与结算闭环，旧直采路线下线；后端全量测试、App 构建与真实 UI 走查 PASS；
-- B6：独立验收 FAIL，121/127 PASS；B6.1 已完成修复并在自测中验证 6 个缺陷关闭，待 B6.2 独立复验；
+- B6：独立验收 FAIL，121/127；B6.1 修复后 B6.2 独立复验 149/150，原 6 缺陷关闭但新 P2 价格投影缺陷开放；
 - B2 证据：`evidence/B2/`；
 - B3 证据：`evidence/B3/`；
 - B4 证据：`evidence/B4/`；
 - B5 证据：`evidence/B5/`；
 - B6.1 证据：`evidence/B6.1/`；
+- B6.2 证据：`evidence/B6.2/`；
 - 不可宣称：全品类材料门禁、B6 独立验收通过、ACCEPTED、助手可替代人工判断；
-- 下一批：B6.2 独立复验；通过后才讨论 `ACCEPTED`，随后进入 B7 助手上下文入口。
+- 下一批：B6.3 修复 B62-DEF-001；B6.4 聚焦独立复验通过后才讨论 `ACCEPTED`，随后进入 B7 助手上下文入口。

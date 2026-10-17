@@ -82,3 +82,15 @@
 - 后端全量 871/0/0/0 PASS；App/Web 构建与真实页面自测 PASS；
 - 该结果仅用于进入 B6.2 独立复验，不能作为 `ACCEPTED` 依据；
 - 临时数据、项目负责人和测试密码哈希已恢复；证据 `evidence/B6.1/`。
+
+
+---
+
+## B6.2 独立复验执行结果（2026-10-17）
+
+- 环境：后端 `8cc1d11`、App `46a5be4`、Web `04ba3b4`；
+- 结果：150 项 **149 PASS / 1 FAIL**；原 B6 六项缺陷 6/6 关闭；
+- 新缺陷：`B62-DEF-001` P2 OPEN，多供应商拆单后作业单价格投影仍为 `Unpriced`；
+- 采购/应付金额事实、权限、幂等、到场门禁、助手、旧路线、跨端和 UI 通过；
+- 证据：`evidence/B6.2/README.md`、`blackbox-results.json`、`defects.json`、`summary.json`、`screenshots/`；
+- 结论：不满足 `ACCEPTED`；下一批 B6.3 修复，B6.4 独立复验。

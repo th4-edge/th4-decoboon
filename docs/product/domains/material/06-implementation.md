@@ -315,3 +315,16 @@
   - 真实 UI：Web 4175 / 1440×900、App H5 8080 / 390×844；Console Errors 0，横向溢出 0。
 - 证据：`evidence/B6.1/README.md`、`defect-verification.json`、`api-samples.json`、`browser-metrics.json`、`screenshots/`。
 - 边界：临时作业单/采购/应付已删除，物料计划恢复 `ReadyToOrder`，测试账号密码哈希已恢复；未执行 DDL、生产、正式小程序发布；未宣称 `ACCEPTED`。
+
+
+---
+
+# B6.2 独立复验记录
+
+- 独立任务在精确提交上执行：后端 `8cc1d11`、App `46a5be4`、Web `04ba3b4`；
+- 150 项：**149 PASS / 1 FAIL**；原 B6 六项缺陷 **6/6 PASS / CLOSED**；
+- 新缺陷 `B62-DEF-001`（P2，OPEN）：多供应商拆单后作业单价格投影仍为 `Unpriced`，未反映 Priced + Settled 的组合；
+- 采购/应付金额事实、权限、幂等、到场门禁、50 黄金问题、旧路线、跨端与 UI 回归均通过；
+- 实际页面证据：Web `/finance/payables` 1440×900、App H5 390×844；暂估文案和禁用付款正确；
+- 临时业务数据、计划状态、项目经理和测试凭据已恢复；
+- 证据：`evidence/B6.2/`；结论不支持 `ACCEPTED`，下一批 B6.3 修复 B62-DEF-001。

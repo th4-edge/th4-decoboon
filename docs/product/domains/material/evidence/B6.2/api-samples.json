@@ -1,0 +1,560 @@
+{
+  "environment": {
+    "backend": "http://127.0.0.1:8090",
+    "appH5": "http://127.0.0.1:8080",
+    "web": "http://127.0.0.1:4175",
+    "database": "127.0.0.1:3306/decoboon",
+    "backendExactCheckout": "/tmp/th4-b62-backend-8cc1d11 @ 8cc1d11",
+    "appExactCheckout": "/tmp/th4-b62-app-46a5be4 @ 46a5be4",
+    "webExactCheckout": "/tmp/th4-b62-web-04ba3b4 @ 04ba3b4",
+    "backendRuntimeNote": "8090 JVM classpath pointed at main-repo target/classes. Relevant material (133 classes), finance payables page (8 classes) and project purchase page (6 classes) are byte-identical by SHA-256 to the exact /tmp 8cc1d11 checkout; material source worktree is clean. Later main-repo diffs do not include material implementation."
+  },
+  "session_roles": {
+    "roles": [
+      "Boss",
+      "Finance",
+      "Designer",
+      "PM",
+      "StoreManager",
+      "CrossCompanyBoss"
+    ],
+    "result": "all authenticated; role/company identity matched"
+  },
+  "selection_gate": {
+    "selectionIds": [
+      "237140505387859968",
+      "237140511490572288"
+    ],
+    "deliver": true,
+    "result": "Selected; sheet creation gate passed"
+  },
+  "sheet_create": {
+    "sheets": [
+      {
+        "sheetId": "1792228308015661882",
+        "sheetNo": "TILE-20261017-001",
+        "projectId": "228669029517099008",
+        "planId": "228669029559042048",
+        "quantity": 10
+      },
+      {
+        "sheetId": "1792228309167673855",
+        "sheetNo": "TILE-20261017-002",
+        "projectId": "231848057782665216",
+        "planId": "231848058021740544",
+        "quantity": 5
+      },
+      {
+        "sheetId": "1792228614488620878",
+        "sheetNo": "TILE-20261017-003",
+        "projectId": "228669029517099008",
+        "planId": "228669029559042048",
+        "quantity": 8
+      }
+    ],
+    "result": "3 Draft sheets"
+  },
+  "measure_submit": {
+    "measureBy": "PM",
+    "measureAt": "2026-10-17",
+    "deliverAt": "2026-10-20",
+    "installAt": "2026-10-22",
+    "result": "A/B/C Measured then Submitted"
+  },
+  "priced_order": {
+    "sheetId": "1792228308015661882",
+    "key": "b62-A-priced-20261017",
+    "items": [
+      {
+        "quantity": 10,
+        "purchasePrice": 100
+      }
+    ],
+    "purchase": {
+      "purchaseId": "1792228351080100029",
+      "no": "PO1efc87885a5933b420dead2300043e63",
+      "quantity": 10,
+      "amount": 1000,
+      "priceState": "Priced"
+    },
+    "payable": {
+      "payableId": "1792228351118578213",
+      "amount": 1000,
+      "estimated": false
+    },
+    "result": "success"
+  },
+  "unpriced_order": {
+    "sheetId": "1792228309167673855",
+    "key": "b62-B-unpriced-20261017",
+    "items": [
+      {
+        "quantity": 5,
+        "purchasePrice": null
+      }
+    ],
+    "purchase": {
+      "purchaseId": "1792228403052193700",
+      "no": "POc70797ee939adc0f340eb9278a2b31d1",
+      "quantity": 5,
+      "amount": 0,
+      "priceState": "Unpriced"
+    },
+    "payable": {
+      "payableId": "1792228403068500836",
+      "amount": 0,
+      "estimated": true
+    },
+    "result": "success"
+  },
+  "duplicate_order": {
+    "key": "b62-A-priced-20261017",
+    "firstResult": "same deterministic business result",
+    "secondResult": "same deterministic business result",
+    "dbCounts": {
+      "purchase": 1,
+      "purchase_item": 1,
+      "payable": 1
+    },
+    "result": "PASS"
+  },
+  "idempotency_conflict": {
+    "key": "b62-A-priced-20261017",
+    "changedPayload": "purchasePrice 100 -> 101",
+    "success": false,
+    "errorCode": "409",
+    "message": "幂等键对应的下单内容不一致，请生成新的下单请求",
+    "transport": "HTTP 200 platform envelope",
+    "result": "PASS"
+  },
+  "sheet_privacy": {
+    "designer": {
+      "itemKeys": [
+        "createTime",
+        "itemId",
+        "sourceKind",
+        "materialPlan",
+        "standardIncluded",
+        "locationName",
+        "quantity",
+        "unit",
+        "lossRate",
+        "lossQuantity",
+        "orderedQuantity",
+        "sort",
+        "attachments"
+      ],
+      "sensitiveKeys": []
+    },
+    "pm": {
+      "sensitiveKeys": []
+    },
+    "finance": {
+      "quoteCostPrice": 35,
+      "purchasePrice": 100,
+      "priceState": "Priced"
+    },
+    "boss": {
+      "quoteCostPrice": 35,
+      "purchasePrice": 100,
+      "priceState": "Priced"
+    }
+  },
+  "purchase_privacy": {
+    "designer": {
+      "no": "PO1efc87885a5933b420dead2300043e63",
+      "quantity": 10,
+      "receivedQuantity": 0,
+      "status": "Ordered",
+      "sensitiveFields": null
+    },
+    "pm": {
+      "sameFulfillmentProjection": true,
+      "sensitiveFields": null
+    },
+    "finance": {
+      "amount": 1000,
+      "supplierName": "昭青演示材料商",
+      "supplierContactPresent": true,
+      "contractPresent": true
+    },
+    "storeManager": {
+      "amount": 1000,
+      "supplierName": "昭青演示材料商",
+      "supplierContactPresent": true
+    }
+  },
+  "settlement_privacy": {
+    "designer": {
+      "pageErrorCode": "403",
+      "infoErrorCode": "403"
+    },
+    "pm": {
+      "pageErrorCode": "403",
+      "infoErrorCode": "403"
+    },
+    "finance": {
+      "pageSuccess": true,
+      "infoSuccess": true,
+      "totalAmount": 660,
+      "supplierName": "昭青演示材料商"
+    },
+    "boss": {
+      "pageSuccess": true,
+      "infoSuccess": true,
+      "totalAmount": 660
+    },
+    "storeManager": {
+      "pageSuccess": true,
+      "infoSuccess": true,
+      "totalAmount": 660
+    }
+  },
+  "receipt_gate": {
+    "beforeReceipt": {
+      "previewRows": 0,
+      "previewData": [],
+      "confirm": {
+        "success": false,
+        "message": "采购明细尚未到场，不能结算"
+      }
+    },
+    "afterPartialReceipt": {
+      "receivedQuantity": 6,
+      "purchasedQuantity": 10,
+      "previewRow": {
+        "purchaseItemId": "1792228351095995776",
+        "quantity": 10,
+        "receivedQuantity": 6,
+        "purchasePrice": 100
+      },
+      "overQuantity": {
+        "quantity": 7,
+        "success": false,
+        "message": "结算数量不能超过已到场数量"
+      },
+      "validQuantity": {
+        "quantity": 6,
+        "success": true,
+        "totalAmount": 660,
+        "settlementId": "1792228387377581438"
+      }
+    },
+    "unpricedFullReceipt": {
+      "receivedQuantity": 5,
+      "quantity": 5
+    }
+  },
+  "boundary_matrix": {
+    "unreceivedPreview": [],
+    "unreceivedConfirmError": "采购明细尚未到场，不能结算",
+    "overReceivedError": "结算数量不能超过已到场数量",
+    "equalReceived": "success",
+    "duplicateSettlement": "already-settled error",
+    "mutualExclusion": "post-monthly preview=[]"
+  },
+  "estimated_payable_rollback": {
+    "beforeSettlement": {
+      "payableId": "1792228403068500836",
+      "amount": 0,
+      "estimated": true,
+      "status": "Pending",
+      "sourceNo": "POc70797ee939adc0f340eb9278a2b31d1"
+    },
+    "afterSettlement": {
+      "amount": 600,
+      "estimated": false,
+      "settledAmount": 600,
+      "status": "Pending",
+      "materialCost": 600
+    },
+    "afterCancel": {
+      "amount": 0,
+      "estimated": true,
+      "settledAmount": null,
+      "status": "Pending",
+      "materialCost": 0,
+      "settlementStatus": "Cancelled",
+      "settlementItems": []
+    },
+    "costBefore": 35605.08,
+    "costAfterSettlement": 31240.28,
+    "costAfterCancel": 35605.08
+  },
+  "priced_cancel": {
+    "settlementId": "1792228387377581438",
+    "before": {
+      "purchaseItemPriceState": "Settled",
+      "settlementPrice": 110,
+      "payableAmount": 660
+    },
+    "after": {
+      "purchaseItemPriceState": "Priced",
+      "settlementPrice": null,
+      "payableAmount": 1000,
+      "settlementStatus": "Cancelled",
+      "settlementItems": []
+    }
+  },
+  "multi_supplier_split": {
+    "sheetId": "1792228614488620878",
+    "orders": [
+      {
+        "supplier": "昭青演示材料商",
+        "quantity": 3,
+        "purchasePrice": 100,
+        "purchaseItemPriceState": "Priced"
+      },
+      {
+        "supplier": "B6.2验收临时厂家",
+        "quantity": 5,
+        "purchasePrice": null,
+        "purchaseItemPriceState": "Unpriced"
+      }
+    ],
+    "receipts": [
+      {
+        "quantity": 3
+      },
+      {
+        "quantity": 5
+      }
+    ],
+    "result": "two purchase orders created"
+  },
+  "monthly_settlement": {
+    "scope": "Monthly",
+    "supplier": "B6.2验收临时厂家",
+    "period": "2026-10",
+    "preview": [
+      {
+        "quantity": 5,
+        "receivedQuantity": 5,
+        "unpriced": true
+      }
+    ],
+    "confirm": {
+      "settlementId": "1792228637191202470",
+      "totalAmount": 600,
+      "status": "Confirmed"
+    },
+    "postConfirmPreview": [],
+    "duplicateConfirm": {
+      "success": false,
+      "message": "该采购明细已结算，不允许重复计入（结算互斥，DEC-073）"
+    },
+    "cancel": {
+      "status": "Cancelled",
+      "payable": {
+        "amount": 0,
+        "estimated": true
+      }
+    }
+  },
+  "multi_supplier_price_state": {
+    "expected": "Mixed (or otherwise non-Unpriced after priced+settled facts)",
+    "actual": {
+      "sheetStatus": "Arrived",
+      "sheetPriceState": "Unpriced",
+      "sheetItem": {
+        "orderedQuantity": 8,
+        "purchasePrice": null,
+        "settlementPrice": null,
+        "priceState": "Unpriced"
+      },
+      "purchaseItems": [
+        {
+          "quantity": 3,
+          "unitPrice": 100,
+          "priceState": "Priced"
+        },
+        {
+          "quantity": 5,
+          "settlementPrice": 120,
+          "priceState": "Settled"
+        }
+      ]
+    },
+    "result": "FAIL"
+  },
+  "cost_incomplete": {
+    "project44": {
+      "costComplete": false,
+      "profitAmount": null
+    },
+    "projectB": {
+      "costComplete": false,
+      "profitAmount": null,
+      "grossMargin": null
+    }
+  },
+  "permission_matrix": {
+    "designerSheet": "no commercial fields",
+    "pmSheet": "no commercial fields",
+    "designerPurchase": "no amount/supplier/contract",
+    "pmPurchase": "no amount/supplier/contract",
+    "designerSettlement": "403 page+info",
+    "pmSettlement": "403 page+info",
+    "financeSettlement": "allowed",
+    "storeManagerSettlement": "allowed",
+    "designerOrder": "403",
+    "pmOrder": "403",
+    "designerConfirm": "403",
+    "pmConfirm": "403"
+  },
+  "cross_boundary": {
+    "crossBoss": {
+      "projectInfo": "404",
+      "sheetInfo": "404",
+      "sheetPageRows": 0,
+      "purchaseRows": 0,
+      "settlementRows": 0,
+      "payableRows": 0
+    },
+    "storeManagerForeignProject": "404",
+    "scopeLimit": "The supplied local StoreManager belongs to a single-store tenant; independent same-tenant cross-store negative could not be executed without an unprovided multi-store StoreManager account. Combined foreign-company/foreign-store target returned 404."
+  },
+  "old_routes": {
+    "save": {
+      "errorCode": "canNotFoundHandler",
+      "message": "找不到对应的处理服务:project/purchase/save"
+    },
+    "batch": {
+      "errorCode": "canNotFoundHandler",
+      "message": "找不到对应的处理服务:project/purchase/batch"
+    },
+    "appRoutes": [
+      {
+        "route": "/subpackages/supply/pages/material-batch-order",
+        "bodyText": "",
+        "scrollWidth": 390
+      },
+      {
+        "route": "/subpackages/supply/pages/purchase-edit",
+        "bodyText": "",
+        "scrollWidth": 390
+      },
+      {
+        "route": "/subpackages/supply/pages/material-plan-picker",
+        "bodyText": "",
+        "scrollWidth": 390
+      }
+    ],
+    "materialPlanText": "请从主材作业单发起的下单流程; 下一步: 从主材作业单下单"
+  },
+  "assistant_golden": {
+    "total": 50,
+    "pass": 50,
+    "fail": 0,
+    "intentMatches": 50,
+    "readOnly": true,
+    "auditStatus": "RECORDED",
+    "citationNonEmpty": true,
+    "auditIdsCount": 50
+  },
+  "assistant_extra": {
+    "sameRequestIdSameAudit": true,
+    "auditId": "237141576864759808",
+    "designerOwnProject": {
+      "intent": "PROJECT_HEALTH",
+      "answerType": "LIVE_DATA",
+      "answer": "当前项目材料计划 1 条，待下单 0 条，待到货 1 条，逾期 1 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。"
+    },
+    "designerCrossTenant": {
+      "success": false,
+      "errorCode": "404"
+    },
+    "bossCrossTenant": {
+      "success": false,
+      "errorCode": "404"
+    },
+    "unknown": {
+      "intent": "UNKNOWN",
+      "answerType": "NO_EVIDENCE",
+      "readOnly": true
+    },
+    "auditSchema": "db_ai_usage_call has no prompt/answer body columns"
+  },
+  "ui": {
+    "web": {
+      "viewport": "1440x900",
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "consoleErrors": 0,
+      "consoleWarnings": 1,
+      "warning": "Vue Router no-match warning during initial lazy role-route registration",
+      "estimatedRowText": "材料采购 · 昭青演示材料商 | ... | 待结算 | 安排付款(disabled)",
+      "paymentDisabled": true,
+      "zeroNotShownInTargetRow": true,
+      "screenshots": [
+        "screenshots/b62-web-payables-estimated-1440x900.png",
+        "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png"
+      ]
+    },
+    "app": {
+      "viewport": "390x844",
+      "innerWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "consoleErrors": 0,
+      "estimatedRowText": "待定价 | 暂估/待定价 | 已付 ¥0 · 待付 待结算 | 结算后安排付款",
+      "paymentButtonAbsent": true,
+      "emptyText": "暂无应付账款记录",
+      "permissionText": "当前账号无权执行该操作 / 当前账号无权访问该功能",
+      "workbenchText": [
+        "已进入采购",
+        "成本待结算",
+        "已到场",
+        "已定价",
+        "部分到场"
+      ],
+      "screenshots": [
+        "screenshots/b62-app-payables-estimated-390x844.png",
+        "screenshots/b62-app-payables-estimated-after-cancel-390x844.png",
+        "screenshots/b62-app-payables-empty-390x844.png",
+        "screenshots/b62-app-payables-permission-390x844.png",
+        "screenshots/b62-app-material-sheet-workbench-390x844.png",
+        "screenshots/b62-app-old-route-unreachable-390x844.png"
+      ]
+    }
+  },
+  "cleanup": {
+    "sheets": 0,
+    "sheetItems": 0,
+    "purchases": 6,
+    "purchaseItems": 6,
+    "payables": 11,
+    "receipts": 3,
+    "settlements": 0,
+    "settlementItems": 0,
+    "selections": 0,
+    "tempSupplier": 0,
+    "plans": [
+      {
+        "planId": "228669029559042048",
+        "status": "ReadyToOrder",
+        "arrivedAt": null,
+        "selectionId": null,
+        "unitPrice": 35,
+        "cost": 945
+      },
+      {
+        "planId": "231848058021740544",
+        "status": "ReadyToOrder",
+        "arrivedAt": null,
+        "selectionId": null,
+        "unitPrice": 85.6,
+        "cost": 4964.8
+      }
+    ],
+    "managerRestored": {
+      "projectId": "228669029517099008",
+      "managerId": "1790000000000000108"
+    },
+    "ddl": false,
+    "productionTouched": false,
+    "formalMiniProgramRelease": false,
+    "auditRows": "55 B6.2 assistant audit records remain in the append-only AI usage ledger: 50 golden-question records plus 5 auxiliary probes (2 initial probes, 1 idempotency probe, 1 designer live-context question, 1 unknown-question probe). No temporary material business rows remain."
+  }
+}

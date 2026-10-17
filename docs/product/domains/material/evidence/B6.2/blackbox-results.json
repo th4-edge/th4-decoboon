@@ -1,0 +1,1780 @@
+{
+  "batch": "B6.2",
+  "domain": "material",
+  "date": "2026-10-17",
+  "environment": "local dev backend 8090; App H5 8080; Web 4175; MySQL 127.0.0.1:3306/decoboon",
+  "totals": {
+    "total": 150,
+    "pass": 149,
+    "fail": 1
+  },
+  "byCategory": {
+    "defect-verification": {
+      "total": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    "main-chain": {
+      "total": 18,
+      "pass": 18,
+      "fail": 0
+    },
+    "permission": {
+      "total": 28,
+      "pass": 28,
+      "fail": 0
+    },
+    "idempotency": {
+      "total": 5,
+      "pass": 5,
+      "fail": 0
+    },
+    "boundary": {
+      "total": 10,
+      "pass": 9,
+      "fail": 1
+    },
+    "assistant": {
+      "total": 56,
+      "pass": 56,
+      "fail": 0
+    },
+    "old-route": {
+      "total": 4,
+      "pass": 4,
+      "fail": 0
+    },
+    "cross-boundary": {
+      "total": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    "ui": {
+      "total": 11,
+      "pass": 11,
+      "fail": 0
+    },
+    "cleanup": {
+      "total": 6,
+      "pass": 6,
+      "fail": 0
+    }
+  },
+  "results": [
+    {
+      "id": "F01",
+      "category": "defect-verification",
+      "expected": "Designer/PM cannot read sheet cost fields; Boss/Finance/StoreManager retain commercial visibility",
+      "actual": "Designer/PM sheet info and page omit quoteCostPrice/purchasePrice/settlementPrice/priceState; Finance/Boss see quoteCostPrice=35 and purchasePrice=100 after order",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#F01",
+        "api-samples.json#sheet_privacy",
+        "screenshots/b62-app-material-sheet-workbench-390x844.png"
+      ],
+      "notes": "B6-DEF-001 independently verified closed"
+    },
+    {
+      "id": "F02",
+      "category": "defect-verification",
+      "expected": "Designer/PM cannot read purchase amount, unit price, supplier or contract-sensitive fields",
+      "actual": "Designer/PM purchase rows keep no/quantity/receivedQuantity/status but omit amount/unitPrice/supplierName/supplier/contract; Finance/Boss/StoreManager see amount=1000 and supplier",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#F02",
+        "api-samples.json#purchase_privacy"
+      ],
+      "notes": "B6-DEF-002 independently verified closed"
+    },
+    {
+      "id": "F03",
+      "category": "defect-verification",
+      "expected": "Designer/PM settlement page and info are denied",
+      "actual": "Designer/PM both page and info return success=false, errorCode=403; Finance/Boss/StoreManager read totalAmount=660/supplier",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#F03",
+        "api-samples.json#settlement_privacy"
+      ],
+      "notes": "B6-DEF-003 independently verified closed"
+    },
+    {
+      "id": "F04",
+      "category": "defect-verification",
+      "expected": "Identical order retry creates one purchase/item/payable; same key different payload conflicts",
+      "actual": "Two identical requests returned same deterministic result; DB had exactly 1 purchase, 1 item, 1 payable; changed price returned logical 409",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#F04",
+        "api-samples.json#duplicate_order",
+        "api-samples.json#idempotency_conflict"
+      ],
+      "notes": "B6-DEF-004 independently verified closed; errorCode 409 is transported in the platform standard HTTP 200 envelope"
+    },
+    {
+      "id": "F05",
+      "category": "defect-verification",
+      "expected": "Unreceived items cannot be settled; settlement quantity cannot exceed received quantity",
+      "actual": "Before receipt preview=[] and confirm rejected; after 6/10 receipt preview receivedQuantity=6; quantity 7 rejected; quantity 6 accepted",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#F05",
+        "api-samples.json#receipt_gate"
+      ],
+      "notes": "B6-DEF-005 independently verified closed"
+    },
+    {
+      "id": "F06",
+      "category": "defect-verification",
+      "expected": "Estimated payable is explicit, UI does not present 0 as real amount, settlement/cancel restores marker and cost",
+      "actual": "finance/payable/page returned estimated=true; Web showed 待结算 with disabled payment; App showed 待定价/暂估/待定价/结算后安排付款; after settlement estimated=false/settledAmount=600; after cancel estimated=true/amount=0/materialCost=0",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#F06",
+        "api-samples.json#estimated_payable_rollback",
+        "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png",
+        "screenshots/b62-app-payables-estimated-after-cancel-390x844.png"
+      ],
+      "notes": "B6-DEF-006 independently verified closed"
+    },
+    {
+      "id": "P01",
+      "category": "main-chain",
+      "expected": "Six provided roles can log in and receive tenant-bound identity",
+      "actual": "Boss/Finance/Designer/PM/StoreManager/cross-company Boss all authenticated; identities matched expected role and company",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#session_roles"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P02",
+      "category": "main-chain",
+      "expected": "Selection gate can be satisfied before sheet creation",
+      "actual": "Two temporary selections saved and delivered; material plans entered ReadyToOrder-eligible state",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#selection_gate"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P03",
+      "category": "main-chain",
+      "expected": "Designer can create sheets from material plans",
+      "actual": "Three temporary sheets created and each persisted one Plan-source line",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#sheet_create"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P04",
+      "category": "main-chain",
+      "expected": "PM can measure and set delivery/install dates",
+      "actual": "PM measured sheet A and B; measureAt/deliverAt/installAt persisted; delivered status Measured",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#measure_submit"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P05",
+      "category": "main-chain",
+      "expected": "Designer can submit sheets",
+      "actual": "Sheets A/B/C advanced to Submitted",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#measure_submit"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P06",
+      "category": "main-chain",
+      "expected": "Finance can place a priced order",
+      "actual": "Sheet A ordered 10@100; purchase amount=1000, payable=1000",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#priced_order"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P07",
+      "category": "main-chain",
+      "expected": "Finance can place an unpriced order",
+      "actual": "Sheet B ordered 5 without purchase price; purchase priceState=Unpriced and payable estimated=true",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#unpriced_order"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P08",
+      "category": "main-chain",
+      "expected": "PM can record a partial receipt",
+      "actual": "Sheet A purchase item received 6 of 10; purchase and item became PartiallyReceived; sheet became PartiallyArrived",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#receipt_gate"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P09",
+      "category": "main-chain",
+      "expected": "PM can record full receipt of an unpriced purchase",
+      "actual": "Sheet B received 5/5 without price; sheet advanced to Arrived; cost remained incomplete",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#receipt_gate"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P10",
+      "category": "main-chain",
+      "expected": "One sheet can be split across two suppliers",
+      "actual": "Sheet C ordered 3@100 to supplier A and 5 unpriced to supplier B; two purchase orders were created",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#multi_supplier_split"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P11",
+      "category": "main-chain",
+      "expected": "Both split purchases can be received",
+      "actual": "Split purchase items received 3/3 and 5/5",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#multi_supplier_split"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P12",
+      "category": "main-chain",
+      "expected": "Monthly settlement can settle an unpriced split",
+      "actual": "Monthly preview listed 5@received=5; confirm created monthly settlement of 600",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#monthly_settlement"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P13",
+      "category": "main-chain",
+      "expected": "Monthly settlement is mutually exclusive with repeat settlement",
+      "actual": "Post-settlement monthly preview was empty; duplicate confirm rejected with already-settled error",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#monthly_settlement"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P14",
+      "category": "main-chain",
+      "expected": "Monthly settlement can be cancelled",
+      "actual": "Cancel set settlement status Cancelled and payable back to estimated=true/amount=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#monthly_settlement"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P15",
+      "category": "main-chain",
+      "expected": "Per-purchase settlement can be cancelled",
+      "actual": "Cancel restored purchase item priceState=Priced/settlementPrice=null and payable amount to purchase-price basis",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#priced_cancel"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P16",
+      "category": "main-chain",
+      "expected": "Unpriced settlement can be cancelled with cost rollback",
+      "actual": "materialCost 600→0; payable settledAmount cleared; estimated=true; settlement header retained as Cancelled with empty items",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#estimated_payable_rollback"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P17",
+      "category": "main-chain",
+      "expected": "Incomplete cost never yields a real profit",
+      "actual": "Baseline project health returned costComplete=false and profitAmount=null for both affected projects after cleanup",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cost_incomplete"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "P18",
+      "category": "main-chain",
+      "expected": "Historical purchase and receipt query remain available",
+      "actual": "Existing seed purchases and receipts remained readable after temporary cleanup; counts restored to 6 purchases/3 receipts",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup",
+        "api-samples.json#old_routes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X01",
+      "category": "permission",
+      "expected": "Designer material/sheet/info hides commercial fields",
+      "actual": "success=true; sensitive key set empty; fulfillment fields retained",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X02",
+      "category": "permission",
+      "expected": "Designer material/sheet/page hides commercial fields",
+      "actual": "row present; sensitive key set empty",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X03",
+      "category": "permission",
+      "expected": "PM material/sheet/info hides commercial fields",
+      "actual": "success=true; sensitive key set empty; orderedQuantity retained",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X04",
+      "category": "permission",
+      "expected": "PM material/sheet/page hides commercial fields",
+      "actual": "row present; sensitive key set empty",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X05",
+      "category": "permission",
+      "expected": "Finance material/sheet/info retains commercial fields",
+      "actual": "quoteCostPrice=35; purchasePrice=100; priceState=Priced",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X06",
+      "category": "permission",
+      "expected": "Boss material/sheet/info retains commercial fields",
+      "actual": "quoteCostPrice=35; purchasePrice=100; priceState=Priced",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X07",
+      "category": "permission",
+      "expected": "Designer project/purchase/page hides amount/supplier/contract",
+      "actual": "fulfillment row present; amount/unitPrice/supplierName/supplier/contract absent",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X08",
+      "category": "permission",
+      "expected": "PM project/purchase/page hides amount/supplier/contract",
+      "actual": "fulfillment row present; sensitive fields absent",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X09",
+      "category": "permission",
+      "expected": "Finance project/purchase/page retains commercial fields",
+      "actual": "amount=1000; supplierName=昭青演示材料商; supplier contact present",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X10",
+      "category": "permission",
+      "expected": "StoreManager project/purchase/page retains commercial fields",
+      "actual": "amount=1000; supplierName=昭青演示材料商; supplier contact present",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X11",
+      "category": "permission",
+      "expected": "Designer material/settlement/page denied",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X12",
+      "category": "permission",
+      "expected": "Designer material/settlement/info denied",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X13",
+      "category": "permission",
+      "expected": "PM material/settlement/page denied",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X14",
+      "category": "permission",
+      "expected": "PM material/settlement/info denied",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X15",
+      "category": "permission",
+      "expected": "Finance material/settlement/page+info allowed",
+      "actual": "page and info return totalAmount=660 and supplier",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X16",
+      "category": "permission",
+      "expected": "Boss material/settlement/page+info allowed",
+      "actual": "page and info return totalAmount=660 and supplier",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X17",
+      "category": "permission",
+      "expected": "StoreManager material/settlement/page+info allowed",
+      "actual": "page and info return totalAmount=660 and supplier",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X18",
+      "category": "permission",
+      "expected": "Designer finance/payable/page denied",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X19",
+      "category": "permission",
+      "expected": "PM finance/payable/page denied",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X20",
+      "category": "permission",
+      "expected": "Designer cannot order",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X21",
+      "category": "permission",
+      "expected": "PM cannot order",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X22",
+      "category": "permission",
+      "expected": "Designer cannot confirm settlement",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X23",
+      "category": "permission",
+      "expected": "PM cannot confirm settlement",
+      "actual": "success=false; errorCode=403",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X24",
+      "category": "permission",
+      "expected": "Cross-company Boss cannot read sheet info",
+      "actual": "success=false; errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X25",
+      "category": "permission",
+      "expected": "Cross-company Boss sheet list is empty",
+      "actual": "success=true; rows=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X26",
+      "category": "permission",
+      "expected": "Cross-company Boss purchase/settlement/payable reads expose no target data",
+      "actual": "purchase and settlement denied/empty; payable rows=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X27",
+      "category": "permission",
+      "expected": "Cross-company Boss project info denied",
+      "actual": "success=false; errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "X28",
+      "category": "permission",
+      "expected": "StoreManager cannot access foreign-company/foreign-store project",
+      "actual": "success=false; errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#permission_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "I01",
+      "category": "idempotency",
+      "expected": "Two identical order submissions are idempotent",
+      "actual": "Second response matched first deterministic purchase result; no second purchase/item/payable",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#duplicate_order"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "I02",
+      "category": "idempotency",
+      "expected": "Database counts confirm one purchase/item/payable",
+      "actual": "counts: purchase=1, purchase_item=1, payable=1 for the target plan/key",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#duplicate_order"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "I03",
+      "category": "idempotency",
+      "expected": "Same idempotency key with different payload conflicts",
+      "actual": "success=false; errorCode=409; message says content mismatch",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#idempotency_conflict"
+      ],
+      "notes": "Platform error envelope uses HTTP 200 with logical errorCode"
+    },
+    {
+      "id": "I04",
+      "category": "idempotency",
+      "expected": "Distinct idempotency keys allow intentional split orders",
+      "actual": "Two orders with different suppliers/keys created two purchase orders",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#multi_supplier_split"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "I05",
+      "category": "idempotency",
+      "expected": "Duplicate settlement is rejected after first settlement",
+      "actual": "Second confirm returned already-settled error; preview no longer listed row",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#monthly_settlement"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B01",
+      "category": "boundary",
+      "expected": "Unreceived preview is empty",
+      "actual": "rows=[]",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B02",
+      "category": "boundary",
+      "expected": "Unreceived confirm is rejected",
+      "actual": "success=false; message=采购明细尚未到场，不能结算",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B03",
+      "category": "boundary",
+      "expected": "After partial receipt preview reflects received quantity",
+      "actual": "quantity=10; receivedQuantity=6",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B04",
+      "category": "boundary",
+      "expected": "Settlement quantity above received quantity is rejected",
+      "actual": "quantity 7 rejected: 结算数量不能超过已到场数量",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B05",
+      "category": "boundary",
+      "expected": "Settlement quantity equal to received quantity succeeds",
+      "actual": "quantity 6 accepted; settlement total=660",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B06",
+      "category": "boundary",
+      "expected": "Estimated payable API marker is explicit",
+      "actual": "amount=0; estimated=true; sourceNo present",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B07",
+      "category": "boundary",
+      "expected": "Settlement converts estimated payable to confirmed amount",
+      "actual": "estimated=false; settledAmount=600; amount=600",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B08",
+      "category": "boundary",
+      "expected": "Cancel restores estimated marker and cost",
+      "actual": "estimated=true; amount=0; settledAmount absent; materialCost 600→0; items=[]",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B09",
+      "category": "boundary",
+      "expected": "Monthly settlement excludes already-settled rows",
+      "actual": "post-confirm monthly preview rows=[]; duplicate confirm rejected",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#boundary_matrix"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "B10",
+      "category": "boundary",
+      "expected": "Multi-supplier split sheet aggregate should expose Mixed / non-stale price state",
+      "actual": "Expected Mixed after 3 priced + 5 unpriced, and still non-Unpriced after 5 settled; actual sheet and item stayed Unpriced with purchasePrice/settlementPrice null while purchase items were Priced(100) and Settled(120)",
+      "result": "FAIL",
+      "evidence": [
+        "blackbox-results.json#B10",
+        "api-samples.json#multi_supplier_price_state"
+      ],
+      "notes": "New B6.2 P2 defect; financial source facts were correct but sheet projection is stale"
+    },
+    {
+      "id": "Q01",
+      "category": "assistant",
+      "expected": "Intent SELECTION_GATE with read-only audited answer",
+      "actual": "intent=SELECTION_GATE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q01",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q02",
+      "category": "assistant",
+      "expected": "Intent SELECTION_GATE with read-only audited answer",
+      "actual": "intent=SELECTION_GATE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q02",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q03",
+      "category": "assistant",
+      "expected": "Intent SELECTION_GATE with read-only audited answer",
+      "actual": "intent=SELECTION_GATE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q03",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q04",
+      "category": "assistant",
+      "expected": "Intent SELECTION_GATE with read-only audited answer",
+      "actual": "intent=SELECTION_GATE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q04",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q05",
+      "category": "assistant",
+      "expected": "Intent TIME_SEMANTICS with read-only audited answer",
+      "actual": "intent=TIME_SEMANTICS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q05",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q06",
+      "category": "assistant",
+      "expected": "Intent TIME_SEMANTICS with read-only audited answer",
+      "actual": "intent=TIME_SEMANTICS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q06",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q07",
+      "category": "assistant",
+      "expected": "Intent TIME_SEMANTICS with read-only audited answer",
+      "actual": "intent=TIME_SEMANTICS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q07",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q08",
+      "category": "assistant",
+      "expected": "Intent TIME_SEMANTICS with read-only audited answer",
+      "actual": "intent=TIME_SEMANTICS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q08",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q09",
+      "category": "assistant",
+      "expected": "Intent TIME_SEMANTICS with read-only audited answer",
+      "actual": "intent=TIME_SEMANTICS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q09",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q10",
+      "category": "assistant",
+      "expected": "Intent SHEET_VS_PURCHASE with read-only audited answer",
+      "actual": "intent=SHEET_VS_PURCHASE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q10",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q11",
+      "category": "assistant",
+      "expected": "Intent SHEET_VS_PURCHASE with read-only audited answer",
+      "actual": "intent=SHEET_VS_PURCHASE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q11",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q12",
+      "category": "assistant",
+      "expected": "Intent SHEET_VS_PURCHASE with read-only audited answer",
+      "actual": "intent=SHEET_VS_PURCHASE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q12",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q13",
+      "category": "assistant",
+      "expected": "Intent SUPPLIER with read-only audited answer",
+      "actual": "intent=SUPPLIER; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q13",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q14",
+      "category": "assistant",
+      "expected": "Intent SHEET_STATUS with read-only audited answer",
+      "actual": "intent=SHEET_STATUS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q14",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q15",
+      "category": "assistant",
+      "expected": "Intent SHEET_STATUS with read-only audited answer",
+      "actual": "intent=SHEET_STATUS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q15",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q16",
+      "category": "assistant",
+      "expected": "Intent SHEET_STATUS with read-only audited answer",
+      "actual": "intent=SHEET_STATUS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q16",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q17",
+      "category": "assistant",
+      "expected": "Intent SHEET_STATUS with read-only audited answer",
+      "actual": "intent=SHEET_STATUS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q17",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q18",
+      "category": "assistant",
+      "expected": "Intent SHEET_STATUS with read-only audited answer",
+      "actual": "intent=SHEET_STATUS; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q18",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q19",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q19",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q20",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q20",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q21",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q21",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q22",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q22",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q23",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q23",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q24",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q24",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q25",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q25",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q26",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q26",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q27",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q27",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q28",
+      "category": "assistant",
+      "expected": "Intent RECEIPT with read-only audited answer",
+      "actual": "intent=RECEIPT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q28",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q29",
+      "category": "assistant",
+      "expected": "Intent RECEIPT with read-only audited answer",
+      "actual": "intent=RECEIPT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q29",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q30",
+      "category": "assistant",
+      "expected": "Intent PRICE_COST with read-only audited answer",
+      "actual": "intent=PRICE_COST; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=4",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q30",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q31",
+      "category": "assistant",
+      "expected": "Intent RECEIPT with read-only audited answer",
+      "actual": "intent=RECEIPT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q31",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q32",
+      "category": "assistant",
+      "expected": "Intent CHANGE with read-only audited answer",
+      "actual": "intent=CHANGE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q32",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q33",
+      "category": "assistant",
+      "expected": "Intent CHANGE with read-only audited answer",
+      "actual": "intent=CHANGE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q33",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q34",
+      "category": "assistant",
+      "expected": "Intent CHANGE with read-only audited answer",
+      "actual": "intent=CHANGE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q34",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q35",
+      "category": "assistant",
+      "expected": "Intent CHANGE with read-only audited answer",
+      "actual": "intent=CHANGE; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q35",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q36",
+      "category": "assistant",
+      "expected": "Intent SETTLEMENT with read-only audited answer",
+      "actual": "intent=SETTLEMENT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q36",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q37",
+      "category": "assistant",
+      "expected": "Intent SETTLEMENT with read-only audited answer",
+      "actual": "intent=SETTLEMENT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q37",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q38",
+      "category": "assistant",
+      "expected": "Intent SETTLEMENT with read-only audited answer",
+      "actual": "intent=SETTLEMENT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q38",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q39",
+      "category": "assistant",
+      "expected": "Intent SETTLEMENT with read-only audited answer",
+      "actual": "intent=SETTLEMENT; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q39",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q40",
+      "category": "assistant",
+      "expected": "Intent SUPPLIER with read-only audited answer",
+      "actual": "intent=SUPPLIER; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q40",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q41",
+      "category": "assistant",
+      "expected": "Intent SUPPLIER with read-only audited answer",
+      "actual": "intent=SUPPLIER; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q41",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q42",
+      "category": "assistant",
+      "expected": "Intent SUPPLIER with read-only audited answer",
+      "actual": "intent=SUPPLIER; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q42",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q43",
+      "category": "assistant",
+      "expected": "Intent PROJECT_HEALTH with read-only audited answer",
+      "actual": "intent=PROJECT_HEALTH; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q43",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q44",
+      "category": "assistant",
+      "expected": "Intent PROJECT_HEALTH with read-only audited answer",
+      "actual": "intent=PROJECT_HEALTH; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q44",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q45",
+      "category": "assistant",
+      "expected": "Intent PROJECT_HEALTH with read-only audited answer",
+      "actual": "intent=PROJECT_HEALTH; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q45",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q46",
+      "category": "assistant",
+      "expected": "Intent PERMISSION with read-only audited answer",
+      "actual": "intent=PERMISSION; answerType=PERMISSION_DENIED; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q46",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q47",
+      "category": "assistant",
+      "expected": "Intent PERMISSION with read-only audited answer",
+      "actual": "intent=PERMISSION; answerType=PERMISSION_DENIED; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q47",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q48",
+      "category": "assistant",
+      "expected": "Intent FIELD_DICTIONARY with read-only audited answer",
+      "actual": "intent=FIELD_DICTIONARY; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=3",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q48",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q49",
+      "category": "assistant",
+      "expected": "Intent FIELD_DICTIONARY with read-only audited answer",
+      "actual": "intent=FIELD_DICTIONARY; answerType=EXPLANATION; readOnly=true; auditStatus=RECORDED; citations=2",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q49",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "Q50",
+      "category": "assistant",
+      "expected": "Intent OUT_OF_SCOPE with read-only audited answer",
+      "actual": "intent=OUT_OF_SCOPE; answerType=REFUSAL; readOnly=true; auditStatus=RECORDED; citations=1",
+      "result": "PASS",
+      "evidence": [
+        "blackbox-results.json#Q50",
+        "api-samples.json#assistant_golden"
+      ],
+      "notes": "Golden question live rerun"
+    },
+    {
+      "id": "A51",
+      "category": "assistant",
+      "expected": "Repeated requestId+idempotencyKey returns same audit record",
+      "actual": "Both responses returned auditId 237141576864759808 and RECORDED",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#assistant_extra"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "A52",
+      "category": "assistant",
+      "expected": "Designer live project answer contains fulfillment only, no cost/profit numbers",
+      "actual": "answer: 1 plan, 0 ready-to-order, 1 pending arrival, 1 overdue; states cost/profit restricted",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#assistant_extra"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "A53",
+      "category": "assistant",
+      "expected": "Designer cross-tenant project is denied",
+      "actual": "success=false; errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#assistant_extra"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "A54",
+      "category": "assistant",
+      "expected": "Cross-company Boss cross-tenant project is denied",
+      "actual": "success=false; errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#assistant_extra"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "A55",
+      "category": "assistant",
+      "expected": "Unknown question returns NO_EVIDENCE rather than fabricated answer",
+      "actual": "answerType=NO_EVIDENCE; readOnly=true; auditStatus=RECORDED",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#assistant_extra"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "A56",
+      "category": "assistant",
+      "expected": "Audit storage does not contain question/answer text",
+      "actual": "db_ai_usage_call schema contains capability/request/idempotency/status/units and no prompt/answer body columns",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#assistant_extra"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "O01",
+      "category": "old-route",
+      "expected": "Legacy project/purchase/save is unreachable",
+      "actual": "errorCode=canNotFoundHandler; 找不到对应的处理服务",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#old_routes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "O02",
+      "category": "old-route",
+      "expected": "Legacy project/purchase/batch is unreachable",
+      "actual": "errorCode=canNotFoundHandler; 找不到对应的处理服务",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#old_routes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "O03",
+      "category": "old-route",
+      "expected": "Three legacy App routes are blank/no-match",
+      "actual": "material-batch-order, purchase-edit, material-plan-picker rendered empty body with scrollWidth=390",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-old-route-unreachable-390x844.png",
+        "api-samples.json#old_routes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "O04",
+      "category": "old-route",
+      "expected": "Material plan workbench offers no direct procurement entry",
+      "actual": "page says 请从主材作业单发起的下单流程 and next action 从主材作业单下单; no direct purchase action found",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#old_routes"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "C01",
+      "category": "cross-boundary",
+      "expected": "Cross-company Boss project info denied",
+      "actual": "errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cross_boundary"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "C02",
+      "category": "cross-boundary",
+      "expected": "Cross-company Boss sheet info denied and list empty",
+      "actual": "info errorCode=404; page rows=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cross_boundary"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "C03",
+      "category": "cross-boundary",
+      "expected": "Cross-company Boss purchase read exposes no target data",
+      "actual": "success=false/rows=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cross_boundary"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "C04",
+      "category": "cross-boundary",
+      "expected": "Cross-company Boss settlement preview exposes no target data",
+      "actual": "success=false/rows=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cross_boundary"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "C05",
+      "category": "cross-boundary",
+      "expected": "Cross-company Boss payable read is empty",
+      "actual": "success=true; rows=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cross_boundary"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "C06",
+      "category": "cross-boundary",
+      "expected": "StoreManager foreign-company/foreign-store project denied",
+      "actual": "project info errorCode=404",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cross_boundary"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U01",
+      "category": "ui",
+      "expected": "Web 1440x900 estimated payable text is not presented as a real zero amount",
+      "actual": "row shows 待结算; row contains no ¥0.00",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-web-payables-estimated-1440x900.png",
+        "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U02",
+      "category": "ui",
+      "expected": "Web disables payment before estimated payable is priced",
+      "actual": "安排付款 button in target row is disabled with aria-disabled=true",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U03",
+      "category": "ui",
+      "expected": "Web payables has no horizontal overflow at 1440x900",
+      "actual": "innerWidth=scrollWidth=bodyScrollWidth=1440",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U04",
+      "category": "ui",
+      "expected": "Web page has no console errors",
+      "actual": "0 errors; 1 non-business Vue Router warning during initial lazy role-route registration",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U05",
+      "category": "ui",
+      "expected": "App 390x844 estimated payable uses待定价 and待结算 wording",
+      "actual": "row text includes 待定价, 暂估/待定价, 待付 待结算, 结算后安排付款",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-payables-estimated-390x844.png",
+        "screenshots/b62-app-payables-estimated-after-cancel-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U06",
+      "category": "ui",
+      "expected": "App does not expose a pre-pricing payment button",
+      "actual": "target row contains no payment button; footer says 结算后安排付款",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-payables-estimated-after-cancel-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U07",
+      "category": "ui",
+      "expected": "App payables has no horizontal overflow at 390x844",
+      "actual": "innerWidth=scrollWidth=bodyScrollWidth=390",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-payables-estimated-after-cancel-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U08",
+      "category": "ui",
+      "expected": "App payables has no console errors",
+      "actual": "0 errors",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-payables-estimated-after-cancel-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U09",
+      "category": "ui",
+      "expected": "App empty payable state is explicit",
+      "actual": "shows 暂无应付账款记录 and recovery guidance",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-payables-empty-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U10",
+      "category": "ui",
+      "expected": "App permission state is explicit and redirects",
+      "actual": "designer direct access redirected to home and showed 当前账号无权执行该操作 / 当前账号无权访问该功能",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-payables-permission-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "U11",
+      "category": "ui",
+      "expected": "App material-sheet workbench shows fulfillment/pricing state",
+      "actual": "shows 已进入采购; sheet B 成本待结算/已到场; sheet A 已定价/部分到场; no overflow; console 0 errors",
+      "result": "PASS",
+      "evidence": [
+        "screenshots/b62-app-material-sheet-workbench-390x844.png"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L01",
+      "category": "cleanup",
+      "expected": "Temporary sheets/items deleted",
+      "actual": "counts returned to 0 sheets and 0 sheet items",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L02",
+      "category": "cleanup",
+      "expected": "Seed purchase/payable/receipt counts restored",
+      "actual": "purchases=6, purchase_items=6, payables=11, receipts=3, settlements=0, settlement_items=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L03",
+      "category": "cleanup",
+      "expected": "Temporary supplier and selections deleted",
+      "actual": "temp supplier=0; selections=0",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L04",
+      "category": "cleanup",
+      "expected": "Material plans restored",
+      "actual": "both plans ReadyToOrder; arrived_at/selection_id null; unit_price/cost restored to 35/945 and 85.60/4964.80",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L05",
+      "category": "cleanup",
+      "expected": "Temporary PM assignment restored",
+      "actual": "project 228669029517099008 manager_id restored to 1790000000000000108",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "L06",
+      "category": "cleanup",
+      "expected": "No DDL/migration, production action or formal mini-program release",
+      "actual": "none executed",
+      "result": "PASS",
+      "evidence": [
+        "api-samples.json#cleanup"
+      ],
+      "notes": ""
+    }
+  ]
+}

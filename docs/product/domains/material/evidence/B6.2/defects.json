@@ -1,0 +1,104 @@
+[
+  {
+    "id": "B6-DEF-001",
+    "severity": "P1",
+    "title": "Designer/PM 可读取材料成本字段",
+    "originalBatch": "B6",
+    "status": "CLOSED",
+    "b62Result": "PASS",
+    "evidence": [
+      "blackbox-results.json#F01",
+      "api-samples.json#sheet_privacy"
+    ],
+    "note": "B6.2 independent retest found no cost fields for Designer/PM; Finance/Boss retain visibility."
+  },
+  {
+    "id": "B6-DEF-002",
+    "severity": "P1",
+    "title": "Designer/PM 可读取采购金额与供应商",
+    "originalBatch": "B6",
+    "status": "CLOSED",
+    "b62Result": "PASS",
+    "evidence": [
+      "blackbox-results.json#F02",
+      "api-samples.json#purchase_privacy"
+    ],
+    "note": "Fulfillment fields retained; commercial and supplier fields absent for Designer/PM."
+  },
+  {
+    "id": "B6-DEF-003",
+    "severity": "P1",
+    "title": "Designer/PM 可读取结算单金额与供应商",
+    "originalBatch": "B6",
+    "status": "CLOSED",
+    "b62Result": "PASS",
+    "evidence": [
+      "blackbox-results.json#F03",
+      "api-samples.json#settlement_privacy"
+    ],
+    "note": "Both page and info return 403 for Designer/PM."
+  },
+  {
+    "id": "B6-DEF-004",
+    "severity": "P1",
+    "title": "重复订单请求生成重复采购单/应付",
+    "originalBatch": "B6",
+    "status": "CLOSED",
+    "b62Result": "PASS",
+    "evidence": [
+      "blackbox-results.json#F04",
+      "api-samples.json#duplicate_order",
+      "api-samples.json#idempotency_conflict"
+    ],
+    "note": "Identical payload produced one purchase/item/payable; mismatched payload under same key returned logical 409."
+  },
+  {
+    "id": "B6-DEF-005",
+    "severity": "P1",
+    "title": "未到场的采购明细可被结算",
+    "originalBatch": "B6",
+    "status": "CLOSED",
+    "b62Result": "PASS",
+    "evidence": [
+      "blackbox-results.json#F05",
+      "api-samples.json#receipt_gate"
+    ],
+    "note": "Unreceived preview empty and confirm rejected; after partial receipt over-quantity rejected."
+  },
+  {
+    "id": "B6-DEF-006",
+    "severity": "P2",
+    "title": "暂估应付读模型显示0且未暴露estimated",
+    "originalBatch": "B6",
+    "status": "CLOSED",
+    "b62Result": "PASS",
+    "evidence": [
+      "blackbox-results.json#F06",
+      "api-samples.json#estimated_payable_rollback",
+      "screenshots/b62-web-payables-estimated-after-cancel-1440x900.png",
+      "screenshots/b62-app-payables-estimated-after-cancel-390x844.png"
+    ],
+    "note": "API marker, Web/App wording, disabled payment and settlement/cancel rollback all verified."
+  },
+  {
+    "id": "B62-DEF-001",
+    "severity": "P2",
+    "title": "多供应商拆单后作业单价格投影仍停留为 Unpriced",
+    "originalBatch": "B6.2",
+    "status": "OPEN",
+    "b62Result": "FAIL",
+    "expected": "同一作业单行同时存在 Priced 与 Unpriced 采购明细时应投影 Mixed；部分结算后也不得回退/停留为 Unpriced。",
+    "actual": "采购明细为 Priced(3@100) 与 Settled(5@120)，但 material/sheet/info 的 sheet/item priceState 仍为 Unpriced，purchasePrice/settlementPrice 均为空；DB 同值。",
+    "repro": "sheet 1792228614488620878: order 3@100 supplier A -> order 5 unpriced supplier B -> receive 3/3 and 5/5 -> monthly settle 5@120 -> material/sheet/info. 作业单投影仍 Unpriced。",
+    "impact": "SCN-021 场景 B 的多供应商价格分批事实无法在作业单读模型中正确表达，界面会继续提示“成本待结算”，可能误导材料员判断成本是否已收敛；采购与应付金额事实本身正确。",
+    "refs": [
+      "docs/design/29-主材下单作业单设计说明.md §2.2/§2.3/§7",
+      "SCN-021 场景 B",
+      "BR-045"
+    ],
+    "evidence": [
+      "blackbox-results.json#B10",
+      "api-samples.json#multi_supplier_price_state"
+    ]
+  }
+]
