@@ -4,9 +4,9 @@
   "title": "材料履约与材料业务助手",
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
-  "phase": "ACCEPTED",
-  "batch": "B6.6",
-  "nextAction": "B7 材料业务助手上下文入口（App/Web 单轮“问材料”抽屉）",
+  "phase": "RECONCILED",
+  "batch": "B7",
+  "nextAction": "B8 助手 UI 聚焦独立验收（权限、证据、拒答、上下文、跨端一致性）；不得自批 ACCEPTED",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T21:10:34+08:00",
+  "updatedAt": "2026-10-17T22:27:48+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -214,6 +214,36 @@
       "phase": "ACCEPTED",
       "batch": "B6.6",
       "note": "B6.6 独立复验 157/157 PASS，0 FAIL/0 BLOCKED；B62-DEF-001、B64-UI-WEB-SHEET-01 CLOSED；B6 系列 ACCEPTED；最终正式接受/发布由用户确认；证据 evidence/B6.6/"
+    },
+    {
+      "at": "2026-10-17T22:07:59+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B7",
+      "note": "B7 方案冻结：App/Web 单轮问材料；复用 material/assistant/ask；新增只读建议问题入口与同一知识源；无 DDL/权限/金额语义变化"
+    },
+    {
+      "at": "2026-10-17T22:07:59+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B7",
+      "note": "B7 implementation started；后端建议入口 + Web/App 助手抽屉"
+    },
+    {
+      "at": "2026-10-17T22:27:48+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B7",
+      "note": "B7 DEV_VERIFIED：后端定向测试 PASS；Web type-check/build PASS；App type-check/build/check:ui/check:numeric-inputs/check:subpackages PASS；API 14/14 PASS"
+    },
+    {
+      "at": "2026-10-17T22:27:48+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "B7",
+      "note": "B7 UI_REVIEWED：Web 1440x900/1024x768 与 App H5 390x844/375x667 真实渲染；项目/作业单/采购/结算上下文、证据/工具/下一步、拒答/无证据、清除/恢复、错误重试 PASS；14 张截图"
+    },
+    {
+      "at": "2026-10-17T22:27:48+08:00",
+      "phase": "RECONCILED",
+      "batch": "B7",
+      "note": "B7 RECONCILED：Web/App 单轮问材料 48/48 自测 PASS（API 14/Web 22/App 12）；无 UNMAPPED/STALE；临时作业单已删除、材料计划恢复 ReadyToOrder；证据 evidence/B7/；B8 独立验收待执行"
     }
   ]
 }

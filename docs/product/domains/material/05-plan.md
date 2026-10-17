@@ -20,7 +20,7 @@
 | B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；139/140） |
 | B6.5 | 修复 Web 作业单 Mixed 状态展示 | Finance/StoreManager/Boss | Sheet/Finance | Web 价格状态文案与角标 | Web | Mixed/Unpriced/Settled | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE (2026-10-17) |
 | B6.6 | Web Mixed 状态聚焦独立复验 | independent | Web 主材下单页 + 回归 | 无实现 | Web/App | 独立黑盒复验 | ACCEPTED 或新缺陷 | COMPLETE（2026-10-17；157/157 PASS，ACCEPTED） |
-| B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
+| B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` + 只读建议问题 | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE（2026-10-17；48/48 自测 PASS） |
 | B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
 | B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
 
@@ -32,7 +32,7 @@
 - B4 必须依赖 B1 的蓝图、B2 的校核和 B3 的对象上下文。
 - B5 完成 App 单端闭环后，B6 必须独立于实现，不能由执行者自验。
 - B6.2 确认 6 项关闭并发现 B62-DEF-001；B6.3 修复后 B6.4 确认后端关闭但发现 Web UI P2；B6.5 修复、B6.6 独立复验 157/157 PASS 后，B6 系列 `ACCEPTED`，可进入助手 UI。
-- B7/B8 完成材料助手上下文入口及聚焦独立验收；B9 只做体验版，正式版由用户完成。
+- B7 已完成材料助手上下文入口（App/Web 单轮问材料，48/48 自测 PASS）；B8 负责聚焦独立验收；B9 只做体验版，正式版由用户完成。
 
 ## 回滚
 

@@ -1,0 +1,25 @@
+{
+  "fab": {
+    "x": 285.015625,
+    "y": 784.21875,
+    "width": 92.515625,
+    "height": 38.984375,
+    "bottomGap": 20.796875,
+    "fontSize": "13.52px",
+    "background": "rgb(22, 163, 148)",
+    "borderRadius": "519.48px"
+  },
+  "panel": {
+    "x": 0,
+    "y": 73.90625,
+    "width": 390,
+    "height": 770.09375,
+    "bottomGap": 0,
+    "background": "rgb(255, 255, 255)",
+    "borderRadius": "14.56px"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "web": {
+    "project": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "domNodeCount": 1115,
+      "htmlLength": 349772
+    },
+    "compact": {
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "scrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "domNodeCount": 1150,
+      "htmlLength": 352282
+    }
+  },
+  "app": {
+    "project": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "domNodeCount": 657,
+      "htmlLength": 218674
+    },
+    "compact": {
+      "innerWidth": 375,
+      "innerHeight": 667,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "domNodeCount": 600,
+      "htmlLength": 215328
+    }
+  },
+  "consoleErrors": {
+    "web": [
+      "Failed to load resource: net::ERR_FAILED"
+    ],
+    "app": []
+  },
+  "screenshots": [
+    "screenshots/b7-web-project-entry-1440x900.png",
+    "screenshots/b7-web-project-drawer-1440x900.png",
+    "screenshots/b7-web-project-answer-1440x900.png",
+    "screenshots/b7-web-project-refusal-1440x900.png",
+    "screenshots/b7-web-project-unbound-1440x900.png",
+    "screenshots/b7-web-ordering-drawer-1440x900.png",
+    "screenshots/b7-web-settlement-drawer-1440x900.png",
+    "screenshots/b7-web-project-error-1440x900.png",
+    "screenshots/b7-web-project-1024x768.png",
+    "screenshots/b7-app-project-answer-390x844.png",
+    "screenshots/b7-app-sheet-answer-390x844.png",
+    "screenshots/b7-app-settlement-answer-390x844.png",
+    "screenshots/b7-app-designer-project-390x844.png",
+    "screenshots/b7-app-project-375x667.png"
+  ]
+}

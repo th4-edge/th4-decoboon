@@ -1,0 +1,28 @@
+{
+  "drawer": {
+    "x": 920,
+    "y": 0,
+    "width": 520,
+    "height": 900
+  },
+  "context": {
+    "fontSize": "14px",
+    "lineHeight": "normal",
+    "color": "rgb(26, 26, 23)",
+    "background": "rgba(0, 0, 0, 0)",
+    "borderRadius": "14px",
+    "width": 480,
+    "height": 125.5
+  },
+  "answer": null,
+  "chip": {
+    "fontSize": "12px",
+    "lineHeight": "16.8px",
+    "color": "rgb(29, 78, 57)",
+    "background": "rgb(238, 246, 241)",
+    "borderRadius": "999px",
+    "width": 206,
+    "height": 32.796875
+  },
+  "fab": null
+}

@@ -389,3 +389,26 @@
 - 环境瞬态 `ENV-B66-001`：首轮 Vite `504 (Outdated Optimize Dep)`，同问题重试 1 次后全 PASS，不属于产品缺陷；
 - 证据：`evidence/B6.6/`（README、summary.json、verification-results.json、ui-metrics.json、attempts.json、environment.json、run-b66-verification.mjs、9 张截图）；
 - 结论：独立验收 PASS，满足 `ACCEPTED` 证据条件；独立验收方未代替用户做最终正式接受。
+
+
+---
+
+# B7 材料业务助手上下文入口
+
+- 新增只读 `material/assistant/suggestions`：按 `project/sheet/purchase/settlement/general` 从同一 `MaterialAssistantKnowledge` 黄金问题中挑选建议，不读取金额/成本、不写库、不新增表或 DDL；
+- 回答链路继续只复用 `material/assistant/ask`；建议问题入口不形成第二套助手规则；
+- Web 新增 `MaterialAssistant` 浮动入口/右侧抽屉，接入：
+  - `/finance/projects/:projectId` 项目上下文；
+  - `/finance/material-ordering` 采购上下文；
+  - `/finance/material-settlement` 结算上下文；
+- App 新增 `MaterialAssistant` 底部弹层/浮动入口，接入：
+  - 项目详情项目上下文；
+  - 作业单详情真实 `sheetId` 上下文；
+  - 主材结算结算上下文；
+- 展示 `answerType`/置信度/证据/只读工具/下一步/建议追问/审计状态；`NO_EVIDENCE`/`REFUSAL`/`PERMISSION_DENIED` 原样展示，不兜底；无审批/付款/删除/改权限按钮；
+- 验证：
+  - 后端定向 `MaterialAssistantGoldenQuestionsTest`、`MaterialAssistantSuggestionsTest`、`MaterialAssistantAuditContextTest` PASS；
+  - Web `type-check`/`build` PASS；App `type-check`/`build:mp-weixin`/`check:ui`/`check:numeric-inputs`/`check:subpackages` PASS；
+  - 真实浏览器 48/48 PASS（API 14、Web UI 22、App UI 12）；Web 1440×900/1024×768、App H5 390×844/375×667；无横向溢出、Console Errors 0；
+  - 证据：`evidence/B7/`（README、summary、verification-results、ui-metrics、ui-style-metrics、14 张截图）；
+- 边界：临时作业单已删除，材料计划恢复 `ReadyToOrder`；未执行 DDL/迁移/生产部署/正式小程序发布；未宣称 B8 `ACCEPTED`。

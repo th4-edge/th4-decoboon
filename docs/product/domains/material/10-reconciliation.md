@@ -19,7 +19,7 @@
 | REQ-MAT-013 | A/B | SCN-021/DEC-072/DEC-073 | material.order-sheet.order | material/sheet/order | App 主材下单工作台/下单页 | B6.6 157/157 独立复验 PASS；四态与拆单/部分结算/撤销回归 PASS | B6.6 独立验收 | PASS（B6.6 独立） |
 | REQ-MAT-014 | A/B | BR-045/DEC-073/DEC-074 | material.settlement | material/settlement/preview|confirm|cancel | App 主材结算 | B6.2 角色门禁/到场门禁/逐单月结/撤销独立 PASS | B6.4 回归 | PASS（B6.2 独立） |
 | REQ-MAT-015 | 全场景 | 2026-10-17 用户裁决 | material.single-route | 旧 `project/purchase/save`/`batch` 下线 | App 材料计划/供应商 | Provider 已删除，App 入口已清理 | B6 独立验收 | PASS（B6 独立验证） |
-| REQ-MAT-016 | 全场景 | BR-045/OBJ-008 | material.assistant-context | `material/assistant/ask` + 上下文入口 | App/Web 统一问材料抽屉 | 单轮/证据/拒答/权限/跨端 | B8 独立验收 | PENDING（B7） |
+| REQ-MAT-016 | 全场景 | BR-045/OBJ-008 | material.assistant-context | `material/assistant/ask` + `material/assistant/suggestions` + 上下文入口 | App/Web 统一问材料抽屉 | B7 48/48 自测 PASS（API 14/Web 22/App 12） | B8 独立验收 | PASS（B7 自测，B8 待验） |
 
 ## B6 独立验收结果（2026-10-17）
 
@@ -104,6 +104,7 @@
 - B4：`DEV_VERIFIED + RECONCILED`（无新增 UI 表面）；
 - B5：App 单端材料下单与结算闭环，旧直采路线下线；后端全量测试、App 构建与真实 UI 走查 PASS；
 - B6：B6.4 独立复验确认 B62-DEF-001 关闭；B6.5 修复 Web Mixed 展示；B6.6 独立复验 157/157 PASS，B6 系列 `ACCEPTED`；
+- B7：App/Web 单轮「问材料」上下文入口完成，48/48 自测 PASS；B8 独立验收待执行；
 - B2 证据：`evidence/B2/`；
 - B3 证据：`evidence/B3/`；
 - B4 证据：`evidence/B4/`；
@@ -114,8 +115,9 @@
 - B6.4 证据：`evidence/B6.4/`；
 - B6.5 证据：`evidence/B6.5/`；
 - B6.6 证据：`evidence/B6.6/`；
-- 不可宣称：全品类材料门禁、助手可替代人工判断；B6 独立验收结论以 `evidence/B6.6/` 为准；
-- 下一批：B7 材料业务助手上下文入口（App/Web 单轮“问材料”抽屉）。
+- B7 证据：`evidence/B7/`；
+- 不可宣称：全品类材料门禁、助手可替代人工判断、B8 已验收；B6 独立验收结论以 `evidence/B6.6/` 为准；
+- 下一批：B8 助手 UI 聚焦独立验收（权限、证据、拒答、上下文、跨端一致性）。
 
 
 ## B6.6 独立复验结果（2026-10-17）
@@ -127,3 +129,14 @@
 - 无 `UNMAPPED`/`STALE`；环境瞬态 `ENV-B66-001` 已记录为 Vite 依赖优化瞬态，非产品缺陷；
 - 证据：`evidence/B6.6/`；B6 系列 `ACCEPTED`，最终正式接受/发布由用户确认；
 - 下一批：B7 材料业务助手上下文入口。
+
+
+## B7 材料业务助手上下文入口结果（2026-10-17）
+
+- 范围：App/Web 单轮「问材料」抽屉；项目、作业单、采购/结算上下文；复用 `material/assistant/ask`；
+- 新增只读 `material/assistant/suggestions`，建议问题只来自同一 `MaterialAssistantKnowledge` 黄金问题源；
+- 后端 API 14/14、Web UI 22/22、App UI 12/12，合计 **48/48 PASS**；
+- 覆盖项目/作业单上下文、Designer 权限口径、REFUSAL、NO_EVIDENCE、空/超长问题、错误重试、清除/恢复上下文；
+- Web 1440×900/1024×768、App H5 390×844/375×667 无横向溢出，Console Errors 0；
+- 证据：`evidence/B7/`；临时作业单已删除，材料计划恢复 `ReadyToOrder`；无 DDL/迁移/生产/正式小程序发布；
+- 无 `UNMAPPED`/`STALE`；B7 `RECONCILED`，B8 独立验收待执行。

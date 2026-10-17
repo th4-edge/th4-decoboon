@@ -244,3 +244,18 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - App H5 390×844 同源状态显示 PASS；Web 1440×900 与 App H5 均无横向溢出，Console Errors 0；
 - 截图：`evidence/B6.6/screenshots/`（9 张）；
 - 结论：独立 UI PASS，`B64-UI-WEB-SHEET-01` CLOSED。
+
+
+---
+
+# B7 问材料上下文入口 UI 审查
+
+- Web 项目核算 1440×900：浮动「问材料」入口、右侧 520px 抽屉、项目上下文/已绑定/只读、6 条服务端建议问题；回答展示实时数据、证据、只读工具、下一步；
+- Web 主材下单/结算页：采购/结算上下文标签、未绑定业务单据提示、对应建议问题；清除/恢复上下文可用；
+- Web 拒答/无证据：`不在助手范围`、`暂无证据` 原样展示；抽屉内无审批/付款/删除/改权限按钮；
+- Web 错误重试：故意中断一次请求后显示“材料助手暂不可确认/重试”，重试成功；
+- Web 1024×768/1440×900 与 App H5 390×844/375×667 均无横向溢出，Console Errors 0；
+- App 项目/作业单/结算三页真实渲染：项目上下文、真实 `TILE-` 作业单上下文、结算建议均正确；底部安全区与长内容滚动正常；
+- App Designer 项目回答使用“当前角色可查看履约状态”，不返回利润 null 或成本工具；
+- 截图：`evidence/B7/screenshots/`（14 张）；样式指标：`ui-style-metrics-web.json`、`ui-style-metrics-app.json`；
+- 限制：微信开发者工具 automator 本轮未执行；MP 构建通过，DevTools 逐页走查留 B8 独立验收。

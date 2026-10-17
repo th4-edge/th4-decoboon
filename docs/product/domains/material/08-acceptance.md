@@ -138,3 +138,15 @@
 - 环境瞬态 `ENV-B66-001`：首轮 Vite `504 (Outdated Optimize Dep)`，同问题重试 1 次后全 PASS，不属产品缺陷；
 - 证据：`evidence/B6.6/README.md`、`summary.json`、`verification-results.json`、`ui-metrics.json`、`attempts.json`、`environment.json`、`screenshots/`；
 - 结论：独立验收 **PASS**；B6 系列满足 `ACCEPTED` 证据条件，`ACCEPTED` 已记录；最终正式接受/发布仍由用户确认。
+
+
+---
+
+## B7 自测输入（不是独立验收）
+
+- 范围：App/Web 单轮「问材料」上下文入口；项目/作业单/采购/结算；
+- API 14/14 PASS；Web UI 22/22 PASS；App UI 12/12 PASS；合计 48/48；
+- 覆盖建议问题同源、项目/作业单上下文、Designer 权限口径、REFUSAL、NO_EVIDENCE、空/超长问题、错误重试、清除/恢复上下文、跨端无溢出、Console Errors 0；
+- 证据：`evidence/B7/`；
+- 仅用于进入 B8 独立验收，不得自批 `ACCEPTED`；
+- 未执行微信开发者工具 automator；B8 需覆盖 DevTools 375×667 与跨端一致性。

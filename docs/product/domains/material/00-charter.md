@@ -131,5 +131,5 @@
 - 场景：`SCN-005`、`SCN-006`、`SCN-021`
 - 决策：`DEC-008`、`DEC-056`、`DEC-072`、`DEC-073`、`DEC-074`
 - 约束：`DEC-029`/`BR-027`（禁止数据库锁，使用 RedissonLock）
-- 当前实现：App 1.0.56 体验版、后端 `97d5705`/release `20261017-112330`；B5 App 单端材料下单与结算闭环已 RECONCILED；B6–B6.6 已闭环：B6.6 独立复验 157/157 PASS，B62-DEF-001、B64-UI-WEB-SHEET-01 均 CLOSED，B6 系列 `ACCEPTED`；最终正式接受/发布由用户确认；B7 材料业务助手上下文入口进行中
+- 当前实现：App 1.0.56 体验版、后端 `97d5705`/release `20261017-112330`；B5 App 单端材料下单与结算闭环已 RECONCILED；B6–B6.6 已闭环：B6.6 独立复验 157/157 PASS，B62-DEF-001、B64-UI-WEB-SHEET-01 均 CLOSED，B6 系列 `ACCEPTED`；最终正式接受/发布由用户确认；B7 材料业务助手上下文入口已 RECONCILED（Web/App 单轮问材料，48/48 自测 PASS）；B8 助手 UI 聚焦独立验收待执行
 - 当前蓝图：`docs/product/domains/material/03-blueprint.json` v1.0.0（`BLUEPRINT_READY`）

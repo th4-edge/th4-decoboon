@@ -1,0 +1,489 @@
+{
+  "batch": "B7",
+  "date": "2026-10-17",
+  "environment": {
+    "api": "http://127.0.0.1:8091/api",
+    "web": "http://127.0.0.1:4175",
+    "app": "http://127.0.0.1:8080",
+    "projectId": "235520576473530368",
+    "sheetId": "1792246721730889455",
+    "viewports": [
+      "1440x900",
+      "1024x768",
+      "390x844",
+      "375x667"
+    ]
+  },
+  "totals": {
+    "total": 48,
+    "pass": 48,
+    "fail": 0,
+    "blocked": 0
+  },
+  "verdict": "PASS",
+  "categories": {
+    "api": {
+      "total": 14,
+      "pass": 14,
+      "fail": 0
+    },
+    "web-ui": {
+      "total": 22,
+      "pass": 22,
+      "fail": 0
+    },
+    "app-ui": {
+      "total": 12,
+      "pass": 12,
+      "fail": 0
+    }
+  },
+  "uiMetrics": {
+    "web": {
+      "project": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "scrollWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "domNodeCount": 1115,
+        "htmlLength": 349772
+      },
+      "compact": {
+        "innerWidth": 1024,
+        "innerHeight": 768,
+        "scrollWidth": 1024,
+        "bodyScrollWidth": 1024,
+        "domNodeCount": 1150,
+        "htmlLength": 352282
+      }
+    },
+    "app": {
+      "project": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "domNodeCount": 657,
+        "htmlLength": 218674
+      },
+      "compact": {
+        "innerWidth": 375,
+        "innerHeight": 667,
+        "scrollWidth": 375,
+        "bodyScrollWidth": 375,
+        "domNodeCount": 600,
+        "htmlLength": 215328
+      }
+    },
+    "consoleErrors": {
+      "web": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "app": []
+    },
+    "screenshots": [
+      "screenshots/b7-web-project-entry-1440x900.png",
+      "screenshots/b7-web-project-drawer-1440x900.png",
+      "screenshots/b7-web-project-answer-1440x900.png",
+      "screenshots/b7-web-project-refusal-1440x900.png",
+      "screenshots/b7-web-project-unbound-1440x900.png",
+      "screenshots/b7-web-ordering-drawer-1440x900.png",
+      "screenshots/b7-web-settlement-drawer-1440x900.png",
+      "screenshots/b7-web-project-error-1440x900.png",
+      "screenshots/b7-web-project-1024x768.png",
+      "screenshots/b7-app-project-answer-390x844.png",
+      "screenshots/b7-app-sheet-answer-390x844.png",
+      "screenshots/b7-app-settlement-answer-390x844.png",
+      "screenshots/b7-app-designer-project-390x844.png",
+      "screenshots/b7-app-project-375x667.png"
+    ]
+  },
+  "attempts": [],
+  "results": [
+    {
+      "id": "B7-API-SUG-01",
+      "category": "api",
+      "description": "通用上下文建议问题来自同一知识源",
+      "result": "PASS",
+      "actual": "general/6",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-SUG-02",
+      "category": "api",
+      "description": "作业单上下文返回作业单/价格/时间建议",
+      "result": "PASS",
+      "actual": "这张作业单为什么不能提交请购？ | 作业单进入采购后为什么不能编辑？ | 未定价为什么还能下单？ | 暂估应付是什么意思？ | 作业单里的测量日期是什么意思？ | 配送日期和安装日期是系统确认时间吗？",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-SUG-03",
+      "category": "api",
+      "description": "项目上下文返回体检/选材/变更建议",
+      "result": "PASS",
+      "actual": "这个项目的材料业务现在缺什么？ | 项目材料为什么还没有闭环？ | 主材还没选材，为什么不能下单？ | 材料计划行什么时候才算可以进入采购？ | 减项发生在已经下单之后怎么处理？ | 已经到货的材料减项要走退货吗？",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-SUG-04",
+      "category": "api",
+      "description": "结算上下文返回结算/成本/到场建议",
+      "result": "PASS",
+      "actual": "逐单结算和月结会重复计算吗？ | 为什么先逐单结算再月结？ | 未定价为什么还能下单？ | 暂估应付是什么意思？ | 材料部分到场怎么处理？ | 到场确认会新增应付吗？",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-SUG-05",
+      "category": "api",
+      "description": "未登录不能读取建议问题",
+      "result": "PASS",
+      "actual": "status=200",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-01",
+      "category": "api",
+      "description": "Boss 项目问答返回实时数据与证据",
+      "result": "PASS",
+      "actual": "LIVE_DATA/3/RECORDED",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-02",
+      "category": "api",
+      "description": "成本不完整时项目问答保留利润 null",
+      "result": "PASS",
+      "actual": "当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财务",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-03",
+      "category": "api",
+      "description": "作业单上下文问答绑定真实单据",
+      "result": "PASS",
+      "actual": "当前作业单 TILE-20261017-001 状态为 填单中，价格状态为 未定价（待结算）；测量 待确认，配送 待确认，安装 待确认。 当前模板必填字段缺失：测量时间。 下一步：先补齐模板必填字段：测量时间",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-04",
+      "category": "api",
+      "description": "Designer 项目问答使用履约口径且不返回成本利润",
+      "result": "PASS",
+      "actual": "当前项目材料计划 2 条，待下单 1 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-05",
+      "category": "api",
+      "description": "越界写操作请求返回 REFUSAL",
+      "result": "PASS",
+      "actual": "REFUSAL",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-06",
+      "category": "api",
+      "description": "未知问题返回 NO_EVIDENCE 且不兜底",
+      "result": "PASS",
+      "actual": "NO_EVIDENCE",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-07",
+      "category": "api",
+      "description": "成本可见性请求返回 PERMISSION_DENIED",
+      "result": "PASS",
+      "actual": "PERMISSION_DENIED",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-08",
+      "category": "api",
+      "description": "空问题被服务端拒绝",
+      "result": "PASS",
+      "actual": "{\"success\":false,\"errorCode\":{\"code\":\"400\",\"message\":\"问题不能为空\",\"system\":false}}",
+      "evidence": ""
+    },
+    {
+      "id": "B7-API-ASK-09",
+      "category": "api",
+      "description": "超长问题被服务端拒绝",
+      "result": "PASS",
+      "actual": "{\"success\":false,\"errorCode\":{\"code\":\"400\",\"message\":\"问题过长，请控制在 500 字以内\",\"system\":false}}",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-01",
+      "category": "web-ui",
+      "description": "项目核算页显示「问材料」入口",
+      "result": "PASS",
+      "actual": "fab visible",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-02",
+      "category": "web-ui",
+      "description": "项目上下文摘要显示项目名/已绑定/只读",
+      "result": "PASS",
+      "actual": "项目上下文 只读 已绑定 王芳（造数1100） · 望江府1栋102 项目核算 · 成本未完整 清除上下文",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-03",
+      "category": "web-ui",
+      "description": "初始建议问题来自服务端且不少于 5 条",
+      "result": "PASS",
+      "actual": "6",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-04",
+      "category": "web-ui",
+      "description": "建议问题返回实时数据/证据/只读工具/下一步",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 94%\n只读\n已审计\n\n当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-05",
+      "category": "web-ui",
+      "description": "成本不完整时页面显示利润 null",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 94%\n只读\n已审计\n\n当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财务。\n\n证据\nCHK-UNSELECTE",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-06",
+      "category": "web-ui",
+      "description": "助手抽屉不提供审批/付款/删除/改权限按钮",
+      "result": "PASS",
+      "actual": " | 清除上下文 | 这个项目的材料业务现在缺什么？ | 项目材料为什么还没有闭环？ | 项目材料体检里的待下单和待到货怎么理解？ | 发送",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-07",
+      "category": "web-ui",
+      "description": "自由输入得到规则/实时解释与暂估应付口径",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 95%\n只读\n已审计\n\nP1 报价成本价只用于预计成本；P2 采购价在下单时形成应付和暂估成本；P3 结算价是实际成本的唯一计价来源。 无价下单允许，但会形成暂估应付；任一应计成本缺失时 costComplete=false，利润和毛利率必须为 null，不能用 0 成本或预计成本冒充实际利润。 当前项目材料应付 ¥2500.00，实际成本",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-08",
+      "category": "web-ui",
+      "description": "越界请求显示 REFUSAL 边界",
+      "result": "PASS",
+      "actual": "不在助手范围\n置信度 100%\n只读\n已审计\n\n我只处理材料业务的解释、数据校核和下一步引导，不能自动审批、付款、删除数据或修改权限。需要这些动作时，请由有权限的人员在对应业务页面人工处理。\n\n证据\nREAD-ONLY\n只读边界\n\n材料助手不执行审批、付款、删除或权限变更。\n\n只读工具\nblueprints/mater",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-09",
+      "category": "web-ui",
+      "description": "未知问题显示 NO_EVIDENCE 且不伪装成功",
+      "result": "PASS",
+      "actual": "暂无证据\n置信度 35%\n只读\n已审计\n\n这个问题在已发布材料蓝图和当前项目上下文中没有足够证据，暂不可确认。请补充材料对象、项目或作业单上下文，或换一个材料业务问题。\n\n证据\nKNOWLEDGE\n已发布蓝图\n\n当前问题没有命中已发布材料蓝图或实时业务上下文。\n\n只读工具\nblueprints/material-v1.",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-10",
+      "category": "web-ui",
+      "description": "清除上下文后显示未绑定并回落通用规则",
+      "result": "PASS",
+      "actual": "项目上下文 只读 未绑定业务单据 仅解释材料规则 未绑定业务单据，仅解释材料规则，不读取实时项目数据 恢复当前页面上下文",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-11",
+      "category": "web-ui",
+      "description": "可恢复当前页面上下文",
+      "result": "PASS",
+      "actual": "项目上下文 只读 已绑定 王芳（造数1100） · 望江府1栋102 项目核算 · 成本未完整 清除上下文",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-12",
+      "category": "web-ui",
+      "description": "Esc 可关闭问材料抽屉",
+      "result": "PASS",
+      "actual": "drawer closed",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-13",
+      "category": "web-ui",
+      "description": "主材下单页显示采购上下文",
+      "result": "PASS",
+      "actual": "采购上下文 只读 未绑定业务单据 主材下单工作台 按供应商下单 · 单价可留空（未定价） · 未绑定业务单据，仅解释材料规则",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-14",
+      "category": "web-ui",
+      "description": "采购上下文回答作业单与采购单边界",
+      "result": "PASS",
+      "actual": "规则解释\n置信度 97%\n只读\n已审计\n\n作业单对厂家，按品类承载安装位置、型号、颜色、尺寸、测量/配送/安装时间和签字；采购单对财务，承载供应商、价格、账期和应付。 1 张作业单可以拆成 N 张采购单，作业单本身不带价格、账期和成本。\n\n证据\nMaterialOrderSheet\n主材下单作业单\n\n按品类对厂家的作业单据，承载安装位置、尺寸、测量/配送/安",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-15",
+      "category": "web-ui",
+      "description": "结算页显示结算上下文与结算建议",
+      "result": "PASS",
+      "actual": "结算上下文 只读 未绑定业务单据 主材采购结算工作台 按供应商/采购单结算 · 结算价是实际成本唯一来源 · 未绑定业务单据，仅解释材料规则",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-16",
+      "category": "web-ui",
+      "description": "结算上下文回答互斥与月结口径",
+      "result": "PASS",
+      "actual": "规则解释\n置信度 94%\n只读\n已审计\n\n逐单结算与月结并存，规则是互斥、逐单优先、月结兜底：同一采购明细只能被一种方式计入；月结只结算尚未逐单结算的差额。结算撤销走反向记录，释放明细后重新计算应付和实际成本，成本不完整时利润回到 null。\n\n证据\nR-SETTLEMENT-EXCLUSIVE\nR-SETTLEMENT-EXCLUSIVE\n\n同一采购明细只",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-17",
+      "category": "web-ui",
+      "description": "助手请求失败显示可重试错误态",
+      "result": "PASS",
+      "actual": "材料助手暂不可确认 网络异常，请检查网络后重试 重试",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-18",
+      "category": "web-ui",
+      "description": "重试后恢复成功回答",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 95%\n只读\n已审计\n\nP1 报价成本价只用于预计成本；P2 采购价在下单时形成应付和暂估成本；P3 结算价是实际成本的唯一计价来源。 无价下单允许，但会形成暂估应付；任一应计成本缺失时 costComplete=fals",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-19",
+      "category": "web-ui",
+      "description": "Web 1024×768 无横向溢出",
+      "result": "PASS",
+      "actual": "{\"innerWidth\":1024,\"innerHeight\":768,\"scrollWidth\":1024,\"bodyScrollWidth\":1024,\"domNodeCount\":1150,\"htmlLength\":352282}",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-20",
+      "category": "web-ui",
+      "description": "Web Console Errors=0（排除故意中断请求）",
+      "result": "PASS",
+      "actual": "only intentional abort",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-21",
+      "category": "web-ui",
+      "description": "Designer 无权访问财务项目核算，未显示问材料入口（权限优先）",
+      "result": "PASS",
+      "actual": "designer finance route has no assistant entry",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-WEB-22",
+      "category": "web-ui",
+      "description": "Designer 页面 Console Errors=0",
+      "result": "PASS",
+      "actual": "",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-01",
+      "category": "app-ui",
+      "description": "App 项目详情显示问材料入口与已绑定上下文",
+      "result": "PASS",
+      "actual": "项目上下文 只读 已绑定 王芳（造数1100） · 望江府1栋102 项目进度 0% · 材料业务体检 清除上下文",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-02",
+      "category": "app-ui",
+      "description": "App 初始建议问题不少于 5 条",
+      "result": "PASS",
+      "actual": "6",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-03",
+      "category": "app-ui",
+      "description": "App 项目回答显示实时数据/证据/下一步",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 94%\n只读\n已审计\n当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财务",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-04",
+      "category": "app-ui",
+      "description": "App 390×844 无横向溢出",
+      "result": "PASS",
+      "actual": "{\"innerWidth\":390,\"innerHeight\":844,\"scrollWidth\":390,\"bodyScrollWidth\":390,\"domNodeCount\":657,\"htmlLength\":218674}",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-05",
+      "category": "app-ui",
+      "description": "App 作业单详情绑定真实作业单",
+      "result": "PASS",
+      "actual": "作业单上下文 只读 已绑定 瓷砖（地砖/墙砖） TILE-20261017-001 王芳（造数1100） · 望江府1栋102 · 填写中 清除上下文",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-06",
+      "category": "app-ui",
+      "description": "App 作业单回答引用真实状态与模板门禁",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 93%\n只读\n已审计\n当前作业单 TILE-20261017-001 状态为 填单中，价格状态为 未定价（待结算）；测量 待确认，配送 待确认，安装 待确认。 当前模板必填字段缺失：测量时间。 下一步：先补齐模板必填字段：测量时间\n证据\nMaterialOrderSheet.status/remark\n作业单状态/取消原因\n未进入采购前可取",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-07",
+      "category": "app-ui",
+      "description": "App 结算页显示结算上下文与结算建议",
+      "result": "PASS",
+      "actual": "结算上下文 只读 未绑定业务单据 主材采购结算工作台 按供应商/采购单结算 · 结算价是实际成本唯一来源 · 未绑定业务单据，仅解释材料规则",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-08",
+      "category": "app-ui",
+      "description": "App 结算回答包含互斥/月结口径",
+      "result": "PASS",
+      "actual": "规则解释\n置信度 94%\n只读\n已审计\n逐单结算与月结并存，规则是互斥、逐单优先、月结兜底：同一采购明细只能被一种方式计入；月结只结算尚未逐单结算的差额。结算撤销走反向记录，释放明细后重新计算应付和实际成本，成本不完整时利润回到 null。\n证据\nR-SETTLEMENT-EXCLUSIVE\nR-SETTLEMENT-EXCLUSIVE\n同一采购明细只能被一",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-09",
+      "category": "app-ui",
+      "description": "App Console Errors=0",
+      "result": "PASS",
+      "actual": "",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-10",
+      "category": "app-ui",
+      "description": "App Designer 回答使用履约口径且不显示利润 null",
+      "result": "PASS",
+      "actual": "实时数据\n置信度 90%\n只读\n已审计\n当前项目材料计划 2 条，待下单 1 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。\n证据\nCHK-UNSELECTED\n未完成选材\nSelection 为空或不是 Selected；下一步：设计师完成选材并交付财务\nCHK-UNPRICED\n采购未定价\nprice",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-11",
+      "category": "app-ui",
+      "description": "App Designer 页面 Console Errors=0",
+      "result": "PASS",
+      "actual": "",
+      "evidence": ""
+    },
+    {
+      "id": "B7-UI-APP-12",
+      "category": "app-ui",
+      "description": "App H5 375×667 无横向溢出",
+      "result": "PASS",
+      "actual": "{\"innerWidth\":375,\"innerHeight\":667,\"scrollWidth\":375,\"bodyScrollWidth\":375,\"domNodeCount\":600,\"htmlLength\":215328}",
+      "evidence": ""
+    }
+  ],
+  "boundary": "开发自测/UI 走查，不是 B8 独立验收；不宣称 B8 ACCEPTED。"
+}
