@@ -5,8 +5,8 @@
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
   "phase": "RECONCILED",
-  "batch": "B6",
-  "nextAction": "B6.1 修复 B6 独立验收 6 个开放缺陷；不得宣称 ACCEPTED",
+  "batch": "B6.1",
+  "nextAction": "执行 B6.2 独立复验；独立验收角色复跑 B6 受影响矩阵与回归，不得自批 ACCEPTED",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T15:16:15+08:00",
+  "updatedAt": "2026-10-17T16:16:58+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -178,6 +178,12 @@
       "phase": "RECONCILED",
       "batch": "B6",
       "note": "B6 独立验收 FAIL：127 项 121 PASS / 6 FAIL；5 个 P1（成本/采购/结算读权限、重复下单、未到场结算）与 1 个 P2（暂估应付显示 0）；证据 evidence/B6/；B6.1 修复，B6.2 独立复验，之后 B7 助手上下文入口"
+    },
+    {
+      "at": "2026-10-17T16:16:58+08:00",
+      "phase": "RECONCILED",
+      "batch": "B6.1",
+      "note": "B6.1 RECONCILED：6 个 B6 缺陷已修复；后端全量 871/0/0/0 PASS；App type-check/MP 构建/UI/分包 PASS；Web type-check/构建 PASS；真实 Web 1440x900 与 App H5 390x844 暂估应付 UI PASS；证据 evidence/B6.1/；临时数据与测试凭据已恢复"
     }
   ]
 }

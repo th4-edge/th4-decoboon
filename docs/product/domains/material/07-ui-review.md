@@ -180,3 +180,13 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - 11 项 UI 检查全部 PASS；`scrollWidth=innerWidth=390`，业务 Console Errors=0；
 - 证据：`evidence/B6/README.md`、`evidence/B6/screenshots/`、`evidence/B6/browser-metrics.json`；
 - UI 通过不代表业务验收通过；B6 因 6 个缺陷仍判定 FAIL。
+
+
+---
+
+# B6.1 暂估应付 UI 验证
+
+- Web `/finance/payables` 1440×900：暂估应付显示“待结算”，安排付款按钮禁用；Console Errors 0；无横向溢出；
+- App H5 `/subpackages/finance/pages/payables` 390×844：显示“待定价 / 暂估/待定价 / 结算后安排付款”；Console Errors 0，`scrollWidth=innerWidth=390`；
+- 截图：`evidence/B6.1/screenshots/b61-web-payables-estimated.png`、`b61-app-payables-estimated.png`；
+- 本记录是实现者 UI 自测，B6.2 仍需独立验收。

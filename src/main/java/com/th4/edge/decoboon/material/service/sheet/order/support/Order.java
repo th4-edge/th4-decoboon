@@ -16,6 +16,7 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
+import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
@@ -57,6 +58,7 @@ public class Order implements com.th4.edge.decoboon.material.service.sheet.order
     @AutoInject private DeliveryMode deliveryMode;
     @AutoInject private LocalDate expectedAt;
     @AutoInject private String remark;
+    @AutoInject @Length(max = 128) private String idempotencyKey;
     @AutoInject private List<MaterialOrderSheetItem> items;
 
     private final MaterialSheetContext context;
@@ -68,6 +70,6 @@ public class Order implements com.th4.edge.decoboon.material.service.sheet.order
     @Override
     @Transactional
     public MaterialOrderSheet call(MaterialOrderSheet request) {
-        return context.order(employee, sheetId, supplierId, supplierName, deliveryMode, expectedAt, remark, items);
+        return context.order(employee, sheetId, supplierId, supplierName, deliveryMode, expectedAt, remark, items, idempotencyKey);
     }
 }

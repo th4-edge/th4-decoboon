@@ -1,10 +1,12 @@
 package com.th4.edge.decoboon.material.service.sheet.page.support;
 
+import com.th4.edge.decoboon.material.context.MaterialCommercialPrivacyContext;
 import com.th4.edge.decoboon.material.context.MaterialSheetContext;
 import com.th4.edge.decoboon.material.model.MaterialCategory;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheet;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
 import com.th4.edge.decoboon.project.configure.DeliveryMode;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.property.model.Property;
@@ -56,9 +58,14 @@ public class Page implements com.th4.edge.decoboon.material.service.sheet.page.P
     @AutoInject private com.th4.edge.decoboon.material.configure.MaterialSheetStatus status;
 
     private final MaterialSheetContext context;
+    private final MaterialCommercialPrivacyContext privacyContext;
+    private final ProjectAccessContext accessContext;
 
-    public Page(MaterialSheetContext context) {
+    public Page(MaterialSheetContext context, MaterialCommercialPrivacyContext privacyContext,
+                ProjectAccessContext accessContext) {
         this.context = context;
+        this.privacyContext = privacyContext;
+        this.accessContext = accessContext;
     }
 
     /** 在事务内显式触碰响应所需关联，确保关闭 OSIV 时序列化不触发懒加载异常。 */
@@ -84,13 +91,14 @@ public class Page implements com.th4.edge.decoboon.material.service.sheet.page.P
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<MaterialOrderSheet> call(MaterialOrderSheet request) {
-        List<MaterialOrderSheet> sheets = context.page(employee, projectId, sheetType, status);
+        Employee current = accessContext.requireEmployee(employee);
+        List<MaterialOrderSheet> sheets = context.page(current, projectId, sheetType, status);
         for (MaterialOrderSheet sheet : sheets) {
             sheet.setItems(context.items(sheet.getSheetId()));
             initializeProjection(sheet, sheet.getItems());
         }
-        return sheets;
+        return privacyContext.maskSheets(sheets, current);
     }
 }

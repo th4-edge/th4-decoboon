@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.project.service.purchases.page.support;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.material.context.MaterialCommercialPrivacyContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.*;
 import com.th4.edge.decoboon.project.repository.*;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 @Note("采购订单分页")
@@ -32,12 +34,13 @@ import java.util.List;
 @Service("project/purchase/page") @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.project.service.purchases.page.Page{
  @AutoInject private Long projectId; @User private Employee employee;
- private final ProjectRepository projectRepository; private final PurchaseOrderRepository purchaseRepository; private final ProjectAccessContext accessContext; private final PurchaseOrderItemRepository purchaseItemRepository;
- public Page(ProjectRepository p,PurchaseOrderRepository o,ProjectAccessContext a,PurchaseOrderItemRepository i){projectRepository=p;purchaseRepository=o;accessContext=a;purchaseItemRepository=i;}
- @Override public org.springframework.data.domain.Page<PurchaseOrder> call(PurchaseOrder request){
+ private final ProjectRepository projectRepository; private final PurchaseOrderRepository purchaseRepository; private final ProjectAccessContext accessContext; private final PurchaseOrderItemRepository purchaseItemRepository; private final MaterialCommercialPrivacyContext privacyContext;
+ public Page(ProjectRepository p,PurchaseOrderRepository o,ProjectAccessContext a,PurchaseOrderItemRepository i,MaterialCommercialPrivacyContext c){projectRepository=p;purchaseRepository=o;accessContext=a;purchaseItemRepository=i;privacyContext=c;}
+ @Override @Transactional(readOnly = true) public org.springframework.data.domain.Page<PurchaseOrder> call(PurchaseOrder request){
+   Employee current = accessContext.requireEmployee(employee);
    List<Project> projects = projectId == null
-       ? projectRepository.findAll(accessContext.visibleProject(employee), Sort.by(Sort.Direction.DESC, "projectId"))
-       : List.of(accessContext.requireProject(projectId, employee));
+       ? projectRepository.findAll(accessContext.visibleProject(current), Sort.by(Sort.Direction.DESC, "projectId"))
+       : List.of(accessContext.requireProject(projectId, current));
    List<PurchaseOrder> orders = projects.stream()
        .flatMap(project -> purchaseRepository.findByProjectOrderByPurchaseIdDesc(project).stream())
        .sorted(Comparator.comparing(PurchaseOrder::getPurchaseId).reversed())
@@ -48,7 +51,10 @@ public class Page implements com.th4.edge.decoboon.project.service.purchases.pag
        : purchaseItemRepository.findByPurchaseOrder_PurchaseIdIn(purchaseIds).stream()
            .filter(item -> item.getPurchaseOrder() != null && item.getPurchaseOrder().getPurchaseId() != null)
            .collect(java.util.stream.Collectors.groupingBy(item -> item.getPurchaseOrder().getPurchaseId()));
-   orders.forEach(order -> order.setItems(itemsByPurchase.getOrDefault(order.getPurchaseId(), java.util.List.of())));
+   orders.forEach(order -> {
+     order.setItems(itemsByPurchase.getOrDefault(order.getPurchaseId(), java.util.List.of()));
+     privacyContext.mask(order, current);
+   });
    return new PageImpl<>(orders);
  }
 }

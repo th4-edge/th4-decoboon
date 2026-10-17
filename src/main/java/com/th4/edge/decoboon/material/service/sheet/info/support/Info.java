@@ -1,10 +1,12 @@
 package com.th4.edge.decoboon.material.service.sheet.info.support;
 
+import com.th4.edge.decoboon.material.context.MaterialCommercialPrivacyContext;
 import com.th4.edge.decoboon.material.context.MaterialSheetContext;
 import com.th4.edge.decoboon.material.model.MaterialCategory;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheet;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
 import com.th4.edge.decoboon.project.configure.DeliveryMode;
+import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.property.model.Property;
@@ -54,9 +56,14 @@ public class Info implements com.th4.edge.decoboon.material.service.sheet.info.I
     @AutoInject @NotNull private Long sheetId;
 
     private final MaterialSheetContext context;
+    private final MaterialCommercialPrivacyContext privacyContext;
+    private final ProjectAccessContext accessContext;
 
-    public Info(MaterialSheetContext context) {
+    public Info(MaterialSheetContext context, MaterialCommercialPrivacyContext privacyContext,
+                ProjectAccessContext accessContext) {
         this.context = context;
+        this.privacyContext = privacyContext;
+        this.accessContext = accessContext;
     }
 
     /** 在事务内显式触碰响应所需关联，确保关闭 OSIV 时序列化不触发懒加载异常。 */
@@ -82,12 +89,13 @@ public class Info implements com.th4.edge.decoboon.material.service.sheet.info.I
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public MaterialOrderSheet call(MaterialOrderSheet request) {
-        MaterialOrderSheet sheet = context.info(employee, sheetId);
+        Employee current = accessContext.requireEmployee(employee);
+        MaterialOrderSheet sheet = context.info(current, sheetId);
         List<MaterialOrderSheetItem> items = context.items(sheetId);
         sheet.setItems(items);
         initializeProjection(sheet, items);
-        return sheet;
+        return privacyContext.mask(sheet, current);
     }
 }

@@ -127,6 +127,7 @@ class MaterialSettlementFlowTest {
         itemPriced.setMaterialPlan(plan);
         itemPriced.setQuantity(new BigDecimal("10"));
         itemPriced.setUnitPrice(new BigDecimal("68"));
+        itemPriced.setReceivedQuantity(new BigDecimal("10"));
         itemPriced.setPriceState(SheetPriceState.Priced);
 
         itemUnpriced = new PurchaseOrderItem();
@@ -136,6 +137,7 @@ class MaterialSettlementFlowTest {
         itemUnpriced.setMaterialPlan(plan);
         itemUnpriced.setQuantity(new BigDecimal("10"));
         itemUnpriced.setUnitPrice(BigDecimal.ZERO);
+        itemUnpriced.setReceivedQuantity(new BigDecimal("10"));
         itemUnpriced.setPriceState(SheetPriceState.Unpriced);
 
         payable = new Payable();
@@ -292,6 +294,37 @@ class MaterialSettlementFlowTest {
 
         assertThat(rows).hasSize(1);
         assertThat(rows.get(0).getPurchaseItemId()).isEqualTo(22L);
+    }
+
+    @Test
+    void settlementBeforeReceiptMustBeRejected() {
+        itemPriced.setReceivedQuantity(BigDecimal.ZERO);
+
+        assertThatThrownBy(() -> context.confirm(finance, 4L, SettlementScope.PerPurchaseOrder, null,
+                List.of(command(21L, "70")), null))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("尚未到场");
+    }
+
+    @Test
+    void previewMustExcludeItemsNotReceived() {
+        itemPriced.setReceivedQuantity(BigDecimal.ZERO);
+        when(purchaseOrderRepository.findByCompany_ComIdOrderByPurchaseIdDesc(any())).thenReturn(List.of(order));
+        when(purchaseItemRepository.findByPurchaseOrderInOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(itemPriced));
+
+        assertThat(context.preview(finance, null, null, null, null, null)).isEmpty();
+    }
+
+    @Test
+    void settlementQuantityCannotExceedReceivedQuantity() {
+        MaterialSettlementItem command = command(21L, "70");
+        command.setQuantity(new BigDecimal("11"));
+
+        assertThatThrownBy(() -> context.confirm(finance, 4L, SettlementScope.PerPurchaseOrder, null,
+                List.of(command), null))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("不能超过已到场数量");
     }
 
     private MaterialSettlementItem command(Long purchaseItemId, String price) {

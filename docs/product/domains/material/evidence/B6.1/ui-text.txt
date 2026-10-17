@@ -1,0 +1,9 @@
+[web-payables]
+待结算
+安排付款 disabled for estimated row
+
+[app-payables]
+待定价
+暂估/待定价
+已付 ¥500 · 待付 待结算
+结算后安排付款

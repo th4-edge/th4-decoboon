@@ -286,3 +286,32 @@
   - `B6-DEF-006` 暂估应付读模型显示 0 且不暴露 estimated（P2）；
 - 临时供应商、作业单、采购/到场/结算数据已清理并逐列恢复；本地测试密码哈希已恢复；
 - 证据：`evidence/B6/`；没有实现修复、DDL、生产发布或正式小程序动作。
+
+
+---
+
+# B6.1 独立验收缺陷修复
+
+- Batch：B6.1；目标只修复 B6-DEF-001~006，不新增业务规则或 DDL。
+- 权限裁剪：
+  - 新增 `MaterialCommercialPrivacyContext`：Boss/StoreManager/Finance 保留商业字段；Designer/PM 的作业单响应移除报价成本/采购价/结算价，采购响应移除金额、单价、供应商与合同敏感字段；
+  - `material/sheet/info|page` 与 `project/purchase/page` 在 `@Transactional(readOnly=true)` 中裁剪，先通过 `ProjectAccessContext.requireEmployee` 恢复完整登录员工，避免 `@User` 仅带索引导致 Finance 被误裁剪；
+  - `material/settlement/page|info` 统一调用 `MaterialPurchaseContext.requireOperator`。
+- 幂等：
+  - `material/sheet/order` 增加稳定 `idempotencyKey` 入参、作业单+供应商分布式锁和确定性采购单号；
+  - 无客户端键时以业务 payload + 当日日期生成 fallback；重复请求返回已生成结果，内容不一致返回 409；
+  - 不新增表或迁移。
+- 结算门禁：
+  - 未到场（`receivedQuantity<=0`）的采购明细不进入 preview；
+  - confirm 拒绝未到场明细，结算数量默认取到场数量且不得超过到场数量。
+- 暂估应付：
+  - `finance/payable/page` 暴露 `estimated`、`settledAmount`；
+  - App/Web 应付列表对 `estimated=true` 显示“待定价/待结算”，不显示 0 元，不允许在定价前付款。
+- 验证：
+  - 后端全量 `mvn -q test` → **871 / 0 / 0 / 0 PASS**；
+  - 定向覆盖隐私裁剪、重复下单、未到场结算、暂估应付投影；
+  - App `type-check`、`build:mp-weixin`、`check:ui`、`check:subpackages` PASS；
+  - Web `type-check`、`build` PASS；
+  - 真实 UI：Web 4175 / 1440×900、App H5 8080 / 390×844；Console Errors 0，横向溢出 0。
+- 证据：`evidence/B6.1/README.md`、`defect-verification.json`、`api-samples.json`、`browser-metrics.json`、`screenshots/`。
+- 边界：临时作业单/采购/应付已删除，物料计划恢复 `ReadyToOrder`，测试账号密码哈希已恢复；未执行 DDL、生产、正式小程序发布；未宣称 `ACCEPTED`。

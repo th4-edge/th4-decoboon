@@ -111,6 +111,7 @@ class MaterialSheetOrderFlowTest {
     private Partner supplier;
     private final List<MaterialOrderSheetItem> savedItems = new ArrayList<>();
     private final List<PurchaseOrderItem> savedPurchaseItems = new ArrayList<>();
+    private final List<PurchaseOrder> savedPurchases = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -167,9 +168,13 @@ class MaterialSheetOrderFlowTest {
                 .thenAnswer(invocation -> new ArrayList<>(savedItems));
         when(purchaseRepository.save(any())).thenAnswer(invocation -> {
             PurchaseOrder order = invocation.getArgument(0);
-            if (order.getPurchaseId() == null) order.setPurchaseId(2000L);
+            if (order.getPurchaseId() == null) order.setPurchaseId((long) (2000 + savedPurchases.size()));
+            if (!savedPurchases.contains(order)) savedPurchases.add(order);
             return order;
         });
+        when(purchaseRepository.findByNo(any())).thenAnswer(invocation -> savedPurchases.stream()
+                .filter(order -> order.getNo() != null && order.getNo().equals(invocation.getArgument(0)))
+                .findFirst());
         when(purchaseItemRepository.save(any())).thenAnswer(invocation -> {
             PurchaseOrderItem item = invocation.getArgument(0);
             if (item.getPurchaseItemId() == null) item.setPurchaseItemId((long) (600 + savedPurchaseItems.size()));
@@ -385,6 +390,26 @@ class MaterialSheetOrderFlowTest {
         org.mockito.Mockito.verify(payableRepository).save(payables.capture());
         assertThat(payables.getValue().getEstimated()).as("含未定价行必须形成暂估应付").isTrue();
         assertThat(payables.getValue().getAmount()).isEqualByComparingTo("680");
+    }
+
+    @Test
+    void identicalOrderRetryShouldNotCreateSecondPurchaseOrPayable() {
+        MaterialPlan plan = plan(62L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.PartiallyOrdered);
+
+        MaterialOrderSheetItem command = new MaterialOrderSheetItem();
+        command.setItemId(savedItems.get(0).getItemId());
+        command.setQuantity(new BigDecimal("3"));
+        command.setPurchasePrice(new BigDecimal("100"));
+
+        context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null, List.of(command));
+        context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null, List.of(command));
+
+        assertThat(savedPurchases).as("重复请求只能生成一张采购单").hasSize(1);
+        org.mockito.Mockito.verify(payableRepository, org.mockito.Mockito.times(1)).save(any());
     }
 
     @Test

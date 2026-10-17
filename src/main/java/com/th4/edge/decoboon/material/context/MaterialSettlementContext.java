@@ -83,6 +83,7 @@ public class MaterialSettlementContext {
 
     public List<MaterialSettlement> page(Employee principal, Long supplierId) {
         Employee current = accessContext.requireEmployee(principal);
+        materialPurchaseContext.requireOperator(current);
         Long comId = current.getCompany().getComId();
         return (supplierId == null
                 ? settlementRepository.findByCompany_ComIdOrderBySettlementIdDesc(comId)
@@ -94,6 +95,7 @@ public class MaterialSettlementContext {
 
     public MaterialSettlement info(Employee principal, Long settlementId) {
         Employee current = accessContext.requireEmployee(principal);
+        materialPurchaseContext.requireOperator(current);
         MaterialSettlement settlement = requireSettlement(current, settlementId);
         settlement.setItems(settlementItemRepository.findBySettlement_SettlementIdOrderBySettlementItemIdAsc(settlementId));
         return settlement;
@@ -166,6 +168,9 @@ public class MaterialSettlementContext {
             if (!visibleStore(current, order.getStore())) {
                 throw new DefinedException(new DefaultErrorCode("404", "采购明细不存在或无权访问"));
             }
+            if (value(item.getReceivedQuantity()).signum() <= 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "采购明细尚未到场，不能结算"));
+            }
         }
 
         MaterialSettlement settlement = new MaterialSettlement();
@@ -204,9 +209,13 @@ public class MaterialSettlementContext {
             if (price == null || price.signum() < 0) {
                 throw new DefinedException(new DefaultErrorCode("400", "结算价必须大于等于 0"));
             }
-            // 数量缺省（null 或 0）时取采购数量：实体默认值为 0，不能把"未填"当成"结算 0 件"。
+            // 数量缺省（null 或 0）时取已到场数量；结算数量不得超过到场事实。
+            BigDecimal received = value(purchaseItem.getReceivedQuantity());
             BigDecimal quantity = (command.getQuantity() == null || command.getQuantity().signum() <= 0)
-                    ? value(purchaseItem.getQuantity()) : command.getQuantity();
+                    ? received : command.getQuantity();
+            if (quantity.compareTo(received) > 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "结算数量不能超过已到场数量"));
+            }
             BigDecimal amount = money(quantity.multiply(price));
 
             MaterialSettlementItem item = new MaterialSettlementItem();
@@ -378,8 +387,11 @@ public class MaterialSettlementContext {
         List<Long> settled = settlementItemRepository.findByPurchaseItem_PurchaseItemIdIn(ids).stream()
                 .map(item -> item.getPurchaseItem().getPurchaseItemId())
                 .toList();
-        // 月结兜底 + 互斥：已结算明细不再进入可结算集合
-        return items.stream().filter(item -> !settled.contains(item.getPurchaseItemId())).toList();
+        // 月结兜底 + 互斥 + 到场门禁：未到场和已结算明细不进入可结算集合
+        return items.stream()
+                .filter(item -> !settled.contains(item.getPurchaseItemId()))
+                .filter(item -> value(item.getReceivedQuantity()).signum() > 0)
+                .toList();
     }
 
     private boolean inPeriod(PurchaseOrder order, String period) {
@@ -504,9 +516,9 @@ public class MaterialSettlementContext {
                 continue;
             }
             Long quoteLineId = item.getMaterialPlan().getQuoteItem().getItemId();
-            // 与结算数量同口径：null 或 0 视为"未填"，取采购数量（实体默认值为 0，不能当成 0 件）
+            // 与结算数量同口径：null 或 0 视为"未填"，取已到场数量。
             BigDecimal quantity = (command.getQuantity() == null || command.getQuantity().signum() <= 0)
-                    ? value(item.getQuantity()) : command.getQuantity();
+                    ? value(item.getReceivedQuantity()) : command.getQuantity();
             BigDecimal delta = money(value(command.getSettlementPrice()).subtract(value(item.getUnitPrice())).multiply(quantity));
             deltaByQuoteLine.merge(quoteLineId, delta, BigDecimal::add);
             quoteLineIds.add(quoteLineId);

@@ -14,8 +14,8 @@
 | B4 | 只读材料助手 | 全角色（按权限） | 全部材料对象 | assistant orchestrator/tools | Web/App | 50 黄金问题、8–12 校核 | 权限/反向/证据 PASS | COMPLETE (2026-10-17) |
 | B5 | App 单端材料下单与结算闭环 | Designer/PM/Finance/Boss/StoreManager | Plan/Sheet/Purchase/Payable/Receipt/Settlement | sheet/order 编排、PurchaseOrderItem、旧直采下线 | App | 下单/到场/结算/成本完整 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE (2026-10-17) |
 | B6 | 独立验收与对账 | independent | 全部 | 无实现 | App/Web | 正向/反向/越权/幂等/边界 | ACCEPTED | FAIL（2026-10-17；121/127） |
-| B6.1 | 修复 B6 独立验收缺陷 | Finance/Designer/PM | Sheet/Purchase/Settlement/Payable | 字段投影、角色门禁、幂等、到场门禁、暂估应付投影 | App/Web | 权限/金额/幂等/边界 | DEV_VERIFIED + RECONCILED | NEXT |
-| B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | PENDING |
+| B6.1 | 修复 B6 独立验收缺陷 | Finance/Designer/PM | Sheet/Purchase/Settlement/Payable | 字段投影、角色门禁、幂等、到场门禁、暂估应付投影 | App/Web | 权限/金额/幂等/边界 | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
+| B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | NEXT |
 | B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
 | B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
 | B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
@@ -222,7 +222,7 @@
 - 阻断：3 个成本/金额读权限泄漏、重复下单重复应付、未到场可结算、暂估应付显示为 0；
 - 证据：`evidence/B6/`。
 
-## B6.1 修复门槛（NEXT）
+## B6.1 修复记录（COMPLETE，2026-10-17）
 
 - 修复 B6-DEF-001~006，先以最小变更恢复已裁决权限/金额/结算口径，不新增业务规则；
 - 权限：Designer/PM 的作业单、采购、结算读模型必须按角色裁剪成本/金额/供应商敏感字段；
@@ -238,3 +238,12 @@
 - 展示结论、证据引用、只读工具、下一步、建议追问、只读边界；NO_EVIDENCE/REFUSAL 不兜底；
 - 不做多轮记忆、不做万能聊天框、不改金额/成本/权限语义、不做 DDL；
 - 完成后进入 B8 独立验收，不能由实现者自批。
+
+
+### B6.1 完成记录
+
+- 后端：材料商业字段按角色裁剪；采购/结算读权限补齐；下单确定性幂等；结算到场门禁；暂估应付读模型暴露 `estimated/settledAmount`；
+- App/Web：应付列表对暂估应付显示“待定价/待结算”，禁止在定价前付款；
+- 测试：后端全量 871/0/0/0 PASS；App type-check/MP 构建/UI/分包 PASS；Web type-check/构建 PASS；
+- UI：Web 1440×900 与 App H5 390×844 真实渲染，暂估文案可见、无横向溢出、Console Errors 0；
+- 证据：`evidence/B6.1/`；停在 `RECONCILED`，B6.2 独立复验。

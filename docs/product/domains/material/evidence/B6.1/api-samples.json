@@ -1,0 +1,60 @@
+{
+  "duplicate_order": {
+    "request": "POST /api/material/sheet/order (same payload twice)",
+    "first_success": true,
+    "second_success": true,
+    "deterministic_no": "PO52f9c3837876e4e6fc0ad069efc1eadf",
+    "db_result": {
+      "purchase_count": 1,
+      "purchase_item_count": 1,
+      "payable_count": 1
+    },
+    "result": "PASS"
+  },
+  "designer_sheet_privacy": {
+    "request": "POST /api/material/sheet/info",
+    "returned_item": {
+      "itemId": "1792224592472999078",
+      "locationName": "客厅地砖",
+      "quantity": 5.0,
+      "orderedQuantity": 3.0,
+      "quoteCostPrice": null,
+      "purchasePrice": null,
+      "settlementPrice": null,
+      "priceState": null
+    },
+    "result": "PASS"
+  },
+  "designer_purchase_privacy": {
+    "request": "POST /api/project/purchase/page",
+    "sample": {
+      "no": "PO52f9c3837876e4e6fc0ad069efc1eadf",
+      "quantity": 3.0,
+      "receivedQuantity": 0.0,
+      "amount": null,
+      "unitPrice": null,
+      "supplierName": null,
+      "status": {
+        "name": "已下单",
+        "key": "Ordered"
+      }
+    },
+    "result": "PASS"
+  },
+  "designer_settlement_gate": {
+    "request": "POST /api/material/settlement/page",
+    "success": false,
+    "message": "只有企业负责人、店长或财务可以确认采购下单",
+    "result": "PASS"
+  },
+  "settlement_before_receipt": {
+    "preview_rows": 0,
+    "confirm_success": false,
+    "message": "采购明细尚未到场，不能结算",
+    "result": "PASS"
+  },
+  "estimated_payable": {
+    "api_sample": null,
+    "result": "PASS"
+  }
+}

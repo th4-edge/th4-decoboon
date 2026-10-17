@@ -64,3 +64,21 @@
 - 正向主链、旧路线、助手和 UI 已通过，但 5 个 P1 阻断权限/金额/幂等/门禁；
 - 证据：`evidence/B6/README.md`、`defects.json`、`blackbox-results.json`、`summary.json`；
 - 下一批：`B6.1` 修复缺陷；修复后由 `B6.2` 独立复验，仍不得由实现者自批。
+
+
+---
+
+## B6.1 修复自测输入（不是独立验收）
+
+| 缺陷 | 自测结果 | 证据 |
+| --- | --- | --- |
+| B6-DEF-001 作业单成本可见性 | PASS | `evidence/B6.1/defect-verification.json` |
+| B6-DEF-002 采购金额/供应商可见性 | PASS | 同上 |
+| B6-DEF-003 结算页/详情角色门禁 | PASS | 同上 |
+| B6-DEF-004 重复下单/应付 | PASS | 同上 |
+| B6-DEF-005 未到场可结算 | PASS | 同上 |
+| B6-DEF-006 暂估应付显示 0 | PASS | 同上 |
+
+- 后端全量 871/0/0/0 PASS；App/Web 构建与真实页面自测 PASS；
+- 该结果仅用于进入 B6.2 独立复验，不能作为 `ACCEPTED` 依据；
+- 临时数据、项目负责人和测试密码哈希已恢复；证据 `evidence/B6.1/`。

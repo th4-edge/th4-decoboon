@@ -1,0 +1,18 @@
+{
+  "web": {
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "innerWidth": 1440,
+    "console_errors": 0,
+    "estimated_text": true,
+    "screenshot": "screenshots/b61-web-payables-estimated.png"
+  },
+  "app": {
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "console_errors": 0,
+    "estimated_text": true,
+    "screenshot": "screenshots/b61-app-payables-estimated.png"
+  }
+}

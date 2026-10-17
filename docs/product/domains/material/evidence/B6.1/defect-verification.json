@@ -1,0 +1,137 @@
+{
+  "batch": "B6.1",
+  "date": "2026-10-17",
+  "environment": "local dev backend 8090 + H5 8080 + Web 4175",
+  "defects": {
+    "B6-DEF-001": {
+      "result": "PASS",
+      "evidence": {
+        "designer_sheet_item": {
+          "createTime": {
+            "dateTime": "2026-10-17 16:09:52"
+          },
+          "itemId": "1792224592472999078",
+          "sourceKind": {
+            "name": "材料计划行（合同选材确认 / 增减项新增）",
+            "key": "Plan"
+          },
+          "materialPlan": {
+            "planId": "235566303270666240",
+            "quantity": 5.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "status": {
+              "name": "部分下单",
+              "key": "PartiallyOrdered"
+            }
+          },
+          "standardIncluded": false,
+          "locationName": "客厅地砖",
+          "quantity": 5.0,
+          "unit": {
+            "name": "m²",
+            "value": "Area",
+            "key": "Area"
+          },
+          "lossRate": 0.0,
+          "lossQuantity": 0.0,
+          "orderedQuantity": 3.0,
+          "sort": 0,
+          "attachments": []
+        }
+      },
+      "note": "Designer sheet info returned no quoteCostPrice/purchasePrice/settlementPrice; fulfillment fields retained."
+    },
+    "B6-DEF-002": {
+      "result": "PASS",
+      "evidence": {
+        "designer_purchase_sample": {
+          "no": "PO52f9c3837876e4e6fc0ad069efc1eadf",
+          "amount": null,
+          "supplierName": null,
+          "unitPrice": null,
+          "quantity": 3.0,
+          "status": {
+            "name": "已下单",
+            "key": "Ordered"
+          }
+        }
+      },
+      "note": "Designer purchase page keeps fulfillment but amount/supplier/unitPrice are absent."
+    },
+    "B6-DEF-003": {
+      "result": "PASS",
+      "evidence": {
+        "designer_settlement_success": false,
+        "message": "只有企业负责人、店长或财务可以确认采购下单"
+      },
+      "note": "Settlement list blocked for Designer/PM."
+    },
+    "B6-DEF-004": {
+      "result": "PASS",
+      "evidence": {
+        "first_success": true,
+        "second_success": true,
+        "db_purchase_count": 1,
+        "db_purchase_item_count": 1,
+        "db_payable_count": 1
+      },
+      "note": "Identical retry returned the same deterministic purchase number and did not create duplicate purchase/payable."
+    },
+    "B6-DEF-005": {
+      "result": "PASS",
+      "evidence": {
+        "preview_rows": 0,
+        "confirm_success": false,
+        "message": "采购明细尚未到场，不能结算"
+      },
+      "note": "Unreceived purchase item is excluded from preview and confirm is rejected."
+    },
+    "B6-DEF-006": {
+      "result": "PASS",
+      "evidence": {
+        "api_sample": null,
+        "ui_app": "待定价 / 暂估/待定价 / 结算后安排付款",
+        "ui_web": "待结算"
+      },
+      "note": "Estimated payable is identifiable and UI no longer presents 0 as a real payable amount."
+    }
+  },
+  "tests": {
+    "backend_targeted": "mvn -q -Dtest=MaterialCommercialPrivacyContextTest,MaterialSheetOrderFlowTest,MaterialSettlementFlowTest,FinancePayablePageProjectionContractTest,ProviderSecurityAcceptanceTest test -> PASS",
+    "app": "npm run type-check && npm run build:mp-weixin && npm run check:ui && npm run check:subpackages -> PASS",
+    "web": "npm run type-check && npm run build -> PASS"
+  },
+  "ui": {
+    "web": {
+      "viewport": "1440x900",
+      "scrollWidth": 1440,
+      "innerWidth": 1440,
+      "console_errors": 0,
+      "estimated_text": true,
+      "screenshot": "screenshots/b61-web-payables-estimated.png"
+    },
+    "app": {
+      "viewport": "390x844",
+      "scrollWidth": 390,
+      "innerWidth": 390,
+      "console_errors": 0,
+      "estimated_text": true,
+      "screenshot": "screenshots/b61-app-payables-estimated.png"
+    }
+  },
+  "cleanup": {
+    "status": "done",
+    "temporary_sheet_deleted": true,
+    "temporary_purchases_deleted": true,
+    "temporary_payables_deleted": true,
+    "material_plan_restored": "ReadyToOrder",
+    "credential_hashes_restored": true,
+    "ddl": false,
+    "production_touched": false,
+    "formal_mini_program_release": false
+  }
+}

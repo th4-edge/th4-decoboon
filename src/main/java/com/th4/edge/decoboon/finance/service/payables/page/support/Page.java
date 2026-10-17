@@ -26,7 +26,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = Payable.class,
                 properties = {"payableId", "project", "materialPlan", "name", "type", "payeeEmployee", "payeePartner", "payeeName",
-                        "period", "amount", "paidAmount", "dueDate", "status", "urgent", "sourceNo", "remark",
+                        "period", "amount", "estimated", "settledAmount", "paidAmount", "dueDate", "status", "urgent", "sourceNo", "remark",
                         "createdBy", "createTime", "property" }),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status" }),

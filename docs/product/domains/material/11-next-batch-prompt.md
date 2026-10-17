@@ -1,45 +1,33 @@
-# 材料域下一批提示词（B6.1 修复独立验收缺陷）
+# 材料域下一批提示词（B6.2 B6 缺陷修复独立复验）
 
 继续 material 域。先恢复外部状态，不要依赖聊天记忆：
 
 1. 读取 `AGENTS.md`、`docs/operations/试运营单人轻量协作与发版规范.md`；
-2. 读取 `.agents/skills/domain-delivery-orchestrator/SKILL.md`、`run-envelope.md`；
-3. 读取 `state.json`、`00-charter.md`、`04-requirements.md`、`05-plan.md`、`06-implementation.md`、`08-acceptance.md`、`10-reconciliation.md`；
-4. 读取 `evidence/B6/README.md`、`defects.json`、`blackbox-results.json`、`summary.json`、`api-samples.json`；
-5. 涉及材料权限、金额/成本口径时，读取 `/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md` 及其规范事实源。
+2. 读取 `.agents/skills/domain-delivery-orchestrator/SKILL.md`、`run-envelope.md`、`state.json`；
+3. 读取 `00-charter.md`、`04-requirements.md`、`05-plan.md`、`06-implementation.md`、`08-acceptance.md`、`10-reconciliation.md`；
+4. 读取 `evidence/B6/` 与 `evidence/B6.1/`，以 B6 原始缺陷为复验基线；
+5. 涉及权限、成本、应付、结算时读取 `/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md` 及 BR-044/BR-045/DEC-072/073/074。
 
-当前预期：B6 独立验收结论为 FAIL；B5 实现不可视为已验收。以 `state.json` 为准。
+当前预期：B6 独立验收 FAIL，B6.1 已完成修复并 RECONCILED；B6.2 才能判断是否进入 ACCEPTED。以 `state.json` 为准。
 
-## B6.1 修复范围
+## 独立性要求
 
-只修复 B6 独立证据已确认的 6 个缺陷，不扩业务规则、不做 DDL：
+- 必须使用独立验收角色/任务，不能由 B6.1 实现者自批；
+- 只做黑盒验证和证据采集，不修改实现代码；
+- 以 B6 的 6 个缺陷为主，复跑受影响矩阵并增加回归；
+- 用户最终决定是否进入 `ACCEPTED`；无法启动独立角色时写决策包并 BLOCKED。
 
-- `B6-DEF-001`：Designer/PM 对 `material/sheet/info|page` 的成本字段可见性；
-- `B6-DEF-002`：Designer/PM 对 `project/purchase/page` 的采购金额、供应商敏感信息可见性；
-- `B6-DEF-003`：Designer/PM 对 `material/settlement/page|info` 的角色门禁；
-- `B6-DEF-004`：`material/sheet/order` 重复请求的业务幂等键，禁止重复采购/应付；
-- `B6-DEF-005`：`material/settlement/preview|confirm` 必须要求 `receivedQuantity>0`；
-- `B6-DEF-006`：无价采购的暂估应付读模型不得显示 0，必须可识别暂估/待定价。
+## 必验
+
+1. Designer/PM 对 `material/sheet/info|page`、`project/purchase/page`、`material/settlement/page|info` 的权限负向；
+2. 相同 `material/sheet/order` 重试只生成一份采购/采购明细/应付；相同幂等键不同 payload 必须冲突；
+3. 未到场采购明细 preview 为空、confirm 被拒；到场后结算数量不得超过到场数量；
+4. 暂估应付返回 `estimated=true`，App/Web 不显示 0 为真实金额；结算/撤销后标记与成本正确回退；
+5. 复跑 B6 主链、跨企业/跨门店、旧路线、50 黄金问题、跨端、H5 UI；
+6. 证据落 `evidence/B6.2/`，更新 `08-acceptance.md`、`10-reconciliation.md`、`state.json/history`。
 
 ## 边界
 
-- 先核对 BR-044/BR-045、DEC-072/073/074 与既有权限规范，修复只能恢复到已裁决口径；
-- 不改状态机、不改金额公式、不改角色、不做 DDL/迁移、不碰生产、不正式发布小程序；
-- 不修改 B6 证据文件；新修复证据落 `evidence/B6.1/`；
-- Designer/PM 的履约需求继续可读，但成本、采购金额、结算金额、供应商敏感字段必须按角色最小可见；
-- 幂等实现优先复用现有框架能力或业务唯一键，不引入前端可信 ID 作为权限依据。
-
-## 验证与退出
-
-- 定向测试覆盖 6 个缺陷的正向/反向/重复请求/跨角色；
-- 金额/成本/权限变更执行全量后端测试；App/Web 相关构建与真实页面走查；
-- 补充 B6.1 请求/响应、DB 前后差异、测试结果和页面证据；
-- 更新 `06-implementation.md`、`07-ui-review.md`、`10-reconciliation.md`、`state.json/history`；
-- 停在 `RECONCILED`，不得自批 `ACCEPTED`；B6.2 由独立验收角色复跑受影响矩阵与回归。
-
-## 后续队列
-
-- B6.2：独立复验 B6.1；
-- B7：材料业务助手上下文入口（App/Web 统一单轮「问材料」抽屉，复用 `material/assistant/ask`，不做多轮记忆）；
-- B8：助手 UI 聚焦独立验收；
-- B9：体验版/发布准备；正式小程序提审和发布永远由用户完成。
+- 不改业务规则、权限语义、金额/成本公式；不做 DDL/迁移；不碰生产；不正式发布小程序；
+- 不修改 B6/B6.1 证据；不把开发自测当独立验收；
+- 通过后输出 B7（材料业务助手上下文入口）的实施提示词；失败则登记缺陷并停在修复门禁。

@@ -25,6 +25,7 @@ import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.components.lock.DistributedLocked;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -34,6 +35,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,8 +46,8 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * 主材下单作业单：单据生命周期 + 门禁 + 下单编排（SOL-014 / OBJ-008 / BR-044 / BR-045 / SCN-021）。
@@ -302,16 +306,23 @@ public class MaterialSheetContext {
     public MaterialOrderSheet order(Employee principal, Long sheetId, Long supplierId, String supplierName,
                                     com.th4.edge.decoboon.project.configure.DeliveryMode deliveryMode,
                                     LocalDate expectedAt, String remark, List<MaterialOrderSheetItem> lines) {
+        return order(principal, sheetId, supplierId, supplierName, deliveryMode, expectedAt, remark, lines, null);
+    }
+
+    /**
+     * 同一作业单 + 供应商的下单请求串行执行；客户端幂等键或确定性业务指纹落为采购单号，
+     * 重复请求返回已生成结果，不再重复形成采购与应付。
+     */
+    @DistributedLocked(key = "#root.orderLockKey(#sheetId, #supplierId)")
+    public MaterialOrderSheet order(Employee principal, Long sheetId, Long supplierId, String supplierName,
+                                    com.th4.edge.decoboon.project.configure.DeliveryMode deliveryMode,
+                                    LocalDate expectedAt, String remark, List<MaterialOrderSheetItem> lines,
+                                    String idempotencyKey) {
         Employee current = accessContext.requireEmployee(principal);
         materialPurchaseContext.requireOperator(current);
         MaterialOrderSheet sheet = requireSheet(current, sheetId);
         if (sheet.getStatus() == MaterialSheetStatus.Cancelled || sheet.getStatus() == MaterialSheetStatus.Closed) {
             throw new DefinedException(new DefaultErrorCode("400", "该作业单已取消或已关闭，不能下单"));
-        }
-        if (sheet.getStatus() != MaterialSheetStatus.Submitted
-                && sheet.getStatus() != MaterialSheetStatus.Pricing
-                && sheet.getStatus() != MaterialSheetStatus.PartiallyOrdered) {
-            throw new DefinedException(new DefaultErrorCode("400", "作业单尚未提交请购，不能下单"));
         }
         List<MaterialOrderSheetItem> sheetLines = items(sheetId);
         if (sheetLines.isEmpty()) {
@@ -341,6 +352,20 @@ public class MaterialSheetContext {
                 throw new DefinedException(new DefaultErrorCode("400", "作业单行必须来源材料计划"));
             }
             orderPlanIds.add(line.getMaterialPlan().getPlanId());
+        }
+        String purchaseNo = purchaseNo(sheetId, supplier, deliveryMode, expectedAt, remark, lines, lineById, idempotencyKey);
+        Optional<PurchaseOrder> existed = purchaseRepository.findByNo(purchaseNo);
+        if (existed.isPresent()) {
+            if (!samePurchaseRequest(existed.get(), lines, lineById, supplier, deliveryMode)) {
+                throw new DefinedException(new DefaultErrorCode("409", "幂等键对应的下单内容不一致，请生成新的下单请求"));
+            }
+            sheet.setItems(sheetLines);
+            return sheet;
+        }
+        if (sheet.getStatus() != MaterialSheetStatus.Submitted
+                && sheet.getStatus() != MaterialSheetStatus.Pricing
+                && sheet.getStatus() != MaterialSheetStatus.PartiallyOrdered) {
+            throw new DefinedException(new DefaultErrorCode("400", "作业单尚未提交请购，不能下单"));
         }
         Map<Long, MaterialPlan> orderPlans = loadOrderablePlans(current, sheet.getProject().getProjectId(), orderPlanIds);
 
@@ -393,7 +418,7 @@ public class MaterialSheetContext {
         purchase.setSupplierName(supplier.getName());
         purchase.setDeliveryMode(deliveryMode == null
                 ? com.th4.edge.decoboon.project.configure.DeliveryMode.Direct : deliveryMode);
-        purchase.setNo(nextPurchaseNo(sheetId, supplier.getPartnerId()));
+        purchase.setNo(purchaseNo);
         purchase.setQuantity(totalQuantity);
         purchase.setUnit(orderLines.get(0).line().getUnit());
         purchase.setUnitPrice(BigDecimal.ZERO);
@@ -454,10 +479,81 @@ public class MaterialSheetContext {
                              BigDecimal unitPrice, SheetPriceState priceState) {
     }
 
-    private String nextPurchaseNo(Long sheetId, Long supplierId) {
-        return "PO" + System.currentTimeMillis() + "-" + sheetId + "-"
-                + (supplierId == null ? "0" : supplierId) + "-"
-                + UUID.randomUUID().toString().substring(0, 6);
+    public String orderLockKey(Long sheetId, Long supplierId) {
+        return "material-order:" + (sheetId == null ? "unknown" : sheetId)
+                + ":" + (supplierId == null ? "unknown" : supplierId);
+    }
+
+    /** 客户端幂等键优先；旧客户端按业务指纹 + 当日日期生成确定性单号，避免网络重试重复下单。 */
+    private String purchaseNo(Long sheetId, com.th4.edge.decoboon.supply.model.Partner supplier,
+                              com.th4.edge.decoboon.project.configure.DeliveryMode deliveryMode,
+                              LocalDate expectedAt, String remark, List<MaterialOrderSheetItem> commands,
+                              Map<Long, MaterialOrderSheetItem> lineById, String idempotencyKey) {
+        StringBuilder raw = new StringBuilder();
+        if (idempotencyKey != null && !idempotencyKey.isBlank()) {
+            raw.append("client|").append(sheetId).append('|').append(supplier.getPartnerId())
+                    .append('|').append(idempotencyKey.trim());
+        } else {
+            raw.append("payload|").append(sheetId).append('|').append(supplier.getPartnerId())
+                    .append('|').append(deliveryMode == null ? "Direct" : deliveryMode)
+                    .append('|').append(expectedAt == null ? "" : expectedAt)
+                    .append('|').append(remark == null ? "" : remark.trim());
+            for (MaterialOrderSheetItem command : commands) {
+                MaterialOrderSheetItem line = lineById.get(command.getItemId());
+                BigDecimal quantity = command.getQuantity() == null ? line.getQuantity() : command.getQuantity();
+                raw.append('|').append(command.getItemId())
+                        .append(':').append(line.getMaterialPlan().getPlanId())
+                        .append(':').append(plain(quantity))
+                        .append(':').append(command.getPurchasePrice() == null
+                                ? "unpriced" : plain(command.getPurchasePrice()));
+            }
+            raw.append("|date:").append(LocalDate.now());
+        }
+        return "PO" + sha256(raw.toString()).substring(0, 32);
+    }
+
+    private boolean samePurchaseRequest(PurchaseOrder existing,
+                                        List<MaterialOrderSheetItem> commands,
+                                        Map<Long, MaterialOrderSheetItem> lineById,
+                                        com.th4.edge.decoboon.supply.model.Partner supplier,
+                                        com.th4.edge.decoboon.project.configure.DeliveryMode deliveryMode) {
+        if (existing.getSupplier() == null || !supplier.getPartnerId().equals(existing.getSupplier().getPartnerId())) {
+            return false;
+        }
+        if ((deliveryMode == null ? com.th4.edge.decoboon.project.configure.DeliveryMode.Direct : deliveryMode)
+                != (existing.getDeliveryMode() == null
+                ? com.th4.edge.decoboon.project.configure.DeliveryMode.Direct : existing.getDeliveryMode())) {
+            return false;
+        }
+        Map<Long, String> expected = new LinkedHashMap<>();
+        for (MaterialOrderSheetItem command : commands) {
+            MaterialOrderSheetItem line = lineById.get(command.getItemId());
+            BigDecimal quantity = command.getQuantity() == null ? line.getQuantity() : command.getQuantity();
+            expected.put(line.getMaterialPlan().getPlanId(),
+                    plain(quantity) + "|" + (command.getPurchasePrice() == null
+                            ? "unpriced" : plain(command.getPurchasePrice())));
+        }
+        Map<Long, String> actual = new LinkedHashMap<>();
+        for (PurchaseOrderItem item : purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(existing)) {
+            if (item.getMaterialPlan() == null || item.getMaterialPlan().getPlanId() == null) continue;
+            actual.put(item.getMaterialPlan().getPlanId(),
+                    plain(item.getQuantity()) + "|" + (item.getPriceState() == SheetPriceState.Unpriced
+                            ? "unpriced" : plain(item.getUnitPrice())));
+        }
+        return expected.equals(actual);
+    }
+
+    private String plain(BigDecimal value) {
+        return value == null ? "0" : value.stripTrailingZeros().toPlainString();
+    }
+
+    private String sha256(String value) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return java.util.HexFormat.of().formatHex(digest.digest(value.getBytes(StandardCharsets.UTF_8)));
+        } catch (NoSuchAlgorithmException exception) {
+            throw new IllegalStateException("SHA-256 不可用", exception);
+        }
     }
 
     /**
