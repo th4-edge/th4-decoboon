@@ -6,7 +6,7 @@
   "owner": "codex",
   "phase": "BLUEPRINT_READY",
   "batch": "B2",
-  "nextAction": "等待用户确认后启动 B2：收敛旧 save 与 batch-save，核对 range/目标快照/审批联动并在干净基线上跑定向测试",
+  "nextAction": "等待材料域释放代码租约且代码工作区干净后，由全域总控启动 B2：收敛旧 save 与 batch-save，核对 range/目标快照/审批联动并跑定向测试",
   "openDecisions": [
     "GAP-CC-DUAL-ENTRY：旧 project/contract-change/save 与 batch-save 双入口需收敛",
     "GAP-CC-CUSTOMER-CONFIRM-LEGACY：历史 customer-confirm 与存量状态展示待独立验收",
