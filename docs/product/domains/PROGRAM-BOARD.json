@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "program": "ZHUANGDEQING-DOMAIN-DELIVERY",
-  "updatedAt": "2026-10-17T21:17:05+08:00",
+  "updatedAt": "2026-10-17T22:17:05+08:00",
   "currentProgramStage": "MATERIAL_CLOSEOUT",
   "activeLease": {
     "domain": "material",
@@ -17,9 +17,9 @@
     ],
     "releaseCondition": "material.phase in [RELEASED, LEARNED] AND material handoff recorded AND no uncommitted code changes under src/main, src/test, App or Web",
     "staleReviewAfterHours": 3,
-    "lastOwnerActivityAt": "2026-10-17T21:11:09+08:00",
-    "lastDomainStateUpdatedAt": "2026-10-17T21:10:34+08:00",
-    "lastObservedAt": "2026-10-17T21:17:05+08:00",
+    "lastOwnerActivityAt": "2026-10-17T22:07:59+08:00",
+    "lastDomainStateUpdatedAt": "2026-10-17T22:07:59+08:00",
+    "lastObservedAt": "2026-10-17T22:17:05+08:00",
     "staleBasis": "domain state.updatedAt unchanged for staleReviewAfterHours; owner thread idle alone is not stale"
   },
   "queue": [
@@ -142,9 +142,9 @@
   ],
   "domainStates": {
     "material": {
-      "phase": "ACCEPTED",
-      "batch": "B6.6",
-      "nextAction": "B7 材料业务助手上下文入口（App/Web 单轮“问材料”抽屉）"
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B7",
+      "nextAction": "实现 B7 材料业务助手上下文入口（App/Web 单轮“问材料”抽屉）"
     },
     "contract-change": {
       "phase": "BLUEPRINT_READY",
@@ -177,10 +177,10 @@
     "requireNoUncommittedCodeChangesBeforeNewDomain": true
   },
   "blockers": [
-    "材料 B6 系列已记录 ACCEPTED（B6.6 独立复验 157/157 PASS）；B7/B8/B9 尚未完成，材料域释放 handoff 未写；最终正式接受/发布仍需用户确认",
-    "后端 src/main/src/test 46 项、App src/pages.json 13 项、Web src 16 项未提交代码改动，工作区门禁未通过，contract-change B2 暂不可启动"
+    "材料域 B7 实现中；B8 独立验收、B9 发布准备未完成，材料域释放 handoff 未写；最终正式接受/发布仍需用户确认",
+    "后端 src/main/src/test 50 项、App src/pages.json 19 项、Web src 22 项未提交代码改动，工作区门禁未通过，contract-change B2 暂不可启动"
   ],
-  "nextProgramAction": "保持 material 租约 ACTIVE；进入 B7 材料助手上下文入口，随后 B8/B9；满足 RELEASED/LEARNED + handoff + 三端代码干净后再授权 contract-change B2",
+  "nextProgramAction": "保持 material 租约 ACTIVE；跟踪 B7 助手上下文入口 → B8 独立验收 → B9 发布准备；满足 RELEASED/LEARNED + handoff + 三端代码干净后再授权 contract-change B2",
   "notificationPolicy": "仅在工作区租约变化、域门禁变化、独立验收失败、需要用户裁决、连续无进展或全域收口时通知",
   "programSupervisor": {
     "threadId": "01a148c3-89b6-7ea0-874e-b128397fc4ed",
@@ -188,10 +188,10 @@
     "status": "ACTIVE",
     "codeWriteAllowed": false,
     "heartbeatRule": "FREQ=MINUTELY;INTERVAL=10;BYSECOND=0",
-    "lastObservationAt": "2026-10-17T21:17:05+08:00",
+    "lastObservationAt": "2026-10-17T22:17:05+08:00",
     "monitoringMode": "10m-fast-watch+event-deep-check",
     "fastCheckScript": ".agents/skills/domain-delivery-orchestrator/scripts/program_watch.py",
     "fastCheckCommand": "python3 .agents/skills/domain-delivery-orchestrator/scripts/program_watch.py --json",
-    "lastFingerprint": "5da9658aa6da02956240a65b8b1a7278e1424b29850d45bf797723d8905dd1b9"
+    "lastFingerprint": "08146741daf507d8bf0a7972a4eff18f0d348fcdf83ed24b5f0e124b33ca8374"
   }
 }
