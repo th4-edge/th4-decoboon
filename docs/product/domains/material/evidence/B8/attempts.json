@@ -1,0 +1,7 @@
+[
+  {
+    "surface": "devtools",
+    "result": "PROCESS",
+    "stdout": "{\"total\":11,\"pass\":11,\"fail\":0,\"screenshots\":[\"screenshots/b8-devtools-project-drawer-375x667.png\",\"screenshots/b8-devtools-project-answer-375x667.png\",\"screenshots/b8-devtools-sheet-answer-375x667.png\",\"screenshots/b8-devtools-sheet-freeform-375x667.png\"]}\n"
+  }
+]

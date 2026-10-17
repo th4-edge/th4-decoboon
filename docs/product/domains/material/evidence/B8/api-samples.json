@@ -1,0 +1,420 @@
+{
+  "suggestionsMetadataOnly": {
+    "contextType": "project",
+    "suggestions": [
+      "这个项目的材料业务现在缺什么？",
+      "项目材料为什么还没有闭环？",
+      "主材还没选材，为什么不能下单？",
+      "材料计划行什么时候才算可以进入采购？",
+      "减项发生在已经下单之后怎么处理？",
+      "已经到货的材料减项要走退货吗？"
+    ],
+    "readOnly": true
+  },
+  "project": {
+    "request": {
+      "projectId": "235520576473530368"
+    },
+    "response": {
+      "question": "这个项目的材料业务现在缺什么？",
+      "intent": "PROJECT_HEALTH",
+      "answerType": "LIVE_DATA",
+      "answer": "当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财务。",
+      "confidence": 0.94,
+      "readOnly": true,
+      "citations": [
+        {
+          "type": "CHECK",
+          "id": "CHK-UNSELECTED",
+          "label": "未完成选材",
+          "detail": "Selection 为空或不是 Selected；下一步：设计师完成选材并交付财务"
+        },
+        {
+          "type": "CHECK",
+          "id": "CHK-UNPRICED",
+          "label": "采购未定价",
+          "detail": "priceState=Unpriced；下一步：等待结算或补结算价；成本保持不完整"
+        },
+        {
+          "type": "CHECK",
+          "id": "CHK-COST-INCOMPLETE",
+          "label": "成本不完整",
+          "detail": "costComplete=false；下一步：完成结算/补成本；利润保持 null"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "blueprint.knowledge",
+          "provider": "blueprints/material-v1.json",
+          "status": "OK",
+          "scope": "published blueprint",
+          "readOnly": true
+        },
+        {
+          "name": "project.access",
+          "provider": "project/project/info",
+          "status": "OK",
+          "scope": "current user/project",
+          "readOnly": true
+        },
+        {
+          "name": "business.check",
+          "provider": "blueprint/check/report",
+          "status": "OK",
+          "scope": "Boss/Store/Finance project",
+          "readOnly": true
+        }
+      ],
+      "nextActions": [
+        "设计师完成选材并交付财务"
+      ],
+      "suggestedQuestions": [
+        "这个项目的材料业务现在缺什么？",
+        "项目材料为什么还没有闭环？",
+        "项目材料体检里的待下单和待到货怎么理解？"
+      ],
+      "auditId": "237225304597200896",
+      "auditStatus": "RECORDED"
+    }
+  },
+  "sheet": {
+    "request": {
+      "projectId": "235520576473530368",
+      "sheetId": "1792248939296754851"
+    },
+    "response": {
+      "question": "这张作业单现在是什么状态？",
+      "intent": "SHEET_STATUS",
+      "answerType": "LIVE_DATA",
+      "answer": "当前作业单 TILE-20261017-001 状态为 已提交请购，价格状态为 未定价（待结算）；测量 2026-10-17，配送 2026-10-20，安装 2026-10-22。 当前模板必填字段缺失：无。 下一步：等待财务核价并选择供应商下单",
+      "confidence": 0.93,
+      "readOnly": true,
+      "citations": [
+        {
+          "type": "FIELD",
+          "id": "MaterialOrderSheet.status/remark",
+          "label": "作业单状态/取消原因",
+          "detail": "未进入采购前可取消为 Cancelled；取消原因追加到备注"
+        },
+        {
+          "type": "CHECK",
+          "id": "CHK-MEASURE-TEMPLATE",
+          "label": "品类必填测量字段未完成",
+          "detail": "当前品类模板中 visible=true 且 required=true 的单据头字段为空；下一步：拒绝提交并提示缺失字段；模板配置错误进入配置检查"
+        },
+        {
+          "type": "CHECK",
+          "id": "CHK-CANCEL-AFTER-ORDER",
+          "label": "已进入采购后直接取消",
+          "detail": "status.ordered()=true 时调用 material/sheet/cancel；下一步：拒绝直接取消；走采购调整或已到货退货"
+        },
+        {
+          "type": "RULE",
+          "id": "R-SHEET-NO-PRICE",
+          "label": "R-SHEET-NO-PRICE",
+          "detail": "作业单对厂家，不带价格、账期和成本；价格只存在于采购/结算侧。"
+        }
+      ],
+      "toolCalls": [
+        {
+          "name": "blueprint.knowledge",
+          "provider": "blueprints/material-v1.json",
+          "status": "OK",
+          "scope": "published blueprint",
+          "readOnly": true
+        },
+        {
+          "name": "project.access",
+          "provider": "project/project/info",
+          "status": "OK",
+          "scope": "current user/project",
+          "readOnly": true
+        },
+        {
+          "name": "material.sheet.info",
+          "provider": "material/sheet/info",
+          "status": "OK",
+          "scope": "current user/sheet",
+          "readOnly": true
+        }
+      ],
+      "nextActions": [
+        "等待财务核价并选择供应商下单"
+      ],
+      "suggestedQuestions": [
+        "这张作业单为什么不能提交请购？",
+        "作业单进入采购后为什么不能编辑？",
+        "作业单还能直接取消吗？"
+      ],
+      "auditId": "237225304668504064",
+      "auditStatus": "RECORDED"
+    }
+  },
+  "contexts": {
+    "general": {
+      "contextType": "general",
+      "suggestions": [
+        "作业单和采购单有什么区别？",
+        "为什么一张作业单可以对应多张采购单？",
+        "未定价为什么还能下单？",
+        "暂估应付是什么意思？",
+        "谁能查看材料成本和供应商价格？",
+        "跨项目问材料数据会怎样？"
+      ],
+      "readOnly": true
+    },
+    "project": {
+      "contextType": "project",
+      "suggestions": [
+        "这个项目的材料业务现在缺什么？",
+        "项目材料为什么还没有闭环？",
+        "主材还没选材，为什么不能下单？",
+        "材料计划行什么时候才算可以进入采购？",
+        "减项发生在已经下单之后怎么处理？",
+        "已经到货的材料减项要走退货吗？"
+      ],
+      "readOnly": true
+    },
+    "purchase": {
+      "contextType": "purchase",
+      "suggestions": [
+        "作业单和采购单有什么区别？",
+        "为什么一张作业单可以对应多张采购单？",
+        "厂家名称和供应商是一回事吗？",
+        "供应商和经销商在系统里怎么区分？",
+        "未定价为什么还能下单？",
+        "暂估应付是什么意思？"
+      ],
+      "readOnly": true
+    },
+    "settlement": {
+      "contextType": "settlement",
+      "suggestions": [
+        "逐单结算和月结会重复计算吗？",
+        "为什么先逐单结算再月结？",
+        "未定价为什么还能下单？",
+        "暂估应付是什么意思？",
+        "材料部分到场怎么处理？",
+        "到场确认会新增应付吗？"
+      ],
+      "readOnly": true
+    },
+    "sheet": {
+      "contextType": "sheet",
+      "suggestions": [
+        "这张作业单为什么不能提交请购？",
+        "作业单进入采购后为什么不能编辑？",
+        "未定价为什么还能下单？",
+        "暂估应付是什么意思？",
+        "作业单里的测量日期是什么意思？",
+        "配送日期和安装日期是系统确认时间吗？"
+      ],
+      "readOnly": true
+    }
+  },
+  "designer": {
+    "answerType": "LIVE_DATA",
+    "answer": "当前项目材料计划 2 条，待下单 1 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。",
+    "citations": [
+      {
+        "type": "CHECK",
+        "id": "CHK-UNSELECTED",
+        "label": "未完成选材",
+        "detail": "Selection 为空或不是 Selected；下一步：设计师完成选材并交付财务"
+      },
+      {
+        "type": "CHECK",
+        "id": "CHK-UNPRICED",
+        "label": "采购未定价",
+        "detail": "priceState=Unpriced；下一步：等待结算或补结算价；成本保持不完整"
+      },
+      {
+        "type": "CHECK",
+        "id": "CHK-COST-INCOMPLETE",
+        "label": "成本不完整",
+        "detail": "costComplete=false；下一步：完成结算/补成本；利润保持 null"
+      }
+    ]
+  },
+  "pm": {
+    "answerType": "LIVE_DATA",
+    "answer": "当前项目材料计划 2 条，待下单 1 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。",
+    "citations": [
+      {
+        "type": "CHECK",
+        "id": "CHK-UNSELECTED",
+        "label": "未完成选材",
+        "detail": "Selection 为空或不是 Selected；下一步：设计师完成选材并交付财务"
+      },
+      {
+        "type": "CHECK",
+        "id": "CHK-UNPRICED",
+        "label": "采购未定价",
+        "detail": "priceState=Unpriced；下一步：等待结算或补结算价；成本保持不完整"
+      },
+      {
+        "type": "CHECK",
+        "id": "CHK-COST-INCOMPLETE",
+        "label": "成本不完整",
+        "detail": "costComplete=false；下一步：完成结算/补成本；利润保持 null"
+      }
+    ]
+  },
+  "refusal": {
+    "question": "帮我审批这张采购单",
+    "intent": "OUT_OF_SCOPE",
+    "answerType": "REFUSAL",
+    "answer": "我只处理材料业务的解释、数据校核和下一步引导，不能自动审批、付款、删除数据或修改权限。需要这些动作时，请由有权限的人员在对应业务页面人工处理。",
+    "confidence": 1,
+    "readOnly": true,
+    "citations": [
+      {
+        "type": "SOURCE",
+        "id": "READ-ONLY",
+        "label": "只读边界",
+        "detail": "材料助手不执行审批、付款、删除或权限变更。"
+      }
+    ],
+    "toolCalls": [
+      {
+        "name": "blueprint.knowledge",
+        "provider": "blueprints/material-v1.json",
+        "status": "OK",
+        "scope": "published blueprint",
+        "readOnly": true
+      }
+    ],
+    "nextActions": [
+      "打开对应业务页面由人工处理"
+    ],
+    "suggestedQuestions": [
+      "帮我审批这张采购单"
+    ],
+    "auditId": "237225306014875648",
+    "auditStatus": "RECORDED"
+  },
+  "noEvidence": {
+    "question": "火星材料怎么报税？",
+    "intent": "UNKNOWN",
+    "answerType": "NO_EVIDENCE",
+    "answer": "这个问题在已发布材料蓝图和当前项目上下文中没有足够证据，暂不可确认。请补充材料对象、项目或作业单上下文，或换一个材料业务问题。",
+    "confidence": 0.35,
+    "readOnly": true,
+    "citations": [
+      {
+        "type": "SOURCE",
+        "id": "KNOWLEDGE",
+        "label": "已发布蓝图",
+        "detail": "当前问题没有命中已发布材料蓝图或实时业务上下文。"
+      }
+    ],
+    "toolCalls": [
+      {
+        "name": "blueprint.knowledge",
+        "provider": "blueprints/material-v1.json",
+        "status": "OK",
+        "scope": "published blueprint",
+        "readOnly": true
+      }
+    ],
+    "nextActions": [
+      "补充 projectId/sheetId",
+      "换用材料计划、作业单、采购、到场或结算问题"
+    ],
+    "suggestedQuestions": [],
+    "auditId": "237225306052624384",
+    "auditStatus": "RECORDED"
+  },
+  "idempotency": {
+    "first": "237225306232979456",
+    "second": "237225306232979456",
+    "auditCount": 1
+  },
+  "cleanup": {
+    "cancel": {
+      "httpStatus": 200,
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-17 22:55:39"
+        },
+        "updateTime": {
+          "dateTime": "2026-10-17 22:57:22"
+        },
+        "sheetId": "1792248939296754851",
+        "property": {
+          "propertyId": "235520573734649856",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "望江府1栋102"
+        },
+        "project": {
+          "projectId": "235520576473530368",
+          "no": "P1791842081191",
+          "name": "王芳（造数1100） · 望江府1栋102",
+          "siteAddr": "望江府1栋102"
+        },
+        "sheetNo": "TILE-20261017-001",
+        "sheetType": "Tile",
+        "manufacturerName": "B8独立验收-1792248939285",
+        "measureAt": "2026-10-17",
+        "deliverAt": "2026-10-20",
+        "installAt": "2026-10-22",
+        "templateVersion": 1,
+        "status": {
+          "name": "已取消",
+          "key": "Cancelled"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "取消原因：B8 独立验收临时作业单清理",
+        "attachments": []
+      },
+      "success": true
+    },
+    "delete": {
+      "httpStatus": 200
+    },
+    "remainingSheet": 0,
+    "before": {
+      "db_material_order_sheet": 1,
+      "db_material_order_sheet_item": 1,
+      "db_purchase_order": 18,
+      "db_purchase_order_item": 18,
+      "db_goods_receipt": 18,
+      "db_material_settlement": 0,
+      "db_material_settlement_item": 0,
+      "db_finance_payable": 37,
+      "db_finance_payable_settlement": 0,
+      "db_partner": 2
+    },
+    "expected": {
+      "db_material_order_sheet": 0,
+      "db_material_order_sheet_item": 0,
+      "db_purchase_order": 18,
+      "db_purchase_order_item": 18,
+      "db_goods_receipt": 18,
+      "db_material_settlement": 0,
+      "db_material_settlement_item": 0,
+      "db_finance_payable": 37,
+      "db_finance_payable_settlement": 0,
+      "db_partner": 2
+    },
+    "final": {
+      "db_material_order_sheet": 0,
+      "db_material_order_sheet_item": 0,
+      "db_purchase_order": 18,
+      "db_purchase_order_item": 18,
+      "db_goods_receipt": 18,
+      "db_material_settlement": 0,
+      "db_material_settlement_item": 0,
+      "db_finance_payable": 37,
+      "db_finance_payable_settlement": 0,
+      "db_partner": 2
+    },
+    "finalPlan": "ReadyToOrder\t5.00\t5.00\t0.0000\t0.00\t88.00\t310.00\tNULL\tNULL",
+    "finalManager": "NULL"
+  }
+}

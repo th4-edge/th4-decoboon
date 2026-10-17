@@ -1,0 +1,136 @@
+{
+  "batch": "B8",
+  "date": "2026-10-17",
+  "verdict": "PASS",
+  "totals": {
+    "total": 110,
+    "pass": 110,
+    "fail": 0,
+    "blocked": 0
+  },
+  "categories": {
+    "api": {
+      "total": 29,
+      "pass": 29,
+      "fail": 0,
+      "blocked": 0
+    },
+    "web-ui": {
+      "total": 34,
+      "pass": 34,
+      "fail": 0,
+      "blocked": 0
+    },
+    "app-ui": {
+      "total": 26,
+      "pass": 26,
+      "fail": 0,
+      "blocked": 0
+    },
+    "cross-surface": {
+      "total": 5,
+      "pass": 5,
+      "fail": 0,
+      "blocked": 0
+    },
+    "devtools": {
+      "total": 11,
+      "pass": 11,
+      "fail": 0,
+      "blocked": 0
+    },
+    "ui": {
+      "total": 1,
+      "pass": 1,
+      "fail": 0,
+      "blocked": 0
+    },
+    "cleanup": {
+      "total": 4,
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0
+    }
+  },
+  "environment": {
+    "api": "http://127.0.0.1:8091/api",
+    "web": "http://127.0.0.1:4175",
+    "app": "http://127.0.0.1:8080",
+    "mysql": "127.0.0.1:3306/decoboon",
+    "projectId": "235520576473530368",
+    "planId": "235566303270666240",
+    "sheetId": "1792248939296754851",
+    "sheetNo": "TILE-20261017-001",
+    "viewports": [
+      "1440x900",
+      "1024x768",
+      "390x844",
+      "375x667",
+      "devtools-375x667"
+    ],
+    "commits": {
+      "backend": "302193eef30bbe2341148394d3679c23ec2c84bd",
+      "app": "67e6da0f310d5f209ad0f739d7826b314a87d990",
+      "web": "d15d088074d28c3c1eb1530fd0f9a58abe8cbedb"
+    },
+    "worktrees": {
+      "backend": "/tmp/th4-b8-backend-302193e",
+      "app": "/tmp/th4-b8-app-67e6da0",
+      "web": "/tmp/th4-b8-web-d15d088"
+    }
+  },
+  "devtoolsCompleted": true,
+  "acceptanceEvidenceConditionsMet": true,
+  "boundary": "独立黑盒验收只判断是否满足进入 ACCEPTED 用户决策的证据条件；不自批最终正式接受或发布。",
+  "observations": [
+    {
+      "id": "OBS-B8-001",
+      "title": "建议问题接口只做分组选择，不读取对象数据",
+      "detail": "suggestions 对任意 projectId/sheetId 只返回黄金问题分组，不读取项目、成本或供应商数据；越权对象访问由 material/assistant/ask 统一返回 404/403。当前行为未发现数据泄漏，属于低风险边界。",
+      "severity": "P3"
+    }
+  ],
+  "screenshots": [
+    "screenshots/b8-web-project-entry-1440x900.png",
+    "screenshots/b8-web-project-drawer-1440x900.png",
+    "screenshots/b8-web-project-loading-1440x900.png",
+    "screenshots/b8-web-project-answer-1440x900.png",
+    "screenshots/b8-web-project-refusal-1440x900.png",
+    "screenshots/b8-web-project-noevidence-1440x900.png",
+    "screenshots/b8-web-project-long-content-1440x900.png",
+    "screenshots/b8-web-project-unbound-1440x900.png",
+    "screenshots/b8-web-project-error-1440x900.png",
+    "screenshots/b8-web-project-1024x768.png",
+    "screenshots/b8-web-ordering-drawer-1440x900.png",
+    "screenshots/b8-web-ordering-answer-1440x900.png",
+    "screenshots/b8-web-ordering-1024x768.png",
+    "screenshots/b8-web-settlement-drawer-1440x900.png",
+    "screenshots/b8-web-settlement-answer-1440x900.png",
+    "screenshots/b8-web-settlement-1024x768.png",
+    "screenshots/b8-web-designer-no-finance-1440x900.png",
+    "screenshots/b8-app-project-drawer-390x844.png",
+    "screenshots/b8-app-project-loading-390x844.png",
+    "screenshots/b8-app-project-answer-390x844.png",
+    "screenshots/b8-app-sheet-drawer-390x844.png",
+    "screenshots/b8-app-sheet-answer-390x844.png",
+    "screenshots/b8-app-settlement-drawer-390x844.png",
+    "screenshots/b8-app-settlement-answer-390x844.png",
+    "screenshots/b8-app-refusal-390x844.png",
+    "screenshots/b8-app-error-390x844.png",
+    "screenshots/b8-app-long-content-390x844.png",
+    "screenshots/b8-app-project-375x667.png",
+    "screenshots/b8-app-keyboard-proxy-375x430.png",
+    "screenshots/b8-app-designer-project-390x844.png",
+    "screenshots/b8-devtools-project-drawer-375x667.png",
+    "screenshots/b8-devtools-project-answer-375x667.png",
+    "screenshots/b8-devtools-sheet-answer-375x667.png",
+    "screenshots/b8-devtools-sheet-freeform-375x667.png"
+  ],
+  "attempts": [
+    {
+      "surface": "devtools",
+      "result": "PROCESS",
+      "stdout": "{\"total\":11,\"pass\":11,\"fail\":0,\"screenshots\":[\"screenshots/b8-devtools-project-drawer-375x667.png\",\"screenshots/b8-devtools-project-answer-375x667.png\",\"screenshots/b8-devtools-sheet-answer-375x667.png\",\"screenshots/b8-devtools-sheet-freeform-375x667.png\"]}\n"
+    }
+  ]
+}

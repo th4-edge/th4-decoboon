@@ -1,0 +1,385 @@
+{
+  "web": {
+    "project": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "scrollHeight": 1885,
+      "domNodeCount": 1194,
+      "htmlLength": 353567,
+      "horizontalOverflow": false
+    },
+    "projectCompact": {
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "scrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "scrollHeight": 2640,
+      "domNodeCount": 1146,
+      "htmlLength": 351177,
+      "horizontalOverflow": false
+    },
+    "ordering": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "scrollHeight": 1017,
+      "domNodeCount": 570,
+      "htmlLength": 183933,
+      "horizontalOverflow": false
+    },
+    "orderingCompact": {
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "scrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "scrollHeight": 1017,
+      "domNodeCount": 523,
+      "htmlLength": 181509,
+      "horizontalOverflow": false
+    },
+    "settlement": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "scrollHeight": 1478,
+      "domNodeCount": 583,
+      "htmlLength": 164544,
+      "horizontalOverflow": false
+    },
+    "settlementCompact": {
+      "innerWidth": 1024,
+      "innerHeight": 768,
+      "scrollWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "scrollHeight": 1478,
+      "domNodeCount": 555,
+      "htmlLength": 163220,
+      "horizontalOverflow": false
+    }
+  },
+  "app": {
+    "project": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 2580,
+      "domNodeCount": 686,
+      "htmlLength": 221827,
+      "horizontalOverflow": false
+    },
+    "compact": {
+      "innerWidth": 375,
+      "innerHeight": 667,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "scrollHeight": 2387,
+      "domNodeCount": 601,
+      "htmlLength": 214334,
+      "horizontalOverflow": false
+    }
+  },
+  "devtools": {
+    "system": {
+      "brand": "devtools",
+      "model": "Mac 13-inch and below",
+      "system": "macOS 10.14.3",
+      "platform": "devtools",
+      "benchmarkLevel": -1,
+      "pixelRatio": 2,
+      "screenWidth": 375,
+      "screenHeight": 667,
+      "windowWidth": 375,
+      "windowHeight": 667,
+      "statusBarHeight": 20,
+      "safeArea": {
+        "top": 20,
+        "left": 0,
+        "right": 375,
+        "bottom": 667,
+        "width": 375,
+        "height": 647
+      },
+      "language": "zh_CN",
+      "version": "8.0.5",
+      "fontSizeSetting": 16,
+      "SDKVersion": "3.17.4",
+      "host": {
+        "env": "WeChat"
+      },
+      "enableDebug": false,
+      "mode": "default",
+      "deviceOrientation": "portrait",
+      "bluetoothEnabled": true,
+      "locationEnabled": true,
+      "wifiEnabled": true,
+      "albumAuthorized": true,
+      "cameraAuthorized": true,
+      "locationAuthorized": true,
+      "microphoneAuthorized": true,
+      "notificationAuthorized": true,
+      "notificationAlertAuthorized": true,
+      "notificationBadgeAuthorized": true,
+      "notificationSoundAuthorized": true,
+      "phoneCalendarAuthorized": true,
+      "bluetoothAuthorized": true,
+      "locationReducedAccuracy": true,
+      "devicePixelRatio": 2
+    },
+    "consoleEvents": [
+      {
+        "type": "warn",
+        "args": [
+          "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "Lazy code loading is enabled. Only injecting required components."
+        ]
+      },
+      {
+        "type": "warn",
+        "args": [
+          "无效的 app.json [\"versionName\"]、app.json [\"versionCode\"]"
+        ]
+      },
+      {
+        "type": "warn",
+        "args": [
+          "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: success"
+        ]
+      },
+      {
+        "type": "warn",
+        "args": [
+          "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+        ]
+      },
+      {
+        "type": "log",
+        "args": [
+          "[装得清] App Launch",
+          {
+            "role": "boss"
+          }
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: success"
+        ]
+      }
+    ]
+  },
+  "consoleErrors": {
+    "web": {
+      "product": [],
+      "intentional": [
+        "B8 injected 500 on material/assistant/ask"
+      ],
+      "designer": []
+    },
+    "app": {
+      "product": [],
+      "intentional": [
+        "B8 injected 500 on material/assistant/ask"
+      ]
+    },
+    "devtools": []
+  },
+  "styles": {
+    "webProject": {
+      "drawer": {
+        "fontSize": "14px",
+        "lineHeight": "normal",
+        "color": "rgb(26, 26, 23)",
+        "background": "rgb(255, 255, 255)",
+        "borderRadius": "0px",
+        "x": 920,
+        "y": 0,
+        "width": 520,
+        "height": 900
+      },
+      "context": {
+        "fontSize": "14px",
+        "lineHeight": "normal",
+        "color": "rgb(26, 26, 23)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderRadius": "14px",
+        "x": 940,
+        "y": 94,
+        "width": 480,
+        "height": 125.5
+      },
+      "chip": {
+        "fontSize": "12px",
+        "lineHeight": "16.8px",
+        "color": "rgb(29, 78, 57)",
+        "background": "rgb(238, 246, 241)",
+        "borderRadius": "999px",
+        "x": 940,
+        "y": 456.5,
+        "width": 206,
+        "height": 32.796875
+      },
+      "answer": null,
+      "fab": {
+        "fontSize": "14px",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(47, 125, 90)",
+        "borderRadius": "999px",
+        "x": 1308,
+        "y": 830,
+        "width": 108,
+        "height": 46
+      },
+      "boundary": {
+        "fontSize": "11px",
+        "lineHeight": "17.6px",
+        "color": "rgb(184, 184, 176)",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "x": 940,
+        "y": 719.890625,
+        "width": 480,
+        "height": 17.59375
+      }
+    },
+    "appProject": {
+      "fab": {
+        "fontSize": "13.52px",
+        "lineHeight": "20.28px",
+        "background": "rgb(22, 163, 148)",
+        "borderRadius": "519.48px",
+        "x": 285.015625,
+        "y": 784.21875,
+        "width": 92.515625,
+        "height": 38.984375,
+        "bottomGap": 20.796875
+      },
+      "panel": {
+        "fontSize": "15.6px",
+        "lineHeight": "23.4px",
+        "background": "rgb(255, 255, 255)",
+        "borderRadius": "14.56px 14.56px 0px 0px",
+        "x": 0,
+        "y": 26.453125,
+        "width": 390,
+        "height": 817.546875,
+        "bottomGap": 0
+      },
+      "composer": {
+        "fontSize": "15.6px",
+        "lineHeight": "23.4px",
+        "background": "rgb(255, 255, 255)",
+        "borderRadius": "0px",
+        "x": 14.546875,
+        "y": 611.890625,
+        "width": 360.90625,
+        "height": 198.859375,
+        "bottomGap": 33.25
+      },
+      "boundary": {
+        "fontSize": "10.4px",
+        "lineHeight": "15.6px",
+        "background": "rgba(0, 0, 0, 0)",
+        "borderRadius": "0px",
+        "x": 14.546875,
+        "y": 945.328125,
+        "width": 360.90625,
+        "height": 15.609375,
+        "bottomGap": -116.9375
+      }
+    },
+    "appCompact": {
+      "panel": {
+        "x": 0,
+        "y": 8.046875,
+        "width": 375,
+        "height": 658.953125,
+        "bottomGap": 0
+      },
+      "viewport": {
+        "width": 375,
+        "height": 667
+      }
+    },
+    "appKeyboardProxy": {
+      "innerWidth": 375,
+      "innerHeight": 430,
+      "composer": {
+        "top": 201,
+        "bottom": 398,
+        "width": 347
+      },
+      "panel": {
+        "top": -20.390625,
+        "bottom": 430,
+        "width": 375
+      },
+      "horizontalOverflow": false
+    }
+  },
+  "screenshots": [
+    "screenshots/b8-web-project-entry-1440x900.png",
+    "screenshots/b8-web-project-drawer-1440x900.png",
+    "screenshots/b8-web-project-loading-1440x900.png",
+    "screenshots/b8-web-project-answer-1440x900.png",
+    "screenshots/b8-web-project-refusal-1440x900.png",
+    "screenshots/b8-web-project-noevidence-1440x900.png",
+    "screenshots/b8-web-project-long-content-1440x900.png",
+    "screenshots/b8-web-project-unbound-1440x900.png",
+    "screenshots/b8-web-project-error-1440x900.png",
+    "screenshots/b8-web-project-1024x768.png",
+    "screenshots/b8-web-ordering-drawer-1440x900.png",
+    "screenshots/b8-web-ordering-answer-1440x900.png",
+    "screenshots/b8-web-ordering-1024x768.png",
+    "screenshots/b8-web-settlement-drawer-1440x900.png",
+    "screenshots/b8-web-settlement-answer-1440x900.png",
+    "screenshots/b8-web-settlement-1024x768.png",
+    "screenshots/b8-web-designer-no-finance-1440x900.png",
+    "screenshots/b8-app-project-drawer-390x844.png",
+    "screenshots/b8-app-project-loading-390x844.png",
+    "screenshots/b8-app-project-answer-390x844.png",
+    "screenshots/b8-app-sheet-drawer-390x844.png",
+    "screenshots/b8-app-sheet-answer-390x844.png",
+    "screenshots/b8-app-settlement-drawer-390x844.png",
+    "screenshots/b8-app-settlement-answer-390x844.png",
+    "screenshots/b8-app-refusal-390x844.png",
+    "screenshots/b8-app-error-390x844.png",
+    "screenshots/b8-app-long-content-390x844.png",
+    "screenshots/b8-app-project-375x667.png",
+    "screenshots/b8-app-keyboard-proxy-375x430.png",
+    "screenshots/b8-app-designer-project-390x844.png",
+    "screenshots/b8-devtools-project-drawer-375x667.png",
+    "screenshots/b8-devtools-project-answer-375x667.png",
+    "screenshots/b8-devtools-sheet-answer-375x667.png",
+    "screenshots/b8-devtools-sheet-freeform-375x667.png"
+  ]
+}

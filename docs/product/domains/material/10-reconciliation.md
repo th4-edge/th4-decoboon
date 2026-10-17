@@ -19,7 +19,7 @@
 | REQ-MAT-013 | A/B | SCN-021/DEC-072/DEC-073 | material.order-sheet.order | material/sheet/order | App 主材下单工作台/下单页 | B6.6 157/157 独立复验 PASS；四态与拆单/部分结算/撤销回归 PASS | B6.6 独立验收 | PASS（B6.6 独立） |
 | REQ-MAT-014 | A/B | BR-045/DEC-073/DEC-074 | material.settlement | material/settlement/preview|confirm|cancel | App 主材结算 | B6.2 角色门禁/到场门禁/逐单月结/撤销独立 PASS | B6.4 回归 | PASS（B6.2 独立） |
 | REQ-MAT-015 | 全场景 | 2026-10-17 用户裁决 | material.single-route | 旧 `project/purchase/save`/`batch` 下线 | App 材料计划/供应商 | Provider 已删除，App 入口已清理 | B6 独立验收 | PASS（B6 独立验证） |
-| REQ-MAT-016 | 全场景 | BR-045/OBJ-008 | material.assistant-context | `material/assistant/ask` + `material/assistant/suggestions` + 上下文入口 | App/Web 统一问材料抽屉 | B7 48/48 自测 PASS（API 14/Web 22/App 12） | B8 独立验收 | PASS（B7 自测，B8 待验） |
+| REQ-MAT-016 | 全场景 | BR-045/OBJ-008 | material.assistant-context | `material/assistant/ask` + `material/assistant/suggestions` + 上下文入口 | App/Web 统一问材料抽屉 | B7 48/48 自测 PASS；B8 110/110 PASS | B8 独立验收 | PASS（ACCEPTED） |
 
 ## B6 独立验收结果（2026-10-17）
 
@@ -104,7 +104,7 @@
 - B4：`DEV_VERIFIED + RECONCILED`（无新增 UI 表面）；
 - B5：App 单端材料下单与结算闭环，旧直采路线下线；后端全量测试、App 构建与真实 UI 走查 PASS；
 - B6：B6.4 独立复验确认 B62-DEF-001 关闭；B6.5 修复 Web Mixed 展示；B6.6 独立复验 157/157 PASS，B6 系列 `ACCEPTED`；
-- B7：App/Web 单轮「问材料」上下文入口完成，48/48 自测 PASS；B8 独立验收待执行；
+- B7：App/Web 单轮「问材料」上下文入口完成，48/48 自测 PASS；B8 独立验收 110/110 PASS；
 - B2 证据：`evidence/B2/`；
 - B3 证据：`evidence/B3/`；
 - B4 证据：`evidence/B4/`；
@@ -116,8 +116,8 @@
 - B6.5 证据：`evidence/B6.5/`；
 - B6.6 证据：`evidence/B6.6/`；
 - B7 证据：`evidence/B7/`；
-- 不可宣称：全品类材料门禁、助手可替代人工判断、B8 已验收；B6 独立验收结论以 `evidence/B6.6/` 为准；
-- 下一批：B8 助手 UI 聚焦独立验收（权限、证据、拒答、上下文、跨端一致性）。
+- 不可宣称：全品类材料门禁、助手可替代人工判断；B8 独立验收结论以 `evidence/B8/` 为准；
+- 下一批：B9 体验版与发布准备；正式提审/发布由用户完成。
 
 
 ## B6.6 独立复验结果（2026-10-17）
@@ -139,4 +139,17 @@
 - 覆盖项目/作业单上下文、Designer 权限口径、REFUSAL、NO_EVIDENCE、空/超长问题、错误重试、清除/恢复上下文；
 - Web 1440×900/1024×768、App H5 390×844/375×667 无横向溢出，Console Errors 0；
 - 证据：`evidence/B7/`；临时作业单已删除，材料计划恢复 `ReadyToOrder`；无 DDL/迁移/生产/正式小程序发布；
-- 无 `UNMAPPED`/`STALE`；B7 `RECONCILED`，B8 独立验收待执行。
+- 无 `UNMAPPED`/`STALE`；B7 `RECONCILED`，B8 独立验收完成。
+
+
+## B8 助手 UI 聚焦独立验收结论（2026-10-17）
+
+- 精确提交：后端 `302193e` / App `67e6da0` / Web `d15d088`；
+- 110 项 **110 PASS / 0 FAIL / 0 BLOCKED**；
+- API 上下文/建议同源、answer/citations/toolCalls/nextActions/readOnly/auditStatus、成本角色可见性、跨企业/跨项目 404、前端字段伪造、REFUSAL/NO_EVIDENCE、审计幂等与不保存正文、50 黄金问题、只读业务表均通过；
+- Web 项目/采购/结算 1440×900/1024×768、App 项目/真实作业单/结算 390×844/375×667、Web/App 加载/长内容/错误重试/清除恢复/焦点/溢出的真实 UI 证据通过；
+- 微信开发者工具 `miniprogram-automator@0.12.1` 真实进入项目与作业单并完成建议问题、回答、证据、只读提示、上下文绑定验证；375×667，业务 Console Errors/exception 0；
+- API/Web/App/DevTools 同一项目与作业单的 answer、状态/计数/阶段/下一步及核心 citations 一致；
+- 无新增缺陷，`defects.json=[]`；P3 观察项 `OBS-B8-001` 登记为 suggestions 元数据分组边界，不构成权限泄漏；
+- 临时作业单、材料计划、项目负责人、测试密码哈希已清理/恢复；无 DDL/迁移/生产/正式小程序发布；
+- 无 `UNMAPPED`/`STALE`；B8 满足 `ACCEPTED` 用户决策证据条件，最终正式接受/发布由用户确认。

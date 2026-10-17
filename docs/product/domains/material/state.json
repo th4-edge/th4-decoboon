@@ -4,9 +4,9 @@
   "title": "材料履约与材料业务助手",
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
-  "phase": "RECONCILED",
-  "batch": "B7",
-  "nextAction": "B8 助手 UI 聚焦独立验收（权限、证据、拒答、上下文、跨端一致性）；不得自批 ACCEPTED",
+  "phase": "ACCEPTED",
+  "batch": "B8",
+  "nextAction": "执行 B9 体验版与发布准备：从精确提交构建后端/Web/App，上传体验版并验证；不正式提审或发布",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T22:27:48+08:00",
+  "updatedAt": "2026-10-17T22:59:35+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -244,6 +244,12 @@
       "phase": "RECONCILED",
       "batch": "B7",
       "note": "B7 RECONCILED：Web/App 单轮问材料 48/48 自测 PASS（API 14/Web 22/App 12）；无 UNMAPPED/STALE；临时作业单已删除、材料计划恢复 ReadyToOrder；证据 evidence/B7/；B8 独立验收待执行"
+    },
+    {
+      "at": "2026-10-17T22:59:35+08:00",
+      "phase": "ACCEPTED",
+      "batch": "B8",
+      "note": "B8 助手 UI 独立验收 PASS：110/110，0 FAIL/0 BLOCKED；精确后端 302193e/App 67e6da0/Web d15d088；DevTools 375x667 真实 automator 11/11；证据 evidence/B8/"
     }
   ]
 }

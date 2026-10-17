@@ -1,0 +1,429 @@
+{
+  "results": [
+    {
+      "id": "B8-DEVTOOLS-LAUNCH",
+      "category": "devtools",
+      "title": "微信开发者工具 automator 启动并连接",
+      "expected": "miniprogram-automator 连接成功",
+      "actual": {
+        "port": 9432,
+        "project": "/tmp/th4-b8-app-67e6da0/dist/dev/mp-weixin",
+        "system": {
+          "brand": "devtools",
+          "model": "Mac 13-inch and below",
+          "system": "macOS 10.14.3",
+          "platform": "devtools",
+          "benchmarkLevel": -1,
+          "pixelRatio": 2,
+          "screenWidth": 375,
+          "screenHeight": 667,
+          "windowWidth": 375,
+          "windowHeight": 667,
+          "statusBarHeight": 20,
+          "safeArea": {
+            "top": 20,
+            "left": 0,
+            "right": 375,
+            "bottom": 667,
+            "width": 375,
+            "height": 647
+          },
+          "language": "zh_CN",
+          "version": "8.0.5",
+          "fontSizeSetting": 16,
+          "SDKVersion": "3.17.4",
+          "host": {
+            "env": "WeChat"
+          },
+          "enableDebug": false,
+          "mode": "default",
+          "deviceOrientation": "portrait",
+          "bluetoothEnabled": true,
+          "locationEnabled": true,
+          "wifiEnabled": true,
+          "albumAuthorized": true,
+          "cameraAuthorized": true,
+          "locationAuthorized": true,
+          "microphoneAuthorized": true,
+          "notificationAuthorized": true,
+          "notificationAlertAuthorized": true,
+          "notificationBadgeAuthorized": true,
+          "notificationSoundAuthorized": true,
+          "phoneCalendarAuthorized": true,
+          "bluetoothAuthorized": true,
+          "locationReducedAccuracy": true,
+          "devicePixelRatio": 2
+        }
+      },
+      "result": "PASS",
+      "evidence": ""
+    },
+    {
+      "id": "B8-DEVTOOLS-VIEWPORT",
+      "category": "devtools",
+      "title": "真实模拟器尺寸为 375×667",
+      "expected": "windowWidth=375, windowHeight=667",
+      "actual": {
+        "windowWidth": 375,
+        "windowHeight": 667,
+        "SDKVersion": "3.17.4"
+      },
+      "result": "PASS",
+      "evidence": ""
+    },
+    {
+      "id": "B8-DEVTOOLS-PROJECT-ENTRY",
+      "category": "devtools",
+      "title": "真实进入项目详情",
+      "expected": "页面路由为 subpackages/project/pages/detail",
+      "actual": {
+        "path": "subpackages/project/pages/detail",
+        "query": {
+          "id": "235520576473530368"
+        }
+      },
+      "result": "PASS",
+      "evidence": ""
+    },
+    {
+      "id": "B8-DEVTOOLS-PROJECT-CONTEXT",
+      "category": "devtools",
+      "title": "微信小程序项目上下文已绑定",
+      "expected": "含项目上下文/已绑定/真实项目名",
+      "actual": "项目上下文 只读已绑定王芳（造数1100） · 望江府1栋102项目进度 0% · 材料业务体检清除上下文",
+      "result": "PASS",
+      "evidence": ""
+    },
+    {
+      "id": "B8-DEVTOOLS-PROJECT-SUGGESTIONS",
+      "category": "devtools",
+      "title": "微信小程序建议问题来自服务端",
+      "expected": "至少 5 条且含项目体检问题",
+      "actual": [
+        "这个项目的材料业务现在缺什么？",
+        "项目材料为什么还没有闭环？",
+        "主材还没选材，为什么不能下单？",
+        "材料计划行什么时候才算可以进入采购？",
+        "减项发生在已经下单之后怎么处理？",
+        "已经到货的材料减项要走退货吗？"
+      ],
+      "result": "PASS",
+      "evidence": ""
+    },
+    {
+      "id": "B8-DEVTOOLS-PROJECT-ANSWER",
+      "category": "devtools",
+      "title": "微信小程序项目问答完整展示",
+      "expected": "含实时数据/证据/只读工具/下一步/审计/利润 null",
+      "actual": "实时数据置信度 94%只读已审计当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财务。证据CHK-UNSELECTED未完成选材Selection 为空或不是 Selected；下一步：设计师完成选材并交付财务CHK-UNPRICED采购未定价priceState=Unpriced；下一步：等待结算或补结算价；成本保持不完整CHK-COST-INCOMPLETE成本不完整costComplete=false；下一步：完成结算/补成本；利润保持 null只读工具blueprints/material-v1.json 只读project/project/info 只读blueprint/check/report 只读下一步1设计师完成选材并交付财务",
+      "result": "PASS",
+      "evidence": "screenshots/b8-devtools-project-drawer-375x667.png"
+    },
+    {
+      "id": "B8-DEVTOOLS-SHEET-ENTRY",
+      "category": "devtools",
+      "title": "真实进入作业单详情",
+      "expected": "页面路由为 material-sheet-detail",
+      "actual": {
+        "path": "subpackages/project/pages/material-sheet-detail",
+        "query": {
+          "sheetId": "1792248939296754851"
+        }
+      },
+      "result": "PASS",
+      "evidence": "screenshots/b8-devtools-project-drawer-375x667.png,screenshots/b8-devtools-project-answer-375x667.png"
+    },
+    {
+      "id": "B8-DEVTOOLS-SHEET-CONTEXT",
+      "category": "devtools",
+      "title": "微信小程序作业单上下文绑定真实 sheetId",
+      "expected": "含作业单上下文/已绑定/真实 sheetNo",
+      "actual": "作业单上下文 只读已绑定瓷砖（地砖/墙砖） TILE-20261017-001王芳（造数1100） · 望江府1栋102 · 待下单清除上下文",
+      "result": "PASS",
+      "evidence": "screenshots/b8-devtools-project-drawer-375x667.png,screenshots/b8-devtools-project-answer-375x667.png"
+    },
+    {
+      "id": "B8-DEVTOOLS-SHEET-ANSWER",
+      "category": "devtools",
+      "title": "微信小程序作业单回答显示证据/只读/下一步",
+      "expected": "含真实 sheetNo、证据、只读工具、下一步",
+      "actual": "实时数据置信度 93%只读已审计当前作业单 TILE-20261017-001 状态为 已提交请购，价格状态为 未定价（待结算）；测量 2026-10-17，配送 2026-10-20，安装 2026-10-22。 当前模板必填字段缺失：无。 下一步：等待财务核价并选择供应商下单证据MaterialOrderSheet.status/remark作业单状态/取消原因未进入采购前可取消为 Cancelled；取消原因追加到备注CHK-MEASURE-TEMPLATE品类必填测量字段未完成当前品类模板中 visible=true 且 required=true 的单据头字段为空；下一步：拒绝提交并提示缺失字段；模板配置错误进入配置检查CHK-CANCEL-AFTER-ORDER已进入采购后直接取消status.ordered()=true 时调用 material/sheet/cancel；下一步：拒绝直接取消；走采购调整或已到货退货R-SHEET-NO-PRICER-SHEET-NO-PRICE作业单对厂家，不带价格、账期和成本；价格只存在于采购/结算侧。只读工具blueprints/material-v1.json 只读pr",
+      "result": "PASS",
+      "evidence": "screenshots/b8-devtools-project-drawer-375x667.png,screenshots/b8-devtools-project-answer-375x667.png"
+    },
+    {
+      "id": "B8-DEVTOOLS-FREEFORM",
+      "category": "devtools",
+      "title": "微信小程序单轮自由输入可发送并返回上下文回答",
+      "expected": "回答含真实 sheetNo 与只读提示",
+      "actual": "实时数据置信度 93%只读已审计当前作业单 TILE-20261017-001 状态为 已提交请购，价格状态为 未定价（待结算）；测量 2026-10-17，配送 2026-10-20，安装 2026-10-22。 当前模板必填字段缺失：无。 下一步：等待财务核价并选择供应商下单证据MaterialOrderSheet.status/remark作业单状态/取消原因未进入采购前可取消为 Cancelled；取消原因追加到备注CHK-MEASURE-TEMPLATE品类必填测量字段未完成当前品类模板中 visible=true 且 required=true 的单据头字段为空；下一步：拒绝提交并提示缺失字段；模板配置错误进入配置检查CHK-CANCEL-AFTER-ORDER已进入采购后直接取消status.ordered()=true 时调用 material/sheet/cancel；下一步：拒绝直接取消；走采购调整或已到货退",
+      "result": "PASS",
+      "evidence": "screenshots/b8-devtools-project-drawer-375x667.png,screenshots/b8-devtools-project-answer-375x667.png,screenshots/b8-devtools-sheet-answer-375x667.png"
+    },
+    {
+      "id": "B8-DEVTOOLS-CONSOLE",
+      "category": "devtools",
+      "title": "微信开发者工具业务 Console Errors=0",
+      "expected": "error/exception=0",
+      "actual": [
+        {
+          "type": "warn",
+          "args": [
+            "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+          ]
+        },
+        {
+          "type": "info",
+          "args": [
+            "Lazy code loading is enabled. Only injecting required components."
+          ]
+        },
+        {
+          "type": "warn",
+          "args": [
+            "无效的 app.json [\"versionName\"]、app.json [\"versionCode\"]"
+          ]
+        },
+        {
+          "type": "warn",
+          "args": [
+            "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+          ]
+        },
+        {
+          "type": "info",
+          "args": [
+            "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+          ]
+        },
+        {
+          "type": "info",
+          "args": [
+            "preloadSubpackages: success"
+          ]
+        },
+        {
+          "type": "warn",
+          "args": [
+            "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+          ]
+        },
+        {
+          "type": "log",
+          "args": [
+            "[装得清] App Launch",
+            {
+              "role": "boss"
+            }
+          ]
+        },
+        {
+          "type": "info",
+          "args": [
+            "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+          ]
+        },
+        {
+          "type": "info",
+          "args": [
+            "preloadSubpackages: success"
+          ]
+        }
+      ],
+      "result": "PASS",
+      "evidence": "screenshots/b8-devtools-project-drawer-375x667.png,screenshots/b8-devtools-project-answer-375x667.png,screenshots/b8-devtools-sheet-answer-375x667.png,screenshots/b8-devtools-sheet-freeform-375x667.png"
+    }
+  ],
+  "metrics": {
+    "system": {
+      "brand": "devtools",
+      "model": "Mac 13-inch and below",
+      "system": "macOS 10.14.3",
+      "platform": "devtools",
+      "benchmarkLevel": -1,
+      "pixelRatio": 2,
+      "screenWidth": 375,
+      "screenHeight": 667,
+      "windowWidth": 375,
+      "windowHeight": 667,
+      "statusBarHeight": 20,
+      "safeArea": {
+        "top": 20,
+        "left": 0,
+        "right": 375,
+        "bottom": 667,
+        "width": 375,
+        "height": 647
+      },
+      "language": "zh_CN",
+      "version": "8.0.5",
+      "fontSizeSetting": 16,
+      "SDKVersion": "3.17.4",
+      "host": {
+        "env": "WeChat"
+      },
+      "enableDebug": false,
+      "mode": "default",
+      "deviceOrientation": "portrait",
+      "bluetoothEnabled": true,
+      "locationEnabled": true,
+      "wifiEnabled": true,
+      "albumAuthorized": true,
+      "cameraAuthorized": true,
+      "locationAuthorized": true,
+      "microphoneAuthorized": true,
+      "notificationAuthorized": true,
+      "notificationAlertAuthorized": true,
+      "notificationBadgeAuthorized": true,
+      "notificationSoundAuthorized": true,
+      "phoneCalendarAuthorized": true,
+      "bluetoothAuthorized": true,
+      "locationReducedAccuracy": true,
+      "devicePixelRatio": 2
+    },
+    "consoleEvents": [
+      {
+        "type": "warn",
+        "args": [
+          "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "Lazy code loading is enabled. Only injecting required components."
+        ]
+      },
+      {
+        "type": "warn",
+        "args": [
+          "无效的 app.json [\"versionName\"]、app.json [\"versionCode\"]"
+        ]
+      },
+      {
+        "type": "warn",
+        "args": [
+          "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: success"
+        ]
+      },
+      {
+        "type": "warn",
+        "args": [
+          "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+        ]
+      },
+      {
+        "type": "log",
+        "args": [
+          "[装得清] App Launch",
+          {
+            "role": "boss"
+          }
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+        ]
+      },
+      {
+        "type": "info",
+        "args": [
+          "preloadSubpackages: success"
+        ]
+      }
+    ]
+  },
+  "consoleErrors": [],
+  "consoleWarnings": [
+    {
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "type": "warn",
+      "args": [
+        "无效的 app.json [\"versionName\"]、app.json [\"versionCode\"]"
+      ]
+    },
+    {
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    }
+  ],
+  "screenshots": [
+    "screenshots/b8-devtools-project-drawer-375x667.png",
+    "screenshots/b8-devtools-project-answer-375x667.png",
+    "screenshots/b8-devtools-sheet-answer-375x667.png",
+    "screenshots/b8-devtools-sheet-freeform-375x667.png"
+  ],
+  "system": {
+    "brand": "devtools",
+    "model": "Mac 13-inch and below",
+    "system": "macOS 10.14.3",
+    "platform": "devtools",
+    "benchmarkLevel": -1,
+    "pixelRatio": 2,
+    "screenWidth": 375,
+    "screenHeight": 667,
+    "windowWidth": 375,
+    "windowHeight": 667,
+    "statusBarHeight": 20,
+    "safeArea": {
+      "top": 20,
+      "left": 0,
+      "right": 375,
+      "bottom": 667,
+      "width": 375,
+      "height": 647
+    },
+    "language": "zh_CN",
+    "version": "8.0.5",
+    "fontSizeSetting": 16,
+    "SDKVersion": "3.17.4",
+    "host": {
+      "env": "WeChat"
+    },
+    "enableDebug": false,
+    "mode": "default",
+    "deviceOrientation": "portrait",
+    "bluetoothEnabled": true,
+    "locationEnabled": true,
+    "wifiEnabled": true,
+    "albumAuthorized": true,
+    "cameraAuthorized": true,
+    "locationAuthorized": true,
+    "microphoneAuthorized": true,
+    "notificationAuthorized": true,
+    "notificationAlertAuthorized": true,
+    "notificationBadgeAuthorized": true,
+    "notificationSoundAuthorized": true,
+    "phoneCalendarAuthorized": true,
+    "bluetoothAuthorized": true,
+    "locationReducedAccuracy": true,
+    "devicePixelRatio": 2
+  }
+}

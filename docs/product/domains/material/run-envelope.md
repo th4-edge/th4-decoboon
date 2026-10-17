@@ -36,8 +36,8 @@
 | B6.4 | B62-DEF-001 聚焦独立复验 | 独立黑盒复跑多供应商拆单/部分结算和回归 | `ACCEPTED` 或新缺陷 | FAIL（2026-10-17；139/140；B64-UI-WEB-SHEET-01 P2 开放） |
 | B6.5 | 修复 Web 作业单 Mixed 状态展示 | Web `/finance/material-ordering` 价格状态文案与角标 | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | COMPLETE (2026-10-17) |
 | B6.6 | Web Mixed 状态聚焦独立复验 | 独立复跑 Web 多供应商状态展示与回归 | `ACCEPTED` 或新缺陷 | COMPLETE（2026-10-17；独立 PASS 157/157；`ACCEPTED` 已记录，最终正式接受由用户确认） |
-| B7 | 材料业务助手上下文入口 | App/Web 上下文“问材料”抽屉、建议问题、证据/拒答/下一步展示；复用 `material/assistant/ask` | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | COMPLETE（2026-10-17；48/48 自测 PASS；B8 独立验收待执行） |
-| B8 | 助手 UI 聚焦独立验收 | 权限、证据、拒答、上下文、跨端一致性黑盒验收 | `ACCEPTED` | PENDING |
+| B7 | 材料业务助手上下文入口 | App/Web 上下文“问材料”抽屉、建议问题、证据/拒答/下一步展示；复用 `material/assistant/ask` | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | COMPLETE（2026-10-17；48/48 自测 PASS） |
+| B8 | 助手 UI 聚焦独立验收 | 权限、证据、拒答、上下文、跨端一致性黑盒验收 | `ACCEPTED` | COMPLETE（2026-10-17；独立 110/110 PASS，DevTools 375x667 11/11） |
 | B9 | 体验版/发布准备（如涉及 App） | 构建、体验版上传、发布记录；不正式发布 | `RELEASED`（体验版）或用户决策包 | PENDING |
 
 ## 3. 自主决策权限

@@ -150,3 +150,27 @@
 - 证据：`evidence/B7/`；
 - 仅用于进入 B8 独立验收，不得自批 `ACCEPTED`；
 - 未执行微信开发者工具 automator；B8 需覆盖 DevTools 375×667 与跨端一致性。
+
+
+---
+
+## B8 助手 UI 聚焦独立验收结果（2026-10-17）
+
+- 性质：独立黑盒验收；未修改任何实现代码；精确提交为后端 `302193e`、App `67e6da0`、Web `d15d088`；
+- 结果：**110 / 110 PASS，0 FAIL，0 BLOCKED**；
+  - API / 只读边界 29/29；
+  - Web 真实 UI 34/34；
+  - App H5 真实 UI 26/26；
+  - 跨端一致性 5/5；
+  - 微信开发者工具 automator 11/11；
+  - 只读业务表回归 1/1；
+  - 清理 4/4；
+- Web 覆盖项目核算、采购、结算上下文，1440×900/1024×768，建议问题点击、加载、证据、只读工具、下一步、REFUSAL、NO_EVIDENCE、错误重试、清除/恢复、焦点与 Esc、长内容压力，均无横向溢出，业务 Console Errors 0；
+- App H5 覆盖 390×844/375×667 的项目、真实作业单、主材结算、Designer 权限、拒答、错误恢复与长内容压力，无横向溢出，业务 Console Errors 0；375×430 键盘布局代理通过，但不等同物理键盘证据；
+- 微信开发者工具使用干净 App worktree 的 `dist/dev/mp-weixin`，`miniprogram-automator@0.12.1` 真实进入项目与作业单，点击「问材料」、选择服务端建议并发送，验证回答/证据/只读/下一步/上下文绑定，375×667，Console Errors/exception 0；
+- 同一项目与同一作业单经 API/Web/App/DevTools 核对，answer、状态/计数/阶段/下一步、核心 citations 编号一致；Boss/店长/Finance 可见成本与利润口径，Designer/PM 不可见；
+- 50 个黄金问题 50/50；审计幂等 1 条；不保存问题/回答正文；未发现业务表写操作；Bogus/跨项目/跨企业对象返回 404；
+- 无新缺陷，`defects.json=[]`，无 `UNMAPPED`/`STALE`；P3 观察项 `OBS-B8-001` 为 suggestions 仅做问题分组、不校验对象身份且不读取对象数据，未发现泄漏；
+- 证据：`evidence/B8/README.md`、`summary.json`、`verification-results.json`、`defects.json`、`golden-question-results.json`、`api-samples.json`、`ui-metrics.json`、`devtools-results.json`、`screenshots/`；
+- 临时作业单删除、材料计划与项目负责人恢复、测试密码哈希恢复；无 DDL/迁移/生产发布/正式小程序提审；
+- 结论：独立验收 **PASS**，满足进入 `ACCEPTED` 用户决策的证据条件；最终正式接受/发布仍由用户确认，本验收不自批 `ACCEPTED`。
