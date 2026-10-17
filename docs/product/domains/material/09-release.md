@@ -34,3 +34,18 @@
 
 - 小程序体验版：本批未改；
 - 小程序正式版：仍由用户本人提审和发布。
+
+## B3 范围
+
+- App：项目材料体检、作业单上下文说明、建单来源说明、帮助主题；
+- Web/后端：本批无代码变更；
+- 数据库/迁移：无；
+- 配置：无；
+- 环境：本地 dev / 微信开发者工具 / H5 390×844。
+
+## B3 版本与证据
+
+- App 提交：`df8d7fc`；
+- 验证：`npm run type-check`、`npm run build:mp-weixin`、`npm run check:ui`、`npm run check:subpackages` PASS；
+- 证据：`evidence/B3/`；
+- 小程序正式版：未提审、未发布；正式版仍由用户本人完成。

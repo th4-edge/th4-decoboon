@@ -24,9 +24,9 @@
 | 批次 | 垂直切片 | 允许执行 | 退出条件 | 状态 |
 | --- | --- | --- | --- | --- |
 | B1 | 材料业务事实核对 + 结构化蓝图 v1 + 字段字典 | 只读业务卡、写领域包、蓝图 JSON、字段映射 | `BLUEPRINT_READY`；无 P0 业务冲突 | COMPLETE (2026-10-17) |
-| B2 | Web 业务蓝图中心 + 项目材料业务体检 | 只读 Provider、Web 页面、真实浏览器证据 | `DEV_VERIFIED` + `UI_REVIEWED` | NEXT |
-| B3 | App 业务体检 + 页面上下文说明 | App 页面、字段帮助、错误解释、真机/开发者工具证据 | `DEV_VERIFIED` + `UI_REVIEWED` | PENDING |
-| B4 | 只读材料业务助手 | 知识检索、Provider 工具、确定性校核、权限与审计 | 50 个黄金问题、权限/反向验证 PASS | PENDING |
+| B2 | Web 业务蓝图中心 + 项目材料业务体检 | 只读 Provider、Web 页面、真实浏览器证据 | `DEV_VERIFIED` + `UI_REVIEWED` | COMPLETE (2026-10-17) |
+| B3 | App 业务体检 + 页面上下文说明 | App 页面、字段帮助、错误解释、真机/开发者工具证据 | `DEV_VERIFIED` + `UI_REVIEWED` | COMPLETE (2026-10-17) |
+| B4 | 只读材料业务助手 | 知识检索、Provider 工具、确定性校核、权限与审计 | 50 个黄金问题、权限/反向验证 PASS | NEXT |
 | B5 | 独立验收 + 对账 + 缺陷修复 | 黑盒验收、跨端、越权、幂等、边界 | `ACCEPTED`；无 UNMAPPED/STALE | PENDING |
 | B6 | 体验版/发布准备（如涉及 App） | 构建、体验版上传、发布记录；不正式发布 | `RELEASED`（体验版）或用户决策包 | PENDING |
 

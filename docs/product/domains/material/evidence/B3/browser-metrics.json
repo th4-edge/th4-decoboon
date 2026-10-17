@@ -1,0 +1,29 @@
+{
+  "devtools": {
+    "device": "375x599",
+    "projectDetail": {"loaded": true, "healthCardRendered": true},
+    "materialSheetDetail": {"loaded": true, "contextGuideRendered": true},
+    "materialSheetCreate": {"loaded": true, "sourceGuideRendered": true},
+    "helpTopic": {"loaded": true, "timeSemanticsRendered": true}
+  },
+  "h5": {
+    "viewport": "390x844",
+    "projectDetail": {"scrollWidth": 390, "viewportWidth": 390, "overflowX": false},
+    "materialSheetDetail": {"scrollWidth": 390, "viewportWidth": 390, "overflowX": false, "requiredMeasureHint": true},
+    "materialSheetCreate": {"scrollWidth": 390, "viewportWidth": 390, "overflowX": false, "sourceGuide": true},
+    "normalConsoleErrors": 0,
+    "healthActionNavigation": "/subpackages/project/pages/material-plan?projectId=235520576473530368"
+  },
+  "provider": {
+    "route": "blueprint/check/report",
+    "projectId": "235520576473530368",
+    "hasMaterialPlan": true,
+    "totalItems": 2,
+    "selectedItems": 1,
+    "readyToOrder": 1,
+    "partiallyArrived": 1,
+    "unpricedPurchaseCount": 1,
+    "costComplete": false,
+    "profitAmount": null
+  }
+}

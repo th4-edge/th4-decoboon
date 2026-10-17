@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | B1 | 业务卡核对、结构化蓝图、字段字典 | 产品/Boss/财务/设计/PM | MaterialPlan/Selection/Sheet/Purchase/Receipt/Settlement | 无或只读 blueprint definition | 无 | 现有 OBJ/BR/DEC/SCN 引用 | BLUEPRINT_READY | COMPLETE |
 | B2 | Web 蓝图中心 + 项目材料业务体检 | Boss/Store/Finance | 项目/材料/检查 | blueprint runtime/check provider | Web | 选材/下单/到场/成本完整性 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
-| B3 | App 业务体检 + 页面解释 | Designer/PM/Boss/Finance | Sheet/Plan/Receipt | assistant context provider | App | 字段/时间/下一步 | DEV_VERIFIED + UI_REVIEWED | PENDING |
+| B3 | App 业务体检 + 页面解释 | Designer/PM/Boss/Finance | Sheet/Plan/Receipt | assistant context provider | App | 字段/时间/下一步 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
 | B4 | 只读材料助手 | 全角色（按权限） | 全部材料对象 | assistant orchestrator/tools | Web/App | 50 黄金问题、8–12 校核 | 权限/反向/证据 PASS | PENDING |
 | B5 | 独立验收与对账 | independent | 全部 | 无实现 | Web/App | 正向/反向/越权/幂等/边界 | ACCEPTED | PENDING |
 | B6 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
@@ -35,7 +35,9 @@
 
 - B1 已停在：`BLUEPRINT_READY`，蓝图 v1.0.0 + 对账矩阵已建立；
 - B2 已在 2026-10-17 完成 `DEV_VERIFIED + UI_REVIEWED + RECONCILED`：真实浏览器证据见 `evidence/B2/`；
-- B2 不宣称独立验收通过；REQ-MAT-001/002/004 的独立验收仍留 B5。
+- B2 不宣称独立验收通过；REQ-MAT-001/002/004 的独立验收仍留 B5；
+- B3 已在 2026-10-17 完成 `DEV_VERIFIED + UI_REVIEWED + RECONCILED`：微信开发者工具与 H5 证据见 `evidence/B3/`；
+- B3 不宣称独立验收通过，跨端黑盒仍留 B5。
 
 ## B2 实施门槛（PLAN_READY，2026-10-17）
 
@@ -76,3 +78,45 @@
 - 真实浏览器渲染 `/business-blueprints` 和 `/finance/projects/:projectId`，至少 1440×900 与 1024×768 截图并检查空态/失败态；
 - `06-implementation.md`、`07-ui-review.md`、`10-reconciliation.md` 与 `state.json` 更新；
 - 停在 `UI_REVIEWED`，不宣称 `ACCEPTED`，独立验收留 B5。
+
+
+## B3 实施门槛（PLAN_READY，2026-10-17）
+
+### 垂直切片
+
+只交付 App 侧一条只读业务解释链路：
+
+- 项目详情中，Boss / StoreManager / Finance 查看与 Web 同源的 `blueprint/check/report` 材料业务体检；
+- 主材作业单详情解释测量/配送/安装/要求到场/实际到场的时间语义、价格状态、模板必填和取消边界；
+- 主材作业单建单页说明行来源与选材门禁；
+- 使用帮助和错误解释补充材料作业单时间与取消主题。
+
+不做：新 Provider、新业务规则、DDL、金额/成本口径变化、App 正式版提审/发布、B4 助手问答、B5 独立验收。
+
+### 依赖
+
+- `blueprint/check/report`（B2 已完成，Boss/StoreManager/Finance 可读）；
+- App 现有 `material/sheet/info`、`material/sheet/enums`、`project/material-plan/page`、`material/plan/workbench`；
+- 业务事实：`OBJ-008`、`BR-044`、`BR-045`、`SCN-021`、`DEC-MP-07`、`DEC-072`、`DEC-073`；
+- App 设计 Token、`JzPageHeader`、`PageState`、`JzMoney`、`JzCostIncomplete`。
+
+### 页面与状态
+
+- 项目详情材料体检：加载/空态/失败态/重试；成本不完整时利润显示“成本未完整”；
+- 作业单详情：当前状态说明、时间口径、价格状态、模板必填提示、取消边界；
+- 作业单建单：只可加入材料计划行；合同外/标配外先走增减项；
+- 不根据前端布尔伪造完成态，不把“已到场”写成“已结算”。
+
+### 测试与证据
+
+- `npm run type-check`、`npm run build:mp-weixin`；
+- `npm run check:ui`、`npm run check:subpackages`、`npm run check:help`（若不存在则不新增命令）；
+- 现有 `scripts/material-sheet-walkthrough.mjs` 或等价 H5/开发者工具路径做页面冒烟；
+- 真实截图落 `docs/product/domains/material/evidence/B3/`；
+- 至少覆盖：项目材料体检、作业单详情时间说明、建单页来源说明、空态/失败态。
+
+### 回滚
+
+- App 回退本批页面组件与文档；
+- 不涉及数据、迁移、权限或生产配置；
+- 保留旧版体验包，不发布正式版。
