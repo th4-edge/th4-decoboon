@@ -27,7 +27,8 @@
     "uiReview": "07-ui-review.md",
     "acceptance": "08-acceptance.md",
     "release": "09-release.md",
-    "reconciliation": "10-reconciliation.md"
+    "reconciliation": "10-reconciliation.md",
+    "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T15:23:57+08:00",
   "updatedAt": "2026-10-17T15:25:30+08:00",
