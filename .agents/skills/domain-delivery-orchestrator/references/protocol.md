@@ -15,6 +15,7 @@ The protocol has four invariants:
 
 ```text
 docs/product/domains/<domain>/
+├── run-envelope.md          # bounded autonomy authorization
 ├── 00-charter.md            # north star, scope, non-goals, invariants, roles
 ├── 01-scenarios.md          # at least 2 real business scenarios
 ├── 02-business-sync.md      # T05/T06/T12 references, decisions, GAPs
@@ -155,7 +156,20 @@ At the start of every continuing session:
 6. Execute only the requested batch.
 7. Update state, history, and reconciliation before stopping.
 
-## 8. Done definition
+## 8. Long-running supervision
+
+A long-running supervisor is allowed only when `run-envelope.md` defines:
+
+- batch queue;
+- allowed autonomous decisions;
+- human-only gates;
+- quality gates;
+- retry and stop budget;
+- return packet.
+
+The supervisor reads state, generates the next prompt, and continues routine batches. It must not wait for the user between every batch. If a hard gate is hit, it must stop that branch, record a decision request, and continue independent work where possible.
+
+## 9. Done definition
 
 A batch is done only when:
 

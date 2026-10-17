@@ -27,7 +27,7 @@ PHASES = [
 ]
 PHASE_INDEX = {phase: index for index, phase in enumerate(PHASES)}
 ARTIFACT_KEYS = [
-    "charter", "scenarios", "businessSync", "blueprint", "requirements",
+    "runEnvelope", "charter", "scenarios", "businessSync", "blueprint", "requirements",
     "plan", "implementation", "uiReview", "acceptance", "release", "reconciliation",
 ]
 DOMAIN_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
@@ -202,6 +202,33 @@ def cmd_log(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_next_prompt(args: argparse.Namespace) -> int:
+    folder, state = require_state(root_from(args.root), args.domain)
+    phase = state.get("phase")
+    batch = state.get("batch")
+    next_action = state.get("nextAction") or "读取领域包并判断下一批"
+    decisions = state.get("openDecisions", [])
+    blockers = state.get("blockers", [])
+    print(f"继续 {args.domain}。先读取 state.json、run-envelope.md、00-charter.md、10-reconciliation.md 和 open decisions。")
+    print("")
+    print(f"当前阶段：{phase}")
+    print(f"当前批次：{batch}")
+    print(f"下一动作：{next_action}")
+    print(f"未决业务事项：{decisions if decisions else '无'}")
+    print(f"阻塞项：{blockers if blockers else '无'}")
+    print("")
+    print("本轮只做 state.json 的 nextAction 对应的一个垂直切片。")
+    print("执行前先核对 run-envelope.md 的自主权限和人工门禁。")
+    print("完成后必须更新 state.json、history、06-implementation.md 和 10-reconciliation.md。")
+    print("命中人工门禁时，停止该分支，写入决策包；不要跳过业务裁决，不要正式发布小程序。")
+    print("")
+    if phase in {"ACCEPTED", "RELEASED", "LEARNED"}:
+        print("当前阶段已到收口阶段；如无新的用户指令，只报告结果，不继续扩张。")
+    else:
+        print("完成后输出：本批结果、证据、未闭环项、下一批提示词、门禁判断。")
+    return 0
+
+
 def cmd_set_phase(args: argparse.Namespace) -> int:
     folder, state = require_state(root_from(args.root), args.domain)
     old = state.get("phase")
@@ -257,6 +284,10 @@ def build_parser() -> argparse.ArgumentParser:
     log.add_argument("--batch")
     log.add_argument("--next-action")
     log.set_defaults(func=cmd_log)
+
+    next_prompt = sub.add_parser("next-prompt", help="print a recovery-aware next-batch prompt")
+    next_prompt.add_argument("--domain", required=True)
+    next_prompt.set_defaults(func=cmd_next_prompt)
 
     phase = sub.add_parser("set-phase", help="advance or record a phase")
     phase.add_argument("--domain", required=True)

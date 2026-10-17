@@ -10,6 +10,7 @@
   "openDecisions": [],
   "blockers": [],
   "artifacts": {
+    "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
     "scenarios": "01-scenarios.md",
     "businessSync": "02-business-sync.md",

@@ -5,8 +5,9 @@
 领域包不是文档集合，而是跨会话恢复交付的持久化状态。任何继续开发、恢复上下文、门禁审查或对账，都必须先读：
 
 1. `state.json`
-2. `00-charter.md`
-3. `10-reconciliation.md`
+2. `run-envelope.md`
+3. `00-charter.md`
+4. `10-reconciliation.md`
 
 ## 初始化
 
@@ -23,10 +24,13 @@ python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py init
 ```bash
 python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py show --domain material
 python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py validate --domain material
+python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py next-prompt --domain material
 ```
 
 ## 规则
 
+- 离开前先确认 `run-envelope.md`。
+- 监督任务可在授权范围内连续推进，但不得跳过人工门禁。
 - 一次只推进一个垂直切片批次。
 - 业务事实未经 `zhuangdeqing-business` 裁决，不进入编码。
 - 没有真实页面/真机证据，不算 UI 通过。

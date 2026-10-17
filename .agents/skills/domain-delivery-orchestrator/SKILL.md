@@ -14,7 +14,7 @@ One batch = one vertical slice. External state is the memory; chat history is no
 The goal is not to finish a whole domain in one turn. The goal is to keep the domain recoverable across turns:
 
 ```text
-charter + state ledger + reconciliation matrix + gate evidence
+run envelope + charter + state ledger + reconciliation matrix + gate evidence
 ```
 
 ## Before work
@@ -49,6 +49,7 @@ Then stop after creating the charter/scenarios and reporting the first gate. Do 
 - `gate-review`: verify the gate evidence and either advance the phase or report `BLOCKED`.
 - `reconcile`: compare design ↔ blueprint ↔ requirements ↔ code ↔ page ↔ test ↔ acceptance; mark `UNMAPPED`, `STALE`, or `GAP`.
 - `ui-review`: render the real App/Web UI, capture evidence, and review interaction and visual quality; do not decide business facts.
+- `supervise`: read `run-envelope.md`, `state.json`, and `10-reconciliation.md`; determine whether the current batch is complete; generate the next batch prompt; never let the executor wait for the user between routine batches.
 - `acceptance`: independent black-box verification only; do not edit implementation.
 
 ## Phase and gate discipline
@@ -91,6 +92,7 @@ The domain packet lives under `docs/product/domains/<domain>/` and contains:
 
 ```text
 00-charter.md
+run-envelope.md
 01-scenarios.md
 02-business-sync.md
 03-blueprint.json
@@ -104,7 +106,7 @@ The domain packet lives under `docs/product/domains/<domain>/` and contains:
 state.json
 ```
 
-Use `scripts/domain_state.py` for initialization, status, validation, history, and phase updates.
+Use `scripts/domain_state.py` for initialization, status, validation, history, phase updates, and next-prompt generation. The supervisor must run `next-prompt` before dispatching a batch.
 
 ## Output contract
 

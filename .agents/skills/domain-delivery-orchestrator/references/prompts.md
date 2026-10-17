@@ -105,3 +105,19 @@
 
 只有全部通过才能推进 phase；否则保持当前 phase 并写清阻塞原因。
 ```
+
+## G. Long-running supervisor
+
+```text
+你是 {domain} 业务域的长期监督者。读取 run-envelope.md、state.json、00-charter.md、10-reconciliation.md 和 open decisions。
+
+本轮只做监督，不重新解释历史：
+1. 判断当前批次是否真正完成；
+2. 若未完成，生成“继续/修复/UI审查/门禁审查”的下一轮提示词；
+3. 若已完成且没有 hard gate，生成下一批提示词并允许执行；
+4. 若命中 human-only gate，停止该分支，写入决策包，并切换到其他不依赖该决策的工作；
+5. 更新 state.json、history 和 reconciliation；
+6. 每轮结束写入下一轮提示词。
+
+禁止把“已提交”“已构建”当作“已验收”；禁止跳过业务裁决；禁止正式小程序发布。
+```
