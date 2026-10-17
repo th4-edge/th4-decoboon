@@ -12,8 +12,15 @@ import java.util.List;
 @Note("主材下单枚举")
 public class MaterialSheetEnums {
 
-    /** 品类基线（code + 中文名）。 */
-    public record SheetType(String code, String name) {
+    /** 受控字段配置（只暴露渲染所需属性，不暴露任意 JSON）。 */
+    public record FieldConfig(String key, String label, Boolean visible, Boolean required, Integer order) {
+    }
+
+    /** 品类基线（code + 中文名 + 单据头/行字段配置）。 */
+    public record SheetType(String code, String name, List<FieldConfig> headerFields, List<FieldConfig> lineFields) {
+        public SheetType(String code, String name) {
+            this(code, name, List.of(), List.of());
+        }
     }
 
     /** 枚举项（值 + 中文名）。 */

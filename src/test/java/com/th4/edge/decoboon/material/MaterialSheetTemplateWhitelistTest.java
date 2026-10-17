@@ -32,6 +32,13 @@ class MaterialSheetTemplateWhitelistTest {
         for (JsonNode node : fields.get("header")) {
             assertThat(MaterialSheetTemplateContext.HEADER_KEYS).contains(node.get("key").asText());
         }
+        JsonNode measure = null;
+        for (JsonNode node : fields.get("header")) {
+            if ("measureAt".equals(node.get("key").asText())) measure = node;
+        }
+        assertThat(measure).isNotNull();
+        assertThat(measure.get("visible").asBoolean()).isTrue();
+        assertThat(measure.get("required").asBoolean()).isTrue();
         for (JsonNode node : fields.get("line")) {
             assertThat(MaterialSheetTemplateContext.LINE_KEYS).contains(node.get("key").asText());
         }

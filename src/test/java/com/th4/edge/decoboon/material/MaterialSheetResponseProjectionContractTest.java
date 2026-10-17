@@ -24,7 +24,8 @@ class MaterialSheetResponseProjectionContractTest {
             com.th4.edge.decoboon.material.service.sheet.update.support.Update.class,
             com.th4.edge.decoboon.material.service.sheet.measure.support.Measure.class,
             com.th4.edge.decoboon.material.service.sheet.submit.support.Submit.class,
-            com.th4.edge.decoboon.material.service.sheet.order.support.Order.class
+            com.th4.edge.decoboon.material.service.sheet.order.support.Order.class,
+            com.th4.edge.decoboon.material.service.sheet.cancel.support.Cancel.class
     );
 
     @Test

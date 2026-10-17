@@ -117,6 +117,43 @@ public class MaterialSheetTemplateContext {
         return preset == null ? null : toTransient(preset);
     }
 
+    /** 当前企业/品类实际生效的字段配置（企业已发布版本优先，否则平台基线）。 */
+    public List<FieldRequirement> fieldsForIssue(Long comId, String sheetType, String section) {
+        MaterialSheetTemplate template = templateForIssue(comId, sheetType);
+        if (template == null || template.getFieldConfig() == null || template.getFieldConfig().isBlank()) {
+            return List.of();
+        }
+        JsonNode root = readTree(template.getFieldConfig(), "字段配置");
+        JsonNode array = root.get(section);
+        if (array == null || !array.isArray()) return List.of();
+        List<FieldRequirement> result = new ArrayList<>();
+        for (JsonNode node : array) {
+            String key = node.path("key").asText("");
+            if (key.isBlank()) continue;
+            result.add(new FieldRequirement(
+                    key,
+                    node.path("label").asText(key),
+                    node.path("visible").asBoolean(true),
+                    node.path("required").asBoolean(false),
+                    node.path("order").asInt(Integer.MAX_VALUE)
+            ));
+        }
+        result.sort(java.util.Comparator.comparingInt(FieldRequirement::order));
+        return result;
+    }
+
+    /** 提交请购前必须完成的单据头字段。 */
+    public List<FieldRequirement> requiredHeaderFields(Long comId, String sheetType) {
+        return fieldsForIssue(comId, sheetType, "header").stream()
+                .filter(FieldRequirement::visible)
+                .filter(FieldRequirement::required)
+                .toList();
+    }
+
+    /** 可被前端渲染的字段定义，不包含任何数据库/权限细节。 */
+    public record FieldRequirement(String key, String label, boolean visible, boolean required, int order) {
+    }
+
     /** 复制平台基线或新建企业模板。 */
     public MaterialSheetTemplate save(Employee principal, String sheetType, String baselineCode, String name,
                                       String fieldConfig, String rowTemplateConfig, String ruleConfig,

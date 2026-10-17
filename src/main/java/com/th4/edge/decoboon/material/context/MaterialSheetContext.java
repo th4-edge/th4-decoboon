@@ -241,6 +241,17 @@ public class MaterialSheetContext {
                 .map(line -> line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId())
                 .toList();
         loadOrderablePlans(current, sheet.getProject().getProjectId(), planIds);
+        // 模板级提交门禁：只校验当前品类配置为可见且必填的单据头字段。
+        List<MaterialSheetTemplateContext.FieldRequirement> required =
+                templateContext.requiredHeaderFields(current.getCompany().getComId(), sheet.getSheetType());
+        List<String> missing = required == null ? List.of() : required.stream()
+                .filter(field -> !hasHeaderValue(sheet, field.key()))
+                .map(MaterialSheetTemplateContext.FieldRequirement::label)
+                .toList();
+        if (!missing.isEmpty()) {
+            throw new DefinedException(new DefaultErrorCode("400",
+                    "提交请购前请先完成：" + String.join("、", missing)));
+        }
         sheet.setStatus(defaultAfter(sheet, MaterialSheetStatus.Submitted));
         return sheetRepository.save(sheet);
     }
@@ -248,7 +259,7 @@ public class MaterialSheetContext {
     /** 测量与时间确认（项目经理/设计师，DEC-MP-07 任一方即可）。 */
     public MaterialOrderSheet measure(Employee principal, Long sheetId, LocalDate measureAt, LocalDate deliverAt,
                                       LocalDate installAt, String signatures) {
-        Employee current = requireDesignerOrManager(principal);
+        Employee current = requireMeasurer(principal);
         MaterialOrderSheet sheet = requireSheet(current, sheetId);
         if (measureAt != null) sheet.setMeasureAt(measureAt);
         if (deliverAt != null) sheet.setDeliverAt(deliverAt);
@@ -536,6 +547,20 @@ public class MaterialSheetContext {
         }
     }
 
+    private boolean hasHeaderValue(MaterialOrderSheet sheet, String key) {
+        if (sheet == null || key == null) return false;
+        return switch (key) {
+            case "manufacturerName" -> sheet.getManufacturerName() != null && !sheet.getManufacturerName().isBlank();
+            case "supplier" -> sheet.getSupplier() != null;
+            case "measureAt" -> sheet.getMeasureAt() != null;
+            case "groupChatAt" -> sheet.getGroupChatAt() != null;
+            case "deliverAt" -> sheet.getDeliverAt() != null;
+            case "installAt" -> sheet.getInstallAt() != null;
+            case "remark" -> sheet.getRemark() != null && !sheet.getRemark().isBlank();
+            default -> true;
+        };
+    }
+
     private MaterialSheetStatus defaultAfter(MaterialOrderSheet sheet, MaterialSheetStatus target) {
         return sheet.getMeasureAt() == null ? target : target;
     }
@@ -586,6 +611,17 @@ public class MaterialSheetContext {
         EmployeeRole role = current.getRole();
         if (role != EmployeeRole.Designer && role != EmployeeRole.Boss && role != EmployeeRole.StoreManager) {
             throw new DefinedException(new DefaultErrorCode("403", "只有设计师、企业负责人或店长可以维护主材下单作业单"));
+        }
+        return current;
+    }
+
+    private Employee requireMeasurer(Employee principal) {
+        Employee current = tenantContext.requireEmployee(principal);
+        EmployeeRole role = current.getRole();
+        if (role != EmployeeRole.Pm && role != EmployeeRole.Designer && role != EmployeeRole.Boss
+                && role != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403",
+                    "测量与时间确认需由项目经理、设计师、企业负责人或店长完成"));
         }
         return current;
     }

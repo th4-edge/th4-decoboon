@@ -198,8 +198,10 @@ class ProviderSecurityAcceptanceTest {
         // => 当前 Provider 面板为 501（public 16 + protected 485）。
         // 2026-10-15 结算撤销（用户裁决本轮做）新增 1 条 protected：material/settlement/cancel
         // => 当前 Provider 面板为 502（public 16 + protected 486）。
-        assertThat(routes).hasSize(502);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(486);
+        // 2026-10-17 作业单独立取消新增 1 条 protected：material/sheet/cancel
+        // => 当前 Provider 面板为 503（public 16 + protected 487）。
+        assertThat(routes).hasSize(503);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(487);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -279,6 +281,7 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("material/selection/board");
         assertUnauthorized("material/selection/item/page");
         assertUnauthorized("material/selection/item/info");
+        assertUnauthorized("material/sheet/cancel");
         assertUnauthorized("project/acceptance/round/page");
         assertUnauthorized("project/acceptance/rectify/page");
         assertUnauthorized("platform/tenant/page");

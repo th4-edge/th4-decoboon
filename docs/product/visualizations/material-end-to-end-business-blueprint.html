@@ -241,7 +241,7 @@
 
   <main class="main">
     <div class="topbar">
-      <div class="crumb"><span>装得清</span><span>/</span><b>材料全链路产品蓝图</b><span class="pill info" style="margin-left:6px"><i></i>2026-10-17 · App 1.0.55</span></div>
+      <div class="crumb"><span>装得清</span><span>/</span><b>材料全链路产品蓝图</b><span class="pill info" style="margin-left:6px"><i></i>2026-10-17 · App 1.0.56</span></div>
       <div class="top-actions">
         <button class="ghost-btn" onclick="window.print()">打印 / 导出 PDF</button>
         <a class="primary-btn" href="#flow">进入主链</a>
@@ -467,10 +467,10 @@ P3 未知时按 P2 暂估；仍缺失则 costComplete = false</code></div>
         <div class="risk-grid">
           <div class="risk ok"><span class="badge">已修复 · 1.0.55</span><h4>项目详情已接入“主材下单”入口</h4><p>项目详情概览新增主材下单卡片，直达品类作业单列表；不再需要深链或手工路由。</p></div>
           <div class="risk ok"><span class="badge">已修复 · 1.0.55</span><h4>Excel 已改为“建单时间”</h4><p>`sheet.createTime` 明确标为建单时间，不再与财务采购下单时间混淆；采购下单时间仍以采购单为准。</p></div>
-          <div class="risk p1"><span class="badge">P1 · 模板</span><h4>测量字段没有按品类模板驱动</h4><p>详情页对所有可编辑作业单显示测量卡片；没有按 Tile / Curtain / CustomCabinet 的字段显隐与必填配置。</p></div>
-          <div class="risk p1"><span class="badge">P1 · 门禁</span><h4>测量日期不是提交请购的强制条件</h4><p>提交请购当前主要校验选材和数量；如果某品类要求测量必填，需要在提交前增加模板级门禁。</p></div>
-          <div class="risk p1"><span class="badge">P1 · 取消</span><h4>作业单缺少独立取消 Provider</h4><p>状态机定义了 Cancelled，但当前没有 `material/sheet/cancel` 路由；提交后取消/重开路径需要产品裁决。</p></div>
-          <div class="risk ok"><span class="badge">已收口 · 1.0.55</span><h4>作业单角色动作已按权限收口</h4><p>Designer/Boss/StoreManager 可建单、编辑、提交；PM 保留查看与测量确认；其他角色只读。</p></div>
+          <div class="risk ok"><span class="badge">已实现 · 1.0.56</span><h4>测量字段已按品类模板驱动</h4><p>App 读取 headerFields 控制测量/配送/安装显隐；当前 Tile 基线将测量设为必填。其余 16 类仍需继续补基线。</p></div>
+          <div class="risk ok"><span class="badge">已实现 · 1.0.56</span><h4>测量日期已进入提交请购门禁</h4><p>模板中 visible=true、required=true 的单据头字段未完成时，提交请购直接拒绝；前后端同时校验。</p></div>
+          <div class="risk ok"><span class="badge">已实现 · 1.0.56</span><h4>作业单已具备独立取消 Provider</h4><p>`material/sheet/cancel` 在未进入采购前取消并记录原因；已下单/到场/结算必须走采购调整或退货。</p></div>
+          <div class="risk ok"><span class="badge">已收口 · 1.0.55/1.0.56</span><h4>角色动作与表单高度已收口</h4><p>Designer/Boss/StoreManager 可建单、编辑、提交；PM 可测量但不可建单；备注、材料行、日期卡片已压缩。</p></div>
         </div>
       </section>
 
@@ -492,8 +492,8 @@ P3 未知时按 P2 暂估；仍缺失则 costComplete = false</code></div>
       </section>
 
       <div class="footer">
-        <div><b>装得清 · 材料全链路产品蓝图</b><br>口径依据：OBJ-008 / BR-044 / BR-045 / SCN-021 / DEC-072 / DEC-073 / DEC-074，以及 App 1.0.55 / 当前 Web 实现。</div>
-        <div>2026-10-17 · App 1.0.55 · 交互式 HTML</div>
+        <div><b>装得清 · 材料全链路产品蓝图</b><br>口径依据：OBJ-008 / BR-044 / BR-045 / SCN-021 / DEC-072 / DEC-073 / DEC-074，以及 App 1.0.56 / 当前 Web 实现。</div>
+        <div>2026-10-17 · App 1.0.56 · 交互式 HTML</div>
       </div>
     </div>
   </main>

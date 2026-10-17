@@ -54,6 +54,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -173,6 +174,8 @@ class MaterialSheetOrderFlowTest {
         when(payableRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(planStatusContext.orderedQuantity(any())).thenReturn(BigDecimal.ZERO);
         when(planStatusContext.resolve(any())).thenReturn(MaterialPlanStatus.PartiallyOrdered);
+        when(templateContext.requiredHeaderFields(any(), any())).thenReturn(List.of(
+                new MaterialSheetTemplateContext.FieldRequirement("measureAt", "测量时间", true, true, 2)));
     }
 
     private MaterialOrderSheet currentSheet;
@@ -218,15 +221,55 @@ class MaterialSheetOrderFlowTest {
     }
 
     @Test
-    void submitShouldRequireMeasuredGateAndMoveToSubmitted() {
+    void submitWithoutRequiredMeasurementMustBeRejected() {
         MaterialPlan plan = plan(4L, new BigDecimal("10"), BigDecimal.ZERO, true);
         stubPlan(plan);
         currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
 
+        assertThatThrownBy(() -> context.submit(designer, currentSheet.getSheetId()))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("测量时间");
+    }
+
+    @Test
+    void submitAfterMeasurementMovesToSubmitted() {
+        MaterialPlan plan = plan(4L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet = context.measure(designer, currentSheet.getSheetId(), LocalDate.now(),
+                LocalDate.now().plusDays(7), LocalDate.now().plusDays(8), null);
+
         MaterialOrderSheet submitted = context.submit(designer, currentSheet.getSheetId());
 
         assertThat(submitted.getStatus()).isEqualTo(MaterialSheetStatus.Submitted);
+    }
+
+    @Test
+    void cancelBeforeOrderShouldMoveToCancelled() {
+        MaterialPlan plan = plan(8L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+
+        MaterialOrderSheet cancelled = context.cancel(designer, currentSheet.getSheetId(), "客户取消");
+
+        assertThat(cancelled.getStatus()).isEqualTo(MaterialSheetStatus.Cancelled);
+        assertThat(cancelled.getRemark()).contains("取消原因：客户取消");
+    }
+
+    @Test
+    void cancelAfterOrderedMustBeRejected() {
+        MaterialPlan plan = plan(9L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Ordered);
+
+        assertThatThrownBy(() -> context.cancel(designer, currentSheet.getSheetId(), "客户取消"))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("不能直接取消");
     }
 
     @Test
