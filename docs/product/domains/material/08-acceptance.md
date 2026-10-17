@@ -51,12 +51,12 @@
 
 | ID | 级别 | 问题 | 状态 |
 | --- | --- | --- | --- |
-| B6-DEF-001 | P1 | Designer/PM 可读取作业单成本字段 | OPEN |
-| B6-DEF-002 | P1 | Designer/PM 可读取采购金额与供应商 | OPEN |
-| B6-DEF-003 | P1 | Designer/PM 可读取结算金额与供应商 | OPEN |
-| B6-DEF-004 | P1 | 重复下单生成重复采购单/应付 | OPEN |
-| B6-DEF-005 | P1 | 未到场采购明细可结算 | OPEN |
-| B6-DEF-006 | P2 | 暂估应付显示 0 且不暴露 estimated | OPEN |
+| B6-DEF-001 | P1 | Designer/PM 可读取作业单成本字段 | CLOSED（B6.2 独立复验 6/6） |
+| B6-DEF-002 | P1 | Designer/PM 可读取采购金额与供应商 | CLOSED（B6.2 独立复验 6/6） |
+| B6-DEF-003 | P1 | Designer/PM 可读取结算金额与供应商 | CLOSED（B6.2 独立复验 6/6） |
+| B6-DEF-004 | P1 | 重复下单生成重复采购单/应付 | CLOSED（B6.2 独立复验 6/6） |
+| B6-DEF-005 | P1 | 未到场采购明细可结算 | CLOSED（B6.2 独立复验 6/6） |
+| B6-DEF-006 | P2 | 暂估应付显示 0 且不暴露 estimated | CLOSED（B6.2 独立复验 6/6） |
 
 ### B6 结论
 
@@ -124,3 +124,17 @@
 - Web 1440×900 真实页面显示“部分已结算 · 成本待结算”，无横向溢出、Console Errors 0；
 - 证据：`evidence/B6.5/`；
 - 仅用于 B6.6 独立复验，不得自批 `ACCEPTED`。
+
+
+---
+
+## B6.6 独立复验执行结果（2026-10-17）
+
+- 环境：后端 `b66a33b` / App `46a5be4` / Web `3ef4974`；
+- 结果：157 项 **157 PASS / 0 FAIL / 0 BLOCKED**；
+- Web `/finance/material-ordering` 1440×900：Priced、Unpriced、Mixed、Settled 四态文案与 pill 全部正确；Mixed 显示“部分已结算 · 成本待结算”并保留履约状态；
+- `B62-DEF-001`、`B64-UI-WEB-SHEET-01` 均 **CLOSED**；
+- B6 原六项缺陷回归 6/6 PASS；50 个黄金问题 50/50 PASS；权限、幂等、未到场结算门禁、暂估应付、旧路线、跨企业、App/Web UI 全部 PASS；
+- 环境瞬态 `ENV-B66-001`：首轮 Vite `504 (Outdated Optimize Dep)`，同问题重试 1 次后全 PASS，不属产品缺陷；
+- 证据：`evidence/B6.6/README.md`、`summary.json`、`verification-results.json`、`ui-metrics.json`、`attempts.json`、`environment.json`、`screenshots/`；
+- 结论：独立验收 **PASS**；B6 系列满足 `ACCEPTED` 证据条件，`ACCEPTED` 已记录；最终正式接受/发布仍由用户确认。

@@ -1,0 +1,43 @@
+{
+  "batch": "B6.6",
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "FAIL",
+      "totals": {
+        "total": 157,
+        "pass": 156,
+        "fail": 1,
+        "blocked": 0
+      },
+      "failingCheck": {
+        "id": "B66-UI-WEB-PRICED-LAYOUT",
+        "actual": {
+          "innerWidth": 1440,
+          "innerHeight": 900,
+          "scrollWidth": 1440,
+          "bodyScrollWidth": 1440,
+          "consoleErrors": [
+            "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+            "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+            "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+            "TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4175/src/views/finance/FinanceMaterialOrderingView.vue"
+          ]
+        }
+      },
+      "note": "Vite dev-server cold-load dependency optimization transient; the Priced row text/pill/API checks themselves passed. The same page and all later Web/App pages had Console Errors=0 on attempt 2."
+    },
+    {
+      "attempt": 2,
+      "result": "PASS",
+      "totals": {
+        "total": 157,
+        "pass": 157,
+        "fail": 0,
+        "blocked": 0
+      },
+      "note": "No 504; all Web/App UI checks including Console Errors=0 passed."
+    }
+  ],
+  "retryPolicy": "Same issue retried once (2 attempts total), within the task limit of 2."
+}

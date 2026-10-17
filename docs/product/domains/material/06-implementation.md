@@ -374,4 +374,18 @@
 - 在待下单/已进入采购作业单行显示价格状态 pill，不改变履约状态标签；
 - 未改后端、权限、金额/成本口径，不做 DDL；
 - 验证：Web type-check/build PASS；复用 B6.4 黑盒脚本 140/140 PASS；Web 1440×900 Mixed 文案真实可见、无横向溢出、Console Errors 0；
-- 证据：`evidence/B6.5/`；待 B6.6 独立复验。
+- 证据：`evidence/B6.5/`；B6.6 独立复验 157/157 PASS，`B64-UI-WEB-SHEET-01` CLOSED。
+
+---
+
+# B6.6 独立复验记录
+
+- 性质：独立黑盒与真实浏览器复验；执行任务未修改实现，也未参与 B6.5 修复；
+- 精确提交：后端 `b66a33b`、App `46a5be4`、Web `3ef4974`；
+- 结果：157 项 **157 PASS / 0 FAIL / 0 BLOCKED**；
+- `B62-DEF-001` **CLOSED**（23/23 聚焦检查）；`B64-UI-WEB-SHEET-01` **CLOSED**；
+- B6 原六项缺陷回归 6/6 PASS；50 个黄金问题 50/50 PASS；权限、幂等、未到场结算门禁、暂估应付、旧路线、跨企业、App/Web UI 全部 PASS；
+- Web 1440×900 / App H5 390×844 无横向溢出，Console Errors 0；
+- 环境瞬态 `ENV-B66-001`：首轮 Vite `504 (Outdated Optimize Dep)`，同问题重试 1 次后全 PASS，不属于产品缺陷；
+- 证据：`evidence/B6.6/`（README、summary.json、verification-results.json、ui-metrics.json、attempts.json、environment.json、run-b66-verification.mjs、9 张截图）；
+- 结论：独立验收 PASS，满足 `ACCEPTED` 证据条件；独立验收方未代替用户做最终正式接受。

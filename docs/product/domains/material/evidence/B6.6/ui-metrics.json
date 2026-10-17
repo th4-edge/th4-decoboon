@@ -1,0 +1,168 @@
+{
+  "webOrdering_priced": {
+    "sheetNo": "TILE-20261017-001",
+    "sheetId": "1792242375596646175",
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 900,
+    "domNodeCount": 221,
+    "htmlLength": 146977,
+    "consoleErrors": [],
+    "rowCount": 1,
+    "rowText": "瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行 已定价\n已下单",
+    "pillText": "已定价",
+    "pillClass": "mo__price-state mo__price-state--priced",
+    "pillStyle": {
+      "color": "rgb(11, 107, 87)",
+      "backgroundColor": "rgb(232, 245, 240)",
+      "borderRadius": "999px",
+      "fontSize": "11px",
+      "display": "inline-flex"
+    },
+    "apiState": "Priced",
+    "xhrPriceState": "Priced",
+    "xhrSheetStatus": "Ordered",
+    "screenshot": "screenshots/b66-web-ordering-priced-1440x900.png"
+  },
+  "webOrdering_unpriced": {
+    "sheetNo": "TILE-20261017-001",
+    "sheetId": "1792242378984939209",
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 900,
+    "domNodeCount": 221,
+    "htmlLength": 146980,
+    "consoleErrors": [],
+    "rowCount": 1,
+    "rowText": "瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行 未定价 · 成本待结算\n已下单",
+    "pillText": "未定价 · 成本待结算",
+    "pillClass": "mo__price-state mo__price-state--unpriced",
+    "pillStyle": {
+      "color": "rgb(161, 92, 0)",
+      "backgroundColor": "rgb(255, 243, 220)",
+      "borderRadius": "999px",
+      "fontSize": "11px",
+      "display": "inline-flex"
+    },
+    "apiState": "Unpriced",
+    "xhrPriceState": "Unpriced",
+    "xhrSheetStatus": "Ordered",
+    "screenshot": "screenshots/b66-web-ordering-unpriced-1440x900.png"
+  },
+  "webOrdering_settled": {
+    "sheetNo": "TILE-20261017-001",
+    "sheetId": "1792242382327006830",
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 900,
+    "domNodeCount": 221,
+    "htmlLength": 146975,
+    "consoleErrors": [],
+    "rowCount": 1,
+    "rowText": "瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行 已结算\n已到场",
+    "pillText": "已结算",
+    "pillClass": "mo__price-state mo__price-state--settled",
+    "pillStyle": {
+      "color": "rgb(11, 107, 87)",
+      "backgroundColor": "rgb(232, 245, 240)",
+      "borderRadius": "999px",
+      "fontSize": "11px",
+      "display": "inline-flex"
+    },
+    "apiState": "Settled",
+    "xhrPriceState": "Settled",
+    "xhrSheetStatus": "Arrived",
+    "screenshot": "screenshots/b66-web-ordering-settled-1440x900.png"
+  },
+  "webOrdering_mixed-settled": {
+    "sheetNo": "TILE-20261017-001",
+    "sheetId": "1792242385823716301",
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "scrollHeight": 900,
+    "domNodeCount": 221,
+    "htmlLength": 146987,
+    "consoleErrors": [],
+    "rowCount": 1,
+    "rowText": "瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行 部分已结算 · 成本待结算\n部分到场",
+    "pillText": "部分已结算 · 成本待结算",
+    "pillClass": "mo__price-state mo__price-state--mixed",
+    "pillStyle": {
+      "color": "rgb(161, 92, 0)",
+      "backgroundColor": "rgb(255, 243, 220)",
+      "borderRadius": "999px",
+      "fontSize": "11px",
+      "display": "inline-flex"
+    },
+    "apiState": "Mixed",
+    "xhrPriceState": "Mixed",
+    "xhrSheetStatus": "PartiallyArrived",
+    "screenshot": "screenshots/b66-web-ordering-mixed-settled-1440x900.png"
+  },
+  "web": {
+    "ordering": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "scrollHeight": 900,
+      "domNodeCount": 221,
+      "htmlLength": 146983,
+      "consoleErrors": [],
+      "mixedTextVisible": true,
+      "rowText": "瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行 部分已结算 · 成本待结算\n已到场",
+      "pillText": "部分已结算 · 成本待结算",
+      "pillClass": "mo__price-state mo__price-state--mixed",
+      "apiState": "Mixed",
+      "bodyExcerpt": "装\n装得清\n财务工作台\n\n今日\n\n业务工作台\n\n资金收付\n\n待我收款\n收款记录\n待我付款\n付款记录\n工人工资\n\n往来与账本\n\n供应商往来\n资金台账\n客户退款\n\n凭证与归档\n\n收付凭证\n凭证模板\n\n薪酬\n\n薪酬工作台\n员工工资\n员工提成\n提成负向调整\n本店薪酬\n\n项目核算\n\n项目账本\n材料业务蓝图\n退出登录\n财务工作台\n/\n主材下单\n⌘K\n本页按数据范围取数，暂不随门店维度收窄\n财务 · 全公司\n务\nA 总店门店财务\n财务 · 全公司\n主材下单\n\n按供应商成单：设计师提交请购后由材料员/财务下单；单价可留空＝未定价（形成暂估应付，成本待结算）\n\n刷新\n待下单\n—\n\n当前没有待下单的主材作业单\n\n设计师提交请购后会出现在这里\n\n已进入采购\n瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行 部分已结算 · 成本待结算\n已到场"
+    },
+    "payables": {
+      "innerWidth": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "consoleErrors": [],
+      "rowCount": 1,
+      "rowText": "材料采购 · B6.6独立复验临时厂家-1792242375469\n王芳（造数1100） · 望江府1栋102 · PO92c543c820325d9d9c5e62a48839aa41\n\t\n材料款\n\t\n待付款\n\t\n2026-11-16\n\t\nB6.6独立复验临时厂家-1792242375469\n\t\n待结算\n\t\n安排付款\n项目账本",
+      "payButtonDisabled": true
+    }
+  },
+  "app": {
+    "sheet": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 1169,
+      "domNodeCount": 214,
+      "htmlLength": 155422,
+      "consoleErrors": [],
+      "excerpt": "主材下单\n瓷砖（地砖/墙砖）\nTILE-20261017-001\n瓷砖（地砖/墙砖）下单单\n部分已结算\n已到场\n工程\n王芳（造数1100） · 望江府1栋102 · 望江府1栋102\n厂家\nB6.6独立复验厂家\n测量\n2026-10-17\n配送\n2026-10-20\n安装\n2026-10-22\n这张单怎么继续\n作业单只编排厂家履约，不承载价格、账期与成本。\n已到场\n部分已结算\n作业单已全部到场，材料履约事实已完成。 当前采购侧存在未定价或部分结算，成本不完整。\n下一步\n财务在 App 主材结算中确认结算价；结算前成本未完整时利润仍不确认。 未定价不阻断履约，但利润必须保持为空。\n时间口径\n测量日期\n现场复尺/测量事实，不是系统确认时间。\n配送/安装\n计划或约定的配送、安装日期。\n要求到场/实际到场\n在材料计划、采购和到场记录中分别确认，不是作业单时间戳。\n采购侧未完整定价时形成暂估应付；成本不完整，利润不能展示为 0。\n材料明细（1 行）\n1\n客厅地砖\n8㎡\n主材--抛釉砖 800x800\n已下单 8㎡\n该作业单已进入采购，材料与数量已锁定；如需更换材料请发起增减项。\n导出单据"
+    },
+    "payables": {
+      "innerWidth": 390,
+      "innerHeight": 844,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 1135,
+      "domNodeCount": 245,
+      "htmlLength": 171140,
+      "consoleErrors": [],
+      "hasPaymentButton": false,
+      "excerpt": "应付账款\n应付账款\n材料款、项目款、工资与费用统一付款计划\n新增应付\n应付账款总额\n¥2,800\n已付\n¥500\n待付\n¥2,300\n风险/加急\n¥0\n全部\n材料\n工资\n项目\n供应商\n费用\n其他\n手工应付\n王芳（造数1100） · 望江府1栋102 · 造数供应商\n¥2,000\n材料款\n待付款\n账期 2026-11-02\n已付 ¥0 · 待付 ¥2,000\n安排付款\n材料采购 · 造数供应商\n王芳（造数1100） · 望江府1栋102 · 造数供应商\n待定价\n材料款\n已付清\n账期 2026-11-12\n暂估/待定价\n已付 ¥500 · 待付 待结算\n结算后安排付款\n材料采购 · 造数供应商\n王芳（造数1100） · 望江府1栋102 · 造数供应商\n¥300\n材料款\n待付款\n账期 2026-11-16\n已付 ¥0 · 待付 ¥300\n安排付款\n材料采购 · B6.6独立复验临时厂家-1792242375469\n王芳（造数1100） · 望江府1栋102 · B6.6独立复验临时厂家-1792242375469\n待定价\n材料款\n待付款\n账期 2026-11-16\n暂估/待定价\n已付 ¥0 · 待付 待结算\n结算后安排付款\n没有更多了"
+    },
+    "oldRoute": {
+      "path": "http://127.0.0.1:8080/#/subpackages/supply/pages/material-batch-order",
+      "bodyText": "",
+      "innerWidth": 390,
+      "scrollWidth": 390
+    }
+  }
+}

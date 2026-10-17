@@ -1,0 +1,44 @@
+{
+  "batch": "B6.6",
+  "date": "2026-10-17",
+  "timezone": "Asia/Shanghai",
+  "services": {
+    "backend": {
+      "commit": "b66a33b",
+      "port": 8091,
+      "api_base": "http://127.0.0.1:8091/api"
+    },
+    "app": {
+      "commit": "46a5be4",
+      "port": 8080,
+      "surface": "H5"
+    },
+    "web": {
+      "commit": "3ef4974",
+      "port": 4175
+    },
+    "database": {
+      "host": "127.0.0.1",
+      "port": 3306,
+      "database": "decoboon"
+    }
+  },
+  "accounts": [
+    "Boss",
+    "StoreManager",
+    "Designer",
+    "PM",
+    "Finance",
+    "CrossBoss"
+  ],
+  "browser": "Playwright Chromium headless; Web 1440x900, App H5 390x844",
+  "webSourceAudit": {
+    "commit": "3ef4974",
+    "files": {
+      "src/views/finance/FinanceMaterialOrderingView.vue": "aed9383e157f984bd36520e580b4ec87f9cf7caa7e6f7d9e637f226f7f276356",
+      "src/domains/material/api.ts": "24c7ceb3b29f4bd8520220252267ac8b57a4548bf89edcf434472b4f2658c490",
+      "src/domains/material/model.ts": "b83186c89beca29ed17adb1c8066ce894370e377854af694ab23596ad7a9f096"
+    },
+    "finding": "priceState is read from server raw.priceState via SHEET_PRICE_STATE and rendered by a fixed presentation map; no front-end calculation from purchasePrice/settlementPrice was found."
+  }
+}

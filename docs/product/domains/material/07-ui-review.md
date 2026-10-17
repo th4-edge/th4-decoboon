@@ -232,4 +232,15 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - 其他状态文案：Priced/Unpriced/Settled 均有对应 pill；
 - `innerWidth=scrollWidth=bodyScrollWidth=1440`，Console Errors 0；
 - 截图：`evidence/B6.5/screenshots/b64-web-material-ordering-mixed-1440x900.png`；
-- UI 自测 PASS，B6.6 仍需独立复验。
+- UI 自测 PASS；B6.6 独立复验 157/157 PASS，混合状态展示与回归均通过。
+
+---
+
+# B6.6 独立 UI 复验
+
+- Web `/finance/material-ordering` 1440×900：Priced→已定价、Unpriced→未定价 · 成本待结算、Mixed→部分已结算 · 成本待结算、Settled→已结算；
+- Mixed 行同时保留履约状态（部分到场/已到场），不是只显示“已到场”；文案、pill class、computed color/background、API 与页面 XHR `priceState` 一致；
+- 前端审计确认 `priceState` 仅消费服务端字段，不由 `purchasePrice`/`settlementPrice` 推导；
+- App H5 390×844 同源状态显示 PASS；Web 1440×900 与 App H5 均无横向溢出，Console Errors 0；
+- 截图：`evidence/B6.6/screenshots/`（9 张）；
+- 结论：独立 UI PASS，`B64-UI-WEB-SHEET-01` CLOSED。
