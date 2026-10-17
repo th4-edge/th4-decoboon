@@ -33,8 +33,8 @@
 | A4 | 设计 | Requirement、Scheme、Space、DesignItem、Template | 设计师、店长、客户 | `design`、`designtemplate`、`bim`；App/Web 设计工作台 | 中 | 已实现；公式体系仍有冲突 | 设计方案/模版/公式验收 |
 | A5 | 报价 | Quote、QuoteItem、CatalogItem、Package、Formula | 设计师、店长、客户 | `quote`、`catalog`、`pack`；App/Web 报价工作台 | 中 | 已实现；报价接受与成本快照需对账 | 报价公式、接受登记、成本快照验收 |
 | A6 | 签约与合同 | Contract、ContractItem、签约事实 | 设计师、店长、Boss、财务、客户 | `project`/`quote` 相关合同能力；App/Web 签约工作台 | 中 | 已实现；`contract-change` domain packet 已建立，停在 BLUEPRINT_READY | 合同生效、合同版本、下游交接 |
-| A7 | 项目立项与计划 | Project、Stage、Plan、开工日 | Boss、店长、设计师、PM | `project`、`plan`；App/Web 项目工作台 | 中 | 已实现；计划/排期口径有冲突 | 立项、计划、开工日、空阶段验收 |
-| A8 | 施工/进度/工地 | Task、TaskNode、Report、Site、Risk | PM、设计师、业主 | `project`、`plan`、`risk`；App/Web 工地页 | 中 | 已实现；进度分母与现场汇报待统一 | 施工计划/节点留证/偏差域验收 |
+| A7 | 项目立项与计划 | Project、Stage、Plan、开工日 | Boss、店长、设计师、PM | `project`、`plan`；App/Web 项目工作台 | 中 | 已实现；`project-delivery` domain packet 已建立至 SCENARIOS_READY | 立项、计划、开工日、空阶段验收 |
+| A8 | 施工/进度/工地 | Task、TaskNode、Report、Site、Risk | PM、设计师、业主 | `project`、`plan`、`risk`；App/Web 工地页 | 中 | 已实现；project-delivery B1 正在裁决 GAP-034 | 施工计划/节点留证/偏差域验收 |
 | A9 | 材料与供应链 | MaterialPlan、Selection、Sheet、Purchase、Receipt、Return、Supplier、Inventory、Settlement | 设计师、PM、财务、材料员 | `material`、`supply`；App/Web 材料工作台 | 深 | 当前唯一完整 domain packet；B6/B7 继续收口 | 独立验收 + 助手上下文入口 + 发布边界 |
 | A10 | 增减项与变更履约 | ContractChange、ChangeItem、生效事实 | 设计师、店长、财务、PM | `project` 变更能力；App/Web 增减项工作台 | 深 | `contract-change` domain packet 已建立至 BLUEPRINT_READY；双入口与历史状态待收敛 | 三类动作和跨域事件契约验收 |
 | A11 | 阶段验收与整改复验 | Acceptance、Rectification、复验结论 | PM、业主、店长、设计师 | `project` 验收/整改；App/Web 验收页 | 中 | 已实现；迁移和真实多轮验收待确认 | 验收状态机、整改轮次、业主确认验收 |
@@ -49,7 +49,8 @@
 | Domain | 位置 | 当前阶段 | 说明 |
 | --- | --- | --- | --- |
 | `material` | `docs/product/domains/material/` | 监督管理中 | 材料计划、选材、作业单、采购、到场、结算、材料助手 |
-| `contract-change` | `docs/product/domains/contract-change/` | `BLUEPRINT_READY`，B2 待授权 | 合同生效后的新增/减项/替换、当前有效剩余、审批与履约联动 |
+| `contract-change` | `docs/product/domains/contract-change/` | `BLUEPRINT_READY`，B2 等代码租约 | 合同生效后的新增/减项/替换、当前有效剩余、审批与履约联动 |
+| `project-delivery` | `docs/product/domains/project-delivery/` | `SCENARIOS_READY`，B1 业务对齐 | 合同施工行→阶段→任务→排期→节点留证→进度/偏差 |
 
 ## 3. 横向主轴
 
