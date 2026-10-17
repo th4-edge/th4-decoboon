@@ -94,23 +94,25 @@ def build_result() -> dict:
     web_dirty = git_paths(WEB, ["src"])
     ports = {str(port): port_open(port) for port in (3306, 8090, 8080)}
     lease = board.get("activeLease") or {}
-    age = state_age_minutes(lease.get("lastDomainStateUpdatedAt"))
+    leased_domain = lease.get("domain")
+    leased_state = material if leased_domain == "material" else contract if leased_domain == "contract-change" else {}
+    age = state_age_minutes(leased_state.get("updatedAt"))
     stale_after = int(lease.get("staleReviewAfterHours") or 3) * 60
     stale = bool(lease.get("status") == "ACTIVE" and age is not None and age >= stale_after)
     code_clean = not (backend_dirty or app_dirty or web_dirty)
-    material_released = material.get("phase") in {"RELEASED", "LEARNED"}
+    leased_released = leased_state.get("phase") in {"RELEASED", "LEARNED"}
     if not lease or lease.get("status") not in {"ACTIVE", "STALE"}:
         action = "DEEP_CHECK"
         reason = "no active domain lease"
     elif stale:
         action = "NOTIFY_STALE"
         reason = f"active lease state unchanged for {age} minutes"
-    elif material_released and code_clean:
+    elif leased_released and code_clean:
         action = "RELEASE_ELIGIBLE"
-        reason = "material released and all code worktrees are clean"
-    elif material_released and not code_clean:
+        reason = f"{leased_domain} released and all code worktrees are clean"
+    elif leased_released and not code_clean:
         action = "WAIT_WORKSPACE"
-        reason = "material released but code worktrees still dirty"
+        reason = f"{leased_domain} released but code worktrees still dirty"
     else:
         action = "WAIT"
         reason = "active domain has not reached release boundary"
@@ -146,6 +148,7 @@ def build_result() -> dict:
             "ownerThreadId": lease.get("ownerThreadId"),
             "status": lease.get("status"),
             "codeWriteAllowed": lease.get("codeWriteAllowed"),
+            "stateUpdatedAt": leased_state.get("updatedAt"),
             "stateAgeMinutes": age,
             "staleAfterMinutes": stale_after,
             "stale": stale,
