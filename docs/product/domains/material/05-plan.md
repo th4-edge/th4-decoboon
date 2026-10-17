@@ -18,8 +18,8 @@
 | B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；149/150） |
 | B6.3 | 修复 B62-DEF-001 多供应商价格投影 | Finance/Designer/PM | Sheet/Purchase/Settlement | 价格状态与采购明细聚合读模型 | App/Web | Mixed/Priced/Settled/Unpriced | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
 | B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；139/140） |
-| B6.5 | 修复 Web 作业单 Mixed 状态展示 | Finance/StoreManager/Boss | Sheet/Finance | Web 价格状态文案与角标 | Web | Mixed/Unpriced/Settled | DEV_VERIFIED + UI_REVIEWED + RECONCILED | NEXT |
-| B6.6 | Web Mixed 状态聚焦独立复验 | independent | Web 主材下单页 + 回归 | 无实现 | Web/App | 独立黑盒复验 | ACCEPTED 或新缺陷 | PENDING |
+| B6.5 | 修复 Web 作业单 Mixed 状态展示 | Finance/StoreManager/Boss | Sheet/Finance | Web 价格状态文案与角标 | Web | Mixed/Unpriced/Settled | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE (2026-10-17) |
+| B6.6 | Web Mixed 状态聚焦独立复验 | independent | Web 主材下单页 + 回归 | 无实现 | Web/App | 独立黑盒复验 | ACCEPTED 或新缺陷 | NEXT |
 | B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
 | B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
 | B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
@@ -285,10 +285,18 @@
 - App H5 同单据正确显示“部分已结算”，Web 无横向溢出、Console Errors 0；
 - 证据：`evidence/B6.4/`；下一批 B6.5，B6.6 独立复验。
 
-## B6.5 修复门槛（NEXT）
+## B6.5 修复记录（COMPLETE，2026-10-17）
 
 - 仅修 Web 主材下单页展示：Mixed/Unpriced/Settled 状态文案和视觉标记；
 - 以 `sheet.priceState` / `item.priceState` 为唯一数据源，不在前端推导业务口径；
 - 覆盖空态、全价、无价、Mixed、全部结算、权限与失败态；
 - 不做后端语义/金额公式变更，不做 DDL；
 - 真实 Web 1440×900 截图 + 构建；停在 RECONCILED，B6.6 独立复验。
+
+
+### B6.5 完成记录
+
+- Web `FinanceMaterialOrderingView` 按 `sheet.priceState` 展示 Priced/Unpriced/Mixed/Settled；
+- Mixed 显示“部分已结算 · 成本待结算”，不再只显示履约状态；
+- B6.4 复用黑盒脚本重跑：140/140 PASS；Web 1440×900 目标行文本正确，Console Errors 0；
+- Web type-check/build PASS；证据 `evidence/B6.5/`；停在 RECONCILED，B6.6 独立复验。

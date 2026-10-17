@@ -222,3 +222,14 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - Web `/finance/material-ordering` FAIL：目标 Mixed 作业单仅显示“已到场”，未显示价格状态/成本待结算；
 - 截图：`evidence/B6.4/screenshots/b64-web-material-ordering-mixed-1440x900.png`、`b64-app-sheet-mixed-390x844.png`；
 - 开放缺陷：`B64-UI-WEB-SHEET-01`。
+
+
+---
+
+# B6.5 Web Mixed 状态展示审查
+
+- `/finance/material-ordering` 1440×900：Mixed 行显示“部分已结算 · 成本待结算”；
+- 其他状态文案：Priced/Unpriced/Settled 均有对应 pill；
+- `innerWidth=scrollWidth=bodyScrollWidth=1440`，Console Errors 0；
+- 截图：`evidence/B6.5/screenshots/b64-web-material-ordering-mixed-1440x900.png`；
+- UI 自测 PASS，B6.6 仍需独立复验。

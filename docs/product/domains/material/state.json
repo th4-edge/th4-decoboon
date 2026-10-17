@@ -5,8 +5,8 @@
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
   "phase": "RECONCILED",
-  "batch": "B6.4",
-  "nextAction": "B6.5 修复 Web /finance/material-ordering 的 Mixed 价格状态展示；随后 B6.6 独立复验，不得宣称 ACCEPTED",
+  "batch": "B6.5",
+  "nextAction": "执行 B6.6 Web Mixed 状态聚焦独立复验；不得自批 ACCEPTED",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T19:12:57+08:00",
+  "updatedAt": "2026-10-17T20:05:40+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -202,6 +202,12 @@
       "phase": "RECONCILED",
       "batch": "B6.4",
       "note": "B6.4 独立复验 FAIL：140 项 139 PASS / 1 FAIL；B62-DEF-001 后端 23/23 聚焦检查关闭；新 P2 B64-UI-WEB-SHEET-01：Web 主材下单页未展示 Mixed/成本待结算；证据 evidence/B6.4/"
+    },
+    {
+      "at": "2026-10-17T20:05:40+08:00",
+      "phase": "RECONCILED",
+      "batch": "B6.5",
+      "note": "B6.5 RECONCILED：Web /finance/material-ordering 显示 Mixed=部分已结算·成本待结算；Web type-check/build PASS；复用 B6.4 黑盒 140/140 PASS；真实 1440x900 UI PASS；证据 evidence/B6.5/；临时数据与凭据已恢复"
     }
   ]
 }

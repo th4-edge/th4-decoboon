@@ -360,3 +360,18 @@
 - 新缺陷 `B64-UI-WEB-SHEET-01` P2：Web 主材下单页未展示 Mixed 价格状态；App H5 正确显示“部分已结算”；
 - 回归：主链、权限、幂等、到场门禁、暂估应付、50 黄金问题、旧路线、跨企业通过；
 - 证据：`evidence/B6.4/`；不支持 `ACCEPTED`，下一批 B6.5。
+
+
+---
+
+# B6.5 Web Mixed 状态展示修复
+
+- `FinanceMaterialOrderingView` 新增服务端 `priceState` 映射：
+  - Priced → 已定价；
+  - Unpriced → 未定价 · 成本待结算；
+  - Mixed → 部分已结算 · 成本待结算；
+  - Settled → 已结算；
+- 在待下单/已进入采购作业单行显示价格状态 pill，不改变履约状态标签；
+- 未改后端、权限、金额/成本口径，不做 DDL；
+- 验证：Web type-check/build PASS；复用 B6.4 黑盒脚本 140/140 PASS；Web 1440×900 Mixed 文案真实可见、无横向溢出、Console Errors 0；
+- 证据：`evidence/B6.5/`；待 B6.6 独立复验。

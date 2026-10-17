@@ -1,0 +1,249 @@
+{
+  "environment": {
+    "backend": "b66a33b:8091",
+    "app": "46a5be4:8080",
+    "web": "04ba3b4:4175",
+    "database": "127.0.0.1:3306/decoboon"
+  },
+  "preflight": {
+    "plan": {
+      "planId": "235566303270666240",
+      "projectId": "235520576473530368",
+      "status": "ReadyToOrder",
+      "quantity": "5.00",
+      "unit_price": "88.00",
+      "cost": "310.00"
+    },
+    "baselineCounts": {
+      "db_material_order_sheet": 0,
+      "db_material_order_sheet_item": 0,
+      "db_purchase_order": 18,
+      "db_purchase_order_item": 18,
+      "db_goods_receipt": 18,
+      "db_material_settlement": 0,
+      "db_material_settlement_item": 0,
+      "db_finance_payable": 37,
+      "db_finance_payable_settlement": 0,
+      "db_partner": 2
+    },
+    "partnerCount": 2,
+    "projectManager": "NULL"
+  },
+  "allPriced": {
+    "sheetId": "1792238686262469854",
+    "projection": {
+      "sheetStatus": "Ordered",
+      "sheetPriceState": "Priced",
+      "itemPriceState": "Priced",
+      "orderedQuantity": 5,
+      "purchasePrice": 100
+    },
+    "itemFacts": [
+      {
+        "purchaseItemId": "1792238686348761524",
+        "purchaseOrderId": "1792238686345064913",
+        "quantity": "5.000",
+        "unitPrice": "100.00",
+        "receivedQuantity": "0.000",
+        "priceState": "Priced",
+        "settlementPrice": null
+      }
+    ]
+  },
+  "allUnpriced": {
+    "sheetId": "1792238686858282816",
+    "projection": {
+      "sheetStatus": "Ordered",
+      "sheetPriceState": "Unpriced",
+      "itemPriceState": "Unpriced",
+      "orderedQuantity": 5
+    },
+    "itemFacts": [
+      {
+        "purchaseItemId": "1792238686936385136",
+        "purchaseOrderId": "1792238686936385135",
+        "quantity": "5.000",
+        "unitPrice": "0.00",
+        "receivedQuantity": "0.000",
+        "priceState": "Unpriced",
+        "settlementPrice": null
+      }
+    ],
+    "payables": [
+      {
+        "payableId": "1792238686960668638",
+        "purchaseOrderId": "1792238686936385135",
+        "payeePartnerId": "1792238686126079126",
+        "amount": "0.00",
+        "estimated": "1",
+        "settledAmount": null,
+        "status": "Pending"
+      }
+    ]
+  },
+  "allSettled": {
+    "sheetId": "1792238687509111581",
+    "projection": {
+      "sheetStatus": "Arrived",
+      "sheetPriceState": "Settled",
+      "itemPriceState": "Settled",
+      "orderedQuantity": 5,
+      "settlementPrice": 100
+    },
+    "itemFacts": [
+      {
+        "purchaseItemId": "1792238687587050202",
+        "purchaseOrderId": "1792238687584306614",
+        "quantity": "5.000",
+        "unitPrice": "100.00",
+        "receivedQuantity": "5.000",
+        "priceState": "Settled",
+        "settlementPrice": "100.00"
+      }
+    ],
+    "settlementId": "1792238687756197966",
+    "totalAmount": 500
+  },
+  "oldRoutes": {
+    "save": {
+      "success": false,
+      "errorCode": "canNotFoundHandler"
+    },
+    "batch": {
+      "success": false,
+      "errorCode": "canNotFoundHandler"
+    },
+    "historicalPurchaseRows": 20
+  },
+  "assistant": {
+    "golden": {
+      "pass": 50,
+      "total": 50,
+      "failures": []
+    },
+    "idempotency": {
+      "first": "237184079475245056",
+      "second": "237184079475245056"
+    },
+    "unknown": {
+      "intent": "OUT_OF_SCOPE",
+      "answerType": "REFUSAL"
+    },
+    "designer": {
+      "intent": "PROJECT_HEALTH",
+      "answer": "当前项目材料计划 2 条，待下单 0 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。"
+    }
+  },
+  "main": {
+    "sheetId": "1792238688310386662",
+    "itemId": "1792238688315858427",
+    "suppliers": {
+      "existingSupplierId": "1791842081487998780",
+      "tempPartnerId": "1792238686126079126"
+    },
+    "projectionAfterOrder": {
+      "sheetStatus": "Arrived",
+      "sheetPriceState": "Mixed",
+      "itemPriceState": "Mixed",
+      "orderedQuantity": 8,
+      "purchasePrice": 100
+    },
+    "projectionAfterCancel": {
+      "sheetStatus": "Arrived",
+      "sheetPriceState": "Mixed",
+      "itemPriceState": "Mixed",
+      "orderedQuantity": 8,
+      "purchasePrice": 100
+    },
+    "settlementId": "1792238688910003498",
+    "totalAmount": 600,
+    "purchaseIds": [
+      "1792238688385957456",
+      "1792238688588911214"
+    ],
+    "itemsAfterCancel": [
+      {
+        "purchaseItemId": "1792238688388445497",
+        "purchaseOrderId": "1792238688385957456",
+        "quantity": "3.000",
+        "unitPrice": "100.00",
+        "receivedQuantity": "3.000",
+        "priceState": "Priced",
+        "settlementPrice": null
+      },
+      {
+        "purchaseItemId": "1792238688589189310",
+        "purchaseOrderId": "1792238688588911214",
+        "quantity": "5.000",
+        "unitPrice": "0.00",
+        "receivedQuantity": "5.000",
+        "priceState": "Unpriced",
+        "settlementPrice": null
+      }
+    ],
+    "payablesAfterCancel": [
+      {
+        "payableId": "1792238688395636602",
+        "purchaseOrderId": "1792238688385957456",
+        "payeePartnerId": "1791842081487998780",
+        "amount": "300.00",
+        "estimated": "0",
+        "settledAmount": null,
+        "status": "Pending"
+      },
+      {
+        "payableId": "1792238688596772346",
+        "purchaseOrderId": "1792238688588911214",
+        "payeePartnerId": "1792238686126079126",
+        "amount": "0.00",
+        "estimated": "1",
+        "settledAmount": null,
+        "status": "Pending"
+      }
+    ]
+  },
+  "cleanup": {
+    "baseline": {
+      "db_material_order_sheet": 0,
+      "db_material_order_sheet_item": 0,
+      "db_purchase_order": 18,
+      "db_purchase_order_item": 18,
+      "db_goods_receipt": 18,
+      "db_material_settlement": 0,
+      "db_material_settlement_item": 0,
+      "db_finance_payable": 37,
+      "db_finance_payable_settlement": 0,
+      "db_partner": 2
+    },
+    "final": {
+      "db_material_order_sheet": 0,
+      "db_material_order_sheet_item": 0,
+      "db_purchase_order": 18,
+      "db_purchase_order_item": 18,
+      "db_goods_receipt": 18,
+      "db_material_settlement": 0,
+      "db_material_settlement_item": 0,
+      "db_finance_payable": 37,
+      "db_finance_payable_settlement": 0,
+      "db_partner": 2
+    },
+    "partnerCount": {
+      "baseline": 2,
+      "final": 2
+    },
+    "planBaseline": {
+      "status": "ReadyToOrder",
+      "quantity": "5.00",
+      "net_quantity": "5.00",
+      "loss_rate": "0.0000",
+      "loss_quantity": "0.00",
+      "unit_price": "88.00",
+      "cost": "310.00",
+      "selection_id": "NULL",
+      "arrived_at": "NULL"
+    },
+    "planFinal": "ReadyToOrder\t5.00\t5.00\t0.0000\t0.00\t88.00\t310.00\tNULL\tNULL",
+    "managerBaseline": "NULL",
+    "managerFinal": "NULL"
+  }
+}
