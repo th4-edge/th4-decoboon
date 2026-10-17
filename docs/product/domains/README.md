@@ -36,3 +36,13 @@ python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py next
 - 没有真实页面/真机证据，不算 UI 通过。
 - 开发者自测不等于独立验收。
 - 小程序正式版提审和发布由用户本人完成。
+
+## 全域交付总控
+
+多域并行或连续推进时，先读：
+
+- `DOMAIN-REGISTRY.md`
+- `PROGRAM-BOARD.json`
+- `PROGRAM-PROTOCOL.md`
+
+同一时间只允许一个域持有代码写租约。全域总控只编排，不直接修改业务代码。
