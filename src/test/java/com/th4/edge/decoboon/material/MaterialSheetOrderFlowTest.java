@@ -14,6 +14,7 @@ import com.th4.edge.decoboon.material.configure.SelectionStatus;
 import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
 import com.th4.edge.decoboon.material.context.MaterialSheetContext;
+import com.th4.edge.decoboon.material.context.MaterialSheetPriceProjectionContext;
 import com.th4.edge.decoboon.material.context.MaterialSheetTemplateContext;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheet;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
@@ -97,11 +98,13 @@ class MaterialSheetOrderFlowTest {
                     mock(PartnerPriceRepository.class)));
     private final MaterialSelectionContext selectionContext =
             new MaterialSelectionContext(selectionRepository, null, null, null, null, null, null);
+    private final MaterialSheetPriceProjectionContext priceProjectionContext =
+            new MaterialSheetPriceProjectionContext(itemRepository, purchaseItemRepository, sheetRepository);
 
     private final MaterialSheetContext context = new MaterialSheetContext(
             sheetRepository, itemRepository, planRepository, contractRepository, purchaseRepository,
             purchaseItemRepository, partnerRepository, accessContext, permissionContext, identityContext, tenantContext,
-            purchaseContext, selectionContext, templateContext);
+            purchaseContext, selectionContext, templateContext, priceProjectionContext);
 
     private Company company;
     private Project project;
@@ -185,6 +188,7 @@ class MaterialSheetOrderFlowTest {
                 .thenAnswer(invocation -> savedPurchaseItems.stream()
                         .filter(item -> item.getPurchaseOrder() == invocation.getArgument(0))
                         .toList());
+        when(purchaseItemRepository.findByMaterialPlan_PlanIdIn(any())).thenReturn(savedPurchaseItems);
         when(payableRepository.findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(any(), any()))
                 .thenReturn(Optional.empty());
         when(payableRepository.findFirstByCompany_ComIdAndSourceNoAndType(any(), any(), any()))
@@ -410,6 +414,43 @@ class MaterialSheetOrderFlowTest {
 
         assertThat(savedPurchases).as("重复请求只能生成一张采购单").hasSize(1);
         org.mockito.Mockito.verify(payableRepository, org.mockito.Mockito.times(1)).save(any());
+    }
+
+    @Test
+    void pricedAndUnpricedSplitShouldProjectMixedPriceState() {
+        MaterialPlan plan = plan(63L, new BigDecimal("8"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("8"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Submitted);
+        Long itemId = savedItems.get(0).getItemId();
+
+        MaterialOrderSheetItem priced = new MaterialOrderSheetItem();
+        priced.setItemId(itemId);
+        priced.setQuantity(new BigDecimal("3"));
+        priced.setPurchasePrice(new BigDecimal("100"));
+        context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null, List.of(priced));
+
+        MaterialOrderSheetItem unpriced = new MaterialOrderSheetItem();
+        unpriced.setItemId(itemId);
+        unpriced.setQuantity(new BigDecimal("5"));
+        unpriced.setPurchasePrice(null);
+        context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null, List.of(unpriced));
+
+        assertThat(savedPurchaseItems).as("两张采购明细").hasSize(2);
+        assertThat(savedPurchaseItems).extracting(PurchaseOrderItem::getPriceState)
+                .as("采购明细状态").containsExactlyInAnyOrder(SheetPriceState.Priced, SheetPriceState.Unpriced);
+        assertThat(savedPurchaseItems).extracting(item -> item.getPurchaseOrder().getStatus())
+                .as("采购单状态").containsOnly(PurchaseStatus.Ordered);
+        assertThat(savedPurchaseItems).extracting(item -> item.getMaterialPlan().getPlanId())
+                .as("采购明细计划").containsOnly(63L);
+        assertThat(savedItems.get(0).getMaterialPlan().getPlanId()).as("作业单行计划").isEqualTo(63L);
+        assertThat(purchaseItemRepository.findByMaterialPlan_PlanIdIn(List.of(63L)))
+                .as("投影查询可读到两张采购明细").hasSize(2);
+        assertThat(savedItems.get(0).getPriceState())
+                .as("Priced + Unpriced 多供应商拆单必须投影为 Mixed")
+                .isEqualTo(SheetPriceState.Mixed);
+        assertThat(currentSheet.getPriceState()).as("作业单价格状态").isEqualTo(SheetPriceState.Mixed);
     }
 
     @Test

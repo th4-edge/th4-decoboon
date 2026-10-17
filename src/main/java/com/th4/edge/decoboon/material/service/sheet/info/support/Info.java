@@ -95,6 +95,7 @@ public class Info implements com.th4.edge.decoboon.material.service.sheet.info.I
         MaterialOrderSheet sheet = context.info(current, sheetId);
         List<MaterialOrderSheetItem> items = context.items(sheetId);
         sheet.setItems(items);
+        context.applyPriceProjection(sheet, items);
         initializeProjection(sheet, items);
         return privacyContext.mask(sheet, current);
     }

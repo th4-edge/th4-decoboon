@@ -32,8 +32,8 @@
 | B6 | 独立验收与对账 | 黑盒验收、跨端、越权、幂等、边界 | `ACCEPTED`；无 UNMAPPED/STALE | FAIL（2026-10-17；121/127 PASS，5 P1/1 P2 开放） |
 | B6.1 | 修复 B6 独立验收缺陷 | 成本/采购/结算读权限、下单幂等、结算到场门禁、暂估应付投影 | `DEV_VERIFIED` + `RECONCILED` | COMPLETE (2026-10-17) |
 | B6.2 | B6 缺陷修复复验 | 独立复跑受影响矩阵与回归，不改实现 | `ACCEPTED` 或新缺陷 | FAIL（2026-10-17；149/150；B62-DEF-001 P2 开放） |
-| B6.3 | 修复 B62-DEF-001 多供应商价格投影 | 作业单行价格状态聚合、采购/结算读模型 | `DEV_VERIFIED` + `RECONCILED` | NEXT |
-| B6.4 | B62-DEF-001 聚焦独立复验 | 独立黑盒复跑多供应商拆单/部分结算和回归 | `ACCEPTED` 或新缺陷 | PENDING |
+| B6.3 | 修复 B62-DEF-001 多供应商价格投影 | 作业单行价格状态聚合、采购/结算读模型 | `DEV_VERIFIED` + `RECONCILED` | COMPLETE (2026-10-17) |
+| B6.4 | B62-DEF-001 聚焦独立复验 | 独立黑盒复跑多供应商拆单/部分结算和回归 | `ACCEPTED` 或新缺陷 | NEXT |
 | B7 | 材料业务助手上下文入口 | App/Web 上下文“问材料”抽屉、建议问题、证据/拒答/下一步展示；复用 `material/assistant/ask` | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | PENDING |
 | B8 | 助手 UI 聚焦独立验收 | 权限、证据、拒答、上下文、跨端一致性黑盒验收 | `ACCEPTED` | PENDING |
 | B9 | 体验版/发布准备（如涉及 App） | 构建、体验版上传、发布记录；不正式发布 | `RELEASED`（体验版）或用户决策包 | PENDING |

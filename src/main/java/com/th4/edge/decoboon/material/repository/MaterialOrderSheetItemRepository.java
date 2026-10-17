@@ -18,8 +18,11 @@ public interface MaterialOrderSheetItemRepository extends JpaRepository<Material
     @EntityGraph(attributePaths = {"materialPlan"})
     List<MaterialOrderSheetItem> findBySheet_SheetIdInOrderBySheet_SheetIdDescSortAscItemIdAsc(Collection<Long> sheetIds);
 
-    @EntityGraph(attributePaths = {"materialPlan"})
+    @EntityGraph(attributePaths = {"materialPlan", "sheet"})
     List<MaterialOrderSheetItem> findByMaterialPlan_PlanId(Long planId);
+
+    @EntityGraph(attributePaths = {"materialPlan", "sheet"})
+    List<MaterialOrderSheetItem> findByMaterialPlan_PlanIdIn(Collection<Long> planIds);
 
     long countBySheet_SheetId(Long sheetId);
 

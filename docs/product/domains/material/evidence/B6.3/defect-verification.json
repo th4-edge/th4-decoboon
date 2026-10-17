@@ -1,0 +1,71 @@
+{
+  "batch": "B6.3",
+  "date": "2026-10-17",
+  "defect": "B62-DEF-001",
+  "scenario": "同一作业单行分两次下单：3@100 Priced + 2 Unpriced；2 到场后按 120 结算；再撤销结算。",
+  "before": {
+    "sheetPriceState": "Mixed",
+    "item": {
+      "priceState": {
+        "name": "混合（部分已定价）",
+        "key": "Mixed"
+      },
+      "purchasePrice": 100.0,
+      "settlementPrice": null,
+      "orderedQuantity": 5.0
+    }
+  },
+  "confirm": {
+    "success": true,
+    "totalAmount": 240.0
+  },
+  "afterSettlement": {
+    "sheetPriceState": "Mixed",
+    "item": {
+      "priceState": {
+        "name": "混合（部分已定价）",
+        "key": "Mixed"
+      },
+      "purchasePrice": 100.0,
+      "settlementPrice": null,
+      "orderedQuantity": 5.0
+    }
+  },
+  "afterCancel": {
+    "sheetPriceState": "Mixed",
+    "item": {
+      "priceState": {
+        "name": "混合（部分已定价）",
+        "key": "Mixed"
+      },
+      "purchasePrice": 100.0,
+      "settlementPrice": null,
+      "orderedQuantity": 5.0
+    }
+  },
+  "result": "PASS",
+  "ui": {
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "console_errors": 0,
+    "text": "部分已结算",
+    "screenshot": "screenshots/b63-app-sheet-mixed-390x844.png"
+  },
+  "tests": {
+    "fullBackend": "mvn -q test -> 876/0/0/0 PASS",
+    "targeted": "MaterialSheetPriceProjectionContextTest + MaterialSheetOrderFlowTest + MaterialSettlementFlowTest PASS"
+  },
+  "cleanup": {
+    "status": "done",
+    "temporary_sheet_deleted": true,
+    "temporary_purchases_deleted": true,
+    "temporary_receipt_deleted": true,
+    "temporary_settlement_deleted": true,
+    "material_plan_restored": "ReadyToOrder/arrivedAt=null",
+    "credential_hashes_restored": true,
+    "ddl": false,
+    "production_touched": false,
+    "formal_mini_program_release": false
+  }
+}

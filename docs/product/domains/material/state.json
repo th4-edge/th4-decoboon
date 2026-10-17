@@ -5,8 +5,8 @@
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
   "phase": "RECONCILED",
-  "batch": "B6.2",
-  "nextAction": "B6.3 修复 B62-DEF-001 多供应商拆单后作业单价格投影；随后 B6.4 独立复验，不得宣称 ACCEPTED",
+  "batch": "B6.3",
+  "nextAction": "执行 B6.4 B62-DEF-001 聚焦独立复验；不得自批 ACCEPTED",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T17:21:35+08:00",
+  "updatedAt": "2026-10-17T18:11:14+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -190,6 +190,12 @@
       "phase": "RECONCILED",
       "batch": "B6.2",
       "note": "B6.2 独立复验 FAIL：150 项 149 PASS / 1 FAIL；原 B6 六缺陷 6/6 独立关闭；新 P2 B62-DEF-001：Priced+Unpriced/Settled 多供应商拆单后作业单 priceState 仍 Unpriced；证据 evidence/B6.2/"
+    },
+    {
+      "at": "2026-10-17T18:11:14+08:00",
+      "phase": "RECONCILED",
+      "batch": "B6.3",
+      "note": "B6.3 RECONCILED：新增采购明细价格状态聚合；Priced+Unpriced/Settled 投影 Mixed；部分结算与撤销实测 PASS；后端全量 876/0/0/0 PASS；App H5 390x844 真实页面 PASS；证据 evidence/B6.3/；临时数据与凭据已恢复"
     }
   ]
 }

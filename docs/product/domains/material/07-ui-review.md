@@ -201,3 +201,13 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - App `scrollWidth=innerWidth=390`，Console Errors 0；
 - 截图：`evidence/B6.2/screenshots/`；
 - UI 通过，但 B62-DEF-001 仍阻断 B6.2 整体通过。
+
+
+---
+
+# B6.3 多供应商价格状态 UI 验证
+
+- App H5 390×844 打开真实作业单详情：显示“部分已结算 / 部分到场”，与后端 Mixed 投影一致；
+- `scrollWidth=innerWidth=390`，Console Errors 0；
+- 截图：`evidence/B6.3/screenshots/b63-app-sheet-mixed-390x844.png`；
+- 无前端源码变更；B6.4 仍需独立复验。

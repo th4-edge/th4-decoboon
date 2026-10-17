@@ -1,0 +1,44 @@
+{
+  "scenario": "同一作业单行分两次下单：3@100 Priced + 2 Unpriced；2 到场后按 120 结算；再撤销结算。",
+  "before": {
+    "sheetPriceState": "Mixed",
+    "item": {
+      "priceState": {
+        "name": "混合（部分已定价）",
+        "key": "Mixed"
+      },
+      "purchasePrice": 100.0,
+      "settlementPrice": null,
+      "orderedQuantity": 5.0
+    }
+  },
+  "confirm": {
+    "success": true,
+    "totalAmount": 240.0
+  },
+  "afterSettlement": {
+    "sheetPriceState": "Mixed",
+    "item": {
+      "priceState": {
+        "name": "混合（部分已定价）",
+        "key": "Mixed"
+      },
+      "purchasePrice": 100.0,
+      "settlementPrice": null,
+      "orderedQuantity": 5.0
+    }
+  },
+  "afterCancel": {
+    "sheetPriceState": "Mixed",
+    "item": {
+      "priceState": {
+        "name": "混合（部分已定价）",
+        "key": "Mixed"
+      },
+      "purchasePrice": 100.0,
+      "settlementPrice": null,
+      "orderedQuantity": 5.0
+    }
+  },
+  "result": "PASS"
+}

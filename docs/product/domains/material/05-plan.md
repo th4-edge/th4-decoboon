@@ -16,8 +16,8 @@
 | B6 | 独立验收与对账 | independent | 全部 | 无实现 | App/Web | 正向/反向/越权/幂等/边界 | ACCEPTED | FAIL（2026-10-17；121/127） |
 | B6.1 | 修复 B6 独立验收缺陷 | Finance/Designer/PM | Sheet/Purchase/Settlement/Payable | 字段投影、角色门禁、幂等、到场门禁、暂估应付投影 | App/Web | 权限/金额/幂等/边界 | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
 | B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；149/150） |
-| B6.3 | 修复 B62-DEF-001 多供应商价格投影 | Finance/Designer/PM | Sheet/Purchase/Settlement | 价格状态与采购明细聚合读模型 | App/Web | Mixed/Priced/Settled/Unpriced | DEV_VERIFIED + RECONCILED | NEXT |
-| B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | PENDING |
+| B6.3 | 修复 B62-DEF-001 多供应商价格投影 | Finance/Designer/PM | Sheet/Purchase/Settlement | 价格状态与采购明细聚合读模型 | App/Web | Mixed/Priced/Settled/Unpriced | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
+| B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | NEXT |
 | B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
 | B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
 | B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
@@ -259,9 +259,18 @@
 - 影响 SCN-021 多供应商价格分批的读模型提示；采购/应付金额事实未错；
 - 证据：`evidence/B6.2/`；不得进入 `ACCEPTED`，下一批 B6.3。
 
-## B6.3 修复门槛（NEXT）
+## B6.3 修复记录（COMPLETE，2026-10-17）
 
 - 只在读模型中按采购明细聚合作业单行价格状态：Priced / Unpriced / Settled / Mixed 的组合要正确；
 - 不改变采购、应付、结算金额公式，不做 DDL；
 - 增加多供应商拆单、部分/全部结算、撤销后读模型回归；
 - 定向测试 + 全量测试 + App/Web 构建；停在 `RECONCILED`，B6.4 独立复验。
+
+
+### B6.3 完成记录
+
+- 新增 `MaterialSheetPriceProjectionContext`：按采购明细聚合 Priced/Unpriced/Settled/Mixed；
+- 读取时重算作业单行/单价格状态，下单/结算/撤销后同步冗余投影；
+- 实测：3@100 Priced + 2 Unpriced → Mixed；2 到场按 120 结算后仍 Mixed；撤销后仍 Mixed；
+- 后端全量 876/0/0/0 PASS；App H5 390×844 显示“部分已结算”，无横向溢出、Console Errors 0；
+- 证据：`evidence/B6.3/`；停在 RECONCILED，B6.4 独立复验。

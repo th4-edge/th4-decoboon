@@ -94,3 +94,13 @@
 - 采购/应付金额事实、权限、幂等、到场门禁、助手、旧路线、跨端和 UI 通过；
 - 证据：`evidence/B6.2/README.md`、`blackbox-results.json`、`defects.json`、`summary.json`、`screenshots/`；
 - 结论：不满足 `ACCEPTED`；下一批 B6.3 修复，B6.4 独立复验。
+
+
+---
+
+## B6.3 修复自测输入（不是独立验收）
+
+- `B62-DEF-001` 自测：Priced 3@100 + Unpriced 2 → Mixed；2 到场结算 120 后仍 Mixed；撤销后仍 Mixed；
+- 后端全量 876/0/0/0 PASS；App H5 真实页面显示“部分已结算”；
+- 证据：`evidence/B6.3/defect-verification.json`、`screenshots/`；
+- 仅用于进入 B6.4 独立复验，不能作为 `ACCEPTED` 依据。

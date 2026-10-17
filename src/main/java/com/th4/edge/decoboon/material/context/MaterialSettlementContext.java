@@ -58,6 +58,7 @@ public class MaterialSettlementContext {
     private final ProjectAccessContext accessContext;
     private final MaterialPurchaseContext materialPurchaseContext;
     private final ModelIdentityContext modelIdentityContext;
+    private final MaterialSheetPriceProjectionContext priceProjectionContext;
 
     public MaterialSettlementContext(MaterialSettlementRepository settlementRepository,
                                      MaterialSettlementItemRepository settlementItemRepository,
@@ -68,7 +69,8 @@ public class MaterialSettlementContext {
                                      PartnerRepository partnerRepository,
                                      ProjectAccessContext accessContext,
                                      MaterialPurchaseContext materialPurchaseContext,
-                                     ModelIdentityContext modelIdentityContext) {
+                                     ModelIdentityContext modelIdentityContext,
+                                     MaterialSheetPriceProjectionContext priceProjectionContext) {
         this.settlementRepository = settlementRepository;
         this.settlementItemRepository = settlementItemRepository;
         this.purchaseOrderRepository = purchaseOrderRepository;
@@ -79,6 +81,7 @@ public class MaterialSettlementContext {
         this.accessContext = accessContext;
         this.materialPurchaseContext = materialPurchaseContext;
         this.modelIdentityContext = modelIdentityContext;
+        this.priceProjectionContext = priceProjectionContext;
     }
 
     public List<MaterialSettlement> page(Employee principal, Long supplierId) {
@@ -261,6 +264,13 @@ public class MaterialSettlementContext {
 
         // 实际成本补记：按「结算价 − 采购价」差额累计（无价采购的采购价为 0，等于全额补记）
         applyActualCostDelta(lines, itemsById);
+        priceProjectionContext.syncByPlanIds(itemsById.values().stream()
+                .map(PurchaseOrderItem::getMaterialPlan)
+                .filter(java.util.Objects::nonNull)
+                .map(MaterialPlan::getPlanId)
+                .filter(java.util.Objects::nonNull)
+                .distinct()
+                .toList());
 
         saved.setTotalAmount(total);
         saved.setItems(persistedItems);
@@ -325,6 +335,15 @@ public class MaterialSettlementContext {
             settlePayableBackToEstimated(current, order);
         }
         applyCostDeltaByQuoteLine(deltaByQuoteLine);
+        priceProjectionContext.syncByPlanIds(items.stream()
+                .map(MaterialSettlementItem::getPurchaseItem)
+                .filter(java.util.Objects::nonNull)
+                .map(PurchaseOrderItem::getMaterialPlan)
+                .filter(java.util.Objects::nonNull)
+                .map(MaterialPlan::getPlanId)
+                .filter(java.util.Objects::nonNull)
+                .distinct()
+                .toList());
 
         settlement.setStatus(SettlementStatus.Cancelled);
         settlement.setCancelledBy(current);

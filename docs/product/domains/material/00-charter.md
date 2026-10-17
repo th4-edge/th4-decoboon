@@ -131,5 +131,5 @@
 - 场景：`SCN-005`、`SCN-006`、`SCN-021`
 - 决策：`DEC-008`、`DEC-056`、`DEC-072`、`DEC-073`、`DEC-074`
 - 约束：`DEC-029`/`BR-027`（禁止数据库锁，使用 RedissonLock）
-- 当前实现：App 1.0.56 体验版、后端 `97d5705`/release `20261017-112330`；B5 App 单端材料下单与结算闭环已 RECONCILED；B6 独立验收 FAIL（121/127，6 个缺陷开放）；B6.1 已完成修复并 RECONCILED；B6.2 独立复验 149/150 PASS，原 6 缺陷关闭，但新发现 B62-DEF-001（多供应商价格投影仍 Unpriced）开放，下一批 B6.3 修复。B7 材料业务助手上下文入口已排入队列
+- 当前实现：App 1.0.56 体验版、后端 `97d5705`/release `20261017-112330`；B5 App 单端材料下单与结算闭环已 RECONCILED；B6 独立验收 FAIL（121/127，6 个缺陷开放）；B6.1 已完成修复并 RECONCILED；B6.2 独立复验 149/150 PASS，原 6 缺陷关闭，但新发现 B62-DEF-001（多供应商价格投影仍 Unpriced）；B6.3 已修复并 RECONCILED，待 B6.4 聚焦独立复验。B7 材料业务助手上下文入口已排入队列
 - 当前蓝图：`docs/product/domains/material/03-blueprint.json` v1.0.0（`BLUEPRINT_READY`）

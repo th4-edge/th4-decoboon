@@ -328,3 +328,24 @@
 - 实际页面证据：Web `/finance/payables` 1440×900、App H5 390×844；暂估文案和禁用付款正确；
 - 临时业务数据、计划状态、项目经理和测试凭据已恢复；
 - 证据：`evidence/B6.2/`；结论不支持 `ACCEPTED`，下一批 B6.3 修复 B62-DEF-001。
+
+
+---
+
+# B6.3 B62-DEF-001 修复
+
+- 新增 `MaterialSheetPriceProjectionContext`，按材料计划批量读取采购明细并聚合价格状态：
+  - 全部 Priced → Priced；
+  - 全部 Unpriced → Unpriced；
+  - 全部 Settled → Settled；
+  - 任一 Mixed 或 Priced/Unpriced/Settled 组合 → Mixed；
+- `material/sheet/info|page` 读取时重算行与单状态，不回写；
+- 下单后、结算确认后、撤销结算后同步冗余投影；
+- 修正单级 `refreshSheetPriceState`，Mixed 不再被误判为 Unpriced；
+- 不新增实体/表/DDL，不改变采购、应付、结算金额公式。
+- 验证：
+  - 后端全量 `mvn -q test` → **876 / 0 / 0 / 0 PASS**；
+  - 定向：`MaterialSheetPriceProjectionContextTest`、`MaterialSheetOrderFlowTest`、`MaterialSettlementFlowTest` PASS；
+  - 真实 H5 390×844：拆单+部分结算页面显示“部分已结算”，无横向溢出，Console Errors 0；
+  - 证据：`evidence/B6.3/`。
+- 临时作业单/采购/到场/结算已清理，材料计划恢复 ReadyToOrder，测试密码哈希已恢复；未发布。

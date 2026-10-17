@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.material.configure.SettlementScope;
 import com.th4.edge.decoboon.material.configure.SettlementStatus;
 import com.th4.edge.decoboon.material.configure.SheetPriceState;
 import com.th4.edge.decoboon.material.context.MaterialSettlementContext;
+import com.th4.edge.decoboon.material.context.MaterialSheetPriceProjectionContext;
 import com.th4.edge.decoboon.material.model.MaterialSettlement;
 import com.th4.edge.decoboon.material.model.MaterialSettlementItem;
 import com.th4.edge.decoboon.material.model.SettlementPreviewRow;
@@ -63,10 +64,12 @@ class MaterialSettlementFlowTest {
     private final ProjectAccessContext accessContext = mock(ProjectAccessContext.class);
     private final MaterialPurchaseContext purchaseContext = mock(MaterialPurchaseContext.class);
     private final ModelIdentityContext identityContext = mock(ModelIdentityContext.class);
+    private final MaterialSheetPriceProjectionContext priceProjectionContext = mock(MaterialSheetPriceProjectionContext.class);
 
     private final MaterialSettlementContext context = new MaterialSettlementContext(
             settlementRepository, settlementItemRepository, purchaseOrderRepository, purchaseItemRepository,
-            payableRepository, quoteLineRepository, partnerRepository, accessContext, purchaseContext, identityContext);
+            payableRepository, quoteLineRepository, partnerRepository, accessContext, purchaseContext, identityContext,
+            priceProjectionContext);
 
     private Company company;
     private Employee finance;

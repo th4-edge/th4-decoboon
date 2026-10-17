@@ -97,6 +97,7 @@ public class Page implements com.th4.edge.decoboon.material.service.sheet.page.P
         List<MaterialOrderSheet> sheets = context.page(current, projectId, sheetType, status);
         for (MaterialOrderSheet sheet : sheets) {
             sheet.setItems(context.items(sheet.getSheetId()));
+            context.applyPriceProjection(sheet, sheet.getItems());
             initializeProjection(sheet, sheet.getItems());
         }
         return privacyContext.maskSheets(sheets, current);

@@ -78,6 +78,7 @@ public class MaterialSheetContext {
     private final ModelIdentityContext modelIdentityContext;
     private final TenantContext tenantContext;
     private final MaterialPurchaseContext materialPurchaseContext;
+    private final MaterialSheetPriceProjectionContext priceProjectionContext;
     private final MaterialSelectionContext materialSelectionContext;
     private final MaterialSheetTemplateContext templateContext;
 
@@ -94,7 +95,8 @@ public class MaterialSheetContext {
                                 TenantContext tenantContext,
                                 MaterialPurchaseContext materialPurchaseContext,
                                 MaterialSelectionContext materialSelectionContext,
-                                MaterialSheetTemplateContext templateContext) {
+                                MaterialSheetTemplateContext templateContext,
+                                     MaterialSheetPriceProjectionContext priceProjectionContext) {
         this.sheetRepository = sheetRepository;
         this.itemRepository = itemRepository;
         this.materialPlanRepository = materialPlanRepository;
@@ -107,6 +109,7 @@ public class MaterialSheetContext {
         this.modelIdentityContext = modelIdentityContext;
         this.tenantContext = tenantContext;
         this.materialPurchaseContext = materialPurchaseContext;
+        this.priceProjectionContext = priceProjectionContext;
         this.materialSelectionContext = materialSelectionContext;
         this.templateContext = templateContext;
     }
@@ -133,6 +136,11 @@ public class MaterialSheetContext {
 
     public List<MaterialOrderSheetItem> items(Long sheetId) {
         return itemRepository.findBySheet_SheetIdOrderBySortAscItemIdAsc(sheetId);
+    }
+
+    /** 读取响应使用：从采购明细聚合行/单价格状态，不回写数据库。 */
+    public void applyPriceProjection(MaterialOrderSheet sheet, List<MaterialOrderSheetItem> lines) {
+        priceProjectionContext.apply(sheet, lines);
     }
 
     /** 已进入采购的作业单状态（聚合口径的过滤条件，避免把枚举判断放进 Java 循环）。 */
@@ -463,11 +471,10 @@ public class MaterialSheetContext {
 
         for (OrderLine orderLine : orderLines) {
             MaterialOrderSheetItem line = orderLine.line();
-            line.setPurchasePrice(orderLine.unitPrice());
-            line.setPriceState(orderLine.priceState());
             line.setOrderedQuantity(value(line.getOrderedQuantity()).add(orderLine.quantity()));
             itemRepository.save(line);
         }
+        priceProjectionContext.persist(sheetLines);
         refreshSheetPriceState(sheet, sheetLines);
         boolean fullyOrdered = sheetLines.stream()
                 .allMatch(line -> value(line.getOrderedQuantity()).compareTo(value(line.getQuantity())) >= 0);
@@ -720,14 +727,18 @@ public class MaterialSheetContext {
             sheet.setPriceState(SheetPriceState.Unpriced);
             return;
         }
-        long priced = lines.stream().filter(line -> line.getPriceState() == SheetPriceState.Priced
-                || line.getPriceState() == SheetPriceState.Settled).count();
-        if (priced == 0) {
-            sheet.setPriceState(SheetPriceState.Unpriced);
+        long priced = lines.stream().filter(line -> line.getPriceState() == SheetPriceState.Priced).count();
+        long settled = lines.stream().filter(line -> line.getPriceState() == SheetPriceState.Settled).count();
+        long unpriced = lines.stream().filter(line -> line.getPriceState() == SheetPriceState.Unpriced).count();
+        long mixed = lines.stream().filter(line -> line.getPriceState() == SheetPriceState.Mixed).count();
+        if (mixed > 0 || (priced > 0 && unpriced > 0) || (settled > 0 && (priced > 0 || unpriced > 0))) {
+            sheet.setPriceState(SheetPriceState.Mixed);
+        } else if (settled == lines.size()) {
+            sheet.setPriceState(SheetPriceState.Settled);
         } else if (priced == lines.size()) {
             sheet.setPriceState(SheetPriceState.Priced);
         } else {
-            sheet.setPriceState(SheetPriceState.Mixed);
+            sheet.setPriceState(SheetPriceState.Unpriced);
         }
     }
 
