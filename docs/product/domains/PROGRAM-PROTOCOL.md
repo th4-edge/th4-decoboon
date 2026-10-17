@@ -119,6 +119,32 @@ SCENARIOS_READY
 6. 更新 `PROGRAM-BOARD.json` 的观测时间、阻塞和下一动作；
 7. 只在门禁变化、失败、需要决策或全域收口时通知。
 
+## 7.1 10 分钟轻量巡检
+
+全域总控每 10 分钟先运行：
+
+```bash
+python3 .agents/skills/domain-delivery-orchestrator/scripts/program_watch.py --json
+```
+
+脚本只读检查：
+
+- `PROGRAM-BOARD.json` 当前租约；
+- material / contract-change 的 `state.json`；
+- 后端 `src/main`、`src/test` 的脏文件；
+- App `src`、`pages.json` 的脏文件；
+- Web `src` 的脏文件；
+- 3306/8090/8080 端口占用；
+- 租约域状态是否连续 3 小时未变化；
+- 关键状态指纹 `fingerprint`。
+
+执行规则：
+
+1. `changed=false` 且 `action=WAIT`：静默结束，不读取全部协议、不修改文件、不通知；
+2. `changed=true` 或 `action != WAIT`：进入深度检查；
+3. 有实际租约/门禁/阻塞变化时，把最新 fingerprint 写回 `programSupervisor.lastFingerprint`；
+4. 纯时间戳变化不制造 Git 提交。
+
 ## 8. 通知条件
 
 允许通知：
