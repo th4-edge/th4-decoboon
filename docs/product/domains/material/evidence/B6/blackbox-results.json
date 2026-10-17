@@ -1,0 +1,1413 @@
+[
+ {
+  "id": "P01",
+  "category": "positive",
+  "expected": "财务可建立临时供应商用于多供应商验收",
+  "actual": "partner/save success；临时供应商ID 1792220891313776894",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P01"
+  ],
+  "notes": "验收后已删除"
+ },
+ {
+  "id": "P02",
+  "category": "positive",
+  "expected": "Designer 可从材料计划行创建作业单草稿",
+  "actual": "sheetId 1792220891340796153，status=Draft，line qty=7",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P02",
+   "screenshots/b6-h5-workbench-submitted.png"
+  ],
+  "notes": "材料计划行来源"
+ },
+ {
+  "id": "P03",
+  "category": "positive",
+  "expected": "PM 可确认测量/配送/安装时间",
+  "actual": "measure success，measureAt=2026-10-17；PM 项目可见数为1",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P03"
+  ],
+  "notes": "测试前临时把PM设为项目负责人，验收后恢复 manager_id=NULL"
+ },
+ {
+  "id": "P04",
+  "category": "positive",
+  "expected": "Designer 可提交请购",
+  "actual": "submit success，status=Submitted",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P04",
+   "screenshots/b6-h5-workbench-submitted.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P05",
+  "category": "positive",
+  "expected": "Finance 可按供应商下单（有价）",
+  "actual": "order success；采购单 3㎡×100，金额300",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P06",
+  "category": "positive",
+  "expected": "Finance 可对同一作业单拆单到第二供应商（无价）",
+  "actual": "order success；采购单 1㎡，Unpriced，amount=0，estimated payable=true",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P06"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P07",
+  "category": "positive",
+  "expected": "PM 可确认到场",
+  "actual": "goods-receipt/save success，A单 received=3/3，status=Received",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P07"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P08",
+  "category": "positive",
+  "expected": "Designer 可确认到场",
+  "actual": "goods-receipt/save success，A2单 received=3/3",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P08"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P09",
+  "category": "positive",
+  "expected": "Designer 可确认无价采购到场",
+  "actual": "goods-receipt/save success，B单 received=1/1，未阻断履约",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P09"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P10",
+  "category": "positive",
+  "expected": "所有行到场后作业单状态推进到 Arrived",
+  "actual": "sheet status=Arrived，orderedQuantity=7/7",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P10",
+   "screenshots/b6-h5-sheet-detail-arrived.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P11",
+  "category": "positive",
+  "expected": "逐单结算 A（3㎡）成功",
+  "actual": "settlement success，totalAmount=330，status=Confirmed",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P11"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P12",
+  "category": "positive",
+  "expected": "逐单结算 A2（3㎡）成功",
+  "actual": "settlement success，totalAmount=300",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P12"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P13",
+  "category": "positive",
+  "expected": "月结 B（供应商+2026-10）成功",
+  "actual": "settlement success，scope=Monthly，totalAmount=120",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P13"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P14",
+  "category": "positive",
+  "expected": "既有采购单 C（5㎡）逐单结算成功",
+  "actual": "settlement success，totalAmount=500",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P14"
+  ],
+  "notes": "既有造数数据；验收后恢复"
+ },
+ {
+  "id": "P15",
+  "category": "positive",
+  "expected": "全部应计成本结算后收敛",
+  "actual": "costComplete=true，costIncompleteCount=0，profitAmount=-1554.25，grossMargin=-62.3",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P15"
+  ],
+  "notes": "finance/project/report 同源验证"
+ },
+ {
+  "id": "P16",
+  "category": "positive",
+  "expected": "撤销全部结算后成本回退",
+  "actual": "costComplete=false，profitAmount=null，grossMargin=null；应付回到采购价口径",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P16"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "P17",
+  "category": "positive",
+  "expected": "历史采购查询与到场记录仍可用",
+  "actual": "project/purchase/page total=4；project/goods-receipt/page 返回1条到场记录",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#P17"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "N01",
+  "category": "negative",
+  "expected": "未完成选材的材料计划行不可建作业单",
+  "actual": "400：该材料尚未完成主材选材，完成后方可下单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N01"
+  ],
+  "notes": "临时断开计划选材关联后恢复，选材状态未被改写"
+ },
+ {
+  "id": "N02",
+  "category": "negative",
+  "expected": "超量建单被拦截",
+  "actual": "400：本次下单量超过可下单数量 5",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N02"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "N03",
+  "category": "negative",
+  "expected": "缺测量时间的作业单不可提交",
+  "actual": "400：提交请购前请先完成：测量时间",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N03"
+  ],
+  "notes": "临时草稿已删除"
+ },
+ {
+  "id": "N04",
+  "category": "negative",
+  "expected": "已进入采购/到场的作业单不可直接取消",
+  "actual": "400：已进入采购的作业单不能直接取消；请走采购调整或退货",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N04"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "N05",
+  "category": "negative",
+  "expected": "PM 不可创建作业单",
+  "actual": "403：只有设计师、企业负责人或店长可以维护主材下单作业单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "N06",
+  "category": "negative",
+  "expected": "Finance 不可创建作业单",
+  "actual": "403：只有设计师、企业负责人或店长可以维护主材下单作业单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N06"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "N07",
+  "category": "negative",
+  "expected": "有下单权限但空明细的请求被拒绝",
+  "actual": "400：作业单尚未提交请购，不能下单（权限门已通过，非403）",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#N07"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X01",
+  "category": "permission",
+  "expected": "Boss 可下单/可读结算候选",
+  "actual": "order 空明细返回400而非403；settlement/preview success rows=1",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X01"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X02",
+  "category": "permission",
+  "expected": "StoreManager 可下单/可读结算候选",
+  "actual": "order 空明细返回400而非403；settlement/preview success rows=1",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X02"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X03",
+  "category": "permission",
+  "expected": "Finance 可下单/可结算",
+  "actual": "实际下单、结算、撤销全部成功",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X03"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X04",
+  "category": "permission",
+  "expected": "Designer 不可下单",
+  "actual": "403：只有企业负责人、店长或财务可以确认采购下单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X04"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X05",
+  "category": "permission",
+  "expected": "Designer 不可确认结算",
+  "actual": "403：只有企业负责人、店长或财务可以确认采购下单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X06",
+  "category": "permission",
+  "expected": "PM 不可下单",
+  "actual": "403：只有企业负责人、店长或财务可以确认采购下单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X06"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X07",
+  "category": "permission",
+  "expected": "PM 不可确认结算",
+  "actual": "403：只有企业负责人、店长或财务可以确认采购下单",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X07"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X08",
+  "category": "permission",
+  "expected": "Designer/PM 不可查看含成本的业务体检",
+  "actual": "两者均403：当前账号无权执行该操作",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X08"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X09",
+  "category": "permission",
+  "expected": "Designer/PM 不可查看财务应付",
+  "actual": "两者均403：当前账号无权执行该操作",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X09"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X10",
+  "category": "permission",
+  "expected": "Designer/PM 不可查看结算单金额与供应商",
+  "actual": "两者 material/settlement/page 和 info 均 success，返回 totalAmount=500/300/330 与供应商",
+  "result": "FAIL",
+  "evidence": [
+   "blackbox-results.json#X10"
+  ],
+  "notes": "P1权限缺陷 B6-DEF-003"
+ },
+ {
+  "id": "X11",
+  "category": "permission",
+  "expected": "Designer/PM 不可查看采购金额与供应商",
+  "actual": "两者 project/purchase/page success，返回 amount=300、supplierName=造数供应商",
+  "result": "FAIL",
+  "evidence": [
+   "blackbox-results.json#X11"
+  ],
+  "notes": "P1权限缺陷 B6-DEF-002"
+ },
+ {
+  "id": "X12",
+  "category": "permission",
+  "expected": "Designer 不可看到作业单成本字段",
+  "actual": "material/sheet/info 返回 quoteCostPrice=120.0；页面文案却称作业单不承载价格/成本",
+  "result": "FAIL",
+  "evidence": [
+   "blackbox-results.json#X12"
+  ],
+  "notes": "P1权限缺陷 B6-DEF-001"
+ },
+ {
+  "id": "X13",
+  "category": "permission",
+  "expected": "跨企业项目详情 404/403",
+  "actual": "Boss S 访问 M 项目返回404：项目不存在或无权访问",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X13"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X14",
+  "category": "permission",
+  "expected": "跨企业项目体检 404/403",
+  "actual": "Boss S 返回404",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X14"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X15",
+  "category": "permission",
+  "expected": "跨企业结算候选不得泄漏",
+  "actual": "Boss S 返回 success=true 但 rows=0",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X15"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X16",
+  "category": "permission",
+  "expected": "跨企业作业单列表不得泄漏",
+  "actual": "Boss S 返回空集",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X16"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X17",
+  "category": "permission",
+  "expected": "跨企业作业单详情/下单 404/403",
+  "actual": "sheet/info 与 sheet/order 均404",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X17"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "X18",
+  "category": "permission",
+  "expected": "店长不可查看其他门店项目",
+  "actual": "StoreManager A 访问 C 店项目返回404",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#X18"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "I01",
+  "category": "idempotency",
+  "expected": "同一订单请求重复提交不得重复生成采购/应付",
+  "actual": "两次完全相同的 material/sheet/order 均 success；生成两张采购单和两条应付（各300元）",
+  "result": "FAIL",
+  "evidence": [
+   "blackbox-results.json#I01"
+  ],
+  "notes": "P1幂等缺陷 B6-DEF-004"
+ },
+ {
+  "id": "I02",
+  "category": "idempotency",
+  "expected": "重复结算不得重复计入",
+  "actual": "第二次 confirm 返回400：该采购明细已结算，不允许重复计入",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#I02"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "I03",
+  "category": "idempotency",
+  "expected": "重复到场不得重复累计",
+  "actual": "第二次到场返回400，purchase received_quantity 仍为3",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#I03"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "I04",
+  "category": "idempotency",
+  "expected": "重复提交已到场作业单被拒绝",
+  "actual": "400：已进入采购（已到场），不能再修改",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#I04"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "I05",
+  "category": "idempotency",
+  "expected": "助手重复 requestId/idempotencyKey 审计稳定",
+  "actual": "两次返回同一 auditId=237110033547001856，状态RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#I05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "I06",
+  "category": "idempotency",
+  "expected": "重复撤销结算不重复生效",
+  "actual": "第二次 cancel success，结算仍为Cancelled，未生成新结算明细",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#I06"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "B01",
+  "category": "boundary",
+  "expected": "无价下单形成暂估应付",
+  "actual": "DB estimated=true；App/Provider 显示 Unpriced",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#B01"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "B02",
+  "category": "boundary",
+  "expected": "无价/混合价不得在作业单/下单页用0冒充",
+  "actual": "下单页显示“未定价”“可留空=未定价”“成本待结算”",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#B02",
+   "screenshots/b6-h5-sheet-order.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "B03",
+  "category": "boundary",
+  "expected": "成本不完整时利润/毛利率为null",
+  "actual": "costComplete=false，profitAmount=null，grossMargin=null",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#B03"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "B04",
+  "category": "boundary",
+  "expected": "采购明细未到场的不得结算",
+  "actual": "settlement/preview 返回 receivedQuantity=0 的行；confirm 仍 success，生成330元结算",
+  "result": "FAIL",
+  "evidence": [
+   "blackbox-results.json#B04"
+  ],
+  "notes": "P1业务门禁缺陷 B6-DEF-005"
+ },
+ {
+  "id": "B05",
+  "category": "boundary",
+  "expected": "结算后成本收敛",
+  "actual": "全部结算后 costComplete=true，profitAmount=-1554.25，grossMargin=-62.3",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#B05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "B06",
+  "category": "boundary",
+  "expected": "撤销结算后利润回退",
+  "actual": "撤销后 costComplete=false，profitAmount=null，grossMargin=null",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#B06"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "B07",
+  "category": "boundary",
+  "expected": "暂估应付不得显示为0且应可识别",
+  "actual": "finance/payable/page 返回 amount=0.0，且投影未含 estimated/settledAmount",
+  "result": "FAIL",
+  "evidence": [
+   "blackbox-results.json#B07"
+  ],
+  "notes": "P2读模型缺陷 B6-DEF-006"
+ },
+ {
+  "id": "B08",
+  "category": "boundary",
+  "expected": "空项目不得伪装材料履约完成",
+  "actual": "hasMaterialPlan=false，totalItems=0，stageKey=material-plan，profitAmount=null；B2/B3空态证据一致",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#B08"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "O01",
+  "category": "old-route",
+  "expected": "project/purchase/save 不可达",
+  "actual": "canNotFoundHandler：找不到对应的处理服务",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#O01"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "O02",
+  "category": "old-route",
+  "expected": "project/purchase/batch 不可达",
+  "actual": "canNotFoundHandler：找不到对应的处理服务",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#O02"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "O03",
+  "category": "old-route",
+  "expected": "App 旧页面不可达",
+  "actual": "material-batch-order / purchase-edit / material-plan-picker 路由均为空白页面并记录 Vue Router no match",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#O03",
+   "screenshots/b6-h5-old-entry-unreachable.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "O04",
+  "category": "old-route",
+  "expected": "材料计划/供应商页不得有直采入口",
+  "actual": "页面文案：下单统一从主材作业单发起；仅保留主材下单工作台/材料计划工作台/主材结算/采购进度",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#O04",
+   "screenshots/b6-h5-subpackages-project-pages-material-plan-workbench.png",
+   "screenshots/b6-h5-subpackages-supply-pages-index.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "O05",
+  "category": "old-route",
+  "expected": "历史采购查询/到场仍存在",
+  "actual": "purchase page 与 goods-receipt page 均返回真实历史数据",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#O05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "A-Q01",
+  "category": "assistant",
+  "expected": "意图 SELECTION_GATE，有证据引用，只读且审计",
+  "actual": "intent=SELECTION_GATE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q01"
+  ],
+  "notes": "主材还没选材，为什么不能下单？"
+ },
+ {
+  "id": "A-Q02",
+  "category": "assistant",
+  "expected": "意图 SELECTION_GATE，有证据引用，只读且审计",
+  "actual": "intent=SELECTION_GATE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q02"
+  ],
+  "notes": "材料计划行什么时候才算可以进入采购？"
+ },
+ {
+  "id": "A-Q03",
+  "category": "assistant",
+  "expected": "意图 SELECTION_GATE，有证据引用，只读且审计",
+  "actual": "intent=SELECTION_GATE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q03"
+  ],
+  "notes": "进入采购后还能换材料吗？"
+ },
+ {
+  "id": "A-Q04",
+  "category": "assistant",
+  "expected": "意图 SELECTION_GATE，有证据引用，只读且审计",
+  "actual": "intent=SELECTION_GATE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q04"
+  ],
+  "notes": "哪些材料行必须先完成选材确认？"
+ },
+ {
+  "id": "A-Q05",
+  "category": "assistant",
+  "expected": "意图 TIME_SEMANTICS，有证据引用，只读且审计",
+  "actual": "intent=TIME_SEMANTICS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q05"
+  ],
+  "notes": "作业单里的测量日期是什么意思？"
+ },
+ {
+  "id": "A-Q06",
+  "category": "assistant",
+  "expected": "意图 TIME_SEMANTICS，有证据引用，只读且审计",
+  "actual": "intent=TIME_SEMANTICS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q06"
+  ],
+  "notes": "配送日期和安装日期是系统确认时间吗？"
+ },
+ {
+  "id": "A-Q07",
+  "category": "assistant",
+  "expected": "意图 TIME_SEMANTICS，有证据引用，只读且审计",
+  "actual": "intent=TIME_SEMANTICS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q07"
+  ],
+  "notes": "要求到场和实际到场有什么区别？"
+ },
+ {
+  "id": "A-Q08",
+  "category": "assistant",
+  "expected": "意图 TIME_SEMANTICS，有证据引用，只读且审计",
+  "actual": "intent=TIME_SEMANTICS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q08"
+  ],
+  "notes": "拉群时间和测量时间是一回事吗？"
+ },
+ {
+  "id": "A-Q09",
+  "category": "assistant",
+  "expected": "意图 TIME_SEMANTICS，有证据引用，只读且审计",
+  "actual": "intent=TIME_SEMANTICS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q09"
+  ],
+  "notes": "请购时间和建单时间、采购下单时间怎么区分？"
+ },
+ {
+  "id": "A-Q10",
+  "category": "assistant",
+  "expected": "意图 SHEET_VS_PURCHASE，有证据引用，只读且审计",
+  "actual": "intent=SHEET_VS_PURCHASE，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q10"
+  ],
+  "notes": "作业单和采购单有什么区别？"
+ },
+ {
+  "id": "A-Q11",
+  "category": "assistant",
+  "expected": "意图 SHEET_VS_PURCHASE，有证据引用，只读且审计",
+  "actual": "intent=SHEET_VS_PURCHASE，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q11"
+  ],
+  "notes": "为什么一张作业单可以对应多张采购单？"
+ },
+ {
+  "id": "A-Q12",
+  "category": "assistant",
+  "expected": "意图 SHEET_VS_PURCHASE，有证据引用，只读且审计",
+  "actual": "intent=SHEET_VS_PURCHASE，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q12"
+  ],
+  "notes": "作业单上为什么不显示价格和账期？"
+ },
+ {
+  "id": "A-Q13",
+  "category": "assistant",
+  "expected": "意图 SUPPLIER，有证据引用，只读且审计",
+  "actual": "intent=SUPPLIER，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q13"
+  ],
+  "notes": "厂家名称和供应商是一回事吗？"
+ },
+ {
+  "id": "A-Q14",
+  "category": "assistant",
+  "expected": "意图 SHEET_STATUS，有证据引用，只读且审计",
+  "actual": "intent=SHEET_STATUS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q14"
+  ],
+  "notes": "这张作业单为什么不能提交请购？"
+ },
+ {
+  "id": "A-Q15",
+  "category": "assistant",
+  "expected": "意图 SHEET_STATUS，有证据引用，只读且审计",
+  "actual": "intent=SHEET_STATUS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q15"
+  ],
+  "notes": "作业单进入采购后为什么不能编辑？"
+ },
+ {
+  "id": "A-Q16",
+  "category": "assistant",
+  "expected": "意图 SHEET_STATUS，有证据引用，只读且审计",
+  "actual": "intent=SHEET_STATUS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q16"
+  ],
+  "notes": "作业单还能直接取消吗？"
+ },
+ {
+  "id": "A-Q17",
+  "category": "assistant",
+  "expected": "意图 SHEET_STATUS，有证据引用，只读且审计",
+  "actual": "intent=SHEET_STATUS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q17"
+  ],
+  "notes": "测量字段没填能提交请购吗？"
+ },
+ {
+  "id": "A-Q18",
+  "category": "assistant",
+  "expected": "意图 SHEET_STATUS，有证据引用，只读且审计",
+  "actual": "intent=SHEET_STATUS，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q18"
+  ],
+  "notes": "作业单现在下一步该做什么？"
+ },
+ {
+  "id": "A-Q19",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q19"
+  ],
+  "notes": "未定价为什么还能下单？"
+ },
+ {
+  "id": "A-Q20",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q20"
+  ],
+  "notes": "暂估应付是什么意思？"
+ },
+ {
+  "id": "A-Q21",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q21"
+  ],
+  "notes": "材料成本不完整为什么利润不能显示？"
+ },
+ {
+  "id": "A-Q22",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q22"
+  ],
+  "notes": "P1、P2、P3 分别是什么价格？"
+ },
+ {
+  "id": "A-Q23",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q23"
+  ],
+  "notes": "结算价会写回供应商参考价吗？"
+ },
+ {
+  "id": "A-Q24",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q24"
+  ],
+  "notes": "无价采购到场后成本怎么算？"
+ },
+ {
+  "id": "A-Q25",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q25"
+  ],
+  "notes": "为什么项目毛利是空的？"
+ },
+ {
+  "id": "A-Q26",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q26"
+  ],
+  "notes": "采购价和结算价哪个进入实际成本？"
+ },
+ {
+  "id": "A-Q27",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q27"
+  ],
+  "notes": "成本不完整时能不能先按 0 算利润？"
+ },
+ {
+  "id": "A-Q28",
+  "category": "assistant",
+  "expected": "意图 RECEIPT，有证据引用，只读且审计",
+  "actual": "intent=RECEIPT，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q28"
+  ],
+  "notes": "材料部分到场怎么处理？"
+ },
+ {
+  "id": "A-Q29",
+  "category": "assistant",
+  "expected": "意图 RECEIPT，有证据引用，只读且审计",
+  "actual": "intent=RECEIPT，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q29"
+  ],
+  "notes": "到场确认会新增应付吗？"
+ },
+ {
+  "id": "A-Q30",
+  "category": "assistant",
+  "expected": "意图 PRICE_COST，有证据引用，只读且审计",
+  "actual": "intent=PRICE_COST，answerType=EXPLANATION，citations=4，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q30"
+  ],
+  "notes": "无价采购能正常确认到场吗？"
+ },
+ {
+  "id": "A-Q31",
+  "category": "assistant",
+  "expected": "意图 RECEIPT，有证据引用，只读且审计",
+  "actual": "intent=RECEIPT，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q31"
+  ],
+  "notes": "到场后账期从什么时候开始算？"
+ },
+ {
+  "id": "A-Q32",
+  "category": "assistant",
+  "expected": "意图 CHANGE，有证据引用，只读且审计",
+  "actual": "intent=CHANGE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q32"
+  ],
+  "notes": "减项发生在已经下单之后怎么处理？"
+ },
+ {
+  "id": "A-Q33",
+  "category": "assistant",
+  "expected": "意图 CHANGE，有证据引用，只读且审计",
+  "actual": "intent=CHANGE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q33"
+  ],
+  "notes": "已经到货的材料减项要走退货吗？"
+ },
+ {
+  "id": "A-Q34",
+  "category": "assistant",
+  "expected": "意图 CHANGE，有证据引用，只读且审计",
+  "actual": "intent=CHANGE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q34"
+  ],
+  "notes": "未下单的减项是冲材料计划还是采购？"
+ },
+ {
+  "id": "A-Q35",
+  "category": "assistant",
+  "expected": "意图 CHANGE，有证据引用，只读且审计",
+  "actual": "intent=CHANGE，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q35"
+  ],
+  "notes": "换材料为什么要走增减项？"
+ },
+ {
+  "id": "A-Q36",
+  "category": "assistant",
+  "expected": "意图 SETTLEMENT，有证据引用，只读且审计",
+  "actual": "intent=SETTLEMENT，answerType=EXPLANATION，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q36"
+  ],
+  "notes": "逐单结算和月结会重复计算吗？"
+ },
+ {
+  "id": "A-Q37",
+  "category": "assistant",
+  "expected": "意图 SETTLEMENT，有证据引用，只读且审计",
+  "actual": "intent=SETTLEMENT，answerType=EXPLANATION，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q37"
+  ],
+  "notes": "为什么先逐单结算再月结？"
+ },
+ {
+  "id": "A-Q38",
+  "category": "assistant",
+  "expected": "意图 SETTLEMENT，有证据引用，只读且审计",
+  "actual": "intent=SETTLEMENT，answerType=EXPLANATION，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q38"
+  ],
+  "notes": "结算撤销后成本和利润怎么恢复？"
+ },
+ {
+  "id": "A-Q39",
+  "category": "assistant",
+  "expected": "意图 SETTLEMENT，有证据引用，只读且审计",
+  "actual": "intent=SETTLEMENT，answerType=EXPLANATION，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q39"
+  ],
+  "notes": "同一采购明细能结算两次吗？"
+ },
+ {
+  "id": "A-Q40",
+  "category": "assistant",
+  "expected": "意图 SUPPLIER，有证据引用，只读且审计",
+  "actual": "intent=SUPPLIER，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q40"
+  ],
+  "notes": "供应商和经销商在系统里怎么区分？"
+ },
+ {
+  "id": "A-Q41",
+  "category": "assistant",
+  "expected": "意图 SUPPLIER，有证据引用，只读且审计",
+  "actual": "intent=SUPPLIER，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q41"
+  ],
+  "notes": "谁能决定采购供应商？"
+ },
+ {
+  "id": "A-Q42",
+  "category": "assistant",
+  "expected": "意图 SUPPLIER，有证据引用，只读且审计",
+  "actual": "intent=SUPPLIER，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q42"
+  ],
+  "notes": "没有供应商能形成应付吗？"
+ },
+ {
+  "id": "A-Q43",
+  "category": "assistant",
+  "expected": "意图 PROJECT_HEALTH，有证据引用，只读且审计",
+  "actual": "intent=PROJECT_HEALTH，answerType=LIVE_DATA，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q43"
+  ],
+  "notes": "这个项目的材料业务现在缺什么？"
+ },
+ {
+  "id": "A-Q44",
+  "category": "assistant",
+  "expected": "意图 PROJECT_HEALTH，有证据引用，只读且审计",
+  "actual": "intent=PROJECT_HEALTH，answerType=LIVE_DATA，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q44"
+  ],
+  "notes": "项目材料为什么还没有闭环？"
+ },
+ {
+  "id": "A-Q45",
+  "category": "assistant",
+  "expected": "意图 PROJECT_HEALTH，有证据引用，只读且审计",
+  "actual": "intent=PROJECT_HEALTH，answerType=LIVE_DATA，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q45"
+  ],
+  "notes": "项目材料体检里的待下单和待到货怎么理解？"
+ },
+ {
+  "id": "A-Q46",
+  "category": "assistant",
+  "expected": "意图 PERMISSION，有证据引用，只读且审计",
+  "actual": "intent=PERMISSION，answerType=PERMISSION_DENIED，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q46"
+  ],
+  "notes": "谁能查看材料成本和供应商价格？"
+ },
+ {
+  "id": "A-Q47",
+  "category": "assistant",
+  "expected": "意图 PERMISSION，有证据引用，只读且审计",
+  "actual": "intent=PERMISSION，answerType=PERMISSION_DENIED，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q47"
+  ],
+  "notes": "跨项目问材料数据会怎样？"
+ },
+ {
+  "id": "A-Q48",
+  "category": "assistant",
+  "expected": "意图 FIELD_DICTIONARY，有证据引用，只读且审计",
+  "actual": "intent=FIELD_DICTIONARY，answerType=EXPLANATION，citations=3，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q48"
+  ],
+  "notes": "作业单的 status 字段是什么意思？"
+ },
+ {
+  "id": "A-Q49",
+  "category": "assistant",
+  "expected": "意图 FIELD_DICTIONARY，有证据引用，只读且审计",
+  "actual": "intent=FIELD_DICTIONARY，answerType=EXPLANATION，citations=2，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q49"
+  ],
+  "notes": "priceState 字段代表什么？"
+ },
+ {
+  "id": "A-Q50",
+  "category": "assistant",
+  "expected": "意图 OUT_OF_SCOPE，有证据引用，只读且审计",
+  "actual": "intent=OUT_OF_SCOPE，answerType=REFUSAL，citations=1，audit=RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-Q50"
+  ],
+  "notes": "帮我审批这张采购单"
+ },
+ {
+  "id": "A-EXTRA-01",
+  "category": "assistant",
+  "expected": "Designer 本人项目只返回履约状态，不泄漏成本",
+  "actual": "success，LIVE_DATA，回答明确“成本和利润仅对 Boss、店长、财务展示”，无金额",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-EXTRA-01"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "A-EXTRA-02",
+  "category": "assistant",
+  "expected": "Designer 跨项目 404/403",
+  "actual": "404：项目不存在或无权访问",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-EXTRA-02"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "A-EXTRA-03",
+  "category": "assistant",
+  "expected": "Boss S 跨企业 404/403",
+  "actual": "404：项目不存在或无权访问",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-EXTRA-03"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "A-EXTRA-04",
+  "category": "assistant",
+  "expected": "同一审计键重复请求稳定",
+  "actual": "两次返回同一 auditId，状态 RECORDED",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-EXTRA-04"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "A-EXTRA-05",
+  "category": "assistant",
+  "expected": "审计不保存问题/回答正文",
+  "actual": "db_ai_usage_call 仅含 capability/employee/status/units 等，无 prompt/answer 字段",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#A-EXTRA-05"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "C01",
+  "category": "cross-end",
+  "expected": "蓝图运行态与B2 Web证据同源",
+  "actual": "runtime version=1.0.0；Boss/Store/Finance可读，Designer/PM 403；B2证据同版本",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#C01",
+   "evidence/B2/b2-blueprint-1440x900.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "C02",
+  "category": "cross-end",
+  "expected": "App项目体检与Provider计数/成本/下一步一致",
+  "actual": "Provider：1计划/1已选材/4采购/成本不完整/利润null/nextAction=完成采购结算或补齐成本；App项目详情同屏一致",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#C02",
+   "screenshots/b6-h5-project-detail.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "C03",
+  "category": "cross-end",
+  "expected": "App作业单状态与Provider一致",
+  "actual": "Provider status=Arrived、priceState=Unpriced；App显示“已到场”“成本待结算”",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#C03",
+   "screenshots/b6-h5-workbench-after-arrival.png",
+   "screenshots/b6-h5-sheet-detail-arrived.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "C04",
+  "category": "cross-end",
+  "expected": "空态跨端一致",
+  "actual": "Provider hasMaterialPlan=false；B2/B3空态明确“无法确认”，不伪装完成",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#C04",
+   "evidence/B2/b2-material-health-empty-1440x900.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U01",
+  "category": "ui",
+  "expected": "390×844 主材下单工作台真实渲染",
+  "actual": "scrollWidth=innerWidth=390，显示待财务下单/作业单/去下单",
+  "result": "PASS",
+  "evidence": [
+   "screenshots/b6-h5-workbench-submitted.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U02",
+  "category": "ui",
+  "expected": "390×844 作业单下单页真实渲染",
+  "actual": "无横向溢出；显示供应商、数量、可空单价、未定价提示",
+  "result": "PASS",
+  "evidence": [
+   "screenshots/b6-h5-sheet-order.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U03",
+  "category": "ui",
+  "expected": "390×844 主材结算页真实渲染",
+  "actual": "无横向溢出；显示待结算、逐单/月结、结算价",
+  "result": "PASS",
+  "evidence": [
+   "screenshots/b6-h5-settlement-pending.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U04",
+  "category": "ui",
+  "expected": "结算单空态真实渲染",
+  "actual": "切到“结算单”显示“还没有结算单 / 确认结算后会出现在这里”",
+  "result": "PASS",
+  "evidence": [
+   "screenshots/b6-h5-settlement-empty.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U05",
+  "category": "ui",
+  "expected": "作业单/工作台到场态真实渲染",
+  "actual": "工作台显示“已进入采购/已到场”；详情显示“已到场/成本待结算”和下一步说明",
+  "result": "PASS",
+  "evidence": [
+   "screenshots/b6-h5-workbench-after-arrival.png",
+   "screenshots/b6-h5-sheet-detail-arrived.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U06",
+  "category": "ui",
+  "expected": "业务页面Console无业务错误且无横向溢出",
+  "actual": "仅 favicon.ico 404；业务页面 Console Errors=0；各页 scrollWidth=390",
+  "result": "PASS",
+  "evidence": [
+   "blackbox-results.json#U06",
+   "screenshots/b6-h5-project-detail.png"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "U07",
+  "category": "ui",
+  "expected": "旧入口在真实浏览器不可达",
+  "actual": "三条旧路由均为空白页，Vue Router no match；无直采按钮",
+  "result": "PASS",
+  "evidence": [
+   "screenshots/b6-h5-old-entry-unreachable.png"
+  ],
+  "notes": ""
+ }
+]

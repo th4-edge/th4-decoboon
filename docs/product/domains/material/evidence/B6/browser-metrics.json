@@ -1,0 +1,22 @@
+{
+  "viewport": "390x844",
+  "pages": {
+    "material-sheet": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false},
+    "material-sheet-order": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false},
+    "material-sheet-detail": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false},
+    "material-settlement": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false},
+    "material-plan-workbench": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false},
+    "supply-index": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false},
+    "project-detail": {"scrollWidth": 390, "innerWidth": 390, "overflowX": false}
+  },
+  "console": {
+    "businessErrors": 0,
+    "onlyError": "favicon.ico 404 (non-business resource)",
+    "warnings": "uni-app/Vue dev runtime noise; old routes emit Vue Router no-match warnings"
+  },
+  "oldRoutes": {
+    "subpackages/project/pages/material-batch-order": "blank page; Vue Router no match",
+    "subpackages/supply/pages/purchase-edit": "blank page; Vue Router no match",
+    "subpackages/supply/pages/material-plan-picker": "blank page; Vue Router no match"
+  }
+}

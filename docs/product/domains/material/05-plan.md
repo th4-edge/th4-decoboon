@@ -13,8 +13,12 @@
 | B3 | App 业务体检 + 页面解释 | Designer/PM/Boss/Finance | Sheet/Plan/Receipt | assistant context provider | App | 字段/时间/下一步 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
 | B4 | 只读材料助手 | 全角色（按权限） | 全部材料对象 | assistant orchestrator/tools | Web/App | 50 黄金问题、8–12 校核 | 权限/反向/证据 PASS | COMPLETE (2026-10-17) |
 | B5 | App 单端材料下单与结算闭环 | Designer/PM/Finance/Boss/StoreManager | Plan/Sheet/Purchase/Payable/Receipt/Settlement | sheet/order 编排、PurchaseOrderItem、旧直采下线 | App | 下单/到场/结算/成本完整 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE (2026-10-17) |
-| B6 | 独立验收与对账 | independent | 全部 | 无实现 | App/Web | 正向/反向/越权/幂等/边界 | ACCEPTED | NEXT |
-| B7 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
+| B6 | 独立验收与对账 | independent | 全部 | 无实现 | App/Web | 正向/反向/越权/幂等/边界 | ACCEPTED | FAIL（2026-10-17；121/127） |
+| B6.1 | 修复 B6 独立验收缺陷 | Finance/Designer/PM | Sheet/Purchase/Settlement/Payable | 字段投影、角色门禁、幂等、到场门禁、暂估应付投影 | App/Web | 权限/金额/幂等/边界 | DEV_VERIFIED + RECONCILED | NEXT |
+| B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | PENDING |
+| B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
+| B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
+| B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
 
 ## 依赖与顺序
 
@@ -23,7 +27,8 @@
 - B3 的上下文助手不能直接查库。
 - B4 必须依赖 B1 的蓝图、B2 的校核和 B3 的对象上下文。
 - B5 完成 App 单端闭环后，B6 必须独立于实现，不能由执行者自验。
-- B7 只做体验版；正式版由用户完成。
+- B6.1 只修复 B6 已证实的缺陷，不扩业务范围；B6.2 独立复验通过后才可进入助手 UI。
+- B7/B8 完成材料助手上下文入口及聚焦独立验收；B9 只做体验版，正式版由用户完成。
 
 ## 回滚
 
@@ -206,3 +211,30 @@
 - 无价、部分下单、多供应商、超量、重复结算、越权场景有证据；
 - `06-implementation.md`、`07-ui-review.md`、`10-reconciliation.md`、`state.json` 更新；
 - 停在 `RECONCILED`，不宣称独立验收通过，B6 由独立角色执行。
+
+
+## B6 独立验收结果（2026-10-17）
+
+- 独立验收角色：未参与 B1–B5 实现的独立任务；
+- 环境：后端 `af12b9f`、App `225b963`、本地 dev/H5 390×844；
+- 结果：127 项中 121 PASS / 6 FAIL，结论 FAIL，不支持 `ACCEPTED`；
+- 通过：主链拆单/无价/到场/结算/撤销、旧路线下线、50 黄金问题、跨端读数、UI 布局；
+- 阻断：3 个成本/金额读权限泄漏、重复下单重复应付、未到场可结算、暂估应付显示为 0；
+- 证据：`evidence/B6/`。
+
+## B6.1 修复门槛（NEXT）
+
+- 修复 B6-DEF-001~006，先以最小变更恢复已裁决权限/金额/结算口径，不新增业务规则；
+- 权限：Designer/PM 的作业单、采购、结算读模型必须按角色裁剪成本/金额/供应商敏感字段；
+- 幂等：`material/sheet/order` 增加稳定业务幂等键，重复请求不得重复采购/应付；
+- 结算：`receivedQuantity>0` 是候选与确认前置门禁；
+- 暂估应付：无价读模型必须可识别暂估/待定价，禁止用 0 冒充未知；
+- 定向测试 + 全量测试（金额/权限）+ App/Web 构建；停在 `RECONCILED`，B6.2 独立复验。
+
+## B7 材料业务助手上下文入口（队列）
+
+- 目标：在项目、作业单、采购/结算上下文打开统一「问材料」抽屉；
+- 首版单轮问答，复用 `material/assistant/ask`、发布蓝图建议问题和证据，不新增事实源；
+- 展示结论、证据引用、只读工具、下一步、建议追问、只读边界；NO_EVIDENCE/REFUSAL 不兜底；
+- 不做多轮记忆、不做万能聊天框、不改金额/成本/权限语义、不做 DDL；
+- 完成后进入 B8 独立验收，不能由实现者自批。

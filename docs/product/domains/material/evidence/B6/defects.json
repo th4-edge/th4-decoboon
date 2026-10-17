@@ -1,0 +1,87 @@
+[
+  {
+    "id": "B6-DEF-001",
+    "severity": "P1",
+    "title": "Designer/PM 可读取材料成本字段",
+    "status": "OPEN",
+    "expected": "Designer/PM 只能看到履约与作业事实；报价成本价 P1、采购价 P2、结算价 P3 仅 Boss/StoreManager/Finance 可见。",
+    "actual": "Designer 调用 material/sheet/info 时返回 quoteCostPrice=120.0；material/sheet/page 的字段白名单同样包含 quoteCostPrice/purchasePrice/settlementPrice。页面文案却明确写“作业单只编排厂家履约，不承载价格、账期与成本”。",
+    "repro": "designer token -> POST /api/material/sheet/info {sheetId: <Designer可见作业单>} -> data.items[0].quoteCostPrice 有值；下单/结算后 purchasePrice、settlementPrice 也会出现。",
+    "impact": "P1 权限泄漏：项目设计师/项目经理可绕过页面看到采购与成本口径，违反成本可见性边界。",
+    "rootCauseHypothesis": "material/sheet/info|page 使用固定的 @Properties 白名单，没有按登录角色裁剪成本字段；权限只校验了数据范围，没有校验字段可见性。",
+    "evidence": [
+      "blackbox-results.json#X12",
+      "screenshots/b6-h5-sheet-detail-arrived.png"
+    ]
+  },
+  {
+    "id": "B6-DEF-002",
+    "severity": "P1",
+    "title": "Designer/PM 可读取采购金额与供应商",
+    "status": "OPEN",
+    "expected": "Designer/PM 不可查看供应商价格、采购金额与供应商敏感信息；只应看到履约状态与数量。",
+    "actual": "Designer 与 PM 调用 project/purchase/page 均 success；返回 amount=300.0、supplierName=造数供应商，且 supplier 对象包含联系人与电话。",
+    "repro": "designer/pm token -> POST /api/project/purchase/page {projectId: <其可见项目>} -> data.content[*].amount / supplierName / supplier.contactName 有值。",
+    "impact": "P1 权限泄漏：PM/Designer 可通过历史采购页读取采购金额和供应商联系方式。",
+    "rootCauseHypothesis": "project/purchase/page 仅按项目数据范围过滤，@Properties 中包含 unitPrice/amount/supplier，未按角色裁剪。",
+    "evidence": [
+      "blackbox-results.json#X11"
+    ]
+  },
+  {
+    "id": "B6-DEF-003",
+    "severity": "P1",
+    "title": "Designer/PM 可读取结算单金额与供应商",
+    "status": "OPEN",
+    "expected": "结算单列表/详情仅 Boss/StoreManager/Finance 可读；Designer/PM 应 403/404。",
+    "actual": "Designer 与 PM 调用 material/settlement/page 均 success，返回 totalAmount=500/300/330 和供应商；material/settlement/info 同样 success 返回 totalAmount=500。",
+    "repro": "designer/pm token -> POST /api/material/settlement/page {supplierId} -> 4 rows；POST /api/material/settlement/info {settlementId} -> totalAmount 有值。",
+    "impact": "P1 权限泄漏：结算金额、供应商和结算状态可被非财务角色读取。preview/confirm 已正确 403，但 page/info 没有同等门禁。",
+    "rootCauseHypothesis": "material/settlement/page|info 只调用数据范围查询，未调用 materialPurchaseContext.requireOperator 或等价角色校验。",
+    "evidence": [
+      "blackbox-results.json#X10"
+    ]
+  },
+  {
+    "id": "B6-DEF-004",
+    "severity": "P1",
+    "title": "重复订单请求生成重复采购单/应付",
+    "status": "OPEN",
+    "expected": "相同 material/sheet/order 请求重试时不得重复生成采购单和应付；应幂等返回同一结果或明确拒绝。",
+    "actual": "对同一作业单行，连续两次提交完全相同的 order payload（3㎡×100，供应商造数供应商）均 success；DB 生成两张采购单（PO…b18585、PO…0a8bdc）和两条 300 元应付。",
+    "repro": "finance token -> POST /api/material/sheet/order 两次，body 完全一致 -> 两次 success；select * from db_purchase_order where no like '%<sheetId>%' -> 2 rows；db_finance_payable -> 2 temporary payables。",
+    "impact": "P1 金额/应付缺陷：网络重试或重复点击会重复形成应付，直接破坏采购与应付一致性。",
+    "rootCauseHypothesis": "material/sheet/order 没有 requestId/idempotencyKey 或业务幂等键；仅用作业单行剩余数量做校验，重复请求在剩余量足够时会被当成新订单。",
+    "evidence": [
+      "blackbox-results.json#I01"
+    ]
+  },
+  {
+    "id": "B6-DEF-005",
+    "severity": "P1",
+    "title": "未到场的采购明细可被结算",
+    "status": "OPEN",
+    "expected": "结算前置条件为采购明细已到场；receivedQuantity=0 的明细不得进入可结算集或不得确认结算。",
+    "actual": "下单后未到场时，material/settlement/preview 返回 receivedQuantity=0.0 的行；material/settlement/confirm 仍 success，生成 330 元结算（3×110），随后可撤销。",
+    "repro": "finance token -> 下单 3㎡ -> 不做到场 -> POST /api/material/settlement/preview {scope:'PerPurchaseOrder',purchaseOrderId} -> receivedQuantity=0；POST /api/material/settlement/confirm -> success。",
+    "impact": "P1 业务门禁缺陷：未到场即可把采购价/结算价计入实际成本，违背“到场后才累计实际成本”和 REQ-MAT-014 前置条件。",
+    "rootCauseHypothesis": "MaterialSettlementContext.candidates/confirm 未校验 receivedQuantity>0，也没有校验到场数量与结算数量关系。",
+    "evidence": [
+      "blackbox-results.json#B04"
+    ]
+  },
+  {
+    "id": "B6-DEF-006",
+    "severity": "P2",
+    "title": "暂估应付读模型显示 0 且未暴露 estimated",
+    "status": "OPEN",
+    "expected": "无价采购形成暂估应付，金额待定；读模型必须显式标识“暂估/待定价”，不能用 0 冒充未知。",
+    "actual": "DB 中该应付 estimated=true；但 finance/payable/page 返回 amount=0.0，且 @Properties 未包含 estimated/settledAmount。前端若直接展示金额，会显示 ¥0.00。",
+    "repro": "无价下单 1㎡ -> select estimated from db_finance_payable -> 1；finance token -> POST /api/finance/payable/page -> 该 sourceNo 的 amount=0.0，estimated 字段不存在。",
+    "impact": "P2 成本边界/可解释性缺陷：暂估应付在财务应付读模型中不可区分于真实 0 元应付。",
+    "rootCauseHypothesis": "采购下单把暂估金额落为 0；finance/payable/page 的投影未包含 estimated，也没有金额为 null/待定价的表达。",
+    "evidence": [
+      "blackbox-results.json#B07"
+    ]
+  }
+]

@@ -169,3 +169,14 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - UI：`UI_REVIEWED`；
 - 仍需 B6 独立验收，不能由本实现自批 `ACCEPTED`；
 - 未执行正式小程序提审或发布。
+
+
+---
+
+# B6 独立验收 UI 记录
+
+- 独立验收任务使用 App 干净提交 `225b963` 的 H5 390×844 真实浏览器；
+- 采集 11 张截图：主材工作台、下单、结算、空态、到场后、项目体检、材料计划、供应商、旧入口不可达；
+- 11 项 UI 检查全部 PASS；`scrollWidth=innerWidth=390`，业务 Console Errors=0；
+- 证据：`evidence/B6/README.md`、`evidence/B6/screenshots/`、`evidence/B6/browser-metrics.json`；
+- UI 通过不代表业务验收通过；B6 因 6 个缺陷仍判定 FAIL。

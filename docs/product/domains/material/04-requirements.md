@@ -17,12 +17,14 @@
 | REQ-MAT-013 | 财务能在 App 内从待下单作业单完成采购下单 | 作业单已提交请购 | Finance/Boss/StoreManager | Sheet/Plan/Purchase/Payable | App 主材下单工作台/下单页 | material/sheet/order | 多供应商、部分下单、可空单价、暂估应付正确 | SCN-021/DEC-072/DEC-073 |
 | REQ-MAT-014 | 财务能在 App 内完成材料结算并收敛成本 | 采购明细已到场 | Finance/Boss/StoreManager | PurchaseOrderItem/MaterialSettlement/Payable | App 主材结算 | material/settlement/preview/confirm/cancel | 逐单/月结互斥、撤销回退、成本完整/利润 null 正确 | BR-045/DEC-073/DEC-074 |
 | REQ-MAT-015 | App 不再提供材料计划直接采购入口 | 登录员工在 App 材料/供应商页面 | 按现有权限 | MaterialPlan/PurchaseOrder | App 材料计划/供应商 | 旧 `project/purchase/save`/`batch` 下线 | 旧入口不可达，历史采购单仍可查/到场 | 2026-10-17 用户裁决 |
+| REQ-MAT-016 | 用户能在真实材料业务上下文中打开「问材料」并得到可追溯回答 | 用户在项目/作业单/采购/结算页面 | 当前登录员工数据范围 | 项目/作业单/采购/结算上下文 | App/Web 统一上下文抽屉 | `material/assistant/ask` + 发布蓝图建议问题 | 结论/证据/只读工具/下一步/拒答/权限正确；单轮；不改金额或权限语义 | 2026-10-17 用户研发要求 / BR-045 / OBJ-008 |
 
 ## 非功能要求
 
 - 列表/体检接口响应体最小字段白名单；
 - 统计/计数使用聚合投影，不在循环内查库；
 - 助手回答不得直接查生产库，使用 Provider 工具；
+- 助手 UI 必须使用稳定 requestId/idempotencyKey，不保存问题/回答正文；上下文 ID 只作为参数，权限仍由后端校验；
 - 所有高风险动作只读或需人工确认；
 - App 是材料下单与结算的闭环主入口，Web 不是必经节点；App/Web 对同一对象的状态/下一步口径仍须一致。
 

@@ -1,0 +1,2904 @@
+{
+ "duplicate_order": {
+  "request": "POST /api/material/sheet/order (identical payload twice)",
+  "payload": {
+   "sheetId": "1792220891340796153",
+   "supplierId": "1791842081487998780",
+   "deliveryMode": "Direct",
+   "items": [
+    {
+     "itemId": "1792220891349307568",
+     "quantity": 3,
+     "purchasePrice": 100
+    }
+   ]
+  },
+  "first_success": true,
+  "second_success": true,
+  "purchases_created": [
+   {
+    "purchaseId": "1792220966976317333",
+    "no": "PO1792220966974-1792220891340796153-1791842081487998780-b18585",
+    "quantity": "3.000",
+    "amount": "300.00",
+    "priceState": "Priced"
+   },
+   {
+    "purchaseId": "1792220967035721864",
+    "no": "PO1792220967035-1792220891340796153-1791842081487998780-0a8bdc",
+    "quantity": "3.000",
+    "amount": "300.00",
+    "priceState": "Priced"
+   }
+  ],
+  "result": "FAIL: duplicate payable created"
+ },
+ "duplicate_settlement": {
+  "first_confirm": "success",
+  "second_confirm": {
+   "success": false,
+   "errorCode": {
+    "code": "400",
+    "message": "该采购明细已结算，不允许重复计入（结算互斥，DEC-073）：[1792220966984706460]",
+    "system": false
+   }
+  },
+  "result": "PASS: 400 already settled, no duplicate"
+ },
+ "settlement_before_receipt": {
+  "preview": {
+   "receivedQuantity": 0.0,
+   "purchaseItemId": "1792220966984706460",
+   "quantity": 3.0
+  },
+  "confirm_success": true,
+  "confirmed_totalAmount": 330.0,
+  "cancel_success": true,
+  "result": "FAIL: receivedQuantity=0 yet settlement succeeded"
+ },
+ "cost_convergence": {
+  "after_all_settlements": {
+   "costComplete": false,
+   "costIncompleteCount": 1,
+   "materialCost": 3130.0,
+   "actualCost": 1150.0,
+   "estimatedCost": 1760.0,
+   "costLabel": "成本未完整",
+   "settlementStatus": "待确认"
+  },
+  "finance_project_report": {
+   "costComplete": true,
+   "profitAmount": -1554.25,
+   "grossProfit": -1554.25,
+   "grossMargin": -62.3
+  },
+  "result": "PASS: costComplete=true after all settlements"
+ },
+ "cost_rollback": {
+  "health_after_cancel": {
+   "project": {
+    "projectId": "235520589224214528",
+    "businessOrigin": {
+     "name": "正常业务",
+     "value": "New",
+     "key": "New"
+    },
+    "no": "P1791842084231",
+    "name": "陈晨（造数1104） · 滨湖世纪城5栋502",
+    "customer": {
+     "custId": "235520587655544832",
+     "name": "陈晨（造数1104）",
+     "telNo": "13700001104"
+    },
+    "property": {
+     "createTime": {
+      "dateTime": "2026-10-13 05:54:43"
+     },
+     "updateTime": {
+      "dateTime": "2026-10-13 05:54:44"
+     },
+     "propertyId": "235520587714265088",
+     "company": {
+      "comId": "999200000000000001",
+      "title": "多门店数据集造数企业M",
+      "name": "ZDQ造数M",
+      "size": {
+       "name": "10人以下",
+       "value": "A",
+       "key": "A"
+      },
+      "addr": "合肥市走查路1号",
+      "setting": {
+       "enableStore": true
+      },
+      "createTime": {
+       "dateTime": "2026-10-13 12:00:00"
+      }
+     },
+     "store": {
+      "storeId": "999200000000000011",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "name": "A 总店",
+      "defaultStore": true,
+      "status": {
+       "name": "启用",
+       "key": "Active"
+      },
+      "sort": 0,
+      "addr": "合肥市走查路1号",
+      "createTime": {
+       "dateTime": "2026-10-13 12:00:00"
+      }
+     },
+     "owner": {
+      "empId": "999200000000000028",
+      "name": "A 总店业务",
+      "role": {
+       "name": "业务员",
+       "value": "Marketer",
+       "key": "Marketer"
+      }
+     },
+     "customer": {
+      "custId": "235520587655544832",
+      "name": "陈晨（造数1104）",
+      "telNo": "13700001104"
+     },
+     "propertyNo": "H1791842083872",
+     "community": "滨湖世纪城",
+     "building": "5栋",
+     "roomNo": "502",
+     "address": "滨湖世纪城5栋502",
+     "area": 140.0,
+     "layout": "三室两厅一厨两卫",
+     "status": {
+      "name": "施工中",
+      "key": "Serving"
+     },
+     "salesman": {
+      "empId": "999200000000000028",
+      "name": "A 总店业务",
+      "role": {
+       "name": "业务员",
+       "value": "Marketer",
+       "key": "Marketer"
+      }
+     },
+     "designer": {
+      "empId": "999200000000000027",
+      "name": "A 总店设计",
+      "role": {
+       "name": "设计师",
+       "value": "Designer",
+       "key": "Designer"
+      }
+     },
+     "latestMeasureAt": "2026-10-14 07:54:43",
+     "remark": "造数房屋"
+    },
+    "designer": {
+     "empId": "999200000000000027",
+     "name": "A 总店设计",
+     "role": {
+      "name": "设计师",
+      "value": "Designer",
+      "key": "Designer"
+     }
+    },
+    "manager": {
+     "empId": "999200000000000029",
+     "name": "A 总店项目经理",
+     "role": {
+      "name": "项目经理",
+      "value": "Pm",
+      "key": "Pm"
+     }
+    },
+    "siteAddr": "滨湖世纪城5栋502",
+    "contractAmount": 2495.75,
+    "cost": 1760.0,
+    "status": {
+     "name": "待开工",
+     "key": "Preparing"
+    },
+    "progress": 0,
+    "startDate": "2026-10-22",
+    "planEndDate": "2027-01-25"
+   },
+   "contractAmount": 2495.75,
+   "contractRevenue": 2495.75,
+   "receivableAmount": 7495.75,
+   "receivedAmount": 748.73,
+   "outstandingAmount": 6747.02,
+   "overdueAmount": 0,
+   "payableAmount": 3100.0,
+   "paidAmount": 500.0,
+   "unpaidAmount": 2600.0,
+   "receiptCount": 1,
+   "paymentCount": 1,
+   "receiptAmount": 748.73,
+   "paymentAmount": 500.0,
+   "monthReceiptAmount": 748.73,
+   "monthPaymentAmount": 500.0,
+   "urgentPayableAmount": 0,
+   "materialAmount": 3100.0,
+   "materialCost": 3100.0,
+   "salaryAmount": 0,
+   "laborCost": 0,
+   "projectPaymentAmount": 0,
+   "projectCost": 0,
+   "employeeSalaryAmount": 0,
+   "employeeCommissionAmount": 0,
+   "otherPayableAmount": 0,
+   "expenseAllocation": 0,
+   "estimatedCost": 1760.0,
+   "actualCost": 2560.0,
+   "manualIncomeAmount": 0,
+   "manualCostAmount": 800.0,
+   "totalCost": 3900.0,
+   "costComplete": false,
+   "costIncompleteCount": 1,
+   "collectionRate": 10.0,
+   "paymentRate": 16.1,
+   "receivableCleared": false,
+   "payableCleared": false,
+   "historicalArchive": false,
+   "settlementActionable": true,
+   "settlement": {
+    "settlementId": "235520590478311424",
+    "contractAmount": 2495.75,
+    "receivableAmount": 7495.75,
+    "receivedAmount": 748.73,
+    "payableAmount": 2500.0,
+    "paidAmount": 500.0,
+    "materialAmount": 2500.0,
+    "salaryAmount": 0.0,
+    "projectAmount": 0.0,
+    "expenseAmount": 0.0,
+    "totalCost": 3300.0,
+    "status": {
+     "name": "待确认",
+     "key": "Draft"
+    },
+    "remark": "造数结算单"
+   },
+   "receivables": [
+    {
+     "receivableId": "235520589324877824",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "合同签约款",
+     "type": {
+      "name": "首期款",
+      "key": "First"
+     },
+     "amount": 748.73,
+     "receivedAmount": 748.73,
+     "dueDate": "2026-10-13",
+     "status": {
+      "name": "已收清",
+      "key": "Received"
+     },
+     "invoiceRequired": false,
+     "remark": "合同付款计划快照：标准 30/40/30 / SIGN_30"
+    },
+    {
+     "receivableId": "235520589324877825",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "项目开工款",
+     "stageName": "开工交底",
+     "type": {
+      "name": "进度款",
+      "key": "Progress"
+     },
+     "amount": 998.3,
+     "receivedAmount": 0.0,
+     "dueDate": "2026-10-22",
+     "status": {
+      "name": "待收",
+      "key": "Pending"
+     },
+     "invoiceRequired": false,
+     "remark": "合同付款计划快照：标准 30/40/30 / START_40"
+    },
+    {
+     "receivableId": "235520589421346816",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "手工补充应收",
+     "stageName": "补充款",
+     "type": {
+      "name": "进度款",
+      "key": "Progress"
+     },
+     "amount": 5000.0,
+     "receivedAmount": 0.0,
+     "dueDate": "2026-11-12",
+     "status": {
+      "name": "待收",
+      "key": "Pending"
+     },
+     "invoiceRequired": false
+    },
+    {
+     "receivableId": "235520589324877826",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "竣工尾款",
+     "stageName": "竣工保洁验收",
+     "type": {
+      "name": "尾款",
+      "key": "Final"
+     },
+     "amount": 748.72,
+     "receivedAmount": 0.0,
+     "dueDate": "2027-01-25",
+     "status": {
+      "name": "待收",
+      "key": "Pending"
+     },
+     "invoiceRequired": false,
+     "remark": "合同付款计划快照：标准 30/40/30 / FINAL_30"
+    }
+   ],
+   "payables": [
+    {
+     "payableId": "235520589639450624",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "手工应付",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 2000.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-02",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false
+    },
+    {
+     "payableId": "1791842084445481428",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · 造数供应商",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 500.0,
+     "paidAmount": 500.0,
+     "dueDate": "2026-11-12",
+     "status": {
+      "name": "已付清",
+      "key": "Paid"
+     },
+     "urgent": false,
+     "sourceNo": "PO1791842084425",
+     "remark": "结算已撤销：应付回到采购价口径"
+    },
+    {
+     "payableId": "1792220967002613185",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · 造数供应商",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 300.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-16",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false,
+     "sourceNo": "PO1792220966974-1792220891340796153-1791842081487998780-b18585",
+     "remark": "结算已撤销：应付回到采购价口径"
+    },
+    {
+     "payableId": "1792220967051651634",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · 造数供应商",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 300.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-16",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false,
+     "sourceNo": "PO1792220967035-1792220891340796153-1791842081487998780-0a8bdc",
+     "remark": "结算已撤销：应付回到采购价口径"
+    },
+    {
+     "payableId": "1792220970469337607",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · B6验收临时供应商-20261017",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "B6验收临时供应商-20261017",
+     "amount": 0.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-16",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false,
+     "sourceNo": "PO1792220970459-1792220891340796153-1792220891313776894-690a2b",
+     "remark": "结算已撤销：应付回到采购价口径，仍有未定价行"
+    }
+   ],
+   "recentLedgers": [
+    {
+     "ledgerId": "235520590386036737",
+     "direction": {
+      "name": "支出",
+      "key": "Expense"
+     },
+     "category": "材料款",
+     "source": {
+      "name": "业务付款",
+      "key": "Payment"
+     },
+     "amount": 500.0,
+     "account": {
+      "name": "企业对公",
+      "key": "CompanyBank"
+     },
+     "occurredAt": "2026-10-13",
+     "counterparty": "造数供应商",
+     "summary": "付款 · 材料采购 · 造数供应商"
+    },
+    {
+     "ledgerId": "235520589706559488",
+     "direction": {
+      "name": "支出",
+      "key": "Expense"
+     },
+     "category": "零星其他支出",
+     "source": {
+      "name": "手工记账",
+      "key": "Manual"
+     },
+     "amount": 800.0,
+     "account": {
+      "name": "企业对公",
+      "key": "CompanyBank"
+     },
+     "occurredAt": "2026-10-13",
+     "counterparty": "造数商户",
+     "summary": "造数项目零星其他支出"
+    },
+    {
+     "ledgerId": "235520589559758848",
+     "direction": {
+      "name": "收入",
+      "key": "Income"
+     },
+     "category": "首期款",
+     "source": {
+      "name": "客户收款",
+      "key": "Receipt"
+     },
+     "amount": 748.73,
+     "account": {
+      "name": "企业对公",
+      "key": "CompanyBank"
+     },
+     "occurredAt": "2026-10-13",
+     "counterparty": "造数业主",
+     "summary": "收款 · 合同签约款"
+    }
+   ]
+  },
+  "finance_after_cancel": {
+   "project": {
+    "projectId": "235520589224214528",
+    "businessOrigin": {
+     "name": "正常业务",
+     "value": "New",
+     "key": "New"
+    },
+    "no": "P1791842084231",
+    "name": "陈晨（造数1104） · 滨湖世纪城5栋502",
+    "customer": {
+     "custId": "235520587655544832",
+     "name": "陈晨（造数1104）",
+     "telNo": "13700001104"
+    },
+    "property": {
+     "createTime": {
+      "dateTime": "2026-10-13 05:54:43"
+     },
+     "updateTime": {
+      "dateTime": "2026-10-13 05:54:44"
+     },
+     "propertyId": "235520587714265088",
+     "company": {
+      "comId": "999200000000000001",
+      "title": "多门店数据集造数企业M",
+      "name": "ZDQ造数M",
+      "size": {
+       "name": "10人以下",
+       "value": "A",
+       "key": "A"
+      },
+      "addr": "合肥市走查路1号",
+      "setting": {
+       "enableStore": true
+      },
+      "createTime": {
+       "dateTime": "2026-10-13 12:00:00"
+      }
+     },
+     "store": {
+      "storeId": "999200000000000011",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "name": "A 总店",
+      "defaultStore": true,
+      "status": {
+       "name": "启用",
+       "key": "Active"
+      },
+      "sort": 0,
+      "addr": "合肥市走查路1号",
+      "createTime": {
+       "dateTime": "2026-10-13 12:00:00"
+      }
+     },
+     "owner": {
+      "empId": "999200000000000028",
+      "name": "A 总店业务",
+      "role": {
+       "name": "业务员",
+       "value": "Marketer",
+       "key": "Marketer"
+      }
+     },
+     "customer": {
+      "custId": "235520587655544832",
+      "name": "陈晨（造数1104）",
+      "telNo": "13700001104"
+     },
+     "propertyNo": "H1791842083872",
+     "community": "滨湖世纪城",
+     "building": "5栋",
+     "roomNo": "502",
+     "address": "滨湖世纪城5栋502",
+     "area": 140.0,
+     "layout": "三室两厅一厨两卫",
+     "status": {
+      "name": "施工中",
+      "key": "Serving"
+     },
+     "salesman": {
+      "empId": "999200000000000028",
+      "name": "A 总店业务",
+      "role": {
+       "name": "业务员",
+       "value": "Marketer",
+       "key": "Marketer"
+      }
+     },
+     "designer": {
+      "empId": "999200000000000027",
+      "name": "A 总店设计",
+      "role": {
+       "name": "设计师",
+       "value": "Designer",
+       "key": "Designer"
+      }
+     },
+     "latestMeasureAt": "2026-10-14 07:54:43",
+     "remark": "造数房屋"
+    },
+    "designer": {
+     "empId": "999200000000000027",
+     "name": "A 总店设计",
+     "role": {
+      "name": "设计师",
+      "value": "Designer",
+      "key": "Designer"
+     }
+    },
+    "manager": {
+     "empId": "999200000000000029",
+     "name": "A 总店项目经理",
+     "role": {
+      "name": "项目经理",
+      "value": "Pm",
+      "key": "Pm"
+     }
+    },
+    "siteAddr": "滨湖世纪城5栋502",
+    "contractAmount": 2495.75,
+    "cost": 1760.0,
+    "status": {
+     "name": "待开工",
+     "key": "Preparing"
+    },
+    "progress": 0,
+    "startDate": "2026-10-22",
+    "planEndDate": "2027-01-25"
+   },
+   "contractAmount": 2495.75,
+   "contractRevenue": 2495.75,
+   "receivableAmount": 7495.75,
+   "receivedAmount": 748.73,
+   "outstandingAmount": 6747.02,
+   "overdueAmount": 0,
+   "payableAmount": 3100.0,
+   "paidAmount": 500.0,
+   "unpaidAmount": 2600.0,
+   "receiptCount": 1,
+   "paymentCount": 1,
+   "receiptAmount": 748.73,
+   "paymentAmount": 500.0,
+   "monthReceiptAmount": 748.73,
+   "monthPaymentAmount": 500.0,
+   "urgentPayableAmount": 0,
+   "materialAmount": 3100.0,
+   "materialCost": 3100.0,
+   "salaryAmount": 0,
+   "laborCost": 0,
+   "projectPaymentAmount": 0,
+   "projectCost": 0,
+   "employeeSalaryAmount": 0,
+   "employeeCommissionAmount": 0,
+   "otherPayableAmount": 0,
+   "expenseAllocation": 0,
+   "estimatedCost": 1760.0,
+   "actualCost": 2560.0,
+   "manualIncomeAmount": 0,
+   "manualCostAmount": 800.0,
+   "totalCost": 3900.0,
+   "costComplete": false,
+   "costIncompleteCount": 1,
+   "collectionRate": 10.0,
+   "paymentRate": 16.1,
+   "receivableCleared": false,
+   "payableCleared": false,
+   "historicalArchive": false,
+   "settlementActionable": true,
+   "settlement": {
+    "settlementId": "235520590478311424",
+    "contractAmount": 2495.75,
+    "receivableAmount": 7495.75,
+    "receivedAmount": 748.73,
+    "payableAmount": 2500.0,
+    "paidAmount": 500.0,
+    "materialAmount": 2500.0,
+    "salaryAmount": 0.0,
+    "projectAmount": 0.0,
+    "expenseAmount": 0.0,
+    "totalCost": 3300.0,
+    "status": {
+     "name": "待确认",
+     "key": "Draft"
+    },
+    "remark": "造数结算单"
+   },
+   "receivables": [
+    {
+     "receivableId": "235520589324877824",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "合同签约款",
+     "type": {
+      "name": "首期款",
+      "key": "First"
+     },
+     "amount": 748.73,
+     "receivedAmount": 748.73,
+     "dueDate": "2026-10-13",
+     "status": {
+      "name": "已收清",
+      "key": "Received"
+     },
+     "invoiceRequired": false,
+     "remark": "合同付款计划快照：标准 30/40/30 / SIGN_30"
+    },
+    {
+     "receivableId": "235520589324877825",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "项目开工款",
+     "stageName": "开工交底",
+     "type": {
+      "name": "进度款",
+      "key": "Progress"
+     },
+     "amount": 998.3,
+     "receivedAmount": 0.0,
+     "dueDate": "2026-10-22",
+     "status": {
+      "name": "待收",
+      "key": "Pending"
+     },
+     "invoiceRequired": false,
+     "remark": "合同付款计划快照：标准 30/40/30 / START_40"
+    },
+    {
+     "receivableId": "235520589421346816",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "手工补充应收",
+     "stageName": "补充款",
+     "type": {
+      "name": "进度款",
+      "key": "Progress"
+     },
+     "amount": 5000.0,
+     "receivedAmount": 0.0,
+     "dueDate": "2026-11-12",
+     "status": {
+      "name": "待收",
+      "key": "Pending"
+     },
+     "invoiceRequired": false
+    },
+    {
+     "receivableId": "235520589324877826",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "竣工尾款",
+     "stageName": "竣工保洁验收",
+     "type": {
+      "name": "尾款",
+      "key": "Final"
+     },
+     "amount": 748.72,
+     "receivedAmount": 0.0,
+     "dueDate": "2027-01-25",
+     "status": {
+      "name": "待收",
+      "key": "Pending"
+     },
+     "invoiceRequired": false,
+     "remark": "合同付款计划快照：标准 30/40/30 / FINAL_30"
+    }
+   ],
+   "payables": [
+    {
+     "payableId": "235520589639450624",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "手工应付",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 2000.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-02",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false
+    },
+    {
+     "payableId": "1791842084445481428",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · 造数供应商",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 500.0,
+     "paidAmount": 500.0,
+     "dueDate": "2026-11-12",
+     "status": {
+      "name": "已付清",
+      "key": "Paid"
+     },
+     "urgent": false,
+     "sourceNo": "PO1791842084425",
+     "remark": "结算已撤销：应付回到采购价口径"
+    },
+    {
+     "payableId": "1792220967002613185",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · 造数供应商",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 300.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-16",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false,
+     "sourceNo": "PO1792220966974-1792220891340796153-1791842081487998780-b18585",
+     "remark": "结算已撤销：应付回到采购价口径"
+    },
+    {
+     "payableId": "1792220967051651634",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · 造数供应商",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "造数供应商",
+     "amount": 300.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-16",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false,
+     "sourceNo": "PO1792220967035-1792220891340796153-1791842081487998780-0a8bdc",
+     "remark": "结算已撤销：应付回到采购价口径"
+    },
+    {
+     "payableId": "1792220970469337607",
+     "property": {
+      "createTime": {
+       "dateTime": "2026-10-13 05:54:43"
+      },
+      "updateTime": {
+       "dateTime": "2026-10-13 05:54:44"
+      },
+      "propertyId": "235520587714265088",
+      "company": {
+       "comId": "999200000000000001",
+       "title": "多门店数据集造数企业M",
+       "name": "ZDQ造数M",
+       "size": {
+        "name": "10人以下",
+        "value": "A",
+        "key": "A"
+       },
+       "addr": "合肥市走查路1号",
+       "setting": {
+        "enableStore": true
+       },
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "store": {
+       "storeId": "999200000000000011",
+       "company": {
+        "comId": "999200000000000001",
+        "title": "多门店数据集造数企业M",
+        "name": "ZDQ造数M",
+        "size": {
+         "name": "10人以下",
+         "value": "A",
+         "key": "A"
+        },
+        "addr": "合肥市走查路1号",
+        "setting": {
+         "enableStore": true
+        },
+        "createTime": {
+         "dateTime": "2026-10-13 12:00:00"
+        }
+       },
+       "name": "A 总店",
+       "defaultStore": true,
+       "status": {
+        "name": "启用",
+        "key": "Active"
+       },
+       "sort": 0,
+       "addr": "合肥市走查路1号",
+       "createTime": {
+        "dateTime": "2026-10-13 12:00:00"
+       }
+      },
+      "owner": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "customer": {
+       "custId": "235520587655544832",
+       "name": "陈晨（造数1104）",
+       "telNo": "13700001104"
+      },
+      "propertyNo": "H1791842083872",
+      "community": "滨湖世纪城",
+      "building": "5栋",
+      "roomNo": "502",
+      "address": "滨湖世纪城5栋502",
+      "area": 140.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+       "name": "施工中",
+       "key": "Serving"
+      },
+      "salesman": {
+       "empId": "999200000000000028",
+       "name": "A 总店业务",
+       "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+       }
+      },
+      "designer": {
+       "empId": "999200000000000027",
+       "name": "A 总店设计",
+       "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+       }
+      },
+      "latestMeasureAt": "2026-10-14 07:54:43",
+      "remark": "造数房屋"
+     },
+     "name": "材料采购 · B6验收临时供应商-20261017",
+     "type": {
+      "name": "材料款",
+      "key": "Material"
+     },
+     "payeeName": "B6验收临时供应商-20261017",
+     "amount": 0.0,
+     "paidAmount": 0.0,
+     "dueDate": "2026-11-16",
+     "status": {
+      "name": "待付款",
+      "key": "Pending"
+     },
+     "urgent": false,
+     "sourceNo": "PO1792220970459-1792220891340796153-1792220891313776894-690a2b",
+     "remark": "结算已撤销：应付回到采购价口径，仍有未定价行"
+    }
+   ],
+   "recentLedgers": [
+    {
+     "ledgerId": "235520590386036737",
+     "direction": {
+      "name": "支出",
+      "key": "Expense"
+     },
+     "category": "材料款",
+     "source": {
+      "name": "业务付款",
+      "key": "Payment"
+     },
+     "amount": 500.0,
+     "account": {
+      "name": "企业对公",
+      "key": "CompanyBank"
+     },
+     "occurredAt": "2026-10-13",
+     "counterparty": "造数供应商",
+     "summary": "付款 · 材料采购 · 造数供应商"
+    },
+    {
+     "ledgerId": "235520589706559488",
+     "direction": {
+      "name": "支出",
+      "key": "Expense"
+     },
+     "category": "零星其他支出",
+     "source": {
+      "name": "手工记账",
+      "key": "Manual"
+     },
+     "amount": 800.0,
+     "account": {
+      "name": "企业对公",
+      "key": "CompanyBank"
+     },
+     "occurredAt": "2026-10-13",
+     "counterparty": "造数商户",
+     "summary": "造数项目零星其他支出"
+    },
+    {
+     "ledgerId": "235520589559758848",
+     "direction": {
+      "name": "收入",
+      "key": "Income"
+     },
+     "category": "首期款",
+     "source": {
+      "name": "客户收款",
+      "key": "Receipt"
+     },
+     "amount": 748.73,
+     "account": {
+      "name": "企业对公",
+      "key": "CompanyBank"
+     },
+     "occurredAt": "2026-10-13",
+     "counterparty": "造数业主",
+     "summary": "收款 · 合同签约款"
+    }
+   ]
+  },
+  "payables": [
+   {
+    "payable_id": "1791842084445481428",
+    "source_no": "PO1791842084425",
+    "amount": "500.00",
+    "settled_amount": "NULL",
+    "estimated": "\\0",
+    "status": "Paid",
+    "remark": "结算已撤销：应付回到采购价口径"
+   },
+   {
+    "payable_id": "1792220967002613185",
+    "source_no": "PO1792220966974-1792220891340796153-1791842081487998780-b18585",
+    "amount": "300.00",
+    "settled_amount": "NULL",
+    "estimated": "\\0",
+    "status": "Pending",
+    "remark": "结算已撤销：应付回到采购价口径"
+   },
+   {
+    "payable_id": "1792220967051651634",
+    "source_no": "PO1792220967035-1792220891340796153-1791842081487998780-0a8bdc",
+    "amount": "300.00",
+    "settled_amount": "NULL",
+    "estimated": "\\0",
+    "status": "Pending",
+    "remark": "结算已撤销：应付回到采购价口径"
+   },
+   {
+    "payable_id": "1792220970469337607",
+    "source_no": "PO1792220970459-1792220891340796153-1792220891313776894-690a2b",
+    "amount": "0.00",
+    "settled_amount": "NULL",
+    "estimated": "\u0001",
+    "status": "Pending",
+    "remark": "结算已撤销：应付回到采购价口径，仍有未定价行"
+   }
+  ],
+  "result": "PASS: costComplete=false, profit/grossMargin null after cancel"
+ },
+ "designer_settlement_leak": {
+  "request": "POST /api/material/settlement/page and /info with Designer/PM token",
+  "response_success": true,
+  "sample": {
+   "settlementId": "1792221003035007305",
+   "no": "ST1792221003034",
+   "totalAmount": 500.0,
+   "supplierName": "造数供应商"
+  },
+  "result": "FAIL: cost/settlement data visible to Designer/PM"
+ },
+ "designer_purchase_leak": {
+  "request": "POST /api/project/purchase/page with Designer/PM token",
+  "response_success": true,
+  "sample": {
+   "no": "PO1792220967035-1792220891340796153-1791842081487998780-0a8bdc",
+   "amount": 300.0,
+   "supplierName": "造数供应商"
+  },
+  "result": "FAIL: purchase amount visible"
+ },
+ "designer_sheet_cost_leak": {
+  "request": "POST /api/material/sheet/info with Designer token",
+  "response_success": true,
+  "sample": {
+   "itemId": "1792220891349307568",
+   "quoteCostPrice": 120.0,
+   "priceState": "Unpriced"
+  },
+  "result": "FAIL: quote cost visible"
+ },
+ "unpriced_payable_projection": {
+  "db": {
+   "estimated": true,
+   "amount": 0.0
+  },
+  "api": {
+   "payableId": "1792220970469337607",
+   "amount": 0.0,
+   "estimated": null,
+   "settledAmount": null
+  },
+  "result": "FAIL: estimated not exposed, amount 0"
+ },
+ "cross_tenant": {
+  "project_info": {
+   "success": false,
+   "code": "404",
+   "message": "项目不存在或无权访问"
+  },
+  "settlement_preview": {
+   "success": true,
+   "rows": 0
+  },
+  "sheet_list": {
+   "success": true,
+   "rows": 0
+  },
+  "sheet_info": {
+   "success": false,
+   "code": "404",
+   "message": "作业单不存在或无权访问"
+  },
+  "result": "PASS: no cross-tenant data returned"
+ },
+ "old_routes": {
+  "project/purchase/save": {
+   "success": false,
+   "code": "canNotFoundHandler"
+  },
+  "project/purchase/batch": {
+   "success": false,
+   "code": "canNotFoundHandler"
+  },
+  "result": "PASS: unreachable"
+ },
+ "assistant_audit_idempotency": {
+  "requestId": "b6-req-audit-001",
+  "idempotencyKey": "b6-idem-audit-001",
+  "auditId_1": "237110033547001856",
+  "auditId_2": "237110033547001856",
+  "same": true,
+  "result": "PASS: stable audit"
+ }
+}

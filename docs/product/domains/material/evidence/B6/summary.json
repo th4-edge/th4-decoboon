@@ -1,0 +1,148 @@
+{
+ "batch": "B6",
+ "domain": "material",
+ "conclusion": "FAIL",
+ "conclusionScope": "independent acceptance recommendation only; not ACCEPTED",
+ "environment": {
+  "backend": "/tmp/th4-b6-backend-af12b9f commit af12b9f on 8090",
+  "app": "/tmp/th4-b6-app-225b963 commit 225b963 H5 on 8080",
+  "db": "127.0.0.1:3306/decoboon local dev",
+  "viewport": "390x844",
+  "web": "B2 real-browser evidence reused; Provider re-queried"
+ },
+ "totals": {
+  "total": 127,
+  "pass": 121,
+  "fail": 6
+ },
+ "byCategory": {
+  "positive": {
+   "total": 17,
+   "pass": 17,
+   "fail": 0
+  },
+  "negative": {
+   "total": 7,
+   "pass": 7,
+   "fail": 0
+  },
+  "permission": {
+   "total": 18,
+   "pass": 15,
+   "fail": 3
+  },
+  "idempotency": {
+   "total": 6,
+   "pass": 5,
+   "fail": 1
+  },
+  "boundary": {
+   "total": 8,
+   "pass": 6,
+   "fail": 2
+  },
+  "old-route": {
+   "total": 5,
+   "pass": 5,
+   "fail": 0
+  },
+  "assistant": {
+   "total": 55,
+   "pass": 55,
+   "fail": 0
+  },
+  "cross-end": {
+   "total": 4,
+   "pass": 4,
+   "fail": 0
+  },
+  "ui": {
+   "total": 7,
+   "pass": 7,
+   "fail": 0
+  }
+ },
+ "defects": [
+  {
+   "id": "B6-DEF-001",
+   "severity": "P1",
+   "title": "Designer/PM 可读取材料成本字段",
+   "status": "OPEN",
+   "evidence": [
+    "blackbox-results.json#X12",
+    "screenshots/b6-h5-sheet-detail-arrived.png"
+   ]
+  },
+  {
+   "id": "B6-DEF-002",
+   "severity": "P1",
+   "title": "Designer/PM 可读取采购金额与供应商",
+   "status": "OPEN",
+   "evidence": [
+    "blackbox-results.json#X11"
+   ]
+  },
+  {
+   "id": "B6-DEF-003",
+   "severity": "P1",
+   "title": "Designer/PM 可读取结算单金额与供应商",
+   "status": "OPEN",
+   "evidence": [
+    "blackbox-results.json#X10"
+   ]
+  },
+  {
+   "id": "B6-DEF-004",
+   "severity": "P1",
+   "title": "重复订单请求生成重复采购单/应付",
+   "status": "OPEN",
+   "evidence": [
+    "blackbox-results.json#I01"
+   ]
+  },
+  {
+   "id": "B6-DEF-005",
+   "severity": "P1",
+   "title": "未到场的采购明细可被结算",
+   "status": "OPEN",
+   "evidence": [
+    "blackbox-results.json#B04"
+   ]
+  },
+  {
+   "id": "B6-DEF-006",
+   "severity": "P2",
+   "title": "暂估应付读模型显示0且未暴露estimated",
+   "status": "OPEN",
+   "evidence": [
+    "blackbox-results.json#B07"
+   ]
+  }
+ ],
+ "requirements": {
+  "REQ-MAT-013": "FAIL（主链可跑通，但重复下单会重复生成采购/应付）",
+  "REQ-MAT-014": "FAIL（逐单/月结/撤销可跑通，但未到场可结算，且Designer/PM可读结算金额）",
+  "REQ-MAT-015": "PASS（旧Provider与旧App入口不可达；历史采购/到场仍可用）",
+  "REQ-MAT-006": "PASS（PM测量/到场；项目负责人临时赋权后验证，已恢复）",
+  "REQ-MAT-001/002/004": "PASS（B2/App/Provider同源，角色负向通过）",
+  "REQ-MAT-008/009": "PASS（50/50黄金问题、拒答、审计、跨租户）"
+ },
+ "cleanup": {
+  "temporary_supplier": "deleted",
+  "temporary_sheet": "deleted",
+  "temporary_purchases": "deleted",
+  "temporary_settlements": "deleted",
+  "temporary_receipts": "deleted",
+  "seed_rows_restored": "plan/purchase/purchase_item/payable/quote_line diff=0",
+  "project_manager_restored": true,
+  "ddl": false,
+  "production_touched": false,
+  "formal_mini_program_release": false
+ },
+ "limitations": [
+  "PM seed account initially had 0 visible projects; PM positive flow required temporary project-manager assignment, restored afterwards.",
+  "Web pages were not re-rendered; B2 real-browser evidence plus live Provider were used, as allowed by the run envelope.",
+  "No WeChat DevTools run in B6; H5 390x844 real-browser evidence used for App UI."
+ ],
+ "recommendation": "Do not mark B6 ACCEPTED. Fix the six open defects (especially B6-DEF-001/002/003/004/005), rerun the affected black-box matrix, then request user final ACCEPTED decision."
+}

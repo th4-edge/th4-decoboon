@@ -5,8 +5,8 @@
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
   "phase": "RECONCILED",
-  "batch": "B5",
-  "nextAction": "执行 B6 独立验收与黑盒对账；实现者不得自批 ACCEPTED",
+  "batch": "B6",
+  "nextAction": "B6.1 修复 B6 独立验收 6 个开放缺陷；不得宣称 ACCEPTED",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T14:21:45+08:00",
+  "updatedAt": "2026-10-17T15:16:15+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -172,6 +172,12 @@
       "phase": "RECONCILED",
       "batch": "B5",
       "note": "B5 RECONCILED：REQ-MAT-013/014/015 与真实 App 页面/测试/证据对齐；无 UNMAPPED/STALE；独立验收留 B6"
+    },
+    {
+      "at": "2026-10-17T15:16:15+08:00",
+      "phase": "RECONCILED",
+      "batch": "B6",
+      "note": "B6 独立验收 FAIL：127 项 121 PASS / 6 FAIL；5 个 P1（成本/采购/结算读权限、重复下单、未到场结算）与 1 个 P2（暂估应付显示 0）；证据 evidence/B6/；B6.1 修复，B6.2 独立复验，之后 B7 助手上下文入口"
     }
   ]
 }
