@@ -1,0 +1,206 @@
+{
+  "general_price": {
+    "success": true,
+    "errorCode": null,
+    "question": "未定价为什么还能下单？",
+    "intent": "PRICE_COST",
+    "answerType": "EXPLANATION",
+    "answer": "P1 报价成本价只用于预计成本；P2 采购价在下单时形成应付和暂估成本；P3 结算价是实际成本的唯一计价来源。 无价下单允许，但会形成暂估应付；任一应计成本缺失时 costComplete=false，利润和毛利率必须为 null，不能用 0 成本或预计成本冒充实际利润。",
+    "confidence": 0.95,
+    "readOnly": true,
+    "citationIds": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json"
+    ],
+    "nextActions": [
+      "继续核对采购与结算金额"
+    ],
+    "auditId": "237074681557942272",
+    "auditStatus": "RECORDED"
+  },
+  "project_health": {
+    "success": true,
+    "errorCode": null,
+    "question": "这个项目的材料业务现在缺什么？",
+    "intent": "PROJECT_HEALTH",
+    "answerType": "LIVE_DATA",
+    "answer": "当前项目阶段：选材 / 现场确认。仍有材料计划行未完成选材，尚不能进入财务下单。 材料计划 2 条，已选材 1 条，待下单 1 条，待到货 1 条，逾期 0 条。校核项：未完成选材 1 项；采购未定价 1 项；成本不完整 1 项。 成本状态：未完整（1 项）；利润：null（暂不确认）。下一步：设计师完成选材并交付财务。",
+    "confidence": 0.94,
+    "readOnly": true,
+    "citationIds": [
+      "CHK-UNSELECTED",
+      "CHK-UNPRICED",
+      "CHK-COST-INCOMPLETE"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json",
+      "project/project/info",
+      "blueprint/check/report"
+    ],
+    "nextActions": [
+      "设计师完成选材并交付财务"
+    ],
+    "auditId": "237074682174504960",
+    "auditStatus": "RECORDED"
+  },
+  "receipt": {
+    "success": true,
+    "errorCode": null,
+    "question": "到场确认会新增应付吗？",
+    "intent": "RECEIPT",
+    "answerType": "LIVE_DATA",
+    "answer": "到场确认按实际到场数量和日期登记，支持部分到场；到场不会新增应付，只回填账期并累计算实际成本。无价采购不阻断到场，成本仍保持不完整直到结算。 当前项目待到货 1 条，部分到场 1 条，逾期 0 条。",
+    "confidence": 0.94,
+    "readOnly": true,
+    "citationIds": [
+      "R-RECEIPT-NO-PAYABLE",
+      "EX-PARTIAL-RECEIPT",
+      "GoodsReceipt.quantity/arrivedAt"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json",
+      "project/project/info",
+      "blueprint/check/report"
+    ],
+    "nextActions": [
+      "项目经理/设计师确认实际到场数量",
+      "财务回填账期并在结算时收敛成本"
+    ],
+    "auditId": "237074682434551808",
+    "auditStatus": "RECORDED"
+  },
+  "permission": {
+    "success": true,
+    "errorCode": null,
+    "question": "谁能查看材料成本和供应商价格？",
+    "intent": "PERMISSION",
+    "answerType": "PERMISSION_DENIED",
+    "answer": "材料助手只读，并继承当前登录员工的数据范围，不信任前端传入的 companyId/empId/projectId。跨企业、跨项目和越权数据请求应返回 404/403；材料成本、供应商价格和利润仅 Boss、店长、财务可见。",
+    "confidence": 1.0,
+    "readOnly": true,
+    "citationIds": [
+      "BR-027",
+      "EX-CROSS-TENANT"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json"
+    ],
+    "nextActions": [
+      "仅查看当前员工有权访问的项目",
+      "成本问题请由财务/负责人查看"
+    ],
+    "auditId": "237074682518437888",
+    "auditStatus": "RECORDED"
+  },
+  "refusal": {
+    "success": true,
+    "errorCode": null,
+    "question": "帮我审批这张采购单",
+    "intent": "OUT_OF_SCOPE",
+    "answerType": "REFUSAL",
+    "answer": "我只处理材料业务的解释、数据校核和下一步引导，不能自动审批、付款、删除数据或修改权限。需要这些动作时，请由有权限的人员在对应业务页面人工处理。",
+    "confidence": 1.0,
+    "readOnly": true,
+    "citationIds": [
+      "READ-ONLY"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json"
+    ],
+    "nextActions": [
+      "打开对应业务页面由人工处理"
+    ],
+    "auditId": "237074682602323968",
+    "auditStatus": "RECORDED"
+  },
+  "unknown": {
+    "success": true,
+    "errorCode": null,
+    "question": "明天适合穿什么衣服？",
+    "intent": "UNKNOWN",
+    "answerType": "NO_EVIDENCE",
+    "answer": "这个问题在已发布材料蓝图和当前项目上下文中没有足够证据，暂不可确认。请补充材料对象、项目或作业单上下文，或换一个材料业务问题。",
+    "confidence": 0.35,
+    "readOnly": true,
+    "citationIds": [
+      "KNOWLEDGE"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json"
+    ],
+    "nextActions": [
+      "补充 projectId/sheetId",
+      "换用材料计划、作业单、采购、到场或结算问题"
+    ],
+    "auditId": "237074682686210048",
+    "auditStatus": "RECORDED"
+  },
+  "designer_own_project": {
+    "success": true,
+    "errorCode": null,
+    "question": "这个项目的材料业务现在缺什么？",
+    "intent": "PROJECT_HEALTH",
+    "answerType": "LIVE_DATA",
+    "answer": "当前项目材料计划 2 条，待下单 1 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。",
+    "confidence": 0.9,
+    "readOnly": true,
+    "citationIds": [
+      "CHK-UNSELECTED",
+      "CHK-UNPRICED",
+      "CHK-COST-INCOMPLETE"
+    ],
+    "toolProviders": [
+      "blueprints/material-v1.json",
+      "project/project/info",
+      "material/plan/workbench"
+    ],
+    "nextActions": [
+      "继续查看材料计划与到场状态"
+    ],
+    "auditId": "237074734695579648",
+    "auditStatus": "RECORDED"
+  },
+  "designer_cross_project_denied": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "项目不存在或无权访问",
+      "system": false
+    },
+    "question": null,
+    "intent": null,
+    "answerType": null,
+    "answer": null,
+    "confidence": null,
+    "readOnly": null,
+    "citationIds": [],
+    "toolProviders": [],
+    "nextActions": [],
+    "auditId": null,
+    "auditStatus": null
+  },
+  "boss_cross_tenant_denied": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "项目不存在或无权访问",
+      "system": false
+    },
+    "question": null,
+    "intent": null,
+    "answerType": null,
+    "answer": null,
+    "confidence": null,
+    "readOnly": null,
+    "citationIds": [],
+    "toolProviders": [],
+    "nextActions": [],
+    "auditId": null,
+    "auditStatus": null
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "capabilityCode": "material.assistant.ask",
+  "count": 109,
+  "firstStartedAt": "2026-10-17 12:50:08.706481",
+  "lastStartedAt": "2026-10-17 12:53:08.017493",
+  "succeeded": 109,
+  "promptStored": false,
+  "answerStored": false,
+  "recent": [
+    {
+      "callId": "237075433600843776",
+      "employeeId": "999200000000000025",
+      "businessType": null,
+      "businessId": null,
+      "providerCode": "baseline",
+      "modelCode": "rule-material-v1",
+      "status": "Succeeded",
+      "resourceUnits": 80,
+      "startedAt": "2026-10-17 12:53:08.017493"
+    },
+    {
+      "callId": "237075433567289344",
+      "employeeId": "999200000000000025",
+      "businessType": null,
+      "businessId": null,
+      "providerCode": "baseline",
+      "modelCode": "rule-material-v1",
+      "status": "Succeeded",
+      "resourceUnits": 144,
+      "startedAt": "2026-10-17 12:53:08.009079"
+    },
+    {
+      "callId": "237075433533734912",
+      "employeeId": "999200000000000025",
+      "businessType": null,
+      "businessId": null,
+      "providerCode": "baseline",
+      "modelCode": "rule-material-v1",
+      "status": "Succeeded",
+      "resourceUnits": 200,
+      "startedAt": "2026-10-17 12:53:07.999713"
+    },
+    {
+      "callId": "237075433491791872",
+      "employeeId": "999200000000000025",
+      "businessType": null,
+      "businessId": null,
+      "providerCode": "baseline",
+      "modelCode": "rule-material-v1",
+      "status": "Succeeded",
+      "resourceUnits": 123,
+      "startedAt": "2026-10-17 12:53:07.991052"
+    },
+    {
+      "callId": "237075433454043136",
+      "employeeId": "999200000000000025",
+      "businessType": null,
+      "businessId": null,
+      "providerCode": "baseline",
+      "modelCode": "rule-material-v1",
+      "status": "Succeeded",
+      "resourceUnits": 126,
+      "startedAt": "2026-10-17 12:53:07.981330"
+    }
+  ]
+}

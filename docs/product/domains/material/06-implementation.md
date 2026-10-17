@@ -130,3 +130,44 @@
 - 临时 Tile 草稿已删除；
 - 本地造数账号密码哈希临时重置后已恢复；
 - 无 DDL、无迁移、无生产发布。
+
+## B4 范围
+
+- Batch：B4
+- 垂直切片：只读材料业务助手运行时；
+- 角色：登录员工（数据范围继承），成本类实时数据仅 Boss/店长/财务；
+- 不含：UI 页面新增、LLM 自主写入、审批/付款/删除/改权限、DDL、正式小程序发布。
+
+## B4 后端变更
+
+- 新增 `material/assistant/ask` Provider：
+  - `MaterialAssistantQuery`、`MaterialAssistantAnswer`、`MaterialAssistantCitation`、`MaterialAssistantToolCall`；
+  - `MaterialAssistantContext`：意图识别、蓝图检索、实时项目/作业单工具、确定性回答；
+  - `MaterialAssistantIntentResolver`：规则基线意图识别；
+  - `MaterialAssistantKnowledge`：读取发布蓝图与 50 个黄金问题；
+  - `MaterialAssistantAuditContext`：复用既有 `AiUsageContext` 记录调用元数据，不保存问题/回答正文。
+- 读取真实上下文：
+  - `ProjectAccessContext.requireReadableProject`；
+  - `MaterialSheetContext.info` + `MaterialSheetTemplateContext.requiredHeaderFields`；
+  - Boss/店长/财务使用 `MaterialHealthContext`；Designer/PM 使用 `MaterialPlanWorkbenchContext`，不读取成本；
+  - 跨项目/跨企业由既有数据范围返回 404。
+- 无新增实体、无 DDL、无迁移。
+
+## B4 验证
+
+- 50 个黄金问题全部命中预期意图，50/50 带证据或明确拒答，全部 `readOnly=true`、审计 RECORDED；
+- 真实项目 `235520576473530368` 材料体检回答包含阶段、计数、校核项、成本未完整和利润 `null`；
+- Designer 本人项目只返回履约状态，不读取成本；跨项目 404；
+- Boss 跨企业项目 404；
+- 越界审批请求拒答；未知问题 `NO_EVIDENCE`；
+- 重复 `requestId + idempotencyKey` 返回同一审计记录；
+- 定向测试与 `mvn -q -DskipTests compile` PASS。
+
+## B4 证据
+
+- `docs/product/domains/material/evidence/B4/golden-questions.json`
+- `golden-question-results.json`
+- `api-samples.json`
+- `audit-summary.json`
+- `test-summary.json`
+- `README.md`

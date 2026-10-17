@@ -1,0 +1,489 @@
+[
+  {
+    "id": "Q01",
+    "question": "主材还没选材，为什么不能下单？",
+    "expectedIntent": "SELECTION_GATE",
+    "expectedRefs": [
+      "R-SELECTION-GATE",
+      "CHK-UNSELECTED"
+    ]
+  },
+  {
+    "id": "Q02",
+    "question": "材料计划行什么时候才算可以进入采购？",
+    "expectedIntent": "SELECTION_GATE",
+    "expectedRefs": [
+      "R-SELECTION-GATE",
+      "CHK-UNSELECTED"
+    ]
+  },
+  {
+    "id": "Q03",
+    "question": "进入采购后还能换材料吗？",
+    "expectedIntent": "SELECTION_GATE",
+    "expectedRefs": [
+      "R-SELECTION-GATE",
+      "CHK-UNSELECTED"
+    ]
+  },
+  {
+    "id": "Q04",
+    "question": "哪些材料行必须先完成选材确认？",
+    "expectedIntent": "SELECTION_GATE",
+    "expectedRefs": [
+      "R-SELECTION-GATE",
+      "CHK-UNSELECTED"
+    ]
+  },
+  {
+    "id": "Q05",
+    "question": "作业单里的测量日期是什么意思？",
+    "expectedIntent": "TIME_SEMANTICS",
+    "expectedRefs": [
+      "MaterialOrderSheet.measureAt/groupChatAt/deliverAt/installAt",
+      "PurchaseOrder.expectedAt/orderedAt",
+      "GoodsReceipt.quantity/arrivedAt",
+      "GAP-MAT-TIME-SEMANTICS"
+    ]
+  },
+  {
+    "id": "Q06",
+    "question": "配送日期和安装日期是系统确认时间吗？",
+    "expectedIntent": "TIME_SEMANTICS",
+    "expectedRefs": [
+      "MaterialOrderSheet.measureAt/groupChatAt/deliverAt/installAt",
+      "PurchaseOrder.expectedAt/orderedAt",
+      "GoodsReceipt.quantity/arrivedAt",
+      "GAP-MAT-TIME-SEMANTICS"
+    ]
+  },
+  {
+    "id": "Q07",
+    "question": "要求到场和实际到场有什么区别？",
+    "expectedIntent": "TIME_SEMANTICS",
+    "expectedRefs": [
+      "MaterialOrderSheet.measureAt/groupChatAt/deliverAt/installAt",
+      "PurchaseOrder.expectedAt/orderedAt",
+      "GoodsReceipt.quantity/arrivedAt",
+      "GAP-MAT-TIME-SEMANTICS"
+    ]
+  },
+  {
+    "id": "Q08",
+    "question": "拉群时间和测量时间是一回事吗？",
+    "expectedIntent": "TIME_SEMANTICS",
+    "expectedRefs": [
+      "MaterialOrderSheet.measureAt/groupChatAt/deliverAt/installAt",
+      "PurchaseOrder.expectedAt/orderedAt",
+      "GoodsReceipt.quantity/arrivedAt",
+      "GAP-MAT-TIME-SEMANTICS"
+    ]
+  },
+  {
+    "id": "Q09",
+    "question": "请购时间和建单时间、采购下单时间怎么区分？",
+    "expectedIntent": "TIME_SEMANTICS",
+    "expectedRefs": [
+      "MaterialOrderSheet.measureAt/groupChatAt/deliverAt/installAt",
+      "PurchaseOrder.expectedAt/orderedAt",
+      "GoodsReceipt.quantity/arrivedAt",
+      "GAP-MAT-TIME-SEMANTICS"
+    ]
+  },
+  {
+    "id": "Q10",
+    "question": "作业单和采购单有什么区别？",
+    "expectedIntent": "SHEET_VS_PURCHASE",
+    "expectedRefs": [
+      "MaterialOrderSheet",
+      "R-SHEET-NO-PRICE",
+      "R-ONE-TO-MANY"
+    ]
+  },
+  {
+    "id": "Q11",
+    "question": "为什么一张作业单可以对应多张采购单？",
+    "expectedIntent": "SHEET_VS_PURCHASE",
+    "expectedRefs": [
+      "MaterialOrderSheet",
+      "R-SHEET-NO-PRICE",
+      "R-ONE-TO-MANY"
+    ]
+  },
+  {
+    "id": "Q12",
+    "question": "作业单上为什么不显示价格和账期？",
+    "expectedIntent": "SHEET_VS_PURCHASE",
+    "expectedRefs": [
+      "MaterialOrderSheet",
+      "R-SHEET-NO-PRICE",
+      "R-ONE-TO-MANY"
+    ]
+  },
+  {
+    "id": "Q13",
+    "question": "厂家名称和供应商是一回事吗？",
+    "expectedIntent": "SUPPLIER",
+    "expectedRefs": [
+      "Partner",
+      "PurchaseOrder.supplier",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q14",
+    "question": "这张作业单为什么不能提交请购？",
+    "expectedIntent": "SHEET_STATUS",
+    "expectedRefs": [
+      "MaterialOrderSheet.status/remark",
+      "CHK-MEASURE-TEMPLATE",
+      "CHK-CANCEL-AFTER-ORDER",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q15",
+    "question": "作业单进入采购后为什么不能编辑？",
+    "expectedIntent": "SHEET_STATUS",
+    "expectedRefs": [
+      "MaterialOrderSheet.status/remark",
+      "CHK-MEASURE-TEMPLATE",
+      "CHK-CANCEL-AFTER-ORDER",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q16",
+    "question": "作业单还能直接取消吗？",
+    "expectedIntent": "SHEET_STATUS",
+    "expectedRefs": [
+      "MaterialOrderSheet.status/remark",
+      "CHK-MEASURE-TEMPLATE",
+      "CHK-CANCEL-AFTER-ORDER",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q17",
+    "question": "测量字段没填能提交请购吗？",
+    "expectedIntent": "SHEET_STATUS",
+    "expectedRefs": [
+      "MaterialOrderSheet.status/remark",
+      "CHK-MEASURE-TEMPLATE",
+      "CHK-CANCEL-AFTER-ORDER",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q18",
+    "question": "作业单现在下一步该做什么？",
+    "expectedIntent": "SHEET_STATUS",
+    "expectedRefs": [
+      "MaterialOrderSheet.status/remark",
+      "CHK-MEASURE-TEMPLATE",
+      "CHK-CANCEL-AFTER-ORDER",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q19",
+    "question": "未定价为什么还能下单？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q20",
+    "question": "暂估应付是什么意思？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q21",
+    "question": "材料成本不完整为什么利润不能显示？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q22",
+    "question": "P1、P2、P3 分别是什么价格？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q23",
+    "question": "结算价会写回供应商参考价吗？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q24",
+    "question": "无价采购到场后成本怎么算？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q25",
+    "question": "为什么项目毛利是空的？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q26",
+    "question": "采购价和结算价哪个进入实际成本？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q27",
+    "question": "成本不完整时能不能先按 0 算利润？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q28",
+    "question": "材料部分到场怎么处理？",
+    "expectedIntent": "RECEIPT",
+    "expectedRefs": [
+      "R-RECEIPT-NO-PAYABLE",
+      "EX-PARTIAL-RECEIPT"
+    ]
+  },
+  {
+    "id": "Q29",
+    "question": "到场确认会新增应付吗？",
+    "expectedIntent": "RECEIPT",
+    "expectedRefs": [
+      "R-RECEIPT-NO-PAYABLE",
+      "EX-PARTIAL-RECEIPT"
+    ]
+  },
+  {
+    "id": "Q30",
+    "question": "无价采购能正常确认到场吗？",
+    "expectedIntent": "PRICE_COST",
+    "expectedRefs": [
+      "R-PAYABLE-ON-ORDER",
+      "R-P3-ACTUAL-COST",
+      "R-COST-COMPLETE",
+      "CHK-UNPRICED"
+    ]
+  },
+  {
+    "id": "Q31",
+    "question": "到场后账期从什么时候开始算？",
+    "expectedIntent": "RECEIPT",
+    "expectedRefs": [
+      "R-RECEIPT-NO-PAYABLE",
+      "EX-PARTIAL-RECEIPT"
+    ]
+  },
+  {
+    "id": "Q32",
+    "question": "减项发生在已经下单之后怎么处理？",
+    "expectedIntent": "CHANGE",
+    "expectedRefs": [
+      "R-CHANGE-THREE-WAY",
+      "EX-CHANGE-AFTER-ORDER"
+    ]
+  },
+  {
+    "id": "Q33",
+    "question": "已经到货的材料减项要走退货吗？",
+    "expectedIntent": "CHANGE",
+    "expectedRefs": [
+      "R-CHANGE-THREE-WAY",
+      "EX-CHANGE-AFTER-ORDER"
+    ]
+  },
+  {
+    "id": "Q34",
+    "question": "未下单的减项是冲材料计划还是采购？",
+    "expectedIntent": "CHANGE",
+    "expectedRefs": [
+      "R-CHANGE-THREE-WAY",
+      "EX-CHANGE-AFTER-ORDER"
+    ]
+  },
+  {
+    "id": "Q35",
+    "question": "换材料为什么要走增减项？",
+    "expectedIntent": "CHANGE",
+    "expectedRefs": [
+      "R-CHANGE-THREE-WAY",
+      "EX-CHANGE-AFTER-ORDER"
+    ]
+  },
+  {
+    "id": "Q36",
+    "question": "逐单结算和月结会重复计算吗？",
+    "expectedIntent": "SETTLEMENT",
+    "expectedRefs": [
+      "R-SETTLEMENT-EXCLUSIVE"
+    ]
+  },
+  {
+    "id": "Q37",
+    "question": "为什么先逐单结算再月结？",
+    "expectedIntent": "SETTLEMENT",
+    "expectedRefs": [
+      "R-SETTLEMENT-EXCLUSIVE"
+    ]
+  },
+  {
+    "id": "Q38",
+    "question": "结算撤销后成本和利润怎么恢复？",
+    "expectedIntent": "SETTLEMENT",
+    "expectedRefs": [
+      "R-SETTLEMENT-EXCLUSIVE"
+    ]
+  },
+  {
+    "id": "Q39",
+    "question": "同一采购明细能结算两次吗？",
+    "expectedIntent": "SETTLEMENT",
+    "expectedRefs": [
+      "R-SETTLEMENT-EXCLUSIVE"
+    ]
+  },
+  {
+    "id": "Q40",
+    "question": "供应商和经销商在系统里怎么区分？",
+    "expectedIntent": "SUPPLIER",
+    "expectedRefs": [
+      "Partner",
+      "PurchaseOrder.supplier",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q41",
+    "question": "谁能决定采购供应商？",
+    "expectedIntent": "SUPPLIER",
+    "expectedRefs": [
+      "Partner",
+      "PurchaseOrder.supplier",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q42",
+    "question": "没有供应商能形成应付吗？",
+    "expectedIntent": "SUPPLIER",
+    "expectedRefs": [
+      "Partner",
+      "PurchaseOrder.supplier",
+      "R-SHEET-NO-PRICE"
+    ]
+  },
+  {
+    "id": "Q43",
+    "question": "这个项目的材料业务现在缺什么？",
+    "expectedIntent": "PROJECT_HEALTH",
+    "expectedRefs": [
+      "CHK-UNSELECTED",
+      "CHK-UNPRICED",
+      "CHK-COST-INCOMPLETE"
+    ]
+  },
+  {
+    "id": "Q44",
+    "question": "项目材料为什么还没有闭环？",
+    "expectedIntent": "PROJECT_HEALTH",
+    "expectedRefs": [
+      "CHK-UNSELECTED",
+      "CHK-UNPRICED",
+      "CHK-COST-INCOMPLETE"
+    ]
+  },
+  {
+    "id": "Q45",
+    "question": "项目材料体检里的待下单和待到货怎么理解？",
+    "expectedIntent": "PROJECT_HEALTH",
+    "expectedRefs": [
+      "CHK-UNSELECTED",
+      "CHK-UNPRICED",
+      "CHK-COST-INCOMPLETE"
+    ]
+  },
+  {
+    "id": "Q46",
+    "question": "谁能查看材料成本和供应商价格？",
+    "expectedIntent": "PERMISSION",
+    "expectedRefs": [
+      "BR-027",
+      "EX-CROSS-TENANT"
+    ]
+  },
+  {
+    "id": "Q47",
+    "question": "跨项目问材料数据会怎样？",
+    "expectedIntent": "PERMISSION",
+    "expectedRefs": [
+      "BR-027",
+      "EX-CROSS-TENANT"
+    ]
+  },
+  {
+    "id": "Q48",
+    "question": "作业单的 status 字段是什么意思？",
+    "expectedIntent": "FIELD_DICTIONARY",
+    "expectedRefs": []
+  },
+  {
+    "id": "Q49",
+    "question": "priceState 字段代表什么？",
+    "expectedIntent": "FIELD_DICTIONARY",
+    "expectedRefs": []
+  },
+  {
+    "id": "Q50",
+    "question": "帮我审批这张采购单",
+    "expectedIntent": "OUT_OF_SCOPE",
+    "expectedRefs": []
+  }
+]

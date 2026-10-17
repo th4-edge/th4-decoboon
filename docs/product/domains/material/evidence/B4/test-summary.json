@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-17",
+  "environment": "local-dev",
+  "provider": "material/assistant/ask",
+  "unitTests": "PASS",
+  "compile": "PASS",
+  "goldenQuestions": {
+    "total": 50,
+    "intentMatched": 50,
+    "readOnly": 50,
+    "audited": 50
+  },
+  "liveChecks": {
+    "projectHealthProfitNull": true,
+    "designerOwnProjectUsesWorkbench": true,
+    "designerCrossProjectDenied404": true,
+    "bossCrossTenantDenied404": true,
+    "outOfScopeRefusal": true,
+    "unknownNoEvidence": true,
+    "idempotentAudit": true
+  },
+  "audit": {
+    "table": "db_ai_usage_call",
+    "promptStored": false,
+    "answerStored": false,
+    "rows": 109,
+    "allSucceeded": true
+  },
+  "ddl": false,
+  "migration": false,
+  "productionRelease": false
+}

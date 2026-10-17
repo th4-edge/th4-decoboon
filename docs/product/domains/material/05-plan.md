@@ -11,8 +11,8 @@
 | B1 | 业务卡核对、结构化蓝图、字段字典 | 产品/Boss/财务/设计/PM | MaterialPlan/Selection/Sheet/Purchase/Receipt/Settlement | 无或只读 blueprint definition | 无 | 现有 OBJ/BR/DEC/SCN 引用 | BLUEPRINT_READY | COMPLETE |
 | B2 | Web 蓝图中心 + 项目材料业务体检 | Boss/Store/Finance | 项目/材料/检查 | blueprint runtime/check provider | Web | 选材/下单/到场/成本完整性 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
 | B3 | App 业务体检 + 页面解释 | Designer/PM/Boss/Finance | Sheet/Plan/Receipt | assistant context provider | App | 字段/时间/下一步 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
-| B4 | 只读材料助手 | 全角色（按权限） | 全部材料对象 | assistant orchestrator/tools | Web/App | 50 黄金问题、8–12 校核 | 权限/反向/证据 PASS | PENDING |
-| B5 | 独立验收与对账 | independent | 全部 | 无实现 | Web/App | 正向/反向/越权/幂等/边界 | ACCEPTED | PENDING |
+| B4 | 只读材料助手 | 全角色（按权限） | 全部材料对象 | assistant orchestrator/tools | Web/App | 50 黄金问题、8–12 校核 | 权限/反向/证据 PASS | COMPLETE (2026-10-17) |
+| B5 | 独立验收与对账 | independent | 全部 | 无实现 | Web/App | 正向/反向/越权/幂等/边界 | ACCEPTED | NEXT |
 | B6 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
 
 ## 依赖与顺序
@@ -37,7 +37,8 @@
 - B2 已在 2026-10-17 完成 `DEV_VERIFIED + UI_REVIEWED + RECONCILED`：真实浏览器证据见 `evidence/B2/`；
 - B2 不宣称独立验收通过；REQ-MAT-001/002/004 的独立验收仍留 B5；
 - B3 已在 2026-10-17 完成 `DEV_VERIFIED + UI_REVIEWED + RECONCILED`：微信开发者工具与 H5 证据见 `evidence/B3/`；
-- B3 不宣称独立验收通过，跨端黑盒仍留 B5。
+- B3 不宣称独立验收通过，跨端黑盒仍留 B5；
+- B4 已完成只读助手运行时、50 黄金问题、权限负向和审计证据，停在 `RECONCILED`；B5 必须由独立验收角色/任务执行。
 
 ## B2 实施门槛（PLAN_READY，2026-10-17）
 
@@ -120,3 +121,32 @@
 - App 回退本批页面组件与文档；
 - 不涉及数据、迁移、权限或生产配置；
 - 保留旧版体验包，不发布正式版。
+
+
+## B4 实施门槛（PLAN_READY，2026-10-17）
+
+### 垂直切片
+
+只交付材料业务助手的只读运行时与 50 个黄金问题验证：
+
+- `material/assistant/ask` Provider；
+- 意图识别、蓝图检索、真实项目/作业单上下文、确定性校核；
+- 证据引用、只读工具清单、下一步、审计记录；
+- 50 个黄金问题、权限负向、成本不完整与无证据拒答。
+
+不做：新业务规则、LLM 自主写入、审批/付款/删除/改权限、DDL、正式小程序发布。
+
+### 依赖
+
+- B1 蓝图 v1.0.0、B2 `blueprint/check/report`、B3 页面上下文；
+- `MaterialSheetContext`、`MaterialHealthContext`、`MaterialPlanWorkbenchContext`、`ProjectAccessContext`；
+- 既有 AI 调用底账 `AiUsageContext`（仅记录调用元数据，不存问题/回答正文）。
+
+### 退出条件
+
+- 50 个黄金问题全部命中预期意图并带证据或明确拒答；
+- 跨项目/越权由既有数据范围拒绝；
+- 无价/成本不完整时利润不输出 0；
+- Provider 编译、定向测试、HTTP 冒烟；
+- 证据落 `evidence/B4/` 并更新对账矩阵；
+- 停在 `RECONCILED`，独立验收留 B5。

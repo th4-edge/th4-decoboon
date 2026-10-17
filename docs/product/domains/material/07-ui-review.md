@@ -93,3 +93,21 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - Web 与 App 的 `blueprint/check/report` 使用同一 Provider、同一阶段/计数/成本口径；
 - App 作业单时间说明引用 `OBJ-008 / DEC-MP-07 / DEC-072 / DEC-073`，没有在前端新增状态机；
 - B5 仍需独立验证 App/Web 真机、越权、空态和边界一致性。
+
+---
+
+# B4 只读材料业务助手审查说明
+
+## 审查范围
+
+- Batch：B4
+- 交付形态：Provider/运行时，不新增独立 Web/App 页面；
+- 页面影响：B2 蓝图中心、B3 App 业务体检与上下文页面未改动；
+- 审查结论：本批不做 UI 通过声明，UI 入口和真实页面验收留 B5 独立验收。
+
+## 运行时证据
+
+- `evidence/B4/api-samples.json`：真实 HTTP 响应、证据引用、工具列表与审计状态；
+- `evidence/B4/golden-question-results.json`：50 个黄金问题逐题结果；
+- `evidence/B4/audit-summary.json`：审计元数据，不含问题/回答正文；
+- 设计—蓝图—实现—验收的一致性由 B5 独立黑盒验证。

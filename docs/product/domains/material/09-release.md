@@ -49,3 +49,14 @@
 - 验证：`npm run type-check`、`npm run build:mp-weixin`、`npm run check:ui`、`npm run check:subpackages` PASS；
 - 证据：`evidence/B3/`；
 - 小程序正式版：未提审、未发布；正式版仍由用户本人完成。
+
+## B4 范围
+
+- 提交：本批 `feat(material): 增加只读材料业务助手`
+
+- 后端：`material/assistant/ask` 只读材料业务助手；
+- 知识：发布蓝图 + 50 个黄金问题；
+- 工具：项目访问、作业单、项目材料体检、材料计划工作台；
+- 审计：复用 `db_ai_usage_call`，不保存问题/回答正文；
+- 数据库/迁移：无；
+- 生产发布：无。
