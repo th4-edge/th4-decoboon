@@ -14,9 +14,10 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.data.jpa.inject.annotation.ModelSaveInject;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
-import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,6 @@ import java.math.BigDecimal;
 public class Save implements com.th4.edge.decoboon.design.service.schemes.save.Save {
 
     @AutoInject
-    @NotNull
     private Long customerId;
 
     @AutoInject
@@ -82,6 +82,9 @@ public class Save implements com.th4.edge.decoboon.design.service.schemes.save.S
         Employee current = designContext.requireDesignWriteAccess(employee);
         if (copyFromId != null) {
             return designCopyContext.copy(copyFromId, employee, current);
+        }
+        if (customerId == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "新增设计方案必须指定客户"));
         }
         Customer customer = designContext.requireCustomer(customerId, employee);
         Employee fallback = customer.getDesigner() == null ? current : customer.getDesigner();
