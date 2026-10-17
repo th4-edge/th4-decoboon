@@ -4,9 +4,9 @@
   "title": "材料履约与材料业务助手",
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
-  "phase": "BLUEPRINT_READY",
+  "phase": "RECONCILED",
   "batch": "B2",
-  "nextAction": "核对 B2 垂直切片、依赖、回滚与退出条件，进入 PLAN_READY；随后只实现 Web 蓝图中心与项目材料业务体检",
+  "nextAction": "B2 已完成 DEV_VERIFIED + UI_REVIEWED + RECONCILED；下一批 B3：App 业务体检与页面上下文说明",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -23,10 +23,11 @@
     "uiReview": "07-ui-review.md",
     "acceptance": "08-acceptance.md",
     "release": "09-release.md",
-    "reconciliation": "10-reconciliation.md"
+    "reconciliation": "10-reconciliation.md",
+    "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T11:44:36+08:00",
+  "updatedAt": "2026-10-17T12:03:30+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -51,6 +52,30 @@
       "phase": "BLUEPRINT_READY",
       "batch": "B2",
       "note": "B1 blueprint v1.0.0 ready: 12 objects, stage source refs, template/cancel fields, reconciliation seeded"
+    },
+    {
+      "at": "2026-10-17T11:47:24+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B2",
+      "note": "B2 vertical slice, dependencies, rollback and exit criteria frozen; no DDL or business semantic change"
+    },
+    {
+      "at": "2026-10-17T12:00:30+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2",
+      "note": "backend targeted tests + compile, web type-check/build and nine governance checks passed; runtime/check providers verified with real project data"
+    },
+    {
+      "at": "2026-10-17T12:01:30+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "B2",
+      "note": "real browser 1440x900/1024x768 screenshots, stage switch, field search, project ledger navigation, empty/error/retry states captured in evidence/B2"
+    },
+    {
+      "at": "2026-10-17T12:02:07+08:00",
+      "phase": "RECONCILED",
+      "batch": "B2",
+      "note": "B2 Web blueprint center and project material health implemented with real Provider data, 1440/1024 browser evidence, empty/error/retry states; independent acceptance remains B5"
     }
   ]
 }

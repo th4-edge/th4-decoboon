@@ -1,0 +1,42 @@
+{
+  "blueprint": {
+    "viewport": "1440x900",
+    "docWidth": 1440,
+    "docHeight": 3409,
+    "overflowX": false,
+    "fieldRowsAfterSearch": 4
+  },
+  "blueprint1024": {
+    "viewport": "1024x768",
+    "docWidth": 1024,
+    "docHeight": 4630,
+    "overflowX": false,
+    "stageColumnCount": 3,
+    "sideNavVisible": false
+  },
+  "health": {
+    "viewport": "1440x900",
+    "docWidth": 1440,
+    "docHeight": 1674,
+    "overflowX": false,
+    "issueCount": 2,
+    "focusRowCount": 1
+  },
+  "health1024": {
+    "viewport": "1024x768",
+    "docWidth": 1024,
+    "docHeight": 2429,
+    "overflowX": false,
+    "metricColumnCount": 3,
+    "gridColumnCount": 1
+  },
+  "interactions": [
+    "stage switch",
+    "field search",
+    "project ledger navigation",
+    "health refresh",
+    "error retry recovery",
+    "real empty state"
+  ],
+  "normalPageConsoleErrors": 0
+}

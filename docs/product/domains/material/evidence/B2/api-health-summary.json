@@ -1,0 +1,28 @@
+{
+  "projectId": "235520634724024320",
+  "projectNo": "P1791842095079",
+  "projectName": "赵磊（造数1306） · 翡翠湖畔7栋702",
+  "hasMaterialPlan": true,
+  "totalItems": 1,
+  "selectedItems": 1,
+  "readyToOrder": 0,
+  "pendingArrival": 1,
+  "partiallyArrived": 1,
+  "arrived": 0,
+  "delayed": 0,
+  "purchaseCount": 1,
+  "unpricedPurchaseCount": 1,
+  "missingSupplierCount": 0,
+  "costComplete": false,
+  "costIncompleteCount": 1,
+  "stageKey": "receipt",
+  "stageLabel": "到场确认",
+  "nextAction": "项目经理/设计师确认到场，财务回填账期",
+  "settlementStatus": "待确认",
+  "issueIds": [
+    "CHK-UNPRICED",
+    "CHK-COST-INCOMPLETE"
+  ],
+  "rowCount": 1,
+  "profitAmount": null
+}

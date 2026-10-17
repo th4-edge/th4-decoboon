@@ -1,0 +1,10 @@
+{
+  "id": "material.end-to-end",
+  "title": "材料履约与材料业务助手",
+  "version": "1.0.0",
+  "status": "ready-for-implementation",
+  "lastReviewedCommit": "97d5705",
+  "sourceRefCount": 13,
+  "viewerRole": "Boss",
+  "costVisible": true
+}
