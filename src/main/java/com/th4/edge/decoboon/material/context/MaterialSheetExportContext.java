@@ -62,7 +62,7 @@ public class MaterialSheetExportContext {
 
             rowIndex = meta(target, rowIndex++, labelStyle, valueStyle, "设计师",
                     name(sheet.getCreatedBy()), "工程名称", projectName(sheet));
-            rowIndex = meta(target, rowIndex++, labelStyle, valueStyle, "下单时间",
+            rowIndex = meta(target, rowIndex++, labelStyle, valueStyle, "建单时间",
                     sheet.getCreateTime() == null ? "" : String.valueOf(sheet.getCreateTime().getDateTime()),
                     "厂家", nvl(sheet.getManufacturerName()));
             rowIndex = meta(target, rowIndex++, labelStyle, valueStyle, "单据编号",

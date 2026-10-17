@@ -117,6 +117,10 @@ class MaterialSheetExportTest {
         assertThat(cells).anyMatch(value -> value.contains("麦鸿装饰") && value.contains("下单表"));
         assertThat(cells).contains("项目经理确认签字：", "设计师确认签字：");
         assertThat(cells).contains("安装位置", "数量", "单位", "标配含");
+        assertThat(cells)
+                .as("建单时间必须与真正的采购下单时间区分")
+                .anyMatch(value -> value.contains("建单时间"))
+                .noneMatch(value -> value.contains("下单时间"));
         assertThat(cells).contains("客厅地砖", "12", "利家福", "43021", "羊脂白玉");
     }
 
