@@ -5,6 +5,9 @@ import com.th4.edge.decoboon.material.model.MaterialCategory;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheet;
 import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
 import com.th4.edge.decoboon.project.configure.DeliveryMode;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
+import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -29,15 +32,18 @@ import java.util.List;
         @AllowProperties(model = MaterialOrderSheet.class,
                 properties = {"sheetId", "sheetNo", "sheetType", "manufacturerName", "measureAt", "groupChatAt",
                         "deliverAt", "installAt", "templateVersion", "status", "priceState", "signatures",
-                        "remark", "attachments", "items", "createTime", "updateTime"}),
+                        "remark", "attachments", "items", "project", "property", "supplier", "createTime", "updateTime"}),
         @AllowProperties(model = MaterialOrderSheetItem.class,
                 properties = {"itemId", "sourceKind", "standardIncluded", "spaceName", "locationName", "materialName",
                         "brand", "model", "spec", "color", "size", "craft", "glass", "quantity", "unit", "lossRate",
                         "lossQuantity", "quoteCostPrice", "purchasePrice", "settlementPrice", "priceState",
-                        "orderedQuantity", "sort", "remark", "attachments", "createTime"}),
+                        "orderedQuantity", "sort", "remark", "attachments", "materialPlan", "createTime"}),
         @AllowProperties(model = Partner.class, properties = {"partnerId", "type", "name", "contactName", "telNo", "status"}),
         @AllowProperties(model = MaterialCategory.class, properties = {"materialCategoryId", "name", "defaultLossRate"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr"}),
+        @AllowProperties(model = Property.class, properties = {"propertyId", "community", "building", "roomNo", "address"}),
+        @AllowProperties(model = MaterialPlan.class, properties = {"planId", "status", "quantity", "unit"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"})
 })
 @Service("material/sheet/order")
