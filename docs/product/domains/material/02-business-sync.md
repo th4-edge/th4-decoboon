@@ -2,10 +2,11 @@
 
 ## 1. 本轮同步结论
 
-- 同步状态：**核心材料事实已 aligned，可用于只读蓝图/业务体检/业务助手设计与实现**。
+- 同步状态：**核心材料事实已 aligned，结构化蓝图可进入实现**。
 - 业务事实源：`zhuangdeqing-business` 规范目录。
 - 本轮不新增业务规则；只把已裁决材料事实产品化、结构化、可解释化。
 - 新规则或口径变化仍必须走 T05 → T06/T12。
+- 最近核对实现：`97d5705`（2026-10-17）。
 
 ## 2. 已引用的业务事实
 
@@ -34,18 +35,26 @@
 - `gap`/`stale`/`draft` 不作为正式回答；
 - 小程序正式版发布由用户本人完成。
 
-## 4. 未决项与非阻塞处理
+## 4. 已实现但仍需页面与独立验收的事项
+
+| 事项 | 代码事实 | 已覆盖测试 | 当前状态 | 不能宣称什么 |
+| --- | --- | --- | --- | --- |
+| 测量字段按品类模板显隐/必填 | `material/sheet/enums` 投影企业生效 `headerFields/lineFields`；提交校验 `visible && required` 的单据头字段 | `MaterialSheetTemplateFieldConfigTest`、`MaterialSheetOrderFlowTest.submitWithoutRequiredMeasurementMustBeRejected` | `CODE_VERIFIED`，待 App/Web 页面证据和独立验收 | 不能说所有品类都已覆盖；V1 基线只有 Tile |
+| 作业单独立取消 Provider | `material/sheet/cancel`；仅未进入采购前可取消，原因写入备注 | `MaterialSheetOrderFlowTest.cancelBeforeOrderShouldMoveToCancelled`、`cancelAfterOrderShouldBeRejected` | `CODE_VERIFIED`，待页面动作证据和独立验收 | 不能说可撤销已下单采购；必须走采购调整/退货 |
+
+定向测试已于 2026-10-17 执行通过：
+`MaterialSheetOrderFlowTest`、`MaterialSheetTemplateFieldConfigTest`、`MaterialSheetEnumsProviderTest`、`MaterialSheetTemplateWhitelistTest`、`MaterialSheetResponseProjectionContractTest`。
+
+## 5. 未决项与非阻塞处理
 
 | 问题 | 影响 | 处理 |
 | --- | --- | --- |
-| 测量字段按品类模板显隐/必填 | 作业单详情与提交门禁 | 标记 `gap`，不作为本轮只读助手和蓝图的阻塞项 |
-| 作业单独立取消 Provider | 提交后取消/重开 | 标记 `gap`，不实现、不承诺 |
-| 助手回答范围/表达边界 | 运行时权限与措辞 | 默认只读、同用户范围、无高风险写入；由本域验收规范约束 |
-| 请购时间/采购下单时间字段 | 时间解释 | 当前以现有 `createTime`/`orderedAt` 为准；新增字段需业务裁决 |
+| 请购时间/采购下单时间是否新增独立字段 | 单据和助手时间解释 | 保持 `createTime`=建单、`orderedAt`=采购下单；新增字段需业务裁决，已在蓝图标记 `GAP-MAT-TIME-SEMANTICS` |
+| 助手回答范围/表达边界 | 运行时权限与措辞 | 已确定为只读、同用户范围、无高风险写入；B4 用黄金问题和越权用例验收 |
 
-## 5. 同步状态
+## 6. 同步状态
 
 - 业务知识来源版本：以规范目录当前索引为准。
-- 蓝图状态：`draft`，待结构化与 UI 绑定完成后进入 `approved`。
-- 需要重新同步的节点：测量门禁、取消路径、时间字段。
+- 蓝图状态：`ready-for-implementation`，版本 `1.0.0`。
+- 需要重新同步的节点：仅时间字段新增口径；测量门禁和取消路径已按 `97d5705` 校正。
 - 对外表达边界：只能说“助手帮助解释/校核/引导”，不能说“助手自动审批、自动付款或替代老板决策”。

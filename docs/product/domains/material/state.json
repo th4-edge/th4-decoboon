@@ -4,13 +4,11 @@
   "title": "材料履约与材料业务助手",
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
-  "phase": "SCENARIOS_READY",
-  "batch": "B1",
-  "nextAction": "核对现有业务卡，完善结构化蓝图、字段映射和对账矩阵，准备 BLUEPRINT_READY",
+  "phase": "BLUEPRINT_READY",
+  "batch": "B2",
+  "nextAction": "核对 B2 垂直切片、依赖、回滚与退出条件，进入 PLAN_READY；随后只实现 Web 蓝图中心与项目材料业务体检",
   "openDecisions": [
-    "测量字段按品类模板显隐/必填（gap，不阻塞只读蓝图与助手）",
-    "作业单独立取消 Provider（gap，不实现）",
-    "请购时间/采购下单时间新增字段（gap，需业务裁决）"
+    "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
   "blockers": [],
   "artifacts": {
@@ -28,7 +26,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T11:42:02+08:00",
+  "updatedAt": "2026-10-17T11:44:36+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -41,6 +39,18 @@
       "phase": "SCENARIOS_READY",
       "batch": "B1",
       "note": "material charter, scenarios, run envelope, business sync, structural blueprint v0.1 and reconciliation seeded"
+    },
+    {
+      "at": "2026-10-17T11:44:36+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "B1",
+      "note": "B1 business sync aligned; template gate and cancel branch reconciled to 97d5705"
+    },
+    {
+      "at": "2026-10-17T11:44:36+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "B2",
+      "note": "B1 blueprint v1.0.0 ready: 12 objects, stage source refs, template/cancel fields, reconciliation seeded"
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "id": "material.end-to-end",
   "title": "材料履约与材料业务助手",
-  "version": "0.1.0",
-  "status": "draft",
+  "version": "1.0.0",
+  "status": "ready-for-implementation",
   "sourceRefs": [
     "OBJ-008",
     "BR-009",
@@ -18,85 +18,286 @@
     "DEC-073",
     "DEC-074"
   ],
-  "audience": ["boss", "storeManager", "finance", "designer", "pm", "customer"],
-  "layers": ["standard", "tenant", "project"],
+  "audience": [
+    "boss",
+    "storeManager",
+    "finance",
+    "designer",
+    "pm",
+    "customer"
+  ],
+  "layers": [
+    "standard",
+    "tenant",
+    "project"
+  ],
   "objects": [
     {
       "id": "MaterialPlan",
       "name": "材料计划",
       "meaning": "项目级材料需求事实：需要什么、净用量、损耗、要求到场和履约状态。",
-      "keyFields": ["planId", "sourceType", "contractLine", "catalogItem", "quantity", "netQuantity", "lossRate", "lossQuantity", "status", "requiredAt", "arrivedAt", "selection"],
-      "sources": ["OBJ-008", "DEC-MP-09", "DEC-MP-10"]
+      "keyFields": [
+        "planId",
+        "sourceType",
+        "contractLine",
+        "catalogItem",
+        "quantity",
+        "netQuantity",
+        "lossRate",
+        "lossQuantity",
+        "status",
+        "requiredAt",
+        "arrivedAt",
+        "selection"
+      ],
+      "sources": [
+        "OBJ-008",
+        "DEC-MP-09",
+        "DEC-MP-10"
+      ]
     },
     {
       "id": "MaterialSelection",
       "name": "主材选材",
       "meaning": "现场确认颜色、规格、型号、工艺和照片；保存即已选材，进入采购后锁定。",
-      "keyFields": ["selectionId", "version", "status", "content", "selectionJson", "attachments", "property", "contract", "project", "designer"],
-      "sources": ["SCN-006", "BR-009", "DEC-008", "DEC-056"]
+      "keyFields": [
+        "selectionId",
+        "version",
+        "status",
+        "content",
+        "selectionJson",
+        "attachments",
+        "property",
+        "contract",
+        "project",
+        "designer"
+      ],
+      "sources": [
+        "SCN-006",
+        "BR-009",
+        "DEC-008",
+        "DEC-056"
+      ]
     },
     {
       "id": "MaterialOrderSheet",
       "name": "主材下单作业单",
       "meaning": "按品类对厂家的作业单据，承载安装位置、尺寸、测量/配送/安装时间与签字，不带价格与账期。",
-      "keyFields": ["sheetId", "sheetNo", "sheetType", "project", "property", "contract", "manufacturerName", "supplier", "measureAt", "groupChatAt", "deliverAt", "installAt", "status", "priceState", "items"],
-      "sources": ["OBJ-008", "BR-044", "DEC-073"]
+      "keyFields": [
+        "sheetId",
+        "sheetNo",
+        "sheetType",
+        "project",
+        "property",
+        "contract",
+        "manufacturerName",
+        "supplier",
+        "measureAt",
+        "groupChatAt",
+        "deliverAt",
+        "installAt",
+        "status",
+        "priceState",
+        "items"
+      ],
+      "sources": [
+        "OBJ-008",
+        "BR-044",
+        "DEC-073"
+      ]
+    },
+    {
+      "id": "MaterialSheetTemplate",
+      "name": "主材下单单据模板",
+      "meaning": "平台品类基线 L1 + 企业个性化 L2；在建单时取企业发布版本并冻结版本，字段只能改显隐、必填、顺序和别名。",
+      "keyFields": [
+        "sheetTemplateId",
+        "sheetType",
+        "scope",
+        "baselineVersion",
+        "version",
+        "publishedVersion",
+        "fieldConfig",
+        "rowTemplateConfig",
+        "signatureConfig",
+        "numberRule",
+        "status"
+      ],
+      "sources": [
+        "OBJ-008",
+        "BR-044"
+      ]
     },
     {
       "id": "PurchaseOrder",
       "name": "采购单",
       "meaning": "对供应商的交易单据，承载供应商、P2 价格、交付方式、要求到场和应付。",
-      "keyFields": ["purchaseId", "no", "supplier", "deliveryMode", "quantity", "unitPrice", "amount", "priceState", "status", "orderedAt", "expectedAt", "receivedQuantity", "items"],
-      "sources": ["SCN-005", "BR-045", "DEC-072"]
+      "keyFields": [
+        "purchaseId",
+        "no",
+        "supplier",
+        "deliveryMode",
+        "quantity",
+        "unitPrice",
+        "amount",
+        "priceState",
+        "status",
+        "orderedAt",
+        "expectedAt",
+        "receivedQuantity",
+        "items"
+      ],
+      "sources": [
+        "SCN-005",
+        "BR-045",
+        "DEC-072"
+      ]
     },
     {
       "id": "GoodsReceipt",
       "name": "到场记录",
       "meaning": "实际到场数量、日期、验收人、照片和异常；回填应付账期并累计实际成本。",
-      "keyFields": ["receiptId", "purchase", "purchaseItem", "materialPlan", "quantity", "unit", "arrivedAt", "inspector", "images", "remark", "createTime"],
-      "sources": ["SCN-021", "DEC-MP-01", "DEC-MP-07"]
+      "keyFields": [
+        "receiptId",
+        "purchase",
+        "purchaseItem",
+        "materialPlan",
+        "quantity",
+        "unit",
+        "arrivedAt",
+        "inspector",
+        "images",
+        "remark",
+        "createTime"
+      ],
+      "sources": [
+        "SCN-021",
+        "DEC-MP-01",
+        "DEC-MP-07"
+      ]
     },
     {
       "id": "MaterialReturn",
       "name": "材料退货单",
       "meaning": "已到货减项的统一冲减载体，冲减应付、实际成本和入仓库存。",
-      "keyFields": ["returnId", "materialPlan", "purchaseOrder", "supplier", "quantity", "unitPrice", "amount", "returnedAt", "reason", "status"],
-      "sources": ["DEC-MP-02", "DEC-073"]
+      "keyFields": [
+        "returnId",
+        "materialPlan",
+        "purchaseOrder",
+        "supplier",
+        "quantity",
+        "unitPrice",
+        "amount",
+        "returnedAt",
+        "reason",
+        "status"
+      ],
+      "sources": [
+        "DEC-MP-02",
+        "DEC-073"
+      ]
     },
     {
       "id": "Payable",
       "name": "材料应付",
       "meaning": "采购下单时形成；无价形成暂估；到场回填账期；结算修正金额。",
-      "keyFields": ["payableId", "purchaseOrder", "supplier", "amount", "estimated", "settledAmount", "receiptDate", "dueDate", "status"],
-      "sources": ["DEC-MP-01", "DEC-072", "BR-045"]
+      "keyFields": [
+        "payableId",
+        "purchaseOrder",
+        "supplier",
+        "amount",
+        "estimated",
+        "settledAmount",
+        "receiptDate",
+        "dueDate",
+        "status"
+      ],
+      "sources": [
+        "DEC-MP-01",
+        "DEC-072",
+        "BR-045"
+      ]
     },
     {
       "id": "MaterialSettlement",
       "name": "采购结算",
       "meaning": "逐单或月结确认 P3 结算价，修正应付和实际成本；同一采购明细只计入一次。",
-      "keyFields": ["settlementId", "scope", "period", "supplier", "settledAt", "totalAmount", "status", "items"],
-      "sources": ["DEC-073", "DEC-074", "BR-045"]
+      "keyFields": [
+        "settlementId",
+        "scope",
+        "period",
+        "supplier",
+        "settledAt",
+        "totalAmount",
+        "status",
+        "items"
+      ],
+      "sources": [
+        "DEC-073",
+        "DEC-074",
+        "BR-045"
+      ]
     },
     {
       "id": "Partner",
       "name": "供应商 / 经销商 / 工厂",
       "meaning": "统一合作方；当前系统没有独立经销商实体，按 Supplier/Factory 等类型区分。",
-      "keyFields": ["partnerId", "type", "name", "settlementMode", "settlementDays", "cutoffDay", "brands", "status"],
-      "sources": ["SCN-005", "DEC-MP-03"]
+      "keyFields": [
+        "partnerId",
+        "type",
+        "name",
+        "settlementMode",
+        "settlementDays",
+        "cutoffDay",
+        "brands",
+        "status"
+      ],
+      "sources": [
+        "SCN-005",
+        "DEC-MP-03"
+      ]
     },
     {
       "id": "MaterialSupplier",
       "name": "材料供应关系",
       "meaning": "材料与合作方的供货关系：参考采购价、起订量、交期、账期和有效期。",
-      "keyFields": ["partner", "materialKey", "catalogItem", "brand", "spec", "model", "purchasePrice", "minimumOrder", "leadTimeDays", "settlementDays", "active"],
-      "sources": ["DEC-MP-08", "BR-045"]
+      "keyFields": [
+        "partner",
+        "materialKey",
+        "catalogItem",
+        "brand",
+        "spec",
+        "model",
+        "purchasePrice",
+        "minimumOrder",
+        "leadTimeDays",
+        "settlementDays",
+        "active"
+      ],
+      "sources": [
+        "DEC-MP-08",
+        "BR-045"
+      ]
     },
     {
       "id": "ContractChange",
       "name": "合同变更",
       "meaning": "增项/减项/替换/数量/价格变化；审批通过后联动合同、应收、任务、材料和成本。",
-      "keyFields": ["changeId", "changeType", "project", "contract", "items", "amount", "status", "approvedAt"],
-      "sources": ["DEC-MP-02", "DEC-073", "ProjectContractContext"]
+      "keyFields": [
+        "changeId",
+        "changeType",
+        "project",
+        "contract",
+        "items",
+        "amount",
+        "status",
+        "approvedAt"
+      ],
+      "sources": [
+        "DEC-MP-02",
+        "DEC-073",
+        "ProjectContractContext"
+      ]
     }
   ],
   "stages": [
@@ -104,180 +305,901 @@
       "id": "contract-effective",
       "no": "00",
       "name": "合同生效 / 立项",
-      "roles": ["boss", "storeManager", "system"],
+      "roles": [
+        "boss",
+        "storeManager",
+        "system"
+      ],
       "trigger": "合同生效",
       "system": "生成项目、阶段/任务、应收计划和材料计划",
       "output": "MaterialPlan[Planned]",
       "accounting": "P1 报价成本快照冻结，不形成材料应付",
-      "exceptions": ["未生效合同不能立项", "无目录项的材料行不生成计划"]
+      "exceptions": [
+        "未生效合同不能立项",
+        "无目录项的材料行不生成计划"
+      ],
+      "sources": [
+        "SCN-006",
+        "OBJ-008",
+        "DEC-008"
+      ]
     },
     {
       "id": "material-plan",
       "no": "01",
       "name": "材料计划",
-      "roles": ["system", "designer", "finance"],
+      "roles": [
+        "system",
+        "designer",
+        "finance"
+      ],
       "trigger": "合同材料行或变更生效",
       "system": "生成需求行，继承损耗率，计算净用量和可下单余额",
       "output": "MaterialPlan[Planned]",
       "accounting": "P1 只用于预计成本和偏差",
-      "exceptions": ["减项、重复计划、目录项缺失"]
+      "exceptions": [
+        "减项、重复计划、目录项缺失"
+      ],
+      "sources": [
+        "OBJ-008",
+        "DEC-MP-09",
+        "DEC-MP-10"
+      ]
     },
     {
       "id": "selection",
       "no": "02",
       "name": "选材 / 现场确认",
-      "roles": ["designer", "boss", "storeManager", "finance"],
+      "roles": [
+        "designer",
+        "boss",
+        "storeManager",
+        "finance"
+      ],
       "trigger": "客户现场确认主材",
       "system": "保存选材文本/JSON/照片，生成版本；交付财务时计划行进入可下单",
       "output": "MaterialSelection[Selected]; MaterialPlan[ReadyToOrder]",
       "accounting": "不改变报价、合同、成本、采购事实",
-      "exceptions": ["进入采购后锁定", "未选材不可下单", "换材走增减项"]
+      "exceptions": [
+        "进入采购后锁定",
+        "未选材不可下单",
+        "换材走增减项"
+      ],
+      "sources": [
+        "SCN-006",
+        "BR-009",
+        "DEC-008",
+        "DEC-056"
+      ]
     },
     {
       "id": "order-sheet",
       "no": "03",
       "name": "主材作业单建单",
-      "roles": ["designer", "boss", "storeManager"],
+      "roles": [
+        "designer",
+        "boss",
+        "storeManager"
+      ],
       "trigger": "已选材，准备按品类向厂家下单",
-      "system": "按品类建单；行只能来自材料计划；校验选材门禁和数量上限",
+      "system": "按品类建单；取用模板并冻结版本；行只能来自材料计划；校验选材门禁和数量上限",
       "output": "MaterialOrderSheet[Draft]",
       "accounting": "作业单不带价格、账期和成本",
-      "exceptions": ["未选材", "超量", "跨项目/跨房屋", "合同外材料"]
+      "exceptions": [
+        "未选材",
+        "超量",
+        "跨项目/跨房屋",
+        "合同外材料"
+      ],
+      "sources": [
+        "OBJ-008",
+        "BR-044",
+        "BR-045",
+        "DEC-073"
+      ]
     },
     {
       "id": "measure",
       "no": "04",
       "name": "测量与时间确认",
-      "roles": ["pm", "designer", "boss", "storeManager"],
+      "roles": [
+        "pm",
+        "designer",
+        "boss",
+        "storeManager"
+      ],
       "trigger": "现场具备测量条件",
-      "system": "记录测量、配送、安装日期和签字；有测量日期时推进 Measuring/Measured",
+      "system": "按当前品类模板显示测量/配送/安装字段；PM、设计师、Boss 或店长记录日期与签字",
       "output": "作业单时间字段与附件",
       "accounting": "不产生金额；测量日期不是系统确认时间",
-      "exceptions": ["字段显隐/必填应由品类模板控制（当前 gap）"]
+      "exceptions": [
+        "模板可见且必填的测量字段为空时不能提交请购",
+        "测量日期是计划/复尺事实，不是系统确认时间"
+      ],
+      "sources": [
+        "OBJ-008",
+        "BR-044",
+        "DEC-MP-07"
+      ]
     },
     {
       "id": "submit",
       "no": "05",
       "name": "提交请购",
-      "roles": ["designer", "boss", "storeManager"],
+      "roles": [
+        "designer",
+        "boss",
+        "storeManager"
+      ],
       "trigger": "作业单准备完成",
-      "system": "复核行来源、选材门禁和数量上限；进入 Submitted",
+      "system": "复核行来源、选材门禁、数量上限及当前模板 required=true 的可见单据头字段；进入 Submitted",
       "output": "MaterialOrderSheet[Submitted]",
       "accounting": "仍不产生价格或应付",
-      "exceptions": ["无行", "已锁定", "超量", "未选材"]
+      "exceptions": [
+        "无行",
+        "已锁定",
+        "超量",
+        "未选材",
+        "模板必填字段缺失"
+      ],
+      "sources": [
+        "OBJ-008",
+        "BR-009",
+        "BR-044",
+        "DEC-008"
+      ]
     },
     {
       "id": "purchase-order",
       "no": "06",
       "name": "财务核价 / 下单",
-      "roles": ["finance", "boss", "storeManager"],
+      "roles": [
+        "finance",
+        "boss",
+        "storeManager"
+      ],
       "trigger": "财务确认供应商与本次数量",
       "system": "生成 PurchaseOrder/PurchaseOrderItem；有价或暂估应付；推进计划和作业单状态",
       "output": "PurchaseOrder[Ordered]; Payable",
       "accounting": "下单即形成应付；无价 estimated=true，不用 0 冒充未知",
-      "exceptions": ["缺供应商", "超可下单量", "拆分多供应商", "补货另开采购"]
+      "exceptions": [
+        "缺供应商",
+        "超可下单量",
+        "拆分多供应商",
+        "补货另开采购"
+      ],
+      "sources": [
+        "SCN-005",
+        "SCN-021",
+        "DEC-072",
+        "DEC-073"
+      ]
     },
     {
       "id": "receipt",
       "no": "07",
       "name": "到场确认",
-      "roles": ["pm", "designer", "finance"],
+      "roles": [
+        "pm",
+        "designer",
+        "finance"
+      ],
       "trigger": "供应商送货到工地/仓库",
       "system": "生成 GoodsReceipt；累计到场量；回填账期；推进计划/作业单状态",
       "output": "GoodsReceipt + 库存流水（入仓时）",
       "accounting": "到场不新增应付；累计实际成本并回填账期",
-      "exceptions": ["部分到场", "超量", "破损/色差", "多明细需指定", "直送不产生库存"]
+      "exceptions": [
+        "部分到场",
+        "超量",
+        "破损/色差",
+        "多明细需指定",
+        "直送不产生库存"
+      ],
+      "sources": [
+        "SCN-021",
+        "DEC-MP-01",
+        "DEC-MP-07"
+      ]
     },
     {
       "id": "settlement",
       "no": "08",
       "name": "结算 / 成本收敛",
-      "roles": ["finance", "boss", "storeManager"],
+      "roles": [
+        "finance",
+        "boss",
+        "storeManager"
+      ],
       "trigger": "供应商对账完成，逐单或月结",
       "system": "回填 P3；修正暂估应付；重算实际成本；撤销释放明细",
       "output": "MaterialSettlement + 应付/成本修正",
       "accounting": "P3 是实际成本唯一来源；全部应计成本齐备后 costComplete=true",
-      "exceptions": ["同一采购明细只结算一次", "月结只结未逐单结算差额", "撤销走反向记录"]
+      "exceptions": [
+        "同一采购明细只结算一次",
+        "月结只结未逐单结算差额",
+        "撤销走反向记录"
+      ],
+      "sources": [
+        "SCN-021",
+        "DEC-072",
+        "DEC-073",
+        "DEC-074",
+        "BR-045"
+      ]
     }
   ],
   "fields": [
-    {"object": "MaterialPlan", "field": "sourceType", "label": "需求来源", "meaning": "Selection/ChangeAdd/ChangeReduce", "owner": "system", "impact": "决定是否走选材门禁"},
-    {"object": "MaterialPlan", "field": "quantity/netQuantity", "label": "需求/净用量", "meaning": "总需求和实际施工量", "owner": "contract/change/system", "impact": "下单上限 = 净用量 + 损耗"},
-    {"object": "MaterialPlan", "field": "lossRate/lossQuantity", "label": "损耗率/损耗量", "meaning": "从主材分类继承的默认损耗", "owner": "material category/system", "impact": "影响采购数量和减项冲减顺序"},
-    {"object": "MaterialPlan", "field": "status", "label": "计划状态", "meaning": "需求/履约状态", "owner": "system", "impact": "由采购和到场事实派生"},
-    {"object": "MaterialSelection", "field": "version/status", "label": "选材版本/状态", "meaning": "每次保存追加版本，Selected 为已选材", "owner": "designer/authorized maintainer", "impact": "采购门禁和锁定"},
-    {"object": "MaterialSelection", "field": "content/selectionJson", "label": "选材文本/快照", "meaning": "颜色、规格、品牌、工艺、备注", "owner": "现场维护人", "impact": "不自动改报价/合同/成本"},
-    {"object": "MaterialOrderSheet", "field": "sheetType", "label": "品类", "meaning": "一个品类一张单", "owner": "template/system", "impact": "决定模板字段、行骨架和打印"},
-    {"object": "MaterialOrderSheet", "field": "measureAt/groupChatAt/deliverAt/installAt", "label": "测量/拉群/配送/安装日期", "meaning": "现场测量和计划时间", "owner": "designer/pm/boss", "impact": "测量是复尺依据；配送可带入要求到场；不是系统时间戳"},
-    {"object": "MaterialOrderSheet", "field": "priceState", "label": "价格状态", "meaning": "Unpriced/Priced/Settled", "owner": "system", "impact": "无价不阻断履约，但成本可能不完整"},
-    {"object": "MaterialOrderSheetItem", "field": "materialPlan", "label": "行来源计划", "meaning": "作业单行必须挂 MaterialPlan", "owner": "system", "impact": "选材门禁和数量上限的唯一来源"},
-    {"object": "MaterialOrderSheetItem", "field": "locationName", "label": "安装位置", "meaning": "客厅地砖、卫生间墙砖等", "owner": "designer/pm", "impact": "供厂家生产、测量和安装"},
-    {"object": "MaterialOrderSheetItem", "field": "quoteCostPrice", "label": "报价成本价快照", "meaning": "P1，用于预计成本对照", "owner": "quote/contract", "impact": "只读，不进入实际成本"},
-    {"object": "PurchaseOrder", "field": "supplier", "label": "供应商/经销商", "meaning": "实际供货合作方", "owner": "finance/boss/storeManager", "impact": "无供应商不能形成应付"},
-    {"object": "PurchaseOrder", "field": "quantity/unitPrice/amount", "label": "采购数量/单价/金额", "meaning": "P2 采购事实", "owner": "finance/purchase", "impact": "形成应付和暂估成本"},
-    {"object": "PurchaseOrder", "field": "priceState", "label": "价格状态", "meaning": "Priced/Unpriced/Settled/Mixed", "owner": "purchase/settlement", "impact": "无价形成暂估应付"},
-    {"object": "PurchaseOrder", "field": "expectedAt/orderedAt", "label": "要求到场/下单日期", "meaning": "计划到场和实际下单日", "owner": "finance/purchase", "impact": "expectedAt 默认取 deliverAt；月结按 orderedAt 月份"},
-    {"object": "GoodsReceipt", "field": "quantity/arrivedAt", "label": "到场数量/日期", "meaning": "实际到场事实", "owner": "pm/designer", "impact": "累计实际成本并回填账期"},
-    {"object": "GoodsReceipt", "field": "inspector/images/remark", "label": "验收人/证据/异常", "meaning": "现场确认责任和证据", "owner": "pm/designer", "impact": "追溯、退货和供应商协商"},
-    {"object": "Payable", "field": "estimated/settledAmount/dueDate", "label": "暂估/结算金额/到期日", "meaning": "应付状态和账期", "owner": "system/finance", "impact": "无价暂估；到场回填账期；结算修正"},
-    {"object": "MaterialSettlement", "field": "scope/period/totalAmount", "label": "结算方式/期间/金额", "meaning": "逐单或月结，P3 结算价", "owner": "finance", "impact": "实际成本唯一来源；互斥"},
-    {"object": "MaterialReturn", "field": "quantity/amount/status", "label": "退货数量/金额/状态", "meaning": "已到货减项的冲减载体", "owner": "system/finance", "impact": "冲应付/成本/库存；余额转往来"},
-    {"object": "Partner", "field": "type/name/settlementMode", "label": "合作方类型/名称/账期", "meaning": "供应商/工厂/安装班组等", "owner": "boss/storeManager/finance", "impact": "下单、应付和账期"},
-    {"object": "MaterialSupplier", "field": "materialKey/purchasePrice/leadTimeDays", "label": "材料供应关系", "meaning": "材料—合作方关系、参考价、交期", "owner": "purchase/finance", "impact": "匹配供应关系，不等于结算价"}
+    {
+      "object": "MaterialPlan",
+      "field": "sourceType",
+      "label": "需求来源",
+      "meaning": "Selection/ChangeAdd/ChangeReduce",
+      "owner": "system",
+      "impact": "决定是否走选材门禁"
+    },
+    {
+      "object": "MaterialPlan",
+      "field": "quantity/netQuantity",
+      "label": "需求/净用量",
+      "meaning": "总需求和实际施工量",
+      "owner": "contract/change/system",
+      "impact": "下单上限 = 净用量 + 损耗"
+    },
+    {
+      "object": "MaterialPlan",
+      "field": "lossRate/lossQuantity",
+      "label": "损耗率/损耗量",
+      "meaning": "从主材分类继承的默认损耗",
+      "owner": "material category/system",
+      "impact": "影响采购数量和减项冲减顺序"
+    },
+    {
+      "object": "MaterialPlan",
+      "field": "status",
+      "label": "计划状态",
+      "meaning": "需求/履约状态",
+      "owner": "system",
+      "impact": "由采购和到场事实派生"
+    },
+    {
+      "object": "MaterialSelection",
+      "field": "version/status",
+      "label": "选材版本/状态",
+      "meaning": "每次保存追加版本，Selected 为已选材",
+      "owner": "designer/authorized maintainer",
+      "impact": "采购门禁和锁定"
+    },
+    {
+      "object": "MaterialSelection",
+      "field": "content/selectionJson",
+      "label": "选材文本/快照",
+      "meaning": "颜色、规格、品牌、工艺、备注",
+      "owner": "现场维护人",
+      "impact": "不自动改报价/合同/成本"
+    },
+    {
+      "object": "MaterialOrderSheet",
+      "field": "sheetType",
+      "label": "品类",
+      "meaning": "一个品类一张单",
+      "owner": "template/system",
+      "impact": "决定模板字段、行骨架和打印"
+    },
+    {
+      "object": "MaterialSheetTemplate",
+      "field": "publishedVersion/version/fieldConfig",
+      "label": "模板发布版本/版本/字段配置",
+      "meaning": "企业已发布版本优先，否则企业最新版本，最后回退平台基线；作业单记录 templateVersion",
+      "owner": "boss/storeManager",
+      "impact": "决定 header/line 字段显隐、必填、顺序；企业不能改事实与权限红线",
+      "sources": [
+        "OBJ-008",
+        "BR-044"
+      ]
+    },
+    {
+      "object": "MaterialSheetTemplate",
+      "field": "headerFields/lineFields",
+      "label": "单据头/行字段投影",
+      "meaning": "material/sheet/enums 返回当前企业生效字段，前端按此渲染",
+      "owner": "system",
+      "impact": "避免前端硬编码品类字段；V1 仅平台基线 Tile 可用",
+      "sources": [
+        "OBJ-008",
+        "BR-044",
+        "97d5705"
+      ]
+    },
+    {
+      "object": "MaterialOrderSheet",
+      "field": "measureAt/groupChatAt/deliverAt/installAt",
+      "label": "测量/拉群/配送/安装日期",
+      "meaning": "现场测量和计划时间",
+      "owner": "designer/pm/boss",
+      "impact": "测量是复尺依据；配送可带入要求到场；不是系统时间戳"
+    },
+    {
+      "object": "MaterialOrderSheet",
+      "field": "status/remark",
+      "label": "作业单状态/取消原因",
+      "meaning": "未进入采购前可取消为 Cancelled；取消原因追加到备注",
+      "owner": "designer/boss/storeManager/finance（按现有操作权限）",
+      "impact": "已下单、到场、结算后禁止直接取消，必须走采购调整或退货",
+      "sources": [
+        "OBJ-008",
+        "DEC-MP-02",
+        "97d5705"
+      ]
+    },
+    {
+      "object": "MaterialOrderSheet",
+      "field": "priceState",
+      "label": "价格状态",
+      "meaning": "Unpriced/Priced/Settled",
+      "owner": "system",
+      "impact": "无价不阻断履约，但成本可能不完整"
+    },
+    {
+      "object": "MaterialOrderSheetItem",
+      "field": "materialPlan",
+      "label": "行来源计划",
+      "meaning": "作业单行必须挂 MaterialPlan",
+      "owner": "system",
+      "impact": "选材门禁和数量上限的唯一来源"
+    },
+    {
+      "object": "MaterialOrderSheetItem",
+      "field": "locationName",
+      "label": "安装位置",
+      "meaning": "客厅地砖、卫生间墙砖等",
+      "owner": "designer/pm",
+      "impact": "供厂家生产、测量和安装"
+    },
+    {
+      "object": "MaterialOrderSheetItem",
+      "field": "quoteCostPrice",
+      "label": "报价成本价快照",
+      "meaning": "P1，用于预计成本对照",
+      "owner": "quote/contract",
+      "impact": "只读，不进入实际成本"
+    },
+    {
+      "object": "PurchaseOrder",
+      "field": "supplier",
+      "label": "供应商/经销商",
+      "meaning": "实际供货合作方",
+      "owner": "finance/boss/storeManager",
+      "impact": "无供应商不能形成应付"
+    },
+    {
+      "object": "PurchaseOrder",
+      "field": "quantity/unitPrice/amount",
+      "label": "采购数量/单价/金额",
+      "meaning": "P2 采购事实",
+      "owner": "finance/purchase",
+      "impact": "形成应付和暂估成本"
+    },
+    {
+      "object": "PurchaseOrder",
+      "field": "priceState",
+      "label": "价格状态",
+      "meaning": "Priced/Unpriced/Settled/Mixed",
+      "owner": "purchase/settlement",
+      "impact": "无价形成暂估应付"
+    },
+    {
+      "object": "PurchaseOrder",
+      "field": "expectedAt/orderedAt",
+      "label": "要求到场/下单日期",
+      "meaning": "计划到场和实际下单日",
+      "owner": "finance/purchase",
+      "impact": "expectedAt 默认取 deliverAt；月结按 orderedAt 月份"
+    },
+    {
+      "object": "GoodsReceipt",
+      "field": "quantity/arrivedAt",
+      "label": "到场数量/日期",
+      "meaning": "实际到场事实",
+      "owner": "pm/designer",
+      "impact": "累计实际成本并回填账期"
+    },
+    {
+      "object": "GoodsReceipt",
+      "field": "inspector/images/remark",
+      "label": "验收人/证据/异常",
+      "meaning": "现场确认责任和证据",
+      "owner": "pm/designer",
+      "impact": "追溯、退货和供应商协商"
+    },
+    {
+      "object": "Payable",
+      "field": "estimated/settledAmount/dueDate",
+      "label": "暂估/结算金额/到期日",
+      "meaning": "应付状态和账期",
+      "owner": "system/finance",
+      "impact": "无价暂估；到场回填账期；结算修正"
+    },
+    {
+      "object": "MaterialSettlement",
+      "field": "scope/period/totalAmount",
+      "label": "结算方式/期间/金额",
+      "meaning": "逐单或月结，P3 结算价",
+      "owner": "finance",
+      "impact": "实际成本唯一来源；互斥"
+    },
+    {
+      "object": "MaterialReturn",
+      "field": "quantity/amount/status",
+      "label": "退货数量/金额/状态",
+      "meaning": "已到货减项的冲减载体",
+      "owner": "system/finance",
+      "impact": "冲应付/成本/库存；余额转往来"
+    },
+    {
+      "object": "Partner",
+      "field": "type/name/settlementMode",
+      "label": "合作方类型/名称/账期",
+      "meaning": "供应商/工厂/安装班组等",
+      "owner": "boss/storeManager/finance",
+      "impact": "下单、应付和账期"
+    },
+    {
+      "object": "MaterialSupplier",
+      "field": "materialKey/purchasePrice/leadTimeDays",
+      "label": "材料供应关系",
+      "meaning": "材料—合作方关系、参考价、交期",
+      "owner": "purchase/finance",
+      "impact": "匹配供应关系，不等于结算价"
+    }
   ],
   "rules": [
-    {"id": "R-SELECTION-GATE", "text": "合同选材来源的计划行必须有 Selected 选材记录；进入采购后锁定。", "refs": ["BR-009", "DEC-008", "DEC-056"]},
-    {"id": "R-ORDER-LIMIT", "text": "下单量不得超过净用量 + 损耗；减项先冲损耗再冲净用量。", "refs": ["DEC-MP-10", "DEC-MP-02"]},
-    {"id": "R-SHEET-NO-PRICE", "text": "作业单对厂家，不带价格、账期和成本；价格只存在于采购/结算侧。", "refs": ["OBJ-008", "DEC-073"]},
-    {"id": "R-ONE-TO-MANY", "text": "1 张作业单可以对应 N 张采购单；财务按供应商/批次拆分。", "refs": ["DEC-073", "SCN-021"]},
-    {"id": "R-PAYABLE-ON-ORDER", "text": "采购下单即形成应付；无价形成暂估应付，不用 0 冒充未知。", "refs": ["DEC-MP-01", "DEC-072", "BR-045"]},
-    {"id": "R-RECEIPT-NO-PAYABLE", "text": "到场不新增应付，只回填账期并累计实际成本。", "refs": ["DEC-MP-01", "SCN-021"]},
-    {"id": "R-P3-ACTUAL-COST", "text": "实际成本优先 P3，P2 暂估，P1 只用于预计成本。", "refs": ["BR-045", "DEC-072"]},
-    {"id": "R-COST-COMPLETE", "text": "任一应计成本缺失时 costComplete=false，利润和毛利率为 null。", "refs": ["MET-002", "BR-045"]},
-    {"id": "R-SETTLEMENT-EXCLUSIVE", "text": "同一采购明细只能被一种结算方式计入一次；逐单优先，月结兜底。", "refs": ["DEC-073", "DEC-074"]},
-    {"id": "R-CHANGE-THREE-WAY", "text": "减项按未下单/已下单未到/已到货三路径处理：计划冲减/采购调整/退货。", "refs": ["DEC-MP-02", "DEC-073"]}
+    {
+      "id": "R-SELECTION-GATE",
+      "text": "合同选材来源的计划行必须有 Selected 选材记录；进入采购后锁定。",
+      "refs": [
+        "BR-009",
+        "DEC-008",
+        "DEC-056"
+      ]
+    },
+    {
+      "id": "R-ORDER-LIMIT",
+      "text": "下单量不得超过净用量 + 损耗；减项先冲损耗再冲净用量。",
+      "refs": [
+        "DEC-MP-10",
+        "DEC-MP-02"
+      ]
+    },
+    {
+      "id": "R-SHEET-NO-PRICE",
+      "text": "作业单对厂家，不带价格、账期和成本；价格只存在于采购/结算侧。",
+      "refs": [
+        "OBJ-008",
+        "DEC-073"
+      ]
+    },
+    {
+      "id": "R-ONE-TO-MANY",
+      "text": "1 张作业单可以对应 N 张采购单；财务按供应商/批次拆分。",
+      "refs": [
+        "DEC-073",
+        "SCN-021"
+      ]
+    },
+    {
+      "id": "R-PAYABLE-ON-ORDER",
+      "text": "采购下单即形成应付；无价形成暂估应付，不用 0 冒充未知。",
+      "refs": [
+        "DEC-MP-01",
+        "DEC-072",
+        "BR-045"
+      ]
+    },
+    {
+      "id": "R-RECEIPT-NO-PAYABLE",
+      "text": "到场不新增应付，只回填账期并累计实际成本。",
+      "refs": [
+        "DEC-MP-01",
+        "SCN-021"
+      ]
+    },
+    {
+      "id": "R-P3-ACTUAL-COST",
+      "text": "实际成本优先 P3，P2 暂估，P1 只用于预计成本。",
+      "refs": [
+        "BR-045",
+        "DEC-072"
+      ]
+    },
+    {
+      "id": "R-COST-COMPLETE",
+      "text": "任一应计成本缺失时 costComplete=false，利润和毛利率为 null。",
+      "refs": [
+        "MET-002",
+        "BR-045"
+      ]
+    },
+    {
+      "id": "R-SETTLEMENT-EXCLUSIVE",
+      "text": "同一采购明细只能被一种结算方式计入一次；逐单优先，月结兜底。",
+      "refs": [
+        "DEC-073",
+        "DEC-074"
+      ]
+    },
+    {
+      "id": "R-CHANGE-THREE-WAY",
+      "text": "减项按未下单/已下单未到/已到货三路径处理：计划冲减/采购调整/退货。",
+      "refs": [
+        "DEC-MP-02",
+        "DEC-073"
+      ]
+    }
   ],
   "checks": [
-    {"id": "CHK-UNSELECTED", "label": "未完成选材", "severity": "P0", "scope": "MaterialPlan", "condition": "Selection 为空或不是 Selected", "nextAction": "设计师完成选材并交付财务", "refs": ["BR-009"]},
-    {"id": "CHK-OVER-QTY", "label": "超过可下单数量", "severity": "P0", "scope": "MaterialPlan", "condition": "本次下单量 > 净用量 + 损耗 - 已下单", "nextAction": "调整数量或损耗/发起增减项", "refs": ["DEC-MP-10"]},
-    {"id": "CHK-NO-SUPPLIER", "label": "采购缺少供应商", "severity": "P0", "scope": "PurchaseOrder", "condition": "supplier 为空", "nextAction": "财务选择合作方档案中的供应商", "refs": ["SCN-005"]},
-    {"id": "CHK-UNPRICED", "label": "采购未定价", "severity": "P1", "scope": "PurchaseOrder", "condition": "priceState=Unpriced", "nextAction": "等待结算或补结算价；成本保持不完整", "refs": ["BR-045"]},
-    {"id": "CHK-RECEIPT-OVER", "label": "到场数量超采购量", "severity": "P0", "scope": "GoodsReceipt", "condition": "累计到场量 > 采购量", "nextAction": "拒绝登记并核对采购单", "refs": ["SCN-021"]},
-    {"id": "CHK-SETTLEMENT-DUP", "label": "重复结算", "severity": "P0", "scope": "MaterialSettlement", "condition": "采购明细已被结算", "nextAction": "撤销原结算或按互斥规则处理", "refs": ["DEC-073"]},
-    {"id": "CHK-COST-INCOMPLETE", "label": "成本不完整", "severity": "P1", "scope": "Project", "condition": "costComplete=false", "nextAction": "完成结算/补成本；利润保持 null", "refs": ["BR-045", "MET-002"]},
-    {"id": "CHK-MEASURE-GAP", "label": "测量字段/门禁待业务裁决", "severity": "P1", "scope": "MaterialOrderSheet", "condition": "品类要求测量但当前未模板化", "nextAction": "标记 gap，不自动改成全品类必填", "refs": ["DEC-MP-07", "OBJ-008"]}
+    {
+      "id": "CHK-UNSELECTED",
+      "label": "未完成选材",
+      "severity": "P0",
+      "scope": "MaterialPlan",
+      "condition": "Selection 为空或不是 Selected",
+      "nextAction": "设计师完成选材并交付财务",
+      "refs": [
+        "BR-009"
+      ]
+    },
+    {
+      "id": "CHK-OVER-QTY",
+      "label": "超过可下单数量",
+      "severity": "P0",
+      "scope": "MaterialPlan",
+      "condition": "本次下单量 > 净用量 + 损耗 - 已下单",
+      "nextAction": "调整数量或损耗/发起增减项",
+      "refs": [
+        "DEC-MP-10"
+      ]
+    },
+    {
+      "id": "CHK-NO-SUPPLIER",
+      "label": "采购缺少供应商",
+      "severity": "P0",
+      "scope": "PurchaseOrder",
+      "condition": "supplier 为空",
+      "nextAction": "财务选择合作方档案中的供应商",
+      "refs": [
+        "SCN-005"
+      ]
+    },
+    {
+      "id": "CHK-UNPRICED",
+      "label": "采购未定价",
+      "severity": "P1",
+      "scope": "PurchaseOrder",
+      "condition": "priceState=Unpriced",
+      "nextAction": "等待结算或补结算价；成本保持不完整",
+      "refs": [
+        "BR-045"
+      ]
+    },
+    {
+      "id": "CHK-RECEIPT-OVER",
+      "label": "到场数量超采购量",
+      "severity": "P0",
+      "scope": "GoodsReceipt",
+      "condition": "累计到场量 > 采购量",
+      "nextAction": "拒绝登记并核对采购单",
+      "refs": [
+        "SCN-021"
+      ]
+    },
+    {
+      "id": "CHK-SETTLEMENT-DUP",
+      "label": "重复结算",
+      "severity": "P0",
+      "scope": "MaterialSettlement",
+      "condition": "采购明细已被结算",
+      "nextAction": "撤销原结算或按互斥规则处理",
+      "refs": [
+        "DEC-073"
+      ]
+    },
+    {
+      "id": "CHK-COST-INCOMPLETE",
+      "label": "成本不完整",
+      "severity": "P1",
+      "scope": "Project",
+      "condition": "costComplete=false",
+      "nextAction": "完成结算/补成本；利润保持 null",
+      "refs": [
+        "BR-045",
+        "MET-002"
+      ]
+    },
+    {
+      "id": "CHK-MEASURE-TEMPLATE",
+      "label": "品类必填测量字段未完成",
+      "severity": "P1",
+      "scope": "MaterialOrderSheet",
+      "condition": "当前品类模板中 visible=true 且 required=true 的单据头字段为空",
+      "nextAction": "拒绝提交并提示缺失字段；模板配置错误进入配置检查",
+      "refs": [
+        "DEC-MP-07",
+        "OBJ-008",
+        "BR-044"
+      ],
+      "implementation": "97d5705"
+    },
+    {
+      "id": "CHK-CANCEL-AFTER-ORDER",
+      "label": "已进入采购后直接取消",
+      "severity": "P0",
+      "scope": "MaterialOrderSheet",
+      "condition": "status.ordered()=true 时调用 material/sheet/cancel",
+      "nextAction": "拒绝直接取消；走采购调整或已到货退货",
+      "refs": [
+        "DEC-MP-02",
+        "DEC-073",
+        "97d5705"
+      ],
+      "implementation": "97d5705"
+    }
   ],
   "exceptions": [
-    {"id": "EX-NO-PRICE", "text": "无价下单允许，形成暂估应付；成本不完整。", "refs": ["DEC-072", "BR-045"]},
-    {"id": "EX-PARTIAL-RECEIPT", "text": "部分到场推进 PartiallyArrived；累计实际成本按到场量。", "refs": ["SCN-021"]},
-    {"id": "EX-RETURN-BALANCE", "text": "退货余款先冲其他应付，仍有余款转供应商往来余额。", "refs": ["DEC-MP-02"]},
-    {"id": "EX-CHANGE-AFTER-ORDER", "text": "已下单未到调整采购明细/应付；已到货必须生成退货单。", "refs": ["DEC-MP-02", "DEC-073"]},
-    {"id": "EX-CROSS-TENANT", "text": "业务助手和页面只使用当前用户数据范围；越权统一拒绝。", "refs": ["BR-027", "权限规范"]}
+    {
+      "id": "EX-NO-PRICE",
+      "text": "无价下单允许，形成暂估应付；成本不完整。",
+      "refs": [
+        "DEC-072",
+        "BR-045"
+      ]
+    },
+    {
+      "id": "EX-PARTIAL-RECEIPT",
+      "text": "部分到场推进 PartiallyArrived；累计实际成本按到场量。",
+      "refs": [
+        "SCN-021"
+      ]
+    },
+    {
+      "id": "EX-RETURN-BALANCE",
+      "text": "退货余款先冲其他应付，仍有余款转供应商往来余额。",
+      "refs": [
+        "DEC-MP-02"
+      ]
+    },
+    {
+      "id": "EX-CHANGE-AFTER-ORDER",
+      "text": "已下单未到调整采购明细/应付；已到货必须生成退货单。",
+      "refs": [
+        "DEC-MP-02",
+        "DEC-073"
+      ]
+    },
+    {
+      "id": "EX-CROSS-TENANT",
+      "text": "业务助手和页面只使用当前用户数据范围；越权统一拒绝。",
+      "refs": [
+        "BR-027",
+        "权限规范"
+      ]
+    }
   ],
   "metrics": [
-    {"id": "MET-MATERIAL-CLOSURE", "label": "材料闭环完成率", "meaning": "已选材/已下单/已到场/已结算计划的比例"},
-    {"id": "MET-COST-COMPLETE", "label": "成本完整项目比例", "meaning": "costComplete=true 的项目占比"},
-    {"id": "MET-ASSISTANT-GROUNDING", "label": "助手证据覆盖", "meaning": "回答带对象/规则/下一步的比例"},
-    {"id": "MET-PERMISSION", "label": "越权访问", "meaning": "跨租户/越权数据请求，目标为 0"}
+    {
+      "id": "MET-MATERIAL-CLOSURE",
+      "label": "材料闭环完成率",
+      "meaning": "已选材/已下单/已到场/已结算计划的比例"
+    },
+    {
+      "id": "MET-COST-COMPLETE",
+      "label": "成本完整项目比例",
+      "meaning": "costComplete=true 的项目占比"
+    },
+    {
+      "id": "MET-ASSISTANT-GROUNDING",
+      "label": "助手证据覆盖",
+      "meaning": "回答带对象/规则/下一步的比例"
+    },
+    {
+      "id": "MET-PERMISSION",
+      "label": "越权访问",
+      "meaning": "跨租户/越权数据请求，目标为 0"
+    }
   ],
   "uiBindings": [
-    {"surface": "web", "route": "/business-blueprints", "objectType": "blueprint", "blueprintNode": "material.end-to-end", "roles": ["boss", "storeManager", "finance", "designer", "pm"], "entry": "业务蓝图中心"},
-    {"surface": "web", "route": "/finance/material-ordering", "objectType": "MaterialOrderSheet", "blueprintNode": "material.purchase-order", "roles": ["finance", "boss", "storeManager"], "entry": "为什么/下一步面板"},
-    {"surface": "web", "route": "/finance/material-settlement", "objectType": "MaterialSettlement", "blueprintNode": "material.settlement", "roles": ["finance", "boss", "storeManager"], "entry": "成本与结算解释"},
-    {"surface": "web", "route": "/finance/projects/:id", "objectType": "Project", "blueprintNode": "material.health", "roles": ["boss", "storeManager", "finance"], "entry": "材料业务体检"},
-    {"surface": "app", "route": "/subpackages/project/pages/material-sheet", "objectType": "MaterialOrderSheet", "blueprintNode": "material.order-sheet", "roles": ["designer", "pm", "boss", "storeManager"], "entry": "主材下单入口/说明"},
-    {"surface": "app", "route": "/subpackages/project/pages/material-sheet-detail", "objectType": "MaterialOrderSheet", "blueprintNode": "material.measure", "roles": ["designer", "pm", "boss", "storeManager"], "entry": "字段解释/下一步"},
-    {"surface": "app", "route": "/subpackages/project/pages/detail", "objectType": "Project", "blueprintNode": "material.health", "roles": ["boss", "storeManager", "finance"], "entry": "项目材料体检"}
+    {
+      "surface": "web",
+      "route": "/business-blueprints",
+      "objectType": "blueprint",
+      "blueprintNode": "material.end-to-end",
+      "roles": [
+        "boss",
+        "storeManager",
+        "finance",
+        "designer",
+        "pm"
+      ],
+      "entry": "业务蓝图中心"
+    },
+    {
+      "surface": "web",
+      "route": "/finance/material-ordering",
+      "objectType": "MaterialOrderSheet",
+      "blueprintNode": "material.purchase-order",
+      "roles": [
+        "finance",
+        "boss",
+        "storeManager"
+      ],
+      "entry": "为什么/下一步面板"
+    },
+    {
+      "surface": "web",
+      "route": "/finance/material-settlement",
+      "objectType": "MaterialSettlement",
+      "blueprintNode": "material.settlement",
+      "roles": [
+        "finance",
+        "boss",
+        "storeManager"
+      ],
+      "entry": "成本与结算解释"
+    },
+    {
+      "surface": "web",
+      "route": "/finance/projects/:id",
+      "objectType": "Project",
+      "blueprintNode": "material.health",
+      "roles": [
+        "boss",
+        "storeManager",
+        "finance"
+      ],
+      "entry": "材料业务体检"
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/material-sheet",
+      "objectType": "MaterialOrderSheet",
+      "blueprintNode": "material.order-sheet",
+      "roles": [
+        "designer",
+        "pm",
+        "boss",
+        "storeManager"
+      ],
+      "entry": "主材下单入口/说明"
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/material-sheet-detail",
+      "objectType": "MaterialOrderSheet",
+      "blueprintNode": "material.measure",
+      "roles": [
+        "designer",
+        "pm",
+        "boss",
+        "storeManager"
+      ],
+      "entry": "字段解释/下一步"
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/detail",
+      "objectType": "Project",
+      "blueprintNode": "material.health",
+      "roles": [
+        "boss",
+        "storeManager",
+        "finance"
+      ],
+      "entry": "项目材料体检"
+    }
   ],
   "agentTools": [
-    {"name": "material.sheet.info", "provider": "material/sheet/info", "readOnly": true, "scope": "current user/project"},
-    {"name": "material.plan.page", "provider": "material/plan/workbench", "readOnly": true, "scope": "current user/project"},
-    {"name": "material.selection.info", "provider": "material/selection/item/page", "readOnly": true, "scope": "current user/project"},
-    {"name": "purchase.page", "provider": "project/purchase/page", "readOnly": true, "scope": "current user/project"},
-    {"name": "receipt.page", "provider": "project/goods-receipt/page", "readOnly": true, "scope": "current user/project"},
-    {"name": "settlement.preview", "provider": "material/settlement/preview", "readOnly": true, "scope": "finance/boss/storeManager"},
-    {"name": "cost.inspect", "provider": "ProjectCostContext", "readOnly": true, "scope": "finance/boss/storeManager"},
-    {"name": "blueprint.runtime", "provider": "blueprint/runtime/info", "readOnly": true, "scope": "role-aware"},
-    {"name": "business.check", "provider": "blueprint/check/report", "readOnly": true, "scope": "project/role-aware"}
+    {
+      "name": "material.sheet.info",
+      "provider": "material/sheet/info",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "material.plan.page",
+      "provider": "material/plan/workbench",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "material.selection.info",
+      "provider": "material/selection/item/page",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "purchase.page",
+      "provider": "project/purchase/page",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "receipt.page",
+      "provider": "project/goods-receipt/page",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "settlement.preview",
+      "provider": "material/settlement/preview",
+      "readOnly": true,
+      "scope": "finance/boss/storeManager"
+    },
+    {
+      "name": "cost.inspect",
+      "provider": "ProjectCostContext",
+      "readOnly": true,
+      "scope": "finance/boss/storeManager"
+    },
+    {
+      "name": "blueprint.runtime",
+      "provider": "blueprint/runtime/info",
+      "readOnly": true,
+      "scope": "role-aware"
+    },
+    {
+      "name": "business.check",
+      "provider": "blueprint/check/report",
+      "readOnly": true,
+      "scope": "project/role-aware"
+    }
+  ],
+  "lastReviewedCommit": "97d5705",
+  "branches": [
+    {
+      "id": "sheet-cancel",
+      "name": "未进入采购前取消作业单",
+      "fromStates": [
+        "Draft",
+        "Measuring",
+        "Measured",
+        "Submitted",
+        "Pricing"
+      ],
+      "guard": "作业单尚未进入采购，且不处于 Arrived/Settled/Closed/Cancelled",
+      "action": "material/sheet/cancel",
+      "input": [
+        "sheetId",
+        "reason"
+      ],
+      "output": "MaterialOrderSheet[Cancelled] + 取消原因备注",
+      "roles": [
+        "designer",
+        "boss",
+        "storeManager",
+        "finance（沿用 Provider 操作权限）"
+      ],
+      "sources": [
+        "OBJ-008",
+        "DEC-MP-02",
+        "97d5705"
+      ],
+      "evidence": [
+        "src/main/java/com/th4/edge/decoboon/material/service/sheet/cancel/support/Cancel.java",
+        "MaterialSheetOrderFlowTest.cancelBeforeOrderShouldMoveToCancelled"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "id": "GAP-MAT-TIME-SEMANTICS",
+      "label": "请购时间/采购下单时间是否新增独立字段",
+      "status": "open-business-decision",
+      "currentImplementation": "建单使用 createTime；采购下单使用 orderedAt；不新增请购时间字段",
+      "whyNotClosed": "新增字段属于业务口径变化，需要业务智能体裁决后才能进入实现",
+      "refs": [
+        "OBJ-008",
+        "DEC-072",
+        "BR-045"
+      ]
+    }
   ]
 }
