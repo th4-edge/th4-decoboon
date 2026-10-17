@@ -19,8 +19,10 @@ import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
+import com.th4.edge.decoboon.project.model.PurchaseOrderItem;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
+import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.framework.exception.DefaultErrorCode;
@@ -36,9 +38,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * 主材下单作业单：单据生命周期 + 门禁 + 下单编排（SOL-014 / OBJ-008 / BR-044 / BR-045 / SCN-021）。
@@ -62,6 +67,7 @@ public class MaterialSheetContext {
     private final MaterialPlanRepository materialPlanRepository;
     private final ProjectContractRepository contractRepository;
     private final PurchaseOrderRepository purchaseRepository;
+    private final PurchaseOrderItemRepository purchaseItemRepository;
     private final com.th4.edge.decoboon.supply.repository.PartnerRepository partnerRepository;
     private final ProjectAccessContext accessContext;
     private final ProjectPermissionContext permissionContext;
@@ -76,6 +82,7 @@ public class MaterialSheetContext {
                                 MaterialPlanRepository materialPlanRepository,
                                 ProjectContractRepository contractRepository,
                                 PurchaseOrderRepository purchaseRepository,
+                                PurchaseOrderItemRepository purchaseItemRepository,
                                 com.th4.edge.decoboon.supply.repository.PartnerRepository partnerRepository,
                                 ProjectAccessContext accessContext,
                                 ProjectPermissionContext permissionContext,
@@ -89,6 +96,7 @@ public class MaterialSheetContext {
         this.materialPlanRepository = materialPlanRepository;
         this.contractRepository = contractRepository;
         this.purchaseRepository = purchaseRepository;
+        this.purchaseItemRepository = purchaseItemRepository;
         this.partnerRepository = partnerRepository;
         this.accessContext = accessContext;
         this.permissionContext = permissionContext;
@@ -300,6 +308,11 @@ public class MaterialSheetContext {
         if (sheet.getStatus() == MaterialSheetStatus.Cancelled || sheet.getStatus() == MaterialSheetStatus.Closed) {
             throw new DefinedException(new DefaultErrorCode("400", "该作业单已取消或已关闭，不能下单"));
         }
+        if (sheet.getStatus() != MaterialSheetStatus.Submitted
+                && sheet.getStatus() != MaterialSheetStatus.Pricing
+                && sheet.getStatus() != MaterialSheetStatus.PartiallyOrdered) {
+            throw new DefinedException(new DefaultErrorCode("400", "作业单尚未提交请购，不能下单"));
+        }
         List<MaterialOrderSheetItem> sheetLines = items(sheetId);
         if (sheetLines.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400", "作业单还没有材料行"));
@@ -308,66 +321,143 @@ public class MaterialSheetContext {
             throw new DefinedException(new DefaultErrorCode("400", "请选择要下单的材料行"));
         }
         var supplier = requireSupplier(current, supplierId, supplierName);
+        if (supplier == null) {
+            throw new DefinedException(new DefaultErrorCode("400", "请选择已在合作方建档的供应商"));
+        }
         // 循环外一次性批量取材料计划（DEC-036 反模式 A2b：禁止循环体内查库）
         Map<Long, MaterialOrderSheetItem> lineById = new LinkedHashMap<>();
         sheetLines.forEach(line -> lineById.put(line.getItemId(), line));
-        List<Long> orderPlanIds = lines.stream()
-                .map(command -> lineById.get(command.getItemId()))
-                .filter(java.util.Objects::nonNull)
-                .map(line -> line.getMaterialPlan() == null ? null : line.getMaterialPlan().getPlanId())
-                .filter(java.util.Objects::nonNull)
-                .toList();
-        Map<Long, MaterialPlan> orderPlans = loadOrderablePlans(current, sheet.getProject().getProjectId(), orderPlanIds);
-        List<MaterialOrderSheetItem> targets = new ArrayList<>();
+        Set<Long> seenLineIds = new HashSet<>();
+        List<Long> orderPlanIds = new ArrayList<>();
         for (MaterialOrderSheetItem command : lines) {
+            if (command.getItemId() == null || !seenLineIds.add(command.getItemId())) {
+                throw new DefinedException(new DefaultErrorCode("400", "同一作业单行不能重复下单"));
+            }
             MaterialOrderSheetItem line = lineById.get(command.getItemId());
             if (line == null) {
                 throw new DefinedException(new DefaultErrorCode("404", "作业单行不存在或不属于本单"));
             }
+            if (line.getMaterialPlan() == null || line.getMaterialPlan().getPlanId() == null) {
+                throw new DefinedException(new DefaultErrorCode("400", "作业单行必须来源材料计划"));
+            }
+            orderPlanIds.add(line.getMaterialPlan().getPlanId());
+        }
+        Map<Long, MaterialPlan> orderPlans = loadOrderablePlans(current, sheet.getProject().getProjectId(), orderPlanIds);
+
+        List<OrderLine> orderLines = new ArrayList<>();
+        BigDecimal totalQuantity = BigDecimal.ZERO;
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        boolean allPriced = true;
+        boolean anyPriced = false;
+        boolean anyUnpriced = false;
+        for (MaterialOrderSheetItem command : lines) {
+            MaterialOrderSheetItem line = lineById.get(command.getItemId());
             BigDecimal quantity = command.getQuantity() == null ? line.getQuantity() : command.getQuantity();
+            if (quantity == null || quantity.signum() <= 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "本次下单数量必须大于 0"));
+            }
+            BigDecimal sheetRemaining = value(line.getQuantity()).subtract(value(line.getOrderedQuantity()));
+            if (quantity.compareTo(sheetRemaining) > 0) {
+                throw new DefinedException(new DefaultErrorCode("400",
+                        "本次下单量超过作业单行剩余数量 " + sheetRemaining.stripTrailingZeros().toPlainString()));
+            }
             MaterialPlan plan = orderPlans.get(line.getMaterialPlan().getPlanId());
             materialPurchaseContext.requireOrderQuantity(plan, quantity);
-
             BigDecimal unitPrice = command.getPurchasePrice();
+            if (unitPrice != null && unitPrice.signum() < 0) {
+                throw new DefinedException(new DefaultErrorCode("400", "采购单价不能为负数"));
+            }
             SheetPriceState priceState = unitPrice == null ? SheetPriceState.Unpriced : SheetPriceState.Priced;
-            PurchaseOrder purchase = new PurchaseOrder();
-            purchase.setCompany(plan.getProject().getCompany());
-            purchase.setProperty(plan.getProject().getProperty());
-            purchase.setProject(plan.getProject());
-            purchase.setContract(sheet.getContract());
-            purchase.setMaterialPlan(plan);
-            purchase.setQuoteLine(plan.getQuoteItem());
-            purchase.setSupplier(supplier);
-            purchase.setSupplierName(supplier.getName());
-            purchase.setDeliveryMode(deliveryMode == null
-                    ? com.th4.edge.decoboon.project.configure.DeliveryMode.Direct : deliveryMode);
-            purchase.setNo("PO" + System.currentTimeMillis() + "-" + line.getItemId());
-            purchase.setQuantity(quantity);
-            purchase.setUnit(line.getUnit());
-            purchase.setUnitPrice(unitPrice == null ? BigDecimal.ZERO : unitPrice);
-            purchase.setAmount(unitPrice == null ? BigDecimal.ZERO : quantity.multiply(unitPrice));
-            purchase.setReceivedQuantity(BigDecimal.ZERO);
-            purchase.setStatus(PurchaseStatus.Approved);
-            purchase.setApprovedBy(current);
-            purchase.setApprovedAt(LocalDateTime.now());
-            purchase.setApprovalRemark(unitPrice == null ? "无价下单（暂估应付）" : "按作业单下单");
-            purchase.setPriceState(priceState);
-            purchase.setExpectedAt(expectedAt == null ? sheet.getDeliverAt() : expectedAt);
-            purchase.setCreatedBy(current);
-            purchase.setRemark(remark);
-            PurchaseOrder savedPurchase = purchaseRepository.save(modelIdentityContext.prepare(purchase));
-            materialPurchaseContext.confirmOrder(savedPurchase, current);
+            if (unitPrice == null) {
+                allPriced = false;
+                anyUnpriced = true;
+            } else {
+                anyPriced = true;
+                totalAmount = totalAmount.add(quantity.multiply(unitPrice));
+            }
+            totalQuantity = totalQuantity.add(quantity);
+            orderLines.add(new OrderLine(line, plan, quantity, unitPrice, priceState));
+        }
 
-            line.setPurchasePrice(unitPrice);
-            line.setPriceState(priceState);
-            line.setOrderedQuantity(value(line.getOrderedQuantity()).add(quantity));
+        MaterialPlan firstPlan = orderLines.get(0).plan();
+        Project project = firstPlan.getProject();
+        PurchaseOrder purchase = new PurchaseOrder();
+        purchase.setCompany(project.getCompany());
+        purchase.setProperty(project.getProperty());
+        purchase.setProject(project);
+        permissionContext.apply(purchase, project);
+        purchase.setContract(sheet.getContract());
+        purchase.setMaterialPlan(firstPlan);
+        purchase.setQuoteLine(firstPlan.getQuoteItem());
+        purchase.setSupplier(supplier);
+        purchase.setSupplierName(supplier.getName());
+        purchase.setDeliveryMode(deliveryMode == null
+                ? com.th4.edge.decoboon.project.configure.DeliveryMode.Direct : deliveryMode);
+        purchase.setNo(nextPurchaseNo(sheetId, supplier.getPartnerId()));
+        purchase.setQuantity(totalQuantity);
+        purchase.setUnit(orderLines.get(0).line().getUnit());
+        purchase.setUnitPrice(BigDecimal.ZERO);
+        purchase.setAmount(totalAmount);
+        purchase.setReceivedQuantity(BigDecimal.ZERO);
+        purchase.setStatus(PurchaseStatus.Approved);
+        purchase.setApprovedBy(current);
+        purchase.setApprovedAt(LocalDateTime.now());
+        purchase.setApprovalRemark(anyUnpriced ? "作业单下单（含无价行，暂估应付）" : "按作业单下单");
+        purchase.setPriceState(allPriced ? SheetPriceState.Priced
+                : (anyPriced ? SheetPriceState.Mixed : SheetPriceState.Unpriced));
+        purchase.setExpectedAt(expectedAt == null ? sheet.getDeliverAt() : expectedAt);
+        purchase.setCreatedBy(current);
+        purchase.setRemark(remark);
+        PurchaseOrder savedPurchase = purchaseRepository.save(modelIdentityContext.prepare(purchase));
+
+        for (OrderLine orderLine : orderLines) {
+            PurchaseOrderItem item = new PurchaseOrderItem();
+            item.setCompany(savedPurchase.getCompany());
+            item.setProperty(savedPurchase.getProperty());
+            item.setProject(savedPurchase.getProject());
+            item.setContract(savedPurchase.getContract());
+            item.setPurchaseOrder(savedPurchase);
+            item.setMaterialPlan(orderLine.plan());
+            item.setStore(savedPurchase.getStore());
+            item.setTeam(savedPurchase.getTeam());
+            item.setOwner(savedPurchase.getOwner());
+            item.setQuantity(orderLine.quantity());
+            item.setUnit(orderLine.line().getUnit());
+            item.setUnitPrice(orderLine.unitPrice() == null ? BigDecimal.ZERO : orderLine.unitPrice());
+            item.setAmount(orderLine.unitPrice() == null ? BigDecimal.ZERO
+                    : orderLine.quantity().multiply(orderLine.unitPrice()));
+            item.setReceivedQuantity(BigDecimal.ZERO);
+            item.setStatus(PurchaseStatus.Approved);
+            item.setPriceState(orderLine.priceState());
+            item.setPriceSource(materialPurchaseContext.resolvePriceSource(
+                    orderLine.plan(), supplier, orderLine.unitPrice()));
+            item.setRemark(orderLine.line().getRemark());
+            purchaseItemRepository.save(modelIdentityContext.prepare(item));
+        }
+        materialPurchaseContext.confirmOrder(savedPurchase, current);
+
+        for (OrderLine orderLine : orderLines) {
+            MaterialOrderSheetItem line = orderLine.line();
+            line.setPurchasePrice(orderLine.unitPrice());
+            line.setPriceState(orderLine.priceState());
+            line.setOrderedQuantity(value(line.getOrderedQuantity()).add(orderLine.quantity()));
             itemRepository.save(line);
-            targets.add(line);
         }
         refreshSheetPriceState(sheet, sheetLines);
-        sheet.setStatus(sheetLines.stream().allMatch(line -> value(line.getOrderedQuantity()).signum() > 0)
-                ? MaterialSheetStatus.Ordered : MaterialSheetStatus.PartiallyOrdered);
+        boolean fullyOrdered = sheetLines.stream()
+                .allMatch(line -> value(line.getOrderedQuantity()).compareTo(value(line.getQuantity())) >= 0);
+        sheet.setStatus(fullyOrdered ? MaterialSheetStatus.Ordered : MaterialSheetStatus.PartiallyOrdered);
         return sheetRepository.save(sheet);
+    }
+
+    private record OrderLine(MaterialOrderSheetItem line, MaterialPlan plan, BigDecimal quantity,
+                             BigDecimal unitPrice, SheetPriceState priceState) {
+    }
+
+    private String nextPurchaseNo(Long sheetId, Long supplierId) {
+        return "PO" + System.currentTimeMillis() + "-" + sheetId + "-"
+                + (supplierId == null ? "0" : supplierId) + "-"
+                + UUID.randomUUID().toString().substring(0, 6);
     }
 
     /**
@@ -380,10 +470,8 @@ public class MaterialSheetContext {
         if (plan == null || plan.getPlanId() == null) {
             return;
         }
-        List<com.th4.edge.decoboon.project.model.PurchaseOrder> orders =
-                purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(plan);
-        BigDecimal received = orders.stream()
-                .map(order -> value(order.getReceivedQuantity()))
+        BigDecimal received = purchaseItemRepository.findByMaterialPlanOrderByPurchaseItemIdAsc(plan).stream()
+                .map(item -> value(item.getReceivedQuantity()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         if (received.signum() <= 0) {
             return;

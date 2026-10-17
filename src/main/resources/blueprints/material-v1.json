@@ -1066,9 +1066,34 @@
         "designer",
         "pm",
         "boss",
+        "storeManager",
+        "finance"
+      ],
+      "entry": "主材下单工作台：项目/全公司待请购与已下单"
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/material-sheet-order",
+      "objectType": "MaterialOrderSheet",
+      "blueprintNode": "material.purchase-order",
+      "roles": [
+        "finance",
+        "boss",
         "storeManager"
       ],
-      "entry": "主材下单入口/说明"
+      "entry": "App 下单：供应商/数量/可空单价"
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/finance/pages/material-settlement",
+      "objectType": "MaterialSettlement",
+      "blueprintNode": "material.settlement",
+      "roles": [
+        "finance",
+        "boss",
+        "storeManager"
+      ],
+      "entry": "App 主材结算：逐单/月结/撤销"
     },
     {
       "surface": "app",
@@ -1079,9 +1104,10 @@
         "designer",
         "pm",
         "boss",
-        "storeManager"
+        "storeManager",
+        "finance"
       ],
-      "entry": "字段解释/下一步"
+      "entry": "字段解释/下一步/App 下单入口"
     },
     {
       "surface": "app",

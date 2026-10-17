@@ -25,7 +25,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = MaterialSettlement.class,
                 properties = {"settlementId", "no", "scope", "period", "settledAt", "totalAmount", "status",
-                        "remark", "items", "createTime"}),
+                        "remark", "supplier", "items", "createTime"}),
         @AllowProperties(model = MaterialSettlementItem.class,
                 properties = {"settlementItemId", "quantity", "settlementPrice", "amount", "remark", "createTime"}),
         @AllowProperties(model = SettlementPreviewRow.class,
@@ -50,6 +50,14 @@ public class Page implements com.th4.edge.decoboon.material.service.settlement.p
     @Override
     @Transactional
     public List<MaterialSettlement> call(MaterialSettlement request) {
-        return context.page(employee, supplierId);
+        List<MaterialSettlement> rows = context.page(employee, supplierId);
+        // 关闭 OSIV 时也要能序列化供应商摘要（只触碰 response 实际使用字段）。
+        rows.forEach(row -> {
+            if (row.getSupplier() != null) {
+                row.getSupplier().getPartnerId();
+                row.getSupplier().getName();
+            }
+        });
+        return rows;
     }
 }

@@ -27,8 +27,9 @@
 | B2 | Web 业务蓝图中心 + 项目材料业务体检 | 只读 Provider、Web 页面、真实浏览器证据 | `DEV_VERIFIED` + `UI_REVIEWED` | COMPLETE (2026-10-17) |
 | B3 | App 业务体检 + 页面上下文说明 | App 页面、字段帮助、错误解释、真机/开发者工具证据 | `DEV_VERIFIED` + `UI_REVIEWED` | COMPLETE (2026-10-17) |
 | B4 | 只读材料业务助手 | 知识检索、Provider 工具、确定性校核、权限与审计 | 50 个黄金问题、权限/反向验证 PASS | COMPLETE (2026-10-17) |
-| B5 | 独立验收 + 对账 + 缺陷修复 | 黑盒验收、跨端、越权、幂等、边界 | `ACCEPTED`；无 UNMAPPED/STALE | NEXT |
-| B6 | 体验版/发布准备（如涉及 App） | 构建、体验版上传、发布记录；不正式发布 | `RELEASED`（体验版）或用户决策包 | PENDING |
+| B5 | App 单端材料下单与结算闭环 | App 下单/到场/结算页面、后端编排、旧直采下线 | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | COMPLETE (2026-10-17) |
+| B6 | 独立验收与对账 | 黑盒验收、跨端、越权、幂等、边界 | `ACCEPTED`；无 UNMAPPED/STALE | NEXT |
+| B7 | 体验版/发布准备（如涉及 App） | 构建、体验版上传、发布记录；不正式发布 | `RELEASED`（体验版）或用户决策包 | PENDING |
 
 ## 3. 自主决策权限
 
@@ -70,7 +71,7 @@
 - 每批 UI 审查最多轮次：2；
 - 同一指标连续无改善：2 次后停止该类优化并重新测量；
 - 单次监督循环最多推进：1 个批次；
-- 最大自主批次：B1–B6；
+- 最大自主批次：B1–B7；
 - 无进展/证据不足：标记 `BLOCKED`，写决策包，停止该分支。
 
 ## 7. Return Packet

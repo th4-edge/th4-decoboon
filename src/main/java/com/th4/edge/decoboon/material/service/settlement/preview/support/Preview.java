@@ -25,7 +25,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = MaterialSettlement.class,
                 properties = {"settlementId", "no", "scope", "period", "settledAt", "totalAmount", "status",
-                        "remark", "items", "createTime"}),
+                        "remark", "supplier", "items", "createTime"}),
         @AllowProperties(model = MaterialSettlementItem.class,
                 properties = {"settlementItemId", "quantity", "settlementPrice", "amount", "remark", "createTime"}),
         @AllowProperties(model = SettlementPreviewRow.class,

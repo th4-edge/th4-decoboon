@@ -25,7 +25,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = MaterialSettlement.class,
                 properties = {"settlementId", "no", "scope", "period", "settledAt", "totalAmount", "status",
-                        "remark", "items", "createTime"}),
+                        "remark", "supplier", "items", "createTime"}),
         @AllowProperties(model = MaterialSettlementItem.class,
                 properties = {"settlementItemId", "quantity", "settlementPrice", "amount", "remark", "createTime"}),
         @AllowProperties(model = SettlementPreviewRow.class,
@@ -54,6 +54,11 @@ public class Confirm implements com.th4.edge.decoboon.material.service.settlemen
     @Override
     @Transactional
     public MaterialSettlement call(Employee request) {
-        return context.confirm(employee, supplierId, scope, period, items, remark);
+        MaterialSettlement settlement = context.confirm(employee, supplierId, scope, period, items, remark);
+        if (settlement.getSupplier() != null) {
+            settlement.getSupplier().getPartnerId();
+            settlement.getSupplier().getName();
+        }
+        return settlement;
     }
 }

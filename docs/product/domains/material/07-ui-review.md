@@ -103,11 +103,69 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - Batch：B4
 - 交付形态：Provider/运行时，不新增独立 Web/App 页面；
 - 页面影响：B2 蓝图中心、B3 App 业务体检与上下文页面未改动；
-- 审查结论：本批不做 UI 通过声明，UI 入口和真实页面验收留 B5 独立验收。
+- 审查结论：本批不做 UI 通过声明，UI 入口和真实页面验收留 B6 独立验收。
 
 ## 运行时证据
 
 - `evidence/B4/api-samples.json`：真实 HTTP 响应、证据引用、工具列表与审计状态；
 - `evidence/B4/golden-question-results.json`：50 个黄金问题逐题结果；
 - `evidence/B4/audit-summary.json`：审计元数据，不含问题/回答正文；
-- 设计—蓝图—实现—验收的一致性由 B5 独立黑盒验证。
+- 设计—蓝图—实现—验收的一致性由 B6 独立黑盒验证。
+
+---
+
+# B5 App 单端材料下单与结算审查
+
+## 审查状态
+
+- Batch：B5
+- 状态：**PASS（真实渲染与交互走查完成）**
+- 证据目录：`evidence/B5/`
+- 不宣称：独立验收 `ACCEPTED`、正式小程序发布。
+
+## 环境
+
+- 微信开发者工具 2.02.2609231，项目根 `th4-decoboon-app/dist/dev/mp-weixin`；
+- DevTools 系统窗口 375×667，页面 `page.size()` 375×599；
+- H5 390×844；
+- 本地 dev 后端 8090，造数企业 M 真实 Provider 数据；
+- 临时作业单 `TILE-20261017-001`，走查后取消并删除。
+
+## 真实页面证据
+
+| 页面 | DevTools 截图 | H5 截图 | 结果 |
+| --- | --- | --- | --- |
+| 主材下单工作台 | `evidence/B5/screenshots/b5-workbench-submitted.png` | `evidence/B5/screenshots/b5-h5-workbench-submitted.png` | PASS：待财务下单、去下单、结算入口 |
+| 作业单下单 | `evidence/B5/screenshots/b5-material-sheet-order.png` | `evidence/B5/screenshots/b5-h5-material-sheet-order.png` | PASS：供应商/数量/可空单价/未定价 |
+| 作业单详情 | `evidence/B5/screenshots/b5-material-sheet-detail-submitted.png` | `evidence/B5/screenshots/b5-h5-material-sheet-detail.png` | PASS：待下单、去下单、时间与模板说明 |
+| 主材结算 | `evidence/B5/screenshots/b5-material-settlement.png` | `evidence/B5/screenshots/b5-h5-material-settlement.png` | PASS：逐单/月结、结算价、待结算明细 |
+| 结算单空态 | `evidence/B5/screenshots/b5-material-settlement-settlements-tab.png` | — | PASS：明确“还没有结算单” |
+| 材料计划工作台 | `evidence/B5/screenshots/b5-material-plan-workbench.png` | `evidence/B5/screenshots/b5-h5-material-plan-workbench.png` | PASS：旧直采入口移除 |
+| 供应商协作 | `evidence/B5/screenshots/b5-supply-index.png` | `evidence/B5/screenshots/b5-h5-supply-index.png` | PASS：旧直采入口移除，保留历史/到场 |
+
+## 交互
+
+- 主材工作台“去下单”实际 tap 后进入 `subpackages/project/pages/material-sheet-order`；
+- 主材结算“结算单”tab 实际 tap 后进入空态；
+- 作业单下单页显示“未定价”“采购单价 可留空=未定价”“1 行未定价 · 成本待结算”；
+- 材料计划工作台显示“下单统一从主材作业单发起”；
+- 供应商协作页显示“主材下单工作台 / 材料计划工作台 / 主材结算”，无旧材料计划直采入口。
+
+## 布局与 Console
+
+- DevTools 各页 `page.size()` 宽度均为 375，无横向溢出；材料计划工作台高度 667，其余 599；
+- H5 六页 `scrollWidth = innerWidth = 390`；
+- H5 业务页面 Console Errors = 0；仅 `favicon.ico` 404；
+- DevTools 编译成功、automator 可连接。
+
+## 缺陷与修复
+
+| ID | 页面 | 现象 | 修复 | 状态 |
+| --- | --- | --- | --- | --- |
+| B5-UI-001 | 材料计划工作台 | 模板存在孤立 `"`，DevTools 编译报 `unexpected character`，automator 反复 timeout | 删除 `mpw__item` 节点多余引号，重新构建后编译通过 | FIXED |
+
+## 结论
+
+- UI：`UI_REVIEWED`；
+- 仍需 B6 独立验收，不能由本实现自批 `ACCEPTED`；
+- 未执行正式小程序提审或发布。

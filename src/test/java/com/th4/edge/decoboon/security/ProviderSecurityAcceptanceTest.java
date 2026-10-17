@@ -199,9 +199,11 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-15 结算撤销（用户裁决本轮做）新增 1 条 protected：material/settlement/cancel
         // => 当前 Provider 面板为 502（public 16 + protected 486）。
         // 2026-10-17 作业单独立取消新增 1 条 protected：material/sheet/cancel
-        // => 当前 Provider 面板为 503（public 16 + protected 487）。
-        assertThat(routes).hasSize(503);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(487);
+        // 2026-10-17 B5 移除旧直采 project/purchase/save、project/purchase/batch；
+        // 蓝图运行时/体检 Provider 已纳入安全面板。
+        // => 当前 Provider 面板为 504（public 16 + protected 488）。
+        assertThat(routes).hasSize(504);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(488);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 

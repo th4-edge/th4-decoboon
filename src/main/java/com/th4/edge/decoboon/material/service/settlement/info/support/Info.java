@@ -25,7 +25,7 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = MaterialSettlement.class,
                 properties = {"settlementId", "no", "scope", "period", "settledAt", "totalAmount", "status",
-                        "remark", "items", "createTime"}),
+                        "remark", "supplier", "items", "createTime"}),
         @AllowProperties(model = MaterialSettlementItem.class,
                 properties = {"settlementItemId", "quantity", "settlementPrice", "amount", "remark", "createTime"}),
         @AllowProperties(model = SettlementPreviewRow.class,
@@ -50,6 +50,11 @@ public class Info implements com.th4.edge.decoboon.material.service.settlement.i
     @Override
     @Transactional
     public MaterialSettlement call(MaterialSettlement request) {
-        return context.info(employee, settlementId);
+        MaterialSettlement settlement = context.info(employee, settlementId);
+        if (settlement.getSupplier() != null) {
+            settlement.getSupplier().getPartnerId();
+            settlement.getSupplier().getName();
+        }
+        return settlement;
     }
 }

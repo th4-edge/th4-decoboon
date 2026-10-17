@@ -163,8 +163,8 @@ class MaterialGoodsReceiptFlowTest {
         sheetLine.setUnit(Unit.Sheet);
 
         sheetContext = new MaterialSheetContext(sheetRepository, sheetItemRepository, materialPlanRepository,
-                mock(ProjectContractRepository.class), purchaseRepository, mock(PartnerRepository.class),
-                accessContext, permissionContext, identityContext, mock(TenantContext.class),
+                mock(ProjectContractRepository.class), purchaseRepository, purchaseItemRepository,
+                mock(PartnerRepository.class), accessContext, permissionContext, identityContext, mock(TenantContext.class),
                 StoreAttributionTestSupport.inject(new MaterialPurchaseContext(purchaseRepository,
                         purchaseItemRepository, materialPlanRepository, planStatusContext, payableRepository,
                         identityContext, mock(PartnerCreditContext.class), mock(MaterialSupplierRepository.class),
@@ -206,6 +206,7 @@ class MaterialGoodsReceiptFlowTest {
                 .thenReturn(Optional.empty());
         // 作业单回写链路
         when(purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(any())).thenReturn(List.of(purchase));
+        when(purchaseItemRepository.findByMaterialPlanOrderByPurchaseItemIdAsc(any())).thenReturn(List.of(item));
         when(sheetItemRepository.findByMaterialPlan_PlanId(any())).thenReturn(List.of(sheetLine));
         when(sheetRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
     }

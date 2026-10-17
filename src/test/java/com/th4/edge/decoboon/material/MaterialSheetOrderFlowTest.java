@@ -33,6 +33,7 @@ import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
+import com.th4.edge.decoboon.project.model.PurchaseOrderItem;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
@@ -78,6 +79,7 @@ class MaterialSheetOrderFlowTest {
     private final MaterialPlanRepository planRepository = mock(MaterialPlanRepository.class);
     private final ProjectContractRepository contractRepository = mock(ProjectContractRepository.class);
     private final PurchaseOrderRepository purchaseRepository = mock(PurchaseOrderRepository.class);
+    private final PurchaseOrderItemRepository purchaseItemRepository = mock(PurchaseOrderItemRepository.class);
     private final PartnerRepository partnerRepository = mock(PartnerRepository.class);
     private final PayableRepository payableRepository = mock(PayableRepository.class);
     private final ProjectAccessContext accessContext = mock(ProjectAccessContext.class);
@@ -89,7 +91,7 @@ class MaterialSheetOrderFlowTest {
     private final MaterialSelectionRepository selectionRepository = mock(MaterialSelectionRepository.class);
 
     private final MaterialPurchaseContext purchaseContext = StoreAttributionTestSupport.inject(
-            new MaterialPurchaseContext(purchaseRepository, mock(PurchaseOrderItemRepository.class),
+            new MaterialPurchaseContext(purchaseRepository, purchaseItemRepository,
                     planRepository, planStatusContext, payableRepository, identityContext,
                     mock(PartnerCreditContext.class), mock(MaterialSupplierRepository.class),
                     mock(PartnerPriceRepository.class)));
@@ -98,7 +100,7 @@ class MaterialSheetOrderFlowTest {
 
     private final MaterialSheetContext context = new MaterialSheetContext(
             sheetRepository, itemRepository, planRepository, contractRepository, purchaseRepository,
-            partnerRepository, accessContext, permissionContext, identityContext, tenantContext,
+            purchaseItemRepository, partnerRepository, accessContext, permissionContext, identityContext, tenantContext,
             purchaseContext, selectionContext, templateContext);
 
     private Company company;
@@ -108,6 +110,7 @@ class MaterialSheetOrderFlowTest {
     private Employee boss;
     private Partner supplier;
     private final List<MaterialOrderSheetItem> savedItems = new ArrayList<>();
+    private final List<PurchaseOrderItem> savedPurchaseItems = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -167,6 +170,16 @@ class MaterialSheetOrderFlowTest {
             if (order.getPurchaseId() == null) order.setPurchaseId(2000L);
             return order;
         });
+        when(purchaseItemRepository.save(any())).thenAnswer(invocation -> {
+            PurchaseOrderItem item = invocation.getArgument(0);
+            if (item.getPurchaseItemId() == null) item.setPurchaseItemId((long) (600 + savedPurchaseItems.size()));
+            if (!savedPurchaseItems.contains(item)) savedPurchaseItems.add(item);
+            return item;
+        });
+        when(purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(any()))
+                .thenAnswer(invocation -> savedPurchaseItems.stream()
+                        .filter(item -> item.getPurchaseOrder() == invocation.getArgument(0))
+                        .toList());
         when(payableRepository.findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(any(), any()))
                 .thenReturn(Optional.empty());
         when(payableRepository.findFirstByCompany_ComIdAndSourceNoAndType(any(), any(), any()))
@@ -278,6 +291,7 @@ class MaterialSheetOrderFlowTest {
         stubPlan(plan);
         currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Submitted);
 
         ArgumentCaptor<PurchaseOrder> purchases = ArgumentCaptor.forClass(PurchaseOrder.class);
         ArgumentCaptor<Payable> payables = ArgumentCaptor.forClass(Payable.class);
@@ -316,6 +330,7 @@ class MaterialSheetOrderFlowTest {
         stubPlan(plan);
         currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
                 List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Submitted);
 
         MaterialOrderSheetItem command = new MaterialOrderSheetItem();
         command.setItemId(savedItems.get(0).getItemId());
@@ -331,6 +346,65 @@ class MaterialSheetOrderFlowTest {
         org.mockito.Mockito.verify(payableRepository).save(payables.capture());
         assertThat(payables.getValue().getEstimated()).isFalse();
         assertThat(payables.getValue().getAmount()).isEqualByComparingTo("680");
+    }
+
+    @Test
+    void multiLineOrderShouldCreateOnePurchaseWithItemsAndMixedEstimate() {
+        MaterialPlan firstPlan = plan(51L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        MaterialPlan secondPlan = plan(52L, new BigDecimal("20"), BigDecimal.ZERO, true);
+        when(planRepository.findByProject_ProjectIdAndPlanIdIn(any(), any()))
+                .thenReturn(List.of(firstPlan, secondPlan));
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(firstPlan, new BigDecimal("10"), "客厅地砖"),
+                        line(secondPlan, new BigDecimal("20"), "厨房墙砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Submitted);
+
+        MaterialOrderSheetItem priced = new MaterialOrderSheetItem();
+        priced.setItemId(savedItems.get(0).getItemId());
+        priced.setQuantity(new BigDecimal("10"));
+        priced.setPurchasePrice(new BigDecimal("68"));
+        MaterialOrderSheetItem unpriced = new MaterialOrderSheetItem();
+        unpriced.setItemId(savedItems.get(1).getItemId());
+        unpriced.setQuantity(new BigDecimal("20"));
+        unpriced.setPurchasePrice(null);
+
+        ArgumentCaptor<PurchaseOrder> purchases = ArgumentCaptor.forClass(PurchaseOrder.class);
+        ArgumentCaptor<Payable> payables = ArgumentCaptor.forClass(Payable.class);
+        MaterialOrderSheet ordered = context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null,
+                List.of(priced, unpriced));
+
+        assertThat(ordered.getStatus()).isEqualTo(MaterialSheetStatus.Ordered);
+        assertThat(ordered.getPriceState()).isEqualTo(SheetPriceState.Mixed);
+        org.mockito.Mockito.verify(purchaseRepository, org.mockito.Mockito.atLeastOnce()).save(purchases.capture());
+        PurchaseOrder header = purchases.getAllValues().get(0);
+        assertThat(header.getPriceState()).as("同一供应商多行应生成一张混合价采购单").isEqualTo(SheetPriceState.Mixed);
+        assertThat(header.getAmount()).isEqualByComparingTo("680");
+        assertThat(savedPurchaseItems).as("采购单必须落采购明细，结算才能找到候选行").hasSize(2);
+        assertThat(savedPurchaseItems).extracting(PurchaseOrderItem::getPriceState)
+                .containsExactlyInAnyOrder(SheetPriceState.Priced, SheetPriceState.Unpriced);
+        org.mockito.Mockito.verify(payableRepository).save(payables.capture());
+        assertThat(payables.getValue().getEstimated()).as("含未定价行必须形成暂估应付").isTrue();
+        assertThat(payables.getValue().getAmount()).isEqualByComparingTo("680");
+    }
+
+    @Test
+    void partialQuantityOrderShouldStayPartiallyOrdered() {
+        MaterialPlan plan = plan(61L, new BigDecimal("10"), BigDecimal.ZERO, true);
+        stubPlan(plan);
+        currentSheet = context.create(designer, 9L, "Tile", null, null, null, null, null, null,
+                List.of(line(plan, new BigDecimal("10"), "客厅地砖")));
+        currentSheet.setStatus(MaterialSheetStatus.Submitted);
+
+        MaterialOrderSheetItem command = new MaterialOrderSheetItem();
+        command.setItemId(savedItems.get(0).getItemId());
+        command.setQuantity(new BigDecimal("5"));
+        command.setPurchasePrice(new BigDecimal("68"));
+
+        MaterialOrderSheet ordered = context.order(boss, currentSheet.getSheetId(), 3L, null, null, null, null,
+                List.of(command));
+
+        assertThat(ordered.getStatus()).isEqualTo(MaterialSheetStatus.PartiallyOrdered);
+        assertThat(savedItems.get(0).getOrderedQuantity()).isEqualByComparingTo("5");
     }
 
     @Test

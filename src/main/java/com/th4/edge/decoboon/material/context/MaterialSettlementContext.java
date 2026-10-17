@@ -12,6 +12,7 @@ import com.th4.edge.decoboon.project.context.MaterialPurchaseContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.PurchaseOrder;
 import com.th4.edge.decoboon.project.model.PurchaseOrderItem;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
@@ -22,7 +23,9 @@ import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.supply.repository.PartnerRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -81,9 +84,12 @@ public class MaterialSettlementContext {
     public List<MaterialSettlement> page(Employee principal, Long supplierId) {
         Employee current = accessContext.requireEmployee(principal);
         Long comId = current.getCompany().getComId();
-        return supplierId == null
+        return (supplierId == null
                 ? settlementRepository.findByCompany_ComIdOrderBySettlementIdDesc(comId)
-                : settlementRepository.findByCompany_ComIdAndSupplier_PartnerIdOrderBySettlementIdDesc(comId, supplierId);
+                : settlementRepository.findByCompany_ComIdAndSupplier_PartnerIdOrderBySettlementIdDesc(comId, supplierId))
+                .stream()
+                .filter(item -> visibleStore(current, item.getStore()))
+                .toList();
     }
 
     public MaterialSettlement info(Employee principal, Long settlementId) {
@@ -145,6 +151,20 @@ public class MaterialSettlementContext {
         for (Long id : purchaseItemIds) {
             if (!itemsById.containsKey(id)) {
                 throw new DefinedException(new DefaultErrorCode("404", "采购明细不存在或无权访问：" + id));
+            }
+        }
+        // 越权防线：确认结算只接受当前企业、当前供应商名下的采购明细，不能只凭前端传入的 ID。
+        for (PurchaseOrderItem item : itemsById.values()) {
+            if (item.getCompany() == null || !comId.equals(item.getCompany().getComId())) {
+                throw new DefinedException(new DefaultErrorCode("404", "采购明细不存在或无权访问"));
+            }
+            PurchaseOrder order = item.getPurchaseOrder();
+            if (order == null || order.getSupplier() == null
+                    || !supplier.getPartnerId().equals(order.getSupplier().getPartnerId())) {
+                throw new DefinedException(new DefaultErrorCode("400", "采购明细不属于当前供应商，不能结算"));
+            }
+            if (!visibleStore(current, order.getStore())) {
+                throw new DefinedException(new DefaultErrorCode("404", "采购明细不存在或无权访问"));
             }
         }
 
@@ -344,6 +364,7 @@ public class MaterialSettlementContext {
                     .filter(order -> inPeriod(order, period))
                     .toList();
         }
+        orders = orders.stream().filter(order -> visibleStore(current, order.getStore())).toList();
         if (orders.isEmpty()) {
             return List.of();
         }
@@ -389,8 +410,18 @@ public class MaterialSettlementContext {
         row.setPurchaseNo(order == null ? null : order.getNo());
         row.setSupplierId(order == null || order.getSupplier() == null ? null : order.getSupplier().getPartnerId());
         row.setSupplierName(order == null ? null : order.getSupplierName());
-        row.setMaterialName(item.getMaterialPlan() == null || item.getMaterialPlan().getCatalogItem() == null
-                ? null : item.getMaterialPlan().getCatalogItem().getName());
+        MaterialPlan plan = item.getMaterialPlan();
+        String materialName = null;
+        if (plan != null) {
+            if (plan.getCatalogItem() != null && plan.getCatalogItem().getName() != null) {
+                materialName = plan.getCatalogItem().getName();
+            } else if (plan.getContractLine() != null && plan.getContractLine().getName() != null) {
+                materialName = plan.getContractLine().getName();
+            } else if (plan.getQuoteItem() != null) {
+                materialName = plan.getQuoteItem().getName();
+            }
+        }
+        row.setMaterialName(materialName);
         row.setQuantity(value(item.getQuantity()));
         row.setReceivedQuantity(value(item.getReceivedQuantity()));
         row.setPurchasePrice(value(item.getUnitPrice()));
@@ -421,7 +452,7 @@ public class MaterialSettlementContext {
         payableRepository.save(payable);
     }
 
-    /** 应付回退为暂估（撤销结算用）：金额回到采购价口径，estimated 恢复为 true。 */
+    /** 应付回退到采购价口径：仅当仍有未定价行时才保留暂估。 */
     private void settlePayableBackToEstimated(Employee current, PurchaseOrder order) {
         Long comId = current.getCompany().getComId();
         Payable payable = payableRepository
@@ -430,13 +461,17 @@ public class MaterialSettlementContext {
         if (payable == null) {
             return;
         }
-        BigDecimal amount = purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(order).stream()
+        List<PurchaseOrderItem> items = purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(order);
+        BigDecimal amount = items.stream()
                 .map(item -> money(value(item.getUnitPrice()).multiply(value(item.getQuantity()))))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+        boolean hasUnpriced = items.stream().anyMatch(item -> item.getPriceState() == SheetPriceState.Unpriced);
         payable.setAmount(money(amount));
         payable.setSettledAmount(null);
-        payable.setEstimated(Boolean.TRUE);
-        payable.setRemark("结算已撤销：应付回退为暂估，成本重新判为不完整");
+        payable.setEstimated(hasUnpriced);
+        payable.setRemark(hasUnpriced
+                ? "结算已撤销：应付回到采购价口径，仍有未定价行"
+                : "结算已撤销：应付回到采购价口径");
         payableRepository.save(payable);
     }
 
@@ -498,8 +533,23 @@ public class MaterialSettlementContext {
         if (settlementId == null) {
             throw new DefinedException(new DefaultErrorCode("400", "缺少结算单索引"));
         }
-        return settlementRepository.findFirstBySettlementIdAndCompany_ComId(settlementId, current.getCompany().getComId())
+        MaterialSettlement settlement = settlementRepository
+                .findFirstBySettlementIdAndCompany_ComId(settlementId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "结算单不存在或无权访问")));
+        if (!visibleStore(current, settlement.getStore())) {
+            throw new DefinedException(new DefaultErrorCode("404", "结算单不存在或无权访问"));
+        }
+        return settlement;
+    }
+
+    /** 店长只能处理本店采购/结算；Boss/Finance 保持企业范围。 */
+    private boolean visibleStore(Employee current, Store store) {
+        if (current == null || current.getRole() != EmployeeRole.StoreManager) {
+            return true;
+        }
+        return current.getStore() != null && store != null
+                && current.getStore().getStoreId() != null
+                && current.getStore().getStoreId().equals(store.getStoreId());
     }
 
     private Partner requireSupplier(Employee current, Long supplierId) {

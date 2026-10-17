@@ -14,6 +14,9 @@
 | REQ-MAT-010 | 本批交付可与设计/蓝图/页面/测试对账 | 批次完成 | 不适用 | 对账矩阵 | 证据面板 | domain_state/reconciliation | 无 UNMAPPED/STALE | domain protocol |
 | REQ-MAT-011 | 用户看到的作业单字段与品类模板一致 | 企业模板已发布或回退平台基线 | 登录员工 | 模板版本、header/line 字段 | App/Web 建单/详情 | material/sheet/enums + submit | 显隐/必填/顺序一致，必填缺失可恢复 | OBJ-008/BR-044 |
 | REQ-MAT-012 | 用户能取消尚未进入采购的作业单 | 作业单未进入采购 | 现有操作权限 | Sheet[Cancelled]、取消原因 | App/Web 作业单详情 | material/sheet/cancel | 已下单/到场/结算拒绝直接取消 | OBJ-008/DEC-MP-02 |
+| REQ-MAT-013 | 财务能在 App 内从待下单作业单完成采购下单 | 作业单已提交请购 | Finance/Boss/StoreManager | Sheet/Plan/Purchase/Payable | App 主材下单工作台/下单页 | material/sheet/order | 多供应商、部分下单、可空单价、暂估应付正确 | SCN-021/DEC-072/DEC-073 |
+| REQ-MAT-014 | 财务能在 App 内完成材料结算并收敛成本 | 采购明细已到场 | Finance/Boss/StoreManager | PurchaseOrderItem/MaterialSettlement/Payable | App 主材结算 | material/settlement/preview/confirm/cancel | 逐单/月结互斥、撤销回退、成本完整/利润 null 正确 | BR-045/DEC-073/DEC-074 |
+| REQ-MAT-015 | App 不再提供材料计划直接采购入口 | 登录员工在 App 材料/供应商页面 | 按现有权限 | MaterialPlan/PurchaseOrder | App 材料计划/供应商 | 旧 `project/purchase/save`/`batch` 下线 | 旧入口不可达，历史采购单仍可查/到场 | 2026-10-17 用户裁决 |
 
 ## 非功能要求
 
@@ -21,7 +24,7 @@
 - 统计/计数使用聚合投影，不在循环内查库；
 - 助手回答不得直接查生产库，使用 Provider 工具；
 - 所有高风险动作只读或需人工确认；
-- App 与 Web 对同一对象的状态/下一步口径一致。
+- App 是材料下单与结算的闭环主入口，Web 不是必经节点；App/Web 对同一对象的状态/下一步口径仍须一致。
 
 ## 明确不做
 

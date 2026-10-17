@@ -30,6 +30,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -220,6 +221,50 @@ class MaterialSettlementFlowTest {
                 .as("已补记的实际成本差额应被冲回")
                 .isEqualByComparingTo("0");
         org.mockito.Mockito.verify(settlementItemRepository).deleteAll(any());
+    }
+
+    @Test
+    void confirmMustRejectCrossCompanyPurchaseItem() {
+        Company otherCompany = new Company();
+        otherCompany.setComId(2L);
+        itemPriced.setCompany(otherCompany);
+
+        assertThatThrownBy(() -> context.confirm(finance, 4L, SettlementScope.PerPurchaseOrder, null,
+                List.of(command(21L, "70")), null))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("无权访问");
+    }
+
+    @Test
+    void cancelFullyPricedSettlementShouldNotLeavePayableEstimated() {
+        itemPriced.setSettlementPrice(new BigDecimal("70"));
+        itemPriced.setPriceState(SheetPriceState.Settled);
+        when(purchaseItemRepository.findByPurchaseOrderOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(itemPriced));
+
+        context.cancel(finance, 900L, "对账口径有误");
+
+        assertThat(payable.getEstimated())
+                .as("全部行有采购价时，撤销结算后应付应回到确定金额，而不是继续暂估")
+                .isFalse();
+    }
+
+    @Test
+    void storeManagerShouldNotSeeOtherStoreSettlementCandidates() {
+        Store ownStore = new Store();
+        ownStore.setStoreId(1L);
+        Store otherStore = new Store();
+        otherStore.setStoreId(2L);
+        Employee storeManager = new Employee();
+        storeManager.setEmpId(4L);
+        storeManager.setRole(EmployeeRole.StoreManager);
+        storeManager.setCompany(company);
+        storeManager.setStore(ownStore);
+        order.setStore(otherStore);
+        when(accessContext.requireEmployee(any())).thenReturn(storeManager);
+        when(purchaseOrderRepository.findByCompany_ComIdOrderByPurchaseIdDesc(any())).thenReturn(List.of(order));
+
+        assertThat(context.preview(storeManager, null, null, null, null, null)).isEmpty();
     }
 
     @Test

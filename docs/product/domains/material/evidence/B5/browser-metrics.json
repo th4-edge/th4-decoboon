@@ -1,0 +1,30 @@
+{
+  "devtools": {
+    "systemWindow": "375x667",
+    "pageSize": {
+      "material-sheet": "375x599",
+      "material-sheet-order": "375x599",
+      "material-sheet-detail": "375x599",
+      "material-settlement": "375x599",
+      "material-plan-workbench": "375x667",
+      "supply-index": "375x599"
+    },
+    "horizontalOverflow": false,
+    "automatorConnected": true,
+    "compileErrorFound": "material-plan-workbench.wxml stray quote",
+    "compileAfterFix": "PASS"
+  },
+  "h5": {
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "horizontalOverflow": false,
+    "businessConsoleErrors": 0,
+    "favicon404Only": true
+  },
+  "interactions": {
+    "workbenchToOrder": "PASS",
+    "settlementTabToEmptyState": "PASS",
+    "orderUnpricedCopy": "PASS",
+    "oldDirectPurchaseRemoved": "PASS"
+  }
+}

@@ -44,6 +44,11 @@ public class Cancel implements com.th4.edge.decoboon.material.service.settlement
     @Override
     @Transactional
     public MaterialSettlement call(MaterialSettlement request) {
-        return context.cancel(employee, settlementId, reason);
+        MaterialSettlement settlement = context.cancel(employee, settlementId, reason);
+        if (settlement.getSupplier() != null) {
+            settlement.getSupplier().getPartnerId();
+            settlement.getSupplier().getName();
+        }
+        return settlement;
     }
 }

@@ -79,7 +79,7 @@
 - Batch：B3
 - 垂直切片：App 业务体检 + 页面上下文说明；
 - 角色：Boss / StoreManager / Finance（材料体检）；Designer / Pm（作业单时间与测量上下文）；
-- 不含：新 Provider、新业务规则、DDL、金额/成本语义变化、B4 助手、B5 独立验收、正式小程序发布。
+- 不含：新 Provider、新业务规则、DDL、金额/成本语义变化、B4 助手、B6 独立验收、正式小程序发布。
 
 ## B3 App 变更
 
@@ -171,3 +171,100 @@
 - `audit-summary.json`
 - `test-summary.json`
 - `README.md`
+
+---
+
+# B5 App 单端材料下单与结算闭环
+
+## 范围
+
+- Batch：B5
+- 目标：App 内完成 `MaterialPlan → MaterialOrderSheet → 提交请购 → App 下单 → PurchaseOrder/PurchaseOrderItem → Payable → GoodsReceipt → MaterialSettlement`；
+- 旧“材料计划直接采购”路线下线；
+- 不新增业务对象、状态机、金额公式或 DDL；
+- Web 不作为必经节点。
+
+## 后端变更
+
+- `material/context/MaterialSheetContext.java`
+  - `order(...)` 改为一次调用按供应商生成 **1 张采购单 + N 条采购明细**；
+  - 增加 `Submitted/Pricing/PartiallyOrdered` 状态门禁、同一作业单行去重、作业单行剩余数量校验；
+  - 支持部分行下单与 `purchasePrice=null` 无价下单；
+  - 采购单头 `priceState` 表达 `Priced/Unpriced/Mixed`；
+  - 作业单只有所有行数量全部下单后才进入 `Ordered`，部分数量保持 `PartiallyOrdered`；
+  - 到场回写改为按 `PurchaseOrderItem` 汇总，不再用采购单头跨明细错误汇总。
+- `project/context/MaterialPurchaseContext.java`
+  - `priceState=Mixed` 与 `Unpriced` 均形成暂估应付，避免混合价被误判为确定应付。
+- `material/context/MaterialSettlementContext.java`
+  - 结算候选继续按采购明细取数；
+  - 增加当前企业 + 当前供应商的采购明细归属校验，阻断跨租户/跨供应商结算；
+  - 店长结算候选/确认/列表/详情统一限制本店范围；
+  - 结算候选材料名支持目录项、合同行、报价行回退；
+  - 撤销结算时，全部行有采购价的应付回到确定金额，只有仍有未定价行时才保留暂估。
+- `material/service/settlement/*`
+  - 结算单投影补 `supplier`，并在 Page/Info/Confirm/Cancel 内初始化供应商摘要，保证关闭 OSIV 时序列化稳定。
+- 删除旧直采 Provider：
+  - `project/purchase/save`
+  - `project/purchase/batch`
+  - 对应 `PurchaseCreationPolicyTest` 删除；历史采购单查询/到场 Provider 保留。
+- `material/context/MaterialPlanWorkbenchContext.java`
+  - 待下单下一步改为“从主材作业单下单”，不再提示直接采购。
+
+## App 变更
+
+- 新增 `/subpackages/project/pages/material-sheet-order`
+  - 选择供应商、交付方式、到场时间；
+  - 按作业单行填写本次数量与可空采购单价；
+  - 无价行明确提示形成暂估应付。
+- 新增 `/subpackages/finance/pages/material-settlement`
+  - 待结算明细按供应商/采购单分组；
+  - 逐单结算、月结、撤销结算；
+  - 未定价行必须填结算价；已结算明细不再进入候选集。
+- `material-sheet` 页面
+  - 支持项目内视图与全公司财务工作台；
+  - 增加“待财务下单 / 建单测量中 / 已进入采购”分组；
+  - 财务可直接从待下单卡片进入 App 下单。
+- `material-sheet-detail` 页面
+  - 提交请购后给 Finance/Boss/StoreManager 显示“去下单”；
+  - 展示剩余未下单行数。
+- `material-plan-workbench`、`supply/index`
+  - 移除材料计划直采、合并下单、从材料计划创建采购单入口；
+  - 保留需求/进度/历史采购/到场；
+  - 增加主材下单与主材结算入口。
+- 删除页面/API：
+  - `material-batch-order.vue`
+  - `supply/purchase-edit.vue`
+  - `supply/material-plan-picker.vue`
+  - `material-plan-picker.ts`
+  - `materialBatchPurchaseApi`、`materialApi.savePurchase/orderPurchase/approvePurchase`
+- 新增模型/API：
+  - `SettlementPreviewRow`、`MaterialSettlement`；
+  - `materialSettlementApi.preview/list/info/confirm/cancel`；
+  - `materialSheetApi.order`。
+
+## 验证
+
+- 后端：`mvn -q test` → **854 / 0 / 0 / 0 PASS**；
+- 后端定向：`MaterialSheetOrderFlowTest`、`MaterialGoodsReceiptFlowTest`、`MaterialSettlementFlowTest`、`MaterialSheetLineValidationTest` PASS；
+- 关键新增用例：
+  - 同一供应商多行生成 1 张采购单 + 多条采购明细；
+  - 混合价采购单形成暂估应付；
+  - 跨企业采购明细结算被拒绝；
+  - 到场按采购明细推进作业单状态。
+- App：
+  - `npm run verify:mp-weixin` → PASS（含选择器、动作、财务 IA、数字输入、UI、类型检查、构建、分包）；
+  - `npm run type-check` → PASS；
+  - `npm run build:mp-weixin` → PASS；
+  - `npm run check:ui` → PASS；
+  - `npm run check:numeric-inputs` → PASS；
+  - `npm run check:subpackages` → PASS（主包 922026 B / 最大分包 651400 B / 总包 3608914 B）。
+- 真实 UI 走查（2026-10-17）：
+  - 微信开发者工具 2.02.2609231，项目根 `dist/dev/mp-weixin`，完成主材下单工作台、作业单下单、作业单详情、主材结算、结算单空态、材料计划工作台、供应商协作 7 页的真实渲染；
+  - H5 390×844 完成主材下单工作台、作业单下单、作业单详情、主材结算、材料计划工作台、供应商协作 6 页渲染；
+  - “去下单”实际进入 `subpackages/project/pages/material-sheet-order`；结算单 tab 实际进入空态；“未定价/可空单价/成本待结算”文案正确；旧材料计划直采入口不可达；
+  - DevTools 各页宽度 375、无横向溢出；H5 页面 `scrollWidth=innerWidth=390`，业务 Console Errors 为 0；
+  - 发现并修复 `B5-UI-001`：材料计划工作台模板孤立引号导致 DevTools 编译失败，删除后重新构建通过；
+  - 证据：`evidence/B5/README.md`、`evidence/B5/browser-metrics.json`、`evidence/B5/ui-text.txt`、`evidence/B5/screenshots/`。
+- 未执行：
+  - App 真机全链数据验证；
+  - B6 独立验收（本实现不得自批 `ACCEPTED`）。

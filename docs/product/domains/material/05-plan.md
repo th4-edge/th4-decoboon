@@ -12,8 +12,9 @@
 | B2 | Web 蓝图中心 + 项目材料业务体检 | Boss/Store/Finance | 项目/材料/检查 | blueprint runtime/check provider | Web | 选材/下单/到场/成本完整性 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
 | B3 | App 业务体检 + 页面解释 | Designer/PM/Boss/Finance | Sheet/Plan/Receipt | assistant context provider | App | 字段/时间/下一步 | DEV_VERIFIED + UI_REVIEWED | COMPLETE (2026-10-17) |
 | B4 | 只读材料助手 | 全角色（按权限） | 全部材料对象 | assistant orchestrator/tools | Web/App | 50 黄金问题、8–12 校核 | 权限/反向/证据 PASS | COMPLETE (2026-10-17) |
-| B5 | 独立验收与对账 | independent | 全部 | 无实现 | Web/App | 正向/反向/越权/幂等/边界 | ACCEPTED | NEXT |
-| B6 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
+| B5 | App 单端材料下单与结算闭环 | Designer/PM/Finance/Boss/StoreManager | Plan/Sheet/Purchase/Payable/Receipt/Settlement | sheet/order 编排、PurchaseOrderItem、旧直采下线 | App | 下单/到场/结算/成本完整 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | COMPLETE (2026-10-17) |
+| B6 | 独立验收与对账 | independent | 全部 | 无实现 | App/Web | 正向/反向/越权/幂等/边界 | ACCEPTED | NEXT |
+| B7 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
 
 ## 依赖与顺序
 
@@ -21,8 +22,8 @@
 - B2 的检查规则必须复用领域事实，不在页面计算。
 - B3 的上下文助手不能直接查库。
 - B4 必须依赖 B1 的蓝图、B2 的校核和 B3 的对象上下文。
-- B5 必须独立于实现，不能由执行者自验。
-- B6 只做体验版；正式版由用户完成。
+- B5 完成 App 单端闭环后，B6 必须独立于实现，不能由执行者自验。
+- B7 只做体验版；正式版由用户完成。
 
 ## 回滚
 
@@ -35,10 +36,11 @@
 
 - B1 已停在：`BLUEPRINT_READY`，蓝图 v1.0.0 + 对账矩阵已建立；
 - B2 已在 2026-10-17 完成 `DEV_VERIFIED + UI_REVIEWED + RECONCILED`：真实浏览器证据见 `evidence/B2/`；
-- B2 不宣称独立验收通过；REQ-MAT-001/002/004 的独立验收仍留 B5；
+- B2 不宣称独立验收通过；REQ-MAT-001/002/004 的独立验收仍留 B6；
 - B3 已在 2026-10-17 完成 `DEV_VERIFIED + UI_REVIEWED + RECONCILED`：微信开发者工具与 H5 证据见 `evidence/B3/`；
-- B3 不宣称独立验收通过，跨端黑盒仍留 B5；
-- B4 已完成只读助手运行时、50 黄金问题、权限负向和审计证据，停在 `RECONCILED`；B5 必须由独立验收角色/任务执行。
+- B3 不宣称独立验收通过，跨端黑盒仍留 B6；
+- B4 已完成只读助手运行时、50 黄金问题、权限负向和审计证据，停在 `RECONCILED`；
+- B5 已在 2026-10-17 完成 App 单端材料下单与结算闭环，旧直采路线下线；真实 DevTools/H5 页面、交互和布局证据见 `evidence/B5/`；B6 独立验收不得由实现者自批。
 
 ## B2 实施门槛（PLAN_READY，2026-10-17）
 
@@ -78,7 +80,7 @@
 - 后端编译与 Web `type-check`/构建通过；
 - 真实浏览器渲染 `/business-blueprints` 和 `/finance/projects/:projectId`，至少 1440×900 与 1024×768 截图并检查空态/失败态；
 - `06-implementation.md`、`07-ui-review.md`、`10-reconciliation.md` 与 `state.json` 更新；
-- 停在 `UI_REVIEWED`，不宣称 `ACCEPTED`，独立验收留 B5。
+- 停在 `UI_REVIEWED`，不宣称 `ACCEPTED`，独立验收留 B6。
 
 
 ## B3 实施门槛（PLAN_READY，2026-10-17）
@@ -92,7 +94,7 @@
 - 主材作业单建单页说明行来源与选材门禁；
 - 使用帮助和错误解释补充材料作业单时间与取消主题。
 
-不做：新 Provider、新业务规则、DDL、金额/成本口径变化、App 正式版提审/发布、B4 助手问答、B5 独立验收。
+不做：新 Provider、新业务规则、DDL、金额/成本口径变化、App 正式版提审/发布、B4 助手问答、B6 独立验收。
 
 ### 依赖
 
@@ -149,4 +151,58 @@
 - 无价/成本不完整时利润不输出 0；
 - Provider 编译、定向测试、HTTP 冒烟；
 - 证据落 `evidence/B4/` 并更新对账矩阵；
-- 停在 `RECONCILED`，独立验收留 B5。
+- 停在 `RECONCILED`，独立验收留 B6。
+
+## B5 实施门槛（PLAN_READY，2026-10-17）
+
+### 垂直切片
+
+只交付一条 App 单端材料业务闭环：
+
+- 项目/财务入口进入「主材下单」工作台，查看已提交请购作业单；
+- 设计师建作业单、PM 测量、提交请购；
+- Finance/Boss/StoreManager 在 App 选择供应商、按行填数量和可空单价，调用 `material/sheet/order` 下单；
+- 系统生成采购单及采购明细、形成应付/暂估应付，推进作业单与材料计划状态；
+- PM/设计师在 App 确认到场；
+- Finance/Boss/StoreManager 在 App 做逐单或月结，确认结算价、修正应付、收敛实际成本；支持撤销结算；
+- 旧 `project/purchase/save`、`project/purchase/batch` 与 App 材料计划直采入口下线。
+
+不做：新业务对象、新状态机、新金额公式、DDL、自动审批/付款/删除、正式小程序提审和发布。
+
+### 依赖
+
+- 业务事实：`SCN-021`、`OBJ-008`、`BR-044`、`BR-045`、`DEC-072`、`DEC-073`、`DEC-074` 及 2026-10-17 用户裁决；
+- 后端既有：`MaterialSheetContext`、`MaterialPurchaseContext`、`MaterialSettlementContext`、`GoodsReceipt`、`Payable`；
+- App 既有：`material-sheet` 系列页面、`supplyReceiptEdit`、`financeApi`、供应商/项目数据范围；
+- 权限：Boss/StoreManager/Finance 可下单和结算；Designer/PM 只建单/测量/到场；客户只读。
+
+### 后端契约
+
+- `material/sheet/order`：一次调用按供应商生成一张采购单，行写入 `PurchaseOrderItem`；支持无价 `purchasePrice=null`、部分行下单；
+- 采购单 `priceState` 正确表达 `Priced/Unpriced/Mixed`；混合价形成暂估应付；
+- `project/purchase/save`、`project/purchase/batch` 不再注册为下单入口；历史采购单查询、到场保留；
+- `material/settlement/preview|confirm|cancel` 直接复用，不新增结算规则；
+- 到场回写作业单时按采购明细汇总，不按采购单头错误汇总。
+
+### App 页面
+
+- `/subpackages/project/pages/material-sheet`：项目模式/全公司工作台；
+- `/subpackages/project/pages/material-sheet-order`：App 下单；
+- `/subpackages/finance/pages/material-settlement`：App 主材结算；
+- `material-sheet-detail`：提交请购后给财务“去下单”入口；
+- `material-plan-workbench`、`supply/index`：移除直接采购入口，保留进度/历史/到场。
+
+### 回滚
+
+- 旧直采 Provider 删除前保留当前提交与上一 release；App 回退上一体验版；
+- 本批不涉及 DDL/迁移；采购/结算数据写入口径需全量测试与备份；
+- 生产发布前由用户确认，发布使用 `scripts/deploy-prod.sh`，失败回滚。
+
+### 退出条件
+
+- 后端定向测试 + 全量测试（涉及金额/成本）通过；App `type-check`/`build:mp-weixin` 通过；
+- App 真实页面走查：建单→请购→App 下单→到场→结算→撤销结算；
+- 旧直采入口在 App 不可达；历史采购单仍可查询/到场；
+- 无价、部分下单、多供应商、超量、重复结算、越权场景有证据；
+- `06-implementation.md`、`07-ui-review.md`、`10-reconciliation.md`、`state.json` 更新；
+- 停在 `RECONCILED`，不宣称独立验收通过，B6 由独立角色执行。

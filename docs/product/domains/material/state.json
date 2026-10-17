@@ -5,8 +5,8 @@
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
   "phase": "RECONCILED",
-  "batch": "B4",
-  "nextAction": "B4 已完成 DEV_VERIFIED + RECONCILED；下一批 B5：独立验收（必须使用独立验收角色/任务，不能自批）",
+  "batch": "B5",
+  "nextAction": "执行 B6 独立验收与黑盒对账；实现者不得自批 ACCEPTED",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-17T12:53:20+08:00",
+  "updatedAt": "2026-10-17T14:21:45+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -124,6 +124,54 @@
       "phase": "RECONCILED",
       "batch": "B4",
       "note": "B4 50 golden questions and permission/cost/audit evidence reconciled; no DDL/migration/release; test credentials restored"
+    },
+    {
+      "at": "2026-10-17T13:11:21+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B5",
+      "note": "2026-10-17 用户裁决：App 单端完成 L1 下单履约与 L2 材料结算/成本完整，Web 不作为接管端；B5 计划与需求已冻结"
+    },
+    {
+      "at": "2026-10-17T13:11:23+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B5",
+      "note": "B5 implementation started; no DDL, no new business rule"
+    },
+    {
+      "at": "2026-10-17T13:26:57+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B5",
+      "note": "B5 DEV_VERIFIED：后端 851/0/0 PASS；App type-check/build/check:ui/check:numeric-inputs/check:subpackages PASS；UI 走查尚未执行，不得宣称 UI_REVIEWED/RECONCILED"
+    },
+    {
+      "at": "2026-10-17T13:32:22+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B5",
+      "note": "B5 DEV_VERIFIED：后端 852/0/0 PASS；App verify:mp-weixin PASS；UI 走查尚未执行，不得宣称 UI_REVIEWED/RECONCILED"
+    },
+    {
+      "at": "2026-10-17T13:36:48+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B5",
+      "note": "B5 DEV_VERIFIED：后端 854/0/0 PASS；App verify:mp-weixin PASS；UI 走查尚未执行，不得宣称 UI_REVIEWED/RECONCILED"
+    },
+    {
+      "at": "2026-10-17T13:56:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B5",
+      "note": "B5 微信开发者工具走查尝试：修正项目根为 dist/dev/mp-weixin；automator 连接成功但页面跳转反复 timeout，未取得完整 UI 证据；UI_REVIEWED 仍为 BLOCKED"
+    },
+    {
+      "at": "2026-10-17T14:21:45+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "B5",
+      "note": "B5 UI_REVIEWED：微信开发者工具 375x667 与 H5 390x844 真实渲染、交互、布局和 Console 走查 PASS；B5-UI-001 孤立引号已修复；证据 evidence/B5/"
+    },
+    {
+      "at": "2026-10-17T14:21:45+08:00",
+      "phase": "RECONCILED",
+      "batch": "B5",
+      "note": "B5 RECONCILED：REQ-MAT-013/014/015 与真实 App 页面/测试/证据对齐；无 UNMAPPED/STALE；独立验收留 B6"
     }
   ]
 }
