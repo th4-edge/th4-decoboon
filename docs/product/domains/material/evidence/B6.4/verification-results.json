@@ -1,0 +1,2403 @@
+{
+  "batch": "B6.4",
+  "date": "2026-10-17",
+  "environment": {
+    "backend": "b66a33b:8091",
+    "app": "46a5be4:8080",
+    "web": "04ba3b4:4175",
+    "database": "127.0.0.1:3306/decoboon"
+  },
+  "totals": {
+    "total": 140,
+    "pass": 139,
+    "fail": 1,
+    "blocked": 0
+  },
+  "byCategory": {
+    "session": {
+      "pass": 9,
+      "fail": 0,
+      "blocked": 0,
+      "total": 9
+    },
+    "main-chain": {
+      "pass": 7,
+      "fail": 0,
+      "blocked": 0,
+      "total": 7
+    },
+    "b6.4-focus": {
+      "pass": 23,
+      "fail": 0,
+      "blocked": 0,
+      "total": 23
+    },
+    "idempotency": {
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0,
+      "total": 4
+    },
+    "boundary": {
+      "pass": 5,
+      "fail": 0,
+      "blocked": 0,
+      "total": 5
+    },
+    "permission": {
+      "pass": 15,
+      "fail": 0,
+      "blocked": 0,
+      "total": 15
+    },
+    "cross-tenant": {
+      "pass": 7,
+      "fail": 0,
+      "blocked": 0,
+      "total": 7
+    },
+    "old-route": {
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0,
+      "total": 4
+    },
+    "assistant": {
+      "pass": 52,
+      "fail": 0,
+      "blocked": 0,
+      "total": 52
+    },
+    "ui": {
+      "pass": 9,
+      "fail": 1,
+      "blocked": 0,
+      "total": 10
+    },
+    "cleanup": {
+      "pass": 4,
+      "fail": 0,
+      "blocked": 0,
+      "total": 4
+    }
+  },
+  "results": [
+    {
+      "id": "B64-LOGIN-Boss",
+      "category": "session",
+      "title": "Boss 登录与会话绑定",
+      "expected": "登录成功且返回员工、角色、企业",
+      "actual": {
+        "empId": "999200000000000025",
+        "role": "Boss",
+        "comId": "999200000000000001"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LOGIN-StoreManager",
+      "category": "session",
+      "title": "StoreManager 登录与会话绑定",
+      "expected": "登录成功且返回员工、角色、企业",
+      "actual": {
+        "empId": "999200000000000026",
+        "role": "StoreManager",
+        "comId": "999200000000000001"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LOGIN-Designer",
+      "category": "session",
+      "title": "Designer 登录与会话绑定",
+      "expected": "登录成功且返回员工、角色、企业",
+      "actual": {
+        "empId": "999200000000000027",
+        "role": "Designer",
+        "comId": "999200000000000001"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LOGIN-Pm",
+      "category": "session",
+      "title": "Pm 登录与会话绑定",
+      "expected": "登录成功且返回员工、角色、企业",
+      "actual": {
+        "empId": "999200000000000029",
+        "role": "Pm",
+        "comId": "999200000000000001"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LOGIN-Finance",
+      "category": "session",
+      "title": "Finance 登录与会话绑定",
+      "expected": "登录成功且返回员工、角色、企业",
+      "actual": {
+        "empId": "999200000000000030",
+        "role": "Finance",
+        "comId": "999200000000000001"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LOGIN-CrossBoss",
+      "category": "session",
+      "title": "CrossBoss 登录与会话绑定",
+      "expected": "登录成功且返回员工、角色、企业",
+      "actual": {
+        "empId": "999300000000000042",
+        "role": "Boss",
+        "comId": "999300000000000001"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LIVE-01",
+      "category": "session",
+      "title": "实时查询可用 ReadyToOrder 材料计划",
+      "expected": "当前企业 M 存在可下单材料计划",
+      "actual": {
+        "planId": "235566303270666240",
+        "status": "ReadyToOrder"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LIVE-02",
+      "category": "session",
+      "title": "实时查询可用供应商",
+      "expected": "财务供应商列表非空",
+      "actual": {
+        "supplierCount": 1,
+        "existingSupplierId": "1791842081487998780"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-LIVE-03",
+      "category": "session",
+      "title": "创建第二临时供应商用于真实不同供应商拆单",
+      "expected": "第二供应商建档成功",
+      "actual": {
+        "tempPartnerId": "1792235446791671692",
+        "tempName": "B6.4独立复验临时厂家-1792235446784"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-NEG-01-priced",
+      "category": "main-chain",
+      "title": "未测量提交请购被拦截",
+      "expected": "未填写必填测量时间时不得提交",
+      "actual": {
+        "success": false,
+        "message": "提交请购前请先完成：测量时间"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PROJ-PRICED-I",
+      "category": "b6.4-focus",
+      "title": "全有价：sheet/item priceState=Priced",
+      "expected": "Priced/Priced",
+      "actual": {
+        "sheetStatus": "Ordered",
+        "sheetPriceState": "Priced",
+        "itemPriceState": "Priced",
+        "orderedQuantity": 5,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {
+        "sheetId": "1792235446922793249"
+      }
+    },
+    {
+      "id": "B64-PROJ-PRICED-P",
+      "category": "b6.4-focus",
+      "title": "全有价：page 投影同源为 Priced",
+      "expected": "page sheet/item=Priced",
+      "actual": {
+        "sheet": "Priced",
+        "item": "Priced"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PROJ-PRICED-F",
+      "category": "b6.4-focus",
+      "title": "全有价：采购明细事实为 Priced",
+      "expected": "1 条 Priced 采购明细",
+      "actual": [
+        {
+          "purchaseItemId": "1792235446999347341",
+          "purchaseOrderId": "1792235446995331105",
+          "quantity": "5.000",
+          "unitPrice": "100.00",
+          "receivedQuantity": "0.000",
+          "priceState": "Priced",
+          "settlementPrice": null
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-NEG-01-unpriced",
+      "category": "main-chain",
+      "title": "未测量提交请购被拦截",
+      "expected": "未填写必填测量时间时不得提交",
+      "actual": {
+        "success": false,
+        "message": "提交请购前请先完成：测量时间"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PROJ-UNPRICED-I",
+      "category": "b6.4-focus",
+      "title": "全无价：sheet/item priceState=Unpriced",
+      "expected": "Unpriced/Unpriced",
+      "actual": {
+        "sheetStatus": "Ordered",
+        "sheetPriceState": "Unpriced",
+        "itemPriceState": "Unpriced",
+        "orderedQuantity": 5
+      },
+      "result": "PASS",
+      "evidence": {
+        "sheetId": "1792235447519853836"
+      }
+    },
+    {
+      "id": "B64-PROJ-UNPRICED-P",
+      "category": "b6.4-focus",
+      "title": "全无价：page 投影同源为 Unpriced",
+      "expected": "page sheet/item=Unpriced",
+      "actual": {
+        "sheet": "Unpriced",
+        "item": "Unpriced"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PROJ-UNPRICED-PAY",
+      "category": "b6.4-focus",
+      "title": "全无价形成暂估应付",
+      "expected": "estimated=true",
+      "actual": [
+        {
+          "payableId": "1792235447608971077",
+          "purchaseOrderId": "1792235447596572877",
+          "payeePartnerId": "1792235446791671692",
+          "amount": "0.00",
+          "estimated": "1",
+          "settledAmount": null,
+          "status": "Pending"
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-NEG-01-settled",
+      "category": "main-chain",
+      "title": "未测量提交请购被拦截",
+      "expected": "未填写必填测量时间时不得提交",
+      "actual": {
+        "success": false,
+        "message": "提交请购前请先完成：测量时间"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PROJ-SETTLED-I",
+      "category": "b6.4-focus",
+      "title": "全部 Settled（同价）：sheet/item priceState=Settled",
+      "expected": "Settled/Settled 且 settlementPrice=100",
+      "actual": {
+        "sheetStatus": "Arrived",
+        "sheetPriceState": "Settled",
+        "itemPriceState": "Settled",
+        "orderedQuantity": 5,
+        "settlementPrice": 100
+      },
+      "result": "PASS",
+      "evidence": {
+        "sheetId": "1792235448155611652"
+      }
+    },
+    {
+      "id": "B64-PROJ-SETTLED-P",
+      "category": "b6.4-focus",
+      "title": "全部 Settled：page 投影同源为 Settled",
+      "expected": "page sheet/item=Settled",
+      "actual": {
+        "sheet": "Settled",
+        "item": "Settled"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PROJ-SETTLED-F",
+      "category": "b6.4-focus",
+      "title": "全部 Settled：采购明细结算价回填",
+      "expected": "Settled + settlementPrice=100",
+      "actual": [
+        {
+          "purchaseItemId": "1792235448232054711",
+          "purchaseOrderId": "1792235448229161977",
+          "quantity": "5.000",
+          "unitPrice": "100.00",
+          "receivedQuantity": "5.000",
+          "priceState": "Settled",
+          "settlementPrice": "100.00"
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-NEG-01-mixed",
+      "category": "main-chain",
+      "title": "未测量提交请购被拦截",
+      "expected": "未填写必填测量时间时不得提交",
+      "actual": {
+        "success": false,
+        "message": "提交请购前请先完成：测量时间"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-IDEM-01",
+      "category": "idempotency",
+      "title": "同幂等键同载荷重复下单只生成 1 张采购单",
+      "expected": "第二次返回同一结果且采购单 count=1",
+      "actual": {
+        "firstSuccess": true,
+        "retrySuccess": true,
+        "purchaseCount": 1,
+        "purchaseIds": [
+          "1792235449018311106"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-IDEM-02",
+      "category": "idempotency",
+      "title": "同幂等键异载荷返回 409 且不新增采购",
+      "expected": "409 + count 仍为 1",
+      "actual": {
+        "success": false,
+        "errorCode": "409",
+        "message": "幂等键对应的下单内容不一致，请生成新的下单请求",
+        "purchaseCount": 1
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-MAIN-01",
+      "category": "b6.4-focus",
+      "title": "首次有价部分下单后 sheet/item=Priced",
+      "expected": "Priced/Priced, orderedQuantity=3",
+      "actual": {
+        "sheetStatus": "PartiallyOrdered",
+        "sheetPriceState": "Priced",
+        "itemPriceState": "Priced",
+        "orderedQuantity": 3,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-MAIN-02",
+      "category": "b6.4-focus",
+      "title": "有价采购事实 3@100",
+      "expected": "quantity=3, amount=300",
+      "actual": [
+        {
+          "purchaseId": "1792235449018311106",
+          "supplierId": "1791842081487998780",
+          "no": "POe811608798bdbd974d5fb8f85740d8f8",
+          "quantity": "3.000",
+          "unitPrice": "0.00",
+          "amount": "300.00",
+          "priceState": "Priced",
+          "status": "Ordered"
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-I-01",
+      "category": "b6.4-focus",
+      "title": "不同供应商拆单后 info sheet/item=Mixed",
+      "expected": "Mixed/Mixed, orderedQuantity=8",
+      "actual": {
+        "sheetStatus": "Ordered",
+        "sheetPriceState": "Mixed",
+        "itemPriceState": "Mixed",
+        "orderedQuantity": 8,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {
+        "sheetId": "1792235448947560163"
+      }
+    },
+    {
+      "id": "B64-B62-P-01",
+      "category": "b6.4-focus",
+      "title": "不同供应商拆单后 page sheet/item=Mixed",
+      "expected": "page Mixed/Mixed",
+      "actual": {
+        "sheet": "Mixed",
+        "item": "Mixed"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-F-01",
+      "category": "b6.4-focus",
+      "title": "两个供应商采购事实分别为 Priced 与 Unpriced",
+      "expected": "2 purchases, Priced 100 + Unpriced",
+      "actual": {
+        "purchases": [
+          {
+            "purchaseId": "1792235449018311106",
+            "supplierId": "1791842081487998780",
+            "no": "POe811608798bdbd974d5fb8f85740d8f8",
+            "quantity": "3.000",
+            "unitPrice": "0.00",
+            "amount": "300.00",
+            "priceState": "Priced",
+            "status": "Ordered"
+          },
+          {
+            "purchaseId": "1792235449217430202",
+            "supplierId": "1792235446791671692",
+            "no": "POe3e6d2bd2083181b70cff9d6ecdad3b8",
+            "quantity": "5.000",
+            "unitPrice": "0.00",
+            "amount": "0.00",
+            "priceState": "Unpriced",
+            "status": "Ordered"
+          }
+        ],
+        "items": [
+          {
+            "purchaseItemId": "1792235449021708031",
+            "purchaseOrderId": "1792235449018311106",
+            "quantity": "3.000",
+            "unitPrice": "100.00",
+            "receivedQuantity": "0.000",
+            "priceState": "Priced",
+            "settlementPrice": null
+          },
+          {
+            "purchaseItemId": "1792235449217430203",
+            "purchaseOrderId": "1792235449217430202",
+            "quantity": "5.000",
+            "unitPrice": "0.00",
+            "receivedQuantity": "0.000",
+            "priceState": "Unpriced",
+            "settlementPrice": null
+          }
+        ]
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-PAY-01",
+      "category": "b6.4-focus",
+      "title": "拆单应付事实：有价确定、无价暂估",
+      "expected": "300 estimated=false + 0 estimated=true",
+      "actual": [
+        {
+          "payableId": "1792235449030123870",
+          "purchaseOrderId": "1792235449018311106",
+          "payeePartnerId": "1791842081487998780",
+          "amount": "300.00",
+          "estimated": "0",
+          "settledAmount": null,
+          "status": "Pending"
+        },
+        {
+          "payableId": "1792235449225494328",
+          "purchaseOrderId": "1792235449217430202",
+          "payeePartnerId": "1792235446791671692",
+          "amount": "0.00",
+          "estimated": "1",
+          "settledAmount": null,
+          "status": "Pending"
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-GATE-01",
+      "category": "boundary",
+      "title": "未到场采购明细不进入结算 preview",
+      "expected": "preview=[]",
+      "actual": {
+        "success": true,
+        "rows": 0
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-GATE-02",
+      "category": "boundary",
+      "title": "未到场采购明细 confirm 被拒绝",
+      "expected": "拒绝且提示尚未到场",
+      "actual": {
+        "success": false,
+        "message": "采购明细尚未到场，不能结算"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-PARTIAL-01",
+      "category": "b6.4-focus",
+      "title": "部分到场后 sheet/item 仍为 Mixed",
+      "expected": "PartiallyArrived + Mixed/Mixed",
+      "actual": {
+        "sheetStatus": "PartiallyArrived",
+        "sheetPriceState": "Mixed",
+        "itemPriceState": "Mixed",
+        "orderedQuantity": 8,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-SETTLE-01",
+      "category": "main-chain",
+      "title": "到场后月结 preview 仅含无价部分 5@120",
+      "expected": "1 行，receivedQuantity=5",
+      "actual": [
+        {
+          "purchaseItemId": "1792235449217430203",
+          "purchaseOrderId": "1792235449217430202",
+          "purchaseNo": "POe3e6d2bd2083181b70cff9d6ecdad3b8",
+          "supplierName": "B6.4独立复验临时厂家-1792235446784",
+          "materialName": "主材--抛釉砖 800x800",
+          "quantity": 5,
+          "receivedQuantity": 5,
+          "purchasePrice": 0,
+          "unpriced": true
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-SETTLE-02",
+      "category": "main-chain",
+      "title": "无价部分 5@120 结算金额=600",
+      "expected": "totalAmount=600",
+      "actual": {
+        "settlementId": "1792235449543678008",
+        "totalAmount": 600
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-SETTLE-01",
+      "category": "b6.4-focus",
+      "title": "无价部分结算后 info 不得回退为 Unpriced，应为 Mixed",
+      "expected": "Mixed/Mixed",
+      "actual": {
+        "sheetStatus": "PartiallyArrived",
+        "sheetPriceState": "Mixed",
+        "itemPriceState": "Mixed",
+        "orderedQuantity": 8,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-SETTLE-02",
+      "category": "b6.4-focus",
+      "title": "无价部分结算后 page 仍为 Mixed",
+      "expected": "page Mixed/Mixed",
+      "actual": {
+        "sheet": "Mixed",
+        "item": "Mixed"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-SETTLE-03",
+      "category": "b6.4-focus",
+      "title": "采购明细事实为 Priced + Settled(120)",
+      "expected": "Priced + Settled(120)",
+      "actual": [
+        {
+          "purchaseItemId": "1792235449021708031",
+          "purchaseOrderId": "1792235449018311106",
+          "quantity": "3.000",
+          "unitPrice": "100.00",
+          "receivedQuantity": "2.000",
+          "priceState": "Priced",
+          "settlementPrice": null
+        },
+        {
+          "purchaseItemId": "1792235449217430203",
+          "purchaseOrderId": "1792235449217430202",
+          "quantity": "5.000",
+          "unitPrice": "0.00",
+          "receivedQuantity": "5.000",
+          "priceState": "Settled",
+          "settlementPrice": "120.00"
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-SETTLE-03",
+      "category": "idempotency",
+      "title": "已结算明细不再进入 preview 且重复 confirm 被拒",
+      "expected": "preview=[] + duplicate rejected",
+      "actual": {
+        "previewRows": 0,
+        "duplicateSuccess": false,
+        "duplicateMessage": "该采购明细已结算，不允许重复计入（结算互斥，DEC-073）：[1792235449217430203]"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-MAIN-03",
+      "category": "b6.4-focus",
+      "title": "全部到场后 sheet=Arrived 且仍 Mixed",
+      "expected": "Arrived + Mixed/Mixed",
+      "actual": {
+        "sheetStatus": "Arrived",
+        "sheetPriceState": "Mixed",
+        "itemPriceState": "Mixed",
+        "orderedQuantity": 8,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-CANCEL-01",
+      "category": "b6.4-focus",
+      "title": "撤销结算后 info 仍为 Mixed",
+      "expected": "Mixed/Mixed",
+      "actual": {
+        "sheetStatus": "Arrived",
+        "sheetPriceState": "Mixed",
+        "itemPriceState": "Mixed",
+        "orderedQuantity": 8,
+        "purchasePrice": 100
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-CANCEL-02",
+      "category": "b6.4-focus",
+      "title": "撤销结算后 page 仍为 Mixed",
+      "expected": "page Mixed/Mixed",
+      "actual": {
+        "sheet": "Mixed",
+        "item": "Mixed"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-B62-CANCEL-03",
+      "category": "b6.4-focus",
+      "title": "撤销后采购明细回到 Priced + Unpriced",
+      "expected": "Priced + Unpriced(null)",
+      "actual": [
+        {
+          "purchaseItemId": "1792235449021708031",
+          "purchaseOrderId": "1792235449018311106",
+          "quantity": "3.000",
+          "unitPrice": "100.00",
+          "receivedQuantity": "3.000",
+          "priceState": "Priced",
+          "settlementPrice": null
+        },
+        {
+          "purchaseItemId": "1792235449217430203",
+          "purchaseOrderId": "1792235449217430202",
+          "quantity": "5.000",
+          "unitPrice": "0.00",
+          "receivedQuantity": "5.000",
+          "priceState": "Unpriced",
+          "settlementPrice": null
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PAY-01",
+      "category": "boundary",
+      "title": "撤销后无价应付回到暂估",
+      "expected": "temp supplier payable estimated=true",
+      "actual": [
+        {
+          "payableId": "1792235449030123870",
+          "purchaseOrderId": "1792235449018311106",
+          "payeePartnerId": "1791842081487998780",
+          "amount": "300.00",
+          "estimated": "0",
+          "settledAmount": null,
+          "status": "Pending"
+        },
+        {
+          "payableId": "1792235449225494328",
+          "purchaseOrderId": "1792235449217430202",
+          "payeePartnerId": "1792235446791671692",
+          "amount": "0.00",
+          "estimated": "1",
+          "settledAmount": null,
+          "status": "Pending"
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-SETTLE-04",
+      "category": "main-chain",
+      "title": "撤销后采购明细重新进入可结算集",
+      "expected": "preview 重新出现 1 行",
+      "actual": [
+        {
+          "purchaseItemId": "1792235449217430203",
+          "purchaseOrderId": "1792235449217430202",
+          "purchaseNo": "POe3e6d2bd2083181b70cff9d6ecdad3b8",
+          "supplierName": "B6.4独立复验临时厂家-1792235446784",
+          "materialName": "主材--抛釉砖 800x800",
+          "quantity": 5,
+          "receivedQuantity": 5,
+          "purchasePrice": 0,
+          "unpriced": true
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PAY-02",
+      "category": "boundary",
+      "title": "finance/payable/page 暴露 estimated 且不伪装 0 元确定应付",
+      "expected": "estimated=true 且 amount=0/null",
+      "actual": [
+        {
+          "payableId": "1792235449225494328",
+          "amount": 0,
+          "estimated": true
+        }
+      ],
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-COST-01",
+      "category": "boundary",
+      "title": "成本不完整时利润为 null 而非 0",
+      "expected": "costComplete=false, profitAmount=null",
+      "actual": {
+        "costComplete": false,
+        "actualCost": 1402.5
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Designer-SHEET",
+      "category": "permission",
+      "title": "Designer 作业单不返回成本/价格字段",
+      "expected": "success + 商业字段缺失",
+      "actual": {
+        "success": true,
+        "keys": [
+          "createTime",
+          "itemId",
+          "sourceKind",
+          "materialPlan",
+          "standardIncluded",
+          "locationName",
+          "materialName",
+          "quantity",
+          "unit",
+          "lossRate",
+          "lossQuantity",
+          "orderedQuantity",
+          "sort",
+          "attachments"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Designer-SHEETPAGE",
+      "category": "permission",
+      "title": "Designer 作业单列表不返回成本/价格字段",
+      "expected": "success + 商业字段缺失",
+      "actual": {
+        "success": true,
+        "keys": [
+          "createTime",
+          "itemId",
+          "sourceKind",
+          "materialPlan",
+          "standardIncluded",
+          "locationName",
+          "materialName",
+          "quantity",
+          "unit",
+          "lossRate",
+          "lossQuantity",
+          "orderedQuantity",
+          "sort",
+          "attachments"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Designer-PURCHASE",
+      "category": "permission",
+      "title": "Designer 采购不返回金额/单价/供应商",
+      "expected": "履约字段保留，商业字段为空",
+      "actual": {
+        "purchaseId": "1792235449217430202"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Designer-SETTLEMENT",
+      "category": "permission",
+      "title": "Designer 结算 page/info 被拒绝",
+      "expected": "page=403, info=403",
+      "actual": {
+        "page": {
+          "success": false,
+          "errorCode": "403",
+          "message": "只有企业负责人、店长或财务可以确认采购下单"
+        },
+        "info": {
+          "success": false,
+          "errorCode": "403",
+          "message": "只有企业负责人、店长或财务可以确认采购下单"
+        }
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Designer-ORDER",
+      "category": "permission",
+      "title": "Designer 下单被拒绝",
+      "expected": "403",
+      "actual": {
+        "success": false,
+        "errorCode": "403",
+        "message": "只有企业负责人、店长或财务可以确认采购下单"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Designer-CONFIRM",
+      "category": "permission",
+      "title": "Designer 结算确认被拒绝",
+      "expected": "403",
+      "actual": {
+        "success": false,
+        "errorCode": "403",
+        "message": "只有企业负责人、店长或财务可以确认采购下单"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Pm-SHEET",
+      "category": "permission",
+      "title": "Pm 作业单不返回成本/价格字段",
+      "expected": "success + 商业字段缺失",
+      "actual": {
+        "success": true,
+        "keys": [
+          "createTime",
+          "itemId",
+          "sourceKind",
+          "materialPlan",
+          "standardIncluded",
+          "locationName",
+          "materialName",
+          "quantity",
+          "unit",
+          "lossRate",
+          "lossQuantity",
+          "orderedQuantity",
+          "sort",
+          "attachments"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Pm-SHEETPAGE",
+      "category": "permission",
+      "title": "Pm 作业单列表不返回成本/价格字段",
+      "expected": "success + 商业字段缺失",
+      "actual": {
+        "success": true,
+        "keys": [
+          "createTime",
+          "itemId",
+          "sourceKind",
+          "materialPlan",
+          "standardIncluded",
+          "locationName",
+          "materialName",
+          "quantity",
+          "unit",
+          "lossRate",
+          "lossQuantity",
+          "orderedQuantity",
+          "sort",
+          "attachments"
+        ]
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Pm-PURCHASE",
+      "category": "permission",
+      "title": "Pm 采购不返回金额/单价/供应商",
+      "expected": "履约字段保留，商业字段为空",
+      "actual": {
+        "purchaseId": "1792235449217430202"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Pm-SETTLEMENT",
+      "category": "permission",
+      "title": "Pm 结算 page/info 被拒绝",
+      "expected": "page=403, info=403",
+      "actual": {
+        "page": {
+          "success": false,
+          "errorCode": "403",
+          "message": "只有企业负责人、店长或财务可以确认采购下单"
+        },
+        "info": {
+          "success": false,
+          "errorCode": "403",
+          "message": "只有企业负责人、店长或财务可以确认采购下单"
+        }
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Pm-ORDER",
+      "category": "permission",
+      "title": "Pm 下单被拒绝",
+      "expected": "403",
+      "actual": {
+        "success": false,
+        "errorCode": "403",
+        "message": "只有企业负责人、店长或财务可以确认采购下单"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-PERM-Pm-CONFIRM",
+      "category": "permission",
+      "title": "Pm 结算确认被拒绝",
+      "expected": "403",
+      "actual": {
+        "success": false,
+        "errorCode": "403",
+        "message": "只有企业负责人、店长或财务可以确认采购下单"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-ALLOW-Boss",
+      "category": "permission",
+      "title": "Boss 保留作业单与结算读权限",
+      "expected": "sheet info + settlement page success",
+      "actual": {
+        "sheetInfo": true,
+        "settlementPage": true,
+        "settlementError": ""
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-ALLOW-StoreManager",
+      "category": "permission",
+      "title": "StoreManager 保留作业单与结算读权限",
+      "expected": "sheet info + settlement page success",
+      "actual": {
+        "sheetInfo": true,
+        "settlementPage": true,
+        "settlementError": ""
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-ALLOW-Finance",
+      "category": "permission",
+      "title": "Finance 保留作业单与结算读权限",
+      "expected": "sheet info + settlement page success",
+      "actual": {
+        "sheetInfo": true,
+        "settlementPage": true,
+        "settlementError": ""
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-01",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 作业单详情 404",
+      "expected": "404",
+      "actual": {
+        "success": false,
+        "errorCode": "404"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-02",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 采购列表无 M 企业数据",
+      "expected": "无目标采购行",
+      "actual": {
+        "success": false,
+        "rows": 0,
+        "errorCode": "404"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-03",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 结算列表无 M 企业结算",
+      "expected": "无目标结算",
+      "actual": {
+        "success": true,
+        "rows": 0,
+        "errorCode": ""
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-04",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 应付无临时供应商数据",
+      "expected": "0 行",
+      "actual": {
+        "success": true,
+        "rows": 0
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-05",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 供应商列表无临时供应商",
+      "expected": "无临时供应商",
+      "actual": {
+        "success": true,
+        "rows": 0
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-06",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 材料体检 404",
+      "expected": "404",
+      "actual": {
+        "success": false,
+        "errorCode": "404"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CROSS-07",
+      "category": "cross-tenant",
+      "title": "跨企业 Boss 材料助手 404",
+      "expected": "404",
+      "actual": {
+        "success": false,
+        "errorCode": "404"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-OLD-01",
+      "category": "old-route",
+      "title": "旧直采保存 Provider 不存在",
+      "expected": "canNotFoundHandler",
+      "actual": {
+        "success": false,
+        "errorCode": "canNotFoundHandler",
+        "message": "找不到对应的处理服务:project/purchase/save"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-OLD-02",
+      "category": "old-route",
+      "title": "旧直采批量 Provider 不存在",
+      "expected": "canNotFoundHandler",
+      "actual": {
+        "success": false,
+        "errorCode": "canNotFoundHandler",
+        "message": "找不到对应的处理服务:project/purchase/batch"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-OLD-03",
+      "category": "old-route",
+      "title": "历史采购仍可查询",
+      "expected": "历史采购非空",
+      "actual": {
+        "success": true,
+        "rows": 20
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-OLD-04",
+      "category": "old-route",
+      "title": "材料计划工作台不再提供计划直采动作",
+      "expected": "无直接采购/材料计划下单动作",
+      "actual": {
+        "success": true,
+        "directPurchaseHint": false
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q01",
+      "category": "assistant",
+      "title": "黄金问题 Q01: 主材还没选材，为什么不能下单？",
+      "expected": "SELECTION_GATE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q01",
+        "expectedIntent": "SELECTION_GATE",
+        "actualIntent": "SELECTION_GATE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q02",
+      "category": "assistant",
+      "title": "黄金问题 Q02: 材料计划行什么时候才算可以进入采购？",
+      "expected": "SELECTION_GATE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q02",
+        "expectedIntent": "SELECTION_GATE",
+        "actualIntent": "SELECTION_GATE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q03",
+      "category": "assistant",
+      "title": "黄金问题 Q03: 进入采购后还能换材料吗？",
+      "expected": "SELECTION_GATE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q03",
+        "expectedIntent": "SELECTION_GATE",
+        "actualIntent": "SELECTION_GATE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q04",
+      "category": "assistant",
+      "title": "黄金问题 Q04: 哪些材料行必须先完成选材确认？",
+      "expected": "SELECTION_GATE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q04",
+        "expectedIntent": "SELECTION_GATE",
+        "actualIntent": "SELECTION_GATE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q05",
+      "category": "assistant",
+      "title": "黄金问题 Q05: 作业单里的测量日期是什么意思？",
+      "expected": "TIME_SEMANTICS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q05",
+        "expectedIntent": "TIME_SEMANTICS",
+        "actualIntent": "TIME_SEMANTICS",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q06",
+      "category": "assistant",
+      "title": "黄金问题 Q06: 配送日期和安装日期是系统确认时间吗？",
+      "expected": "TIME_SEMANTICS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q06",
+        "expectedIntent": "TIME_SEMANTICS",
+        "actualIntent": "TIME_SEMANTICS",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q07",
+      "category": "assistant",
+      "title": "黄金问题 Q07: 要求到场和实际到场有什么区别？",
+      "expected": "TIME_SEMANTICS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q07",
+        "expectedIntent": "TIME_SEMANTICS",
+        "actualIntent": "TIME_SEMANTICS",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q08",
+      "category": "assistant",
+      "title": "黄金问题 Q08: 拉群时间和测量时间是一回事吗？",
+      "expected": "TIME_SEMANTICS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q08",
+        "expectedIntent": "TIME_SEMANTICS",
+        "actualIntent": "TIME_SEMANTICS",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q09",
+      "category": "assistant",
+      "title": "黄金问题 Q09: 请购时间和建单时间、采购下单时间怎么区分？",
+      "expected": "TIME_SEMANTICS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q09",
+        "expectedIntent": "TIME_SEMANTICS",
+        "actualIntent": "TIME_SEMANTICS",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q10",
+      "category": "assistant",
+      "title": "黄金问题 Q10: 作业单和采购单有什么区别？",
+      "expected": "SHEET_VS_PURCHASE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q10",
+        "expectedIntent": "SHEET_VS_PURCHASE",
+        "actualIntent": "SHEET_VS_PURCHASE",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q11",
+      "category": "assistant",
+      "title": "黄金问题 Q11: 为什么一张作业单可以对应多张采购单？",
+      "expected": "SHEET_VS_PURCHASE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q11",
+        "expectedIntent": "SHEET_VS_PURCHASE",
+        "actualIntent": "SHEET_VS_PURCHASE",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q12",
+      "category": "assistant",
+      "title": "黄金问题 Q12: 作业单上为什么不显示价格和账期？",
+      "expected": "SHEET_VS_PURCHASE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q12",
+        "expectedIntent": "SHEET_VS_PURCHASE",
+        "actualIntent": "SHEET_VS_PURCHASE",
+        "answerType": "EXPLANATION",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q13",
+      "category": "assistant",
+      "title": "黄金问题 Q13: 厂家名称和供应商是一回事吗？",
+      "expected": "SUPPLIER + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q13",
+        "expectedIntent": "SUPPLIER",
+        "actualIntent": "SUPPLIER",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q14",
+      "category": "assistant",
+      "title": "黄金问题 Q14: 这张作业单为什么不能提交请购？",
+      "expected": "SHEET_STATUS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q14",
+        "expectedIntent": "SHEET_STATUS",
+        "actualIntent": "SHEET_STATUS",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q15",
+      "category": "assistant",
+      "title": "黄金问题 Q15: 作业单进入采购后为什么不能编辑？",
+      "expected": "SHEET_STATUS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q15",
+        "expectedIntent": "SHEET_STATUS",
+        "actualIntent": "SHEET_STATUS",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q16",
+      "category": "assistant",
+      "title": "黄金问题 Q16: 作业单还能直接取消吗？",
+      "expected": "SHEET_STATUS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q16",
+        "expectedIntent": "SHEET_STATUS",
+        "actualIntent": "SHEET_STATUS",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q17",
+      "category": "assistant",
+      "title": "黄金问题 Q17: 测量字段没填能提交请购吗？",
+      "expected": "SHEET_STATUS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q17",
+        "expectedIntent": "SHEET_STATUS",
+        "actualIntent": "SHEET_STATUS",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q18",
+      "category": "assistant",
+      "title": "黄金问题 Q18: 作业单现在下一步该做什么？",
+      "expected": "SHEET_STATUS + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q18",
+        "expectedIntent": "SHEET_STATUS",
+        "actualIntent": "SHEET_STATUS",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q19",
+      "category": "assistant",
+      "title": "黄金问题 Q19: 未定价为什么还能下单？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q19",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q20",
+      "category": "assistant",
+      "title": "黄金问题 Q20: 暂估应付是什么意思？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q20",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q21",
+      "category": "assistant",
+      "title": "黄金问题 Q21: 材料成本不完整为什么利润不能显示？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q21",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q22",
+      "category": "assistant",
+      "title": "黄金问题 Q22: P1、P2、P3 分别是什么价格？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q22",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q23",
+      "category": "assistant",
+      "title": "黄金问题 Q23: 结算价会写回供应商参考价吗？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q23",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q24",
+      "category": "assistant",
+      "title": "黄金问题 Q24: 无价采购到场后成本怎么算？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q24",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q25",
+      "category": "assistant",
+      "title": "黄金问题 Q25: 为什么项目毛利是空的？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q25",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q26",
+      "category": "assistant",
+      "title": "黄金问题 Q26: 采购价和结算价哪个进入实际成本？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q26",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q27",
+      "category": "assistant",
+      "title": "黄金问题 Q27: 成本不完整时能不能先按 0 算利润？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q27",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q28",
+      "category": "assistant",
+      "title": "黄金问题 Q28: 材料部分到场怎么处理？",
+      "expected": "RECEIPT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q28",
+        "expectedIntent": "RECEIPT",
+        "actualIntent": "RECEIPT",
+        "answerType": "LIVE_DATA",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q29",
+      "category": "assistant",
+      "title": "黄金问题 Q29: 到场确认会新增应付吗？",
+      "expected": "RECEIPT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q29",
+        "expectedIntent": "RECEIPT",
+        "actualIntent": "RECEIPT",
+        "answerType": "LIVE_DATA",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q30",
+      "category": "assistant",
+      "title": "黄金问题 Q30: 无价采购能正常确认到场吗？",
+      "expected": "PRICE_COST + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q30",
+        "expectedIntent": "PRICE_COST",
+        "actualIntent": "PRICE_COST",
+        "answerType": "LIVE_DATA",
+        "citations": 4,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q31",
+      "category": "assistant",
+      "title": "黄金问题 Q31: 到场后账期从什么时候开始算？",
+      "expected": "RECEIPT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q31",
+        "expectedIntent": "RECEIPT",
+        "actualIntent": "RECEIPT",
+        "answerType": "LIVE_DATA",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q32",
+      "category": "assistant",
+      "title": "黄金问题 Q32: 减项发生在已经下单之后怎么处理？",
+      "expected": "CHANGE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q32",
+        "expectedIntent": "CHANGE",
+        "actualIntent": "CHANGE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q33",
+      "category": "assistant",
+      "title": "黄金问题 Q33: 已经到货的材料减项要走退货吗？",
+      "expected": "CHANGE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q33",
+        "expectedIntent": "CHANGE",
+        "actualIntent": "CHANGE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q34",
+      "category": "assistant",
+      "title": "黄金问题 Q34: 未下单的减项是冲材料计划还是采购？",
+      "expected": "CHANGE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q34",
+        "expectedIntent": "CHANGE",
+        "actualIntent": "CHANGE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q35",
+      "category": "assistant",
+      "title": "黄金问题 Q35: 换材料为什么要走增减项？",
+      "expected": "CHANGE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q35",
+        "expectedIntent": "CHANGE",
+        "actualIntent": "CHANGE",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q36",
+      "category": "assistant",
+      "title": "黄金问题 Q36: 逐单结算和月结会重复计算吗？",
+      "expected": "SETTLEMENT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q36",
+        "expectedIntent": "SETTLEMENT",
+        "actualIntent": "SETTLEMENT",
+        "answerType": "EXPLANATION",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q37",
+      "category": "assistant",
+      "title": "黄金问题 Q37: 为什么先逐单结算再月结？",
+      "expected": "SETTLEMENT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q37",
+        "expectedIntent": "SETTLEMENT",
+        "actualIntent": "SETTLEMENT",
+        "answerType": "EXPLANATION",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q38",
+      "category": "assistant",
+      "title": "黄金问题 Q38: 结算撤销后成本和利润怎么恢复？",
+      "expected": "SETTLEMENT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q38",
+        "expectedIntent": "SETTLEMENT",
+        "actualIntent": "SETTLEMENT",
+        "answerType": "EXPLANATION",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q39",
+      "category": "assistant",
+      "title": "黄金问题 Q39: 同一采购明细能结算两次吗？",
+      "expected": "SETTLEMENT + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q39",
+        "expectedIntent": "SETTLEMENT",
+        "actualIntent": "SETTLEMENT",
+        "answerType": "EXPLANATION",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q40",
+      "category": "assistant",
+      "title": "黄金问题 Q40: 供应商和经销商在系统里怎么区分？",
+      "expected": "SUPPLIER + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q40",
+        "expectedIntent": "SUPPLIER",
+        "actualIntent": "SUPPLIER",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q41",
+      "category": "assistant",
+      "title": "黄金问题 Q41: 谁能决定采购供应商？",
+      "expected": "SUPPLIER + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q41",
+        "expectedIntent": "SUPPLIER",
+        "actualIntent": "SUPPLIER",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q42",
+      "category": "assistant",
+      "title": "黄金问题 Q42: 没有供应商能形成应付吗？",
+      "expected": "SUPPLIER + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q42",
+        "expectedIntent": "SUPPLIER",
+        "actualIntent": "SUPPLIER",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q43",
+      "category": "assistant",
+      "title": "黄金问题 Q43: 这个项目的材料业务现在缺什么？",
+      "expected": "PROJECT_HEALTH + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q43",
+        "expectedIntent": "PROJECT_HEALTH",
+        "actualIntent": "PROJECT_HEALTH",
+        "answerType": "LIVE_DATA",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q44",
+      "category": "assistant",
+      "title": "黄金问题 Q44: 项目材料为什么还没有闭环？",
+      "expected": "PROJECT_HEALTH + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q44",
+        "expectedIntent": "PROJECT_HEALTH",
+        "actualIntent": "PROJECT_HEALTH",
+        "answerType": "LIVE_DATA",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q45",
+      "category": "assistant",
+      "title": "黄金问题 Q45: 项目材料体检里的待下单和待到货怎么理解？",
+      "expected": "PROJECT_HEALTH + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q45",
+        "expectedIntent": "PROJECT_HEALTH",
+        "actualIntent": "PROJECT_HEALTH",
+        "answerType": "LIVE_DATA",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q46",
+      "category": "assistant",
+      "title": "黄金问题 Q46: 谁能查看材料成本和供应商价格？",
+      "expected": "PERMISSION + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q46",
+        "expectedIntent": "PERMISSION",
+        "actualIntent": "PERMISSION",
+        "answerType": "PERMISSION_DENIED",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q47",
+      "category": "assistant",
+      "title": "黄金问题 Q47: 跨项目问材料数据会怎样？",
+      "expected": "PERMISSION + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q47",
+        "expectedIntent": "PERMISSION",
+        "actualIntent": "PERMISSION",
+        "answerType": "PERMISSION_DENIED",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q48",
+      "category": "assistant",
+      "title": "黄金问题 Q48: 作业单的 status 字段是什么意思？",
+      "expected": "FIELD_DICTIONARY + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q48",
+        "expectedIntent": "FIELD_DICTIONARY",
+        "actualIntent": "FIELD_DICTIONARY",
+        "answerType": "EXPLANATION",
+        "citations": 3,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q49",
+      "category": "assistant",
+      "title": "黄金问题 Q49: priceState 字段代表什么？",
+      "expected": "FIELD_DICTIONARY + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q49",
+        "expectedIntent": "FIELD_DICTIONARY",
+        "actualIntent": "FIELD_DICTIONARY",
+        "answerType": "EXPLANATION",
+        "citations": 2,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-Q50",
+      "category": "assistant",
+      "title": "黄金问题 Q50: 帮我审批这张采购单",
+      "expected": "OUT_OF_SCOPE + evidence/refusal + readOnly + RECORDED",
+      "actual": {
+        "id": "Q50",
+        "expectedIntent": "OUT_OF_SCOPE",
+        "actualIntent": "OUT_OF_SCOPE",
+        "answerType": "REFUSAL",
+        "citations": 1,
+        "readOnly": true,
+        "auditStatus": "RECORDED",
+        "result": "PASS"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-IDEM",
+      "category": "idempotency",
+      "title": "助手 requestId+idempotencyKey 幂等返回同一审计",
+      "expected": "same auditId",
+      "actual": {
+        "first": "237170492677554176",
+        "second": "237170492677554176"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-UNKNOWN",
+      "category": "assistant",
+      "title": "无证据/越界问题拒答",
+      "expected": "NO_EVIDENCE 或 REFUSAL + readOnly",
+      "actual": {
+        "intent": "OUT_OF_SCOPE",
+        "answerType": "REFUSAL",
+        "readOnly": true
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-AI-PERM",
+      "category": "assistant",
+      "title": "Designer 项目材料回答不返回成本金额",
+      "expected": "仅履约状态，无成本/金额",
+      "actual": {
+        "intent": "PROJECT_HEALTH",
+        "answer": "当前项目材料计划 2 条，待下单 0 条，待到货 1 条，逾期 0 条。当前角色可查看履约状态；成本和利润仅对 Boss、店长、财务展示。"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-WEB-SHEET-01",
+      "category": "ui",
+      "title": "Web 1440×900 主材下单页展示 Mixed 价格状态/成本待结算",
+      "expected": "目标作业单行显示混合/部分已结算/成本待结算文案",
+      "actual": {
+        "sheetId": "1792235448947560163",
+        "sheetNo": "TILE-20261017-001",
+        "containsSheet": true,
+        "mixedTextVisible": false,
+        "rowText": "瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行\n已到场",
+        "excerpt": "装\n装得清\n财务工作台\n\n今日\n\n业务工作台\n\n资金收付\n\n待我收款\n收款记录\n待我付款\n付款记录\n工人工资\n\n往来与账本\n\n供应商往来\n资金台账\n客户退款\n\n凭证与归档\n\n收付凭证\n凭证模板\n\n薪酬\n\n薪酬工作台\n员工工资\n员工提成\n提成负向调整\n本店薪酬\n\n项目核算\n\n项目账本\n材料业务蓝图\n退出登录\n财务工作台\n/\n主材下单\n⌘K\n本页按数据范围取数，暂不随门店维度收窄\n财务 · 全公司\n务\nA 总店门店财务\n财务 · 全公司\n主材下单\n\n按供应商成单：设计师提交请购后由材料员/财务下单；单价可留空＝未定价（形成暂估应付，成本待结算）\n\n刷新\n待下单\n—\n\n当前没有待下单的主材作业单\n\n设计师提交请购后会出现在这里\n\n已进入采购\n瓷砖（地砖/墙砖） · TILE-20261017-001\n王芳（造数1100） · 望江府1栋102 · 1 行\n已到场"
+      },
+      "result": "FAIL",
+      "evidence": {
+        "screenshot": "screenshots/b64-web-material-ordering-mixed-1440x900.png",
+        "uiMetrics": "ui-metrics.json#web.ordering",
+        "sheetId": "1792235448947560163",
+        "sheetNo": "TILE-20261017-001"
+      }
+    },
+    {
+      "id": "B64-UI-WEB-SHEET-02",
+      "category": "ui",
+      "title": "Web 主材下单页无横向溢出且 Console Errors=0",
+      "expected": "scrollWidth<=innerWidth; errors=0",
+      "actual": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "consoleErrors": []
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-WEB-PAY-01",
+      "category": "ui",
+      "title": "Web 应付页暂估行显示“待结算”且不显示 ¥0.00",
+      "expected": "目标行含待结算，不含 ¥0.00",
+      "actual": {
+        "rowCount": 1,
+        "rowText": "材料采购 · B6.4独立复验临时厂家-1792235446784\n王芳（造数1100） · 望江府1栋102 · POe3e6d2bd2083181b70cff9d6ecdad3b8\n\t\n材料款\n\t\n待付款\n\t\n2026-11-16\n\t\nB6.4独立复验临时厂家-1792235446784\n\t\n待结算\n\t\n安排付款\n项目账本"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-WEB-PAY-02",
+      "category": "ui",
+      "title": "Web 暂估应付“安排付款”按钮禁用",
+      "expected": "安排付款 disabled",
+      "actual": {
+        "payButtonCount": 1,
+        "payButtonDisabled": true
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-WEB-PAY-03",
+      "category": "ui",
+      "title": "Web 应付页无横向溢出且 Console Errors=0",
+      "expected": "scrollWidth<=innerWidth; errors=0",
+      "actual": {
+        "innerWidth": 1440,
+        "scrollWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "consoleErrors": []
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-APP-SHEET-01",
+      "category": "ui",
+      "title": "App H5 作业单页展示 Mixed/部分已结算价格状态",
+      "expected": "含 Mixed/部分已结算",
+      "actual": {
+        "excerpt": "主材下单\n瓷砖（地砖/墙砖）\nTILE-20261017-001\n瓷砖（地砖/墙砖）下单单\n部分已结算\n已到场\n工程\n王芳（造数1100） · 望江府1栋102 · 望江府1栋102\n厂家\nB6.4独立复验厂家\n测量\n2026-10-17\n配送\n2026-10-20\n安装\n2026-10-22\n这张单怎么继续\n作业单只编排厂家履约，不承载价格、账期与成本。\n已到场\n部分已结算\n作业单已全部到场，材料履约事实已完成。 当前采购侧存在未定价或部分结算，成本不完整。\n下一步\n财务在 App 主材结算中确认结算价；结算前成本未完整时利润仍不确认。 未定价不阻断履约，但利润必须保持为空。\n时间口径\n测量日期\n现场复尺/测量事实，不是系统确认时间。\n配送/安装\n计划或约定的配送、安装日期。\n要求到场/实际到场\n在材料计划、采购和到场记录中分别确认，不是作业单时间戳。\n采购侧未完整定价时形成暂估应付；成本不完整，利润不能展示为 0。\n材料明细（1 行）\n1\n客厅地砖\n8㎡\n主材--抛釉砖 800x800\n已下单 8㎡\n该作业单已进入采购，材料与数量已锁定；如需更换材料请发起增减项。\n导出单据"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-APP-SHEET-02",
+      "category": "ui",
+      "title": "App 作业单页无横向溢出且 Console Errors=0",
+      "expected": "scrollWidth<=innerWidth; errors=0",
+      "actual": {
+        "innerWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "consoleErrors": []
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-APP-PAY-01",
+      "category": "ui",
+      "title": "App 应付页暂估行显示待定价/待结算且无提前付款按钮",
+      "expected": "待定价/待结算且无付款按钮",
+      "actual": {
+        "containsEstimated": true,
+        "buttons": []
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-APP-PAY-02",
+      "category": "ui",
+      "title": "App 应付页无横向溢出且 Console Errors=0",
+      "expected": "scrollWidth<=innerWidth; errors=0",
+      "actual": {
+        "innerWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "consoleErrors": []
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-UI-APP-OLD",
+      "category": "ui",
+      "title": "App 旧直采路由不可达/空白",
+      "expected": "bodyText 空且无横向溢出",
+      "actual": {
+        "path": "http://127.0.0.1:8080/#/subpackages/supply/pages/material-batch-order",
+        "bodyText": "",
+        "innerWidth": 390,
+        "scrollWidth": 390
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CLEANUP-01",
+      "category": "cleanup",
+      "title": "临时作业单/采购/到场/结算/应付清理完成",
+      "expected": "业务表计数回到基线",
+      "actual": {
+        "baseline": {
+          "db_material_order_sheet": 0,
+          "db_material_order_sheet_item": 0,
+          "db_purchase_order": 18,
+          "db_purchase_order_item": 18,
+          "db_goods_receipt": 18,
+          "db_material_settlement": 0,
+          "db_material_settlement_item": 0,
+          "db_finance_payable": 37,
+          "db_finance_payable_settlement": 0,
+          "db_partner": 2
+        },
+        "final": {
+          "db_material_order_sheet": 0,
+          "db_material_order_sheet_item": 0,
+          "db_purchase_order": 18,
+          "db_purchase_order_item": 18,
+          "db_goods_receipt": 18,
+          "db_material_settlement": 0,
+          "db_material_settlement_item": 0,
+          "db_finance_payable": 37,
+          "db_finance_payable_settlement": 0,
+          "db_partner": 2
+        }
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CLEANUP-02",
+      "category": "cleanup",
+      "title": "临时供应商清理完成",
+      "expected": "partner count 回到基线",
+      "actual": {
+        "baseline": 2,
+        "final": 2
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CLEANUP-03",
+      "category": "cleanup",
+      "title": "材料计划逐列恢复 ReadyToOrder 与原始数量/价格/成本",
+      "expected": "逐列等于基线快照",
+      "actual": {
+        "baseline": {
+          "status": "ReadyToOrder",
+          "quantity": "5.00",
+          "net_quantity": "5.00",
+          "loss_rate": "0.0000",
+          "loss_quantity": "0.00",
+          "unit_price": "88.00",
+          "cost": "310.00",
+          "selection_id": "NULL",
+          "arrived_at": "NULL"
+        },
+        "final": "ReadyToOrder\t5.00\t5.00\t0.0000\t0.00\t88.00\t310.00\tNULL\tNULL"
+      },
+      "result": "PASS",
+      "evidence": {}
+    },
+    {
+      "id": "B64-CLEANUP-04",
+      "category": "cleanup",
+      "title": "项目经理恢复原负责人",
+      "expected": "manager_id 回到基线",
+      "actual": {
+        "baseline": "NULL",
+        "final": "NULL"
+      },
+      "result": "PASS",
+      "evidence": {}
+    }
+  ]
+}

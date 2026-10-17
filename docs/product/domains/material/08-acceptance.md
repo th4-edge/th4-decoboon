@@ -104,3 +104,13 @@
 - 后端全量 876/0/0/0 PASS；App H5 真实页面显示“部分已结算”；
 - 证据：`evidence/B6.3/defect-verification.json`、`screenshots/`；
 - 仅用于进入 B6.4 独立复验，不能作为 `ACCEPTED` 依据。
+
+
+---
+
+## B6.4 独立复验执行结果（2026-10-17）
+
+- 环境：后端 `b66a33b` / App `46a5be4` / Web `04ba3b4`；
+- 140 项：139 PASS / 1 FAIL；B62-DEF-001 聚焦 23/23 PASS，后端缺陷关闭；
+- 新缺陷 `B64-UI-WEB-SHEET-01` P2：Web 主材下单页未展示 Mixed 状态；
+- 证据：`evidence/B6.4/`；结论不支持 `ACCEPTED`，下一批 B6.5。

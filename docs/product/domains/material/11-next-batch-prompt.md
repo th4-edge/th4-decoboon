@@ -1,36 +1,33 @@
-# 材料域下一批提示词（B6.4 B62-DEF-001 聚焦独立复验）
+# 材料域下一批提示词（B6.5 修复 Web Mixed 状态展示）
 
 继续 material 域。先恢复外部状态，不要依赖聊天记忆：
 
 1. 读取 `AGENTS.md`、`docs/operations/试运营单人轻量协作与发版规范.md`；
 2. 读取 `.agents/skills/domain-delivery-orchestrator/SKILL.md`、`run-envelope.md`、`state.json`；
-3. 读取 `00-charter.md`、`04-requirements.md`、`05-plan.md`、`06-implementation.md`、`08-acceptance.md`、`10-reconciliation.md`；
-4. 读取 `evidence/B6/`、`evidence/B6.1/`、`evidence/B6.2/`、`evidence/B6.3/`；
-5. 涉及成本/结算口径时读取 `/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md` 与 BR-044/BR-045/DEC-072/073/074。
+3. 读取 `00-charter.md`、`04-requirements.md`、`05-plan.md`、`06-implementation.md`、`07-ui-review.md`、`08-acceptance.md`、`10-reconciliation.md`；
+4. 读取 `evidence/B6.4/` 与 `evidence/B6.3/`；
+5. 涉及价格/成本语义时读取 `/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md` 与 BR-045/DEC-072/073。
 
-当前预期：B6.2 独立复验 149/150，B62-DEF-001 开放；B6.3 已修复并 RECONCILED。以 `state.json` 为准。
+当前预期：B6.4 独立复验 139/140；B62-DEF-001 后端已关闭；B64-UI-WEB-SHEET-01 开放。以 `state.json` 为准。
 
-## 独立性要求
+## 本批只修 Web UI 展示
 
-- 独立验收角色/任务，不得由 B6.3 实现者自批；
-- 只做黑盒验证与证据采集，不修改实现代码；
-- 用户最终决定 `ACCEPTED`。
+Web `/finance/material-ordering` 的作业单行只展示履约状态，Mixed 作业单没有“混合/部分已结算/成本待结算”提示，尽管 `sheet.priceState=Mixed` 且 App H5 正确显示。
 
-## 复验重点
+## 要求
 
-1. 同一作业单行拆单：Priced 3@100 + Unpriced 5；
-2. 全部/部分到场后，未定价部分结算/撤销；
-3. `material/sheet/info|page` 的 sheet/item `priceState`：
-   - 全有价 Priced；
-   - 全无价 Unpriced；
-   - Priced+Unpriced 或 Priced+Settled Mixed；
-   - 全部 Settled（同价可回填 settlementPrice）；
-4. 采购/应付金额、权限、幂等、到场门禁不得回归；
-5. 复跑 B6 主链、50 黄金问题、跨企业、旧路线、App/Web UI；
-6. 证据落 `evidence/B6.4/`，更新 `08-acceptance.md`、`10-reconciliation.md`、`state.json/history`。
+- 以 `sheet.priceState` / `item.priceState` 为唯一数据源，不在前端推导价格/成本；
+- 对 Unpriced、Mixed、Settled、Priced 显示明确文案和视觉标记；
+- 保留已到场、部分到场、已下单等履约状态；
+- 覆盖空态、全价、无价、Mixed、全部结算、权限受限、加载/失败/重试；
+- 不改后端语义、金额公式、权限或数据库；不新增 DDL；
+- Web 真实 1440×900 截图和类型检查/构建；
+- 更新 UI review、implementation、reconciliation、state/history；修复证据落 `evidence/B6.5/`；
+- 停在 RECONCILED，不得自批 ACCEPTED；B6.6 独立复验。
 
-## 边界
+## 后续
 
-- 不改业务规则、权限、金额/成本语义；不做 DDL/迁移；不碰生产；不正式发布小程序；
-- 不修改 B6/B6.1/B6.2/B6.3 证据；
-- 通过后生成 B7 材料业务助手上下文入口提示词；失败则登记新缺陷并停在修复门禁。
+- B6.6：Web Mixed 状态聚焦独立复验 + 回归；
+- B7：材料业务助手上下文入口；
+- B8：助手 UI 独立验收；
+- B9：体验版/发布准备。

@@ -211,3 +211,14 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - `scrollWidth=innerWidth=390`，Console Errors 0；
 - 截图：`evidence/B6.3/screenshots/b63-app-sheet-mixed-390x844.png`；
 - 无前端源码变更；B6.4 仍需独立复验。
+
+
+---
+
+# B6.4 独立复验 UI 记录
+
+- Web `/finance/payables` 1440×900 PASS：暂估“待结算”且付款禁用；无横向溢出、Console Errors 0；
+- App H5 作业单 390×844 PASS：Mixed 显示“部分已结算”；
+- Web `/finance/material-ordering` FAIL：目标 Mixed 作业单仅显示“已到场”，未显示价格状态/成本待结算；
+- 截图：`evidence/B6.4/screenshots/b64-web-material-ordering-mixed-1440x900.png`、`b64-app-sheet-mixed-390x844.png`；
+- 开放缺陷：`B64-UI-WEB-SHEET-01`。

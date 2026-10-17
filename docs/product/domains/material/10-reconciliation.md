@@ -16,7 +16,7 @@
 | REQ-MAT-010 | 全场景 | domain protocol | material.reconciliation | state/evidence | 无 | 矩阵完整性 | B6 独立验收 | PASS（B2 范围） |
 | REQ-MAT-011 | B | OBJ-008/BR-044 | material.order-sheet | material/sheet/enums headerFields/lineFields | App/Web 建单/详情 | 模板字段定向测试 PASS；App 建单来源说明与模板字段提示 PASS | B6 独立验收 | PASS（B3 范围，验收待 B6） |
 | REQ-MAT-012 | B | OBJ-008/DEC-MP-02 | material.order-sheet.sheet-cancel | material/sheet/cancel | App/Web 作业单详情 | 取消/拒绝取消测试 PASS；App 取消边界说明 PASS | B6 独立验收 | PASS（B3 范围，验收待 B6） |
-| REQ-MAT-013 | A/B | SCN-021/DEC-072/DEC-073 | material.order-sheet.order | material/sheet/order | App 主材下单工作台/下单页 | B6.3 多供应商价格投影 Mixed/Priced/Settled 自测 PASS | B6.4 聚焦复验 | PASS（B6.3，B6.4待验） |
+| REQ-MAT-013 | A/B | SCN-021/DEC-072/DEC-073 | material.order-sheet.order | material/sheet/order | App 主材下单工作台/下单页 | B6.4 后端 23/23 PASS；Web Mixed 状态展示 FAIL | B6.6 复验 | FAIL（B64-UI-WEB-SHEET-01） |
 | REQ-MAT-014 | A/B | BR-045/DEC-073/DEC-074 | material.settlement | material/settlement/preview|confirm|cancel | App 主材结算 | B6.2 角色门禁/到场门禁/逐单月结/撤销独立 PASS | B6.4 回归 | PASS（B6.2 独立） |
 | REQ-MAT-015 | 全场景 | 2026-10-17 用户裁决 | material.single-route | 旧 `project/purchase/save`/`batch` 下线 | App 材料计划/供应商 | Provider 已删除，App 入口已清理 | B6 独立验收 | PASS（B6 独立验证） |
 | REQ-MAT-016 | 全场景 | BR-045/OBJ-008 | material.assistant-context | `material/assistant/ask` + 上下文入口 | App/Web 统一问材料抽屉 | 单轮/证据/拒答/权限/跨端 | B8 独立验收 | PENDING（B7） |
@@ -51,6 +51,13 @@
 - 实测 Mixed → 结算后 Mixed → 撤销后 Mixed；采购/应付/结算金额事实不变；
 - 后端全量 876/0/0/0 PASS；App H5 390×844 真实页面 PASS；证据 `evidence/B6.3/`；
 - 无 `UNMAPPED`/`STALE`；B6.4 聚焦独立复验待执行。
+
+## B6.4 独立复验结果（2026-10-17）
+
+- 140 项：139 PASS / 1 FAIL；B62-DEF-001 的 23 项聚焦检查全部通过，后端读模型关闭；
+- 新 P2 `B64-UI-WEB-SHEET-01`：Web `/finance/material-ordering` Mixed 作业单未展示价格状态/成本待结算；
+- App H5 同单据显示“部分已结算”；Web 无横向溢出、Console Errors 0；
+- 证据：`evidence/B6.4/`；下一批 B6.5，B6.6 独立复验。
 
 ## 已对齐
 
@@ -90,7 +97,7 @@
 - B3：`DEV_VERIFIED + UI_REVIEWED + RECONCILED`；
 - B4：`DEV_VERIFIED + RECONCILED`（无新增 UI 表面）；
 - B5：App 单端材料下单与结算闭环，旧直采路线下线；后端全量测试、App 构建与真实 UI 走查 PASS；
-- B6：B6.2 独立复验 149/150，原 6 缺陷关闭；B6.3 已修复 B62-DEF-001，待 B6.4 独立复验；
+- B6：B6.3 后端修复，B6.4 独立复验 139/140，B62-DEF-001 关闭；Web Mixed UI P2 开放，待 B6.5/B6.6；
 - B2 证据：`evidence/B2/`；
 - B3 证据：`evidence/B3/`；
 - B4 证据：`evidence/B4/`；
@@ -98,5 +105,6 @@
 - B6.1 证据：`evidence/B6.1/`；
 - B6.2 证据：`evidence/B6.2/`；
 - B6.3 证据：`evidence/B6.3/`；
+- B6.4 证据：`evidence/B6.4/`；
 - 不可宣称：全品类材料门禁、B6 独立验收通过、ACCEPTED、助手可替代人工判断；
-- 下一批：B6.4 聚焦独立复验；通过后才讨论 `ACCEPTED`，随后进入 B7 助手上下文入口。
+- 下一批：B6.5 修复 Web Mixed 状态展示；B6.6 独立复验通过后才讨论 `ACCEPTED`，随后进入 B7 助手上下文入口。

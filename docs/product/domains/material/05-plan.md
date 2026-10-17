@@ -17,7 +17,9 @@
 | B6.1 | 修复 B6 独立验收缺陷 | Finance/Designer/PM | Sheet/Purchase/Settlement/Payable | 字段投影、角色门禁、幂等、到场门禁、暂估应付投影 | App/Web | 权限/金额/幂等/边界 | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
 | B6.2 | B6 缺陷修复复验 | independent | 受影响矩阵 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；149/150） |
 | B6.3 | 修复 B62-DEF-001 多供应商价格投影 | Finance/Designer/PM | Sheet/Purchase/Settlement | 价格状态与采购明细聚合读模型 | App/Web | Mixed/Priced/Settled/Unpriced | DEV_VERIFIED + RECONCILED | COMPLETE (2026-10-17) |
-| B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | NEXT |
+| B6.4 | B62-DEF-001 聚焦独立复验 | independent | 多供应商拆单 + 回归 | 无实现 | App/Web | 独立黑盒复验 | ACCEPTED 或新缺陷 | FAIL（2026-10-17；139/140） |
+| B6.5 | 修复 Web 作业单 Mixed 状态展示 | Finance/StoreManager/Boss | Sheet/Finance | Web 价格状态文案与角标 | Web | Mixed/Unpriced/Settled | DEV_VERIFIED + UI_REVIEWED + RECONCILED | NEXT |
+| B6.6 | Web Mixed 状态聚焦独立复验 | independent | Web 主材下单页 + 回归 | 无实现 | Web/App | 独立黑盒复验 | ACCEPTED 或新缺陷 | PENDING |
 | B7 | 材料业务助手上下文入口 | Boss/StoreManager/Finance/Designer/PM | Assistant/Project/Sheet/Settlement | 复用 `material/assistant/ask` | App/Web | 上下文/证据/拒答/权限/跨端 | DEV_VERIFIED + UI_REVIEWED + RECONCILED | PENDING |
 | B8 | 助手 UI 聚焦独立验收 | independent | Assistant UI | 无实现 | App/Web | 权限/证据/拒答/上下文 | ACCEPTED | PENDING |
 | B9 | 体验版/发布准备 | release | App/后端/Web | 构建/发布记录 | App 体验版 | 冒烟/回滚 | RELEASED 或决策包 | PENDING |
@@ -29,7 +31,7 @@
 - B3 的上下文助手不能直接查库。
 - B4 必须依赖 B1 的蓝图、B2 的校核和 B3 的对象上下文。
 - B5 完成 App 单端闭环后，B6 必须独立于实现，不能由执行者自验。
-- B6.1 只修复 B6 已证实的缺陷；B6.2 独立复验确认 6 项关闭并发现 B62-DEF-001；B6.3/B6.4 修复并复验后才可进入助手 UI。
+- B6.2 确认 6 项关闭并发现 B62-DEF-001；B6.3 修复后 B6.4 确认后端关闭但发现 Web UI P2；B6.5/B6.6 修复并复验后才可进入助手 UI。
 - B7/B8 完成材料助手上下文入口及聚焦独立验收；B9 只做体验版，正式版由用户完成。
 
 ## 回滚
@@ -274,3 +276,19 @@
 - 实测：3@100 Priced + 2 Unpriced → Mixed；2 到场按 120 结算后仍 Mixed；撤销后仍 Mixed；
 - 后端全量 876/0/0/0 PASS；App H5 390×844 显示“部分已结算”，无横向溢出、Console Errors 0；
 - 证据：`evidence/B6.3/`；停在 RECONCILED，B6.4 独立复验。
+
+
+## B6.4 独立复验结果（2026-10-17）
+
+- 140 项：139 PASS / 1 FAIL；`B62-DEF-001` 的 23 项聚焦检查全部 PASS，后端读模型关闭；
+- 新缺陷 `B64-UI-WEB-SHEET-01`（P2）：Web `/finance/material-ordering` 的多供应商 Mixed 作业单只显示“已到场”，未展示“混合/部分已结算/成本待结算”；
+- App H5 同单据正确显示“部分已结算”，Web 无横向溢出、Console Errors 0；
+- 证据：`evidence/B6.4/`；下一批 B6.5，B6.6 独立复验。
+
+## B6.5 修复门槛（NEXT）
+
+- 仅修 Web 主材下单页展示：Mixed/Unpriced/Settled 状态文案和视觉标记；
+- 以 `sheet.priceState` / `item.priceState` 为唯一数据源，不在前端推导业务口径；
+- 覆盖空态、全价、无价、Mixed、全部结算、权限与失败态；
+- 不做后端语义/金额公式变更，不做 DDL；
+- 真实 Web 1440×900 截图 + 构建；停在 RECONCILED，B6.6 独立复验。
