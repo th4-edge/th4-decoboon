@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "program": "ZHUANGDEQING-DOMAIN-DELIVERY",
-  "updatedAt": "2026-10-17T15:29:13+08:00",
+  "updatedAt": "2026-10-17T15:30:07+08:00",
   "currentProgramStage": "MATERIAL_CLOSEOUT",
   "activeLease": {
     "domain": "material",
@@ -19,7 +19,7 @@
     "staleReviewAfterHours": 3,
     "lastOwnerActivityAt": "2026-10-17T15:17:19+08:00",
     "lastDomainStateUpdatedAt": "2026-10-17T15:16:15+08:00",
-    "lastObservedAt": "2026-10-17T15:29:13+08:00",
+    "lastObservedAt": "2026-10-17T15:30:07+08:00",
     "staleBasis": "domain state.updatedAt unchanged for staleReviewAfterHours; owner thread idle alone is not stale"
   },
   "queue": [
