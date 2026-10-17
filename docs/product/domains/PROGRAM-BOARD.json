@@ -9,7 +9,6 @@
     "status": "ACTIVE",
     "codeWriteAllowed": true,
     "reason": "材料域 B6.1 缺陷修复与后续 B6.2/B7/B8/B9 收口",
-    "lastOwnerHeartbeatAt": "2026-10-17T15:29:13+08:00",
     "exclusivePaths": [
       "src/main/**",
       "src/test/**",
@@ -17,7 +16,11 @@
       "../../前端代码/th4-decoboon-web/**"
     ],
     "releaseCondition": "material.phase in [RELEASED, LEARNED] AND material handoff recorded AND no uncommitted code changes under src/main, src/test, App or Web",
-    "staleReviewAfterHours": 3
+    "staleReviewAfterHours": 3,
+    "lastOwnerActivityAt": "2026-10-17T15:17:19+08:00",
+    "lastDomainStateUpdatedAt": "2026-10-17T15:16:15+08:00",
+    "lastObservedAt": "2026-10-17T15:29:13+08:00",
+    "staleBasis": "domain state.updatedAt unchanged for staleReviewAfterHours; owner thread idle alone is not stale"
   },
   "queue": [
     {
