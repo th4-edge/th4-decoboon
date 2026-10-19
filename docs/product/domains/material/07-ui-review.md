@@ -259,3 +259,37 @@ OCR 文本：`evidence/B3/ocr-text.txt`。
 - App Designer 项目回答使用“当前角色可查看履约状态”，不返回利润 null 或成本工具；
 - 截图：`evidence/B7/screenshots/`（14 张）；样式指标：`ui-style-metrics-web.json`、`ui-style-metrics-app.json`；
 - 限制：微信开发者工具 automator 本轮未执行；MP 构建通过，DevTools 逐页走查留 B8 独立验收。
+
+---
+
+# U1 · App 作业单详情工作台化（2026-10-18）
+
+- 触发：用户反馈 Web/App 解释过多、技术语言过多，设计师/财务用不好最基本功能。
+- 结论：首屏已从“业务说明书”改为“状态 + 还差什么 + 一个主行动”；解释折叠到“为什么这样填？”；Designer/PM 隐藏商业价格语言。
+- 真实 H5：390×844，Designer/Boss/PM/Finance 四种角色；375×667 帮助展开；无横向溢出，Console Errors 0。
+- 提交链路：选择测量日期 → 自动保存并提交 → “已提交请购”；提交后 Designer 无主按钮，Finance 出现“去下单”。
+- 证据：`evidence/U1/README.md`、`evidence/U1/screenshots/`、`evidence/U1/ui-metrics-draft.json`、`evidence/U1/ui-metrics-submitted.json`。
+- 性质：自测/UI_REVIEWED，不是独立验收；U2 财务工作台、U3 老板页/助手/蓝图入口仍待执行。
+
+---
+
+# U2 · App/Web 主材下单与结算工作台化（2026-10-18）
+
+- 触发：U1 后继续将财务主流程从“规则说明”改为“工作台”。
+- 结论：App/Web 下单与结算首屏均收敛为“可做多少、缺什么、一个主行动”；长规则折叠到“为什么/结算规则”。
+- App：390×844 与 375×667；Web：1440×900 与 1024×768；均无横向溢出，业务 Console Errors 0。
+- 下单：App/Web 均显示待下单张数、可下单行数、未定价行数；Web 增加显式“去下单”行按钮。
+- 结算：App/Web 均显示可结算行数、未定价行数、待填结算价行数、供应商数；“结算本单”为主按钮，“月结”为次要动作。
+- 证据：`evidence/U2/README.md`、`evidence/U2/screenshots/`、`evidence/U2/ui-metrics-web.json`、`evidence/U2/ui-metrics-app.json`。
+- 性质：自测/UI_REVIEWED，不是独立验收；U3 老板页/助手/蓝图入口仍待执行。
+
+---
+
+# U3 · 老板材料风险页、助手语言与材料说明入口（2026-10-18）
+
+- 触发：U2 后继续收口老板视角、助手技术语言和蓝图入口。
+- 结论：Web/App 首屏新增“最急材料”（材料/空间、卡点、责任设计/项目、下一步、一个处理按钮）；助手移除置信度/只读工具/审计/技术 ID，并把价格与成本字段转成业务语言；蓝图降为“帮助与说明 → 材料业务说明”。
+- 真实渲染：Web 1440×900/1024×768；App 390×844/375×667；无横向溢出，业务 Console Errors 0。
+- 助手文本：`null/priceState/costComplete/置信度/只读工具/已审计` 均不再出现；Designer/PM 的成本/定价/利润依据被过滤；材料说明页不再展示 BR/DEC/OBJ/SCN/MET/CAP/GAP/EX 等内部编号，字段字典默认隐藏。
+- 证据：`evidence/U3/README.md`、`evidence/U3/screenshots/`、`evidence/U3/ui-metrics-web.json`、`evidence/U3/ui-metrics-app.json`。
+- 性质：自测/UI_REVIEWED，不是独立验收；U4 真实用户可用性走查仍待执行。

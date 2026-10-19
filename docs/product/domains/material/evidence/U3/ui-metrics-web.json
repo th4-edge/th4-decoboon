@@ -1,0 +1,23 @@
+{
+  "webProject1440": {
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "scrollHeight": 1951
+  },
+  "webProject1024": {
+    "innerWidth": 1024,
+    "scrollWidth": 1024,
+    "scrollHeight": 2707
+  },
+  "webAssistant": {
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "scrollHeight": 1951,
+    "consoleErrors": []
+  },
+  "webBlueprint": {
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "scrollHeight": 4856
+  }
+}

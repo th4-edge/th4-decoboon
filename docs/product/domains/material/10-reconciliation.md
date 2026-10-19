@@ -153,3 +153,30 @@
 - 无新增缺陷，`defects.json=[]`；P3 观察项 `OBS-B8-001` 登记为 suggestions 元数据分组边界，不构成权限泄漏；
 - 临时作业单、材料计划、项目负责人、测试密码哈希已清理/恢复；无 DDL/迁移/生产/正式小程序发布；
 - 无 `UNMAPPED`/`STALE`；B8 满足 `ACCEPTED` 用户决策证据条件，最终正式接受/发布由用户确认。
+
+## U1 App 作业单详情工作台化（2026-10-18）
+
+- 状态：`UI_REVIEWED`（自测，不是独立验收）
+- 范围：`subpackages/project/pages/material-sheet-detail.vue`
+- 设计↔实现：首屏收敛为“状态 + 还差什么 + 一个主行动”；大段说明折叠为“为什么这样填？”；Designer/PM 不显示商业价格状态；提交动作自动保存现场字段后再提交。
+- 页面证据：`evidence/U1/README.md`、`evidence/U1/screenshots/`、`evidence/U1/ui-metrics-draft.json`、`evidence/U1/ui-metrics-submitted.json`。
+- 角色：Boss/Designer/PM/Finance 390×844；Designer 帮助态 375×667；无横向溢出，业务 Console Errors 0。
+- 未闭环：U2 财务下单/结算工作台化；U3 老板材料风险页、助手技术语言与蓝图入口；独立用户可用性走查 U4。
+
+## U2 App/Web 主材下单与结算工作台化（2026-10-18）
+
+- 状态：`UI_REVIEWED`（自测，不是独立验收）
+- 范围：App `material-sheet-order.vue`、`material-settlement.vue`；Web `FinanceMaterialOrderingView.vue`、`FinanceMaterialSettlementView.vue`
+- 设计↔实现：首屏摘要化；规则折叠；下单/结算各自只有一个主行动；Web 待下单行增加显式“去下单”。
+- 页面证据：`evidence/U2/README.md`、`evidence/U2/screenshots/`、`evidence/U2/ui-metrics-web.json`、`evidence/U2/ui-metrics-app.json`。
+- 角色/分辨率：Finance 390×844/375×667（App）、1440×900/1024×768（Web）；无横向溢出，业务 Console Errors 0。
+- 未闭环：U3 老板材料风险页/助手/蓝图入口；U4 独立用户可用性走查。
+
+## U3 老板材料风险页、助手语言与材料说明入口（2026-10-18）
+
+- 状态：`UI_REVIEWED`（自测，不是独立验收）
+- 范围：Web `MaterialHealthPanel.vue`、`MaterialAssistant.vue`、`BusinessBlueprintCenterView.vue`、`workbenchConfig.ts`、`routes.ts`；App `MaterialHealthCard.vue`、`MaterialAssistant.vue`、`project/pages/detail.vue`
+- 设计↔实现：首屏新增“最急材料”（材料/空间、卡点、责任设计/项目、下一步、一个处理按钮）；助手移除技术元数据并转业务语言；蓝图移至“帮助与说明 → 材料业务说明”。
+- 页面证据：`evidence/U3/README.md`、`evidence/U3/screenshots/`、`evidence/U3/ui-metrics-web.json`、`evidence/U3/ui-metrics-app.json`。
+- 角色/分辨率：Finance/Designer；Web 1440×900/1024×768、App 390×844/375×667；无横向溢出，业务 Console Errors 0。
+- 未闭环：U4 真实用户可用性走查；助手单轮、固定建议题库、无自动执行。

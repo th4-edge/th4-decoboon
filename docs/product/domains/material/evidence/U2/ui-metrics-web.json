@@ -1,0 +1,42 @@
+{
+  "ordering-1440x900": {
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "scrollHeight": 900,
+    "innerHeight": 900
+  },
+  "ordering-selected-1440x900": {
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "scrollHeight": 1164,
+    "innerHeight": 900,
+    "consoleErrors": []
+  },
+  "settlement-1440x900": {
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "scrollHeight": 993,
+    "innerHeight": 900,
+    "consoleErrors": []
+  },
+  "ordering-1024x768": {
+    "innerWidth": 1024,
+    "scrollWidth": 1024,
+    "scrollHeight": 770,
+    "innerHeight": 768
+  },
+  "ordering-selected-1024x768": {
+    "innerWidth": 1024,
+    "scrollWidth": 1024,
+    "scrollHeight": 1164,
+    "innerHeight": 768,
+    "consoleErrors": []
+  },
+  "settlement-1024x768": {
+    "innerWidth": 1024,
+    "scrollWidth": 1024,
+    "scrollHeight": 1023,
+    "innerHeight": 768,
+    "consoleErrors": []
+  }
+}
