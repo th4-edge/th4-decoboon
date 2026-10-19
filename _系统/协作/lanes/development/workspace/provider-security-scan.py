@@ -15,6 +15,7 @@ PUBLIC_ROUTES = {
     "auth/session/password-login",
     "auth/session/password-setup",
     "auth/session/register",
+    "auth/session/dev-owner-login",
     "identity/customer-invite/accept",
     "identity/customer-invite/info",
     "invite/invitation/accept",
@@ -23,6 +24,9 @@ PUBLIC_ROUTES = {
     "order/callback",
     "file/private/download",
     "platform/auth/login",
+    "site/lead/submit",
+    "site/lead/douyin/submit",
+    "customer/shareview/info",
 }
 
 
