@@ -2,6 +2,7 @@
 # 生产迁移模板：不自动执行备份、升级、DDL 回滚或数据修复。
 # baseline: 只允许新空库执行 00-迁移账本.sql + 01-空库基线.sql
 # adopt:    已有库必须先完成 DBA 结构审计，再登记经过审计的版本
+# apply:    仅用于**账本链条完整**的库执行新增迁移（≥117）；必须提供 DBA_AUDIT_ID 与已存在的 BACKUP_DIR
 # upgrade:  已禁用；存量库不得自动执行不完整的增量链
 set -Eeuo pipefail
 
@@ -10,14 +11,16 @@ ADOPT_VERSIONS="${2:-}"
 MYSQL_BIN="${MYSQL_BIN:-mysql}"
 
 usage() {
-  echo "用法: $0 baseline|adopt [版本列表]"
+  echo "用法: $0 baseline|adopt|apply [版本列表]"
   echo "  baseline 仅支持新空库，只执行 00-迁移账本.sql 和 01-空库基线.sql"
   echo "  adopt    仅用于 DBA 审计后的已有库，需同时设置 DBA_AUDIT_ID；版本示例 10,11,12,17"
+  echo "  apply    仅用于账本链条完整的库执行**新增**迁移（≥ APPLY_MIN_VERSION，默认 117）；"
+  echo "           必须同时提供 DBA_AUDIT_ID 与 BACKUP_DIR（执行前备份目录，须存在且非空）"
   echo "  upgrade  已禁用，避免误跑不完整的存量库升级链"
 }
 
 case "$MODE" in
-  baseline|adopt|upgrade) ;;
+  baseline|adopt|upgrade|apply) ;;
   *)
     usage
     exit 2
@@ -35,6 +38,14 @@ fi
 
 if [[ "$MODE" == "adopt" ]]; then
   : "${DBA_AUDIT_ID:?adopt 模式必须提供 DBA_AUDIT_ID}"
+fi
+
+if [[ "$MODE" == "apply" ]]; then
+  : "${DBA_AUDIT_ID:?apply 模式必须提供 DBA_AUDIT_ID（本轮结构审计证据编号）}"
+  : "${BACKUP_DIR:?apply 模式必须提供 BACKUP_DIR（执行前备份目录）}"
+  [[ -d "$BACKUP_DIR" ]] || { echo "BACKUP_DIR 不存在: $BACKUP_DIR"; exit 2; }
+  [[ -n "$(ls -A "$BACKUP_DIR" 2>/dev/null)" ]] || { echo "BACKUP_DIR 为空，拒绝在无备份的情况下执行 DDL"; exit 2; }
+  APPLY_MIN_VERSION="${APPLY_MIN_VERSION:-117}"
 fi
 
 MIGRATIONS_DIR="${MIGRATIONS_DIR:-$(cd "$(dirname "$0")" && pwd)}"
@@ -257,6 +268,7 @@ if [[ "$MODE" == "baseline" ]]; then
   exit 0
 fi
 
+if [[ "$MODE" == "adopt" ]]; then
 # adopt 只登记 DBA 已审计的结构，不执行任何 DDL 文件。
 [[ -n "$ADOPT_VERSIONS" ]] || { echo "adopt 模式必须提供版本列表，如 10,11,12,17"; exit 7; }
 mysql_cmd < "$LEDGER"
@@ -273,3 +285,71 @@ for version in "${versions[@]}"; do
 done
 
 echo "MIGRATION_COMPLETE mode=$MODE actor=$MIGRATION_ACTOR audit=$DBA_AUDIT_ID"
+  exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# apply：账本链条完整前提下的**新增**迁移执行（2026-10-16 评审新增）。
+# 约束：① 必须提供 DBA_AUDIT_ID 与已存在的 BACKUP_DIR；
+#      ② 只允许 >= APPLY_MIN_VERSION 的版本；
+#      ③ 账本状态必须是空（未登记）——已 SUCCESS/BASELINE/ADOPTED 直接 SKIP；
+#         RUNNING/FAILED 一律拒绝（人工处理）；
+#      ④ 校验和不匹配（CHECKSUM_DRIFT）立即停止；
+#      ⑤ 执行失败把该版本标 FAILED 并停止，不继续后续版本。
+# ---------------------------------------------------------------------------
+if [[ "$MODE" == "apply" ]]; then
+  [[ -n "$ADOPT_VERSIONS" ]] || { echo "apply 模式必须提供版本列表，如 117,118,119"; exit 7; }
+  mysql_cmd < "$LEDGER"
+  IFS=',' read -r -a apply_versions <<< "$ADOPT_VERSIONS"
+  for version in "${apply_versions[@]}"; do
+    [[ "$version" =~ ^[0-9]+$ ]] || { echo "版本必须是数字: $version"; exit 7; }
+    if (( version < APPLY_MIN_VERSION )); then
+      echo "apply 只允许执行 >= ${APPLY_MIN_VERSION} 的新增迁移，拒绝版本 $version" >&2
+      exit 7
+    fi
+    matches=( "$MIGRATIONS_DIR/${version}-"*.sql )
+    if [[ ! -e "${matches[0]}" ]]; then
+      echo "缺少迁移文件: ${version}-*.sql" >&2
+      exit 3
+    fi
+    if [[ "${#matches[@]}" -gt 1 ]]; then
+      echo "版本 ${version} 存在多个迁移文件，拒绝执行: ${matches[*]}" >&2
+      exit 7
+    fi
+    file="${matches[0]}"
+    description="$(basename "$file" .sql | cut -d- -f2-)"
+    row="$(ledger_row "$version")"
+    if [[ -n "$row" ]]; then
+      existing_status="${row%%|*}"
+      recorded="${row#*|}"
+      current="$(checksum "$file")"
+      if [[ "$recorded" != "$current" ]]; then
+        echo "CHECKSUM_DRIFT version=$version recorded=$recorded current=$current file=$file" >&2
+        exit 8
+      fi
+      case "$existing_status" in
+        SUCCESS|BASELINE|ADOPTED) echo "SKIP $version $description ($existing_status)"; continue ;;
+        *) echo "MIGRATION_${existing_status} version=$version 需要人工处理，拒绝执行" >&2; exit 8 ;;
+      esac
+    fi
+    sha="$(checksum "$file")"
+    mysql_cmd -e "INSERT INTO db_schema_migration(version,description,checksum,status,started_at,applied_by,error_message) VALUES('${version}','${description}','${sha}','RUNNING',NOW(6),'${MIGRATION_ACTOR}','apply for new migration; audit:${DBA_AUDIT_ID}')"
+    RUNNING_VERSION="$version"
+    echo "APPLYING $version $description"
+    if mysql_cmd < "$file"; then
+      mysql_cmd -e "UPDATE db_schema_migration SET status='SUCCESS',finished_at=NOW(6),error_message='applied by apply mode; audit:${DBA_AUDIT_ID}; backup:${BACKUP_DIR}' WHERE version='${version}' AND status='RUNNING'"
+      RUNNING_VERSION=""
+      echo "SUCCESS $version $description"
+    else
+      if mark_ledger_failed "$version"; then
+        RUNNING_VERSION=""
+        echo "FAILED $version $description；已停止，不继续后续版本" >&2
+        exit 4
+      fi
+      echo "CRITICAL: 迁移 ${version} 失败且账本无法写入 FAILED，请立即人工修复。" >&2
+      exit 10
+    fi
+  done
+  echo "MIGRATION_COMPLETE mode=$MODE actor=$MIGRATION_ACTOR audit=$DBA_AUDIT_ID backup=$BACKUP_DIR"
+  exit 0
+fi
