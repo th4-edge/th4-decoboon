@@ -1,0 +1,233 @@
+{
+  "collectedAt": "2026-10-17T04:43:09.447946+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-17/20261017-124308",
+  "counts": {
+    "code_bug": 1,
+    "unknown": 16,
+    "expected": 70
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261017-b63f1ec203",
+      "signature": "Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+      "signatureHash": "b63f1ec203",
+      "classification": "code_bug",
+      "severity": "critical",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 11:22:24.423",
+      "lastSeen": "2026-10-17 11:22:24.423",
+      "samples": [
+        "[2026-10-17 11:22:24.423] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-1638a78ea5",
+      "signature": "Failed to convert from type [java.lang.String] to type [java.lang.Long] for value [x]",
+      "signatureHash": "1638a78ea5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 11:22:17.227",
+      "lastSeen": "2026-10-17 11:22:17.227",
+      "samples": [
+        "[2026-10-17 11:22:17.227] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/cancel处理失败:Failed to convert from type [java.lang.String] to type [java.lang.Long] for value [x]"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-83e24658d0",
+      "signature": "customerId不能为空",
+      "signatureHash": "83e24658d0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 12:35:24.737",
+      "lastSeen": "2026-10-17 12:35:24.737",
+      "samples": [
+        "[2026-10-17 12:35:24.737] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/scheme/save处理失败: customerId不能为空"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-2be88ca424",
+      "signature": "null",
+      "signatureHash": "2be88ca424",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 03:27:23.535",
+      "lastSeen": "2026-10-17 03:27:23.535",
+      "samples": [
+        "[2026-10-17 03:27:23.535] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:null"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-0e0e3b6a7b",
+      "signature": "作业单不存在或无权访问",
+      "signatureHash": "0e0e3b6a7b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-17 10:43:13.141",
+      "lastSeen": "2026-10-17 11:25:05.314",
+      "samples": [
+        "[2026-10-17 10:43:13.141] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/info处理失败:作业单不存在或无权访问",
+        "[2026-10-17 11:24:57.517] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/cancel处理失败:作业单不存在或无权访问",
+        "[2026-10-17 11:25:05.314] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/info处理失败:作业单不存在或无权访问"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-0133839b83",
+      "signature": "作业单行必须来源材料计划；合同外主材请先发起增减项",
+      "signatureHash": "0133839b83",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 10:09:32.222",
+      "lastSeen": "2026-10-17 10:09:32.222",
+      "samples": [
+        "[2026-10-17 10:09:32.222] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/save处理失败:作业单行必须来源材料计划；合同外主材请先发起增减项"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-979f5a015e",
+      "signature": "当前账号无权执行该操作",
+      "signatureHash": "979f5a015e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-17 10:18:51.169",
+      "lastSeen": "2026-10-17 10:19:47.649",
+      "samples": [
+        "[2026-10-17 10:18:51.169] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/team-leader/report处理失败:当前账号无权执行该操作",
+        "[2026-10-17 10:19:47.649] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/team-leader/report处理失败:当前账号无权执行该操作"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 10,
+      "firstSeen": "2026-10-17 03:32:47.014",
+      "lastSeen": "2026-10-17 10:38:03.730",
+      "samples": [
+        "[2026-10-17 03:32:47.014] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "[2026-10-17 03:32:49.954] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "[2026-10-17 03:33:05.241] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "[2026-10-17 03:33:24.260] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "[2026-10-17 03:33:42.057] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-17 00:00:36.923",
+      "lastSeen": "2026-10-17 00:49:16.570",
+      "samples": [
+        "[2026-10-17 00:00:36.923] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "[2026-10-17 00:49:16.570] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-dfb2d5ba8f",
+      "signature": "找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+      "signatureHash": "dfb2d5ba8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 09:12:50.621",
+      "lastSeen": "2026-10-17 09:12:50.621",
+      "samples": [
+        "[2026-10-17 09:12:50.621] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-6778138315",
+      "signature": "提交请购前请先完成：测量时间",
+      "signatureHash": "6778138315",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-17 11:25:04.488",
+      "lastSeen": "2026-10-17 12:12:20.505",
+      "samples": [
+        "[2026-10-17 11:25:04.488] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/submit处理失败:提交请购前请先完成：测量时间",
+        "[2026-10-17 12:11:29.994] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/submit处理失败:提交请购前请先完成：测量时间",
+        "[2026-10-17 12:12:20.505] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/submit处理失败:提交请购前请先完成：测量时间"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 60,
+      "firstSeen": "2026-10-17 03:27:24.923",
+      "lastSeen": "2026-10-17T12:43:09.380+08:00",
+      "samples": [
+        "[2026-10-17 03:27:24.923] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-17 03:27:33.317] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-17 03:27:42.042] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-17 03:32:47.204] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-17 03:32:47.397] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/template/page处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261017-dc2c39fd4c",
+      "signature": "该房屋已指定设计师，量房完成必须由指定设计师执行",
+      "signatureHash": "dc2c39fd4c",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-17 10:55:59.756",
+      "lastSeen": "2026-10-17 10:55:59.756",
+      "samples": [
+        "[2026-10-17 10:55:59.756] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:该房屋已指定设计师，量房完成必须由指定设计师执行"
+      ],
+      "reportPaths": []
+    }
+  ]
+}
