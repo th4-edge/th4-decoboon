@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
+import com.th4.edge.decoboon.design.configure.QuantitySource;
 import com.th4.edge.decoboon.design.context.DesignContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
@@ -23,6 +24,7 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
@@ -159,6 +161,39 @@ class DesignItemBatchSaveTest {
                 .hasMessageContaining("不能为负数");
 
         verify(itemRepository, never()).save(any(DesignItem.class));
+    }
+
+    @Test
+    void shouldKeepCatalogPricingFormulaSeparateFromQuantityFormula() {
+        Company company = company(1L);
+        Employee designer = employee(10L, company);
+        Design design = design(100L, company);
+        Space space = space(200L, design, company);
+        CatalogItem catalog = catalog(301L, company, "地板--荣程强化地板（1.2）", "79.50");
+        catalog.setFormula("(材料单价) × 工程量");
+        DesignItem row = row(space, catalog, "22.3");
+        row.setQuantityFormula("A");
+
+        when(designContext.requireDesign(100L, designer)).thenReturn(design);
+        when(spaceRepository.findById(200L)).thenReturn(Optional.of(space));
+        when(catalogRepository.findById(301L)).thenReturn(Optional.of(catalog));
+        when(quoteCalcContext.calculate(any(DesignItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(itemRepository.save(any(DesignItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(spaceRepository.findByDesign_DesignIdOrderBySortAsc(100L)).thenReturn(List.of(space));
+        when(itemRepository.findByDesign_DesignIdOrderBySortAsc(100L)).thenReturn(List.of(new DesignItem()));
+
+        ReflectionTestUtils.setField(batchSave, "designId", 100L);
+        ReflectionTestUtils.setField(batchSave, "employee", designer);
+        ReflectionTestUtils.setField(batchSave, "items", List.of(row));
+
+        batchSave.call(new Design());
+
+        ArgumentCaptor<DesignItem> captor = ArgumentCaptor.forClass(DesignItem.class);
+        verify(itemRepository).save(captor.capture());
+        DesignItem saved = captor.getValue();
+        assertThat(saved.getFormula()).isEqualTo("(材料单价) × 工程量");
+        assertThat(saved.getQuantityFormula()).isEqualTo("A");
+        assertThat(saved.getQuantitySource()).isEqualTo(QuantitySource.Formula);
     }
 
     @Test

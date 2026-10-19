@@ -42,7 +42,7 @@ import java.util.ArrayList;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "design", "space", "type", "category", "catalogItem",
                         "name", "brand", "spec", "unit", "quantity", "quantitySource", "materialPrice", "manualPrice",
-                        "costPrice", "pricingMode", "amount", "cost", "formula", "pendingMeasure", "criterion", "craft", "remark", "sort",
+                        "costPrice", "pricingMode", "amount", "cost", "formula", "quantityFormula", "pendingMeasure", "criterion", "craft", "remark", "sort",
                         "images", "createTime", "updateTime"}),
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "status", "area", "layout"}),
@@ -99,6 +99,8 @@ public class Save implements com.th4.edge.decoboon.design.service.items.save.Sav
 
         target.setQuantity(quantity);
         target.setQuantitySource(QuantitySource.Manual);
+        // 单行保存入口只接受手工工程量；工程量公式和人工改量互斥，避免保留失效公式。
+        target.setQuantityFormula(null);
         target.setRemark(remark);
         target.setSort(sort == null ? 0 : sort);
         quoteCalcContext.calculate(target);

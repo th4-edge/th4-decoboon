@@ -176,9 +176,13 @@ public class DesignItem extends AuditModel {
     @Column(precision = 12, scale = 2, nullable = false)
     private BigDecimal cost = BigDecimal.ZERO;
 
-    @Note("公式说明")
+    @Note("计价公式说明")
     @Column(length = 256)
     private String formula;
+
+    @Note("工程量公式（专业变量）")
+    @Column(name = "quantity_formula", length = 512)
+    private String quantityFormula;
 
     /** 待补尺寸标记（DEC-058）：与 DesignTemplateFormulaContext 共用同一字面量。 */
     public static final String PENDING_MEASURE_MARKER = "__PENDING_MEASURE__";
@@ -188,7 +192,7 @@ public class DesignItem extends AuditModel {
     private Boolean pendingMeasure;
 
     @Transient
-    @Note("只读投影：公式待修订")
+    @Note("只读投影：工程量公式待修订")
     private Boolean formulaRevisionNeeded;
 
     @Note("工艺说明")
@@ -264,7 +268,8 @@ public class DesignItem extends AuditModel {
             return pendingMeasure;
         }
         // 由实例化写入的公式前缀派生（DEC-058）：0=待补 与 0=赠送 并存，不新增 DDL 字段。
-        return formula != null && formula.startsWith(PENDING_MEASURE_MARKER + "|");
+        String effective = effectiveQuantityFormula();
+        return effective != null && effective.startsWith(PENDING_MEASURE_MARKER + "|");
     }
     public void setPendingMeasure(Boolean pendingMeasure) { this.pendingMeasure = pendingMeasure; }
     public Boolean getFormulaRevisionNeeded() { return formulaRevisionNeeded; }
@@ -273,6 +278,18 @@ public class DesignItem extends AuditModel {
     }
     public String getFormula() { return formula; }
     public void setFormula(String formula) { this.formula = formula; }
+    public String getQuantityFormula() { return quantityFormula; }
+    public void setQuantityFormula(String quantityFormula) { this.quantityFormula = quantityFormula; }
+    /**
+     * 过渡兼容：拆分前实例化的待补分项把标记写在 formula；新数据只写 quantityFormula。
+     * 只把待补标记回退读取，绝不把中文计价说明当作工程量公式。
+     */
+    public String effectiveQuantityFormula() {
+        if (quantityFormula != null && !quantityFormula.isBlank()) {
+            return quantityFormula;
+        }
+        return formula != null && formula.startsWith(PENDING_MEASURE_MARKER + "|") ? formula : null;
+    }
     public String getCriterion() { return criterion; }
     public void setCriterion(String criterion) { this.criterion = criterion; }
     public String getCraft() { return craft; }

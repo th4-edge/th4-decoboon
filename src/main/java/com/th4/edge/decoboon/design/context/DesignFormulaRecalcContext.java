@@ -62,7 +62,8 @@ public class DesignFormulaRecalcContext {
             if (!formulaDriven(item)) {
                 continue;
             }
-            String stored = item.getFormula() == null ? "" : item.getFormula().trim();
+            String effectiveFormula = item.effectiveQuantityFormula();
+            String stored = effectiveFormula == null ? "" : effectiveFormula.trim();
             boolean pending = stored.startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|");
             String expression = pending
                     ? stored.substring(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER.length() + 1).trim()
@@ -83,13 +84,13 @@ public class DesignFormulaRecalcContext {
                         : formulaContext.evaluate(toTemplateRoom(space), expression,
                                 measuredArea(space), measuredPerimeter(space));
                 item.setQuantity(quantity);
-                item.setFormula(expression);
+                item.setQuantityFormula(expression);
                 item.setFormulaRevisionNeeded(false);
             } catch (DefinedException exception) {
                 if (exception.getErrorCode() != null
                         && "TEMPLATE_SIZE_MISSING".equals(exception.getErrorCode().getCode())) {
                     item.setQuantity(BigDecimal.ZERO);
-                    item.setFormula(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|" + expression);
+                    item.setQuantityFormula(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|" + expression);
                 } else {
                     throw exception;
                 }
@@ -104,9 +105,9 @@ public class DesignFormulaRecalcContext {
             return false;
         }
         if (item.getQuantitySource() == QuantitySource.Formula) {
-            return item.getFormula() != null && !item.getFormula().isBlank();
+            return item.effectiveQuantityFormula() != null && !item.effectiveQuantityFormula().isBlank();
         }
-        return item.getFormula() != null && !item.getFormula().isBlank();
+        return item.effectiveQuantityFormula() != null && !item.effectiveQuantityFormula().isBlank();
     }
 
     /**

@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -50,7 +51,7 @@ class DesignFormulaRecalcContextTest {
 
         // WP = 实测周长 19.00 × 层高 2.8（不扣门窗洞）
         assertEquals(new BigDecimal("53.200"), formulaDriven.getQuantity());
-        assertEquals("=WP", formulaDriven.getFormula());
+        assertEquals("=WP", formulaDriven.getQuantityFormula());
         assertEquals(new BigDecimal("99"), manual.getQuantity());
         verify(quoteCalcContext).calculate(formulaDriven);
         verify(quoteCalcContext, never()).calculate(manual);
@@ -87,7 +88,7 @@ class DesignFormulaRecalcContextTest {
         context.recalculate(design);
 
         assertEquals(BigDecimal.ZERO, item.getQuantity());
-        assertTrue(item.getFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
+        assertTrue(item.getQuantityFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
     }
 
     @Test
@@ -101,7 +102,7 @@ class DesignFormulaRecalcContextTest {
 
         // 历史按长宽推算的估算值不得继续充当工程量基数
         assertEquals(BigDecimal.ZERO, item.getQuantity());
-        assertTrue(item.getFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
+        assertTrue(item.getQuantityFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
     }
 
     @Test
@@ -109,6 +110,7 @@ class DesignFormulaRecalcContextTest {
         Design design = design(7L);
         Space space = measuredSpace(70L, design, "客厅", "4", "5", "2.8", "20.50", "18.00");
         DesignItem legacy = item(700L, design, space, "(人工单价) × 工程量", QuantitySource.Formula, "7.5");
+        legacy.setFormula("(材料单价) × 工程量");
         DesignItem measured = item(701L, design, space, "=A", QuantitySource.Formula, "0");
 
         stub(7L, List.of(space), List.of(legacy, measured));
@@ -116,12 +118,45 @@ class DesignFormulaRecalcContextTest {
 
         // GAP-042：历史中文公式降级为「不参与重算」，工程量与公式保持既有快照并标记待修订
         assertEquals(new BigDecimal("7.5"), legacy.getQuantity());
-        assertEquals("(人工单价) × 工程量", legacy.getFormula());
+        assertEquals("(人工单价) × 工程量", legacy.getQuantityFormula());
+        assertEquals("(材料单价) × 工程量", legacy.getFormula());
         assertTrue(legacy.getFormulaRevisionNeeded());
         verify(quoteCalcContext, never()).calculate(legacy);
         // 同一批次里的专业变量分项照常重算
         assertEquals(new BigDecimal("20.500"), measured.getQuantity());
         assertEquals(Boolean.FALSE, measured.getFormulaRevisionNeeded());
+    }
+
+    @Test
+    void doesNotTreatPricingFormulaAsQuantityFormula() {
+        Design design = design(8L);
+        Space space = measuredSpace(80L, design, "客厅", "4", "5", "2.8", "20.50", "18.00");
+        DesignItem item = item(800L, design, space, null, QuantitySource.Formula, "7.5");
+        item.setFormula("(材料单价) × 工程量");
+
+        stub(8L, List.of(space), List.of(item));
+        context.recalculate(design);
+
+        assertEquals(new BigDecimal("7.5"), item.getQuantity());
+        assertEquals("(材料单价) × 工程量", item.getFormula());
+        assertNull(item.getQuantityFormula());
+        assertNull(item.getFormulaRevisionNeeded());
+        verify(quoteCalcContext, never()).calculate(item);
+    }
+
+    @Test
+    void readsLegacyPendingMarkerFromFormulaDuringTransition() {
+        Design design = design(9L);
+        Space space = space(90L, design, "主卧", "4", "5", "2.8", null, null, null);
+        DesignItem item = item(900L, design, space, null, QuantitySource.Formula, "0");
+        item.setFormula(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|=A");
+
+        stub(9L, List.of(space), List.of(item));
+        context.recalculate(design);
+
+        assertEquals(BigDecimal.ZERO, item.getQuantity());
+        assertTrue(item.getPendingMeasure());
+        assertTrue(item.getQuantityFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
     }
 
     @Test
@@ -149,7 +184,7 @@ class DesignFormulaRecalcContextTest {
 
         // 不得用部分区域求和的偏小值冒充已完成工程量
         assertEquals(BigDecimal.ZERO, aggregate.getQuantity());
-        assertTrue(aggregate.getFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
+        assertTrue(aggregate.getQuantityFormula().startsWith(DesignTemplateFormulaContext.PENDING_MEASURE_MARKER));
     }
 
     private void stub(Long designId, List<Space> spaces, List<DesignItem> items) {
@@ -185,13 +220,13 @@ class DesignFormulaRecalcContextTest {
         return space;
     }
 
-    private DesignItem item(Long id, Design design, Space space, String formula,
+    private DesignItem item(Long id, Design design, Space space, String quantityFormula,
                             QuantitySource source, String quantity) {
         DesignItem item = new DesignItem();
         item.setItemId(id);
         item.setDesign(design);
         item.setSpace(space);
-        item.setFormula(formula);
+        item.setQuantityFormula(quantityFormula);
         item.setQuantitySource(source);
         item.setQuantity(decimal(quantity));
         return item;

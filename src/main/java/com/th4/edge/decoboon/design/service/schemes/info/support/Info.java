@@ -41,7 +41,7 @@ import java.util.List;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "space", "type", "category", "catalogItem", "name", "brand",
                         "spec", "unit", "quantity", "quantitySource", "materialPrice", "manualPrice", "costPrice", "pricingMode",
-                        "amount", "cost", "formula", "pendingMeasure", "formulaRevisionNeeded", "criterion", "craft",
+                        "amount", "cost", "formula", "quantityFormula", "pendingMeasure", "formulaRevisionNeeded", "criterion", "craft",
                         "remark", "sort", "images"}),
         @AllowProperties(model = Requirement.class,
                 properties = {"requirementId", "type", "spaceName", "kind", "category", "priority", "status",
@@ -87,9 +87,13 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
         Design design = designContext.requireReadableDesign(designId, employee);
         design.setSpaces(spaceRepository.findByDesign_DesignIdOrderBySortAsc(designId));
         List<DesignItem> items = itemRepository.findByDesign_DesignIdOrderBySortAsc(designId);
-        // GAP-042：历史中文公式分项无法按专业变量重算，服务端投影「公式待修订」供设计师识别与修复。
+        // DEC-063 / GAP-042：formula 只承载报价项目的计价说明；工程量公式独立使用 quantityFormula。
+        // 只有 quantityFormula 非空且不是专业变量语法时才标记「公式待修订」。
         for (DesignItem item : items) {
-            item.setFormulaRevisionNeeded(!formulaContext.isSupportedFormula(item.getFormula()));
+            String quantityFormula = item.effectiveQuantityFormula();
+            item.setFormulaRevisionNeeded(quantityFormula != null
+                    && !quantityFormula.isBlank()
+                    && !formulaContext.isSupportedFormula(quantityFormula));
         }
         design.setItems(items);
         design.setRequirements(requirementRepository.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(

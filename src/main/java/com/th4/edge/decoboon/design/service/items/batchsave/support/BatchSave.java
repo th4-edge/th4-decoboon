@@ -49,7 +49,7 @@ import java.util.List;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "space", "type", "category", "catalogItem", "name", "brand", "spec", "unit",
                         "quantity", "quantitySource", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "pricingMode",
-                        "amount", "cost", "formula", "pendingMeasure", "criterion", "craft", "remark", "sort", "images"}),
+                        "amount", "cost", "formula", "quantityFormula", "pendingMeasure", "criterion", "craft", "remark", "sort", "images"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "sourceMeasureRegionId", "sort", "remark"}),
         @AllowProperties(model = CatalogItem.class,
@@ -115,6 +115,7 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
             applyCatalog(row.target(), row.catalog());
             row.target().setQuantity(row.quantity());
             row.target().setQuantitySource(row.quantitySource());
+            row.target().setQuantityFormula(row.quantityFormula());
             row.target().setRemark(row.remark());
             row.target().setSort(row.sort());
             quoteCalcContext.calculate(row.target());
@@ -164,18 +165,30 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
                         "请从企业报价项目库选择施工、主材、软装、定制、电器或综合项目"));
             }
             CatalogItem catalog = requireCatalog(design, catalogId);
+            String quantityFormula = row.getQuantityFormula();
+            if (quantityFormula == null) {
+                quantityFormula = target.effectiveQuantityFormula();
+            }
+            quantityFormula = normalizeFormula(quantityFormula);
             QuantitySource quantitySource = row.getQuantitySource();
             if (quantitySource == null) {
                 quantitySource = target.getQuantitySource();
             }
             if (quantitySource == null) {
-                quantitySource = catalog.getFormula() == null || catalog.getFormula().isBlank()
-                        ? QuantitySource.Manual : QuantitySource.Formula;
+                quantitySource = quantityFormula == null ? QuantitySource.Manual : QuantitySource.Formula;
+            }
+            if (quantityFormula == null && quantitySource == QuantitySource.Formula) {
+                quantitySource = QuantitySource.Manual;
+            }
+            if (quantitySource == QuantitySource.Manual) {
+                // 手工改量后不得继续沿用旧的自动公式，否则后续区域变更会覆盖人工数量。
+                quantityFormula = null;
             }
             prepared.add(new PreparedRow(
                     target,
                     row,
                     quantity,
+                    quantityFormula,
                     row.getRemark(),
                     row.getSort() == null ? 0 : row.getSort(),
                     catalog,
@@ -183,6 +196,13 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
                     quantitySource));
         }
         return prepared;
+    }
+
+    private String normalizeFormula(String formula) {
+        if (formula == null || formula.isBlank()) {
+            return null;
+        }
+        return formula.trim();
     }
 
     private void requireSameDesign(Design design, DesignItem item) {
@@ -254,6 +274,7 @@ public class BatchSave implements com.th4.edge.decoboon.design.service.items.bat
             DesignItem target,
             DesignItem source,
             BigDecimal quantity,
+            String quantityFormula,
             String remark,
             Integer sort,
             CatalogItem catalog,

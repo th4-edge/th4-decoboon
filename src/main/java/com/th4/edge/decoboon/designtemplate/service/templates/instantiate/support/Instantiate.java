@@ -72,7 +72,7 @@ import java.util.Map;
         @AllowProperties(model = DesignItem.class,
                 properties = {"itemId", "type", "category", "name", "brand", "spec", "unit", "quantity",
                         "materialPrice", "manualPrice", "fixedTotalPrice", "pricingMode", "amount",
-                        "formula", "pendingMeasure", "criterion", "craft", "remark", "sort"}),
+                        "formula", "quantityFormula", "pendingMeasure", "criterion", "craft", "remark", "sort"}),
         @AllowProperties(model = DesignTemplateVersion.class,
                 properties = {"versionId", "version", "status", "name", "houseType", "areaMin", "areaMax",
                         "tags", "publishedAt"}),
@@ -298,7 +298,9 @@ public class Instantiate implements com.th4.edge.decoboon.designtemplate.service
             item.setMaterialPrice(catalogItem.getMaterialPrice());
             item.setManualPrice(catalogItem.getManualPrice());
             item.setFixedTotalPrice(catalogItem.getFixedTotalPrice());
-            item.setFormula(pendingMeasure
+            // formula 是报价项目库的计价说明快照；模版专业变量只进入 quantityFormula。
+            item.setFormula(catalogItem.getFormula());
+            item.setQuantityFormula(pendingMeasure
                     ? DesignTemplateFormulaContext.PENDING_MEASURE_MARKER + "|"
                             + (templateFormula == null ? "" : templateFormula)
                     : templateFormula);
