@@ -7,6 +7,7 @@ import com.th4.edge.framework.core.annotation.Unit;
 import com.th4.edge.framework.data.jpa.annotation.Model;
 import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.tenant.user.model.Company;
+import com.th4.edge.tenant.user.model.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -16,7 +17,6 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -27,7 +27,6 @@ import java.time.LocalDate;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @Table(name = "db_business_target",
-        uniqueConstraints = @UniqueConstraint(name = "uk_business_target_company_month", columnNames = {"com_id", "target_month"}),
         indexes = {
                 @Index(name = "idx_business_target_company", columnList = "com_id, target_id"),
                 @Index(name = "idx_business_target_company_month", columnList = "com_id, target_month, target_id")
@@ -43,6 +42,11 @@ public class BusinessTarget extends AuditModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "com_id", nullable = false)
     private Company company;
+
+    @Note("门店目标归属；NULL=公司级目标（DEC-076/BR-049）")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @Note("目标月份，保存当月第一天")
     @Column(name = "target_month", nullable = false)
@@ -69,6 +73,8 @@ public class BusinessTarget extends AuditModel {
 
     public Long getTargetId() { return targetId; }
     public void setTargetId(Long targetId) { this.targetId = targetId; }
+    public Store getStore() { return store; }
+    public void setStore(Store store) { this.store = store; }
     public Company getCompany() { return company; }
     public void setCompany(Company company) { this.company = company; }
     public LocalDate getTargetMonth() { return targetMonth; }

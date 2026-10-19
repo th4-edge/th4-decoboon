@@ -74,7 +74,7 @@ class BossDashboardContextTest {
         target.setSignedAmount(new BigDecimal("12000.00"));
 
         when(tenant.requireBoss(boss)).thenReturn(boss);
-        when(targets.findByCompany_ComIdAndTargetMonth(10L, MONTH)).thenReturn(Optional.of(target));
+        when(targets.findByCompany_ComIdAndStoreIsNullAndTargetMonth(10L, MONTH)).thenReturn(Optional.of(target));
         when(aggregate.signedContractAmount(eq(10L), anyLong(), eq(MONTH))).thenReturn(new BigDecimal("10000.00"));
         when(aggregate.signedContractAmount(eq(10L), anyLong(), eq(MONTH.minusMonths(1))))
                 .thenReturn(new BigDecimal("5000.00"));
@@ -126,7 +126,7 @@ class BossDashboardContextTest {
         contract.setSignedAt(MONTH.plusDays(3));
 
         when(tenant.requireBoss(boss)).thenReturn(boss);
-        when(targets.findByCompany_ComIdAndTargetMonth(10L, MONTH)).thenReturn(Optional.empty());
+        when(targets.findByCompany_ComIdAndStoreIsNullAndTargetMonth(10L, MONTH)).thenReturn(Optional.empty());
         when(aggregate.signedContractAmount(eq(10L), anyLong(), any())).thenReturn(BigDecimal.ZERO);
         when(aggregate.receiptAmount(eq(10L), anyLong(), any())).thenReturn(BigDecimal.ZERO);
         when(aggregate.activeProjectCount(eq(10L), anyLong(), any())).thenReturn(0L);

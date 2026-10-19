@@ -73,7 +73,7 @@ public class BossDashboardContext {
         // P0B-02 聚合下推：门店条件与全部标量（签约额/收款额/在建项目数）都在 SQL 侧完成，
         // 不再「全量加载 + 内存 filter/sum」（DEC-036 / BR-031）。
         Long storeFilter = StoreScope.normalize(query == null ? null : query.getStoreId());
-        BusinessTarget target = targetRepository.findByCompany_ComIdAndTargetMonth(comId, month)
+        BusinessTarget target = targetRepository.findByCompany_ComIdAndStoreIsNullAndTargetMonth(comId, month)
                 .orElseGet(BusinessTarget::new);
         boolean targetSet = target.getTargetId() != null;
 

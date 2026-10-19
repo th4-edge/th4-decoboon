@@ -39,6 +39,7 @@ statistic/pm/report
 statistic/risk/report
 statistic/store/report
 statistic/success/report
+statistic/target/info
 statistic/target/save
 statistic/team-leader/report
 statistic/workbench/design/page
