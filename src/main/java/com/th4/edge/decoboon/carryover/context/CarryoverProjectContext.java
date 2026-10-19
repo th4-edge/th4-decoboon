@@ -155,11 +155,20 @@ public class CarryoverProjectContext {
         if (item.getCompany() == null || !item.getCompany().getComId().equals(principal.getCompany().getComId())) {
             throw new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问"));
         }
+        if (principal.getRole() == EmployeeRole.StoreManager) {
+            Long currentStoreId = principal.getStore() == null ? null : principal.getStore().getStoreId();
+            Long itemStoreId = item.getStore() == null ? null : item.getStore().getStoreId();
+            if (currentStoreId == null || !currentStoreId.equals(itemStoreId)) {
+                throw new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问"));
+            }
+        }
+        boolean managerProxy = principal.getRole() == EmployeeRole.StoreManager;
         if (principal.getRole() != EmployeeRole.Boss && principal.getRole() != EmployeeRole.Finance
-                && !assignedTo(item, principal, role)) {
+                && !managerProxy && !assignedTo(item, principal, role)) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工不是该承接项目的责任成员"));
         }
-        boolean proxy = principal.getRole() == EmployeeRole.Boss && role != CarryoverConfirmationRole.Boss;
+        boolean proxy = (principal.getRole() == EmployeeRole.Boss && role != CarryoverConfirmationRole.Boss)
+                || managerProxy;
         if (!proxy && !roleMatches(principal.getRole(), role)) {
             throw new DefinedException(new DefaultErrorCode("403", "当前角色不能执行该确认"));
         }

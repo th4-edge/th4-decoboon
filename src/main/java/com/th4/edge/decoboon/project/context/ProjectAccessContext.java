@@ -292,10 +292,11 @@ public class ProjectAccessContext {
         requireVisible(project, current);
         if (current.getRole() == EmployeeRole.Boss
                 || current.getRole() == EmployeeRole.Pm
-                || isEmployee(project.getDesigner(), current)) {
+                || isEmployee(project.getDesigner(), current)
+                || (current.getRole() == EmployeeRole.StoreManager && isStoreProject(project, current))) {
             return project;
         }
-        throw new DefinedException(new DefaultErrorCode("403", "只有设计师、项目经理或企业负责人可以编排施工计划"));
+        throw new DefinedException(new DefaultErrorCode("403", "只有设计师、项目经理、本店店长或企业负责人可以编排施工计划"));
     }
 
     private boolean isEmployee(Employee target, Employee current) {
@@ -303,10 +304,14 @@ public class ProjectAccessContext {
     }
 
     private boolean isStoreProject(Project project, Employee current) {
-        return project.getCustomer() != null
-                && project.getCustomer().getStore() != null
-                && current.getStore() != null
-                && project.getCustomer().getStore().getStoreId().equals(current.getStore().getStoreId());
+        if (project == null || current == null || current.getStore() == null) {
+            return false;
+        }
+        Long projectStoreId = project.getStore() != null
+                ? project.getStore().getStoreId()
+                : project.getCustomer() != null && project.getCustomer().getStore() != null
+                        ? project.getCustomer().getStore().getStoreId() : null;
+        return projectStoreId != null && projectStoreId.equals(current.getStore().getStoreId());
     }
 
     private boolean isTeamProject(Project project, Employee current) {

@@ -69,7 +69,7 @@ public class Page implements com.th4.edge.decoboon.catalog.service.importrow.pag
     @Override
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<CatalogImportRow> call(CatalogImportRow request) {
-        Employee currentEmployee = importContext.requireBoss(employee);
+        Employee currentEmployee = importContext.requireMaintainer(employee);
         CatalogImportBatch batch = batchRepository
                 .findByBatchIdAndCompany_ComId(batchId, currentEmployee.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "导入批次不存在或无权访问")));

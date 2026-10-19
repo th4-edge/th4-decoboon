@@ -50,7 +50,7 @@ public class Page implements com.th4.edge.decoboon.catalog.service.importbatch.p
     @Override
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<CatalogImportBatch> call(CatalogImportBatch request) {
-        Employee currentEmployee = importContext.requireBoss(employee);
+        Employee currentEmployee = importContext.requireMaintainer(employee);
         List<CatalogImportBatch> all = batchRepository
                 .findByCompany_ComIdOrderByBatchIdDesc(currentEmployee.getCompany().getComId()).stream()
                 .filter(batch -> status == null || batch.getStatus() == status)

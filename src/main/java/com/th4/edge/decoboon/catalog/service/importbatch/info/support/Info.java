@@ -54,7 +54,7 @@ public class Info implements com.th4.edge.decoboon.catalog.service.importbatch.i
     @Override
     @Transactional
     public CatalogImportBatch call(CatalogImportBatch request) {
-        Employee current = importContext.requireBoss(employee);
+        Employee current = importContext.requireMaintainer(employee);
         CatalogImportBatch batch = batchRepository
                 .findByBatchIdAndCompany_ComId(batchId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "导入批次不存在或无权访问")));

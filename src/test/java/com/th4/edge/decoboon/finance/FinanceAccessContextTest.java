@@ -4,12 +4,15 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
+import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
@@ -34,6 +37,7 @@ class FinanceAccessContextTest {
     private EmployeeRepository employeeRepository;
     private ProjectRepository projectRepository;
     private LedgerRepository ledgerRepository;
+    private DataScopeContext dataScopeContext;
     private FinanceAccessContext accessContext;
 
     @BeforeEach
@@ -42,9 +46,10 @@ class FinanceAccessContextTest {
         projectRepository = mock(ProjectRepository.class);
         ledgerRepository = mock(LedgerRepository.class);
         TenantContext tenantContext = new TenantContext(employeeRepository);
+        dataScopeContext = mock(DataScopeContext.class);
         accessContext = StoreAttributionTestSupport.inject(new FinanceAccessContext(
                 tenantContext,
-                mock(DataScopeContext.class),
+                dataScopeContext,
                 projectRepository,
                 ledgerRepository
         ));
@@ -106,6 +111,38 @@ class FinanceAccessContextTest {
         assertThat(receivable.getCompany()).isSameAs(company);
         assertThat(receivable.getStore()).isSameAs(store);
         assertThat(receivable.getOwner()).isSameAs(owner);
+    }
+
+
+    @Test
+    void shouldAllowStoreManagerHighRiskActionOnlyInOwnStore() {
+        Employee manager = employee(EmployeeRole.StoreManager);
+        Company company = new Company();
+        company.setComId(10L);
+        Store ownStore = new Store();
+        ownStore.setStoreId(20L);
+        manager.setCompany(company);
+        manager.setStore(ownStore);
+        when(employeeRepository.findByEmpId(manager.getEmpId())).thenReturn(manager);
+        when(dataScopeContext.resolve(manager)).thenReturn(new DataScope(DataScopeType.Store, 10L, 20L, null, manager.getEmpId()));
+
+        assertThat(accessContext.requireHighRiskEditor(manager).getRole()).isEqualTo(EmployeeRole.StoreManager);
+
+        Ledger ownLedger = new Ledger();
+        ownLedger.setStore(ownStore);
+        accessContext.requireLedgerScope(manager, ownLedger);
+
+        Store otherStore = new Store();
+        otherStore.setStoreId(30L);
+        Ledger otherLedger = new Ledger();
+        otherLedger.setStore(otherStore);
+        assertThatThrownBy(() -> accessContext.requireLedgerScope(manager, otherLedger))
+                .hasMessageContaining("无权访问");
+
+        Employee finance = employee(EmployeeRole.Finance);
+        when(employeeRepository.findByEmpId(finance.getEmpId())).thenReturn(finance);
+        assertThatThrownBy(() -> accessContext.requireHighRiskEditor(finance))
+                .hasMessageContaining("无权执行");
     }
 
     private Employee employee(EmployeeRole role) {

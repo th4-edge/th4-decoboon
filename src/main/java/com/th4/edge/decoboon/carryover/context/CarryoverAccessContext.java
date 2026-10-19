@@ -39,6 +39,29 @@ public class CarryoverAccessContext {
         return tenantContext.requireEmployee(principal);
     }
 
+    /** 店长承接确认/代确认：BOSS 全企业；店长限本店（DEC-076）。 */
+    public Employee requireManager(Employee principal) {
+        Employee current = tenantContext.requireRole(principal,
+                EmployeeRole.Boss, EmployeeRole.StoreManager);
+        if (current.getRole() == EmployeeRole.StoreManager
+                && (current.getStore() == null || current.getStore().getStoreId() == null)) {
+            throw new DefinedException(new DefaultErrorCode("400", "店长未归属门店"));
+        }
+        return current;
+    }
+
+    /** 店长只能操作本店承接项目。 */
+    public void requireSameStore(Employee current, CarryoverProject item) {
+        if (current.getRole() != EmployeeRole.StoreManager) {
+            return;
+        }
+        Long currentStoreId = current.getStore() == null ? null : current.getStore().getStoreId();
+        Long itemStoreId = item == null || item.getStore() == null ? null : item.getStore().getStoreId();
+        if (currentStoreId == null || !currentStoreId.equals(itemStoreId)) {
+            throw new DefinedException(new DefaultErrorCode("404", "承接项目不存在或无权访问"));
+        }
+    }
+
     /** 双轨对账维护：仅企业负责人或财务。 */
     public Employee requireFinance(Employee principal) {
         Employee current = tenantContext.requireEmployee(principal);

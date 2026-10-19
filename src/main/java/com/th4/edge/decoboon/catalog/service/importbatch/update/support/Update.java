@@ -85,7 +85,7 @@ public class Update implements com.th4.edge.decoboon.catalog.service.importbatch
     @Override
     @Transactional
     public CatalogImportBatch call(CatalogImportBatch request) {
-        Employee current = importContext.requireBoss(employee);
+        Employee current = importContext.requireMaintainer(employee);
         String lockKey = "catalog-import-batch:" + current.getCompany().getComId() + ":" + batchId;
         if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
             throw new DefinedException(new DefaultErrorCode("409", "导入批次正在处理中，请稍后重试"));

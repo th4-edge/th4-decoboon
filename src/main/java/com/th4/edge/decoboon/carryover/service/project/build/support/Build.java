@@ -40,8 +40,9 @@ public class Build implements com.th4.edge.decoboon.carryover.service.project.bu
     @Override
     @Transactional
     public CarryoverProject call(CarryoverProject request) {
-        Employee current = accessContext.requireBoss(employee);
+        Employee current = accessContext.requireManager(employee);
         CarryoverProject item = accessContext.requireItem(current, itemId);
+        accessContext.requireSameStore(current, item);
         return applyContext.apply(item, current);
     }
 }

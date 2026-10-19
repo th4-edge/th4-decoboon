@@ -75,9 +75,28 @@ public class FinanceAccessContext {
                 EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
     }
 
-    /** 手工作废、更正和冲正重记仅允许企业负责人执行。 */
+    /** 手工作废、更正和冲正重记仅允许企业负责人执行（历史入口保留）。 */
     public Employee requireBoss(Employee principal) {
         return tenantContext.requireRole(principal, EmployeeRole.Boss);
+    }
+
+    /**
+     * 财务高危动作（DEC-075/DEC-076）：BOSS 全企业，店长本店；门店财务/总部财务不自动获得。
+     */
+    public Employee requireHighRiskEditor(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
+    }
+
+    /** 店长执行财务高危动作时，目标流水必须属于本人门店。 */
+    public void requireLedgerScope(Employee principal, Ledger ledger) {
+        if (principal.getRole() != EmployeeRole.StoreManager) {
+            return;
+        }
+        Long currentStoreId = scope(principal).type() == DataScopeType.Store ? scope(principal).storeId() : null;
+        Long ledgerStoreId = ledger == null || ledger.getStore() == null ? null : ledger.getStore().getStoreId();
+        if (currentStoreId == null || !currentStoreId.equals(ledgerStoreId)) {
+            throw new DefinedException(new DefaultErrorCode("404", "手工流水不存在或无权访问"));
+        }
     }
 
     public Project resolveProject(Employee current, Long projectId) {

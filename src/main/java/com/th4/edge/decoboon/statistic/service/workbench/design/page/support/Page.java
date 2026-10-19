@@ -42,8 +42,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/** 设计师设计工作台实现，按客户和房屋的联合事实聚合。 */
-@Note("设计师设计工作台")
+/** 设计工作台实现：设计师看本人，店长看本店，老板看全企业。 */
+@Note("设计工作台")
 @Properties(allow = {
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "status"}),
@@ -92,12 +92,22 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
         Long comId = current.getCompany().getComId();
         Long empId = current.getEmpId();
         boolean boss = current.getRole() == EmployeeRole.Boss;
+        boolean storeManager = current.getRole() == EmployeeRole.StoreManager;
+        Long storeId = current.getStore() == null ? null : current.getStore().getStoreId();
+        if (storeManager && storeId == null) {
+            return List.of();
+        }
 
         List<Customer> assignedCustomers = boss
                 ? customerRepository.findByCompany_ComId(comId)
+                : storeManager
+                ? customerRepository.findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(comId, storeId)
                 : customerRepository.findByCompany_ComIdAndDesigner_EmpId(comId, empId);
-        List<Property> assignedProperties = boss ? List.of() : propertyRepository
-                .findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(comId, empId);
+        List<Property> assignedProperties = boss
+                ? List.of()
+                : storeManager
+                ? propertyRepository.findByCompany_ComIdAndStore_StoreIdOrderByPropertyIdDesc(comId, storeId)
+                : propertyRepository.findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(comId, empId);
         if (assignedCustomers.isEmpty() && assignedProperties.isEmpty()) {
             return List.of();
         }
@@ -118,7 +128,9 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
                 .filter(property -> property.getCompany() != null && comId.equals(property.getCompany().getComId()))
                 .filter(property -> !CLOSED_PROPERTY_STATUSES.contains(property.getStatus()))
                 .filter(property -> property.getCustomer() != null)
-                .filter(property -> boss || assignedTo(property, current, customerById))
+                .filter(property -> boss || (storeManager
+                        ? inStore(property, storeId)
+                        : assignedTo(property, current, customerById)))
                 .filter(property -> DESIGN_STAGE_CUSTOMER_STATUSES.contains(property.getCustomer().getStatus()))
                 .sorted(Comparator.comparing(Property::getPropertyId))
                 .toList();
@@ -203,6 +215,10 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
         items.sort(Comparator.comparing(DesignWorkbenchItem::getStayDays, Comparator.reverseOrder())
                 .thenComparing(DesignWorkbenchItem::getPropertyId, Comparator.reverseOrder()));
         return items;
+    }
+
+    private boolean inStore(Property property, Long storeId) {
+        return property.getStore() != null && storeId.equals(property.getStore().getStoreId());
     }
 
     private boolean assignedTo(Property property, Employee current, Map<Long, Customer> assignedCustomers) {

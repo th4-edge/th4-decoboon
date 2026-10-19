@@ -115,11 +115,23 @@ public class CatalogImportContext {
         this.tenantContext = tenantContext;
     }
 
-    /** 批量导入 P0 仅企业负责人可发起；服务端强校验，不依赖页面隐藏。 */
+    /** 批量导入 P0 仅企业负责人可发起（历史入口保留）。 */
     public Employee requireBoss(Employee principal) {
         Employee current = tenantContext.requireEmployee(principal);
         if (current.getRole() != EmployeeRole.Boss) {
             throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以批量导入报价项目库"));
+        }
+        return current;
+    }
+
+    /**
+     * 报价项目库属于企业级主数据（DEC-075）：BOSS 与店长均可批量导入。
+     * 导入结果影响全企业，页面需提示影响范围并保留审计。
+     */
+    public Employee requireMaintainer(Employee principal) {
+        Employee current = tenantContext.requireEmployee(principal);
+        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或店长可以批量导入报价项目库"));
         }
         return current;
     }

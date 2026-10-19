@@ -190,9 +190,12 @@ public class CarryoverPlanContext {
         CarryoverProject item = requirePlanItem(current, itemId);
         Project project = requireProject(item);
         projectAccessContext.requirePlanEditor(project, current);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Pm) {
-            throw invalid("只有项目经理或企业负责人可以确认接管后计划");
+        if (current.getRole() != EmployeeRole.Boss
+                && current.getRole() != EmployeeRole.Pm
+                && current.getRole() != EmployeeRole.StoreManager) {
+            throw invalid("只有项目经理、企业负责人或本店店长可以确认接管后计划");
         }
+        accessContext.requireSameStore(current, item);
         if (item.getPlanStatus() == CarryoverPlanStatus.Confirmed
                 || item.getPlanStatus() == CarryoverPlanStatus.Locked) {
             return item;

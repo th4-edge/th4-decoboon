@@ -29,6 +29,7 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -175,6 +176,50 @@ class DesignerWorkbenchAggregationTest {
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
                 tenant, customers, designs, requirements, properties, measures, quotes);
         List<DesignWorkbenchItem> result = provider.call(boss);
+
+        assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));
+    }
+
+    @Test
+    void storeManagerDesignWorkbenchShouldSeeStoreProperties() {
+        Employee manager = employee(30L, EmployeeRole.StoreManager);
+        Store store = new Store();
+        store.setStoreId(5L);
+        manager.setStore(store);
+        Employee designer = employee(10L, EmployeeRole.Designer);
+        designer.setStore(store);
+        Customer customer = customer(20L, designer);
+        customer.setStore(store);
+        Property property = property(101L, customer, designer, PropertyStatus.Designing);
+        property.setStore(store);
+
+        CustomerRepository customers = mock(CustomerRepository.class);
+        PropertyRepository properties = mock(PropertyRepository.class);
+        DesignRepository designs = mock(DesignRepository.class);
+        RequirementRepository requirements = mock(RequirementRepository.class);
+        MeasureRepository measures = mock(MeasureRepository.class);
+        QuoteRepository quotes = mock(QuoteRepository.class);
+        TenantContext tenant = mock(TenantContext.class);
+        when(tenant.requireEmployee(manager)).thenReturn(manager);
+        when(customers.findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(1L, 5L))
+                .thenReturn(List.of(customer));
+        when(properties.findByCompany_ComIdAndStore_StoreIdOrderByPropertyIdDesc(1L, 5L))
+                .thenReturn(List.of(property));
+        when(properties.findByCompany_ComIdAndCustomer_CustIdIn(1L, List.of(20L)))
+                .thenReturn(List.of(property));
+        when(designs.findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(1L, List.of(101L)))
+                .thenReturn(List.of());
+        when(requirements.findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(1L, List.of(101L)))
+                .thenReturn(List.of());
+        when(measures.findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(1L, List.of(101L)))
+                .thenReturn(List.of());
+        when(quotes.findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
+                1L, List.of(101L), List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
+                .thenReturn(List.of());
+
+        var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
+                tenant, customers, designs, requirements, properties, measures, quotes);
+        List<DesignWorkbenchItem> result = provider.call(manager);
 
         assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));
     }

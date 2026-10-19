@@ -76,9 +76,10 @@ public class Delete implements com.th4.edge.decoboon.finance.service.ledgers.del
     @Override
     @Transactional
     public Ledger call(Ledger request) {
-        Employee current = accessContext.requireBoss(employee);
+        Employee current = accessContext.requireHighRiskEditor(employee);
         Ledger ledger = ledgerRepository.findByCompany_ComIdAndLedgerId(current.getCompany().getComId(), ledgerId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "手工流水不存在或无权访问")));
+        accessContext.requireLedgerScope(current, ledger);
         if (ledger.getSource() != LedgerSource.Manual) {
             throw new DefinedException(new DefaultErrorCode("400", "仅手工记账流水允许作废"));
         }

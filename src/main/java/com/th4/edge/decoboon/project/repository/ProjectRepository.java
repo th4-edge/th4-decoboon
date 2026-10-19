@@ -56,6 +56,9 @@ List<Project> findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(L
 
     Optional<Project> findByProjectIdAndCompany_ComId(Long projectId, Long comId);
 
+    /** 门店经营利润：按项目自身门店快照聚合（DEC-070/MET-011）。 */
+    List<Project> findByCompany_ComIdAndStore_StoreId(Long comId, Long storeId);
+
     Optional<Project> findFirstByCompany_ComIdAndQuote_QuoteIdOrderByProjectIdDesc(Long comId, Long quoteId);
 
 

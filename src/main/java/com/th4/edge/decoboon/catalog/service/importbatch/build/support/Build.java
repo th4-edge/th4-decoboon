@@ -83,7 +83,7 @@ public class Build implements com.th4.edge.decoboon.catalog.service.importbatch.
     @Override
     @Transactional
     public CatalogImportBatch call(CatalogImportBatch request) {
-        Employee current = importContext.requireBoss(employee);
+        Employee current = importContext.requireMaintainer(employee);
         if (file == null || file.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400", "请选择要导入的 .xlsx 或 .csv 模板文件"));
         }

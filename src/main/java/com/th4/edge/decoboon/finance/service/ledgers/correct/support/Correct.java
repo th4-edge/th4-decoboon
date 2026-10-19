@@ -119,8 +119,9 @@ public class Correct implements com.th4.edge.decoboon.finance.service.ledgers.co
     @Override
     @Transactional
     public Ledger call(Ledger request) {
-        Employee current = accessContext.requireBoss(employee);
+        Employee current = accessContext.requireHighRiskEditor(employee);
         Ledger original = requireManual(current, ledgerId);
+        accessContext.requireLedgerScope(current, original);
         BigDecimal total = accessContext.value(amount);
         if (total.signum() <= 0) {
             throw new DefinedException(new DefaultErrorCode("400", "记账金额必须大于 0"));

@@ -87,10 +87,13 @@ public class Update implements com.th4.edge.decoboon.project.service.contractcha
         Specification<ContractChange> byId = (root, query, builder) ->
                 builder.equal(root.get("changeId"), changeId);
         ContractChange change = changeRepository.findOne(
-                        byId.and(accessContext.visibleChild(employee, ContractChange.class, "project")))
+                        byId.and(accessContext.visibleChild(current, ContractChange.class, "project")))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "变更单不存在或无权访问")));
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.Finance) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或财务可以审批合同变更"));
+        // DEC-076：BOSS/财务保留既有审批能力；店长可审批本店变更，数据范围仍由 visibleChild 强制。
+        if (current.getRole() != EmployeeRole.Boss
+                && current.getRole() != EmployeeRole.Finance
+                && current.getRole() != EmployeeRole.StoreManager) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、财务或本店店长可以审批合同变更"));
         }
         if (change.getStatus() != ContractChangeStatus.Pending) {
             throw new DefinedException(new DefaultErrorCode("400", "变更单已处理"));
