@@ -75,8 +75,8 @@ public class Build implements com.th4.edge.decoboon.catalog.service.importtempla
         grant.setName(TEMPLATE_NAME);
         grant.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         grant.setSize((long) bytes.length);
-        // 与其它私有文件一致：对象存储可用时返回预签名地址，否则回退业务域名网关。
-        grant.setUrl(signatureContext.sign(TEMPLATE_KEY));
+        // 小程序 downloadFile 必须走业务域名网关；预签名 OSS 地址会触发 url not in domain list。
+        grant.setUrl(signatureContext.signGateway(TEMPLATE_KEY, TEMPLATE_NAME));
         grant.setExpiresAt(signatureContext.expiresAt());
         return grant;
     }
