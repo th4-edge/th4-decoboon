@@ -1,0 +1,120 @@
+{
+  "collectedAt": "2026-10-20T08:11:32.371053+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-20/20261020-161131",
+  "counts": {
+    "expected": 45,
+    "unknown": 55
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261020-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 1,
+      "firstSeen": "2026-10-20 15:20:05.392",
+      "lastSeen": "2026-10-20 15:20:05.392",
+      "samples": [
+        "[2026-10-20 15:20:05.392] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-57c3fb7d96",
+      "signature": "找不到对应的处理服务:design/items/reorder",
+      "signatureHash": "57c3fb7d96",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 46,
+      "firstSeen": "2026-10-20 13:03:11.309",
+      "lastSeen": "2026-10-20 16:10:32.901",
+      "samples": [
+        "[2026-10-20 13:03:11.309] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:14.663] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:25.489] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:37.226] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:39.771] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-20 01:46:12.748",
+      "lastSeen": "2026-10-20 12:00:30.120",
+      "samples": [
+        "[2026-10-20 01:46:12.748] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "[2026-10-20 08:11:21.411] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "[2026-10-20 12:00:30.120] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-10-20 09:23:59.668",
+      "lastSeen": "2026-10-20 15:46:33.800",
+      "samples": [
+        "[2026-10-20 09:23:59.668] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 14:16:59.117] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 15:19:32.826] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/save处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 15:26:30.893] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 15:31:32.323] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 43,
+      "firstSeen": "2026-10-20 09:23:59.703",
+      "lastSeen": "2026-10-20T16:11:32.241+08:00",
+      "samples": [
+        "[2026-10-20 09:23:59.703] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.708] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.704] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.707] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.720] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-3470d63bd2",
+      "signature": "首次登录请授权手机号",
+      "signatureHash": "3470d63bd2",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 1,
+      "firstSeen": "2026-10-20 15:27:21.430",
+      "lastSeen": "2026-10-20 15:27:21.430",
+      "samples": [
+        "[2026-10-20 15:27:21.430] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

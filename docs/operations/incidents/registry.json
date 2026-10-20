@@ -107,9 +107,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 106,
+      "count": 112,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-10-20T15:46:33.800+08:00",
+      "lastSeen": "2026-10-20 15:46:33.800",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
         "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
@@ -118,7 +118,6 @@
         "[2026-10-20 14:16:59.117] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
       ],
       "reportPaths": [
-        "2026-09-26/20260926-022226",
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
@@ -137,7 +136,8 @@
         "2026-09-17/20260917-014449",
         "2026-09-17/20260917-184110",
         "2026-10-08/20261008-181622",
-        "2026-10-20/20261020-160741"
+        "2026-10-20/20261020-160741",
+        "2026-10-20/20261020-161131"
       ]
     },
     {
@@ -512,9 +512,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 65,
+      "count": 68,
       "firstSeen": "2026-09-17T23:54:36.942+08:00",
-      "lastSeen": "2026-10-20T12:00:30.120+08:00",
+      "lastSeen": "2026-10-20 12:00:30.120",
       "samples": [
         "16438:2026-09-17T23:54:36.942+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
         "[2026-09-20 02:26:19.563] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
@@ -523,7 +523,6 @@
         "2909:2026-09-18T20:04:07.556+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
       ],
       "reportPaths": [
-        "2026-10-06/20261006-184549",
         "2026-10-06/20261006-184950",
         "2026-10-07/20261007-003223",
         "2026-10-07/20261007-012037",
@@ -542,7 +541,8 @@
         "2026-10-17/20261017-123804",
         "2026-10-17/20261017-124308",
         "2026-10-17/20261017-150230",
-        "2026-10-20/20261020-160741"
+        "2026-10-20/20261020-160741",
+        "2026-10-20/20261020-161131"
       ]
     },
     {
@@ -3789,13 +3789,13 @@
       "incidentId": "INC-20261020-57c3fb7d96",
       "signature": "找不到对应的处理服务:design/items/reorder",
       "signatureHash": "57c3fb7d96",
-      "classification": "unknown",
+      "classification": "code_bug",
       "severity": "medium",
-      "status": "open",
-      "actionable": true,
-      "count": 74,
+      "status": "fixed",
+      "actionable": false,
+      "count": 120,
       "firstSeen": "2026-10-20 13:03:11.309",
-      "lastSeen": "2026-10-20T16:07:41.046+08:00",
+      "lastSeen": "2026-10-20 16:10:32.901",
       "samples": [
         "[2026-10-20 13:03:11.309] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
         "[2026-10-20 13:03:14.663] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
@@ -3804,8 +3804,12 @@
         "[2026-10-20 13:03:39.771] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder"
       ],
       "reportPaths": [
-        "2026-10-20/20261020-160741"
-      ]
+        "2026-10-20/20261020-160741",
+        "2026-10-20/20261020-161131"
+      ],
+      "fixedAt": "2026-10-20 16:11:35",
+      "fixedRelease": "/opt/decoboon/releases/20261020-161011",
+      "fixSummary": "根因：Web 已调用 design/items/reorder，但后端未注册 Provider。新增设计分项纯排序接口（整单 itemId 完整校验、只更新 sort，不重算价格），DesignItemReorderTest 3/3 与 ProviderSecurityAcceptanceTest 3/3 通过；release 20261020-160942 部署为 20261020-161011，HTTPS 冒烟返回 tokenIsUndefined，部署后不再出现找不到对应处理服务。"
     },
     {
       "incidentId": "INC-20261020-d379a5ae43",
@@ -4054,5 +4058,5 @@
       ]
     }
   ],
-  "updatedAt": "2026-10-20T08:07:42.276723+00:00"
+  "updatedAt": "2026-10-20T16:11:35+08:00"
 }
