@@ -203,9 +203,10 @@ class ProviderSecurityAcceptanceTest {
         // 蓝图运行时/体检 Provider 已纳入安全面板。
         // => 2026-10-17 店长目标/门店利润新增 2 条（statistic/target/info、statistic/store/profit/report）。
         // 2026-10-20 设计方案分项纯排序新增 1 条 protected：design/items/reorder。
-        // => 当前 Provider 面板为 508（public 16 + protected 492）。
-        assertThat(routes).hasSize(508);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(492);
+        // 2026-10-20 收款冲正新增 2 条 protected：finance/receipt/info、finance/receipt/reverse。
+        // => 当前 Provider 面板为 510（public 16 + protected 494）。
+        assertThat(routes).hasSize(510);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(494);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -247,6 +248,8 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("finance/ledger/update");
         assertUnauthorized("finance/ledger/correct");
         assertUnauthorized("finance/ledger/delete");
+        assertUnauthorized("finance/receipt/info");
+        assertUnauthorized("finance/receipt/reverse");
         assertUnauthorized("finance/opening-balance/save");
         assertUnauthorized("finance/opening-balance/page");
         assertUnauthorized("carryover/payment-plan/save");

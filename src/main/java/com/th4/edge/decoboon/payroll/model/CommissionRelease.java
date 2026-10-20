@@ -82,6 +82,20 @@ public class CommissionRelease extends AuditModel {
     @Column(length = 500)
     private String remark;
 
+    @Note("是否因收款冲正反释放")
+    @Column(nullable = false)
+    private Boolean reversed = Boolean.FALSE;
+
+    @Note("反释放时间")
+    private LocalDateTime reversedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reversed_by_id")
+    private Employee reversedBy;
+
+    @Column(name = "reverse_reason", length = 500)
+    private String reverseReason;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee createdBy;
@@ -108,4 +122,12 @@ public class CommissionRelease extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
+    public Boolean getReversed() { return reversed; }
+    public void setReversed(Boolean reversed) { this.reversed = reversed; }
+    public LocalDateTime getReversedAt() { return reversedAt; }
+    public void setReversedAt(LocalDateTime reversedAt) { this.reversedAt = reversedAt; }
+    public Employee getReversedBy() { return reversedBy; }
+    public void setReversedBy(Employee reversedBy) { this.reversedBy = reversedBy; }
+    public String getReverseReason() { return reverseReason; }
+    public void setReverseReason(String reverseReason) { this.reverseReason = reverseReason; }
 }

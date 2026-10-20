@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = FinanceProjectReport.class,
                 properties = {"project", "contractAmount", "contractRevenue", "receivableAmount", "receivedAmount", "outstandingAmount",
-                        "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
+                        "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount", "receiptCount", "paymentCount", "grossReceiptAmount", "reversalAmount", "receiptAmount", "paymentAmount",
                         "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "materialAmount", "materialCost", "salaryAmount", "employeeSalaryAmount", "employeeCommissionAmount",
                         "laborCost", "projectPaymentAmount", "projectCost", "otherPayableAmount", "expenseAllocation",
                         "estimatedCost", "actualCost", "manualIncomeAmount", "manualCostAmount", "totalCost", "profitAmount", "costComplete", "costIncompleteCount",

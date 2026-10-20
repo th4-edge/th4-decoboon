@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface CommissionReleaseRepository extends JpaRepository<CommissionRelease, Long>, JpaSpecificationExecutor<CommissionRelease> {
     Optional<CommissionRelease> findByCompany_ComIdAndCommissionItem_CommissionIdAndReceipt_ReceiptId(Long comId, Long commissionId, Long receiptId);
     List<CommissionRelease> findByCommissionItem_CommissionIdOrderByReleasedAtAsc(Long commissionId);
+    List<CommissionRelease> findByCompany_ComIdAndReceipt_ReceiptId(Long comId, Long receiptId);
 }

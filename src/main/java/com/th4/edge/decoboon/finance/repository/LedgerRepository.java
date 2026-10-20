@@ -25,6 +25,9 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long>,
 
     java.util.Optional<Ledger> findByCompany_ComIdAndLedgerId(Long comId, Long ledgerId);
 
+    java.util.Optional<Ledger> findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+            Long comId, com.th4.edge.decoboon.finance.configure.LedgerSource source, Long sourceId);
+
     /**
      * 门店经营利润组件（MET-011）：门店非项目收入/直接归属企业费用。
      * 只统计未作废、无项目关联、手工用途明确的流水。

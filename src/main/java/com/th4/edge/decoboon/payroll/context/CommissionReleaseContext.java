@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.payroll.context;
 
+import com.th4.edge.decoboon.finance.configure.ReceiptStatus;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.payroll.configure.CommissionStatus;
@@ -42,6 +43,7 @@ public class CommissionReleaseContext {
         List<Receipt> receipts = receiptRepository
                 .findByCompany_ComIdAndProject_ProjectIdOrderByReceivedAtDesc(comId, projectId);
         BigDecimal cumulative = receipts.stream()
+                .filter(item -> item.getStatus() == ReceiptStatus.Active)
                 .filter(item -> item.getReceiptId() == null || receipt.getReceiptId() == null
                         || item.getReceiptId() <= receipt.getReceiptId())
                 .map(item -> item.getAmount() == null ? BigDecimal.ZERO : item.getAmount())

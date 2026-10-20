@@ -11,7 +11,8 @@ public enum LedgerSource implements Enumerable<String> {
     Refund("客户退款"),
     Payment("业务付款"),
     Manual("手工记账"),
-    Adjustment("调整冲销");
+    Adjustment("调整冲销"),
+    ReceiptReversal("收款冲正");
 
     private final String name;
 

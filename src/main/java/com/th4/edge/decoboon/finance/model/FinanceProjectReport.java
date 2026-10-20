@@ -22,6 +22,8 @@ public class FinanceProjectReport {
     private BigDecimal unpaidAmount = BigDecimal.ZERO;
     private Integer receiptCount = 0;
     private Integer paymentCount = 0;
+    private BigDecimal grossReceiptAmount = BigDecimal.ZERO;
+    private BigDecimal reversalAmount = BigDecimal.ZERO;
     private BigDecimal receiptAmount = BigDecimal.ZERO;
     private BigDecimal paymentAmount = BigDecimal.ZERO;
     private BigDecimal monthReceiptAmount = BigDecimal.ZERO;
@@ -88,6 +90,10 @@ public class FinanceProjectReport {
     public void setReceiptCount(Integer receiptCount) { this.receiptCount = receiptCount; }
     public Integer getPaymentCount() { return paymentCount; }
     public void setPaymentCount(Integer paymentCount) { this.paymentCount = paymentCount; }
+    public BigDecimal getGrossReceiptAmount() { return grossReceiptAmount; }
+    public void setGrossReceiptAmount(BigDecimal grossReceiptAmount) { this.grossReceiptAmount = grossReceiptAmount; }
+    public BigDecimal getReversalAmount() { return reversalAmount; }
+    public void setReversalAmount(BigDecimal reversalAmount) { this.reversalAmount = reversalAmount; }
     public BigDecimal getReceiptAmount() { return receiptAmount; }
     public void setReceiptAmount(BigDecimal receiptAmount) { this.receiptAmount = receiptAmount; }
     public BigDecimal getPaymentAmount() { return paymentAmount; }

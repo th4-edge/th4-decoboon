@@ -20,4 +20,7 @@ public interface ReceiptRepository extends JpaRepository<Receipt, Long>,
     List<Receipt> findTop200ByCompany_ComIdOrderByReceivedAtDesc(Long comId);
 
     Optional<Receipt> findByCompany_ComIdAndIdempotencyKey(Long comId, String idempotencyKey);
+
+    @EntityGraph(attributePaths = {"project", "receivable", "customer", "owner", "store", "team", "createdBy", "reversedBy"})
+    Optional<Receipt> findByCompany_ComIdAndReceiptId(Long comId, Long receiptId);
 }

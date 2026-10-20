@@ -27,7 +27,8 @@ import java.util.List;
 @Properties(allow = {
         @AllowProperties(model = Receipt.class,
                 properties = {"receiptId", "project", "receivable", "customer", "amount", "account", "receivedAt",
-                        "payerName", "voucherUrl", "remark", "createdBy", "createTime"}),
+                        "payerName", "voucherUrl", "remark", "createdBy", "status", "reversedAt",
+                        "reversedBy", "reversalReason", "createTime"}),
         @AllowProperties(model = Receivable.class,
                 properties = {"receivableId", "name", "type", "amount", "receivedAmount", "dueDate", "status", "property" }),
         @AllowProperties(model = Project.class,

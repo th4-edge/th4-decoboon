@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
                 properties = {"projectCount", "activeProjectCount", "contractAmount", "receivableAmount", "receivableCount", "receivedAmount",
                         "outstandingAmount", "overdueAmount", "payableAmount", "paidAmount", "unpaidAmount",
                         "materialPayableAmount", "salaryPayableAmount", "employeeSalaryPayableAmount", "employeeCommissionPayableAmount", "projectPayableAmount", "otherPayableAmount",
-                        "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receivableCount", "receiptCount", "paymentCount", "receiptAmount", "paymentAmount",
+                        "monthIncome", "monthExpense", "monthNetCashFlowAmount", "receivableCount", "receiptCount", "paymentCount", "grossReceiptAmount", "reversalAmount", "receiptAmount", "paymentAmount",
                         "monthReceiptAmount", "monthPaymentAmount", "urgentPayableAmount", "cashBalance", "openingBalanceAmount", "openingBalanceCaptured", "estimatedCost", "actualCost",
                         "manualIncomeAmount", "manualCostAmount",
                         "costComplete", "costIncompleteProjectCount", "costIncompleteItemCount",

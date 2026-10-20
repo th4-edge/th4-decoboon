@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
+import com.th4.edge.decoboon.finance.configure.ReceiptStatus;
 import com.th4.edge.decoboon.finance.model.FinanceProjectReport;
 import com.th4.edge.decoboon.finance.model.FinanceSummary;
 import com.th4.edge.decoboon.finance.model.Ledger;
@@ -186,11 +187,18 @@ public class FinanceReportContext {
                 .filter(item -> item.getDirection() == LedgerDirection.Expense && sameMonth(item.getOccurredAt(), month))
                 .map(Ledger::getAmount)));
         summary.setMonthNetCashFlowAmount(summary.getMonthIncome().subtract(summary.getMonthExpense()));
-        summary.setReceiptCount(receipts.size());
+        List<Receipt> activeReceipts = receipts.stream()
+                .filter(item -> item.getStatus() == ReceiptStatus.Active)
+                .toList();
+        BigDecimal grossReceiptAmount = sum(receipts.stream().map(Receipt::getAmount));
+        BigDecimal activeReceiptAmount = sum(activeReceipts.stream().map(Receipt::getAmount));
+        summary.setGrossReceiptAmount(grossReceiptAmount);
+        summary.setReversalAmount(grossReceiptAmount.subtract(activeReceiptAmount));
+        summary.setReceiptCount(activeReceipts.size());
         summary.setPaymentCount(payments.size());
-        summary.setReceiptAmount(sum(receipts.stream().map(Receipt::getAmount)));
+        summary.setReceiptAmount(activeReceiptAmount);
         summary.setPaymentAmount(sum(payments.stream().map(Payment::getAmount)));
-        summary.setMonthReceiptAmount(sum(receipts.stream()
+        summary.setMonthReceiptAmount(sum(activeReceipts.stream()
                 .filter(item -> sameMonth(item.getReceivedAt(), month))
                 .map(Receipt::getAmount)));
         summary.setMonthPaymentAmount(sum(payments.stream()
@@ -354,11 +362,18 @@ public class FinanceReportContext {
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
         YearMonth month = YearMonth.now();
-        report.setReceiptCount(receipts.size());
+        List<Receipt> activeReceipts = receipts.stream()
+                .filter(item -> item.getStatus() == ReceiptStatus.Active)
+                .toList();
+        BigDecimal grossReceiptAmount = sum(receipts.stream().map(Receipt::getAmount));
+        BigDecimal activeReceiptAmount = sum(activeReceipts.stream().map(Receipt::getAmount));
+        report.setGrossReceiptAmount(grossReceiptAmount);
+        report.setReversalAmount(grossReceiptAmount.subtract(activeReceiptAmount));
+        report.setReceiptCount(activeReceipts.size());
         report.setPaymentCount(payments.size());
-        report.setReceiptAmount(sum(receipts.stream().map(Receipt::getAmount)));
+        report.setReceiptAmount(activeReceiptAmount);
         report.setPaymentAmount(sum(payments.stream().map(Payment::getAmount)));
-        report.setMonthReceiptAmount(sum(receipts.stream()
+        report.setMonthReceiptAmount(sum(activeReceipts.stream()
                 .filter(item -> sameMonth(item.getReceivedAt(), month))
                 .map(Receipt::getAmount)));
         report.setMonthPaymentAmount(sum(payments.stream()

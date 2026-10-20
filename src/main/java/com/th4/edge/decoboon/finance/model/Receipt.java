@@ -8,6 +8,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.FundAccount;
+import com.th4.edge.decoboon.finance.configure.ReceiptStatus;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
@@ -33,6 +34,7 @@ import jakarta.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /** 实际客户收款，一笔收款对应一个应收节点。 */
 @Note("客户收款")
@@ -133,6 +135,23 @@ public class Receipt extends AuditModel {
     @Column(name = "idempotency_fingerprint", length = 64)
     private String idempotencyFingerprint;
 
+    @Note("收款状态")
+    @Enumerated(EnumType.STRING)
+    @Column(length = 16, nullable = false)
+    private ReceiptStatus status = ReceiptStatus.Active;
+
+    @Note("冲正时间")
+    private LocalDateTime reversedAt;
+
+    @Note("冲正操作人")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reversed_by_id")
+    private Employee reversedBy;
+
+    @Note("冲正原因快照")
+    @Column(name = "reversal_reason", length = 500)
+    private String reversalReason;
+
     public Long getReceiptId() { return receiptId; }
     public void setReceiptId(Long receiptId) { this.receiptId = receiptId; }
     public Company getCompany() { return company; }
@@ -165,6 +184,14 @@ public class Receipt extends AuditModel {
     public void setIdempotencyKey(String idempotencyKey) { this.idempotencyKey = idempotencyKey; }
     public String getIdempotencyFingerprint() { return idempotencyFingerprint; }
     public void setIdempotencyFingerprint(String idempotencyFingerprint) { this.idempotencyFingerprint = idempotencyFingerprint; }
+    public ReceiptStatus getStatus() { return status; }
+    public void setStatus(ReceiptStatus status) { this.status = status; }
+    public LocalDateTime getReversedAt() { return reversedAt; }
+    public void setReversedAt(LocalDateTime reversedAt) { this.reversedAt = reversedAt; }
+    public Employee getReversedBy() { return reversedBy; }
+    public void setReversedBy(Employee reversedBy) { this.reversedBy = reversedBy; }
+    public String getReversalReason() { return reversalReason; }
+    public void setReversalReason(String reversalReason) { this.reversalReason = reversalReason; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
 }

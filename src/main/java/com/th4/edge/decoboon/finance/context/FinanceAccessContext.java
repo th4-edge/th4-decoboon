@@ -87,6 +87,19 @@ public class FinanceAccessContext {
         return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
     }
 
+    /** 店长执行财务高危动作时，目标收款必须属于本人门店。 */
+    public void requireReceiptScope(Employee principal,
+                                    com.th4.edge.decoboon.finance.model.Receipt receipt) {
+        if (principal.getRole() != EmployeeRole.StoreManager) {
+            return;
+        }
+        Long currentStoreId = scope(principal).type() == DataScopeType.Store ? scope(principal).storeId() : null;
+        Long receiptStoreId = receipt == null || receipt.getStore() == null ? null : receipt.getStore().getStoreId();
+        if (currentStoreId == null || !currentStoreId.equals(receiptStoreId)) {
+            throw new DefinedException(new DefaultErrorCode("404", "收款记录不存在或无权访问"));
+        }
+    }
+
     /** 店长执行财务高危动作时，目标流水必须属于本人门店。 */
     public void requireLedgerScope(Employee principal, Ledger ledger) {
         if (principal.getRole() != EmployeeRole.StoreManager) {
