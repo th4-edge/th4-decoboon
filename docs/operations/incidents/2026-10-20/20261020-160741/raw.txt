@@ -1,0 +1,460 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-10-20T16:07:42+08:00
+ 16:07:42 up 34 days, 14:55,  1 user,  load average: 0.00, 0.00, 0.00
+since=2 hours ago
+== SERVICE ==
+enabled
+active
+MainPID=292714
+ExecMainStartTimestamp=Mon 2026-10-19 13:25:35 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20261019-132500
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks     Used Available Capacity Mounted on
+/dev/vda3         40901312 21984756  17026188      57% /
+/dev/vda3         40901312 21984756  17026188      57% /
+/dev/vda3         40901312 21984756  17026188      57% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        3959         421         524        3897        3496
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-10-20 01:46:12.748] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp
+[2026-10-20 08:11:21.411] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp
+[2026-10-20 09:23:59.668] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-20 09:23:59.703] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 09:23:59.708] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 09:23:59.704] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 09:23:59.707] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 09:23:59.720] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 09:23:59.752] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 12:00:30.120] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp
+[2026-10-20 13:00:58.020] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 13:03:11.309] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:03:14.663] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:03:25.489] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:03:37.226] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:03:39.771] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:03:44.379] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:05:05.077] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:05:07.468] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:05:09.237] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:05:11.589] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:05:13.500] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:05:15.400] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:08:32.034] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:18:46.457] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:19:04.962] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:19:06.910] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:19:10.823] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:19:14.221] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:21:29.795] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 13:23:00.796] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 14:16:59.117] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-20 14:16:59.157] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 14:16:59.162] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 14:16:59.172] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 14:16:59.189] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 14:16:59.239] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 14:16:59.255] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:19:32.826] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/save处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-20 15:19:53.070] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/save处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:20:05.392] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误
+[2026-10-20 15:20:19.648] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:23:17.407] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:23:20.159] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:25:13.218] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:26:30.893] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-20 15:26:30.895] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:26:30.900] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:26:30.920] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:26:30.926] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:26:30.949] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:26:30.950] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:27:21.430] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-10-20 15:31:32.323] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-20 15:33:54.647] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:36:18.648] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:36:41.702] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:37:02.672] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:37:16.196] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:39:24.472] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:45:39.709] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:46:17.296] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 15:46:33.800] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+[2026-10-20 15:46:33.805] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:46:33.809] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:46:33.809] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:46:33.818] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:47:10.237] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:47:10.259] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:47:10.266] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:47:10.273] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:47:10.285] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:55:17.739] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:55:17.769] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:55:17.794] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:55:17.804] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:55:17.806] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 15:55:17.807] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/marketer/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 16:05:44.863] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 16:05:50.220] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 16:07:26.348] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 16:07:39.017] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-20 16:07:39.328] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 16:07:41.046] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+[2026-10-20 16:07:42.171] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-10-19 13:25:45.422] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-10-19 13:25:47.480] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-10-19 13:25:50.730] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-10-19 13:25:58.130] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-19 13:25:58.407] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-19 13:25:58.429] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+726:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+827:2026-10-19T13:26:20.146+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+828:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+929:2026-10-19T13:26:24.462+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+930:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1034:2026-10-19T13:26:24.647+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/target/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1035:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1139:2026-10-19T13:26:24.843+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/target/save处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1140:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1244:2026-10-19T13:26:25.011+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/store/profit/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1246:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1347:2026-10-19T13:27:46.689+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1348:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1449:2026-10-19T13:28:06.205+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/assistant/ask处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1450:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1554:2026-10-19T13:28:06.331+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/assistant/suggestions处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1555:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:material/health/report
+1640:2026-10-19T13:28:06.550+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/health/report处理失败:找不到对应的处理服务:material/health/report
+1641:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1742:2026-10-19T13:28:06.675+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : blueprint/runtime/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1743:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1844:2026-10-19T13:28:06.836+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : blueprint/check/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1845:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1946:2026-10-19T13:28:25.403+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1947:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2048:2026-10-19T13:28:25.512+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/assistant/ask处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2049:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2150:2026-10-19T13:28:31.925+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2151:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2255:2026-10-19T13:28:32.047+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/sheet/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2256:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2360:2026-10-19T13:28:32.219+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/settlement/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2361:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2465:2026-10-19T13:57:19.811+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/sheet/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2466:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2570:2026-10-19T13:57:19.926+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/sheet/enums处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2571:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2672:2026-10-19T13:57:20.133+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2673:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2777:2026-10-19T13:57:20.250+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/template/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2778:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2879:2026-10-19T14:05:44.107+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2880:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+2981:2026-10-19T14:06:01.633+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+2982:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3079:2026-10-19T14:08:10.078+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3080:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3180:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3266:2026-10-19T14:21:30.285+08:00 ERROR 292714 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3281:2026-10-19T14:21:30.302+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3282:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3379:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3426:2026-10-19T14:21:30.312+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3477:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3574:2026-10-19T14:21:30.324+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3575:2026-10-19T14:21:30.336+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3576:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3676:2026-10-19T14:21:30.368+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3677:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3777:2026-10-19T14:21:30.375+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3779:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3876:2026-10-19T14:48:03.021+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+3877:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+3977:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4074:2026-10-19T14:48:03.051+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4075:2026-10-19T14:48:03.052+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4076:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4173:2026-10-19T14:48:03.062+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4174:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4274:2026-10-19T14:48:03.082+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4275:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4375:2026-10-19T14:48:03.097+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4376:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+4476:2026-10-19T14:48:03.100+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+4478:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:queue
+4563:2026-10-19T20:50:54.188+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : queue处理失败:找不到对应的处理服务:queue
+4564:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:settings
+4649:2026-10-19T20:50:54.201+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : settings处理失败:找不到对应的处理服务:settings
+4650:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/workspace
+4735:2026-10-19T20:50:54.216+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace处理失败:找不到对应的处理服务:contents/workspace
+4736:org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'system' available
+4851:2026-10-19T20:50:54.223+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : system-info处理失败:No bean named 'system' available
+4852:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:status/
+4937:2026-10-19T20:50:54.228+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : status/处理失败:找不到对应的处理服务:status/
+4938:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/workspace/
+5023:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:env
+5108:2026-10-19T20:50:54.247+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace/处理失败:找不到对应的处理服务:contents/workspace/
+5109:2026-10-19T20:50:54.249+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : env处理失败:找不到对应的处理服务:env
+5110:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/root/
+5195:2026-10-19T20:50:54.254+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root/处理失败:找不到对应的处理服务:contents/root/
+5196:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:terminals
+5281:2026-10-19T20:50:54.268+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : terminals处理失败:找不到对应的处理服务:terminals
+5282:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/.env
+5367:2026-10-19T20:50:54.273+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/.env处理失败:找不到对应的处理服务:contents/.env
+5368:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:tags
+5453:2026-10-19T20:50:54.352+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : tags处理失败:找不到对应的处理服务:tags
+5454:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:sessions
+5539:2026-10-19T20:50:54.371+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : sessions处理失败:找不到对应的处理服务:sessions
+5540:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:config
+5625:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:status
+5710:2026-10-19T20:50:54.392+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config
+5711:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/
+5796:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:version
+5797:2026-10-19T20:50:54.400+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/处理失败:找不到对应的处理服务:contents/
+5798:2026-10-19T20:50:54.396+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : status处理失败:找不到对应的处理服务:status
+5883:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:spec
+5968:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:object_info
+5969:2026-10-19T20:50:54.410+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : version处理失败:找不到对应的处理服务:version
+6054:2026-10-19T20:50:54.410+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : spec处理失败:找不到对应的处理服务:spec
+6055:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system_stats
+6140:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:kernels
+6225:2026-10-19T20:50:54.414+08:00 ERROR 292714 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : object_info处理失败:找不到对应的处理服务:object_info
+6226:2026-10-19T20:50:54.415+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : system_stats处理失败:找不到对应的处理服务:system_stats
+6227:2026-10-19T20:50:54.419+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : kernels处理失败:找不到对应的处理服务:kernels
+6228:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/root
+6313:2026-10-19T20:50:54.441+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root处理失败:找不到对应的处理服务:contents/root
+6314:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:config/
+6399:2026-10-19T20:50:54.492+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : config/处理失败:找不到对应的处理服务:config/
+6400:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:
+6485:2026-10-19T20:50:55.051+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:
+6486:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/root
+6571:2026-10-19T20:51:54.183+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root处理失败:找不到对应的处理服务:contents/root
+6572:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/.env
+6657:2026-10-19T20:51:54.214+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/.env处理失败:找不到对应的处理服务:contents/.env
+6658:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/
+6743:2026-10-19T20:51:54.233+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/处理失败:找不到对应的处理服务:contents/
+6744:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:version
+6829:2026-10-19T20:51:54.241+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : version处理失败:找不到对应的处理服务:version
+6830:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:tags
+6915:2026-10-19T20:51:54.255+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : tags处理失败:找不到对应的处理服务:tags
+6916:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:status/
+7001:2026-10-19T20:51:54.276+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : status/处理失败:找不到对应的处理服务:status/
+7002:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/workspace
+7087:2026-10-19T20:51:54.297+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace处理失败:找不到对应的处理服务:contents/workspace
+7088:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:env
+7173:2026-10-19T20:51:54.310+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : env处理失败:找不到对应的处理服务:env
+7174:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:terminals
+7259:2026-10-19T20:51:54.318+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : terminals处理失败:找不到对应的处理服务:terminals
+7260:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:object_info
+7345:2026-10-19T20:51:54.332+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : object_info处理失败:找不到对应的处理服务:object_info
+7346:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:system_stats
+7431:2026-10-19T20:51:54.352+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : system_stats处理失败:找不到对应的处理服务:system_stats
+7432:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:kernels
+7517:2026-10-19T20:51:54.354+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : kernels处理失败:找不到对应的处理服务:kernels
+7518:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/workspace/
+7603:2026-10-19T20:51:54.368+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace/处理失败:找不到对应的处理服务:contents/workspace/
+7604:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:status
+7689:2026-10-19T20:51:54.374+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : status处理失败:找不到对应的处理服务:status
+7690:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:spec
+7775:2026-10-19T20:51:54.387+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : spec处理失败:找不到对应的处理服务:spec
+7776:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:settings
+7861:2026-10-19T20:51:54.393+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : settings处理失败:找不到对应的处理服务:settings
+7862:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:contents/root/
+7947:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:queue
+8032:2026-10-19T20:51:54.406+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root/处理失败:找不到对应的处理服务:contents/root/
+8033:2026-10-19T20:51:54.406+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : queue处理失败:找不到对应的处理服务:queue
+8034:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:config
+8119:2026-10-19T20:51:54.423+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config
+8120:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:sessions
+8205:2026-10-19T20:51:54.431+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : sessions处理失败:找不到对应的处理服务:sessions
+8206:org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'system' available
+8321:2026-10-19T20:51:54.435+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : system-info处理失败:No bean named 'system' available
+8322:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:config/
+8407:2026-10-19T20:51:54.547+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : config/处理失败:找不到对应的处理服务:config/
+8408:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+8493:2026-10-20T01:46:12.748+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+8494:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+8579:2026-10-20T08:11:21.411+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+8580:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+8677:2026-10-20T09:23:59.668+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+8678:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8778:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8779:2026-10-20T09:23:59.703+08:00 ERROR 292714 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+8876:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+8973:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9021:2026-10-20T09:23:59.704+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9074:2026-10-20T09:23:59.708+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9075:2026-10-20T09:23:59.707+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9076:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9176:2026-10-20T09:23:59.720+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9177:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9277:2026-10-20T09:23:59.752+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9279:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:mcp
+9364:2026-10-20T12:00:30.120+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp
+9365:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+9462:2026-10-20T13:00:58.020+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+9464:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+9549:2026-10-20T13:03:11.309+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+9550:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+9635:2026-10-20T13:03:14.663+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+9636:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+9721:2026-10-20T13:03:25.489+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+9722:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+9807:2026-10-20T13:03:37.226+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+9808:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+9893:2026-10-20T13:03:39.771+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+9894:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+9979:2026-10-20T13:03:44.379+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+9980:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10065:2026-10-20T13:05:05.077+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10066:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10151:2026-10-20T13:05:07.468+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10152:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10237:2026-10-20T13:05:09.237+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10238:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10323:2026-10-20T13:05:11.589+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10324:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10409:2026-10-20T13:05:13.500+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10410:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10495:2026-10-20T13:05:15.400+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10496:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10581:2026-10-20T13:08:32.034+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10582:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10667:2026-10-20T13:18:46.457+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10668:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10753:2026-10-20T13:19:04.962+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10754:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10839:2026-10-20T13:19:06.910+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10840:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+10925:2026-10-20T13:19:10.823+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+10926:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+11011:2026-10-20T13:19:14.221+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+11012:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+11097:2026-10-20T13:21:29.795+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+11098:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+11183:2026-10-20T13:23:00.796+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+11184:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+11281:2026-10-20T14:16:59.117+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+11282:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11379:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11415:2026-10-20T14:16:59.157+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11480:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11562:2026-10-20T14:16:59.162+08:00 ERROR 292714 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11578:2026-10-20T14:16:59.172+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11579:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11679:2026-10-20T14:16:59.189+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11680:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11780:2026-10-20T14:16:59.239+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11781:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+11881:2026-10-20T14:16:59.255+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+11883:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+11983:2026-10-20T15:19:32.826+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:访问受限，授权已过期，请重新登录后再访问。
+11984:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12084:2026-10-20T15:19:53.070+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12085:com.th4.edge.framework.exception.DefinedException: 手机号或密码错误
+12190:2026-10-20T15:20:05.392+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误
+12191:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+12276:2026-10-20T15:20:19.648+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+12277:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+12362:2026-10-20T15:23:17.407+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+12363:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+12448:2026-10-20T15:23:20.159+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+12449:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+12534:2026-10-20T15:25:13.218+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+12535:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+12632:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12732:2026-10-20T15:26:30.893+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+12733:2026-10-20T15:26:30.895+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12734:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12831:2026-10-20T15:26:30.900+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12832:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+12929:2026-10-20T15:26:30.920+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+12930:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13030:2026-10-20T15:26:30.926+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13031:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13131:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+13159:2026-10-20T15:26:30.949+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13232:2026-10-20T15:26:30.950+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+13235:com.th4.edge.framework.exception.DefinedException: 首次登录请授权手机号
+13340:2026-10-20T15:27:21.430+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号
+13343:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+13440:2026-10-20T15:31:32.323+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+13441:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+13526:2026-10-20T15:33:54.647+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+13527:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+13612:2026-10-20T15:36:18.648+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+13613:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+13698:2026-10-20T15:36:41.702+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+13699:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+13784:2026-10-20T15:37:02.672+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+13785:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+13870:2026-10-20T15:37:16.196+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+13871:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+13956:2026-10-20T15:39:24.472+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+13957:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+14042:2026-10-20T15:45:39.709+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+14043:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+14128:2026-10-20T15:46:17.296+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+14129:com.th4.edge.framework.exception.DefinedException: 访问受限，授权已过期，请重新登录后再访问。
+14226:2026-10-20T15:46:33.800+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。
+14227:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14327:2026-10-20T15:46:33.805+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14328:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14425:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14426:2026-10-20T15:46:33.809+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14523:2026-10-20T15:46:33.809+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14524:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14624:2026-10-20T15:46:33.818+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14626:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14723:2026-10-20T15:47:10.237+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14724:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14829:2026-10-20T15:47:10.259+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14830:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+14927:2026-10-20T15:47:10.266+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : finance/summary/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+14928:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15025:2026-10-20T15:47:10.273+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15026:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15126:2026-10-20T15:47:10.285+08:00 ERROR 292714 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15129:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15226:2026-10-20T15:55:17.739+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15227:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15332:2026-10-20T15:55:17.769+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15333:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15433:2026-10-20T15:55:17.794+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15434:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15534:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15631:2026-10-20T15:55:17.804+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15632:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+15657:2026-10-20T15:55:17.806+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15733:2026-10-20T15:55:17.807+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/marketer/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+15735:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+15820:2026-10-20T16:05:44.863+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+15821:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+15906:2026-10-20T16:05:50.220+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+15907:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+15992:2026-10-20T16:07:26.348+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+15993:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16094:2026-10-20T16:07:39.017+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+16095:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+16180:2026-10-20T16:07:39.328+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+16181:com.th4.edge.framework.exception.DefinedException: 找不到对应的处理服务:design/items/reorder
+16266:2026-10-20T16:07:41.046+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder
+16267:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+16368:2026-10-20T16:07:42.171+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+-- No entries --

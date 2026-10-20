@@ -1,0 +1,574 @@
+{
+  "collectedAt": "2026-10-20T08:07:42.278513+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-20/20261020-160741",
+  "counts": {
+    "unknown": 138,
+    "expected": 114
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261020-c08609e4cc",
+      "signature": "No bean named 'system' available",
+      "signatureHash": "c08609e4cc",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.223+08:00",
+      "lastSeen": "2026-10-19T20:51:54.435+08:00",
+      "samples": [
+        "4851:2026-10-19T20:50:54.223+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : system-info处理失败:No bean named 'system' available",
+        "8321:2026-10-19T20:51:54.435+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : system-info处理失败:No bean named 'system' available"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 2,
+      "firstSeen": "2026-10-20 15:20:05.392",
+      "lastSeen": "2026-10-20T15:20:05.392+08:00",
+      "samples": [
+        "[2026-10-20 15:20:05.392] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "12190:2026-10-20T15:20:05.392+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-f7155d2eba",
+      "signature": "找不到对应的处理服务:",
+      "signatureHash": "f7155d2eba",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-19T20:50:55.051+08:00",
+      "lastSeen": "2026-10-19T20:50:55.051+08:00",
+      "samples": [
+        "6485:2026-10-19T20:50:55.051+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : 处理失败:找不到对应的处理服务:"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-cddd8368fa",
+      "signature": "找不到对应的处理服务:config",
+      "signatureHash": "cddd8368fa",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.392+08:00",
+      "lastSeen": "2026-10-19T20:51:54.423+08:00",
+      "samples": [
+        "5710:2026-10-19T20:50:54.392+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config",
+        "8119:2026-10-19T20:51:54.423+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : config处理失败:找不到对应的处理服务:config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-5f55b30272",
+      "signature": "找不到对应的处理服务:config/",
+      "signatureHash": "5f55b30272",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.492+08:00",
+      "lastSeen": "2026-10-19T20:51:54.547+08:00",
+      "samples": [
+        "6399:2026-10-19T20:50:54.492+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : config/处理失败:找不到对应的处理服务:config/",
+        "8407:2026-10-19T20:51:54.547+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : config/处理失败:找不到对应的处理服务:config/"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-e0e4df6c81",
+      "signature": "找不到对应的处理服务:contents/",
+      "signatureHash": "e0e4df6c81",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.400+08:00",
+      "lastSeen": "2026-10-19T20:51:54.233+08:00",
+      "samples": [
+        "5797:2026-10-19T20:50:54.400+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/处理失败:找不到对应的处理服务:contents/",
+        "6743:2026-10-19T20:51:54.233+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/处理失败:找不到对应的处理服务:contents/"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-b695769ce3",
+      "signature": "找不到对应的处理服务:contents/.env",
+      "signatureHash": "b695769ce3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.273+08:00",
+      "lastSeen": "2026-10-19T20:51:54.214+08:00",
+      "samples": [
+        "5367:2026-10-19T20:50:54.273+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/.env处理失败:找不到对应的处理服务:contents/.env",
+        "6657:2026-10-19T20:51:54.214+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/.env处理失败:找不到对应的处理服务:contents/.env"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-cb81988995",
+      "signature": "找不到对应的处理服务:contents/root",
+      "signatureHash": "cb81988995",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.441+08:00",
+      "lastSeen": "2026-10-19T20:51:54.183+08:00",
+      "samples": [
+        "6313:2026-10-19T20:50:54.441+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root处理失败:找不到对应的处理服务:contents/root",
+        "6571:2026-10-19T20:51:54.183+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root处理失败:找不到对应的处理服务:contents/root"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-04b2780e01",
+      "signature": "找不到对应的处理服务:contents/root/",
+      "signatureHash": "04b2780e01",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.254+08:00",
+      "lastSeen": "2026-10-19T20:51:54.406+08:00",
+      "samples": [
+        "5195:2026-10-19T20:50:54.254+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root/处理失败:找不到对应的处理服务:contents/root/",
+        "8032:2026-10-19T20:51:54.406+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/root/处理失败:找不到对应的处理服务:contents/root/"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-9b624416f3",
+      "signature": "找不到对应的处理服务:contents/workspace",
+      "signatureHash": "9b624416f3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.216+08:00",
+      "lastSeen": "2026-10-19T20:51:54.297+08:00",
+      "samples": [
+        "4735:2026-10-19T20:50:54.216+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace处理失败:找不到对应的处理服务:contents/workspace",
+        "7087:2026-10-19T20:51:54.297+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace处理失败:找不到对应的处理服务:contents/workspace"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-8cfe62be13",
+      "signature": "找不到对应的处理服务:contents/workspace/",
+      "signatureHash": "8cfe62be13",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.247+08:00",
+      "lastSeen": "2026-10-19T20:51:54.368+08:00",
+      "samples": [
+        "5108:2026-10-19T20:50:54.247+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace/处理失败:找不到对应的处理服务:contents/workspace/",
+        "7603:2026-10-19T20:51:54.368+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : contents/workspace/处理失败:找不到对应的处理服务:contents/workspace/"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-57c3fb7d96",
+      "signature": "找不到对应的处理服务:design/items/reorder",
+      "signatureHash": "57c3fb7d96",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 74,
+      "firstSeen": "2026-10-20 13:03:11.309",
+      "lastSeen": "2026-10-20T16:07:41.046+08:00",
+      "samples": [
+        "[2026-10-20 13:03:11.309] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:14.663] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:25.489] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:37.226] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder",
+        "[2026-10-20 13:03:39.771] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/reorder处理失败:找不到对应的处理服务:design/items/reorder"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-d379a5ae43",
+      "signature": "找不到对应的处理服务:env",
+      "signatureHash": "d379a5ae43",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.249+08:00",
+      "lastSeen": "2026-10-19T20:51:54.310+08:00",
+      "samples": [
+        "5109:2026-10-19T20:50:54.249+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : env处理失败:找不到对应的处理服务:env",
+        "7173:2026-10-19T20:51:54.310+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : env处理失败:找不到对应的处理服务:env"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-9464a54906",
+      "signature": "找不到对应的处理服务:kernels",
+      "signatureHash": "9464a54906",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.419+08:00",
+      "lastSeen": "2026-10-19T20:51:54.354+08:00",
+      "samples": [
+        "6227:2026-10-19T20:50:54.419+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : kernels处理失败:找不到对应的处理服务:kernels",
+        "7517:2026-10-19T20:51:54.354+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : kernels处理失败:找不到对应的处理服务:kernels"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-f12c25306b",
+      "signature": "找不到对应的处理服务:material/health/report",
+      "signatureHash": "f12c25306b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-19T13:28:06.550+08:00",
+      "lastSeen": "2026-10-19T13:28:06.550+08:00",
+      "samples": [
+        "1640:2026-10-19T13:28:06.550+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : material/health/report处理失败:找不到对应的处理服务:material/health/report"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-10-20 01:46:12.748",
+      "lastSeen": "2026-10-20T12:00:30.120+08:00",
+      "samples": [
+        "[2026-10-20 01:46:12.748] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "[2026-10-20 08:11:21.411] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "[2026-10-20 12:00:30.120] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "8493:2026-10-20T01:46:12.748+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "8579:2026-10-20T08:11:21.411+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-291e126dc1",
+      "signature": "找不到对应的处理服务:object_info",
+      "signatureHash": "291e126dc1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.414+08:00",
+      "lastSeen": "2026-10-19T20:51:54.332+08:00",
+      "samples": [
+        "6225:2026-10-19T20:50:54.414+08:00 ERROR 292714 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : object_info处理失败:找不到对应的处理服务:object_info",
+        "7345:2026-10-19T20:51:54.332+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : object_info处理失败:找不到对应的处理服务:object_info"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-f03fb63736",
+      "signature": "找不到对应的处理服务:queue",
+      "signatureHash": "f03fb63736",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.188+08:00",
+      "lastSeen": "2026-10-19T20:51:54.406+08:00",
+      "samples": [
+        "4563:2026-10-19T20:50:54.188+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : queue处理失败:找不到对应的处理服务:queue",
+        "8033:2026-10-19T20:51:54.406+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : queue处理失败:找不到对应的处理服务:queue"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-3d9c9432a7",
+      "signature": "找不到对应的处理服务:sessions",
+      "signatureHash": "3d9c9432a7",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.371+08:00",
+      "lastSeen": "2026-10-19T20:51:54.431+08:00",
+      "samples": [
+        "5539:2026-10-19T20:50:54.371+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : sessions处理失败:找不到对应的处理服务:sessions",
+        "8205:2026-10-19T20:51:54.431+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : sessions处理失败:找不到对应的处理服务:sessions"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-bc0d9240b2",
+      "signature": "找不到对应的处理服务:settings",
+      "signatureHash": "bc0d9240b2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.201+08:00",
+      "lastSeen": "2026-10-19T20:51:54.393+08:00",
+      "samples": [
+        "4649:2026-10-19T20:50:54.201+08:00 ERROR 292714 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : settings处理失败:找不到对应的处理服务:settings",
+        "7861:2026-10-19T20:51:54.393+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : settings处理失败:找不到对应的处理服务:settings"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-b09d05e316",
+      "signature": "找不到对应的处理服务:spec",
+      "signatureHash": "b09d05e316",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.410+08:00",
+      "lastSeen": "2026-10-19T20:51:54.387+08:00",
+      "samples": [
+        "6054:2026-10-19T20:50:54.410+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : spec处理失败:找不到对应的处理服务:spec",
+        "7775:2026-10-19T20:51:54.387+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : spec处理失败:找不到对应的处理服务:spec"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-87ca8e0355",
+      "signature": "找不到对应的处理服务:status",
+      "signatureHash": "87ca8e0355",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.396+08:00",
+      "lastSeen": "2026-10-19T20:51:54.374+08:00",
+      "samples": [
+        "5798:2026-10-19T20:50:54.396+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : status处理失败:找不到对应的处理服务:status",
+        "7689:2026-10-19T20:51:54.374+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : status处理失败:找不到对应的处理服务:status"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-92548e36d0",
+      "signature": "找不到对应的处理服务:status/",
+      "signatureHash": "92548e36d0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.228+08:00",
+      "lastSeen": "2026-10-19T20:51:54.276+08:00",
+      "samples": [
+        "4937:2026-10-19T20:50:54.228+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : status/处理失败:找不到对应的处理服务:status/",
+        "7001:2026-10-19T20:51:54.276+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : status/处理失败:找不到对应的处理服务:status/"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-5c021b3968",
+      "signature": "找不到对应的处理服务:system_stats",
+      "signatureHash": "5c021b3968",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.415+08:00",
+      "lastSeen": "2026-10-19T20:51:54.352+08:00",
+      "samples": [
+        "6226:2026-10-19T20:50:54.415+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : system_stats处理失败:找不到对应的处理服务:system_stats",
+        "7431:2026-10-19T20:51:54.352+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : system_stats处理失败:找不到对应的处理服务:system_stats"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-a1c8e8cad5",
+      "signature": "找不到对应的处理服务:tags",
+      "signatureHash": "a1c8e8cad5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.352+08:00",
+      "lastSeen": "2026-10-19T20:51:54.255+08:00",
+      "samples": [
+        "5453:2026-10-19T20:50:54.352+08:00 ERROR 292714 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : tags处理失败:找不到对应的处理服务:tags",
+        "6915:2026-10-19T20:51:54.255+08:00 ERROR 292714 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : tags处理失败:找不到对应的处理服务:tags"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-c123735338",
+      "signature": "找不到对应的处理服务:terminals",
+      "signatureHash": "c123735338",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.268+08:00",
+      "lastSeen": "2026-10-19T20:51:54.318+08:00",
+      "samples": [
+        "5281:2026-10-19T20:50:54.268+08:00 ERROR 292714 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : terminals处理失败:找不到对应的处理服务:terminals",
+        "7259:2026-10-19T20:51:54.318+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : terminals处理失败:找不到对应的处理服务:terminals"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-c8c8259dc3",
+      "signature": "找不到对应的处理服务:version",
+      "signatureHash": "c8c8259dc3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-19T20:50:54.410+08:00",
+      "lastSeen": "2026-10-19T20:51:54.241+08:00",
+      "samples": [
+        "5969:2026-10-19T20:50:54.410+08:00 ERROR 292714 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : version处理失败:找不到对应的处理服务:version",
+        "6829:2026-10-19T20:51:54.241+08:00 ERROR 292714 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : version处理失败:找不到对应的处理服务:version"
+      ],
+      "reportPaths": [
+        "2026-10-20/20261020-160741"
+      ]
+    },
+    {
+      "incidentId": "INC-20261020-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 12,
+      "firstSeen": "2026-10-20 09:23:59.668",
+      "lastSeen": "2026-10-20T15:46:33.800+08:00",
+      "samples": [
+        "[2026-10-20 09:23:59.668] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 14:16:59.117] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 15:19:32.826] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/items/save处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 15:26:30.893] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "[2026-10-20 15:31:32.323] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 110,
+      "firstSeen": "2026-10-19T13:26:20.146+08:00",
+      "lastSeen": "2026-10-20T16:07:42.171+08:00",
+      "samples": [
+        "[2026-10-20 09:23:59.703] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.708] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.704] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.707] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-20 09:23:59.720] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261020-3470d63bd2",
+      "signature": "首次登录请授权手机号",
+      "signatureHash": "3470d63bd2",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 2,
+      "firstSeen": "2026-10-20 15:27:21.430",
+      "lastSeen": "2026-10-20T15:27:21.430+08:00",
+      "samples": [
+        "[2026-10-20 15:27:21.430] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号",
+        "13340:2026-10-20T15:27:21.430+08:00 ERROR 292714 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/login处理失败:首次登录请授权手机号"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

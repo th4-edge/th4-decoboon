@@ -202,14 +202,16 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-17 B5 移除旧直采 project/purchase/save、project/purchase/batch；
         // 蓝图运行时/体检 Provider 已纳入安全面板。
         // => 2026-10-17 店长目标/门店利润新增 2 条（statistic/target/info、statistic/store/profit/report）。
-        // HEAD 基线实际为 505（此前注释少计 1 条）；加上 2 条后当前 Provider 面板为 507（public 16 + protected 491）。
-        assertThat(routes).hasSize(507);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(491);
+        // 2026-10-20 设计方案分项纯排序新增 1 条 protected：design/items/reorder。
+        // => 当前 Provider 面板为 508（public 16 + protected 492）。
+        assertThat(routes).hasSize(508);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(492);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
     @Test
     void protectedRepresentativeRoutesMustReturnUnauthorizedWithoutToken() throws Exception {
+        assertUnauthorized("design/items/reorder");
         assertUnauthorized("project/contract-change/preview");
         assertUnauthorized("content/template/list");
         assertUnauthorized("content/lead-touch/save");
