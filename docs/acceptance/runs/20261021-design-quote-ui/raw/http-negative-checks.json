@@ -1,0 +1,38 @@
+{
+  "secondStore": {
+    "storeManagerPage": {
+      "success": true,
+      "total": "0"
+    },
+    "storeFinancePage": {
+      "success": true,
+      "total": "0"
+    },
+    "storeManagerDetail": {
+      "success": false,
+      "code": "404",
+      "message": "设计方案不存在或无权访问"
+    },
+    "storeFinanceDetail": {
+      "success": false,
+      "code": "404",
+      "message": "设计方案不存在或无权访问"
+    },
+    "crossStoreFilter": {
+      "success": false,
+      "code": "403",
+      "message": "门店不存在或无权访问"
+    }
+  },
+  "crossCompany": {
+    "page": {
+      "success": true,
+      "total": "0"
+    },
+    "detail": {
+      "success": false,
+      "code": "404",
+      "message": "设计方案不存在或无权访问"
+    }
+  }
+}
