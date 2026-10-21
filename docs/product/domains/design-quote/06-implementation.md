@@ -33,11 +33,11 @@
 
 ## 代码版本
 
-| 工程 | 分支 | 提交 |
+| 工程 | dev 集成提交 | 隔离实施提交 |
 | --- | --- | --- |
-| th4-decoboon | `feature/design-quote-review` | `fdbe4fd` |
-| th4-decoboon-web | `feature/design-quote-review` | `1e0c0a8` |
-| th4-decoboon-app | `feature/design-quote-review` | `52626e8` |
+| th4-decoboon | `8aeb31a` | `fdbe4fd` |
+| th4-decoboon-web | `889c3b4` | `1e0c0a8` |
+| th4-decoboon-app | `99d8ab8` | `52626e8` |
 
 ## 测试与证据
 
