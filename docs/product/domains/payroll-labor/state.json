@@ -4,9 +4,9 @@
   "title": "员工薪酬与薪资经营",
   "northStar": "财务按方案A完成员工薪酬日常操作，BOSS保留最终确认与高风险动作，薪酬方案、考勤、提成、工资单、应付、发放和工资条形成可追溯闭环",
   "owner": "codex",
-  "phase": "ACCEPTED",
+  "phase": "RELEASED",
   "batch": "B1",
-  "nextAction": "等待用户确认 L3 生产发布；确认后按后端→Web→App顺序发布并保留回滚点",
+  "nextAction": "B1已发布；App正式版等待用户本人提审发布，后续可启动B2月度考勤修正",
   "openDecisions": [
     "店长员工发放权限在 BR-038 与 DEC-065 间的最终边界，B3 前关闭，不阻塞 B1",
     "GAP-060 店长工资单确认与作废边界，非 B1 阻塞"
@@ -27,7 +27,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T12:15:00+08:00",
-  "updatedAt": "2026-10-21T13:35:49+08:00",
+  "updatedAt": "2026-10-21T13:42:20+08:00",
   "history": [
     {
       "at": "2026-10-21T12:15:00+08:00",
@@ -88,6 +88,12 @@
       "phase": "ACCEPTED",
       "batch": "B1",
       "note": "独立验收PASS；REQ-B1-01～11全部通过，ACC-B1-001/002/003与U01全部关闭"
+    },
+    {
+      "at": "2026-10-21T13:42:20+08:00",
+      "phase": "RELEASED",
+      "batch": "B1",
+      "note": "后端、Web生产发布，App1.0.64体验版上传；生产只读冒烟PASS，无DDL"
     }
   ]
 }
