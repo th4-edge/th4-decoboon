@@ -37,9 +37,9 @@
 
 | 工程 | dev 集成提交 | 隔离实施提交 |
 | --- | --- | --- |
-| th4-decoboon | `f289725` | `4ffb097` |
-| th4-decoboon-web | `889c3b4` | `1e0c0a8` |
-| th4-decoboon-app | `e2d4232` | `773833e` |
+| th4-decoboon | `189843f` | `4ffb097` |
+| th4-decoboon-web | `2351ce2` | `1e0c0a8` |
+| th4-decoboon-app | `7697a8c` | `773833e` |
 
 ## 测试与证据
 

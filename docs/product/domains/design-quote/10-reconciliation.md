@@ -33,13 +33,13 @@
 - App 新增 `view:design-review`，修复设计师运营查看深链越权。
 - App 移除不兼容的 `> :nth-child(3)` WXSS 选择器，修复原生分包打开失败。
 
-## 最新 dev 对账（2026-10-22）
+## 验收集成提交对账（2026-10-22）
 
 | 端 | 最新 dev | 本轮内容 | 结论 |
 | --- | --- | --- | --- |
-| 后端 | `72afe27` | 包含设计报价 B1 实现与 UI 复核证据；与隔离分支相比，设计域仅 `06-implementation.md` 版本表格式不同 | ALIGNED |
+| 后端 | `189843f` | 设计报价 B1 实现、UI 复核、对账与独立验收均已进入 dev | ALIGNED |
 | Web | `2351ce2` | `889c3b4` 为祖先提交，路由、角色入口和查看页均在 dev | ALIGNED |
-| App | `e2d4232` | 包含运营查看、金额、权限和原生 WXSS 修复 | ALIGNED |
+| App | `7697a8c` | 通过合并包含 `e2d4232`，运营查看、金额、权限和原生 WXSS 修复均在 dev | ALIGNED |
 
 - 需求映射：`REQ-001`～`REQ-009`，需求 9 条、对账 9 条，无缺失或多余。
 - 蓝图映射：`calculatedAmount`、`currentQuoteAmount`、`priceDisplayMode`、报价优先级、成本裁剪、App/Web/Backend UI 绑定均有实现和证据。
