@@ -4,10 +4,42 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.finance.configure.FundAccount;
+import com.th4.edge.decoboon.finance.configure.LedgerDirection;
+import com.th4.edge.decoboon.finance.configure.LedgerManualPurpose;
+import com.th4.edge.decoboon.finance.configure.LedgerSource;
+import com.th4.edge.decoboon.finance.configure.PayableStatus;
+import com.th4.edge.decoboon.finance.configure.PayableType;
+import com.th4.edge.decoboon.finance.configure.ReceiptStatus;
+import com.th4.edge.decoboon.finance.configure.SettlementStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.configure.ReceivableType;
+import com.th4.edge.decoboon.finance.context.FinanceSummaryAggregateContext;
+import com.th4.edge.decoboon.finance.model.Ledger;
+import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.Payment;
+import com.th4.edge.decoboon.finance.model.Receipt;
+import com.th4.edge.decoboon.finance.model.ReceiptRefund;
 import com.th4.edge.decoboon.finance.model.Receivable;
+import com.th4.edge.decoboon.finance.model.Settlement;
+import com.th4.edge.decoboon.finance.repository.LedgerRepository;
+import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.finance.repository.PaymentRepository;
+import com.th4.edge.decoboon.finance.repository.ReceiptRefundRepository;
+import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
+import com.th4.edge.decoboon.finance.repository.SettlementRepository;
+import com.th4.edge.decoboon.payroll.configure.CommissionStatus;
+import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
+import com.th4.edge.decoboon.payroll.context.CommissionReportContext;
+import com.th4.edge.decoboon.payroll.model.CommissionItem;
+import com.th4.edge.decoboon.payroll.model.PayrollSheet;
+import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
+import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
+import com.th4.edge.decoboon.finance.context.FinanceProjectLedgerContext;
+import com.th4.edge.decoboon.finance.context.PartnerLedgerAggregateContext;
+import com.th4.edge.decoboon.supply.model.Partner;
+import com.th4.edge.decoboon.supply.repository.PartnerRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -36,6 +68,9 @@ import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import com.th4.edge.tenant.user.repository.InviteRepository;
 import com.th4.edge.tenant.user.repository.StoreRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import org.hibernate.SessionFactory;
+import org.hibernate.stat.Statistics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +102,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
         "spring.jpa.hibernate.ddl-auto=create-drop",
         "spring.jpa.show-sql=false",
+        "spring.jpa.properties.hibernate.generate_statistics=true",
         "th4.edge.components.lock.enabled=false",
         "th4.edge.components.wechat.pay.enabled=false",
         "th4.edge.components.storage.provider=local",
         "th4.edge.framework.upload-dir=${java.io.tmpdir}/finance-store-scope-http-upload",
         "logging.level.root=ERROR",
-        "logging.level.org.hibernate.SQL=OFF"
+        "logging.level.org.hibernate.SQL=OFF",
+        "logging.level.org.hibernate.engine.internal.StatisticalLoggingSessionEventListener=OFF"
 })
 @AutoConfigureMockMvc
 @Transactional
@@ -93,7 +130,21 @@ class FinanceStoreScopeHttpAcceptanceTest {
     @Autowired private QuoteRepository quoteRepository;
     @Autowired private ProjectRepository projectRepository;
     @Autowired private ReceivableRepository receivableRepository;
+    @Autowired private ReceiptRepository receiptRepository;
+    @Autowired private PayableRepository payableRepository;
+    @Autowired private PaymentRepository paymentRepository;
+    @Autowired private LedgerRepository ledgerRepository;
+    @Autowired private ReceiptRefundRepository receiptRefundRepository;
+    @Autowired private PayrollSheetRepository payrollSheetRepository;
+    @Autowired private CommissionItemRepository commissionItemRepository;
+    @Autowired private CommissionReportContext commissionReportContext;
+    @Autowired private PartnerLedgerAggregateContext partnerLedgerAggregateContext;
+    @Autowired private FinanceProjectLedgerContext financeProjectLedgerContext;
+    @Autowired private PartnerRepository partnerRepository;
+    @Autowired private SettlementRepository settlementRepository;
     @Autowired private EntityManager entityManager;
+    @Autowired private EntityManagerFactory entityManagerFactory;
+    @Autowired private FinanceSummaryAggregateContext aggregateContext;
 
     private Scope scope;
 
@@ -165,6 +216,337 @@ class FinanceStoreScopeHttpAcceptanceTest {
                 .isEqualByComparingTo("200.00");
         assertThat(api("finance/summary/report", drill, bossToken).path("data").path("receivableAmount").decimalValue())
                 .isEqualByComparingTo("200.00");
+    }
+
+    @Test
+    void receiptAndPaymentListsAndReportsUseTheSameServerScopeAndFilters() throws Exception {
+        String bossToken = login(scope.bossPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+
+        JsonNode receiptReport = api("finance/receipt/report", "{}", bossToken);
+        assertThat(receiptReport.path("success").asBoolean()).as(receiptReport.toString()).isTrue();
+        assertThat(receiptReport.path("data").path("receiptCount").asInt()).isEqualTo(3);
+        assertThat(receiptReport.path("data").path("grossReceiptAmount").decimalValue()).isEqualByComparingTo("320.00");
+        assertThat(receiptReport.path("data").path("reversalAmount").decimalValue()).isEqualByComparingTo("20.00");
+        assertThat(receiptReport.path("data").path("receiptAmount").decimalValue()).isEqualByComparingTo("300.00");
+        assertThat(receiptReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storeReceiptReport = api("finance/receipt/report", "{}", storeFinanceToken);
+        assertThat(storeReceiptReport.path("data").path("receiptCount").asInt()).isEqualTo(1);
+        assertThat(storeReceiptReport.path("data").path("grossReceiptAmount").decimalValue()).isEqualByComparingTo("200.00");
+
+        JsonNode filteredReceiptReport = api("finance/receipt/report",
+                "{\"keyword\":\"专属付款方-12\"}", bossToken);
+        assertThat(filteredReceiptReport.path("data").path("receiptCount").asInt()).isEqualTo(1);
+        assertThat(filteredReceiptReport.path("data").path("grossReceiptAmount").decimalValue()).isEqualByComparingTo("200.00");
+
+        JsonNode filteredReceiptPage = api("finance/receipt/page",
+                "{\"current\":1,\"size\":1,\"keyword\":\"专属付款方-12\"}", bossToken);
+        assertThat(filteredReceiptPage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(filteredReceiptPage.path("data").path("content").size()).isEqualTo(1);
+        assertThat(filteredReceiptPage.path("data").path("content").get(0).path("payerName").asText())
+                .isEqualTo("专属付款方-12");
+
+        JsonNode secondReceiptPage = api("finance/receipt/page", "{\"current\":2,\"size\":1}", bossToken);
+        assertThat(secondReceiptPage.path("data").path("totalElements").asLong()).isEqualTo(3);
+        assertThat(secondReceiptPage.path("data").path("content").size()).isEqualTo(1);
+        assertThat(secondReceiptPage.path("data").path("content").get(0).path("receiptId").asText())
+                .isNotEqualTo(filteredReceiptPage.path("data").path("content").get(0).path("receiptId").asText());
+
+        JsonNode paymentReport = api("finance/payment/report", "{}", bossToken);
+        assertThat(paymentReport.path("success").asBoolean()).as(paymentReport.toString()).isTrue();
+        assertThat(paymentReport.path("data").path("paymentCount").asInt()).isEqualTo(2);
+        assertThat(paymentReport.path("data").path("paymentAmount").decimalValue()).isEqualByComparingTo("70.00");
+        assertThat(paymentReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storePaymentReport = api("finance/payment/report", "{}", storeFinanceToken);
+        assertThat(storePaymentReport.path("data").path("paymentCount").asInt()).isEqualTo(1);
+        assertThat(storePaymentReport.path("data").path("paymentAmount").decimalValue()).isEqualByComparingTo("40.00");
+
+        JsonNode filteredPaymentReport = api("finance/payment/report",
+                "{\"keyword\":\"PAY-11\"}", bossToken);
+        assertThat(filteredPaymentReport.path("data").path("paymentCount").asInt()).isEqualTo(1);
+        assertThat(filteredPaymentReport.path("data").path("paymentAmount").decimalValue()).isEqualByComparingTo("30.00");
+
+        JsonNode filteredPaymentPage = api("finance/payment/page",
+                "{\"current\":1,\"size\":1,\"keyword\":\"PAY-11\"}", bossToken);
+        assertThat(filteredPaymentPage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(filteredPaymentPage.path("data").path("content").size()).isEqualTo(1);
+        assertThat(filteredPaymentPage.path("data").path("content").get(0).path("transactionNo").asText())
+                .isEqualTo("PAY-11");
+    }
+
+    @Test
+    void receivablePayableAndLedgerPagesAndReportsUseTheSameServerScopeAndFilters() throws Exception {
+        String bossToken = login(scope.bossPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+
+        JsonNode receivableReport = api("finance/receivable/report", "{}", bossToken);
+        assertThat(receivableReport.path("success").asBoolean()).as(receivableReport.toString()).isTrue();
+        assertThat(receivableReport.path("data").path("count").asInt()).isEqualTo(2);
+        assertThat(receivableReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("300.00");
+        assertThat(receivableReport.path("data").path("receivedAmount").decimalValue()).isEqualByComparingTo("0.00");
+        assertThat(receivableReport.path("data").path("outstandingAmount").decimalValue()).isEqualByComparingTo("300.00");
+        assertThat(receivableReport.path("data").path("overdueAmount").decimalValue()).isEqualByComparingTo("0.00");
+        assertThat(receivableReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storeReceivableReport = api("finance/receivable/report", "{}", storeFinanceToken);
+        assertThat(storeReceivableReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(storeReceivableReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("200.00");
+
+        JsonNode filteredReceivableReport = api("finance/receivable/report",
+                "{\"type\":\"First\",\"status\":\"Pending\",\"keyword\":\"HTTP项目12\"}", bossToken);
+        assertThat(filteredReceivableReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(filteredReceivableReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("200.00");
+
+        JsonNode receivablePage = api("finance/receivable/page",
+                "{\"current\":1,\"size\":1,\"keyword\":\"HTTP项目12\"}", bossToken);
+        assertThat(receivablePage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(receivablePage.path("data").path("content").size()).isEqualTo(1);
+
+        JsonNode payableReport = api("finance/payable/report", "{}", bossToken);
+        assertThat(payableReport.path("success").asBoolean()).as(payableReport.toString()).isTrue();
+        assertThat(payableReport.path("data").path("count").asInt()).isEqualTo(3);
+        assertThat(payableReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("85.00");
+        assertThat(payableReport.path("data").path("paidAmount").decimalValue()).isEqualByComparingTo("60.00");
+        assertThat(payableReport.path("data").path("outstandingAmount").decimalValue()).isEqualByComparingTo("25.00");
+        assertThat(payableReport.path("data").path("urgentAmount").decimalValue()).isEqualByComparingTo("25.00");
+        assertThat(payableReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storePayableReport = api("finance/payable/report", "{}", storeFinanceToken);
+        assertThat(storePayableReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(storePayableReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("30.00");
+        assertThat(storePayableReport.path("data").path("outstandingAmount").decimalValue()).isEqualByComparingTo("0.00");
+
+        JsonNode filteredPayableReport = api("finance/payable/report",
+                "{\"urgent\":true,\"keyword\":\"紧急未付\"}", bossToken);
+        assertThat(filteredPayableReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(filteredPayableReport.path("data").path("outstandingAmount").decimalValue()).isEqualByComparingTo("25.00");
+
+        JsonNode payablePage = api("finance/payable/page",
+                "{\"current\":1,\"size\":1,\"urgent\":true}", bossToken);
+        assertThat(payablePage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(payablePage.path("data").path("content").size()).isEqualTo(1);
+
+        JsonNode ledgerReport = api("finance/ledger/report", "{}", bossToken);
+        assertThat(ledgerReport.path("success").asBoolean()).as(ledgerReport.toString()).isTrue();
+        assertThat(ledgerReport.path("data").path("count").asInt()).isEqualTo(3);
+        assertThat(ledgerReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("170.00");
+        assertThat(ledgerReport.path("data").path("incomeAmount").decimalValue()).isEqualByComparingTo("140.00");
+        assertThat(ledgerReport.path("data").path("expenseAmount").decimalValue()).isEqualByComparingTo("30.00");
+        assertThat(ledgerReport.path("data").path("netCashFlowAmount").decimalValue()).isEqualByComparingTo("110.00");
+        assertThat(ledgerReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storeLedgerReport = api("finance/ledger/report", "{}", storeFinanceToken);
+        assertThat(storeLedgerReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(storeLedgerReport.path("data").path("expenseAmount").decimalValue()).isEqualByComparingTo("0.00");
+
+        JsonNode expenseReport = api("finance/ledger/report", "{\"direction\":\"Expense\"}", bossToken);
+        assertThat(expenseReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(expenseReport.path("data").path("expenseAmount").decimalValue()).isEqualByComparingTo("30.00");
+        assertThat(expenseReport.path("data").path("netCashFlowAmount").decimalValue()).isEqualByComparingTo("-30.00");
+
+        JsonNode filteredLedgerPage = api("finance/ledger/page",
+                "{\"current\":1,\"size\":1,\"keyword\":\"HTTP台账收入-12\"}", bossToken);
+        assertThat(filteredLedgerPage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(filteredLedgerPage.path("data").path("content").size()).isEqualTo(1);
+    }
+
+    @Test
+    void refundPayrollAndCommissionPagesUseServerPagingAndReports() throws Exception {
+        String bossToken = login(scope.bossPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+
+        JsonNode refundReport = api("finance/refund/report", "{}", bossToken);
+        assertThat(refundReport.path("success").asBoolean()).as(refundReport.toString()).isTrue();
+        assertThat(refundReport.path("data").path("count").asInt()).isEqualTo(2);
+        assertThat(refundReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("30.00");
+        assertThat(refundReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storeRefundReport = api("finance/refund/report", "{}", storeFinanceToken);
+        assertThat(storeRefundReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(storeRefundReport.path("data").path("totalAmount").decimalValue()).isEqualByComparingTo("20.00");
+
+        JsonNode refundPage = api("finance/refund/page", "{\"current\":2,\"size\":1}", bossToken);
+        assertThat(refundPage.path("data").path("totalElements").asLong()).isEqualTo(2);
+        assertThat(refundPage.path("data").path("content").size()).isEqualTo(1);
+
+        JsonNode sheetPage = api("payroll/sheet/page", "{\"current\":2,\"size\":1}", bossToken);
+        assertThat(sheetPage.path("success").asBoolean()).as(sheetPage.toString()).isTrue();
+        assertThat(sheetPage.path("data").path("totalElements").asLong()).isEqualTo(2);
+        assertThat(sheetPage.path("data").path("content").size()).isEqualTo(1);
+
+        JsonNode storeSheetPage = api("payroll/sheet/page", "{\"current\":1,\"size\":20}", storeFinanceToken);
+        assertThat(storeSheetPage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(storeSheetPage.path("data").path("content").get(0).path("period").asText()).isEqualTo("2026-09");
+
+        JsonNode commissionReport = api("payroll/commission/report", "{}", bossToken);
+        assertThat(commissionReport.path("success").asBoolean()).as(commissionReport.toString()).isTrue();
+        assertThat(commissionReport.path("data").path("count").asInt()).isEqualTo(2);
+        assertThat(commissionReport.path("data").path("commissionAmount").decimalValue()).isEqualByComparingTo("110.00");
+        assertThat(commissionReport.path("data").path("accruedAmount").decimalValue()).isEqualByComparingTo("70.00");
+        assertThat(commissionReport.path("data").path("releasedAmount").decimalValue()).isEqualByComparingTo("50.00");
+        assertThat(commissionReport.path("data").path("paidAmount").decimalValue()).isEqualByComparingTo("20.00");
+        assertThat(commissionReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storeCommissionReport = api("payroll/commission/report", "{}", storeFinanceToken);
+        assertThat(storeCommissionReport.path("data").path("count").asInt()).isEqualTo(1);
+        assertThat(storeCommissionReport.path("data").path("commissionAmount").decimalValue()).isEqualByComparingTo("50.00");
+
+        JsonNode commissionPage = api("payroll/commission/page", "{\"current\":2,\"size\":1}", bossToken);
+        assertThat(commissionPage.path("data").path("totalElements").asLong()).isEqualTo(2);
+        assertThat(commissionPage.path("data").path("content").size()).isEqualTo(1);
+    }
+
+    @Test
+    void partnerLedgerUsesServerPagingFilteringAndAggregateSummary() throws Exception {
+        String bossToken = login(scope.bossPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+
+        JsonNode partnerReport = api("finance/partner-ledger/report",
+                "{\"summaryOnly\":true}", bossToken);
+        assertThat(partnerReport.path("success").asBoolean()).as(partnerReport.toString()).isTrue();
+        assertThat(partnerReport.path("data").path("partnerCount").asInt()).isEqualTo(2);
+        assertThat(partnerReport.path("data").path("payableAmount").decimalValue()).isEqualByComparingTo("85.00");
+        assertThat(partnerReport.path("data").path("paidAmount").decimalValue()).isEqualByComparingTo("60.00");
+        assertThat(partnerReport.path("data").path("outstandingAmount").decimalValue()).isEqualByComparingTo("25.00");
+        assertThat(partnerReport.path("data").path("overdueAmount").decimalValue()).isEqualByComparingTo("25.00");
+        assertThat(partnerReport.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storePartnerReport = api("finance/partner-ledger/report",
+                "{\"summaryOnly\":true}", storeFinanceToken);
+        assertThat(storePartnerReport.path("data").path("partnerCount").asInt()).isEqualTo(1);
+        assertThat(storePartnerReport.path("data").path("outstandingAmount").decimalValue()).isEqualByComparingTo("0.00");
+
+        JsonNode filteredPartnerReport = api("finance/partner-ledger/report",
+                "{\"summaryOnly\":true,\"keyword\":\"HTTP供应商-12\"}", bossToken);
+        assertThat(filteredPartnerReport.path("data").path("partnerCount").asInt()).isEqualTo(1);
+        assertThat(filteredPartnerReport.path("data").path("payableAmount").decimalValue()).isEqualByComparingTo("30.00");
+
+        JsonNode overduePartnerReport = api("finance/partner-ledger/report",
+                "{\"summaryOnly\":true,\"overdueOnly\":true}", bossToken);
+        assertThat(overduePartnerReport.path("data").path("partnerCount").asInt()).isEqualTo(1);
+        assertThat(overduePartnerReport.path("data").path("overdueAmount").decimalValue()).isEqualByComparingTo("25.00");
+
+        JsonNode partnerPage = api("finance/partner-ledger/page",
+                "{\"current\":2,\"size\":1}", bossToken);
+        assertThat(partnerPage.path("success").asBoolean()).as(partnerPage.toString()).isTrue();
+        assertThat(partnerPage.path("data").path("totalElements").asLong()).isEqualTo(2);
+        assertThat(partnerPage.path("data").path("content").size()).isEqualTo(1);
+
+        JsonNode overduePartnerPage = api("finance/partner-ledger/page",
+                "{\"current\":1,\"size\":20,\"overdueOnly\":true}", bossToken);
+        assertThat(overduePartnerPage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(overduePartnerPage.path("data").path("content").get(0).path("overdueAmount").decimalValue())
+                .isEqualByComparingTo("25.00");
+
+        JsonNode appCompatibleReport = api("finance/partner-ledger/report", "{}", bossToken);
+        assertThat(appCompatibleReport.path("data").path("rows").size()).isEqualTo(2);
+    }
+
+    @Test
+    void projectLedgerUsesServerPagingFiltersAndAggregateSummary() throws Exception {
+        String bossToken = login(scope.bossPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+
+        JsonNode projectSummary = api("finance/project-ledger/report", "{}", bossToken);
+        assertThat(projectSummary.path("success").asBoolean()).as(projectSummary.toString()).isTrue();
+        assertThat(projectSummary.path("data").path("projectCount").asInt()).isEqualTo(2);
+        assertThat(projectSummary.path("data").path("activeProjectCount").asInt()).isEqualTo(2);
+        assertThat(projectSummary.path("data").path("contractAmount").decimalValue()).isEqualByComparingTo("200000.00");
+        assertThat(projectSummary.path("data").path("receivableAmount").decimalValue()).isEqualByComparingTo("300.00");
+        assertThat(projectSummary.path("data").path("costComplete").asBoolean()).isFalse();
+        assertThat(projectSummary.path("data").path("costIncompleteProjectCount").asInt()).isEqualTo(2);
+        assertThat(projectSummary.path("data").path("asOf").asText()).isNotBlank();
+
+        JsonNode storeProjectSummary = api("finance/project-ledger/report", "{}", storeFinanceToken);
+        assertThat(storeProjectSummary.path("data").path("projectCount").asInt()).isEqualTo(1);
+        assertThat(storeProjectSummary.path("data").path("contractAmount").decimalValue()).isEqualByComparingTo("100000.00");
+
+        JsonNode filteredProjectSummary = api("finance/project-ledger/report",
+                "{\"keyword\":\"HTTP项目12\"}", bossToken);
+        assertThat(filteredProjectSummary.path("data").path("projectCount").asInt()).isEqualTo(1);
+        assertThat(filteredProjectSummary.path("data").path("contractAmount").decimalValue()).isEqualByComparingTo("100000.00");
+
+        JsonNode riskSummary = api("finance/project-ledger/report", "{\"filter\":\"risk\"}", bossToken);
+        assertThat(riskSummary.path("data").path("projectCount").asInt()).isEqualTo(2);
+
+        JsonNode settleSummary = api("finance/project-ledger/report", "{\"filter\":\"settle\"}", bossToken);
+        assertThat(settleSummary.path("data").path("projectCount").asInt()).isEqualTo(1);
+
+        JsonNode projectPage = api("finance/project/page", "{\"current\":2,\"size\":1}", bossToken);
+        assertThat(projectPage.path("success").asBoolean()).as(projectPage.toString()).isTrue();
+        assertThat(projectPage.path("data").path("totalElements").asLong()).isEqualTo(2);
+        assertThat(projectPage.path("data").path("content").size()).isEqualTo(1);
+
+        JsonNode settlePage = api("finance/project/page",
+                "{\"current\":1,\"size\":20,\"filter\":\"settle\"}", bossToken);
+        assertThat(settlePage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(settlePage.path("data").path("content").get(0).path("settlement").path("status").path("key").asText())
+                .isEqualTo("Draft");
+    }
+
+    @Test
+    void transactionReportsUseAggregateQueriesWithoutRowByRowQueries() {
+        Statistics statistics = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+        statistics.setStatisticsEnabled(true);
+        entityManager.flush();
+        statistics.clear();
+        Employee boss = employeeRepository.findByTelNo(scope.bossPhone());
+
+        aggregateContext.receipts(boss,
+                new FinanceSummaryAggregateContext.ReceiptCriteria(null, null, 0L));
+        long afterReceipts = statistics.getPrepareStatementCount();
+        aggregateContext.payments(boss,
+                new FinanceSummaryAggregateContext.PaymentCriteria(null, null, 0L));
+        long afterPayments = statistics.getPrepareStatementCount();
+        aggregateContext.receivables(boss,
+                new FinanceSummaryAggregateContext.ReceivableCriteria(null, null, null, null, 0L));
+        long afterReceivables = statistics.getPrepareStatementCount();
+        aggregateContext.payables(boss,
+                new FinanceSummaryAggregateContext.PayableCriteria(null, null, null, null, null, null, 0L));
+        long afterPayables = statistics.getPrepareStatementCount();
+        aggregateContext.ledgers(boss,
+                new FinanceSummaryAggregateContext.LedgerCriteria(null, null, null, null,
+                        null, null, null, null, null, 0L));
+        long afterLedgers = statistics.getPrepareStatementCount();
+        aggregateContext.refunds(boss,
+                new FinanceSummaryAggregateContext.RefundCriteria(null, 0L));
+        long afterRefunds = statistics.getPrepareStatementCount();
+        commissionReportContext.aggregate(boss, 0L);
+        long afterCommissions = statistics.getPrepareStatementCount();
+        partnerLedgerAggregateContext.summary(boss, null, null, null, 0L);
+        long afterPartners = statistics.getPrepareStatementCount();
+        financeProjectLedgerContext.summary(boss, null, null, null, null, "all");
+        long afterProjectLedger = statistics.getPrepareStatementCount();
+
+        assertThat(afterReceipts)
+                .as("首个汇总调用的权限解析 + 聚合查询应为固定小常数，不能随收款明细数增长")
+                .isLessThanOrEqualTo(4);
+        assertThat(afterPayments - afterReceipts)
+                .as("付款汇总不得因明细行逐条查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterReceivables - afterPayments)
+                .as("应收汇总不得因明细行逐条查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterPayables - afterReceivables)
+                .as("应付汇总不得因明细行逐条查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterLedgers - afterPayables)
+                .as("资金台账汇总不得因明细行逐条查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterRefunds - afterLedgers)
+                .as("退款汇总不得因明细行逐条查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterCommissions - afterRefunds)
+                .as("提成汇总不得因明细行逐条查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterPartners - afterCommissions)
+                .as("供应商往来汇总不得因供应商逐家查库")
+                .isLessThanOrEqualTo(2);
+        assertThat(afterProjectLedger - afterPartners)
+                .as("项目账本汇总必须批量读取财务事实，查询条数不得随项目数线性增长")
+                .isLessThanOrEqualTo(20);
     }
 
     @Test
@@ -442,6 +824,18 @@ class FinanceStoreScopeHttpAcceptanceTest {
         project.setPlanEndDate(LocalDate.now().plusDays(90));
         project = projectRepository.save(project);
 
+        if (offset == 11) {
+            Settlement settlement = new Settlement();
+            settlement.setCompany(company);
+            settlement.setStore(store);
+            settlement.setOwner(operator);
+            settlement.setProject(project);
+            settlement.setContractAmount(new BigDecimal("100000.00"));
+            settlement.setStatus(SettlementStatus.Draft);
+            settlement.setCreatedBy(operator);
+            settlementRepository.save(settlement);
+        }
+
         Receivable receivable = new Receivable();
         receivable.setCompany(company);
         receivable.setStore(store);
@@ -457,8 +851,172 @@ class FinanceStoreScopeHttpAcceptanceTest {
         receivable.setDueDate(LocalDate.now().plusDays(30));
         receivable.setStatus(ReceivableStatus.Pending);
         receivable.setCreatedBy(operator);
-        receivableRepository.save(receivable);
+        receivable = receivableRepository.save(receivable);
+
+        Receipt receipt = new Receipt();
+        receipt.setCompany(company);
+        receipt.setStore(store);
+        receipt.setOwner(operator);
+        receipt.setProject(project);
+        receipt.setReceivable(receivable);
+        receipt.setCustomer(customer);
+        receipt.setAmount(new BigDecimal(receivableAmount));
+        receipt.setAccount(FundAccount.CompanyBank);
+        receipt.setReceivedAt(LocalDate.now().minusDays(1));
+        receipt.setPayerName("专属付款方-" + offset);
+        receipt.setRemark("HTTP收款验收-" + offset);
+        receipt.setCreatedBy(operator);
+        receipt.setStatus(ReceiptStatus.Active);
+        receipt = receiptRepository.save(receipt);
+
+        ReceiptRefund refund = new ReceiptRefund();
+        refund.setCompany(company);
+        refund.setStore(store);
+        refund.setOwner(operator);
+        refund.setProject(project);
+        refund.setReceipt(receipt);
+        refund.setCustomer(customer);
+        refund.setAmount(new BigDecimal(offset == 11 ? "10.00" : "20.00"));
+        refund.setAccount(FundAccount.CompanyBank);
+        refund.setRefundAt(LocalDate.now().minusDays(1));
+        refund.setReason("HTTP退款验收-" + offset);
+        refund.setCreatedBy(operator);
+        receiptRefundRepository.save(refund);
+
+        if (offset == 11) {
+            Receipt reversed = new Receipt();
+            reversed.setCompany(company);
+            reversed.setStore(store);
+            reversed.setOwner(operator);
+            reversed.setProject(project);
+            reversed.setReceivable(receivable);
+            reversed.setCustomer(customer);
+            reversed.setAmount(new BigDecimal("20.00"));
+            reversed.setAccount(FundAccount.CompanyBank);
+            reversed.setReceivedAt(LocalDate.now().minusDays(2));
+            reversed.setPayerName("已冲正付款方-11");
+            reversed.setRemark("HTTP冲正验收-11");
+            reversed.setCreatedBy(operator);
+            reversed.setStatus(ReceiptStatus.Reversed);
+            receiptRepository.save(reversed);
+        }
+
+        Partner partner = new Partner();
+        partner.setCompany(company);
+        partner.setName("HTTP供应商-" + offset);
+        partner.setCreatedBy(operator);
+        partner = partnerRepository.save(partner);
+
+        Payable payable = new Payable();
+        payable.setCompany(company);
+        payable.setStore(store);
+        payable.setOwner(operator);
+        payable.setProject(project);
+        payable.setName("HTTP应付-" + offset);
+        payable.setType(PayableType.Material);
+        payable.setPayeeName("HTTP供应商-" + offset);
+        payable.setPayeePartner(partner);
+        payable.setAmount(new BigDecimal("30.00"));
+        payable.setPaidAmount(new BigDecimal("30.00"));
+        payable.setDueDate(LocalDate.now());
+        payable.setStatus(PayableStatus.Paid);
+        payable.setUrgent(false);
+        payable.setCreatedBy(operator);
+        payable = payableRepository.save(payable);
+
+        if (offset == 11) {
+            Payable urgentUnpaid = new Payable();
+            urgentUnpaid.setCompany(company);
+            urgentUnpaid.setStore(store);
+            urgentUnpaid.setOwner(operator);
+            urgentUnpaid.setProject(project);
+            urgentUnpaid.setName("HTTP紧急未付-" + offset);
+            urgentUnpaid.setType(PayableType.Material);
+            urgentUnpaid.setPayeeName("HTTP紧急供应商-" + offset);
+            urgentUnpaid.setPayeePartner(partner);
+            urgentUnpaid.setAmount(new BigDecimal("25.00"));
+            urgentUnpaid.setPaidAmount(BigDecimal.ZERO);
+            urgentUnpaid.setDueDate(LocalDate.now().minusDays(1));
+            urgentUnpaid.setStatus(PayableStatus.Overdue);
+            urgentUnpaid.setUrgent(true);
+            urgentUnpaid.setCreatedBy(operator);
+            payableRepository.save(urgentUnpaid);
+        }
+
+        Payment payment = new Payment();
+        payment.setCompany(company);
+        payment.setStore(store);
+        payment.setOwner(operator);
+        payment.setProject(project);
+        payment.setPayable(payable);
+        payment.setAmount(new BigDecimal(offset == 11 ? "30.00" : "40.00"));
+        payment.setAccount(FundAccount.CompanyBank);
+        payment.setPaidAt(LocalDate.now());
+        payment.setPayeeName("HTTP付款方-" + offset);
+        payment.setTransactionNo("PAY-" + offset);
+        payment.setRemark("HTTP付款验收-" + offset);
+        payment.setCreatedBy(operator);
+        paymentRepository.save(payment);
+
+        PayrollSheet sheet = new PayrollSheet();
+        sheet.setCompany(company);
+        sheet.setStore(store);
+        sheet.setOwner(operator);
+        sheet.setPeriod(offset == 11 ? "2026-08" : "2026-09");
+        sheet.setStatus(PayrollSheetStatus.Draft);
+        sheet.setAttendanceComplete(false);
+        sheet.setCommissionComplete(false);
+        sheet.setTotalGrossAmount(new BigDecimal("80.00"));
+        sheet.setTotalDeductionAmount(new BigDecimal("5.00"));
+        sheet.setTotalNetAmount(new BigDecimal("75.00"));
+        sheet.setCreatedBy(operator);
+        payrollSheetRepository.save(sheet);
+
+        CommissionItem commission = new CommissionItem();
+        commission.setCompany(company);
+        commission.setStore(store);
+        commission.setTeam(operator.getTeam());
+        commission.setEmployee(operator);
+        commission.setProject(project);
+        commission.setContractAmount(new BigDecimal("1000.00"));
+        commission.setManualRate(new BigDecimal("5.0000"));
+        commission.setCommissionAmount(new BigDecimal(offset == 11 ? "60.00" : "50.00"));
+        commission.setAccruedAmount(new BigDecimal(offset == 11 ? "40.00" : "30.00"));
+        commission.setReleasedAmount(new BigDecimal(offset == 11 ? "30.00" : "20.00"));
+        commission.setPaidAmount(new BigDecimal("10.00"));
+        commission.setStatus(CommissionStatus.Released);
+        commission.setCreatedBy(operator);
+        commissionItemRepository.save(commission);
+
+        ledger(company, store, operator, project, LedgerDirection.Income,
+                new BigDecimal(offset == 11 ? "100.00" : "40.00"), "HTTP台账收入-" + offset);
+        if (offset == 11) {
+            ledger(company, store, operator, project, LedgerDirection.Expense,
+                    new BigDecimal("30.00"), "HTTP台账支出-" + offset);
+        }
         return project;
+    }
+
+    private void ledger(Company company, Store store, Employee operator, Project project,
+                        LedgerDirection direction, BigDecimal amount, String summary) {
+        Ledger ledger = new Ledger();
+        ledger.setCompany(company);
+        ledger.setStore(store);
+        ledger.setOwner(operator);
+        ledger.setProject(project);
+        ledger.setDirection(direction);
+        ledger.setCategory(direction == LedgerDirection.Income ? "项目收款" : "项目支出");
+        ledger.setPurpose(LedgerManualPurpose.ProjectIncidentalCost);
+        ledger.setSource(LedgerSource.Manual);
+        ledger.setAmount(amount);
+        ledger.setAccount(FundAccount.CompanyBank);
+        ledger.setOccurredAt(LocalDate.now());
+        ledger.setCounterparty("HTTP对方");
+        ledger.setSummary(summary);
+        ledger.setRemark("HTTP台账验收");
+        ledger.setCreatedBy(operator);
+        ledger.setVoided(false);
+        ledgerRepository.save(ledger);
     }
 
     private record Scope(Long storeAId, Long storeBId, Long foreignStoreId,

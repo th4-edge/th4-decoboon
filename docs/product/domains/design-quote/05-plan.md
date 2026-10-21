@@ -8,7 +8,7 @@
 
 | 批次 | 垂直切片 | 涉及角色 | 涉及对象 | 后端 | App/Web | 业务校核 | 退出条件 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| B1 | 设计师与经营角色看到同一方案当前价格，并完成只读运营查看 | Designer、Boss、StoreManager、Finance | Design、DesignItem、Quote | 价格读模型、当前报价、成本裁剪、范围过滤 | App 工作台/列表/只读详情；Web 方案卡/查看列表/只读详情 | DEC-078、BR-003、DEC-065 | 三端价格一致；运营查看无写动作；跨范围拒绝；性能达标 | READY |
+| B1 | 设计师与经营角色看到同一方案当前价格，并完成只读运营查看 | Designer、Boss、StoreManager、Finance | Design、DesignItem、Quote | 价格读模型、当前报价、成本裁剪、范围过滤 | App 工作台/列表/只读详情；Web 方案卡/查看列表/只读详情 | DEC-078、BR-003、DEC-065 | 三端价格一致；运营查看无写动作；跨范围拒绝；性能达标 | UI_REVIEWED |
 | B2 | 后续风险增强 | 经营角色 | Design、Quote | 报价过期、缺口统计 | 列表筛选 | GAP-061 关闭后 | 不阻塞 B1 | BLOCKED_BY_DECISION |
 
 ## 依赖与顺序
@@ -26,6 +26,7 @@
 
 ## 门禁
 
-- 本批结束停在：`DEV_VERIFIED`，完成定向测试、全量后端测试、Web/App type-check 和构建。
-- UI 走查与独立验收：需要真实 BOSS/店长/财务/设计师账号；没有真实渲染不得标记 `UI_REVIEWED` 或 `ACCEPTED`。
+- 后端已完成全量回归、真实 HTTP 越权负向、当前数据量与 10 倍数据量接口采样。
+- Web 已完成真实 BOSS/店长/财务/设计师渲染；App 已完成微信开发者工具原生页面、同源 H5 复核与 Release 构建。
+- UI 门禁已通过，可进入独立验收；开发侧不得自行推进 `ACCEPTED`。
 - 下一批开始前必须：关闭 `GAP-061` 或明确不展示报价过期。

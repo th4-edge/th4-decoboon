@@ -21,6 +21,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ import java.util.List;
                 properties = {"designId", "no", "name", "customer", "owner", "version", "style", "status", "area",
                         "layout", "description", "coverUrl", "cadUrl", "cadPreviewUrl", "cadConvertStatus", "originalPlanUrl", "demolitionUrl",
                         "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "originalPlanImages", "spaces", "items",
-                        "requirements", "createTime", "updateTime", "property",
+                        "requirements", "createTime", "updateTime", "property", "store",
                         "calculatedAmount", "spaceCount", "itemCount", "currentQuoteId", "currentQuoteNo",
                         "currentQuoteVersion", "currentQuoteStatus", "currentQuoteStatusName", "currentQuoteAmount"}),
         @AllowProperties(model = Space.class,
@@ -55,7 +56,8 @@ import java.util.List;
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore", "status"})
 })
 @Service("design/scheme/info")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -94,7 +96,8 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
 
     @Override
     public Design call(Design request) {
-        Design design = designContext.requireReadableDesign(designId, employee);
+        Employee current = designContext.requireEmployee(employee);
+        Design design = designContext.requireReadableDesign(designId, current);
         design.setSpaces(spaceRepository.findByDesign_DesignIdOrderBySortAsc(designId));
         List<DesignItem> items = itemRepository.findByDesign_DesignIdOrderBySortAsc(designId);
         // DEC-063 / GAP-042：formula 只承载报价项目的计价说明；工程量公式独立使用 quantityFormula。
@@ -105,7 +108,7 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
                     && !quantityFormula.isBlank()
                     && !formulaContext.isSupportedFormula(quantityFormula));
         }
-        costContext.mask(items, employee);
+        costContext.mask(items, current);
         design.setItems(items);
         design.setRequirements(requirementRepository.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(
                 design.getCompany().getComId(), design.getCustomer().getCustId()));

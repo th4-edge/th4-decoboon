@@ -1,8 +1,8 @@
 package com.th4.edge.decoboon.finance.service.payments.page.support;
-import com.th4.edge.decoboon.customer.model.Customer;
 
-import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.common.context.StoreScope;
+import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Payment;
 import com.th4.edge.decoboon.finance.repository.PaymentRepository;
@@ -14,13 +14,22 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 付款分页实现。 */
 @Note("付款分页")
@@ -31,7 +40,7 @@ import java.util.List;
         @AllowProperties(model = Payable.class,
                 properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status", "payeeName", "property" }),
         @AllowProperties(model = Project.class,
-                properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
+                properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "status" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
@@ -65,25 +74,55 @@ public class Page implements com.th4.edge.decoboon.finance.service.payments.page
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Payment> call(Payment request) {
         Employee currentEmployee = accessContext.requireReader(employee);
         Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
-        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
-        List<Payment> items = paymentRepository.findAll(accessContext.visible(currentEmployee, Payment.class))
-                .stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
-                .filter(item -> kw.isBlank()
-                        || (item.getPayeeName() != null && item.getPayeeName().toLowerCase().contains(kw))
-                        || (item.getPayable().getName() != null && item.getPayable().getName().toLowerCase().contains(kw))
-                        || (item.getTransactionNo() != null && item.getTransactionNo().toLowerCase().contains(kw)))
-                .sorted(Comparator.comparing(Payment::getPaidAt,
-                        Comparator.nullsLast(Comparator.naturalOrder())).reversed())
-                .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, items.size());
-        int to = Math.min(from + pageSize, items.size());
-        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(
+                Sort.Order.desc("paidAt"),
+                Sort.Order.desc("paymentId")));
+        Specification<Payment> specification = specification(currentEmployee, storeFilter);
+
+        org.springframework.data.domain.Page<Payment> skeleton = paymentRepository.findAll(specification, pageable);
+        if (skeleton.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, skeleton.getTotalElements());
+        }
+
+        List<Long> ids = skeleton.getContent().stream().map(Payment::getPaymentId).toList();
+        Map<Long, Payment> byId = new LinkedHashMap<>();
+        for (Payment item : paymentRepository.findDetailsByIdIn(ids)) {
+            byId.put(item.getPaymentId(), item);
+        }
+        List<Payment> ordered = ids.stream().map(byId::get).filter(java.util.Objects::nonNull).toList();
+        return new PageImpl<>(ordered, pageable, skeleton.getTotalElements());
+    }
+
+    private Specification<Payment> specification(Employee currentEmployee, Long storeFilter) {
+        Specification<Payment> specification = accessContext.visible(currentEmployee, Payment.class);
+        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
+
+        return specification.and((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (projectId != null) {
+                predicates.add(cb.equal(root.get("project").get("projectId"), projectId));
+            }
+            if (!StoreScope.isAllStores(storeFilter)) {
+                predicates.add(cb.equal(root.get("store").get("storeId"), storeFilter));
+            }
+            if (!kw.isBlank()) {
+                Join<Payment, Project> project = root.join("project", JoinType.LEFT);
+                String pattern = "%" + kw + "%";
+                predicates.add(cb.or(
+                        cb.like(cb.lower(cb.coalesce(root.<String>get("payeeName"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(root.get("payable").get("name"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(root.<String>get("transactionNo"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(root.<String>get("remark"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(project.get("name"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(project.get("no"), "")), pattern)));
+            }
+            return cb.and(predicates.toArray(Predicate[]::new));
+        });
     }
 }

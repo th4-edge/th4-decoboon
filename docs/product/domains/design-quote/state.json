@@ -4,9 +4,9 @@
   "title": "设计方案与设计报价审视",
   "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
+  "phase": "UI_REVIEWED",
   "batch": "B1",
-  "nextAction": "执行真实BOSS/店长/财务/设计师的Web渲染、App真机、跨店跨企业HTTP负向与性能验证",
+  "nextAction": "执行独立验收与对账；由非开发执行者复核业务口径、权限、金额和跨端证据，通过后推进 RECONCILED/ACCEPTED",
   "openDecisions": [
     "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
   ],
@@ -26,7 +26,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T22:14:57+08:00",
-  "updatedAt": "2026-10-21T22:37:22+08:00",
+  "updatedAt": "2026-10-21T23:38:32+08:00",
   "history": [
     {
       "at": "2026-10-21T22:14:57+08:00",
@@ -69,6 +69,18 @@
       "phase": "DEV_VERIFIED",
       "batch": "B1",
       "note": "B1三端实现完成：后端901/901，Web构建与门禁通过，App type-check与mp-weixin release构建通过；未发布生产"
+    },
+    {
+      "at": "2026-10-21T23:21:53+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B1",
+      "note": "完成Web三档/BOSS店长财务设计师真实渲染、App同源H5三角色复核、跨店跨企业HTTP负向、当前数据量性能采样与App release构建；修复门店白名单、App金额重复符号与设计师直链越权。微信开发者工具复制同AppID项目出现现有运行时异常，原生点击冒烟仍阻塞，故保持DEV_VERIFIED。"
+    },
+    {
+      "at": "2026-10-21T23:38:32+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "B1",
+      "note": "微信开发者工具原生 BOSS/店长/财务列表与详情、设计师工作台和直链拦截全部完成；10倍方案性能P95 72.1ms，查询结构固定；App原页面WXSS兼容问题已修复并复跑release构建。"
     }
   ]
 }

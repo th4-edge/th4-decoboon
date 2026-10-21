@@ -4,6 +4,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /** 应付筛选结果汇总，金额由服务端按全部匹配记录计算。 */
 @Note("应付账款汇总")
@@ -28,6 +29,9 @@ public class FinancePayableReport {
     @Note("风险/加急金额：逾期或加急应付的待付金额")
     private BigDecimal urgentAmount = BigDecimal.ZERO;
 
+    @Note("数据截止时间")
+    private LocalDateTime asOf;
+
     public Integer getCount() { return count; }
     public void setCount(Integer count) { this.count = count; }
     public BigDecimal getTotalAmount() { return totalAmount; }
@@ -38,4 +42,6 @@ public class FinancePayableReport {
     public void setOutstandingAmount(BigDecimal outstandingAmount) { this.outstandingAmount = outstandingAmount; }
     public BigDecimal getUrgentAmount() { return urgentAmount; }
     public void setUrgentAmount(BigDecimal urgentAmount) { this.urgentAmount = urgentAmount; }
+    public LocalDateTime getAsOf() { return asOf; }
+    public void setAsOf(LocalDateTime asOf) { this.asOf = asOf; }
 }

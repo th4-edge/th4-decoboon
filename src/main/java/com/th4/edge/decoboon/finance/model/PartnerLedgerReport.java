@@ -4,6 +4,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /** 供应商往来台账及服务端汇总。 */
@@ -32,6 +33,9 @@ public class PartnerLedgerReport {
     @Note("逾期金额")
     private BigDecimal overdueAmount = BigDecimal.ZERO;
 
+    @Note("数据截止时间")
+    private LocalDateTime asOf;
+
     public List<PartnerLedger> getRows() { return rows; }
     public void setRows(List<PartnerLedger> rows) { this.rows = rows; }
     public Integer getPartnerCount() { return partnerCount; }
@@ -44,4 +48,6 @@ public class PartnerLedgerReport {
     public void setOutstandingAmount(BigDecimal outstandingAmount) { this.outstandingAmount = outstandingAmount; }
     public BigDecimal getOverdueAmount() { return overdueAmount; }
     public void setOverdueAmount(BigDecimal overdueAmount) { this.overdueAmount = overdueAmount; }
+    public LocalDateTime getAsOf() { return asOf; }
+    public void setAsOf(LocalDateTime asOf) { this.asOf = asOf; }
 }

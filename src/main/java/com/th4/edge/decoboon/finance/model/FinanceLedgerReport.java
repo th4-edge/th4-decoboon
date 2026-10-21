@@ -4,6 +4,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /** 资金台账筛选结果汇总，金额由服务端按全部匹配记录计算。 */
 @Note("资金台账汇总")
@@ -28,6 +29,9 @@ public class FinanceLedgerReport {
     @Note("净现金流 = 收入合计 - 支出合计")
     private BigDecimal netCashFlowAmount = BigDecimal.ZERO;
 
+    @Note("数据截止时间")
+    private LocalDateTime asOf;
+
     public Integer getCount() { return count; }
     public void setCount(Integer count) { this.count = count; }
     public BigDecimal getTotalAmount() { return totalAmount; }
@@ -38,4 +42,6 @@ public class FinanceLedgerReport {
     public void setExpenseAmount(BigDecimal expenseAmount) { this.expenseAmount = expenseAmount; }
     public BigDecimal getNetCashFlowAmount() { return netCashFlowAmount; }
     public void setNetCashFlowAmount(BigDecimal netCashFlowAmount) { this.netCashFlowAmount = netCashFlowAmount; }
+    public LocalDateTime getAsOf() { return asOf; }
+    public void setAsOf(LocalDateTime asOf) { this.asOf = asOf; }
 }
