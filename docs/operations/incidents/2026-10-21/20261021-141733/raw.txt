@@ -1,0 +1,229 @@
+Warning: Permanently added '120.55.15.159' (ED25519) to the list of known hosts.
+== META ==
+iZbp14tkw2g2pye56mfj7cZ
+2026-10-21T14:17:34+08:00
+ 14:17:34 up 35 days, 13:05,  1 user,  load average: 1.73, 0.68, 0.30
+since=10 minutes ago
+== SERVICE ==
+enabled
+active
+MainPID=305676
+ExecMainStartTimestamp=Wed 2026-10-21 14:16:21 CST
+ActiveState=active
+SubState=running
+== RELEASE ==
+/opt/decoboon/releases/20261021-141548
+/opt/decoboon/releases/.previous
+== HEALTH ==
+health_http=200
+{"success":false,"errorCode":{"code":"tokenIsUndefined","message":"访问受限，缺少授权标识，请先登录后再访问。","system":false}}
+== RESOURCES ==
+Filesystem     1024-blocks     Used Available Capacity Mounted on
+/dev/vda3         40901312 22875384  16135560      59% /
+/dev/vda3         40901312 22875384  16135560      59% /
+/dev/vda3         40901312 22875384  16135560      59% /
+               total        used        free      shared  buff/cache   available
+Mem:            7456        3647         432         400        4075        3809
+Swap:              0           0           0
+== LOG_ERROR ==
+[2026-10-21 01:13:37.732] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:13:56.577] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:13:57.021] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:13:57.025] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:13:57.029] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:13:57.039] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:22:42.289] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:22:45.124] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:22:45.497] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/import-template/build处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:24:12.212] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:26:18.404] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-10-21 01:26:21.910] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-10-21 01:26:21.986] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-10-21 01:26:59.474] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:28:21.613] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/customer/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:28:36.278] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/asset/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:28:55.764] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/company/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:02.195] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/team/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:06.818] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/task/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:08.663] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:14.583] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/template/list处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:14.586] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/asset/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:15.090] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:21.553] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/user/handover处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:28.619] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/employee-content/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:34.498] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/asset/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:40.977] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/dashboard/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:29:56.684] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/dashboard/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:30:06.993] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/employee-content/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:30:38.548] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/asset/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:30:55.474] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/dashboard/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 01:31:10.286] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - content/employee-content/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 02:25:33.150] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - 处理失败:找不到对应的处理服务:
+[2026-10-21 04:18:36.258] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-10-21 04:18:37.541] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/models处理失败:找不到对应的处理服务:v1/models
+[2026-10-21 04:18:37.623] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/namespaces/default/secrets处理失败:找不到对应的处理服务:v1/namespaces/default/secrets
+[2026-10-21 04:18:37.655] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/namespaces/kube-system/configmaps处理失败:找不到对应的处理服务:v1/namespaces/kube-system/configmaps
+[2026-10-21 04:18:38.421] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql
+[2026-10-21 04:18:38.743] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env
+[2026-10-21 04:18:39.968] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php
+[2026-10-21 04:18:44.009] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/download处理失败:找不到对应的处理服务:v1/download
+[2026-10-21 04:18:44.461] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - download处理失败:找不到对应的处理服务:download
+[2026-10-21 04:18:44.909] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - actuator/env处理失败:找不到对应的处理服务:actuator/env
+[2026-10-21 04:18:46.706] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - docker/config处理失败:找不到对应的处理服务:docker/config
+[2026-10-21 04:18:47.114] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - actuator处理失败:找不到对应的处理服务:actuator
+[2026-10-21 04:18:47.116] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - actuator/env处理失败:找不到对应的处理服务:actuator/env
+[2026-10-21 04:18:47.640] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql
+[2026-10-21 04:18:47.828] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - gql处理失败:找不到对应的处理服务:gql
+[2026-10-21 04:18:48.362] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql
+[2026-10-21 04:18:48.755] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - swagger.json处理失败:找不到对应的处理服务:swagger.json
+[2026-10-21 04:18:48.914] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - openapi.json处理失败:找不到对应的处理服务:openapi.json
+[2026-10-21 04:18:48.930] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/openapi.json处理失败:找不到对应的处理服务:v1/openapi.json
+[2026-10-21 04:18:48.951] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - swagger-ui.html处理失败:找不到对应的实体处理服务[ui.html]
+[2026-10-21 04:18:51.444] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - redis处理失败:找不到对应的处理服务:redis
+[2026-10-21 04:18:51.671] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mongo处理失败:找不到对应的处理服务:mongo
+[2026-10-21 04:18:53.423] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - json处理失败:找不到对应的处理服务:json
+[2026-10-21 05:02:10.367] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 10:14:51.764] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 10:22:54.256] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 10:26:50.391] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:26:53.442] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:26:54.403] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:26:55.264] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:29:27.765] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/employee/page处理失败:当前账号无权执行该操作
+[2026-10-21 10:29:59.951] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 10:31:52.300] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:31:53.475] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:31:53.947] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:31:54.847] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:31:55.334] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库
+[2026-10-21 10:32:36.981] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 10:32:39.554] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 10:33:02.858] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 10:33:16.307] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 10:34:13.706] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 11:14:13.981] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:14:14.038] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:14:14.045] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:14:14.045] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:14:14.049] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:35:00.871] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:35:00.877] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:35:00.888] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/alert/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:35:00.891] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:35:00.892] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:35:00.895] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 11:36:37.602] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:不能操作自己的员工记录
+[2026-10-21 11:36:37.604] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/handover处理失败:不能操作自己的员工记录
+[2026-10-21 12:22:46.440] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/login处理失败:首次登录请授权手机号
+[2026-10-21 12:25:57.694] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/employee/page处理失败:当前账号无权执行该操作
+[2026-10-21 12:26:25.765] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/employee/page处理失败:当前账号无权执行该操作
+[2026-10-21 12:35:31.795] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误
+[2026-10-21 12:47:13.780] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env
+[2026-10-21 12:47:15.236] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/models处理失败:找不到对应的处理服务:v1/models
+[2026-10-21 12:47:15.304] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/namespaces/default/secrets处理失败:找不到对应的处理服务:v1/namespaces/default/secrets
+[2026-10-21 12:47:15.352] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/namespaces/kube-system/configmaps处理失败:找不到对应的处理服务:v1/namespaces/kube-system/configmaps
+[2026-10-21 12:47:16.122] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql
+[2026-10-21 12:47:16.425] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env
+[2026-10-21 12:47:17.696] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php
+[2026-10-21 12:47:27.745] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/download处理失败:找不到对应的处理服务:v1/download
+[2026-10-21 12:47:28.141] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - download处理失败:找不到对应的处理服务:download
+[2026-10-21 12:47:28.638] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - actuator/env处理失败:找不到对应的处理服务:actuator/env
+[2026-10-21 12:47:30.905] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - docker/config处理失败:找不到对应的处理服务:docker/config
+[2026-10-21 12:47:31.286] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - actuator处理失败:找不到对应的处理服务:actuator
+[2026-10-21 12:47:31.291] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - actuator/env处理失败:找不到对应的处理服务:actuator/env
+[2026-10-21 12:47:32.042] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql
+[2026-10-21 12:47:32.245] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - gql处理失败:找不到对应的处理服务:gql
+[2026-10-21 12:47:32.916] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - graphql处理失败:找不到对应的处理服务:graphql
+[2026-10-21 12:47:33.309] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - swagger.json处理失败:找不到对应的处理服务:swagger.json
+[2026-10-21 12:47:33.481] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - openapi.json处理失败:找不到对应的处理服务:openapi.json
+[2026-10-21 12:47:33.488] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/openapi.json处理失败:找不到对应的处理服务:v1/openapi.json
+[2026-10-21 12:47:33.501] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - swagger-ui.html处理失败:找不到对应的实体处理服务[ui.html]
+[2026-10-21 12:47:37.126] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - redis处理失败:找不到对应的处理服务:redis
+[2026-10-21 12:47:37.332] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mongo处理失败:找不到对应的处理服务:mongo
+[2026-10-21 12:47:40.313] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - json处理失败:找不到对应的处理服务:json
+[2026-10-21 12:56:33.446] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 12:56:33.485] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 12:56:33.507] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 12:56:33.510] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 12:56:33.536] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:39:28.781] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:39:43.328] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:39:43.573] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/compensation/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:39:45.541] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:40:03.482] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:40:10.909] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:42:45.291] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:40.772] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/plan/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:40.786] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:40.801] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:40.808] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/workbench处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:40.832] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/onboarding/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:40.849] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:53:41.011] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/success/report处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 13:58:51.305] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:00:02.266] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:00:10.765] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:00:51.226] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:00:58.394] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:01:44.319] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:01:51.240] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:05:57.750] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:13:07.599] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:13:20.403] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:当前账号无权执行该操作
+[2026-10-21 14:17:06.153] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:13.497] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:13.638] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:13.755] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:25.783] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:25.887] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - payroll/store-payroll/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:26.085] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+[2026-10-21 14:17:34.195] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== LOG_WARN ==
+[2026-10-21 01:22:09.868] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-10-21 01:22:11.771] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-10-21 01:22:14.761] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-10-21 01:22:21.253] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 01:22:21.506] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 01:22:21.519] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 13:38:55.260] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-10-21 13:38:57.221] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-10-21 13:39:00.290] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-10-21 13:39:06.514] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 13:39:06.715] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 13:39:06.727] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 14:16:32.059] [WARN ] [main] [io.undertow.websockets.jsr] [?] [?] - UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+[2026-10-21 14:16:34.249] [WARN ] [main] [org.hibernate.orm.deprecation] [?] [?] - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-10-21 14:16:37.160] [WARN ] [main] [o.s.context.support.ApplicationListenerDetector] [?] [?] - Inner bean 'com.th4.edge.framework.data.model.listener.ModelListener' implements ApplicationListener interface but is not reachable for event multicasting by its containing ApplicationContext because it does not have singleton scope. Only top-level listener beans are allowed to be of non-singleton scope.
+[2026-10-21 14:16:44.066] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 14:16:44.363] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+[2026-10-21 14:16:44.376] [WARN ] [main] [config] [?] [?] - password setting is deprecated. Use password setting in Config instead.
+
+== STDOUT_ERRORS ==
+730:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+831:2026-10-21T14:17:06.153+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+833:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+934:2026-10-21T14:17:13.497+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+935:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1044:2026-10-21T14:17:13.638+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/store-payroll/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1045:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1146:2026-10-21T14:17:13.755+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : catalog/item/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1147:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1248:2026-10-21T14:17:25.783+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1249:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1358:2026-10-21T14:17:25.887+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/store-payroll/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1359:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1460:2026-10-21T14:17:26.085+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : catalog/item/page处理失败:访问受限，缺少授权标识，请先登录后再访问。
+1461:com.th4.edge.framework.exception.DefinedException: 访问受限，缺少授权标识，请先登录后再访问。
+1562:2026-10-21T14:17:34.195+08:00 ERROR 305676 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。
+
+== JOURNAL ==
+Oct 21 14:16:17 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Stopping decoboon.service - Decoboon backend service...
+Oct 21 14:16:17 iZbp14tkw2g2pye56mfj7cZ cmd.sh[305655]: th4-decoboon is not running
+Oct 21 14:16:18 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Main process exited, code=exited, status=143/n/a
+Oct 21 14:16:18 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Failed with result 'exit-code'.
+Oct 21 14:16:18 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Stopped decoboon.service - Decoboon backend service.
+Oct 21 14:16:18 iZbp14tkw2g2pye56mfj7cZ systemd[1]: decoboon.service: Consumed 3min 45.406s CPU time, 1.8G memory peak, 0B memory swap peak.
+Oct 21 14:16:18 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Starting decoboon.service - Decoboon backend service...
+Oct 21 14:16:21 iZbp14tkw2g2pye56mfj7cZ cmd.sh[305670]: th4-decoboon started, PID=305676, log=/opt/decoboon/th4-decoboon/logs/stdout.log
+Oct 21 14:16:21 iZbp14tkw2g2pye56mfj7cZ systemd[1]: Started decoboon.service - Decoboon backend service.

@@ -2,6 +2,31 @@
   "schema": "th4-decoboon.incidents.v1",
   "incidents": [
     {
+      "incidentId": "INC-20261021-6b16b0032a",
+      "signature": "当前账号无权维护报价项目库",
+      "signatureHash": "6b16b0032a",
+      "classification": "code_bug",
+      "severity": "medium",
+      "status": "fixed",
+      "actionable": false,
+      "count": 9,
+      "firstSeen": "2026-10-21 10:26:50.391",
+      "lastSeen": "2026-10-21 10:31:55.334",
+      "samples": [
+        "[2026-10-21 10:26:50.391] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库",
+        "[2026-10-21 10:26:53.442] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库",
+        "[2026-10-21 10:26:54.403] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库",
+        "[2026-10-21 10:26:55.264] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库",
+        "[2026-10-21 10:31:52.300] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - catalog/item/update处理失败:当前账号无权维护报价项目库"
+      ],
+      "reportPaths": [
+        "2026-10-21/20261021-141733"
+      ],
+      "fixedAt": "2026-10-21 14:18:46",
+      "fixedRelease": "/opt/decoboon/releases/20261021-141548",
+      "fixSummary": "财务报价库价格维护权限已修复；后端 82dcd21，生产 release 20261021-141548，发布后同一指纹未再增长。"
+    },
+    {
       "incidentId": "INC-20261020-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
