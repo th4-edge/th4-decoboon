@@ -20,21 +20,21 @@
 | 反向 | 非法设计 ID | 返回不存在或无权访问，不返回其他方案 | `404 设计方案不存在或无权访问` | HTTP 负向证据 | PASS |
 | 越权 | 临时二店店长/门店财务访问总店方案 | 列表 0 条；详情 404；显式跨店筛选 403 | 列表 0、详情 404、筛选 403 | `raw/http-negative-checks.json` | PASS |
 | 越权 | 其他企业 BOSS 访问麦鸿方案 | 列表 0 条；详情 404 | 列表 0、详情 404 | `raw/http-negative-checks.json` | PASS |
-| 越权 | 设计师直达 App 运营查看页 | 回到设计师工作台，不进入经营查看 | H5 路由回退 `#/`，页面无运营查看内容 | `app-h5-designer-review-denied.png` | PASS（H5） |
+| 越权 | 设计师直达 App 运营查看页 | 不渲染经营查看内容 | 原生页面 `.dr` 与方案卡均为 0；H5 直链回退首页 | `app-mp-designer-review-denied.png`、`app-h5-designer-review-denied.png` | PASS |
 | 幂等 | 只读详情重复请求 | 不改变方案、报价、成本或状态 | 仅读查询，无写接口调用 | 代码/接口审查 | PASS |
 | 边界 | 1 万元以下金额 | 只显示一次货币符号 | `¥82`，不再出现 `¥¥82` | App H5 列表 | PASS |
 | 边界 | 1 万元以上金额 | 万元显示且无截断 | `6.54万`、`11.8万`、`118,025.45` | Web/App 截图 | PASS |
 | 跨端 | App/Web 同一方案价格 | 正式报价优先且金额一致 | 正式报价 `65,406.10`；方案计算价 `62,291.52` | Web/App 截图 | PASS |
 | 性能 | 列表/详情各 10 次 | P95≤500ms | 列表 P95 145.4ms、详情 P95 132.6ms | `raw/http-performance.csv` | PASS（当前数据量） |
-| 性能 | 10 倍数据量 SQL 不增长 | SQL 条数稳定 | 未构造 10 倍数据量 | 待补 | BLOCKED |
-| 原生端 | 微信开发者工具页面级点击 | BOSS/店长/财务/设计师主路径可点验 | 切换复制项目时出现 `up.split is not a function`，未完成 | DevTools 运行异常 | BLOCKED |
+| 性能 | 10 倍数据量（5→50 方案） | SQL 条数稳定、P95≤500ms | 基线 P95 54.2ms；50 方案 P95 72.1ms；批量上下文固定 4 类查询 | `raw/performance-10x.json`、`raw/http-performance-10x.csv` | PASS |
+| 原生端 | 微信开发者工具页面级点击 | BOSS/店长/财务/设计师主路径可点验 | 四角色原生页面实际打开；列表/详情/成本/权限表现符合 | `screenshots/app-mp-*` | PASS |
 
 ## 构建与测试
 
 - 后端定向：`DesignPriceContextTest`、`DesignCostContextTest`、`DesignSchemeInfoFormulaTest`、`DesignerWorkbenchAggregationTest` 13/13 PASS。
 - 后端全量：`mvn -o test`，901/901 PASS。
 - App：`type-check`、UI、导航、设计分项、动作门禁 PASS。
-- App release：`build:mp-weixin:release` PASS；主包 937071 B，最大分包 664803 B，总包 3701229 B，17 分包/167 页。
+- App release：`build:mp-weixin:release` PASS；主包 937071 B，最大分包 664803 B，总包 3701188 B，17 分包/167 页。
 - Web：构建与角色可达、权限、表单门禁 PASS（见前序开发验证）。
 
 ## 数据与凭据恢复
@@ -42,12 +42,13 @@
 - BOSS、店长临时登录哈希已按 `raw/credential-backup.tsv` 恢复，失败次数清零、锁定时间清空。
 - 临时二店已删除；店长/门店财务归属已恢复总店。
 - 其他企业测试凭据已恢复为原手机号、类型、状态和空哈希。
+- 10 倍性能测试新增 45 个临时方案，已在测试后删除；企业方案数恢复为 5。
 - 未修改生产数据库，未发布生产。
 
 ## 结论
 
-- 状态：BLOCKED
-- 已通过：业务口径、价格投影、成本裁剪、Web 渲染、App H5 同源渲染、跨店/跨企业负向、当前数据量性能、App release 构建。
-- 未覆盖：微信开发者工具/真机原生页面点击；10 倍数据量性能；独立验收签署。
-- 遗留风险：微信开发者工具运行时异常需在干净项目副本上复现或排除；`GAP-061` 报价过期口径仍未关闭。
-- 是否允许进入下一批：否；先保持 `DEV_VERIFIED`，补做原生端冒烟后再申请 UI/验收门禁。
+- 状态：PASS（开发侧黑盒证据）
+- 已通过：业务口径、价格投影、成本裁剪、Web 渲染、App 原生页面、跨店/跨企业负向、10 倍数据量性能、App release 构建。
+- 未覆盖：独立验收签署、真实手机系统能力（相机/相册/订阅消息等本功能不涉及）。
+- 遗留风险：`GAP-061` 报价过期口径仍未关闭，本批未展示“报价过期”。
+- 门禁结论：可推进 `UI_REVIEWED`；不得由开发侧自行推进 `ACCEPTED`。
