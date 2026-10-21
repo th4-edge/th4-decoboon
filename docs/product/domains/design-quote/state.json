@@ -4,9 +4,9 @@
   "title": "设计方案与设计报价审视",
   "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
   "owner": "codex",
-  "phase": "UI_REVIEWED",
+  "phase": "RECONCILED",
   "batch": "B1",
-  "nextAction": "执行独立验收与对账；由非开发执行者复核业务口径、权限、金额和跨端证据，通过后推进 RECONCILED/ACCEPTED",
+  "nextAction": "执行独立验收：由非开发执行者按 08-acceptance 矩阵复核业务口径、跨店跨企业、成本裁剪和跨端证据；通过后推进 ACCEPTED",
   "openDecisions": [
     "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
   ],
@@ -26,7 +26,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T22:14:57+08:00",
-  "updatedAt": "2026-10-21T23:38:32+08:00",
+  "updatedAt": "2026-10-22T00:39:54+08:00",
   "history": [
     {
       "at": "2026-10-21T22:14:57+08:00",
@@ -81,6 +81,12 @@
       "phase": "UI_REVIEWED",
       "batch": "B1",
       "note": "微信开发者工具原生 BOSS/店长/财务列表与详情、设计师工作台和直链拦截全部完成；10倍方案性能P95 72.1ms，查询结构固定；App原页面WXSS兼容问题已修复并复跑release构建。"
+    },
+    {
+      "at": "2026-10-22T00:39:54+08:00",
+      "phase": "RECONCILED",
+      "batch": "B1",
+      "note": "最新dev对账通过：需求9/9映射，无UNMAPPED/STALE；后端72afe27、Web2351ce2、App e2d4232均包含本轮设计与UI证据。"
     }
   ]
 }
