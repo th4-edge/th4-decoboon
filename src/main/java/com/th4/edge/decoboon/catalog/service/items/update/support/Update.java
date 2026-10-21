@@ -82,7 +82,7 @@ public class Update implements com.th4.edge.decoboon.catalog.service.items.updat
 
     @Override
     public CatalogItem call(CatalogItem request) {
-        Employee current = context.requireMaintainer(employee);
+        Employee current = context.requirePriceMaintainer(employee);
         CatalogItem item = repository.findByItemIdAndCompany_ComId(itemId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "材料库项目不存在")));
         item.setType(type);

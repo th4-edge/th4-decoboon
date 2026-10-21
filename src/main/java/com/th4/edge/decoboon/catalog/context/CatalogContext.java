@@ -24,7 +24,18 @@ public class CatalogContext {
         return dataScopeContext.requireEmployee(principal);
     }
 
-    /** 报价项目库及标准成本仅企业负责人、店长可维护；其他内部岗位只读。 */
+    /** 报价项目库价格维护：企业负责人、店长、财务；销售价与标准成本分开保存。 */
+    public Employee requirePriceMaintainer(Employee principal) {
+        Employee current = requireEmployee(principal);
+        if (current.getRole() != EmployeeRole.Boss
+                && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号无权维护报价项目库价格"));
+        }
+        return current;
+    }
+
+    /** 删除、批量导入等高风险维护仍按既有边界控制，财务不因价格维护权限自动获得。 */
     public Employee requireMaintainer(Employee principal) {
         Employee current = requireEmployee(principal);
         if (current.getRole() != EmployeeRole.Boss

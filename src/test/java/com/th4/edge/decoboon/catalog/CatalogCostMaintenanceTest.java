@@ -29,46 +29,51 @@ import static org.mockito.Mockito.when;
 class CatalogCostMaintenanceTest {
 
     @Test
-    void catalogCostIsVisibleOnlyToBossAndStoreManager() {
+    void catalogCostIsVisibleToBossStoreManagerAndFinanceOnly() {
         CatalogCostContext context = new CatalogCostContext();
 
         assertThat(context.canViewCost(employee(EmployeeRole.Boss))).isTrue();
         assertThat(context.canViewCost(employee(EmployeeRole.StoreManager))).isTrue();
-        assertThat(context.canViewCost(employee(EmployeeRole.Finance))).isFalse();
+        assertThat(context.canViewCost(employee(EmployeeRole.Finance))).isTrue();
         assertThat(context.canViewCost(employee(EmployeeRole.Designer))).isFalse();
 
         CatalogItem financeView = new CatalogItem();
         financeView.setCostPrice(new BigDecimal("88.00"));
         context.mask(financeView, employee(EmployeeRole.Finance));
-        assertThat(financeView.getCostPrice()).isNull();
+        assertThat(financeView.getCostPrice()).isEqualByComparingTo("88.00");
 
-        CatalogItem managerView = new CatalogItem();
-        managerView.setCostPrice(new BigDecimal("88.00"));
-        context.mask(managerView, employee(EmployeeRole.StoreManager));
-        assertThat(managerView.getCostPrice()).isEqualByComparingTo("88.00");
+        CatalogItem designerView = new CatalogItem();
+        designerView.setCostPrice(new BigDecimal("88.00"));
+        context.mask(designerView, employee(EmployeeRole.Designer));
+        assertThat(designerView.getCostPrice()).isNull();
     }
 
     @Test
-    void catalogWriteRejectsFinanceAndAllowsStoreManager() {
+    void financeCanMaintainPricesButDoesNotGainDeleteOrImportPermission() {
         DataScopeContext scope = mock(DataScopeContext.class);
         CatalogContext context = new CatalogContext(scope);
         Employee finance = employee(EmployeeRole.Finance);
         Employee storeManager = employee(EmployeeRole.StoreManager);
+        Employee designer = employee(EmployeeRole.Designer);
         when(scope.requireEmployee(finance)).thenReturn(finance);
         when(scope.requireEmployee(storeManager)).thenReturn(storeManager);
+        when(scope.requireEmployee(designer)).thenReturn(designer);
 
-        assertThat(context.requireMaintainer(storeManager)).isSameAs(storeManager);
+        assertThat(context.requirePriceMaintainer(finance)).isSameAs(finance);
+        assertThat(context.requirePriceMaintainer(storeManager)).isSameAs(storeManager);
+        assertThatThrownBy(() -> context.requirePriceMaintainer(designer))
+                .hasMessageContaining("无权维护报价项目库价格");
         assertThatThrownBy(() -> context.requireMaintainer(finance))
                 .hasMessageContaining("无权维护报价项目库");
     }
 
     @Test
-    void storeManagerCanUpdateCatalogCostDirectly() {
+    void financeCanUpdateCatalogSalesAndCostPricesDirectly() {
         Company company = new Company();
         company.setComId(1L);
         Employee employee = new Employee();
         employee.setEmpId(10L);
-        employee.setRole(EmployeeRole.StoreManager);
+        employee.setRole(EmployeeRole.Finance);
         employee.setCompany(company);
 
         CatalogItem item = new CatalogItem();
@@ -82,7 +87,7 @@ class CatalogCostMaintenanceTest {
         CatalogContext catalogContext = mock(CatalogContext.class);
         CatalogDetailContext detailContext = mock(CatalogDetailContext.class);
 
-        when(catalogContext.requireMaintainer(employee)).thenReturn(employee);
+        when(catalogContext.requirePriceMaintainer(employee)).thenReturn(employee);
         when(catalogContext.formula(PricingMethod.MaterialOnly)).thenReturn("材料单价 × 工程量");
         when(repository.findByItemIdAndCompany_ComId(20L, 1L)).thenReturn(Optional.of(item));
         when(repository.save(any(CatalogItem.class))).thenAnswer(invocation -> invocation.getArgument(0));

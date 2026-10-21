@@ -82,7 +82,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
 
     @Override
     public CatalogItem call(CatalogItem request) {
-        Employee current = context.requireMaintainer(employee);
+        Employee current = context.requirePriceMaintainer(employee);
         CatalogItem item = new CatalogItem();
         item.setCompany(current.getCompany());
         item.setMaintainer(current);

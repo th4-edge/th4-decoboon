@@ -12,15 +12,15 @@ import java.util.Set;
 /**
  * 成本价可见性控制。
  *
- * <p>报价项目库成本价是中小装企的核心敏感配置：仅企业负责人、店长可见。
- * 其余角色（财务、设计师、业务员、项目经理等）的响应中**直接不返回**该字段，
+ * <p>报价项目库成本价是中小装企的核心敏感配置：企业负责人、店长、财务可见。
+ * 其余角色（设计师、业务员、项目经理等）的响应中**直接不返回**该字段，
  * 不依赖前端隐藏。</p>
  */
 @Component
 public class CatalogCostContext {
 
     private static final Set<EmployeeRole> COST_VISIBLE = EnumSet.of(
-            EmployeeRole.Boss, EmployeeRole.StoreManager);
+            EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.Finance);
 
     /** 当前员工是否可见成本价。 */
     public boolean canViewCost(Employee employee) {
