@@ -16,6 +16,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** 阶段分页实现。 */
 @Note("阶段分页")
@@ -51,8 +52,9 @@ public class Page implements com.th4.edge.decoboon.project.service.stages.page.P
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<ProjectStage> call(ProjectStage request) {
         var project = accessContext.requireReadableProject(projectId, employee);
-        return new PageImpl<>(stageRepository.findByProjectOrderBySort(project));
+        return new PageImpl<>(stageRepository.findDetailedByProjectOrderBySort(project));
     }
 }

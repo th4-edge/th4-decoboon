@@ -17,7 +17,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -62,10 +64,11 @@ public class Page implements com.th4.edge.decoboon.project.service.tasks.page.Pa
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<ProjectTask> call(ProjectTask request) {
         Employee current = accessContext.requireEmployee(employee);
         var project = accessContext.requireReadableProject(projectId, current);
-        List<ProjectTask> tasks = taskRepository.findByProject(project).stream()
+        List<ProjectTask> tasks = taskRepository.findDetailedByProject(project).stream()
                 .filter(task -> stageId == null || task.getStage().getStageId().equals(stageId))
                 .sorted(Comparator.comparing(ProjectTask::getTaskId))
                 .map(this::safeCopy)
@@ -76,9 +79,11 @@ public class Page implements com.th4.edge.decoboon.project.service.tasks.page.Pa
     /** 页面返回安全副本，关联人员仅保留最小字段，避免实体图递归序列化。 */
     private ProjectTask safeCopy(ProjectTask source) {
         ProjectTask copy = new ProjectTask();
-        BeanUtils.copyProperties(source, copy, "owner", "creator");
+        BeanUtils.copyProperties(source, copy, "owner", "creator", "evidenceUrls");
         copy.setOwner(minimalEmployee(source.getOwner()));
         copy.setCreator(minimalEmployee(source.getCreator()));
+        copy.setEvidenceUrls(source.getEvidenceUrls() == null
+                ? new ArrayList<>() : new ArrayList<>(source.getEvidenceUrls()));
         return copy;
     }
 

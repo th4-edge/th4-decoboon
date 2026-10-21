@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.repository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +18,10 @@ public interface ProjectStageRepository extends JpaRepository<ProjectStage, Long
         JpaSpecificationExecutor<ProjectStage> {
 
     List<ProjectStage> findByProjectOrderBySort(Project project);
+
+    /** 阶段详情页所需关联预取；避免 OSIV=false 时序列化 project/store 越界。 */
+    @EntityGraph(attributePaths = {"project", "project.store", "project.customer", "notApplicableBy"})
+    List<ProjectStage> findDetailedByProjectOrderBySort(Project project);
 
     /** 非加锁读取；阶段状态推进的并发由 DistributedLock / @DistributedLocked 串行化。 */
     Optional<ProjectStage> findByStageId(Long stageId);

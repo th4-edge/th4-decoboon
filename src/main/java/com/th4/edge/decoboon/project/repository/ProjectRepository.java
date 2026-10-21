@@ -55,6 +55,12 @@ List<Project> findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(L
     List<Project> findByCompany_ComIdAndCustomer_Team_TeamIdOrderByProjectIdDesc(Long comId, Long teamId);
 
     Optional<Project> findByProjectIdAndCompany_ComId(Long projectId, Long comId);
+    /**
+     * 项目详情预取：仅预取详情响应直接需要的四个聚合根关联。
+     * 其余二级关联由 Provider 在只读事务内显式初始化，避免 OSIV=false 时序列化越界。
+     */
+    @EntityGraph(attributePaths = {"customer", "property", "quote", "designer"})
+    Optional<Project> findDetailedByProjectIdAndCompany_ComId(Long projectId, Long comId);
 
     /** 门店经营利润：按项目自身门店快照聚合（DEC-070/MET-011）。 */
     List<Project> findByCompany_ComIdAndStore_StoreId(Long comId, Long storeId);

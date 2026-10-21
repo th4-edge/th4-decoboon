@@ -17,6 +17,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,6 +29,8 @@ import java.util.Map;
         @AllowProperties(model = ProjectMember.class,
                 properties = {"id", "project", "emp", "customer", "kind", "role", "label", "joinedAt"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "name", "property" }),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"})
 })
@@ -50,8 +53,13 @@ public class List implements com.th4.edge.decoboon.project.service.members.list.
     }
 
     @Override
+    @Transactional(readOnly = true)
     public java.util.List<ProjectMember> call(ProjectMember request) {
-        Project project = accessContext.requireProject(projectId, employee);
+        Project visible = accessContext.requireProject(projectId, employee);
+        Project project = projectRepository.findDetailedByProjectIdAndCompany_ComId(
+                        visible.getProjectId(), visible.getCompany().getComId())
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目不存在或无权访问")));
+        initializeMemberAssociations(project);
         Map<Long, Employee> employees = new LinkedHashMap<>();
         if (project.getDesigner() != null) employees.put(project.getDesigner().getEmpId(), project.getDesigner());
         if (project.getManager() != null) employees.put(project.getManager().getEmpId(), project.getManager());
@@ -84,5 +92,17 @@ public class List implements com.th4.edge.decoboon.project.service.members.list.
             result.add(owner);
         }
         return result;
+    }
+
+    private void initializeMemberAssociations(Project project) {
+        if (project.getCustomer() != null && project.getCustomer().getOwner() != null) {
+            project.getCustomer().getOwner().getName();
+        }
+        if (project.getQuote() != null && project.getQuote().getCreatedBy() != null) {
+            project.getQuote().getCreatedBy().getName();
+        }
+        if (project.getManager() != null) {
+            project.getManager().getName();
+        }
     }
 }
