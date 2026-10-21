@@ -205,14 +205,9 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-20 设计方案分项纯排序新增 1 条 protected：design/items/reorder。
         // 2026-10-20 收款冲正新增 2 条 protected：finance/receipt/info、finance/receipt/reverse。
         // 2026-10-21 业主视角只读预览新增 1 条 protected：project/owner-preview/info。
-        // 2026-10-21 收款/付款筛选汇总新增 2 条 protected：finance/receipt/report、finance/payment/report。
-        // 2026-10-21 应收筛选汇总新增 1 条 protected：finance/receivable/report。
-        // 2026-10-21 退款与提成汇总新增 2 条 protected：finance/refund/report、payroll/commission/report。
-        // 2026-10-21 供应商往来分页新增 1 条 protected：finance/partner-ledger/page。
-        // 2026-10-21 项目账本汇总新增 1 条 protected：finance/project-ledger/report。
-        // => 当前 Provider 面板为 518（public 16 + protected 502）。
-        assertThat(routes).hasSize(518);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(502);
+        // => 当前 Provider 面板为 511（public 16 + protected 495）。
+        assertThat(routes).hasSize(511);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(495);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -256,8 +251,7 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("finance/ledger/delete");
         assertUnauthorized("finance/receipt/info");
         assertUnauthorized("finance/receipt/reverse");
-        assertUnauthorized("finance/receipt/report");
-        assertUnauthorized("finance/payment/report");
+        assertUnauthorized("project/owner-preview/info");
         assertUnauthorized("finance/opening-balance/save");
         assertUnauthorized("finance/opening-balance/page");
         assertUnauthorized("carryover/payment-plan/save");
@@ -283,11 +277,6 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("customer/project/album/page");
         assertUnauthorized("file/private/grant");
         assertUnauthorized("finance/receivable/page");
-        assertUnauthorized("finance/receivable/report");
-        assertUnauthorized("finance/refund/report");
-        assertUnauthorized("finance/partner-ledger/page");
-        assertUnauthorized("finance/project-ledger/report");
-        assertUnauthorized("payroll/commission/report");
         assertUnauthorized("labor/worker/page");
         assertUnauthorized("labor/worker/info");
         assertUnauthorized("labor/worker/save");
