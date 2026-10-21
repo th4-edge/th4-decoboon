@@ -4,9 +4,9 @@
   "title": "项目施工履约与进度",
   "northStar": "合同施工范围通过阶段、任务、排期、节点留证和进度投影形成可追溯的履约闭环，不脱离合同或已生效变更独立造任务",
   "owner": "codex",
-  "phase": "SCENARIOS_READY",
-  "batch": "B1",
-  "nextAction": "请用户裁决 GAP-034 五项（推荐 1A/2A/3A/4A/5A），裁决后完成 BIZ_ALIGNED",
+  "phase": "DEV_VERIFIED",
+  "batch": "OWNER-UI-V2-C",
+  "nextAction": "补齐 390×844、430×932、375×812 微信运行时检查及空态/错误态/长内容/部分同步矩阵后，再评审是否推进 UI_REVIEWED",
   "openDecisions": [
     "GAP-034：阶段计划两套算法如何统一",
     "GAP-034 G-01：acceptanceMode 是否落到 ProjectStage",
@@ -29,10 +29,12 @@
     "uiReview": "07-ui-review.md",
     "acceptance": "08-acceptance.md",
     "release": "09-release.md",
-    "reconciliation": "10-reconciliation.md"
+    "reconciliation": "10-reconciliation.md",
+    "ownerUiDesignSpec": "13-owner-ui-v2-design-spec.md",
+    "ownerUiInteractionSpec": "14-owner-ui-v2-technical-interaction-spec.md"
   },
   "createdAt": "2026-10-17T22:33:38+08:00",
-  "updatedAt": "2026-10-17T22:45:00+08:00",
+  "updatedAt": "2026-10-21T23:35:45+08:00",
   "history": [
     {
       "at": "2026-10-17T22:33:38+08:00",
@@ -51,6 +53,60 @@
       "phase": "SCENARIOS_READY",
       "batch": "B1",
       "note": "GAP-034 decision packet created; B1 waiting for user decision"
+    },
+    {
+      "at": "2026-10-21T02:36:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "OWNER-PREVIEW-P0",
+      "note": "independent owner-preview P0 slice DEV_VERIFIED: backend full tests 893/0/0, App verify:mp-weixin PASS, isolated startup smoke PASS; B1 GAP-034 gate unchanged; MySQL migration and independent acceptance pending"
+    },
+    {
+      "at": "2026-10-21T05:01:25+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "OWNER-UI-V1",
+      "note": "四主 Tab + 中央装修历程、产品化首页、施工节点、我的钱、家档案与深色装修历程已在微信开发者工具完成开发自测走查；未来 7 天等业务未决项保持 GAP"
+    },
+    {
+      "at": "2026-10-21T22:14:16+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "OWNER-UI-V2",
+      "note": "业主端产品化 UI V2 复用现有业务裁决：线下确认、材料到场、增减项审批和员工只读预览口径不变；无新增业务对象、状态机或金额规则。"
+    },
+    {
+      "at": "2026-10-21T22:14:16+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "OWNER-UI-V2",
+      "note": "新增 owner-ui-v2 页面绑定，覆盖首页、进度、历程、五类详情页和家档案。"
+    },
+    {
+      "at": "2026-10-21T22:14:16+08:00",
+      "phase": "PLAN_READY",
+      "batch": "OWNER-UI-V2-A",
+      "note": "OWNER-UI-V2 设计规范与技术交互规范已冻结；研发拆为 A 组件层、B 五类详情、C UI 对账、D 真机验收。"
+    },
+    {
+      "at": "2026-10-21T22:22:46+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "OWNER-UI-V2-A",
+      "note": "Owner Token、浅色单据 Hero、五槽导航、统一签认卡、材料计划页和业务事实投影进入实现。"
+    },
+    {
+      "at": "2026-10-21T22:22:46+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "OWNER-UI-V2-A",
+      "note": "App type-check、Owner UI 契约、预览契约、导航、mp-weixin 构建、分包 PASS；后端 CustomerJourney 定向测试 8/8 PASS；无 DDL；UI 真实渲染尚未完成。"
+    },
+    {
+      "at": "2026-10-21T22:24:08+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "OWNER-UI-V2-A",
+      "note": "Owner UI V2-A re-verified after final Token/signoff/material-plan integration: type-check, owner UI contract, preview contract, navigation, check:ui, mp-weixin build and subpackages all PASS; backend targeted 8/8 remains PASS; UI render still pending."
+    },
+    {
+      "at": "2026-10-21T23:35:45+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "OWNER-UI-V2-C",
+      "note": "OWNER-UI-V2-C: 微信开发者工具 375×667 完成 10 页业主真实会话与员工预览业务区同屏一致性；修复反馈能力误计待办、身份残留和旧 app.json；多分辨率、异常状态与独立验收仍待完成"
     }
   ]
 }

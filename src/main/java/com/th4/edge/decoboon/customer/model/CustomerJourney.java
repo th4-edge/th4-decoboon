@@ -25,6 +25,7 @@ public class CustomerJourney {
     @Note("待办数量") private Integer pendingActionCount = 0;
     @Note("服务方（装企品牌与署名配置）") private Vendor vendor = new Vendor();
     @Note("为这一户服务的人（不含个人手机号）") private List<Member> team = new ArrayList<>();
+    @Note("员工侧业主视角预览标识；真实业主端为空") private PreviewMeta previewMeta;
 
     public Long getProjectId() { return projectId; }
     public void setProjectId(Long projectId) { this.projectId = projectId; }
@@ -56,6 +57,8 @@ public class CustomerJourney {
     public void setTeam(List<Member> team) { this.team = team; }
     public Integer getPendingActionCount() { return pendingActionCount; }
     public void setPendingActionCount(Integer pendingActionCount) { this.pendingActionCount = pendingActionCount; }
+    public PreviewMeta getPreviewMeta() { return previewMeta; }
+    public void setPreviewMeta(PreviewMeta previewMeta) { this.previewMeta = previewMeta; }
 
     /** 生命周期分区。 */
     public static class Section {
@@ -213,6 +216,26 @@ public class CustomerJourney {
         public void setName(String name) { this.name = name; }
         public String getRoleName() { return roleName; }
         public void setRoleName(String roleName) { this.roleName = roleName; }
+    }
+
+    /** 员工侧业主视角预览标识；不进入真实业主端响应。 */
+    public static class PreviewMeta {
+        @Note("模式") private String mode;
+        @Note("只读") private Boolean readOnly;
+        @Note("说明") private String notice;
+        @Note("水印") private String watermark;
+        @Note("数据时间") private LocalDateTime asOf;
+
+        public String getMode() { return mode; }
+        public void setMode(String mode) { this.mode = mode; }
+        public Boolean getReadOnly() { return readOnly; }
+        public void setReadOnly(Boolean readOnly) { this.readOnly = readOnly; }
+        public String getNotice() { return notice; }
+        public void setNotice(String notice) { this.notice = notice; }
+        public String getWatermark() { return watermark; }
+        public void setWatermark(String watermark) { this.watermark = watermark; }
+        public LocalDateTime getAsOf() { return asOf; }
+        public void setAsOf(LocalDateTime asOf) { this.asOf = asOf; }
     }
 
     public static class Action {

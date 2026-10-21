@@ -1,0 +1,220 @@
+{
+  "at": "2026-10-21T15:33:15.935Z",
+  "projectId": "236266510782300160",
+  "systemInfo": {
+    "brand": "devtools",
+    "model": "Mac 13-inch and below",
+    "system": "macOS 10.14.3",
+    "platform": "devtools",
+    "benchmarkLevel": -1,
+    "pixelRatio": 2,
+    "screenWidth": 375,
+    "screenHeight": 667,
+    "windowWidth": 375,
+    "windowHeight": 667,
+    "statusBarHeight": 20,
+    "safeArea": {
+      "top": 20,
+      "left": 0,
+      "right": 375,
+      "bottom": 667,
+      "width": 375,
+      "height": 647
+    },
+    "language": "zh_CN",
+    "version": "8.0.5",
+    "fontSizeSetting": 16,
+    "SDKVersion": "3.17.3",
+    "host": {
+      "env": "WeChat"
+    },
+    "enableDebug": false,
+    "mode": "default",
+    "deviceOrientation": "portrait",
+    "bluetoothEnabled": true,
+    "locationEnabled": true,
+    "wifiEnabled": true,
+    "albumAuthorized": true,
+    "cameraAuthorized": true,
+    "locationAuthorized": true,
+    "microphoneAuthorized": true,
+    "notificationAuthorized": true,
+    "notificationAlertAuthorized": true,
+    "notificationBadgeAuthorized": true,
+    "notificationSoundAuthorized": true,
+    "phoneCalendarAuthorized": true,
+    "bluetoothAuthorized": true,
+    "locationReducedAccuracy": true,
+    "devicePixelRatio": 2
+  },
+  "pageKeys": [
+    "home",
+    "progress",
+    "money",
+    "archive",
+    "journey",
+    "quote",
+    "contract",
+    "selection",
+    "material-plan",
+    "change"
+  ],
+  "semanticScope": "business content excluding preview chrome, owner-private feedback, share/write actions and tabbar",
+  "sources": [
+    {
+      "file": "parity-batch-1.json",
+      "at": "2026-10-21T15:28:51.851Z",
+      "keys": [
+        "home",
+        "progress",
+        "money"
+      ],
+      "outcome": "PASS"
+    },
+    {
+      "file": "parity-batch-2.json",
+      "at": "2026-10-21T15:29:51.201Z",
+      "keys": [
+        "archive",
+        "journey",
+        "quote"
+      ],
+      "outcome": "PASS"
+    },
+    {
+      "file": "parity-contract.json",
+      "at": "2026-10-21T15:31:34.140Z",
+      "keys": [
+        "contract"
+      ],
+      "outcome": "PASS"
+    },
+    {
+      "file": "parity-selection.json",
+      "at": "2026-10-21T15:32:08.225Z",
+      "keys": [
+        "selection"
+      ],
+      "outcome": "PASS"
+    },
+    {
+      "file": "parity-material-plan.json",
+      "at": "2026-10-21T15:32:40.050Z",
+      "keys": [
+        "material-plan"
+      ],
+      "outcome": "PASS"
+    },
+    {
+      "file": "parity-change.json",
+      "at": "2026-10-21T15:33:11.916Z",
+      "keys": [
+        "change"
+      ],
+      "outcome": "PASS"
+    }
+  ],
+  "results": [
+    {
+      "key": "home",
+      "path": "/pages/index/index",
+      "sameText": true,
+      "previewLength": 470,
+      "ownerLength": 470,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/home.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/home.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "progress",
+      "path": "/pages/project/list",
+      "sameText": true,
+      "previewLength": 490,
+      "ownerLength": 490,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/progress.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/progress.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "money",
+      "path": "/subpackages/project/pages/owner-payment",
+      "sameText": true,
+      "previewLength": 245,
+      "ownerLength": 245,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/money.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/money.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "archive",
+      "path": "/subpackages/project/pages/owner-archive",
+      "sameText": true,
+      "previewLength": 370,
+      "ownerLength": 370,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/archive.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/archive.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "journey",
+      "path": "/subpackages/project/pages/journey",
+      "sameText": true,
+      "previewLength": 2754,
+      "ownerLength": 2754,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/journey.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/journey.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "quote",
+      "path": "/subpackages/project/pages/owner-quote",
+      "sameText": true,
+      "previewLength": 373,
+      "ownerLength": 373,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/quote.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/quote.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "contract",
+      "path": "/subpackages/project/pages/owner-contract",
+      "sameText": true,
+      "previewLength": 194,
+      "ownerLength": 194,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/contract.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/contract.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "selection",
+      "path": "/subpackages/project/pages/owner-selection",
+      "sameText": true,
+      "previewLength": 896,
+      "ownerLength": 896,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/selection.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/selection.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "material-plan",
+      "path": "/subpackages/project/pages/owner-material-plan",
+      "sameText": true,
+      "previewLength": 706,
+      "ownerLength": 706,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/material-plan.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/material-plan.png",
+      "textDiffHint": ""
+    },
+    {
+      "key": "change",
+      "path": "/subpackages/project/pages/owner-change",
+      "sameText": true,
+      "previewLength": 342,
+      "ownerLength": 342,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/change.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/change.png",
+      "textDiffHint": ""
+    }
+  ],
+  "outcome": "PASS"
+}

@@ -36,3 +36,66 @@
 - 已对齐：核心任务来源、工期层次、节点、空阶段与偏差规则；
 - 待对齐：GAP-034 未决子项、结构化字段字典、实现与页面；
 - 当前停在：`SCENARIOS_READY`，下一步 BIZ_ALIGNED。
+
+## 独立切片对账：业主视角只读预览 P0（2026-10-21）
+
+| REQ | 场景 | 业务规则 | 蓝图节点 | 字段/API | 页面 | 测试 | 验收 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| REQ-OP-001 | 员工查看本项目业主投影 | USER-DECISION-001/002、T12-001 | owner-preview.employee-projection | project/owner-preview/info | App owner-preview | OwnerPreviewInfoAcceptanceTest | 真实员工 token/真机待补 | PENDING |
+| REQ-OP-002 | 预览与业主投影同源 | T12-001/002 | owner-preview.journey-mode | CustomerJourney.EmployeeOwnerPreview | App 首页/全过程/验收 | CustomerJourneyOwnerPreviewModeTest、OwnerPreviewInfoAcceptanceTest | 页面视觉字段待补 | PENDING |
+| REQ-OP-003 | 预览只读无副作用 | T12-001 | owner-preview.read-only | actions=[]；previewMeta.readOnly | 无业主写按钮 | OwnerPreviewInfoAcceptanceTest | 真机交互待补 | PENDING |
+| REQ-OP-004 | 最小审计 | USER-DECISION-002、T12-001/002 | owner-preview.audit | db_project_owner_preview_log | 后台无页面 | 集成测试 + MigrationSchemaParityTest | MySQL 迁移/查询验收待补 | PENDING |
+| REQ-OP-005 | 角色与项目范围拒绝 | USER-DECISION-001、T12-001 | owner-preview.access | 5 角色白名单 + requireProject | 入口/守卫 | 集成测试 + App 契约 | 独立越权验收待补 | PENDING |
+
+### 本切片结论
+
+- 设计与实现已映射：路由、能力键、投影模式、Provider、审计迁移、App 页面均有代码与测试证据。
+- 未映射/过期：本切片无。
+- 未决：真实 MySQL 迁移、真实微信员工会话、真机 UI、独立验收与发布。
+- 本结论不推进原 B1 `GAP-034` 门禁。
+
+## 业主端产品化 UI V1（OWNER-UI-V1，2026-10-21）
+
+| REQ | 场景 | 业务规则 | 蓝图节点 | 字段/API | 页面 | 测试 | 验收 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| REQ-OUI-001 | 业主日常打开 | SCN-003、DEC-015、DEC-048 | owner-ui.home | project/owner-preview/info、customer/project/journey/info | App 我的家 | verify:owner-preview-product-ui | 真机/用户确认待补 | UI_REVIEWED |
+| REQ-OUI-002 | 查看施工节点 | BR-008、DEC-048 | owner-ui.progress | journey construction section | App 进度 | type-check/build/四页走查 | 真机待补 | UI_REVIEWED |
+| REQ-OUI-003 | 核对付款 | 业主金额口径：应付/已付/待付 | owner-ui.money | journey payment section | App 我的钱 | 金额事实与页面走查 | 真机待补 | UI_REVIEWED |
+| REQ-OUI-004 | 回看装修档案 | USER-DECISION-20261014-002 | owner-ui.archive | journey sections | App 家档案 | 八类档案走查 | 真机待补 | UI_REVIEWED |
+| REQ-OUI-005 | 浏览完整历程 | SCN-003、DEC-015 | owner-ui.journey | customer/project/journey/info | App 装修历程 | 四主 Tab + 中央入口走查 | 真机待补 | UI_REVIEWED |
+| REQ-OUI-006 | 员工预览 | USER-DECISION-001/002 | owner-preview.read-only | project/owner-preview/info | 同业主页面 | 15/15 自动化 + 水印/只读 | 独立验收待补 | UI_REVIEWED |
+| REQ-OUI-007 | 未来 7 天计划 | 待业务裁决 | owner-ui.upcoming | 待补 | 首页/进度 | 未实现 | 待裁决 | GAP |
+
+### 本批结论
+
+- 10-14 原型的四主 Tab + 中央装修历程骨架已落地。
+- 首页、进度、我的钱、家档案、装修历程均复用真实业务事实。
+- 未伪造未来 7 天、质保和逐项验收数据。
+- 下一步是用户视觉确认与真实业主账号走查；正式验收仍需独立证据。
+
+## 业主端产品化 UI V2（OWNER-UI-V2，2026-10-21）
+
+| REQ | 业务规则 | 蓝图节点 | 数据投影 | 页面 | 测试 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| REQ-OUI2-001 | T12-20261021-001/002 | owner-ui-v2.shell | CustomerJourney + previewMeta | 同业主页面 | parity contract | DEV_VERIFIED |
+| REQ-OUI2-002 | USER-DECISION-20261014-004 | owner-ui-v2.quote | quote facts/items | owner-quote | page state/build | DEV_VERIFIED |
+| REQ-OUI2-003 | BR-002、DEC-015 | owner-ui-v2.contract | contract facts/items | owner-contract | page state/build | DEV_VERIFIED |
+| REQ-OUI2-004 | DEC-056、BR-009 | owner-ui-v2.selection | material selection items | owner-selection | page state/build | DEV_VERIFIED |
+| REQ-OUI2-005 | USER-DECISION-20261014-003 | owner-ui-v2.material-plan | material plan items | owner-material-plan | no-confirm assertion | DEV_VERIFIED |
+| REQ-OUI2-006 | DEC-068 | owner-ui-v2.change | change facts/items | owner-change | pending amount hidden | DEV_VERIFIED |
+| REQ-OUI2-007 | T12-20261021-001/002 | owner-ui-v2.shell | previewMeta/readOnly | OwnerPageShell | write action scan | DEV_VERIFIED |
+| REQ-OUI2-008 | domain protocol | owner-ui-v2.shell | loading/error/empty | all owner pages | state contract | DEV_PARTIAL |
+
+### OWNER-UI-V2-C 同屏审查回写（2026-10-21）
+
+| 对账项 | 证据 | 结论 |
+| --- | --- | --- |
+| 10 页业务区同源 | `docs/acceptance/runs/20261021-owner-ui-v2-c/parity-results.json` | PASS（375×667） |
+| 业主/预览并排截图 | `screenshots/preview/*.png`、`screenshots/owner/*.png` | PASS |
+| 真实待办口径 | `08-owner-journey-actions.json`、`09-preview-actions.json` | PASS：两侧 actions/pendingActionCount 均为 0 |
+| 反馈隐私边界 | T12-BIZ-20261021-001；预览 section keys | PASS：预览不展示 feedback section |
+| 预览安全层 | banner、watermark、readOnly、写动作 | PASS（静态/渲染层） |
+| 多分辨率 | 390×844、430×932、375×812 | PENDING |
+| 状态矩阵 | 空态、错误态、部分同步、长内容、极端数值 | PENDING |
+
+结论：设计已冻结，A/B 主要代码已进入 DEV_VERIFIED，并完成 375×667 微信开发者工具首轮同屏审查；多分辨率、异常状态和独立验收未完成，不得标记 UI_REVIEWED。

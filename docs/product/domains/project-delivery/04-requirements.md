@@ -25,3 +25,16 @@
 - 不做手工任务。
 - 不做工艺库直接下发。
 - 不做自动验收、自动完工、自动顺延合同基准。
+
+## 业主端产品化 UI V2
+
+| ID | 用户故事 | 前置条件 | 权限 | 数据/状态 | 页面/交互 | API/事实 | 验收 | 来源 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| REQ-OUI2-001 | 业主与员工预览看到同一业务 UI | 员工具备预览权限 | 业主本人/预览白名单角色 | CustomerJourney 同源 | 同路由同组件 | journey/info、owner-preview/info | 除安全层外布局一致 | USER-DECISION-20261021-001/002 |
+| REQ-OUI2-002 | 业主能完整查看报价详情 | 项目存在 | 业主本人 | quote section | owner-quote | acceptedBy/acceptedAt/priceGroups | 版本、构成、差异与登记来源完整 | USER-DECISION-20261014-004 |
+| REQ-OUI2-003 | 业主能完整查看合同详情 | 合同生效 | 业主本人 | contract section | owner-contract | signed/current/signedAt/effectiveAt/registeredBy | 金额、付款、附件与签署登记完整 | BR-002、DEC-015 |
+| REQ-OUI2-004 | 业主能完整查看选材详情 | 已形成选材 | 业主本人 | material section | owner-selection | selection facts | 品牌、规格、版本与设计师登记完整 | DEC-056、BR-009 |
+| REQ-OUI2-005 | 业主能完整查看材料计划 | 已形成计划 | 业主本人 | material section | owner-material-plan | plan facts | 状态、数量、到场日期完整；无确认按钮 | USER-DECISION-20261014-003 |
+| REQ-OUI2-006 | 业主能查看增减项结果 | 有变更单 | 业主本人 | change section | owner-change | status/effective facts | 审批中不显示金额，生效后显示结果 | DEC-068 |
+| REQ-OUI2-007 | 预览不出现写动作 | 预览激活 | 员工预览 | readOnly/previewMeta | OwnerPageShell | owner-preview/info | 确认/驳回/分享/上传不出现 | T12-BIZ-20261021-001/002 |
+| REQ-OUI2-008 | 详情页在空/错/部分同步时可恢复 | 任意 | 业主/预览 | loading/empty/error | 详情页 | PageState | 三态与重试可用 | UI gate |

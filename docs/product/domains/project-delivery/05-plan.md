@@ -32,3 +32,19 @@
 
 - 本批结束停在：`BIZ_ALIGNED` 或 `BLUEPRINT_READY`。
 - 下一批开始前必须：解决 GAP-034 未决子项、确认任务来源、阶段算法和现场汇报角色。
+
+## 业主端产品化 UI V2 垂直切片
+
+| 批次 | 垂直切片 | 角色 | 页面/对象 | 退出条件 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| OWNER-UI-V2-A | Owner Token、页面壳、五槽导航、预览安全层 | 业主/预览员工 | Owner Token、OwnerFactHero、OwnerTabBar、OwnerSection、OwnerSignoffCard | type-check/build/contract PASS；UI review pending | DEV_VERIFIED |
+| OWNER-UI-V2-B | 五类业务详情页 + 材料计划独立页 | 业主/预览员工 | quote/contract/selection/material-plan/change | 页面与事实已接入；待 UI review | DEV_IN_PROGRESS |
+| OWNER-UI-V2-C | 同源 UI 对账与微信开发者工具走查 | 业主/预览员工 | 全部 Owner 页面 | 三档渲染、无横向溢出、业务区一致 | PENDING |
+| OWNER-UI-V2-D | 真机/业主账号验收 | independent | 全部 Owner 页面 | 用户确认与独立证据 | PENDING |
+
+### 本批开发边界
+
+- 不新增 DDL。
+- 不改变业务状态机、金额、成本、权限。
+- 先做主页面组件层和五类详情页；不改员工内部工作台业务页。
+- 所有预览页面复用业主页面，不新增平行预览页面。

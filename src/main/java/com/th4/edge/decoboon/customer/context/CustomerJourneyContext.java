@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.common.support.SelectionText;
 import com.th4.edge.decoboon.common.support.CraftText;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.customer.configure.CustomerFeedbackStatus;
+import com.th4.edge.decoboon.customer.configure.JourneyViewMode;
 import com.th4.edge.decoboon.customer.model.CustomerFeedback;
 import com.th4.edge.decoboon.customer.model.CustomerJourney;
 import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
@@ -124,6 +125,12 @@ public class CustomerJourneyContext {
 
     @Transactional(readOnly = true)
     public CustomerJourney build(Project project) {
+        return build(project, JourneyViewMode.Owner);
+    }
+
+    @Transactional(readOnly = true)
+    public CustomerJourney build(Project project, JourneyViewMode viewMode) {
+        JourneyViewMode mode = viewMode == null ? JourneyViewMode.Owner : viewMode;
         Long comId = project.getCompany().getComId();
         Long projectId = project.getProjectId();
         Long propertyId = project.getProperty().getPropertyId();
@@ -142,7 +149,9 @@ public class CustomerJourneyContext {
                 .findByCompany_ComIdAndProject_ProjectIdAndVisibleToCustomerTrueOrderByCreateTime_DateTimeDesc(
                         comId, projectId, PageRequest.of(0, 12)).getContent();
         List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
-        List<CustomerFeedback> feedbacks = feedbackRepository.findByProject_ProjectIdAndCompany_ComIdOrderByFeedbackIdDesc(projectId, comId);
+        List<CustomerFeedback> feedbacks = mode == JourneyViewMode.Owner
+                ? feedbackRepository.findByProject_ProjectIdAndCompany_ComIdOrderByFeedbackIdDesc(projectId, comId)
+                : List.of();
 
         CustomerJourney journey = new CustomerJourney();
         journey.setProjectId(projectId);
@@ -193,7 +202,7 @@ public class CustomerJourneyContext {
         if (project.getQuote() != null) addMember.accept(project.getQuote().getCreatedBy());
         if (project.getCustomer() != null) addMember.accept(project.getCustomer().getOwner());
         journey.setTeam(new java.util.ArrayList<>(team.values()));
-        journey.setSections(List.of(
+        List<CustomerJourney.Section> sections = new ArrayList<>(List.of(
                 measureSection(measures),
                 designSection(designs),
                 quoteSection(quotes),
@@ -202,15 +211,29 @@ public class CustomerJourneyContext {
                 materialSection(plans, selections),
                 constructionSection(project, stages, reports),
                 acceptanceSection(acceptances),
-                paymentSection(receivables),
-                feedbackSection(feedbacks)
+                paymentSection(receivables)
         ));
+        if (mode == JourneyViewMode.Owner) {
+            sections.add(feedbackSection(feedbacks));
+        }
+        journey.setSections(sections);
 
-        List<CustomerJourney.Action> actions = collectActions(acceptances, changes, selections, feedbacks);
+        List<CustomerJourney.Action> actions = mode == JourneyViewMode.Owner
+                ? collectActions(acceptances, changes, selections, feedbacks)
+                : List.of();
         journey.setActions(actions);
         journey.setPendingActionCount(actions.size());
-        journey.setOpenFeedbackCount((int) feedbacks.stream()
-                .filter(item -> item.getStatus() != CustomerFeedbackStatus.Closed).count());
+        journey.setOpenFeedbackCount(mode == JourneyViewMode.Owner
+                ? (int) feedbacks.stream().filter(item -> item.getStatus() != CustomerFeedbackStatus.Closed).count()
+                : 0);
+        if (mode == JourneyViewMode.EmployeeOwnerPreview) {
+            CustomerJourney.PreviewMeta previewMeta = new CustomerJourney.PreviewMeta();
+            previewMeta.setMode(mode.name());
+            previewMeta.setReadOnly(true);
+            previewMeta.setAsOf(journey.getAsOf());
+            previewMeta.setNotice("业主视角预览 · 只读，不代表业主已查看或确认");
+            journey.setPreviewMeta(previewMeta);
+        }
         return journey;
     }
 
@@ -508,6 +531,13 @@ public class CustomerJourneyContext {
         if (quote.getDiscount() != null && quote.getDiscount().compareTo(BigDecimal.ONE) < 0) {
             item.getFacts().add(fact("discount", "折扣", quote.getDiscount().stripTrailingZeros().toPlainString(), "text"));
         }
+        if (quote.getAcceptedAt() != null) {
+            item.getFacts().add(fact("acceptedAt", "线下确认时间", date(quote.getAcceptedAt()), "text"));
+            item.getFacts().add(fact("registrationSource", "登记来源", "员工登记", "text"));
+        }
+        if (quote.getAcceptedBy() != null) {
+            item.getFacts().add(fact("acceptedBy", "登记人", name(quote.getAcceptedBy()), "text"));
+        }
         return item;
     }
 
@@ -623,6 +653,13 @@ public class CustomerJourneyContext {
         item.setStatusName(contract.getStatus() == null ? null : contract.getStatus().getName());
         item.setAmount(money(contract.getCurrentAmount()));
         item.setDate(date(contract.getSignedAt()));
+        if (contract.getEffectiveAt() != null) {
+            item.getFacts().add(fact("effectiveAt", "生效时间", date(contract.getEffectiveAt()), "text"));
+        }
+        if (contract.getCreatedBy() != null) {
+            item.getFacts().add(fact("registeredBy", "登记人", name(contract.getCreatedBy()), "text"));
+            item.getFacts().add(fact("registrationSource", "登记方式", "员工线下签署登记", "text"));
+        }
         return item;
     }
 
@@ -640,6 +677,12 @@ public class CustomerJourneyContext {
         item.setBusinessType("ContractChange");
         item.setBusinessId(change.getChangeId());
         item.setDate(effective ? date(change.getApprovedAt()) : null);
+        if (change.getRequestedBy() != null) {
+            item.getFacts().add(fact("requestedBy", "发起人", name(change.getRequestedBy()), "text"));
+        }
+        if (change.getCreateTime() != null) {
+            item.getFacts().add(fact("requestedAt", "发起时间", date(change.getCreateTime()), "text"));
+        }
         if (effective) {
             item.getFacts().add(fact("approvedAt", "生效时间", date(change.getApprovedAt()), "date"));
         } else {
@@ -668,6 +711,8 @@ public class CustomerJourneyContext {
         item.getFacts().add(fact("quantity", "数量", plan.getQuantity() + unit(plan.getUnit()), "text"));
         if (plan.getSelectedBrand() != null) item.getFacts().add(fact("brand", "品牌", plan.getSelectedBrand(), "text"));
         if (plan.getSelectedSpec() != null) item.getFacts().add(fact("spec", "规格", plan.getSelectedSpec(), "text"));
+        if (plan.getRequiredAt() != null) item.getFacts().add(fact("requiredAt", "要求到场", date(plan.getRequiredAt()), "date"));
+        if (plan.getArrivedAt() != null) item.getFacts().add(fact("arrivedAt", "实际到场", date(plan.getArrivedAt()), "date"));
         return item;
     }
 
@@ -677,6 +722,13 @@ public class CustomerJourneyContext {
         item.setStatus(selection.getStatus() == null ? null : selection.getStatus().name());
         item.setStatusName(selection.getStatus() == null ? null : selection.getStatus().getName());
         item.setDate(date(selection.getUpdateTime()));
+        if (selection.getDesigner() != null) {
+            item.getFacts().add(fact("designer", "设计师", selection.getDesigner().getName(), "text"));
+        }
+        if (selection.getUpdateTime() != null) {
+            item.getFacts().add(fact("registeredAt", "登记时间", date(selection.getUpdateTime()), "text"));
+        }
+        item.getFacts().add(fact("registrationSource", "登记方式", "设计师线下登记", "text"));
         // 历史坑：这里原本直接把 selectionJson 塞进 lines，业主端会把
         // {"color":"...","spec":"..."} 一长串原样渲染出来。选材结果必须是"标签 + 值"的结构化字段，
         // JSON 只用于回显表单，可读文本仅作兜底。
@@ -850,11 +902,7 @@ public class CustomerJourneyContext {
                 actions.add(new CustomerJourney.Action("acceptance-" + item.getAcceptanceId(), "CONFIRM_ACCEPTANCE",
                         "确认阶段验收", "阶段已提交验收，请您确认或提出整改要求", "AcceptanceStage",
                         item.getStage() == null ? null : item.getStage().getStageId())));
-        feedbacks.stream().filter(item -> item.getStatus() != CustomerFeedbackStatus.Closed).findFirst().ifPresent(item ->
-                actions.add(new CustomerJourney.Action("feedback-" + item.getFeedbackId(), "VIEW_FEEDBACK",
-                        "跟踪我的意见", item.getTitle(), "CustomerFeedback", item.getFeedbackId())));
-        actions.add(new CustomerJourney.Action("feedback-new", "SUBMIT_FEEDBACK",
-                "提出意见或投诉", "现场发现问题时可直接反馈给项目团队", "CustomerFeedback", null));
+        // 提出/跟踪意见是常驻服务能力，不是业主必须处理的待办；待办只承载真实验收/确认动作。
         return actions;
     }
 

@@ -1,65 +1,559 @@
 {
   "id": "project-delivery.end-to-end",
   "title": "项目施工履约与进度",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "draft",
-  "sourceRefs": ["OBJ-001", "BR-001", "BR-002", "BR-008", "SCN-003", "SCN-010", "DEC-048", "DEC-049", "DEC-051", "DEC-057", "GAP-034"],
-  "audience": ["boss", "storeManager", "designer", "pm", "customer"],
-  "layers": ["standard", "tenant", "project"],
+  "sourceRefs": [
+    "OBJ-001",
+    "BR-001",
+    "BR-002",
+    "BR-008",
+    "SCN-003",
+    "SCN-010",
+    "DEC-048",
+    "DEC-049",
+    "DEC-051",
+    "DEC-057",
+    "GAP-034",
+    "BR-043",
+    "DEC-015",
+    "DEC-068",
+    "USER-DECISION-20261014-003",
+    "USER-DECISION-20261014-004",
+    "USER-DECISION-20261021-001",
+    "USER-DECISION-20261021-002",
+    "T12-BIZ-20261021-001",
+    "T12-BIZ-20261021-002"
+  ],
+  "audience": [
+    "boss",
+    "storeManager",
+    "designer",
+    "pm",
+    "customer"
+  ],
+  "layers": [
+    "standard",
+    "tenant",
+    "project"
+  ],
   "objects": [
-    {"id": "Project", "name": "项目", "meaning": "合同生效后的履约经营单元", "keyFields": ["projectId", "contract", "property", "manager", "status", "planStartDate", "planEndDate", "expectedEndDate"], "sources": ["BR-001", "BR-002", "DEC-048"]},
-    {"id": "ProjectStage", "name": "项目阶段", "meaning": "施工执行的基准阶段与进度分母", "keyFields": ["stageId", "project", "name", "status", "plannedStart", "plannedEnd", "notApplicableReason"], "sources": ["DEC-048", "DEC-057"]},
-    {"id": "ProjectTask", "name": "施工任务", "meaning": "合同施工行或已生效变更项的执行任务", "keyFields": ["taskId", "project", "stage", "contractLine", "sourceChangeItem", "name", "quantity", "plannedStart", "plannedEnd", "status", "owner"], "sources": ["DEC-049", "SCN-003"]},
-    {"id": "TaskNode", "name": "任务节点", "meaning": "施工进行、隐蔽工程、施工完成的现场证据", "keyFields": ["nodeId", "task", "key", "occurredAt", "operator", "images", "remark"], "sources": ["SCN-003", "BR-008"]},
-    {"id": "ProjectReport", "name": "现场动态/日报", "meaning": "项目现场事实与业主可见动态", "keyFields": ["reportId", "project", "author", "content", "visibleToCustomer", "createTime"], "sources": ["SCN-003"]},
-    {"id": "ProjectPlanDeviation", "name": "计划偏差", "meaning": "排期超窗后的待确认事实", "keyFields": ["deviationId", "project", "reason", "expectedEndDate", "status", "confirmedBy"], "sources": ["DEC-051"]},
-    {"id": "ContractLine", "name": "合同施工行", "meaning": "施工任务的合法来源与金额成本快照", "keyFields": ["lineId", "contract", "type", "name", "quantity", "amount", "cost"], "sources": ["DEC-049"]},
-    {"id": "ContractChangeItem", "name": "已生效变更项", "meaning": "合同外施工进入任务的唯一合法来源", "keyFields": ["changeItemId", "change", "changeType", "targetName", "targetQuantity", "targetAmount", "targetCostAmount"], "sources": ["DEC-049", "DEC-055"]}
+    {
+      "id": "Project",
+      "name": "项目",
+      "meaning": "合同生效后的履约经营单元",
+      "keyFields": [
+        "projectId",
+        "contract",
+        "property",
+        "manager",
+        "status",
+        "planStartDate",
+        "planEndDate",
+        "expectedEndDate"
+      ],
+      "sources": [
+        "BR-001",
+        "BR-002",
+        "DEC-048"
+      ]
+    },
+    {
+      "id": "ProjectStage",
+      "name": "项目阶段",
+      "meaning": "施工执行的基准阶段与进度分母",
+      "keyFields": [
+        "stageId",
+        "project",
+        "name",
+        "status",
+        "plannedStart",
+        "plannedEnd",
+        "notApplicableReason"
+      ],
+      "sources": [
+        "DEC-048",
+        "DEC-057"
+      ]
+    },
+    {
+      "id": "ProjectTask",
+      "name": "施工任务",
+      "meaning": "合同施工行或已生效变更项的执行任务",
+      "keyFields": [
+        "taskId",
+        "project",
+        "stage",
+        "contractLine",
+        "sourceChangeItem",
+        "name",
+        "quantity",
+        "plannedStart",
+        "plannedEnd",
+        "status",
+        "owner"
+      ],
+      "sources": [
+        "DEC-049",
+        "SCN-003"
+      ]
+    },
+    {
+      "id": "TaskNode",
+      "name": "任务节点",
+      "meaning": "施工进行、隐蔽工程、施工完成的现场证据",
+      "keyFields": [
+        "nodeId",
+        "task",
+        "key",
+        "occurredAt",
+        "operator",
+        "images",
+        "remark"
+      ],
+      "sources": [
+        "SCN-003",
+        "BR-008"
+      ]
+    },
+    {
+      "id": "ProjectReport",
+      "name": "现场动态/日报",
+      "meaning": "项目现场事实与业主可见动态",
+      "keyFields": [
+        "reportId",
+        "project",
+        "author",
+        "content",
+        "visibleToCustomer",
+        "createTime"
+      ],
+      "sources": [
+        "SCN-003"
+      ]
+    },
+    {
+      "id": "ProjectPlanDeviation",
+      "name": "计划偏差",
+      "meaning": "排期超窗后的待确认事实",
+      "keyFields": [
+        "deviationId",
+        "project",
+        "reason",
+        "expectedEndDate",
+        "status",
+        "confirmedBy"
+      ],
+      "sources": [
+        "DEC-051"
+      ]
+    },
+    {
+      "id": "ContractLine",
+      "name": "合同施工行",
+      "meaning": "施工任务的合法来源与金额成本快照",
+      "keyFields": [
+        "lineId",
+        "contract",
+        "type",
+        "name",
+        "quantity",
+        "amount",
+        "cost"
+      ],
+      "sources": [
+        "DEC-049"
+      ]
+    },
+    {
+      "id": "ContractChangeItem",
+      "name": "已生效变更项",
+      "meaning": "合同外施工进入任务的唯一合法来源",
+      "keyFields": [
+        "changeItemId",
+        "change",
+        "changeType",
+        "targetName",
+        "targetQuantity",
+        "targetAmount",
+        "targetCostAmount"
+      ],
+      "sources": [
+        "DEC-049",
+        "DEC-055"
+      ]
+    }
   ],
   "stages": [
-    {"id": "project-start", "no": "01", "name": "合同生效立项", "system": "生成项目、基准阶段和合同施工计划快照", "sources": ["BR-002", "DEC-048"]},
-    {"id": "pm-assign", "no": "02", "name": "指定项目经理", "system": "Boss/店长指定 PM；PM 未指定不得开工", "sources": ["GAP-034"]},
-    {"id": "source-task", "no": "03", "name": "从合同施工行生成任务", "system": "任务唯一来源=合同施工行或已生效变更项", "sources": ["DEC-049"]},
-    {"id": "schedule", "no": "04", "name": "排期", "system": "按阶段/区域/数量/计划起止排期，任务驱动执行计划", "sources": ["DEC-048", "DEC-049"]},
-    {"id": "work", "no": "05", "name": "开工与施工", "system": "校验 PM、开工日期、量房与前置状态", "sources": ["GAP-034", "SCN-003"]},
-    {"id": "evidence", "no": "06", "name": "节点留证", "system": "记录施工进行/隐蔽/完成节点及证据", "sources": ["SCN-003"]},
-    {"id": "progress", "no": "07", "name": "阶段/项目进度", "system": "排除本项不涉及，更新预计完工与偏差", "sources": ["DEC-048", "DEC-051", "DEC-057"]},
-    {"id": "acceptance", "no": "08", "name": "提交阶段验收", "system": "阶段任务满足条件后进入验收", "sources": ["BR-008", "SCN-010"]}
+    {
+      "id": "project-start",
+      "no": "01",
+      "name": "合同生效立项",
+      "system": "生成项目、基准阶段和合同施工计划快照",
+      "sources": [
+        "BR-002",
+        "DEC-048"
+      ]
+    },
+    {
+      "id": "pm-assign",
+      "no": "02",
+      "name": "指定项目经理",
+      "system": "Boss/店长指定 PM；PM 未指定不得开工",
+      "sources": [
+        "GAP-034"
+      ]
+    },
+    {
+      "id": "source-task",
+      "no": "03",
+      "name": "从合同施工行生成任务",
+      "system": "任务唯一来源=合同施工行或已生效变更项",
+      "sources": [
+        "DEC-049"
+      ]
+    },
+    {
+      "id": "schedule",
+      "no": "04",
+      "name": "排期",
+      "system": "按阶段/区域/数量/计划起止排期，任务驱动执行计划",
+      "sources": [
+        "DEC-048",
+        "DEC-049"
+      ]
+    },
+    {
+      "id": "work",
+      "no": "05",
+      "name": "开工与施工",
+      "system": "校验 PM、开工日期、量房与前置状态",
+      "sources": [
+        "GAP-034",
+        "SCN-003"
+      ]
+    },
+    {
+      "id": "evidence",
+      "no": "06",
+      "name": "节点留证",
+      "system": "记录施工进行/隐蔽/完成节点及证据",
+      "sources": [
+        "SCN-003"
+      ]
+    },
+    {
+      "id": "progress",
+      "no": "07",
+      "name": "阶段/项目进度",
+      "system": "排除本项不涉及，更新预计完工与偏差",
+      "sources": [
+        "DEC-048",
+        "DEC-051",
+        "DEC-057"
+      ]
+    },
+    {
+      "id": "acceptance",
+      "no": "08",
+      "name": "提交阶段验收",
+      "system": "阶段任务满足条件后进入验收",
+      "sources": [
+        "BR-008",
+        "SCN-010"
+      ]
+    }
   ],
   "fields": [],
   "rules": [
-    {"id": "R-TASK-SOURCE", "text": "任务只能来自本项目合同施工行或已生效变更项", "sources": ["DEC-049"]},
-    {"id": "R-BASELINE", "text": "合同基准完工日锁定，排期只产生预计完工日", "sources": ["DEC-048"]},
-    {"id": "R-PM-GATE", "text": "未指定 PM、量房未完成、开工日期不明确不得开工", "sources": ["GAP-034"]},
-    {"id": "R-EVIDENCE", "text": "隐蔽工程等节点必须有项目关联证据", "sources": ["SCN-003"]},
-    {"id": "R-NA-STAGE", "text": "本项不涉及剔除进度分母；应有任务缺失阻断", "sources": ["DEC-057"]},
-    {"id": "R-DEVIATION", "text": "排期超窗生成计划偏差，确认后才调整基准", "sources": ["DEC-051"]}
+    {
+      "id": "R-TASK-SOURCE",
+      "text": "任务只能来自本项目合同施工行或已生效变更项",
+      "sources": [
+        "DEC-049"
+      ]
+    },
+    {
+      "id": "R-BASELINE",
+      "text": "合同基准完工日锁定，排期只产生预计完工日",
+      "sources": [
+        "DEC-048"
+      ]
+    },
+    {
+      "id": "R-PM-GATE",
+      "text": "未指定 PM、量房未完成、开工日期不明确不得开工",
+      "sources": [
+        "GAP-034"
+      ]
+    },
+    {
+      "id": "R-EVIDENCE",
+      "text": "隐蔽工程等节点必须有项目关联证据",
+      "sources": [
+        "SCN-003"
+      ]
+    },
+    {
+      "id": "R-NA-STAGE",
+      "text": "本项不涉及剔除进度分母；应有任务缺失阻断",
+      "sources": [
+        "DEC-057"
+      ]
+    },
+    {
+      "id": "R-DEVIATION",
+      "text": "排期超窗生成计划偏差，确认后才调整基准",
+      "sources": [
+        "DEC-051"
+      ]
+    }
   ],
   "checks": [
-    {"id": "CHK-TASK-NO-SOURCE", "label": "任务脱离合同来源", "severity": "P0", "nextAction": "阻断创建并要求从合同行或变更项选择", "refs": ["DEC-049"]},
-    {"id": "CHK-PM-MISSING", "label": "未指定 PM 开工", "severity": "P0", "nextAction": "阻断并提示指定 PM", "refs": ["GAP-034"]},
-    {"id": "CHK-MEASURE-NOT-DONE", "label": "量房未完成开工", "severity": "P0", "nextAction": "阻断并回到量房", "refs": ["GAP-034"]},
-    {"id": "CHK-EVIDENCE-MISSING", "label": "节点证据缺失", "severity": "P0", "nextAction": "阻断完成并提示补证", "refs": ["SCN-003"]},
-    {"id": "CHK-PLAN-OVERWINDOW", "label": "排期超出合同基准窗口", "severity": "P1", "nextAction": "生成计划偏差待确认", "refs": ["DEC-048", "DEC-051"]},
-    {"id": "CHK-NA-MISUSE", "label": "空阶段被静默跳过", "severity": "P1", "nextAction": "区分本项不涉及与应有任务缺失", "refs": ["DEC-057"]}
+    {
+      "id": "CHK-TASK-NO-SOURCE",
+      "label": "任务脱离合同来源",
+      "severity": "P0",
+      "nextAction": "阻断创建并要求从合同行或变更项选择",
+      "refs": [
+        "DEC-049"
+      ]
+    },
+    {
+      "id": "CHK-PM-MISSING",
+      "label": "未指定 PM 开工",
+      "severity": "P0",
+      "nextAction": "阻断并提示指定 PM",
+      "refs": [
+        "GAP-034"
+      ]
+    },
+    {
+      "id": "CHK-MEASURE-NOT-DONE",
+      "label": "量房未完成开工",
+      "severity": "P0",
+      "nextAction": "阻断并回到量房",
+      "refs": [
+        "GAP-034"
+      ]
+    },
+    {
+      "id": "CHK-EVIDENCE-MISSING",
+      "label": "节点证据缺失",
+      "severity": "P0",
+      "nextAction": "阻断完成并提示补证",
+      "refs": [
+        "SCN-003"
+      ]
+    },
+    {
+      "id": "CHK-PLAN-OVERWINDOW",
+      "label": "排期超出合同基准窗口",
+      "severity": "P1",
+      "nextAction": "生成计划偏差待确认",
+      "refs": [
+        "DEC-048",
+        "DEC-051"
+      ]
+    },
+    {
+      "id": "CHK-NA-MISUSE",
+      "label": "空阶段被静默跳过",
+      "severity": "P1",
+      "nextAction": "区分本项不涉及与应有任务缺失",
+      "refs": [
+        "DEC-057"
+      ]
+    }
   ],
   "exceptions": [
-    {"id": "EX-CONTRACT-OUTSIDE", "text": "合同外施工必须先走增减项，生效后生成任务", "refs": ["DEC-049"]},
-    {"id": "EX-NA-ALL", "text": "全部阶段本项不涉及时不自动完工", "refs": ["DEC-057"]},
-    {"id": "EX-CUSTOMER-DELAY", "text": "客户原因超窗必须走合同工期变更，不静默顺延", "refs": ["DEC-051"]}
+    {
+      "id": "EX-CONTRACT-OUTSIDE",
+      "text": "合同外施工必须先走增减项，生效后生成任务",
+      "refs": [
+        "DEC-049"
+      ]
+    },
+    {
+      "id": "EX-NA-ALL",
+      "text": "全部阶段本项不涉及时不自动完工",
+      "refs": [
+        "DEC-057"
+      ]
+    },
+    {
+      "id": "EX-CUSTOMER-DELAY",
+      "text": "客户原因超窗必须走合同工期变更，不静默顺延",
+      "refs": [
+        "DEC-051"
+      ]
+    }
   ],
   "metrics": [
-    {"id": "MET-DELIVERY-SOURCE", "label": "有来源任务覆盖率", "meaning": "有合同行或变更项来源的任务占比"},
-    {"id": "MET-DELIVERY-EVIDENCE", "label": "节点证据完整率", "meaning": "满足节点留证要求的任务占比"}
+    {
+      "id": "MET-DELIVERY-SOURCE",
+      "label": "有来源任务覆盖率",
+      "meaning": "有合同行或变更项来源的任务占比"
+    },
+    {
+      "id": "MET-DELIVERY-EVIDENCE",
+      "label": "节点证据完整率",
+      "meaning": "满足节点留证要求的任务占比"
+    }
   ],
   "uiBindings": [
-    {"surface": "app", "route": "/subpackages/project/pages/plan", "objectType": "ProjectStage", "blueprintNode": "project-delivery.schedule", "roles": ["designer", "pm", "boss", "storeManager"]},
-    {"surface": "app", "route": "/subpackages/project/pages/task/detail", "objectType": "ProjectTask", "blueprintNode": "project-delivery.evidence", "roles": ["designer", "pm", "boss", "storeManager"]},
-    {"surface": "web", "route": "/pm/workbench", "objectType": "Project", "blueprintNode": "project-delivery.progress", "roles": ["pm", "boss", "storeManager"]}
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/plan",
+      "objectType": "ProjectStage",
+      "blueprintNode": "project-delivery.schedule",
+      "roles": [
+        "designer",
+        "pm",
+        "boss",
+        "storeManager"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/task/detail",
+      "objectType": "ProjectTask",
+      "blueprintNode": "project-delivery.evidence",
+      "roles": [
+        "designer",
+        "pm",
+        "boss",
+        "storeManager"
+      ]
+    },
+    {
+      "surface": "web",
+      "route": "/pm/workbench",
+      "objectType": "Project",
+      "blueprintNode": "project-delivery.progress",
+      "roles": [
+        "pm",
+        "boss",
+        "storeManager"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/owner-quote",
+      "objectType": "Quote",
+      "blueprintNode": "owner-ui-v2.quote",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/owner-contract",
+      "objectType": "ProjectContract",
+      "blueprintNode": "owner-ui-v2.contract",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/owner-selection",
+      "objectType": "MaterialSelection",
+      "blueprintNode": "owner-ui-v2.selection",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/owner-material-plan",
+      "objectType": "MaterialPlan",
+      "blueprintNode": "owner-ui-v2.material-plan",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/owner-change",
+      "objectType": "ContractChange",
+      "blueprintNode": "owner-ui-v2.change",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/owner-archive",
+      "objectType": "CustomerJourney.sections",
+      "blueprintNode": "owner-ui-v2.archive",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/journey",
+      "objectType": "CustomerJourney",
+      "blueprintNode": "owner-ui-v2.journey",
+      "roles": [
+        "customer",
+        "boss",
+        "storeManager",
+        "teamLeader",
+        "designer",
+        "pm"
+      ]
+    }
   ],
   "agentTools": [
-    {"name": "project.info", "provider": "project/project/info", "readOnly": true, "scope": "current user/project"},
-    {"name": "project.plan", "provider": "project/plan/info", "readOnly": true, "scope": "current user/project"},
-    {"name": "project.task.page", "provider": "project/task/page", "readOnly": true, "scope": "current user/project"}
+    {
+      "name": "project.info",
+      "provider": "project/project/info",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "project.plan",
+      "provider": "project/plan/info",
+      "readOnly": true,
+      "scope": "current user/project"
+    },
+    {
+      "name": "project.task.page",
+      "provider": "project/task/page",
+      "readOnly": true,
+      "scope": "current user/project"
+    }
   ]
 }
