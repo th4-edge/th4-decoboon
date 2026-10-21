@@ -2,6 +2,8 @@ package com.th4.edge.decoboon.design;
 
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.design.context.DesignContext;
+import com.th4.edge.decoboon.design.context.DesignCostContext;
+import com.th4.edge.decoboon.design.context.DesignPriceContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
@@ -27,8 +29,10 @@ class DesignSchemeInfoFormulaTest {
     private final SpaceRepository spaceRepository = mock(SpaceRepository.class);
     private final DesignItemRepository itemRepository = mock(DesignItemRepository.class);
     private final RequirementRepository requirementRepository = mock(RequirementRepository.class);
+    private final DesignPriceContext priceContext = mock(DesignPriceContext.class);
+    private final DesignCostContext costContext = mock(DesignCostContext.class);
     private final Info info = new Info(designContext, spaceRepository, itemRepository,
-            requirementRepository, new DesignTemplateFormulaContext());
+            requirementRepository, new DesignTemplateFormulaContext(), priceContext, costContext);
 
     @Test
     void pricingFormulaAloneMustNotBeMarkedForRevision() {

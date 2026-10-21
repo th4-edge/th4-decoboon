@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.design.service.schemes.info.support;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.design.context.DesignContext;
+import com.th4.edge.decoboon.design.context.DesignCostContext;
+import com.th4.edge.decoboon.design.context.DesignPriceContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.model.Requirement;
@@ -31,7 +33,9 @@ import java.util.List;
                 properties = {"designId", "no", "name", "customer", "owner", "version", "style", "status", "area",
                         "layout", "description", "coverUrl", "cadUrl", "cadPreviewUrl", "cadConvertStatus", "originalPlanUrl", "demolitionUrl",
                         "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "originalPlanImages", "spaces", "items",
-                        "requirements", "createTime", "updateTime", "property"}),
+                        "requirements", "createTime", "updateTime", "property",
+                        "calculatedAmount", "spaceCount", "itemCount", "currentQuoteId", "currentQuoteNo",
+                        "currentQuoteVersion", "currentQuoteStatus", "currentQuoteStatusName", "currentQuoteAmount"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "sourceMeasureRegionId",
                         "sort", "remark", "images"}),
@@ -69,17 +73,23 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
     private final DesignItemRepository itemRepository;
     private final RequirementRepository requirementRepository;
     private final DesignTemplateFormulaContext formulaContext;
+    private final DesignPriceContext priceContext;
+    private final DesignCostContext costContext;
 
     public Info(DesignContext designContext,
                 SpaceRepository spaceRepository,
                 DesignItemRepository itemRepository,
                 RequirementRepository requirementRepository,
-                DesignTemplateFormulaContext formulaContext) {
+                DesignTemplateFormulaContext formulaContext,
+                DesignPriceContext priceContext,
+                DesignCostContext costContext) {
         this.designContext = designContext;
         this.spaceRepository = spaceRepository;
         this.itemRepository = itemRepository;
         this.requirementRepository = requirementRepository;
         this.formulaContext = formulaContext;
+        this.priceContext = priceContext;
+        this.costContext = costContext;
     }
 
     @Override
@@ -95,9 +105,11 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
                     && !quantityFormula.isBlank()
                     && !formulaContext.isSupportedFormula(quantityFormula));
         }
+        costContext.mask(items, employee);
         design.setItems(items);
         design.setRequirements(requirementRepository.findByCompany_ComIdAndCustomer_CustIdOrderByRequirementIdDesc(
                 design.getCompany().getComId(), design.getCustomer().getCustId()));
+        priceContext.enrich(design, items, design.getSpaces() == null ? 0 : design.getSpaces().size());
         return design;
     }
 }

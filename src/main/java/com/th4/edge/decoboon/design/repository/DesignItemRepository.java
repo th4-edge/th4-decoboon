@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,4 +26,8 @@ public interface DesignItemRepository extends JpaRepository<DesignItem, Long>,
     List<DesignItem> findByDesign_DesignIdAndSpace_SpaceIdOrderBySortAsc(Long designId, Long spaceId);
 
     List<DesignItem> findByCompany_ComIdOrderByTypeAscCategoryAscNameAsc(Long comId);
+
+    @Query("select i.design.designId, coalesce(sum(i.amount), 0), count(i) from DesignItem i "
+            + "where i.design.designId in :designIds group by i.design.designId")
+    List<Object[]> summarizeByDesignIds(@Param("designIds") Collection<Long> designIds);
 }

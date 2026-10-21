@@ -38,6 +38,23 @@ public class DesignWorkbenchItem {
     /** 最近设计更新时间 */
     private LocalDateTime lastDesignAt;
 
+    /** 最近方案索引 */
+    private Long latestDesignId;
+    /** 最近方案名称 */
+    private String latestDesignName;
+    /** 最近方案状态名称 */
+    private String latestDesignStatusName;
+    /** 方案计算价：当前设计分项销售金额合计 */
+    private BigDecimal calculatedAmount;
+    /** 当前正式报价金额 */
+    private BigDecimal currentQuoteAmount;
+    /** 当前正式报价编号 */
+    private String currentQuoteNo;
+    /** 当前正式报价状态名称 */
+    private String currentQuoteStatusName;
+    /** 列表主价格来源：Quote / Calculated / Unavailable */
+    private String priceSource;
+
     /** 在当前设计阶段停留天数 */
     private Long stayDays;
 
@@ -73,6 +90,22 @@ public class DesignWorkbenchItem {
     public void setHasRequirement(Boolean hasRequirement) { this.hasRequirement = hasRequirement; }
     public LocalDateTime getLastDesignAt() { return lastDesignAt; }
     public void setLastDesignAt(LocalDateTime lastDesignAt) { this.lastDesignAt = lastDesignAt; }
+    public Long getLatestDesignId() { return latestDesignId; }
+    public void setLatestDesignId(Long latestDesignId) { this.latestDesignId = latestDesignId; }
+    public String getLatestDesignName() { return latestDesignName; }
+    public void setLatestDesignName(String latestDesignName) { this.latestDesignName = latestDesignName; }
+    public String getLatestDesignStatusName() { return latestDesignStatusName; }
+    public void setLatestDesignStatusName(String latestDesignStatusName) { this.latestDesignStatusName = latestDesignStatusName; }
+    public BigDecimal getCalculatedAmount() { return calculatedAmount; }
+    public void setCalculatedAmount(BigDecimal calculatedAmount) { this.calculatedAmount = calculatedAmount; }
+    public BigDecimal getCurrentQuoteAmount() { return currentQuoteAmount; }
+    public void setCurrentQuoteAmount(BigDecimal currentQuoteAmount) { this.currentQuoteAmount = currentQuoteAmount; }
+    public String getCurrentQuoteNo() { return currentQuoteNo; }
+    public void setCurrentQuoteNo(String currentQuoteNo) { this.currentQuoteNo = currentQuoteNo; }
+    public String getCurrentQuoteStatusName() { return currentQuoteStatusName; }
+    public void setCurrentQuoteStatusName(String currentQuoteStatusName) { this.currentQuoteStatusName = currentQuoteStatusName; }
+    public String getPriceSource() { return priceSource; }
+    public void setPriceSource(String priceSource) { this.priceSource = priceSource; }
     public Long getStayDays() { return stayDays; }
     public void setStayDays(Long stayDays) { this.stayDays = stayDays; }
 }

@@ -10,6 +10,7 @@ import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.designtemplate.model.DesignTemplateVersion;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.core.annotation.Unit;
@@ -198,6 +199,42 @@ public class Design extends AuditModel {
     @Note("客户诉求")
     private List<Requirement> requirements;
 
+    @Transient
+    @Note("方案计算价（当前设计分项销售金额合计）")
+    private BigDecimal calculatedAmount = BigDecimal.ZERO;
+
+    @Transient
+    @Note("方案区域数")
+    private Integer spaceCount = 0;
+
+    @Transient
+    @Note("设计分项数")
+    private Integer itemCount = 0;
+
+    @Transient
+    @Note("当前正式报价索引")
+    private Long currentQuoteId;
+
+    @Transient
+    @Note("当前正式报价编号")
+    private String currentQuoteNo;
+
+    @Transient
+    @Note("当前正式报价版本")
+    private Integer currentQuoteVersion;
+
+    @Transient
+    @Note("当前正式报价状态")
+    private QuoteStatus currentQuoteStatus;
+
+    @Transient
+    @Note("当前正式报价状态名称")
+    private String currentQuoteStatusName;
+
+    @Transient
+    @Note("当前正式报价金额")
+    private BigDecimal currentQuoteAmount;
+
     public Long getDesignId() { return designId; }
     public void setDesignId(Long designId) { this.designId = designId; }
     public String getNo() { return no; }
@@ -255,6 +292,24 @@ public class Design extends AuditModel {
     public void setItems(List<DesignItem> items) { this.items = items; }
     public List<Requirement> getRequirements() { return requirements; }
     public void setRequirements(List<Requirement> requirements) { this.requirements = requirements; }
+    public BigDecimal getCalculatedAmount() { return calculatedAmount; }
+    public void setCalculatedAmount(BigDecimal calculatedAmount) { this.calculatedAmount = calculatedAmount; }
+    public Integer getSpaceCount() { return spaceCount; }
+    public void setSpaceCount(Integer spaceCount) { this.spaceCount = spaceCount; }
+    public Integer getItemCount() { return itemCount; }
+    public void setItemCount(Integer itemCount) { this.itemCount = itemCount; }
+    public Long getCurrentQuoteId() { return currentQuoteId; }
+    public void setCurrentQuoteId(Long currentQuoteId) { this.currentQuoteId = currentQuoteId; }
+    public String getCurrentQuoteNo() { return currentQuoteNo; }
+    public void setCurrentQuoteNo(String currentQuoteNo) { this.currentQuoteNo = currentQuoteNo; }
+    public Integer getCurrentQuoteVersion() { return currentQuoteVersion; }
+    public void setCurrentQuoteVersion(Integer currentQuoteVersion) { this.currentQuoteVersion = currentQuoteVersion; }
+    public QuoteStatus getCurrentQuoteStatus() { return currentQuoteStatus; }
+    public void setCurrentQuoteStatus(QuoteStatus currentQuoteStatus) { this.currentQuoteStatus = currentQuoteStatus; }
+    public String getCurrentQuoteStatusName() { return currentQuoteStatusName; }
+    public void setCurrentQuoteStatusName(String currentQuoteStatusName) { this.currentQuoteStatusName = currentQuoteStatusName; }
+    public BigDecimal getCurrentQuoteAmount() { return currentQuoteAmount; }
+    public void setCurrentQuoteAmount(BigDecimal currentQuoteAmount) { this.currentQuoteAmount = currentQuoteAmount; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

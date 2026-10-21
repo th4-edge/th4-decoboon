@@ -86,6 +86,9 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
 
     List<Quote> findByDesign_DesignIdOrderByVersionDesc(Long designId);
 
+    @EntityGraph(attributePaths = {"design"})
+    List<Quote> findByDesign_DesignIdInOrderByVersionDesc(Collection<Long> designIds);
+
     long countByDesign_DesignId(Long designId);
 
     boolean existsByCompany_ComIdAndCustomer_CustId(Long comId, Long customerId);

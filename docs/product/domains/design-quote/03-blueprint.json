@@ -1,18 +1,351 @@
 {
   "id": "design-quote.end-to-end",
-  "title": "设计方案与设计报价审视",
-  "version": "0.1.0",
-  "status": "draft",
-  "sourceRefs": [],
-  "audience": [],
-  "layers": ["standard", "tenant", "project"],
-  "objects": [],
-  "stages": [],
-  "fields": [],
-  "rules": [],
-  "checks": [],
-  "exceptions": [],
-  "metrics": [],
-  "uiBindings": [],
+  "title": "设计方案与设计报价运营查看",
+  "version": "1.0.0",
+  "status": "frozen",
+  "sourceRefs": [
+    "DEC-078",
+    "DEC-002",
+    "DEC-009",
+    "DEC-034",
+    "DEC-065",
+    "DEC-075",
+    "BR-001",
+    "BR-002",
+    "BR-003",
+    "BR-028",
+    "OBJ-005",
+    "GAP-061",
+    "EV-336"
+  ],
+  "audience": [
+    "Designer",
+    "Boss",
+    "StoreManager",
+    "Finance",
+    "TeamLeader",
+    "Marketer",
+    "Pm"
+  ],
+  "layers": [
+    "standard",
+    "tenant",
+    "project"
+  ],
+  "objects": [
+    {
+      "key": "design",
+      "label": "设计方案",
+      "fields": [
+        "designId",
+        "no",
+        "name",
+        "version",
+        "status",
+        "area",
+        "owner",
+        "customer",
+        "property",
+        "store"
+      ],
+      "sourceRefs": [
+        "OBJ-005"
+      ]
+    },
+    {
+      "key": "designItem",
+      "label": "设计分项",
+      "fields": [
+        "itemId",
+        "type",
+        "quantity",
+        "materialPrice",
+        "manualPrice",
+        "fixedTotalPrice",
+        "amount",
+        "costPrice",
+        "cost",
+        "quantityFormula"
+      ],
+      "sourceRefs": [
+        "OBJ-005"
+      ]
+    },
+    {
+      "key": "quote",
+      "label": "正式报价",
+      "fields": [
+        "quoteId",
+        "no",
+        "version",
+        "status",
+        "amount",
+        "subtotal",
+        "discount",
+        "taxAmount",
+        "designFee",
+        "managementFee",
+        "costComplete"
+      ],
+      "sourceRefs": [
+        "BR-002",
+        "DEC-002"
+      ]
+    },
+    {
+      "key": "priceProjection",
+      "label": "方案价格读模型",
+      "fields": [
+        "calculatedAmount",
+        "currentQuoteId",
+        "currentQuoteNo",
+        "currentQuoteVersion",
+        "currentQuoteStatus",
+        "currentQuoteAmount"
+      ],
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "key": "designStatus",
+      "values": [
+        "Draft",
+        "Ready",
+        "Presented",
+        "Selected",
+        "Archived"
+      ],
+      "newState": false,
+      "sourceRefs": [
+        "OBJ-005"
+      ]
+    },
+    {
+      "key": "quoteStatus",
+      "values": [
+        "Draft",
+        "Submitted",
+        "Accepted",
+        "Rejected",
+        "Superseded",
+        "Converted"
+      ],
+      "newState": false,
+      "sourceRefs": [
+        "BR-002",
+        "DEC-002"
+      ]
+    },
+    {
+      "key": "operationalView",
+      "values": [
+        "ReadOnly"
+      ],
+      "newState": false,
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "key": "calculatedAmount",
+      "label": "方案计算价",
+      "formula": "SUM(DesignItem.amount)",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "currentQuoteAmount",
+      "label": "当前正式报价金额",
+      "formula": "Quote.amount",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "priceDisplayMode",
+      "label": "列表主价格来源",
+      "values": [
+        "Quote",
+        "Calculated",
+        "Unavailable"
+      ],
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "currentQuoteStatusName",
+      "label": "当前报价状态",
+      "sourceRefs": [
+        "DEC-002",
+        "DEC-078"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "key": "quote-priority",
+      "rule": "正式报价优先，无正式报价展示方案计算价，均无显示暂不可计算",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "current-quote",
+      "rule": "Converted > Accepted > 最新非 Superseded",
+      "sourceRefs": [
+        "DEC-078",
+        "DEC-002"
+      ]
+    },
+    {
+      "key": "read-only-view",
+      "rule": "运营查看不新增状态、待办、通知或写动作",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "cost-visible",
+      "rule": "成本毛利仅 BOSS/店长/财务",
+      "sourceRefs": [
+        "BR-003",
+        "DEC-065",
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "cost-incomplete",
+      "rule": "成本不完整时毛利和毛利率为 null",
+      "sourceRefs": [
+        "BR-003",
+        "DEC-065"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "key": "cross-company",
+      "rule": "跨企业拒绝",
+      "sourceRefs": [
+        "BR-001",
+        "DEC-065"
+      ]
+    },
+    {
+      "key": "store-scope",
+      "rule": "店长与门店财务只读本店",
+      "sourceRefs": [
+        "DEC-065",
+        "DEC-075"
+      ]
+    },
+    {
+      "key": "designer-cost-hidden",
+      "rule": "设计师响应不返回成本和毛利",
+      "sourceRefs": [
+        "DEC-078",
+        "BR-003"
+      ]
+    },
+    {
+      "key": "no-new-state",
+      "rule": "查看前后对象状态不变",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "key": "no-items",
+      "label": "尚无设计分项，暂不可计算",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "no-quote",
+      "label": "暂无正式报价，展示方案计算价",
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "rejected-quote",
+      "label": "展示拒绝版本与金额，不当作可签约正式报价",
+      "sourceRefs": [
+        "DEC-002",
+        "DEC-078"
+      ]
+    },
+    {
+      "key": "quote-staleness",
+      "label": "报价过期判定未冻结，本批不推断",
+      "sourceRefs": [
+        "GAP-061"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "key": "designCalculatedAmount",
+      "formula": "SUM(DesignItem.amount)"
+    },
+    {
+      "key": "currentQuoteAmount",
+      "formula": "Quote.amount"
+    },
+    {
+      "key": "grossProfit",
+      "formula": "quoteAmount - costAmount",
+      "condition": "costComplete=true and role in Boss/StoreManager/Finance"
+    }
+  ],
+  "uiBindings": [
+    {
+      "surface": "App",
+      "pages": [
+        "design/workbench",
+        "design/list",
+        "design/review",
+        "design/review-detail"
+      ],
+      "sourceRefs": [
+        "DEC-078",
+        "DEC-034"
+      ]
+    },
+    {
+      "surface": "Web",
+      "pages": [
+        "designer/design",
+        "designer/customers",
+        "design/design-review",
+        "finance/design-review"
+      ],
+      "sourceRefs": [
+        "DEC-078",
+        "DEC-034"
+      ]
+    },
+    {
+      "surface": "Backend",
+      "routes": [
+        "design/scheme/page",
+        "design/scheme/info",
+        "statistic/workbench/design/page"
+      ],
+      "sourceRefs": [
+        "DEC-078"
+      ]
+    }
+  ],
   "agentTools": []
 }

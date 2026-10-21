@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.design.context.DesignPriceContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Requirement;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
@@ -74,7 +75,7 @@ class DesignerWorkbenchAggregationTest {
                 .thenReturn(List.of());
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes);
+                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
         List<DesignWorkbenchItem> result = provider.call(designer);
 
         assertThat(result).hasSize(2);
@@ -112,7 +113,7 @@ class DesignerWorkbenchAggregationTest {
                 .thenReturn(List.of(accepted));
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes);
+                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
 
         assertThat(provider.call(designer)).isEmpty();
     }
@@ -174,7 +175,7 @@ class DesignerWorkbenchAggregationTest {
                 .thenReturn(List.of());
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes);
+                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
         List<DesignWorkbenchItem> result = provider.call(boss);
 
         assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));
@@ -218,7 +219,7 @@ class DesignerWorkbenchAggregationTest {
                 .thenReturn(List.of());
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes);
+                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
         List<DesignWorkbenchItem> result = provider.call(manager);
 
         assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));

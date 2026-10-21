@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
+import com.th4.edge.decoboon.design.context.DesignPriceContext;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.Requirement;
 import com.th4.edge.decoboon.design.repository.DesignRepository;
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
     private final PropertyRepository propertyRepository;
     private final MeasureRepository measureRepository;
     private final QuoteRepository quoteRepository;
+    private final DesignPriceContext priceContext;
 
     public Page(TenantContext tenantContext,
                 CustomerRepository customerRepository,
@@ -75,7 +78,8 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
                 RequirementRepository requirementRepository,
                 PropertyRepository propertyRepository,
                 MeasureRepository measureRepository,
-                QuoteRepository quoteRepository) {
+                QuoteRepository quoteRepository,
+                DesignPriceContext priceContext) {
         this.tenantContext = tenantContext;
         this.customerRepository = customerRepository;
         this.designRepository = designRepository;
@@ -83,6 +87,7 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
         this.propertyRepository = propertyRepository;
         this.measureRepository = measureRepository;
         this.quoteRepository = quoteRepository;
+        this.priceContext = priceContext;
     }
 
     @Override
@@ -154,10 +159,13 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
         }
 
         List<Long> propertyIds = properties.stream().map(Property::getPropertyId).toList();
-        Map<Long, List<Design>> designsByProperty = designRepository
+        List<Design> scopedDesigns = designRepository
                 .findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(comId, propertyIds)
                 .stream()
                 .filter(design -> design.getProperty() != null)
+                .toList();
+        priceContext.enrich(scopedDesigns);
+        Map<Long, List<Design>> designsByProperty = scopedDesigns.stream()
                 .collect(Collectors.groupingBy(design -> design.getProperty().getPropertyId()));
         Map<Long, List<Requirement>> requirementsByProperty = requirementRepository
                 .findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(comId, propertyIds)
@@ -195,6 +203,22 @@ public class Page implements com.th4.edge.decoboon.statistic.service.workbench.d
             item.setSchemeCount(designs.size());
             item.setHasRequirement(!requirementsByProperty.getOrDefault(property.getPropertyId(), List.of()).isEmpty());
             item.setLastDesignAt(lastDesignAt);
+            if (!designs.isEmpty()) {
+                Design latest = designs.get(0);
+                item.setLatestDesignId(latest.getDesignId());
+                item.setLatestDesignName(latest.getName());
+                item.setLatestDesignStatusName(latest.getStatus() == null ? null : latest.getStatus().getName());
+                item.setCalculatedAmount(latest.getCalculatedAmount());
+                item.setCurrentQuoteAmount(latest.getCurrentQuoteAmount());
+                item.setCurrentQuoteNo(latest.getCurrentQuoteNo());
+                item.setCurrentQuoteStatusName(latest.getCurrentQuoteStatusName());
+                item.setPriceSource(latest.getCurrentQuoteId() != null
+                        ? "Quote"
+                        : latest.getItemCount() != null && latest.getItemCount() > 0 ? "Calculated" : "Unavailable");
+            } else {
+                item.setCalculatedAmount(BigDecimal.ZERO);
+                item.setPriceSource("Unavailable");
+            }
 
             if (designs.isEmpty()) {
                 item.setDesignStatus("Pending");
