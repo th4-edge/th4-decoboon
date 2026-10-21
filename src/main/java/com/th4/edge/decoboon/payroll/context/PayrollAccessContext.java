@@ -58,11 +58,6 @@ public class PayrollAccessContext {
     }
 
 
-    /** 店长只看本店薪酬。 */
-    public Employee requireStoreManager(Employee principal) {
-        return tenantContext.requireRole(principal, EmployeeRole.StoreManager);
-    }
-
     /** 员工本人工资条、提成和考勤。 */
     public Employee requireSelf(Employee principal) {
         return tenantContext.requireEmployee(principal);

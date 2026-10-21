@@ -19,7 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-@Note("店长本店工资分页")
+@Note("本店薪酬工资分页")
 @Properties(allow = {
         @AllowProperties(model = PayrollItem.class,
                 properties = {"itemId", "employee", "sheet", "project", "attribution", "grossAmount", "deductionAmount",
@@ -50,7 +50,7 @@ public class Page implements com.th4.edge.decoboon.payroll.service.storepayroll.
     }
     @Override
     public org.springframework.data.domain.Page<PayrollItem> call(PayrollItem request) {
-        Employee currentEmployee = accessContext.requireStoreManager(employee);
+        Employee currentEmployee = accessContext.requireManager(employee);
         Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
         var items = repository.findAll(accessContext.visible(currentEmployee, PayrollItem.class)).stream()
                 .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))

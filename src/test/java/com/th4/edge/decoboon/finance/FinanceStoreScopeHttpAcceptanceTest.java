@@ -176,36 +176,36 @@ class FinanceStoreScopeHttpAcceptanceTest {
     void newStoreScopePagesResolveStoreDimensionOverHttp() throws Exception {
         String bossToken = login(scope.bossPhone());
         String storeManagerToken = login(scope.storeManagerPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
         String[] endpoints = {
                 "finance/refund/page", "payroll/sheet/page", "payroll/item/page", "payroll/commission/page",
                 "payroll/store-payroll/page", "document/voucher/page", "finance/partner-ledger/report"
         };
         for (String endpoint : endpoints) {
-            // `payroll/store-payroll/page` 为**店长专属**（既有 `requireStoreManager` 角色门禁，本批不放宽）：
-            // 其「全部门店 / 下钻」以店长身份验证，并额外断言 BOSS 仍被角色门禁拒绝。
-            boolean storeManagerOnly = "payroll/store-payroll/page".equals(endpoint);
-            String browseToken = storeManagerOnly ? storeManagerToken : bossToken;
-            if (storeManagerOnly) {
-                JsonNode bossRejected = api(endpoint, "{\"current\":1,\"size\":20}", bossToken);
-                assertThat(bossRejected.path("success").asBoolean()).as(endpoint + " 既有限制：BOSS 不可读: " + bossRejected).isFalse();
-                assertThat(bossRejected.path("errorCode").path("code").asText()).isEqualTo("403");
-            }
-
             // 1) 全部门店：不传 storeId（绝不传状态值 '0'）
-            JsonNode all = api(endpoint, "{\"current\":1,\"size\":20}", browseToken);
+            JsonNode all = api(endpoint, "{\"current\":1,\"size\":20}", bossToken);
             assertThat(all.path("success").asBoolean()).as(endpoint + " 全部门店: " + all).isTrue();
+
+            if ("payroll/store-payroll/page".equals(endpoint)) {
+                JsonNode financeOwnStore = api(endpoint, "{\"current\":1,\"size\":20}", storeFinanceToken);
+                assertThat(financeOwnStore.path("success").asBoolean())
+                        .as(endpoint + " 门店财务本店: " + financeOwnStore).isTrue();
+                JsonNode financeCrossStore = api(endpoint,
+                        "{\"storeId\":\"%s\"}".formatted(scope.storeAId()), storeFinanceToken);
+                assertThat(financeCrossStore.path("success").asBoolean())
+                        .as(endpoint + " 门店财务跨店: " + financeCrossStore).isFalse();
+                assertThat(financeCrossStore.path("errorCode").path("code").asText()).isEqualTo("403");
+            }
 
             // 2) 下钻本店维度 → 通过（企业范围任意本店；门店范围角色为其本店）
             JsonNode drill = api(endpoint,
-                    "{\"current\":1,\"size\":20,\"storeId\":\"%s\"}".formatted(scope.storeBId()), browseToken);
+                    "{\"current\":1,\"size\":20,\"storeId\":\"%s\"}".formatted(scope.storeBId()), bossToken);
             assertThat(drill.path("success").asBoolean()).as(endpoint + " 下钻本店: " + drill).isTrue();
 
-            // 3) 企业范围下钻他企业门店 → 403（店长专属页由下方跨店用例覆盖）
-            if (!storeManagerOnly) {
-                JsonNode foreign = api(endpoint, "{\"storeId\":\"%s\"}".formatted(scope.foreignStoreId()), bossToken);
-                assertThat(foreign.path("success").asBoolean()).as(endpoint + " 他企业门店: " + foreign).isFalse();
-                assertThat(foreign.path("errorCode").path("code").asText()).as(endpoint + " 他企业门店码").isEqualTo("403");
-            }
+            // 3) 企业范围下钻他企业门店 → 403
+            JsonNode foreign = api(endpoint, "{\"storeId\":\"%s\"}".formatted(scope.foreignStoreId()), bossToken);
+            assertThat(foreign.path("success").asBoolean()).as(endpoint + " 他企业门店: " + foreign).isFalse();
+            assertThat(foreign.path("errorCode").path("code").asText()).as(endpoint + " 他企业门店码").isEqualTo("403");
 
             // 4) 门店范围角色（店长）传他店 → 403（锁本店，不得静默忽略）
             JsonNode crossStore = api(endpoint, "{\"storeId\":\"%s\"}".formatted(scope.storeAId()), storeManagerToken);
