@@ -1,0 +1,8 @@
+accountsChanged=3
+postRestoreHashMatches=3
+postRestoreHashMismatches=0
+totalSchemes=5
+xuyongSchemes=0
+wumengmengSchemes=1
+temporarySchemeResidue=0
+restoreSqlCleaned=true

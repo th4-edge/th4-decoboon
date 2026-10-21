@@ -1,0 +1,579 @@
+{
+  "id": "payroll-labor.compensation-scheme-b1",
+  "title": "B1 财务薪酬方案维护闭环",
+  "version": "1.0.0",
+  "status": "ready-for-planning",
+  "batch": "B1",
+  "sourceRefs": [
+    "BR-015",
+    "BR-038",
+    "BR-039",
+    "DEC-045",
+    "DEC-046",
+    "DEC-065",
+    "GAP-060"
+  ],
+  "audience": [
+    "boss",
+    "finance",
+    "storeManager"
+  ],
+  "layers": [
+    "tenant"
+  ],
+  "objects": [
+    {
+      "id": "CompensationScheme",
+      "name": "员工薪酬方案",
+      "meaning": "员工某一生效日期起采用的固定工资和月应出勤天数版本；一旦形成薪酬事实即冻结，后续变化通过新增方案接续。",
+      "keyFields": [
+        "schemeId",
+        "company",
+        "store",
+        "team",
+        "employee",
+        "baseSalary",
+        "scheduledDays",
+        "effectiveFrom",
+        "effectiveTo",
+        "status",
+        "remark",
+        "createdBy",
+        "createTime",
+        "updateTime"
+      ],
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "Employee",
+      "name": "发薪员工",
+      "meaning": "薪酬方案的唯一对象；门店、团队、企业归属从员工和登录人解析，不信任前端参数。",
+      "keyFields": [
+        "empId",
+        "name",
+        "role",
+        "status",
+        "store",
+        "team"
+      ],
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "AttendanceSummary",
+      "name": "月度考勤事实",
+      "meaning": "存在考勤事实后，薪酬方案涉及的关键字段不可再修改或删除。",
+      "keyFields": [
+        "summaryId",
+        "employee",
+        "payrollMonth",
+        "scheduledDays",
+        "status"
+      ],
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "CommissionItem",
+      "name": "员工提成事实",
+      "meaning": "存在提成事实后，沿用现有保守规则锁定该员工的薪酬方案版本。",
+      "keyFields": [
+        "commissionId",
+        "employee",
+        "project",
+        "status"
+      ],
+      "sources": [
+        "BR-039"
+      ]
+    },
+    {
+      "id": "PayrollItem",
+      "name": "工资项事实",
+      "meaning": "存在工资项后，薪酬方案不可直接编辑或删除。",
+      "keyFields": [
+        "itemId",
+        "employee",
+        "sheet",
+        "baseSalaryAmount",
+        "scheduledDays"
+      ],
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "PayrollAccessContext",
+      "name": "薪酬权限与数据范围上下文",
+      "meaning": "统一判定 BOSS、财务、店长、员工本人和企业/门店范围；写动作不得绕过。",
+      "keyFields": [
+        "role",
+        "dataScope",
+        "store",
+        "employee"
+      ],
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "enter",
+      "no": "01",
+      "name": "进入薪酬方案列表",
+      "system": "按当前财务/店长数据范围读取本页方案；总部财务可按门店收窄，门店财务与店长锁本店。",
+      "sources": [
+        "DEC-065",
+        "BR-038"
+      ]
+    },
+    {
+      "id": "filter",
+      "no": "02",
+      "name": "查找员工与方案",
+      "system": "支持员工关键词、状态、生效月份和门店筛选；列表显示固定工资、应出勤天数、有效期、状态、创建人和更新时间。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "create",
+      "no": "03",
+      "name": "新增方案",
+      "system": "选择薪酬域员工，填写固定工资、月应出勤天数、生效日期和备注；服务端校验权限、范围、金额、日期和重复版本。",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "edit",
+      "no": "04",
+      "name": "编辑未形成事实的方案",
+      "system": "仅无考勤、提成和工资事实的方案可修改关键字段；员工不可更换。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "lock",
+      "no": "05",
+      "name": "形成事实后冻结版本",
+      "system": "方案出现关联薪酬事实后变为锁定；页面不显示编辑/终止/删除，只提供新增后续方案。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "terminate-delete",
+      "no": "06",
+      "name": "终止或删除未生效事实版本",
+      "system": "未形成事实时可设置失效日期或删除；删除必须二次确认并由服务端再次校验无事实。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "successor",
+      "no": "07",
+      "name": "新增后续方案",
+      "system": "员工薪酬变化时新增更晚生效的方案，旧方案和既有工资事实保持不动；同一周期按最新生效日期选择方案。",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "recover",
+      "no": "08",
+      "name": "失败恢复",
+      "system": "保存失败保留表单；资格、范围或事实状态冲突时重新读取服务端结果，禁止前端强行覆盖。",
+      "sources": [
+        "BR-038"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "object": "CompensationScheme",
+      "field": "employee",
+      "label": "发薪员工",
+      "meaning": "新增时选择；编辑时只读。员工门店/团队作为方案归属快照。",
+      "owner": "finance/boss",
+      "impact": "决定企业、门店、团队和发薪范围",
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "baseSalary",
+      "label": "月固定工资",
+      "meaning": "员工固定工资，必须大于 0，单位元，服务端保存两位小数。",
+      "owner": "finance/boss",
+      "impact": "直接进入工资项基本工资计算",
+      "sources": [
+        "BR-015",
+        "BR-038"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "scheduledDays",
+      "label": "月应出勤天数",
+      "meaning": "整数 1～31，考勤和工资计算使用；不得沿用前端默认 22 天。",
+      "owner": "finance/boss",
+      "impact": "影响日工资和考勤扣款",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "effectiveFrom",
+      "label": "生效日期",
+      "meaning": "该版本开始适用的日期；同一员工同一生效日期唯一。",
+      "owner": "finance/boss",
+      "impact": "决定工资月份采用哪个版本",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "effectiveTo",
+      "label": "失效日期",
+      "meaning": "可空；为空表示不主动终止，必须不早于生效日期。",
+      "owner": "finance/boss",
+      "impact": "影响方案有效期和工资月份匹配",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "status",
+      "label": "方案状态",
+      "meaning": "新增默认 Active；B1 不开放任意状态编辑，Expired 仅兼容历史数据展示。",
+      "owner": "system",
+      "impact": "状态与有效期共同参与可读性判断",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "remark",
+      "label": "备注",
+      "meaning": "最多 500 字，说明调薪或方案原因。",
+      "owner": "finance/boss",
+      "impact": "审计辅助，不参与计算",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "createdBy/createTime/updateTime",
+      "label": "创建人与时间",
+      "meaning": "记录创建人和创建/更新时间；事实形成前的操作另写结构化审计日志。",
+      "owner": "system",
+      "impact": "恢复与审计依据",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "object": "CompensationScheme",
+      "field": "locked",
+      "label": "是否锁定",
+      "meaning": "服务端派生字段：存在考勤、提成或工资项事实时为 true。",
+      "owner": "system",
+      "impact": "控制编辑、终止、删除和新增后续方案入口",
+      "sources": [
+        "BR-038"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE-B1-01",
+      "rule": "写权限仅 BOSS、财务；店长只读本店；员工本人不进入薪酬方案管理页。",
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "RULE-B1-02",
+      "rule": "总部财务企业范围并可按门店收窄；门店财务和店长只能读取、写入本店员工方案。",
+      "sources": [
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "RULE-B1-03",
+      "rule": "公司、门店、团队和创建人全部由登录员工与目标员工解析，禁止信任前端 companyId/empId/storeId 作为归属。",
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "RULE-B1-04",
+      "rule": "baseSalary 必填且大于 0；scheduledDays 必填且为 1～31 的整数。",
+      "sources": [
+        "BR-015",
+        "BR-038"
+      ]
+    },
+    {
+      "id": "RULE-B1-05",
+      "rule": "effectiveFrom 必填；effectiveTo 可空且不得早于 effectiveFrom。",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "RULE-B1-06",
+      "rule": "同一企业同一员工同一 effectiveFrom 只能存在一个方案，重复返回 409。",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "RULE-B1-07",
+      "rule": "方案一旦存在该员工的考勤、提成或工资项事实即锁定，不允许修改关键字段、终止或删除。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "RULE-B1-08",
+      "rule": "锁定的方案只能通过新增更晚生效的方案承接薪酬变化；旧方案和既有工资事实保持不变。",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "RULE-B1-09",
+      "rule": "同一工资月份匹配多个方案时，服务端以 effectiveFrom 最新的方案为准。",
+      "sources": [
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "RULE-B1-10",
+      "rule": "新增方案默认 Active；B1 不允许客户端任意切换 Draft/Expired 状态。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "RULE-B1-11",
+      "rule": "删除只允许无考勤、提成和工资项事实的方案，服务端在删除事务内再次校验。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "RULE-B1-12",
+      "rule": "事实形成前的创建、修改、终止、删除写结构化审计日志，包含操作人、企业、门店、对象、动作和前后快照；不新增 DDL。",
+      "sources": [
+        "BR-038"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "CHK-B1-01",
+      "check": "服务端验证当前员工角色为 BOSS/Finance；StoreManager 写请求 403。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "CHK-B1-02",
+      "check": "员工选择、方案详情、更新和删除统一使用同一数据范围判定，跨店返回 404/403。",
+      "sources": [
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "CHK-B1-03",
+      "check": "前端和后端同时校验 baseSalary > 0、scheduledDays 1～31、日期范围和备注长度。",
+      "sources": [
+        "BR-015",
+        "BR-038"
+      ]
+    },
+    {
+      "id": "CHK-B1-04",
+      "check": "保存和更新前检查同员工同 effectiveFrom 重复；并发冲突由唯一约束兜底并转换为 409。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "CHK-B1-05",
+      "check": "更新、终止、删除前检查该员工是否已有考勤、提成或工资项事实；存在则 409 并提示新增后续方案。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "CHK-B1-06",
+      "check": "page/info 至少返回 scheduledDays、createdBy、createTime、updateTime、locked，禁止前端用默认值补齐。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "CHK-B1-07",
+      "check": "Web 使用 payroll 专属写权限判定，不使用包含 StoreManager 的通用财务 canWrite。",
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "CHK-B1-08",
+      "check": "App 现有薪酬方案列表/新增/编辑/删除继续通过同一 Provider，并回归锁定状态和后端错误提示。",
+      "sources": [
+        "BR-038"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "EX-B1-01",
+      "case": "门店财务选择或提交他店员工",
+      "behavior": "返回 404「员工不存在或无权访问」，不泄露员工是否存在。",
+      "recovery": "切换本店维度后重新选择。"
+    },
+    {
+      "id": "EX-B1-02",
+      "case": "同员工同生效日期重复",
+      "behavior": "返回 409 并保留表单输入。",
+      "recovery": "修改生效日期或打开已有方案。"
+    },
+    {
+      "id": "EX-B1-03",
+      "case": "员工已形成考勤、提成或工资事实",
+      "behavior": "方案锁定，编辑/终止/删除被拒绝。",
+      "recovery": "新增更晚生效的后续方案。"
+    },
+    {
+      "id": "EX-B1-04",
+      "case": "店长尝试写方案",
+      "behavior": "前端隐藏写按钮，服务端返回 403。",
+      "recovery": "交给 BOSS 或财务处理。"
+    },
+    {
+      "id": "EX-B1-05",
+      "case": "保存时网络失败或服务端 5xx",
+      "behavior": "保留已填内容并显示暂不可确认，不本地伪造成功。",
+      "recovery": "重试或刷新列表。"
+    },
+    {
+      "id": "EX-B1-06",
+      "case": "页面数据已过期或他人已修改同一方案",
+      "behavior": "保存前重新读取；发现最新方案链后要求用户按最新事实重试。",
+      "recovery": "关闭抽屉、刷新并重新编辑或新增后续方案。"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "MET-B1-01",
+      "name": "薪酬方案完整率",
+      "meaning": "在职员工中存在当前或后续有效薪酬方案的比例；分母只统计有发薪资格的内部员工。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "MET-B1-02",
+      "name": "应出勤配置完整率",
+      "meaning": "有效薪酬方案中 scheduledDays 在 1～31 的比例。",
+      "sources": [
+        "BR-038"
+      ]
+    }
+  ],
+  "uiBindings": [
+    {
+      "id": "UI-B1-01",
+      "surface": "web",
+      "route": "/finance/compensation-schemes",
+      "role": "Finance/Boss 可写；Finance/StoreManager/Boss 按范围查看",
+      "component": "FinanceCompensationSchemesView.vue",
+      "behavior": "专业列表页；筛选、分页、行操作、抽屉文档式编辑。",
+      "sources": [
+        "BR-038",
+        "DEC-065"
+      ]
+    },
+    {
+      "id": "UI-B1-02",
+      "surface": "web",
+      "component": "薪酬方案列表",
+      "behavior": "列：员工、岗位、门店/团队、月固定工资、月应出勤、生效期、状态、锁定、创建人、更新时间、操作。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "UI-B1-03",
+      "surface": "web",
+      "component": "薪酬方案抽屉",
+      "behavior": "字段：员工、月固定工资、月应出勤天数、生效日期、失效日期、备注；编辑时员工只读；侧栏展示计算影响与风险提示。",
+      "sources": [
+        "BR-038",
+        "DEC-045"
+      ]
+    },
+    {
+      "id": "UI-B1-04",
+      "surface": "web",
+      "component": "行操作",
+      "behavior": "未锁定：编辑、终止、删除；已锁定：只显示「新增后续方案」和查看详情。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "UI-B1-05",
+      "surface": "web",
+      "component": "删除确认",
+      "behavior": "明确说明仅删除未形成考勤/提成/工资事实的方案；服务端失败时显示原因并刷新。",
+      "sources": [
+        "BR-038"
+      ]
+    },
+    {
+      "id": "UI-B1-06",
+      "surface": "app",
+      "route": "/subpackages/payroll/pages/compensation-list",
+      "behavior": "现有列表/新增/编辑/删除保持；补锁定状态展示和后续方案入口说明，不新增另一套 Provider。",
+      "sources": [
+        "BR-038"
+      ]
+    }
+  ],
+  "agentTools": []
+}

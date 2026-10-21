@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.payroll.service.employees.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -37,6 +39,8 @@ public class Page implements com.th4.edge.decoboon.payroll.service.employees.pag
     @AutoInject private Integer size;
     private final EmployeeRepository repository;
     private final PayrollAccessContext accessContext;
+    @org.springframework.beans.factory.annotation.Autowired
+    private StoreFilterContext storeFilterContext;
 
     public Page(EmployeeRepository repository, PayrollAccessContext accessContext) {
         this.repository = repository;
@@ -47,6 +51,7 @@ public class Page implements com.th4.edge.decoboon.payroll.service.employees.pag
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Employee> call(Employee request) {
         Employee currentEmployee = accessContext.requireEditor(employee);
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
         EmployeeRole roleFilter = roleFilter(role);
         EmployeeStatus statusFilter = statusFilter(status);
@@ -55,8 +60,7 @@ public class Page implements com.th4.edge.decoboon.payroll.service.employees.pag
                 : repository.findByCompany_ComIdAndStatusOrderByNameAsc(currentEmployee.getCompany().getComId(), statusFilter);
         var items = source.stream()
                 .filter(item -> roleFilter == null || item.getRole() == roleFilter)
-                .filter(item -> storeId == null
-                        || (item.getStore() != null && storeId.equals(item.getStore().getStoreId())))
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> kw.isBlank()
                         || (item.getName() != null && item.getName().toLowerCase().contains(kw))
                         || (item.getTelNo() != null && item.getTelNo().contains(kw)))

@@ -2,6 +2,8 @@ package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
@@ -35,19 +37,20 @@ class PayrollDeleteGuardTest {
         scheme.setEmployee(target);
 
         CompensationSchemeRepository schemes = mock(CompensationSchemeRepository.class);
-        AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
-        PayrollItemRepository payrollItems = mock(PayrollItemRepository.class);
-        CommissionItemRepository commissions = mock(CommissionItemRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
+        PayrollCompensationContext compensationContext = mock(PayrollCompensationContext.class);
+        PayrollCompensationAuditContext audit = mock(PayrollCompensationAuditContext.class);
         var delete = new com.th4.edge.decoboon.payroll.service.compensations.delete.support.Delete(
-                schemes, attendances, payrollItems, commissions, access);
+                schemes, access, compensationContext, audit);
         ReflectionTestUtils.setField(delete, "employee", boss);
         ReflectionTestUtils.setField(delete, "schemeId", 10L);
 
         when(access.requireEditor(boss)).thenReturn(boss);
         when(access.visible(boss, CompensationScheme.class)).thenReturn(mock(Specification.class));
         when(schemes.findOne(any(Specification.class))).thenReturn(Optional.of(scheme));
-        when(attendances.existsByCompany_ComIdAndEmployee_EmpId(company.getComId(), target.getEmpId())).thenReturn(true);
+        org.mockito.Mockito.doThrow(new com.th4.edge.framework.exception.DefinedException(
+                        new com.th4.edge.framework.exception.DefaultErrorCode("409", "已形成工资事实，不能删除薪酬方案")))
+                .when(compensationContext).requireUnlocked(company.getComId(), target);
 
         assertThatThrownBy(() -> delete.call(new CompensationScheme()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)

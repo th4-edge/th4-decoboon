@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "domain": "payroll-labor",
+  "title": "员工薪酬与薪资经营",
+  "northStar": "财务按方案A完成员工薪酬日常操作，BOSS保留最终确认与高风险动作，薪酬方案、考勤、提成、工资单、应付、发放和工资条形成可追溯闭环",
+  "owner": "codex",
+  "phase": "ACCEPTED",
+  "batch": "B1",
+  "nextAction": "等待用户确认 L3 生产发布；确认后按后端→Web→App顺序发布并保留回滚点",
+  "openDecisions": [
+    "店长员工发放权限在 BR-038 与 DEC-065 间的最终边界，B3 前关闭，不阻塞 B1",
+    "GAP-060 店长工资单确认与作废边界，非 B1 阻塞"
+  ],
+  "blockers": [],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md"
+  },
+  "createdAt": "2026-10-21T12:15:00+08:00",
+  "updatedAt": "2026-10-21T13:35:49+08:00",
+  "history": [
+    {
+      "at": "2026-10-21T12:15:00+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-21T12:15:30+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B0",
+      "note": "charter 与两个闭环场景已建立"
+    },
+    {
+      "at": "2026-10-21T12:16:50+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "B1",
+      "note": "方案A与现有BR-038/BR-039/DEC-046/DEC-047完成对齐，B1范围冻结为薪酬方案维护闭环"
+    },
+    {
+      "at": "2026-10-21T12:20:17+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "B1",
+      "note": "B1薪酬方案维护蓝图完成，补齐门店数据范围、事实锁定、字段完整性和App对齐"
+    },
+    {
+      "at": "2026-10-21T12:25:32+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B1",
+      "note": "B1实施计划完成，冻结改动文件、测试矩阵、真实浏览器验收、无迁移回滚与发布门禁"
+    },
+    {
+      "at": "2026-10-21T12:28:16+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B1",
+      "note": "用户确认进入 B1 编码"
+    },
+    {
+      "at": "2026-10-21T12:37:22+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B1",
+      "note": "B1后端、Web、App实现完成；后端全量900/0/0，Web/App构建和目标检查通过，无DDL"
+    },
+    {
+      "at": "2026-10-21T12:49:23+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "B1",
+      "note": "真实Web UI审查PASS；修复岗位门店映射和编辑锁定提示两处P1缺陷，三档视口和三角色走查完成"
+    },
+    {
+      "at": "2026-10-21T12:52:24+08:00",
+      "phase": "RECONCILED",
+      "batch": "B1",
+      "note": "REQ-B1-01～11全部映射且无UNMAPPED/STALE；UI缺陷已修复，对账PASS"
+    },
+    {
+      "at": "2026-10-21T13:35:49+08:00",
+      "phase": "ACCEPTED",
+      "batch": "B1",
+      "note": "独立验收PASS；REQ-B1-01～11全部通过，ACC-B1-001/002/003与U01全部关闭"
+    }
+  ]
+}

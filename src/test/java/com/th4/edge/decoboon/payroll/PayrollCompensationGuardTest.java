@@ -1,8 +1,13 @@
 package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationContext;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
+import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
 import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
+import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.exception.DefinedException;
@@ -49,6 +54,9 @@ class PayrollCompensationGuardTest {
                     .containsExactly("storeId", "name");
             assertThat(Arrays.asList(allowFor(properties, Team.class).properties()))
                     .containsExactly("teamId", "name");
+            assertThat(Arrays.asList(allowFor(properties, CompensationScheme.class).properties()))
+                    .contains("schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom",
+                            "effectiveTo", "status", "locked", "lockedReason", "createdBy", "createTime", "updateTime");
         }
     }
 
@@ -109,7 +117,14 @@ class PayrollCompensationGuardTest {
 
         CompensationSchemeRepository repository = mock(CompensationSchemeRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
-        var save = new com.th4.edge.decoboon.payroll.service.compensations.save.support.Save(repository, access);
+        PayrollCompensationContext compensationContext = new PayrollCompensationContext(
+                repository,
+                mock(AttendanceSummaryRepository.class),
+                mock(PayrollItemRepository.class),
+                mock(CommissionItemRepository.class));
+        PayrollCompensationAuditContext audit = mock(PayrollCompensationAuditContext.class);
+        var save = new com.th4.edge.decoboon.payroll.service.compensations.save.support.Save(
+                repository, access, compensationContext, audit);
         ReflectionTestUtils.setField(save, "employee", boss);
         ReflectionTestUtils.setField(save, "empId", target.getEmpId());
         ReflectionTestUtils.setField(save, "baseSalary", new BigDecimal("3000.00"));
@@ -124,6 +139,39 @@ class PayrollCompensationGuardTest {
         assertThatThrownBy(() -> save.call(new CompensationScheme()))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("已有薪酬方案");
+        verify(repository, never()).save(any(CompensationScheme.class));
+    }
+
+    @Test
+    void missingScheduledDaysMustUseBusiness400InsteadOfFrameworkValidationCode() {
+        Company company = new Company();
+        company.setComId(100L);
+        Employee boss = employee(1L, EmployeeRole.Boss, company);
+        Employee target = employee(2L, EmployeeRole.Designer, company);
+
+        CompensationSchemeRepository repository = mock(CompensationSchemeRepository.class);
+        PayrollAccessContext access = mock(PayrollAccessContext.class);
+        PayrollCompensationContext compensationContext = new PayrollCompensationContext(
+                repository,
+                mock(AttendanceSummaryRepository.class),
+                mock(PayrollItemRepository.class),
+                mock(CommissionItemRepository.class));
+        PayrollCompensationAuditContext audit = mock(PayrollCompensationAuditContext.class);
+        var save = new com.th4.edge.decoboon.payroll.service.compensations.save.support.Save(
+                repository, access, compensationContext, audit);
+        ReflectionTestUtils.setField(save, "employee", boss);
+        ReflectionTestUtils.setField(save, "empId", target.getEmpId());
+        ReflectionTestUtils.setField(save, "baseSalary", new BigDecimal("3000.00"));
+        ReflectionTestUtils.setField(save, "effectiveFrom", LocalDate.of(2026, 10, 21));
+
+        when(access.requireEditor(boss)).thenReturn(boss);
+        when(access.resolveEmployee(boss, target.getEmpId())).thenReturn(target);
+
+        assertThatThrownBy(() -> save.call(new CompensationScheme()))
+                .isInstanceOfSatisfying(DefinedException.class, error -> {
+                    assertThat(error.getErrorCode().getCode()).isEqualTo("400");
+                    assertThat(error.getMessage()).contains("月应出勤天数");
+                });
         verify(repository, never()).save(any(CompensationScheme.class));
     }
 

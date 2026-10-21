@@ -14,6 +14,8 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.access.DataScope;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
@@ -72,12 +74,15 @@ public class PayrollAccessContext {
         if (target == null) {
             throw new DefinedException(new DefaultErrorCode("404", "员工不存在或无权访问"));
         }
-        if (current.getRole() == EmployeeRole.StoreManager) {
-            Long currentStoreId = current.getStore() == null ? null : current.getStore().getStoreId();
+        DataScope scope = dataScopeContext.resolve(current);
+        if (scope.type() == DataScopeType.Store) {
+            Long currentStoreId = scope.storeId();
             Long targetStoreId = target.getStore() == null ? null : target.getStore().getStoreId();
             if (currentStoreId == null || !currentStoreId.equals(targetStoreId)) {
                 throw new DefinedException(new DefaultErrorCode("404", "员工不存在或无权访问"));
             }
+        } else if (scope.type() != DataScopeType.Company) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号未配置有效薪酬数据范围"));
         }
         return target;
     }

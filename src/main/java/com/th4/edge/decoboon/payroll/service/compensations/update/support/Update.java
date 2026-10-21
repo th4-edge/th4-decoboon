@@ -1,7 +1,8 @@
 package com.th4.edge.decoboon.payroll.service.compensations.update.support;
 
-import com.th4.edge.decoboon.payroll.configure.CompensationStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationContext;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -17,17 +18,19 @@ import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** 更新员工薪酬方案。 */
+/** 更新未形成薪酬事实的员工薪酬方案。 */
 @Note("薪酬方案更新")
 @Properties(allow = {
         @AllowProperties(model = CompensationScheme.class,
-                properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status", "remark", "updateTime"}),
+                properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo",
+                        "status", "remark", "locked", "lockedReason", "createdBy", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
         @AllowProperties(model = Team.class, properties = {"teamId", "name"})
@@ -42,36 +45,53 @@ public class Update implements com.th4.edge.decoboon.payroll.service.compensatio
     @AutoInject private Integer scheduledDays;
     @AutoInject private LocalDate effectiveFrom;
     @AutoInject private LocalDate effectiveTo;
-    @AutoInject private CompensationStatus status;
     @AutoInject private String remark;
 
     private final CompensationSchemeRepository repository;
     private final PayrollAccessContext accessContext;
+    private final PayrollCompensationContext compensationContext;
+    private final PayrollCompensationAuditContext auditContext;
 
-    public Update(CompensationSchemeRepository repository, PayrollAccessContext accessContext) {
+    public Update(CompensationSchemeRepository repository,
+                  PayrollAccessContext accessContext,
+                  PayrollCompensationContext compensationContext,
+                  PayrollCompensationAuditContext auditContext) {
         this.repository = repository;
         this.accessContext = accessContext;
+        this.compensationContext = compensationContext;
+        this.auditContext = auditContext;
     }
 
     @Override
     @Transactional
     public CompensationScheme call(CompensationScheme request) {
         Employee current = accessContext.requireEditor(employee);
-        CompensationScheme scheme = repository.findById(schemeId)
-                .filter(item -> item.getCompany() != null
-                        && current.getCompany().getComId().equals(item.getCompany().getComId()))
+        Specification<CompensationScheme> byId =
+                (root, query, builder) -> builder.equal(root.get("schemeId"), schemeId);
+        CompensationScheme scheme = repository.findOne(
+                        byId.and(accessContext.visible(current, CompensationScheme.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "薪酬方案不存在或无权访问")));
-        if (baseSalary != null) scheme.setBaseSalary(baseSalary);
-        if (scheduledDays != null) {
-            if (scheduledDays <= 0 || scheduledDays > 31) {
-                throw new DefinedException(new DefaultErrorCode("400", "月应出勤天数必须为 1 至 31 天"));
-            }
-            scheme.setScheduledDays(scheduledDays);
+        compensationContext.requireUnlocked(current.getCompany().getComId(), scheme.getEmployee());
+        String before = auditContext.snapshot(scheme);
+
+        BigDecimal nextSalary = baseSalary == null ? scheme.getBaseSalary()
+                : compensationContext.validBaseSalary(baseSalary);
+        int nextDays = scheduledDays == null ? scheme.getScheduledDays()
+                : compensationContext.validScheduledDays(scheduledDays);
+        LocalDate nextFrom = effectiveFrom == null ? scheme.getEffectiveFrom() : effectiveFrom;
+        LocalDate nextTo = effectiveTo == null ? scheme.getEffectiveTo() : effectiveTo;
+        compensationContext.validPeriod(nextFrom, nextTo);
+        if (effectiveFrom != null && !nextFrom.equals(scheme.getEffectiveFrom())) {
+            compensationContext.requireUniqueEffectiveDate(
+                    current.getCompany().getComId(), scheme.getEmployee(), nextFrom, scheme.getSchemeId());
         }
-        if (effectiveFrom != null) scheme.setEffectiveFrom(effectiveFrom);
-        if (effectiveTo != null) scheme.setEffectiveTo(effectiveTo);
-        if (status != null) scheme.setStatus(status);
+        scheme.setBaseSalary(nextSalary);
+        scheme.setScheduledDays(nextDays);
+        scheme.setEffectiveFrom(nextFrom);
+        scheme.setEffectiveTo(nextTo);
         if (remark != null) scheme.setRemark(remark);
-        return repository.save(scheme);
+        CompensationScheme saved = repository.save(scheme);
+        auditContext.record(current, saved, "UPDATE", before);
+        return saved;
     }
 }

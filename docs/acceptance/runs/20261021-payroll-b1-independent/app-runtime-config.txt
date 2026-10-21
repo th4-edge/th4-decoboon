@@ -1,0 +1,7 @@
+App runtime build:
+- mode: development
+- VITE_API_BASE: http://127.0.0.1:8090/api/
+- output: /tmp/payroll-b1-app-local-dist
+- runtime: WeChat DevTools 2.02.2609231, local simulator
+- production API base was not used for runtime testing
+- local legal-domain check was changed only in the temporary simulator project session and the setting was verified back at unchecked

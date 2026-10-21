@@ -1,11 +1,10 @@
 package com.th4.edge.decoboon.payroll.service.compensations.delete.support;
 
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollCompensationContext;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
-import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
-import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
 import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
-import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -27,7 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("薪酬方案删除")
 @Properties(allow = {
         @AllowProperties(model = CompensationScheme.class,
-                properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo", "status"}),
+                properties = {"schemeId", "employee", "baseSalary", "scheduledDays", "effectiveFrom", "effectiveTo",
+                        "status", "remark", "locked", "lockedReason", "createdBy", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
         @AllowProperties(model = Team.class, properties = {"teamId", "name"})
@@ -40,37 +40,31 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.compensatio
     @AutoInject @NotNull private Long schemeId;
 
     private final CompensationSchemeRepository repository;
-    private final AttendanceSummaryRepository attendanceRepository;
-    private final PayrollItemRepository payrollItemRepository;
-    private final CommissionItemRepository commissionRepository;
     private final PayrollAccessContext accessContext;
+    private final PayrollCompensationContext compensationContext;
+    private final PayrollCompensationAuditContext auditContext;
 
     public Delete(CompensationSchemeRepository repository,
-                  AttendanceSummaryRepository attendanceRepository,
-                  PayrollItemRepository payrollItemRepository,
-                  CommissionItemRepository commissionRepository,
-                  PayrollAccessContext accessContext) {
+                  PayrollAccessContext accessContext,
+                  PayrollCompensationContext compensationContext,
+                  PayrollCompensationAuditContext auditContext) {
         this.repository = repository;
-        this.attendanceRepository = attendanceRepository;
-        this.payrollItemRepository = payrollItemRepository;
-        this.commissionRepository = commissionRepository;
         this.accessContext = accessContext;
+        this.compensationContext = compensationContext;
+        this.auditContext = auditContext;
     }
 
     @Override
     @Transactional
     public CompensationScheme call(CompensationScheme request) {
         Employee current = accessContext.requireEditor(employee);
-        Specification<CompensationScheme> byId = (root, query, builder) -> builder.equal(root.get("schemeId"), schemeId);
-        CompensationScheme scheme = repository.findOne(byId.and(accessContext.visible(current, CompensationScheme.class)))
+        Specification<CompensationScheme> byId =
+                (root, query, builder) -> builder.equal(root.get("schemeId"), schemeId);
+        CompensationScheme scheme = repository.findOne(
+                        byId.and(accessContext.visible(current, CompensationScheme.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "薪酬方案不存在或无权访问")));
-        Long comId = current.getCompany().getComId();
-        Long empId = scheme.getEmployee().getEmpId();
-        if (attendanceRepository.existsByCompany_ComIdAndEmployee_EmpId(comId, empId)
-                || payrollItemRepository.existsByCompany_ComIdAndEmployee_EmpId(comId, empId)
-                || commissionRepository.existsByCompany_ComIdAndEmployee_EmpId(comId, empId)) {
-            throw new DefinedException(new DefaultErrorCode("409", "已形成考勤、提成或工资事实，不能删除薪酬方案"));
-        }
+        compensationContext.requireUnlocked(current.getCompany().getComId(), scheme.getEmployee());
+        auditContext.record(current, scheme, "DELETE", auditContext.snapshot(scheme));
         repository.delete(scheme);
         return scheme;
     }

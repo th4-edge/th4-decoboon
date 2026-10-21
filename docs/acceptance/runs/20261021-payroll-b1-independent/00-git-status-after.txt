@@ -1,0 +1,107 @@
+ M "_\347\263\273\347\273\237/\344\273\273\345\212\241/\345\275\223\345\211\215\345\267\245\344\275\234.md"
+ M "_\347\263\273\347\273\237/\345\215\217\344\275\234/\345\267\245\344\275\234\347\272\246\345\256\232.md"
+ M docs/design/migrations/run-migrations.sh.template
+ M docs/product/domains/project-delivery/06-implementation.md
+ M docs/product/domains/project-delivery/10-reconciliation.md
+ M docs/product/domains/project-delivery/state.json
+ M src/main/java/com/th4/edge/decoboon/customer/context/CustomerJourneyContext.java
+ M src/main/java/com/th4/edge/decoboon/customer/model/CustomerJourney.java
+ M src/main/java/com/th4/edge/decoboon/payroll/context/PayrollAccessContext.java
+ M src/main/java/com/th4/edge/decoboon/payroll/model/CompensationScheme.java
+ M src/main/java/com/th4/edge/decoboon/payroll/repository/AttendanceSummaryRepository.java
+ M src/main/java/com/th4/edge/decoboon/payroll/repository/CommissionItemRepository.java
+ M src/main/java/com/th4/edge/decoboon/payroll/repository/CompensationSchemeRepository.java
+ M src/main/java/com/th4/edge/decoboon/payroll/repository/PayrollItemRepository.java
+ M src/main/java/com/th4/edge/decoboon/payroll/service/compensations/delete/support/Delete.java
+ M src/main/java/com/th4/edge/decoboon/payroll/service/compensations/info/support/Info.java
+ M src/main/java/com/th4/edge/decoboon/payroll/service/compensations/page/support/Page.java
+ M src/main/java/com/th4/edge/decoboon/payroll/service/compensations/save/support/Save.java
+ M src/main/java/com/th4/edge/decoboon/payroll/service/compensations/update/support/Update.java
+ M src/main/java/com/th4/edge/decoboon/payroll/service/employees/page/support/Page.java
+ M src/main/java/com/th4/edge/decoboon/project/repository/ProjectContractRepository.java
+ M src/main/java/com/th4/edge/decoboon/project/repository/ProjectRepository.java
+ M src/main/java/com/th4/edge/decoboon/project/repository/ProjectStageRepository.java
+ M src/main/java/com/th4/edge/decoboon/project/repository/ProjectTaskRepository.java
+ M src/main/java/com/th4/edge/decoboon/project/service/contract/info/support/Info.java
+ M src/main/java/com/th4/edge/decoboon/project/service/members/list/support/List.java
+ M src/main/java/com/th4/edge/decoboon/project/service/projects/info/support/Info.java
+ M src/main/java/com/th4/edge/decoboon/project/service/stages/page/support/Page.java
+ M src/main/java/com/th4/edge/decoboon/project/service/tasks/page/support/Page.java
+ M src/test/java/com/th4/edge/decoboon/payroll/PayrollCompensationGuardTest.java
+ M src/test/java/com/th4/edge/decoboon/payroll/PayrollDeleteGuardTest.java
+ M src/test/java/com/th4/edge/decoboon/security/ProviderSecurityAcceptanceTest.java
+?? docs/acceptance/runs/20261021-owner-preview-four-tabs-independent/
+?? docs/acceptance/runs/20261021-owner-preview-p0-independent/
+?? docs/acceptance/runs/20261021-owner-preview-p0/
+?? docs/acceptance/runs/20261021-owner-product-ui-v1/
+?? docs/acceptance/runs/20261021-payroll-b1-independent/
+?? "docs/design/migrations/123-\344\270\232\344\270\273\350\247\206\350\247\222\351\242\204\350\247\210\345\256\241\350\256\241.sql"
+?? "docs/design/migrations/rollback/123-\344\270\232\344\270\273\350\247\206\350\247\222\351\242\204\350\247\210\345\256\241\350\256\241-rollback.sql"
+?? "docs/operations/data-changes/2026-10-20-\346\224\266\346\254\276\345\206\262\346\255\243\350\277\201\347\247\273122\345\211\215\347\275\256\345\244\207\344\273\275.sql"
+?? docs/product/domains/payroll-labor/
+?? docs/product/domains/project-delivery/11-owner-ui-v1.md
+?? docs/product/domains/project-delivery/12-owner-ui-strategy-review.md
+?? output/playwright/owner-arrival-sheet.png
+?? output/playwright/owner-company-sheet.png
+?? output/playwright/owner-concept-acceptance-v2.png
+?? output/playwright/owner-concept-acceptance.png
+?? output/playwright/owner-concept-archive-v2.png
+?? output/playwright/owner-concept-archive-v4.png
+?? output/playwright/owner-concept-archive.png
+?? output/playwright/owner-concept-checklist-v3.png
+?? output/playwright/owner-concept-money-v2.png
+?? output/playwright/owner-concept-money-v3.png
+?? output/playwright/owner-concept-money.png
+?? output/playwright/owner-concept-overview-v2.png
+?? output/playwright/owner-concept-overview-v4.png
+?? output/playwright/owner-concept-overview.png
+?? output/playwright/owner-concept-progress-v2.png
+?? output/playwright/owner-concept-progress-v3.png
+?? output/playwright/owner-concept-progress.png
+?? output/playwright/owner-concept-share-v2.png
+?? output/playwright/owner-concept-share.png
+?? output/playwright/owner-concept-story-v2.png
+?? output/playwright/owner-concept-story.png
+?? output/playwright/owner-confirm-sheet.png
+?? output/playwright/owner-idea-sheet.png
+?? output/playwright/owner-pano-sheet.png
+?? output/playwright/owner-real-archive-v2.png
+?? output/playwright/owner-real-archive.png
+?? output/playwright/owner-real-change-detail-v2.png
+?? output/playwright/owner-real-change-detail.png
+?? output/playwright/owner-real-contract-detail-v2.png
+?? output/playwright/owner-real-contract-detail.png
+?? output/playwright/owner-real-home.png
+?? output/playwright/owner-real-material-detail.png
+?? output/playwright/owner-real-material-plan-detail-v2.png
+?? output/playwright/owner-real-money.png
+?? output/playwright/owner-real-progress.png
+?? output/playwright/owner-real-quote-detail-v2.png
+?? output/playwright/owner-real-quote-detail.png
+?? output/playwright/owner-real-selection-detail-v2.png
+?? output/playwright/owner-real-selection-detail.png
+?? output/playwright/owner-real-story.png
+?? output/playwright/owner-rich-archive-v2.png
+?? output/playwright/owner-rich-change-detail-v2.png
+?? output/playwright/owner-rich-contract-detail-v2.png
+?? output/playwright/owner-rich-material-plan-detail-v2.png
+?? output/playwright/owner-rich-quote-detail-v2.png
+?? output/playwright/owner-rich-selection-detail-v2.png
+?? output/playwright/owner-story-v4.png
+?? output/playwright/owner-story-v5.png
+?? output/playwright/payroll-b1-independent/
+?? output/playwright/payroll-b1-ui-review/
+?? src/main/java/com/th4/edge/decoboon/customer/configure/JourneyViewMode.java
+?? src/main/java/com/th4/edge/decoboon/payroll/context/PayrollCompensationAuditContext.java
+?? src/main/java/com/th4/edge/decoboon/payroll/context/PayrollCompensationContext.java
+?? src/main/java/com/th4/edge/decoboon/project/configure/OwnerPreviewResult.java
+?? src/main/java/com/th4/edge/decoboon/project/configure/OwnerPreviewSource.java
+?? src/main/java/com/th4/edge/decoboon/project/context/OwnerPreviewAuditContext.java
+?? src/main/java/com/th4/edge/decoboon/project/model/ProjectOwnerPreviewLog.java
+?? src/main/java/com/th4/edge/decoboon/project/repository/ProjectOwnerPreviewLogRepository.java
+?? src/main/java/com/th4/edge/decoboon/project/service/ownerpreview/
+?? src/test/java/com/th4/edge/decoboon/customer/CustomerJourneyOwnerPreviewModeTest.java
+?? src/test/java/com/th4/edge/decoboon/payroll/PayrollCompensationContextTest.java
+?? src/test/java/com/th4/edge/decoboon/payroll/PayrollCompensationScopeTest.java
+?? src/test/java/com/th4/edge/decoboon/project/OwnerPreviewInfoAcceptanceTest.java
+?? "\350\276\223\345\207\272/\350\215\211\347\250\277/\344\270\232\344\270\273\347\253\257\344\272\247\345\223\201\347\220\206\345\277\265\351\253\230\344\277\235\347\234\237-20261021/"

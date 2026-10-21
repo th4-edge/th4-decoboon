@@ -4,18 +4,30 @@ import com.th4.edge.decoboon.payroll.configure.CompensationStatus;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface CompensationSchemeRepository extends JpaRepository<CompensationScheme, Long>, JpaSpecificationExecutor<CompensationScheme> {
+
+    @Override
+    @EntityGraph(attributePaths = {"employee", "employee.store", "employee.team", "createdBy"})
+    List<CompensationScheme> findAll(Specification<CompensationScheme> spec);
+
+    @Override
+    @EntityGraph(attributePaths = {"employee", "employee.store", "employee.team", "createdBy"})
+    Optional<CompensationScheme> findOne(Specification<CompensationScheme> spec);
+
     Optional<CompensationScheme> findByCompany_ComIdAndEmployee_EmpIdAndStatus(Long comId, Long empId, CompensationStatus status);
     List<CompensationScheme> findByCompany_ComIdAndEmployeeOrderByEffectiveFromDesc(Long comId, Employee employee);
 
     /** 按工资归属月份匹配方案，避免补发历史工资时使用当前方案。 */
+    @EntityGraph(attributePaths = {"employee", "employee.store", "employee.team", "createdBy"})
     @Query("""
             select scheme from CompensationScheme scheme
             where scheme.company.comId = :comId

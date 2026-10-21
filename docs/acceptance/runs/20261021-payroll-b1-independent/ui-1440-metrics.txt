@@ -1,0 +1,17 @@
+### Result
+{
+  "innerWidth": 1440,
+  "docScrollWidth": 1440,
+  "bodyScrollWidth": 1440,
+  "tableWrappers": [
+    {
+      "clientWidth": 1138,
+      "scrollWidth": 1138
+    }
+  ],
+  "text": false
+}
+### Ran Playwright code
+```js
+await page.evaluate('() => ({innerWidth: window.innerWidth, docScrollWidth: document.documentElement.scrollWidth, bodyScrollWidth: document.body.scrollWidth, tableWrappers: [...document.querySelectorAll(\'.el-table__body-wrapper\')].map(x => ({clientWidth:x.clientWidth,scrollWidth:x.scrollWidth})), text: document.body.innerText.includes(\'吴濛濛 财务\') && document.body.innerText.includes(\'新增后续方案\')})');
+```

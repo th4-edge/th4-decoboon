@@ -1,0 +1,201 @@
+### Page
+- Page URL: http://127.0.0.1:8080/finance/compensation-schemes
+- Page Title: 薪酬方案 | 装得清 · 企业工作台
+- Console: 1 errors, 1 warnings
+### Snapshot
+```yaml
+- generic [ref=e145]:
+  - banner [ref=e146]:
+    - generic [ref=e147]:
+      - button "打开导航" [ref=e1252]
+      - generic [ref=e148]:
+        - generic [ref=e149]: 财务工作台
+        - generic [ref=e150]: /
+        - generic [ref=e151]: 薪酬方案
+    - generic [ref=e159]:
+      - button "通知" [ref=e160]
+      - generic [ref=e163]: 财务 · 全公司
+      - button "濛 吴濛濛 财务 · 全公司" [ref=e165]:
+        - generic [ref=e166]: 濛
+        - generic [ref=e167]:
+          - strong [ref=e168]: 吴濛濛
+          - generic [ref=e169]: 财务 · 全公司
+  - main [ref=e170]:
+    - generic [ref=e717]:
+      - generic [ref=e718]:
+        - generic [ref=e719]:
+          - generic [ref=e720]: COMPENSATION · 薪酬方案
+          - heading "薪酬方案" [level=1] [ref=e721]
+          - paragraph [ref=e722]: 维护员工月固定工资和月应出勤天数。方案形成考勤、提成或工资事实后自动锁定，调薪通过新增后续方案承接，历史工资事实不回写。
+        - generic [ref=e723]:
+          - button "刷新" [ref=e724] [cursor=pointer]
+          - button "新增方案" [ref=e726] [cursor=pointer]
+      - generic [ref=e729]:
+        - generic [ref=e730]:
+          - generic [ref=e731]:
+            - textbox "搜索员工姓名" [ref=e734]
+            - generic [ref=e737] [cursor=pointer]:
+              - generic:
+                - combobox [ref=e739]
+                - generic [ref=e740]: 方案状态
+            - combobox "生效月份" [ref=e751]
+            - button "查询" [ref=e752] [cursor=pointer]
+          - generic [ref=e754]: 6 条本页方案 · 5 条已锁定
+        - generic [ref=e1017]:
+          - table [ref=e1019]:
+            - rowgroup [ref=e1029]:
+              - row [ref=e1030]:
+                - columnheader "员工 / 岗位" [ref=e1031]
+                - columnheader "门店 / 团队" [ref=e1033]
+                - columnheader "月固定工资" [ref=e1035]
+                - columnheader "月应出勤" [ref=e1037]
+                - columnheader "有效期" [ref=e1039]
+                - columnheader "状态" [ref=e1041]
+                - columnheader "创建 / 更新" [ref=e1043]
+                - columnheader "操作" [ref=e1045]
+          - table [ref=e1051]:
+            - rowgroup [ref=e1061]:
+              - row [ref=e1533]:
+                - cell "徐勇 项目经理" [ref=e1534]:
+                  - generic [ref=e1065]:
+                    - generic [ref=e1066]: 徐勇
+                    - generic [ref=e1067]: 项目经理
+                - cell "总店 未分团队" [ref=e1068]:
+                  - generic [ref=e1070]:
+                    - generic [ref=e1071]: 总店
+                    - generic [ref=e1072]: 未分团队
+                - cell "¥8,888.00" [ref=e1535]
+                - cell "22 天" [ref=e1536]
+                - cell "2026-10-21 至 长期" [ref=e1537]
+                - cell "生效" [ref=e1538]
+                - cell "吴濛濛 2026-10-21 13:15" [ref=e1539]:
+                  - generic [ref=e1091]:
+                    - generic [ref=e1092]: 吴濛濛
+                    - generic [ref=e1093]: 2026-10-21 13:15
+                - cell [ref=e1540]:
+                  - generic [ref=e1096]:
+                    - button "新增后续方案" [ref=e1097] [cursor=pointer]
+                    - button "编辑" [ref=e1541] [cursor=pointer]
+                    - button "终止" [ref=e1543] [cursor=pointer]
+                    - button "删除" [ref=e1545] [cursor=pointer]
+              - row [ref=e1547]:
+                - cell "吴濛濛 财务" [ref=e1548]:
+                  - generic [ref=e1103]:
+                    - generic [ref=e1104]: 吴濛濛
+                    - generic [ref=e1105]: 财务
+                - cell "总店 未分团队" [ref=e1106]:
+                  - generic [ref=e1108]:
+                    - generic [ref=e1109]: 总店
+                    - generic [ref=e1110]: 未分团队
+                - cell "¥5,000.00" [ref=e1111]
+                - cell "27 天" [ref=e1114]
+                - cell "2026-07-15 至 长期" [ref=e1116]
+                - cell "生效 已锁定" [ref=e1118]:
+                  - generic [ref=e1120]:
+                    - generic [ref=e1121]: 生效
+                    - generic [ref=e1124]: 已锁定
+                - cell "麦鸿 2026-10-08 18:19" [ref=e1127]:
+                  - generic [ref=e1129]:
+                    - generic [ref=e1130]: 麦鸿
+                    - generic [ref=e1131]: 2026-10-08 18:19
+                - cell "新增后续方案 事实已锁定" [ref=e1132]:
+                  - generic [ref=e1134]:
+                    - button "新增后续方案" [ref=e1135] [cursor=pointer]
+                    - generic [ref=e1137]: 事实已锁定
+              - row [ref=e1549]:
+                - cell "王宏文 店长" [ref=e1550]:
+                  - generic [ref=e1141]:
+                    - generic [ref=e1142]: 王宏文
+                    - generic [ref=e1143]: 店长
+                - cell "总店 未分团队" [ref=e1144]:
+                  - generic [ref=e1146]:
+                    - generic [ref=e1147]: 总店
+                    - generic [ref=e1148]: 未分团队
+                - cell "¥5,000.00" [ref=e1551]
+                - cell "27 天" [ref=e1152]
+                - cell "2026-07-15 至 长期" [ref=e1154]
+                - cell "生效 已锁定" [ref=e1156]:
+                  - generic [ref=e1158]:
+                    - generic [ref=e1159]: 生效
+                    - generic [ref=e1162]: 已锁定
+                - cell "麦鸿 2026-10-08 18:19" [ref=e1552]:
+                  - generic [ref=e1167]:
+                    - generic [ref=e1168]: 麦鸿
+                    - generic [ref=e1169]: 2026-10-08 18:19
+                - cell "新增后续方案 事实已锁定" [ref=e1170]:
+                  - generic [ref=e1172]:
+                    - button "新增后续方案" [ref=e1173] [cursor=pointer]
+                    - generic [ref=e1175]: 事实已锁定
+              - row [ref=e1553]:
+                - cell "董夏鹏 设计师" [ref=e1554]:
+                  - generic [ref=e1179]:
+                    - generic [ref=e1180]: 董夏鹏
+                    - generic [ref=e1181]: 设计师
+                - cell "总店 未分团队" [ref=e1182]:
+                  - generic [ref=e1184]:
+                    - generic [ref=e1185]: 总店
+                    - generic [ref=e1186]: 未分团队
+                - cell "¥3,000.00" [ref=e1187]
+                - cell "27 天" [ref=e1190]
+                - cell "2026-07-15 至 长期" [ref=e1192]
+                - cell "生效 已锁定" [ref=e1194]:
+                  - generic [ref=e1196]:
+                    - generic [ref=e1197]: 生效
+                    - generic [ref=e1200]: 已锁定
+                - cell "麦鸿 2026-10-08 18:18" [ref=e1555]:
+                  - generic [ref=e1205]:
+                    - generic [ref=e1206]: 麦鸿
+                    - generic [ref=e1207]: 2026-10-08 18:18
+                - cell "新增后续方案 事实已锁定" [ref=e1208]:
+                  - generic [ref=e1210]:
+                    - button "新增后续方案" [ref=e1211] [cursor=pointer]
+                    - generic [ref=e1213]: 事实已锁定
+              - row [ref=e1556]:
+                - cell "谢玲玲 设计师" [ref=e1557]:
+                  - generic [ref=e1217]:
+                    - generic [ref=e1218]: 谢玲玲
+                    - generic [ref=e1219]: 设计师
+                - cell "总店 未分团队" [ref=e1220]:
+                  - generic [ref=e1222]:
+                    - generic [ref=e1223]: 总店
+                    - generic [ref=e1224]: 未分团队
+                - cell "¥3,000.00" [ref=e1558]
+                - cell "27 天" [ref=e1228]
+                - cell "2026-07-15 至 长期" [ref=e1230]
+                - cell "生效 已锁定" [ref=e1232]:
+                  - generic [ref=e1234]:
+                    - generic [ref=e1235]: 生效
+                    - generic [ref=e1238]: 已锁定
+                - cell "麦鸿 2026-10-08 18:19" [ref=e1241]:
+                  - generic [ref=e1243]:
+                    - generic [ref=e1244]: 麦鸿
+                    - generic [ref=e1245]: 2026-10-08 18:19
+                - cell "新增后续方案 事实已锁定" [ref=e1246]:
+                  - generic [ref=e1248]:
+                    - button "新增后续方案" [ref=e1249] [cursor=pointer]
+                    - generic [ref=e1251]: 事实已锁定
+              - row [ref=e1559]:
+                - cell "黄贤杰 业务员" [ref=e1560]:
+                  - generic [ref=e1562]:
+                    - generic [ref=e1563]: 黄贤杰
+                    - generic [ref=e1564]: 业务员
+                - cell "总店 未分团队" [ref=e1565]:
+                  - generic [ref=e1567]:
+                    - generic [ref=e1568]: 总店
+                    - generic [ref=e1569]: 未分团队
+                - cell "¥5,000.00" [ref=e1570]
+                - cell "27 天" [ref=e1573]
+                - cell "2026-07-15 至 长期" [ref=e1575]
+                - cell "生效 已锁定" [ref=e1577]:
+                  - generic [ref=e1579]:
+                    - generic [ref=e1580]: 生效
+                    - generic [ref=e1583]: 已锁定
+                - cell "麦鸿 2026-10-08 18:19" [ref=e1586]:
+                  - generic [ref=e1588]:
+                    - generic [ref=e1589]: 麦鸿
+                    - generic [ref=e1590]: 2026-10-08 18:19
+                - cell "新增后续方案 事实已锁定" [ref=e1591]:
+                  - generic [ref=e1593]:
+                    - button "新增后续方案" [ref=e1594] [cursor=pointer]
+                    - generic [ref=e1596]: 事实已锁定
+```

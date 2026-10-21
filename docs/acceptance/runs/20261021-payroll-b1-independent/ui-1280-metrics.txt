@@ -1,0 +1,16 @@
+### Result
+{
+  "innerWidth": 1280,
+  "docScrollWidth": 1280,
+  "bodyScrollWidth": 1280,
+  "table": [
+    {
+      "clientWidth": 978,
+      "scrollWidth": 978
+    }
+  ]
+}
+### Ran Playwright code
+```js
+await page.evaluate('() => ({innerWidth:innerWidth,docScrollWidth:document.documentElement.scrollWidth,bodyScrollWidth:document.body.scrollWidth,table:[...document.querySelectorAll(\'.el-table__body-wrapper\')].map(x=>({clientWidth:x.clientWidth,scrollWidth:x.scrollWidth}))})');
+```

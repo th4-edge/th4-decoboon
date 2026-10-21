@@ -98,6 +98,14 @@ public class CompensationScheme extends AuditModel {
     @Note("创建人")
     private Employee createdBy;
 
+    @Transient
+    @Note("是否已锁定")
+    private Boolean locked = Boolean.FALSE;
+
+    @Transient
+    @Note("锁定原因")
+    private String lockedReason;
+
     public Long getSchemeId() { return schemeId; }
     public void setSchemeId(Long schemeId) { this.schemeId = schemeId; }
     public Company getCompany() { return company; }
@@ -122,4 +130,8 @@ public class CompensationScheme extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
+    public Boolean getLocked() { return locked; }
+    public void setLocked(Boolean locked) { this.locked = locked; }
+    public String getLockedReason() { return lockedReason; }
+    public void setLockedReason(String lockedReason) { this.lockedReason = lockedReason; }
 }

@@ -3,8 +3,11 @@ package com.th4.edge.decoboon.payroll.repository;
 import com.th4.edge.decoboon.payroll.model.CommissionItem;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface CommissionItemRepository extends JpaRepository<CommissionItem, Long>, JpaSpecificationExecutor<CommissionItem> {
     List<CommissionItem> findByCompany_ComIdAndEmployee_EmpIdOrderByCreateTime_DateTimeDesc(Long comId, Long empId);
@@ -12,4 +15,11 @@ public interface CommissionItemRepository extends JpaRepository<CommissionItem, 
     boolean existsByCompany_ComIdAndEmployee_EmpIdAndStatusIn(Long comId, Long empId, Collection<com.th4.edge.decoboon.payroll.configure.CommissionStatus> statuses);
     boolean existsByCompany_ComIdAndEmployee_EmpId(Long comId, Long empId);
     List<CommissionItem> findByPayrollItem_ItemIdOrderByCommissionIdAsc(Long itemId);
+
+    @Query("""
+            select distinct item.employee.empId from CommissionItem item
+            where item.company.comId = :comId and item.employee.empId in :empIds
+            """)
+    Set<Long> findEmployeeIdsWithFacts(@Param("comId") Long comId,
+                                       @Param("empIds") Collection<Long> empIds);
 }

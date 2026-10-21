@@ -1,0 +1,10 @@
+{
+  "httpStatus": 200,
+  "success": false,
+  "providerCode": "400",
+  "message": "月应出勤天数必须为 1 至 31 天",
+  "beforeCount": 0,
+  "afterCount": 0,
+  "persisted": false,
+  "expectationMet": true
+}

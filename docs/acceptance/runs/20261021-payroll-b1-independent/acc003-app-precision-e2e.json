@@ -1,0 +1,144 @@
+{
+  "at": "2026-10-21T05:34:41.565Z",
+  "apiBase": "http://127.0.0.1:8090/api/",
+  "employeeId": "1790224826490830054",
+  "steps": [
+    {
+      "step": "before",
+      "xuSchemeCount": 0
+    },
+    {
+      "step": "list-before",
+      "cardCount": 5
+    },
+    {
+      "step": "create-form",
+      "values": {
+        "money": "5432.12",
+        "days": "23"
+      }
+    },
+    {
+      "step": "created",
+      "cardCount": 6,
+      "cardText": "徐勇 生效月固定工资 ¥5,432.12月应出勤 23 天生效 2026-10-21删除方案",
+      "api": {
+        "schemeId": "238535475134988288",
+        "baseSalary": 5432.12,
+        "scheduledDays": 23,
+        "locked": false
+      },
+      "displayExact": true
+    },
+    {
+      "step": "edit-form",
+      "initialValues": {
+        "money": "5432.12",
+        "days": "23"
+      },
+      "updatedValues": {
+        "money": "5432.12",
+        "days": "24"
+      }
+    },
+    {
+      "step": "edited",
+      "cardCount": 6,
+      "cardText": "徐勇 生效月固定工资 ¥5,432.12月应出勤 24 天生效 2026-10-21删除方案",
+      "api": {
+        "schemeId": "238535475134988288",
+        "baseSalary": 5432.12,
+        "scheduledDays": 24,
+        "locked": false
+      },
+      "displayExact": true
+    },
+    {
+      "step": "delete-confirm",
+      "visible": true
+    },
+    {
+      "step": "deleted",
+      "cardCount": 5,
+      "xuVisible": false,
+      "apiCount": 0
+    }
+  ],
+  "pass": true,
+  "logs": [
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "Lazy code loading is enabled. Only injecting required components."
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "warn",
+      "args": [
+        "无效的 app.json [\"versionName\"]、app.json [\"versionCode\"]"
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "warn",
+      "args": [
+        "wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "preloadSubpackages: success"
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "preloadSubpackages: success"
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "log",
+      "args": [
+        "[装得清] App Launch",
+        {
+          "role": null
+        }
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"
+      ]
+    },
+    {
+      "kind": "console",
+      "type": "info",
+      "args": [
+        "preloadSubpackages: success"
+      ]
+    }
+  ],
+  "consoleErrors": []
+}

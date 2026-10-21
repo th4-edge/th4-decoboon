@@ -1,0 +1,55 @@
+[
+  {
+    "label": "status=Active",
+    "success": true,
+    "count": 5,
+    "employeeNames": [
+      "吴濛濛",
+      "王宏文",
+      "董夏鹏",
+      "谢玲玲",
+      "黄贤杰"
+    ],
+    "providerCode": ""
+  },
+  {
+    "label": "status=Expired",
+    "success": true,
+    "count": 0,
+    "employeeNames": [],
+    "providerCode": ""
+  },
+  {
+    "label": "effectiveMonth=2026-07",
+    "success": true,
+    "count": 5,
+    "employeeNames": [
+      "吴濛濛",
+      "王宏文",
+      "董夏鹏",
+      "谢玲玲",
+      "黄贤杰"
+    ],
+    "providerCode": ""
+  },
+  {
+    "label": "effectiveMonth=2025-01",
+    "success": true,
+    "count": 0,
+    "employeeNames": [],
+    "providerCode": ""
+  },
+  {
+    "label": "storeId=本企业总店",
+    "success": true,
+    "count": 5,
+    "employeeNames": [
+      "吴濛濛",
+      "王宏文",
+      "董夏鹏",
+      "谢玲玲",
+      "黄贤杰"
+    ],
+    "providerCode": ""
+  }
+]
