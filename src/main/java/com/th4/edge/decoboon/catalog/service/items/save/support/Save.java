@@ -27,10 +27,13 @@ import java.util.List;
 
 /** 家装材料库新增实现。 */
 @Note("家装材料库新增")
-@Properties(allow = @AllowProperties(model = CatalogItem.class,
-        properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
-                "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion",
-                "description", "images", "maintainer", "active", "sort", "sourceType", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = CatalogItem.class,
+                properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
+                        "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion",
+                        "description", "images", "maintainer", "active", "sort", "sourceType", "createTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
 @Service("catalog/item/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Save {

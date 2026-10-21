@@ -28,10 +28,13 @@ import java.util.List;
 
 /** 家装材料库更新实现。 */
 @Note("家装材料库更新")
-@Properties(allow = @AllowProperties(model = CatalogItem.class,
-        properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
-                "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion",
-                "description", "images", "maintainer", "active", "sort", "updateTime"}))
+@Properties(allow = {
+        @AllowProperties(model = CatalogItem.class,
+                properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
+                        "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion",
+                        "description", "images", "maintainer", "active", "sort", "updateTime"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+})
 @Service("catalog/item/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.decoboon.catalog.service.items.update.Update {

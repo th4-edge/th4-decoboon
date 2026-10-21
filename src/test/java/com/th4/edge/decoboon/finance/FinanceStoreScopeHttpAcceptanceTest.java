@@ -21,16 +21,19 @@ import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.tenant.user.configure.CredType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
+import com.th4.edge.tenant.user.configure.InviteStatus;
 import com.th4.edge.tenant.user.configure.Size;
 import com.th4.edge.tenant.user.configure.UserStatus;
 import com.th4.edge.tenant.user.context.PasswordContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Invite;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.CompanyRepository;
 import com.th4.edge.tenant.user.repository.CredentialsRepository;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
+import com.th4.edge.tenant.user.repository.InviteRepository;
 import com.th4.edge.tenant.user.repository.StoreRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,6 +86,7 @@ class FinanceStoreScopeHttpAcceptanceTest {
     @Autowired private CompanyRepository companyRepository;
     @Autowired private StoreRepository storeRepository;
     @Autowired private EmployeeRepository employeeRepository;
+    @Autowired private InviteRepository inviteRepository;
     @Autowired private CredentialsRepository credentialsRepository;
     @Autowired private CustomerRepository customerRepository;
     @Autowired private PropertyRepository propertyRepository;
@@ -106,6 +110,44 @@ class FinanceStoreScopeHttpAcceptanceTest {
         assertThat(response.path("data").path("receivableAmount").decimalValue())
                 .isEqualByComparingTo("200.00");
         assertThat(response.path("data").path("projectCount").asInt()).isEqualTo(1);
+    }
+
+    @Test
+    void financeCanUpdateCatalogCostAndSalePriceOverHttp() throws Exception {
+        Employee finance = employeeRepository.findByTelNo(scope.storeFinancePhone());
+        Invite invite = new Invite();
+        invite.setCompany(finance.getCompany());
+        invite.setStore(finance.getStore());
+        invite.setInviter(finance);
+        invite.setInviteName(finance.getName());
+        invite.setTelNo(finance.getTelNo());
+        invite.setRole(finance.getRole());
+        invite.setStatus(InviteStatus.Accepted);
+        invite.setExpireTime(LocalDateTime.now().plusDays(1));
+        invite = inviteRepository.save(invite);
+        finance.setInvite(invite);
+        employeeRepository.save(finance);
+        entityManager.flush();
+
+        String token = login(scope.storeFinancePhone());
+        JsonNode created = api("catalog/item/save", """
+                {"type":"Construction","code":"HTTP-CATALOG-COST","category":"木工",
+                 "name":"HTTP报价库财务维护","unit":"Item","pricingMode":"ManualOnly",
+                 "materialPrice":0,"manualPrice":20.00,"costPrice":12.00,"images":[]}
+                """, token);
+        assertThat(created.path("success").asBoolean()).as(created.toString()).isTrue();
+        long itemId = created.path("data").path("itemId").asLong();
+
+        JsonNode response = api("catalog/item/update", """
+                {"itemId":%s,"type":"Construction","code":"HTTP-CATALOG-COST","category":"木工",
+                 "name":"HTTP报价库财务维护","unit":"Item","pricingMode":"ManualOnly",
+                 "materialPrice":0,"manualPrice":25.50,"costPrice":15.00,"active":true,"sort":0,"images":[]}
+                """.formatted(itemId), token);
+
+        assertThat(response.path("success").asBoolean()).as(response.toString()).isTrue();
+        assertThat(response.toString().length()).as("单条报价项目保存响应不得膨胀").isLessThan(10_000);
+        assertThat(response.path("data").path("manualPrice").decimalValue()).isEqualByComparingTo("25.50");
+        assertThat(response.path("data").path("costPrice").decimalValue()).isEqualByComparingTo("15.00");
     }
 
     @Test
