@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "domain": "design-quote",
+  "title": "设计方案与设计报价审视",
+  "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
+  "owner": "codex",
+  "phase": "SCENARIOS_READY",
+  "batch": "B0",
+  "nextAction": "提交设计方案价格口径、财务审视动作、报价过期判定与跨端范围给业务智能体裁决",
+  "openDecisions": [
+    "列表主金额口径：正式报价优先、无正式报价回退方案计算价",
+    "财务是否只读及是否允许标记核价/退回补充",
+    "方案变更后正式报价过期的服务端判定方式",
+    "成本在列表仅显示风险标签、详情展开金额",
+    "BOSS/店长/财务在App端的审视范围与入口"
+  ],
+  "blockers": [],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md"
+  },
+  "createdAt": "2026-10-21T22:14:57+08:00",
+  "updatedAt": "2026-10-21T22:16:08+08:00",
+  "history": [
+    {
+      "at": "2026-10-21T22:14:57+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-21T22:16:08+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B0",
+      "note": "完成章程、3个真实场景和候选产品设计稿；业务问题已收敛为5项，等待BIZ_ALIGNED"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "design-quote.end-to-end",
+  "title": "设计方案与设计报价审视",
+  "version": "0.1.0",
+  "status": "draft",
+  "sourceRefs": [],
+  "audience": [],
+  "layers": ["standard", "tenant", "project"],
+  "objects": [],
+  "stages": [],
+  "fields": [],
+  "rules": [],
+  "checks": [],
+  "exceptions": [],
+  "metrics": [],
+  "uiBindings": [],
+  "agentTools": []
+}
