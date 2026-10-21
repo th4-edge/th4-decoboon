@@ -1,10 +1,12 @@
 package com.th4.edge.decoboon.finance.service.ledgers.page.support;
-import com.th4.edge.decoboon.customer.model.Customer;
 
+import com.th4.edge.decoboon.common.context.StoreScope;
+import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
-import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.model.Ledger;
+import com.th4.edge.decoboon.finance.model.LedgerCategory;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -14,15 +16,23 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 资金流水分页实现。 */
 @Note("资金流水分页")
@@ -35,7 +45,7 @@ import java.util.List;
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
-        @AllowProperties(model = com.th4.edge.decoboon.finance.model.LedgerCategory.class,
+        @AllowProperties(model = LedgerCategory.class,
                 properties = {"categoryId", "name", "description", "direction", "code", "builtIn", "sort", "active"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
@@ -85,40 +95,82 @@ public class Page implements com.th4.edge.decoboon.finance.service.ledgers.page.
     public org.springframework.data.domain.Page<Ledger> call(Ledger request) {
         Employee currentEmployee = accessContext.requireReader(employee);
         Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
-        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
-        List<Ledger> items = ledgerRepository.findAll(accessContext.visible(currentEmployee, Ledger.class))
-                .stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
-                .filter(item -> ledgerId == null || ledgerId.equals(item.getLedgerId()))
-                .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
-                .filter(item -> direction == null || direction.isBlank() || item.getDirection().name().equalsIgnoreCase(direction))
-                .filter(item -> categoryId == null || (item.getCategoryNode() != null
-                        && categoryId.equals(item.getCategoryNode().getCategoryId())))
-                .filter(item -> category == null || category.isBlank() || category.equals(item.getCategory()))
-                .filter(item -> !Boolean.TRUE.equals(uncategorized)
-                        || (item.getSource() == LedgerSource.Manual && item.getCategoryNode() == null))
-                .filter(item -> startDate == null || (item.getOccurredAt() != null && !item.getOccurredAt().isBefore(startDate)))
-                .filter(item -> endDate == null || (item.getOccurredAt() != null && !item.getOccurredAt().isAfter(endDate)))
-                .filter(item -> kw.isBlank()
-                        || contains(item.getSummary(), kw)
-                        || contains(item.getCounterparty(), kw)
-                        || contains(item.getCategory(), kw)
-                        || (item.getCategoryNode() != null && contains(item.getCategoryNode().getName(), kw)))
-                .sorted(Comparator.comparing(Ledger::getOccurredAt,
-                                Comparator.nullsLast(Comparator.naturalOrder()))
-                        .thenComparing(Ledger::getLedgerId,
-                                Comparator.nullsLast(Comparator.naturalOrder()))
-                        .reversed())
-                .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, items.size());
-        int to = Math.min(from + pageSize, items.size());
-        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(
+                Sort.Order.desc("occurredAt"),
+                Sort.Order.desc("ledgerId")));
+        Specification<Ledger> specification = specification(currentEmployee, storeFilter);
+
+        org.springframework.data.domain.Page<Ledger> skeleton = ledgerRepository.findAll(specification, pageable);
+        if (skeleton.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, skeleton.getTotalElements());
+        }
+        List<Long> ids = skeleton.getContent().stream().map(Ledger::getLedgerId).toList();
+        Map<Long, Ledger> byId = new LinkedHashMap<>();
+        for (Ledger item : ledgerRepository.findDetailsByIdIn(ids)) {
+            byId.put(item.getLedgerId(), item);
+        }
+        List<Ledger> ordered = ids.stream().map(byId::get).filter(java.util.Objects::nonNull).toList();
+        return new PageImpl<>(ordered, pageable, skeleton.getTotalElements());
     }
 
-    private boolean contains(String value, String keyword) {
-        return value != null && value.toLowerCase().contains(keyword);
+    private Specification<Ledger> specification(Employee currentEmployee, Long storeFilter) {
+        Specification<Ledger> specification = accessContext.visible(currentEmployee, Ledger.class);
+        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
+
+        return specification.and((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.isFalse(root.get("voided")));
+            if (ledgerId != null) {
+                predicates.add(cb.equal(root.get("ledgerId"), ledgerId));
+            }
+            if (projectId != null) {
+                predicates.add(cb.equal(root.get("project").get("projectId"), projectId));
+            }
+            if (!StoreScope.isAllStores(storeFilter)) {
+                predicates.add(cb.equal(root.get("store").get("storeId"), storeFilter));
+            }
+            if (direction != null && !direction.isBlank()) {
+                LedgerDirection parsed = enumValue(LedgerDirection.class, direction);
+                predicates.add(parsed == null ? cb.disjunction() : cb.equal(root.get("direction"), parsed));
+            }
+            if (categoryId != null) {
+                predicates.add(cb.equal(root.get("categoryNode").get("categoryId"), categoryId));
+            }
+            if (category != null && !category.isBlank()) {
+                predicates.add(cb.equal(root.get("category"), category));
+            }
+            if (Boolean.TRUE.equals(uncategorized)) {
+                predicates.add(cb.and(
+                        cb.equal(root.get("source"), LedgerSource.Manual),
+                        cb.isNull(root.get("categoryNode"))));
+            }
+            if (startDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("occurredAt"), startDate));
+            }
+            if (endDate != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("occurredAt"), endDate));
+            }
+            if (!kw.isBlank()) {
+                Join<Ledger, LedgerCategory> categoryNode = root.join("categoryNode", JoinType.LEFT);
+                String pattern = "%" + kw + "%";
+                predicates.add(cb.or(
+                        cb.like(cb.lower(cb.coalesce(root.get("summary"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(root.get("counterparty"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(root.get("category"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(categoryNode.get("name"), "")), pattern)));
+            }
+            return cb.and(predicates.toArray(Predicate[]::new));
+        });
+    }
+
+    private <E extends Enum<E>> E enumValue(Class<E> enumType, String rawValue) {
+        for (E value : enumType.getEnumConstants()) {
+            if (value.name().equalsIgnoreCase(rawValue.trim())) {
+                return value;
+            }
+        }
+        return null;
     }
 }

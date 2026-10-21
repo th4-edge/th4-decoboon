@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 /** 资金流水仓储。 */
@@ -22,6 +23,19 @@ public interface LedgerRepository extends JpaRepository<Ledger, Long>,
     List<Ledger> findByCompany_ComIdAndProject_ProjectIdIn(Long comId, java.util.Collection<Long> projectIds);
 
     List<Ledger> findByCompany_ComIdAndLedgerIdIn(Long comId, java.util.Collection<Long> ledgerIds);
+
+    /** 分页后的批量详情读取：一次 JOIN FETCH 预取页面白名单关联，避免逐行懒加载。 */
+    @Query("""
+            select l from Ledger l
+            left join fetch l.project p
+            left join fetch p.property
+            left join fetch p.customer
+            left join fetch l.categoryNode
+            left join fetch l.originalLedger
+            left join fetch l.createdBy
+            where l.ledgerId in :ids
+            """)
+    List<Ledger> findDetailsByIdIn(@Param("ids") Collection<Long> ids);
 
     java.util.Optional<Ledger> findByCompany_ComIdAndLedgerId(Long comId, Long ledgerId);
 

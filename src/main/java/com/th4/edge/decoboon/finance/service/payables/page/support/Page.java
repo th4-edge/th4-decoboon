@@ -1,8 +1,10 @@
 package com.th4.edge.decoboon.finance.service.payables.page.support;
-import com.th4.edge.decoboon.customer.model.Customer;
 
-import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.common.context.StoreScope;
+import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.finance.configure.PayableStatus;
+import com.th4.edge.decoboon.finance.configure.PayableType;
+import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.project.model.Project;
@@ -13,13 +15,22 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 应付分页实现。 */
 @Note("应付分页")
@@ -73,30 +84,75 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Payable> call(Payable request) {
         Employee currentEmployee = accessContext.requireReader(employee);
         Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
-        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
-        List<Payable> items = payableRepository.findAll(accessContext.visible(currentEmployee, Payable.class))
-                .stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> projectId == null || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
-                .filter(item -> type == null || type.isBlank() || item.getType().name().equalsIgnoreCase(type))
-                .filter(item -> status == null || status.isBlank() || item.getStatus().name().equalsIgnoreCase(status))
-                .filter(item -> urgent == null || urgent.equals(item.getUrgent()))
-                .filter(item -> partnerId == null
-                        || (item.getPayeePartner() != null && partnerId.equals(item.getPayeePartner().getPartnerId())))
-                .filter(item -> kw.isBlank()
-                        || item.getName().toLowerCase().contains(kw)
-                        || (item.getPayeeName() != null && item.getPayeeName().toLowerCase().contains(kw))
-                        || (item.getProject() != null && item.getProject().getName().toLowerCase().contains(kw)))
-                .sorted(Comparator.comparing(Payable::getDueDate,
-                        Comparator.nullsLast(Comparator.naturalOrder())))
-                .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, items.size());
-        int to = Math.min(from + pageSize, items.size());
-        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(
+                Sort.Order.asc("dueDate"),
+                Sort.Order.desc("payableId")));
+        Specification<Payable> specification = specification(currentEmployee, storeFilter);
+
+        org.springframework.data.domain.Page<Payable> skeleton = payableRepository.findAll(specification, pageable);
+        if (skeleton.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, skeleton.getTotalElements());
+        }
+        List<Long> ids = skeleton.getContent().stream().map(Payable::getPayableId).toList();
+        Map<Long, Payable> byId = new LinkedHashMap<>();
+        for (Payable item : payableRepository.findDetailsByIdIn(ids)) {
+            byId.put(item.getPayableId(), item);
+        }
+        List<Payable> ordered = ids.stream().map(byId::get).filter(java.util.Objects::nonNull).toList();
+        return new PageImpl<>(ordered, pageable, skeleton.getTotalElements());
+    }
+
+    private Specification<Payable> specification(Employee currentEmployee, Long storeFilter) {
+        Specification<Payable> specification = accessContext.visible(currentEmployee, Payable.class);
+        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
+
+        return specification.and((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (projectId != null) {
+                predicates.add(cb.equal(root.get("project").get("projectId"), projectId));
+            }
+            if (!StoreScope.isAllStores(storeFilter)) {
+                predicates.add(cb.equal(root.get("store").get("storeId"), storeFilter));
+            }
+            if (partnerId != null) {
+                predicates.add(cb.equal(root.get("payeePartner").get("partnerId"), partnerId));
+            }
+            if (type != null && !type.isBlank()) {
+                PayableType parsed = enumValue(PayableType.class, type);
+                predicates.add(parsed == null ? cb.disjunction() : cb.equal(root.get("type"), parsed));
+            }
+            if (status != null && !status.isBlank()) {
+                PayableStatus parsed = enumValue(PayableStatus.class, status);
+                predicates.add(parsed == null ? cb.disjunction() : cb.equal(root.get("status"), parsed));
+            }
+            if (urgent != null) {
+                predicates.add(cb.equal(root.get("urgent"), urgent));
+            }
+            if (!kw.isBlank()) {
+                Join<Payable, Project> project = root.join("project", JoinType.LEFT);
+                String pattern = "%" + kw + "%";
+                predicates.add(cb.or(
+                        cb.like(cb.lower(cb.coalesce(root.get("name"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(root.get("payeeName"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(project.get("name"), "")), pattern),
+                        cb.like(cb.lower(cb.coalesce(project.get("no"), "")), pattern)));
+            }
+            return cb.and(predicates.toArray(Predicate[]::new));
+        });
+    }
+
+    private <E extends Enum<E>> E enumValue(Class<E> enumType, String rawValue) {
+        for (E value : enumType.getEnumConstants()) {
+            if (value.name().equalsIgnoreCase(rawValue.trim())) {
+                return value;
+            }
+        }
+        return null;
     }
 }

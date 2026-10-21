@@ -56,6 +56,22 @@ List<Project> findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(L
 
     Optional<Project> findByProjectIdAndCompany_ComId(Long projectId, Long comId);
 
+    /** 项目账本读取：按统一 Specification 取项目，再由账本上下文批量回填财务事实。 */
+    default List<Project> findLedgerRows(org.springframework.data.jpa.domain.Specification<Project> specification) {
+        return findAll(specification);
+    }
+
+    /** 项目账本分页后的批量详情读取：一次预取页面与成本计算所需关联。 */
+    @Query("""
+            select distinct p from Project p
+            left join fetch p.customer
+            left join fetch p.property
+            left join fetch p.manager
+            left join fetch p.quote
+            where p.projectId in :ids
+            """)
+    List<Project> findDetailsByIdIn(@Param("ids") Collection<Long> ids);
+
     /** 门店经营利润：按项目自身门店快照聚合（DEC-070/MET-011）。 */
     List<Project> findByCompany_ComIdAndStore_StoreId(Long comId, Long storeId);
 

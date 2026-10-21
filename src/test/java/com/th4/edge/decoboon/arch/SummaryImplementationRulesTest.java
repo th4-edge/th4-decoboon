@@ -49,6 +49,9 @@ class SummaryImplementationRulesTest {
             "customer/context/CustomerOverviewContext.java",
             "customer/context/MyCustomerOverviewContext.java",
             "finance/context/FinanceSummaryAggregateContext.java",
+            "finance/context/PartnerLedgerAggregateContext.java",
+            "finance/context/FinanceProjectLedgerContext.java",
+            "payroll/context/CommissionReportContext.java",
             "payroll/context/PayrollWorkbenchContext.java",
             "project/context/ContractWorkbenchContext.java",
             // 2026-10-10 内容经营 P0-4：内容线索与已发布内容的经营聚合。
