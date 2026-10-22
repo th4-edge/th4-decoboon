@@ -48,7 +48,7 @@ public class DesignTemplateFormulaContext {
      */
     public static final Set<String> SNAPSHOT_VARIABLES = Set.of("L", "W");
     private static final String SNAPSHOT_FORBIDDEN_MESSAGE =
-            "「L/W」是量房快照，不能用于推算面积/周长；请录入区域实测值后引用 A/P/CP/WP（DEC-062）";
+            "「L/W」是量房记录，不能用于推算面积或周长；请录入区域实测值后引用 A/P/CP/WP";
     public static final Set<String> FUNCTIONS = Set.of("SUM", "MIN", "MAX", "ROUND", "COUNT");
 
     /** 实例化“待补尺寸”标记：quantity=0 且 formula 以该前缀开头；不新增 DDL。 */

@@ -120,8 +120,10 @@ public class CustomerBatchContext {
         if (current == null || current.getCompany() == null || current.getCompany().getComId() == null) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
         }
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.StoreManager) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人或店长可以批量录入客户"));
+        if (current.getRole() != EmployeeRole.Boss
+                && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人、店长或财务可以批量录入客户"));
         }
     }
 

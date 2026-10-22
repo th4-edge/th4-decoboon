@@ -49,7 +49,7 @@ class CatalogCostMaintenanceTest {
     }
 
     @Test
-    void financeCanMaintainPricesButDoesNotGainDeleteOrImportPermission() {
+    void financeCanMaintainPricesAndHighRiskCatalogOperations() {
         DataScopeContext scope = mock(DataScopeContext.class);
         CatalogContext context = new CatalogContext(scope);
         Employee finance = employee(EmployeeRole.Finance);
@@ -63,7 +63,9 @@ class CatalogCostMaintenanceTest {
         assertThat(context.requirePriceMaintainer(storeManager)).isSameAs(storeManager);
         assertThatThrownBy(() -> context.requirePriceMaintainer(designer))
                 .hasMessageContaining("无权维护报价项目库价格");
-        assertThatThrownBy(() -> context.requireMaintainer(finance))
+        assertThat(context.requireMaintainer(finance)).isSameAs(finance);
+        assertThat(context.requireMaintainer(storeManager)).isSameAs(storeManager);
+        assertThatThrownBy(() -> context.requireMaintainer(designer))
                 .hasMessageContaining("无权维护报价项目库");
     }
 

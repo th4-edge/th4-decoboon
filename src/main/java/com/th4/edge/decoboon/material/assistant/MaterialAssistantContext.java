@@ -310,7 +310,7 @@ public class MaterialAssistantContext {
         List<MaterialAssistantCitation> citations = List.of(
                 knowledge.ruleCitation("R-SETTLEMENT-EXCLUSIVE"),
                 knowledge.ruleCitation("R-P3-ACTUAL-COST"));
-        String answer = "逐单结算与月结并存，规则是互斥、逐单优先、月结兜底：同一采购明细只能被一种方式计入；月结只结算尚未逐单结算的差额。结算撤销走反向记录，释放明细后重新计算应付和实际成本，成本不完整时利润回到 null。";
+        String answer = "逐单结算与月结并存，规则是互斥、逐单优先、月结兜底：同一采购明细只能被一种方式计入；月结只结算尚未逐单结算的差额。结算撤销走反向记录，释放明细后重新计算应付和实际成本，成本不完整时利润暂不显示。";
         if (live.health() != null) {
             answer += " 当前项目结算状态：" + live.health().getSettlementStatus() + "。";
         }
@@ -362,7 +362,7 @@ public class MaterialAssistantContext {
         List<MaterialAssistantCitation> citations = List.of(
                 knowledge.sourceCitation("BR-027", "权限与数据范围", "助手不扩大登录员工的数据范围，跨企业/跨项目请求拒绝。"),
                 knowledge.exceptionCitation("EX-CROSS-TENANT"));
-        String answer = "材料助手只读，并继承当前登录员工的数据范围，不信任前端传入的 companyId/empId/projectId。跨企业、跨项目和越权数据请求应返回 404/403；材料成本、供应商价格和利润仅 Boss、店长、财务可见。";
+        String answer = "材料助手只提供查询，并按当前登录员工的数据范围返回结果。跨企业、跨项目和越权请求会被拒绝；材料成本、供应商价格和利润仅 Boss、店长、财务可见。";
         return answer(question, "PERMISSION_DENIED", answer, 1.0, citations,
                 List.of("仅查看当前员工有权访问的项目", "成本问题请由财务/负责人查看"), new LiveContext(null, null, null, null, List.of()));
     }
@@ -384,14 +384,14 @@ public class MaterialAssistantContext {
         });
         if (citations.isEmpty()) {
             return answer(question, "NO_EVIDENCE",
-                    "已发布字段字典没有匹配到该字段。可以问“status、priceState、measureAt、lossRate 等字段是什么意思”。",
-                    0.45, List.of(knowledge.sourceCitation("BR-044", "字段与模板边界", "字段含义必须先命中已发布字段字典。")),
+                    "没有找到这个字段的说明。可以询问“状态、采购价状态、量房时间、损耗率等是什么意思”。",
+                    0.45, List.of(knowledge.sourceCitation("BR-044", "字段与模板边界", "字段含义必须能在业务说明中查到。")),
                     List.of("换一个已登记字段名"), new LiveContext(null, null, null, null, List.of()));
         }
         return answer(question, "EXPLANATION",
-                "字段字典：" + String.join("；", matches.stream().limit(3).toList()) + "。",
+                "字段说明：" + String.join("；", matches.stream().limit(3).toList()) + "。",
                 0.9, citations.stream().limit(3).toList(),
-                List.of("字段含义以蓝图字段字典为准"), new LiveContext(null, null, null, null, List.of()));
+                List.of("字段含义以业务说明为准"), new LiveContext(null, null, null, null, List.of()));
     }
 
     private MaterialAssistantAnswer refusal(String question) {

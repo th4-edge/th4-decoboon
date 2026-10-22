@@ -199,6 +199,44 @@ class FinanceStoreScopeHttpAcceptanceTest {
         assertThat(response.toString().length()).as("单条报价项目保存响应不得膨胀").isLessThan(10_000);
         assertThat(response.path("data").path("manualPrice").decimalValue()).isEqualByComparingTo("25.50");
         assertThat(response.path("data").path("costPrice").decimalValue()).isEqualByComparingTo("15.00");
+
+        JsonNode importBatches = api("catalog/import-batch/page", "{\"current\":1,\"size\":3}", token);
+        assertThat(importBatches.path("success").asBoolean()).as(importBatches.toString()).isTrue();
+
+        JsonNode deleted = api("catalog/item/delete", "{\"itemId\":%s}".formatted(itemId), token);
+        assertThat(deleted.path("success").asBoolean()).as(deleted.toString()).isTrue();
+    }
+
+    @Test
+    void financeCanUseCustomerMenuAndCustomerActionsOverHttp() throws Exception {
+        Employee storeFinance = employeeRepository.findByTelNo(scope.storeFinancePhone());
+        Employee storeManager = employeeRepository.findByTelNo(scope.storeManagerPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+
+        JsonNode storePage = api("customer/customer/page", "{\"current\":1,\"size\":50}", storeFinanceToken);
+        assertThat(storePage.path("success").asBoolean()).as(storePage.toString()).isTrue();
+        assertThat(storePage.path("data").path("totalElements").asLong()).isEqualTo(1);
+        long customerId = storePage.path("data").path("content").get(0).path("custId").asLong();
+
+        JsonNode propertyPage = api("property/property/page", "{\"customerId\":%s}".formatted(customerId), storeFinanceToken);
+        assertThat(propertyPage.path("success").asBoolean()).as(propertyPage.toString()).isTrue();
+        long propertyId = propertyPage.path("data").path("content").get(0).path("propertyId").asLong();
+
+        JsonNode transferred = api("customer/customer/update", """
+                {"customerId":%s,"ownerId":%s,"reason":"财务客户权限验收"}
+                """.formatted(customerId, storeManager.getEmpId()), storeFinanceToken);
+        assertThat(transferred.path("success").asBoolean()).as(transferred.toString()).isTrue();
+        assertThat(transferred.path("data").path("owner").path("empId").asLong()).isEqualTo(storeManager.getEmpId());
+
+        JsonNode handedOff = api("customer/customer/handoff", """
+                {"customerId":%s,"designerId":%s,"propertyId":%s}
+                """.formatted(customerId, storeManager.getEmpId(), propertyId), storeFinanceToken);
+        assertThat(handedOff.path("success").asBoolean()).as(handedOff.toString()).isTrue();
+
+        String headFinanceToken = login(scope.headFinancePhone());
+        JsonNode headPage = api("customer/customer/page", "{\"current\":1,\"size\":50}", headFinanceToken);
+        assertThat(headPage.path("success").asBoolean()).as(headPage.toString()).isTrue();
+        assertThat(headPage.path("data").path("totalElements").asLong()).isEqualTo(2);
     }
 
     @Test

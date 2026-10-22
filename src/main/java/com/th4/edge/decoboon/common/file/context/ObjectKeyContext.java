@@ -58,6 +58,6 @@ public class ObjectKeyContext {
     }
 
     private DefinedException invalid() {
-        return new DefinedException(new DefaultErrorCode("400", "文件存储归属参数无效"));
+        return new DefinedException(new DefaultErrorCode("400", "文件归属信息不完整，请重新上传"));
     }
 }

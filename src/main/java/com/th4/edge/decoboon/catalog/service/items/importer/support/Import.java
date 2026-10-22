@@ -91,7 +91,7 @@ public class Import implements com.th4.edge.decoboon.catalog.service.items.impor
         if (items != null && !items.isEmpty()) {
             return items;
         }
-        throw new RuntimeException("未提供导入数据：items 列表或 filename 参数至少一项必填");
+        throw new RuntimeException("请提供要导入的数据或选择导入文件");
     }
 
     private CatalogItem buildItem(CatalogItem source, Employee current, int sort) {

@@ -57,11 +57,11 @@ class DesignTemplateFormulaContextTest {
         DesignTemplateRoom room = masterBedroom();
         assertThat(context.variablesUsed("=L*W")).containsExactlyInAnyOrder("L", "W");
         assertThatThrownBy(() -> evaluate(room, "=L*W"))
-                .hasMessageContaining("量房快照");
+                .hasMessageContaining("量房记录");
         assertThatThrownBy(() -> context.validate("=L*W"))
-                .hasMessageContaining("量房快照");
+                .hasMessageContaining("量房记录");
         assertThatThrownBy(() -> context.requireDimension(Unit.Area, "=L*W"))
-                .hasMessageContaining("量房快照");
+                .hasMessageContaining("量房记录");
     }
 
     @Test

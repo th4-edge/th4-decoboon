@@ -1,0 +1,435 @@
+﻿platform,severity,category,audience,file,line,kind,text,recommendation
+App,P0,研发治理语言,企业员工,src/domains/material/meta.ts,63,script-literal,作业单状态待业务确认。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,技术错误直出,企业员工,src/pages/invite/accept.vue,47,script-literal,邀请参数缺失，请重新打开邀请人发送的完整链接。,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,研发治理语言,企业员工,src/pages/project/list.vue,288,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,技术错误直出,企业员工,src/subpackages/carryover/pages/plan.vue,53,script-literal,缺少承接项目参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,技术错误直出,企业员工,src/subpackages/company/pages/handover.vue,34,script-literal,员工参数缺失,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,研发治理语言,企业员工,src/subpackages/content/pages/employee-content-create.vue,3,template-text,P0 使用多视频片段服务端渲染，统一竖版、拼接并叠加文案字幕。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,研发治理语言,企业员工,src/subpackages/content/pages/employee-content-create.vue,39,script-literal,P0 直通成片至少需要一条视频素材,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,技术错误直出,企业员工,src/subpackages/customer/pages/detail.vue,303,script-literal,缺少客户参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,研发治理语言,企业员工,src/subpackages/customer/pages/measure-record.vue,37,template-text,量房测的是房屋原始结构。原始区域面积/周长按 CAD 计算结果录入；保存后量房完成即冻结， 需要修正必须重新量房（复尺）。新建方案会继承它作结构起点，之后可在方案内改造，二者不联动（DEC-069）。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,技术错误直出,企业员工,src/subpackages/customer/pages/measure.vue,46,script-literal,缺少客户参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,技术错误直出,企业员工,src/subpackages/customer/pages/portrait-edit.vue,83,script-literal,缺少客户参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,技术错误直出,企业员工,src/subpackages/customer/pages/property-edit.vue,55,script-literal,缺少客户参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,技术错误直出,企业员工,src/subpackages/customer/pages/tag-manage.vue,57,script-literal,缺少客户参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,技术错误直出,企业员工,src/subpackages/customer/pages/wechat-record.vue,21,script-literal,缺少客户参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,技术错误直出,企业员工,src/subpackages/design/pages/ai-generation.vue,72,script-literal,缺少设计方案参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,未完成能力,企业员工,src/subpackages/design/pages/ai-generation.vue,75,template-text,正式 HTML/PDF 能力尚未开放，当前页面不提供正式交付按钮。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,系统实现解释,企业员工,src/subpackages/quote/pages/edit.vue,51,template-interp,"property ? [property.address, `${property.area || 0}㎡`, property.layout].filter(Boolean).join(' · ') : '房屋按客户归属显式选择，不使用第一条兜底'",删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,系统实现解释,企业员工,src/subpackages/quote/pages/edit.vue,352,script-literal,房屋按客户归属显式选择，不使用第一条兜底,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,技术错误直出,企业员工,src/subpackages/quote/pages/quote-confirm.vue,69,script-literal,缺少报价参数,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+App,P0,页面职责/内部口径,企业员工,src/subpackages/statistic/pages/business-dynamics.vue,47,bind:sub,经营动态只展示真实业务事实，不会用演示数据填充。当前企业还没有可形成动态的客户、报价、合同、项目或资金记录。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,页面职责/内部口径,企业员工,src/subpackages/statistic/pages/business-dynamics.vue,137,script-literal,hasAnyEvents ? '切换其他分类查看，或等待新的业务事件产生' : '经营动态只展示真实业务事实，不会用演示数据填充。当前企业还没有可形成动态的客户、报价、合同、项目或资金记录。',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,研发治理语言,企业员工,src/subpackages/statistic/pages/performance.vue,313,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P0,技术错误直出,企业员工,src/subpackages/supply/pages/receipt-edit.vue,28,script-literal,采购单参数缺失,禁止透传参数/路由错误；改为用户可执行的信息不完整提示并提供返回或重试。
+Web,P0,研发治理语言,企业员工,src/components/CustomerPropertyContext.vue,26,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/business-state/NextActionPanel.vue,5,template-interp,action?.label || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/business-state/NextActionPanel.vue,43,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/finance/FinanceMetricGlossary.vue,38,template-interp,metric.definition || '口径说明待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/finance/FinanceMetricGlossary.vue,54,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/finance/FinanceMetricGlossary.vue,95,script-literal,口径说明待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/picker/CustomerPicker.vue,39,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,页面职责/内部口径,企业员工,src/components/property/PropertyFormDrawer.vue,4,template-text,· 房屋是量房、设计、报价、合同与项目的对象锚点，地址为必填。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/workbench/WorkbenchEntryCard.vue,7,bind:text,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,页面职责/内部口径,企业员工,src/components/workbench/WorkbenchEntryCard.vue,16,template-text,对象锚点,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/workbench/WorkbenchEntryCard.vue,21,script-literal,entry.decisionStatus === 'approved' ? entry.priority : '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/workbench/WorkbenchEntryCard.vue,41,template-text,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/components/workbench/WorkbenchEntryCard.vue,52,script-literal,该工作台的动作策略或对象入口尚未通过业务裁决，暂不可进入执行。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/business-state/api.ts,82,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/business-state/registry.ts,63,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/crm/customerMeta.ts,20,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/crm/journey.ts,23,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/document/meta.ts,23,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/finance/meta.ts,155,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/property/statusMeta.ts,31,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/trade/formula.ts,40,script-literal,暂不支持函数 ${fn}（P0 仅支持 ${ALLOWED_FUNCTIONS.join(' / ')}）,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/domains/workbench/api.ts,114,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/account/MyPayslipsView.vue,33,bind:text,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/account/MyPayslipsView.vue,82,script-literal,row.status ? (PAYSLIP_STATUS_META[row.status]?.label || '待业务确认') : '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,150,attr:title,字段字典,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,197,template-text,未决业务事项,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,204,attr:title,当前没有登记中的蓝图层未决项,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,204,attr:description,不等于业务已全部验收；以对账矩阵为准。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,317,script-literal,字段字典,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,371,script-literal,当前没有登记中的蓝图层未决项,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,371,script-literal,不等于业务已全部验收；以对账矩阵为准。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerContractHandoffView.vue,238,template-interp,mainAction?.label || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerContractHandoffView.vue,353,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerContractHandoffView.vue,354,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerContractHandoffView.vue,542,script-literal,确认签约必须填写计划开工日期（DEC-048）,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerContractHandoffView.vue,869,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerCustomersView.vue,49,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,66,template-text,量房测的是房屋原始结构，量房完成后冻结、不可再改；设计方案只是继承它作结构起点， 之后可在方案内改造（改尺寸/新增/拆除），二者不联动（DEC-066）,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerFollowUpTasksView.vue,53,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMaterialSelectionBoardView.vue,96,template-interp,project.nextAction || '待业务确认下一步',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMaterialSelectionBoardView.vue,130,template-interp,selectedProject.nextAction || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMaterialSelectionBoardView.vue,261,script-literal,待业务确认下一步,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMaterialSelectionBoardView.vue,295,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,114,bind:note,等待业务确认当前任务原因,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,237,template-interp,selectedTask.riskReason || '等待业务确认当前任务原因',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,238,template-interp,selectedTask.nextActionLabel || selectedTask.mainActionLabel || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,250,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,254,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,790,script-literal,selectedTask.riskReason || '等待业务确认当前任务原因',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,913,script-literal,等待业务确认当前任务原因,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerMeasureTasksView.vue,914,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerQuoteListView.vue,234,template-interp,mainAction?.label || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerQuoteListView.vue,270,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerQuoteListView.vue,272,script-literal,报价动作策略（保存 / 提交）待业务裁决（T06），当前仅展示；编辑与提交请在报价工作区进行。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerQuoteListView.vue,274,script-literal,修订后重报动作待业务裁决（T06），当前仅展示；修订请在报价工作区进行。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerQuoteListView.vue,282,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/DesignerQuoteListView.vue,644,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/components/DesignerProjectGuide.vue,6,template-interp,nextAction?.label || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/components/DesignerProjectGuide.vue,37,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/components/DesignerProjectGuide.vue,56,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/components/DesignerProjectHero.vue,64,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/designer/components/DesignerProjectHero.vue,109,script-literal,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/finance/FinanceStorePayrollView.vue,41,bind:text,待业务确认,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/finance/FinanceStorePayrollView.vue,92,script-literal,PAYROLL_ITEM_STATUS_META[row.status]?.label || '待业务确认',删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/pm/PmWorkbenchView.vue,8,template-text,从本人负责或参与的项目进入当前工作面；阶段与任务动作按服务端动作策略开放，未登记动作只显示待业务确认。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+Web,P0,研发治理语言,企业员工,src/views/pm/PmWorkbenchView.vue,65,template-text,阶段可「开启阶段」，任务可「开始 / 提交验收 / 完成 / 重新打开」，均按服务端动作策略与前置条件执行；阶段验收按 BR-008 在工作区提交。,删除研发编号、裁决状态或内部实现；改为业务状态、影响和下一步。
+App,P1,系统实现解释,企业员工,src/components/MaterialAssistant/MaterialAssistant.vue,62,template-text,回答只基于当前页面材料和已登记规则；没有依据、越权或超出范围时会明确说明，不会用兜底话术伪装成功。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/components/MaterialAssistant/MaterialAssistant.vue,81,template-text,助手不会审批、付款、删除或修改权限；金额/成本以服务端口径为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,业主,src/components/owner/OwnerRegionList.vue,14,template-text,快照长,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,业主,src/components/owner/OwnerRegionList.vue,18,template-text,快照宽,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/content/helpCenter.ts,147,script-literal,可能是页面数据未刷新、历史数据缺失，或状态投影暂时不一致。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,企业员工,src/domains/file/api.ts,81,script-literal,文件上传未返回存储路径,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/pages/about/index.vue,24,script-literal,方案分项、价格快照与版本,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,企业员工,src/pages/auth/enterprise.vue,57,script-literal,企业创建后未返回员工身份,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/components/DesignEditorSheets/DesignEditorSheets.vue,12,template-text,区域尺寸（长/宽为量房快照）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,企业员工,src/subpackages/design/pages/ai-generation.vue,209,script-literal,AI 模型未返回有效图片,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/review.vue,16,attr:sub,调整状态或搜索条件后重试；没有数据不等于接口失败,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/review.vue,106,script-literal,调整状态或搜索条件后重试；没有数据不等于接口失败,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,75,template-text,实测面积与周长按 CAD 录入；长宽为量房快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,93,template-text,快照长,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,94,template-text,快照宽,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,104,attr:sub,点击“新增区域”录入量房快照与实测面积/周长,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,596,script-literal,确认删除“${item.name}”？已生成报价快照的分项不能删除。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,722,script-literal,>实测面积与周长按 CAD 录入；长宽为量房快照</text></view><button class=,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,740,script-literal,>快照长</text><text class=,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,741,script-literal,>快照宽</text><text class=,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/design/pages/scheme.vue,751,script-literal,点击“新增区域”录入量房快照与实测面积/周长,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/payroll/pages/attendance-edit.vue,22,template-interp,summaryId ? '该值已保存为当月考勤快照' : '按所选工资月份匹配生效薪酬方案；保存后写入当月考勤快照',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/payroll/pages/attendance-edit.vue,126,script-literal,该值已保存为当月考勤快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/payroll/pages/attendance-edit.vue,126,script-literal,按所选工资月份匹配生效薪酬方案；保存后写入当月考勤快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/plan/pages/construction-edit.vue,3,attr:subtitle,阶段和工期内置于项目，历史合同快照不受影响,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/plan/pages/construction-edit.vue,134,script-literal,阶段和工期内置于项目，历史合同快照不受影响,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/plan/pages/payment-list.vue,3,attr:subtitle,企业自定义合同收款节点，历史合同快照不受影响,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/plan/pages/payment-list.vue,123,script-literal,企业自定义合同收款节点，历史合同快照不受影响,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-create.vue,115,template-text,服务端试算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-create.vue,118,template-text,金额、当前有效剩余与目标快照由服务端计算；试算未通过不能提交。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-create.vue,121,template-text,明细已就绪，正在获取服务端试算…,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-create.vue,143,template-text,从合同原行或已生效增减项中选择；剩余量、待审批占用和可变更量以服务端为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-create.vue,316,script-literal,名称、规格、单位与单价由服务端按项目库快照冻结,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-create.vue,486,script-literal,请先完成服务端试算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-workbench.vue,69,template-text,合同金额与经营投影,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-workbench.vue,70,template-text,全部在途确认后的读时投影,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/change-workbench.vue,103,template-text,预计毛利按「合同投影 −（预计成本 + 在途及已确认变更成本）」读时计算，不等于最终财务利润；成本不完整时不显示数字。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/contract.vue,135,template-text,签约时冻结的合同行快照，共,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/contract.vue,141,attr:sub,合同生成时会冻结报价行快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/contract.vue,357,script-literal,合同生成时会冻结报价行快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/project/pages/create.vue,94,template-text,合同生效后，系统自动冻结报价与合同行快照，并生成施工阶段、任务、材料计划和应收计划。后续金额调整必须通过合同变更单完成。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,业主,src/subpackages/project/pages/owner-quote.vue,73,bind:description,报价确认在线下完成；当前同步结果尚未返回登记人和确认时间。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,业主,src/subpackages/project/pages/owner-quote.vue,123,script-literal,fact('acceptedBy') || fact('acceptedAt') ? '报价确认在线下完成，本页展示系统已经同步的登记结果。' : '报价确认在线下完成；当前同步结果尚未返回登记人和确认时间。',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,业主,src/subpackages/project/pages/owner-selection.vue,42,bind:description,选材确认在线下完成；当前同步结果尚未返回登记设计师和登记时间。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,页面职责/内部口径,业主,src/subpackages/project/pages/owner-selection.vue,106,script-literal,selectionFact('designer') || selectionFact('registeredAt') ? '品牌、规格、花色和空间由客户线下确认，系统展示设计师登记后的选材版本。' : '选材确认在线下完成；当前同步结果尚未返回登记设计师和登记时间。',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/quote/pages/package-manage.vue,10,template-interp,canEdit ? '套餐是企业标准报价模板，客户报价生成后保存独立快照，修改模板不影响历史报价。' : '只读查看企业套餐模板；套餐调整由企业负责人或店长维护。',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/quote/pages/package-manage.vue,83,script-literal,套餐是企业标准报价模板，客户报价生成后保存独立快照，修改模板不影响历史报价。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P1,系统实现解释,企业员工,src/subpackages/quote/pages/package-picker.vue,10,template-text,最终金额由服务端按套餐规则汇算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteDecisionPanel.vue,11,template-text,服务端已保存,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteDecisionPanel.vue,45,template-text,服务端重算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteFormulaBar.vue,34,template-text,公式已改 · 待服务端计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteFormulaBar.vue,35,template-text,当前快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteFormulaBar.vue,39,template-text,服务端工程量,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteHeader.vue,18,template-text,服务端正式总额,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/QuoteHeader.vue,46,script-literal,服务端已同步,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/customer/CustomerCreateSheet.vue,8,template-text,姓名与手机号必填；企业、门店与负责人由服务端按登录员工裁决，前端不提交。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/customer/CustomerEditSheet.vue,8,template-text,· 保存后重新读取服务端事实,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceAttendanceDrawer.vue,31,template-text,考勤确认后进入工资计算；员工选择必须使用员工专用选择器，缺勤状态不得直接显示后端枚举。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCollectionDrawer.vue,45,template-text,待服务端核销,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCollectionDrawer.vue,52,template-text,保存后由服务端核销应收并写入资金台账；应收状态和剩余待收金额以服务端回读为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCommissionDrawer.vue,26,attr:placeholder,留空由服务端计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCommissionDrawer.vue,32,script-literal,由服务端按签约额和比例计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCommissionDrawer.vue,33,script-literal,待服务端计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCommissionDrawer.vue,38,template-text,待服务端计提,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCommissionDrawer.vue,46,template-text,提成金额留空时由服务端按签约额和比例计算；最终计提结果以服务端回读为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCommissionDrawer.vue,107,script-literal,留空由服务端计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceCompensationDrawer.vue,49,template-text,月固定工资和应出勤天数由服务端校验。方案形成考勤、提成或工资事实后不可直接修改，只能新增后续方案。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceLedgerDrawer.vue,72,template-text,手工记账只用于无来源单据的事实；更正会由服务端冲正原流水并重记，保留完整留痕。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceMetricGlossary.vue,2,attr:description,口径说明来自服务端指标字典；来源、公式、时间口径、包含与排除、缺失值规则均可展开查看。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,页面职责/内部口径,企业员工,src/components/finance/FinanceMetricGlossary.vue,24,attr:description,指标字典未返回财务类口径，请稍后刷新；不要用经验口径替代。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceMetricGlossary.vue,59,script-literal,口径说明来自服务端指标字典；来源、公式、时间口径、包含与排除、缺失值规则均可展开查看。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,页面职责/内部口径,企业员工,src/components/finance/FinanceMetricGlossary.vue,81,script-literal,指标字典未返回财务类口径，请稍后刷新；不要用经验口径替代。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinancePayableDrawer.vue,65,template-text,保存后形成统一付款义务；后续付款时由服务端核销，不在此处直接改变资金账户。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinancePaymentDrawer.vue,51,template-text,待服务端核销,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinancePaymentDrawer.vue,59,template-text,保存后由服务端核销应付并写入资金台账；项目成本不在此处重新计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceReceivableDrawer.vue,10,template-text,直接编辑应收节点单据。保存后由服务端校验合同归属、金额、状态和到期日。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceReceivableDrawer.vue,72,template-interp,selectedProjectName || '选择项目后显示服务端资金数据',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceReceivableDrawer.vue,87,template-text,金额与状态由服务端最终校验。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/finance/FinanceReceivableDrawer.vue,232,script-literal,选择项目后显示服务端资金数据,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/material/MaterialAssistant.vue,72,template-text,回答只基于当前页面材料和已登记规则；没有依据、越权或超出范围时会明确说明，不会用兜底话术伪装成功。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/material/MaterialAssistant.vue,109,template-text,助手不会审批、付款、删除或修改权限；金额/成本以服务端口径为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/picker/PayablePicker.vue,49,template-text,逾期和临期应付优先；实际付款金额与核销结果由服务端最终判定。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/components/picker/ReceivablePicker.vue,55,template-text,逾期和临期节点优先展示；核销金额与状态由服务端最终判定。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,246,script-literal,开间（量房快照）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,253,script-literal,现场量房快照（非工程量依据）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,256,script-literal,量房快照不参与工程量计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,263,script-literal,进深（量房快照）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,266,script-literal,量房现场粗测的进深。与开间同属快照，不是工程量依据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,270,script-literal,现场量房快照（非工程量依据）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,273,script-literal,量房快照不参与工程量计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/domains/designtemplate/formula-guide.ts,286,script-literal,量房快照（不能进公式）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,页面职责/内部口径,企业员工,src/domains/file/api.ts,52,script-literal,文件上传未返回存储路径,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,101,script-literal,台账、成本、项目核算相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,166,script-literal,台账、凭证、项目回款相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,270,script-literal,凭证归档、项目核算相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,283,script-literal,叶子页：本店薪酬为门店经营结果投影，无下游工作台；明细疑问回到员工工资单与考勤事实核对,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,337,script-literal,台账与项目核算投影刷新；凭证归档供对账留档,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,509,script-literal,凭证归档、项目核算相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,522,script-literal,叶子页：本店薪酬为门店经营结果投影，无下游工作台；明细疑问回到员工工资单与考勤事实核对,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,576,script-literal,台账与项目核算投影刷新；凭证归档供对账留档,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,1080,script-literal,台账、成本、项目核算相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,1093,script-literal,台账、凭证、项目回款相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,1119,script-literal,凭证归档、项目核算相关投影刷新,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,1145,script-literal,保存后全企业门店引用最新主数据；已签约合同与既有报价继续使用历史快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,1158,script-literal,叶子页：本店薪酬为门店经营结果投影，无下游工作台；明细疑问回到员工工资单与考勤事实核对,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/roles/workbenchHome.ts,1212,script-literal,台账与项目核算投影刷新；凭证归档供对账留档,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/account/MyPayslipsView.vue,7,template-text,的工资条：未发放的工资单对员工不可见。金额由服务端按工资单确认后的实发口径给出，页面只做展示。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,142,attr:description,对象说明来自已发布蓝图，不从前端模型推导。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,309,script-literal,对象说明来自已发布蓝图，不从前端模型推导。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignReviewView.vue,37,attr:description,调整设计状态、设计师或关键词后重试；没有数据不等于接口失败。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignReviewView.vue,153,script-literal,调整设计状态、设计师或关键词后重试；没有数据不等于接口失败。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCatalogView.vue,7,template-text,维护报价分项的材料价、人工价、固定总价和标准成本。修改影响全企业所有门店，已签约合同与既有报价继续使用历史快照。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,内部产品术语,企业员工,src/views/designer/DesignerContractChangesView.vue,8,template-text,一张单承载多条明细（新增分项 / 减项 / 替换）；企业审批通过即生效，并即时同频业主端只读可见。 可变更量 = 当前有效剩余 − 待审批占用，均由服务端投影与复核。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,34,template-text,服务端试算通过后提交审批,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,142,attr:description,历史数据可能只保留汇总金额，请以服务端和合同档案为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,220,template-text,减项不得超过当前有效剩余，待审批占用会在服务端复核。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,内部产品术语,企业员工,src/views/designer/DesignerContractChangesView.vue,243,template-text,单据即表单：明细以表格逐条加入，金额与当前有效剩余由服务端计算；提交后即时同频业主端只读可见。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,280,template-text,逐条加入新增分项 / 减项 / 替换；同一张单承载全部明细，冻结目标快照。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,344,template-text,服务端提交时复核当前有效剩余与待审批占用,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,372,template-interp,row.target ? targetMetaText(row) : '只可选当前企业启用项目，提交时冻结目标快照',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,438,template-text,服务端试算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,444,template-text,（服务端试算口径）；提交后进入待审批， BOSS / 财务审批通过即生效，并联动合同额、应收、任务、材料与成本。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,456,template-text,（服务端投影，提交时重新复核）。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,555,attr:note,目标分项来自当前企业启用的报价项目库；选择只确定目标与工程量，正式金额、成本和差额由服务端快照计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,667,script-literal,当前有效剩余以服务端为准,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,765,script-literal,目标快照已冻结,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,767,script-literal,目标快照已冻结,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,777,script-literal,服务端试算中，请稍候,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,779,script-literal,请先完成服务端试算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,1015,script-literal,历史数据可能只保留汇总金额，请以服务端和合同档案为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,1245,script-literal,只可选当前企业启用项目，提交时冻结目标快照,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,1311,script-literal,}} 服务端试算{{ previewLoading ?,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractChangesView.vue,1428,script-literal,目标分项来自当前企业启用的报价项目库；选择只确定目标与工程量，正式金额、成本和差额由服务端快照计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractHandoffView.vue,132,template-text,金额、签署与生效时间来自服务端合同投影；设计师只读，不修改签约结果。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractHandoffView.vue,145,template-text,合同来自已接受报价；金额与版本以服务端为准,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractHandoffView.vue,285,attr:description,右侧会显示当前状态、唯一主行动、接棒人、完成回读与下一项。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerContractHandoffView.vue,916,script-literal,右侧会显示当前状态、唯一主行动、接棒人、完成回读与下一项。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomer360View.vue,349,script-literal,确认删除房屋「${label}」？ 只有完全没有量房/诉求/方案/报价/合同/项目的房屋可以删除；有附带数据时服务端会拒绝并说明原因。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomer360View.vue,440,template-text,最近服务端记录（,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomersView.vue,50,attr:description,已量房客户会从队列移出；可刷新服务端数据，或回到我的客户选择其他客户。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomersView.vue,77,attr:description,待设计队列只接收已完成量房、尚未签约或终结的房屋；可按客户或房屋筛选，或刷新服务端数据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomersView.vue,242,attr:description,客户列表来自服务端，选中后才能查看房屋、量房和设计方案。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomersView.vue,1026,script-literal,已量房客户会从队列移出；可刷新服务端数据，或回到我的客户选择其他客户。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomersView.vue,1053,script-literal,待设计队列只接收已完成量房、尚未签约或终结的房屋；可按客户或房屋筛选，或刷新服务端数据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerCustomersView.vue,1218,script-literal,客户列表来自服务端，选中后才能查看房屋、量房和设计方案。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,44,template-text,金额由设计项汇总，最终以服务端报价为准,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,272,attr:label,量房快照 长（米）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,273,attr:label,量房快照 宽（米）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,274,attr:label,量房快照 层高（米）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,313,script-literal,方案已具备 ${scheme.value?.itemCount ?? 0} 个设计分项，下一步将按当前分项生成报价草稿快照，金额由服务端计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,365,script-literal,将按「${current.name}」的 ${current.itemCount} 个设计分项生成报价草稿，金额和成本由服务端计算。是否继续？,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,467,script-literal,确定删除空间「${space.name}」？空间下如果还有设计项，服务端可能拒绝删除。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,783,script-literal,量房快照 长（米）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,784,script-literal,量房快照 宽（米）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerDesignWorkspaceView.vue,785,script-literal,量房快照 层高（米）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerFollowUpTasksView.vue,604,script-literal,服务端拒绝了这次预约：${message} 先记录一次跟进、客户阶段进入「跟进中」后即可预约量房。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMaterialSelectionView.vue,32,attr:description,切换筛选条件或刷新服务端数据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMaterialSelectionView.vue,219,script-literal,切换筛选条件或刷新服务端数据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,137,template-text,本页主行动的依据；数值来自服务端量房任务投影,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,302,attr:description,右侧会显示服务端风险原因、唯一主行动、完成回读和下一接棒。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,339,attr:title,如果客户存在未结束合同、状态不允许或数据范围越权，服务端会拒绝休眠并返回原因。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,364,template-text,现场事实先原样记录，保存后会回读房屋、客户派生标签和设计可用性。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,513,script-literal,${task.blockReason || '服务端未放行这个动作。'}。可先补全客户与房屋信息，或联系客户负责人处理后再回到本任务。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,978,script-literal,右侧会显示服务端风险原因、唯一主行动、完成回读和下一接棒。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMeasureTasksView.vue,1015,script-literal,如果客户存在未结束合同、状态不允许或数据范围越权，服务端会拒绝休眠并返回原因。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMyCustomersView.vue,6,template-text,只显示本人负责或指派给我设计的客户；点击客户卡片进入客户 360。状态与主行动由服务端事实推导，不展示成本与利润。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerMyCustomersView.vue,32,template-text,按当前数据范围统计，来自服务端聚合,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerPerformanceView.vue,7,template-text,只展示服务端聚合的本人经营与交付结果，不拉客户、报价、项目全量明细，也不展开未授权的项目经营敏感字段。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerPerformanceView.vue,35,template-text,指标由服务端聚合，前端只做展示与格式化；无基期时明确显示“暂无基期”。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerPerformanceView.vue,113,template-text,量房 → 设计 → 报价 → 合同，数量与当前节点来自服务端聚合。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerProjectsView.vue,62,template-text,按服务端参与关系返回，不默认选中第一条,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteListView.vue,111,bind:note,V${selectedQuote.version} · 正式金额以服务端 revision 计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteListView.vue,144,template-text,金额、折扣与税额来自服务端报价投影；进入报价工作区可编辑草稿、查看版本与驳回反馈。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteListView.vue,157,template-text,折扣、税额与版本调整在报价工作区完成，结果由服务端重算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteListView.vue,280,attr:description,右侧会显示当前状态、唯一主行动、接棒人、完成回读与下一项。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteListView.vue,521,script-literal,`V${selectedQuote.version} · 正式金额以服务端 revision 计算`,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteListView.vue,690,script-literal,右侧会显示当前状态、唯一主行动、接棒人、完成回读与下一项。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,201,template-text,行；只写本地草稿，不直接改服务端正式金额。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,227,template-text,批量修改只作用于当前报价草稿；保存后由服务端统一重算金额。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,396,script-literal,确定删除「${item.name}」？删除后由服务端重新计算报价。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,403,script-literal,报价行已删除，金额已由服务端重算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,426,script-literal,确定删除选中的 ${keys.length} 行？${unsavedTip}删除后由服务端重新计算报价。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,452,script-literal,已删除 ${deleted} 行，金额已由服务端重算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,559,script-literal,Excel 已导入并由服务端重新计算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,633,script-literal,已修改 ${changed} 行，保存后由服务端重算,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerQuoteWorkspaceView.vue,908,script-literal,服务端未接受以下改动：${notApplied.join('；')},保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,86,script-literal,删除区域「${room.name}」？如果该区域已被分项公式引用，服务端会阻断删除并提示你先解引用。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,91,template-text,下表每一列都是一个公式变量。区域分项优先用 A（面积）和 P（周长）；量房快照的开间、进深只作记录，不能进公式。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,112,template-text,L / W 是量房快照，不能用于公式,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,118,template-text,量房快照 · 不参与公式,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,264,template-text,量房快照 · 开间 / 进深（不参与公式）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,296,attr:title,只有已发布版本可实例化；同一房屋 + 同一模版版本重复生成只会得到同一份设计方案（幂等）。生成后进入设计工作区补齐尺寸与公式结果。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerTemplateEditorView.vue,506,script-literal,只有已发布版本可实例化；同一房屋 + 同一模版版本重复生成只会得到同一份设计方案（幂等）。生成后进入设计工作区补齐尺寸与公式结果。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/DesignerWorkbenchView.vue,140,template-text,数据来自服务端聚合；成本、利润和未授权动作按当前设计师权限隐藏。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/CatalogMaintenanceDrawer.vue,24,attr:title,报价项目库是企业级主数据，本次修改影响全企业所有门店；已签约合同和既有报价继续使用历史快照。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/CatalogMaintenanceDrawer.vue,211,script-literal,报价项目库是企业级主数据，本次修改影响全企业所有门店；已签约合同和既有报价继续使用历史快照。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignItemSheet.vue,7,template-text,设计项只能从企业报价项目库选择，价格、规格、工艺和公式由项目库带入；编辑后自动保存草稿，正式金额由服务端汇算，工程量 0 表示赠送。新增分项默认插到当前选中行之后（同区域同类型），也可进入“排序”调整本组顺序。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignItemSheet.vue,13,template-text,设计项汇总 · 正式报价以服务端汇算为准,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignItemSheet.vue,817,script-literal,服务端读回 ${serverItems.length} 项，本地 ${rows.value.length} 项，未确认全部保存，草稿已保留,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignItemSheet.vue,837,script-literal,服务端读回的分项数量与本地不一致，顺序未确认保存,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignTemplateFormulaAssistant.vue,67,script-literal,前端预览；正式结果以服务端重算为准,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignTemplateFormulaAssistant.vue,85,template-text,模版区域可以先填一组「参考面积 / 参考周长」用来校验公式：填了会按参考值预览并标注「按参考值」，没填就显示「待补」。参考值只是打底，不进入工程量与金额；实例化到方案后录入该房屋的实测面积 / 周长才参与金额。量房快照的开间、进深只作记录，不能用来推算工程量。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignTemplateItemSheet.vue,383,script-literal,服务端读回 ${returned.length} 项，本地应有 ${expectedServerCount} 项，未确认全部保存，草稿已保留,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignTemplateItemSheet.vue,438,script-literal,服务端未回读该行，草稿已保留，请重试,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectGuide.vue,7,template-interp,nextAction?.hint || '服务端未返回当前项目下一步，暂不能由前端推断。',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectGuide.vue,24,template-text,进入当前项目的主材选材工作区，按合同范围逐项核对和现场代录；是否可编辑由选材工作区按服务端门禁裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectGuide.vue,57,script-literal,服务端未返回当前项目下一步，暂不能由前端推断。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectGuide.vue,130,template-text,项目当前推进点由服务端状态视图指定责任人；设计师不代替项目经理推进开工、任务节点或业主验收。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectHero.vue,37,attr:note,服务端尚未返回可确认的阶段关注事实,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectHero.vue,61,script-literal,阶段名称以项目主链服务端投影为准,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectHero.vue,110,script-literal,服务端尚未返回可确认的阶段关注事实,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectStageWork.vue,6,template-text,阶段只读取项目服务端事实；设计师查看 PM 推进结果，不在此代替 PM 开工、完工或验收。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectStageWork.vue,29,attr:description,阶段由合同生效或项目立项后的服务端主链生成；请刷新确认项目是否已进入施工。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectStageWork.vue,83,script-literal,阶段由合同生效或项目立项后的服务端主链生成；请刷新确认项目是否已进入施工。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectStageWork.vue,86,attr:description,任务为空可能是尚未编排，也可能是读取失败；当前状态仅表示服务端返回了空任务集合。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/DesignerProjectStageWork.vue,140,script-literal,任务为空可能是尚未编排，也可能是读取失败；当前状态仅表示服务端返回了空任务集合。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/ProjectMemberAssignSheet.vue,46,attr:placeholder,按服务端在职员工选择,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/ProjectMemberAssignSheet.vue,68,template-text,成员变更会由服务端写入一条「项目成员调整」对内动态并立即生效；项目经理不能修改合同基准开工/完工日期。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/ProjectMemberAssignSheet.vue,107,script-literal,项目成员已更新，服务端已写入项目成员调整动态,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/designer/components/ProjectMemberAssignSheet.vue,163,script-literal,按服务端在职员工选择,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceLedgerView.vue,34,template-interp,selectedError || '同组合并规则由服务端校验',保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceLedgerView.vue,239,script-literal,同组合并规则由服务端校验,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceMaterialSettlementView.vue,32,attr:description,已结算明细不会重复出现（互斥 + 月结兜底）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceMaterialSettlementView.vue,207,script-literal,已结算明细不会重复出现（互斥 + 月结兜底）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinancePayrollWorkbenchView.vue,7,template-text,。金额与计数全部取服务端报告；工资条在,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinancePayrollWorkbenchView.vue,27,template-text,工资与提成分别结算、分别发放；待发金额为服务端应付口径。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinancePayrollWorkbenchView.vue,65,attr:description,Web 侧把考勤、薪酬方案与员工发放收在「员工工资」页内统一承接；可进入的范围由服务端权限与数据范围裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinancePayrollWorkbenchView.vue,103,attr:title,当前角色只读：可查看薪酬报告与工资单，写动作（生成/确认/发放）按服务端权限执行,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinancePayrollWorkbenchView.vue,146,script-literal,Web 侧把考勤、薪酬方案与员工发放收在「员工工资」页内统一承接；可进入的范围由服务端权限与数据范围裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinancePayrollWorkbenchView.vue,184,script-literal,当前角色只读：可查看薪酬报告与工资单，写动作（生成/确认/发放）按服务端权限执行,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,60,attr:description,成本来自服务端统一项目成本上下文。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,68,attr:description,核销与结算状态由后端推进。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,175,attr:description,页面只提交动作，状态与金额由服务端裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,183,template-text,不满足应收应付结清、成本完整性或状态条件时，服务端会拒绝并返回恢复路径。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,247,script-literal,成本来自服务端统一项目成本上下文。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,255,script-literal,核销与结算状态由后端推进。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceProjectView.vue,362,script-literal,页面只提交动作，状态与金额由服务端裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceReceivablesView.vue,7,template-text,按首期款、进度款、尾款和质保金跟踪；逾期优先，登记收款后由服务端完成核销与台账写入。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceStorePayrollView.vue,7,template-text,仅显示本店员工的工资构成（应发、扣款、实发与工资项状态）。数据范围由服务端按门店裁决；工资单的确认动作仅企业负责人可执行，本页只读。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceVoucherTemplatesView.vue,72,attr:description,字段显隐和样式由服务端逐项校验。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceVoucherTemplatesView.vue,383,script-literal,字段显隐和样式由服务端逐项校验。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,7,template-text,（现金余额）。期初未承接时余额只作过程参考；正式状态、金额、核销、成本完整性与利润全部以服务端事实为准。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,84,template-text,客户侧与供应商/员工侧各看一条：应收→已收、应付→已付。缺口取服务端同名指标（待收 / 待付），,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,84,template-text,不在前端做减法,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,130,attr:description,服务端当前未返回逾期应收。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,163,attr:description,服务端当前未返回紧急或逾期应付。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,215,script-literal,服务端当前未返回逾期应收。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/finance/FinanceWorkbenchView.vue,248,script-literal,服务端当前未返回紧急或逾期应付。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,7,template-text,项目进入当前工作面；你可在本页开启阶段、撤销「本项不涉及」判定，任务动作按服务端策略开放。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,27,attr:description,项目为空来自服务端事实，不显示虚构项目或默认第一条。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,103,attr:description,该结果来自服务端，不写死固定施工阶段。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,131,attr:description,任务为空来自服务端事实，不用空数组伪造阶段完成。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,221,script-literal,撤销后该阶段回到「待开始」，可以重新开工；撤销记录由服务端留痕。是否撤销判定？,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,311,script-literal,项目为空来自服务端事实，不显示虚构项目或默认第一条。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,387,script-literal,该结果来自服务端，不写死固定施工阶段。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/pm/PmWorkbenchView.vue,415,script-literal,任务为空来自服务端事实，不用空数组伪造阶段完成。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/BossOrganizationView.vue,11,template-text,本月人均产出、订单与角色产能，以及设计师/业务员/项目经理排行；样本不足时按服务端标记提示。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/BossOverviewView.vue,11,template-text,本月经营漏斗、报价转化、渠道与区域结构；口径取自服务端月报，不前端重算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerCustomerView.vue,349,script-literal,确认登记「${customer.name}」本次到店？到店次数按服务端事实累计，前端不去重。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerCustomerView.vue,449,script-literal,确认恢复「${customer.name}」？恢复后的阶段由服务端按原状态事实裁决，前端不猜测。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerMeasureView.vue,76,attr:label,服务端建议,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerMeasureView.vue,212,script-literal,服务端建议,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,73,template-text,进入「跟进中」客户池；到期与逾期请按列表的「下次跟进」列核对（服务端暂不支持按到期筛选）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,100,attr:subtitle,今日 / 本周 / 本月（口径由服务端给出）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,131,attr:subtitle,我的名次来自服务端；榜单口径与范围由服务端裁剪,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,138,attr:description,同岗数据不足时服务端不返回榜单。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,173,template-text,数据只读，不参与状态机或金额裁决；后台统计任务按周期更新。客户数与金额取自服务端，前端不做二次计算。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,243,script-literal,今日 / 本周 / 本月（口径由服务端给出）,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,274,script-literal,我的名次来自服务端；榜单口径与范围由服务端裁剪,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/MarketerPerformanceView.vue,281,script-literal,同岗数据不足时服务端不返回榜单。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/RiskQueueView.vue,7,template-text,按当前数据范围汇总逾期、停工、材料超领与变更异常；处置按服务端状态机留痕，完成后回读队列。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreCarryoverView.vue,27,attr:description,只显示本店范围；服务端逐项校验待补齐事项、门店范围与幂等。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreCarryoverView.vue,106,script-literal,只显示本店范围；服务端逐项校验待补齐事项、门店范围与幂等。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,7,template-text,数据范围展示客户、报价、项目、任务、成员、月度目标与经营利润（参考）。经营利润来自独立的门店利润投影；成本不完整时利润为空，不以 0 代替。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,28,attr:description,本店可直接干预的事项，全部取服务端计数。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,42,template-text,金额为服务端汇总；经营利润按服务端口径，成本未完整时显示「成本未完整」。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,52,template-text,服务端口径,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,98,attr:description,服务端未返回本店设计师业绩数据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,113,attr:description,服务端未返回本店最近项目。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,117,script-literal,服务端按报价单金额汇总,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,123,attr:description,服务端未返回本店最近客户。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,160,script-literal,本店可直接干预的事项，全部取服务端计数。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,230,script-literal,服务端未返回本店设计师业绩数据。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,245,script-literal,服务端未返回本店最近项目。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/StoreOverviewView.vue,255,script-literal,服务端未返回本店最近客户。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/TeamOverviewView.vue,34,template-text,服务端口径,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/WorkbenchHomeView.vue,7,template-text,从当前角色对应的场景工作台进入业务对象。工作台只负责入口、当前对象上下文和完成后交接， 不替代服务端状态机、权限或金额裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/WorkbenchHomeView.vue,35,script-literal,先从经营风险、门店结果和关键交接进入。系统只呈现服务端已经给出的事实，不用空队列或假数字填充首页。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/WorkbenchHomeView.vue,41,script-literal,风险、客户推进、项目履约和资金异常按本店范围聚集；动作仍由服务端状态、权限和数据范围裁决。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/WorkbenchHomeView.vue,45,attr:description,入口来自本角色的静态场景清单（`src/roles/workbenchHome.ts`），队列数据按对应批次接入。未返回服务端事实前，不显示 0、不把空数组当作完成。部分数据读取失败时保留恢复路径。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/WorkbenchHomeView.vue,53,script-literal,从客户、量房、项目参与和客户反馈进入。没有服务端返回的事实前，不用 0 或假待办装饰首页。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+Web,P1,系统实现解释,企业员工,src/views/workbench/WorkbenchHomeView.vue,140,script-literal,入口来自本角色的静态场景清单（`src/roles/workbenchHome.ts`），队列数据按对应批次接入。未返回服务端事实前，不显示 0、不把空数组当作完成。部分数据读取失败时保留恢复路径。,保留业务结论，删除服务端、前端、投影、回读等实现描述。
+App,P2,内部产品术语,企业员工,src/pages/dynamic/index.vue,5,attr:title,工地同频动态,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/pages/dynamic/index.vue,102,script-literal,工地同频动态,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/pages/index/index.vue,73,script-literal,进度、任务、现场留证同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/pages/index/index.vue,639,script-literal,业主同频视图 · 仅可见我的工地,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/pages/mine/index.vue,4,bind:subtitle,业主同频账号,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/pages/mine/index.vue,192,script-literal,isCustomer(role) ? '业主同频账号' : '企业协同账号',替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,业主,src/pages/owner/enter.vue,11,template-interp,invite.propertyAddress || '项目进度同频',替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,业主,src/pages/owner/enter.vue,190,script-literal,项目进度同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/accept/edit.vue,8,template-text,验收通过后，阶段自动完结并进入下一阶段（同频闭环）,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/change-detail.vue,71,template-text,审批通过即生效，并即时同频业主端只读可见,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/detail.vue,50,template-text,同频成员,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/detail.vue,77,template-text,量房、设计、报价、合同、材料、施工、验收和款项全链路同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/detail.vue,354,template-text,同频成员（,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/detail.vue,369,template-text,同频说明,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/detail.vue,377,script-literal,>同频成员 {{ members.length }} 人</text><JzIcon name=,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/invite.vue,4,template-text,邀请业主同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/invite.vue,30,template-text,业主同频闭环,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/invite.vue,78,script-literal,【装得清】${project.value?.name || ''} 已开通进度同频，请用本机微信打开「装得清」小程序并验证手机号，即可查看装修进度、材料与验收。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/invite.vue,90,script-literal,${project.value?.name || '我的家'} · 装得清进度同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/members.vue,40,template-text,业主同频（,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/members.vue,46,template-text,· 仅同频可见,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/members.vue,49,template-text,尚未邀请业主，同频闭环需要业主加入,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/members.vue,53,template-text,邀请业主同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,页面职责/内部口径,业主,src/subpackages/project/pages/owner-change.vue,28,template-text,施工过程中如需增加或减少项目，由您与设计师线下确认后形成正式变更单；企业审批通过即生效，本页只读展示变更结果。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,业主,src/subpackages/project/pages/owner-change.vue,35,attr:subtitle,企业审批生效后，业主端只读同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,业主,src/subpackages/project/pages/owner-change.vue,56,script-literal,fact('pending') && Number(fact('pending')) > 0 ? `${fact('pending')} 项审批中，审批中不计入合同金额` : '审批通过后自动同频',替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,业主,src/subpackages/project/pages/owner-change.vue,79,script-literal,企业审批生效后，业主端只读同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/report/edit.vue,36,template-text,开启后客户同频可见,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+App,P2,内部产品术语,企业员工,src/subpackages/project/pages/stage/detail.vue,72,template-text,阶段开工、现场汇报和验收会同步到项目动态，便于项目经理与业主同频。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/components/QuoteDecisionPanel.vue,49,template-text,接棒与去向,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/components/business-state/CompletionHandoff.vue,7,template-text,接棒人,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/components/business-state/CompletionHandoff.vue,9,script-literal,已完成，下一步已接棒,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/components/finance/FinanceReceivableDrawer.vue,86,template-text,本页面只组织应收事实，不计算正式收入。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/components/workbench/WorkbenchMainlineSteps.vue,6,template-text,量房 → 设计 → 报价 → 合同：当前阶段唯一主行动，完成后自动进入下一站。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,内部产品术语,企业员工,src/views/auth/LoginView.vue,6,template-text,同一张进度页同频共管。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,7,template-text,用于了解材料流程、字段和规则；日常操作请去项目材料、主材下单或结算。 本页只解释既有业务事实，不发起审批、付款、删除或权限变更。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,177,attr:description,页面只展示已登记校核；具体项目命中情况在项目材料体检中读取。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/blueprint/BusinessBlueprintCenterView.vue,344,script-literal,页面只展示已登记校核；具体项目命中情况在项目材料体检中读取。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,内部产品术语,企业员工,src/views/designer/DesignerContractChangesView.vue,36,template-text,审批通过即生效并同频业主端,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,内部产品术语,企业员工,src/views/designer/DesignerContractChangesView.vue,419,template-text,本单留痕与同频,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,内部产品术语,企业员工,src/views/designer/DesignerContractChangesView.vue,420,template-text,系统只承载内部留痕与对外同频，不托管无法校验的线下「业主确认」事实。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,内部产品术语,企业员工,src/views/designer/DesignerContractChangesView.vue,427,template-text,提交即同频 · 只读可见,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerContractHandoffView.vue,52,template-text,客户已确认报价为主线，合同状态作为接棒线索,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerContractHandoffView.vue,243,template-text,下一接棒,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerCustomersView.vue,256,template-text,下一接棒,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerCustomersView.vue,287,attr:description,左侧队列只收已量房、尚未签约的客户；选中后右侧显示当前阶段、唯一主行动与下一接棒。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerCustomersView.vue,1263,script-literal,左侧队列只收已量房、尚未签约的客户；选中后右侧显示当前阶段、唯一主行动与下一接棒。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerMeasureTasksView.vue,7,template-text,把当前量房工作接住：先看任务队列，再确认客户与房屋，最后完成唯一主行动并交接到设计。,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerMeasureTasksView.vue,238,template-text,下一接棒,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/DesignerQuoteListView.vue,239,template-text,下一接棒,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/components/DesignerProjectGuide.vue,77,template-text,次级入口，不替代当前唯一主行动,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/designer/components/DesignerProjectGuide.vue,127,template-text,下一接棒,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。
+Web,P2,页面职责/内部口径,企业员工,src/views/pm/PmWorkbenchView.vue,60,template-text,当前唯一主行动,替换为用户语言或删除；界面不解释页面职责、测试边界或产品设计原因。

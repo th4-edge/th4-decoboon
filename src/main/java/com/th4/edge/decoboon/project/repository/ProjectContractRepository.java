@@ -19,6 +19,13 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
 
     Optional<ProjectContract> findByProject(Project project);
 
+    /** 合同详情页所需的最小聚合根预取；其余二级关联在 Provider 只读事务内初始化。 */
+    @EntityGraph(attributePaths = {"project", "customer", "property", "quote"})
+    Optional<ProjectContract> findDetailedByProject(Project project);
+
+    @EntityGraph(attributePaths = {"project", "customer", "property", "quote"})
+    Optional<ProjectContract> findDetailedByQuote_QuoteId(Long quoteId);
+
     Optional<ProjectContract> findByQuote_QuoteId(Long quoteId);
 
     List<ProjectContract> findByQuote_QuoteIdIn(Collection<Long> quoteIds);

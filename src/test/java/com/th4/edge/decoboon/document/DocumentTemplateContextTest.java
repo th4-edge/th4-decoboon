@@ -97,7 +97,7 @@ class DocumentTemplateContextTest {
         when(tenantContext.requireRole(eq(boss), any(), any(), any())).thenReturn(boss);
         assertThatThrownBy(() -> context.save(boss, DocumentType.Payment, "工资发放凭证",
                 "{\"showUnknownVoucherField\":true}", "{\"primaryColor\":\"#2F7D5A\"}"))
-                .hasMessageContaining("不支持的字段配置");
+                .hasMessageContaining("模板包含不支持的字段");
     }
 
     @Test
@@ -251,7 +251,7 @@ class DocumentTemplateContextTest {
         assertThatThrownBy(() -> context.save(boss, DocumentType.Quote, "x",
                 "{\"showInternalCost\":true}", "{}"))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("不支持的字段配置");
+                .hasMessageContaining("模板包含不支持的字段");
 
         assertThatThrownBy(() -> context.save(boss, DocumentType.Quote, "x",
                 "{\"showCompanyName\":true}", "{\"html\":\"<script/>\"}"))

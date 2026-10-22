@@ -149,7 +149,7 @@ public class MaterialSettlementContext {
                 .toList();
         if (!settled.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400",
-                    "该采购明细已结算，不允许重复计入（结算互斥，DEC-073）：" + settled));
+                    "该采购明细已结算，不能重复计入：" + settled));
         }
         Map<Long, PurchaseOrderItem> itemsById = new LinkedHashMap<>();
         purchaseItemRepository.findAllById(purchaseItemIds).forEach(item -> itemsById.put(item.getPurchaseItemId(), item));

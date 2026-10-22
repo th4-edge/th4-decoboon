@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -88,6 +89,16 @@ class CustomerDormantContextTest {
                 null, null, CustStatus.Following, null))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("请选择休眠原因");
+    }
+
+    @Test
+    void financeCanSetDormant() {
+        Employee finance = new Employee();
+        finance.setEmpId(30L);
+        finance.setRole(EmployeeRole.Finance);
+        finance.setCompany(marketer.getCompany());
+
+        assertThatCode(() -> context.requireWritableRole(finance)).doesNotThrowAnyException();
     }
 
     @Test

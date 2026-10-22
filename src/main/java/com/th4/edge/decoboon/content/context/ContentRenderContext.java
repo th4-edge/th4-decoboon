@@ -48,10 +48,10 @@ public class ContentRenderContext {
     public RenderResult render(Long companyId, List<ContentAsset> assets, ContentTemplate template, String caption) {
         List<ContentAsset> videos = assets.stream().filter(a -> a.getMediaType() == com.th4.edge.decoboon.content.configure.ContentMediaType.Video).toList();
         if (videos.isEmpty()) {
-            throw new DefinedException(new DefaultErrorCode("409", "服务端渲染至少需要一条视频素材"));
+            throw new DefinedException(new DefaultErrorCode("409", "请至少选择一条视频素材"));
         }
         if (assets.stream().anyMatch(a -> a.getMediaType() != com.th4.edge.decoboon.content.configure.ContentMediaType.Video)) {
-            throw new DefinedException(new DefaultErrorCode("409", "P0 服务端渲染暂只支持视频片段，请移除图片素材"));
+            throw new DefinedException(new DefaultErrorCode("409", "当前仅支持使用视频片段生成成片，请移除图片素材"));
         }
         if (template != null && (videos.size() < template.getClipMin() || videos.size() > template.getClipMax())) {
             throw new DefinedException(new DefaultErrorCode("409", "素材片段数量不符合模板要求"));

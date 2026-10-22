@@ -291,13 +291,13 @@ public class MaterialSheetTemplateContext {
     private void validateFieldArray(JsonNode array, Set<String> allowed, String section) {
         if (array == null || array.isNull()) return;
         if (!array.isArray()) {
-            throw new DefinedException(new DefaultErrorCode("400", "字段配置 " + section + " 必须是数组"));
+            throw new DefinedException(new DefaultErrorCode("400", "模板明细格式不正确"));
         }
         LinkedHashSet<String> unknown = new LinkedHashSet<>();
         for (JsonNode node : array) {
             String key = node.path("key").asText("");
             if (key.isBlank()) {
-                throw new DefinedException(new DefaultErrorCode("400", "字段配置 " + section + " 存在缺少 key 的项"));
+                throw new DefinedException(new DefaultErrorCode("400", "模板中有字段未填写名称，请检查后重试"));
             }
             if (!allowed.contains(key)) unknown.add(key);
         }

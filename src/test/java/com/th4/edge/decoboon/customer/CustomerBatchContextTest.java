@@ -82,7 +82,19 @@ class CustomerBatchContextTest {
 
         assertThatThrownBy(() -> context.preview(marketer, "13800138000"))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("仅企业负责人或店长");
+                .hasMessageContaining("仅企业负责人、店长或财务");
+    }
+
+    @Test
+    void financeCanUseBatchEntry() {
+        CustomerRepository repository = mock(CustomerRepository.class);
+        CustomerBatchContext context = new CustomerBatchContext(repository, mock(CustomerContext.class));
+        Employee finance = employee(7L, EmployeeRole.Finance, company(1L), store(1L), EmployeeStatus.Active);
+        when(repository.findByCompany_ComId(1L)).thenReturn(List.of());
+
+        CustomerBatchPreview preview = context.preview(finance, "13800138000");
+
+        assertThat(preview.getValidCount()).isEqualTo(1);
     }
 
     private static Customer customer(String phone) {

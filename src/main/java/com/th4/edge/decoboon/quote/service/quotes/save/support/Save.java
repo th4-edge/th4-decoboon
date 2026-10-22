@@ -162,7 +162,7 @@ public class Save implements com.th4.edge.decoboon.quote.service.quotes.save.Sav
             return quoteContext.create(design, discount);
         }
         if (templateId == null || customerId == null || area == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "设计报价或套餐报价参数不完整"));
+            throw new DefinedException(new DefaultErrorCode("400", "报价信息不完整，请补充后再保存"));
         }
 
         Specification<Customer> byId = (root, query, builder) ->

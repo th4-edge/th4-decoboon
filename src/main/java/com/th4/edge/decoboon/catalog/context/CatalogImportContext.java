@@ -125,13 +125,15 @@ public class CatalogImportContext {
     }
 
     /**
-     * 报价项目库属于企业级主数据（DEC-075）：BOSS 与店长均可批量导入。
+     * 报价项目库属于企业级主数据：BOSS、店长与财务均可批量导入。
      * 导入结果影响全企业，页面需提示影响范围并保留审计。
      */
     public Employee requireMaintainer(Employee principal) {
         Employee current = tenantContext.requireEmployee(principal);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.StoreManager) {
-            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人或店长可以批量导入报价项目库"));
+        if (current.getRole() != EmployeeRole.Boss
+                && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.Finance) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长或财务可以批量导入报价项目库"));
         }
         return current;
     }

@@ -25,6 +25,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Employee;
@@ -93,15 +94,16 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问")));
         if (current.getRole() != EmployeeRole.Boss
                 && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.Finance
                 && current.getRole() != EmployeeRole.TeamLeader) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅团队负责人、店长或企业负责人可以指定设计师"));
+            throw new DefinedException(new DefaultErrorCode("403", "仅团队负责人、店长、企业负责人或财务可以指定设计师"));
         }
         // DEC-066（2026-10-12 用户裁决）：新客户（待首联）允许直接指定设计师——自然到店客户由店长/团队负责人
         // 当场派单，首次跟进由接手的设计师完成；状态不随派单推进。仅"已流失"客户必须先恢复再指派。
         if (customer.getStatus() == CustStatus.Lost) {
             throw new DefinedException(new DefaultErrorCode("400", "客户已流失，请先恢复客户后再指定设计师"));
         }
-        if (current.getRole() == EmployeeRole.StoreManager
+        if (scope.type() == DataScopeType.Store
                 && (current.getStore() == null || customer.getStore() == null
                 || !current.getStore().getStoreId().equals(customer.getStore().getStoreId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "客户不存在或无权访问"));
@@ -111,7 +113,7 @@ public class Handoff implements com.th4.edge.decoboon.customer.service.cust.hand
         if (designer == null || designer.getStatus() != EmployeeStatus.Active) {
             throw new DefinedException(new DefaultErrorCode("400", "请选择本企业在职员工"));
         }
-        if (current.getRole() == EmployeeRole.StoreManager
+        if (scope.type() == DataScopeType.Store
                 && (designer.getStore() == null || current.getStore() == null
                 || !designer.getStore().getStoreId().equals(current.getStore().getStoreId()))) {
             throw new DefinedException(new DefaultErrorCode("400", "仅可指定本门店在职员工"));

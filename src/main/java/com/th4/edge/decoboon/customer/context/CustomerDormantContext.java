@@ -52,8 +52,9 @@ public class CustomerDormantContext {
                 || (current.getRole() != EmployeeRole.Boss
                 && current.getRole() != EmployeeRole.StoreManager
                 && current.getRole() != EmployeeRole.Marketer
-                && current.getRole() != EmployeeRole.Designer)) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅业务员、店长、企业负责人或设计师可以设置休眠客户"));
+                && current.getRole() != EmployeeRole.Designer
+                && current.getRole() != EmployeeRole.Finance)) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅业务员、店长、企业负责人、设计师或财务可以设置休眠客户"));
         }
     }
 

@@ -325,16 +325,16 @@ public class DocumentTemplateContext {
     private String normalizeFields(DocumentType type, String fieldConfig) {
         try {
             JsonNode parsed = objectMapper.readTree(fieldConfig);
-            if (!(parsed instanceof ObjectNode objectNode)) throw invalid("字段配置必须是JSON对象");
+            if (!(parsed instanceof ObjectNode objectNode)) throw invalid("模板字段格式不正确");
             Set<String> allowed = new java.util.HashSet<>(COMMON_FIELDS);
             allowed.addAll(ALLOWED_FIELDS.getOrDefault(type, Set.of()));
             Iterator<String> names = objectNode.fieldNames();
             ObjectNode result = objectMapper.createObjectNode();
             while (names.hasNext()) {
                 String name = names.next();
-                if (!allowed.contains(name)) throw invalid("不支持的字段配置：" + name);
+                if (!allowed.contains(name)) throw invalid("模板包含不支持的字段：" + name);
                 JsonNode value = objectNode.get(name);
-                if (!value.isBoolean()) throw invalid("字段配置必须是布尔值：" + name);
+                if (!value.isBoolean()) throw invalid("字段 " + name + " 必须选择显示或不显示");
                 result.put(name, value.booleanValue());
             }
             for (String name : allowed) {
@@ -344,7 +344,7 @@ public class DocumentTemplateContext {
         } catch (DefinedException ex) {
             throw ex;
         } catch (Exception ex) {
-            throw invalid("字段配置JSON格式错误");
+            throw invalid("模板字段格式无法读取，请重新保存");
         }
     }
 

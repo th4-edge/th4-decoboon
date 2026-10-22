@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/** DEC-075：报价项目库批量导入允许企业负责人与店长。 */
+/** 报价项目库批量导入允许企业负责人、店长与财务。 */
 class CatalogImportContextTest {
 
     private EmployeeRepository employeeRepository;
@@ -27,7 +27,7 @@ class CatalogImportContextTest {
     }
 
     @Test
-    void shouldAllowBossAndStoreManagerButRejectMarketer() {
+    void shouldAllowBossStoreManagerAndFinanceButRejectMarketer() {
         Employee boss = employee(EmployeeRole.Boss);
         when(employeeRepository.findByEmpId(boss.getEmpId())).thenReturn(boss);
         assertThat(context.requireMaintainer(boss).getRole()).isEqualTo(EmployeeRole.Boss);
@@ -36,10 +36,14 @@ class CatalogImportContextTest {
         when(employeeRepository.findByEmpId(manager.getEmpId())).thenReturn(manager);
         assertThat(context.requireMaintainer(manager).getRole()).isEqualTo(EmployeeRole.StoreManager);
 
+        Employee finance = employee(EmployeeRole.Finance);
+        when(employeeRepository.findByEmpId(finance.getEmpId())).thenReturn(finance);
+        assertThat(context.requireMaintainer(finance).getRole()).isEqualTo(EmployeeRole.Finance);
+
         Employee marketer = employee(EmployeeRole.Marketer);
         when(employeeRepository.findByEmpId(marketer.getEmpId())).thenReturn(marketer);
         assertThatThrownBy(() -> context.requireMaintainer(marketer))
-                .hasMessageContaining("只有企业负责人或店长");
+                .hasMessageContaining("只有企业负责人、店长或财务");
     }
 
     private Employee employee(EmployeeRole role) {

@@ -10,6 +10,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
@@ -83,8 +84,7 @@ public class CustomerContext {
      */
     public Employee resolveOwner(Employee current, Long ownerId, Employee fallback) {
         Long comId = requireCompanyId(current);
-        if (ownerId != null
-                && (current.getRole() == EmployeeRole.Boss || current.getRole() == EmployeeRole.StoreManager)) {
+        if (ownerId != null && isCustomerManager(current)) {
             return resolveAssignableOwner(current, ownerId);
         }
         Employee owner = fallback == null ? current : fallback;
@@ -98,8 +98,8 @@ public class CustomerContext {
     /** 解析批量录入或客户转交时明确指定的负责人。 */
     public Employee resolveAssignableOwner(Employee current, Long ownerId) {
         Long comId = requireCompanyId(current);
-        if (current.getRole() != EmployeeRole.Boss && current.getRole() != EmployeeRole.StoreManager) {
-            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人或店长可以变更客户负责人"));
+        if (!isCustomerManager(current)) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人、店长或财务可以变更客户负责人"));
         }
         if (ownerId == null) {
             throw new DefinedException(new DefaultErrorCode("400", "请选择客户负责人"));
@@ -108,13 +108,22 @@ public class CustomerContext {
         if (owner == null || owner.getStatus() != EmployeeStatus.Active) {
             throw new DefinedException(new DefaultErrorCode("400", "负责人不属于当前企业或已离职"));
         }
-        if (current.getRole() == EmployeeRole.StoreManager) {
+        boolean storeScoped = current.getRole() == EmployeeRole.StoreManager
+                || (current.getRole() == EmployeeRole.Finance
+                && dataScopeContext.resolve(current).type() == DataScopeType.Store);
+        if (storeScoped) {
             if (current.getStore() == null || owner.getStore() == null
                     || !current.getStore().getStoreId().equals(owner.getStore().getStoreId())) {
                 throw new DefinedException(new DefaultErrorCode("400", "仅可转交给本门店人员"));
             }
         }
         return owner;
+    }
+
+    private boolean isCustomerManager(Employee current) {
+        return current.getRole() == EmployeeRole.Boss
+                || current.getRole() == EmployeeRole.StoreManager
+                || current.getRole() == EmployeeRole.Finance;
     }
 
     private Long requireCompanyId(Employee current) {

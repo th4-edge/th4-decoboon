@@ -67,6 +67,27 @@ class CustomerOwnerAssignmentTest {
     }
 
     @Test
+    void storeFinanceCanOnlyAssignSameStoreEmployee() {
+        EmployeeRepository repository = mock(EmployeeRepository.class);
+        DataScopeContext dataScope = mock(DataScopeContext.class);
+        CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), dataScope, storeAttribution());
+        Company company = company(1L);
+        Store first = store(10L);
+        Store second = store(20L);
+        Employee finance = employee(7L, EmployeeRole.Finance, company, first);
+        Employee sameStore = employee(4L, EmployeeRole.Marketer, company, first);
+        Employee otherStore = employee(5L, EmployeeRole.Marketer, company, second);
+        when(dataScope.resolve(finance)).thenReturn(new DataScope(DataScopeType.Store, 1L, 10L, null, 7L));
+        when(repository.findByEmpIdAndCompany_ComId(4L, 1L)).thenReturn(sameStore);
+        when(repository.findByEmpIdAndCompany_ComId(5L, 1L)).thenReturn(otherStore);
+
+        assertThat(context.resolveAssignableOwner(finance, 4L)).isSameAs(sameStore);
+        assertThatThrownBy(() -> context.resolveAssignableOwner(finance, 5L))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("仅可转交给本门店人员");
+    }
+
+    @Test
     void financeCanBeAssignedAsCustomerSalesOwner() {
         EmployeeRepository repository = mock(EmployeeRepository.class);
         CustomerContext context = new CustomerContext(repository, mock(CustomerRepository.class), mock(DataScopeContext.class), storeAttribution());

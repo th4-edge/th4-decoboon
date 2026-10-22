@@ -25,6 +25,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** 项目合同基线详情实现。 */
 @Note("合同基线详情")
@@ -83,18 +84,47 @@ public class Info implements com.th4.edge.decoboon.project.service.contract.info
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProjectContract call(ProjectContract request) {
         Employee current = accessContext.requireEmployee(employee);
         if (quoteId != null) {
             Specification<ProjectContract> byQuote = (root, query, builder) ->
                     builder.equal(root.get("quote").get("quoteId"), quoteId);
-            return contractRepository.findOne(byQuote.and(accessContext.visibleContract(employee)))
-                    .map(contractContext::enrich)
-                    .orElse(null);
+            ProjectContract visible = contractRepository.findOne(
+                    byQuote.and(accessContext.visibleContract(employee))).orElse(null);
+            if (visible == null) {
+                return null;
+            }
+            ProjectContract contract = contractRepository.findDetailedByQuote_QuoteId(quoteId)
+                    .orElseThrow(() -> new DefinedException(
+                            new DefaultErrorCode("404", "合同不存在或无权访问")));
+            initializeDetailAssociations(contract);
+            return contractContext.enrich(contract);
         }
         Project project = accessContext.requireProject(projectId, current);
-        return contractRepository.findByProject(project)
-                .map(contractContext::enrich)
+        ProjectContract contract = contractRepository.findDetailedByProject(project)
                 .orElse(null);
+        if (contract == null) {
+            return null;
+        }
+        initializeDetailAssociations(contract);
+        return contractContext.enrich(contract);
+    }
+
+    private void initializeDetailAssociations(ProjectContract contract) {
+        if (contract.getProject() != null) {
+            if (contract.getProject().getProperty() != null) {
+                contract.getProject().getProperty().getPropertyId();
+            }
+            if (contract.getProject().getCustomer() != null) {
+                contract.getProject().getCustomer().getCustId();
+            }
+            if (contract.getProject().getQuote() != null) {
+                contract.getProject().getQuote().getQuoteId();
+            }
+        }
+        if (contract.getCreatedBy() != null) {
+            contract.getCreatedBy().getName();
+        }
     }
 }

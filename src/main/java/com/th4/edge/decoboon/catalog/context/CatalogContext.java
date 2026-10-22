@@ -35,11 +35,12 @@ public class CatalogContext {
         return current;
     }
 
-    /** 删除、批量导入等高风险维护仍按既有边界控制，财务不因价格维护权限自动获得。 */
+    /** 报价项目库高风险维护：企业负责人、店长、财务。 */
     public Employee requireMaintainer(Employee principal) {
         Employee current = requireEmployee(principal);
         if (current.getRole() != EmployeeRole.Boss
-                && current.getRole() != EmployeeRole.StoreManager) {
+                && current.getRole() != EmployeeRole.StoreManager
+                && current.getRole() != EmployeeRole.Finance) {
             throw new DefinedException(new DefaultErrorCode("403", "当前账号无权维护报价项目库"));
         }
         return current;
