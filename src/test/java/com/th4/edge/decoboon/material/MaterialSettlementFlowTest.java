@@ -368,7 +368,7 @@ class MaterialSettlementFlowTest {
         assertThatThrownBy(() -> context.confirm(finance, 4L, SettlementScope.PerPurchaseOrder, null,
                 List.of(command(21L, "70")), null))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("结算互斥");
+                .hasMessageContaining("不能重复计入");
     }
 
     @Test
