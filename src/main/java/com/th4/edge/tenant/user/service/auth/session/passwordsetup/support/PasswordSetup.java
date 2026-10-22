@@ -11,6 +11,7 @@ import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.tenant.user.context.PasswordAuthContext;
 import com.th4.edge.tenant.user.context.PasswordContext;
 import com.th4.edge.tenant.user.context.UserIdentityContext;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
@@ -77,11 +78,12 @@ public class PasswordSetup implements com.th4.edge.tenant.user.service.auth.sess
         }
         passwordContext.validate(initialPassword);
         Credentials credential = passwordAuthContext.requireSetupCredential(normalizedPhone);
-        credential = passwordAuthContext.setInitialPassword(credential, initialPassword);
         Employee employee = userContext.activeEmployee(credential);
         if (employee == null) {
             throw new DefinedException(new DefaultErrorCode("403", "当前账号未加入有效企业"));
         }
+        EmployeeRolePolicy.requireApplicationAccess(employee);
+        passwordAuthContext.setInitialPassword(credential, initialPassword);
         return employee;
     }
 

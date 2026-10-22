@@ -2,6 +2,7 @@ package com.th4.edge.tenant.user;
 
 import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -30,5 +31,16 @@ class EmployeeRoleContractTest {
         assertThat(EmployeeRole.Finance.getDataScopeType()).isEqualTo(DataScopeType.Store);
         assertThat(EmployeeRole.StoreManager.getDataScopeType()).isEqualTo(DataScopeType.Store);
         assertThat(EmployeeRole.Boss.getDataScopeType()).isEqualTo(DataScopeType.Company);
+    }
+
+    @Test
+    void teamLeaderIsPersistedButNotAnApplicationRole() {
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.TeamLeader)).isFalse();
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.Boss)).isTrue();
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.StoreManager)).isTrue();
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.Marketer)).isTrue();
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.Designer)).isTrue();
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.Pm)).isTrue();
+        assertThat(EmployeeRolePolicy.isApplicationRole(EmployeeRole.Finance)).isTrue();
     }
 }

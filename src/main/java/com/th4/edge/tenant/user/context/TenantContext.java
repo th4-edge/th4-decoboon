@@ -4,6 +4,7 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
@@ -37,6 +38,7 @@ public class TenantContext {
         if (employee.getStatus() != EmployeeStatus.Active) {
             throw new DefinedException(new DefaultErrorCode("403", "当前员工已离职或停用"));
         }
+        EmployeeRolePolicy.requireApplicationAccess(employee);
         return employee;
     }
 

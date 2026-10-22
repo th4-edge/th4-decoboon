@@ -192,6 +192,54 @@ class PasswordSessionAcceptanceTest {
         assertThat(response.path("errorCode").path("code").asText()).isEqualTo("PASSWORD_POLICY");
     }
 
+    @Test
+    void frozenTeamLeaderCannotLoginWithPassword() throws Exception {
+        Employee employee = employee("13890000008", EmployeeRole.TeamLeader);
+        credential(employee, "Correct123");
+
+        JsonNode response = call("password-login", """
+                {"phone":"%s","password":"Correct123"}
+                """.formatted(employee.getTelNo()), null);
+
+        assertThat(response.path("success").asBoolean()).isFalse();
+        assertThat(response.path("errorCode").path("code").asText()).isEqualTo("403");
+        assertThat(response.path("errorCode").toString()).contains("团队负责人角色已冻结");
+    }
+
+    @Test
+    void frozenTeamLeaderCannotSetInitialPassword() throws Exception {
+        Employee employee = employee("13890000010", EmployeeRole.TeamLeader);
+
+        JsonNode response = call("password-setup", """
+                {"phone":"%s","bootstrapToken":"acceptance-bootstrap","password":"Pass1234","confirmPassword":"Pass1234"}
+                """.formatted(employee.getTelNo()), null);
+
+        assertThat(response.path("success").asBoolean()).isFalse();
+        assertThat(response.path("errorCode").path("code").asText()).isEqualTo("403");
+        assertThat(response.path("errorCode").toString()).contains("团队负责人角色已冻结");
+        Credentials credential = credentialsRepository.findByTypeAndPhone(CredType.Password, employee.getTelNo());
+        assertThat(credential == null || credential.getPasswordHash() == null).isTrue();
+    }
+
+    @Test
+    void oldTokenMustBeRejectedAfterRoleBecomesFrozen() throws Exception {
+        Employee employee = employee("13890000009");
+        credential(employee, "Correct123");
+        JsonNode login = call("password-login", """
+                {"phone":"%s","password":"Correct123"}
+                """.formatted(employee.getTelNo()), null);
+        String token = login.path("data").path("token").asText();
+        assertThat(token).isNotBlank();
+
+        employee.setRole(EmployeeRole.TeamLeader);
+        employeeRepository.saveAndFlush(employee);
+
+        JsonNode info = call("info", "{}", token);
+        assertThat(info.path("success").asBoolean()).isFalse();
+        assertThat(info.path("errorCode").path("code").asText()).isEqualTo("403");
+        assertThat(info.path("errorCode").toString()).contains("团队负责人角色已冻结");
+    }
+
     private JsonNode call(String action, String body, String token) throws Exception {
         var request = post("/api/auth/session/" + action)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -204,6 +252,10 @@ class PasswordSessionAcceptanceTest {
     }
 
     private Employee employee(String phone) {
+        return employee(phone, EmployeeRole.Boss);
+    }
+
+    private Employee employee(String phone, EmployeeRole role) {
         Company company = new Company();
         company.setTitle("密码会话验收企业");
         company.setName("W" + Long.toHexString(System.nanoTime()));
@@ -217,7 +269,7 @@ class PasswordSessionAcceptanceTest {
         Employee employee = new Employee();
         employee.setCompany(company);
         employee.setStore(store);
-        employee.setRole(EmployeeRole.Boss);
+        employee.setRole(role);
         employee.setName("网页验收员工");
         employee.setTelNo(phone);
         employee.setStatus(EmployeeStatus.Active);

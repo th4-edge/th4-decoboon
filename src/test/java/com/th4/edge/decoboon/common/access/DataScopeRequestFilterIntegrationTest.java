@@ -125,15 +125,12 @@ class DataScopeRequestFilterIntegrationTest {
                 "老板客户", "店长客户", "团队负责人客户", "团队成员客户", "其他门店客户"));
         assertNames(fixture.storeManager(), Set.of(
                 "老板客户", "店长客户", "团队负责人客户", "团队成员客户"));
-        assertNames(fixture.teamLeader(), Set.of(
-                "团队负责人客户", "团队成员客户"));
+        assertThatThrownBy(() -> assertNames(fixture.teamLeader(), Set.of()))
+                .hasMessageContaining("团队负责人角色已冻结");
         assertNames(fixture.marketer(), Set.of("团队成员客户"));
 
-        Specification<Customer> teamVisible = DataScopeSpecification.visible(
-                Customer.class, dataScopeContext.resolve(fixture.teamLeader()));
-        assertThat(customerRepository.findAll(teamVisible))
-                .extracting(Customer::getName)
-                .containsExactlyInAnyOrder("团队负责人客户", "团队成员客户");
+        assertThatThrownBy(() -> dataScopeContext.resolve(fixture.teamLeader()))
+                .hasMessageContaining("团队负责人角色已冻结");
     }
 
     @Test
@@ -160,8 +157,8 @@ class DataScopeRequestFilterIntegrationTest {
         assertThat(assigned.getTeam().getTeamId()).isEqualTo(fixture.teamLeader().getTeam().getTeamId());
 
         Customer teamCustomer = customerByName("团队成员客户");
-        Customer visible = execute("service/info", fixture.teamLeader(), request(teamCustomer));
-        assertThat(visible.getCustId()).isEqualTo(teamCustomer.getCustId());
+        assertThatThrownBy(() -> execute("service/info", fixture.teamLeader(), request(teamCustomer)))
+                .hasMessageContaining("团队负责人角色已冻结");
         Customer otherStoreCustomer = customerByName("其他门店客户");
         assertThatThrownBy(() -> execute("service/info",
                 fixture.storeManager(), request(otherStoreCustomer)))
@@ -276,9 +273,8 @@ class DataScopeRequestFilterIntegrationTest {
                 .extracting(Customer::getName)
                 .containsExactlyInAnyOrder(
                         "老板客户", "店长客户", "团队负责人客户", "团队成员客户");
-        assertThat(executePage(fixture.teamLeader()).getContent())
-                .extracting(Customer::getName)
-                .containsExactlyInAnyOrder("团队负责人客户", "团队成员客户");
+        assertThatThrownBy(() -> executePage(fixture.teamLeader()))
+                .hasMessageContaining("团队负责人角色已冻结");
         assertThat(executePage(fixture.marketer()).getContent())
                 .extracting(Customer::getName)
                 .containsExactly("团队成员客户");
@@ -301,10 +297,8 @@ class DataScopeRequestFilterIntegrationTest {
                 Project.class, dataScopeContext.requireScope(fixture.storeManager()))))
                 .extracting(Project::getName)
                 .containsExactlyInAnyOrder("老板项目", "店长项目", "团队项目", "团队成员项目");
-        assertThat(projectRepository.findAll(DataScopeSpecification.visible(
-                Project.class, dataScopeContext.requireScope(fixture.teamLeader()))))
-                .extracting(Project::getName)
-                .containsExactlyInAnyOrder("团队项目", "团队成员项目");
+        assertThatThrownBy(() -> dataScopeContext.requireScope(fixture.teamLeader()))
+                .hasMessageContaining("团队负责人角色已冻结");
         assertThat(projectRepository.findAll(DataScopeSpecification.visible(
                 Project.class, dataScopeContext.requireScope(fixture.marketer()))))
                 .extracting(Project::getName)
