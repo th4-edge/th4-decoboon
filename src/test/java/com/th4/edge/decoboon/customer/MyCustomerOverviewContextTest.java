@@ -104,7 +104,7 @@ class MyCustomerOverviewContextTest {
         when(tagContext.assembleBatch(anyLong(), anyCollection(), any(), any()))
                 .thenReturn(Map.of());
 
-        CustomerOverviewReport report = context.report(designer, 1, 20, null, null, "risk");
+        CustomerOverviewReport report = context.report(designer, 1, 20, null, null, "risk", null);
 
         assertThat(report.getCustomers()).hasSize(1);
         assertThat(report.getCustomers().get(0).getPortrait()).isEqualTo(portrait);

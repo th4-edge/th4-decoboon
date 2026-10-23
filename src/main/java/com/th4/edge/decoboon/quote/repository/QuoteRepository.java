@@ -3,6 +3,9 @@ package com.th4.edge.decoboon.quote.repository;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +18,188 @@ import java.util.Optional;
 /** 客户报价仓储。 */
 public interface QuoteRepository extends JpaRepository<Quote, Long>,
         JpaSpecificationExecutor<Quote> {
+
+    /** 动态筛选分页；预取页面序列化需要的一层关联，避免事务边界外触发懒加载。 */
+    @Override
+    @EntityGraph(attributePaths = {"customer", "property", "design", "createdBy"})
+    Page<Quote> findAll(Specification<Quote> specification, Pageable pageable);
+
+    /**
+     * 设计师待谈单工作队列的 ID 分页。状态优先级、停留时间排序、关键词、角色范围和
+     * Dormant/Lost 与单房流失排除均在 SQL 完成，避免先加载企业全部报价再在 Java 中过滤切页。
+     */
+    @Query(value = """
+            select q.quote_id
+            from quote q
+            join cust_customer c on c.cust_id = q.customer_id
+            join db_property p on p.property_id = q.property_id
+            where q.com_id = :comId
+              and q.status in ('Draft', 'Submitted', 'Rejected')
+              and c.status in ('New', 'Following', 'PendingMeasure', 'Quoted')
+              and not exists (
+                  select 1 from cust_customer_loss cl
+                  where cl.com_id = q.com_id
+                    and cl.property_id = q.property_id
+                    and cl.restored_at is null
+              )
+              and (:allCompany = true or q.store_id = :storeId)
+              and (:designerId is null or q.emp_id = :designerId)
+              and (:statusFilter is null or q.status = :statusFilter)
+              and (:focusQuoteId is null or q.quote_id = :focusQuoteId)
+              and (:keyword = '' or lower(q.no) like :pattern
+                   or lower(c.name) like :pattern
+                   or lower(c.tel_no) like :pattern
+                   or lower(coalesce(p.community, c.community, '')) like :pattern)
+            order by case q.status when 'Rejected' then 0 when 'Draft' then 1 else 2 end,
+                     case q.status
+                       when 'Rejected' then timestampdiff(second,
+                         coalesce(q.rejected_at, from_unixtime(q.create_date_time / 1000)), now())
+                       when 'Draft' then timestampdiff(second, from_unixtime(q.create_date_time / 1000), now())
+                       else timestampdiff(second,
+                         coalesce(q.submitted_at, from_unixtime(q.create_date_time / 1000)), now())
+                     end asc,
+                     q.quote_id desc
+            """, countQuery = """
+            select count(q.quote_id)
+            from quote q
+            join cust_customer c on c.cust_id = q.customer_id
+            join db_property p on p.property_id = q.property_id
+            where q.com_id = :comId
+              and q.status in ('Draft', 'Submitted', 'Rejected')
+              and c.status in ('New', 'Following', 'PendingMeasure', 'Quoted')
+              and not exists (
+                  select 1 from cust_customer_loss cl
+                  where cl.com_id = q.com_id
+                    and cl.property_id = q.property_id
+                    and cl.restored_at is null
+              )
+              and (:allCompany = true or q.store_id = :storeId)
+              and (:designerId is null or q.emp_id = :designerId)
+              and (:statusFilter is null or q.status = :statusFilter)
+              and (:focusQuoteId is null or q.quote_id = :focusQuoteId)
+              and (:keyword = '' or lower(q.no) like :pattern
+                   or lower(c.name) like :pattern
+                   or lower(c.tel_no) like :pattern
+                   or lower(coalesce(p.community, c.community, '')) like :pattern)
+            """, nativeQuery = true)
+    Page<Long> findWorkbenchQuoteIds(@Param("comId") Long comId,
+                                     @Param("allCompany") boolean allCompany,
+                                     @Param("storeId") Long storeId,
+                                     @Param("designerId") Long designerId,
+                                     @Param("statusFilter") String statusFilter,
+                                     @Param("focusQuoteId") Long focusQuoteId,
+                                     @Param("keyword") String keyword,
+                                     @Param("pattern") String pattern,
+                                     Pageable pageable);
+
+    /** 只批量预取工作队列页面需要的客户与房屋摘要，顺序由调用方按 ID 页恢复。 */
+    @EntityGraph(attributePaths = {"customer", "property"})
+    @Query("select q from Quote q where q.quoteId in :quoteIds")
+    List<Quote> findWorkbenchQuotes(@Param("quoteIds") Collection<Long> quoteIds);
+
+    /** 签约工作队列：SQL 先过滤合同/项目状态并分页，页面只批量读取当前页报价。 */
+    @Query(value = """
+            select q.quote_id
+            from quote q
+            join cust_customer c on c.cust_id = q.customer_id
+            join db_property p on p.property_id = q.property_id
+            left join db_project_contract ct on ct.quote_id = q.quote_id and ct.com_id = q.com_id
+            left join db_project pj on pj.project_id = ct.project_id
+            where q.com_id = :comId
+              and q.status in ('Accepted', 'Converted')
+              and c.status not in ('Dormant', 'Lost')
+              and not exists (
+                  select 1 from cust_customer_loss cl
+                  where cl.com_id = q.com_id
+                    and cl.property_id = q.property_id
+                    and cl.restored_at is null
+              )
+              and (
+                  :allCompany = true
+                  or (:storeId is not null and q.store_id = :storeId)
+                  or (:teamId is not null and c.team_id = :teamId)
+                  or (:creatorId is not null and q.emp_id = :creatorId)
+              )
+              and (:focusQuoteId is null or q.quote_id = :focusQuoteId)
+              and (:keyword = '' or lower(q.no) like :pattern
+                   or lower(coalesce(ct.no, '')) like :pattern
+                   or lower(c.name) like :pattern
+                   or lower(c.tel_no) like :pattern
+                   or lower(coalesce(p.community, c.community, '')) like :pattern
+                   or lower(coalesce(p.address, c.addr, '')) like :pattern)
+              and (
+                  :filterValue is null or :filterValue = '' or :filterValue = 'all'
+                  or (:filterValue = 'toCreate' and ct.contract_id is null)
+                  or (:filterValue = 'waitingConfirm' and ct.status in ('PendingSign', 'Signed'))
+                  or (:filterValue = 'effective' and ct.status in
+                      ('Effective', 'Active', 'Changing', 'Changed', 'Completed', 'Settled', 'Closed', 'Terminated'))
+                  or (:filterValue = 'pending' and ct.contract_id is null)
+                  or (:filterValue = 'waiting' and ct.status in ('PendingSign', 'Signed'))
+                  or (:filterValue = 'fulfilling' and pj.status in ('Preparing', 'Ongoing', 'Suspended', 'Accepting'))
+                  or (:filterValue = 'done' and pj.status in ('Finished', 'Settled'))
+              )
+            order by
+              case when q.status = 'Converted' or ct.status in
+                  ('Signed', 'Effective', 'Active', 'Changing', 'Changed', 'Completed', 'Settled', 'Closed', 'Terminated')
+                  or ct.project_id is not null then 1 else 0 end asc,
+              coalesce(q.accepted_at, from_unixtime(q.create_date_time / 1000)) asc,
+              q.quote_id desc
+            """, countQuery = """
+            select count(q.quote_id)
+            from quote q
+            join cust_customer c on c.cust_id = q.customer_id
+            join db_property p on p.property_id = q.property_id
+            left join db_project_contract ct on ct.quote_id = q.quote_id and ct.com_id = q.com_id
+            left join db_project pj on pj.project_id = ct.project_id
+            where q.com_id = :comId
+              and q.status in ('Accepted', 'Converted')
+              and c.status not in ('Dormant', 'Lost')
+              and not exists (
+                  select 1 from cust_customer_loss cl
+                  where cl.com_id = q.com_id
+                    and cl.property_id = q.property_id
+                    and cl.restored_at is null
+              )
+              and (
+                  :allCompany = true
+                  or (:storeId is not null and q.store_id = :storeId)
+                  or (:teamId is not null and c.team_id = :teamId)
+                  or (:creatorId is not null and q.emp_id = :creatorId)
+              )
+              and (:focusQuoteId is null or q.quote_id = :focusQuoteId)
+              and (:keyword = '' or lower(q.no) like :pattern
+                   or lower(coalesce(ct.no, '')) like :pattern
+                   or lower(c.name) like :pattern
+                   or lower(c.tel_no) like :pattern
+                   or lower(coalesce(p.community, c.community, '')) like :pattern
+                   or lower(coalesce(p.address, c.addr, '')) like :pattern)
+              and (
+                  :filterValue is null or :filterValue = '' or :filterValue = 'all'
+                  or (:filterValue = 'toCreate' and ct.contract_id is null)
+                  or (:filterValue = 'waitingConfirm' and ct.status in ('PendingSign', 'Signed'))
+                  or (:filterValue = 'effective' and ct.status in
+                      ('Effective', 'Active', 'Changing', 'Changed', 'Completed', 'Settled', 'Closed', 'Terminated'))
+                  or (:filterValue = 'pending' and ct.contract_id is null)
+                  or (:filterValue = 'waiting' and ct.status in ('PendingSign', 'Signed'))
+                  or (:filterValue = 'fulfilling' and pj.status in ('Preparing', 'Ongoing', 'Suspended', 'Accepting'))
+                  or (:filterValue = 'done' and pj.status in ('Finished', 'Settled'))
+              )
+            """, nativeQuery = true)
+    Page<Long> findWorkbenchSignQuoteIds(@Param("comId") Long comId,
+                                         @Param("allCompany") boolean allCompany,
+                                         @Param("storeId") Long storeId,
+                                         @Param("teamId") Long teamId,
+                                         @Param("creatorId") Long creatorId,
+                                         @Param("filterValue") String filterValue,
+                                         @Param("focusQuoteId") Long focusQuoteId,
+                                         @Param("keyword") String keyword,
+                                         @Param("pattern") String pattern,
+                                         Pageable pageable);
+
+    /** 批量预取签约当前页报价及设计责任来源。 */
+    @EntityGraph(attributePaths = {"customer", "property", "design"})
+    @Query("select q from Quote q where q.quoteId in :quoteIds")
+    List<Quote> findSignWorkbenchQuotes(@Param("quoteIds") Collection<Long> quoteIds);
 
     Optional<Quote> findByQuoteIdAndCompany_ComId(Long quoteId, Long comId);
 
@@ -68,6 +253,8 @@ public interface QuoteRepository extends JpaRepository<Quote, Long>,
     List<Quote> findByCompany_ComIdAndCustomer_Team_TeamIdOrderByQuoteIdDesc(Long comId, Long teamId);
 
     List<Quote> findByProperty_PropertyIdOrderByQuoteIdDesc(Long propertyId);
+
+    List<Quote> findByCompany_ComIdAndProperty_PropertyIdOrderByQuoteIdDesc(Long comId, Long propertyId);
 
     List<Quote> findByCustomer_CustIdOrderByQuoteIdDesc(Long custId);
 

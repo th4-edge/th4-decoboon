@@ -17,6 +17,9 @@ import com.th4.edge.decoboon.statistic.model.DesignerMeasureQuery;
 import com.th4.edge.decoboon.statistic.model.DesignerMeasureTask;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +30,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** 设计师待量房任务投影：按客户 + 房屋返回可执行任务，不在前端推断状态。 */
 @Component
@@ -54,6 +60,88 @@ public class DesignerMeasureTaskContext {
         this.measureRepository = measureRepository;
         this.requirementRepository = requirementRepository;
         this.designRepository = designRepository;
+    }
+
+    /**
+     * 待量房队列分页：先由 SQL 返回当前页客户/房屋锚点，再批量装配当前页事实。
+     *
+     * <p>关键词、状态、责任范围和风险排序均已在 SQL 完成；不再全量回捞客户、房屋、
+     * 量房、诉求和设计。{@link #list(Employee, DesignerMeasureQuery)} 仅保留给旧调用兼容。</p>
+     */
+    @Transactional(readOnly = true)
+    public Page<DesignerMeasureTask> page(Employee current, DesignerMeasureQuery request) {
+        Long comId = current.getCompany().getComId();
+        Long empId = current.getEmpId();
+        LocalDateTime now = LocalDateTime.now();
+        int pageIndex = request == null || request.getCurrent() == null || request.getCurrent() < 1
+                ? 0 : request.getCurrent() - 1;
+        int pageSize = request == null || request.getSize() == null || request.getSize() < 1
+                ? 20 : Math.min(request.getSize(), 100);
+        String keyword = request == null || request.getKeyword() == null ? "" : request.getKeyword().trim();
+        String state = request == null || request.getState() == null ? "" : request.getState().trim();
+        PageRequest pageable = PageRequest.of(pageIndex, pageSize);
+
+        Page<PropertyRepository.MeasureTaskAnchor> anchors = propertyRepository.findMeasureTaskAnchors(
+                comId, empId, current.getRole() == EmployeeRole.Boss, keyword, state,
+                now.minusHours(OVERDUE_HOURS), now.minusHours(HANDOFF_HOURS), pageable);
+        if (anchors.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, anchors.getTotalElements());
+        }
+
+        List<Long> customerIds = anchors.getContent().stream()
+                .map(PropertyRepository.MeasureTaskAnchor::getCustomerId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        Map<Long, Customer> customers = customerRepository.findByCompany_ComIdAndCustIdIn(comId, customerIds)
+                .stream()
+                .collect(Collectors.toMap(Customer::getCustId, Function.identity(), (left, right) -> left));
+
+        List<Long> propertyIds = anchors.getContent().stream()
+                .map(PropertyRepository.MeasureTaskAnchor::getPropertyId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        Map<Long, Property> properties = propertyIds.isEmpty() ? Map.of()
+                : propertyRepository.findByCompany_ComIdAndPropertyIdIn(comId, propertyIds)
+                        .stream()
+                        .collect(Collectors.toMap(Property::getPropertyId, Function.identity(), (left, right) -> left));
+        Map<Long, List<Measure>> measuresByProperty = propertyIds.isEmpty() ? Map.of()
+                : measureRepository.findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(comId, propertyIds)
+                        .stream()
+                        .collect(Collectors.groupingBy(measure -> measure.getProperty().getPropertyId()));
+        Map<Long, List<Requirement>> requirementsByProperty = propertyIds.isEmpty() ? Map.of()
+                : requirementRepository.findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(comId, propertyIds)
+                        .stream()
+                        .collect(Collectors.groupingBy(requirement -> requirement.getProperty().getPropertyId()));
+        Map<Long, List<Design>> designsByProperty = propertyIds.isEmpty() ? Map.of()
+                : designRepository.findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(comId, propertyIds)
+                        .stream()
+                        .collect(Collectors.groupingBy(design -> design.getProperty().getPropertyId()));
+
+        List<DesignerMeasureTask> tasks = new ArrayList<>();
+        for (PropertyRepository.MeasureTaskAnchor anchor : anchors.getContent()) {
+            Customer customer = customers.get(anchor.getCustomerId());
+            if (customer == null) {
+                continue;
+            }
+            if (anchor.getPropertyId() == null) {
+                tasks.add(missingPropertyTask(customer));
+                continue;
+            }
+            Property property = properties.get(anchor.getPropertyId());
+            if (property == null) {
+                continue;
+            }
+            List<Measure> measures = measuresByProperty.getOrDefault(property.getPropertyId(), List.of());
+            int requirementCount = requirementsByProperty.getOrDefault(property.getPropertyId(), List.of()).size();
+            int designCount = designsByProperty.getOrDefault(property.getPropertyId(), List.of()).size();
+            DesignerMeasureTask task = buildTask(customer, property, measures, requirementCount, designCount, now);
+            if (task != null) {
+                tasks.add(task);
+            }
+        }
+        return new PageImpl<>(tasks, pageable, anchors.getTotalElements());
     }
 
     @Transactional(readOnly = true)
@@ -267,7 +355,7 @@ public class DesignerMeasureTaskContext {
         task.setRiskLevel("warning");
         task.setRiskReason("客户已进入量房阶段，但尚未形成预约时间。");
         task.setMainActionKey("schedule_measure");
-        task.setMainActionLabel("安排量房");
+        task.setMainActionLabel("预约量房");
         task.setNextActionKey("measure/schedule");
         task.setNextActionLabel("约定量房时间");
         task.setCompletionHint("安排后进入已预约待上门。");
