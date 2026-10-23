@@ -63,3 +63,72 @@
 1. `GAP-061` 未关闭：方案变更后正式报价是否过期尚无稳定修订令牌口径；本批不展示“报价已过期”结论。
 2. 独立验收尚未签署；开发侧证据不能替代 `ACCEPTED`。
 3. 本批未发布 test/prod；App 正式版仍由用户本人提审发布。
+
+## DQ-X1：待我谈单工作队列查询整改（2026-10-24）
+
+- Batch：`DQ-X1`
+- 垂直切片：待我谈单队列从全量报价加载、Java 过滤排序、内存切页，改为数据库 ID 分页和当前页实体批量预取。
+- 范围：仅 `statistic/workbench/quote/page`、`quote/designer/page` 及其测试；不改变报价状态、金额、风险文案或前端交互。
+
+### 实现
+
+- `QuoteRepository#findWorkbenchQuoteIds`：在 SQL 内完成企业/门店/本人范围、Draft/Submitted/Rejected、Dormant 排除、关键词、状态筛选、业务优先级和停留时间排序，返回稳定 ID 页。
+- `QuoteRepository#findWorkbenchQuotes`：按当前页 ID 批量预取 Quote、Customer、Property，避免逐报价查询客户/房屋。
+- `statistic/workbench/quote/page`：固定为 1 次 ID 分页查询 + 1 次页面实体批量查询；默认 20 条，服务端上限 100 条。
+- 权限：仅 `Boss / StoreManager / Designer`；Boss 企业范围、店长必须归属本店、设计师仅本人创建报价；其他角色在查询前返回 403。
+- `quote/designer/page`：同步改为 `Specification + Pageable` 数据库分页，支持 `customerId / propertyId / designId / status / keyword`，默认 20 条、上限 100 条。
+- 迁移：无 DDL、无数据迁移。
+
+### 验证
+
+- `DesignerQuoteWorkbenchPaginationTest`、`DesignerWorkbenchAggregationTest`、`DesignerQuoteStoreManagerScopeTest` 定向测试 PASS。
+- 后端全量：停止本地后端、移走旧 `target` 后执行干净 `mvn test`，**1098/1098 PASS，0 failures / 0 errors / 0 skipped**。
+- 测试覆盖：默认范围参数、Boss 企业范围、店长本店范围、无门店店长空结果、非授权角色 403、页大小 500 被截为 100、ID 顺序恢复、单次批量预取。
+- 本地 MySQL 8.0.24 `EXPLAIN ANALYZE`：20 条页查询命中 `quote` 企业索引并回表 `cust_customer/db_property` 主键；当前样本 23 条候选、20 条返回，实际约 2.6ms，查询结构固定。
+- 真实 HTTP 验收：`docs/acceptance/runs/20261024-dq-x1/run-http-acceptance.mjs`，17/17 PASS；Boss/店长 22 条、设计师本人 14 条、Draft 13 条，10 次 P95 38.6ms。
+- 真实页面：Web 1440/1280 完成设计师、Boss、店长、Finance 四角色回归；Boss 翻页后总数保持 22；Finance 直链进入 `/forbidden`；页面 console 0 error。截图见 `docs/acceptance/runs/20261024-dq-x1/screenshots/`。
+- 验收中修复：设计师范围参数导致本人任务为 0；`CustomerHeroCard.vue` 未定义 `$danger-600`；`DesignerMeasureTasksView.vue` 房屋 ID 类型不匹配。
+- Web 构建：`npm run build` PASS，包含分页门禁、type-check、客户端文案门禁和 Vite production build。
+- 干净全量回归已通过；独立验收尚未执行，本批不标记 `ACCEPTED`。
+
+## DQ-X2：设计师五阶段 App/Web 统一（2026-10-24）
+
+- Batch：`DQ-X2`
+- 垂直切片：统一设计师五阶段名称、顺序、筛选语义、关键词检索和 App 触底加载参数。
+- 不包含：Provider、权限、状态机、金额、数据库和 Web 分页结构变更。
+
+### 实现
+
+- App 设计师入口与页面标题统一为 `待我跟进 → 待我量房 → 待我设计 → 待我谈单 → 待我签约`。
+- App 待我量房筛选项 `全部` 统一为 `全部任务`。
+- App 待我谈单筛选值统一为 Web 的 `all / draft / submitted / rejected`。
+- App 待我签约筛选值统一为 Web 的 `all / toCreate / waitingConfirm / effective`。
+- App 待我谈单和待我签约新增 320ms 防抖关键词搜索；首屏、刷新和触底加载携带相同筛选值与关键词。
+- App 谈单、签约筛选条改为横向滚动，避免窄屏挤压。
+- 五页继续使用下拉刷新第 1 页和 `onReachBottom` 追加下一页；不展示页码控件。
+
+### 验证
+
+- 微信开发者工具原生自动复核 24/24 PASS，0 error。
+- Web 真实 Chromium 自动复核 20/20 PASS，Console error 0。
+- 谈单搜索 `周先生` 返回空队列；签约搜索 `王亮` 仅返回王亮，证明检索由服务端同源执行。
+- 谈单筛选中草稿返回 `Q1790383677036`，待客户确认/需调整为空；签约筛选中待发起合同/待企业确认/已生效分别返回周先生/空/王亮。
+- App `type-check`、UI、文案、导航、分页门禁与 `build:mp-weixin:release` PASS。
+- Web `build`、工作台、工作空间和权限门禁 PASS。
+- Web 真实 Chromium 以同一设计师账号完成五页复核，侧栏顺序、H1、筛选文案和文档标题一致；截图见同目录验收记录。
+- 证据：`docs/acceptance/runs/20261024-designer-five-stage-unified/README.md`。
+
+### 验收结论
+
+- 试运营单人模式只读验收 PASS；第三方独立验收未执行，不冒充独立验收。
+- 本轮无业务写操作、无数据库变更。
+- 小程序未上传、未提审、未发布；正式版仍由用户本人操作。
+
+## 发布前复核（2026-10-24）
+
+- 结论：`BLOCKED / DO_NOT_RELEASE`，证据见 `docs/acceptance/runs/20261024-dq-x1-x2-release-readiness/`。
+- 阻断不在 DQ 功能验收，而在候选不可唯一识别：后端 271 M / 3 D / 308 ??；Web 71 M / 21 ??；App 84 M / 21 ??。
+- Web 本地 `dev` 相对 `origin/dev` ahead 1 / behind 5。
+- 当前工作区包含迁移 124–131 与对应 rollback；与 DQ-X1/DQ-X2 无直接关系，但发布包会带上。
+- App 版本仍为 `1.0.66 / 166`，不能直接用于新体验版/正式版。
+- 未执行提交、推送、test 同步、生产部署或小程序上传。

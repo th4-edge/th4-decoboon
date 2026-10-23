@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-10-23T18:24:03.179Z",
+  "status": "PASS",
+  "mode": "TRIAL_SINGLE_PERSON_READ_ONLY_ACCEPTANCE",
+  "scope": "设计师五阶段 App/Web 名称、顺序、筛选语义、关键词检索和分页表达",
+  "environment": {
+    "backend": "127.0.0.1:8090 dev",
+    "web": "127.0.0.1:8080, real Chromium 1440x900",
+    "app": "WeChat DevTools native simulator, auto port 9430",
+    "identity": "18660219918 / Designer / 安徽昭青网络科技"
+  },
+  "app": {
+    "pass": true,
+    "checks": 24,
+    "errors": [],
+    "evidence": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app/output/playwright/20261024-designer-five-stage-unified/app-unified-audit.json"
+  },
+  "web": {
+    "pass": true,
+    "checks": 20,
+    "errors": [],
+    "evidence": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/output/playwright/20261024-designer-five-stage-unified/web-unified-audit.json"
+  },
+  "crossSurfaceSamples": [
+    {
+      "stage": "待我跟进",
+      "tokens": [
+        "待完善-136****2182"
+      ],
+      "app": true,
+      "web": true
+    },
+    {
+      "stage": "待我量房",
+      "tokens": [
+        "【验收·待量房】林女士"
+      ],
+      "app": true,
+      "web": true
+    },
+    {
+      "stage": "待我设计",
+      "tokens": [
+        "张伟",
+        "【验收·待量房】林女士"
+      ],
+      "app": true,
+      "web": true
+    },
+    {
+      "stage": "待我谈单",
+      "tokens": [
+        "Q1790383677036"
+      ],
+      "app": true,
+      "web": true
+    },
+    {
+      "stage": "待我签约",
+      "tokens": [
+        "Q-SIGN-DEMO-001",
+        "CQ1790371757130"
+      ],
+      "app": true,
+      "web": true
+    }
+  ],
+  "pagination": {
+    "app": "dropdown refresh + onReachBottom; no previous/next/page-number/total-pages controls",
+    "web": "el-pagination retained",
+    "priorPageBoundaryEvidence": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/docs/acceptance/runs/20261024-designer-quote-sign-pagination/ui-checks.json"
+  },
+  "sideEffects": {
+    "businessWrites": 0,
+    "databaseChanges": 0
+  },
+  "limitations": [
+    "不是第三方独立验收",
+    "未执行小程序上传、提审或正式发布"
+  ]
+}
