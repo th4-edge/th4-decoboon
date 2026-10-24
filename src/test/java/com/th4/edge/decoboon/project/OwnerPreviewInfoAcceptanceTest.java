@@ -90,11 +90,11 @@ class OwnerPreviewInfoAcceptanceTest {
     @Autowired private TransactionTemplate transactionTemplate;
 
     @Test
-    void fiveAllowedRolesCanOpenPreviewAndAreAudited() {
+    void fourTargetRolesCanOpenPreviewAndAreAudited() {
         Fixture fixture = fixture("allowed");
 
         for (EmployeeRole role : List.of(EmployeeRole.Boss, EmployeeRole.StoreManager,
-                EmployeeRole.TeamLeader, EmployeeRole.Designer, EmployeeRole.Pm)) {
+                EmployeeRole.Designer, EmployeeRole.Pm)) {
             Employee employee = fixture.employee(role);
             CustomerJourney journey = call(employee, fixture.project().getProjectId());
             assertThat(journey.getActions()).isEmpty();
@@ -109,12 +109,12 @@ class OwnerPreviewInfoAcceptanceTest {
         List<ProjectOwnerPreviewLog> logs = auditRepository
                 .findByCompany_ComIdAndRequestedProjectIdOrderByLogIdAsc(
                         fixture.company().getComId(), fixture.project().getProjectId());
-        assertThat(logs).hasSize(5);
+        assertThat(logs).hasSize(4);
         assertThat(logs).extracting(ProjectOwnerPreviewLog::getResult)
                 .containsOnly(OwnerPreviewResult.Success);
         assertThat(logs).extracting(ProjectOwnerPreviewLog::getEmployeeRole)
                 .containsExactlyInAnyOrder(EmployeeRole.Boss, EmployeeRole.StoreManager,
-                        EmployeeRole.TeamLeader, EmployeeRole.Designer, EmployeeRole.Pm);
+                        EmployeeRole.Designer, EmployeeRole.Pm);
         assertThat(logs).allSatisfy(log -> {
             assertThat(log.getCompany().getComId()).isEqualTo(fixture.company().getComId());
             assertThat(log.getProject().getProjectId()).isEqualTo(fixture.project().getProjectId());
@@ -194,14 +194,14 @@ class OwnerPreviewInfoAcceptanceTest {
         assertDefined(() -> call(fixture.employee(EmployeeRole.Boss), otherCompanyProject.getProjectId()), "404");
         assertDefined(() -> call(fixture.nonMemberDesigner(), fixture.project().getProjectId()), "404");
         assertDefined(() -> call(fixture.otherStoreManager(), fixture.project().getProjectId()), "404");
-        assertDefined(() -> call(fixture.otherTeamLeader(), fixture.project().getProjectId()), "404");
+        assertDefined(() -> call(fixture.otherTeamLeader(), fixture.project().getProjectId()), "403");
 
         assertThat(auditRepository.findByCompany_ComIdAndRequestedProjectIdOrderByLogIdAsc(
                 fixture.company().getComId(), otherCompanyProject.getProjectId())).hasSize(1);
         List<ProjectOwnerPreviewLog> projectLogs = auditRepository
                 .findByCompany_ComIdAndRequestedProjectIdOrderByLogIdAsc(
                         fixture.company().getComId(), fixture.project().getProjectId());
-        assertThat(projectLogs).hasSize(3);
+        assertThat(projectLogs).hasSize(2);
         assertThat(projectLogs).extracting(ProjectOwnerPreviewLog::getResult)
                 .containsOnly(OwnerPreviewResult.NotFound);
     }

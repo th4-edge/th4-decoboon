@@ -11,6 +11,7 @@ import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.context.UserIdentityContext;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
@@ -59,6 +60,7 @@ public class Info implements com.th4.edge.tenant.user.service.auth.session.info.
             credential = userContext.requireUser(Long.valueOf(principal.getUserId().toString()));
         }
         if (credential == null) throw new DefinedException(new DefaultErrorCode("401", "当前微信凭证不存在"));
+        EmployeeRolePolicy.requireApplicationAccess(credential.getEmployee());
         customerAccessContext.attachSession(credential);
         return credential;
     }

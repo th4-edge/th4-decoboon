@@ -45,6 +45,9 @@ if [ ! -f "$RELEASE_DIR/SHA256SUMS" ]; then
   exit 2
 fi
 
+# 防止绕过标准构建、直接上传 Spring Boot repackage JAR。
+python3 "$ROOT_DIR/scripts/verify-release-boot-jar.py" "$ARCHIVE"
+
 (
   cd "$RELEASE_DIR"
   shasum -a 256 -c SHA256SUMS

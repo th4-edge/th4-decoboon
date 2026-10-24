@@ -18,6 +18,7 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.billing.context.SubscriptionContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.configure.InviteStatus;
 import com.th4.edge.tenant.user.configure.MemberLogAction;
@@ -121,6 +122,7 @@ public class MembershipContext {
     public Invite createInvite(Employee inviter, String inviteName, String phone,
                                EmployeeRole role, Long teamId, String teamName) {
         EmployeeRole inviteRole = role == null ? EmployeeRole.Marketer : role;
+        EmployeeRolePolicy.requireAssignableRole(inviteRole);
         requireInviteScope(inviter, inviteRole);
         validateInviteFrequency(inviter, phone);
         subscriptionContext.requireWritable(inviter.getCompany());
@@ -165,6 +167,7 @@ public class MembershipContext {
     public Employee accept(Long inviteId, String openId, String unionId, String phone,
                            String name, boolean confirmSwitch, String reason, String avatarUrl) {
         Invite invite = requireInvite(inviteId);
+        EmployeeRolePolicy.requireInviteAcceptable(invite.getRole());
         if (invite.getStatus() != InviteStatus.Pending) {
             throw new DefinedException(new DefaultErrorCode("400", inviteExpiredMessage(invite.getStatus())));
         }
@@ -177,6 +180,7 @@ public class MembershipContext {
         user = userContext.lock(user.getCreId());
         Employee active = userContext.activeEmployee(user);
         if (active != null) {
+            EmployeeRolePolicy.requireApplicationAccess(active);
             if (active.getCompany() != null
                     && invite.getCompany() != null
                     && Objects.equals(active.getCompany().getComId(), invite.getCompany().getComId())) {
@@ -372,8 +376,12 @@ public class MembershipContext {
     @Transactional
     public Employee updateMember(Employee operator, Long empId, EmployeeRole role, Long storeId, Long teamId) {
         Employee target = requireTarget(operator, empId);
+        if (target.getRole() == EmployeeRole.TeamLeader && operator.getRole() != EmployeeRole.Boss) {
+            throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人可调整已冻结的团队负责人"));
+        }
         String before = snapshot(target);
         EmployeeRole targetRole = role == null ? target.getRole() : role;
+        EmployeeRolePolicy.requireAssignableRole(targetRole);
         if (targetRole == EmployeeRole.Boss && operator.getRole() != EmployeeRole.Boss) {
             throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以设置负责人角色"));
         }

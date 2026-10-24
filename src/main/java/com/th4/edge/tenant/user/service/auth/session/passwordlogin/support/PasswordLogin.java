@@ -10,6 +10,7 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.tenant.user.context.PasswordAuthContext;
 import com.th4.edge.tenant.user.context.UserIdentityContext;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
@@ -66,6 +67,7 @@ public class PasswordLogin implements com.th4.edge.tenant.user.service.auth.sess
             passwordAuthContext.loginFailed(credential, "密码错误");
             throw new DefinedException(new DefaultErrorCode("AUTH_FAILED", "手机号或密码错误"));
         }
+        EmployeeRolePolicy.requireApplicationAccess(employee);
         passwordAuthContext.loginSucceeded(credential);
         return employee;
     }

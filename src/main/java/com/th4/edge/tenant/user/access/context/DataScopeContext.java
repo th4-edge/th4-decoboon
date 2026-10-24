@@ -6,6 +6,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
@@ -47,6 +48,7 @@ public class DataScopeContext {
         if (current == null || current.getEmpId() == null) {
             throw new DefinedException(new DefaultErrorCode("401", "登录状态已失效"));
         }
+        EmployeeRolePolicy.requireApplicationAccess(current);
 
         Company company = current.getCompany();
         if (company == null || company.getComId() == null) {

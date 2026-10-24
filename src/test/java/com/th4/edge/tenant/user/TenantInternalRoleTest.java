@@ -56,6 +56,16 @@ class TenantInternalRoleTest {
                 .hasMessageContaining("无权执行");
     }
 
+    @Test
+    void frozenTeamLeaderMustNotPassTenantBoundaryEvenWithAnOldToken() {
+        Employee leader = employee(EmployeeRole.TeamLeader);
+        when(employeeRepository.findByEmpId(leader.getEmpId())).thenReturn(leader);
+
+        assertThatThrownBy(() -> tenantContext.requireEmployee(leader))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("团队负责人角色已冻结");
+    }
+
     private Employee employee(EmployeeRole role) {
         Employee employee = new Employee();
         employee.setEmpId((long) role.ordinal() + 100);

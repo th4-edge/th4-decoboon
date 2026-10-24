@@ -4,12 +4,16 @@ import com.th4.edge.framework.provider.Provider;
 import com.th4.edge.framework.provider.RequestContext;
 import com.th4.edge.framework.provider.security.Security;
 import com.th4.edge.framework.provider.security.SecurityManager;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.billing.configure.PlanModule;
 import com.th4.edge.tenant.billing.context.SubscriptionContext;
 import com.th4.edge.tenant.billing.filter.SubscriptionAccessRequestFilter;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
+import com.th4.edge.tenant.user.configure.EmployeeStatus;
+import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +69,9 @@ class SubscriptionAccessFilterAcceptanceTest {
         company = new Company();
         company.setComId(700001L);
         employee = new Employee();
+        employee.setEmpId(700002L);
         employee.setCompany(company);
+        employee.setStatus(EmployeeStatus.Active);
         doReturn(employee).when(securityManager).authenticate(requestContext);
         when(tenantContext.requireEmployee(employee)).thenReturn(employee);
         filter = new SubscriptionAccessRequestFilter(securityManager, tenantContext, subscriptionContext);
@@ -94,11 +100,35 @@ class SubscriptionAccessFilterAcceptanceTest {
     }
 
     @Test
-    void renewalAndFileAuthorizationRoutesMustBeExemptFromSubscriptionWriteGate() {
+    void renewalAndFileRoutesMustStillPassLegacyRoleGateButSkipSubscriptionGates() {
         filter.prepare((Provider<Object, ?>) orderPrepay, new Object(), requestContext);
         filter.prepare((Provider<Object, ?>) fileGrant, new Object(), requestContext);
 
-        verifyNoInteractions(securityManager, tenantContext, subscriptionContext);
+        verify(tenantContext, org.mockito.Mockito.times(2)).requireEmployee(employee);
+        verifyNoInteractions(subscriptionContext);
+    }
+
+    @Test
+    void frozenTeamLeaderMustBeRejectedBeforeExemptRouteReturns() {
+        employee.setRole(EmployeeRole.TeamLeader);
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        when(employeeRepository.findByEmpId(employee.getEmpId())).thenReturn(employee);
+        filter = new SubscriptionAccessRequestFilter(
+                securityManager, new TenantContext(employeeRepository), subscriptionContext);
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(
+                        () -> filter.prepare((Provider<Object, ?>) orderPrepay, new Object(), requestContext))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("团队负责人角色已冻结");
+        org.assertj.core.api.Assertions.assertThatThrownBy(
+                        () -> filter.prepare((Provider<Object, ?>) fileGrant, new Object(), requestContext))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("团队负责人角色已冻结");
+        org.assertj.core.api.Assertions.assertThatThrownBy(
+                        () -> filter.prepare((Provider<Object, ?>) provider("subscription/info"), new Object(), requestContext))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("团队负责人角色已冻结");
+        verifyNoInteractions(subscriptionContext);
     }
 
     @Test

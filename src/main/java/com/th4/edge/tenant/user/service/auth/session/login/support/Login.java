@@ -12,6 +12,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.context.UserIdentityContext;
+import com.th4.edge.tenant.user.configure.EmployeeRolePolicy;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
@@ -69,8 +70,9 @@ public class Login implements com.th4.edge.tenant.user.service.auth.session.logi
             if (existing.getStatus() != UserStatus.Active) {
                 throw new DefinedException(new DefaultErrorCode("403", "当前微信用户已停用"));
             }
-            userContext.touchLogin(existing);
             Employee employee = userContext.activeEmployee(existing);
+            EmployeeRolePolicy.requireApplicationAccess(employee);
+            userContext.touchLogin(existing);
             return employee == null ? existing : employee;
         }
         if (phoneCode == null || phoneCode.isBlank()) {
@@ -78,8 +80,9 @@ public class Login implements com.th4.edge.tenant.user.service.auth.session.logi
         }
         WechatPhone phone = wechatClient.phone(phoneCode);
         Credentials credential = userContext.identify(session.openId(), session.unionId(), phone.phone(), nickname, avatarUrl);
-        userContext.touchLogin(credential);
         Employee employee = userContext.activeEmployee(credential);
+        EmployeeRolePolicy.requireApplicationAccess(employee);
+        userContext.touchLogin(credential);
         return employee == null ? credential : employee;
     }
 }
