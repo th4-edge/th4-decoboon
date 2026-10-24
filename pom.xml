@@ -163,6 +163,8 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
+                            <!-- 主制品必须保持 thin JAR；重打包制品单独输出为 *-boot.jar，禁止进入生产 assembly。 -->
+                            <classifier>boot</classifier>
                             <layout>ZIP</layout>
                             <includes>
                                 <!-- 项目启动jar包中排除依赖包 -->
