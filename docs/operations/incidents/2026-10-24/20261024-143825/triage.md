@@ -21,3 +21,12 @@
   - 框架捕获该异常并统一转换成 `tokenIsUndefined`，因此表面像“缺少 token”，实际是 JWT audience 类加载失败。
 - 标准构建验证：`mvn -o -q -DskipTests package` 生成的 assembly 中 boot JAR 仍是 thin JAR（`Main-Class=com.th4.edge.Application`，无 `BOOT-INF/classes`），连续两次构建结果一致。
 - 发布根因：`20261024-030000` 实际部署的是 Spring Boot repackage 后的 `target/th4-decoboon-1.0.0.jar`，不是 assembly 应交付的 thin JAR；这是本次发版制品选择/组装路径偏离标准 `build-release.sh` 的结果。
+
+## 修复与上线
+
+- 修复提交：`18099ed fix(release): enforce thin boot jar for production`。
+- 生产 release：`/opt/decoboon/releases/20261024-150858`。
+- 全量测试：239 suites / 928 tests / 0 failures / 0 errors。
+- 生产微信登录：登录成功、会话成功、页面进入 `pages/index/index`，角色 `boss`。
+- 备份与回滚点：`/opt/backups/th4-decoboon/20261024-150510/`；上一版本 `20261024-030000`。
+- 状态：fixed。
