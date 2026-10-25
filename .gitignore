@@ -84,3 +84,19 @@ docs/acceptance/**/*.tsv
 docs/acceptance/**/*.txt
 docs/acceptance/**/*.png
 docs/acceptance/**/*.jpg
+
+### 营销/验收/输出产物（二进制与临时）###
+docs/marketing/**/*.png
+docs/marketing/**/*.jpg
+docs/marketing/**/*.jpeg
+docs/marketing/**/*.pdf
+docs/marketing/**/*.mp4
+docs/marketing/**/*.svg
+docs/marketing/**/index.html
+docs/acceptance/**/*.xml
+docs/acceptance/**/*.patch
+docs/acceptance/**/*.jsonl
+docs/acceptance/**/*.headers
+docs/acceptance/**/SHA256SUMS
+docs/acceptance/**/evidence/**/*.java
+输出/
