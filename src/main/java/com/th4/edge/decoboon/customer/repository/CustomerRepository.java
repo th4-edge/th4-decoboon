@@ -76,12 +76,31 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
               and c.nextFollowAt is not null
               and c.nextFollowAt >= :from
               and c.nextFollowAt < :to
+              and c.measureRequestedAt is null
+              and c.pendingMeasureAt is null
+              and c.measureAt is null
             """)
     long countFollowBetweenForDesigner(@Param("comId") Long comId,
                                        @Param("empId") Long empId,
                                        @Param("statuses") Collection<CustStatus> statuses,
                                        @Param("from") LocalDateTime from,
                                        @Param("to") LocalDateTime to);
+
+    /** 设计师口径：待跟进但尚未安排下一次联系时间。 */
+    @Query("""
+            select count(c)
+            from Customer c
+            where c.company.comId = :comId
+              and (c.owner.empId = :empId or c.designer.empId = :empId)
+              and c.status in :statuses
+              and c.nextFollowAt is null
+              and c.measureRequestedAt is null
+              and c.pendingMeasureAt is null
+              and c.measureAt is null
+            """)
+    long countFollowUnplannedForDesigner(@Param("comId") Long comId,
+                                         @Param("empId") Long empId,
+                                         @Param("statuses") Collection<CustStatus> statuses);
 
     /** 设计师口径：待量房已约定时间但尚未指派设计师。 */
     @Query("""
@@ -120,6 +139,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     List<Customer> findByCompany_ComIdAndOwner_EmpId(Long comId, Long empId);
     List<Customer> findByCompany_ComIdAndDesigner_EmpId(Long comId, Long empId);
+
+    /** 已由分页查询限定租户与数据范围后，按主键批量装配当前页。 */
+    List<Customer> findByCompany_ComIdAndCustIdIn(Long comId, java.util.Collection<Long> custIds);
     Optional<Customer> findByCustIdAndCompany_ComIdAndDesigner_EmpId(Long custId, Long comId, Long empId);
 
     List<Customer> findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(Long comId, Long storeId);

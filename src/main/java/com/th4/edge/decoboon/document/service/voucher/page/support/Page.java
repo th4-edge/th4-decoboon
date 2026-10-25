@@ -26,10 +26,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** 凭证记录分页实现。 */
 @Note("凭证记录分页")
@@ -37,7 +40,7 @@ import java.util.List;
         @AllowProperties(model = VoucherRecord.class,
                 properties = {"voucherId", "project", "type", "voucherNo", "title", "templateVersion",
                         "totalAmount", "amountWords", "partyName", "worker", "status", "fileName",
-                        "generatedBy", "generatedAt", "items", "url", "urlExpiresAt"}),
+                        "sourceType", "sourceId", "paymentId", "sha256", "generatedBy", "generatedAt", "items", "url", "urlExpiresAt"}),
         @AllowProperties(model = VoucherItem.class,
                 properties = {"itemId", "sourceType", "sourceId", "sourceNo", "businessDate",
                         "account", "amount", "category", "remark"}),
@@ -59,6 +62,8 @@ public class Page implements com.th4.edge.decoboon.document.service.voucher.page
     private Integer size;
     @AutoInject
     private Long projectId;
+    @AutoInject
+    private Long expenseId;
     @AutoInject
     private String status;
     @AutoInject
@@ -91,19 +96,32 @@ public class Page implements com.th4.edge.decoboon.document.service.voucher.page
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<VoucherRecord> call(VoucherRecord request) {
         Employee viewer = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager,
-                EmployeeRole.Finance, EmployeeRole.Pm, EmployeeRole.Designer);
+                EmployeeRole.Finance);
         Long comId = viewer.getCompany().getComId();
         Specification<VoucherRecord> visible = viewer.getRole() == EmployeeRole.Boss
                 || viewer.getRole() == EmployeeRole.Finance
                 ? (root, query, builder) -> builder.equal(root.get("company").get("comId"), comId)
                 : DataScopeSpecification.visible(VoucherRecord.class, dataScopeContext.resolve(viewer));
         Long storeFilter = storeFilterContext.resolve(viewer, storeId);
-        List<VoucherRecord> items = recordRepository.findAll(visible).stream()
+        List<Long> ids = recordRepository.findAll(visible).stream()
+                .map(VoucherRecord::getVoucherId)
+                .toList();
+        Map<Long, VoucherRecord> details = new LinkedHashMap<>();
+        if (!ids.isEmpty()) {
+            for (VoucherRecord item : recordRepository.findDetailsByIdIn(ids)) {
+                details.put(item.getVoucherId(), item);
+            }
+        }
+        List<VoucherRecord> items = ids.stream().map(details::get).filter(java.util.Objects::nonNull)
                 .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> projectId == null
                         || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
+                .filter(item -> expenseId == null
+                        || (VoucherRecord.SOURCE_EXPENSE.equals(item.getSourceType())
+                        && expenseId.equals(item.getSourceId())))
                 .filter(item -> status == null || status.isBlank() || item.getStatus().name().equalsIgnoreCase(status))
                 .filter(item -> type == null || type.isBlank() || item.getType().name().equalsIgnoreCase(type))
                 .filter(item -> matchesKeyword(item, keyword))

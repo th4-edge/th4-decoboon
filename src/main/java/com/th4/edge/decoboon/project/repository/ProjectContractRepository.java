@@ -30,6 +30,11 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
 
     List<ProjectContract> findByQuote_QuoteIdIn(Collection<Long> quoteIds);
 
+    /** 签约当前页合同与项目一次批量预取。 */
+    @EntityGraph(attributePaths = {"project", "quote"})
+    @Query("select c from ProjectContract c where c.quote.quoteId in :quoteIds")
+    List<ProjectContract> findWorkbenchByQuoteIds(@Param("quoteIds") Collection<Long> quoteIds);
+
     Optional<ProjectContract> findByProject_ProjectIdAndCompany_ComId(Long projectId, Long comId);
 
     Optional<ProjectContract> findByContractIdAndCompany_ComId(Long contractId, Long comId);
@@ -39,6 +44,10 @@ public interface ProjectContractRepository extends JpaRepository<ProjectContract
     /** 指定客户是否存在不在终态集合内的正式合同。 */
     boolean existsByCompany_ComIdAndCustomer_CustIdAndStatusNotIn(
             Long comId, Long customerId, Collection<ContractStatus> statuses);
+
+    /** 指定房屋是否存在不在终态集合内的正式合同。 */
+    boolean existsByCompany_ComIdAndProperty_PropertyIdAndStatusNotIn(
+            Long comId, Long propertyId, Collection<ContractStatus> statuses);
 
     boolean existsByProject_ProjectId(Long projectId);
 

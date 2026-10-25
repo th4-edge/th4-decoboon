@@ -14,11 +14,7 @@ import com.th4.edge.decoboon.project.model.PurchaseOrderItem;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
-import com.th4.edge.decoboon.supply.model.MaterialSupplier;
 import com.th4.edge.decoboon.supply.model.Partner;
-import com.th4.edge.decoboon.supply.model.PartnerPrice;
-import com.th4.edge.decoboon.supply.repository.MaterialSupplierRepository;
-import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
@@ -50,8 +46,6 @@ public class MaterialPurchaseContext {
     private com.th4.edge.decoboon.common.context.StoreAttributionContext storeAttributionContext;
 
 
-    public static final String PRICE_SOURCE_SUPPLY_RELATION = "供应关系价";
-    public static final String PRICE_SOURCE_PARTNER_PRICE = "目录合作价";
     public static final String PRICE_SOURCE_MANUAL = "手工录入";
 
     private final PurchaseOrderRepository purchaseRepository;
@@ -61,8 +55,6 @@ public class MaterialPurchaseContext {
     private final PayableRepository payableRepository;
     private final ModelIdentityContext modelIdentityContext;
     private final PartnerCreditContext partnerCreditContext;
-    private final MaterialSupplierRepository materialSupplierRepository;
-    private final PartnerPriceRepository partnerPriceRepository;
 
     public MaterialPurchaseContext(PurchaseOrderRepository purchaseRepository,
                                    PurchaseOrderItemRepository purchaseItemRepository,
@@ -70,9 +62,7 @@ public class MaterialPurchaseContext {
                                    MaterialPlanStatusContext materialPlanStatusContext,
                                    PayableRepository payableRepository,
                                    ModelIdentityContext modelIdentityContext,
-                                   PartnerCreditContext partnerCreditContext,
-                                   MaterialSupplierRepository materialSupplierRepository,
-                                   PartnerPriceRepository partnerPriceRepository) {
+                                   PartnerCreditContext partnerCreditContext) {
         this.purchaseRepository = purchaseRepository;
         this.purchaseItemRepository = purchaseItemRepository;
         this.materialPlanRepository = materialPlanRepository;
@@ -80,8 +70,6 @@ public class MaterialPurchaseContext {
         this.payableRepository = payableRepository;
         this.modelIdentityContext = modelIdentityContext;
         this.partnerCreditContext = partnerCreditContext;
-        this.materialSupplierRepository = materialSupplierRepository;
-        this.partnerPriceRepository = partnerPriceRepository;
     }
 
     /** 供应商决定权归财务、店长和企业负责人，项目经理只参与履约，不负责锁供应商。 */
@@ -121,33 +109,9 @@ public class MaterialPurchaseContext {
     }
 
     /**
-     * 本次执行价的来源只做事实识别，不改变采购执行价。
-     * 优先识别材料—供应商供应关系，其次识别目录合作价，最后记为手工录入。
+     * 采购执行价只作为应付事实的输入；供应商旧价格模型已退场，不再推断供应关系价或目录合作价。
      */
     public String resolvePriceSource(MaterialPlan plan, Partner supplier, BigDecimal executionPrice) {
-        if (plan == null || supplier == null || executionPrice == null) {
-            return PRICE_SOURCE_MANUAL;
-        }
-        Long comId = plan.getCompany() == null ? null : plan.getCompany().getComId();
-        if (comId != null && plan.getMaterialKey() != null && !plan.getMaterialKey().isBlank()
-                && supplier.getPartnerId() != null) {
-            MaterialSupplier relation = materialSupplierRepository
-                    .findFirstByCompany_ComIdAndMaterialKeyAndPartner_PartnerId(
-                            comId, plan.getMaterialKey(), supplier.getPartnerId())
-                    .orElse(null);
-            if (relation != null && Boolean.TRUE.equals(relation.getActive())
-                    && sameMoney(relation.getPurchasePrice(), executionPrice)) {
-                return PRICE_SOURCE_SUPPLY_RELATION;
-            }
-        }
-        if (plan.getCatalogItem() != null) {
-            PartnerPrice partnerPrice = partnerPriceRepository
-                    .findFirstByPartnerAndItemAndActiveTrueOrderByPartnerPriceIdDesc(
-                            supplier, plan.getCatalogItem());
-            if (partnerPrice != null && sameMoney(partnerPrice.getPurchasePrice(), executionPrice)) {
-                return PRICE_SOURCE_PARTNER_PRICE;
-            }
-        }
         return PRICE_SOURCE_MANUAL;
     }
 
@@ -252,10 +216,6 @@ public class MaterialPurchaseContext {
             return purchase.getProperty().getOwner();
         }
         return fallback;
-    }
-
-    private boolean sameMoney(BigDecimal left, BigDecimal right) {
-        return value(left).compareTo(value(right)) == 0;
     }
 
     private BigDecimal value(BigDecimal value) {

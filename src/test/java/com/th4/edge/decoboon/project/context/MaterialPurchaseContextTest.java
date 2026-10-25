@@ -9,10 +9,7 @@ import com.th4.edge.decoboon.project.model.PurchaseOrder;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
-import com.th4.edge.decoboon.supply.model.MaterialSupplier;
 import com.th4.edge.decoboon.supply.model.Partner;
-import com.th4.edge.decoboon.supply.repository.MaterialSupplierRepository;
-import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
@@ -38,14 +35,11 @@ class MaterialPurchaseContextTest {
     private final PayableRepository payableRepository = mock(PayableRepository.class);
     private final ModelIdentityContext modelIdentityContext = mock(ModelIdentityContext.class);
     private final PartnerCreditContext partnerCreditContext = mock(PartnerCreditContext.class);
-    private final MaterialSupplierRepository materialSupplierRepository = mock(MaterialSupplierRepository.class);
-    private final PartnerPriceRepository partnerPriceRepository = mock(PartnerPriceRepository.class);
 
     private MaterialPurchaseContext context() {
         return StoreAttributionTestSupport.inject(new MaterialPurchaseContext(purchaseRepository,
                 purchaseItemRepository, materialPlanRepository,
-                materialPlanStatusContext, payableRepository, modelIdentityContext, partnerCreditContext,
-                materialSupplierRepository, partnerPriceRepository));
+                materialPlanStatusContext, payableRepository, modelIdentityContext, partnerCreditContext));
     }
 
     @Test
@@ -118,24 +112,14 @@ class MaterialPurchaseContextTest {
     }
 
     @Test
-    void executionPriceShouldRecordSupplyRelationWhenMatched() {
+    void executionPriceSourceIsAlwaysManualAfterLegacyPriceRetirement() {
         MaterialPurchaseContext context = context();
         MaterialPlan plan = new MaterialPlan();
         plan.setMaterialKey("brand:m&b|spec:750x1500|unit:Area");
-        var company = new com.th4.edge.tenant.user.model.Company();
-        company.setComId(10L);
-        plan.setCompany(company);
         Partner supplier = new Partner();
         supplier.setPartnerId(20L);
-        MaterialSupplier relation = new MaterialSupplier();
-        relation.setActive(true);
-        relation.setPurchasePrice(new BigDecimal("68.00"));
-        when(materialSupplierRepository.findFirstByCompany_ComIdAndMaterialKeyAndPartner_PartnerId(
-                10L, plan.getMaterialKey(), 20L)).thenReturn(Optional.of(relation));
 
         assertThat(context.resolvePriceSource(plan, supplier, new BigDecimal("68.00")))
-                .isEqualTo(MaterialPurchaseContext.PRICE_SOURCE_SUPPLY_RELATION);
-        assertThat(context.resolvePriceSource(plan, supplier, new BigDecimal("66.00")))
                 .isEqualTo(MaterialPurchaseContext.PRICE_SOURCE_MANUAL);
     }
 

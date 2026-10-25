@@ -18,13 +18,16 @@ import com.th4.edge.decoboon.plan.repository.CompanyConstructionPlanRepository;
 import com.th4.edge.decoboon.plan.repository.CompanyConstructionStageRepository;
 import com.th4.edge.decoboon.plan.repository.CompanyPaymentNodeRepository;
 import com.th4.edge.decoboon.plan.repository.CompanyPaymentPlanRepository;
+import com.th4.edge.components.lock.DistributedLock;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /** 企业自定义付款与施工计划模板维护。 */
 @Component
@@ -43,19 +47,25 @@ public class CompanyPlanTemplateContext {
     private final CompanyPaymentNodeRepository paymentNodeRepository;
     private final CompanyConstructionPlanRepository constructionPlanRepository;
     private final CompanyConstructionStageRepository constructionStageRepository;
+    private final DistributedLock distributedLock;
+    private final TransactionTemplate transactionTemplate;
 
     public CompanyPlanTemplateContext(TenantContext tenantContext,
                                       PlanTemplateBaselineContext baselineContext,
                                       CompanyPaymentPlanRepository paymentPlanRepository,
                                       CompanyPaymentNodeRepository paymentNodeRepository,
                                       CompanyConstructionPlanRepository constructionPlanRepository,
-                                      CompanyConstructionStageRepository constructionStageRepository) {
+                                      CompanyConstructionStageRepository constructionStageRepository,
+                                      DistributedLock distributedLock,
+                                      TransactionTemplate transactionTemplate) {
         this.tenantContext = tenantContext;
         this.baselineContext = baselineContext;
         this.paymentPlanRepository = paymentPlanRepository;
         this.paymentNodeRepository = paymentNodeRepository;
         this.constructionPlanRepository = constructionPlanRepository;
         this.constructionStageRepository = constructionStageRepository;
+        this.distributedLock = distributedLock;
+        this.transactionTemplate = transactionTemplate;
     }
 
     @Transactional(readOnly = true)
@@ -99,6 +109,7 @@ public class CompanyPlanTemplateContext {
         plan.setVersion(1);
         plan.setStatus(PlanTemplateStatus.Draft);
         plan.setDefaultPlan(Boolean.FALSE);
+        plan.setCurrentEnabled(Boolean.FALSE);
         List<CompanyPaymentNode> nodes;
         if (hasText(request.getSourceBaselineCode())) {
             PaymentPlanTemplate baseline = baselineContext.paymentPlan(request.getSourceBaselineCode());
@@ -121,53 +132,177 @@ public class CompanyPlanTemplateContext {
     @Transactional
     public PaymentPlanTemplate updatePayment(Employee principal, CompanyPaymentPlan request) {
         Employee current = requireMaintainer(principal);
-        CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
+        CompanyPaymentPlan plan = requirePaymentDraft(current, request == null ? null : request.getTemplateId());
         List<CompanyPaymentNode> nodes = paymentNodes(plan, request.getNodes());
         applyPayment(plan, request);
-        if (plan.getStatus() == PlanTemplateStatus.Enabled) {
-            plan.setVersion(Math.max(1, value(plan.getVersion())) + 1);
-            plan.setPublishedAt(LocalDateTime.now());
-        }
         validatePayment(plan, nodes);
         plan = paymentPlanRepository.save(plan);
         replacePaymentNodes(plan, nodes);
         return paymentView(plan);
     }
 
-    @Transactional
+    public PaymentPlanTemplate buildPayment(Employee principal, CompanyPaymentPlan request) {
+        Employee current = requireMaintainer(principal);
+        Long comId = current.getCompany().getComId();
+        CompanyPaymentPlan base = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
+        String lockKey = planLockKey("payment", comId, base.getCode());
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyPaymentPlan latest = paymentPlanRepository
+                        .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(comId, base.getCode())
+                        .orElseThrow(() -> new DefinedException(new DefaultErrorCode("409", "付款计划版本已变化，请刷新后重试")));
+                String requestedBaselineCode = request == null ? null : request.getSourceBaselineCode();
+                if (latest.getStatus() == PlanTemplateStatus.Draft) {
+                    if (!hasText(requestedBaselineCode)
+                            || requestedBaselineCode.equals(latest.getSourceBaselineCode())) {
+                        return paymentView(latest);
+                    }
+                    throw new DefinedException(new DefaultErrorCode("409", "付款计划已存在其他草稿，请直接编辑"));
+                }
+                if (!latest.getTemplateId().equals(base.getTemplateId())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "付款计划版本已变化，请刷新后重试"));
+                }
+                CompanyPaymentPlan draft = new CompanyPaymentPlan();
+                draft.setCompany(current.getCompany());
+                draft.setCode(latest.getCode());
+                draft.setVersion(latest.getVersion() + 1);
+                draft.setStatus(PlanTemplateStatus.Draft);
+                draft.setDefaultPlan(Boolean.FALSE);
+                draft.setCurrentEnabled(Boolean.FALSE);
+                draft.setName(latest.getName());
+                draft.setDescription(latest.getDescription());
+                draft.setSort(latest.getSort());
+                draft.setSourceBaselineCode(latest.getSourceBaselineCode());
+                draft.setSourceBaselineVersion(latest.getSourceBaselineVersion());
+                List<CompanyPaymentNode> nodes;
+                if (request != null && hasText(request.getSourceBaselineCode())) {
+                    PaymentPlanTemplate baseline = baselineContext.paymentPlan(request.getSourceBaselineCode());
+                    draft.setSourceBaselineCode(baseline.getCode());
+                    draft.setSourceBaselineVersion(baseline.getVersion());
+                    nodes = paymentNodesFromBaseline(draft, baseline.getNodes());
+                } else {
+                    nodes = copyPaymentNodes(latest, draft);
+                }
+                validatePayment(draft, nodes);
+                draft = paymentPlanRepository.save(draft);
+                replacePaymentNodes(draft, nodes);
+                return paymentView(draft);
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
+    }
+
     public PaymentPlanTemplate publishPayment(Employee principal, CompanyPaymentPlan request) {
         Employee current = requireMaintainer(principal);
-        CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
-        List<CompanyPaymentNode> nodes = paymentNodeRepository.findByPlan_TemplateIdOrderBySortAscNodeIdAsc(plan.getTemplateId());
-        validatePayment(plan, nodes);
-        plan.setStatus(PlanTemplateStatus.Enabled);
-        plan.setPublishedAt(LocalDateTime.now());
-        if (plan.getVersion() == null || plan.getVersion() < 1) plan.setVersion(1);
-        if (!hasPaymentDefault(current)) plan.setDefaultPlan(Boolean.TRUE);
-        paymentPlanRepository.save(plan);
-        return paymentView(plan);
+        Long comId = current.getCompany().getComId();
+        CompanyPaymentPlan base = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
+        String lockKey = planDefaultLockKey("payment", comId);
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyPaymentPlan plan = requirePaymentPlan(current, base.getTemplateId());
+                if (plan.getStatus() == PlanTemplateStatus.Enabled && Boolean.TRUE.equals(plan.getCurrentEnabled())) {
+                    return paymentView(plan);
+                }
+                if (plan.getStatus() != PlanTemplateStatus.Draft) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只有草稿付款计划可以启用"));
+                }
+                CompanyPaymentPlan latest = paymentPlanRepository
+                        .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(comId, plan.getCode())
+                        .orElse(plan);
+                if (!latest.getTemplateId().equals(plan.getTemplateId())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只能启用付款计划最新版本"));
+                }
+                List<CompanyPaymentNode> nodes = paymentNodeRepository.findByPlan_TemplateIdOrderBySortAscNodeIdAsc(plan.getTemplateId());
+                validatePayment(plan, nodes);
+                List<CompanyPaymentPlan> previous = paymentPlanRepository
+                        .findByCompany_ComIdAndCodeAndCurrentEnabledTrue(comId, plan.getCode());
+                boolean inheritedDefault = previous.stream()
+                        .anyMatch(item -> Boolean.TRUE.equals(item.getDefaultPlan()));
+                List<CompanyPaymentPlan> allCurrent = paymentPlanRepository
+                        .findByCompany_ComIdAndCurrentEnabledTrue(comId);
+                boolean otherDefault = allCurrent.stream()
+                        .filter(item -> !item.getTemplateId().equals(plan.getTemplateId()))
+                        .anyMatch(item -> Boolean.TRUE.equals(item.getDefaultPlan()));
+                for (CompanyPaymentPlan item : previous) {
+                    if (!item.getTemplateId().equals(plan.getTemplateId())) {
+                        item.setCurrentEnabled(Boolean.FALSE);
+                        item.setDefaultPlan(Boolean.FALSE);
+                        paymentPlanRepository.save(item);
+                    }
+                }
+                if (inheritedDefault) {
+                    for (CompanyPaymentPlan item : allCurrent) {
+                        if (!item.getTemplateId().equals(plan.getTemplateId())
+                                && Boolean.TRUE.equals(item.getDefaultPlan())) {
+                            item.setDefaultPlan(Boolean.FALSE);
+                            paymentPlanRepository.save(item);
+                        }
+                    }
+                }
+                plan.setStatus(PlanTemplateStatus.Enabled);
+                plan.setCurrentEnabled(Boolean.TRUE);
+                plan.setPublishedAt(LocalDateTime.now());
+                plan.setDefaultPlan(inheritedDefault || !otherDefault);
+                paymentPlanRepository.save(plan);
+                return paymentView(plan);
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
-    @Transactional
     public PaymentPlanTemplate disablePayment(Employee principal, CompanyPaymentPlan request) {
         Employee current = requireMaintainer(principal);
-        CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
-        plan.setStatus(PlanTemplateStatus.Disabled);
-        plan.setDefaultPlan(Boolean.FALSE);
-        paymentPlanRepository.save(plan);
-        return paymentView(plan);
+        Long comId = current.getCompany().getComId();
+        CompanyPaymentPlan base = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
+        String lockKey = planLockKey("payment", comId, base.getCode());
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyPaymentPlan plan = requirePaymentPlan(current, base.getTemplateId());
+                if (plan.getStatus() == PlanTemplateStatus.Disabled) {
+                    plan.setCurrentEnabled(Boolean.FALSE);
+                    plan.setDefaultPlan(Boolean.FALSE);
+                    return paymentView(paymentPlanRepository.save(plan));
+                }
+                if (plan.getStatus() != PlanTemplateStatus.Enabled || !Boolean.TRUE.equals(plan.getCurrentEnabled())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只有当前启用的付款计划可以停用"));
+                }
+                plan.setStatus(PlanTemplateStatus.Disabled);
+                plan.setCurrentEnabled(Boolean.FALSE);
+                plan.setDefaultPlan(Boolean.FALSE);
+                return paymentView(paymentPlanRepository.save(plan));
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
-    @Transactional
     public PaymentPlanTemplate defaultPayment(Employee principal, CompanyPaymentPlan request) {
         Employee current = requireMaintainer(principal);
+        Long comId = current.getCompany().getComId();
         CompanyPaymentPlan plan = requirePaymentPlan(current, request == null ? null : request.getTemplateId());
-        requireEnabled(plan.getStatus(), "只有已启用的付款计划模板可以设为默认");
-        for (CompanyPaymentPlan item : paymentPlanRepository.findByCompany_ComIdOrderByDefaultPlanDescSortAscTemplateIdAsc(current.getCompany().getComId())) {
-            item.setDefaultPlan(item.getTemplateId().equals(plan.getTemplateId()));
-            paymentPlanRepository.save(item);
+        String lockKey = planDefaultLockKey("payment", comId);
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyPaymentPlan target = requirePaymentPlan(current, plan.getTemplateId());
+                requireEnabled(target.getStatus(), "只有已启用的付款计划模板可以设为默认");
+                if (!Boolean.TRUE.equals(target.getCurrentEnabled())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只有当前启用的付款计划可以设为默认"));
+                }
+                for (CompanyPaymentPlan item : paymentPlanRepository.findByCompany_ComIdAndCurrentEnabledTrue(comId)) {
+                    item.setDefaultPlan(item.getTemplateId().equals(target.getTemplateId()));
+                    paymentPlanRepository.save(item);
+                }
+                return paymentView(target);
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
         }
-        return paymentView(plan);
     }
 
     @Transactional
@@ -179,6 +314,7 @@ public class CompanyPlanTemplateContext {
         plan.setVersion(1);
         plan.setStatus(PlanTemplateStatus.Draft);
         plan.setDefaultPlan(Boolean.FALSE);
+        plan.setCurrentEnabled(Boolean.FALSE);
         List<CompanyConstructionStage> stages;
         if (hasText(request.getSourceBaselineCode())) {
             ConstructionPlanTemplate baseline = baselineContext.constructionPlan(request.getSourceBaselineCode());
@@ -193,8 +329,10 @@ public class CompanyPlanTemplateContext {
         } else {
             applyConstruction(plan, request);
             stages = constructionStages(plan, request.getStages());
-            // 空白新建没有可继承的声明总工期，按阶段 defaultDays 汇总作为默认值。
-            plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
+            // 空白新建未声明总工期时，才以阶段相对权重合计作为初始值。
+            if (request.getTotalDays() == null) {
+                plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
+            }
         }
         validateConstruction(plan, stages);
         plan = constructionPlanRepository.save(plan);
@@ -205,16 +343,12 @@ public class CompanyPlanTemplateContext {
     @Transactional
     public ConstructionPlanTemplate updateConstruction(Employee principal, CompanyConstructionPlan request) {
         Employee current = requireMaintainer(principal);
-        CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
+        CompanyConstructionPlan plan = requireConstructionDraft(current, request == null ? null : request.getTemplateId());
         List<CompanyConstructionStage> stages = constructionStages(plan, request.getStages());
         applyConstruction(plan, request);
         // DEC-048 T-02：保留模板已声明的标准总工期；仅历史数据为空时兜底。
         if (plan.getTotalDays() == null) {
             plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
-        }
-        if (plan.getStatus() == PlanTemplateStatus.Enabled) {
-            plan.setVersion(Math.max(1, value(plan.getVersion())) + 1);
-            plan.setPublishedAt(LocalDateTime.now());
         }
         validateConstruction(plan, stages);
         plan = constructionPlanRepository.save(plan);
@@ -222,61 +356,204 @@ public class CompanyPlanTemplateContext {
         return constructionView(plan);
     }
 
-    @Transactional
+    public ConstructionPlanTemplate buildConstruction(Employee principal, CompanyConstructionPlan request) {
+        Employee current = requireMaintainer(principal);
+        Long comId = current.getCompany().getComId();
+        CompanyConstructionPlan base = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
+        String lockKey = planLockKey("construction", comId, base.getCode());
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyConstructionPlan latest = constructionPlanRepository
+                        .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(comId, base.getCode())
+                        .orElseThrow(() -> new DefinedException(new DefaultErrorCode("409", "施工计划版本已变化，请刷新后重试")));
+                String requestedBaselineCode = request == null ? null : request.getSourceBaselineCode();
+                if (latest.getStatus() == PlanTemplateStatus.Draft) {
+                    if (!hasText(requestedBaselineCode)
+                            || requestedBaselineCode.equals(latest.getSourceBaselineCode())) {
+                        return constructionView(latest);
+                    }
+                    throw new DefinedException(new DefaultErrorCode("409", "施工计划已存在其他草稿，请直接编辑"));
+                }
+                if (!latest.getTemplateId().equals(base.getTemplateId())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "施工计划版本已变化，请刷新后重试"));
+                }
+                CompanyConstructionPlan draft = new CompanyConstructionPlan();
+                draft.setCompany(current.getCompany());
+                draft.setCode(latest.getCode());
+                draft.setVersion(latest.getVersion() + 1);
+                draft.setStatus(PlanTemplateStatus.Draft);
+                draft.setDefaultPlan(Boolean.FALSE);
+                draft.setCurrentEnabled(Boolean.FALSE);
+                draft.setName(latest.getName());
+                draft.setDescription(latest.getDescription());
+                draft.setTotalDays(latest.getTotalDays());
+                draft.setSort(latest.getSort());
+                draft.setSourceBaselineCode(latest.getSourceBaselineCode());
+                draft.setSourceBaselineVersion(latest.getSourceBaselineVersion());
+                List<CompanyConstructionStage> stages;
+                if (request != null && hasText(request.getSourceBaselineCode())) {
+                    ConstructionPlanTemplate baseline = baselineContext.constructionPlan(request.getSourceBaselineCode());
+                    draft.setSourceBaselineCode(baseline.getCode());
+                    draft.setSourceBaselineVersion(baseline.getVersion());
+                    draft.setTotalDays(baseline.getTotalDays());
+                    stages = constructionStagesFromBaseline(draft, baseline.getStages());
+                } else {
+                    stages = copyConstructionStages(latest, draft);
+                }
+                validateConstruction(draft, stages);
+                draft = constructionPlanRepository.save(draft);
+                replaceConstructionStages(draft, stages);
+                return constructionView(draft);
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
+    }
+
     public ConstructionPlanTemplate publishConstruction(Employee principal, CompanyConstructionPlan request) {
         Employee current = requireMaintainer(principal);
-        CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
-        List<CompanyConstructionStage> stages = constructionStageRepository.findByPlan_TemplateIdOrderBySortAscStageIdAsc(plan.getTemplateId());
-        if (plan.getTotalDays() == null) {
-            plan.setTotalDays(stages.stream().mapToInt(item -> Math.max(1, item.getDefaultDays())).sum());
+        Long comId = current.getCompany().getComId();
+        CompanyConstructionPlan base = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
+        String lockKey = planDefaultLockKey("construction", comId);
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyConstructionPlan plan = requireConstructionPlan(current, base.getTemplateId());
+                if (plan.getStatus() == PlanTemplateStatus.Enabled && Boolean.TRUE.equals(plan.getCurrentEnabled())) {
+                    return constructionView(plan);
+                }
+                if (plan.getStatus() != PlanTemplateStatus.Draft) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只有草稿施工计划可以启用"));
+                }
+                CompanyConstructionPlan latest = constructionPlanRepository
+                        .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(comId, plan.getCode())
+                        .orElse(plan);
+                if (!latest.getTemplateId().equals(plan.getTemplateId())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只能启用施工计划最新版本"));
+                }
+                List<CompanyConstructionStage> stages = constructionStageRepository.findByPlan_TemplateIdOrderBySortAscStageIdAsc(plan.getTemplateId());
+                validateConstruction(plan, stages);
+                List<CompanyConstructionPlan> previous = constructionPlanRepository
+                        .findByCompany_ComIdAndCodeAndCurrentEnabledTrue(comId, plan.getCode());
+                boolean inheritedDefault = previous.stream()
+                        .anyMatch(item -> Boolean.TRUE.equals(item.getDefaultPlan()));
+                List<CompanyConstructionPlan> allCurrent = constructionPlanRepository
+                        .findByCompany_ComIdAndCurrentEnabledTrue(comId);
+                boolean otherDefault = allCurrent.stream()
+                        .filter(item -> !item.getTemplateId().equals(plan.getTemplateId()))
+                        .anyMatch(item -> Boolean.TRUE.equals(item.getDefaultPlan()));
+                for (CompanyConstructionPlan item : previous) {
+                    if (!item.getTemplateId().equals(plan.getTemplateId())) {
+                        item.setCurrentEnabled(Boolean.FALSE);
+                        item.setDefaultPlan(Boolean.FALSE);
+                        constructionPlanRepository.save(item);
+                    }
+                }
+                if (inheritedDefault) {
+                    for (CompanyConstructionPlan item : allCurrent) {
+                        if (!item.getTemplateId().equals(plan.getTemplateId())
+                                && Boolean.TRUE.equals(item.getDefaultPlan())) {
+                            item.setDefaultPlan(Boolean.FALSE);
+                            constructionPlanRepository.save(item);
+                        }
+                    }
+                }
+                plan.setStatus(PlanTemplateStatus.Enabled);
+                plan.setCurrentEnabled(Boolean.TRUE);
+                plan.setPublishedAt(LocalDateTime.now());
+                plan.setDefaultPlan(inheritedDefault || !otherDefault);
+                constructionPlanRepository.save(plan);
+                return constructionView(plan);
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
         }
-        validateConstruction(plan, stages);
-        plan.setStatus(PlanTemplateStatus.Enabled);
-        plan.setPublishedAt(LocalDateTime.now());
-        if (plan.getVersion() == null || plan.getVersion() < 1) plan.setVersion(1);
-        if (!hasConstructionDefault(current)) plan.setDefaultPlan(Boolean.TRUE);
-        constructionPlanRepository.save(plan);
-        return constructionView(plan);
     }
 
-    @Transactional
     public ConstructionPlanTemplate disableConstruction(Employee principal, CompanyConstructionPlan request) {
         Employee current = requireMaintainer(principal);
-        CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
-        plan.setStatus(PlanTemplateStatus.Disabled);
-        plan.setDefaultPlan(Boolean.FALSE);
-        constructionPlanRepository.save(plan);
-        return constructionView(plan);
+        Long comId = current.getCompany().getComId();
+        CompanyConstructionPlan base = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
+        String lockKey = planLockKey("construction", comId, base.getCode());
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyConstructionPlan plan = requireConstructionPlan(current, base.getTemplateId());
+                if (plan.getStatus() == PlanTemplateStatus.Disabled) {
+                    plan.setCurrentEnabled(Boolean.FALSE);
+                    plan.setDefaultPlan(Boolean.FALSE);
+                    return constructionView(constructionPlanRepository.save(plan));
+                }
+                if (plan.getStatus() != PlanTemplateStatus.Enabled || !Boolean.TRUE.equals(plan.getCurrentEnabled())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只有当前启用的施工计划可以停用"));
+                }
+                plan.setStatus(PlanTemplateStatus.Disabled);
+                plan.setCurrentEnabled(Boolean.FALSE);
+                plan.setDefaultPlan(Boolean.FALSE);
+                return constructionView(constructionPlanRepository.save(plan));
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
     }
 
-    @Transactional
     public ConstructionPlanTemplate defaultConstruction(Employee principal, CompanyConstructionPlan request) {
         Employee current = requireMaintainer(principal);
+        Long comId = current.getCompany().getComId();
         CompanyConstructionPlan plan = requireConstructionPlan(current, request == null ? null : request.getTemplateId());
-        requireEnabled(plan.getStatus(), "只有已启用的施工计划模板可以设为默认");
-        for (CompanyConstructionPlan item : constructionPlanRepository.findByCompany_ComIdOrderByDefaultPlanDescSortAscTemplateIdAsc(current.getCompany().getComId())) {
-            item.setDefaultPlan(item.getTemplateId().equals(plan.getTemplateId()));
-            constructionPlanRepository.save(item);
+        String lockKey = planDefaultLockKey("construction", comId);
+        lock(lockKey);
+        try {
+            return executeVersionWrite(() -> {
+                CompanyConstructionPlan target = requireConstructionPlan(current, plan.getTemplateId());
+                requireEnabled(target.getStatus(), "只有已启用的施工计划模板可以设为默认");
+                if (!Boolean.TRUE.equals(target.getCurrentEnabled())) {
+                    throw new DefinedException(new DefaultErrorCode("409", "只有当前启用的施工计划可以设为默认"));
+                }
+                for (CompanyConstructionPlan item : constructionPlanRepository.findByCompany_ComIdAndCurrentEnabledTrue(comId)) {
+                    item.setDefaultPlan(item.getTemplateId().equals(target.getTemplateId()));
+                    constructionPlanRepository.save(item);
+                }
+                return constructionView(target);
+            });
+        } finally {
+            distributedLock.unlock(lockKey);
         }
-        return constructionView(plan);
     }
 
     @Transactional(readOnly = true)
     public PaymentPlanTemplate resolvePaymentPlan(Long comId, String code) {
-        CompanyPaymentPlan custom = hasText(code)
-                ? paymentPlanRepository.findByCompany_ComIdAndCodeAndStatus(comId, code, PlanTemplateStatus.Enabled).orElse(null)
-                : paymentPlanRepository.findFirstByCompany_ComIdAndStatusOrderByDefaultPlanDescSortAscTemplateIdAsc(
-                        comId, PlanTemplateStatus.Enabled).orElse(null);
+        if (!hasText(code)) {
+            CompanyPaymentPlan defaultPlan = paymentPlanRepository
+                    .findByCompany_ComIdAndStatusAndCurrentEnabledTrueOrderByDefaultPlanDescTemplateIdAsc(
+                            comId, PlanTemplateStatus.Enabled).stream()
+                    .filter(item -> Boolean.TRUE.equals(item.getDefaultPlan()))
+                    .findFirst()
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("400", "请选择明确的付款计划模板")));
+            return paymentView(defaultPlan);
+        }
+        CompanyPaymentPlan custom = paymentPlanRepository
+                .findByCompany_ComIdAndCodeAndCurrentEnabledTrue(comId, code).stream()
+                .filter(item -> item.getStatus() == PlanTemplateStatus.Enabled).findFirst().orElse(null);
         if (custom != null) return paymentView(custom);
         return baselineContext.paymentPlan(code);
     }
 
     @Transactional(readOnly = true)
     public ConstructionPlanTemplate resolveConstructionPlan(Long comId, String code) {
-        CompanyConstructionPlan custom = hasText(code)
-                ? constructionPlanRepository.findByCompany_ComIdAndCodeAndStatus(comId, code, PlanTemplateStatus.Enabled).orElse(null)
-                : constructionPlanRepository.findFirstByCompany_ComIdAndStatusOrderByDefaultPlanDescSortAscTemplateIdAsc(
-                        comId, PlanTemplateStatus.Enabled).orElse(null);
+        if (!hasText(code)) {
+            CompanyConstructionPlan defaultPlan = constructionPlanRepository
+                    .findByCompany_ComIdAndStatusAndCurrentEnabledTrueOrderByDefaultPlanDescTemplateIdAsc(
+                            comId, PlanTemplateStatus.Enabled).stream()
+                    .filter(item -> Boolean.TRUE.equals(item.getDefaultPlan()))
+                    .findFirst()
+                    .orElseThrow(() -> new DefinedException(new DefaultErrorCode("400", "请选择明确的施工计划模板")));
+            return constructionView(defaultPlan);
+        }
+        CompanyConstructionPlan custom = constructionPlanRepository
+                .findByCompany_ComIdAndCodeAndCurrentEnabledTrue(comId, code).stream()
+                .filter(item -> item.getStatus() == PlanTemplateStatus.Enabled).findFirst().orElse(null);
         if (custom != null) return constructionView(custom);
         return baselineContext.constructionPlan(code);
     }
@@ -285,16 +562,16 @@ public class CompanyPlanTemplateContext {
         Long comId = current.getCompany().getComId();
         List<PaymentPlanTemplate> payments = new ArrayList<>();
         List<CompanyPaymentPlan> customPayments = includeDisabled
-                ? paymentPlanRepository.findByCompany_ComIdOrderByDefaultPlanDescSortAscTemplateIdAsc(comId)
-                : paymentPlanRepository.findByCompany_ComIdAndStatusOrderByDefaultPlanDescSortAscTemplateIdAsc(
+                ? paymentPlanRepository.findByCompany_ComIdOrderByCodeAscVersionDescTemplateIdDesc(comId)
+                : paymentPlanRepository.findByCompany_ComIdAndStatusAndCurrentEnabledTrueOrderByDefaultPlanDescTemplateIdAsc(
                         comId, PlanTemplateStatus.Enabled);
         customPayments.forEach(item -> payments.add(paymentView(item)));
         baselineContext.catalog().getPaymentPlans().forEach(item -> payments.add(baselinePayment(item)));
 
         List<ConstructionPlanTemplate> constructions = new ArrayList<>();
         List<CompanyConstructionPlan> customConstructions = includeDisabled
-                ? constructionPlanRepository.findByCompany_ComIdOrderByDefaultPlanDescSortAscTemplateIdAsc(comId)
-                : constructionPlanRepository.findByCompany_ComIdAndStatusOrderByDefaultPlanDescSortAscTemplateIdAsc(
+                ? constructionPlanRepository.findByCompany_ComIdOrderByCodeAscVersionDescTemplateIdDesc(comId)
+                : constructionPlanRepository.findByCompany_ComIdAndStatusAndCurrentEnabledTrueOrderByDefaultPlanDescTemplateIdAsc(
                         comId, PlanTemplateStatus.Enabled);
         customConstructions.forEach(item -> constructions.add(constructionView(item)));
         baselineContext.catalog().getConstructionPlans().forEach(item -> constructions.add(baselineConstruction(item)));
@@ -338,8 +615,11 @@ public class CompanyPlanTemplateContext {
         view.setDescription(plan.getDescription());
         view.setSort(plan.getSort());
         view.setSource(PlanTemplateSource.Company);
+        view.setSourceBaselineCode(plan.getSourceBaselineCode());
+        view.setSourceBaselineVersion(plan.getSourceBaselineVersion());
         view.setStatus(plan.getStatus());
         view.setDefaultPlan(Boolean.TRUE.equals(plan.getDefaultPlan()));
+        view.setCurrentEnabled(Boolean.TRUE.equals(plan.getCurrentEnabled()));
         view.setNodes(paymentNodeRepository.findByPlan_TemplateIdOrderBySortAscNodeIdAsc(plan.getTemplateId()).stream()
                 .map(this::paymentNodeView).toList());
         return view;
@@ -355,8 +635,11 @@ public class CompanyPlanTemplateContext {
         view.setTotalDays(plan.getTotalDays());
         view.setSort(plan.getSort());
         view.setSource(PlanTemplateSource.Company);
+        view.setSourceBaselineCode(plan.getSourceBaselineCode());
+        view.setSourceBaselineVersion(plan.getSourceBaselineVersion());
         view.setStatus(plan.getStatus());
         view.setDefaultPlan(Boolean.TRUE.equals(plan.getDefaultPlan()));
+        view.setCurrentEnabled(Boolean.TRUE.equals(plan.getCurrentEnabled()));
         view.setStages(constructionStageRepository.findByPlan_TemplateIdOrderBySortAscStageIdAsc(plan.getTemplateId()).stream()
                 .map(this::constructionStageView).toList());
         return view;
@@ -497,6 +780,7 @@ public class CompanyPlanTemplateContext {
         plan.setName(request.getName().trim());
         plan.setDescription(textOrNull(request.getDescription()));
         plan.setSort(request.getSort() == null ? 0 : request.getSort());
+        if (request.getTotalDays() != null) plan.setTotalDays(request.getTotalDays());
     }
 
     private void validatePayment(CompanyPaymentPlan plan, List<CompanyPaymentNode> nodes) {
@@ -532,6 +816,92 @@ public class CompanyPlanTemplateContext {
             if (stage.getDefaultDays() == null || stage.getDefaultDays() < 1 || stage.getDefaultDays() > 365) {
                 throw invalid("施工阶段工期必须在1至365天之间");
             }
+        }
+    }
+
+    private CompanyPaymentPlan requirePaymentDraft(Employee current, Long templateId) {
+        CompanyPaymentPlan plan = requirePaymentPlan(current, templateId);
+        if (plan.getStatus() != PlanTemplateStatus.Draft) {
+            throw new DefinedException(new DefaultErrorCode("409", "已启用或已停用的付款计划不能原地修改，请先创建新版本"));
+        }
+        CompanyPaymentPlan latest = paymentPlanRepository
+                .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(current.getCompany().getComId(), plan.getCode())
+                .orElse(plan);
+        if (!latest.getTemplateId().equals(plan.getTemplateId())) {
+            throw new DefinedException(new DefaultErrorCode("409", "只能修改付款计划最新草稿"));
+        }
+        return plan;
+    }
+
+    private CompanyConstructionPlan requireConstructionDraft(Employee current, Long templateId) {
+        CompanyConstructionPlan plan = requireConstructionPlan(current, templateId);
+        if (plan.getStatus() != PlanTemplateStatus.Draft) {
+            throw new DefinedException(new DefaultErrorCode("409", "已启用或已停用的施工计划不能原地修改，请先创建新版本"));
+        }
+        CompanyConstructionPlan latest = constructionPlanRepository
+                .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(current.getCompany().getComId(), plan.getCode())
+                .orElse(plan);
+        if (!latest.getTemplateId().equals(plan.getTemplateId())) {
+            throw new DefinedException(new DefaultErrorCode("409", "只能修改施工计划最新草稿"));
+        }
+        return plan;
+    }
+
+    private List<CompanyPaymentNode> copyPaymentNodes(CompanyPaymentPlan source, CompanyPaymentPlan target) {
+        List<CompanyPaymentNode> result = new ArrayList<>();
+        for (CompanyPaymentNode item : paymentNodeRepository.findByPlan_TemplateIdOrderBySortAscNodeIdAsc(source.getTemplateId())) {
+            CompanyPaymentNode copy = new CompanyPaymentNode();
+            copy.setCompany(target.getCompany());
+            copy.setPlan(target);
+            copy.setCode(item.getCode());
+            copy.setName(item.getName());
+            copy.setRatio(item.getRatio());
+            copy.setType(item.getType());
+            copy.setTriggerType(item.getTriggerType());
+            copy.setTriggerStageCode(item.getTriggerStageCode());
+            copy.setOffsetDays(item.getOffsetDays());
+            copy.setSort(item.getSort());
+            result.add(copy);
+        }
+        return result;
+    }
+
+    private List<CompanyConstructionStage> copyConstructionStages(CompanyConstructionPlan source, CompanyConstructionPlan target) {
+        List<CompanyConstructionStage> result = new ArrayList<>();
+        for (CompanyConstructionStage item : constructionStageRepository.findByPlan_TemplateIdOrderBySortAscStageIdAsc(source.getTemplateId())) {
+            CompanyConstructionStage copy = new CompanyConstructionStage();
+            copy.setCompany(target.getCompany());
+            copy.setPlan(target);
+            copy.setCode(item.getCode());
+            copy.setName(item.getName());
+            copy.setDefaultDays(item.getDefaultDays());
+            copy.setAcceptanceMode(item.getAcceptanceMode());
+            copy.setSort(item.getSort());
+            copy.setDescription(item.getDescription());
+            result.add(copy);
+        }
+        return result;
+    }
+
+    private void lock(String lockKey) {
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "计划模板版本正在被处理，请稍后重试"));
+        }
+    }
+
+    private String planLockKey(String type, Long comId, String code) {
+        return "company-plan-template:" + type + ":" + comId + ":" + code;
+    }
+
+    private String planDefaultLockKey(String type, Long comId) {
+        return "company-plan-template:" + type + ":" + comId + ":default";
+    }
+
+    private <T> T executeVersionWrite(Supplier<T> action) {
+        try {
+            return transactionTemplate.execute(status -> action.get());
+        } catch (DataIntegrityViolationException ex) {
+            throw new DefinedException(new DefaultErrorCode("409", "计划模板版本正在被其他操作更新，请刷新后重试"));
         }
     }
 

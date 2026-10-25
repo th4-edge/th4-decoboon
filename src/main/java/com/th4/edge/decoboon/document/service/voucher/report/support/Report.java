@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.document.service.voucher.report.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.document.configure.DocumentType;
 import com.th4.edge.decoboon.document.model.VoucherMonthAmount;
 import com.th4.edge.decoboon.document.model.VoucherRecord;
@@ -46,6 +48,8 @@ public class Report implements com.th4.edge.decoboon.document.service.voucher.re
     @AutoInject
     private Long projectId;
     @AutoInject
+    private Long expenseId;
+    @AutoInject
     private String status;
     @AutoInject
     private String keyword;
@@ -55,31 +59,40 @@ public class Report implements com.th4.edge.decoboon.document.service.voucher.re
     private LocalDate startDate;
     @AutoInject
     private LocalDate endDate;
+    @AutoInject
+    private Long storeId;
 
     private final VoucherRecordRepository recordRepository;
     private final TenantContext tenantContext;
     private final DataScopeContext dataScopeContext;
+    private final StoreFilterContext storeFilterContext;
 
     public Report(VoucherRecordRepository recordRepository, TenantContext tenantContext,
-                  DataScopeContext dataScopeContext) {
+                  DataScopeContext dataScopeContext, StoreFilterContext storeFilterContext) {
         this.recordRepository = recordRepository;
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Override
     @Transactional(readOnly = true)
     public VoucherReport call(VoucherRecord request) {
         Employee viewer = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager,
-                EmployeeRole.Finance, EmployeeRole.Pm, EmployeeRole.Designer);
+                EmployeeRole.Finance);
         Long comId = viewer.getCompany().getComId();
         Specification<VoucherRecord> visible = viewer.getRole() == EmployeeRole.Boss
                 || viewer.getRole() == EmployeeRole.Finance
                 ? (root, query, builder) -> builder.equal(root.get("company").get("comId"), comId)
                 : DataScopeSpecification.visible(VoucherRecord.class, dataScopeContext.resolve(viewer));
+        Long storeFilter = storeFilterContext.resolve(viewer, storeId);
         List<VoucherRecord> items = recordRepository.findAll(visible).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> projectId == null
                         || (item.getProject() != null && projectId.equals(item.getProject().getProjectId())))
+                .filter(item -> expenseId == null
+                        || (VoucherRecord.SOURCE_EXPENSE.equals(item.getSourceType())
+                        && expenseId.equals(item.getSourceId())))
                 .filter(item -> status == null || status.isBlank() || item.getStatus().name().equalsIgnoreCase(status))
                 .filter(item -> type == null || type.isBlank() || item.getType().name().equalsIgnoreCase(type))
                 .filter(item -> matchesKeyword(item, keyword))

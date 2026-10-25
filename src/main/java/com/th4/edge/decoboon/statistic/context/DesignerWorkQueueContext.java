@@ -62,7 +62,13 @@ public class DesignerWorkQueueContext {
                   ON d.com_id = p.com_id
                  AND d.property_id = p.property_id
                 WHERE c.com_id = :comId
-                  AND c.status <> 'Dormant'
+                  AND c.status IN ('New', 'Following', 'PendingMeasure', 'Quoted')
+                  AND NOT EXISTS (
+                    SELECT 1 FROM cust_customer_loss cl
+                    WHERE cl.com_id = p.com_id
+                      AND cl.property_id = p.property_id
+                      AND cl.restored_at IS NULL
+                  )
                   AND c.designer_id = :empId
                   AND d.status IN ('Draft','Ready','Presented')
                   AND NOT EXISTS (
@@ -130,7 +136,13 @@ public class DesignerWorkQueueContext {
                   ON q.com_id = c.com_id
                  AND q.customer_id = c.cust_id
                 WHERE c.com_id = :comId
-                  AND c.status <> 'Dormant'
+                  AND c.status IN ('New', 'Following', 'PendingMeasure', 'Quoted')
+                  AND NOT EXISTS (
+                    SELECT 1 FROM cust_customer_loss cl
+                    WHERE cl.com_id = p.com_id
+                      AND cl.property_id = p.property_id
+                      AND cl.restored_at IS NULL
+                  )
                   AND q.emp_id = :empId
                   AND q.status IN ('Draft','Rejected')
                 ORDER BY FIELD(q.status, 'Rejected', 'Draft'),
@@ -193,7 +205,13 @@ public class DesignerWorkQueueContext {
                   ON ct.com_id = c.com_id
                  AND ct.customer_id = c.cust_id
                 WHERE c.com_id = :comId
-                  AND c.status <> 'Dormant'
+                  AND c.status NOT IN ('Dormant', 'Lost')
+                  AND NOT EXISTS (
+                    SELECT 1 FROM cust_customer_loss cl
+                    WHERE cl.com_id = p.com_id
+                      AND cl.property_id = p.property_id
+                      AND cl.restored_at IS NULL
+                  )
                   AND c.designer_id = :empId
                   AND ct.status IN ('PendingSign','Signed')
                 ORDER BY FIELD(ct.status, 'Signed', 'PendingSign'),

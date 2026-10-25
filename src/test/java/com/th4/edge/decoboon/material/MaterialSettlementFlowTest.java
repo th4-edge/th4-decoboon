@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.material;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
@@ -65,11 +66,12 @@ class MaterialSettlementFlowTest {
     private final MaterialPurchaseContext purchaseContext = mock(MaterialPurchaseContext.class);
     private final ModelIdentityContext identityContext = mock(ModelIdentityContext.class);
     private final MaterialSheetPriceProjectionContext priceProjectionContext = mock(MaterialSheetPriceProjectionContext.class);
+    private final StoreFilterContext storeFilterContext = mock(StoreFilterContext.class);
 
     private final MaterialSettlementContext context = new MaterialSettlementContext(
             settlementRepository, settlementItemRepository, purchaseOrderRepository, purchaseItemRepository,
             payableRepository, quoteLineRepository, partnerRepository, accessContext, purchaseContext, identityContext,
-            priceProjectionContext);
+            priceProjectionContext, storeFilterContext);
 
     private Company company;
     private Employee finance;
@@ -152,6 +154,10 @@ class MaterialSettlementFlowTest {
         payable.setPaidAmount(BigDecimal.ZERO);
 
         when(accessContext.requireEmployee(any())).thenReturn(finance);
+        when(storeFilterContext.resolve(any(), any())).thenAnswer(invocation -> {
+            Employee principal = invocation.getArgument(0);
+            return principal.getStore() == null ? null : principal.getStore().getStoreId();
+        });
         when(partnerRepository.findById(4L)).thenReturn(Optional.of(supplier));
         when(identityContext.prepare(any())).thenAnswer(invocation -> invocation.getArgument(0));
         when(settlementRepository.save(any())).thenAnswer(invocation -> {

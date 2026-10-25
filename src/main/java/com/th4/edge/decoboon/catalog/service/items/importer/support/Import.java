@@ -10,6 +10,8 @@ import com.th4.edge.decoboon.catalog.context.CatalogCodeContext;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogCostContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
+import com.th4.edge.decoboon.catalog.context.CatalogRevisionContext;
+import com.th4.edge.decoboon.catalog.configure.CatalogRevisionType;
 import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
@@ -47,15 +49,18 @@ public class Import implements com.th4.edge.decoboon.catalog.service.items.impor
     private final CatalogCodeContext codeContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
+    private final CatalogRevisionContext revisionContext;
 
     public Import(CatalogItemRepository repository, CatalogCostContext costContext, PinyinContext pinyinContext,
-                  CatalogCodeContext codeContext, CatalogContext context, CatalogDetailContext detailContext) {
+                  CatalogCodeContext codeContext, CatalogContext context, CatalogDetailContext detailContext,
+                  CatalogRevisionContext revisionContext) {
         this.repository = repository;
         this.costContext = costContext;
         this.pinyinContext = pinyinContext;
         this.codeContext = codeContext;
         this.context = context;
         this.detailContext = detailContext;
+        this.revisionContext = revisionContext;
     }
 
     @Override
@@ -70,8 +75,10 @@ public class Import implements com.th4.edge.decoboon.catalog.service.items.impor
             CatalogItem source = data.get(i);
             try {
                 CatalogItem item = buildItem(source, current, sortBase + i);
+                item.setRevision(1);
                 CatalogItem saved = repository.save(item);
                 detailContext.sync(saved);
+                revisionContext.record(saved, current, CatalogRevisionType.Create);
                 result.incrementSuccess();
             } catch (Exception ex) {
                 result.addFailure(i + 1, source.getName() != null ? source.getName() : "(无名称)", ex.getMessage());
@@ -110,7 +117,8 @@ public class Import implements com.th4.edge.decoboon.catalog.service.items.impor
         item.setPricingMode(source.getPricingMode() != null ? source.getPricingMode() : PricingMethod.MaterialAndManual);
         item.setMaterialPrice(zero(source.getMaterialPrice()));
         item.setManualPrice(zero(source.getManualPrice()));
-        item.setCostPrice(zero(source.getCostPrice()));
+        // 成本空白保持 null（成本待维护），0 表示明确零成本。
+        item.setCostPrice(source.getCostPrice());
         item.setFormula(context.formula(item.getPricingMode()));
         item.setCraft(source.getCraft());
         item.setCriterion(source.getCriterion());

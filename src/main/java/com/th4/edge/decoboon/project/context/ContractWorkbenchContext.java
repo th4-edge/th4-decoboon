@@ -1,10 +1,25 @@
 package com.th4.edge.decoboon.project.context;
 
+import com.th4.edge.decoboon.common.configure.BusinessOrigin;
+import com.th4.edge.decoboon.common.configure.FactStage;
+import com.th4.edge.decoboon.common.configure.FactType;
+import com.th4.edge.decoboon.common.configure.FactVisibility;
+import com.th4.edge.decoboon.common.model.BusinessFactContract;
+import com.th4.edge.decoboon.common.model.BusinessFactNode;
+import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.material.repository.MaterialSelectionRepository;
+import com.th4.edge.decoboon.design.configure.AreaSource;
+import com.th4.edge.decoboon.property.configure.MeasureStatus;
+import com.th4.edge.decoboon.property.model.Measure;
+import com.th4.edge.decoboon.property.model.MeasureRegion;
+import com.th4.edge.decoboon.property.repository.MeasureRegionRepository;
+import com.th4.edge.decoboon.property.repository.MeasureRepository;
+import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.framework.data.date.model.DateTime;
 import com.th4.edge.decoboon.plan.model.ContractPaymentNode;
 import com.th4.edge.decoboon.plan.model.ContractPaymentPlan;
 import com.th4.edge.decoboon.project.configure.ContractChangeStatus;
@@ -14,7 +29,9 @@ import com.th4.edge.decoboon.project.model.ContractWorkbench;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectStage;
+import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
+import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +39,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 合同履约档案聚合上下文。
@@ -45,6 +64,10 @@ public class ContractWorkbenchContext {
     private final ProjectStageRepository stageRepository;
     private final ContractChangeRepository changeRepository;
     private final MaterialSelectionRepository selectionRepository;
+    private final MeasureRepository measureRepository;
+    private final MeasureRegionRepository measureRegionRepository;
+    private final MaterialPlanRepository materialPlanRepository;
+    private final AcceptanceRepository acceptanceRepository;
 
     @org.springframework.beans.factory.annotation.Autowired(required = false)
     private com.th4.edge.decoboon.finance.context.ManualLedgerContext manualLedgerContext;
@@ -55,7 +78,11 @@ public class ContractWorkbenchContext {
                                     ProjectCostContext costContext,
                                     ProjectStageRepository stageRepository,
                                     ContractChangeRepository changeRepository,
-                                    MaterialSelectionRepository selectionRepository) {
+                                    MaterialSelectionRepository selectionRepository,
+                                    MeasureRepository measureRepository,
+                                    MeasureRegionRepository measureRegionRepository,
+                                    MaterialPlanRepository materialPlanRepository,
+                                    AcceptanceRepository acceptanceRepository) {
         this.contractContext = contractContext;
         this.receivableRepository = receivableRepository;
         this.paymentNodeRepository = paymentNodeRepository;
@@ -63,10 +90,19 @@ public class ContractWorkbenchContext {
         this.stageRepository = stageRepository;
         this.changeRepository = changeRepository;
         this.selectionRepository = selectionRepository;
+        this.measureRepository = measureRepository;
+        this.measureRegionRepository = measureRegionRepository;
+        this.materialPlanRepository = materialPlanRepository;
+        this.acceptanceRepository = acceptanceRepository;
     }
 
     @Transactional(readOnly = true)
     public ContractWorkbench build(ProjectContract contract) {
+        return build(contract, true);
+    }
+
+    @Transactional(readOnly = true)
+    public ContractWorkbench build(ProjectContract contract, boolean includeInternalCost) {
         ProjectContract enriched = contractContext.enrich(contract);
         ContractWorkbench workbench = new ContractWorkbench();
         workbench.setContract(enriched);
@@ -78,12 +114,205 @@ public class ContractWorkbenchContext {
 
         workbench.setReceivable(receivable(receivables));
         workbench.setPaymentNodes(paymentNodes(enriched.getPaymentPlan(), receivables));
-        workbench.setCost(cost(enriched));
+        workbench.setCost(includeInternalCost ? cost(enriched) : null);
         workbench.setProgress(progress(project));
         workbench.setChange(change(enriched));
         workbench.setSelection(selection(enriched));
+        ContractFacts facts = facts(enriched, workbench, includeInternalCost);
+        workbench.setUpstreamFacts(facts.upstream());
+        workbench.setDownstreamFacts(facts.downstream());
+        workbench.setSourceGaps(facts.gaps());
         return workbench;
     }
+
+    private ContractFacts facts(ProjectContract contract, ContractWorkbench workbench, boolean includeInternalCost) {
+        List<BusinessFactNode> upstream = new ArrayList<>();
+        List<BusinessFactNode> downstream = new ArrayList<>();
+        List<String> gaps = new ArrayList<>();
+
+        Long projectId = contract.getProject() == null ? null : contract.getProject().getProjectId();
+        if (contract.getCustomer() != null) {
+            upstream.add(node(FactType.Customer, "Customer", contract.getCustomer().getCustId(), 1, projectId,
+                    null, null, auditTime(contract.getCustomer().getCreateTime()), null,
+                    contract.getCustomer().getName(), "合同客户", null, "customer:" + contract.getCustomer().getCustId()));
+        }
+        if (contract.getProperty() != null) {
+            upstream.add(node(FactType.Property, "Property", contract.getProperty().getPropertyId(), 1, projectId,
+                    null, null, auditTime(contract.getProperty().getCreateTime()), null,
+                    contract.getProperty().getCommunity(), summary(contract.getProperty().getAddress()), null,
+                    "property:" + contract.getProperty().getPropertyId()));
+        }
+
+        Measure measure = latestCompletedMeasure(contract);
+        if (measure == null) {
+            gaps.add("无系统量房记录");
+        } else {
+            long regionCount = 0;
+            long measuredCount = 0;
+            if (contract.getCompany() != null) {
+                List<MeasureRegion> regions = measureRegionRepository
+                        .findByCompany_ComIdAndMeasure_MeasureIdOrderBySortAscRegionIdAsc(
+                                contract.getCompany().getComId(), measure.getMeasureId());
+                regionCount = regions.size();
+                measuredCount = regions.stream()
+                        .filter(region -> region.getAreaSource() == AreaSource.Measured && region.getArea() != null)
+                        .count();
+            }
+            String actor = measure.getExecutor() != null ? measure.getExecutor().getName()
+                    : measure.getDesigner() == null ? null : measure.getDesigner().getName();
+            upstream.add(node(FactType.Measure, "Measure", measure.getMeasureId(), 1, projectId,
+                    measure.getStatus().name(), measure.getStatus().getName(), measure.getCompletedAt(), actor,
+                    "量房记录", "区域 " + regionCount + " · 实测 " + measuredCount + " · 待补 " + (regionCount - measuredCount),
+                    null, "measure:" + measure.getMeasureId()));
+        }
+
+        Quote quote = contract.getQuote();
+        Design design = quote == null ? null : quote.getDesign();
+        if (design == null) {
+            gaps.add("无设计方案来源");
+        } else {
+            upstream.add(node(FactType.Design, "Design", design.getDesignId(), design.getVersion(), projectId,
+                    design.getStatus() == null ? null : design.getStatus().name(),
+                    design.getStatus() == null ? null : design.getStatus().getName(),
+                    auditTime(design.getCreateTime()), design.getOwner() == null ? null : design.getOwner().getName(),
+                    design.getName(), "绑定设计方案", null, "design:" + design.getDesignId()));
+        }
+        if (quote != null) {
+            upstream.add(node(FactType.Quote, "Quote", quote.getQuoteId(), quote.getVersion(), projectId,
+                    quote.getStatus() == null ? null : quote.getStatus().name(),
+                    quote.getStatus() == null ? null : quote.getStatus().getName(),
+                    quote.getAcceptedAt() == null ? quote.getSubmittedAt() : quote.getAcceptedAt(),
+                    quote.getAcceptedBy() == null ? null : quote.getAcceptedBy().getName(),
+                    quote.getNo(), "签约报价基线 V" + value(quote.getVersion()), quote.getAmount(),
+                    "quote:" + quote.getQuoteId()));
+        }
+        upstream.add(node(FactType.Contract, "Contract", contract.getContractId(), 1, projectId,
+                contract.getStatus() == null ? null : contract.getStatus().name(),
+                contract.getStatus() == null ? null : contract.getStatus().getName(),
+                contract.getSignedAt() == null ? null : contract.getSignedAt().atStartOfDay(),
+                contract.getCreatedBy() == null ? null : contract.getCreatedBy().getName(),
+                contract.getNo(), contract.getBusinessOrigin() == BusinessOrigin.Carryover
+                        ? BusinessFactContract.CARRYOVER_SOURCE : "正常业务",
+                contract.getCurrentAmount(), "contract:" + contract.getContractId()));
+
+        if (contract.getProject() != null) {
+            downstream.add(node(FactType.Project, "Project", contract.getProject().getProjectId(), 1, projectId,
+                    contract.getProject().getStatus() == null ? null : contract.getProject().getStatus().name(),
+                    contract.getProject().getStatus() == null ? null : contract.getProject().getStatus().getName(),
+                    auditTime(contract.getProject().getCreateTime()),
+                    contract.getProject().getManager() == null ? null : contract.getProject().getManager().getName(),
+                    contract.getProject().getName(), "项目当前状态", contract.getProject().getContractAmount(),
+                    "project:" + projectId));
+        }
+        if (workbench.getChange() != null && value(workbench.getChange().getTotalCount()) > 0) {
+            downstream.add(node(FactType.ContractChange, "ContractChangeAggregate", contract.getContractId(), 1, projectId,
+                    null, null, null, null, "合同增减项",
+                    "共 " + workbench.getChange().getTotalCount() + " 单 · 待审批 " + workbench.getChange().getPendingCount(),
+                    workbench.getChange().getConfirmedAmount(), "contract-change:" + contract.getContractId()));
+        }
+        if (contract.getProject() != null) {
+            long materialCount = materialPlanRepository.countByProject(contract.getProject());
+            if (materialCount > 0) {
+                downstream.add(node(FactType.MaterialPlan, "MaterialPlanAggregate", projectId, 1, projectId,
+                        null, null, null, null, "材料计划", materialCount + " 条材料计划", null,
+                        "project:" + projectId + ":materials"));
+            }
+            long acceptanceCount = acceptanceRepository.countByProject_ProjectId(projectId);
+            if (acceptanceCount > 0) {
+                downstream.add(node(FactType.Acceptance, "AcceptanceAggregate", projectId, 1, projectId,
+                        null, null, null, null, "阶段验收", acceptanceCount + " 条验收事实", null,
+                        "project:" + projectId + ":acceptance"));
+            }
+        }
+        if (workbench.getReceivable() != null && value(workbench.getReceivable().getTotalCount()) > 0) {
+            downstream.add(node(FactType.Receivable, "ReceivableAggregate", contract.getContractId(), 1, projectId,
+                    null, null, null, null, "应收与回款",
+                    "应收 " + money(workbench.getReceivable().getReceivableTotal())
+                            + " · 已收 " + money(workbench.getReceivable().getReceivedTotal())
+                            + " · 逾期 " + money(workbench.getReceivable().getOverdueTotal()),
+                    workbench.getReceivable().getOutstandingTotal(), "contract:" + contract.getContractId() + ":receivables"));
+        }
+        if (includeInternalCost && contract.getProject() != null) {
+            downstream.add(node(FactType.Cost, "ProjectCost", projectId, 1, projectId,
+                    Boolean.TRUE.equals(contract.getCostComplete()) ? "Complete" : "Incomplete",
+                    Boolean.TRUE.equals(contract.getCostComplete()) ? "成本完整" : "成本未完整",
+                    null, null, "项目成本", "签约成本快照", contract.getSignedCost(),
+                    "project:" + projectId + ":cost"));
+            downstream.get(downstream.size() - 1).setVisibility(FactVisibility.Internal);
+        }
+
+        upstream.sort(java.util.Comparator
+                .comparingInt((BusinessFactNode node) -> contractUpstreamOrder(node.getFactType()))
+                .thenComparing(BusinessFactContract.stableOrder()));
+        downstream.sort(BusinessFactContract.stableOrder());
+        return new ContractFacts(List.copyOf(upstream), List.copyOf(downstream), List.copyOf(gaps));
+    }
+
+    private int contractUpstreamOrder(FactType type) {
+        return switch (type) {
+            case Customer -> 10;
+            case Property -> 20;
+            case Measure -> 30;
+            case Design -> 40;
+            case Quote -> 50;
+            case Contract -> 60;
+            default -> 100;
+        };
+    }
+
+    private Measure latestCompletedMeasure(ProjectContract contract) {
+        if (contract.getCompany() == null || contract.getProperty() == null) return null;
+        return measureRepository.findByCompany_ComIdAndProperty_PropertyIdOrderByMeasureTimeDesc(
+                        contract.getCompany().getComId(), contract.getProperty().getPropertyId()).stream()
+                .filter(measure -> measure.getStatus() == MeasureStatus.Completed)
+                .sorted(java.util.Comparator
+                        .comparing(Measure::getCompletedAt, java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder()))
+                        .reversed()
+                        .thenComparing(Measure::getMeasureId, java.util.Comparator.nullsLast(Long::compareTo).reversed()))
+                .findFirst().orElse(null);
+    }
+
+    private BusinessFactNode node(FactType type, String objectType, Long objectId, Integer version, Long projectId,
+                                  String status, String statusName, LocalDateTime businessTime, String actor,
+                                  String title, String summary, BigDecimal amount, String navigationPath) {
+        BusinessFactNode node = new BusinessFactNode();
+        node.setNodeId(type.name() + "-" + objectType + "-" + objectId);
+        node.setNodeKey(type.name() + ":" + objectType + ":" + objectId + ":" + version);
+        node.setStage(type.getStage());
+        node.setFactType(type);
+        node.setObjectType(objectType);
+        node.setObjectId(objectId);
+        node.setVersion(version);
+        node.setProjectId(projectId);
+        node.setCurrent(true);
+        node.setStatus(status);
+        node.setStatusName(statusName);
+        node.setBusinessTime(businessTime);
+        node.setRecordedAt(LocalDateTime.now());
+        node.setActorName(actor);
+        node.setTitle(title);
+        node.setSummary(summary);
+        node.setAmount(amount);
+        node.setVisibility(FactVisibility.OwnerVisible);
+        node.setNavigationPath(navigationPath);
+        node.setReturnPath("contract:" + (objectId == null ? "" : objectId));
+        node.setReturnAnchor("contract-facts");
+        node.setSourceLabel("合同关联事实");
+        if (projectId == null) {
+            node.setUncertainty("项目尚未建立，事实按合同绑定关系展示");
+        }
+        return node;
+    }
+
+    private long value(Integer value) {
+        return value == null ? 0 : value;
+    }
+
+    private LocalDateTime auditTime(DateTime value) {
+        return value == null ? null : value.toLocalDateTime();
+    }
+
+    private record ContractFacts(List<BusinessFactNode> upstream, List<BusinessFactNode> downstream, List<String> gaps) {}
 
     private ContractWorkbench.Receivable receivable(List<Receivable> receivables) {
         ContractWorkbench.Receivable summary = new ContractWorkbench.Receivable();
@@ -180,12 +409,12 @@ public class ContractWorkbenchContext {
         ProjectCostContext.CostSummary summary = costContext.summarize(contract.getProject());
         com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = manualAmounts(contract.getProject());
         view.setEstimatedCost(money(summary.estimatedCost()));
-        view.setActualCost(money(value(summary.actualCost()).add(manual.cost())));
+        view.setActualCost(money(summary.actualCost()));
         view.setCostComplete(summary.complete());
         view.setIncompleteItemCount(summary.incompleteItemCount());
         if (summary.complete()) {
             BigDecimal income = value(contract.getCurrentAmount()).add(manual.income());
-            BigDecimal profit = income.subtract(value(summary.actualCost()).add(manual.cost()));
+            BigDecimal profit = income.subtract(value(summary.actualCost()));
             view.setGrossProfit(money(profit));
             view.setGrossMargin(income.signum() == 0
                     ? null

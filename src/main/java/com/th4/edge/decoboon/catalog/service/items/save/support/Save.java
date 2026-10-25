@@ -6,6 +6,8 @@ import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
 import com.th4.edge.decoboon.catalog.context.CatalogCodeContext;
 import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.context.CatalogCostContext;
+import com.th4.edge.decoboon.catalog.context.CatalogRevisionContext;
+import com.th4.edge.decoboon.catalog.configure.CatalogRevisionType;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -21,6 +23,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,7 +34,7 @@ import java.util.List;
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
                         "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion",
-                        "description", "images", "maintainer", "active", "sort", "sourceType", "createTime"}),
+                        "description", "images", "maintainer", "active", "sort", "sourceType", "revision", "createTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("catalog/item/save")
@@ -72,18 +75,21 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
     private final CatalogCodeContext codeContext;
     private final CatalogContext context;
     private final CatalogDetailContext detailContext;
+    private final CatalogRevisionContext revisionContext;
 
     public Save(CatalogItemRepository repository, CatalogCostContext costContext, PinyinContext pinyinContext, CatalogCodeContext codeContext,
-                CatalogContext context, CatalogDetailContext detailContext) {
+                CatalogContext context, CatalogDetailContext detailContext, CatalogRevisionContext revisionContext) {
         this.repository = repository;
         this.costContext = costContext;
         this.pinyinContext = pinyinContext;
         this.codeContext = codeContext;
         this.context = context;
         this.detailContext = detailContext;
+        this.revisionContext = revisionContext;
     }
 
     @Override
+    @Transactional
     public CatalogItem call(CatalogItem request) {
         Employee current = context.requirePriceMaintainer(employee);
         CatalogItem item = new CatalogItem();
@@ -91,8 +97,10 @@ public class Save implements com.th4.edge.decoboon.catalog.service.items.save.Sa
         item.setMaintainer(current);
         apply(item, current.getCompany().getComId());
         applyDetails(item);
+        item.setRevision(1);
         CatalogItem saved = repository.save(item);
         detailContext.sync(saved);
+        revisionContext.record(saved, current, CatalogRevisionType.Create);
         return costContext.mask(saved, current);
     }
 

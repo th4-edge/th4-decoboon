@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.model.Settlement;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -39,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = Settlement.class,
                 properties = {"settlementId", "status", "expenseAmount", "totalCost", "estimatedCost", "actualCost", "profitAmount", "costComplete", "costIncompleteCount", "grossMargin", "confirmedAt", "closedAt"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name"}),
+        @AllowProperties(model = Property.class, properties = {"propertyId", "community", "address"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/project/page")

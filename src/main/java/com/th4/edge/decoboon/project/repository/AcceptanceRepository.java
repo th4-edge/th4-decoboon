@@ -21,6 +21,8 @@ public interface AcceptanceRepository extends JpaRepository<Acceptance, Long>,
 
     boolean existsByStageAndStatus(ProjectStage stage, com.th4.edge.decoboon.project.configure.AcceptStatus status);
 
+    long countByProject_ProjectId(Long projectId);
+
     Optional<Acceptance> findFirstByStageOrderByAcceptanceIdDesc(ProjectStage stage);
 
     Page<Acceptance> findByProject_ProjectIdOrderByAcceptanceIdDesc(Long projectId, Pageable pageable);

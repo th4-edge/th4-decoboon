@@ -152,8 +152,8 @@ public class BossDashboardContext {
     /**
      * 毛利公式（`BR-031` 第二类：成本/毛利类业务公式允许内存计算，但**循环体内零查询**）。
      *
-     * <p>取数全部批量：本月合同一次 SQL（区间 + 来源 + 门店条件下推）；应付按项目一次 `GROUP BY`；
-     * 成本完整性用 {@link ProjectCostContext#summarizeAll}（批量）；手工账用
+     * <p>取数全部批量：本月合同一次 SQL（区间 + 来源 + 门店条件下推）；成本与完整性用
+     * {@link ProjectCostContext#summarizeAll}（批量）；手工账用
      * {@link com.th4.edge.decoboon.finance.context.ManualLedgerContext#amountsAll}（批量）。</p>
      */
     private ProfitResult grossProfit(Long comId, Long storeFilter, LocalDate month) {
@@ -169,25 +169,22 @@ public class BossDashboardContext {
                 .collect(java.util.stream.Collectors.toMap(Project::getProjectId, project -> project,
                         (left, right) -> left, LinkedHashMap::new))
                 .values().stream().toList();
-        Map<Long, BigDecimal> costByProject = aggregateContext.payableAmountByProject(comId, storeFilter,
-                projects.stream().map(Project::getProjectId).toList());
         Map<Long, ProjectCostContext.CostSummary> costSummaries = projectCostContext.summarizeAll(projects);
         Map<Long, com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts> manualByProject =
                 manualLedgerContext == null
                         ? Map.of()
                         : manualLedgerContext.amountsAll(projects);
 
-        return profitOf(contracts, month, costByProject, costSummaries, manualByProject);
+        return profitOf(contracts, month, costSummaries, manualByProject);
     }
 
     /**
      * 毛利口径（**唯一实现**，供经营总览与门店对比矩阵共用；`P0D-05`）。
      *
-     * <p>逐合同：非正常经营来源跳过、非本月签约跳过；成本取「实际成本 vs 采购应付」较大者 + 手工账成本；
+     * <p>逐合同：非正常经营来源跳过、非本月签约跳过；成本只取统一 {@link ProjectCostContext.CostSummary}，
      * 任一项目成本不完整 → 整体不完整（返回 {@code null} + 提示，禁止展示伪利润）。</p>
      */
     public static ProfitResult profitOf(List<ProjectContract> contracts, LocalDate month,
-                                        Map<Long, BigDecimal> costByProject,
                                         Map<Long, ProjectCostContext.CostSummary> costSummaries,
                                         Map<Long, com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts> manualByProject) {
         BigDecimal profit = BigDecimal.ZERO;
@@ -201,9 +198,6 @@ public class BossDashboardContext {
             }
             Project project = contract.getProject();
             Long projectId = project == null ? null : project.getProjectId();
-            BigDecimal payableCost = projectId == null
-                    ? BigDecimal.ZERO
-                    : costByProject.getOrDefault(projectId, BigDecimal.ZERO);
             ProjectCostContext.CostSummary costSummary = projectId == null ? null : costSummaries.get(projectId);
             com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = projectId == null
                     ? com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts.ZERO
@@ -213,7 +207,7 @@ public class BossDashboardContext {
                 incomplete++;
                 continue;
             }
-            BigDecimal cost = costSummary.actualCost().max(payableCost).add(manual.cost());
+            BigDecimal cost = costSummary.actualCost();
             profit = profit.add(contractRevenueStatic(contract).add(manual.income()).subtract(cost));
         }
         if (incomplete > 0) {

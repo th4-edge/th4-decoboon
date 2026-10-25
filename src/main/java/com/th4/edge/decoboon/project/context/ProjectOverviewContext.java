@@ -176,7 +176,7 @@ public class ProjectOverviewContext {
     private void applyProfit(Project project, ProjectContract contract) {
         ProjectCostContext.CostSummary cost = costContext.summarize(project);
         com.th4.edge.decoboon.finance.context.ManualLedgerContext.ManualAmounts manual = manualAmounts(project);
-        BigDecimal actualCost = value(cost.actualCost()).add(manual.cost()).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal actualCost = value(cost.actualCost()).setScale(2, RoundingMode.HALF_UP);
         project.setActualCost(actualCost);
         project.setCostComplete(cost.complete());
         if (!cost.complete()) {

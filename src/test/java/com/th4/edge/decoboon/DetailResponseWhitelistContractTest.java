@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -62,6 +63,24 @@ class DetailResponseWhitelistContractTest {
         assertThat(properties.allow()).anySatisfy(item -> {
             assertThat(item.model()).isEqualTo(Employee.class);
             assertThat(Arrays.asList(item.properties())).containsExactly("empId", "name", "role");
+        });
+    }
+
+    @Test
+    void projectStageReadProvidersMustExposeAcceptanceMode() {
+        var providers = java.util.List.of(
+                com.th4.edge.decoboon.project.service.stages.info.support.Info.class,
+                com.th4.edge.decoboon.project.service.stages.page.support.Page.class,
+                com.th4.edge.decoboon.project.service.stages.update.support.Update.class,
+                com.th4.edge.decoboon.customer.service.stage.list.support.List.class,
+                com.th4.edge.decoboon.customer.service.stage.info.support.Info.class);
+        assertThat(providers).allSatisfy(provider -> {
+            Properties properties = provider.getAnnotation(Properties.class);
+            assertThat(properties).isNotNull();
+            assertThat(properties.allow()).anySatisfy(item -> {
+                assertThat(item.model()).isEqualTo(ProjectStage.class);
+                assertThat(Arrays.asList(item.properties())).contains("acceptanceMode");
+            });
         });
     }
 

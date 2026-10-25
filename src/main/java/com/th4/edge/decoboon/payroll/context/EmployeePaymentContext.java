@@ -26,6 +26,7 @@ import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,7 @@ import java.util.Optional;
 public class EmployeePaymentContext {
 
     private final FinanceAccessContext financeAccess;
+    private final PayrollAccessContext payrollAccessContext;
     private final FinanceIdempotencyContext idempotencyContext;
     private final PaymentRepository paymentRepository;
     private final PayableRepository payableRepository;
@@ -53,6 +55,7 @@ public class EmployeePaymentContext {
     private final PayslipRepository payslipRepository;
 
     public EmployeePaymentContext(FinanceAccessContext financeAccess,
+                                  PayrollAccessContext payrollAccessContext,
                                   FinanceIdempotencyContext idempotencyContext,
                                   PaymentRepository paymentRepository,
                                   PayableRepository payableRepository,
@@ -62,6 +65,7 @@ public class EmployeePaymentContext {
                                   PayrollSheetRepository sheetRepository,
                                   PayslipRepository payslipRepository) {
         this.financeAccess = financeAccess;
+        this.payrollAccessContext = payrollAccessContext;
         this.idempotencyContext = idempotencyContext;
         this.paymentRepository = paymentRepository;
         this.payableRepository = payableRepository;
@@ -76,7 +80,8 @@ public class EmployeePaymentContext {
     public Payment pay(Employee principal, List<Long> payableIds, BigDecimal amount,
                        FundAccount account, LocalDate paidAt, String batchNo,
                        String idempotencyKey, String remark) {
-        Employee current = financeAccess.requireEditor(principal);
+        // DEC-093：员工工资/提成发放仅 BOSS、财务；店长即使具备通用财务写权限也不得发放。
+        Employee current = payrollAccessContext.requireEditor(principal);
         if (amount == null || amount.signum() <= 0) {
             throw new DefinedException(new DefaultErrorCode("400", "发放金额必须大于 0"));
         }
@@ -85,9 +90,9 @@ public class EmployeePaymentContext {
             throw new DefinedException(new DefaultErrorCode("404", "员工应付单不存在或无权访问"));
         }
         Long comId = current.getCompany().getComId();
-        List<Payable> payables = payableRepository.findAllById(ids).stream()
-                .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
-                .toList();
+        Specification<Payable> requested = (root, query, builder) -> root.get("payableId").in(ids);
+        List<Payable> payables = payableRepository.findAll(
+                requested.and(financeAccess.visible(current, Payable.class)));
         if (payables.size() != ids.size()) {
             throw new DefinedException(new DefaultErrorCode("404", "员工应付单不存在或无权访问"));
         }
@@ -106,6 +111,10 @@ public class EmployeePaymentContext {
             return !Objects.equals(projectId, currentProject);
         })) {
             throw new DefinedException(new DefaultErrorCode("400", "同一发放批次不能跨项目"));
+        }
+        Long sourceStoreId = storeId(payables.get(0));
+        if (payables.stream().anyMatch(item -> !Objects.equals(sourceStoreId, storeId(item)))) {
+            throw new DefinedException(new DefaultErrorCode("400", "同一发放批次只能对应同一门店"));
         }
 
         String fingerprintBase = String.join("|",
@@ -135,9 +144,7 @@ public class EmployeePaymentContext {
 
         Payment payment = new Payment();
         payment.setCompany(current.getCompany());
-        payment.setStore(payee.getStore());
-        payment.setTeam(payee.getTeam());
-        payment.setOwner(payee);
+        financeAccess.applySourceOwnership(payment, payables.get(0));
         payment.setProject(payables.get(0).getProject());
         payment.setPayable(payables.get(0));
         payment.setAmount(amount.setScale(2, RoundingMode.HALF_UP));
@@ -159,9 +166,9 @@ public class EmployeePaymentContext {
             BigDecimal allocated = remaining.min(payableOutstanding);
             PayableSettlement settlement = new PayableSettlement();
             settlement.setCompany(current.getCompany());
-            settlement.setStore(payee.getStore());
-            settlement.setTeam(payee.getTeam());
-            settlement.setOwner(payee);
+            settlement.setStore(saved.getStore());
+            settlement.setTeam(saved.getTeam());
+            settlement.setOwner(saved.getOwner());
             settlement.setPayment(saved);
             settlement.setPayable(payable);
             settlement.setAmount(allocated);
@@ -185,9 +192,14 @@ public class EmployeePaymentContext {
         }
         financeAccess.recordLedger(current, saved.getProject(), LedgerDirection.Expense,
                 "员工工资/提成", LedgerSource.Payment, saved.getPaymentId(), amount, saved.getAccount(),
-                saved.getPaidAt(), payee.getName(), "员工工资/提成发放", remark);
+                saved.getPaidAt(), payee.getName(), "员工工资/提成发放", remark,
+                saved.getStore(), saved.getTeam(), saved.getOwner());
         publishPayslipsAfterPayment(current, saved, payables);
         return saved;
+    }
+
+    private Long storeId(Payable payable) {
+        return payable == null || payable.getStore() == null ? null : payable.getStore().getStoreId();
     }
 
     private BigDecimal paymentOutstanding(Payable payable) {

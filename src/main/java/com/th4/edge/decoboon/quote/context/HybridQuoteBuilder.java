@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.quote.context;
 
 import com.th4.edge.decoboon.common.support.CraftText;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.catalog.support.CatalogQuoteSourceSupport;
 import com.th4.edge.decoboon.design.configure.DesignStatus;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
@@ -99,6 +100,9 @@ public class HybridQuoteBuilder {
         quote.setCustomer(design.getCustomer());
         quote.setDesign(design);
         quote.setPackageTemplate(template);
+        quote.setPackageTemplateCode(template.getCode());
+        quote.setPackageTemplateVersion(template.getVersion());
+        quote.setPackageTemplateSnapshotHash(template.getSnapshotHash());
         quote.setCreatedBy(design.getOwner());
         quote.setVersion((int) quoteRepository.countByDesign_DesignId(design.getDesignId()) + 1);
         quote.setMode(QuoteMode.Hybrid);
@@ -191,10 +195,19 @@ public class HybridQuoteBuilder {
         line.setQuote(quote);
         line.setProperty(quote.getProperty());
         line.setPackageLine(packageLine);
-        line.setCatalogItem(packageLine.getItem());
-        line.setCraft(packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
-        line.setType(packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
-        line.setCategory(packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
+        CatalogQuoteSourceSupport.attach(line, packageLine.getItem());
+        line.setCraft(packageLine.getCraftSnapshot() != null
+                ? packageLine.getCraftSnapshot() : packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
+        line.setType(packageLine.getCatalogTypeSnapshot() != null
+                ? packageLine.getCatalogTypeSnapshot() : packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
+        line.setPackageSectionNameSnapshot(packageLine.getSectionNameSnapshot() != null
+                ? packageLine.getSectionNameSnapshot()
+                : packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
+        line.setCategory(packageLine.getCatalogCategorySnapshot() != null
+                ? packageLine.getCatalogCategorySnapshot()
+                : packageLine.getSectionNameSnapshot() != null
+                        ? packageLine.getSectionNameSnapshot()
+                        : packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
         line.setName(packageLine.getName());
         line.setBrand(packageLine.getBrand());
         line.setSpec(packageLine.getSpec());
@@ -266,7 +279,7 @@ public class HybridQuoteBuilder {
         line.setQuote(quote);
         line.setProperty(quote.getProperty());
         line.setDesignItem(designItem);
-        line.setCatalogItem(designItem.getCatalogItem());
+        CatalogQuoteSourceSupport.attach(line, designItem.getCatalogItem());
         line.setSpace(designItem.getSpace());
         line.setPackageLine(packageLine);
         line.setRole(delta.signum() > 0 ? QuoteLineRole.Add : QuoteLineRole.Deduct);
@@ -303,7 +316,7 @@ public class HybridQuoteBuilder {
         line.setQuote(quote);
         line.setProperty(quote.getProperty());
         line.setDesignItem(designItem);
-        line.setCatalogItem(designItem.getCatalogItem());
+        CatalogQuoteSourceSupport.attach(line, designItem.getCatalogItem());
         line.setSpace(designItem.getSpace());
         line.setRole(QuoteLineRole.Add);
         line.setDifferenceType(QuoteDifferenceType.DesignOnly);

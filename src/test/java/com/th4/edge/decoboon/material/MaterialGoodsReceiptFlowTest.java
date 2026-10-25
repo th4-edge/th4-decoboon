@@ -34,8 +34,6 @@ import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderItemRepository;
 import com.th4.edge.decoboon.project.repository.PurchaseOrderRepository;
 import com.th4.edge.decoboon.supply.context.InventoryContext;
-import com.th4.edge.decoboon.supply.repository.MaterialSupplierRepository;
-import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
 import com.th4.edge.decoboon.supply.repository.PartnerRepository;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.Provider;
@@ -167,8 +165,7 @@ class MaterialGoodsReceiptFlowTest {
                 mock(PartnerRepository.class), accessContext, permissionContext, identityContext, mock(TenantContext.class),
                 StoreAttributionTestSupport.inject(new MaterialPurchaseContext(purchaseRepository,
                         purchaseItemRepository, materialPlanRepository, planStatusContext, payableRepository,
-                        identityContext, mock(PartnerCreditContext.class), mock(MaterialSupplierRepository.class),
-                        mock(PartnerPriceRepository.class))),
+                        identityContext, mock(PartnerCreditContext.class))),
                 new MaterialSelectionContext(mock(MaterialSelectionRepository.class), null, null, null, null, null, null),
                 mock(MaterialSheetTemplateContext.class), null);
 

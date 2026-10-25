@@ -35,7 +35,7 @@ public class CatalogImportReferenceContext {
                 new Reference("库存", "select count(s) from InventoryStock s where s.item.itemId = :itemId"),
                 new Reference("库存流水", "select count(sm) from StockMovement sm where sm.item.itemId = :itemId"),
                 new Reference("供应商供货", "select count(ms) from MaterialSupplier ms where ms.catalogItem.itemId = :itemId"),
-                new Reference("供应商采购价", "select count(pp) from PartnerPrice pp where pp.item.itemId = :itemId"));
+                new Reference("历史合作方价格", "select count(pp) from PartnerPrice pp where pp.item.itemId = :itemId"));
         for (Reference reference : references) {
             long count = entityManager.createQuery(reference.query(), Long.class)
                     .setParameter("itemId", item.getItemId())

@@ -45,7 +45,7 @@ import java.time.LocalDateTime;
 @Note("项目阶段推进")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
-                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status", "progress",
+                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "acceptanceMode", "status", "progress",
                         "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime",
                         "notApplicableReason", "notApplicableBy", "notApplicableAt"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),

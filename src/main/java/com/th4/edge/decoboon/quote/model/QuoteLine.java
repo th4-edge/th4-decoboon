@@ -43,6 +43,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /** 报价明细快照。 */
@@ -106,6 +107,18 @@ public class QuoteLine extends AuditModel {
     @JoinColumn(name = "catalog_item_id")
     private CatalogItem catalogItem;
 
+    @Note("报价项目来源索引快照")
+    @Column(name = "catalog_source_id")
+    private Long catalogSourceId;
+
+    @Note("报价项目来源编码快照")
+    @Column(name = "catalog_source_code", length = 64)
+    private String catalogSourceCode;
+
+    @Note("报价项目来源修订快照")
+    @Column(name = "catalog_source_revision")
+    private Integer catalogSourceRevision;
+
     @Note("施工区域")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space_id")
@@ -154,6 +167,10 @@ public class QuoteLine extends AuditModel {
     @Keyword
     @Column(length = 64)
     private String category;
+
+    @Note("套餐分区名称快照")
+    @Column(name = "package_section_name_snapshot", length = 64)
+    private String packageSectionNameSnapshot;
 
     @Note("分项名称")
     @Keyword
@@ -268,6 +285,26 @@ public class QuoteLine extends AuditModel {
     @Column(nullable = false)
     private Integer sort = 0;
 
+    @Note("TYPE 合并行稳定 ID")
+    @Transient
+    private String typeRowId;
+
+    @Note("TYPE 合并行来源明细 ID")
+    @Transient
+    private List<Long> sourceLineIds = new ArrayList<>();
+
+    @Note("TYPE 合并行来源区域 ID")
+    @Transient
+    private List<Long> sourceRegionIds = new ArrayList<>();
+
+    @Note("TYPE 合并行来源区域名称")
+    @Transient
+    private List<String> sourceRegionNames = new ArrayList<>();
+
+    @Note("TYPE 合并行来源明细数量")
+    @Transient
+    private Integer sourceCount = 0;
+
     public Long getItemId() { return itemId; }
     public void setItemId(Long itemId) { this.itemId = itemId; }
     public Company getCompany() { return company; }
@@ -284,6 +321,12 @@ public class QuoteLine extends AuditModel {
     public void setDesignItem(DesignItem designItem) { this.designItem = designItem; }
     public CatalogItem getCatalogItem() { return catalogItem; }
     public void setCatalogItem(CatalogItem catalogItem) { this.catalogItem = catalogItem; }
+    public Long getCatalogSourceId() { return catalogSourceId; }
+    public void setCatalogSourceId(Long catalogSourceId) { this.catalogSourceId = catalogSourceId; }
+    public String getCatalogSourceCode() { return catalogSourceCode; }
+    public void setCatalogSourceCode(String catalogSourceCode) { this.catalogSourceCode = catalogSourceCode; }
+    public Integer getCatalogSourceRevision() { return catalogSourceRevision; }
+    public void setCatalogSourceRevision(Integer catalogSourceRevision) { this.catalogSourceRevision = catalogSourceRevision; }
     public Space getSpace() { return space; }
     public void setSpace(Space space) { this.space = space; }
     public PackageLine getPackageLine() { return packageLine; }
@@ -304,6 +347,8 @@ public class QuoteLine extends AuditModel {
     public void setType(ItemType type) { this.type = type; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public String getPackageSectionNameSnapshot() { return packageSectionNameSnapshot; }
+    public void setPackageSectionNameSnapshot(String packageSectionNameSnapshot) { this.packageSectionNameSnapshot = packageSectionNameSnapshot; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getBrand() { return brand; }
@@ -344,6 +389,16 @@ public class QuoteLine extends AuditModel {
     public void setCraft(String craft) { this.craft = craft; }
     public Integer getSort() { return sort; }
     public void setSort(Integer sort) { this.sort = sort; }
+    public String getTypeRowId() { return typeRowId; }
+    public void setTypeRowId(String typeRowId) { this.typeRowId = typeRowId; }
+    public List<Long> getSourceLineIds() { return sourceLineIds; }
+    public void setSourceLineIds(List<Long> sourceLineIds) { this.sourceLineIds = sourceLineIds; }
+    public List<Long> getSourceRegionIds() { return sourceRegionIds; }
+    public void setSourceRegionIds(List<Long> sourceRegionIds) { this.sourceRegionIds = sourceRegionIds; }
+    public List<String> getSourceRegionNames() { return sourceRegionNames; }
+    public void setSourceRegionNames(List<String> sourceRegionNames) { this.sourceRegionNames = sourceRegionNames; }
+    public Integer getSourceCount() { return sourceCount; }
+    public void setSourceCount(Integer sourceCount) { this.sourceCount = sourceCount; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

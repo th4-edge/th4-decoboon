@@ -13,15 +13,11 @@ import java.util.List;
 public interface QuoteLineRepository extends JpaRepository<QuoteLine, Long> {
 
     /**
-     * 报价行本身没有工艺字段，施工工艺来自 catalogItem.craft，
-     * 设计分项快照 designItem.criterion 兜底；两条关联一并预取，避免逐行懒加载。
+     * 报价行优先使用自身 craft 快照；目录项和设计分项用于历史/补充展示。
+     * 区域和组件投影一并预取，避免在无事务边界时逐行懒加载。
      */
-    @EntityGraph(attributePaths = {"catalogItem", "designItem"})
+    @EntityGraph(attributePaths = {"catalogItem", "designItem", "space", "components"})
     List<QuoteLine> findByQuote(Quote quote);
-
-    /** 财务汇总回退：一次取多报价的报价行（预取报价本体便于分组 + 目录项/设计分项）。 */
-    @EntityGraph(attributePaths = {"quote", "catalogItem", "designItem"})
-    List<QuoteLine> findByQuote_QuoteIdIn(java.util.Collection<Long> quoteIds);
 
     boolean existsByDesignItem_ItemId(Long itemId);
 

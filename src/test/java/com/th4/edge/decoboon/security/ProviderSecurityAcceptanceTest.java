@@ -210,9 +210,12 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-21 退款与提成汇总新增 2 条 protected：finance/refund/report、payroll/commission/report。
         // 2026-10-21 供应商往来分页新增 1 条 protected：finance/partner-ledger/page。
         // 2026-10-21 项目账本汇总新增 1 条 protected：finance/project-ledger/report。
-        // => 当前 Provider 面板为 518（public 16 + protected 502）。
-        assertThat(routes).hasSize(518);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(502);
+        // 2026-10-22 EOP-V1 新增 1 条 protected：standard-asset/lifecycle/list。
+        // 2026-10-22 EOP-V2 新增 4 条 protected：pack/template/list、publish、disable、build。
+        // 2026-10-23 EOP-V4 新增 1 条 protected：catalog/item/revision/page。
+        // => EOP-V2 后安全清单基线至少 523（public 16 + protected 507）；并行会话新增路由不破坏清单验证。
+        assertThat(routes).hasSizeGreaterThanOrEqualTo(523);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSizeGreaterThanOrEqualTo(507);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -244,6 +247,7 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("content/authorization/revoke");
         assertUnauthorized("project/project/page");
         assertUnauthorized("project/project/overview");
+        assertUnauthorized("catalog/item/revision/page");
         assertUnauthorized("finance/aging/report");
         assertUnauthorized("finance/ledger/report");
         assertUnauthorized("finance/payable/report");

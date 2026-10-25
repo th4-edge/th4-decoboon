@@ -7,6 +7,8 @@ import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.context.CatalogCodeContext;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
+import com.th4.edge.decoboon.catalog.context.CatalogRevisionContext;
+import com.th4.edge.decoboon.catalog.configure.CatalogRevisionType;
 import com.th4.edge.decoboon.catalog.context.CatalogImportContext;
 import com.th4.edge.decoboon.catalog.context.CatalogImportFileContext;
 import com.th4.edge.decoboon.catalog.context.CatalogImportParser;
@@ -75,6 +77,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
     private final PinyinContext pinyinContext;
     private final CatalogContext catalogContext;
     private final CatalogDetailContext detailContext;
+    private final CatalogRevisionContext revisionContext;
     private final DistributedLock distributedLock;
 
     public Save(CatalogImportContext importContext,
@@ -87,6 +90,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
                 PinyinContext pinyinContext,
                 CatalogContext catalogContext,
                 CatalogDetailContext detailContext,
+                CatalogRevisionContext revisionContext,
                 DistributedLock distributedLock) {
         this.importContext = importContext;
         this.fileContext = fileContext;
@@ -98,6 +102,7 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
         this.pinyinContext = pinyinContext;
         this.catalogContext = catalogContext;
         this.detailContext = detailContext;
+        this.revisionContext = revisionContext;
         this.distributedLock = distributedLock;
     }
 
@@ -215,8 +220,10 @@ public class Save implements com.th4.edge.decoboon.catalog.service.importbatch.s
         seed.setNameInitials(pinyinContext.initials(seed.getName()));
         seed.setFormula(catalogContext.formula(seed.getPricingMode()));
         seed.setSort(sort);
+        seed.setRevision(1);
         CatalogItem saved = itemRepository.save(seed);
         detailContext.sync(saved);
+        revisionContext.record(saved, current, CatalogRevisionType.Create);
         return saved;
     }
 

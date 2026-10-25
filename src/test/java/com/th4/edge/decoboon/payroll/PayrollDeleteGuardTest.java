@@ -14,6 +14,7 @@ import com.th4.edge.decoboon.payroll.service.attendances.summary.delete.support.
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -60,7 +61,7 @@ class PayrollDeleteGuardTest {
     @Test
     void shouldRejectAttendanceDeleteWhenAlreadyInPayroll() {
         Company company = company();
-        Employee boss = employee(1L, EmployeeRole.Boss, company);
+        Employee manager = employee(1L, EmployeeRole.StoreManager, company);
         Employee target = employee(2L, EmployeeRole.Designer, company);
         AttendanceSummary summary = new AttendanceSummary();
         summary.setSummaryId(20L);
@@ -72,16 +73,51 @@ class PayrollDeleteGuardTest {
         PayrollItemRepository payrollItems = mock(PayrollItemRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         Delete delete = new Delete(attendances, payrollItems, access);
-        ReflectionTestUtils.setField(delete, "employee", boss);
+        ReflectionTestUtils.setField(delete, "employee", manager);
         ReflectionTestUtils.setField(delete, "summaryId", 20L);
 
-        when(access.requireEditor(boss)).thenReturn(boss);
-        when(access.visible(boss, AttendanceSummary.class)).thenReturn(mock(Specification.class));
+        when(access.requireManager(manager)).thenReturn(manager);
+        when(access.visible(manager, AttendanceSummary.class)).thenReturn(mock(Specification.class));
         when(attendances.findOne(any(Specification.class))).thenReturn(Optional.of(summary));
 
         assertThatThrownBy(() -> delete.call(new AttendanceSummary()))
                 .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
                 .hasMessageContaining("不能删除");
+    }
+
+    @Test
+    void shouldRejectAttendanceUpdateWhenPayrollFactsExist() {
+        Company company = company();
+        Store store = new Store();
+        store.setStoreId(10L);
+        Employee manager = employee(1L, EmployeeRole.StoreManager, company);
+        manager.setStore(store);
+        Employee target = employee(2L, EmployeeRole.Designer, company);
+        target.setStore(store);
+        AttendanceSummary summary = new AttendanceSummary();
+        summary.setSummaryId(21L);
+        summary.setCompany(company);
+        summary.setEmployee(target);
+        summary.setStore(store);
+        summary.setPayrollMonth("2026-10");
+        summary.setStatus(AttendanceStatus.Confirmed);
+
+        AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
+        PayrollItemRepository payrollItems = mock(PayrollItemRepository.class);
+        PayrollAccessContext access = mock(PayrollAccessContext.class);
+        var update = new com.th4.edge.decoboon.payroll.service.attendances.summary.update.support.Update(
+                attendances, payrollItems, access);
+        ReflectionTestUtils.setField(update, "employee", manager);
+        ReflectionTestUtils.setField(update, "summaryId", 21L);
+
+        when(access.requireManager(manager)).thenReturn(manager);
+        when(attendances.findById(21L)).thenReturn(Optional.of(summary));
+        when(payrollItems.existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(
+                company.getComId(), target.getEmpId(), "2026-10")).thenReturn(true);
+
+        assertThatThrownBy(() -> update.call(new AttendanceSummary()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("不能修改考勤");
     }
 
     private Company company() {

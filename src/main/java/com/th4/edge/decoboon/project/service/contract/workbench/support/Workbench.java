@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.project.service.contract.workbench.support;
 
+import com.th4.edge.decoboon.common.model.BusinessFactNode;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.material.model.MaterialSelection;
 import com.th4.edge.decoboon.plan.model.ContractConstructionPlan;
@@ -23,6 +24,7 @@ import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -40,15 +42,14 @@ import org.springframework.transaction.annotation.Transactional;
                 properties = {"contractId", "no", "project", "quote", "customer", "property", "baselineAmount",
                         "signedAmount", "currentAmount", "status", "signedAt", "startDate", "planEndDate",
                         "effectiveAt", "paymentTerms", "createdBy", "remark", "receivableCount",
-                        "receivableAmount", "receivedAmount", "pendingChangeCount", "signedCost",
-                        "costComplete", "paymentPlan", "constructionPlan", "createTime"}),
+                        "receivableAmount", "receivedAmount", "pendingChangeCount",  "paymentPlan", "constructionPlan", "createTime"}),
         @AllowProperties(model = ContractPaymentPlan.class,
                 properties = {"planId", "sourceCode", "sourceVersion", "name", "totalAmount", "status", "nodes"}),
         @AllowProperties(model = ContractPaymentNode.class,
                 properties = {"nodeId", "code", "name", "ratio", "amount", "type", "triggerType",
                         "triggerStageCode", "triggerStageName", "offsetDays", "dueDate", "sort"}),
         @AllowProperties(model = ContractConstructionPlan.class,
-                properties = {"planId", "sourceCode", "sourceVersion", "name", "startDate", "endDate", "status", "stages"}),
+                properties = {"planId", "sourceCode", "sourceVersion", "sourceTotalDays", "name", "startDate", "endDate", "status", "stages"}),
         @AllowProperties(model = ContractConstructionStage.class,
                 properties = {"stageId", "code", "name", "sort", "defaultDays", "plannedStart", "plannedEnd",
                         "acceptanceMode", "description"}),
@@ -63,7 +64,14 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo", "addr"}),
         @AllowProperties(model = MaterialSelection.class,
                 properties = {"selectionId", "version", "status", "title", "content", "confirmedAt"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = BusinessFactNode.class, properties = {
+                "nodeId", "nodeKey", "stage", "factType", "objectType", "objectId", "projectId", "version",
+                "current", "status", "statusName", "businessTime", "recordedAt", "actorName", "title", "summary",
+                "sourceLabel", "amount", "quantity", "progress", "costComplete", "uncertainty", "parentNodeId",
+                "relations", "visibility", "navigationPath", "returnPath", "returnAnchor"}),
+        @AllowProperties(model = BusinessFactNode.FactRelation.class, properties = {
+                "relationType", "objectType", "objectId", "version"})
 })
 @Service("project/contract/workbench")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -95,7 +103,10 @@ public class Workbench implements com.th4.edge.decoboon.project.service.contract
     public ContractWorkbench call(ProjectContract request) {
         Employee current = accessContext.requireEmployee(employee);
         ProjectContract contract = resolve(current);
-        return workbenchContext.build(contract);
+        boolean includeCost = current.getRole() == EmployeeRole.Boss
+                || current.getRole() == EmployeeRole.StoreManager
+                || current.getRole() == EmployeeRole.Finance;
+        return workbenchContext.build(contract, includeCost);
     }
 
     private ProjectContract resolve(Employee current) {

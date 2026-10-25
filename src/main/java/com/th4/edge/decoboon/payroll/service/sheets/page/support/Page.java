@@ -1,7 +1,6 @@
 package com.th4.edge.decoboon.payroll.service.sheets.page.support;
 
 import com.th4.edge.decoboon.common.context.StoreFilterContext;
-import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
@@ -59,10 +58,7 @@ public class Page implements com.th4.edge.decoboon.payroll.service.sheets.page.P
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(
                 Sort.Order.desc("period"),
                 Sort.Order.desc("sheetId")));
-        Specification<PayrollSheet> specification = accessContext.visible(currentEmployee, PayrollSheet.class)
-                .and((root, query, cb) -> StoreScope.isAllStores(storeFilter)
-                        ? cb.conjunction()
-                        : cb.equal(root.get("store").get("storeId"), storeFilter));
+        Specification<PayrollSheet> specification = accessContext.visibleSheets(currentEmployee, storeFilter);
         return repository.findAll(specification, pageable);
     }
 }

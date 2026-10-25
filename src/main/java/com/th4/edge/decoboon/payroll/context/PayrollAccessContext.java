@@ -7,6 +7,7 @@ import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.model.CommissionAdjustment;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
+import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.model.Payslip;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -23,6 +24,8 @@ import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /** 员工薪酬权限、组织归属和项目归属上下文。 */
 @Component
 public class PayrollAccessContext {
@@ -31,15 +34,18 @@ public class PayrollAccessContext {
     private final DataScopeContext dataScopeContext;
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
+    private final PayrollItemRepository payrollItemRepository;
 
     public PayrollAccessContext(TenantContext tenantContext,
                                 DataScopeContext dataScopeContext,
                                 EmployeeRepository employeeRepository,
-                                ProjectRepository projectRepository) {
+                                ProjectRepository projectRepository,
+                                PayrollItemRepository payrollItemRepository) {
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
         this.employeeRepository = employeeRepository;
         this.projectRepository = projectRepository;
+        this.payrollItemRepository = payrollItemRepository;
     }
 
     /** 薪酬管理读取：BOSS、财务、店长。 */
@@ -86,6 +92,44 @@ public class PayrollAccessContext {
         Employee current = requireEditor(principal);
         return projectRepository.findByProjectIdAndCompany_ComId(projectId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目不存在或无权访问")));
+    }
+
+    /**
+     * 工资单是公司级单据（com_id + period 唯一），单店视图不能只按工资单头 store 过滤。
+     * 单店可见条件：工资单头归属该店，或工资单内存在该门店工资项。
+     */
+    public Specification<PayrollSheet> visibleSheets(Employee principal, Long storeFilter) {
+        Employee current = requireManager(principal);
+        Long comId = current.getCompany().getComId();
+        Specification<PayrollSheet> companyScope = (root, query, cb) ->
+                cb.equal(root.get("company").get("comId"), comId);
+        if (storeFilter == null || storeFilter == 0L) {
+            return companyScope;
+        }
+        List<Long> itemSheetIds = payrollItemRepository.findSheetIdsByStore(comId, storeFilter);
+        return companyScope.and((root, query, cb) -> {
+            var headerStore = cb.equal(root.get("store").get("storeId"), storeFilter);
+            return itemSheetIds.isEmpty() ? headerStore : cb.or(headerStore, root.get("sheetId").in(itemSheetIds));
+        });
+    }
+
+    /**
+     * 工资单详情使用与列表相同的组织范围：总部范围看企业，门店范围看本店；
+     * 公司级工资单仍按「单头归属本店或包含本店工资项」判定，避免猜 ID 越店读取。
+     */
+    public Specification<PayrollSheet> visibleSheets(Employee principal) {
+        Employee current = requireManager(principal);
+        DataScope scope = dataScopeContext.resolve(current);
+        if (scope.type() == DataScopeType.Store) {
+            if (scope.storeId() == null) {
+                throw new DefinedException(new DefaultErrorCode("403", "当前账号未配置有效薪酬数据范围"));
+            }
+            return visibleSheets(current, scope.storeId());
+        }
+        if (scope.type() == DataScopeType.Company) {
+            return visibleSheets(current, null);
+        }
+        throw new DefinedException(new DefaultErrorCode("403", "当前账号未配置有效薪酬数据范围"));
     }
 
     public <T> Specification<T> visible(Employee principal, Class<T> modelClass) {

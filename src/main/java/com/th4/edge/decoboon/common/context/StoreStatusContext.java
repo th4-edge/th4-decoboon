@@ -131,7 +131,7 @@ public class StoreStatusContext {
     public void requireDisableAllowed(Long comId, Store store) {
         if (Boolean.TRUE.equals(store.getDefaultStore())) {
             throw new DefinedException(new DefaultErrorCode("400",
-                    "默认总店不可停用（总部财务判定依据），如需关店请先另设门店并调整默认总店"));
+                    "默认总店不可停用：该门店由企业创建时形成且不可切换，总部财务以它为唯一组织锚点"));
         }
         long activeStores = storeRepository.countByCompany_ComIdAndStatus(comId, StoreStatus.Active);
         if (activeStores <= 1) {

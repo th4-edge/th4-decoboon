@@ -3,7 +3,9 @@ package com.th4.edge.decoboon.document.service.quote.build.support;
 import com.th4.edge.decoboon.document.configure.DocumentAudience;
 import com.th4.edge.decoboon.document.context.DocumentArchiveContext;
 import com.th4.edge.decoboon.document.model.DocumentRecord;
+import com.th4.edge.decoboon.quote.configure.QuoteViewMode;
 import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.decoboon.quote.model.QuotePrintContract;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -23,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Scope(ScopeTypes.PROTOTYPE)
 public class Build implements com.th4.edge.decoboon.document.service.quote.build.Build {
     @AutoInject @NotNull private Long quoteId;
+    @AutoInject @NotNull private Integer version;
+    @AutoInject private QuoteViewMode groupMode = QuoteViewMode.REGION;
     @AutoInject private DocumentAudience audience = DocumentAudience.Customer;
     @com.th4.edge.framework.provider.security.annotation.User
     private User<?> principal;
@@ -35,7 +39,9 @@ public class Build implements com.th4.edge.decoboon.document.service.quote.build
     @Override
     @Transactional
     public DocumentRecord call(Quote request) {
-        return archiveContext.renderQuote(principal, quoteId,
+        QuoteViewMode mode = groupMode == null ? QuotePrintContract.DEFAULT_GROUP_MODE : groupMode;
+        QuotePrintContract.requireParameters(quoteId, version, mode);
+        return archiveContext.renderQuote(principal, quoteId, version, mode,
                 audience == null ? DocumentAudience.Customer : audience);
     }
 }

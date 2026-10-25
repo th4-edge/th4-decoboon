@@ -29,7 +29,7 @@ import java.util.List;
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
                         "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft",
-                        "criterion", "description", "images", "active", "sort", "maintainer", "createTime", "updateTime"}),
+                        "criterion", "description", "images", "active", "sort", "revision", "maintainer", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("catalog/item/page")

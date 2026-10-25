@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.customer;
 
 import com.th4.edge.decoboon.customer.context.CustomerJourneyContext;
+import com.th4.edge.decoboon.quote.context.QuoteViewContext;
 import com.th4.edge.decoboon.customer.model.CustomerJourney;
 import com.th4.edge.decoboon.customer.model.CustomerFeedback;
 import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
@@ -29,6 +30,7 @@ import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectReportRepository;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
+import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
@@ -45,6 +47,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -89,7 +92,7 @@ class CustomerJourneyChangeSectionTest {
                 designItemRepository, quoteRepository, quoteLineRepository, contractRepository,
                 changeRepository, changeItemRepository, materialPlanRepository, selectionRepository,
                 stageRepository, reportRepository, acceptanceRepository, acceptanceRoundRepository,
-                receivableRepository, feedbackRepository);
+                receivableRepository, feedbackRepository, new QuoteViewContext());
     }
 
     @Test
@@ -131,6 +134,29 @@ class CustomerJourneyChangeSectionTest {
         assertThat(effectiveItem.getFacts()).anySatisfy(fact -> {
             assertThat(fact.getKey()).isEqualTo("approvedAt");
             assertThat(fact.getValue()).startsWith("2026-10-12");
+        });
+    }
+
+    @Test
+    @DisplayName("报价金额缺失时保持暂不可确认，不能补 0")
+    void missingQuoteAmountMustRemainUnconfirmable() throws Exception {
+        Quote quote = new Quote();
+        quote.setQuoteId(901L);
+        quote.setNo("Q-MISSING-AMOUNT");
+        quote.setVersion(1);
+        quote.setStatus(com.th4.edge.decoboon.quote.configure.QuoteStatus.Accepted);
+        quote.setAmount(null);
+        when(quoteLineRepository.findByQuote(quote)).thenReturn(List.of());
+
+        Method method = CustomerJourneyContext.class.getDeclaredMethod("quoteItem", Quote.class);
+        method.setAccessible(true);
+        CustomerJourney.Item item = (CustomerJourney.Item) method.invoke(context, quote);
+
+        assertThat(item.getAmount()).isNull();
+        assertThat(item.getHasSourceLines()).isFalse();
+        assertThat(item.getFacts()).anySatisfy(fact -> {
+            assertThat(fact.getKey()).isEqualTo("amount");
+            assertThat(fact.getValue()).isEqualTo("暂不可确认");
         });
     }
 

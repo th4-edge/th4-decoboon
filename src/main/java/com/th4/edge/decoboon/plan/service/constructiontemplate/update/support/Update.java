@@ -22,7 +22,7 @@ import java.util.List;
 @Note("plan/construction-template/update")
 @Properties(allow = {
         @AllowProperties(model = ConstructionPlanTemplate.class,
-                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "status", "defaultPlan", "stages"}),
+                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "sourceBaselineCode", "sourceBaselineVersion", "status", "defaultPlan", "currentEnabled", "stages"}),
         @AllowProperties(model = ConstructionStageTemplate.class,
                 properties = {"code", "name", "ratio", "type", "triggerType", "triggerStageCode", "offsetDays", "sort", "defaultDays", "acceptanceMode", "description"})
 })
@@ -44,6 +44,8 @@ public class Update implements com.th4.edge.decoboon.plan.service.constructionte
     @AutoInject
     private Integer sort;
     @AutoInject
+    private Integer totalDays;
+    @AutoInject
     private List<CompanyConstructionStage> stages;
 
     private final CompanyPlanTemplateContext context;
@@ -61,6 +63,7 @@ public class Update implements com.th4.edge.decoboon.plan.service.constructionte
         command.setName(name);
         command.setDescription(description);
         command.setSort(sort);
+        command.setTotalDays(totalDays);
         command.setStages(stages);
         return context.updateConstruction(employee, command);
     }

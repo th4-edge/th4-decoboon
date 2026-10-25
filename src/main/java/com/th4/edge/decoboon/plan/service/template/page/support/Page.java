@@ -21,11 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = PlanTemplateCatalog.class,
                 properties = {"paymentPlanBaselineVersion", "constructionPlanBaselineVersion", "paymentPlans", "constructionPlans"}),
         @AllowProperties(model = PaymentPlanTemplate.class,
-                properties = {"templateId", "code", "version", "name", "description", "sort", "source", "status", "defaultPlan", "nodes"}),
+                properties = {"templateId", "code", "version", "name", "description", "sort", "source", "sourceBaselineCode", "sourceBaselineVersion", "status", "defaultPlan", "currentEnabled", "nodes"}),
         @AllowProperties(model = PaymentPlanNodeTemplate.class,
                 properties = {"code", "name", "ratio", "type", "triggerType", "triggerStageCode", "offsetDays", "sort"}),
         @AllowProperties(model = ConstructionPlanTemplate.class,
-                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "status", "defaultPlan", "stages"}),
+                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "sourceBaselineCode", "sourceBaselineVersion", "status", "defaultPlan", "currentEnabled", "stages"}),
         @AllowProperties(model = ConstructionStageTemplate.class,
                 properties = {"code", "name", "defaultDays", "acceptanceMode", "sort", "description"})
 })

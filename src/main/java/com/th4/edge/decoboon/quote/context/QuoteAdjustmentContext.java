@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.quote.context;
 
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
+import com.th4.edge.decoboon.catalog.support.CatalogQuoteSourceSupport;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
 import com.th4.edge.decoboon.quote.configure.QuoteMode;
@@ -98,7 +99,7 @@ public class QuoteAdjustmentContext {
         target.setOwner(quote.getCreatedBy());
         target.setQuote(quote);
         target.setProperty(quote.getProperty());
-        target.setCatalogItem(catalog);
+        CatalogQuoteSourceSupport.attach(target, catalog);
         // ECD-013：请求未显式提供 space 时必须保留既有归属。
         // 原实现无条件 setSpace(request.space)，而 App / Web 单行入参都不携带 space，
         // 会把已有行的 space_id 覆盖为 null，破坏区域分组（区间小计随之漂移）。

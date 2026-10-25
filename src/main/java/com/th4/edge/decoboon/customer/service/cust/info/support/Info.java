@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.customer.service.cust.info.support;
 
 import com.th4.edge.decoboon.customer.context.CustomerGradeContext;
 import com.th4.edge.decoboon.customer.context.CustomerContext;
+import com.th4.edge.decoboon.customer.context.CustomerLossContext;
 import com.th4.edge.decoboon.customer.context.CustomerTagContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerGrade;
@@ -45,6 +46,8 @@ import java.util.Set;
                 properties = {"custId", "name", "telNo", "gender", "source", "community", "addr",
                         "area", "budget", "status", "statusBeforeDormant", "dormantReason", "dormantReasonText", "dormantAt", "dormantBy", "restoredAt", "restoredBy", "owner", "remark", "wechatAdded", "wechatNo", "wechatAddedAt", "visitCount", "lastVisitAt",
                         "lastFollowAt", "nextFollowAt", "pendingMeasureAt", "measureAt", "measureRequestedAt", "handedOffAt", "designer",
+                        "lossId", "lossScope", "lossStage", "lossReason", "lossReasonText", "competitorName", "lostAt", "lostBy",
+                        "lossPropertyId", "lossPropertyName", "lossFromStatus", "activeLossCount", "partialLoss",
                         "createTime", "tags", "portrait", "grade"}),
         @AllowProperties(model = Employee.class,
                 properties = {"empId", "name"}),
@@ -81,6 +84,7 @@ public class Info implements com.th4.edge.decoboon.customer.service.cust.info.In
     private final CustomerTagContext tagContext;
     private final CustomerGradeContext gradeContext;
     private final CustomerContext customerContext;
+    private final CustomerLossContext lossContext;
 
     public Info(CustomerPortraitRepository portraitRepository,
                 CustomerFollowRepository followRepository,
@@ -88,7 +92,8 @@ public class Info implements com.th4.edge.decoboon.customer.service.cust.info.In
                 MeasureRepository measureRepository,
                 CustomerTagContext tagContext,
                 CustomerGradeContext gradeContext,
-                CustomerContext customerContext) {
+                CustomerContext customerContext,
+                CustomerLossContext lossContext) {
         this.portraitRepository = portraitRepository;
         this.followRepository = followRepository;
         this.propertyRepository = propertyRepository;
@@ -96,12 +101,14 @@ public class Info implements com.th4.edge.decoboon.customer.service.cust.info.In
         this.tagContext = tagContext;
         this.gradeContext = gradeContext;
         this.customerContext = customerContext;
+        this.lossContext = lossContext;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Customer call(Customer request) {
         Customer customer = customerContext.requireVisible(customerId, employee);
+        lossContext.enrich(List.of(customer));
         assemble(customer);
         return customer;
     }

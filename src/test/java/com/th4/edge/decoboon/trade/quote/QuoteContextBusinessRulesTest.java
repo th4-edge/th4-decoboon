@@ -90,6 +90,9 @@ class QuoteContextBusinessRulesTest {
         PackageTemplate template = new PackageTemplate();
         template.setTemplateId(4L);
         template.setCompany(company);
+        template.setCode("PACK-QUALITY");
+        template.setVersion(7);
+        template.setSnapshotHash("snapshot-hash");
         template.setName("品质套餐");
         template.setArea(new BigDecimal("100"));
         template.setPrice(new BigDecimal("100000"));
@@ -105,6 +108,9 @@ class QuoteContextBusinessRulesTest {
         Quote quote = context.create(customer, template, property, new BigDecimal("120"), BigDecimal.ONE, employee);
 
         assertThat(quote.getVersion()).isEqualTo(3);
+        assertThat(quote.getPackageTemplateCode()).isEqualTo("PACK-QUALITY");
+        assertThat(quote.getPackageTemplateVersion()).isEqualTo(7);
+        assertThat(quote.getPackageTemplateSnapshotHash()).isEqualTo("snapshot-hash");
         assertThat(quote.getMode().name()).isEqualTo("Package");
         verify(quoteRepository).countByCompany_ComIdAndCustomer_CustIdAndPackageTemplate_TemplateId(1L, 2L, 4L);
     }

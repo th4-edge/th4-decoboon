@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Note("业主项目阶段列表")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
-                properties = {"stageId", "project", "property", "name", "stageCode", "sort", "weight", "status", "progress",
+                properties = {"stageId", "project", "property", "name", "stageCode", "sort", "weight", "acceptanceMode", "status", "progress",
                         "plannedStart", "plannedEnd", "actualStart", "actualEnd",
                         "notApplicableReason", "notApplicableBy", "notApplicableAt"}),
         @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name"}),

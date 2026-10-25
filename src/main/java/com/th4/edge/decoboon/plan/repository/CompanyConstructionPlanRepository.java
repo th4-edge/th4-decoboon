@@ -24,4 +24,15 @@ public interface CompanyConstructionPlanRepository extends JpaRepository<Company
 
     Optional<CompanyConstructionPlan> findByCompany_ComIdAndCodeAndStatus(
             Long comId, String code, PlanTemplateStatus status);
+
+    List<CompanyConstructionPlan> findByCompany_ComIdOrderByCodeAscVersionDescTemplateIdDesc(Long comId);
+
+    Optional<CompanyConstructionPlan> findFirstByCompany_ComIdAndCodeOrderByVersionDesc(Long comId, String code);
+
+    List<CompanyConstructionPlan> findByCompany_ComIdAndCodeAndCurrentEnabledTrue(Long comId, String code);
+
+    List<CompanyConstructionPlan> findByCompany_ComIdAndCurrentEnabledTrue(Long comId);
+
+    List<CompanyConstructionPlan> findByCompany_ComIdAndStatusAndCurrentEnabledTrueOrderByDefaultPlanDescTemplateIdAsc(
+            Long comId, PlanTemplateStatus status);
 }

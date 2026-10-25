@@ -14,14 +14,17 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.th4.edge.decoboon.bim.configure.Unit;
-import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.decoboon.document.configure.DocumentAudience;
 import com.th4.edge.decoboon.document.model.DocumentProfile;
 import com.th4.edge.decoboon.document.model.DocumentTemplate;
+import com.th4.edge.decoboon.quote.configure.QuoteViewMode;
+import com.th4.edge.decoboon.quote.context.QuoteViewContext;
 import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.decoboon.quote.model.QuoteGroup;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.Color;
@@ -32,10 +35,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /** 报价单 PDF 渲染；客户版固定不输出成本、利润和内部结算字段。 */
@@ -54,16 +54,24 @@ public class QuotePdfRenderer {
     private static final String LATIN_FONT_NAME = "Roboto-Regular.ttf";
     private static final byte[] CJK_FONT_BYTES = readFont(CJK_FONT_RESOURCE);
     private static final byte[] LATIN_FONT_BYTES = readFont(LATIN_FONT_RESOURCE);
-    private static final String NO_REGION = "未分区域";
-
     private final ObjectMapper objectMapper;
+    private final QuoteViewContext quoteViewContext;
 
     public QuotePdfRenderer(ObjectMapper objectMapper) {
+        this(objectMapper, new QuoteViewContext());
+    }
+
+    @Autowired
+    public QuotePdfRenderer(ObjectMapper objectMapper, QuoteViewContext quoteViewContext) {
         this.objectMapper = objectMapper;
+        this.quoteViewContext = quoteViewContext;
     }
 
     public byte[] render(Quote quote, List<QuoteLine> lines, DocumentTemplate template,
-                         DocumentProfile profile, DocumentAudience audience) {
+                         DocumentProfile profile, DocumentAudience audience, QuoteViewMode groupMode) {
+        if (groupMode == null) {
+            throw invalid("请选择报价分组方式");
+        }
         if (quote == null) throw invalid("报价不存在");
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             RenderStyle style = style(template.getStyleConfig());
@@ -89,6 +97,7 @@ public class QuotePdfRenderer {
             meta.setWidthPercentage(100);
             addMeta(fonts, meta, "报价编号", quote.getNo(), bodyFont);
             addMeta(fonts, meta, "报价版本", "V" + value(quote.getVersion(), 1), bodyFont);
+            addMeta(fonts, meta, "分组方式", groupMode.getName(), bodyFont);
             addMeta(fonts, meta, "客户名称", quote.getCustomer() == null ? "" : quote.getCustomer().getName(), bodyFont);
             addMeta(fonts, meta, "报价名称", quote.getTitle(), bodyFont);
             if (enabled(template.getFieldConfig(), "showPropertyAddress")) {
@@ -111,17 +120,22 @@ public class QuotePdfRenderer {
             addHeader(fonts, table, "单价", headingFont, style.primaryColor());
             addHeader(fonts, table, "金额", headingFont, style.primaryColor());
 
+            Quote quoteView = quoteViewContext.applyForPrint(quote, lines);
+            List<QuoteGroup> groups = groupMode == QuoteViewMode.TYPE
+                    ? quoteView.getTypeGroups() : quoteView.getRegionGroups();
             int index = 1;
-            for (Map.Entry<String, List<QuoteLine>> group : regionGroups(lines).entrySet()) {
-                addRegionRow(fonts, table, group.getKey(), group.getValue(), headingFont, style.primaryColor());
-                for (QuoteLine line : group.getValue()) {
-                    addCell(fonts, table, String.valueOf(index++), bodyFont, Element.ALIGN_CENTER);
-                    addCell(fonts, table, value(line.getCategory()), bodyFont, Element.ALIGN_LEFT);
-                    addCell(fonts, table, lineName(line, template), bodyFont, Element.ALIGN_LEFT);
-                    addCell(fonts, table, unitLabel(line.getUnit()), bodyFont, Element.ALIGN_CENTER);
-                    addCell(fonts, table, amount(line.getQuantity()), bodyFont, Element.ALIGN_RIGHT);
-                    addCell(fonts, table, money(line.getPrice()), bodyFont, Element.ALIGN_RIGHT);
-                    addCell(fonts, table, money(line.getAmount()), bodyFont, Element.ALIGN_RIGHT);
+            if (groups != null) {
+                for (QuoteGroup group : groups) {
+                    addGroupRow(fonts, table, groupLabel(group), group, headingFont, style.primaryColor());
+                    for (QuoteLine line : group.getItems()) {
+                        addCell(fonts, table, String.valueOf(index++), bodyFont, Element.ALIGN_CENTER);
+                        addCell(fonts, table, value(line.getCategory()), bodyFont, Element.ALIGN_LEFT);
+                        addCell(fonts, table, lineName(line, template), bodyFont, Element.ALIGN_LEFT);
+                        addCell(fonts, table, unitLabel(line.getUnit()), bodyFont, Element.ALIGN_CENTER);
+                        addCell(fonts, table, amount(line.getQuantity()), bodyFont, Element.ALIGN_RIGHT);
+                        addCell(fonts, table, money(line.getPrice()), bodyFont, Element.ALIGN_RIGHT);
+                        addCell(fonts, table, money(line.getAmount()), bodyFont, Element.ALIGN_RIGHT);
+                    }
                 }
             }
             document.add(table);
@@ -145,44 +159,20 @@ public class QuotePdfRenderer {
         }
     }
 
-    /** 报价明细按施工区域分组，区域之间按区域排序值、区域名称稳定排序。 */
-    private Map<String, List<QuoteLine>> regionGroups(List<QuoteLine> lines) {
-        Map<String, List<QuoteLine>> groups = new LinkedHashMap<>();
-        for (QuoteLine line : sortedLines(lines)) {
-            groups.computeIfAbsent(regionName(line), key -> new ArrayList<>()).add(line);
+    private String groupLabel(QuoteGroup group) {
+        String category = value(group.getName());
+        if (group.getType() == null) {
+            return category;
         }
-        return groups;
+        return group.getType().getName() + " · " + category;
     }
 
-    private List<QuoteLine> sortedLines(List<QuoteLine> lines) {
-        if (lines == null) return List.of();
-        return lines.stream()
-                .sorted(Comparator
-                        .comparingInt(this::regionOrder)
-                        .thenComparing(this::regionName)
-                        .thenComparing(QuoteLine::getItemId, Comparator.nullsLast(Long::compareTo)))
-                .toList();
-    }
-
-    private int regionOrder(QuoteLine line) {
-        Space space = line.getSpace();
-        if (space == null || space.getSort() == null) return Integer.MAX_VALUE;
-        return space.getSort();
-    }
-
-    private String regionName(QuoteLine line) {
-        Space space = line.getSpace();
-        String name = space == null ? null : space.getName();
-        return notBlank(name) ? clean(name.trim()) : NO_REGION;
-    }
-
-    private void addRegionRow(FontKit fonts, PdfPTable table, String region, List<QuoteLine> items,
-                              Font font, Color color) {
-        BigDecimal subtotal = items.stream()
-                .map(QuoteLine::getAmount)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        PdfPCell cell = new PdfPCell(fonts.phrase(region + "（" + items.size() + " 项）    小计 ￥" + money(subtotal), font));
+    private void addGroupRow(FontKit fonts, PdfPTable table, String label, QuoteGroup group,
+                             Font font, Color color) {
+        String subtotal = group.getAmount() == null
+                ? "暂不可确认"
+                : "￥" + money(group.getAmount());
+        PdfPCell cell = new PdfPCell(fonts.phrase(label + "（" + group.getItems().size() + " 项）    小计 " + subtotal, font));
         cell.setColspan(7);
         cell.setPadding(6);
         cell.setBackgroundColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 36));

@@ -6,6 +6,7 @@ import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.bim.configure.Unit;
+import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.framework.core.annotation.Note;
@@ -24,6 +25,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -106,6 +108,28 @@ public class PackageLine extends AbstractModel {
     @Column(nullable = false)
     private Integer sort = 0;
 
+    @Note("分区名称快照")
+    @Column(name = "section_name_snapshot", length = 64)
+    private String sectionNameSnapshot;
+
+    @Note("报价项目类型快照")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "catalog_type_snapshot", length = 20)
+    private ItemType catalogTypeSnapshot;
+
+    @Note("报价项目分类快照")
+    @Column(name = "catalog_category_snapshot", length = 64)
+    private String catalogCategorySnapshot;
+
+    @Note("施工工艺快照")
+    @Lob
+    @Column(name = "craft_snapshot")
+    private String craftSnapshot;
+
+    @Note("标准成本快照")
+    @Column(name = "cost_price_snapshot", precision = 12, scale = 2)
+    private BigDecimal costPriceSnapshot;
+
     @Note("套餐项目说明")
     @ElementCollection
     @CollectionTable(name = "pack_line_criterions", joinColumns = @JoinColumn(name = "item_id"))
@@ -142,6 +166,17 @@ public class PackageLine extends AbstractModel {
     public void setDeductible(Boolean deductible) { this.deductible = deductible; }
     public Integer getSort() { return sort; }
     public void setSort(Integer sort) { this.sort = sort; }
+    public String getSectionNameSnapshot() { return sectionNameSnapshot; }
+    public void setSectionNameSnapshot(String sectionNameSnapshot) { this.sectionNameSnapshot = sectionNameSnapshot; }
+    public ItemType getCatalogTypeSnapshot() { return catalogTypeSnapshot; }
+    public void setCatalogTypeSnapshot(ItemType catalogTypeSnapshot) { this.catalogTypeSnapshot = catalogTypeSnapshot; }
+    public String getCatalogCategorySnapshot() { return catalogCategorySnapshot; }
+    public void setCatalogCategorySnapshot(String catalogCategorySnapshot) { this.catalogCategorySnapshot = catalogCategorySnapshot; }
+    public String getCraftSnapshot() { return craftSnapshot; }
+    public void setCraftSnapshot(String craftSnapshot) { this.craftSnapshot = craftSnapshot; }
+    public BigDecimal getCostPriceSnapshot() { return costPriceSnapshot; }
+    public void setCostPriceSnapshot(BigDecimal costPriceSnapshot) { this.costPriceSnapshot = costPriceSnapshot; }
+
     public List<String> getCriterions() { return criterions; }
     public void setCriterions(List<String> criterions) { this.criterions = criterions; }
 }

@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.payroll.service.attendances.summary.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
@@ -33,16 +35,21 @@ public class Page implements com.th4.edge.decoboon.payroll.service.attendances.s
     @AutoInject private String month;
     @AutoInject private Integer current;
     @AutoInject private Integer size;
+    @AutoInject private Long storeId;
     private final AttendanceSummaryRepository repository;
     private final PayrollAccessContext accessContext;
-    public Page(AttendanceSummaryRepository repository, PayrollAccessContext accessContext) {
-        this.repository = repository; this.accessContext = accessContext;
+    private final StoreFilterContext storeFilterContext;
+    public Page(AttendanceSummaryRepository repository, PayrollAccessContext accessContext,
+                StoreFilterContext storeFilterContext) {
+        this.repository = repository; this.accessContext = accessContext; this.storeFilterContext = storeFilterContext;
     }
     @Override
     public org.springframework.data.domain.Page<AttendanceSummary> call(AttendanceSummary request) {
         Employee currentEmployee = accessContext.requireManager(employee);
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
         var items = repository.findAll(accessContext.visible(currentEmployee, AttendanceSummary.class))
                 .stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> month == null || month.isBlank() || month.equals(item.getPayrollMonth()))
                 .toList();
         int page = current == null || current < 1 ? 0 : current - 1;

@@ -90,7 +90,7 @@ public class Workbench implements com.th4.edge.decoboon.customer.service.contrac
     public ContractWorkbench call(ProjectContract request) {
         Credentials credential = accessContext.requireCredential(principal);
         ProjectContract contract = contractContext.requireContract(credential, projectId, contractId);
-        ContractWorkbench view = workbenchContext.build(contract);
+        ContractWorkbench view = workbenchContext.build(contract, false);
         // 即使后续响应白名单被误改，也不把成本对象带到业主响应中。
         view.setCost(null);
         return view;

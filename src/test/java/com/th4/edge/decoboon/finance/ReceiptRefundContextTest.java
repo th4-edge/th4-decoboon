@@ -13,6 +13,7 @@ import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -51,7 +52,7 @@ class ReceiptRefundContextTest {
 
         when(accessContext.requireEditor(finance)).thenReturn(finance);
         when(accessContext.value(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(receiptRepository.findById(10L)).thenReturn(Optional.of(receipt));
+        when(receiptRepository.findOne(any(Specification.class))).thenReturn(Optional.of(receipt));
         when(idempotencyContext.amount(any())).thenReturn("10000");
         when(idempotencyContext.text(any())).thenReturn("客户退款");
         when(idempotencyContext.fingerprint(any())).thenReturn("refund-fingerprint");
@@ -71,7 +72,7 @@ class ReceiptRefundContextTest {
         verify(adjustmentContext).applyRefund(eq(finance), captor.capture());
         assertThat(captor.getValue()).isSameAs(result);
         verify(accessContext).recordLedger(any(), any(), any(), any(), any(), any(), any(),
-                any(), any(), any(), any(), any());
+                any(), any(), any(), any(), any(), any(), any(), any());
     }
 
     @Test
@@ -101,7 +102,7 @@ class ReceiptRefundContextTest {
 
         when(accessContext.requireEditor(finance)).thenReturn(finance);
         when(accessContext.value(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(receiptRepository.findById(10L)).thenReturn(Optional.of(receipt));
+        when(receiptRepository.findOne(any(Specification.class))).thenReturn(Optional.of(receipt));
         when(idempotencyContext.amount(any())).thenReturn("10000");
         when(idempotencyContext.text(any())).thenReturn("客户退款");
         when(idempotencyContext.fingerprint(any())).thenReturn("refund-fingerprint-2");

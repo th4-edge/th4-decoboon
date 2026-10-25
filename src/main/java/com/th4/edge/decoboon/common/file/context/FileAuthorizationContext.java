@@ -23,6 +23,9 @@ import com.th4.edge.decoboon.design.repository.DesignRepository;
 import com.th4.edge.decoboon.design.repository.SpaceRepository;
 import com.th4.edge.decoboon.design.repository.TalkRepository;
 import com.th4.edge.decoboon.design.repository.TalkSectionRepository;
+import com.th4.edge.decoboon.finance.context.ExpenseEvidenceContext;
+import com.th4.edge.decoboon.finance.model.Expense;
+import com.th4.edge.decoboon.finance.repository.ExpenseRepository;
 import com.th4.edge.decoboon.property.model.Measure;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
@@ -86,6 +89,8 @@ public class FileAuthorizationContext {
     private final CatalogItemRepository catalogItemRepository;
     private final CarryoverAttachmentRepository carryoverAttachmentRepository;
     private final MaterialSelectionRepository materialSelectionRepository;
+    private final ExpenseRepository expenseRepository;
+    private final ExpenseEvidenceContext expenseEvidenceContext;
 
     public FileAuthorizationContext(FileSignatureContext signatureContext,
                                     TenantContext tenantContext,
@@ -110,7 +115,9 @@ public class FileAuthorizationContext {
                                     StockMovementRepository stockMovementRepository,
                                     CatalogItemRepository catalogItemRepository,
                                     CarryoverAttachmentRepository carryoverAttachmentRepository,
-                                    MaterialSelectionRepository materialSelectionRepository) {
+                                    MaterialSelectionRepository materialSelectionRepository,
+                                    ExpenseRepository expenseRepository,
+                                    ExpenseEvidenceContext expenseEvidenceContext) {
         this.signatureContext = signatureContext;
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
@@ -135,6 +142,8 @@ public class FileAuthorizationContext {
         this.catalogItemRepository = catalogItemRepository;
         this.carryoverAttachmentRepository = carryoverAttachmentRepository;
         this.materialSelectionRepository = materialSelectionRepository;
+        this.expenseRepository = expenseRepository;
+        this.expenseEvidenceContext = expenseEvidenceContext;
     }
 
     @Transactional(readOnly = true)
@@ -292,6 +301,17 @@ public class FileAuthorizationContext {
                 // 与 customer/customer-follow/page 同口径：能看客户即可看该客户的跟进图片。
                 customerContext.requireVisible(follow.getCustomer().getCustId(), employee);
                 add(allowed, follow.getImages());
+            }
+            case Expense -> {
+                DataScope scopeData = dataScopeContext.resolve(employee);
+                Expense expense = expenseRepository.findOne(byId(Expense.class, "expenseId", businessId)
+                                .and(DataScopeSpecification.visible(Expense.class, scopeData)))
+                        .orElseThrow(this::notFound);
+                if (expense.getProject() != null) {
+                    projectId = expense.getProject().getProjectId();
+                }
+                expense.getAttachments().forEach(item ->
+                        add(allowed, expenseEvidenceContext.validateOrNull(expense, item.getFileUrl())));
             }
         }
         return new Authorization(projectId, requested(allowed, requestedPaths));

@@ -37,6 +37,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -47,7 +48,10 @@ import java.time.LocalDate;
 @EntityListeners(SnowflakeEntityListener.class)
 @Entity
 @DataPermission
-@Table(name = "db_finance_payable", indexes = {
+@Table(name = "db_finance_payable",
+        uniqueConstraints = @UniqueConstraint(name = "uk_fin_payable_company_source",
+                columnNames = {"com_id", "source_type", "source_id"}),
+        indexes = {
         @Index(name = "idx_fin_payable_company", columnList = "com_id, payable_id"),
         @Index(name = "idx_fin_payable_project", columnList = "com_id, project_id, payable_id"),
         @Index(name = "idx_fin_payable_store", columnList = "com_id, store_id, payable_id"),

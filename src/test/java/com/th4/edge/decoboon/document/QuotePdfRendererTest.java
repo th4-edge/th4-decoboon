@@ -8,8 +8,10 @@ import com.th4.edge.decoboon.document.configure.DocumentAudience;
 import com.th4.edge.decoboon.document.context.DocumentTemplateBaseline;
 import com.th4.edge.decoboon.document.context.QuotePdfRenderer;
 import com.th4.edge.decoboon.document.model.DocumentProfile;
+import com.th4.edge.decoboon.catalog.configure.ItemType;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.property.model.Property;
+import com.th4.edge.decoboon.quote.configure.QuoteViewMode;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.bim.configure.Unit;
@@ -64,12 +66,30 @@ class QuotePdfRendererTest {
         QuotePdfRenderer renderer = new QuotePdfRenderer(new ObjectMapper());
 
         byte[] pdf = renderer.render(quote, List.of(line), new DocumentTemplateBaseline().template(
-                com.th4.edge.decoboon.document.configure.DocumentType.Quote), profile, DocumentAudience.Customer);
+                com.th4.edge.decoboon.document.configure.DocumentType.Quote), profile, DocumentAudience.Customer, QuoteViewMode.REGION);
 
         assertThat(new String(pdf, 0, 5)).isEqualTo("%PDF-");
         assertThat(pdf.length).isGreaterThan(1000);
         PdfReader reader = new PdfReader(pdf);
         assertThat(reader.getNumberOfPages()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    void rendersTypeGroupingAndPrintsGroupMode() throws Exception {
+        Quote quote = baseQuote();
+        QuoteLine line = line(3L, "客厅", "水电开槽", "1800.00");
+        line.setType(ItemType.Construction);
+        line.setCategory("水电");
+
+        QuotePdfRenderer renderer = new QuotePdfRenderer(new ObjectMapper());
+        byte[] pdf = renderer.render(quote, List.of(line),
+                new DocumentTemplateBaseline().template(
+                        com.th4.edge.decoboon.document.configure.DocumentType.Quote),
+                profile(), DocumentAudience.Customer, QuoteViewMode.TYPE);
+
+        String text = new PdfTextExtractor(new PdfReader(pdf)).getTextFromPage(1);
+        assertThat(text).contains("分组方式").contains("按类型");
+        assertThat(text).contains("施工 · 水电");
     }
 
     @Test
@@ -82,7 +102,7 @@ class QuotePdfRendererTest {
         byte[] pdf = renderer.render(quote, List.of(livingRoom, bedroom),
                 new DocumentTemplateBaseline().template(
                         com.th4.edge.decoboon.document.configure.DocumentType.Quote),
-                profile(), DocumentAudience.Customer);
+                profile(), DocumentAudience.Customer, QuoteViewMode.REGION);
 
         // 字体必须嵌入并带 ToUnicode，否则手机阅读器乱码、复制文本乱码
         String raw = new String(pdf, StandardCharsets.ISO_8859_1);

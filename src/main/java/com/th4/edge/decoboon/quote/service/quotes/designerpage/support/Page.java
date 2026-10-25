@@ -17,19 +17,24 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-/** 设计师或 BOSS 报价分页实现，禁止在响应中返回任何成本字段。 */
+/** 设计师或 BOSS 报价分页实现，筛选、计数和切页均在数据库完成，响应不包含成本字段。 */
 @Note("设计师报价分页")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
-                properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
+                properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "packageTemplateCode", "packageTemplateVersion", "packageTemplateSnapshotHash", "createdBy", "version", "mode",
                         "area", "subtotal", "amount", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
                         "submittedAt", "rejectedAt", "acceptedAt", "convertedAt", "createTime", "updateTime", "property", "businessStateView"}),
         @AllowProperties(model = Customer.class,
@@ -37,7 +42,7 @@ import java.util.List;
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout"}),
         @AllowProperties(model = com.th4.edge.decoboon.pack.model.PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount"}),
+                properties = {"templateId", "code", "version", "status", "currentPublished", "name", "area", "price", "discount", "snapshotHash"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),
@@ -60,6 +65,12 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
     private Long customerId;
 
     @AutoInject
+    private Long propertyId;
+
+    @AutoInject
+    private Long designId;
+
+    @AutoInject
     private QuoteStatus status;
 
     @AutoInject
@@ -77,44 +88,61 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Quote> call(Quote request) {
         Employee currentEmployee = tenantContext.requireEmployee(employee);
         EmployeeRole role = currentEmployee.getRole();
-        boolean boss = role == EmployeeRole.Boss;
-        // DEC-040：店长负责确认签约与确认生效，必须能读到本店待签约报价队列；
-        // DEC-040 与 BR-033：店长数据范围为本门店（Store），不能看到跨门店对象。
-        if (!boss && role != EmployeeRole.Designer && role != EmployeeRole.StoreManager) {
+        // DEC-040 / BR-033：店长只读本店；设计师只读本人创建；BOSS 读本企业。
+        if (role != EmployeeRole.Boss && role != EmployeeRole.Designer && role != EmployeeRole.StoreManager) {
             throw new DefinedException(new DefaultErrorCode("403", "仅设计师、店长或企业负责人可访问设计与报价列表"));
         }
         Long comId = currentEmployee.getCompany().getComId();
         Long empId = currentEmployee.getEmpId();
-        List<Quote> visibleQuotes;
-        if (boss) {
-            visibleQuotes = quoteRepository.findByCompany_ComIdOrderByQuoteIdDesc(comId);
-        } else if (role == EmployeeRole.StoreManager) {
-            Long storeId = currentEmployee.getStore() == null ? null : currentEmployee.getStore().getStoreId();
-            visibleQuotes = storeId == null
-                    ? List.of()
-                    : quoteRepository.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByQuoteIdDesc(comId, storeId);
-        } else {
-            visibleQuotes = quoteRepository.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(comId, empId);
-        }
-        List<Quote> quotes = visibleQuotes
-                .stream()
-                .filter(quote -> customerId == null || quote.getCustomer().getCustId().equals(customerId))
-                .filter(quote -> status == null || quote.getStatus() == status)
-                .filter(quote -> keyword == null || keyword.isBlank()
-                        || quote.getNo().toLowerCase().contains(keyword.trim().toLowerCase())
-                        || (quote.getTitle() != null && quote.getTitle().toLowerCase().contains(keyword.trim().toLowerCase()))
-                        || (quote.getCustomer() != null && quote.getCustomer().getName().toLowerCase().contains(keyword.trim().toLowerCase())))
-                .sorted(Comparator.comparing(Quote::getQuoteId).reversed())
-                .toList();
+        Long storeId = role == EmployeeRole.StoreManager
+                ? currentEmployee.getStore() == null ? null : currentEmployee.getStore().getStoreId()
+                : null;
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 100 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, quotes.size());
-        int to = Math.min(from + pageSize, quotes.size());
-        List<Quote> pageQuotes = quotes.subList(from, to);
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 100);
+        if (role == EmployeeRole.StoreManager && storeId == null) {
+            return new PageImpl<>(List.of(), PageRequest.of(page, pageSize), 0);
+        }
+
+        Specification<Quote> specification = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.equal(root.get("company").get("comId"), comId));
+            if (role == EmployeeRole.StoreManager) {
+                predicates.add(criteriaBuilder.equal(root.get("customer").get("store").get("storeId"), storeId));
+            } else if (role == EmployeeRole.Designer) {
+                predicates.add(criteriaBuilder.equal(root.get("createdBy").get("empId"), empId));
+            }
+            if (customerId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("customer").get("custId"), customerId));
+            }
+            if (propertyId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("property").get("propertyId"), propertyId));
+            }
+            if (designId != null) {
+                predicates.add(criteriaBuilder.equal(root.get("design").get("designId"), designId));
+            }
+            if (status != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), status));
+            }
+            if (keyword != null && !keyword.isBlank()) {
+                String pattern = "%" + keyword.trim().toLowerCase(Locale.ROOT) + "%";
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("no")), pattern),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), pattern),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("customer").get("name")), pattern)
+                ));
+            }
+            return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
+        };
+
+        org.springframework.data.domain.Page<Quote> pageQuotes = quoteRepository.findAll(
+                specification,
+                PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, "quoteId"))
+        );
         pageQuotes.forEach(quoteBusinessStateContext::enrich);
-        return new PageImpl<>(pageQuotes, PageRequest.of(page, pageSize), quotes.size());
+        return pageQuotes;
     }
 }

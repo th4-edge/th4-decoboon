@@ -14,6 +14,7 @@ import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
+import com.th4.edge.decoboon.plan.configure.StageAcceptanceMode;
 import com.th4.edge.decoboon.project.context.ProjectContractContext;
 import com.th4.edge.decoboon.project.context.ProjectContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
@@ -199,7 +200,8 @@ class DecoboonClosedLoopTest {
         assertThat(customer.getStatus()).isEqualTo(CustStatus.Quoted);
         BigDecimal finalSignedAmount = quote.getAmount().subtract(new BigDecimal("1000.00"));
         ProjectContract contract = projectContractContext.createFromQuote(
-                quote, employee, null, finalSignedAmount, LocalDate.now(), LocalDate.now().plusDays(90), "测试合同");
+                quote, employee, null, finalSignedAmount, LocalDate.now(), LocalDate.now().plusDays(90), "测试合同",
+                "STANDARD_30_40_30", "RESIDENTIAL_STANDARD_8");
         assertThat(contract.getStatus()).isEqualTo(ContractStatus.PendingSign);
         assertThat(customer.getStatus()).isEqualTo(CustStatus.Quoted);
         projectContractContext.markSigned(contract, LocalDate.now(), finalSignedAmount);
@@ -235,6 +237,12 @@ class DecoboonClosedLoopTest {
         assertThat(stages).extracting(ProjectStage::getStageCode)
                 .containsExactly("PREPARE", "DEMOLITION", "WATER_ELECTRIC", "MASONRY",
                         "CARPENTRY", "PAINTING", "INSTALL", "COMPLETION");
+        // DEC-087 / BR-053：合同阶段验收模式必须原样进入项目执行阶段。
+        assertThat(stages).extracting(ProjectStage::getAcceptanceMode)
+                .containsExactly(StageAcceptanceMode.None, StageAcceptanceMode.ConstructionDone,
+                        StageAcceptanceMode.AcceptanceDone, StageAcceptanceMode.ConstructionDone,
+                        StageAcceptanceMode.ConstructionDone, StageAcceptanceMode.ConstructionDone,
+                        StageAcceptanceMode.ConstructionDone, StageAcceptanceMode.AcceptanceDone);
         assertThat(receivables).hasSize(3);
         assertThat(receivables.get(0).getTriggerType().name()).isEqualTo("ContractSigned");
         assertThat(receivables.get(1).getStageCode()).isEqualTo("PREPARE");

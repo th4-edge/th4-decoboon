@@ -37,6 +37,8 @@ class ContractPlanContextTest {
     private List<ContractPaymentNode> savedNodes;
     private List<ContractConstructionStage> savedStages;
 
+    private AtomicReference<ContractConstructionPlan> constructionRef;
+
     @BeforeEach
     void setUp() {
         ContractPaymentPlanRepository paymentPlanRepository = mock(ContractPaymentPlanRepository.class);
@@ -44,7 +46,7 @@ class ContractPlanContextTest {
         ContractConstructionPlanRepository constructionPlanRepository = mock(ContractConstructionPlanRepository.class);
         ContractConstructionStageRepository constructionStageRepository = mock(ContractConstructionStageRepository.class);
         AtomicReference<ContractPaymentPlan> paymentRef = new AtomicReference<>();
-        AtomicReference<ContractConstructionPlan> constructionRef = new AtomicReference<>();
+        constructionRef = new AtomicReference<>();
         savedNodes = new ArrayList<>();
         savedStages = new ArrayList<>();
 
@@ -103,6 +105,7 @@ class ContractPlanContextTest {
         context.select(contract, "STANDARD_30_40_30", "RESIDENTIAL_STANDARD_8");
 
         assertThat(savedStages).hasSize(8);
+        assertThat(constructionRef.get().getSourceTotalDays()).isEqualTo(120);
         assertThat(savedStages.get(0).getCode()).isEqualTo("PREPARE");
         assertThat(savedStages.get(7).getCode()).isEqualTo("COMPLETION");
         assertThat(savedStages.get(0).getPlannedStart()).isEqualTo(LocalDate.of(2026, 9, 20));

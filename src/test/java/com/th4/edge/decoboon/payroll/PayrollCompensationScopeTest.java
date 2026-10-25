@@ -80,7 +80,7 @@ class PayrollCompensationScopeTest {
         DataScopeContext scope = mock(DataScopeContext.class);
         EmployeeRepository employees = mock(EmployeeRepository.class);
         ProjectRepository projects = mock(ProjectRepository.class);
-        PayrollAccessContext access = new PayrollAccessContext(tenant, scope, employees, projects);
+        PayrollAccessContext access = new PayrollAccessContext(tenant, scope, employees, projects, mock(com.th4.edge.decoboon.payroll.repository.PayrollItemRepository.class));
         when(tenant.requireRole(eq(finance), eq(EmployeeRole.Boss), eq(EmployeeRole.Finance))).thenReturn(finance);
         when(tenant.requireRole(eq(finance), eq(EmployeeRole.Boss), eq(EmployeeRole.Finance),
                 eq(EmployeeRole.StoreManager))).thenReturn(finance);

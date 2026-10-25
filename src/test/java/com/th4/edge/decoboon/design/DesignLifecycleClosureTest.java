@@ -216,7 +216,8 @@ class DesignLifecycleClosureTest {
 
         BigDecimal signedAmount = quote.getAmount();
         ProjectContract contract = projectContractContext.createFromQuote(
-                quote, designer, null, signedAmount, LocalDate.now(), LocalDate.now().plusDays(90), "设计状态闭环合同");
+                quote, designer, null, signedAmount, LocalDate.now(), LocalDate.now().plusDays(90), "设计状态闭环合同",
+                "STANDARD_30_40_30", "RESIDENTIAL_STANDARD_8");
         assertThat(contract.getStatus()).isEqualTo(ContractStatus.PendingSign);
         assertThat(reload(design).getStatus()).isEqualTo(DesignStatus.Selected);
 

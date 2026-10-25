@@ -314,13 +314,15 @@ class CustomerJourneyEnrichmentTest {
 
         CustomerJourney.Section quoteSection = section(journey, "quote");
         CustomerJourney.Item quoteFact = quoteSection.getItems().get(0);
-        assertThat(quoteFact.getPriceGroups()).hasSize(1);
-        CustomerJourney.PriceGroup group = quoteFact.getPriceGroups().get(0);
+        assertThat(quoteFact.getHasSourceLines()).isTrue();
+        assertThat(quoteFact.getRegionGroups()).hasSize(1);
+        assertThat(quoteFact.getTypeGroups()).hasSize(1);
+        var group = quoteFact.getRegionGroups().get(0);
         assertThat(group.getName()).isEqualTo("客厅");
-        assertThat(group.getTotal()).isEqualTo("3200.00");
-        assertThat(group.getRows()).hasSize(1);
-        assertThat(group.getRows().get(0).getName()).isEqualTo("墙面施工");
-        assertThat(group.getRows().get(0).getAmount()).isEqualTo("3200.00");
+        assertThat(group.getAmount()).isEqualByComparingTo("3200.00");
+        assertThat(group.getItems()).hasSize(1);
+        assertThat(group.getItems().get(0).getName()).isEqualTo("墙面施工");
+        assertThat(group.getItems().get(0).getAmount()).isEqualByComparingTo("3200.00");
 
         // 服务主体知情权（USER-DECISION-20261014-002）：
         // 业主端可以看到服务方与为这一户服务的人，但**不得出现员工个人手机号**。

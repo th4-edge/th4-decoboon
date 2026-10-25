@@ -32,6 +32,9 @@ import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,6 +42,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -51,41 +57,43 @@ class DesignerWorkbenchAggregationTest {
         Property first = property(101L, customer, designer, PropertyStatus.Measured);
         Property second = property(102L, customer, designer, PropertyStatus.Designing);
 
-        CustomerRepository customers = mock(CustomerRepository.class);
         PropertyRepository properties = mock(PropertyRepository.class);
         DesignRepository designs = mock(DesignRepository.class);
         RequirementRepository requirements = mock(RequirementRepository.class);
         MeasureRepository measures = mock(MeasureRepository.class);
-        QuoteRepository quotes = mock(QuoteRepository.class);
         TenantContext tenant = mock(TenantContext.class);
+        var anchor101 = designAnchor(101L, LocalDateTime.of(2026, 9, 1, 10, 0), "Pending");
+        var anchor102 = designAnchor(102L, LocalDateTime.of(2026, 9, 2, 10, 0), "Done");
         when(tenant.requireEmployee(designer)).thenReturn(designer);
-        when(customers.findByCompany_ComIdAndDesigner_EmpId(1L, 10L)).thenReturn(List.of(customer));
-        when(properties.findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(1L, 10L)).thenReturn(List.of());
-        when(properties.findByCompany_ComIdAndCustomer_CustIdIn(1L, List.of(20L))).thenReturn(List.of(first, second));
+        when(properties.findDesignTaskAnchors(eq(1L), eq(10L), eq(false), eq(false),
+                any(), eq(""), eq("all"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(anchor101, anchor102), PageRequest.of(0, 20), 2));
+        when(properties.findByCompany_ComIdAndPropertyIdIn(1L, List.of(101L, 102L)))
+                .thenReturn(List.of(first, second));
         when(designs.findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(1L, List.of(101L, 102L)))
                 .thenReturn(List.of(design(201L, second, DesignStatus.Ready)));
         when(requirements.findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(1L, List.of(101L, 102L)))
                 .thenReturn(List.of(requirement(301L, second)));
-        Measure completed = measure(401L, first, MeasureStatus.Completed, LocalDateTime.of(2026, 9, 1, 10, 0));
-        Measure scheduled = measure(402L, second, MeasureStatus.Scheduled, LocalDateTime.of(2026, 9, 21, 9, 0));
+        Measure firstCompleted = measure(401L, first, MeasureStatus.Completed, LocalDateTime.of(2026, 9, 1, 10, 0));
+        Measure secondCompleted = measure(403L, second, MeasureStatus.Completed, LocalDateTime.of(2026, 9, 2, 10, 0));
+        Measure secondScheduled = measure(402L, second, MeasureStatus.Scheduled, LocalDateTime.of(2026, 9, 21, 9, 0));
         when(measures.findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(1L, List.of(101L, 102L)))
-                .thenReturn(List.of(completed, scheduled));
-        when(quotes.findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
-                1L, List.of(101L, 102L), List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
-                .thenReturn(List.of());
+                .thenReturn(List.of(firstCompleted, secondCompleted, secondScheduled));
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
-        List<DesignWorkbenchItem> result = provider.call(designer);
+                tenant, designs, requirements, properties, measures, mock(DesignPriceContext.class));
+        var page = provider.call(designer);
+        List<DesignWorkbenchItem> result = page.getContent();
 
+        assertThat(page.getTotalElements()).isEqualTo(2);
         assertThat(result).hasSize(2);
         DesignWorkbenchItem firstResult = result.stream().filter(item -> item.getPropertyId().equals(101L)).findFirst().orElseThrow();
         DesignWorkbenchItem secondResult = result.stream().filter(item -> item.getPropertyId().equals(102L)).findFirst().orElseThrow();
         assertThat(firstResult.getDesignStatus()).isEqualTo("Pending");
-        assertThat(firstResult.getMeasureAt()).isEqualTo(completed.getMeasureTime());
+        assertThat(firstResult.getMeasureAt()).isEqualTo(firstCompleted.getMeasureTime());
         assertThat(firstResult.getHasRequirement()).isFalse();
         assertThat(secondResult.getDesignStatus()).isEqualTo("Done");
-        assertThat(secondResult.getPendingMeasureAt()).isEqualTo(scheduled.getMeasureTime());
+        assertThat(secondResult.getPendingMeasureAt()).isEqualTo(secondScheduled.getMeasureTime());
         assertThat(secondResult.getHasRequirement()).isTrue();
         assertThat(secondResult.getSchemeCount()).isEqualTo(1);
     }
@@ -93,29 +101,20 @@ class DesignerWorkbenchAggregationTest {
     @Test
     void designWorkbenchShouldExcludePropertyAfterQuoteAccepted() {
         Employee designer = employee(10L, EmployeeRole.Designer);
-        Customer customer = customer(20L, designer);
-        Property property = property(101L, customer, designer, PropertyStatus.Quoted);
-        Quote accepted = quote(501L, 2, QuoteStatus.Accepted, customer, property);
-
-        CustomerRepository customers = mock(CustomerRepository.class);
         PropertyRepository properties = mock(PropertyRepository.class);
         DesignRepository designs = mock(DesignRepository.class);
         RequirementRepository requirements = mock(RequirementRepository.class);
         MeasureRepository measures = mock(MeasureRepository.class);
-        QuoteRepository quotes = mock(QuoteRepository.class);
         TenantContext tenant = mock(TenantContext.class);
         when(tenant.requireEmployee(designer)).thenReturn(designer);
-        when(customers.findByCompany_ComIdAndDesigner_EmpId(1L, 10L)).thenReturn(List.of(customer));
-        when(properties.findByCompany_ComIdAndDesigner_EmpIdOrderByPropertyIdDesc(1L, 10L)).thenReturn(List.of());
-        when(properties.findByCompany_ComIdAndCustomer_CustIdIn(1L, List.of(20L))).thenReturn(List.of(property));
-        when(quotes.findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
-                1L, List.of(101L), List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
-                .thenReturn(List.of(accepted));
+        when(properties.findDesignTaskAnchors(eq(1L), eq(10L), eq(false), eq(false),
+                any(), eq(""), eq("all"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 20), 0));
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
+                tenant, designs, requirements, properties, measures, mock(DesignPriceContext.class));
 
-        assertThat(provider.call(designer)).isEmpty();
+        assertThat(provider.call(designer).getContent()).isEmpty();
     }
 
     @Test
@@ -132,12 +131,14 @@ class DesignerWorkbenchAggregationTest {
         QuoteRepository quotes = mock(QuoteRepository.class);
         TenantContext tenant = mock(TenantContext.class);
         when(tenant.requireEmployee(designer)).thenReturn(designer);
-        when(quotes.findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
-                1L, 10L, List.of(QuoteStatus.Draft, QuoteStatus.Submitted, QuoteStatus.Rejected)))
-                .thenReturn(List.of(rejected));
+        when(tenant.requireRole(eq(designer), any(EmployeeRole[].class))).thenReturn(designer);
+        when(quotes.findWorkbenchQuoteIds(
+                eq(1L), eq(true), isNull(), eq(10L), isNull(), isNull(), eq(""), eq("%%"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(501L)));
+        when(quotes.findWorkbenchQuotes(List.of(501L))).thenReturn(List.of(rejected));
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.quote.page.support.Page(tenant, quotes);
-        List<QuoteWorkbenchItem> result = provider.call(designer);
+        List<QuoteWorkbenchItem> result = provider.call(designer).getContent();
 
         assertThat(result).singleElement().satisfies(item -> {
             assertThat(item.getPropertyId()).isEqualTo(101L);
@@ -154,29 +155,27 @@ class DesignerWorkbenchAggregationTest {
         Customer customer = customer(20L, designer);
         Property property = property(101L, customer, designer, PropertyStatus.Measured);
 
-        CustomerRepository customers = mock(CustomerRepository.class);
         PropertyRepository properties = mock(PropertyRepository.class);
         DesignRepository designs = mock(DesignRepository.class);
         RequirementRepository requirements = mock(RequirementRepository.class);
         MeasureRepository measures = mock(MeasureRepository.class);
-        QuoteRepository quotes = mock(QuoteRepository.class);
         TenantContext tenant = mock(TenantContext.class);
+        var anchor = designAnchor(101L, LocalDateTime.of(2026, 9, 1, 10, 0), "Pending");
         when(tenant.requireEmployee(boss)).thenReturn(boss);
-        when(customers.findByCompany_ComId(1L)).thenReturn(List.of(customer));
-        when(properties.findByCompany_ComIdAndCustomer_CustIdIn(1L, List.of(20L))).thenReturn(List.of(property));
+        when(properties.findDesignTaskAnchors(eq(1L), eq(99L), eq(true), eq(false),
+                any(), eq(""), eq("all"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(anchor), PageRequest.of(0, 20), 1));
+        when(properties.findByCompany_ComIdAndPropertyIdIn(1L, List.of(101L))).thenReturn(List.of(property));
         when(designs.findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(1L, List.of(101L)))
                 .thenReturn(List.of());
         when(requirements.findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(1L, List.of(101L)))
                 .thenReturn(List.of());
         when(measures.findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(1L, List.of(101L)))
                 .thenReturn(List.of());
-        when(quotes.findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
-                1L, List.of(101L), List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
-                .thenReturn(List.of());
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
-        List<DesignWorkbenchItem> result = provider.call(boss);
+                tenant, designs, requirements, properties, measures, mock(DesignPriceContext.class));
+        List<DesignWorkbenchItem> result = provider.call(boss).getContent();
 
         assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));
     }
@@ -194,33 +193,27 @@ class DesignerWorkbenchAggregationTest {
         Property property = property(101L, customer, designer, PropertyStatus.Designing);
         property.setStore(store);
 
-        CustomerRepository customers = mock(CustomerRepository.class);
         PropertyRepository properties = mock(PropertyRepository.class);
         DesignRepository designs = mock(DesignRepository.class);
         RequirementRepository requirements = mock(RequirementRepository.class);
         MeasureRepository measures = mock(MeasureRepository.class);
-        QuoteRepository quotes = mock(QuoteRepository.class);
         TenantContext tenant = mock(TenantContext.class);
+        var anchor = designAnchor(101L, LocalDateTime.of(2026, 9, 1, 10, 0), "Pending");
         when(tenant.requireEmployee(manager)).thenReturn(manager);
-        when(customers.findByCompany_ComIdAndStore_StoreIdOrderByCustIdDesc(1L, 5L))
-                .thenReturn(List.of(customer));
-        when(properties.findByCompany_ComIdAndStore_StoreIdOrderByPropertyIdDesc(1L, 5L))
-                .thenReturn(List.of(property));
-        when(properties.findByCompany_ComIdAndCustomer_CustIdIn(1L, List.of(20L)))
-                .thenReturn(List.of(property));
+        when(properties.findDesignTaskAnchors(eq(1L), eq(30L), eq(false), eq(true),
+                eq(5L), eq(""), eq("all"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(anchor), PageRequest.of(0, 20), 1));
+        when(properties.findByCompany_ComIdAndPropertyIdIn(1L, List.of(101L))).thenReturn(List.of(property));
         when(designs.findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(1L, List.of(101L)))
                 .thenReturn(List.of());
         when(requirements.findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(1L, List.of(101L)))
                 .thenReturn(List.of());
         when(measures.findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(1L, List.of(101L)))
                 .thenReturn(List.of());
-        when(quotes.findByCompany_ComIdAndProperty_PropertyIdInAndStatusIn(
-                1L, List.of(101L), List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
-                .thenReturn(List.of());
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.design.page.support.Page(
-                tenant, customers, designs, requirements, properties, measures, quotes, mock(DesignPriceContext.class));
-        List<DesignWorkbenchItem> result = provider.call(manager);
+                tenant, designs, requirements, properties, measures, mock(DesignPriceContext.class));
+        List<DesignWorkbenchItem> result = provider.call(manager).getContent();
 
         assertThat(result).singleElement().satisfies(item -> assertThat(item.getPropertyId()).isEqualTo(101L));
     }
@@ -236,12 +229,14 @@ class DesignerWorkbenchAggregationTest {
         QuoteRepository quotes = mock(QuoteRepository.class);
         TenantContext tenant = mock(TenantContext.class);
         when(tenant.requireEmployee(boss)).thenReturn(boss);
-        when(quotes.findByCompany_ComIdAndStatusInOrderByQuoteIdDesc(
-                1L, List.of(QuoteStatus.Draft, QuoteStatus.Submitted, QuoteStatus.Rejected)))
-                .thenReturn(List.of(draft));
+        when(tenant.requireRole(eq(boss), any(EmployeeRole[].class))).thenReturn(boss);
+        when(quotes.findWorkbenchQuoteIds(
+                eq(1L), eq(true), isNull(), isNull(), isNull(), isNull(), eq(""), eq("%%"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(501L)));
+        when(quotes.findWorkbenchQuotes(List.of(501L))).thenReturn(List.of(draft));
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.quote.page.support.Page(tenant, quotes);
-        List<QuoteWorkbenchItem> result = provider.call(boss);
+        List<QuoteWorkbenchItem> result = provider.call(boss).getContent();
 
         assertThat(result).singleElement().satisfies(item -> assertThat(item.getQuoteId()).isEqualTo(501L));
     }
@@ -268,14 +263,16 @@ class DesignerWorkbenchAggregationTest {
         ProjectContractRepository contracts = mock(ProjectContractRepository.class);
         TenantContext tenant = mock(TenantContext.class);
         when(tenant.requireEmployee(designer)).thenReturn(designer);
-        when(quotes.findByCompany_ComIdAndCreatedBy_EmpIdAndStatusInOrderByQuoteIdDesc(
-                1L, 10L, List.of(QuoteStatus.Accepted, QuoteStatus.Converted)))
-                .thenReturn(List.of(converted));
-        when(contracts.findByQuote_QuoteIdIn(List.of(601L))).thenReturn(List.of(contract));
+        when(tenant.requireRole(eq(designer), any(EmployeeRole[].class))).thenReturn(designer);
+        when(quotes.findWorkbenchSignQuoteIds(
+                eq(1L), eq(false), isNull(), isNull(), eq(10L), eq("all"), isNull(), eq(""), eq("%%"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(601L)));
+        when(quotes.findSignWorkbenchQuotes(List.of(601L))).thenReturn(List.of(converted));
+        when(contracts.findWorkbenchByQuoteIds(List.of(601L))).thenReturn(List.of(contract));
 
         var provider = new com.th4.edge.decoboon.statistic.service.workbench.sign.page.support.Page(
                 tenant, quotes, contracts);
-        List<SignWorkbenchItem> result = provider.call(designer);
+        List<SignWorkbenchItem> result = provider.call(designer).getContent();
 
         assertThat(result).singleElement().satisfies(item -> {
             assertThat(item.getPropertyId()).isEqualTo(101L);
@@ -284,6 +281,14 @@ class DesignerWorkbenchAggregationTest {
             assertThat(item.getProjectId()).isEqualTo(701L);
             assertThat(item.getSignedAt()).isEqualTo(LocalDate.of(2026, 9, 11));
         });
+    }
+
+    private PropertyRepository.DesignTaskAnchor designAnchor(Long propertyId, LocalDateTime measureAt, String status) {
+        PropertyRepository.DesignTaskAnchor anchor = mock(PropertyRepository.DesignTaskAnchor.class);
+        when(anchor.getPropertyId()).thenReturn(propertyId);
+        when(anchor.getMeasureAt()).thenReturn(measureAt);
+        when(anchor.getDesignStatus()).thenReturn(status);
+        return anchor;
     }
 
     private Employee employee(Long id, EmployeeRole role) {

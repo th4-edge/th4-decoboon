@@ -31,7 +31,7 @@ class PayrollAttendanceScheduledDaysTest {
     void shouldSnapshotScheduledDaysFromActiveCompensationScheme() {
         Company company = new Company();
         company.setComId(100L);
-        Employee boss = employee(1L, EmployeeRole.Boss, company);
+        Employee manager = employee(1L, EmployeeRole.StoreManager, company);
         Employee target = employee(2L, EmployeeRole.Designer, company);
         CompensationScheme scheme = new CompensationScheme();
         scheme.setStatus(CompensationStatus.Active);
@@ -41,13 +41,13 @@ class PayrollAttendanceScheduledDaysTest {
         CompensationSchemeRepository compensations = mock(CompensationSchemeRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         Save provider = new Save(attendances, compensations, access);
-        ReflectionTestUtils.setField(provider, "employee", boss);
+        ReflectionTestUtils.setField(provider, "employee", manager);
         ReflectionTestUtils.setField(provider, "empId", target.getEmpId());
         ReflectionTestUtils.setField(provider, "month", "2026-10");
 
-        when(access.requireEditor(boss)).thenReturn(boss);
-        when(access.resolveEmployee(boss, target.getEmpId())).thenReturn(target);
-        doNothing().when(access).applyOwnership(any(AttendanceSummary.class), eq(boss), eq(target));
+        when(access.requireManager(manager)).thenReturn(manager);
+        when(access.resolveEmployee(manager, target.getEmpId())).thenReturn(target);
+        doNothing().when(access).applyOwnership(any(AttendanceSummary.class), eq(manager), eq(target));
         when(attendances.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
                 company.getComId(), target.getEmpId(), "2026-10")).thenReturn(Optional.empty());
         when(compensations.findEffective(

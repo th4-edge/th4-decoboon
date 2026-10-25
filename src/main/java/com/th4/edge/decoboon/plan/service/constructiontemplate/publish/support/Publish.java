@@ -14,7 +14,6 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
 @Note("plan/construction-template/publish")
 @Properties(allow = {
         @AllowProperties(model = ConstructionPlanTemplate.class,
-                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "status", "defaultPlan", "stages"}),
+                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "sourceBaselineCode", "sourceBaselineVersion", "status", "defaultPlan", "currentEnabled", "stages"}),
         @AllowProperties(model = ConstructionStageTemplate.class,
                 properties = {"code", "name", "ratio", "type", "triggerType", "triggerStageCode", "offsetDays", "sort", "defaultDays", "acceptanceMode", "description"})
 })
@@ -43,7 +42,6 @@ public class Publish implements com.th4.edge.decoboon.plan.service.constructiont
     }
 
     @Override
-    @Transactional(readOnly = false)
     public ConstructionPlanTemplate call(CompanyConstructionPlan request) {
         CompanyConstructionPlan command = new CompanyConstructionPlan();
         command.setTemplateId(templateId);

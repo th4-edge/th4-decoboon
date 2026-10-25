@@ -17,6 +17,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,8 +73,10 @@ public class Update implements com.th4.edge.decoboon.finance.service.receivables
     @Transactional
     public Receivable call(Receivable request) {
         Employee current = accessContext.requireEditor(employee);
-        Receivable receivable = receivableRepository.findById(receivableId)
-                .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))
+        Specification<Receivable> byId = (root, query, builder) ->
+                builder.equal(root.get("receivableId"), receivableId);
+        Receivable receivable = receivableRepository.findOne(
+                        byId.and(accessContext.visible(current, Receivable.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "应收计划不存在或无权访问")));
         if (receivable.getReceivedAmount() != null && receivable.getReceivedAmount().signum() > 0
                 && amount != null && amount.compareTo(receivable.getReceivedAmount()) < 0) {

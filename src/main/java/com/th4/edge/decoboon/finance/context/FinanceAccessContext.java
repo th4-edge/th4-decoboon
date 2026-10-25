@@ -23,8 +23,11 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.repository.StoreRepository;
 import com.th4.edge.tenant.user.model.Employee;
+import com.th4.edge.tenant.user.model.Store;
+import com.th4.edge.tenant.user.model.Team;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -112,8 +115,10 @@ public class FinanceAccessContext {
         }
     }
 
+    @Transactional(readOnly = true)
     public Project resolveProject(Employee current, Long projectId) {
-        Project project = projectRepository.findByProjectIdAndCompany_ComId(projectId, current.getCompany().getComId())
+        Project project = projectRepository.findScopeDetailByProjectIdAndCompany_ComId(
+                        projectId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "项目不存在或无权访问")));
         // DEC-065：门店范围主体（门店财务、店长）只能访问本店项目；总部财务/BOSS 为企业范围。
         if (scope(current).type() == DataScopeType.Store) {
@@ -198,6 +203,22 @@ public class FinanceAccessContext {
         applyBase(settlement, current, project);
     }
 
+    /** 付款/退款等下游单据继承来源单据门店，防止企业范围操作人把来源门店改写成自己的默认门店。 */
+    public void applySourceOwnership(com.th4.edge.decoboon.finance.model.Payment payment, Payable payable) {
+        if (payment == null || payable == null) return;
+        payment.setStore(payable.getStore());
+        payment.setTeam(payable.getTeam());
+        payment.setOwner(payable.getOwner());
+    }
+
+    public void applySourceOwnership(ReceiptRefund refund,
+                                     com.th4.edge.decoboon.finance.model.Receipt receipt) {
+        if (refund == null || receipt == null) return;
+        refund.setStore(receipt.getStore());
+        refund.setTeam(receipt.getTeam());
+        refund.setOwner(receipt.getOwner());
+    }
+
     public void refreshReceivableStatus(Receivable receivable) {
         if (receivable.getStatus() == ReceivableStatus.Closed) {
             return;
@@ -236,9 +257,36 @@ public class FinanceAccessContext {
                                String category, LedgerSource source, Long sourceId,
                                BigDecimal amount, FundAccount account, LocalDate occurredAt,
                                String counterparty, String summary, String remark) {
+        return recordLedger(current, project, direction, category, source, sourceId, amount, account,
+                occurredAt, counterparty, summary, remark, false, null, null, null);
+    }
+
+    /**
+     * 下游业务流水继承来源单据门店，企业范围操作人不得把来源门店改写成自己的默认门店。
+     * 来源门店为空时必须保留空归属，不能回落到操作人或项目门店。
+     */
+    public Ledger recordLedger(Employee current, Project project, LedgerDirection direction,
+                               String category, LedgerSource source, Long sourceId,
+                               BigDecimal amount, FundAccount account, LocalDate occurredAt,
+                               String counterparty, String summary, String remark,
+                               Store sourceStore, Team sourceTeam, Employee sourceOwner) {
+        return recordLedger(current, project, direction, category, source, sourceId, amount, account,
+                occurredAt, counterparty, summary, remark, true, sourceStore, sourceTeam, sourceOwner);
+    }
+
+    private Ledger recordLedger(Employee current, Project project, LedgerDirection direction,
+                                String category, LedgerSource source, Long sourceId,
+                                BigDecimal amount, FundAccount account, LocalDate occurredAt,
+                                String counterparty, String summary, String remark,
+                                boolean sourceOwned, Store sourceStore, Team sourceTeam, Employee sourceOwner) {
         Ledger ledger = new Ledger();
         ledger.setProject(project);
         applyOwnership(ledger, current, project);
+        if (sourceOwned) {
+            ledger.setStore(sourceStore);
+            ledger.setTeam(sourceTeam);
+            if (sourceOwner != null) ledger.setOwner(sourceOwner);
+        }
         ledger.setDirection(direction);
         ledger.setCategory(category);
         ledger.setSource(source);

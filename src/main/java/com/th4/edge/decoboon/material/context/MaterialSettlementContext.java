@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.material.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.material.configure.SettlementScope;
 import com.th4.edge.decoboon.material.configure.SettlementStatus;
 import com.th4.edge.decoboon.material.configure.SheetPriceState;
@@ -59,6 +61,7 @@ public class MaterialSettlementContext {
     private final MaterialPurchaseContext materialPurchaseContext;
     private final ModelIdentityContext modelIdentityContext;
     private final MaterialSheetPriceProjectionContext priceProjectionContext;
+    private final StoreFilterContext storeFilterContext;
 
     public MaterialSettlementContext(MaterialSettlementRepository settlementRepository,
                                      MaterialSettlementItemRepository settlementItemRepository,
@@ -70,7 +73,8 @@ public class MaterialSettlementContext {
                                      ProjectAccessContext accessContext,
                                      MaterialPurchaseContext materialPurchaseContext,
                                      ModelIdentityContext modelIdentityContext,
-                                     MaterialSheetPriceProjectionContext priceProjectionContext) {
+                                     MaterialSheetPriceProjectionContext priceProjectionContext,
+                                     StoreFilterContext storeFilterContext) {
         this.settlementRepository = settlementRepository;
         this.settlementItemRepository = settlementItemRepository;
         this.purchaseOrderRepository = purchaseOrderRepository;
@@ -82,6 +86,7 @@ public class MaterialSettlementContext {
         this.materialPurchaseContext = materialPurchaseContext;
         this.modelIdentityContext = modelIdentityContext;
         this.priceProjectionContext = priceProjectionContext;
+        this.storeFilterContext = storeFilterContext;
     }
 
     public List<MaterialSettlement> page(Employee principal, Long supplierId) {
@@ -110,9 +115,16 @@ public class MaterialSettlementContext {
     public List<com.th4.edge.decoboon.material.model.SettlementPreviewRow> preview(
             Employee principal, Long supplierId, SettlementScope scope, String period, Long purchaseOrderId,
             Long projectId) {
+        return preview(principal, supplierId, scope, period, purchaseOrderId, projectId, null);
+    }
+
+    public List<com.th4.edge.decoboon.material.model.SettlementPreviewRow> preview(
+            Employee principal, Long supplierId, SettlementScope scope, String period, Long purchaseOrderId,
+            Long projectId, Long requestedStoreId) {
         Employee current = accessContext.requireEmployee(principal);
         materialPurchaseContext.requireOperator(current);
-        return candidates(current, supplierId, scope, period, purchaseOrderId, projectId).stream()
+        Long storeFilter = storeFilterContext.resolve(current, requestedStoreId);
+        return candidates(current, supplierId, scope, period, purchaseOrderId, projectId, storeFilter).stream()
                 .map(this::toCandidate)
                 .toList();
     }
@@ -120,7 +132,7 @@ public class MaterialSettlementContext {
     /** 兼容旧签名（无项目过滤）。 */
     public List<com.th4.edge.decoboon.material.model.SettlementPreviewRow> preview(
             Employee principal, Long supplierId, SettlementScope scope, String period, Long purchaseOrderId) {
-        return preview(principal, supplierId, scope, period, purchaseOrderId, null);
+        return preview(principal, supplierId, scope, period, purchaseOrderId, null, null);
     }
 
     /**
@@ -362,7 +374,8 @@ public class MaterialSettlementContext {
      * 财务无需先选供应商或采购单即可看到"哪些明细可以结"。</p>
      */
     private List<PurchaseOrderItem> candidates(Employee current, Long supplierId, SettlementScope scope,
-                                               String period, Long purchaseOrderId, Long projectId) {
+                                               String period, Long purchaseOrderId, Long projectId,
+                                               Long storeFilter) {
         Long comId = current.getCompany().getComId();
         List<PurchaseOrder> orders;
         if (scope == SettlementScope.Monthly) {
@@ -392,7 +405,9 @@ public class MaterialSettlementContext {
                     .filter(order -> inPeriod(order, period))
                     .toList();
         }
-        orders = orders.stream().filter(order -> visibleStore(current, order.getStore())).toList();
+        orders = orders.stream()
+                .filter(order -> StoreScope.inStore(StoreScope.storeIdOf(order.getStore()), storeFilter))
+                .toList();
         if (orders.isEmpty()) {
             return List.of();
         }

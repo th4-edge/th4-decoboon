@@ -91,6 +91,8 @@ class ProjectCostUnpricedCompletenessTest {
         order.setStatus(PurchaseStatus.Received);
         order.setQuantity(new BigDecimal("10"));
         order.setReceivedQuantity(new BigDecimal("10"));
+        order.setUnitPrice(new BigDecimal("100"));
+        order.setAmount(new BigDecimal("1000"));
         order.setPriceState(SheetPriceState.Priced);
 
         when(contractLineRepository.findByContract_Project_ProjectIdInOrderBySortAsc(any()))
@@ -100,10 +102,11 @@ class ProjectCostUnpricedCompletenessTest {
     }
 
     @Test
-    void pricedAndFullyReceivedPurchaseShouldBeComplete() {
+    void pricedAndFullyReceivedPurchaseShouldBeDynamicCompleteButFinalIncomplete() {
         ProjectCostContext.CostSummary summary = context.summarize(project);
         assertThat(summary.complete()).isTrue();
-        assertThat(summary.incompleteItemCount()).isZero();
+        assertThat(summary.dynamicCostProvisional()).isTrue();
+        assertThat(summary.finalCostComplete()).isFalse();
     }
 
     @Test
@@ -117,9 +120,10 @@ class ProjectCostUnpricedCompletenessTest {
     }
 
     @Test
-    void unpricedAfterSettlementBackfillShouldBeCompleteAgain() {
+    void orderLevelSettledWithoutP3EvidenceMustRemainFinalIncomplete() {
         order.setPriceState(SheetPriceState.Settled);
         ProjectCostContext.CostSummary summary = context.summarize(project);
         assertThat(summary.complete()).isTrue();
+        assertThat(summary.finalCostComplete()).isFalse();
     }
 }

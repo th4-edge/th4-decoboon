@@ -73,7 +73,10 @@ class FinanceProfitAccountingTest {
                 .thenReturn(List.of());
         when(settlementRepository.findByProject_ProjectIdAndCompany_ComId(3L, 1L)).thenReturn(java.util.Optional.empty());
         when(projectCostContext.summarize(project)).thenReturn(
-                new ProjectCostContext.CostSummary(new BigDecimal("6500.00"), new BigDecimal("6500.00"), 0));
+                new ProjectCostContext.CostSummary(new BigDecimal("6500.00"), new BigDecimal("6500.00"), 0,
+                        new BigDecimal("3000.00"), new BigDecimal("2000.00"),
+                        new BigDecimal("1000.00"), BigDecimal.ZERO,
+                        BigDecimal.ZERO, new BigDecimal("500.00"), BigDecimal.ZERO));
 
         FinanceProjectReport report = context.project(boss, 3L);
 
@@ -184,7 +187,7 @@ class FinanceProfitAccountingTest {
     }
 
     @Test
-    void gap003MustUseQuoteCostSnapshotWhenSignedContractCostIsZero() {
+    void gap003MustUseQuoteSnapshotOnlyForEstimatedNotActualOrFinal() {
         FinanceAccessContext access = mock(FinanceAccessContext.class);
         ProjectRepository projectRepository = mock(ProjectRepository.class);
         ReceivableRepository receivableRepository = mock(ReceivableRepository.class);
@@ -256,25 +259,27 @@ class FinanceProfitAccountingTest {
         FinanceProjectReport report = context.project(boss, 1004L);
 
         assertThat(report.getEstimatedCost()).isEqualByComparingTo("32000.00");
-        assertThat(report.getActualCost()).isEqualByComparingTo("32000.00");
-        assertThat(report.getTotalCost()).isEqualByComparingTo("32000.00");
-        assertThat(report.getProfitAmount()).isEqualByComparingTo("18000.00");
-        assertThat(report.getGrossProfit()).isEqualByComparingTo("18000.00");
-        assertThat(report.getGrossMargin()).isEqualByComparingTo("36.00");
-        assertThat(report.getProfitAmount()).isNotEqualByComparingTo("48400.00");
-        assertThat(report.getGrossMargin()).isNotEqualByComparingTo("97.00");
+        assertThat(report.getActualCost()).isEqualByComparingTo("0.00");
+        assertThat(report.getTotalCost()).isEqualByComparingTo("0.00");
+        assertThat(report.getCostComplete()).isFalse();
+        assertThat(report.getProfitAmount()).isNull();
+        assertThat(report.getGrossProfit()).isNull();
+        assertThat(report.getGrossMargin()).isNull();
 
         quoteLine.setActualCost(new BigDecimal("1600.00"));
         var partialPurchase = new com.th4.edge.decoboon.project.model.PurchaseOrder();
         partialPurchase.setStatus(com.th4.edge.decoboon.project.configure.PurchaseStatus.PartiallyReceived);
         partialPurchase.setQuoteLine(quoteLine);
         partialPurchase.setProject(project);
+        partialPurchase.setUnitPrice(new BigDecimal("16000.00"));
+        partialPurchase.setAmount(new BigDecimal("16000.00"));
+        partialPurchase.setPriceState(com.th4.edge.decoboon.material.configure.SheetPriceState.Priced);
         when(purchaseOrderRepository.findByProject_ProjectIdInOrderByPurchaseIdDesc(any())).thenReturn(List.of(partialPurchase));
 
         FinanceProjectReport partialReport = context.project(boss, 1004L);
 
         assertThat(partialReport.getEstimatedCost()).isEqualByComparingTo("32000.00");
-        assertThat(partialReport.getActualCost()).isEqualByComparingTo("1600.00");
+        assertThat(partialReport.getActualCost()).isEqualByComparingTo("0.00");
         assertThat(partialReport.getCostComplete()).isFalse();
         assertThat(partialReport.getProfitAmount()).isNull();
         assertThat(partialReport.getGrossProfit()).isNull();
@@ -287,7 +292,7 @@ class FinanceProfitAccountingTest {
         FinanceProjectReport partialCoverageReport = context.project(boss, 1004L);
 
         assertThat(partialCoverageReport.getEstimatedCost()).isEqualByComparingTo("32000.00");
-        assertThat(partialCoverageReport.getActualCost()).isEqualByComparingTo("1600.00");
+        assertThat(partialCoverageReport.getActualCost()).isEqualByComparingTo("16000.00");
         assertThat(partialCoverageReport.getCostComplete()).isFalse();
         assertThat(partialCoverageReport.getProfitAmount()).isNull();
         assertThat(partialCoverageReport.getGrossMargin()).isNull();

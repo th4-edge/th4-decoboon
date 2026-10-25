@@ -37,6 +37,13 @@ public class QuoteWorkbenchItem {
     private Integer adjustmentCount;
     /** 在当前报价状态停留天数 */
     private Long stayDays;
+    /** 服务端统一风险级别：Normal / Warning / Danger。 */
+    private String riskLevel;
+    /** 服务端统一风险原因，前端不自行拼接。 */
+    private String riskReason;
+    /** 下一动作键和中文名，页面只负责展示与导航。 */
+    private String nextActionKey;
+    private String nextActionLabel;
 
     public Long getCustId() { return custId; }
     public void setCustId(Long custId) { this.custId = custId; }
@@ -74,4 +81,12 @@ public class QuoteWorkbenchItem {
     public void setAdjustmentCount(Integer adjustmentCount) { this.adjustmentCount = adjustmentCount; }
     public Long getStayDays() { return stayDays; }
     public void setStayDays(Long stayDays) { this.stayDays = stayDays; }
+    public String getRiskLevel() { return riskLevel; }
+    public void setRiskLevel(String riskLevel) { this.riskLevel = riskLevel; }
+    public String getRiskReason() { return riskReason; }
+    public void setRiskReason(String riskReason) { this.riskReason = riskReason; }
+    public String getNextActionKey() { return nextActionKey; }
+    public void setNextActionKey(String nextActionKey) { this.nextActionKey = nextActionKey; }
+    public String getNextActionLabel() { return nextActionLabel; }
+    public void setNextActionLabel(String nextActionLabel) { this.nextActionLabel = nextActionLabel; }
 }

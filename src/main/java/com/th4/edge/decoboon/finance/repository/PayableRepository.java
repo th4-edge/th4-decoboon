@@ -15,6 +15,7 @@ import java.util.List;
 public interface PayableRepository extends JpaRepository<Payable, Long>,
         JpaSpecificationExecutor<Payable> {
 
+    @EntityGraph(attributePaths = {"payeeEmployee", "property"})
     List<Payable> findByProjectOrderByDueDateAsc(Project project);
 
     List<Payable> findByCompany_ComIdAndProject_ProjectIdOrderByDueDateAsc(Long comId, Long projectId);
@@ -23,6 +24,10 @@ public interface PayableRepository extends JpaRepository<Payable, Long>,
     List<Payable> findByCompany_ComIdOrderByDueDateAsc(Long comId);
 
     List<Payable> findByCompany_ComIdAndProject_ProjectIdIn(Long comId, Collection<Long> projectIds);
+
+    /** 成本投影批量读取：只预取项目用于按项目分组，不把付款流水当成本。 */
+    @EntityGraph(attributePaths = {"project"})
+    List<Payable> findByProject_ProjectIdIn(Collection<Long> projectIds);
 
     List<Payable> findByCompany_ComIdAndPayeePartner_PartnerIdOrderByDueDateAsc(Long comId, Long partnerId);
 

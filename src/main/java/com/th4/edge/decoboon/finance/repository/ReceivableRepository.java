@@ -15,6 +15,7 @@ import java.util.List;
 public interface ReceivableRepository extends JpaRepository<Receivable, Long>,
         JpaSpecificationExecutor<Receivable> {
 
+    @EntityGraph(attributePaths = {"property"})
     List<Receivable> findByProjectOrderByDueDateAsc(Project project);
 
     List<Receivable> findByCompany_ComIdAndProject_ProjectIdOrderByDueDateAsc(Long comId, Long projectId);

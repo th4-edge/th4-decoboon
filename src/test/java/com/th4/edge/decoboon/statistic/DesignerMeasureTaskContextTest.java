@@ -18,6 +18,10 @@ import com.th4.edge.decoboon.statistic.model.DesignerMeasureTask;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -73,6 +78,63 @@ class DesignerMeasureTaskContextTest {
         assertThat(tasks.get(0).getSecondaryActionLabel()).isEqualTo("登记量房结论");
         assertThat(tasks.get(0).getNextActionKey()).isEqualTo("measure/complete");
         assertThat(tasks.get(0).getPriority()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldAssembleOnlyCurrentMeasurePageAnchors() {
+        ContextFixture fixture = context();
+        Company company = company(10L);
+        Employee designer = employee(20L, company);
+        Customer customer = customer(100L, company, CustStatus.PendingMeasure);
+        Property property = property(200L, company, customer, PropertyStatus.PendingMeasure);
+        PropertyRepository.MeasureTaskAnchor anchor = mock(PropertyRepository.MeasureTaskAnchor.class);
+        when(anchor.getTaskType()).thenReturn("property");
+        when(anchor.getCustomerId()).thenReturn(100L);
+        when(anchor.getPropertyId()).thenReturn(200L);
+        when(anchor.getStateKey()).thenReturn("not_scheduled");
+        when(fixture.propertyRepository().findMeasureTaskAnchors(
+                eq(10L), eq(20L), eq(false), eq("林"), eq("notScheduled"),
+                any(LocalDateTime.class), any(LocalDateTime.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(anchor), PageRequest.of(0, 20), 21));
+        when(fixture.customerRepository().findByCompany_ComIdAndCustIdIn(10L, List.of(100L)))
+                .thenReturn(List.of(customer));
+        when(fixture.propertyRepository().findByCompany_ComIdAndPropertyIdIn(10L, List.of(200L)))
+                .thenReturn(List.of(property));
+        when(fixture.measureRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(10L, List.of(200L)))
+                .thenReturn(List.of());
+        when(fixture.requirementRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(10L, List.of(200L)))
+                .thenReturn(List.of());
+        when(fixture.designRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(10L, List.of(200L)))
+                .thenReturn(List.of());
+
+        DesignerMeasureQuery query = new DesignerMeasureQuery();
+        query.setCurrent(1);
+        query.setSize(20);
+        query.setKeyword("林");
+        query.setState("notScheduled");
+        Page<DesignerMeasureTask> page = fixture.context().page(designer, query);
+
+        assertThat(page.getTotalElements()).isEqualTo(21);
+        assertThat(page.getContent()).hasSize(1);
+        assertThat(page.getContent().get(0).getMainActionLabel()).isEqualTo("预约量房");
+    }
+
+    @Test
+    void shouldRecommendAppointmentWhenMeasureHasNoSchedule() {
+        ContextFixture fixture = context();
+        Company company = company(10L);
+        Employee designer = employee(20L, company);
+        Customer customer = customer(100L, company, CustStatus.PendingMeasure);
+        Property property = property(200L, company, customer, PropertyStatus.PendingMeasure);
+
+        stubTaskLookup(fixture, company, designer, customer, property, null);
+
+        DesignerMeasureTask task = fixture.context().list(designer, new DesignerMeasureQuery()).get(0);
+        assertThat(task.getStateKey()).isEqualTo("not_scheduled");
+        assertThat(task.getMainActionKey()).isEqualTo("schedule_measure");
+        assertThat(task.getMainActionLabel()).isEqualTo("预约量房");
+        assertThat(task.getNextActionKey()).isEqualTo("measure/schedule");
+        assertThat(task.getNextActionLabel()).isEqualTo("约定量房时间");
     }
 
     @Test
@@ -246,7 +308,7 @@ class DesignerMeasureTaskContextTest {
         when(fixture.propertyRepository().findByCompany_ComIdAndCustomer_CustIdIn(company.getComId(), List.of(customer.getCustId())))
                 .thenReturn(List.of(property));
         when(fixture.measureRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByMeasureTimeDesc(anyLong(), any()))
-                .thenReturn(List.of(measure));
+                .thenReturn(measure == null ? List.of() : List.of(measure));
         when(fixture.requirementRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByRequirementIdDesc(anyLong(), any()))
                 .thenReturn(List.of());
         when(fixture.designRepository().findByCompany_ComIdAndProperty_PropertyIdInOrderByVersionDesc(anyLong(), any()))

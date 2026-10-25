@@ -20,6 +20,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,8 +75,10 @@ public class Update implements com.th4.edge.decoboon.finance.service.settlements
     @Transactional
     public Settlement call(Settlement request) {
         Employee current = accessContext.requireEditor(employee);
-        Settlement settlement = settlementRepository.findById(settlementId)
-                .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))
+        Specification<Settlement> byId = (root, query, builder) ->
+                builder.equal(root.get("settlementId"), settlementId);
+        Settlement settlement = settlementRepository.findOne(
+                        byId.and(accessContext.visible(current, Settlement.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "结算单不存在或无权访问")));
         Project project = settlement.getProject();
         if (status == SettlementStatus.Confirmed || status == SettlementStatus.Closed) {

@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.payroll.context;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
@@ -35,36 +37,45 @@ public class PayrollWorkbenchContext {
     private final CommissionItemRepository commissionRepository;
     private final PayslipRepository payslipRepository;
     private final PayableRepository payableRepository;
+    private final StoreFilterContext storeFilterContext;
 
     public PayrollWorkbenchContext(PayrollAccessContext accessContext,
                                    AttendanceSummaryRepository attendanceRepository,
                                    PayrollSheetRepository sheetRepository,
                                    CommissionItemRepository commissionRepository,
                                    PayslipRepository payslipRepository,
-                                   PayableRepository payableRepository) {
+                                   PayableRepository payableRepository,
+                                   StoreFilterContext storeFilterContext) {
         this.accessContext = accessContext;
         this.attendanceRepository = attendanceRepository;
         this.sheetRepository = sheetRepository;
         this.commissionRepository = commissionRepository;
         this.payslipRepository = payslipRepository;
         this.payableRepository = payableRepository;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Transactional(readOnly = true)
     public PayrollWorkbenchReport report(Employee principal, String period) {
+        return report(principal, period, null);
+    }
+
+    public PayrollWorkbenchReport report(Employee principal, String period, Long requestedStoreId) {
         Employee current = accessContext.requireManager(principal);
+        Long storeFilter = storeFilterContext.resolve(current, requestedStoreId);
         String targetPeriod = period == null || period.isBlank() ? YearMonth.now().toString() : period;
         PayrollWorkbenchReport report = new PayrollWorkbenchReport();
         report.setPeriod(targetPeriod);
 
         report.setPendingAttendanceCount((int) attendanceRepository
                 .findAll(accessContext.visible(current, AttendanceSummary.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> targetPeriod.equals(item.getPayrollMonth()))
                 .filter(item -> item.getStatus() == AttendanceStatus.Pending
                         || item.getStatus() == AttendanceStatus.Disputed)
                 .count());
 
-        List<PayrollSheet> visibleSheets = sheetRepository.findAll(accessContext.visible(current, PayrollSheet.class));
+        List<PayrollSheet> visibleSheets = sheetRepository.findAll(accessContext.visibleSheets(current, storeFilter));
         var sheets = visibleSheets.stream()
                 .filter(item -> targetPeriod.equals(item.getPeriod()))
                 .toList();
@@ -85,6 +96,7 @@ public class PayrollWorkbenchContext {
         report.setPaidSheetCount((int) sheets.stream().filter(item -> item.getStatus() == PayrollSheetStatus.Paid).count());
 
         BigDecimal payableAmount = payableRepository.findAll(accessContext.visible(current, Payable.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> item.getType() == PayableType.EmployeeCommission
                         || (item.getType() == PayableType.EmployeeSalary && targetPeriod.equals(item.getPeriod())))
                 .map(item -> item.getAmount().subtract(item.getPaidAmount() == null ? BigDecimal.ZERO : item.getPaidAmount()))
@@ -93,6 +105,7 @@ public class PayrollWorkbenchContext {
 
         BigDecimal releasedUnpaid = commissionRepository
                 .findAll(accessContext.visible(current, CommissionItem.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> item.getStatus() == CommissionStatus.Released
                         || item.getStatus() == CommissionStatus.InPayment)
                 .map(item -> item.getReleasedAmount().subtract(item.getPaidAmount() == null ? BigDecimal.ZERO : item.getPaidAmount()))
@@ -100,6 +113,7 @@ public class PayrollWorkbenchContext {
         report.setReleasedUnpaidCommissionAmount(releasedUnpaid);
 
         var payslips = payslipRepository.findAll(accessContext.visible(current, Payslip.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> targetPeriod.equals(item.getPeriod()))
                 .toList();
         report.setPendingPayslipCount((int) payslips.stream().filter(item -> item.getStatus() == PayslipStatus.PendingPayment).count());

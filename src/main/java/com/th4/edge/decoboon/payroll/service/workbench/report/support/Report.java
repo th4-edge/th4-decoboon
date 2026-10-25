@@ -25,10 +25,11 @@ import org.springframework.stereotype.Service;
 public class Report implements com.th4.edge.decoboon.payroll.service.workbench.report.Report {
     @User private Employee employee;
     @AutoInject private String period;
+    @AutoInject private Long storeId;
     private final PayrollWorkbenchContext context;
     public Report(PayrollWorkbenchContext context) { this.context = context; }
     @Override
     public PayrollWorkbenchReport call(PayrollSheet request) {
-        return context.report(employee, period);
+        return context.report(employee, period, storeId);
     }
 }

@@ -69,3 +69,10 @@ docs/deepseek
 # 本地 Playwright 会话日志（不入库）
 .playwright-cli/
 .env.dev.local.bak-*
+
+### 本地验收/走查产物（不入库）###
+output/
+screenshots/
+docs/acceptance/**/screenshots/
+docs/acceptance/**/*.log
+docs/acceptance/**/*.tsv

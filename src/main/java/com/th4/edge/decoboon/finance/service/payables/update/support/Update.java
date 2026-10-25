@@ -17,6 +17,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,8 +73,10 @@ public class Update implements com.th4.edge.decoboon.finance.service.payables.up
     @Transactional
     public Payable call(Payable request) {
         Employee current = accessContext.requireEditor(employee);
-        Payable payable = payableRepository.findById(payableId)
-                .filter(item -> item.getCompany().getComId().equals(current.getCompany().getComId()))
+        Specification<Payable> byId = (root, query, builder) ->
+                builder.equal(root.get("payableId"), payableId);
+        Payable payable = payableRepository.findOne(
+                        byId.and(accessContext.visible(current, Payable.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问")));
         if (amount != null && amount.compareTo(accessContext.value(payable.getPaidAmount())) < 0) {
             throw new DefinedException(new DefaultErrorCode("400", "调整后金额不能小于已付金额"));

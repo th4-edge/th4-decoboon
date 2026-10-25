@@ -29,11 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("套餐详情")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount", "cost", "items", "measures",
+                properties = {"templateId", "code", "version", "status", "currentPublished", "publishedAt", "snapshotHash", "name", "area", "price", "discount", "cost", "items", "measures",
                         "criterions", "createTime", "updateTime"}),
         @AllowProperties(model = PackageLine.class,
-                properties = {"itemId", "section", "item", "name", "brand", "spec", "unit", "quantity",
-                        "quantityFactor", "pricingMethod", "included", "deductible", "sort", "criterions"}),
+                properties = {"itemId", "section", "sectionNameSnapshot", "item", "catalogTypeSnapshot",
+                        "catalogCategorySnapshot", "craftSnapshot", "costPriceSnapshot", "name", "brand", "spec", "unit",
+                        "quantity", "quantityFactor", "pricingMethod", "included", "deductible", "sort", "criterions"}),
         @AllowProperties(model = PackageSection.class,
                 properties = {"groupId", "name", "spaceTypes", "maxDeleteNum", "priority"}),
         @AllowProperties(model = PackageTemplateItem.class,

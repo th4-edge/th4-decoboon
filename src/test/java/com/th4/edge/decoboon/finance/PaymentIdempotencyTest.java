@@ -209,11 +209,19 @@ class PaymentIdempotencyTest {
             start.countDown();
 
             List<Attempt> attempts = List.of(first.get(10, TimeUnit.SECONDS), second.get(10, TimeUnit.SECONDS));
-            assertThat(attempts.stream().filter(item -> item.payment() != null)).hasSize(1);
-            Attempt failed = attempts.stream().filter(item -> item.error() != null).findFirst().orElseThrow();
-            DefinedException conflict = (DefinedException) rootCause(failed.error());
-            assertThat(conflict.getErrorCode().getCode()).isEqualTo("409");
-            assertThat(conflict.getMessage()).contains("该幂等键已被其他收付款占用");
+            List<Attempt> succeeded = attempts.stream().filter(item -> item.payment() != null).toList();
+            // 分布式锁可能让后到请求等待并返回同一笔付款，也可能由唯一索引把输家转换为 409；
+            // 两种调度都必须收敛到同一业务事实，测试不得依赖线程先后顺序。
+            assertThat(succeeded).isNotEmpty();
+            assertThat(succeeded).extracting(item -> item.payment().getPaymentId())
+                    .containsOnly(succeeded.get(0).payment().getPaymentId());
+            List<Attempt> failed = attempts.stream().filter(item -> item.error() != null).toList();
+            if (!failed.isEmpty()) {
+                assertThat(failed).hasSize(1);
+                DefinedException conflict = (DefinedException) rootCause(failed.get(0).error());
+                assertThat(conflict.getErrorCode().getCode()).isEqualTo("409");
+                assertThat(conflict.getMessage()).contains("该幂等键已被其他收付款占用");
+            }
             assertThat(paymentRepository.findByCompany_ComIdOrderByPaidAtDesc(fixture.company().getComId())).hasSize(1);
             assertThat(ledgerRepository.findByCompany_ComIdOrderByOccurredAtDescLedgerIdDesc(fixture.company().getComId())).hasSize(1);
             assertThat(payableRepository.findById(fixture.payable().getPayableId()).orElseThrow().getPaidAmount())

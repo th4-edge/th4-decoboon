@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.quote.model;
 
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.quote.configure.QuoteViewMode;
 import com.th4.edge.framework.core.annotation.Note;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ public class QuoteGroup {
 
     private String key;
     private String name;
+    private QuoteViewMode groupMode;
     private ItemType type;
     private String category;
     private Unit unit;
@@ -26,6 +28,8 @@ public class QuoteGroup {
     public void setKey(String key) { this.key = key; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public QuoteViewMode getGroupMode() { return groupMode; }
+    public void setGroupMode(QuoteViewMode groupMode) { this.groupMode = groupMode; }
     public ItemType getType() { return type; }
     public void setType(ItemType type) { this.type = type; }
     public String getCategory() { return category; }

@@ -37,6 +37,7 @@ public class SignWorkbenchItem {
     /** 是否已转项目（已签约） */
     private Boolean converted;
     private Long contractId;
+    private String contractNo;
     private String contractStatus;
     private String contractStatusName;
     private java.time.LocalDate signedAt;
@@ -54,6 +55,13 @@ public class SignWorkbenchItem {
 
     /** 报价确认后停留天数（核心流失风险指标） */
     private Long stayDays;
+    /** 服务端统一风险级别：Normal / Warning / Danger。 */
+    private String riskLevel;
+    /** 服务端统一风险原因，前端不自行拼接。 */
+    private String riskReason;
+    /** 下一动作键和中文名，页面只负责展示与导航。 */
+    private String nextActionKey;
+    private String nextActionLabel;
 
     public Long getCustId() { return custId; }
     public void setCustId(Long custId) { this.custId = custId; }
@@ -93,6 +101,8 @@ public class SignWorkbenchItem {
     public void setConverted(Boolean converted) { this.converted = converted; }
     public Long getContractId() { return contractId; }
     public void setContractId(Long contractId) { this.contractId = contractId; }
+    public String getContractNo() { return contractNo; }
+    public void setContractNo(String contractNo) { this.contractNo = contractNo; }
     public String getContractStatus() { return contractStatus; }
     public void setContractStatus(String contractStatus) { this.contractStatus = contractStatus; }
     public String getContractStatusName() { return contractStatusName; }
@@ -105,6 +115,14 @@ public class SignWorkbenchItem {
     public void setProjectName(String projectName) { this.projectName = projectName; }
     public Long getStayDays() { return stayDays; }
     public void setStayDays(Long stayDays) { this.stayDays = stayDays; }
+    public String getRiskLevel() { return riskLevel; }
+    public void setRiskLevel(String riskLevel) { this.riskLevel = riskLevel; }
+    public String getRiskReason() { return riskReason; }
+    public void setRiskReason(String riskReason) { this.riskReason = riskReason; }
+    public String getNextActionKey() { return nextActionKey; }
+    public void setNextActionKey(String nextActionKey) { this.nextActionKey = nextActionKey; }
+    public String getNextActionLabel() { return nextActionLabel; }
+    public void setNextActionLabel(String nextActionLabel) { this.nextActionLabel = nextActionLabel; }
 
     public String getProjectStatus() { return projectStatus; }
     public void setProjectStatus(String projectStatus) { this.projectStatus = projectStatus; }

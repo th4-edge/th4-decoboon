@@ -44,6 +44,7 @@ public class Preview implements com.th4.edge.decoboon.material.service.settlemen
     @AutoInject private String period;
     @AutoInject private Long purchaseOrderId;
     @AutoInject private Long projectId;
+    @AutoInject private Long storeId;
 
     private final MaterialSettlementContext context;
 
@@ -54,6 +55,6 @@ public class Preview implements com.th4.edge.decoboon.material.service.settlemen
     @Override
     @Transactional
     public List<SettlementPreviewRow> call(Employee request) {
-        return context.preview(employee, supplierId, scope, period, purchaseOrderId, projectId);
+        return context.preview(employee, supplierId, scope, period, purchaseOrderId, projectId, storeId);
     }
 }

@@ -105,6 +105,7 @@ public class Save implements com.th4.edge.decoboon.project.service.reports.save.
     public ProjectReport call(ProjectReport request) {
         Employee current = accessContext.requireEmployee(employee);
         var project = accessContext.requireProject(projectId, current);
+        accessContext.requireReportPublisher(current);
 
         ProjectReport report = new ProjectReport();
         report.setCompany(project.getCompany());

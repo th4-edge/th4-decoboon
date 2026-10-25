@@ -54,7 +54,7 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.attendances
     @Override
     @Transactional
     public AttendanceSummary call(AttendanceSummary request) {
-        Employee current = accessContext.requireEditor(employee);
+        Employee current = accessContext.requireManager(employee);
         Specification<AttendanceSummary> byId = (root, query, builder) -> builder.equal(root.get("summaryId"), summaryId);
         AttendanceSummary summary = repository.findOne(byId.and(accessContext.visible(current, AttendanceSummary.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "考勤不存在或无权访问")));

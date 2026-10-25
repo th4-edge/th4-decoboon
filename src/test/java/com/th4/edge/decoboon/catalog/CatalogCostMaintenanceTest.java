@@ -6,6 +6,8 @@ import com.th4.edge.decoboon.catalog.configure.PricingMethod;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogCostContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
+import com.th4.edge.decoboon.catalog.context.CatalogMutationContext;
+import com.th4.edge.decoboon.catalog.context.CatalogRevisionContext;
 import com.th4.edge.decoboon.catalog.context.PinyinContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
@@ -18,6 +20,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -88,16 +91,21 @@ class CatalogCostMaintenanceTest {
         PinyinContext pinyinContext = new PinyinContext();
         CatalogContext catalogContext = mock(CatalogContext.class);
         CatalogDetailContext detailContext = mock(CatalogDetailContext.class);
+        CatalogRevisionContext revisionContext = mock(CatalogRevisionContext.class);
+        CatalogMutationContext mutationContext = mock(CatalogMutationContext.class);
 
         when(catalogContext.requirePriceMaintainer(employee)).thenReturn(employee);
         when(catalogContext.formula(PricingMethod.MaterialOnly)).thenReturn("材料单价 × 工程量");
         when(repository.findByItemIdAndCompany_ComId(20L, 1L)).thenReturn(Optional.of(item));
         when(repository.save(any(CatalogItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(costContext.mask(any(CatalogItem.class), eq(employee))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(revisionContext.fingerprint(any(CatalogItem.class))).thenReturn("before", "after");
+        when(mutationContext.execute(eq(1L), eq(20L), org.mockito.ArgumentMatchers.<Supplier<CatalogItem>>any()))
+                .thenAnswer(invocation -> invocation.<Supplier<CatalogItem>>getArgument(2).get());
 
         com.th4.edge.decoboon.catalog.service.items.update.support.Update update =
                 new com.th4.edge.decoboon.catalog.service.items.update.support.Update(
-                        repository, costContext, pinyinContext, catalogContext, detailContext);
+                        repository, costContext, pinyinContext, catalogContext, detailContext, revisionContext, mutationContext);
 
         ReflectionTestUtils.setField(update, "itemId", 20L);
         ReflectionTestUtils.setField(update, "type", ItemType.Material);

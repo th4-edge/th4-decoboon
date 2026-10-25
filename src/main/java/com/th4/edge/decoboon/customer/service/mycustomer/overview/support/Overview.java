@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("我的客户聚合")
 @Properties(allow = {
         @AllowProperties(model = CustomerOverviewReport.class,
-                properties = {"asOf", "month", "metrics", "stageCounts", "customers",
+                properties = {"asOf", "month", "metrics", "stageCounts", "followCounts", "customers",
                         "current", "size", "total", "hasMore"}),
         @AllowProperties(model = CustomerMetricCard.class,
                 properties = {"key", "label", "value", "valueType", "status", "subText"}),
@@ -38,7 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
                         "status", "owner", "designer", "remark", "lastFollowAt", "nextFollowAt", "wechatAdded", "wechatNo",
                         "wechatAddedAt", "visitCount", "lastVisitAt", "pendingMeasureAt", "measureAt", "measureRequestedAt",
                         "handedOffAt", "tags", "portrait", "grade", "idleDays", "riskLevel", "riskReason", "nextAction",
-                        "quoteAmount", "signedAmount", "projectId", "projectName", "mainlineKey", "mainlineLabel", "mainlineHint", "createTime"}),
+                        "quoteAmount", "signedAmount", "projectId", "projectName", "mainlineKey", "mainlineLabel", "mainlineHint", "createTime",
+                        "lossId", "lossScope", "lossStage", "lossReason", "lossReasonText", "competitorName", "lostAt", "lostBy",
+                        "lossPropertyId", "lossPropertyName", "lossFromStatus", "activeLossCount", "partialLoss"}),
         @AllowProperties(model = com.th4.edge.decoboon.customer.model.CustomerPortrait.class,
                 properties = {"portraitId", "decisionRole", "purpose", "houseCondition", "startWindow",
                         "style", "eco", "household", "payment", "concerns", "competitor"}),
@@ -61,6 +63,9 @@ public class Overview implements com.th4.edge.decoboon.customer.service.mycustom
     private String stage;
     @AutoInject
     private String sort;
+    /** all / overdue / today / soon / unplanned；设置时只返回设计师待跟进队列。 */
+    @AutoInject
+    private String followFilter;
 
     private final MyCustomerOverviewContext context;
     private final TenantContext tenantContext;
@@ -75,6 +80,6 @@ public class Overview implements com.th4.edge.decoboon.customer.service.mycustom
     public CustomerOverviewReport call(Customer request) {
         // @User 注入的是轻量登录主体，企业与门店需由服务端按登录员工回读，禁止信任前端传值。
         Employee principal = tenantContext.requireEmployee(employee);
-        return context.report(principal, current, size, keyword, stage, sort);
+        return context.report(principal, current, size, keyword, stage, sort, followFilter);
     }
 }

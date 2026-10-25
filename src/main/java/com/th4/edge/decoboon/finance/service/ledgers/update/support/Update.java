@@ -29,6 +29,7 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -182,7 +183,9 @@ public class Update implements com.th4.edge.decoboon.finance.service.ledgers.upd
     }
 
     private Ledger requireManual(Employee current, Long id) {
-        Ledger ledger = ledgerRepository.findByCompany_ComIdAndLedgerId(current.getCompany().getComId(), id)
+        Specification<Ledger> byId = (root, query, builder) ->
+                builder.equal(root.get("ledgerId"), id);
+        Ledger ledger = ledgerRepository.findOne(byId.and(accessContext.visible(current, Ledger.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "手工流水不存在或无权访问")));
         if (ledger.getSource() != LedgerSource.Manual) {
             throw new DefinedException(new DefaultErrorCode("400", "仅手工记账流水允许更正"));

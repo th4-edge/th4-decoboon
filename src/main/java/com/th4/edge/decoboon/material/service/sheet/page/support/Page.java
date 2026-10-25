@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.material.service.sheet.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.material.context.MaterialCommercialPrivacyContext;
 import com.th4.edge.decoboon.material.context.MaterialSheetContext;
 import com.th4.edge.decoboon.material.model.MaterialCategory;
@@ -56,16 +58,19 @@ public class Page implements com.th4.edge.decoboon.material.service.sheet.page.P
     @AutoInject private Long projectId;
     @AutoInject private String sheetType;
     @AutoInject private com.th4.edge.decoboon.material.configure.MaterialSheetStatus status;
+    @AutoInject private Long storeId;
 
     private final MaterialSheetContext context;
     private final MaterialCommercialPrivacyContext privacyContext;
     private final ProjectAccessContext accessContext;
+    private final StoreFilterContext storeFilterContext;
 
     public Page(MaterialSheetContext context, MaterialCommercialPrivacyContext privacyContext,
-                ProjectAccessContext accessContext) {
+                ProjectAccessContext accessContext, StoreFilterContext storeFilterContext) {
         this.context = context;
         this.privacyContext = privacyContext;
         this.accessContext = accessContext;
+        this.storeFilterContext = storeFilterContext;
     }
 
     /** 在事务内显式触碰响应所需关联，确保关闭 OSIV 时序列化不触发懒加载异常。 */
@@ -94,7 +99,10 @@ public class Page implements com.th4.edge.decoboon.material.service.sheet.page.P
     @Transactional(readOnly = true)
     public List<MaterialOrderSheet> call(MaterialOrderSheet request) {
         Employee current = accessContext.requireEmployee(employee);
-        List<MaterialOrderSheet> sheets = context.page(current, projectId, sheetType, status);
+        Long storeFilter = storeFilterContext.resolve(current, storeId);
+        List<MaterialOrderSheet> sheets = context.page(current, projectId, sheetType, status).stream()
+                .filter(sheet -> StoreScope.inStore(StoreScope.storeIdOf(sheet.getStore()), storeFilter))
+                .toList();
         for (MaterialOrderSheet sheet : sheets) {
             sheet.setItems(context.items(sheet.getSheetId()));
             context.applyPriceProjection(sheet, sheet.getItems());

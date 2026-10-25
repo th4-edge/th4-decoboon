@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.quote.context.QuoteRevisionContext;
 import com.th4.edge.decoboon.quote.context.QuoteWorkbookImportContext;
 import com.th4.edge.decoboon.quote.model.QuoteWorkbookImportRequest;
 import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.decoboon.quote.model.QuoteGroup;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -54,12 +55,14 @@ import java.util.stream.Collectors;
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "customer", "design", "version", "mode", "area",
                         "subtotal", "amount", "discount", "taxRate", "taxAmount", "status", "items",
-                        "regionGroups", "constructionGroups", "materialGroups", "otherGroups",
+                        "regionGroups", "typeGroups", "constructionGroups", "materialGroups", "otherGroups",
                         "createTime", "updateTime", "property", "revision"}),
+        @AllowProperties(model = QuoteGroup.class,
+                properties = {"key", "name", "groupMode", "type", "category", "unit", "quantity", "amount", "items"}),
         @AllowProperties(model = QuoteLine.class,
-                properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
+                properties = {"itemId", "catalogSourceId", "catalogSourceCode", "catalogSourceRevision", "space", "type", "category", "packageSectionNameSnapshot", "name", "brand", "spec", "unit", "quantity",
                         "quantityFormula", "materialPrice", "manualPrice", "fixedTotalPrice", "pricingMode",
-                        "price", "amount", "role", "included", "discountAmount", "sort"}),
+                        "price", "amount", "role", "included", "discountAmount", "sort", "typeRowId", "sourceLineIds", "sourceRegionIds", "sourceRegionNames", "sourceCount"}),
         @AllowProperties(model = Space.class, properties = {"spaceId", "name", "type"})
 })
 @Service("quote/workbook/apply")

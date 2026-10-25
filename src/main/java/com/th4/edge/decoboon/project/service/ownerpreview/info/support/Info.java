@@ -7,6 +7,10 @@ import com.th4.edge.decoboon.project.configure.OwnerPreviewResult;
 import com.th4.edge.decoboon.project.context.OwnerPreviewAuditContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.quote.model.QuoteComponent;
+import com.th4.edge.decoboon.quote.model.QuoteGroup;
+import com.th4.edge.decoboon.quote.model.QuoteLine;
+import com.th4.edge.decoboon.design.model.Space;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -40,7 +44,7 @@ import java.time.format.DateTimeFormatter;
                 "key", "title", "subtitle", "status", "statusName", "summary", "facts", "actions", "items"}),
         @AllowProperties(model = CustomerJourney.Item.class, properties = {
                 "key", "title", "subtitle", "status", "statusName", "amount", "date", "businessType",
-                "businessId", "images", "lines", "facts", "media", "regions", "priceGroups"}),
+                "businessId", "images", "lines", "facts", "media", "regions", "priceGroups", "regionGroups", "typeGroups"}),
         @AllowProperties(model = CustomerJourney.Media.class, properties = {
                 "key", "url", "kind", "title", "time", "room"}),
         @AllowProperties(model = CustomerJourney.Region.class, properties = {
@@ -51,6 +55,14 @@ import java.time.format.DateTimeFormatter;
         @AllowProperties(model = CustomerJourney.PriceRow.class, properties = {
                 "key", "name", "category", "brand", "spec", "unit", "quantity", "price", "amount", "role", "type",
                 "craft", "criterion"}),
+        @AllowProperties(model = QuoteGroup.class, properties = {
+                "key", "name", "groupMode", "type", "category", "unit", "quantity", "amount", "items"}),
+        @AllowProperties(model = QuoteLine.class, properties = {
+                "itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity", "price", "amount",
+                "role", "differenceType", "differenceStatus", "included", "discountAmount", "components", "craft",
+                "typeRowId", "sourceLineIds", "sourceRegionIds", "sourceRegionNames", "sourceCount"}),
+        @AllowProperties(model = QuoteComponent.class, properties = {"type", "name", "saleAmount", "sort"}),
+        @AllowProperties(model = Space.class, properties = {"spaceId", "type", "name", "area", "areaSource"}),
         @AllowProperties(model = CustomerJourney.Fact.class, properties = {"key", "label", "value", "valueType"}),
         @AllowProperties(model = CustomerJourney.Action.class, properties = {
                 "key", "type", "title", "description", "targetType", "targetId"})

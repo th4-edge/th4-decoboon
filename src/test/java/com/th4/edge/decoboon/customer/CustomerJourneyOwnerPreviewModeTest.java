@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.customer;
 import com.th4.edge.decoboon.customer.configure.CustomerFeedbackStatus;
 import com.th4.edge.decoboon.customer.configure.JourneyViewMode;
 import com.th4.edge.decoboon.customer.context.CustomerJourneyContext;
+import com.th4.edge.decoboon.quote.context.QuoteViewContext;
 import com.th4.edge.decoboon.customer.model.CustomerFeedback;
 import com.th4.edge.decoboon.customer.model.CustomerJourney;
 import com.th4.edge.decoboon.customer.repository.CustomerFeedbackRepository;
@@ -80,7 +81,7 @@ class CustomerJourneyOwnerPreviewModeTest {
                 designItemRepository, quoteRepository, quoteLineRepository, contractRepository,
                 changeRepository, changeItemRepository, materialPlanRepository, selectionRepository,
                 stageRepository, reportRepository, acceptanceRepository, acceptanceRoundRepository,
-                receivableRepository, feedbackRepository);
+                receivableRepository, feedbackRepository, new QuoteViewContext());
         stubEmptyJourney();
         when(feedbackRepository.findByProject_ProjectIdAndCompany_ComIdOrderByFeedbackIdDesc(anyLong(), anyLong()))
                 .thenReturn(List.of(feedback()));

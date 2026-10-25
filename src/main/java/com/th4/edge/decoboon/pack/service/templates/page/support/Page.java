@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Note("装修套餐分页")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount", "cost", "criterions", "createTime"}),
+                properties = {"templateId", "code", "version", "status", "currentPublished", "publishedAt", "snapshotHash", "name", "area", "price", "discount", "cost", "criterions", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("pack/template/page")
@@ -43,6 +43,6 @@ public class Page implements com.th4.edge.decoboon.pack.service.templates.page.P
     public org.springframework.data.domain.Page<PackageTemplate> call(PackageTemplate request) {
         Employee current = tenantContext.requireEmployee(employee);
         return costContext.mask(new PageImpl<>(giftPackRepository
-                .findByCompany_ComIdOrderByTemplateIdDesc(current.getCompany().getComId())), current);
+                .findByCompany_ComIdOrderByCodeAscVersionDescTemplateIdDesc(current.getCompany().getComId())), current);
     }
 }

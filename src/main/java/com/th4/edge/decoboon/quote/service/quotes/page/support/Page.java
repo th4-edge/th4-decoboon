@@ -27,14 +27,14 @@ import java.util.List;
 @Note("客户报价分页")
 @Properties(allow = {
         @AllowProperties(model = Quote.class,
-                properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "createdBy", "version", "mode",
+                properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "packageTemplateCode", "packageTemplateVersion", "packageTemplateSnapshotHash", "createdBy", "version", "mode",
                         "area", "subtotal", "amount", "cost", "costComplete", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status", "createTime", "property"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "area", "budget", "status"}),
                 @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "version", "style", "status", "area", "layout"}),
 @AllowProperties(model = com.th4.edge.decoboon.pack.model.PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount"}),
+                properties = {"templateId", "code", "version", "status", "currentPublished", "name", "area", "price", "discount", "snapshotHash"}),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),

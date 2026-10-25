@@ -907,7 +907,7 @@ public class ProjectContext {
         allDone = allDone && hasApplicableStage;
         calculatedProgress = capProjectProgress(allDone, calculatedProgress);
         project.setProgress(calculatedProgress);
-        project.setCost(calculateProjectCost(project));
+        refreshProjectCost(project);
         if (allDone) {
             project.setStatus(ProjectStatus.Finished);
             project.setActualEndDate(LocalDate.now());
@@ -1056,6 +1056,8 @@ public class ProjectContext {
             stage.setName(snapshot.getName());
             stage.setStageCode(snapshot.getCode());
             stage.setSort(snapshot.getSort());
+            // DEC-087 / BR-053：验收模式随立项从合同阶段快照进入执行阶段，日期重排不得改写。
+            stage.setAcceptanceMode(snapshot.getAcceptanceMode());
             stage.setWeight(BigDecimal.ZERO);
             stage.setStatus(StageStatus.Todo);
             stage.setProgress(0);
@@ -1349,8 +1351,15 @@ public class ProjectContext {
                 .orElse(0);
     }
 
-    private BigDecimal calculateProjectCost(Project project) {
-        return projectCostContext.summarize(project).actualCost();
+    /**
+     * 只在动态成本完整时刷新项目冗余成本；不完整时保留原事实，禁止把 P1 或暂不可确认的 0
+     * 当作实际成本写入项目。最终口径仍由 ProjectCostContext/D3 统一消费。
+     */
+    private void refreshProjectCost(Project project) {
+        ProjectCostContext.CostSummary summary = projectCostContext.summarize(project);
+        if (summary.complete()) {
+            project.setCost(summary.actualCost());
+        }
     }
 
     private void requireTenant(com.th4.edge.tenant.user.model.Company company, Long companyId) {

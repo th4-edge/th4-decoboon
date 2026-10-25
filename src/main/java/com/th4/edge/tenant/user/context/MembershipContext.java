@@ -2,6 +2,7 @@ package com.th4.edge.tenant.user.context;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.components.lock.DistributedLocked;
+import com.th4.edge.decoboon.common.context.StoreAttributionContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.finance.model.Receivable;
@@ -29,7 +30,7 @@ import com.th4.edge.tenant.user.model.CompanyMemberLog;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Invite;
 import com.th4.edge.tenant.user.model.MemberHandover;
-import com.th4.edge.tenant.user.model.Team;
+import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.repository.CompanyJoinLimitRepository;
 import com.th4.edge.tenant.user.repository.CompanyMemberLogRepository;
@@ -62,11 +63,11 @@ public class MembershipContext {
     private final UserIdentityContext userContext;
     private final EmployeeRepository employeeRepository;
     private final InviteRepository inviteRepository;
-    private final TeamRepository teamRepository;
     private final StoreRepository storeRepository;
     private final CompanyMemberLogRepository memberLogRepository;
     private final CompanyJoinLimitRepository joinLimitRepository;
     private final SubscriptionContext subscriptionContext;
+    private final StoreAttributionContext storeAttributionContext;
     private final ModelIdentityContext modelIdentityContext;
     private final CustomerRepository customerRepository;
     private final PropertyRepository propertyRepository;
@@ -78,11 +79,11 @@ public class MembershipContext {
     public MembershipContext(UserIdentityContext userContext,
                              EmployeeRepository employeeRepository,
                              InviteRepository inviteRepository,
-                             TeamRepository teamRepository,
                              StoreRepository storeRepository,
                              CompanyMemberLogRepository memberLogRepository,
                              CompanyJoinLimitRepository joinLimitRepository,
                              SubscriptionContext subscriptionContext,
+                             StoreAttributionContext storeAttributionContext,
                              ModelIdentityContext modelIdentityContext,
                              CustomerRepository customerRepository,
                              PropertyRepository propertyRepository,
@@ -93,11 +94,11 @@ public class MembershipContext {
         this.userContext = userContext;
         this.employeeRepository = employeeRepository;
         this.inviteRepository = inviteRepository;
-        this.teamRepository = teamRepository;
         this.storeRepository = storeRepository;
         this.memberLogRepository = memberLogRepository;
         this.joinLimitRepository = joinLimitRepository;
         this.subscriptionContext = subscriptionContext;
+        this.storeAttributionContext = storeAttributionContext;
         this.modelIdentityContext = modelIdentityContext;
         this.customerRepository = customerRepository;
         this.propertyRepository = propertyRepository;
@@ -120,10 +121,12 @@ public class MembershipContext {
             message = "该企业订阅正在处理中，请稍后重试")
     @Transactional
     public Invite createInvite(Employee inviter, String inviteName, String phone,
-                               EmployeeRole role, Long teamId, String teamName) {
+                               EmployeeRole role, Long storeId, Long teamId, String teamName) {
         EmployeeRole inviteRole = role == null ? EmployeeRole.Marketer : role;
         EmployeeRolePolicy.requireAssignableRole(inviteRole);
+        requireTeamFrozen(teamId, teamName);
         requireInviteScope(inviter, inviteRole);
+        Store inviteStore = resolveInviteStore(inviter, inviteRole, storeId);
         validateInviteFrequency(inviter, phone);
         subscriptionContext.requireWritable(inviter.getCompany());
         subscriptionContext.lockCurrent(inviter.getCompany());
@@ -133,11 +136,10 @@ public class MembershipContext {
                 inviter.getCompany().getComId(), InviteStatus.Pending);
         subscriptionContext.requireSeatCapacity(inviter.getCompany(), occupiedSeats);
 
-        Team team = resolveTeam(inviter, inviteRole, teamId, teamName);
         Invite invite = new Invite();
         invite.setCompany(inviter.getCompany());
-        invite.setStore(inviter.getStore());
-        invite.setTeam(team);
+        invite.setStore(inviteStore);
+        invite.setTeam(null);
         invite.setInviter(inviter);
         invite.setInviteName(inviteName == null || inviteName.isBlank() ? phone : inviteName.trim());
         invite.setTelNo(phone);
@@ -190,7 +192,7 @@ public class MembershipContext {
                 throw new DefinedException(new DefaultErrorCode("409", "当前用户已加入其他企业，请确认切换企业"));
             }
             validateJoinLimit(user, phone);
-            resignInternal(active, user, reason, true, MemberLogAction.Switch);
+            resignInternal(active, user, reason, true, MemberLogAction.Switch, active);
         } else {
             validateJoinLimit(user, phone);
         }
@@ -205,7 +207,7 @@ public class MembershipContext {
         employee.setName(name == null || name.isBlank() ? invite.getInviteName() : name.trim());
         employee.setTelNo(phone);
         employee.setStore(invite.getStore());
-        employee.setTeam(invite.getTeam());
+        employee.setTeam(null);
         employee.setCompany(invite.getCompany());
         employee.setRole(invite.getRole());
         employee.setStatus(EmployeeStatus.Active);
@@ -215,10 +217,6 @@ public class MembershipContext {
         employee = employeeRepository.save(modelIdentityContext.prepare(employee));
         userContext.linkEmployee(user, employee);
 
-        if (invite.getRole() == EmployeeRole.TeamLeader && invite.getTeam() != null) {
-            invite.getTeam().setLeader(employee);
-            teamRepository.save(invite.getTeam());
-        }
         invite.setStatus(InviteStatus.Accepted);
         invite.setAcceptedAt(LocalDateTime.now());
         invite.setAcceptedBy(user);
@@ -276,7 +274,7 @@ public class MembershipContext {
 
     @Transactional
     public MemberHandover resign(Employee current, String reason, boolean forceHandover) {
-        return resignInternal(current, userContext.requireWx(current), reason, forceHandover, MemberLogAction.Resign);
+        return resignInternal(current, userContext.requireWx(current), reason, forceHandover, MemberLogAction.Resign, current);
     }
 
     @Transactional
@@ -289,7 +287,7 @@ public class MembershipContext {
         if (Objects.equals(operator.getEmpId(), target.getEmpId())) {
             throw new DefinedException(new DefaultErrorCode("400", "不能注销自己"));
         }
-        return resignInternal(target, userContext.requireWx(target), reason, forceHandover, MemberLogAction.Resign);
+        return resignInternal(target, userContext.requireWx(target), reason, forceHandover, MemberLogAction.Resign, operator);
     }
 
     @Transactional
@@ -307,6 +305,8 @@ public class MembershipContext {
         return saved;
     }
 
+    @DistributedLocked(key = "#root.subscriptionLockKeyForTarget(#empId)",
+            message = "该企业订阅正在处理中，请稍后重试")
     @Transactional
     public Employee resume(Employee operator, Long empId) {
         Employee target = requireTarget(operator, empId);
@@ -316,6 +316,12 @@ public class MembershipContext {
         if (userContext.requireWx(target) != null && userContext.activeEmployee(userContext.requireWx(target)) != null) {
             throw new DefinedException(new DefaultErrorCode("400", "该用户已有其他在职企业"));
         }
+        storeAttributionContext.requireAttributable(target.getStore());
+        subscriptionContext.requireWritable(target.getCompany());
+        subscriptionContext.lockCurrent(target.getCompany());
+        long activeSeats = employeeRepository.countByCompany_ComIdAndStatus(
+                target.getCompany().getComId(), EmployeeStatus.Active);
+        subscriptionContext.requireSeatCapacity(target.getCompany(), activeSeats);
         String before = snapshot(target);
         target.setStatus(EmployeeStatus.Active);
         target.setJoinedAt(LocalDateTime.now());
@@ -341,14 +347,12 @@ public class MembershipContext {
         for (Customer customer : customers) {
             customer.setOwner(to);
             customer.setStore(to.getStore());
-            customer.setTeam(to.getTeam());
             customerRepository.save(customer);
         }
         List<Property> properties = propertyRepository.findByCompany_ComIdAndOwner_EmpIdOrderByPropertyIdDesc(comId, from.getEmpId());
         for (Property property : properties) {
             property.setOwner(to);
             property.setStore(to.getStore());
-            property.setTeam(to.getTeam());
             propertyRepository.save(property);
         }
         if (transferProjects) {
@@ -376,6 +380,9 @@ public class MembershipContext {
     @Transactional
     public Employee updateMember(Employee operator, Long empId, EmployeeRole role, Long storeId, Long teamId) {
         Employee target = requireTarget(operator, empId);
+        if (teamId != null) {
+            throw new DefinedException(new DefaultErrorCode("400", "团队已冻结，不能调整团队"));
+        }
         if (target.getRole() == EmployeeRole.TeamLeader && operator.getRole() != EmployeeRole.Boss) {
             throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人可调整已冻结的团队负责人"));
         }
@@ -385,12 +392,25 @@ public class MembershipContext {
         if (targetRole == EmployeeRole.Boss && operator.getRole() != EmployeeRole.Boss) {
             throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以设置负责人角色"));
         }
+        if (targetRole == EmployeeRole.StoreManager && operator.getRole() != EmployeeRole.Boss) {
+            throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人可以设置店长"));
+        }
         if (target.getRole() == EmployeeRole.Boss && targetRole != EmployeeRole.Boss) {
             requireNotLastBoss(target);
         }
         if (storeId != null) {
-            com.th4.edge.tenant.user.model.Store store = storeRepository.findByStoreId(storeId);
-            if (store == null || store.getCompany() == null
+            Store store = storeAttributionContext.requireCompanyStore(storeId, operator.getCompany().getComId());
+            if (target.getStore() == null
+                    || !Objects.equals(target.getStore().getStoreId(), store.getStoreId())) {
+                if (operator.getRole() != EmployeeRole.Boss) {
+                    throw new DefinedException(new DefaultErrorCode("403", "仅企业负责人可跨店调整员工"));
+                }
+                if (targetRole == EmployeeRole.Finance) {
+                    // DEC-081：BOSS 跨店调整财务后，总部/门店身份按新门店即时派生。
+                    // 不要求原因、二次确认、交接或专用审计；历史业务门店由快照规则保持不变。
+                }
+            }
+            if (store.getCompany() == null
                     || !Objects.equals(store.getCompany().getComId(), operator.getCompany().getComId())) {
                 throw new DefinedException(new DefaultErrorCode("404", "门店不存在"));
             }
@@ -400,15 +420,6 @@ public class MembershipContext {
                         "门店「" + store.getName() + "」已停用，不能将员工归属到该门店"));
             }
             target.setStore(store);
-        }
-        if (teamId != null) {
-            Team team = teamRepository.findByTeamIdAndCompany_ComId(teamId, operator.getCompany().getComId());
-            if (team == null) throw new DefinedException(new DefaultErrorCode("404", "团队不存在"));
-            if (target.getStore() != null && team.getStore() != null
-                    && !Objects.equals(target.getStore().getStoreId(), team.getStore().getStoreId())) {
-                throw new DefinedException(new DefaultErrorCode("400", "团队不属于员工门店"));
-            }
-            target.setTeam(team);
         }
         boolean roleChanged = target.getRole() != targetRole;
         target.setRole(targetRole);
@@ -448,7 +459,7 @@ public class MembershipContext {
     }
 
     private MemberHandover resignInternal(Employee employee, Credentials user, String reason,
-                                          boolean forceHandover, MemberLogAction action) {
+                                          boolean forceHandover, MemberLogAction action, Employee operator) {
         if (user == null && employee.getTelNo() != null) {
             user = userContext.identify("phone:" + employee.getTelNo(), null, employee.getTelNo(),
                     employee.getName(), employee.getAvatarUrl());
@@ -468,7 +479,7 @@ public class MembershipContext {
         employee.setResignedAt(LocalDateTime.now());
         employee.setResignReason(reason);
         Employee saved = employeeRepository.save(employee);
-        memberLog(user, employee.getCompany(), saved, action, before, snapshot(saved), employee, reason);
+        memberLog(user, employee.getCompany(), saved, action, before, snapshot(saved), operator, reason);
         if (user != null) {
             updateJoinLimit(user, employee.getTelNo(), false);
             userContext.log(user, action == MemberLogAction.Switch
@@ -536,8 +547,7 @@ public class MembershipContext {
 
     private void requireInviteScope(Employee inviter, EmployeeRole inviteRole) {
         if (inviter.getRole() != EmployeeRole.Boss
-                && inviter.getRole() != EmployeeRole.StoreManager
-                && inviter.getRole() != EmployeeRole.TeamLeader) {
+                && inviter.getRole() != EmployeeRole.StoreManager) {
             throw new DefinedException(new DefaultErrorCode("403", "当前账号无权邀请员工"));
         }
         if (inviteRole == EmployeeRole.Boss) {
@@ -546,36 +556,43 @@ public class MembershipContext {
         if (inviter.getRole() == EmployeeRole.StoreManager && inviteRole == EmployeeRole.StoreManager) {
             throw new DefinedException(new DefaultErrorCode("403", "店长不能邀请其他店长"));
         }
-        if (inviter.getRole() == EmployeeRole.TeamLeader
-                && (inviteRole == EmployeeRole.StoreManager || inviteRole == EmployeeRole.TeamLeader)) {
-            throw new DefinedException(new DefaultErrorCode("403", "团队负责人只能邀请团队成员"));
-        }
     }
 
-    private Team resolveTeam(Employee inviter, EmployeeRole inviteRole, Long teamId, String teamName) {
-        if (inviter.getRole() == EmployeeRole.TeamLeader) return inviter.getTeam();
-        if (teamId != null && teamId > 0) {
-            Team team = teamRepository.findByTeamIdAndCompany_ComId(teamId, inviter.getCompany().getComId());
-            if (team == null) throw new DefinedException(new DefaultErrorCode("404", "团队不存在"));
-            if (inviter.getStore() != null && team.getStore() != null
-                    && !Objects.equals(inviter.getStore().getStoreId(), team.getStore().getStoreId())) {
-                throw new DefinedException(new DefaultErrorCode("400", "团队不属于当前门店"));
-            }
-            return team;
+    /**
+     * 财务邀请必须落门店：BOSS 显式选择目标门店；店长只能邀请本店财务。
+     * 其他角色保持既有“继承邀请人门店”口径。
+     */
+    private Store resolveInviteStore(Employee inviter, EmployeeRole inviteRole, Long storeId) {
+        if (inviteRole != EmployeeRole.Finance) {
+            return inviter.getStore();
         }
-        if (inviteRole == EmployeeRole.TeamLeader) {
-            if (teamName == null || teamName.isBlank()) {
-                throw new DefinedException(new DefaultErrorCode("400", "团队负责人必须指定团队名称"));
-            }
-            Team team = new Team();
-            team.setName(teamName.trim());
-            team.setColor("#2F54EB");
-            team.setLeader(inviter);
-            team.setStore(inviter.getStore());
-            team.setCompany(inviter.getCompany());
-            return teamRepository.save(modelIdentityContext.prepare(team));
+        Long comId = inviter.getCompany() == null ? null : inviter.getCompany().getComId();
+        if (comId == null) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前员工未归属企业"));
         }
-        return null;
+        if (inviter.getRole() == EmployeeRole.Boss) {
+            if (storeId == null) {
+                throw new DefinedException(new DefaultErrorCode("400", "邀请财务必须选择归属门店"));
+            }
+            return storeAttributionContext.requireCompanyStore(storeId, comId);
+        }
+        if (inviter.getRole() == EmployeeRole.StoreManager) {
+            Store own = inviter.getStore();
+            if (own == null || own.getStoreId() == null) {
+                throw new DefinedException(new DefaultErrorCode("403", "当前店长未归属门店，不能邀请财务"));
+            }
+            if (storeId != null && !Objects.equals(storeId, own.getStoreId())) {
+                throw new DefinedException(new DefaultErrorCode("403", "店长只能邀请本店财务"));
+            }
+            return storeAttributionContext.requireCompanyStore(own.getStoreId(), comId);
+        }
+        throw new DefinedException(new DefaultErrorCode("403", "当前账号无权邀请财务"));
+    }
+
+    private void requireTeamFrozen(Long teamId, String teamName) {
+        if (teamId != null || (teamName != null && !teamName.isBlank())) {
+            throw new DefinedException(new DefaultErrorCode("400", "团队已冻结，不能创建或分配团队"));
+        }
     }
 
     private Employee requireTarget(Employee operator, Long empId) {
@@ -597,15 +614,6 @@ public class MembershipContext {
             if (target.getRole() == EmployeeRole.Boss || target.getRole() == EmployeeRole.StoreManager
                     || operator.getStore() == null || target.getStore() == null
                     || !Objects.equals(operator.getStore().getStoreId(), target.getStore().getStoreId())) {
-                throw new DefinedException(new DefaultErrorCode("403", "无权管理该员工"));
-            }
-            return;
-        }
-        if (operator.getRole() == EmployeeRole.TeamLeader) {
-            if (target.getRole() == EmployeeRole.Boss || target.getRole() == EmployeeRole.StoreManager
-                    || target.getRole() == EmployeeRole.TeamLeader || operator.getTeam() == null
-                    || target.getTeam() == null
-                    || !Objects.equals(operator.getTeam().getTeamId(), target.getTeam().getTeamId())) {
                 throw new DefinedException(new DefaultErrorCode("403", "无权管理该员工"));
             }
             return;
@@ -701,6 +709,12 @@ public class MembershipContext {
     public String subscriptionLockKeyForInviter(Employee inviter) {
         Long comId = inviter == null || inviter.getCompany() == null ? null : inviter.getCompany().getComId();
         return "subscription:" + (comId == null ? "unresolved:inviter" : comId);
+    }
+
+    public String subscriptionLockKeyForTarget(Long empId) {
+        Employee target = empId == null ? null : employeeRepository.findByEmpId(empId);
+        Long comId = target == null || target.getCompany() == null ? null : target.getCompany().getComId();
+        return "subscription:" + (comId == null ? "unresolved:target:" + empId : comId);
     }
 
     public String subscriptionLockKeyForInvite(Long inviteId) {

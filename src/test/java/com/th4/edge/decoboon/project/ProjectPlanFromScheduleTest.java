@@ -97,6 +97,8 @@ class ProjectPlanFromScheduleTest {
         ProjectStage afterWater = stageRepository.findById(water.getStageId()).orElseThrow();
         assertThat(afterPrepare.getPlannedStart()).isEqualTo(LocalDate.of(2026, 10, 1));
         assertThat(afterPrepare.getPlannedEnd()).isEqualTo(LocalDate.of(2026, 10, 12));
+        assertThat(afterPrepare.getAcceptanceMode()).isEqualTo(StageAcceptanceMode.None);
+        assertThat(afterWater.getAcceptanceMode()).isEqualTo(StageAcceptanceMode.None);
         assertThat(afterWater.getPlannedStart()).isEqualTo(LocalDate.of(2026, 10, 13));
         assertThat(afterWater.getPlannedEnd()).isEqualTo(LocalDate.of(2026, 10, 24));
 
@@ -327,6 +329,7 @@ class ProjectPlanFromScheduleTest {
         stage.setStageCode(code);
         stage.setSort(sort);
         stage.setWeight(new BigDecimal("50"));
+        stage.setAcceptanceMode(StageAcceptanceMode.None);
         stage.setStatus(StageStatus.Todo);
         stage.setProgress(0);
         stage.setPlannedStart(start);

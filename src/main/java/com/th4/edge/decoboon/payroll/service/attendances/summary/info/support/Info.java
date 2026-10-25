@@ -16,6 +16,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Note("月度考勤详情")
@@ -40,9 +41,9 @@ public class Info implements com.th4.edge.decoboon.payroll.service.attendances.s
     @Override
     public AttendanceSummary call(AttendanceSummary request) {
         Employee current = accessContext.requireManager(employee);
-        return repository.findById(summaryId)
-                .filter(item -> item.getCompany() != null
-                        && current.getCompany().getComId().equals(item.getCompany().getComId()))
+        Specification<AttendanceSummary> byId =
+                (root, query, builder) -> builder.equal(root.get("summaryId"), summaryId);
+        return repository.findOne(byId.and(accessContext.visible(current, AttendanceSummary.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "考勤不存在或无权访问")));
     }
 }

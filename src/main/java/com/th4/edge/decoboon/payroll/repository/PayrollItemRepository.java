@@ -23,4 +23,12 @@ public interface PayrollItemRepository extends JpaRepository<PayrollItem, Long>,
             """)
     Set<Long> findEmployeeIdsWithFacts(@Param("comId") Long comId,
                                        @Param("empIds") Collection<Long> empIds);
+
+    /** 公司级工资单在单店视图下的可见性：工资单内至少有一个该门店的工资项。 */
+    @Query("""
+            select distinct item.sheet.sheetId from PayrollItem item
+            where item.company.comId = :comId and item.store.storeId = :storeId
+              and item.sheet is not null
+            """)
+    List<Long> findSheetIdsByStore(@Param("comId") Long comId, @Param("storeId") Long storeId);
 }

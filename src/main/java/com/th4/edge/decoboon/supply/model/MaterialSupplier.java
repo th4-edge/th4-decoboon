@@ -79,7 +79,7 @@ public class MaterialSupplier extends AuditModel {
 
     @com.th4.edge.framework.core.annotation.Unit("元")
     @Column(name = "purchase_price", precision = 12, scale = 2, nullable = false)
-    @Note("参考采购价")
+    @Note("历史采购价，仅只读兼容；采购价以采购单为准")
     private BigDecimal purchasePrice = BigDecimal.ZERO;
 
     @Column(name = "minimum_order", precision = 12, scale = 3, nullable = false)

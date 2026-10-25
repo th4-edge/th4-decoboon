@@ -9,6 +9,9 @@ import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.configure.CustomerSource;
 import com.th4.edge.decoboon.customer.configure.CustomerDormantReason;
+import com.th4.edge.decoboon.customer.configure.CustomerLossReason;
+import com.th4.edge.decoboon.customer.configure.CustomerLossScope;
+import com.th4.edge.decoboon.customer.configure.CustomerLossStage;
 import com.th4.edge.decoboon.customer.configure.CustomerRiskLevel;
 import com.th4.edge.decoboon.customer.configure.Gender;
 import com.th4.edge.framework.core.annotation.Description;
@@ -267,6 +270,60 @@ public class Customer extends AuditModel {
     @Note("只读投影：项目索引")
     private Long projectId;
 
+    // ==== 以下为当前流失摘要只读投影，不落库；历史记录见 CustomerLoss ====
+
+    @Transient
+    @Note("当前流失记录索引")
+    private Long lossId;
+
+    @Transient
+    @Note("当前流失范围")
+    private CustomerLossScope lossScope;
+
+    @Transient
+    @Note("当前流失阶段")
+    private CustomerLossStage lossStage;
+
+    @Transient
+    @Note("当前流失原因")
+    private CustomerLossReason lossReason;
+
+    @Transient
+    @Note("当前流失原因说明")
+    private String lossReasonText;
+
+    @Transient
+    @Note("竞争对手名称")
+    private String competitorName;
+
+    @Transient
+    @Note("流失时间")
+    private LocalDateTime lostAt;
+
+    @Transient
+    @Note("流失操作人")
+    private Employee lostBy;
+
+    @Transient
+    @Note("流失房屋索引")
+    private Long lossPropertyId;
+
+    @Transient
+    @Note("流失房屋摘要")
+    private String lossPropertyName;
+
+    @Transient
+    @Note("流失前状态")
+    private CustStatus lossFromStatus;
+
+    @Transient
+    @Note("当前活跃流失记录数")
+    private Integer activeLossCount;
+
+    @Transient
+    @Note("是否为部分房屋流失")
+    private Boolean partialLoss;
+
     public Long getCustId() { return custId; }
     public void setCustId(Long custId) { this.custId = custId; }
     public Company getCompany() { return company; }
@@ -365,4 +422,31 @@ public class Customer extends AuditModel {
     public void setProjectName(String projectName) { this.projectName = projectName; }
     public Long getProjectId() { return projectId; }
     public void setProjectId(Long projectId) { this.projectId = projectId; }
+
+    public Long getLossId() { return lossId; }
+    public void setLossId(Long lossId) { this.lossId = lossId; }
+    public CustomerLossScope getLossScope() { return lossScope; }
+    public void setLossScope(CustomerLossScope lossScope) { this.lossScope = lossScope; }
+    public CustomerLossStage getLossStage() { return lossStage; }
+    public void setLossStage(CustomerLossStage lossStage) { this.lossStage = lossStage; }
+    public CustomerLossReason getLossReason() { return lossReason; }
+    public void setLossReason(CustomerLossReason lossReason) { this.lossReason = lossReason; }
+    public String getLossReasonText() { return lossReasonText; }
+    public void setLossReasonText(String lossReasonText) { this.lossReasonText = lossReasonText; }
+    public String getCompetitorName() { return competitorName; }
+    public void setCompetitorName(String competitorName) { this.competitorName = competitorName; }
+    public LocalDateTime getLostAt() { return lostAt; }
+    public void setLostAt(LocalDateTime lostAt) { this.lostAt = lostAt; }
+    public Employee getLostBy() { return lostBy; }
+    public void setLostBy(Employee lostBy) { this.lostBy = lostBy; }
+    public Long getLossPropertyId() { return lossPropertyId; }
+    public void setLossPropertyId(Long lossPropertyId) { this.lossPropertyId = lossPropertyId; }
+    public String getLossPropertyName() { return lossPropertyName; }
+    public void setLossPropertyName(String lossPropertyName) { this.lossPropertyName = lossPropertyName; }
+    public CustStatus getLossFromStatus() { return lossFromStatus; }
+    public void setLossFromStatus(CustStatus lossFromStatus) { this.lossFromStatus = lossFromStatus; }
+    public Integer getActiveLossCount() { return activeLossCount; }
+    public void setActiveLossCount(Integer activeLossCount) { this.activeLossCount = activeLossCount; }
+    public Boolean getPartialLoss() { return partialLoss; }
+    public void setPartialLoss(Boolean partialLoss) { this.partialLoss = partialLoss; }
 }

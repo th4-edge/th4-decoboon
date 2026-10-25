@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 /**
  * 当前账号可见团队列表。
  *
- * <p>BOSS 可见企业全部团队，店长可见本门店团队，团队负责人仅可见本人团队。</p>
+ * <p>Team 已冻结：本接口仅保留历史只读兼容。BOSS 可见企业历史 Team，店长可见本店历史 Team；不再作为管理入口或授权依据。</p>
  */
 @Note("团队列表")
 @Properties(allow = {
@@ -50,26 +50,15 @@ public class List implements com.th4.edge.tenant.user.service.user.team.list.Lis
 
     @Override
     public java.util.List<Team> call(Employee request) {
-        Employee current = tenantContext.requireEmployee(employee);
+        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
         Long comId = current.getCompany().getComId();
-        return switch (current.getRole()) {
-            case Boss -> teamRepository.findByCompany_ComIdOrderByName(comId);
-            case StoreManager -> {
-                if (current.getStore() == null || current.getStore().getStoreId() == null) {
-                    throw new DefinedException(new DefaultErrorCode("403", "当前店长未归属门店"));
-                }
-                yield teamRepository.findByCompany_ComIdAndStore_StoreIdOrderByName(
-                        comId, current.getStore().getStoreId());
-            }
-            case TeamLeader -> {
-                Team team = current.getTeam();
-                if (team == null || team.getTeamId() == null) {
-                    throw new DefinedException(new DefaultErrorCode("403", "当前团队负责人未归属团队"));
-                }
-                Team visible = teamRepository.findByTeamIdAndCompany_ComId(team.getTeamId(), comId);
-                yield visible == null ? java.util.List.of() : java.util.List.of(visible);
-            }
-            default -> throw new DefinedException(new DefaultErrorCode("403", "当前账号无权查看团队"));
-        };
+        if (current.getRole() == EmployeeRole.Boss) {
+            return teamRepository.findByCompany_ComIdOrderByName(comId);
+        }
+        if (current.getStore() == null || current.getStore().getStoreId() == null) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前店长未归属门店"));
+        }
+        return teamRepository.findByCompany_ComIdAndStore_StoreIdOrderByName(
+                comId, current.getStore().getStoreId());
     }
 }

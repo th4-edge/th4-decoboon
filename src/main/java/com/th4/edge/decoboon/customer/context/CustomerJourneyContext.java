@@ -47,6 +47,7 @@ import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
 import com.th4.edge.decoboon.property.model.Measure;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
+import com.th4.edge.decoboon.quote.context.QuoteViewContext;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
@@ -86,6 +87,7 @@ public class CustomerJourneyContext {
     private final AcceptanceRoundRepository acceptanceRoundRepository;
     private final ReceivableRepository receivableRepository;
     private final CustomerFeedbackRepository feedbackRepository;
+    private final QuoteViewContext quoteViewContext;
 
     public CustomerJourneyContext(MeasureRepository measureRepository,
                                   DesignRepository designRepository,
@@ -103,7 +105,8 @@ public class CustomerJourneyContext {
                                   AcceptanceRepository acceptanceRepository,
                                   AcceptanceRoundRepository acceptanceRoundRepository,
                                   ReceivableRepository receivableRepository,
-                                  CustomerFeedbackRepository feedbackRepository) {
+                                  CustomerFeedbackRepository feedbackRepository,
+                                  QuoteViewContext quoteViewContext) {
         this.measureRepository = measureRepository;
         this.designRepository = designRepository;
         this.spaceRepository = spaceRepository;
@@ -121,6 +124,7 @@ public class CustomerJourneyContext {
         this.acceptanceRoundRepository = acceptanceRoundRepository;
         this.receivableRepository = receivableRepository;
         this.feedbackRepository = feedbackRepository;
+        this.quoteViewContext = quoteViewContext;
     }
 
     @Transactional(readOnly = true)
@@ -282,9 +286,9 @@ public class CustomerJourneyContext {
         Quote latest = values.get(0);
         section.setStatus(latest.getStatus() == null ? null : latest.getStatus().name());
         section.setStatusName(latest.getStatus() == null ? null : latest.getStatus().getName());
-        section.setSummary("当前版本报价 " + money(latest.getAmount()));
+        section.setSummary("当前版本报价 " + moneyText(latest.getAmount()));
         section.getFacts().add(fact("count", "报价版本", String.valueOf(values.stream().filter(q -> q.getStatus() != QuoteStatus.Superseded).count()), "count"));
-        section.getFacts().add(fact("amount", "当前金额", money(latest.getAmount()), "money"));
+        section.getFacts().add(fact("amount", "当前金额", moneyText(latest.getAmount()), "money"));
         section.getFacts().add(fact("version", "版本", "V" + value(latest.getVersion(), 1), "text"));
         section.setItems(values.stream().limit(10).map(this::quoteItem).toList());
         return section;
@@ -300,8 +304,8 @@ public class CustomerJourneyContext {
         section.setStatus(contract.getStatus() == null ? null : contract.getStatus().name());
         section.setStatusName(contract.getStatus() == null ? null : contract.getStatus().getName());
         section.setSummary("合同 " + contract.getNo());
-        section.getFacts().add(fact("signed", "签约金额", money(contract.getSignedAmount() == null ? contract.getBaselineAmount() : contract.getSignedAmount()), "money"));
-        section.getFacts().add(fact("current", "当前金额", money(contract.getCurrentAmount()), "money"));
+        section.getFacts().add(fact("signed", "签约金额", moneyText(contract.getSignedAmount() == null ? contract.getBaselineAmount() : contract.getSignedAmount()), "money"));
+        section.getFacts().add(fact("current", "当前金额", moneyText(contract.getCurrentAmount()), "money"));
         section.getFacts().add(fact("signedAt", "签约日期", date(contract.getSignedAt()), "date"));
         section.getItems().add(contractItem(contract));
         return section;
@@ -320,7 +324,7 @@ public class CustomerJourneyContext {
         section.setSummary(processing > 0 ? processing + " 项变更审批中" : "共 " + values.size() + " 项变更");
         section.getFacts().add(fact("total", "变更总数", String.valueOf(values.size()), "count"));
         section.getFacts().add(fact("pending", "审批中", String.valueOf(processing), "count"));
-        section.getFacts().add(fact("confirmed", "已生效金额", money(amount), "money"));
+        section.getFacts().add(fact("confirmed", "已生效金额", moneyText(amount), "money"));
 
         // 效率：明细与签认证据各一次批量查询，最多 2 次额外 SQL，避免逐单 N+1。
         List<Long> changeIds = values.stream().map(ContractChange::getChangeId).filter(Objects::nonNull).toList();
@@ -408,10 +412,10 @@ public class CustomerJourneyContext {
         Receivable next = values.stream().filter(item -> item.getDueDate() != null && outstanding(item)).findFirst().orElse(null);
         section.setStatus(outstanding.signum() == 0 && !values.isEmpty() ? "done" : "pending");
         section.setStatusName(outstanding.signum() == 0 && !values.isEmpty() ? "已付清" : "待付款");
-        section.setSummary("已付 " + money(received) + "，待付 " + money(outstanding));
-        section.getFacts().add(fact("total", "应付总额", money(total), "money"));
-        section.getFacts().add(fact("received", "已付", money(received), "money"));
-        section.getFacts().add(fact("outstanding", "待付", money(outstanding), "money"));
+        section.setSummary("已付 " + moneyText(received) + "，待付 " + moneyText(outstanding));
+        section.getFacts().add(fact("total", "应付总额", moneyText(total), "money"));
+        section.getFacts().add(fact("received", "已付", moneyText(received), "money"));
+        section.getFacts().add(fact("outstanding", "待付", moneyText(outstanding), "money"));
         if (next != null) {
             section.getFacts().add(fact("next", "下一节点", next.getName() + " · " + date(next.getDueDate()), "text"));
         }
@@ -524,19 +528,19 @@ public class CustomerJourneyContext {
         item.setAmount(money(quote.getAmount()));
         item.setDate(date(quote.getAcceptedAt() == null ? quote.getSubmittedAt() : quote.getAcceptedAt()));
         List<QuoteLine> lines = quoteLineRepository.findByQuote(quote);
-        item.setPriceGroups(quoteGroups(lines));
-        if (quote.getSubtotal() != null) item.getFacts().add(fact("subtotal", "清单小计", money(quote.getSubtotal()), "money"));
-        if (quote.getTaxAmount() != null) item.getFacts().add(fact("tax", "税金", money(quote.getTaxAmount()), "money"));
-        item.getFacts().add(fact("amount", "报价总额", money(quote.getAmount()), "money"));
+        item.setHasSourceLines(!lines.isEmpty());
+        Quote quoteView = quoteViewContext.applyForPrint(quote, lines);
+        item.setRegionGroups(quoteView.getRegionGroups());
+        item.setTypeGroups(quoteView.getTypeGroups());
+        if (quote.getSubtotal() != null) item.getFacts().add(fact("subtotal", "清单小计", moneyText(quote.getSubtotal()), "money"));
+        if (quote.getTaxAmount() != null) item.getFacts().add(fact("tax", "税金", moneyText(quote.getTaxAmount()), "money"));
+        item.getFacts().add(fact("amount", "报价总额", moneyText(quote.getAmount()), "money"));
         if (quote.getDiscount() != null && quote.getDiscount().compareTo(BigDecimal.ONE) < 0) {
             item.getFacts().add(fact("discount", "折扣", quote.getDiscount().stripTrailingZeros().toPlainString(), "text"));
         }
         if (quote.getAcceptedAt() != null) {
             item.getFacts().add(fact("acceptedAt", "线下确认时间", date(quote.getAcceptedAt()), "text"));
             item.getFacts().add(fact("registrationSource", "登记来源", "员工登记", "text"));
-        }
-        if (quote.getAcceptedBy() != null) {
-            item.getFacts().add(fact("acceptedBy", "登记人", name(quote.getAcceptedBy()), "text"));
         }
         return item;
     }
@@ -570,51 +574,6 @@ public class CustomerJourneyContext {
             row.setCriterion(CraftText.firstNonBlank(designItem.getCriterion(),
                     catalog == null ? null : catalog.getCriterion()));
             group.getRows().add(row);
-        }
-        return new ArrayList<>(groups.values());
-    }
-
-    /** 报价行按区域分组，业主可逐区域核对“每个区域有哪些项目”。 */
-    private List<CustomerJourney.PriceGroup> quoteGroups(List<QuoteLine> lines) {
-        java.util.LinkedHashMap<String, CustomerJourney.PriceGroup> groups = new java.util.LinkedHashMap<>();
-        java.util.LinkedHashMap<String, BigDecimal> totals = new java.util.LinkedHashMap<>();
-        for (QuoteLine line : lines) {
-            String regionName = line.getSpace() == null || line.getSpace().getName() == null
-                    ? "综合项目" : line.getSpace().getName();
-            String key = line.getSpace() == null ? "group-none" : "group-" + line.getSpace().getSpaceId();
-            CustomerJourney.PriceGroup group = groups.computeIfAbsent(key, k -> {
-                CustomerJourney.PriceGroup g = new CustomerJourney.PriceGroup();
-                g.setKey(k); g.setName(regionName);
-                return g;
-            });
-            CustomerJourney.PriceRow row = new CustomerJourney.PriceRow();
-            row.setKey("quote-line-" + line.getItemId());
-            row.setName(line.getName());
-            row.setCategory(line.getCategory());
-            row.setBrand(line.getBrand());
-            row.setSpec(line.getSpec());
-            row.setUnit(line.getUnit() == null ? null : line.getUnit().getName());
-            row.setQuantity(decimal(line.getQuantity()));
-            row.setPrice(money(line.getPrice()));
-            row.setAmount(money(line.getAmount()));
-            row.setRole(line.getRole() == null ? null : line.getRole().getName());
-            row.setType(line.getType() == null ? null : line.getType().getName());
-            // 报价行快照 → 材料库主数据 → 设计分项快照，任一命中即可。
-            CatalogItem catalog = line.getCatalogItem();
-            DesignItem designItem = line.getDesignItem();
-            row.setCraft(CraftText.firstNonBlank(line.getCraft(),
-                    catalog == null ? null : catalog.getCraft(),
-                    designItem == null ? null : designItem.getCraft()));
-            row.setCriterion(CraftText.firstNonBlank(
-                    designItem == null ? null : designItem.getCriterion(),
-                    catalog == null ? null : catalog.getCriterion()));
-            group.getRows().add(row);
-            totals.merge(key, line.getAmount() == null ? BigDecimal.ZERO : line.getAmount(), BigDecimal::add);
-        }
-        for (CustomerJourney.PriceGroup group : groups.values()) {
-            BigDecimal total = totals.getOrDefault(group.getKey(), BigDecimal.ZERO);
-            group.setTotal(money(total));
-            group.setSummary(group.getRows().size() + " 项 · 小计 " + money(total));
         }
         return new ArrayList<>(groups.values());
     }
@@ -691,7 +650,7 @@ public class CustomerJourneyContext {
         }
         items.stream().limit(100).forEach(detail -> item.getLines().add(
                 detail.getName() + " · 原数量 " + detail.getOldQuantity() + " → " + detail.getNewQuantity()
-                        + " · 金额变化 " + money(detail.getAmountDelta())));
+                        + " · 金额变化 " + moneyText(detail.getAmountDelta())));
         List<String> images = new ArrayList<>(evidenceImages == null ? List.of() : evidenceImages);
         if (change.getSignatureUrl() != null && !change.getSignatureUrl().isBlank()) {
             images.add(change.getSignatureUrl());
@@ -805,8 +764,8 @@ public class CustomerJourneyContext {
         if (unpaid.signum() < 0) unpaid = BigDecimal.ZERO;
         item.setAmount(money(receivable.getAmount()));
         item.setDate(date(receivable.getDueDate()));
-        item.getFacts().add(fact("received", "已付", money(paid), "money"));
-        item.getFacts().add(fact("outstanding", "待付", money(unpaid), "money"));
+        item.getFacts().add(fact("received", "已付", moneyText(paid), "money"));
+        item.getFacts().add(fact("outstanding", "待付", moneyText(unpaid), "money"));
         return item;
     }
 
@@ -927,7 +886,13 @@ public class CustomerJourneyContext {
         return new CustomerJourney.Fact(key, label, value, valueType);
     }
     private String money(BigDecimal value) {
-        return (value == null ? BigDecimal.ZERO : value).setScale(2, RoundingMode.HALF_UP).toPlainString();
+        if (value == null) return null;
+        return value.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    }
+
+    /** 字符串场景使用；缺失金额不得补 0。 */
+    private String moneyText(BigDecimal value) {
+        return value == null ? "暂不可确认" : money(value);
     }
     /**
      * 时间文案。

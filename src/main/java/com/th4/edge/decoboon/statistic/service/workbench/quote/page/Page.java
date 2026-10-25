@@ -5,10 +5,8 @@ import com.th4.edge.framework.provider.Provider;
 import com.th4.edge.framework.provider.security.Security;
 import com.th4.edge.tenant.user.model.Employee;
 
-import java.util.List;
-
 /**
- * 设计师报价工作台列表服务。
+ * 设计师报价工作台分页服务。
  */
-public interface Page extends Provider<Employee, List<QuoteWorkbenchItem>>, Security {
+public interface Page extends Provider<Employee, org.springframework.data.domain.Page<QuoteWorkbenchItem>>, Security {
 }

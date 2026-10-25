@@ -1,9 +1,12 @@
 package com.th4.edge.decoboon.finance.service.payments.employee.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -34,15 +37,23 @@ public class Page implements com.th4.edge.decoboon.finance.service.payments.empl
     @AutoInject private Long empId;
     @AutoInject private Integer current;
     @AutoInject private Integer size;
+    @AutoInject private Long storeId;
     private final PayableRepository repository;
     private final FinanceAccessContext accessContext;
-    public Page(PayableRepository repository, FinanceAccessContext accessContext) {
+    private final PayrollAccessContext payrollAccessContext;
+    private final StoreFilterContext storeFilterContext;
+    public Page(PayableRepository repository, FinanceAccessContext accessContext,
+                PayrollAccessContext payrollAccessContext, StoreFilterContext storeFilterContext) {
         this.repository = repository; this.accessContext = accessContext;
+        this.payrollAccessContext = payrollAccessContext; this.storeFilterContext = storeFilterContext;
     }
     @Override
     public org.springframework.data.domain.Page<Payable> call(Payable request) {
-        Employee currentEmployee = accessContext.requireEditor(employee);
+        // DEC-093：店长不得读取员工工资/提成待发池或执行发放。
+        Employee currentEmployee = payrollAccessContext.requireEditor(employee);
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
         var items = repository.findAll(accessContext.visible(currentEmployee, Payable.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
                 .filter(item -> item.getType() == PayableType.EmployeeSalary
                         || item.getType() == PayableType.EmployeeCommission)
                 .filter(item -> item.getAmount() != null

@@ -61,7 +61,7 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     }
     @Override @Transactional
     public AttendanceSummary call(@ModelSaveInject AttendanceSummary request) {
-        Employee current = accessContext.requireEditor(employee);
+        Employee current = accessContext.requireManager(employee);
         Employee target = accessContext.resolveEmployee(current, empId);
         if (repository.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
                 current.getCompany().getComId(), empId, month).isPresent()) {

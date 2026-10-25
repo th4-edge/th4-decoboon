@@ -3,7 +3,6 @@ package com.th4.edge.decoboon.supply.service.partnerprice.save.support;
 import com.th4.edge.components.data.context.ModelIdentityContext;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
-import com.th4.edge.decoboon.supply.context.PartnerPriceContext;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.supply.model.PartnerPrice;
 import com.th4.edge.decoboon.supply.repository.PartnerPriceRepository;
@@ -27,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** 新增合作方价格。 */
-@Note("新增合作方价格")
+/** 维护劳务/班组价格；供应商材料采购价已停止在此维护。 */
+@Note("维护劳务或班组价格")
 @Properties(allow = {
         @AllowProperties(model = PartnerPrice.class,
                 properties = {"partnerPriceId", "partner", "item", "purchasePrice", "laborPrice",
@@ -45,7 +44,6 @@ public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.s
     @AutoInject private Long partnerPriceId;
     @AutoInject @NotNull private Long partnerId;
     @AutoInject @NotNull private Long itemId;
-    @AutoInject private BigDecimal purchasePrice;
     @AutoInject private BigDecimal laborPrice;
     @AutoInject private BigDecimal minimumOrder;
     @AutoInject private Integer leadTimeDays;
@@ -59,18 +57,15 @@ public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.s
     private final CatalogItemRepository itemRepository;
     private final PartnerPriceRepository priceRepository;
     private final ModelIdentityContext modelIdentityContext;
-    private final PartnerPriceContext partnerPriceContext;
 
     public Save(TenantContext tenantContext, PartnerRepository partnerRepository,
                 CatalogItemRepository itemRepository, PartnerPriceRepository priceRepository,
-                ModelIdentityContext modelIdentityContext,
-                PartnerPriceContext partnerPriceContext) {
+                ModelIdentityContext modelIdentityContext) {
         this.tenantContext = tenantContext;
         this.partnerRepository = partnerRepository;
         this.itemRepository = itemRepository;
         this.priceRepository = priceRepository;
         this.modelIdentityContext = modelIdentityContext;
-        this.partnerPriceContext = partnerPriceContext;
     }
 
     @Override
@@ -89,14 +84,13 @@ public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.s
                 : priceRepository.findById(partnerPriceId)
                 .filter(value -> value.getCompany().getComId().equals(comId))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "采购价记录不存在")));
-        if (value(purchasePrice).signum() < 0 || value(laborPrice).signum() < 0) {
-            throw new DefinedException(new DefaultErrorCode("400", "采购价和人工价不能为负数"));
+        if (value(laborPrice).signum() < 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "人工价不能为负数"));
         }
-        CatalogItem previousItem = price.getPartnerPriceId() == null ? null : price.getItem();
         price.setCompany(current.getCompany());
         price.setPartner(partner);
         price.setItem(item);
-        price.setPurchasePrice(value(purchasePrice));
+        // purchasePrice 为供应商旧价格的历史字段：新增不写入，更新保持原值。
         price.setLaborPrice(value(laborPrice));
         price.setMinimumOrder(minimumOrder == null ? BigDecimal.ONE : minimumOrder);
         price.setLeadTimeDays(leadTimeDays == null ? 0 : leadTimeDays);
@@ -105,12 +99,7 @@ public class Save implements com.th4.edge.decoboon.supply.service.partnerprice.s
         price.setEffectiveTo(effectiveTo);
         price.setActive(active == null || active);
         price.setRemark(remark);
-        PartnerPrice saved = priceRepository.save(modelIdentityContext.prepare(price));
-        partnerPriceContext.refreshCatalogCost(item);
-        if (previousItem != null && !previousItem.getItemId().equals(item.getItemId())) {
-            partnerPriceContext.refreshCatalogCost(previousItem);
-        }
-        return saved;
+        return priceRepository.save(modelIdentityContext.prepare(price));
     }
 
     private BigDecimal value(BigDecimal value) {

@@ -110,6 +110,7 @@ public class PayrollBuildContext {
             if (attendance == null || attendance.getStatus() != AttendanceStatus.Confirmed) {
                 attendanceComplete = false;
             }
+            // commissionComplete 仅作管理侧提示；DEC-047 / BR-039 禁止以此阻断工资确认。
             if (commissionRepository.existsByCompany_ComIdAndEmployee_EmpIdAndStatusIn(
                     comId, employee.getEmpId(),
                     List.of(CommissionStatus.Accrued, CommissionStatus.Released, CommissionStatus.InPayment))) {

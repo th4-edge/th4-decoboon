@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.trade.quote;
 
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.pack.context.PackageLifecycleContext;
+import com.th4.edge.decoboon.pack.configure.PackageTemplateStatus;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.property.model.Property;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -35,8 +38,9 @@ class QuoteCopyContextTest {
     private final QuoteLineRepository lineRepository = mock(QuoteLineRepository.class);
     private final DataScopeContext dataScopeContext = mock(DataScopeContext.class);
     private final ProjectRepository projectRepository = mock(ProjectRepository.class);
+    private final PackageLifecycleContext packageLifecycleContext = mock(PackageLifecycleContext.class);
     private final QuoteCopyContext context = new QuoteCopyContext(
-            quoteRepository, lineRepository, dataScopeContext, projectRepository);
+            quoteRepository, lineRepository, dataScopeContext, projectRepository, packageLifecycleContext);
 
     @Test
     @SuppressWarnings("unchecked")
@@ -47,6 +51,7 @@ class QuoteCopyContextTest {
         when(dataScopeContext.resolve(actor)).thenReturn(new DataScope(DataScopeType.Company, 1L, null, null, 7L));
 
         Quote source = rejectedQuote(actor);
+        when(packageLifecycleContext.requireQuoteSource(4L, 1L)).thenReturn(source.getPackageTemplate());
         QuoteLine sourceLine = new QuoteLine();
         sourceLine.setItemId(8L);
         sourceLine.setName("套餐项目");
@@ -80,6 +85,23 @@ class QuoteCopyContextTest {
         assertThat(captor.getValue().get(0).getAmount()).isEqualByComparingTo("1000");
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldRejectRebaseWhenSourcePackageIsNoLongerCurrentPublished() {
+        Employee actor = new Employee();
+        actor.setEmpId(7L);
+        when(dataScopeContext.requireEmployee(actor)).thenReturn(actor);
+        when(dataScopeContext.resolve(actor)).thenReturn(new DataScope(DataScopeType.Company, 1L, null, null, 7L));
+        Quote source = rejectedQuote(actor);
+        when(quoteRepository.findOne(any(Specification.class))).thenReturn(Optional.of(source));
+        when(packageLifecycleContext.requireQuoteSource(4L, 1L))
+                .thenThrow(new com.th4.edge.framework.exception.DefinedException(
+                        new com.th4.edge.framework.exception.DefaultErrorCode("409", "该套餐不是当前发布版本，不能用于新报价")));
+
+        assertThatThrownBy(() -> context.rebase(1L, actor))
+                .hasMessageContaining("不是当前发布版本");
+    }
+
     private Quote rejectedQuote(Employee owner) {
         Company company = new Company();
         company.setComId(1L);
@@ -89,6 +111,11 @@ class QuoteCopyContextTest {
         property.setPropertyId(3L);
         PackageTemplate template = new PackageTemplate();
         template.setTemplateId(4L);
+        template.setCode("PACK-OLD");
+        template.setVersion(1);
+        template.setStatus(PackageTemplateStatus.Published);
+        template.setCurrentPublished(true);
+        template.setSnapshotHash("hash-v1");
         Quote quote = new Quote();
         quote.setQuoteId(1L);
         quote.setNo("Q-OLD");

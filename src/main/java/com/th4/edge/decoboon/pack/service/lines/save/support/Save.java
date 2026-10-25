@@ -22,8 +22,10 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = PackageLine.class,
                 properties = {"itemId", "template", "section", "item", "name", "brand", "spec", "unit",
-                        "quantity", "quantityFactor", "pricingMethod", "included", "deductible", "sort", "criterions"}),
-        @AllowProperties(model = PackageTemplate.class, properties = {"templateId", "name", "area", "price", "discount", "cost"}),
+                        "quantity", "quantityFactor", "pricingMethod", "included", "deductible", "sort",
+                        "sectionNameSnapshot", "catalogTypeSnapshot", "catalogCategorySnapshot", "craftSnapshot",
+                        "costPriceSnapshot", "criterions"}),
+        @AllowProperties(model = PackageTemplate.class, properties = {"templateId", "code", "version", "status", "currentPublished", "name", "area", "price", "discount", "cost"}),
         @AllowProperties(model = PackageSection.class, properties = {"groupId", "name"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",

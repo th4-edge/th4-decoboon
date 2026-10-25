@@ -46,7 +46,9 @@ import com.th4.edge.tenant.user.repository.StoreRepository;
                         "status", "statusBeforeDormant", "dormantReason", "dormantReasonText", "dormantAt", "dormantBy", "restoredAt", "restoredBy", "owner", "designer", "remark", "lastFollowAt", "nextFollowAt", "wechatAdded", "wechatNo",
                         "wechatAddedAt", "visitCount", "lastVisitAt", "pendingMeasureAt", "measureAt", "measureRequestedAt",
                         "handedOffAt", "tags", "portrait", "grade", "idleDays", "riskLevel", "riskReason", "nextAction",
-                        "quoteAmount", "signedAmount", "projectId", "projectName", "mainlineKey", "mainlineLabel", "mainlineHint", "createTime"}),
+                        "quoteAmount", "signedAmount", "projectId", "projectName", "mainlineKey", "mainlineLabel", "mainlineHint", "createTime",
+                        "lossId", "lossScope", "lossStage", "lossReason", "lossReasonText", "competitorName", "lostAt", "lostBy",
+                        "lossPropertyId", "lossPropertyName", "lossFromStatus", "activeLossCount", "partialLoss"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("customer/customer/overview")

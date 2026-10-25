@@ -50,6 +50,7 @@ public class CustomerOverviewContext {
     private final ProjectContractRepository contractRepository;
     private final MeasureRepository measureRepository;
     private final CustomerInsightContext insight;
+    private final CustomerLossContext lossContext;
 
     public CustomerOverviewContext(TenantContext tenantContext,
                                    CustomerRepository customerRepository,
@@ -57,7 +58,8 @@ public class CustomerOverviewContext {
                                    QuoteRepository quoteRepository,
                                    ProjectContractRepository contractRepository,
                                    MeasureRepository measureRepository,
-                                   CustomerInsightContext insight) {
+                                   CustomerInsightContext insight,
+                                   CustomerLossContext lossContext) {
         this.tenantContext = tenantContext;
         this.customerRepository = customerRepository;
         this.followRepository = followRepository;
@@ -65,6 +67,7 @@ public class CustomerOverviewContext {
         this.contractRepository = contractRepository;
         this.measureRepository = measureRepository;
         this.insight = insight;
+        this.lossContext = lossContext;
     }
 
     @Transactional(readOnly = true)
@@ -95,6 +98,7 @@ public class CustomerOverviewContext {
         List<Customer> customers = customerRepository.findByCompany_ComId(comId).stream()
                 .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeId))
                 .toList();
+        lossContext.enrich(customers);
         List<CustomerFollow> follows = followRepository.findByCompany_ComId(comId);
         List<ProjectContract> contracts = contractRepository.findByCompany_ComIdOrderByContractIdDesc(comId);
         List<Long> customerIds = customers.stream().map(Customer::getCustId).toList();

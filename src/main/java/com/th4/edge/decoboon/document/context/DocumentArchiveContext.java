@@ -19,7 +19,9 @@ import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.decoboon.quote.configure.QuoteViewMode;
 import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.decoboon.quote.model.QuotePrintContract;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -94,17 +96,22 @@ public class DocumentArchiveContext {
         this.printRepository = printRepository;
     }
 
-    public DocumentRecord renderQuote(User<?> principal, Long quoteId, DocumentAudience audience) {
+    public DocumentRecord renderQuote(User<?> principal, Long quoteId, Integer version,
+                                      QuoteViewMode groupMode, DocumentAudience audience) {
+        QuotePrintContract.requireParameters(quoteId, version, groupMode);
         Employee current = requireEmployee(principal);
         Quote quote = requireQuote(current, quoteId);
+        if (quote.getVersion() == null || !quote.getVersion().equals(version)) {
+            throw invalid("报价版本已变化，请重新进入统一报价视图后打印");
+        }
         DocumentTemplate template = templateContext.template(current.getCompany().getComId(), DocumentType.Quote);
         DocumentProfile profile = profileContext.profile(current);
         List<QuoteLine> lines = quoteLineRepository.findByQuote(quote);
-        byte[] content = quotePdfRenderer.render(quote, lines, template, profile, audience);
+        byte[] content = quotePdfRenderer.render(quote, lines, template, profile, audience, groupMode);
         Project project = projectRepository.findFirstByCompany_ComIdAndQuote_QuoteIdOrderByProjectIdDesc(
                 current.getCompany().getComId(), quote.getQuoteId()).orElse(null);
         Long projectId = project == null ? null : project.getProjectId();
-        String fileName = quoteFileName(profile, quote);
+        String fileName = quoteFileName(profile, quote, groupMode);
         String objectKey = keyContext.generated(current.getCompany().getComId(), projectId, FileScope.Document, fileName);
         store(objectKey, content);
 
@@ -296,16 +303,15 @@ public class DocumentArchiveContext {
      * 打印稿文件名：装企企业_设计师_客户_小区_面积_价格_版本。
      * 打印稿是线下交付物，文件名必须能脱离系统辨认客户、房屋和版本。
      */
-    private String quoteFileName(DocumentProfile profile, Quote quote) {
+    private String quoteFileName(DocumentProfile profile, Quote quote, QuoteViewMode groupMode) {
         String community = quote.getProperty() == null ? null : quote.getProperty().getCommunity();
         String fileName = joinFileName(profile == null ? null : profile.getLegalName(),
                 designerName(quote),
                 quote.getCustomer() == null ? null : quote.getCustomer().getName(),
                 community,
                 decimal(quote.getArea()) + "平方米",
-                decimal(quote.getAmount()) + "元",
-                "V" + value(quote.getVersion(), 1));
-        return fileName + ".pdf";
+                decimal(quote.getAmount()) + "元");
+        return fileName + QuotePrintContract.fileSuffix(quote.getVersion(), groupMode) + ".pdf";
     }
 
     /** 负责人优先取方案负责设计师，其次取房屋设计师，最后退回报价负责人。 */

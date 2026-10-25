@@ -16,8 +16,11 @@ public class PaymentPlanTemplate {
     private String description;
     private Integer sort = 0;
     private PlanTemplateSource source = PlanTemplateSource.Baseline;
+    private String sourceBaselineCode;
+    private Integer sourceBaselineVersion;
     private PlanTemplateStatus status = PlanTemplateStatus.Enabled;
     private Boolean defaultPlan = Boolean.FALSE;
+    private Boolean currentEnabled = Boolean.FALSE;
     private List<PaymentPlanNodeTemplate> nodes = List.of();
 
     public Long getTemplateId() { return templateId; }
@@ -34,10 +37,16 @@ public class PaymentPlanTemplate {
     public void setSort(Integer sort) { this.sort = sort; }
     public PlanTemplateSource getSource() { return source; }
     public void setSource(PlanTemplateSource source) { this.source = source; }
+    public String getSourceBaselineCode() { return sourceBaselineCode; }
+    public void setSourceBaselineCode(String sourceBaselineCode) { this.sourceBaselineCode = sourceBaselineCode; }
+    public Integer getSourceBaselineVersion() { return sourceBaselineVersion; }
+    public void setSourceBaselineVersion(Integer sourceBaselineVersion) { this.sourceBaselineVersion = sourceBaselineVersion; }
     public PlanTemplateStatus getStatus() { return status; }
     public void setStatus(PlanTemplateStatus status) { this.status = status; }
     public Boolean getDefaultPlan() { return defaultPlan; }
     public void setDefaultPlan(Boolean defaultPlan) { this.defaultPlan = defaultPlan; }
+    public Boolean getCurrentEnabled() { return currentEnabled; }
+    public void setCurrentEnabled(Boolean currentEnabled) { this.currentEnabled = currentEnabled; }
     public List<PaymentPlanNodeTemplate> getNodes() { return nodes; }
     public void setNodes(List<PaymentPlanNodeTemplate> nodes) { this.nodes = nodes == null ? List.of() : List.copyOf(nodes); }
 }

@@ -22,6 +22,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Long>,
 
     List<Payment> findTop200ByCompany_ComIdOrderByPaidAtDesc(Long comId);
 
+    List<Payment> findByCompany_ComIdAndPayable_PayableIdOrderByPaidAtAsc(Long comId, Long payableId);
+
     List<Payment> findByCompany_ComIdAndProject_ProjectIdIn(Long comId, Collection<Long> projectIds);
 
     Optional<Payment> findByCompany_ComIdAndIdempotencyKey(Long comId, String idempotencyKey);

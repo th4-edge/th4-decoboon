@@ -11,17 +11,53 @@ import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /** DEC-040 / BR-033：店长可读本店待签约报价队列（Store 范围），其他岗位仍按原口径拒绝。 */
 class DesignerQuoteStoreManagerScopeTest {
+
+    @Test
+    void quotePageMustUseDatabasePaginationWithServerCap() {
+        QuoteRepository quotes = mock(QuoteRepository.class);
+        TenantContext tenantContext = mock(TenantContext.class);
+        QuoteBusinessStateContext businessState = mock(QuoteBusinessStateContext.class);
+
+        Company company = new Company();
+        company.setComId(11L);
+        Employee boss = new Employee();
+        boss.setEmpId(12L);
+        boss.setRole(EmployeeRole.Boss);
+        boss.setCompany(company);
+
+        when(tenantContext.requireEmployee(boss)).thenReturn(boss);
+        when(quotes.findAll(any(Specification.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        Page provider = new Page(quotes, tenantContext, businessState);
+        ReflectionTestUtils.setField(provider, "employee", boss);
+        ReflectionTestUtils.setField(provider, "current", 2);
+        ReflectionTestUtils.setField(provider, "size", 500);
+        provider.call(new Quote());
+
+        ArgumentCaptor<Pageable> pageable = ArgumentCaptor.forClass(Pageable.class);
+        verify(quotes).findAll(any(Specification.class), pageable.capture());
+        assertThat(pageable.getValue().getPageNumber()).isEqualTo(1);
+        assertThat(pageable.getValue().getPageSize()).isEqualTo(100);
+        assertThat(pageable.getValue().getSort().getOrderFor("quoteId")).isNotNull();
+    }
 
     @Test
     void storeManagerShouldReadQuotesOfOwnStore() {
@@ -43,8 +79,8 @@ class DesignerQuoteStoreManagerScopeTest {
         quote.setQuoteId(44L);
 
         when(tenantContext.requireEmployee(manager)).thenReturn(manager);
-        when(quotes.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByQuoteIdDesc(11L, 22L))
-                .thenReturn(List.of(quote));
+        when(quotes.findAll(any(Specification.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(quote)));
 
         Page provider = new Page(quotes, tenantContext, businessState);
         ReflectionTestUtils.setField(provider, "employee", manager);
@@ -69,7 +105,8 @@ class DesignerQuoteStoreManagerScopeTest {
         manager.setCompany(company);
 
         when(tenantContext.requireEmployee(manager)).thenReturn(manager);
-        when(quotes.findByCompany_ComIdOrderByQuoteIdDesc(11L)).thenReturn(List.of(new Quote()));
+        when(quotes.findAll(any(Specification.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(new Quote())));
 
         Page provider = new Page(quotes, tenantContext, businessState);
         ReflectionTestUtils.setField(provider, "employee", manager);
@@ -94,8 +131,8 @@ class DesignerQuoteStoreManagerScopeTest {
         own.setQuoteId(66L);
 
         when(tenantContext.requireEmployee(designer)).thenReturn(designer);
-        when(quotes.findByCompany_ComIdAndCreatedBy_EmpIdOrderByQuoteIdDesc(11L, 55L))
-                .thenReturn(List.of(own));
+        when(quotes.findAll(any(Specification.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(own)));
 
         Page provider = new Page(quotes, tenantContext, businessState);
         ReflectionTestUtils.setField(provider, "employee", designer);

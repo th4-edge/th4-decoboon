@@ -8,6 +8,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.context.MembershipContext;
+import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Invite;
 import org.springframework.context.annotation.Scope;
@@ -25,8 +26,14 @@ public class Cancel implements com.th4.edge.tenant.user.service.invite.invitatio
     @User private Employee employee;
     @AutoInject @NotNull private Long inviteId;
     @AutoInject @Length(max = 500) private String reason;
+    private final TenantContext tenantContext;
     private final MembershipContext membershipContext;
-    public Cancel(MembershipContext membershipContext) { this.membershipContext = membershipContext; }
+    public Cancel(TenantContext tenantContext, MembershipContext membershipContext) {
+        this.tenantContext = tenantContext;
+        this.membershipContext = membershipContext;
+    }
     @Override @Transactional
-    public Invite call(Employee request) { return membershipContext.cancel(employee, inviteId, reason); }
+    public Invite call(Employee request) {
+        return membershipContext.cancel(tenantContext.requireEmployee(employee), inviteId, reason);
+    }
 }

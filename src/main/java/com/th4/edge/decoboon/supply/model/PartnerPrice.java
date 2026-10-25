@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** 合作方项目价格与交期。 */
+/** 合作方劳务价格及历史供应商价格兼容对象。 */
 @Note("合作方价格")
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
@@ -29,7 +29,7 @@ public class PartnerPrice extends AuditModel {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "com_id", nullable = false) @Note("所属企业") private Company company;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "partner_id", nullable = false) @Note("合作方") private Partner partner;
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "item_id", nullable = false) @Note("项目库") private CatalogItem item;
-    @Unit("元") @Column(precision = 12, scale = 2, nullable = false) @Note("采购价") private BigDecimal purchasePrice = BigDecimal.ZERO;
+    @Unit("元") @Column(precision = 12, scale = 2, nullable = false) @Note("历史供应商采购价，仅只读兼容") private BigDecimal purchasePrice = BigDecimal.ZERO;
     @Unit("元") @Column(precision = 12, scale = 2, nullable = false) @Note("人工/班组价") private BigDecimal laborPrice = BigDecimal.ZERO;
     @Column(precision = 12, scale = 3, nullable = false) @Note("最小起订量") private BigDecimal minimumOrder = BigDecimal.ONE;
     @Column(nullable = false) @Note("交货天数") private Integer leadTimeDays = 0;

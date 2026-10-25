@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.payroll.service.commissionadjustments.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.CommissionAdjustment;
 import com.th4.edge.decoboon.payroll.model.CommissionItem;
@@ -46,19 +48,27 @@ public class Page implements com.th4.edge.decoboon.payroll.service.commissionadj
     private Integer current;
     @AutoInject
     private Integer size;
+    @AutoInject
+    private Long storeId;
 
     private final CommissionAdjustmentRepository repository;
     private final PayrollAccessContext accessContext;
+    private final StoreFilterContext storeFilterContext;
 
-    public Page(CommissionAdjustmentRepository repository, PayrollAccessContext accessContext) {
+    public Page(CommissionAdjustmentRepository repository, PayrollAccessContext accessContext,
+                StoreFilterContext storeFilterContext) {
         this.repository = repository;
         this.accessContext = accessContext;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Override
     public org.springframework.data.domain.Page<CommissionAdjustment> call(CommissionAdjustment request) {
         Employee currentEmployee = accessContext.requireManager(employee);
-        var items = repository.findAll(accessContext.visible(currentEmployee, CommissionAdjustment.class));
+        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
+        var items = repository.findAll(accessContext.visible(currentEmployee, CommissionAdjustment.class)).stream()
+                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+                .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
         int from = Math.min(page * pageSize, items.size());

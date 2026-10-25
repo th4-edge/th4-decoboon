@@ -1,6 +1,7 @@
 package com.th4.edge.tenant.user;
 
 import com.th4.edge.components.data.context.ModelIdentityContext;
+import com.th4.edge.decoboon.common.context.StoreAttributionContext;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
@@ -33,9 +34,9 @@ class MembershipContextTest {
         EmployeeRepository employees = mock(EmployeeRepository.class);
         MembershipContext context = new MembershipContext(
                 mock(UserIdentityContext.class), employees, mock(InviteRepository.class),
-                mock(TeamRepository.class), mock(com.th4.edge.tenant.user.repository.StoreRepository.class), mock(CompanyMemberLogRepository.class),
+                mock(com.th4.edge.tenant.user.repository.StoreRepository.class), mock(CompanyMemberLogRepository.class),
                 mock(CompanyJoinLimitRepository.class), mock(SubscriptionContext.class),
-                mock(ModelIdentityContext.class), mock(CustomerRepository.class),
+                mock(StoreAttributionContext.class), mock(ModelIdentityContext.class), mock(CustomerRepository.class),
                 mock(PropertyRepository.class), mock(QuoteRepository.class),
                 mock(ProjectRepository.class), mock(ProjectTaskRepository.class),
                 mock(ReceivableRepository.class));

@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
+import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -46,9 +47,13 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
     @AutoInject private String status;
     @AutoInject private String remark;
     private final AttendanceSummaryRepository repository;
+    private final PayrollItemRepository payrollItemRepository;
     private final PayrollAccessContext accessContext;
-    public Update(AttendanceSummaryRepository repository, PayrollAccessContext accessContext) {
-        this.repository = repository; this.accessContext = accessContext;
+    public Update(AttendanceSummaryRepository repository, PayrollItemRepository payrollItemRepository,
+                  PayrollAccessContext accessContext) {
+        this.repository = repository;
+        this.payrollItemRepository = payrollItemRepository;
+        this.accessContext = accessContext;
     }
     @Override @Transactional
     public AttendanceSummary call(AttendanceSummary request) {
@@ -61,6 +66,10 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
                 && (summary.getStore() == null || current.getStore() == null
                 || !summary.getStore().getStoreId().equals(current.getStore().getStoreId()))) {
             throw new DefinedException(new DefaultErrorCode("404", "考勤不存在或无权访问"));
+        }
+        if (payrollItemRepository.existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(
+                current.getCompany().getComId(), summary.getEmployee().getEmpId(), summary.getPayrollMonth())) {
+            throw new DefinedException(new DefaultErrorCode("409", "该员工当月工资项已生成，不能修改考勤"));
         }
         if (normalDays != null) summary.setNormalDays(normalDays);
         if (personalLeaveDays != null) summary.setPersonalLeaveDays(personalLeaveDays);

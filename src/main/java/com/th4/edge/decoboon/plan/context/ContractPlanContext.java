@@ -278,6 +278,7 @@ public class ContractPlanContext {
         plan.setContract(contract);
         plan.setSourceCode(template.getCode());
         plan.setSourceVersion(template.getVersion());
+        plan.setSourceTotalDays(template.getTotalDays());
         plan.setName(template.getName());
         plan.setStartDate(start);
         plan.setEndDate(end);

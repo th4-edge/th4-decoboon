@@ -1,8 +1,11 @@
 package com.th4.edge.decoboon.quote.context;
 
+import com.th4.edge.decoboon.pack.context.PackageLifecycleContext;
+import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteComponent;
+import com.th4.edge.decoboon.catalog.support.CatalogQuoteSourceSupport;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -32,15 +35,18 @@ public class QuoteCopyContext {
     private final QuoteLineRepository lineRepository;
     private final DataScopeContext dataScopeContext;
     private final ProjectRepository projectRepository;
+    private final PackageLifecycleContext packageLifecycleContext;
 
     public QuoteCopyContext(QuoteRepository quoteRepository,
                             QuoteLineRepository lineRepository,
                             DataScopeContext dataScopeContext,
-                            ProjectRepository projectRepository) {
+                            ProjectRepository projectRepository,
+                            PackageLifecycleContext packageLifecycleContext) {
         this.quoteRepository = quoteRepository;
         this.lineRepository = lineRepository;
         this.dataScopeContext = dataScopeContext;
         this.projectRepository = projectRepository;
+        this.packageLifecycleContext = packageLifecycleContext;
     }
 
     @Transactional
@@ -55,6 +61,11 @@ public class QuoteCopyContext {
         }
         Long propertyId = source.getProperty().getPropertyId();
         Long comId = source.getCompany().getComId();
+        PackageTemplate packageTemplate = source.getPackageTemplate();
+        if (packageTemplate != null) {
+            packageTemplate = packageLifecycleContext.requireQuoteSource(
+                    packageTemplate.getTemplateId(), comId);
+        }
         if (projectRepository.existsByCompany_ComIdAndProperty_PropertyId(comId, propertyId)
                 || quoteRepository.existsByProperty_PropertyIdAndStatusIn(propertyId,
                 List.of(QuoteStatus.Accepted, QuoteStatus.Converted))) {
@@ -70,7 +81,10 @@ public class QuoteCopyContext {
         copy.setProperty(source.getProperty());
         copy.setCustomer(source.getCustomer());
         copy.setDesign(source.getDesign());
-        copy.setPackageTemplate(source.getPackageTemplate());
+        copy.setPackageTemplate(packageTemplate);
+        copy.setPackageTemplateCode(packageTemplate == null ? null : packageTemplate.getCode());
+        copy.setPackageTemplateVersion(packageTemplate == null ? null : packageTemplate.getVersion());
+        copy.setPackageTemplateSnapshotHash(packageTemplate == null ? null : packageTemplate.getSnapshotHash());
         copy.setCreatedBy(EmployeeRole.Boss.equals(current.getRole()) ? source.getCreatedBy() : current);
         copy.setVersion(nextVersion(source, current));
         copy.setMode(source.getMode());
@@ -128,6 +142,7 @@ public class QuoteCopyContext {
         copy.setProperty(quote.getProperty());
         copy.setDesignItem(source.getDesignItem());
         copy.setCatalogItem(source.getCatalogItem());
+        CatalogQuoteSourceSupport.copy(source, copy);
         copy.setSpace(source.getSpace());
         copy.setPackageLine(source.getPackageLine());
         copy.setRole(source.getRole());

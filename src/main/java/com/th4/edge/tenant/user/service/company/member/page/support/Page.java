@@ -39,7 +39,7 @@ public class Page implements com.th4.edge.tenant.user.service.company.member.pag
     public Page(TenantContext tenantContext, EmployeeRepository employeeRepository) { this.tenantContext = tenantContext; this.employeeRepository = employeeRepository; }
     @Override
     public org.springframework.data.domain.Page<Employee> call(Employee request) {
-        Employee currentEmployee = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.TeamLeader);
+        Employee currentEmployee = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
         List<Employee> all = scoped(currentEmployee);
@@ -58,9 +58,6 @@ public class Page implements com.th4.edge.tenant.user.service.company.member.pag
         Long comId = current.getCompany().getComId();
         if (current.getRole() == EmployeeRole.StoreManager && current.getStore() != null) {
             return employeeRepository.findByCompany_ComIdAndStore_StoreIdOrderByName(comId, current.getStore().getStoreId());
-        }
-        if (current.getRole() == EmployeeRole.TeamLeader && current.getTeam() != null) {
-            return employeeRepository.findByCompany_ComIdAndTeam_TeamIdOrderByName(comId, current.getTeam().getTeamId());
         }
         return employeeRepository.findByCompany_ComId(comId);
     }

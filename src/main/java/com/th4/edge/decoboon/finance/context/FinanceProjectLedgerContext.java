@@ -157,7 +157,6 @@ public class FinanceProjectLedgerContext {
                 .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
                 .collect(Collectors.toMap(item -> item.getProject().getProjectId(), item -> item, (left, right) -> left));
         Map<Long, ProjectCostContext.CostSummary> costs = projectCostContext.summarizeAll(projects);
-        Map<Long, BigDecimal> carryoverCosts = carryoverCosts(projects);
         Map<Long, ManualAmounts> manuals = manualAmounts(ledgersByProject);
 
         List<FinanceProjectReport> reports = new ArrayList<>(projects.size());
@@ -170,7 +169,6 @@ public class FinanceProjectLedgerContext {
             reports.add(report(project, projectReceivables, projectPayables, projectLedgers, projectReceipts,
                     projectPayments, settlementsByProject.get(project.getProjectId()),
                     costs.get(project.getProjectId()),
-                    carryoverCosts.getOrDefault(project.getProjectId(), BigDecimal.ZERO),
                     manuals.getOrDefault(project.getProjectId(), ManualAmounts.ZERO)));
         }
         return reports.stream()
@@ -222,7 +220,7 @@ public class FinanceProjectLedgerContext {
     private FinanceProjectReport report(Project project, List<Receivable> receivables, List<Payable> payables,
                                         List<Ledger> ledgers, List<Receipt> receipts, List<Payment> payments,
                                         Settlement settlement, ProjectCostContext.CostSummary costSummary,
-                                        BigDecimal carryoverCost, ManualAmounts manual) {
+                                        ManualAmounts manual) {
         FinanceProjectReport report = new FinanceProjectReport();
         report.setProject(project);
         report.setContractAmount(accessContext.value(project.getContractAmount()));
@@ -264,21 +262,13 @@ public class FinanceProjectLedgerContext {
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
 
-        List<Payable> costPayables = payables.stream()
-                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
-                .toList();
-        BigDecimal materialCost = payableAmount(costPayables, PayableType.Material);
-        BigDecimal laborCost = payableAmount(costPayables, PayableType.Salary);
-        BigDecimal projectCost = payableAmount(costPayables, PayableType.Project);
-        BigDecimal expenseAllocation = sum(costPayables.stream()
-                .filter(item -> item.getType() != PayableType.Material
-                        && item.getType() != PayableType.Salary
-                        && item.getType() != PayableType.Project)
-                .map(Payable::getAmount));
-        BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAllocation);
         ProjectCostContext.CostSummary safeCost = costSummary == null
                 ? new ProjectCostContext.CostSummary(BigDecimal.ZERO, BigDecimal.ZERO, 1) : costSummary;
-        BigDecimal totalCost = totalCost(safeCost, carryoverCost, payableCost).add(manual.cost());
+        BigDecimal materialCost = safeCost.materialCost();
+        BigDecimal laborCost = safeCost.workerLaborCost();
+        BigDecimal projectCost = safeCost.projectExpenseCost().add(safeCost.otherProjectAccruedCost());
+        BigDecimal expenseAllocation = safeCost.employeeSalaryCost().add(safeCost.employeeCommissionCost());
+        BigDecimal totalCost = safeCost.actualCost();
         boolean costComplete = safeCost.complete();
         BigDecimal projectRevenue = report.getContractAmount().add(manual.income());
         BigDecimal grossProfit = costComplete ? projectRevenue.subtract(totalCost) : null;
@@ -293,7 +283,7 @@ public class FinanceProjectLedgerContext {
         report.setOtherPayableAmount(expenseAllocation);
         report.setExpenseAllocation(expenseAllocation);
         report.setEstimatedCost(safeCost.estimatedCost());
-        report.setActualCost(safeCost.actualCost().add(manual.cost()));
+        report.setActualCost(safeCost.actualCost());
         report.setManualIncomeAmount(manual.income());
         report.setManualCostAmount(manual.cost());
         report.setCostComplete(costComplete);
@@ -347,17 +337,6 @@ public class FinanceProjectLedgerContext {
         return true;
     }
 
-    private Map<Long, BigDecimal> carryoverCosts(List<Project> projects) {
-        if (projects.isEmpty()) {
-            return Map.of();
-        }
-        return carryoverCostRepository.findByProject_ProjectIdIn(projects.stream().map(Project::getProjectId).toList())
-                .stream()
-                .filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
-                .collect(Collectors.toMap(item -> item.getProject().getProjectId(),
-                        item -> money(item.getTotalCost()), (left, right) -> left));
-    }
-
     private Map<Long, ManualAmounts> manualAmounts(Map<Long, List<Ledger>> ledgersByProject) {
         Map<Long, ManualAmounts> result = new LinkedHashMap<>();
         ledgersByProject.forEach((projectId, items) -> {
@@ -406,16 +385,6 @@ public class FinanceProjectLedgerContext {
     private Map<Long, List<Payment>> groupPayments(List<Payment> items) {
         return items.stream().filter(item -> item.getProject() != null && item.getProject().getProjectId() != null)
                 .collect(Collectors.groupingBy(item -> item.getProject().getProjectId()));
-    }
-
-    private BigDecimal totalCost(ProjectCostContext.CostSummary costSummary, BigDecimal carryoverCost,
-                                 BigDecimal payableCost) {
-        BigDecimal postActual = costSummary.actualCost().subtract(carryoverCost).max(BigDecimal.ZERO);
-        return carryoverCost.add(postActual.max(accessContext.value(payableCost)));
-    }
-
-    private BigDecimal payableAmount(List<Payable> payables, PayableType type) {
-        return sum(payables.stream().filter(item -> item.getType() == type).map(Payable::getAmount));
     }
 
     private boolean receivableOverdue(Receivable receivable) {

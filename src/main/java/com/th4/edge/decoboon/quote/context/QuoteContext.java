@@ -19,6 +19,7 @@ import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.repository.DesignItemRepository;
 import com.th4.edge.decoboon.catalog.configure.ItemType;
+import com.th4.edge.decoboon.catalog.support.CatalogQuoteSourceSupport;
 import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.configure.QuoteMode;
 import com.th4.edge.decoboon.quote.configure.QuoteLineRole;
@@ -197,6 +198,9 @@ public class QuoteContext {
         quote.setProperty(property);
         quote.setCustomer(customer);
         quote.setPackageTemplate(packageTemplate);
+        quote.setPackageTemplateCode(packageTemplate.getCode());
+        quote.setPackageTemplateVersion(packageTemplate.getVersion());
+        quote.setPackageTemplateSnapshotHash(packageTemplate.getSnapshotHash());
         quote.setCreatedBy(employee);
         quote.setVersion((int) quoteRepository
                 .countByCompany_ComIdAndCustomer_CustIdAndPackageTemplate_TemplateId(
@@ -349,7 +353,7 @@ public class QuoteContext {
         item.setOwner(quote.getCreatedBy());
         item.setQuote(quote);
         item.setDesignItem(source);
-        item.setCatalogItem(source.getCatalogItem());
+        CatalogQuoteSourceSupport.attach(item, source.getCatalogItem());
         item.setSpace(source.getSpace());
         item.setType(source.getType() == null ? ItemType.General : source.getType());
         item.setCategory(source.getCategory());
@@ -406,10 +410,19 @@ public class QuoteContext {
             item.setOwner(quote.getCreatedBy());
             item.setQuote(quote);
             item.setPackageLine(packageLine);
-            item.setCatalogItem(packageLine.getItem());
-            item.setCraft(packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
-            item.setType(packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
-            item.setCategory(packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
+            CatalogQuoteSourceSupport.attach(item, packageLine.getItem());
+            item.setCraft(packageLine.getCraftSnapshot() != null
+                    ? packageLine.getCraftSnapshot() : packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
+            item.setType(packageLine.getCatalogTypeSnapshot() != null
+                    ? packageLine.getCatalogTypeSnapshot() : packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
+            item.setPackageSectionNameSnapshot(packageLine.getSectionNameSnapshot() != null
+                    ? packageLine.getSectionNameSnapshot()
+                    : packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
+            item.setCategory(packageLine.getCatalogCategorySnapshot() != null
+                    ? packageLine.getCatalogCategorySnapshot()
+                    : packageLine.getSectionNameSnapshot() != null
+                            ? packageLine.getSectionNameSnapshot()
+                            : packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
             item.setName(packageLine.getItem() == null ? packageLine.getName() : packageLine.getItem().getName());
             item.setBrand(packageLine.getItem() == null ? packageLine.getBrand() : packageLine.getItem().getBrand());
             item.setSpec(packageLine.getItem() == null ? packageLine.getSpec() : packageLine.getItem().getSpec());

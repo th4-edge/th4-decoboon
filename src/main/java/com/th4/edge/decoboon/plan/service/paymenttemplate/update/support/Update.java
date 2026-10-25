@@ -22,7 +22,7 @@ import java.util.List;
 @Note("plan/payment-template/update")
 @Properties(allow = {
         @AllowProperties(model = PaymentPlanTemplate.class,
-                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "status", "defaultPlan", "nodes"}),
+                properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "sourceBaselineCode", "sourceBaselineVersion", "status", "defaultPlan", "currentEnabled", "nodes"}),
         @AllowProperties(model = PaymentPlanNodeTemplate.class,
                 properties = {"code", "name", "ratio", "type", "triggerType", "triggerStageCode", "offsetDays", "sort", "defaultDays", "acceptanceMode", "description"})
 })

@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.project.model;
 
 import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.decoboon.common.model.BusinessFactNode;
 import com.th4.edge.framework.core.annotation.Unit;
 
 import java.math.BigDecimal;
@@ -42,6 +43,15 @@ public class ContractWorkbench {
     @Note("主材选材状态")
     private Selection selection = new Selection();
 
+    @Note("合同上游事实节点")
+    private List<BusinessFactNode> upstreamFacts = new ArrayList<>();
+
+    @Note("合同下游事实摘要")
+    private List<BusinessFactNode> downstreamFacts = new ArrayList<>();
+
+    @Note("上游来源缺口")
+    private List<String> sourceGaps = new ArrayList<>();
+
     public ProjectContract getContract() { return contract; }
     public void setContract(ProjectContract contract) { this.contract = contract; }
     public Receivable getReceivable() { return receivable; }
@@ -56,6 +66,12 @@ public class ContractWorkbench {
     public void setChange(Change change) { this.change = change; }
     public Selection getSelection() { return selection; }
     public void setSelection(Selection selection) { this.selection = selection; }
+    public List<BusinessFactNode> getUpstreamFacts() { return upstreamFacts; }
+    public void setUpstreamFacts(List<BusinessFactNode> upstreamFacts) { this.upstreamFacts = upstreamFacts; }
+    public List<BusinessFactNode> getDownstreamFacts() { return downstreamFacts; }
+    public void setDownstreamFacts(List<BusinessFactNode> downstreamFacts) { this.downstreamFacts = downstreamFacts; }
+    public List<String> getSourceGaps() { return sourceGaps; }
+    public void setSourceGaps(List<String> sourceGaps) { this.sourceGaps = sourceGaps; }
 
     /** 回款结论：应收、已收、未收与逾期，全部来自真实应收事实。 */
     @Note("回款结论")

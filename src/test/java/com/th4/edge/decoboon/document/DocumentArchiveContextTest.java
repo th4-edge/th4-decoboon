@@ -18,6 +18,7 @@ import com.th4.edge.decoboon.document.model.DocumentRecord;
 import com.th4.edge.decoboon.document.repository.DocumentPrintRepository;
 import com.th4.edge.decoboon.document.repository.DocumentRecordRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
+import com.th4.edge.decoboon.quote.configure.QuoteViewMode;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -115,7 +116,7 @@ class DocumentArchiveContextTest {
 
     @Test
     void renderQuoteStoresPrivatePdfAndCreatesFirstPrintAudit() {
-        DocumentRecord record = context.renderQuote(employee, 9L, DocumentAudience.Customer);
+        DocumentRecord record = context.renderQuote(employee, 9L, 1, QuoteViewMode.REGION, DocumentAudience.Customer);
 
         assertThat(record.getType()).isEqualTo(DocumentType.Quote);
         assertThat(record.getBusinessNo()).isEqualTo("BJ-9");
@@ -123,7 +124,7 @@ class DocumentArchiveContextTest {
         assertThat(record.getSha256()).hasSize(64);
         assertThat(record.getSize()).isGreaterThan(1000);
         assertThat(record.getUrl()).isEqualTo("/file/private/download?path=test");
-        assertThat(record.getFileName()).isEqualTo("合肥示例装饰工程有限公司_0平方米_10元_V1.pdf");
+        assertThat(record.getFileName()).isEqualTo("合肥示例装饰工程有限公司_0平方米_10元_V1_按区域.pdf");
         verify(printRepository).save(any(DocumentPrint.class));
     }
 

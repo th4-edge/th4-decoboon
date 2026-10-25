@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.customer;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.configure.CustomerRiskLevel;
 import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
+import com.th4.edge.decoboon.customer.context.CustomerLossContext;
 import com.th4.edge.decoboon.customer.context.CustomerOverviewContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.model.CustomerFollow;
@@ -53,7 +54,7 @@ class CustomerOverviewContextTest {
         ProjectContractRepository contractRepository = mock(ProjectContractRepository.class);
         MeasureRepository measureRepository = mock(MeasureRepository.class);
         context = new CustomerOverviewContext(tenant, customerRepository, followRepository, quoteRepository,
-                contractRepository, measureRepository, new CustomerInsightContext());
+                contractRepository, measureRepository, new CustomerInsightContext(), mock(CustomerLossContext.class));
 
         Company company = new Company();
         company.setComId(10L);

@@ -16,8 +16,6 @@ import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
-import com.th4.edge.framework.exception.DefaultErrorCode;
-import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
@@ -33,7 +31,7 @@ import java.util.List;
         @AllowProperties(model = ProjectContract.class,
                 properties = {"contractId", "no", "project", "quote", "customer", "baselineAmount", "signedAmount", "currentAmount",
                         "status", "signedAt", "createdBy", "remark", "receivableCount", "receivableAmount",
-                        "receivedAmount", "pendingChangeCount", "signedCost", "costComplete", "paymentPlan",
+                        "receivedAmount", "pendingChangeCount", "paymentPlan",
                         "constructionPlan", "createTime", "businessStateView"}),
         @AllowProperties(model = ContractPaymentPlan.class,
                 properties = {"planId", "sourceCode", "sourceVersion", "name", "totalAmount", "status", "nodes"}),
@@ -41,7 +39,7 @@ import java.util.List;
                 properties = {"nodeId", "code", "name", "ratio", "amount", "type", "triggerType", "triggerStageCode",
                         "triggerStageName", "offsetDays", "dueDate", "sort"}),
         @AllowProperties(model = ContractConstructionPlan.class,
-                properties = {"planId", "sourceCode", "sourceVersion", "name", "startDate", "endDate", "status", "stages"}),
+                properties = {"planId", "sourceCode", "sourceVersion", "sourceTotalDays", "name", "startDate", "endDate", "status", "stages"}),
         @AllowProperties(model = ContractConstructionStage.class,
                 properties = {"stageId", "code", "name", "sort", "defaultDays", "plannedStart", "plannedEnd",
                         "acceptanceMode", "description"}),

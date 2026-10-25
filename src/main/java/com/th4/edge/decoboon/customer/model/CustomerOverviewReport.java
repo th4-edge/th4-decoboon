@@ -13,6 +13,8 @@ public class CustomerOverviewReport {
     private LocalDate month;
     private List<CustomerMetricCard> metrics = List.of();
     private List<CustomerStageCount> stageCounts = List.of();
+    /** 设计师待跟进队列分桶计数：all/overdue/today/soon/unplanned。 */
+    private List<CustomerStageCount> followCounts = List.of();
     private List<CustomerOwnerGroup> ownerGroups = List.of();
     private List<Customer> customers = List.of();
     private Integer current = 1;
@@ -33,6 +35,10 @@ public class CustomerOverviewReport {
     public void setMetrics(List<CustomerMetricCard> metrics) { this.metrics = metrics == null ? List.of() : List.copyOf(metrics); }
     public List<CustomerStageCount> getStageCounts() { return stageCounts; }
     public void setStageCounts(List<CustomerStageCount> stageCounts) { this.stageCounts = stageCounts == null ? List.of() : List.copyOf(stageCounts); }
+    public List<CustomerStageCount> getFollowCounts() { return followCounts; }
+    public void setFollowCounts(List<CustomerStageCount> followCounts) {
+        this.followCounts = followCounts == null ? List.of() : List.copyOf(followCounts);
+    }
     public List<CustomerOwnerGroup> getOwnerGroups() { return ownerGroups; }
     public void setOwnerGroups(List<CustomerOwnerGroup> ownerGroups) {
         this.ownerGroups = ownerGroups == null ? List.of() : List.copyOf(ownerGroups);

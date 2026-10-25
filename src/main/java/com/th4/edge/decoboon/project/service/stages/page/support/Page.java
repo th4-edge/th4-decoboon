@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("阶段分页")
 @Properties(allow = {
         @AllowProperties(model = ProjectStage.class,
-                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "status",
+                properties = {"stageId", "project", "name", "stageCode", "sort", "weight", "acceptanceMode", "status",
                         "progress", "baselineProgress", "plannedStart", "plannedEnd", "actualStart", "actualEnd", "createTime",
                         "notApplicableReason", "notApplicableBy", "notApplicableAt"}),
         @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class,

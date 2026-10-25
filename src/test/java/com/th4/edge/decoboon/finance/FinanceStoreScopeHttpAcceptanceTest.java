@@ -33,8 +33,10 @@ import com.th4.edge.decoboon.payroll.configure.CommissionStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.CommissionReportContext;
 import com.th4.edge.decoboon.payroll.model.CommissionItem;
+import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
+import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.decoboon.finance.context.FinanceProjectLedgerContext;
 import com.th4.edge.decoboon.finance.context.PartnerLedgerAggregateContext;
@@ -136,6 +138,7 @@ class FinanceStoreScopeHttpAcceptanceTest {
     @Autowired private LedgerRepository ledgerRepository;
     @Autowired private ReceiptRefundRepository receiptRefundRepository;
     @Autowired private PayrollSheetRepository payrollSheetRepository;
+    @Autowired private PayrollItemRepository payrollItemRepository;
     @Autowired private CommissionItemRepository commissionItemRepository;
     @Autowired private CommissionReportContext commissionReportContext;
     @Autowired private PartnerLedgerAggregateContext partnerLedgerAggregateContext;
@@ -151,6 +154,99 @@ class FinanceStoreScopeHttpAcceptanceTest {
     @BeforeEach
     void setUp() {
         scope = createScope();
+    }
+
+    @Test
+    void companyPayrollSheetIsVisibleFromStoreThatHasPayrollItems() throws Exception {
+        Company company = companyRepository.findByComId(
+                employeeRepository.findByTelNo(scope.bossPhone()).getCompany().getComId());
+        Employee boss = employeeRepository.findByTelNo(scope.bossPhone());
+        Employee storeFinance = employeeRepository.findByTelNo(scope.storeFinancePhone());
+
+        PayrollSheet sheet = new PayrollSheet();
+        sheet.setCompany(company);
+        sheet.setStore(storeRepository.findByStoreId(scope.storeAId()));
+        sheet.setOwner(boss);
+        sheet.setPeriod("2026-10");
+        sheet.setStatus(PayrollSheetStatus.Draft);
+        sheet.setAttendanceComplete(false);
+        sheet.setCommissionComplete(false);
+        sheet.setTotalGrossAmount(new BigDecimal("100.00"));
+        sheet.setTotalDeductionAmount(BigDecimal.ZERO);
+        sheet.setTotalNetAmount(new BigDecimal("100.00"));
+        sheet.setCreatedBy(boss);
+        sheet = payrollSheetRepository.save(sheet);
+
+        PayrollItem item = new PayrollItem();
+        item.setCompany(company);
+        item.setStore(storeRepository.findByStoreId(scope.storeBId()));
+        item.setEmployee(storeFinance);
+        item.setSheet(sheet);
+        item.setAttributionKey("COMPANY");
+        item.setBaseSalaryAmount(new BigDecimal("100.00"));
+        item.setGrossAmount(new BigDecimal("100.00"));
+        item.setDeductionAmount(BigDecimal.ZERO);
+        item.setNetAmount(new BigDecimal("100.00"));
+        item.setCreatedBy(boss);
+        payrollItemRepository.save(item);
+        entityManager.flush();
+
+        JsonNode page = api("payroll/sheet/page",
+                "{\"current\":1,\"size\":20,\"storeId\":%d}".formatted(scope.storeBId()), login(scope.bossPhone()));
+        assertThat(page.path("success").asBoolean()).as(page.toString()).isTrue();
+        assertThat(page.path("data").path("totalElements").asLong()).isEqualTo(2);
+        assertThat(page.path("data").path("content").findValuesAsText("period")).contains("2026-10");
+
+        JsonNode workbench = api("payroll/workbench/report",
+                "{\"period\":\"2026-10\",\"storeId\":%d}".formatted(scope.storeBId()), login(scope.bossPhone()));
+        assertThat(workbench.path("success").asBoolean()).as(workbench.toString()).isTrue();
+        assertThat(workbench.path("data").path("latestSheetId").asLong()).isEqualTo(sheet.getSheetId());
+    }
+
+    @Test
+    void storeCandidatesFollowDataScopeOverHttp() throws Exception {
+        JsonNode headquarters = api("user/store/list", "{}", login(scope.headFinancePhone()));
+        assertThat(headquarters.path("success").asBoolean()).as(headquarters.toString()).isTrue();
+        assertThat(headquarters.path("data").size()).isEqualTo(2);
+
+        JsonNode store = api("user/store/list", "{}", login(scope.storeFinancePhone()));
+        assertThat(store.path("success").asBoolean()).as(store.toString()).isTrue();
+        assertThat(store.path("data").size()).isEqualTo(1);
+        assertThat(store.path("data").get(0).path("storeId").asLong()).isEqualTo(scope.storeBId());
+    }
+
+    @Test
+    void bossMustSelectStoreWhenInvitingFinanceOverHttp() throws Exception {
+        String token = login(scope.bossPhone());
+        String phone = "5" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L));
+        JsonNode missing = api("invite/invitation/save",
+                "{\"inviteName\":\"缺门店财务\",\"invitePhone\":\"%s\",\"role\":\"Finance\"}".formatted(phone), token);
+        assertThat(missing.path("success").asBoolean()).as(missing.toString()).isFalse();
+
+        JsonNode selected = api("invite/invitation/save",
+                "{\"inviteName\":\"二店财务\",\"invitePhone\":\"%s\",\"role\":\"Finance\",\"storeId\":%d}"
+                        .formatted(phone, scope.storeBId()), token);
+        assertThat(selected.path("success").asBoolean()).as(selected.toString()).isTrue();
+        assertThat(selected.path("data").path("store").path("storeId").asLong()).isEqualTo(scope.storeBId());
+    }
+
+    @Test
+    void bossCanMoveFinanceAcrossStoresButStoreManagerCannotOverHttp() throws Exception {
+        Employee finance = employeeRepository.findByTelNo(scope.storeFinancePhone());
+        JsonNode managerMove = api("company/member/update",
+                "{\"empId\":%d,\"role\":\"Finance\",\"storeId\":%d}"
+                        .formatted(finance.getEmpId(), scope.storeAId()), login(scope.storeManagerPhone()));
+        assertThat(managerMove.path("success").asBoolean()).as(managerMove.toString()).isFalse();
+
+        JsonNode bossMove = api("company/member/update",
+                "{\"empId\":%d,\"role\":\"Finance\",\"storeId\":%d}"
+                        .formatted(finance.getEmpId(), scope.storeAId()), login(scope.bossPhone()));
+        assertThat(bossMove.path("success").asBoolean()).as(bossMove.toString()).isTrue();
+        assertThat(bossMove.path("data").path("store").path("storeId").asLong()).isEqualTo(scope.storeAId());
+
+        JsonNode summary = api("finance/summary/report", "{}", login(scope.storeFinancePhone()));
+        assertThat(summary.path("success").asBoolean()).as(summary.toString()).isTrue();
+        assertThat(summary.path("data").path("receivableAmount").decimalValue()).isEqualByComparingTo("300.00");
     }
 
     @Test
@@ -685,6 +781,230 @@ class FinanceStoreScopeHttpAcceptanceTest {
 
         assertThat(rejected.path("success").asBoolean()).isFalse();
         assertThat(rejected.path("errorCode").path("code").asText()).isIn("403", "404");
+    }
+
+    @Test
+    void idWritesRejectCrossStoreTargetsAndMixedStoreVouchers() throws Exception {
+        Employee manager = employeeRepository.findByTelNo(scope.storeManagerPhone());
+        Employee headFinance = employeeRepository.findByTelNo(scope.headFinancePhone());
+        Long comId = manager.getCompany().getComId();
+        String managerToken = login(scope.storeManagerPhone());
+        String storeFinanceToken = login(scope.storeFinancePhone());
+        String headFinanceToken = login(scope.headFinancePhone());
+
+        Receivable receivableA = receivableRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeAId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+        Payable payableA = payableRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeAId().equals(item.getStore().getStoreId()))
+                .filter(item -> item.getPaidAmount() == null
+                        || item.getPaidAmount().compareTo(item.getAmount()) < 0)
+                .findFirst().orElseThrow();
+        Receipt receiptA = receiptRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeAId().equals(item.getStore().getStoreId()))
+                .filter(item -> item.getStatus() == ReceiptStatus.Active)
+                .findFirst().orElseThrow();
+        Settlement settlementA = settlementRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeAId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+        Ledger ledgerA = ledgerRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeAId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+        Ledger ledgerB = ledgerRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeBId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+        Payable payableB = payableRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeBId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+        payableB.setPaidAmount(BigDecimal.ZERO);
+        payableB.setStatus(PayableStatus.Pending);
+        payableRepository.save(payableB);
+
+        assertCrossStoreRejected(api("finance/receivable/update", """
+                {"receivableId":%s,"name":"跨店应收修改"}
+                """.formatted(receivableA.getReceivableId()), managerToken), "应收修改");
+        assertCrossStoreRejected(api("finance/payable/update", """
+                {"payableId":%s,"name":"跨店应付修改"}
+                """.formatted(payableA.getPayableId()), managerToken), "应付修改");
+        assertCrossStoreRejected(api("finance/payment/save", """
+                {"payableId":%s,"amount":1.00,"paidAt":"2026-10-22","idempotencyKey":"scope-payment-a"}
+                """.formatted(payableA.getPayableId()), managerToken), "付款");
+        assertCrossStoreRejected(api("finance/refund/save", """
+                {"receiptId":%s,"amount":1.00,"idempotencyKey":"scope-refund-a"}
+                """.formatted(receiptA.getReceiptId()), managerToken), "退款");
+        assertCrossStoreRejected(api("finance/settlement/update", """
+                {"settlementId":%s,"status":"Confirmed"}
+                """.formatted(settlementA.getSettlementId()), managerToken), "结算修改");
+        assertCrossStoreRejected(api("finance/settlement/retention-release", """
+                {"settlementId":%s}
+                """.formatted(settlementA.getSettlementId()), managerToken), "质保释放");
+        assertCrossStoreRejected(api("finance/ledger/update", """
+                {"ledgerId":%s,"category":"跨店分类修改","reason":"越权验收"}
+                """.formatted(ledgerA.getLedgerId()), managerToken), "台账更新");
+        assertCrossStoreRejected(api("document/voucher/build", """
+                {"ledgerIds":[%s]}
+                """.formatted(ledgerA.getLedgerId()), storeFinanceToken), "跨店生成凭证");
+
+        JsonNode mixedPayment = api("finance/payment/save", """
+                {"payableIds":[%s,%s],"amount":1.00,"paidAt":"2026-10-22","idempotencyKey":"scope-mixed-payment"}
+                """.formatted(payableA.getPayableId(), payableB.getPayableId()), headFinanceToken);
+        assertThat(mixedPayment.path("success").asBoolean()).as(mixedPayment.toString()).isFalse();
+        assertThat(mixedPayment.path("errorCode").path("code").asText()).isEqualTo("400");
+        assertThat(mixedPayment.path("errorCode").path("message").asText()).contains("同一门店");
+
+        JsonNode mixed = api("document/voucher/build", """
+                {"ledgerIds":[%s,%s]}
+                """.formatted(ledgerA.getLedgerId(), ledgerB.getLedgerId()), headFinanceToken);
+        assertThat(mixed.path("success").asBoolean()).as(mixed.toString()).isFalse();
+        assertThat(mixed.path("errorCode").path("code").asText()).isEqualTo("400");
+        assertThat(mixed.path("errorCode").path("message").asText()).contains("同一门店");
+
+        JsonNode paidB = api("finance/payment/save", """
+                {"payableId":%s,"amount":1.00,"paidAt":"2026-10-22","idempotencyKey":"scope-own-store-payment-b"}
+                """.formatted(payableB.getPayableId()), headFinanceToken);
+        assertThat(paidB.path("success").asBoolean()).as(paidB.toString()).isTrue();
+        long paymentBId = paidB.path("data").path("paymentId").asLong();
+        Payment paymentB = paymentRepository.findById(paymentBId).orElseThrow();
+        assertThat(paymentB.getStore().getStoreId()).isEqualTo(scope.storeBId());
+        Ledger paymentLedger = ledgerRepository
+                .findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+                        comId, LedgerSource.Payment, paymentBId)
+                .orElseThrow();
+        assertThat(paymentLedger.getStore().getStoreId()).isEqualTo(scope.storeBId());
+
+        Employee payee = employeeRepository.findByTelNo(scope.bossPhone());
+        Payable employeeSalaryA = new Payable();
+        employeeSalaryA.setCompany(manager.getCompany());
+        employeeSalaryA.setStore(storeRepository.findByStoreId(scope.storeAId()));
+        employeeSalaryA.setOwner(manager);
+        employeeSalaryA.setProject(payableA.getProject());
+        employeeSalaryA.setProperty(payableA.getProperty());
+        employeeSalaryA.setName("HTTP跨店员工工资应付");
+        employeeSalaryA.setType(PayableType.EmployeeSalary);
+        employeeSalaryA.setPayeeEmployee(payee);
+        employeeSalaryA.setPayeeName(payee.getName());
+        employeeSalaryA.setAmount(new BigDecimal("10.00"));
+        employeeSalaryA.setPaidAmount(BigDecimal.ZERO);
+        employeeSalaryA.setDueDate(java.time.LocalDate.now());
+        employeeSalaryA.setStatus(PayableStatus.Pending);
+        employeeSalaryA.setUrgent(false);
+        employeeSalaryA.setCreatedBy(manager);
+        employeeSalaryA = payableRepository.save(employeeSalaryA);
+        entityManager.flush();
+
+        assertCrossStoreRejected(api("finance/payment/employee/save", """
+                {"payableIds":[%s],"amount":1.00,"paidAt":"2026-10-22","idempotencyKey":"scope-employee-payment-a"}
+                """.formatted(employeeSalaryA.getPayableId()), storeFinanceToken), "员工工资发放");
+
+        Employee storeFinance = employeeRepository.findByTelNo(scope.storeFinancePhone());
+        Payable employeeSalaryB = new Payable();
+        employeeSalaryB.setCompany(manager.getCompany());
+        employeeSalaryB.setStore(storeRepository.findByStoreId(scope.storeBId()));
+        employeeSalaryB.setOwner(storeFinance);
+        employeeSalaryB.setName("HTTP本店员工工资应付");
+        employeeSalaryB.setType(PayableType.EmployeeSalary);
+        employeeSalaryB.setPayeeEmployee(storeFinance);
+        employeeSalaryB.setPayeeName(storeFinance.getName());
+        employeeSalaryB.setAmount(new BigDecimal("10.00"));
+        employeeSalaryB.setPaidAmount(BigDecimal.ZERO);
+        employeeSalaryB.setDueDate(java.time.LocalDate.now());
+        employeeSalaryB.setStatus(PayableStatus.Pending);
+        employeeSalaryB.setUrgent(false);
+        employeeSalaryB.setCreatedBy(manager);
+        employeeSalaryB = payableRepository.save(employeeSalaryB);
+        entityManager.flush();
+
+        JsonNode employeePaidB = api("finance/payment/employee/save", """
+                {"payableIds":[%s],"amount":1.00,"paidAt":"2026-10-22","idempotencyKey":"scope-employee-payment-b"}
+                """.formatted(employeeSalaryB.getPayableId()), headFinanceToken);
+        assertThat(employeePaidB.path("success").asBoolean()).as(employeePaidB.toString()).isTrue();
+        long employeePaymentBId = employeePaidB.path("data").path("paymentId").asLong();
+        Payment employeePaymentB = paymentRepository.findById(employeePaymentBId).orElseThrow();
+        assertThat(employeePaymentB.getStore().getStoreId()).isEqualTo(scope.storeBId());
+        Ledger employeeLedgerB = ledgerRepository
+                .findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+                        comId, LedgerSource.Payment, employeePaymentBId)
+                .orElseThrow();
+        assertThat(employeeLedgerB.getStore().getStoreId()).isEqualTo(scope.storeBId());
+
+        Payable historicalNoStore = new Payable();
+        historicalNoStore.setCompany(manager.getCompany());
+        historicalNoStore.setOwner(employeeRepository.findByTelNo(scope.bossPhone()));
+        historicalNoStore.setName("HTTP历史空门店应付");
+        historicalNoStore.setType(PayableType.Other);
+        historicalNoStore.setPayeeName("历史待核验供应商");
+        historicalNoStore.setAmount(new BigDecimal("5.00"));
+        historicalNoStore.setPaidAmount(BigDecimal.ZERO);
+        historicalNoStore.setDueDate(java.time.LocalDate.now());
+        historicalNoStore.setStatus(PayableStatus.Pending);
+        historicalNoStore.setUrgent(false);
+        historicalNoStore.setCreatedBy(manager);
+        historicalNoStore = payableRepository.save(historicalNoStore);
+        entityManager.flush();
+
+        JsonNode historicalPaid = api("finance/payment/save", """
+                {"payableId":%s,"amount":1.00,"paidAt":"2026-10-22","idempotencyKey":"scope-historical-no-store-payment"}
+                """.formatted(historicalNoStore.getPayableId()), headFinanceToken);
+        assertThat(historicalPaid.path("success").asBoolean()).as(historicalPaid.toString()).isTrue();
+        long historicalPaymentId = historicalPaid.path("data").path("paymentId").asLong();
+        Payment historicalPayment = paymentRepository.findById(historicalPaymentId).orElseThrow();
+        assertThat(historicalPayment.getStore()).isNull();
+        Ledger historicalLedger = ledgerRepository
+                .findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+                        comId, LedgerSource.Payment, historicalPaymentId)
+                .orElseThrow();
+        assertThat(historicalLedger.getStore()).isNull();
+
+        assertThat(comId).isNotNull();
+        assertThat(headFinance.getCompany().getComId()).isEqualTo(comId);
+    }
+
+    private void assertCrossStoreRejected(JsonNode response, String action) {
+        assertThat(response.path("success").asBoolean()).as(action + ": " + response).isFalse();
+        assertThat(response.path("errorCode").path("code").asText()).as(action + " 错误码").isIn("403", "404");
+    }
+
+    @Test
+    void storeManagerCanIssueAndReprintOwnStoreVoucherButNotOtherStore() throws Exception {
+        String managerToken = login(scope.storeManagerPhone());
+        String designerToken = login(scope.designerPhone());
+        Ledger ownLedger = ledgerRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeBId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+        Ledger otherLedger = ledgerRepository.findAll().stream()
+                .filter(item -> item.getStore() != null && scope.storeAId().equals(item.getStore().getStoreId()))
+                .findFirst().orElseThrow();
+
+        JsonNode first = api("document/voucher/build", """
+                {"ledgerIds":[%s]}
+                """.formatted(ownLedger.getLedgerId()), managerToken);
+        assertThat(first.path("success").asBoolean()).as(first.toString()).isTrue();
+        String voucherId = first.path("data").path("voucherId").asText();
+        String voucherNo = first.path("data").path("voucherNo").asText();
+        assertThat(voucherId).isNotBlank();
+        assertThat(voucherNo).isNotBlank();
+
+        JsonNode reprint = api("document/voucher/build", """
+                {"ledgerIds":[%s]}
+                """.formatted(ownLedger.getLedgerId()), managerToken);
+        assertThat(reprint.path("success").asBoolean()).as(reprint.toString()).isTrue();
+        assertThat(reprint.path("data").path("voucherId").asText()).isEqualTo(voucherId);
+        assertThat(reprint.path("data").path("voucherNo").asText()).isEqualTo(voucherNo);
+
+        JsonNode page = api("document/voucher/page",
+                "{\"current\":1,\"size\":20,\"storeId\":%d}".formatted(scope.storeBId()), managerToken);
+        assertThat(page.path("success").asBoolean()).as(page.toString()).isTrue();
+        assertThat(page.path("data").path("content").findValuesAsText("voucherNo")).contains(voucherNo);
+
+        JsonNode designerPage = api("document/voucher/page", "{}", designerToken);
+        assertThat(designerPage.path("success").asBoolean()).as(designerPage.toString()).isFalse();
+        assertThat(designerPage.path("errorCode").path("code").asText()).isEqualTo("403");
+
+        JsonNode crossStore = api("document/voucher/build", """
+                {"ledgerIds":[%s]}
+                """.formatted(otherLedger.getLedgerId()), managerToken);
+        assertThat(crossStore.path("success").asBoolean()).as(crossStore.toString()).isFalse();
+        assertThat(crossStore.path("errorCode").path("code").asText()).isIn("403", "404");
     }
 
     @Test

@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.model.Settlement;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -49,6 +50,7 @@ import org.springframework.stereotype.Service;
                         "profitAmount", "grossMargin", "status",
                         "confirmedBy", "confirmedAt", "closedAt", "remark"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
+        @AllowProperties(model = Property.class, properties = {"propertyId", "community", "address"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("finance/project/report")

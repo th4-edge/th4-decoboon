@@ -221,17 +221,7 @@ public class FinanceReportContext {
         summary.setOpeningBalanceAmount(openingBalance);
         summary.setOpeningBalanceCaptured(openingDate != null);
         summary.setCashBalance(openingBalance.add(ledgerNet));
-        // 汇总与项目行、结算快照统一使用 ProjectCostContext + 同一 totalCost 公式，
-        // 避免"汇总成本未完整、项目行却有利润"的口径冲突。
-        Map<Long, BigDecimal> payableCostByProject = new HashMap<>();
-        for (Payable payable : payables) {
-            if (payable.getProject() == null || payable.getProject().getProjectId() == null
-                    || !BusinessOriginFilter.isNormal(payable.getBusinessOrigin())) {
-                continue;
-            }
-            payableCostByProject.merge(payable.getProject().getProjectId(),
-                    accessContext.value(payable.getAmount()), BigDecimal::add);
-        }
+        // 汇总与项目行、结算快照统一只消费 ProjectCostContext，禁止另用应付、付款或手工成本抬价。
         BigDecimal estimatedCost = BigDecimal.ZERO;
         BigDecimal aggregatedTotalCost = BigDecimal.ZERO;
         BigDecimal aggregatedManualIncome = BigDecimal.ZERO;
@@ -245,12 +235,10 @@ public class FinanceReportContext {
             if (costSummary == null) {
                 costSummary = projectCostContext.summarize(project);
             }
-            BigDecimal payableCost = payableCostByProject.getOrDefault(project.getProjectId(), BigDecimal.ZERO);
             ManualLedgerContext.ManualAmounts manual = manualAmounts.getOrDefault(
                     project.getProjectId(), ManualLedgerContext.ManualAmounts.ZERO);
             estimatedCost = estimatedCost.add(costSummary.estimatedCost());
-            aggregatedTotalCost = aggregatedTotalCost.add(totalCost(project, costSummary, payableCost))
-                    .add(manual.cost());
+            aggregatedTotalCost = aggregatedTotalCost.add(costSummary.actualCost());
             aggregatedManualIncome = aggregatedManualIncome.add(manual.income());
             aggregatedManualCost = aggregatedManualCost.add(manual.cost());
             if (!costSummary.complete()) {
@@ -326,11 +314,10 @@ public class FinanceReportContext {
     public FinanceProjectReport project(Employee principal, Long projectId) {
         Employee current = accessContext.requireReader(principal);
         Project project = accessContext.resolveProject(current, projectId);
+        project = projectRepository.findFinanceDetailByProjectIdAndCompany_ComId(
+                projectId, current.getCompany().getComId()).orElse(project);
         List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
         List<Payable> payables = payableRepository.findByProjectOrderByDueDateAsc(project);
-        List<Payable> costPayables = payables.stream()
-                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
-                .toList();
         List<Ledger> ledgers = ledgerRepository
                 .findByCompany_ComIdAndProject_ProjectIdOrderByOccurredAtDescLedgerIdDesc(
                         current.getCompany().getComId(), projectId)
@@ -383,18 +370,13 @@ public class FinanceReportContext {
                 .filter(item -> item.getStatus() == PayableStatus.Overdue || Boolean.TRUE.equals(item.getUrgent()))
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
-        BigDecimal materialCost = payableAmount(costPayables, PayableType.Material);
-        BigDecimal laborCost = payableAmount(costPayables, PayableType.Salary);
-        BigDecimal projectCost = payableAmount(costPayables, PayableType.Project);
-        BigDecimal expenseAllocation = sum(costPayables.stream()
-                .filter(item -> item.getType() != PayableType.Material
-                        && item.getType() != PayableType.Salary
-                        && item.getType() != PayableType.Project)
-                .map(Payable::getAmount));
-        BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAllocation);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
         ManualLedgerContext.ManualAmounts manual = manualLedgerContext.amounts(project);
-        BigDecimal totalCost = totalCost(project, costSummary, payableCost).add(manual.cost());
+        BigDecimal materialCost = costSummary.materialCost();
+        BigDecimal laborCost = costSummary.workerLaborCost();
+        BigDecimal projectCost = costSummary.projectExpenseCost().add(costSummary.otherProjectAccruedCost());
+        BigDecimal expenseAllocation = costSummary.employeeSalaryCost().add(costSummary.employeeCommissionCost());
+        BigDecimal totalCost = costSummary.actualCost();
         boolean costComplete = costSummary.complete();
         BigDecimal projectRevenue = report.getContractAmount().add(manual.income());
         BigDecimal grossProfit = costComplete
@@ -409,7 +391,7 @@ public class FinanceReportContext {
         report.setOtherPayableAmount(expenseAllocation);
         report.setExpenseAllocation(expenseAllocation);
         report.setEstimatedCost(costSummary.estimatedCost());
-        report.setActualCost(costSummary.actualCost().add(manual.cost()));
+        report.setActualCost(costSummary.actualCost());
         report.setManualIncomeAmount(manual.income());
         report.setManualCostAmount(manual.cost());
         report.setCostComplete(costComplete);
@@ -443,9 +425,6 @@ public class FinanceReportContext {
         Employee current = accessContext.requireReader(principal);
         List<Receivable> receivables = receivableRepository.findByProjectOrderByDueDateAsc(project);
         List<Payable> payables = payableRepository.findByProjectOrderByDueDateAsc(project);
-        List<Payable> costPayables = payables.stream()
-                .filter(item -> BusinessOriginFilter.isNormal(item.getBusinessOrigin()))
-                .toList();
         settlement.setCompany(current.getCompany());
         accessContext.applyOwnership(settlement, current, project);
         settlement.setProject(project);
@@ -454,23 +433,18 @@ public class FinanceReportContext {
         settlement.setReceivedAmount(sum(receivables.stream().map(Receivable::getReceivedAmount)));
         settlement.setPayableAmount(sum(payables.stream().map(Payable::getAmount)));
         settlement.setPaidAmount(sum(payables.stream().map(Payable::getPaidAmount)));
-        BigDecimal materialCost = payableAmount(costPayables, PayableType.Material);
-        BigDecimal laborCost = payableAmount(costPayables, PayableType.Salary);
-        BigDecimal projectCost = payableAmount(costPayables, PayableType.Project);
-        BigDecimal expenseAmount = sum(costPayables.stream()
-                .filter(item -> item.getType() != PayableType.Material
-                        && item.getType() != PayableType.Salary
-                        && item.getType() != PayableType.Project)
-                .map(Payable::getAmount));
-        BigDecimal payableCost = materialCost.add(laborCost).add(projectCost).add(expenseAmount);
         ProjectCostContext.CostSummary costSummary = projectCostContext.summarize(project);
         ManualLedgerContext.ManualAmounts manual = manualLedgerContext.amounts(project);
-        BigDecimal totalCost = totalCost(project, costSummary, payableCost).add(manual.cost());
+        BigDecimal materialCost = costSummary.materialCost();
+        BigDecimal laborCost = costSummary.workerLaborCost();
+        BigDecimal projectCost = costSummary.projectExpenseCost().add(costSummary.otherProjectAccruedCost());
+        BigDecimal expenseAmount = costSummary.employeeSalaryCost().add(costSummary.employeeCommissionCost());
+        BigDecimal totalCost = costSummary.actualCost();
         BigDecimal settlementRevenue = settlement.getContractAmount().add(manual.income());
         BigDecimal grossProfit = costSummary.complete()
                 ? settlementRevenue.subtract(totalCost) : null;
         settlement.setEstimatedCost(costSummary.estimatedCost());
-        settlement.setActualCost(costSummary.actualCost().add(manual.cost()));
+        settlement.setActualCost(costSummary.actualCost());
         settlement.setManualIncomeAmount(manual.income());
         settlement.setManualCostAmount(manual.cost());
         settlement.setCostComplete(costSummary.complete());
@@ -515,19 +489,6 @@ public class FinanceReportContext {
             return projectRepository.findByCompany_ComIdOrderByProjectIdDesc(comId);
         }
         return projectRepository.findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(comId, storeFilter);
-    }
-
-    /**
-     * 项目实际成本唯一口径：实际发生成本与应付成本取较高者；汇总、项目报告、结算共用。
-     */
-    private BigDecimal totalCost(Project project, ProjectCostContext.CostSummary costSummary, BigDecimal payableCost) {
-        BigDecimal postActual = costSummary.actualCost();
-        BigDecimal carryoverCost = BigDecimal.ZERO;
-        if (carryoverCostContext != null) {
-            carryoverCost = carryoverCostContext.totalCost(project);
-            postActual = postActual.subtract(carryoverCost).max(BigDecimal.ZERO);
-        }
-        return carryoverCost.add(postActual.max(accessContext.value(payableCost)));
     }
 
     private BigDecimal payableAmount(List<Payable> payables, PayableType type) {

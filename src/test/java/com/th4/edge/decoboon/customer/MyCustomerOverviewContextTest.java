@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.customer.configure.PortraitStartWindow;
 import com.th4.edge.decoboon.customer.configure.PortraitStyle;
 import com.th4.edge.decoboon.customer.context.CustomerGradeContext;
 import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
+import com.th4.edge.decoboon.customer.context.CustomerLossContext;
 import com.th4.edge.decoboon.customer.context.CustomerTagContext;
 import com.th4.edge.decoboon.customer.context.MyCustomerOverviewContext;
 import com.th4.edge.decoboon.customer.model.Customer;
@@ -58,7 +59,8 @@ class MyCustomerOverviewContextTest {
                 new CustomerInsightContext(),
                 followRepository,
                 tagContext,
-                new CustomerGradeContext());
+                new CustomerGradeContext(),
+                mock(CustomerLossContext.class));
 
         Company company = new Company();
         company.setComId(10L);
@@ -104,7 +106,7 @@ class MyCustomerOverviewContextTest {
         when(tagContext.assembleBatch(anyLong(), anyCollection(), any(), any()))
                 .thenReturn(Map.of());
 
-        CustomerOverviewReport report = context.report(designer, 1, 20, null, null, "risk");
+        CustomerOverviewReport report = context.report(designer, 1, 20, null, null, "risk", null);
 
         assertThat(report.getCustomers()).hasSize(1);
         assertThat(report.getCustomers().get(0).getPortrait()).isEqualTo(portrait);

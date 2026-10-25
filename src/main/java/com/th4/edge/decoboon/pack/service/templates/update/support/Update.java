@@ -3,6 +3,7 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.pack.context.PackageContext;
+import com.th4.edge.decoboon.pack.context.PackageLifecycleContext;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.pack.repository.PackageTemplateRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -31,7 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Description("更新 BIM 套餐并重新计算成本")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount", "cost", "criterions", "createTime"})
+                properties = {"templateId", "code", "version", "status", "currentPublished", "name", "area", "price",
+                        "discount", "cost", "criterions", "createTime"})
 })
 @Service("pack/template/update")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -62,21 +64,20 @@ public class Update implements com.th4.edge.decoboon.pack.service.templates.upda
     private final PackageTemplateRepository giftPackRepository;
     private final PackageContext giftPackContext;
     private final TenantContext tenantContext;
+    private final PackageLifecycleContext lifecycleContext;
 
     public Update(PackageTemplateRepository giftPackRepository, PackageContext giftPackContext,
-                  TenantContext tenantContext) {
+                  TenantContext tenantContext, PackageLifecycleContext lifecycleContext) {
         this.giftPackRepository = giftPackRepository;
         this.giftPackContext = giftPackContext;
         this.tenantContext = tenantContext;
+        this.lifecycleContext = lifecycleContext;
     }
 
     @Override
     @Transactional
     public PackageTemplate call(@ModelSaveInject PackageTemplate request) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
-        PackageTemplate pack = giftPackRepository.findByTemplateIdAndCompany_ComId(
-                        templateId, current.getCompany().getComId())
-                .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
+        PackageTemplate pack = lifecycleContext.requireDraft(templateId, employee);
         pack.setName(name);
         pack.setArea(area);
         pack.setPrice(price);

@@ -130,6 +130,15 @@ public class VoucherPdfRenderer {
                     show(config, "showProject") && record.getProject() != null ? value(record.getProject().getName()) : "", font);
             addMeta(fonts, meta, "到账账户", show(config, "showDetailTarget") ? targetAccount(worker, partner) : "", font);
         }
+        if (VoucherRecord.SOURCE_EXPENSE.equals(record.getSourceType())) {
+            addMeta(fonts, meta, "费用编号", value(record.getExpenseNo()), font);
+            addMeta(fonts, meta, "费用分类", value(record.getExpenseCategory()), font);
+            addMeta(fonts, meta, "提交人", value(record.getExpenseRequester()), font);
+            addMeta(fonts, meta, "收款员工", value(record.getExpensePayee()), font);
+            addMeta(fonts, meta, "审批版本",
+                    record.getExpenseApprovalVersion() == null ? "" : "v" + record.getExpenseApprovalVersion(), font);
+            addMeta(fonts, meta, "费用归属", value(record.getExpenseAttribution()), font);
+        }
         if (meta.size() > 0) document.add(meta);
         document.add(paragraph(fonts, " ", font, Element.ALIGN_LEFT, 0, 6));
     }

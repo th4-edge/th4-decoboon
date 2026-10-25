@@ -13,7 +13,7 @@ public interface MaterialSupplierRepository extends JpaRepository<MaterialSuppli
 
     List<MaterialSupplier> findByCompany_ComIdOrderByMaterialSupplierIdDesc(Long comId);
 
-    List<MaterialSupplier> findByCompany_ComIdAndMaterialKeyAndActiveTrueOrderByPurchasePriceAsc(
+    List<MaterialSupplier> findByCompany_ComIdAndMaterialKeyAndActiveTrueOrderByMaterialSupplierIdDesc(
             Long comId, String materialKey);
 
     List<MaterialSupplier> findByCompany_ComIdAndPartner_PartnerIdOrderByMaterialSupplierIdDesc(

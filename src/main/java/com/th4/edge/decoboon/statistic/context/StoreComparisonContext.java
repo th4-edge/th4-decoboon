@@ -232,7 +232,6 @@ public class StoreComparisonContext {
             }
         }
         List<Long> projectIds = List.copyOf(projects.keySet());
-        Map<Long, BigDecimal> costByProject = aggregateContext.payableAmountByProject(comId, StoreScope.ALL_STORES, projectIds);
         Map<Long, ProjectCostContext.CostSummary> costSummaries = projectCostContext.summarizeAll(new ArrayList<>(projects.values()));
         Map<Long, ManualLedgerContext.ManualAmounts> manualByProject = manualLedgerContext.amountsAll(new ArrayList<>(projects.values()));
 
@@ -251,7 +250,7 @@ public class StoreComparisonContext {
                     ? unassignedContracts
                     : byStore.getOrDefault(row.getStoreId(), List.of());
             BossDashboardContext.ProfitResult profit =
-                    BossDashboardContext.profitOf(scope, from, costByProject, costSummaries, manualByProject);
+                    BossDashboardContext.profitOf(scope, from, costSummaries, manualByProject);
             row.setGrossProfit(profit.complete() ? profit.value() : null);
             row.setCostComplete(profit.complete());
             row.setCostWarning(profit.warning());

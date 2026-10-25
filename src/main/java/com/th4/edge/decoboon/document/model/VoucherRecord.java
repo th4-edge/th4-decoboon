@@ -54,11 +54,14 @@ import java.util.List;
         indexes = {
                 @Index(name = "idx_voucher_company", columnList = "com_id, voucher_id"),
                 @Index(name = "idx_voucher_company_project", columnList = "com_id, project_id, voucher_id"),
+                @Index(name = "idx_voucher_company_source", columnList = "com_id, source_type, source_id"),
                 @Index(name = "idx_voucher_company_store", columnList = "com_id, store_id, voucher_id"),
                 @Index(name = "idx_voucher_company_team", columnList = "com_id, team_id, voucher_id"),
                 @Index(name = "idx_voucher_company_owner", columnList = "com_id, owner_id, voucher_id")
         })
 public class VoucherRecord extends AuditModel {
+
+    public static final String SOURCE_EXPENSE = "Expense";
 
     @Id @SnowflakeId @Note("凭证索引")
     private Long voucherId;
@@ -77,6 +80,15 @@ public class VoucherRecord extends AuditModel {
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "project_id") @Note("所属项目")
     private Project project;
+
+    @Column(name = "source_type", length = 32) @Note("来源类型；费用凭证为 Expense")
+    private String sourceType;
+
+    @Column(name = "source_id") @Note("来源业务主键；费用凭证为 expenseId")
+    private Long sourceId;
+
+    @Column(name = "source_snapshot", columnDefinition = "LONGTEXT") @Note("发行时费用来源快照JSON")
+    private String sourceSnapshot;
 
     @Enumerated(EnumType.STRING) @Column(length = 16, nullable = false) @Note("凭证类型")
     private DocumentType type = DocumentType.Payment;
@@ -142,6 +154,23 @@ public class VoucherRecord extends AuditModel {
     @Transient @Note("短期地址过期时间")
     private LocalDateTime urlExpiresAt;
 
+    @Transient @Note("费用编号快照")
+    private String expenseNo;
+    @Transient @Note("费用分类快照")
+    private String expenseCategory;
+    @Transient @Note("费用归属快照")
+    private String expenseAttribution;
+    @Transient @Note("费用提交人快照")
+    private String expenseRequester;
+    @Transient @Note("费用收款员工快照")
+    private String expensePayee;
+    @Transient @Note("费用审批版本快照")
+    private Integer expenseApprovalVersion;
+    @Transient @Note("关联付款索引（费用凭证读取投影）")
+    private Long paymentId;
+    @Transient @Note("发行模板预设编码")
+    private String templatePresetCode;
+
     public Long getVoucherId() { return voucherId; }
     public void setVoucherId(Long voucherId) { this.voucherId = voucherId; }
     public Company getCompany() { return company; }
@@ -154,6 +183,12 @@ public class VoucherRecord extends AuditModel {
     public void setOwner(Employee owner) { this.owner = owner; }
     public Project getProject() { return project; }
     public void setProject(Project project) { this.project = project; }
+    public String getSourceType() { return sourceType; }
+    public void setSourceType(String sourceType) { this.sourceType = sourceType; }
+    public Long getSourceId() { return sourceId; }
+    public void setSourceId(Long sourceId) { this.sourceId = sourceId; }
+    public String getSourceSnapshot() { return sourceSnapshot; }
+    public void setSourceSnapshot(String sourceSnapshot) { this.sourceSnapshot = sourceSnapshot; }
     public DocumentType getType() { return type; }
     public void setType(DocumentType type) { this.type = type; }
     public String getVoucherNo() { return voucherNo; }
@@ -196,4 +231,20 @@ public class VoucherRecord extends AuditModel {
     public void setUrl(String url) { this.url = url; }
     public LocalDateTime getUrlExpiresAt() { return urlExpiresAt; }
     public void setUrlExpiresAt(LocalDateTime urlExpiresAt) { this.urlExpiresAt = urlExpiresAt; }
+    public String getExpenseNo() { return expenseNo; }
+    public void setExpenseNo(String expenseNo) { this.expenseNo = expenseNo; }
+    public String getExpenseCategory() { return expenseCategory; }
+    public void setExpenseCategory(String expenseCategory) { this.expenseCategory = expenseCategory; }
+    public String getExpenseAttribution() { return expenseAttribution; }
+    public void setExpenseAttribution(String expenseAttribution) { this.expenseAttribution = expenseAttribution; }
+    public String getExpenseRequester() { return expenseRequester; }
+    public void setExpenseRequester(String expenseRequester) { this.expenseRequester = expenseRequester; }
+    public String getExpensePayee() { return expensePayee; }
+    public void setExpensePayee(String expensePayee) { this.expensePayee = expensePayee; }
+    public Integer getExpenseApprovalVersion() { return expenseApprovalVersion; }
+    public void setExpenseApprovalVersion(Integer expenseApprovalVersion) { this.expenseApprovalVersion = expenseApprovalVersion; }
+    public Long getPaymentId() { return paymentId; }
+    public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }
+    public String getTemplatePresetCode() { return templatePresetCode; }
+    public void setTemplatePresetCode(String templatePresetCode) { this.templatePresetCode = templatePresetCode; }
 }

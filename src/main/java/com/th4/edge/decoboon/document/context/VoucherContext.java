@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.document.context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.th4.edge.components.storage.service.ObjectStorage;
 import com.th4.edge.components.storage.service.StoredObject;
 import com.th4.edge.decoboon.common.file.configure.FileScope;
@@ -17,17 +19,24 @@ import com.th4.edge.decoboon.document.repository.VoucherRecordRepository;
 import com.th4.edge.decoboon.document.repository.VoucherRevisionRepository;
 import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
+import com.th4.edge.decoboon.finance.configure.ExpensePaymentMode;
+import com.th4.edge.decoboon.finance.configure.ExpenseStatus;
+import com.th4.edge.decoboon.finance.model.Expense;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payment;
+import com.th4.edge.decoboon.finance.repository.ExpenseRepository;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.finance.repository.PaymentRepository;
 import com.th4.edge.decoboon.labor.model.Worker;
 import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.tenant.user.access.DataScopeSpecification;
+import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,8 +68,10 @@ public class VoucherContext {
     private static final DateTimeFormatter NUMBER_PREFIX = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     private final TenantContext tenantContext;
+    private final DataScopeContext dataScopeContext;
     private final LedgerRepository ledgerRepository;
     private final PaymentRepository paymentRepository;
+    private final ExpenseRepository expenseRepository;
     private final DocumentTemplateContext templateContext;
     private final DocumentProfileContext profileContext;
     private final VoucherPdfRenderer renderer;
@@ -70,10 +81,13 @@ public class VoucherContext {
     private final VoucherRecordRepository recordRepository;
     private final VoucherRevisionRepository revisionRepository;
     private final VoucherItemRepository itemRepository;
+    private final ObjectMapper objectMapper;
 
     public VoucherContext(TenantContext tenantContext,
+                          DataScopeContext dataScopeContext,
                           LedgerRepository ledgerRepository,
                           PaymentRepository paymentRepository,
+                          ExpenseRepository expenseRepository,
                           DocumentTemplateContext templateContext,
                           DocumentProfileContext profileContext,
                           VoucherPdfRenderer renderer,
@@ -82,10 +96,13 @@ public class VoucherContext {
                           FileSignatureContext signatureContext,
                           VoucherRecordRepository recordRepository,
                           VoucherRevisionRepository revisionRepository,
-                          VoucherItemRepository itemRepository) {
+                          VoucherItemRepository itemRepository,
+                          ObjectMapper objectMapper) {
         this.tenantContext = tenantContext;
+        this.dataScopeContext = dataScopeContext;
         this.ledgerRepository = ledgerRepository;
         this.paymentRepository = paymentRepository;
+        this.expenseRepository = expenseRepository;
         this.templateContext = templateContext;
         this.profileContext = profileContext;
         this.renderer = renderer;
@@ -95,6 +112,7 @@ public class VoucherContext {
         this.recordRepository = recordRepository;
         this.revisionRepository = revisionRepository;
         this.itemRepository = itemRepository;
+        this.objectMapper = objectMapper;
     }
 
     /** 生成凭证：单笔直接生成，多笔必须满足合并判定。 */
@@ -103,20 +121,48 @@ public class VoucherContext {
         return build(principal, ledgerIds, null);
     }
 
+    /** 按付款记录生成费用/普通付款凭证；用于费用详情按付款行发行凭证。 */
+    @Transactional
+    public VoucherRecord buildForPayment(Employee principal, Long paymentId, String presetCode) {
+        if (paymentId == null) throw invalid("付款记录不能为空");
+        Employee current = tenantContext.requireRole(
+                principal, EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
+        Long comId = current.getCompany().getComId();
+        Specification<Payment> byId = (root, query, builder) -> builder.equal(root.get("paymentId"), paymentId);
+        Specification<Payment> visible = DataScopeSpecification.visible(
+                Payment.class, dataScopeContext.resolve(tenantContext.requireEmployee(current)));
+        paymentRepository.findOne(byId.and(visible))
+                .orElseThrow(() -> notFound("付款记录不存在或无权访问"));
+        Ledger ledger = ledgerRepository.findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+                        comId, LedgerSource.Payment, paymentId)
+                .orElseThrow(() -> invalid("付款记录尚未形成资金流水"));
+        if (Boolean.TRUE.equals(ledger.getVoided())) throw invalid("付款流水已作废，不能生成凭证");
+        return build(principal, List.of(ledger.getLedgerId()), presetCode);
+    }
+
     /** 生成凭证：可指定企业模板预设编码；未指定时使用该类型当前发布版本。 */
     @Transactional
     public VoucherRecord build(Employee principal, List<Long> ledgerIds, String presetCode) {
-        Employee current = tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
+        Employee current = tenantContext.requireRole(
+                principal, EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
         Long comId = current.getCompany().getComId();
         List<Long> ids = normalizeIds(ledgerIds);
         if (ids.isEmpty()) throw invalid("请选择要打印的款项记录");
 
-        List<Ledger> ledgers = new ArrayList<>(ledgerRepository.findByCompany_ComIdAndLedgerIdIn(comId, ids).stream()
+        Employee scopedEmployee = tenantContext.requireEmployee(current);
+        Specification<Ledger> byIds = (root, query, builder) -> root.get("ledgerId").in(ids);
+        Specification<Ledger> visible = DataScopeSpecification.visible(
+                Ledger.class, dataScopeContext.resolve(scopedEmployee));
+        List<Ledger> ledgers = new ArrayList<>(ledgerRepository.findAll(byIds.and(visible)).stream()
                 .filter(item -> !Boolean.TRUE.equals(item.getVoided()))
                 .toList());
         if (ledgers.size() != ids.size()) throw notFound("存在无权访问或已不存在的款项记录");
         ledgers.sort(Comparator.comparing(Ledger::getOccurredAt, Comparator.nullsLast(Comparator.naturalOrder()))
                 .thenComparing(Ledger::getLedgerId, Comparator.nullsLast(Comparator.naturalOrder())));
+        Long sourceStoreId = storeId(ledgers.get(0));
+        if (ledgers.stream().anyMatch(item -> !Objects.equals(sourceStoreId, storeId(item)))) {
+            throw invalid("一次凭证只能包含同一门店的款项记录，请按门店分别生成");
+        }
         requireMergeable(ledgers);
 
         List<Long> sourceKeys = ledgers.stream().map(this::sourceKey).toList();
@@ -132,10 +178,12 @@ public class VoucherContext {
         Ledger first = ledgers.get(0);
         DocumentType type = first.getDirection() == LedgerDirection.Income
                 ? DocumentType.Receipt : DocumentType.Payment;
-        DocumentTemplate template = templateContext.templateForIssue(comId, type, presetCode);
-        DocumentProfile profile = profileContext.profile(current);
-
         Payment payment = resolvePayment(comId, first);
+        Expense expense = expenseForPayment(comId, payment);
+        String effectivePresetCode = presetCode == null || presetCode.isBlank()
+                ? expensePresetCode(expense) : presetCode;
+        DocumentTemplate template = templateContext.templateForIssue(comId, type, effectivePresetCode);
+        DocumentProfile profile = profileContext.profile(current);
         Worker worker = payment == null ? null : payment.getWorker();
         Partner partner = payment == null ? null : payment.getPartner();
 
@@ -151,11 +199,15 @@ public class VoucherContext {
         // 平台行业基线是瞬态副本，未落库时不建立实体关联，只保留模板版本
         record.setTemplate(template.getTemplateId() == null ? null : template);
         record.setTemplateVersion(template.getVersion() == null ? 1 : template.getVersion());
+        record.setTemplatePresetCode(template.getPresetCode());
         record.setTotalAmount(total.setScale(2, RoundingMode.HALF_UP));
         record.setAmountWords(VoucherAmountWords.of(total));
         record.setPartyName(first.getCounterparty());
         record.setWorker(worker);
         record.setPartner(partner);
+        if (expense != null) {
+            applyExpenseSnapshot(record, expense, payment);
+        }
         record.setGeneratedBy(current);
         record.setGeneratedAt(LocalDateTime.now());
         record.setStatus(DocumentStatus.Active);
@@ -164,13 +216,19 @@ public class VoucherContext {
         for (Ledger ledger : ledgers) items.add(item(record, ledger));
         record.setItems(items);
 
+        ObjectNode snapshot = expenseSnapshot(comId, expense, payment, record, null);
+        if (snapshot != null) record.setSourceSnapshot(snapshot.toString());
+
         byte[] content = renderer.render(record, items, template, profile, worker, partner);
         String fileName = fileName(profile, record);
         Long projectId = record.getProject() == null ? null : record.getProject().getProjectId();
         String objectKey = keyContext.generated(comId, projectId, FileScope.Document, fileName);
         store(objectKey, content);
         record.setPath(objectKey);
-        record.setSha256(sha256(content));
+        String hash = sha256(content);
+        record.setSha256(hash);
+        ObjectNode finalSnapshot = expenseSnapshot(comId, expense, payment, record, hash);
+        if (finalSnapshot != null) record.setSourceSnapshot(finalSnapshot.toString());
         record.setFileName(fileName);
         record.setContentType("application/pdf");
         record.setSize((long) content.length);
@@ -187,10 +245,14 @@ public class VoucherContext {
      */
     @Transactional
     public VoucherRecord rebuildForPayment(Employee principal, Long paymentId) {
-        Employee current = tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
+        Employee current = tenantContext.requireRole(
+                principal, EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
         Long comId = current.getCompany().getComId();
-        Payment payment = paymentRepository.findById(paymentId)
-                .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
+        Specification<Payment> byId = (root, query, builder) ->
+                builder.equal(root.get("paymentId"), paymentId);
+        Specification<Payment> visiblePayment = DataScopeSpecification.visible(
+                Payment.class, dataScopeContext.resolve(current));
+        Payment payment = paymentRepository.findOne(byId.and(visiblePayment))
                 .orElseThrow(() -> notFound("付款记录不存在或无权访问"));
         if (payment.getWorker() == null) throw invalid("请先补录发放工人");
 
@@ -271,7 +333,10 @@ public class VoucherContext {
         for (List<VoucherItem> items : grouped.values()) {
             Set<Long> actual = items.stream().map(VoucherItem::getSourceId).collect(java.util.stream.Collectors.toSet());
             if (actual.equals(expected) && items.get(0).getVoucher().getStatus() == DocumentStatus.Active) {
-                return signed(items.get(0).getVoucher());
+                Long voucherId = items.get(0).getVoucher().getVoucherId();
+                return recordRepository.findDetailByCompany_ComIdAndVoucherId(comId, voucherId)
+                        .map(this::signed)
+                        .orElse(null);
             }
         }
         return null;
@@ -311,7 +376,101 @@ public class VoucherContext {
         if (ledger.getSource() != LedgerSource.Payment || ledger.getSourceId() == null) return null;
         return paymentRepository.findById(ledger.getSourceId())
                 .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
+                .filter(item -> Objects.equals(storeId(ledger),
+                        item.getStore() == null ? null : item.getStore().getStoreId()))
                 .orElse(null);
+    }
+
+    private Expense expenseForPayment(Long comId, Payment payment) {
+        if (payment == null || payment.getPayable() == null) return null;
+        var payable = payment.getPayable();
+        if (!VoucherRecord.SOURCE_EXPENSE.equals(payable.getSourceType())) return null;
+        if (payable.getSourceId() == null || payable.getSourceId() <= 0) {
+            throw notFound("费用来源不存在或无权访问");
+        }
+        Expense expense = expenseRepository.findVoucherSourceByCompany_ComIdAndExpenseId(
+                comId, payable.getSourceId())
+                .orElseThrow(() -> notFound("费用来源不存在或无权访问"));
+        if (expense.getPayable() == null
+                || !Objects.equals(expense.getPayable().getPayableId(), payable.getPayableId())) {
+            throw invalid("费用来源与应付不一致，不能生成凭证");
+        }
+        if (expense.getStatus() != ExpenseStatus.Approved && expense.getStatus() != ExpenseStatus.Closed) {
+            throw invalid("费用未审批通过，不能生成凭证");
+        }
+        expenseRepository.findVoucherPeopleByIdIn(List.of(expense.getExpenseId()));
+        return expense;
+    }
+
+    private String expensePresetCode(Expense expense) {
+        if (expense == null) return null;
+        if (expense.getPaymentMode() == ExpensePaymentMode.Direct) return "P-EXPENSE";
+        if (expense.getCategory() != null && "TRAVEL".equalsIgnoreCase(expense.getCategory().getCode())) {
+            return "E-TRAVEL";
+        }
+        return "E-REIMBURSEMENT";
+    }
+
+    private void applyExpenseSnapshot(VoucherRecord record, Expense expense, Payment payment) {
+        record.setSourceType(VoucherRecord.SOURCE_EXPENSE);
+        record.setSourceId(expense.getExpenseId());
+        record.setExpenseNo(expense.getExpenseNo());
+        record.setExpenseCategory(expense.getCategory() == null ? null : expense.getCategory().getName());
+        record.setExpenseAttribution(expense.getProject() == null
+                ? "企业费用"
+                : "项目 " + safe(expense.getProject().getNo()) + " · " + safe(expense.getProject().getName()));
+        record.setExpenseRequester(expense.getRequester() == null ? null : expense.getRequester().getName());
+        String payee = expense.getPayeeEmployee() == null ? null : expense.getPayeeEmployee().getName();
+        record.setExpensePayee(payee == null || payee.isBlank()
+                ? (payment == null ? null : payment.getPayeeName()) : payee);
+        record.setExpenseApprovalVersion(expense.getVersion());
+    }
+
+    private ObjectNode expenseSnapshot(Long comId, Expense expense, Payment payment,
+                                       VoucherRecord record, String fileSha256) {
+        if (expense == null) return null;
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put("schemaVersion", 1);
+        node.put("companyId", comId);
+        node.put("expenseId", expense.getExpenseId());
+        putText(node, "expenseNo", expense.getExpenseNo());
+        putText(node, "expenseStatus", expense.getStatus() == null ? null : expense.getStatus().name());
+        putText(node, "paymentMode", expense.getPaymentMode() == null ? null : expense.getPaymentMode().name());
+        putText(node, "expenseCategoryCode", expense.getCategory() == null ? null : expense.getCategory().getCode());
+        putText(node, "expenseCategoryName", expense.getCategory() == null ? null : expense.getCategory().getName());
+        if (expense.getProject() == null) {
+            node.putNull("projectId");
+            putText(node, "projectNo", null);
+            putText(node, "projectName", null);
+        } else {
+            node.put("projectId", expense.getProject().getProjectId());
+            putText(node, "projectNo", expense.getProject().getNo());
+            putText(node, "projectName", expense.getProject().getName());
+        }
+        node.put("requesterId", expense.getRequester() == null ? null : expense.getRequester().getEmpId());
+        putText(node, "requesterName", expense.getRequester() == null ? null : expense.getRequester().getName());
+        node.put("payeeEmployeeId", expense.getPayeeEmployee() == null ? null : expense.getPayeeEmployee().getEmpId());
+        putText(node, "payeeEmployeeName", expense.getPayeeEmployee() == null ? null : expense.getPayeeEmployee().getName());
+        node.put("approvalVersion", expense.getVersion());
+        node.put("approvedById", expense.getApprovedBy() == null ? null : expense.getApprovedBy().getEmpId());
+        putText(node, "approvedAt", expense.getApprovedAt() == null ? null : expense.getApprovedAt().toString());
+        node.put("paymentId", payment == null ? null : payment.getPaymentId());
+        node.put("paymentAmount", payment == null ? null : payment.getAmount());
+        putText(node, "paidAt", payment == null || payment.getPaidAt() == null ? null : payment.getPaidAt().toString());
+        node.put("templateId", record.getTemplate() == null ? null : record.getTemplate().getTemplateId());
+        putText(node, "templatePresetCode", record.getTemplatePresetCode());
+        node.put("templateVersion", record.getTemplateVersion());
+        putText(node, "fileSha256", fileSha256);
+        return node;
+    }
+
+    private void putText(ObjectNode node, String key, String value) {
+        if (value == null) node.putNull(key);
+        else node.put(key, value);
+    }
+
+    private Long storeId(Ledger ledger) {
+        return ledger == null || ledger.getStore() == null ? null : ledger.getStore().getStoreId();
     }
 
     private List<Long> normalizeIds(List<Long> ledgerIds) {

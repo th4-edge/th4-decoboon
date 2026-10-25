@@ -26,6 +26,7 @@ public class ContractConstructionPlan extends AuditModel {
     @OneToOne(fetch = FetchType.LAZY, optional = false) @JoinColumn(name = "contract_id", nullable = false) @Note("所属合同") private ProjectContract contract;
     @Column(length = 64, nullable = false) @Note("基线模板编码") private String sourceCode;
     @Column(nullable = false) @Note("基线模板版本") private Integer sourceVersion = 1;
+    @Column(name = "source_total_days") @Note("模板声明标准总工期快照") private Integer sourceTotalDays;
     @Column(length = 128, nullable = false) @Note("模板名称") private String name;
     @Column(nullable = false) @Note("计划开工") private LocalDate startDate;
     @Column(nullable = false) @Note("计划竣工") private LocalDate endDate;
@@ -42,6 +43,8 @@ public class ContractConstructionPlan extends AuditModel {
     public void setSourceCode(String sourceCode) { this.sourceCode = sourceCode; }
     public Integer getSourceVersion() { return sourceVersion; }
     public void setSourceVersion(Integer sourceVersion) { this.sourceVersion = sourceVersion; }
+    public Integer getSourceTotalDays() { return sourceTotalDays; }
+    public void setSourceTotalDays(Integer sourceTotalDays) { this.sourceTotalDays = sourceTotalDays; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public LocalDate getStartDate() { return startDate; }

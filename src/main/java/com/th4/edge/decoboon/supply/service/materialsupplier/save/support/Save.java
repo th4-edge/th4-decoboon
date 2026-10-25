@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** 维护材料-供应商供应关系：同一材料同一供应商唯一，重复保存按主键更新。 */
+/** 维护材料-供应商供应关系；采购价由采购单承载，不在供应关系保存。 */
 @Note("材料-供应商供应关系保存")
 @Properties(allow = {
         @AllowProperties(model = MaterialSupplier.class,
@@ -54,7 +54,6 @@ public class Save implements com.th4.edge.decoboon.supply.service.materialsuppli
     @AutoInject @Length(max = 256) private String spec;
     @AutoInject @Length(max = 128) private String model;
     @AutoInject private Unit unit;
-    @AutoInject private BigDecimal purchasePrice;
     @AutoInject private BigDecimal minimumOrder;
     @AutoInject private Integer leadTimeDays;
     @AutoInject private Integer settlementDays;
@@ -116,7 +115,7 @@ public class Save implements com.th4.edge.decoboon.supply.service.materialsuppli
         target.setSpec(blankToNull(spec));
         target.setModel(blankToNull(model));
         target.setUnit(unit);
-        target.setPurchasePrice(purchasePrice == null ? BigDecimal.ZERO : purchasePrice);
+        // purchasePrice 为历史只读字段，不再由供应关系保存覆盖。
         target.setMinimumOrder(minimumOrder == null ? BigDecimal.ONE : minimumOrder);
         target.setLeadTimeDays(leadTimeDays == null ? 0 : leadTimeDays);
         target.setSettlementDays(settlementDays);

@@ -9,5 +9,7 @@ public interface PackageLineRepository extends JpaRepository<PackageLine, Long> 
 
     java.util.List<PackageLine> findByTemplate_TemplateIdOrderBySortAscItemIdAsc(Long templateId);
 
+    java.util.List<PackageLine> findByTemplate_TemplateIdAndCompany_ComIdOrderBySortAscItemIdAsc(Long templateId, Long comId);
+
     long countBySection_GroupId(Long groupId);
 }

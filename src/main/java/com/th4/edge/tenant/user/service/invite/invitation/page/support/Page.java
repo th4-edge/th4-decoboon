@@ -33,7 +33,7 @@ public class Page implements com.th4.edge.tenant.user.service.invite.invitation.
     public Page(TenantContext tenantContext, InviteRepository inviteRepository) { this.tenantContext = tenantContext; this.inviteRepository = inviteRepository; }
     @Override
     public org.springframework.data.domain.Page<Invite> call(Employee request) {
-        Employee currentEmployee = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.TeamLeader);
+        Employee currentEmployee = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
         return inviteRepository.findByCompany_ComId(currentEmployee.getCompany().getComId(), PageRequest.of(page, pageSize));

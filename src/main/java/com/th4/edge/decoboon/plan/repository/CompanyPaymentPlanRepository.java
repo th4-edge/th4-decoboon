@@ -24,4 +24,15 @@ public interface CompanyPaymentPlanRepository extends JpaRepository<CompanyPayme
 
     Optional<CompanyPaymentPlan> findByCompany_ComIdAndCodeAndStatus(
             Long comId, String code, PlanTemplateStatus status);
+
+    List<CompanyPaymentPlan> findByCompany_ComIdOrderByCodeAscVersionDescTemplateIdDesc(Long comId);
+
+    Optional<CompanyPaymentPlan> findFirstByCompany_ComIdAndCodeOrderByVersionDesc(Long comId, String code);
+
+    List<CompanyPaymentPlan> findByCompany_ComIdAndCodeAndCurrentEnabledTrue(Long comId, String code);
+
+    List<CompanyPaymentPlan> findByCompany_ComIdAndCurrentEnabledTrue(Long comId);
+
+    List<CompanyPaymentPlan> findByCompany_ComIdAndStatusAndCurrentEnabledTrueOrderByDefaultPlanDescTemplateIdAsc(
+            Long comId, PlanTemplateStatus status);
 }

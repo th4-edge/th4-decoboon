@@ -9,6 +9,7 @@ import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 import com.th4.edge.tenant.user.access.annotation.DataPermission;
 import com.th4.edge.tenant.user.model.Company;
 import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -35,7 +36,7 @@ import java.util.List;
         @Index(name = "idx_company_construction_plan_company", columnList = "com_id, template_id"),
         @Index(name = "idx_company_construction_plan_status", columnList = "com_id, status, is_default")
 }, uniqueConstraints = {
-        @UniqueConstraint(name = "uk_company_construction_plan_code", columnNames = {"com_id", "code"})
+        @UniqueConstraint(name = "uk_company_construction_plan_code_version", columnNames = {"com_id", "code", "version"})
 })
 public class CompanyConstructionPlan extends AuditModel {
 
@@ -82,6 +83,10 @@ public class CompanyConstructionPlan extends AuditModel {
     @Note("是否默认")
     private Boolean defaultPlan = Boolean.FALSE;
 
+    @Column(name = "is_current_enabled", nullable = false)
+    @Note("是否当前启用版本")
+    private Boolean currentEnabled = Boolean.FALSE;
+
     @Column(length = 64)
     @Note("来源基线编码")
     private String sourceBaselineCode;
@@ -95,6 +100,14 @@ public class CompanyConstructionPlan extends AuditModel {
     @Transient
     @Note("施工阶段")
     private List<CompanyConstructionStage> stages = List.of();
+
+    @PrePersist
+    private void ensureVersionIdentity() {
+        if (version == null) version = 1;
+        if (status == null) status = PlanTemplateStatus.Draft;
+        if (defaultPlan == null) defaultPlan = Boolean.FALSE;
+        if (currentEnabled == null) currentEnabled = Boolean.FALSE;
+    }
 
     public Long getTemplateId() { return templateId; }
     public void setTemplateId(Long templateId) { this.templateId = templateId; }
@@ -116,6 +129,8 @@ public class CompanyConstructionPlan extends AuditModel {
     public void setStatus(PlanTemplateStatus status) { this.status = status; }
     public Boolean getDefaultPlan() { return defaultPlan; }
     public void setDefaultPlan(Boolean defaultPlan) { this.defaultPlan = defaultPlan; }
+    public Boolean getCurrentEnabled() { return currentEnabled; }
+    public void setCurrentEnabled(Boolean currentEnabled) { this.currentEnabled = currentEnabled; }
     public String getSourceBaselineCode() { return sourceBaselineCode; }
     public void setSourceBaselineCode(String sourceBaselineCode) { this.sourceBaselineCode = sourceBaselineCode; }
     public Integer getSourceBaselineVersion() { return sourceBaselineVersion; }

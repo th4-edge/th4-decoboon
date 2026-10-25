@@ -237,6 +237,10 @@ public class Project extends AuditModel implements ProjectOwned {
     private BusinessStateView businessStateView;
 
     @Transient
+    @Note("只读投影：项目事实追踪")
+    private ProjectFactTrace factTrace;
+
+    @Transient
     @Unit("元")
     @Note("只读投影：已收工程款（来源于应收计划）")
     private BigDecimal receivedAmount = BigDecimal.ZERO;
@@ -454,6 +458,8 @@ public Long getProjectId() {
     public void setNextAction(String nextAction) { this.nextAction = nextAction; }
     public BusinessStateView getBusinessStateView() { return businessStateView; }
     public void setBusinessStateView(BusinessStateView businessStateView) { this.businessStateView = businessStateView; }
+    public ProjectFactTrace getFactTrace() { return factTrace; }
+    public void setFactTrace(ProjectFactTrace factTrace) { this.factTrace = factTrace; }
     public BigDecimal getReceivedAmount() { return receivedAmount; }
     public void setReceivedAmount(BigDecimal receivedAmount) { this.receivedAmount = receivedAmount; }
     public BigDecimal getReceivableAmount() { return receivableAmount; }

@@ -6,11 +6,14 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.tenant.user.access.DataScope;
+import com.th4.edge.tenant.user.access.context.DataScopeContext;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.repository.StoreRepository;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 当前账号可见门店列表。
  *
- * <p>企业负责人可见企业全部门店；店长/团队长/普通员工仅可见本人门店。
+ * <p>数据范围为企业的账号（BOSS、总部财务）可见企业全部门店；门店/团队/个人范围仅可见本人门店。
  * 前端据此判断是否需要展示"门店维度"筛选（仅一个门店时无需展示）。</p>
  *
  * <p>`P0D-04`：企业负责人视角**包含已停用门店**（历史查看需要），并返回 `status` / `sort`；
@@ -43,10 +46,12 @@ public class List implements com.th4.edge.tenant.user.service.user.store.list.Li
     private Boolean currentOnly;
 
     private final TenantContext tenantContext;
+    private final DataScopeContext dataScopeContext;
     private final StoreRepository storeRepository;
 
-    public List(TenantContext tenantContext, StoreRepository storeRepository) {
+    public List(TenantContext tenantContext, DataScopeContext dataScopeContext, StoreRepository storeRepository) {
         this.tenantContext = tenantContext;
+        this.dataScopeContext = dataScopeContext;
         this.storeRepository = storeRepository;
     }
 
@@ -54,16 +59,11 @@ public class List implements com.th4.edge.tenant.user.service.user.store.list.Li
     @Transactional(readOnly = true)
     public java.util.List<Store> call(Employee request) {
         Employee current = tenantContext.requireEmployee(employee);
-        if (Boolean.TRUE.equals(currentOnly) || !isCompanyWide(current) || current.getStore() == null) {
+        DataScope scope = dataScopeContext.resolve(current);
+        if (Boolean.TRUE.equals(currentOnly) || scope.type() != DataScopeType.Company) {
             return current.getStore() == null ? java.util.List.of() : java.util.List.of(current.getStore());
         }
-        Long comId = current.getCompany() == null ? null : current.getCompany().getComId();
-        return comId == null ? java.util.List.of()
-                : storeRepository.findByCompany_ComIdOrderBySortAscStoreIdAsc(comId);
-    }
-
-    /** 仅企业负责人具备跨门店视角。 */
-    private boolean isCompanyWide(Employee current) {
-        return current.getRole() == com.th4.edge.tenant.user.configure.EmployeeRole.Boss;
+        return scope.comId() == null ? java.util.List.of()
+                : storeRepository.findByCompany_ComIdOrderBySortAscStoreIdAsc(scope.comId());
     }
 }

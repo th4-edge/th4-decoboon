@@ -29,7 +29,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 @Note("报价明细分页")
 @Properties(allow = {
         @AllowProperties(model = QuoteLine.class,
-                properties = {"itemId", "space", "type", "category", "name", "brand", "spec", "unit", "quantity",
+                properties = {"itemId", "catalogSourceId", "catalogSourceCode", "catalogSourceRevision", "space", "type", "category", "packageSectionNameSnapshot", "name", "brand", "spec", "unit", "quantity",
                         "materialPrice", "manualPrice", "pricingMode", "price", "amount", "cost", "formula", "quantityFormula", "role",
                         "differenceType", "differenceStatus", "included", "discountAmount", "components", "craft", "sort"}),
         @AllowProperties(model = Space.class,

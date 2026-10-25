@@ -77,6 +77,31 @@ public class CatalogDetailContext {
         }
     }
 
+    /** 读取类型明细到传输字段，用于变更比较与完整修订快照。 */
+    @Transactional(readOnly = true)
+    public void hydrate(CatalogItem item) {
+        if (item == null || item.getItemId() == null || item.getType() == null) return;
+        switch (item.getType()) {
+            case Construction -> constructionRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(detail -> item.setDurationDays(detail.getDurationDays()));
+            case Material -> materialRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(detail -> {
+                        item.setLossRate(detail.getLossRate());
+                        item.setMinimumOrder(detail.getMinimumOrder());
+                    });
+            case Soft -> softRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(detail -> item.setLeadTimeDays(detail.getLeadTimeDays()));
+            case Custom -> customRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(detail -> {
+                        item.setBoard(detail.getBoard());
+                        item.setCountertop(detail.getCountertop());
+                    });
+            case Appliance -> applianceRepository.findByItem_ItemId(item.getItemId())
+                    .ifPresent(detail -> item.setWarrantyMonths(detail.getWarrantyMonths()));
+            case General -> { }
+        }
+    }
+
     private void syncConstruction(CatalogItem item) {
         ConstructionItemDetail detail = constructionRepository.findByItem_ItemId(item.getItemId())
                 .orElseGet(ConstructionItemDetail::new);
@@ -98,6 +123,8 @@ public class CatalogDetailContext {
         detail.setModel(item.getSpec());
         detail.setLossRate(item.getLossRate() == null ? BigDecimal.ZERO : item.getLossRate());
         detail.setMinimumOrder(item.getMinimumOrder() == null ? BigDecimal.ONE : item.getMinimumOrder());
+        item.setLossRate(detail.getLossRate());
+        item.setMinimumOrder(detail.getMinimumOrder());
         materialRepository.save(detail);
     }
 

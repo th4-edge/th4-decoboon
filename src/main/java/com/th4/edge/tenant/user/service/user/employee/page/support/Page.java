@@ -66,7 +66,7 @@ public class Page implements com.th4.edge.tenant.user.service.user.employee.page
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 500);
         Employee currentEmployee = tenantContext.requireRole(employee,
-                EmployeeRole.Boss, EmployeeRole.StoreManager, EmployeeRole.TeamLeader,
+                EmployeeRole.Boss, EmployeeRole.StoreManager,
                 EmployeeRole.Designer, EmployeeRole.Pm);
         PageRequest pageable = PageRequest.of(page, pageSize);
         if (currentEmployee.getRole() == EmployeeRole.StoreManager) {
@@ -77,16 +77,6 @@ public class Page implements com.th4.edge.tenant.user.service.user.employee.page
             return employeeRepository.findByCompany_ComIdAndStore_StoreId(
                     currentEmployee.getCompany().getComId(),
                     currentEmployee.getStore().getStoreId(),
-                    pageable);
-        }
-        if (currentEmployee.getRole() == EmployeeRole.TeamLeader) {
-            if (currentEmployee.getTeam() == null || currentEmployee.getTeam().getTeamId() == null) {
-                throw new com.th4.edge.framework.exception.DefinedException(
-                        new com.th4.edge.framework.exception.DefaultErrorCode("403", "当前团队负责人未归属团队"));
-            }
-            return employeeRepository.findByCompany_ComIdAndTeam_TeamId(
-                    currentEmployee.getCompany().getComId(),
-                    currentEmployee.getTeam().getTeamId(),
                     pageable);
         }
         return employeeRepository.findByCompany_ComId(

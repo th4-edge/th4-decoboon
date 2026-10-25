@@ -22,7 +22,8 @@ public enum FileScope implements Enumerable<String> {
     Carryover("业务承接"),
     CustomerFollow("客户跟进图片"),
     Document("单据归档"),
-    Content("内容素材");
+    Content("内容素材"),
+    Expense("费用报销证据");
 
     private final String name;
 

@@ -25,7 +25,7 @@ import java.util.List;
         @AllowProperties(model = VoucherRecord.class,
                 properties = {"voucherId", "project", "type", "voucherNo", "title", "templateVersion",
                         "totalAmount", "amountWords", "partyName", "worker", "status", "fileName",
-                        "contentType", "size", "generatedBy", "generatedAt", "items", "url", "urlExpiresAt"}),
+                        "contentType", "size", "sha256", "sourceType", "sourceId", "paymentId", "generatedBy", "generatedAt", "items", "url", "urlExpiresAt"}),
         @AllowProperties(model = VoucherItem.class,
                 properties = {"itemId", "sourceType", "sourceId", "sourceNo", "businessDate",
                         "account", "amount", "category", "remark"}),
@@ -45,6 +45,8 @@ public class Build implements com.th4.edge.decoboon.document.service.voucher.bui
     private List<Long> ledgerIds;
     @AutoInject
     private String presetCode;
+    @AutoInject
+    private Long paymentId;
 
     private final VoucherContext voucherContext;
 
@@ -55,6 +57,7 @@ public class Build implements com.th4.edge.decoboon.document.service.voucher.bui
     @Override
     @Transactional
     public VoucherRecord call(Ledger request) {
+        if (paymentId != null) return voucherContext.buildForPayment(employee, paymentId, presetCode);
         return voucherContext.build(employee, ledgerIds, presetCode);
     }
 }

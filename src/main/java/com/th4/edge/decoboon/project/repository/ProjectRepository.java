@@ -55,12 +55,25 @@ List<Project> findByCompany_ComIdAndCustomer_Store_StoreIdOrderByProjectIdDesc(L
     List<Project> findByCompany_ComIdAndCustomer_Team_TeamIdOrderByProjectIdDesc(Long comId, Long teamId);
 
     Optional<Project> findByProjectIdAndCompany_ComId(Long projectId, Long comId);
+
+    /** 财务项目访问判定：预取客户门店快照，避免 open-in-view=false 时读取门店归属越界。 */
+    @Query("""
+            select p from Project p
+            join fetch p.customer c
+            left join fetch c.store
+            where p.projectId = :projectId and p.company.comId = :comId
+            """)
+    Optional<Project> findScopeDetailByProjectIdAndCompany_ComId(@Param("projectId") Long projectId,
+                                                                 @Param("comId") Long comId);
+
     /**
      * 项目详情预取：仅预取详情响应直接需要的四个聚合根关联。
      * 其余二级关联由 Provider 在只读事务内显式初始化，避免 OSIV=false 时序列化越界。
      */
     @EntityGraph(attributePaths = {"customer", "property", "quote", "designer"})
     Optional<Project> findDetailedByProjectIdAndCompany_ComId(Long projectId, Long comId);
+    @EntityGraph(attributePaths = {"customer", "property", "manager", "designer", "quote"})
+    Optional<Project> findFinanceDetailByProjectIdAndCompany_ComId(Long projectId, Long comId);
 
     /** 项目账本读取：按统一 Specification 取项目，再由账本上下文批量回填财务事实。 */
     default List<Project> findLedgerRows(org.springframework.data.jpa.domain.Specification<Project> specification) {

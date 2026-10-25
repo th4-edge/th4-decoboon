@@ -12,6 +12,7 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,9 +57,10 @@ public class ReceiptRefundContext {
             throw new DefinedException(new DefaultErrorCode("400", "退款金额必须大于 0"));
         }
         FundAccount targetAccount = account == null ? FundAccount.CompanyBank : account;
-        Receipt receipt = receiptRepository.findById(receiptId)
-                .filter(item -> item.getCompany() != null
-                        && current.getCompany().getComId().equals(item.getCompany().getComId()))
+        Specification<Receipt> byId = (root, query, builder) ->
+                builder.equal(root.get("receiptId"), receiptId);
+        Receipt receipt = receiptRepository.findOne(
+                        byId.and(accessContext.visible(current, Receipt.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "原收款不存在或无权访问")));
         String fingerprintBase = String.join("|", "REFUND",
                 String.valueOf(receipt.getReceiptId()), idempotencyContext.amount(paid),
@@ -87,6 +89,7 @@ public class ReceiptRefundContext {
 
         ReceiptRefund refund = new ReceiptRefund();
         accessContext.applyOwnership(refund, current, receipt.getProject());
+        accessContext.applySourceOwnership(refund, receipt);
         refund.setReceipt(receipt);
         refund.setCustomer(receipt.getCustomer());
         refund.setAmount(paid.setScale(2, RoundingMode.HALF_UP));
@@ -109,7 +112,8 @@ public class ReceiptRefundContext {
         accessContext.recordLedger(current, receipt.getProject(), LedgerDirection.Expense,
                 "客户退款", LedgerSource.Refund, saved.getRefundId(), paid, targetAccount,
                 saved.getRefundAt(), receipt.getCustomer() == null ? null : receipt.getCustomer().getName(),
-                "退款 · " + receipt.getProject().getName(), reason);
+                "退款 · " + receipt.getProject().getName(), reason,
+                receipt.getStore(), receipt.getTeam(), receipt.getOwner());
         commissionAdjustmentContext.applyRefund(current, saved);
         return saved;
     }

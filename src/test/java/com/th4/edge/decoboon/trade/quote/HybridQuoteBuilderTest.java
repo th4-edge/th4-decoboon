@@ -66,6 +66,9 @@ class HybridQuoteBuilderTest {
         PackageTemplate template = new PackageTemplate();
         template.setTemplateId(4L);
         template.setCompany(company);
+        template.setCode("PACK-HYBRID");
+        template.setVersion(3);
+        template.setSnapshotHash("hash-v3");
         template.setName("测试套餐");
         template.setArea(new BigDecimal("118"));
         template.setPrice(new BigDecimal("100000"));
@@ -98,6 +101,9 @@ class HybridQuoteBuilderTest {
         assertThat(quote.getMode()).isEqualTo(QuoteMode.Hybrid);
         assertThat(quote.getDesign()).isSameAs(design);
         assertThat(quote.getPackageTemplate()).isSameAs(template);
+        assertThat(quote.getPackageTemplateCode()).isEqualTo("PACK-HYBRID");
+        assertThat(quote.getPackageTemplateVersion()).isEqualTo(3);
+        assertThat(quote.getPackageTemplateSnapshotHash()).isEqualTo("hash-v3");
         assertThat(quote.getProperty()).isSameAs(property);
         ArgumentCaptor<List<QuoteLine>> captor = ArgumentCaptor.forClass(List.class);
         verify(lineRepository).saveAll(captor.capture());
@@ -106,7 +112,13 @@ class HybridQuoteBuilderTest {
         assertThat(lines).extracting(QuoteLine::getDifferenceType)
                 .contains(QuoteDifferenceType.Matched, QuoteDifferenceType.PackageOnly, QuoteDifferenceType.DesignOnly);
         assertThat(lines).filteredOn(line -> line.getDifferenceType() == QuoteDifferenceType.PackageOnly)
-                .allMatch(line -> line.getDifferenceStatus() == QuoteDifferenceStatus.Pending);
+                .allSatisfy(line -> {
+                    assertThat(line.getDifferenceStatus()).isEqualTo(QuoteDifferenceStatus.Pending);
+                    assertThat(line.getPackageSectionNameSnapshot()).isEqualTo("客餐厅");
+                    assertThat(line.getCategory()).isEqualTo("木门");
+                    assertThat(line.getCraft()).isEqualTo("成品安装");
+                    assertThat(line.getCost()).isPositive();
+                });
     }
 
     @Test
@@ -184,6 +196,8 @@ class HybridQuoteBuilderTest {
         item.setType(ItemType.Material);
         item.setCategory(category);
         item.setName(name);
+        item.setType(com.th4.edge.decoboon.catalog.configure.ItemType.Material);
+        item.setCraft("成品安装");
         item.setUnit(com.th4.edge.decoboon.bim.configure.Unit.Area);
         item.setPricingMode(com.th4.edge.decoboon.catalog.configure.PricingMethod.MaterialOnly);
         item.setMaterialPrice(new BigDecimal("100"));
@@ -203,6 +217,11 @@ class HybridQuoteBuilderTest {
         line.setUnit(catalog.getUnit());
         line.setQuantityFactor(new BigDecimal(factor));
         line.setPricingMethod(catalog.getPricingMode());
+        line.setSectionNameSnapshot(section.getName());
+        line.setCatalogTypeSnapshot(catalog.getType());
+        line.setCatalogCategorySnapshot(catalog.getCategory());
+        line.setCraftSnapshot(catalog.getCraft());
+        line.setCostPriceSnapshot(catalog.getCostPrice());
         return line;
     }
 

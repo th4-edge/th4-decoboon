@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.customer.model;
 
+import com.th4.edge.decoboon.quote.model.QuoteGroup;
 import com.th4.edge.framework.core.annotation.Note;
 
 import java.time.LocalDateTime;
@@ -109,6 +110,9 @@ public class CustomerJourney {
         @Note("业务留痕影像") private List<Media> media = new ArrayList<>();
         @Note("区域尺寸") private List<Region> regions = new ArrayList<>();
         @Note("按区域分组的清单") private List<PriceGroup> priceGroups = new ArrayList<>();
+        @Note("统一报价区域投影") private List<QuoteGroup> regionGroups = new ArrayList<>();
+        @Note("统一报价类型投影") private List<QuoteGroup> typeGroups = new ArrayList<>();
+        @Note("服务端是否读取到原始报价行；用于区分空清单与分组暂不可确认") private Boolean hasSourceLines = false;
 
         public String getKey() { return key; }
         public void setKey(String key) { this.key = key; }
@@ -140,6 +144,12 @@ public class CustomerJourney {
         public void setRegions(List<Region> regions) { this.regions = regions; }
         public List<PriceGroup> getPriceGroups() { return priceGroups; }
         public void setPriceGroups(List<PriceGroup> priceGroups) { this.priceGroups = priceGroups; }
+        public List<QuoteGroup> getRegionGroups() { return regionGroups; }
+        public void setRegionGroups(List<QuoteGroup> regionGroups) { this.regionGroups = regionGroups; }
+        public List<QuoteGroup> getTypeGroups() { return typeGroups; }
+        public void setTypeGroups(List<QuoteGroup> typeGroups) { this.typeGroups = typeGroups; }
+        public Boolean getHasSourceLines() { return hasSourceLines; }
+        public void setHasSourceLines(Boolean hasSourceLines) { this.hasSourceLines = hasSourceLines; }
     }
 
     /** 分区事实。 */

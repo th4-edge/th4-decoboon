@@ -119,6 +119,18 @@ public class Quote extends AuditModel {
     @JoinColumn(name = "package_template_id")
     private PackageTemplate packageTemplate;
 
+    @Note("套餐编码快照")
+    @Column(name = "package_template_code", length = 64)
+    private String packageTemplateCode;
+
+    @Note("套餐版本快照")
+    @Column(name = "package_template_version")
+    private Integer packageTemplateVersion;
+
+    @Note("套餐发布快照哈希")
+    @Column(name = "package_template_snapshot_hash", length = 64)
+    private String packageTemplateSnapshotHash;
+
     @Note("报价负责人")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emp_id")
@@ -214,6 +226,10 @@ public class Quote extends AuditModel {
     @Transient
     private List<QuoteGroup> regionGroups;
 
+    @Note("按类型与分类汇总；跨区域同款由服务端合并")
+    @Transient
+    private List<QuoteGroup> typeGroups;
+
     @Note("按施工分项汇总")
     @Transient
     private List<QuoteGroup> constructionGroups;
@@ -250,6 +266,12 @@ public Long getQuoteId() { return quoteId; }
     public void setDesign(Design design) { this.design = design; }
     public PackageTemplate getPackageTemplate() { return packageTemplate; }
     public void setPackageTemplate(PackageTemplate packageTemplate) { this.packageTemplate = packageTemplate; }
+    public String getPackageTemplateCode() { return packageTemplateCode; }
+    public void setPackageTemplateCode(String packageTemplateCode) { this.packageTemplateCode = packageTemplateCode; }
+    public Integer getPackageTemplateVersion() { return packageTemplateVersion; }
+    public void setPackageTemplateVersion(Integer packageTemplateVersion) { this.packageTemplateVersion = packageTemplateVersion; }
+    public String getPackageTemplateSnapshotHash() { return packageTemplateSnapshotHash; }
+    public void setPackageTemplateSnapshotHash(String packageTemplateSnapshotHash) { this.packageTemplateSnapshotHash = packageTemplateSnapshotHash; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
     public Integer getVersion() { return version; }
@@ -292,6 +314,8 @@ public Long getQuoteId() { return quoteId; }
     public void setItems(List<QuoteLine> items) { this.items = items; }
     public List<QuoteGroup> getRegionGroups() { return regionGroups; }
     public void setRegionGroups(List<QuoteGroup> regionGroups) { this.regionGroups = regionGroups; }
+    public List<QuoteGroup> getTypeGroups() { return typeGroups; }
+    public void setTypeGroups(List<QuoteGroup> typeGroups) { this.typeGroups = typeGroups; }
     public List<QuoteGroup> getConstructionGroups() { return constructionGroups; }
     public void setConstructionGroups(List<QuoteGroup> constructionGroups) { this.constructionGroups = constructionGroups; }
     public List<QuoteGroup> getMaterialGroups() { return materialGroups; }

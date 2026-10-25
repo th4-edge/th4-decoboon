@@ -3,6 +3,9 @@ package com.th4.edge.decoboon.catalog.service.items.delete.support;
 import com.th4.edge.decoboon.catalog.context.CatalogContext;
 import com.th4.edge.decoboon.catalog.context.CatalogDetailContext;
 import com.th4.edge.decoboon.catalog.context.CatalogImportReferenceContext;
+import com.th4.edge.decoboon.catalog.context.CatalogMutationContext;
+import com.th4.edge.decoboon.catalog.context.CatalogRevisionContext;
+import com.th4.edge.decoboon.catalog.configure.CatalogRevisionType;
 import com.th4.edge.decoboon.catalog.model.CatalogImportRow;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogImportRowRepository;
@@ -19,7 +22,6 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,7 +37,7 @@ import java.util.List;
 @Properties(allow = @AllowProperties(model = CatalogItem.class,
         properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
                 "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula",
-                "active", "sort", "sourceType"}))
+                "active", "sort", "sourceType", "revision"}))
 @Service("catalog/item/delete")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Delete implements com.th4.edge.decoboon.catalog.service.items.delete.Delete {
@@ -43,6 +45,9 @@ public class Delete implements com.th4.edge.decoboon.catalog.service.items.delet
     @AutoInject
     @NotNull
     private Long itemId;
+
+    @AutoInject
+    private Integer revision;
 
     @User
     private Employee employee;
@@ -52,25 +57,37 @@ public class Delete implements com.th4.edge.decoboon.catalog.service.items.delet
     private final CatalogDetailContext detailContext;
     private final CatalogImportReferenceContext referenceContext;
     private final CatalogImportRowRepository importRowRepository;
+    private final CatalogRevisionContext revisionContext;
+    private final CatalogMutationContext mutationContext;
 
     public Delete(CatalogContext context,
                   CatalogItemRepository repository,
                   CatalogDetailContext detailContext,
                   CatalogImportReferenceContext referenceContext,
-                  CatalogImportRowRepository importRowRepository) {
+                  CatalogImportRowRepository importRowRepository,
+                  CatalogRevisionContext revisionContext,
+                  CatalogMutationContext mutationContext) {
         this.context = context;
         this.repository = repository;
         this.detailContext = detailContext;
         this.referenceContext = referenceContext;
         this.importRowRepository = importRowRepository;
+        this.revisionContext = revisionContext;
+        this.mutationContext = mutationContext;
     }
 
     @Override
-    @Transactional
     public CatalogItem call(CatalogItem request) {
         Employee current = context.requireMaintainer(employee);
+        return mutationContext.execute(current.getCompany().getComId(), itemId, () -> deleteLocked(current));
+    }
+
+    private CatalogItem deleteLocked(Employee current) {
         CatalogItem item = repository.findByItemIdAndCompany_ComId(itemId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "报价项目不存在或无权访问")));
+        if (revision != null && !revision.equals(item.getRevision())) {
+            throw new DefinedException(new DefaultErrorCode("409", "报价项目已被其他人更新，请刷新后重试"));
+        }
 
         String reference = referenceContext.findReference(item);
         if (reference != null) {
@@ -89,6 +106,9 @@ public class Delete implements com.th4.edge.decoboon.catalog.service.items.delet
             importRowRepository.saveAll(importRows);
         }
 
+        detailContext.hydrate(item);
+        revisionContext.nextRevision(item);
+        revisionContext.record(item, current, CatalogRevisionType.Delete);
         detailContext.remove(item);
         repository.delete(item);
         return item;

@@ -9,7 +9,9 @@ public enum CustomerStatusChangeType implements Enumerable<String> {
     Dormant("设为休眠"),
     Restore("恢复跟进"),
     FollowWake("写跟进唤醒"),
-    OwnerChange("变更负责人");
+    OwnerChange("变更负责人"),
+    Lost("标记流失"),
+    RestoreLost("恢复流失客户");
 
     private final String name;
 

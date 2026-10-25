@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.finance.configure.LedgerDirection;
 import com.th4.edge.decoboon.finance.configure.LedgerSource;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.context.FinanceIdempotencyContext;
+import com.th4.edge.decoboon.finance.context.ExpensePaymentContext;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.model.PayableSettlement;
 import com.th4.edge.decoboon.finance.model.Payment;
@@ -19,6 +20,7 @@ import com.th4.edge.decoboon.labor.repository.WorkerRepository;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
+import com.th4.edge.components.lock.DistributedLock;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.exception.DefaultErrorCode;
@@ -30,8 +32,11 @@ import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -102,6 +107,8 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
     private final FinanceIdempotencyContext idempotencyContext;
     private final CarryoverLockContext carryoverLockContext;
     private final WorkerRepository workerRepository;
+    private final ExpensePaymentContext expensePaymentContext;
+    private final DistributedLock distributedLock;
 
     public Save(PaymentRepository paymentRepository,
                 PayableRepository payableRepository,
@@ -109,7 +116,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 FinanceAccessContext accessContext,
                 FinanceIdempotencyContext idempotencyContext,
                 CarryoverLockContext carryoverLockContext,
-                WorkerRepository workerRepository) {
+                WorkerRepository workerRepository,
+                ExpensePaymentContext expensePaymentContext,
+                DistributedLock distributedLock) {
         this.paymentRepository = paymentRepository;
         this.payableRepository = payableRepository;
         this.payableSettlementRepository = payableSettlementRepository;
@@ -117,6 +126,8 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         this.idempotencyContext = idempotencyContext;
         this.carryoverLockContext = carryoverLockContext;
         this.workerRepository = workerRepository;
+        this.expensePaymentContext = expensePaymentContext;
+        this.distributedLock = distributedLock;
     }
 
     @Override
@@ -130,10 +141,29 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
     }
 
     private Payment settleSingle(Payment request, Employee current) {
-        Payable payable = payableRepository.findById(payableId)
-                .filter(item -> item.getCompany() != null
-                        && item.getCompany().getComId().equals(current.getCompany().getComId()))
+        if (payableId == null) {
+            throw new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问"));
+        }
+        String lockKey = "finance-payment-single:" + current.getCompany().getComId() + ":" + payableId;
+        if (!distributedLock.tryLock(lockKey, 1000, 30000)) {
+            throw new DefinedException(new DefaultErrorCode("409", "该应付正在付款，请稍后重试"));
+        }
+        boolean unlockAfterTransaction = registerUnlockAfterCommit(lockKey);
+        try {
+            return settleSingleLocked(request, current);
+        } finally {
+            if (!unlockAfterTransaction) distributedLock.unlock(lockKey);
+        }
+    }
+
+    private Payment settleSingleLocked(Payment request, Employee current) {
+        Specification<Payable> byId = (root, query, builder) ->
+                builder.equal(root.get("payableId"), payableId);
+        Payable payable = payableRepository.findOne(
+                        byId.and(accessContext.visible(current, Payable.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问")));
+        expensePaymentContext.requirePaymentEligible(payable);
+        requireExpensePayee(current, payable);
         BigDecimal paid = accessContext.value(amount);
         if (paid.signum() <= 0) {
             throw new DefinedException(new DefaultErrorCode("400", "付款金额必须大于 0"));
@@ -145,6 +175,10 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         }
         Worker worker = resolveWorker(current);
         String targetPayee = resolvePayeeName(payeeName, worker, payable.getPayeeName());
+        if (ExpensePaymentContext.SOURCE_TYPE.equals(payable.getSourceType())
+                && payable.getPayeeEmployee() != null) {
+            targetPayee = payable.getPayeeEmployee().getName();
+        }
         List<Long> targetIds = List.of(payable.getPayableId());
         String fingerprintBase = fingerprintBase("SINGLE", targetIds, paid, targetAccount, paidAt,
                 targetPayee, workerId, transactionNo);
@@ -185,15 +219,29 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         request.setIdempotencyFingerprint(fingerprint);
         request.setCreatedBy(current);
         accessContext.applyOwnership(request, current, project);
+        accessContext.applySourceOwnership(request, payable);
         Payment saved = saveIdempotently(request);
+
+        PayableSettlement settlement = new PayableSettlement();
+        settlement.setCompany(current.getCompany());
+        settlement.setStore(saved.getStore());
+        settlement.setTeam(saved.getTeam());
+        settlement.setOwner(saved.getOwner());
+        settlement.setPayment(saved);
+        settlement.setPayable(payable);
+        settlement.setAmount(paid);
+        settlement.setRemark(remark);
+        payableSettlementRepository.save(settlement);
 
         payable.setPaidAmount(accessContext.value(payable.getPaidAmount()).add(paid));
         accessContext.refreshPayableStatus(payable);
         payableRepository.save(payable);
+        expensePaymentContext.closeIfPaid(payable);
         accessContext.recordLedger(current, project, LedgerDirection.Expense,
                 payable.getType().getName(), LedgerSource.Payment, saved.getPaymentId(), paid,
                 saved.getAccount(), paidAt, saved.getPayeeName(),
-                "付款 · " + payable.getName(), remark);
+                "付款 · " + payable.getName(), remark,
+                payable.getStore(), payable.getTeam(), payable.getOwner());
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Payment, current);
         return saved;
     }
@@ -215,11 +263,15 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
             throw new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问"));
         }
         Long comId = current.getCompany().getComId();
-        List<Payable> foundPayables = payableRepository.findAllById(requestedIds).stream()
-                .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
-                .toList();
+        Specification<Payable> requested = (root, query, builder) ->
+                root.get("payableId").in(requestedIds);
+        List<Payable> foundPayables = payableRepository.findAll(
+                requested.and(accessContext.visible(current, Payable.class)));
         if (foundPayables.size() != requestedIds.size()) {
             throw new DefinedException(new DefaultErrorCode("404", "应付单不存在或无权访问"));
+        }
+        if (foundPayables.stream().anyMatch(item -> ExpensePaymentContext.SOURCE_TYPE.equals(item.getSourceType()))) {
+            throw new DefinedException(new DefaultErrorCode("400", "费用报销应付只能单独付款"));
         }
         List<Payable> payables = foundPayables.stream()
                 .sorted(Comparator.comparing(Payable::getDueDate,
@@ -228,6 +280,10 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                                 Comparator.nullsLast(Comparator.naturalOrder())))
                 .toList();
         Payable primary = payables.get(0);
+        Long sourceStoreId = storeId(primary);
+        if (payables.stream().anyMatch(item -> !Objects.equals(sourceStoreId, storeId(item)))) {
+            throw new DefinedException(new DefaultErrorCode("400", "所选应付单必须属于同一门店，请拆分付款"));
+        }
         Project project = primary.getProject();
         if (project != null) {
             accessContext.resolveProject(current, project.getProjectId());
@@ -277,6 +333,7 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         request.setIdempotencyFingerprint(fingerprint);
         request.setCreatedBy(current);
         accessContext.applyOwnership(request, current, project);
+        accessContext.applySourceOwnership(request, primary);
         Payment saved = saveIdempotently(request);
 
         BigDecimal remaining = paid;
@@ -288,9 +345,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
             BigDecimal allocate = remaining.min(outstanding);
             PayableSettlement settlement = new PayableSettlement();
             settlement.setCompany(current.getCompany());
-            settlement.setStore(current.getStore());
-            settlement.setTeam(current.getTeam());
-            settlement.setOwner(current);
+            settlement.setStore(saved.getStore());
+            settlement.setTeam(saved.getTeam());
+            settlement.setOwner(saved.getOwner());
             settlement.setPayment(saved);
             settlement.setPayable(payable);
             settlement.setAmount(allocate);
@@ -305,9 +362,21 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
         accessContext.recordLedger(current, project, LedgerDirection.Expense,
                 primary.getType().getName(), LedgerSource.Payment, saved.getPaymentId(), paid,
                 saved.getAccount(), paidAt, saved.getPayeeName(),
-                "付款 · " + primary.getName() + "（核销 " + payables.size() + " 张应付）", remark);
+                "付款 · " + primary.getName() + "（核销 " + payables.size() + " 张应付）", remark,
+                primary.getStore(), primary.getTeam(), primary.getOwner());
         if (carryoverLockContext != null) carryoverLockContext.lock(project, CarryoverBusinessType.Payment, current);
         return saved;
+    }
+
+    private boolean registerUnlockAfterCommit(String lockKey) {
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) return false;
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCompletion(int status) {
+                distributedLock.unlock(lockKey);
+            }
+        });
+        return true;
     }
 
     /** 先 flush 触发数据库唯一约束，再执行应付回写和台账；并发输家不会产生第二套副作用。 */
@@ -319,6 +388,17 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 throw idempotencyContext.conflict();
             }
             throw exception;
+        }
+    }
+
+    private void requireExpensePayee(Employee current, Payable payable) {
+        if (!ExpensePaymentContext.SOURCE_TYPE.equals(payable.getSourceType())
+                || payable.getPayeeEmployee() == null) {
+            return;
+        }
+        if (Objects.equals(payable.getPayeeEmployee().getEmpId(), current.getEmpId())
+                && current.getRole() != com.th4.edge.tenant.user.configure.EmployeeRole.Boss) {
+            throw new DefinedException(new DefaultErrorCode("403", "不能支付本人的报销费用"));
         }
     }
 
@@ -377,4 +457,8 @@ public class Save implements com.th4.edge.decoboon.finance.service.payments.save
                 && ids.size() == 1
                 && ids.get(0).equals(found.getPayable().getPayableId());
     }
+    private Long storeId(Payable payable) {
+        return payable == null || payable.getStore() == null ? null : payable.getStore().getStoreId();
+    }
+
 }

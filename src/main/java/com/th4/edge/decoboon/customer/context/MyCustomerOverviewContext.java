@@ -72,6 +72,7 @@ public class MyCustomerOverviewContext {
     private final CustomerFollowRepository followRepository;
     private final CustomerTagContext tagContext;
     private final CustomerGradeContext gradeContext;
+    private final CustomerLossContext lossContext;
 
     public MyCustomerOverviewContext(CustomerRepository customerRepository,
                                      CustomerPortraitRepository portraitRepository,
@@ -81,7 +82,8 @@ public class MyCustomerOverviewContext {
                                      CustomerInsightContext insight,
                                      CustomerFollowRepository followRepository,
                                      CustomerTagContext tagContext,
-                                     CustomerGradeContext gradeContext) {
+                                     CustomerGradeContext gradeContext,
+                                     CustomerLossContext lossContext) {
         this.customerRepository = customerRepository;
         this.portraitRepository = portraitRepository;
         this.quoteRepository = quoteRepository;
@@ -91,6 +93,7 @@ public class MyCustomerOverviewContext {
         this.followRepository = followRepository;
         this.tagContext = tagContext;
         this.gradeContext = gradeContext;
+        this.lossContext = lossContext;
     }
 
     @Transactional(readOnly = true)
@@ -99,7 +102,8 @@ public class MyCustomerOverviewContext {
                                          Integer requestedSize,
                                          String keyword,
                                          String stage,
-                                         String sort) {
+                                         String sort,
+                                         String followFilter) {
         Long comId = principal.getCompany().getComId();
         Long empId = principal.getEmpId();
         LocalDate today = LocalDate.now();
@@ -112,10 +116,11 @@ public class MyCustomerOverviewContext {
 
         Map<CustStatus, Long> statusCounts = statusCounts(comId, empId);
         report.setStageCounts(stageCounts(comId, empId, statusCounts, today));
+        report.setFollowCounts(followCounts(comId, empId, today));
         report.setMetrics(metrics(comId, empId, statusCounts, today));
 
         Page<Customer> page = customerRepository.findPageForDesigner(
-                scopeSpecification(comId, empId, normalizeStatus(stage), keyword, sort),
+                scopeSpecification(comId, empId, normalizeStatus(stage), keyword, sort, followFilter, today),
                 PageRequest.of(current - 1, size));
         List<Customer> rows = page.getContent();
         assemblePage(rows, comId, today);
@@ -153,6 +158,28 @@ public class MyCustomerOverviewContext {
         result.add(new CustomerStageCount("done", "完工", count(counts, CustStatus.Finished)));
         result.add(new CustomerStageCount("lost", "流失", count(counts, CustStatus.Lost)));
         return result;
+    }
+
+    private List<CustomerStageCount> followCounts(Long comId, Long empId, LocalDate today) {
+        LocalDateTime todayStart = today.atStartOfDay();
+        LocalDateTime tomorrowStart = today.plusDays(1).atStartOfDay();
+        LocalDateTime soonEnd = today.plusDays(4).atStartOfDay();
+        long overdue = customerRepository.countFollowBeforeForDesigner(
+                comId, empId, FOLLOW_OVERDUE_STATUSES, todayStart);
+        long current = customerRepository.countFollowBetweenForDesigner(
+                comId, empId, FOLLOW_OVERDUE_STATUSES, todayStart, tomorrowStart);
+        long soon = customerRepository.countFollowBetweenForDesigner(
+                comId, empId, FOLLOW_OVERDUE_STATUSES, tomorrowStart, soonEnd);
+        long unplanned = customerRepository.countFollowUnplannedForDesigner(
+                comId, empId, FOLLOW_OVERDUE_STATUSES);
+        long all = overdue + current + soon + unplanned;
+        return List.of(
+                new CustomerStageCount("all", "全部待办", Math.toIntExact(all)),
+                new CustomerStageCount("overdue", "已逾期", Math.toIntExact(overdue)),
+                new CustomerStageCount("today", "今日跟进", Math.toIntExact(current)),
+                new CustomerStageCount("soon", "3 天内", Math.toIntExact(soon)),
+                new CustomerStageCount("unplanned", "未安排", Math.toIntExact(unplanned))
+        );
     }
 
     private int count(Map<CustStatus, Long> counts, CustStatus status) {
@@ -208,7 +235,9 @@ public class MyCustomerOverviewContext {
                                                       Long empId,
                                                       CustStatus status,
                                                       String keyword,
-                                                      String sort) {
+                                                      String sort,
+                                                      String followFilter,
+                                                      LocalDate today) {
         String kw = keyword == null ? "" : keyword.trim().toLowerCase(Locale.ROOT);
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -216,7 +245,34 @@ public class MyCustomerOverviewContext {
             predicates.add(cb.or(
                     cb.equal(root.get("owner").get("empId"), empId),
                     cb.equal(root.get("designer").get("empId"), empId)));
-            if (status != null) {
+            String queue = normalizeFollowFilter(followFilter);
+            if (queue != null) {
+                predicates.add(root.get("status").in(FOLLOW_OVERDUE_STATUSES));
+                predicates.add(cb.isNull(root.get("measureRequestedAt")));
+                predicates.add(cb.isNull(root.get("pendingMeasureAt")));
+                predicates.add(cb.isNull(root.get("measureAt")));
+                LocalDateTime todayStart = today.atStartOfDay();
+                LocalDateTime tomorrowStart = today.plusDays(1).atStartOfDay();
+                LocalDateTime soonEnd = today.plusDays(4).atStartOfDay();
+                switch (queue) {
+                    case "overdue" -> {
+                        predicates.add(cb.isNotNull(root.get("nextFollowAt")));
+                        predicates.add(cb.lessThan(root.get("nextFollowAt"), todayStart));
+                    }
+                    case "today" -> {
+                        predicates.add(cb.greaterThanOrEqualTo(root.get("nextFollowAt"), todayStart));
+                        predicates.add(cb.lessThan(root.get("nextFollowAt"), tomorrowStart));
+                    }
+                    case "soon" -> {
+                        predicates.add(cb.greaterThanOrEqualTo(root.get("nextFollowAt"), tomorrowStart));
+                        predicates.add(cb.lessThan(root.get("nextFollowAt"), soonEnd));
+                    }
+                    case "unplanned" -> predicates.add(cb.isNull(root.get("nextFollowAt")));
+                    default -> predicates.add(cb.or(
+                            cb.isNull(root.get("nextFollowAt")),
+                            cb.lessThan(root.get("nextFollowAt"), soonEnd)));
+                }
+            } else if (status != null) {
                 predicates.add(cb.equal(root.get("status"), status));
             }
             if (!kw.isBlank()) {
@@ -257,6 +313,16 @@ public class MyCustomerOverviewContext {
                 cb.desc(root.get("custId")));
     }
 
+    private String normalizeFollowFilter(String followFilter) {
+        if (followFilter == null || followFilter.isBlank() || "all".equalsIgnoreCase(followFilter)) {
+            return followFilter == null || followFilter.isBlank() ? null : "all";
+        }
+        return switch (followFilter.trim()) {
+            case "overdue", "today", "soon", "unplanned" -> followFilter.trim();
+            default -> null;
+        };
+    }
+
     private CustStatus normalizeStatus(String stage) {
         if (stage == null || stage.isBlank()) {
             return null;
@@ -280,6 +346,7 @@ public class MyCustomerOverviewContext {
         if (rows.isEmpty()) {
             return;
         }
+        lossContext.enrich(rows);
         Set<Long> ids = rows.stream().map(Customer::getCustId).collect(Collectors.toSet());
         Map<Long, Quote> latestQuotes = latest(quoteRepository
                 .findByCompany_ComIdAndCustomer_CustIdInOrderByQuoteIdDesc(comId, ids), Quote::getCustomer);

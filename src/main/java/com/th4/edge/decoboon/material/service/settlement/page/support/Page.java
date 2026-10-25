@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.material.service.settlement.page.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
+import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.material.configure.SettlementScope;
 import com.th4.edge.decoboon.material.context.MaterialSettlementContext;
 import com.th4.edge.decoboon.material.model.MaterialSettlement;
@@ -40,17 +42,23 @@ public class Page implements com.th4.edge.decoboon.material.service.settlement.p
 
     @User private Employee employee;
     @AutoInject private Long supplierId;
+    @AutoInject private Long storeId;
 
     private final MaterialSettlementContext context;
+    private final StoreFilterContext storeFilterContext;
 
-    public Page(MaterialSettlementContext context) {
+    public Page(MaterialSettlementContext context, StoreFilterContext storeFilterContext) {
         this.context = context;
+        this.storeFilterContext = storeFilterContext;
     }
 
     @Override
     @Transactional
     public List<MaterialSettlement> call(MaterialSettlement request) {
-        List<MaterialSettlement> rows = context.page(employee, supplierId);
+        Long storeFilter = storeFilterContext.resolve(employee, storeId);
+        List<MaterialSettlement> rows = context.page(employee, supplierId).stream()
+                .filter(row -> StoreScope.inStore(StoreScope.storeIdOf(row.getStore()), storeFilter))
+                .toList();
         // 关闭 OSIV 时也要能序列化供应商摘要（只触碰 response 实际使用字段）。
         rows.forEach(row -> {
             if (row.getSupplier() != null) {

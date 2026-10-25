@@ -215,6 +215,10 @@ public class CatalogItem extends AbstractModel {
     @Column(nullable = false)
     private Integer sort = 0;
 
+    @Note("有效修订号")
+    @Column(nullable = false)
+    private Integer revision = 1;
+
     public Long getItemId() { return itemId; }
     public void setItemId(Long itemId) { this.itemId = itemId; }
     public Company getCompany() { return company; }
@@ -283,4 +287,6 @@ public class CatalogItem extends AbstractModel {
     public void setActive(Boolean active) { this.active = active; }
     public Integer getSort() { return sort; }
     public void setSort(Integer sort) { this.sort = sort; }
+    public Integer getRevision() { return revision; }
+    public void setRevision(Integer revision) { this.revision = revision; }
 }

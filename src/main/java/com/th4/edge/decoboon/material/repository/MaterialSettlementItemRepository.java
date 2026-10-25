@@ -13,6 +13,8 @@ public interface MaterialSettlementItemRepository extends JpaRepository<Material
 
     List<MaterialSettlementItem> findBySettlement_SettlementIdOrderBySettlementItemIdAsc(Long settlementId);
 
+    /** 成本投影批量读取：预取结算头状态与采购明细，避免循环内懒加载。 */
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = {"settlement", "purchaseItem"})
     List<MaterialSettlementItem> findByPurchaseItem_PurchaseItemIdIn(Collection<Long> purchaseItemIds);
 
     boolean existsByCompany_ComIdAndPurchaseItem_PurchaseItemId(Long comId, Long purchaseItemId);

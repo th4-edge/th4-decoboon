@@ -27,7 +27,7 @@ import jakarta.persistence.UniqueConstraint;
 
 import java.time.LocalDateTime;
 
-/** 客户休眠/恢复状态变更日志，不可承载或修改业务金额。 */
+/** 客户状态变更日志，不可承载或修改业务金额。 */
 @Note("客户状态变更日志")
 @Model
 @EntityListeners(SnowflakeEntityListener.class)
@@ -76,7 +76,7 @@ public class CustomerStatusLog extends AuditModel {
     @Note("原因编码")
     private CustomerDormantReason reasonCode;
 
-    @Column(name = "reason_text", length = 200)
+    @Column(name = "reason_text", length = 500)
     @Note("原因说明")
     private String reasonText;
 

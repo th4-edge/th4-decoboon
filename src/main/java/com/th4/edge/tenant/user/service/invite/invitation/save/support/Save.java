@@ -32,11 +32,13 @@ public class Save implements com.th4.edge.tenant.user.service.invite.invitation.
     @AutoInject @Length(max = 15) private String inviteName;
     @AutoInject @Length(max = 20) private String invitePhone;
     @AutoInject private EmployeeRole role;
+    /** 财务邀请目标门店：BOSS 必填；店长只能传本店或不传。 */
+    @AutoInject private Long storeId;
     @AutoInject private Long teamId;
     @AutoInject @Length(max = 128) private String teamName;
     private final TenantContext tenantContext;
     private final MembershipContext membershipContext;
     public Save(TenantContext tenantContext, MembershipContext membershipContext) { this.tenantContext = tenantContext; this.membershipContext = membershipContext; }
     @Override @Transactional
-    public Invite call(Employee request) { return membershipContext.createInvite(tenantContext.requireEmployee(employee), inviteName, invitePhone, role, teamId, teamName); }
+    public Invite call(Employee request) { return membershipContext.createInvite(tenantContext.requireEmployee(employee), inviteName, invitePhone, role, storeId, teamId, teamName); }
 }

@@ -7,6 +7,7 @@ import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.framework.data.jpa.id.snowflake.annotation.SnowflakeId;
 
 import com.th4.edge.decoboon.common.model.AuditModel;
+import com.th4.edge.decoboon.plan.configure.StageAcceptanceMode;
 import com.th4.edge.decoboon.project.configure.StageStatus;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.field.annotation.LogicField;
@@ -109,6 +110,11 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal weight = BigDecimal.ZERO;
 
+    @Note("阶段验收模式（合同施工计划快照继承；历史来源缺失时为空）")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "acceptance_mode", length = 24)
+    private StageAcceptanceMode acceptanceMode;
+
     @Note("阶段状态")
     @Enumerated(EnumType.STRING)
     @Column(length = 16, nullable = false)
@@ -194,6 +200,14 @@ public class ProjectStage extends AuditModel implements ProjectOwned {
 
     public void setWeight(BigDecimal weight) {
         this.weight = weight;
+    }
+
+    public StageAcceptanceMode getAcceptanceMode() {
+        return acceptanceMode;
+    }
+
+    public void setAcceptanceMode(StageAcceptanceMode acceptanceMode) {
+        this.acceptanceMode = acceptanceMode;
     }
 
     public StageStatus getStatus() {

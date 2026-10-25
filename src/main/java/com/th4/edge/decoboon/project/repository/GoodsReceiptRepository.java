@@ -7,4 +7,5 @@ import java.util.List;
 public interface GoodsReceiptRepository extends JpaRepository<GoodsReceipt,Long>,
         JpaSpecificationExecutor<GoodsReceipt>{
  List<GoodsReceipt> findByPurchaseOrderByReceiptIdDesc(PurchaseOrder purchase);
+ List<GoodsReceipt> findByPurchase_Project_ProjectIdOrderByReceiptIdDesc(Long projectId);
 }

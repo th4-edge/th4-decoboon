@@ -92,6 +92,14 @@ class MigrationSchemaParityTest {
                 .isEmpty();
     }
 
+    @Test
+    void customerLossMigrationMustNormalizeStatusLogForLostAndLongReason() throws Exception {
+        String sql = Files.readString(MIGRATION_DIR.resolve("131-客户流失业务.sql"), StandardCharsets.UTF_8)
+                .toLowerCase(Locale.ROOT);
+        assertThat(sql).contains("modify column change_type varchar(24)");
+        assertThat(sql).contains("modify column reason_text varchar(500)");
+    }
+
     private Map<String, Set<String>> entityColumnsFromH2() throws Exception {
         Map<String, Set<String>> result = new HashMap<>();
         try (Connection connection = dataSource.getConnection();

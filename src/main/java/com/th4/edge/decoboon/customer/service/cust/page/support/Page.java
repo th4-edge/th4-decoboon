@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.customer.service.cust.page.support;
 
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.context.CustomerGradeContext;
+import com.th4.edge.decoboon.customer.context.CustomerLossContext;
 import com.th4.edge.decoboon.customer.context.CustomerTagContext;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
@@ -57,6 +58,8 @@ import com.th4.edge.decoboon.common.context.StoreScope;
                 properties = {"custId", "name", "telNo", "gender", "source", "community", "addr", "area",
                         "budget", "status", "statusBeforeDormant", "dormantReason", "dormantReasonText", "dormantAt", "dormantBy", "restoredAt", "restoredBy", "owner", "wechatAdded", "wechatNo", "wechatAddedAt", "visitCount", "lastVisitAt", "lastFollowAt",
                         "nextFollowAt", "pendingMeasureAt", "measureAt", "measureRequestedAt", "handedOffAt", "designer", "createTime",
+                        "lossId", "lossScope", "lossStage", "lossReason", "lossReasonText", "competitorName", "lostAt", "lostBy",
+                        "lossPropertyId", "lossPropertyName", "lossFromStatus", "activeLossCount", "partialLoss",
                         "tags", "grade",
                         // 门店归属（DEC-070 单一事实源=客户门店）：BOSS「全部客户」需要按门店解释每一行，
                         // 并标注「未归属门店」；只给摘要（storeId/name），不展开门店其他字段（响应体最小白名单）。
@@ -104,6 +107,7 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
     private final CustomerTagContext tagContext;
     private final StoreFilterContext storeFilterContext;
     private final CustomerGradeContext gradeContext;
+    private final CustomerLossContext lossContext;
 
     public Page(TenantContext tenantContext,
                 DataScopeContext dataScopeContext,
@@ -113,7 +117,8 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
                 PropertyRepository propertyRepository,
                 MeasureRepository measureRepository,
                 CustomerTagContext tagContext,
-                CustomerGradeContext gradeContext, StoreFilterContext storeFilterContext) {
+                CustomerGradeContext gradeContext, StoreFilterContext storeFilterContext,
+                CustomerLossContext lossContext) {
         this.tenantContext = tenantContext;
         this.dataScopeContext = dataScopeContext;
         this.customerRepository = customerRepository;
@@ -124,6 +129,7 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
         this.tagContext = tagContext;
         this.storeFilterContext = storeFilterContext;
         this.gradeContext = gradeContext;
+        this.lossContext = lossContext;
     }
 
     @Override
@@ -166,6 +172,7 @@ public class Page implements com.th4.edge.decoboon.customer.service.cust.page.Pa
     /** 批量装配标签与分级（只读投影），避免 N+1。 */
     private void assemble(Long comId, List<Customer> content) {
         if (comId == null || content.isEmpty()) return;
+        lossContext.enrich(content);
         List<Long> customerIds = content.stream()
                 .map(Customer::getCustId)
                 .filter(java.util.Objects::nonNull)

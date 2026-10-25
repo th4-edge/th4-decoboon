@@ -274,6 +274,23 @@ public class ProjectAccessContext {
         throw new DefinedException(new DefaultErrorCode("403", "只有企业负责人、店长、项目经理或项目设计师可以发起增减项"));
     }
 
+    /**
+     * 现场日报/动态发布：项目经理主责，企业负责人和本店店长可兜底。
+     *
+     * <p>设计师、财务、业务员只读；业主可见性仍由服务端额外裁剪。该门禁与
+     * `DEC-088 / BR-054` 的动作矩阵一致。</p>
+     */
+    public Employee requireReportPublisher(Employee employee) {
+        Employee current = requireEmployee(employee);
+        if (current.getRole() == EmployeeRole.Boss
+                || current.getRole() == EmployeeRole.Pm
+                || current.getRole() == EmployeeRole.StoreManager) {
+            return current;
+        }
+        throw new DefinedException(new DefaultErrorCode(
+                "403", "只有项目经理、企业负责人或店长可以发布现场日报"));
+    }
+
     /** 项目是否属于当前店长的门店（优先取项目自身归属，回退客户门店）。 */
     private boolean sameStore(Project project, Employee current) {
         Long storeId = current.getStore() == null ? null : current.getStore().getStoreId();
