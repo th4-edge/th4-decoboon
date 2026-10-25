@@ -100,3 +100,6 @@ docs/acceptance/**/*.headers
 docs/acceptance/**/SHA256SUMS
 docs/acceptance/**/evidence/**/*.java
 输出/
+docs/operations/incidents/**/raw.txt
+docs/acceptance/**/*.cjs
+docs/product/**/evidence/**/*.png
