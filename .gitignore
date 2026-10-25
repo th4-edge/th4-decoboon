@@ -76,3 +76,11 @@ screenshots/
 docs/acceptance/**/screenshots/
 docs/acceptance/**/*.log
 docs/acceptance/**/*.tsv
+*.out
+*.gz
+*.sha256
+*.err
+*.diff
+docs/acceptance/**/*.txt
+docs/acceptance/**/*.png
+docs/acceptance/**/*.jpg
