@@ -103,3 +103,46 @@
 - 390×844、430×932、375×812 微信运行时检查。
 - 空态、错误态、部分同步、长内容与极端数值。
 - 预览写动作逐项交互验证、真机/体验版和独立验收。
+
+## PROJ-STATE-D1 阶段验收模式继承（2026-10-22）
+
+- 批次：`PROJ-STATE-D1`
+- 状态：`DEV_VERIFIED`（开发自测通过，未独立验收）
+- 业务来源：`DEC-087 / BR-053 / T12-BIZ-20261022-008`
+
+### 实现
+
+- `ProjectStage.acceptanceMode`：可空枚举，历史来源缺失为 `null`。
+- `ProjectContext.generateFromConstructionPlan`：立项时复制合同阶段快照模式。
+- 项目与业主阶段 Provider 返回 `acceptanceMode`。
+- App 阶段详情/计划、Web PM 工作面显示“无需验收 / 施工完成 / 业主验收 / 待核验”。
+- 迁移 `125-项目阶段验收模式.sql`：按 `project_stage_id` 回填；无可靠关联不猜测。
+- `scripts/build-release.sh` 的 `MIGRATION_END` 上调至 125。
+
+### 验证
+
+- 后端编译 PASS。
+- 隔离定向测试：`DecoboonClosedLoopTest`、`ProjectPlanFromScheduleTest`、`MigrationNumberingTest`、`DetailResponseWhitelistContractTest` PASS。
+- App `type-check`、`build:mp-weixin` PASS。
+- Web `type-check`、`build` PASS。
+- 证据：`docs/acceptance/runs/20261022-proj-state-d1/README.md`
+- MySQL 8.4 隔离库：125 前向、回填和回滚 PASS。
+- 真实 Provider：业主阶段列表/详情、员工阶段分页均返回 `None / AcceptanceDone / ConstructionDone / null`。
+- Web 真实渲染：页面显示四种验收方式状态并留存截图。
+
+### 未完成
+
+- 125 尚未在完整 dev/test 数据库执行并登记迁移账本；当前完整验收库列由 ddl-auto 同步，不能替代迁移账本。
+- Web 真实页面已回读；App 真机、跨端独立验收尚未完成。
+- 独立验收未执行，D2-D5 未开始。
+
+## PD-X1 实施记录（2026-10-23 / DEV_VERIFIED）
+
+- 后端：新增 `ProjectAccessContext.requireReportPublisher`，`project/report/save` 收紧为 PM/BOSS/本店店长；`ProjectReportPublisherAccessTest + ProjectReportPublisherProviderTest` 4/4、`TaskNodeSaveAcceptanceTest` 13/13、`ProjectPlanFromScheduleTest` 1/1、`ProjectReportStoreManagerScopeTest` 1/1 PASS。
+- Web：新增 `ProjectExecutionView.vue` 与 `/workbench/project-execution`，覆盖任务排期调整、三类节点留证、日报发布和失败重试；Designer/Pm/Boss/StoreManager 静态可达。
+- Web API：新增 `project/task/info`、`project/task/save` 排期适配、`project/task-node/save`、`project/report/save` 调用。
+- App：`act:report` 从 Designer 移除、补到 StoreManager；PM/BOSS 保持。
+- 验证：Web type-check/build、工作台/路由/权限/动作/表单/状态/页面系统检查 PASS；App type-check、动作契约、mp-weixin 构建、分包检查 PASS；Playwright 1440×900/1024×768 夹具渲染与节点/日报对话框状态检查 PASS。
+- 后端干净基线全量 930 项：0 failures、1 个既有 `OwnerClosureAcceptanceTest` 并发瞬时错误；该用例单独重跑 PASS；`ProviderSecurityAcceptanceTest` 3/3 PASS。
+- 未完成：真实角色写入/回滚、真实 Provider 页面证据、独立验收。App `check:ui` 被并行存量 `src/App.vue` 直接调用 `uni.showModal` 阻断。
+

@@ -1,0 +1,23 @@
+{
+  "route": "payroll/sheet/build",
+  "http": 200,
+  "response": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-10-23 18:48:21"
+      },
+      "sheetId": "239339157674000384",
+      "period": "2026-12",
+      "status": {
+        "name": "草稿",
+        "key": "Draft"
+      },
+      "attendanceComplete": false,
+      "commissionComplete": false,
+      "totalGrossAmount": 21000.0,
+      "totalDeductionAmount": 0.0,
+      "totalNetAmount": 21000.0
+    },
+    "success": true
+  }
+}

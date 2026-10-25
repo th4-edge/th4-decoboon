@@ -1,0 +1,67 @@
+{
+  "at": "2026-10-21T15:32:40.050Z",
+  "projectId": "236266510782300160",
+  "systemInfo": {
+    "brand": "devtools",
+    "model": "Mac 13-inch and below",
+    "system": "macOS 10.14.3",
+    "platform": "devtools",
+    "benchmarkLevel": -1,
+    "pixelRatio": 2,
+    "screenWidth": 375,
+    "screenHeight": 667,
+    "windowWidth": 375,
+    "windowHeight": 667,
+    "statusBarHeight": 20,
+    "safeArea": {
+      "top": 20,
+      "left": 0,
+      "right": 375,
+      "bottom": 667,
+      "width": 375,
+      "height": 647
+    },
+    "language": "zh_CN",
+    "version": "8.0.5",
+    "fontSizeSetting": 16,
+    "SDKVersion": "3.17.3",
+    "host": {
+      "env": "WeChat"
+    },
+    "enableDebug": false,
+    "mode": "default",
+    "deviceOrientation": "portrait",
+    "bluetoothEnabled": true,
+    "locationEnabled": true,
+    "wifiEnabled": true,
+    "albumAuthorized": true,
+    "cameraAuthorized": true,
+    "locationAuthorized": true,
+    "microphoneAuthorized": true,
+    "notificationAuthorized": true,
+    "notificationAlertAuthorized": true,
+    "notificationBadgeAuthorized": true,
+    "notificationSoundAuthorized": true,
+    "phoneCalendarAuthorized": true,
+    "bluetoothAuthorized": true,
+    "locationReducedAccuracy": true,
+    "devicePixelRatio": 2
+  },
+  "pageKeys": [
+    "material-plan"
+  ],
+  "semanticScope": "business content excluding preview chrome, owner-private feedback, share/write actions and tabbar",
+  "results": [
+    {
+      "key": "material-plan",
+      "path": "/subpackages/project/pages/owner-material-plan",
+      "sameText": true,
+      "previewLength": 706,
+      "ownerLength": 706,
+      "previewScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/preview/material-plan.png",
+      "ownerScreenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-ui-v2-c/screenshots/owner/material-plan.png",
+      "textDiffHint": ""
+    }
+  ],
+  "outcome": "PASS"
+}

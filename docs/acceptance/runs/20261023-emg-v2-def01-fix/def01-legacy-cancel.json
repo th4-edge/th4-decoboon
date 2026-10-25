@@ -1,0 +1,24 @@
+{
+  "route": "invite/invitation/cancel",
+  "http": 200,
+  "response": {
+    "data": {
+      "inviteId": "1792687401274365047",
+      "inviteName": "验收本店财务",
+      "telNo": "13992000002",
+      "role": {
+        "name": "财务",
+        "value": "Finance",
+        "key": "Finance"
+      },
+      "status": {
+        "name": "已取消",
+        "value": "Cancelled",
+        "key": "Cancelled"
+      },
+      "expireTime": "2026-10-30 00:43:21",
+      "cancelledAt": "2026-10-23 01:16:19"
+    },
+    "success": true
+  }
+}

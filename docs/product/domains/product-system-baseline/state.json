@@ -1,0 +1,597 @@
+{
+  "schemaVersion": 1,
+  "domain": "product-system-baseline",
+  "title": "装得清产品体系基线",
+  "northStar": "以角色、业务域、功能、对象概念和跨端展示的同源基线，支撑产品持续扩展、变更影响识别与规则一致性",
+  "owner": "codex",
+  "phase": "PLAN_READY",
+  "batch": "B2E-PI-017-D2",
+  "nextAction": "COST-D2 计划完成，等待用户明确授权编码；COST-D1 ACCEPTED，COST-D3~D5 未授权，GAP-071 OPEN，不发布",
+  "openDecisions": [
+    {
+      "id": "RQ-04",
+      "question": "合同、财务高危、工资单、验收确认等高风险动作完整主体矩阵",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "RQ-05",
+      "question": "业主、工人、供应商自助身份及业主 Web 入口",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    }
+  ],
+  "blockers": [
+    "高风险动作完整主体矩阵待业务裁决",
+    "外部主体身份边界待业务裁决",
+    "三仓工作区未完成分域提交，不能整体打包为发布候选",
+    "EXPENSE-D5 受 GAP-070 阻塞"
+  ],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md",
+    "roleMatrix": "01a-role-matrix-v0.2.md",
+    "businessConsultation": "../../consultations/REQ-BIZ-20261022-001-角色体系与跨端职责边界.md",
+    "multiRoleAnalysis": "01b-one-person-multi-role-analysis.md",
+    "financeRoleAnalysis": "01c-finance-role-model-analysis.md",
+    "issueGovernance": "../../issue-governance/registry.json",
+    "financeIssue": "../../issue-governance/issues/PI-20261022-001-总部财务与门店财务门店维度未闭环.md",
+    "decisionRegister": "../../decisions/registry.json",
+    "teamLeaderIssue": "../../issue-governance/issues/PI-20261022-002-TeamLeader冻结后的存量角色与技术收口.md",
+    "businessArchitecture": "02-business-operation-architecture-v0.1.md",
+    "eopStandardAssets": "02a-eop-enterprise-standard-assets-v0.1.md",
+    "eopMasterData": "02b-eop-master-data-and-operating-standards-v0.1.md",
+    "enterpriseManagement": "02c-emg-enterprise-management-v0.1.md",
+    "quoteUnifiedView": "03-quote-unified-view-concept-v0.1.md",
+    "unifiedObjectViewStandard": "04-unified-business-object-view-standard-v0.1.md",
+    "projectFactTrace": "05-project-fact-trace-design-v0.1.md",
+    "contractFactTrace": "06-contract-fact-trace-design-v0.1.md",
+    "unifiedObjectImplementation": "07-unified-object-view-implementation-plan-v0.1.md",
+    "bizCustomerMeasure": "02d-biz-operations-a-customer-measure-v0.1.md",
+    "bizDesignQuoteContract": "02e-biz-operations-a-design-quote-contract-v0.1.md",
+    "bizProjectDelivery": "02f-biz-operations-b-project-delivery-v0.1.md",
+    "projectAcceptanceLifecycleIssue": "../../issue-governance/issues/PI-20261022-014-项目阶段验收模式与停工复工生命周期.md",
+    "projectMaterialCrossSurfaceIssue": "../../issue-governance/issues/PI-20261022-015-项目履约与主材作业单跨端闭环.md",
+    "finOperationsMatrix": "02g-fin-operations-matrix-v0.1.md",
+    "financeWriteGovernanceIssue": "../../issue-governance/issues/PI-20261022-016-财务写路径来源与门店高危动作收口.md",
+    "projectCostProfitIssue": "../../issue-governance/issues/PI-20261022-017-项目成本实际毛利与应计口径.md",
+    "expenseReimbursementIssue": "../../issue-governance/issues/PI-20261022-018-企业费用与员工报销独立闭环.md",
+    "fulfillmentSlices": "08-pi-20261022-015-cross-surface-fulfillment-slices-v0.1.md",
+    "expenseReimbursementRequest": "../../../../推广营销/装得清业务智能体/02-采集与咨询/REQ-BIZ-20261022-012-企业费用与员工报销独立闭环咨询.md",
+    "expenseReimbursementAnswer": "../../../../推广营销/装得清业务智能体/02-采集与咨询/答复/ANS-BIZ-20261022-012-企业费用与员工报销独立闭环答复单.md",
+    "expenseReimbursementHandoff": "../../../../推广营销/装得清业务智能体/02-采集与咨询/T12-BIZ-20261022-012-企业费用与员工报销独立闭环研发交接.md",
+    "expenseReimbursementBlueprint": "03a-expense-reimbursement-blueprint-v0.1.json",
+    "expenseReimbursementD1Task": "EXPENSE-D1-费用对象与审批研发任务.md",
+    "expenseD1DevEvidence": "../../acceptance/runs/20261022-expense-d1/01-dev-evidence.md",
+    "expenseD1AcceptanceRunbook": "../../acceptance/runs/20261022-expense-d1/README.md",
+    "expenseD1AcceptanceRecord": "../../acceptance/runs/20261022-expense-d1/02-acceptance-record.md",
+    "expenseD1AcceptanceEvidence": "../../acceptance/runs/20261022-expense-d1/evidence/round2",
+    "finWriteD2FullTest": "../../acceptance/runs/20261022-fin-write-d2/04-full-test-green.md",
+    "threeSurfaceConvergence": "../../acceptance/runs/20261023-three-surface-convergence/README.md",
+    "costD1Acceptance": "../../../acceptance/runs/20261023-cost-d1-independent/README.md",
+    "costD1AcceptanceEvidence": "../../../acceptance/runs/20261023-cost-d1-independent",
+    "expenseReimbursementD2Task": "EXPENSE-D2-审批应付付款核销研发任务.md",
+    "expenseD2DevEvidence": "../../acceptance/runs/20261022-expense-d1/04-dev-evidence-d2.md",
+    "expenseD2AcceptanceRecord": "../../acceptance/runs/20261022-expense-d1/03-acceptance-record-d2.md",
+    "expenseD2AcceptanceEvidence": "../../acceptance/runs/20261022-expense-d1/evidence/d2/round3-independent-20261023",
+    "expenseD3DevEvidence": "../../acceptance/runs/20261022-expense-d1/05-dev-evidence-d3.md",
+    "expenseD3AcceptanceRunbook": "../../acceptance/runs/20261022-expense-d1/06-acceptance-runbook-d3.md",
+    "expenseD3AcceptanceRecord": "../../acceptance/runs/20261022-expense-d1/07-acceptance-record-d3.md",
+    "expenseD3AcceptanceEvidence": "../../acceptance/runs/20261022-expense-d1/evidence/d3/independent-reacceptance-20261023"
+  },
+  "createdAt": "2026-10-22T20:52:09+08:00",
+  "updatedAt": "2026-10-23T19:08:09+08:00",
+  "history": [
+    {
+      "at": "2026-10-22T20:52:09+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-22T20:54:03+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B0",
+      "note": "B0 charter、四个场景、角色矩阵 v0.1 与 T05 咨询单完成，停在 BIZ_ALIGNED 门禁前"
+    },
+    {
+      "at": "2026-10-22T20:58:55+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "回写用户裁决：材料/履约统一归 Finance；App/Web 能力强制边界一致完整。新增一人多岗底层分析；旧 TeamLeader Web 冻结边界标记为与新裁决冲突"
+    },
+    {
+      "at": "2026-10-22T21:02:12+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "用户正式冻结普通员工多岗：单主岗 + BOSS 超集 + 项目责任关系；员工多岗模型不再作为当前方案"
+    },
+    {
+      "at": "2026-10-22T21:05:27+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成企业财务/门店财务角色专项分析：确认单 Finance 角色派生 Company/Store，识别门店列表、账号归属、默认总店和跨端门店维度断点"
+    },
+    {
+      "at": "2026-10-22T21:11:47+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "建立产品问题长期治理台账；财务门店维度问题剥离为 PI-20261022-001，专项会话 01a163bb-6490-7af0-bb73-5515d67856c0 已启动 T05"
+    },
+    {
+      "at": "2026-10-22T21:23:28+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "用户确认 TeamLeader 角色冻结，后续不考虑该角色应用；目标角色改为六类，历史枚举保留；新增 PI-20261022-002 专项会话 01a163c7-d470-7702-957b-898e5d05fc09"
+    },
+    {
+      "at": "2026-10-22T21:29:36+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "新增业务分类与经营矩阵 v0.1：EOP 企业运营、EMG 企业管理、BIZ 业务运营、FIN 财务运营；角色矩阵降为权限对账层"
+    },
+    {
+      "at": "2026-10-22T21:32:16+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成企业运营五类标准资产矩阵：报价项目库、套餐模板、付款/施工计划模板、单据凭证模板；识别套餐模板无状态/版本、三类模板缺 Web 管理、角色所有权不统一等结构问题"
+    },
+    {
+      "at": "2026-10-22T21:35:59+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成企业主数据、经营目标指标字典与设计模版方案库边界分析：确认采购主数据与采购业务分层、指标字典与目标事实分层、设计模版属可复用标准；识别供应商价格双模型、Web 主数据缺失、设计模版 App/Web 冲突"
+    },
+    {
+      "at": "2026-10-22T21:39:31+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "B2A-1",
+      "note": "REQ-BIZ-20261022-004 已取得 ANS-BIZ/T12/DEC-083/BR-051；核心切片可研发，GAP-063 非阻塞"
+    },
+    {
+      "at": "2026-10-22T21:40:24+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成企业管理矩阵：企业主体双端基本一致；门店/团队/员工/订阅/审计存在跨端和管理闭环缺口；TeamLeader 冻结使团队生命周期需重新裁决"
+    },
+    {
+      "at": "2026-10-22T22:07:47+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成获客、客户、房屋与量房矩阵：确认 LeadTouch 与平台线索边界、客户生命周期状态、房屋唯一业务根、量房和原始区域实测口径；识别内容跨端缺失及客户/房屋/量房事实链不完整"
+    },
+    {
+      "at": "2026-10-22T22:10:09+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "内容获客矩阵按用户决定搁置到 PI-20261022-012；客户/房屋/量房事实链继续保留；主梳理进入设计/报价/合同"
+    },
+    {
+      "at": "2026-10-22T22:11:02+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成设计方案、报价、合同矩阵：确认设计版本/报价版本/合同基线+变更历史的对象语义；识别设计版本按客户累计、报价缺显式上一版、合同无独立版本等版本链问题"
+    },
+    {
+      "at": "2026-10-22T22:19:22+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2C-1",
+      "note": "接收 ANS-BIZ-20261022-007 / T12-BIZ-20261022-007 / DEC-086 / BR-052；5 个阻塞问题已冻结，PI-010 状态回写 BIZ_ALIGNED；GAP-065 保持打开，尚未编码或验收"
+    },
+    {
+      "at": "2026-10-22T22:19:39+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2C-1",
+      "note": "B2C-1 业务回写完成；按协议不跳过蓝图/计划门禁，下一步仍为文档批次"
+    },
+    {
+      "at": "2026-10-22T22:21:33+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "B2C-1",
+      "note": "U1 蓝图 0.2.0 已建立 Quote/REGION/TYPE/场景/合同/项目/PDF 节点，节点均有 DEC-086/BR-052 来源；JSON 解析和对账行通过"
+    },
+    {
+      "at": "2026-10-22T22:21:33+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B2C-1",
+      "note": "UOV-V1~V6 垂直切片、依赖、退出条件、回滚和门禁已冻结；当前不启动编码，GAP-065 保持打开"
+    },
+    {
+      "at": "2026-10-22T22:21:48+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B2C-1",
+      "note": "B2C-1 BIZ_ALIGNED→BLUEPRINT_READY→PLAN_READY 门禁证据已落入 02-business-sync、03-blueprint、04-requirements、05-plan、10-reconciliation；当前仅文档冻结，不编码"
+    },
+    {
+      "at": "2026-10-22T22:23:29+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2D",
+      "note": "完成项目、施工、材料、变更、验收履约矩阵：确认合同生效唯一立项、阶段/任务/节点三层施工、变更审批即生效、作业单/采购/到场/结算链与业主验收轮次；识别阶段验收模式丢失、停工复工无业务动作、App/Web 履约能力差集、作业单 Settled/Closed 未回写及独立退换货路径未冻结。新增 PI-20261022-014/015 专项会话，不进入编码"
+    },
+    {
+      "at": "2026-10-22T22:27:45+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2D-PI-014",
+      "note": "PI-20261022-014 取得 ANS-BIZ-20261022-008/T12-BIZ-20261022-008，冻结 DEC-087/BR-053；回写 02f 与对账矩阵，未修改代码、权限、DDL 或状态机"
+    },
+    {
+      "at": "2026-10-22T22:30:07+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2E",
+      "note": "完成财务运营矩阵：映射合同→应收→收款/退款/冲正→台账、采购/工资/费用→应付→付款→核销、项目成本/结算、员工薪酬、凭证、期初与历史承接；确认财务边界和门店派生规则，识别财务按ID写入门店范围/来源门禁缺口、P1/P2/P3与实际毛利口径冲突、企业费用报销缺独立对象、App/Web高危动作与期初/账龄差集。新增 PI-20261022-016/017/018 专项会话，不进入编码"
+    },
+    {
+      "at": "2026-10-22T22:32:54+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2D-1",
+      "note": "PI-20261022-015 已取得 ANS/T12-BIZ-20261022-009、DEC-088、BR-054 和 GAP-067；形成 PD-X1/MAT-X1/MAT-X2/MAT-X3/TRACE-M1/SUP-X1 独立研发切片，仍不授权编码"
+    },
+    {
+      "at": "2026-10-22T22:33:50+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2E",
+      "note": "PI-20261022-017 提交 REQ-BIZ-20261022-017（EV-401/402），只读核对确认 P1 实际成本回退、无采购不判不完整、多处 max(actualCost,payableCost) 与读取面分叉；等待 T06/T12，未修改代码/金额公式/权限/DDL/历史快照"
+    },
+    {
+      "at": "2026-10-22T23:12:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2E-PI-016",
+      "note": "PI-20261022-016 取得 ANS/T12-BIZ-20261022-010，冻结 DEC-089/BR-055：手工应收仅其他应收、手工应付仅其他应付/费用支出，自动来源唯一；按 ID 写路径统一目标门店；店长本店生成凭证；收款冲正/期初/账龄双端强制。补充 ledger update、retention-release、OpeningBalance 无门店三项缺口；用户已要求进入实现，当前仅授权 FIN-WRITE-D2，DDL 待单独确认"
+    },
+    {
+      "at": "2026-10-22T23:25:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2E-PI-018",
+      "note": "PI-20261022-018 取得 ANS/T12-BIZ-20261022-012，冻结 DEC-091/BR-057：独立 Expense 统一企业直付/员工报销，审批唯一确认成本并生成应付，付款/凭证复用现有链路，财务不得自审自付，App/Web 动作级完整；形成 EXPENSE-D1~D6。D5 受 MET-007/011 与 GAP-070 阻塞。未改代码/DDL/权限/生产数据，D1 编码未授权"
+    },
+    {
+      "at": "2026-10-22T23:52:00+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "B2E-PI-018-D1",
+      "note": "完成企业费用/报销 D1 蓝图与任务书：四类落库对象、状态机、权限防自审、字段/DDL提案、App/Web 页面和验收用例；停在 DDL/权限/成本语义确认门禁，未编码"
+    },
+    {
+      "at": "2026-10-22T22:44:39+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "B2E-PI-017",
+      "note": "PI-20261022-017 取得 ANS/T12-BIZ-20261022-017，冻结 DEC-092/BR-058：成本/毛利三态、P1/P2/P3、分类汇总、完整性、唯一投影、结算门禁、承接与历史边界；形成 COST-D1~D5，GAP-071 打开，编码未授权"
+    },
+    {
+      "at": "2026-10-22T22:44:46+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "B2E-PI-017",
+      "note": "同步领域下一动作：PI-017 裁决已完成，研发需用户明确授权；COST-D3 若新增持久化版本字段需另过 DDL/迁移门禁"
+    },
+    {
+      "at": "2026-10-22T22:53:30+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B2C-1",
+      "note": "开始 UOV-V2：服务端双投影、TYPE 合并、来源字段、Provider 白名单和契约测试"
+    },
+    {
+      "at": "2026-10-22T22:53:30+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1",
+      "note": "UOV-V2 完成：9 个报价相关测试类/52 个测试通过，mvn -o -q -DskipTests package 通过；未做 UI、独立验收和生产发布；GAP-065 保持打开"
+    },
+    {
+      "at": "2026-10-22T23:21:30+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1",
+      "note": "校正门禁：U1 已独立验收 PASS；UOV-V2 仅 DEV_VERIFIED，52 个报价相关测试和 package 通过，但未独立验收；GAP-065 保持打开"
+    },
+    {
+      "at": "2026-10-22T23:30:00+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B2E-PI-018-D1",
+      "note": "用户确认进入 EXPENSE-D1；后端四表实体/Provider/权限/附件/版本与 H2 测试已完成，App/Web 并行实现中；未接应付、付款、凭证或利润"
+    },
+    {
+      "at": "2026-10-22T23:29:13+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B2E-PI-017-D1",
+      "note": "COST-D1 三态只读投影契约完成：ProjectCostStage/ProjectCostProjection + 6 个契约测试；JDK22 编译通过，无 DDL、无 Provider 接入、无生产公式变更"
+    },
+    {
+      "at": "2026-10-22T23:25:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2D-PI-014-D1",
+      "note": "PROJ-STATE-D1 已 DEV_VERIFIED：阶段 acceptanceMode 字段、合同快照复制、历史回填、Provider 与 App/Web 只读展示完成；MySQL 迁移、真实页面和独立验收未完成，不启动 D2"
+    },
+    {
+      "at": "2026-10-22T23:32:02+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2E-PI-016",
+      "note": "FIN-WRITE-D2 按 ID 写入门店范围完成开发验证：独立验收 F1 员工工资/提成 Ledger 门店继承、F2 空门店历史保持、F3 退款单测签名均已修复；隔离副本定向 HTTP 1/1、退款 2/2、完整 D2 HTTP 21/21 PASS，PaymentIdempotency 并发同键存在时序波动待复验。未发布"
+    },
+    {
+      "at": "2026-10-22T23:38:07+08:00",
+      "phase": "RECONCILED",
+      "batch": "B2C-1",
+      "note": "U2 对账完成：设计/蓝图/需求/代码/测试映射，52 个报价相关测试和 package 通过；后端切片无 UI，独立验收待执行，GAP-065 保持打开"
+    },
+    {
+      "at": "2026-10-22T23:57:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B2D-1/PD-X1",
+      "note": "PD-X1 进入 DEV_IN_PROGRESS：Web 统一履约工作面、App 日报权限对齐、后端发布角色门禁；静态动作矩阵已回写，真实页面/独立验收未完成"
+    },
+    {
+      "at": "2026-10-22T23:55:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-018-D1",
+      "note": "EXPENSE-D1 后端 5 项费用测试+迁移测试通过，App type-check/构建/导航/文案门禁通过，Web type-check/build/动作/状态/权限/页面门禁通过；Mock 渲染不等同独立验收，状态 DEV_VERIFIED_PENDING_ACCEPTANCE"
+    },
+    {
+      "at": "2026-10-22T23:58:49+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-018-D1",
+      "note": "U2 独立验收 PASS（23/23 定向测试）；U3 仅允许重新对账后准备"
+    },
+    {
+      "at": "2026-10-22T23:59:17+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "D1 状态更正：ProjectCostProjectionTest 6/6 PASS；full suite 976/5F/91E 均与本切片无关，保持 DEV_IN_PROGRESS，不声称完整验证通过"
+    },
+    {
+      "at": "2026-10-23T00:26:16+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "U2 第二轮独立复核 PASS：隔离快照 /tmp/uov-v2-independent.82211/repo，13 类 65/65（含真实 Provider HTTP 2/2，open-in-view=false），JDK22 package、diff、registry、严格账本校验通过；F1 缺失金额补0、F2 PM成本泄漏已闭环；整体 PI-010 保持 DEV_IN_PROGRESS，U3 仅允许准备且未验收"
+    },
+    {
+      "at": "2026-10-23T00:39:05+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "2026-10-23 干净全量测试阻断于 testCompile：CompanyPlanTemplateContextTest 旧 6 参数构造器 vs 生产 8 参数；ProjectCostProjectionTest 6/6 仍通过，D1 不升级"
+    },
+    {
+      "at": "2026-10-23T00:39:08+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-016",
+      "note": "FIN-WRITE-D2 独立复验：Java22 核心 11/11、角色/范围/无部分写入 26/26、并发同键连续 3/3 PASS；F1/F2/F3 关闭，未发现真实重复付款/核销/流水。全量门禁因并行基线编译失败及非 D2 失败未闭合，acceptance=FAIL，不发布"
+    },
+    {
+      "at": "2026-10-23T00:40:43+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "补充定向回归：ProjectCostProjectionTest 6、ProjectCostContextTest 14、ProjectCostUnpricedCompletenessTest 3，共 23/23 PASS；全量仍受 CompanyPlanTemplateContextTest 并发编译不一致阻塞"
+    },
+    {
+      "at": "2026-10-23T00:47:03+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-016",
+      "note": "D2 独立复验最终校正：最新 Java22 test-compile PASS；核心 11/11、凭证 7/7、首轮补充 26/26、并发同键连续 3/3 PASS。F1/F2/F3 关闭且无真实重复副作用；全量 785 tests / 5F / 4E 未闭合，D2 acceptance=FAIL，D3 并行状态不改变该结论"
+    },
+    {
+      "at": "2026-10-23T00:49:46+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U3",
+      "note": "U3 报价跨端接线独立验收 FAIL：scoped 16/16+三端构建通过，但 P1-01 金额缺失补0/重算、P1-02 分组缺失伪空、P2-01 合同读取失败伪待发起均未闭环；U4/U5/U6 BLOCKED，PI-010 保持 DEV_IN_PROGRESS，GAP-065 打开。证据 docs/acceptance/runs/20261023-unified-object-view-u3-independent/README.md"
+    },
+    {
+      "at": "2026-10-23T00:54:07+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "COST-D1 基线复核：旧构造器问题已修复；重复隔离复制受并发写入污染，未取得可采信全量结果；定向回归仍 23/23 PASS"
+    },
+    {
+      "at": "2026-10-23T01:10:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U3-FIX",
+      "note": "U3 首轮独立验收 FAIL 后完成 P1-01/P1-02/P2-01 修复：后端 18/18、App/Web type-check/build PASS；状态 REMEDIATED_PENDING_REACCEPTANCE，U4 保持 BLOCKED"
+    },
+    {
+      "at": "2026-10-23T01:45:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-018-D1",
+      "note": "EXPENSE-D1 独立复验 PASS：后端 HTTP 14/14、原缺陷 6/6、DDL/回滚 PASS，P0=0/P1=0/P2=0；真实 Web/App/OSS 仍 BLOCKED。D1 可进入 D2，等待用户授权"
+    },
+    {
+      "at": "2026-10-23T01:45:22+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-BASELINE-FULLTEST",
+      "note": "完整隔离副本 Java22 mvn -o -q clean test PASS：253 个测试类 / 1027 tests / 0 failures / 0 errors / 0 skipped；D2 与 COST-D1 全量门禁解除，独立复验仍待执行"
+    },
+    {
+      "at": "2026-10-23T01:47:18+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U3-REACCEPT",
+      "note": "U3 第二次独立复验 PASS：首轮 P1-01/P1-02/P2-01 全部 CLOSED；后端 7 类 18/18、JDK22 package、App/Web type-check/build、diff/JSON/registry/domain validate 通过；U3=ACCEPTED，PI-010 保持 DEV_IN_PROGRESS，U4 仅允许重新对账后准备，不得启动或宣称完成。证据 docs/acceptance/runs/20261023-unified-object-view-u3-reacceptance/README.md"
+    },
+    {
+      "at": "2026-10-23T01:30:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U5-PREP",
+      "note": "U5 项目 PHASE 重新对账完成：固定 8 阶段/FactType/权限/排序/导航和准备单；当时无代码、无DDL、未验收，等待实现授权，U6 未启动"
+    },
+    {
+      "at": "2026-10-23T01:50:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U5A",
+      "note": "U5-A 项目事实契约 DEV_VERIFIED：ProjectFactTrace/视图模式/排序分组/业主过滤/绑定校验；9/9 测试和 package PASS；后续 U5-B1 已 DEV_VERIFIED；当时 U5-B2 未启动，U6 未启动"
+    },
+    {
+      "at": "2026-10-23T02:10:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U5B1",
+      "note": "U5-B1 项目当前事实聚合 DEV_VERIFIED：ProjectFactTraceContext 接入 project/project/info，8阶段当前事实/来源缺口/角色成本裁剪；12/12 测试和 package PASS；当时 U5-B2 未启动，U6 未启动"
+    },
+    {
+      "at": "2026-10-23T02:55:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U5B2",
+      "note": "U5-B2 历史折叠与利润/结算节点 DEV_VERIFIED：同 nodeKey 折叠报价/设计/选材/采购/变更/验收/冲正收款；ProfitSettlement 仅继承 Settlement 快照；18/18 测试和 package PASS；当时 U5-C~F 未启动，U6 未启动，GAP-071 保持 OPEN"
+    },
+    {
+      "at": "2026-10-23T03:20:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2C-1-U5C",
+      "note": "U5-C App 项目详情 PHASE 视图 DEV_VERIFIED：员工端事实分段、8阶段当前/异常展开、同 nodeKey 历史折叠、来源缺口与返回锚点已接线；App type-check/build/subpackages/navigation PASS；U5-D~F 未启动，U6 未启动，GAP-065/GAP-071 保持 OPEN"
+    },
+    {
+      "at": "2026-10-23T03:24:36+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2-CONVERGENCE",
+      "note": "三端收敛验证 PASS：快照 /tmp/zhuangdeqing-converge.JgGxh1；后端 261 类 / 1056 tests / 0F / 0E / 0S，App verify:mp-weixin PASS，Web type-check/build/权限/状态/动作/工作台契约 PASS；修复 GoodsReceipt 派生查询、App 文案/数值/TeamLeader 预览/原生模态与支付并发测试不变量；下一步分域提交与独立验收，不发布"
+    },
+    {
+      "at": "2026-10-23T03:45:51+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-016",
+      "note": "FIN-WRITE-D2 独立复验 PASS：Java22 完整隔离副本 261 类 / 1056 tests / 0F / 0E / 0S；PaymentIdempotencyTest 8/8，并发专项连续 3/3 PASS；同一幂等键同 paymentId、单 Payment/单 Ledger/应付累计一次，F1/F2/F3 关闭。PI-016 整体保持 DEV_IN_PROGRESS，D1/D4 待用户确认，D5 未关闭，不发布"
+    },
+    {
+      "at": "2026-10-23T03:50:52+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-016",
+      "note": "D2 独立最终 clean 复跑闭合：Maven RC=0，Surefire 261 reports / 1056 tests / 0F / 0E / 0S；PaymentIdempotencyTest 8/8，并发专项 3/3；D2 PASS。PI-016 整体仍 DEV_IN_PROGRESS，D1/D4/D5 未关闭，不发布"
+    },
+    {
+      "at": "2026-10-23T04:22:56+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "COST-D1 独立验收 FAIL 后完成契约修复候选：ProjectCostProjectionTest 16/16；Java22 全量 mvn -o -q clean test 为 261 reports / 1066 tests / 0 failures / 0 errors / 0 skipped / RC=0；未改 ProjectCostContext/FinanceReportContext 生产公式，未接 Provider，GAP-071 保持 OPEN，待独立复验"
+    },
+    {
+      "at": "2026-10-23T04:32:16+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "COST-D1 第二次独立复验 FAIL 后修复唯一新增旁路：revenue=null 时 profit/margin 必须同时为 null，Estimated/Dynamic/Final 参数化负向测试通过；ProjectCostProjectionTest 19/19、相关 3 类 36/36；未改 ProjectCostContext/FinanceReportContext 生产公式，保留两次 FAIL 历史，待第三次独立复验"
+    },
+    {
+      "at": "2026-10-23T04:42:40+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-017-D1",
+      "note": "COST-D1 第三次独立复验 PASS / ACCEPTED（仅 D1）：完整快照 /tmp/cost-d1-reaccept3.RbOikn，D1 合同 19/19、相关 3 类 36/36、Java22 全量 1069/0/0/0；null revenue 旁路及前两轮缺口保持关闭；生产公式未改，GAP-071 OPEN，COST-D2~D5 未授权，PI-017 overall PENDING，不发布"
+    },
+    {
+      "at": "2026-10-23T11:35:56+08:00",
+      "phase": "DEV_VERIFIED_CANDIDATE",
+      "batch": "B2E-PI-018-D2",
+      "note": "历史候选自测记录（非独立结论）：P1-001 Property 摘要白名单与 payable/receivable 预取修复后，开发侧记录隔离 D2 HTTP 15/15、Java22 完整仓库 1069/0/0/0；后续第二轮独立复验仍因 P1-002 FAIL，首轮 FAIL 继续保留"
+    },
+    {
+      "at": "2026-10-23T13:51:12+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B2E-PI-018-D2",
+      "note": "EXPENSE-D2 第二轮独立复验 FAIL：完整快照 206bc86bc4e2d816c353dd6576925e795a78eacd / tree 999a36e064b7a08d1ddba5814a14e103018a14dc，D2 HTTP 17 项 16 PASS / 1 FAIL；P1-001 JSON/白名单/PayeeEmployee 已 PASS；P1-002 门店范围 finance/project/report 懒加载 Customer.store，返回 hibernateErrorCode，未按门禁返回 403/404；Java22 全量 1069/0/0/0；真实 UI/OSS BLOCKED，不进入 D3，GAP-070 OPEN，不发布"
+    },
+    {
+      "at": "2026-10-23T16:11:48+08:00",
+      "phase": "DEV_VERIFIED_CANDIDATE",
+      "batch": "B2E-PI-018-D2",
+      "note": "EXPENSE-D2 P1-002 修复候选：财务项目访问改走 JOIN FETCH customer/customer.store 的专用查询，resolveProject 使用只读事务；D2 HTTP 18/18（原 17 + 本店/跨店/跨企业/企业范围矩阵）、Java22 编译 2086 文件、完整 clean test 261 suites/1069 tests/0F/0E/0S。保留三轮独立 FAIL 历史，状态 REACCEPTANCE_PENDING；D3/D5 未进入，GAP-070 OPEN，不发布"
+    },
+    {
+      "at": "2026-10-23T17:26:13+08:00",
+      "phase": "ACCEPTED",
+      "batch": "B2E-PI-018-D2",
+      "note": "D2_PASS / EXPENSE-D2 ACCEPTED / PI-018 overall PENDING：第三轮独立复验使用完整干净快照 c77532c1ec18abffbc999951a3ca6d3c9ea5ed63 / tree c035c3fd1f1535990a142c9723e9b91f8f26d26b；原 D2 17 项 + 门店/企业项目财务访问矩阵 HTTP 18/18 PASS，P1-001 PASS，P1-002 CLOSED，8 个矩阵响应均无 hibernateErrorCode；Java22 全量 261 suites / 1069 tests / 0F / 0E / 0S。D3 未启动，D5 受 GAP-070 阻塞，真实 Web/App/OSS BLOCKED，不发布。"
+    },
+    {
+      "at": "2026-10-23T18:04:35+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B2E-PI-018-D3",
+      "note": "EXPENSE-D3 付款凭证来源快照与历史回读完成蓝图/计划：费用付款凭证来源链、快照字段、模板版本/PDF哈希、幂等重打、费用详情凭证摘要与 D3 验收矩阵已冻结。当前只读设计，未改代码/DDL；迁移130和编码待用户确认，D5 BLOCKED"
+    },
+    {
+      "at": "2026-10-23T18:07:27+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B2E-PI-018-D3",
+      "note": "用户批准迁移130、EXPENSE-D3编码和默认模板路由；进入实现，不发布"
+    },
+    {
+      "at": "2026-10-23T18:15:07+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PI-20261022-010/U5-C",
+      "note": "U5-C 独立验收 FAIL：P0/P1/P2=0/2/0；成本根字段泄露（Info Project/Quote allowlist cost）与 App 前端重排/默认兜底；后端 18/18、Provider 探针 2/2 PASS，App type-check/build/subpackages/navigation PASS；check:ui 与 owner-preview 为无关失败；U5-D~F 与 U6 不启动，GAP-065/071 OPEN"
+    },
+    {
+      "at": "2026-10-23T18:22:12+08:00",
+      "phase": "ACCEPTED",
+      "batch": "PI-20261022-010/U5-C",
+      "note": "U5-C 第二轮独立验收 PASS / ACCEPTED：P1-01 成本根字段移除，P1-02 前端重排/默认兜底关闭；后端 22/22、package PASS；App type-check/build/subpackages/navigation PASS；UI/同源探针 9/9 PASS；全新快照 39 files 0 mismatch；U5-D 仅允许重新对账后准备，U5-E~F 与 U6 未启动，GAP-065/071 OPEN"
+    },
+    {
+      "at": "2026-10-23T18:27:31+08:00",
+      "phase": "PLAN_READY",
+      "batch": "PI-20261022-010/U5-D",
+      "note": "U5-D Web 项目执行工作面 PHASE 视图完成重新对账与准备：当前 Web ProjectBrief/API 未映射 factTrace，ProjectExecutionView 仍为阶段/任务/日报；已冻结文件边界、8 阶段/历史折叠/缺口/返回锚点、角色成本和验收门禁；未改 Web 代码/DDL，等待用户明确授权实现；U5-E~F/U6 未启动，GAP-065/071 OPEN"
+    },
+    {
+      "at": "2026-10-23T18:32:15+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-018-D3",
+      "note": "EXPENSE-D3 开发验证 PASS：费用付款凭证来源快照、E-TRAVEL模板路由、幂等重打、费用详情凭证摘要和expenseId过滤完成；迁移130隔离MySQL应用/回滚PASS；Java22全量1074/0/0/0；App/Web构建PASS（Web仅临时兼容无关考勤类型/文案）；待独立验收，D4/D5未启动，不发布"
+    },
+    {
+      "at": "2026-10-23T18:47:00+08:00",
+      "phase": "ACCEPTANCE_FAILED",
+      "batch": "B2E-PI-018-D3",
+      "note": "EXPENSE-D3 首轮独立黑盒验收 FAIL：独立快照 HEAD 7cf83fa2b526156640ea8c227eb348ab81ca27d1 / Tree 0b58e9ba19798cf9863178ad560a8998047a5e0e；真实 RANDOM_PORT HTTP + H2 MySQL 模式 + open-in-view=false 为 11 tests / 10 PASS / 1 FAIL / 0E / 0S。P1-003 OPEN：Payable 声明 sourceType=Expense 但 sourceId 指向他企/不可解析费用时，document/voucher/build 仍 success=true 并生成“工资发放凭证”，未在模板/PDF/存储副作用前拒绝。其余未付款零副作用、来源/金额/快照、P-EXPENSE/E-REIMBURSEMENT/E-TRAVEL、重打身份与文件不覆盖、费用详情回读、expenseId 过滤、跨店/跨企业/错误角色均 PASS。Java22 主源码 compile PASS（2083 files / 2294 classes）；全量 264 suites / 1075 tests / 0F / 0E / 0S；迁移130隔离MySQL apply/rollback PASS；App type-check/build PASS；Web type-check PASS、production build FAIL（$shadow-xs 未定义，非D3专项根因）；真实 Web/App/OSS BLOCKED；不关闭D3，不进入D4/D5，GAP-070 OPEN，不发布"
+    },
+    {
+      "at": "2026-10-23T18:48:11+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PI-20261022-010/U5-D",
+      "note": "U5-D Web PHASE 开发完成：ProjectBrief/API 严格映射 factTrace；ProjectExecutionView 增加 PHASE/施工执行双视图；新增 PHASE 面板、历史折叠、缺口/异常、来源路由和返回锚点；隔离 Web 快照 5 files manifest 7d3c3723...；type-check/client-copy/actions/source guard/build PASS；未真实登录/浏览器/越权验证，等待独立验收；U5-E~F/U6 未启动，GAP-065/071 OPEN"
+    },
+    {
+      "at": "2026-10-23T18:50:00+08:00",
+      "phase": "REACCEPTANCE_REQUIRED",
+      "batch": "B2E-PI-018-D3",
+      "note": "首轮独立验收结束后检测到原工作区 VoucherContext.java 于 18:48:41 出现外部候选修改，内容针对不可解析 Expense 来源抛错；该修改不在首轮快照和 10/11 结果中，不得回溯改变 FAIL。需重新冻结完整快照并独立复验 P1-003，保留首轮证据历史。"
+    },
+    {
+      "at": "2026-10-23T18:52:01+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PI-20261022-010/U5-D",
+      "note": "U5-D 独立验收 FAIL：P0/P1/P2=0/1/1。P1-01 历史节点无 DOM anchor，返回历史来源无法定位；P2-01 MaterialPlan/Purchase/GoodsReceipt 无来源路由或摘要-only 口径。Web type-check/client-copy/actions/source guard/build PASS，但不足以通过；U5-E~F/U6 不启动，GAP-065/071 OPEN"
+    },
+    {
+      "at": "2026-10-23T18:55:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B2E-PI-018-D3",
+      "note": "EXPENSE-D3 首轮独立 FAIL 的 P1-003 修复候选：VoucherContext 对 Expense 来源不可解析/跨企业/来源不一致/未审批状态在模板PDF存储前拒绝；ExpenseVoucherLifecycleTest 2/2、D2回归+D3 HTTP 18/18、Java22全量264 suites/1074 tests/0/0/0；保留首轮11项10/1 FAIL，待独立复验，D4/D5不启动"
+    },
+    {
+      "at": "2026-10-23T18:56:14+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PI-20261022-010/U5-D",
+      "note": "U5-D 首轮独立 FAIL 修复完成：历史事实项增加独立 DOM anchor；Purchase 接入 finance-material-ordering，MaterialPlan/GoodsReceipt/Purchase 无路由时显示“暂无 Web 来源入口”；修复快照 /tmp/u5d-web-fix，5 files manifest 74b527...；type-check/client-copy/actions/source guard/build PASS；状态 REMEDIATED_PENDING_REACCEPTANCE，U5-E~F/U6 不启动"
+    },
+    {
+      "at": "2026-10-23T19:01:02+08:00",
+      "phase": "ACCEPTANCE_PASS",
+      "batch": "PI-20261022-010/U5-D",
+      "note": "U5-D 第二轮独立验收 PASS / ACCEPTED：P1-01 历史节点锚点与返回展开/定位闭合；P2-01 Purchase 仅在合法角色路由接入 finance-material-ordering，MaterialPlan/GoodsReceipt 及无路由角色显式摘要-only；独立 SSR/DOM+角色路由探针 35/35，type-check/client-copy/actions/source guard/build PASS；全新快照 7 文件 manifest 662305...；U5-E 仅允许重新对账后准备，U5-F/U6 未启动，GAP-065/071 OPEN"
+    },
+    {
+      "at": "2026-10-23T19:06:30+08:00",
+      "phase": "ACCEPTED",
+      "batch": "B2E-PI-018-D3",
+      "note": "EXPENSE-D3 第二轮独立复验 PASS / ACCEPTED，P1-003 CLOSED：新完整快照 7cf83fa2 / tree 0b58e9ba，源码清单摘要 98f44673；13/13 HTTP PASS，其中不存在来源/跨企业来源均返回 404，Expense-Payable 不一致返回 400，Voucher 与文件均零副作用，合法 Expense 来源仍成功。Java22 主源码 compile PASS（2087 files/2298 classes）；完整测试 attempt1 因非 D3 时间敏感 StoreDimensionBinding 失败，定向复跑 PASS，attempt2 265 suites/1078 tests/0/0/0；迁移130隔离 apply/rollback PASS；App/Web type-check/build PASS；真实 Web/App/OSS BLOCKED；首轮 FAIL 历史保留，D4/D5 未启动，GAP-070 OPEN，不发布。"
+    },
+    {
+      "at": "2026-10-23T19:14:18+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B2E-PI-017-D2",
+      "note": "COST-D2 只读计划完成：P1/P2/P3分类、完整性、项目Expense与手工零星成本二选一、移除max及性能/权限验收矩阵；未改生产公式，等待编码授权，GAP-071 OPEN"
+    }
+  ],
+  "frozenRoles": [
+    "TeamLeader"
+  ]
+}

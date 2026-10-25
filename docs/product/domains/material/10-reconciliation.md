@@ -180,3 +180,15 @@
 - 页面证据：`evidence/U3/README.md`、`evidence/U3/screenshots/`、`evidence/U3/ui-metrics-web.json`、`evidence/U3/ui-metrics-app.json`。
 - 角色/分辨率：Finance/Designer；Web 1440×900/1024×768、App 390×844/375×667；无横向溢出，业务 Console Errors 0。
 - 未闭环：U4 真实用户可用性走查；助手单轮、固定建议题库、无自动执行。
+
+## PI-20261022-015 跨端与异常闭环（BIZ_DECIDED / 未实现）
+
+| REQ | 业务规则 | 蓝图/对象 | 字段/API | 页面 | 测试 | 验收 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | 待建 | 独立验收待执行 | UNMAPPED |
+| REQ-MAT-018 | `DEC-088/BR-054` | Sheet/Purchase/Receipt/Adjustment/Settlement | 服务端状态推导 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |
+| REQ-MAT-019 | `DEC-088/BR-054` | MaterialAdjustmentOrder 及下层事实 | adjustment/* | App/Web 异常处置 | 待建 | 独立验收待执行 | UNMAPPED |
+| REQ-MAT-020 | `DEC-088/BR-045` | P1/P2/P3 只读投影 | 服务端聚合 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |
+| REQ-MAT-021 | `DEC-088/PI-010` | 五个材料事实节点 | PI-010 统一对象视图 | 项目事实追踪 | 待建 | 独立验收待执行 | UNMAPPED |
+
+说明：业务已对齐；`UNMAPPED` 只表示代码、迁移、页面和测试尚未进入本批，不得解释为业务未决。

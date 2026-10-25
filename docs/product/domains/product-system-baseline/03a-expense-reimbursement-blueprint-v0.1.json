@@ -1,0 +1,808 @@
+{
+  "schemaVersion": 1,
+  "id": "product-system-baseline-expense-reimbursement",
+  "title": "企业费用与员工报销蓝图",
+  "version": "0.2.0",
+  "status": "BLUEPRINT_READY",
+  "batch": "EXPENSE-D3",
+  "sourceRefs": [
+    "DEC-091",
+    "BR-057",
+    "ANS-BIZ-20261022-012",
+    "T12-BIZ-20261022-012",
+    "DEC-016",
+    "DEC-020",
+    "DEC-032",
+    "DEC-075",
+    "DEC-081",
+    "BR-006",
+    "BR-018",
+    "BR-028",
+    "BR-034",
+    "GAP-070",
+    "EV-342"
+  ],
+  "scope": {
+    "included": [
+      "Expense core fact",
+      "ExpenseCategory",
+      "ExpenseAttachment",
+      "ExpenseRevision",
+      "submit/withdraw/approve/return/reject lifecycle",
+      "BOSS/store manager/finance/employee permissions",
+      "App/Web submission and approval",
+      "expense payment voucher issuance",
+      "expense voucher source snapshot",
+      "template version binding",
+      "PDF archive and historical readback",
+      "expense voucher status projection"
+    ],
+    "excluded": [
+      "Payable creation",
+      "Payment",
+      "Ledger",
+      "Voucher issuance",
+      "company/store profit",
+      "budget and pre-spend approval",
+      "invoice management",
+      "expense D4 cost allocation",
+      "company/store profit (GAP-070)",
+      "tax/invoice management"
+    ]
+  },
+  "objects": [
+    {
+      "id": "Expense",
+      "name": "费用/报销单",
+      "kind": "business-entity",
+      "persistence": "new-table",
+      "identity": [
+        "expenseId"
+      ],
+      "description": "企业直付费用或员工垫付报销的业务事实；项目是否存在唯一表达企业/项目归属。",
+      "fields": [
+        "expenseId",
+        "company",
+        "store",
+        "project",
+        "requester",
+        "owner",
+        "payeeEmployee",
+        "expenseNo",
+        "category",
+        "paymentMode",
+        "amount",
+        "expenseDate",
+        "description",
+        "status",
+        "version",
+        "submittedAt",
+        "approvedBy",
+        "approvedAt",
+        "approvalNote",
+        "voidedBy",
+        "voidedAt",
+        "voidReason",
+        "sourceType",
+        "sourceId",
+        "idempotencyKey"
+      ],
+      "states": [
+        "Draft",
+        "Submitted",
+        "Returned",
+        "Approved",
+        "Rejected",
+        "Cancelled",
+        "Voided",
+        "Closed"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057",
+        "T12-BIZ-20261022-012"
+      ]
+    },
+    {
+      "id": "ExpenseCategory",
+      "name": "费用分类",
+      "kind": "master-data",
+      "persistence": "new-table",
+      "identity": [
+        "categoryId"
+      ],
+      "description": "企业一级费用分类，与手工记账 LedgerCategory 分离。",
+      "fields": [
+        "categoryId",
+        "company",
+        "code",
+        "name",
+        "description",
+        "builtIn",
+        "status",
+        "sort"
+      ],
+      "states": [
+        "Active",
+        "Inactive"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "ExpenseAttachment",
+      "name": "费用证据附件",
+      "kind": "evidence",
+      "persistence": "new-table",
+      "identity": [
+        "attachmentId"
+      ],
+      "description": "发票、收据、支付截图、行程单或说明文件；不等于发票管理。",
+      "fields": [
+        "attachmentId",
+        "company",
+        "expense",
+        "revision",
+        "documentType",
+        "fileUrl",
+        "fileName",
+        "sha256",
+        "size",
+        "uploadedBy",
+        "uploadedAt"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057",
+        "DEC-016"
+      ]
+    },
+    {
+      "id": "ExpenseRevision",
+      "name": "费用提交版本",
+      "kind": "audit-snapshot",
+      "persistence": "new-table",
+      "identity": [
+        "revisionId"
+      ],
+      "description": "每次提交或重提保存不可变业务快照，用于回读历史版本。",
+      "fields": [
+        "revisionId",
+        "company",
+        "expense",
+        "version",
+        "snapshotJson",
+        "submittedBy",
+        "submittedAt"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057",
+        "T12-BIZ-20261022-012"
+      ]
+    },
+    {
+      "id": "ExpenseVoucherSnapshot",
+      "name": "费用付款凭证来源快照",
+      "kind": "audit-snapshot",
+      "persistence": "voucher-record-column",
+      "identity": [
+        "voucherId"
+      ],
+      "description": "凭证发行时固化费用、审批版本、付款、模板版本和文件哈希；不重新计算金额。",
+      "fields": [
+        "sourceType",
+        "sourceId",
+        "sourceSnapshot",
+        "expenseNo",
+        "expenseCategory",
+        "paymentMode",
+        "projectOrCompanyAttribution",
+        "requester",
+        "payeeEmployee",
+        "approvalVersion",
+        "paymentAmount",
+        "paidAt",
+        "templateVersion",
+        "fileSha256"
+      ],
+      "states": [
+        "Issued",
+        "Active",
+        "Voided"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057",
+        "T12-BIZ-20261022-012",
+        "DEC-020",
+        "BR-006",
+        "BR-018"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "EXPENSE_LIFECYCLE",
+      "name": "费用/报销生命周期",
+      "order": [
+        "Draft",
+        "Submitted",
+        "Returned",
+        "Approved",
+        "Rejected",
+        "Cancelled",
+        "Voided",
+        "Closed"
+      ],
+      "transitions": [
+        {
+          "from": "Draft",
+          "action": "submit",
+          "to": "Submitted",
+          "roles": [
+            "BOSS",
+            "StoreManager",
+            "Finance",
+            "Employee"
+          ]
+        },
+        {
+          "from": "Submitted",
+          "action": "withdraw",
+          "to": "Cancelled",
+          "roles": [
+            "requester"
+          ]
+        },
+        {
+          "from": "Submitted",
+          "action": "return",
+          "to": "Returned",
+          "roles": [
+            "BOSS",
+            "StoreManager"
+          ]
+        },
+        {
+          "from": "Returned",
+          "action": "submit",
+          "to": "Submitted",
+          "roles": [
+            "BOSS",
+            "StoreManager",
+            "Finance",
+            "Employee"
+          ]
+        },
+        {
+          "from": "Submitted",
+          "action": "approve",
+          "to": "Approved",
+          "roles": [
+            "BOSS",
+            "StoreManager"
+          ]
+        },
+        {
+          "from": "Submitted",
+          "action": "reject",
+          "to": "Rejected",
+          "roles": [
+            "BOSS",
+            "StoreManager"
+          ]
+        }
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "id": "EXP-F01",
+      "field": "paymentMode",
+      "type": "enum",
+      "values": [
+        "Direct",
+        "Reimbursement"
+      ],
+      "required": true,
+      "sourceRefs": [
+        "DEC-091"
+      ]
+    },
+    {
+      "id": "EXP-F02",
+      "field": "project",
+      "type": "Project",
+      "required": false,
+      "rule": "非空=项目费用；空=企业费用；不可由独立归属字段覆盖",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F03",
+      "field": "store",
+      "type": "Store",
+      "required": "项目/默认门店；未归属门店仅 BOSS/总部财务",
+      "rule": "项目费用取项目门店；企业费用默认当前门店；storeId=0 表示未归属门店，仅 BOSS/总部财务可用",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-081"
+      ]
+    },
+    {
+      "id": "EXP-F04",
+      "field": "category",
+      "type": "ExpenseCategory",
+      "required": true,
+      "rule": "同企业且 Active",
+      "sourceRefs": [
+        "DEC-091"
+      ]
+    },
+    {
+      "id": "EXP-F05",
+      "field": "amount",
+      "type": "BigDecimal",
+      "precision": 14,
+      "scale": 2,
+      "required": true,
+      "rule": "大于 0；人民币",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F06",
+      "field": "payeeEmployee",
+      "type": "Employee",
+      "required": "Reimbursement",
+      "rule": "必须等于费用归属员工且在职",
+      "sourceRefs": [
+        "DEC-091"
+      ]
+    },
+    {
+      "id": "EXP-F07",
+      "field": "attachments",
+      "type": "ExpenseAttachment[]",
+      "required": true,
+      "rule": "提交版本至少一份证据",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F08",
+      "field": "version",
+      "type": "Integer",
+      "required": true,
+      "rule": "提交快照版本单调递增",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F09",
+      "field": "approvedBy/approvedAt/approvalNote",
+      "type": "audit",
+      "required": "Approved",
+      "rule": "审批人与提交人同一时仅 BOSS 一人企业例外，并记录 selfApproved",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-032"
+      ]
+    },
+    {
+      "id": "EXP-F10",
+      "field": "allowedActions/nextAction",
+      "type": "server projection",
+      "required": "read-only",
+      "rule": "按当前用户、费用归属和状态现场推导；前端不得自行推断审批或下一步",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F11",
+      "field": "payable",
+      "type": "Payable(Expense)",
+      "required": "Approved",
+      "rule": "审批通过自动生成唯一应付，sourceType=Expense/sourceId=expenseId",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F12",
+      "field": "paymentStatus/paidAmount/unpaidAmount",
+      "type": "server projection",
+      "required": "read-only",
+      "rule": "由应付和付款事实现场推导；付清后费用关闭",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F13",
+      "field": "pay action",
+      "type": "action",
+      "required": "Approved + outstanding>0",
+      "rule": "BOSS/店长/财务按范围付款；财务/店长不得支付本人报销",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057",
+        "DEC-032"
+      ]
+    },
+    {
+      "id": "EXP-F14",
+      "field": "voucherSourceType/sourceId",
+      "type": "controlled source",
+      "required": "issued expense voucher",
+      "rule": "费用付款凭证 sourceType=Expense、sourceId=expenseId；非费用凭证可为空",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F15",
+      "field": "voucherSourceSnapshot",
+      "type": "LONGTEXT JSON",
+      "required": "issued expense voucher",
+      "rule": "发行时固化费用编号/分类/归属/提交人/收款员工/审批版本/付款/模板版本/文件哈希",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-F16",
+      "field": "voucherTemplateVersion/fileSha256",
+      "type": "snapshot metadata",
+      "required": "issued voucher",
+      "rule": "重打读取发行时模板版本和原 PDF，不因模板升级重写",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-020",
+        "BR-006"
+      ]
+    },
+    {
+      "id": "EXP-F17",
+      "field": "voucherStatus projection",
+      "type": "server projection",
+      "required": "read-only",
+      "rule": "费用详情只读取当前企业可见凭证摘要；无记录返回 null",
+      "sourceRefs": [
+        "DEC-091"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "EXP-R01",
+      "statement": "存在审批、附件或员工报销语义的正式费用必须走 Expense；模板、应付和手工流水不能替代。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-R02",
+      "statement": "ExpenseCategory 与 LedgerCategory 分离；不复用手工分类。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-034"
+      ]
+    },
+    {
+      "id": "EXP-R03",
+      "statement": "Submitted 后金额、分类、项目、附件和收款员工不可直接修改；退回后生成新修订。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-R04",
+      "statement": "财务不得业务审批本人费用；店长不得审批本人报销；普通员工不得审批或付款。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-R05",
+      "statement": "BOSS 一人企业可按 DEC-032 顺序完成提交、审批和付款，但动作必须分别留痕。",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-032"
+      ]
+    },
+    {
+      "id": "EXP-R06",
+      "statement": "员工报销收款员工必须等于费用归属员工；不得代他人收款。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-R07",
+      "statement": "附件只作证据，不做发票查验、认证、税额和进项抵扣。",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-016"
+      ]
+    },
+    {
+      "id": "EXP-R08",
+      "statement": "项目和企业归属互斥，由 project 是否存在推导；不允许独立归属枚举产生冲突。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-R09",
+      "statement": "App/Web 必填、金额、状态、权限、异常和下一步同源。",
+      "sourceRefs": [
+        "DEC-091",
+        "EV-342"
+      ]
+    },
+    {
+      "id": "EXP-R10",
+      "statement": "D1 不生成应付、不付款、不出凭证；审批只形成 Approved 事实。",
+      "sourceRefs": [
+        "T12-BIZ-20261022-012"
+      ]
+    },
+    {
+      "id": "EXP-R11",
+      "statement": "只有已付款费用才能生成付款凭证；未付款、付款失败、费用不可见时拒绝。",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "id": "EXP-R12",
+      "statement": "费用凭证来源链为 VoucherRecord -> Payment -> Payable(Expense) -> Expense；金额只取付款事实。",
+      "sourceRefs": [
+        "DEC-091",
+        "T12-BIZ-20261022-012"
+      ]
+    },
+    {
+      "id": "EXP-R13",
+      "statement": "凭证发行快照、模板版本、PDF 和文件哈希不可回写历史；同一来源重打返回原凭证。",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-020",
+        "BR-006",
+        "BR-018"
+      ]
+    },
+    {
+      "id": "EXP-R14",
+      "statement": "凭证生成与打印权限继续服从 DEC-020/BR-006/PI-016，本切片不新增店长凭证权。",
+      "sourceRefs": [
+        "DEC-091",
+        "DEC-020",
+        "BR-006"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "EXP-C01",
+      "check": "scope.company/store/project/employee/category 全部来自服务端数据范围，跨租户/跨店/跨项目拒绝。"
+    },
+    {
+      "id": "EXP-C02",
+      "check": "paymentMode、project、payeeEmployee、category、amount、date、description、attachments 必填校验。"
+    },
+    {
+      "id": "EXP-C03",
+      "check": "提交只允许 Draft/Returned；审批只允许 Submitted；非法状态转换拒绝。"
+    },
+    {
+      "id": "EXP-C04",
+      "check": "提交和审批幂等；同一 idempotencyKey 不新增版本或审批事件。"
+    },
+    {
+      "id": "EXP-C05",
+      "check": "提交后版本快照不可变；重提版本号递增且旧版本可回读。"
+    },
+    {
+      "id": "EXP-C06",
+      "check": "财务审批本人、店长审批本人报销、普通员工审批均拒绝。"
+    },
+    {
+      "id": "EXP-C07",
+      "check": "附件文件 URL、哈希和类型可回读；跨企业附件不可引用。"
+    },
+    {
+      "id": "EXP-C08",
+      "check": "D1 没有 Payable/Payment/Voucher 副作用。"
+    },
+    {
+      "id": "EXP-C09",
+      "check": "未付款费用不得生成 VoucherRecord；已付款费用凭证金额=Payment.amount。"
+    },
+    {
+      "id": "EXP-C10",
+      "check": "费用凭证 sourceType/sourceId 与 sourceSnapshot 可回读至 Expense，模板版本和 sha256 非空。"
+    },
+    {
+      "id": "EXP-C11",
+      "check": "同一付款重打返回同一 voucherNo/path/sha256；模板升级不改变历史文件。"
+    },
+    {
+      "id": "EXP-C12",
+      "check": "费用详情、凭证列表、PDF 元数据和 App/Web 展示同源；跨企业/跨店拒绝。"
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "EXP-E01",
+      "condition": "分类停用",
+      "behavior": "新提交拒绝；历史费用仍按历史分类回读。"
+    },
+    {
+      "id": "EXP-E02",
+      "condition": "附件上传失败",
+      "behavior": "保留草稿并显示暂不可确认，允许重试；不得伪造已上传。"
+    },
+    {
+      "id": "EXP-E03",
+      "condition": "返回修改",
+      "behavior": "保留原提交版本和退回原因，生成新修订后重提。"
+    },
+    {
+      "id": "EXP-E04",
+      "condition": "非法审批人",
+      "behavior": "403/404；不产生状态、成本或附件变化。"
+    },
+    {
+      "id": "EXP-E05",
+      "condition": "历史费用来源缺失",
+      "behavior": "显示历史/来源待核验，不回填、不猜测。"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "EXP-M01",
+      "name": "费用证据完整率",
+      "scope": "已提交 Expense",
+      "formula": "至少一份有效附件的提交版本数 / 已提交版本数",
+      "missing": "附件读取失败标记暂不可确认，不计为通过",
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    }
+  ],
+  "uiBindings": [
+    {
+      "surface": "App",
+      "scene": "EMPLOYEE_EXPENSE",
+      "actions": [
+        "list",
+        "create",
+        "edit",
+        "upload",
+        "submit",
+        "withdraw",
+        "viewHistory",
+        "viewReturnReason"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "T12-BIZ-20261022-012"
+      ]
+    },
+    {
+      "surface": "Web",
+      "scene": "EMPLOYEE_EXPENSE",
+      "actions": [
+        "list",
+        "create",
+        "edit",
+        "upload",
+        "submit",
+        "withdraw",
+        "viewHistory",
+        "viewReturnReason"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "T12-BIZ-20261022-012"
+      ]
+    },
+    {
+      "surface": "App",
+      "scene": "EXPENSE_APPROVAL",
+      "actions": [
+        "pendingList",
+        "detail",
+        "approve",
+        "return",
+        "reject",
+        "auditHistory",
+        "pay"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "surface": "Web",
+      "scene": "EXPENSE_APPROVAL",
+      "actions": [
+        "pendingList",
+        "detail",
+        "approve",
+        "return",
+        "reject",
+        "auditHistory",
+        "pay"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    },
+    {
+      "surface": "App/Web",
+      "scene": "EXPENSE_FINANCE_REVIEW",
+      "actions": [
+        "viewEvidence",
+        "returnForCorrection"
+      ],
+      "sourceRefs": [
+        "DEC-091",
+        "BR-057"
+      ]
+    }
+  ],
+  "gates": {
+    "businessAligned": true,
+    "blueprintReady": true,
+    "planReady": true,
+    "ddlConfirmed": true,
+    "codingAuthorized": true,
+    "devVerified": true,
+    "acceptancePending": false,
+    "blockers": [
+      "real Web/App/OSS pending",
+      "GAP-070 blocks EXPENSE-D5"
+    ],
+    "d2DevVerified": true,
+    "d2AcceptancePending": false,
+    "d3PlanReady": true,
+    "d3DdlConfirmed": true,
+    "d3CodingAuthorized": true,
+    "d3AcceptancePending": true,
+    "d2Accepted": true,
+    "d3DevVerified": true
+  }
+}

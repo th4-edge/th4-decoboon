@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-22T15:51:59.631Z",
+  "steps": [
+    {
+      "step": "members",
+      "path": "subpackages/company/pages/members",
+      "rowCount": 4,
+      "managerActions": [],
+      "bossActions": [],
+      "marketerActions": [
+        "交接",
+        "停用",
+        "离职"
+      ]
+    },
+    {
+      "step": "invite",
+      "path": "subpackages/company/pages/invite",
+      "hasStoreManagerRole": false,
+      "hasTeamLeaderRole": false
+    },
+    {
+      "step": "member-detail",
+      "path": "subpackages/company/pages/member-detail",
+      "hasStoreSelector": false,
+      "hasStoreManagerOption": false
+    }
+  ],
+  "pass": true,
+  "consoleErrors": []
+}

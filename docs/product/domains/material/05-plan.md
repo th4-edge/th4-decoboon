@@ -162,11 +162,11 @@
 - 证据落 `evidence/B4/` 并更新对账矩阵；
 - 停在 `RECONCILED`，独立验收留 B6。
 
-## B5 实施门槛（PLAN_READY，2026-10-17）
+## B5 实施门槛（历史，2026-10-17）
 
 ### 垂直切片
 
-只交付一条 App 单端材料业务闭环：
+当次只交付 App 材料业务闭环；2026-10-22 起 Web 同能力已纳入强制范围，见文末 `MAT-X1/MAT-X2`。
 
 - 项目/财务入口进入「主材下单」工作台，查看已提交请购作业单；
 - 设计师建作业单、PM 测量、提交请购；
@@ -300,3 +300,18 @@
 - Mixed 显示“部分已结算 · 成本待结算”，不再只显示履约状态；
 - B6.4 复用黑盒脚本重跑：140/140 PASS；Web 1440×900 目标行文本正确，Console Errors 0；
 - Web type-check/build PASS；证据 `evidence/B6.5/`；停在 RECONCILED，B6.6 独立复验。
+
+## PI-20261022-015 跨端与异常闭环批次（BIZ_DECIDED，未授权编码）
+
+| 批次 | 垂直切片 | 角色 | 对象 | 退出条件 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| MAT-X1 | 作业单行—采购明细追溯、状态推导、关闭/撤结算重推、价格只读投影 | Finance/PM/Designer/Boss | Sheet/Purchase/Receipt/Settlement | 定向测试 + 全量测试 + 迁移回滚 + API 对账 | BIZ_DECIDED |
+| MAT-X2 | App/Web 作业单全生命周期与到场确认 | Designer/PM/Finance/Boss/店长 | Sheet/Purchase/Receipt | 同角色双向动作、真实页面、多分辨率、错误恢复 | BLOCKED_BY MAT-X1 |
+| MAT-X3 | 独立主材异常处置（退货/补发/换货） | PM/Designer/Finance/Boss/店长 | Adjustment/Return/Receipt/Stock/Payable/Credit | 部分数量、财务/库存/往来对账、独立验收 | BLOCKED_BY MAT-X1/PI-004 |
+| SUP-X1 | Web 供应商专用选择器与 `supplierId` 收口 | Finance/Designer/Boss/店长 | Partner/MaterialSupplier/Purchase | 选择器同源、历史文本兼容、跨企业拒绝 | BLOCKED_BY PI-004 |
+
+说明：
+
+- 2026-10-17 B5 的“App 单端”是历史实施批次，不再作为 Web 豁免依据。
+- `MAT-X1/MAT-X3` 涉及 DDL、权限、金额/成本/库存，必须用户确认、备份、回滚和全量验证。
+- 一次只做一个切片；研发自测不等于独立验收。

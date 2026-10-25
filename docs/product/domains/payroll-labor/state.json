@@ -5,13 +5,17 @@
   "northStar": "财务按方案A完成员工薪酬日常操作，BOSS保留最终确认与高风险动作，薪酬方案、考勤、提成、工资单、应付、发放和工资条形成可追溯闭环",
   "owner": "codex",
   "phase": "RELEASED",
-  "batch": "B1",
-  "nextAction": "B1已发布；App正式版等待用户本人提审发布，后续可启动B2月度考勤修正",
+  "batch": "B2-HOTFIX",
+  "nextAction": "财务刷新生产 Web「员工工资 → 月度考勤」确认麦鸿员工应出勤显示 27；B3B1 等待用户验收，B3B2/B4 阻塞",
   "openDecisions": [
-    "店长员工发放权限在 BR-038 与 DEC-065 间的最终边界，B3 前关闭，不阻塞 B1",
-    "GAP-060 店长工资单确认与作废边界，非 B1 阻塞"
+    "B4 批量/部分发放、提成释放 UI 与人工调整仍待业务裁决",
+    "B3B2 DDL/版本与唯一约束设计、反向应付/成本迁移和回滚方案待确认"
   ],
-  "blockers": [],
+  "blockers": [
+    "B2 Web 热修已发布，等待财务在生产页面确认应出勤显示 27",
+    "B3B1 已黑盒 PASS，等待用户验收",
+    "B3B2/B4 继续阻塞"
+  ],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -24,10 +28,23 @@
     "uiReview": "07-ui-review.md",
     "acceptance": "08-acceptance.md",
     "release": "09-release.md",
-    "reconciliation": "10-reconciliation.md"
+    "reconciliation": "10-reconciliation.md",
+    "remediationPlan": "11-payroll-cross-surface-remediation-plan.md",
+    "h1Task": "H1-payroll-p0-hotfix-task.md",
+    "b2Task": "B2-payroll-attendance-parity-task.md",
+    "b3aTask": "B3A-payroll-sheet-parity-task.md",
+    "issueFile": "docs/product/issue-governance/issues/PI-20261023-001-员工薪酬WebApp跨端一致性与权限闭环.md",
+    "b3bDecisionPackage": "B3B-business-decision-package.md",
+    "b3bBusinessRequest": "REQ-BIZ-20261023-002",
+    "b3bBusinessAnswer": "ANS-BIZ-20261023-002",
+    "businessDecision": "DEC-093",
+    "b3bHandoff": "T12-BIZ-20261023-002",
+    "b3b1Task": "B3B1-payroll-review-payment-permission-task.md",
+    "b3b2Task": "B3B2-payroll-void-reversal-task.md",
+    "webHotfixRelease": "th4-decoboon-web/docs/operations/releases/2026-10-23-Web月度考勤应出勤联动薪酬方案生产热修.md"
   },
   "createdAt": "2026-10-21T12:15:00+08:00",
-  "updatedAt": "2026-10-21T13:42:20+08:00",
+  "updatedAt": "2026-10-23T19:33:23+08:00",
   "history": [
     {
       "at": "2026-10-21T12:15:00+08:00",
@@ -94,6 +111,114 @@
       "phase": "RELEASED",
       "batch": "B1",
       "note": "后端、Web生产发布，App1.0.64体验版上传；生产只读冒烟PASS，无DDL"
+    },
+    {
+      "at": "2026-10-23T16:07:21+08:00",
+      "phase": "PLAN_READY",
+      "batch": "H1",
+      "note": "业务同步 ANS-BIZ-20261023-001；派发 H1/B2/B3A，B3B 受 GAP-060 与员工发放权限裁决阻塞"
+    },
+    {
+      "at": "2026-10-23T18:02:47+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "H1",
+      "note": "用户明确授权启动 H1"
+    },
+    {
+      "at": "2026-10-23T18:08:16+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "H1",
+      "note": "H1 定向 7/0/0/0、全量 1072/0/0/0，Web 构建与权限/门店/工作台门禁 PASS；未发布、未独立验收"
+    },
+    {
+      "at": "2026-10-23T18:16:07+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "H1",
+      "note": "H1 隔离 JDK22 全量 931/0/0/0；共享工作区 JDK22 唯一失败为并行 ExpenseRepository EntityGraph，不归 H1"
+    },
+    {
+      "at": "2026-10-23T18:25:25+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "H1",
+      "note": "BOSS/Finance/StoreManager 真实登录态页面矩阵 PASS；API 14/14 PASS；console error 0"
+    },
+    {
+      "at": "2026-10-23T18:25:25+08:00",
+      "phase": "RECONCILED",
+      "batch": "H1",
+      "note": "H1-01/02/03 均映射到代码、测试、API 和真实 Web 证据；不冒充独立验收"
+    },
+    {
+      "at": "2026-10-23T18:25:38+08:00",
+      "phase": "RECONCILED",
+      "batch": "H1",
+      "note": "H1 API 14/14 PASS；BOSS/Finance/StoreManager 真实 Web 页面 PASS；console error 0；等待独立验收签署"
+    },
+    {
+      "at": "2026-10-23T18:27:11+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B2",
+      "note": "H1 黑盒 PASS 后由用户指令承接为用户验收（非独立）；启动 B2"
+    },
+    {
+      "at": "2026-10-23T18:38:00+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "B2",
+      "note": "27天联动、编辑回填、完整字段、无方案提示、月份上下文 PASS；API 10/10"
+    },
+    {
+      "at": "2026-10-23T18:38:00+08:00",
+      "phase": "RECONCILED",
+      "batch": "B2",
+      "note": "B2-01/02/03 均映射到代码、测试、API 和真实 Web 证据；不冒充独立验收"
+    },
+    {
+      "at": "2026-10-23T18:40:24+08:00",
+      "phase": "ACCEPTED",
+      "batch": "B2",
+      "note": "用户以“下一步”承接 B2 黑盒 PASS。结论记为 USER_ACCEPTED_NON_INDEPENDENT，不冒充独立评审。"
+    },
+    {
+      "at": "2026-10-23T18:40:24+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B3A",
+      "note": "启动 B3A；范围严格限定 payroll/sheet/info + item/page、确认弹窗、BOSS 草稿删除和详情事实回读；不进入复核/作废/员工发放。"
+    },
+    {
+      "at": "2026-10-23T18:53:53+08:00",
+      "phase": "RECONCILED",
+      "batch": "B3A",
+      "note": "B3A 完成：API 20/20 PASS、真实三角色 Web PASS、隔离 JDK22 全量 932/0/0/0；不冒充独立验收。"
+    },
+    {
+      "at": "2026-10-23T18:57:05+08:00",
+      "phase": "ACCEPTED",
+      "batch": "B3A",
+      "note": "用户以“下一步”承接 B3A 黑盒 PASS，记为 USER_ACCEPTED_NON_INDEPENDENT；已发起 B3B/B4 权限与反向流程咨询，答复 BLOCKED。"
+    },
+    {
+      "at": "2026-10-23T19:03:37+08:00",
+      "phase": "PLAN_READY",
+      "batch": "B3B1",
+      "note": "用户确认 DEC-093；GAP-060业务裁决关闭。B3B1拆分并完成计划，B3B2/B4继续阻塞。"
+    },
+    {
+      "at": "2026-10-23T19:06:35+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "B3B1",
+      "note": "用户明确指令“启动 B3B1”；范围严格限定 DEC-093 的 B3B1，不进入 B3B2 作废/反向事实或 B4。"
+    },
+    {
+      "at": "2026-10-23T19:20:36+08:00",
+      "phase": "RECONCILED",
+      "batch": "B3B1",
+      "note": "B3B1 完成：API 14/14、Web/App H5 PASS、隔离 JDK22 全量 938/0/0/0；无 DDL；不冒充独立验收。"
+    },
+    {
+      "at": "2026-10-23T19:33:23+08:00",
+      "phase": "RELEASED",
+      "batch": "B2-HOTFIX",
+      "note": "B2 原始线上问题最小 Web 热修生产发布完成：release 20261023-193138，commit 59072ab，tag v2026.10.23.1；仅 Web，无 DDL；待财务生产页面确认。"
     }
   ]
 }

@@ -1,0 +1,22 @@
+[
+  {
+    "case": "B2-09",
+    "expected": "409",
+    "actual": {
+      "success": false,
+      "code": "409"
+    },
+    "result": "PASS",
+    "evidence": "B2-09.json"
+  },
+  {
+    "case": "B2-10",
+    "expected": "404",
+    "actual": {
+      "success": false,
+      "code": "404"
+    },
+    "result": "PASS",
+    "evidence": "B2-10.json"
+  }
+]

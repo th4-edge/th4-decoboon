@@ -1,0 +1,12 @@
+{
+  "route": "company/member/resume",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "仅停用员工可以恢复",
+      "system": false
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "runId": "20261021-owner-preview-p0-independent-fix-verification",
+  "date": "2026-10-21",
+  "status": "PASS_TEST_ENV_RELEASE_PENDING",
+  "releaseAllowed": false,
+  "fixes": {
+    "D-002": {
+      "status": "PASS",
+      "evidence": "migration-failure-path.log"
+    },
+    "D-003": {
+      "status": "PASS",
+      "evidence": "final4-project_owner-preview_info.json; app-final4.json"
+    },
+    "D-004": {
+      "status": "PASS",
+      "evidence": "summary-final4.txt; app-final4.json; 44-test-detail-dependencies-summary.txt; 46-test-project_task_page.json"
+    }
+  },
+  "tests": {
+    "targeted": "PASS 6/6",
+    "backendFull": "PASS 894/894 final code",
+    "appVerify": "PASS (unchanged App code)",
+    "testEnvironmentApi": "PASS 59/59",
+    "testEnvironmentApp": "PASS 15/15",
+    "exactUiApp": "PASS 15/15"
+  },
+  "remainingBlockers": [],
+  "nextGate": "Production backup/audit and production migration remain separate; mini-program experience upload/verification can proceed.",
+  "d001RepairRehearsal": {
+    "status": "PASS_TEST_ENV_AND_ISOLATED_CHAIN",
+    "database": "decoboon_owner_preview_chain",
+    "repair121": "PASS",
+    "apply122": "SUCCESS",
+    "apply123": "SUCCESS",
+    "repeat123": "SKIP",
+    "rollbackReapply": "PASS",
+    "jpaValidateStartup": "PASS",
+    "originalDevTestRepaired": "decoboon-test=true; decoboon-dev=false",
+    "evidence": "../migration/15-chain-pre-repair.txt through ../migration/22-chain-validate-startup.log",
+    "targetTestRepaired": true,
+    "targetTestEvidence": "../migration/24-test-repair-preflight.txt through ../migration/48-final-app-verify.log"
+  },
+  "releaseDecision": "CONDITIONAL: test-environment acceptance passed; production migration/release requires separate authorization.",
+  "residualRisks": [
+    "D-005 P2 optional OSIV=false report/finance projections"
+  ],
+  "productionTouched": false,
+  "exactUiParity": {
+    "status": "PASS",
+    "samePage": "subpackages/project/pages/journey",
+    "previewRoute": "subpackages/project/pages/owner-preview -> journey?preview=1",
+    "checks": "15/15",
+    "evidence": "../EXACT-UI-DECISION.md; ../migration/exact-ui-app-results.json; ../migration/55-exact-ui-owner-page-in-preview.png"
+  }
+}

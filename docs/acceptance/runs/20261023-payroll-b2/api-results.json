@@ -1,0 +1,90 @@
+{
+  "passed": 8,
+  "failed": 0,
+  "results": [
+    {
+      "case": "B2-01",
+      "expected": "scheduledDays=27",
+      "actual": {
+        "success": true,
+        "scheduledDays": 27,
+        "code": ""
+      },
+      "result": "PASS",
+      "evidence": "B2-01-compensation-month.json"
+    },
+    {
+      "case": "B2-02",
+      "expected": "success scheduledDays=27",
+      "actual": {
+        "success": true,
+        "code": "",
+        "scheduledDays": 27,
+        "summaryId": "239334858160078848"
+      },
+      "result": "PASS",
+      "evidence": "B2-02-manager-create-own.json"
+    },
+    {
+      "case": "B2-03",
+      "expected": "success normalDays=26 personalLeave=1",
+      "actual": {
+        "success": true,
+        "code": "",
+        "normalDays": 26,
+        "personalLeaveDays": 1
+      },
+      "result": "PASS",
+      "evidence": "B2-03-manager-edit-own.json"
+    },
+    {
+      "case": "B2-04",
+      "expected": "success scheduledDays=27",
+      "actual": {
+        "success": true,
+        "code": "",
+        "scheduledDays": 27,
+        "summaryId": "239334858462068736"
+      },
+      "result": "PASS",
+      "evidence": "B2-04-manager-create-delete.json"
+    },
+    {
+      "case": "B2-05",
+      "expected": "404",
+      "actual": {
+        "success": false,
+        "code": "404"
+      },
+      "result": "PASS",
+      "evidence": "B2-05-manager-create-cross-store.json"
+    },
+    {
+      "case": "B2-06",
+      "expected": "success",
+      "actual": {
+        "success": true,
+        "code": ""
+      },
+      "result": "PASS",
+      "evidence": "B2-06-manager-delete-own.json"
+    },
+    {
+      "case": "B2-07",
+      "expected": "404",
+      "actual": {
+        "success": false,
+        "code": "404"
+      },
+      "result": "PASS",
+      "evidence": "B2-07-manager-delete-cross-store.json"
+    },
+    {
+      "case": "B2-08",
+      "expected": "DB scheduled_days=27",
+      "actual": "summary_id\temp_id\tstore_id\tpayroll_month\tscheduled_days\tnormal_days\tpersonal_leave_days\tstatus\n239334858160078848\t9100000000000000204\t9100000000000000101\t2026-11\t27\t26\t1\tPending",
+      "result": "PASS",
+      "evidence": "sql/B2-08-own-record.txt"
+    }
+  ]
+}

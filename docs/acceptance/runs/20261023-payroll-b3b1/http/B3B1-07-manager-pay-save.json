@@ -1,0 +1,12 @@
+{
+  "route": "finance/payment/employee/save",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "当前账号无权执行该操作",
+      "system": false
+    }
+  }
+}

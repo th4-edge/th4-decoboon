@@ -1,0 +1,86 @@
+{
+  "status": "UI_REVIEWED / USER_WEB_ACCEPTANCE_PENDING",
+  "quote_queue": {
+    "total_elements": 214,
+    "total_pages": 11,
+    "page_size": 20,
+    "page1_request": {
+      "current": 1,
+      "size": 20,
+      "filter": "all"
+    },
+    "page2_request": {
+      "current": 2,
+      "size": 20,
+      "filter": "all"
+    },
+    "draft_filter": {
+      "request": {
+        "current": 1,
+        "size": 20,
+        "filter": "draft"
+      },
+      "total_elements": 75,
+      "all_returned_draft": true
+    },
+    "dormant_search": {
+      "keyword": "TMP-DORMANT-QUEUE",
+      "filter": "draft",
+      "total_elements": 0,
+      "visible": false
+    },
+    "viewport": {
+      "1440_overflow_x": false,
+      "1024_overflow_x": false
+    }
+  },
+  "sign_queue": {
+    "total_elements": 214,
+    "total_pages": 11,
+    "page_size": 20,
+    "page1_request": {
+      "current": 1,
+      "size": 20,
+      "filter": "all"
+    },
+    "to_create_filter": {
+      "request": {
+        "current": 1,
+        "size": 20,
+        "filter": "toCreate"
+      },
+      "total_elements": 200,
+      "total_pages": 10
+    },
+    "dormant_search": {
+      "keyword": "TMP-DORMANT-SIGN",
+      "filter": "toCreate",
+      "total_elements": 0,
+      "visible": false
+    },
+    "viewport": {
+      "1440_overflow_x": false,
+      "1024_overflow_x": false
+    }
+  },
+  "console": {
+    "errors": 0,
+    "warnings": 1
+  },
+  "tests": {
+    "backend_designer_workbench_tests": "11/11 PASS",
+    "app_type_check": "PASS",
+    "app_mp_weixin_build": "PASS",
+    "app_action_contract_sign_navigation": "PASS",
+    "web_type_check_build": "PASS",
+    "web_actions_permissions_workbenches_workspaces": "PASS"
+  },
+  "fixture": {
+    "temporary_active_quotes": 201,
+    "temporary_sign_quotes": 201,
+    "temporary_dormant_customer": 1,
+    "queryable_marker_quote": "TMP-DORMANT-QUEUE",
+    "queryable_marker_sign": "TMP-DORMANT-SIGN",
+    "cleanup_file": "~/.decoboon-local/cleanup-designer-pagination-acceptance-20261023.sql"
+  }
+}

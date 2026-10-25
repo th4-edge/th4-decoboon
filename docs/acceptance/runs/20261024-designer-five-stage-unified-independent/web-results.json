@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-10-24T02:23:00+08:00",
+  "environment": {
+    "web": "http://127.0.0.1:8080",
+    "backend": "http://127.0.0.1:8090/api/",
+    "account": "19900000005 / Designer / 董夏鹏",
+    "viewport": "1440x900"
+  },
+  "checks": [
+    { "id": "nav-order", "pass": true, "detail": "待我跟进 → 待我量房 → 待我设计 → 待我谈单 → 待我签约" },
+    { "id": "followup", "pass": true, "title": "待我跟进", "filters": ["全部待办", "已逾期", "今日跟进", "3 天内", "未安排"], "consoleErrors": 0 },
+    { "id": "measure", "pass": true, "title": "待我量房", "filters": ["全部任务", "逾期", "今天", "已预约", "待预约", "待交设计"], "consoleErrors": 0 },
+    { "id": "design", "pass": true, "title": "待我设计", "filters": ["全部", "待设计", "设计中", "方案完成"], "consoleErrors": 0 },
+    { "id": "quote", "pass": true, "title": "待我谈单", "filters": ["全部任务", "草稿", "待客户确认", "需调整"], "consoleErrors": 0 },
+    { "id": "sign", "pass": true, "title": "待我签约", "filters": ["全部", "待发起合同", "待企业确认", "已生效"], "consoleErrors": 0 }
+  ],
+  "passed": 6,
+  "total": 6,
+  "errors": []
+}

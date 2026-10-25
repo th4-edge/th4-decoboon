@@ -174,7 +174,9 @@
 
 ---
 
-# B5 App 单端材料下单与结算闭环
+# B5 App 材料下单与结算闭环（历史实施记录）
+
+> 2026-10-22 起，本节只记录当次实现证据；“Web 不作为必经节点”不再有效。跨端边界以 `DEC-088/BR-054` 为准。
 
 ## 范围
 
@@ -182,7 +184,7 @@
 - 目标：App 内完成 `MaterialPlan → MaterialOrderSheet → 提交请购 → App 下单 → PurchaseOrder/PurchaseOrderItem → Payable → GoodsReceipt → MaterialSettlement`；
 - 旧“材料计划直接采购”路线下线；
 - 不新增业务对象、状态机、金额公式或 DDL；
-- Web 不作为必经节点。
+- ~~Web 不作为必经节点~~（已被 2026-10-22 `DEC-088/BR-054` 覆盖）。
 
 ## 后端变更
 

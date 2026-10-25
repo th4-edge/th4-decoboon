@@ -1,0 +1,65 @@
+{
+  "route": "/designer/contract-archive",
+  "provider": "project/contract/page",
+  "without_project_anchor": true,
+  "data_scope": "ProjectAccessContext.visibleContract",
+  "sample_contract": "CC1790371757137",
+  "sample_customer": "王亮",
+  "filters": {
+    "keyword": true,
+    "status": true,
+    "signed_from": true,
+    "signed_to": true
+  },
+  "pagination": {
+    "current": 1,
+    "size": 20
+  },
+  "detail_provider": "project/contract/info",
+  "navigates_to": [
+    "/designer/my-customers/:customerId",
+    "/designer/projects?projectId="
+  ],
+  "viewport": {
+    "1440_overflow_x": false,
+    "1024_overflow_x": false
+  },
+  "console_errors": 0,
+  "probes": {
+    "keyword_customer": "1",
+    "keyword_missing": "0",
+    "status_effective": "1",
+    "status_pending_sign": "0",
+    "signed_2026_07_range": "1",
+    "signed_from_2026_08": "0"
+  },
+  "menu_contains_contract_archive": true,
+  "store_id_in_url": false,
+  "performance": {
+    "list_enrich_removed": true,
+    "entity_graph_prefetch": [
+      "customer",
+      "property",
+      "quote",
+      "project",
+      "createdBy"
+    ],
+    "business_sql_fixed": 5,
+    "archive_sql": [
+      "count",
+      "content"
+    ],
+    "page_size": 20,
+    "sql_grows_with_rows": false
+  },
+  "keyword_principle": {
+    "contract_no": "prefix",
+    "quote_no": "prefix",
+    "project_no": "prefix",
+    "customer_name": "contains",
+    "project_name": "contains",
+    "community": "contains",
+    "address": "contains",
+    "full_text_index": false
+  }
+}

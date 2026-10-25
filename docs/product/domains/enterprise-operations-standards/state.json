@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "domain": "enterprise-operations-standards",
+  "title": "企业运营标准资产",
+  "northStar": "五类企业运营标准资产具备与业务语义匹配的生命周期、版本或修订、平台基线边界、业务快照与历史保护，并在 App/Web 提供一致完整能力",
+  "owner": "codex",
+  "phase": "DEV_VERIFIED",
+  "batch": "EOP-V4",
+  "nextAction": "修复并隔离 GoodsReceiptRepository 全量测试阻断后重跑全量，再执行 EOP-V4 独立验收",
+  "openDecisions": [],
+  "blockers": [
+    {
+      "id": "EOP-V4-FULL-TEST-BLOCKED",
+      "owner": "parallel-project-session",
+      "fact": "GoodsReceiptRepository.findByPurchaseOrder_Project_ProjectIdOrderByReceiptIdDesc 派生查询把 PurchaseOrder 解析为不存在的 order 属性，44 个 Spring 上下文测试启动失败",
+      "impact": "后端全量 1070 tests / 258 errors，L3 全量门禁未闭合",
+      "next": "由采购/项目并行专项修复后重跑全量；不修改 EOP-V4 文件范围外代码"
+    }
+  ],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md"
+  },
+  "createdAt": "2026-10-22T21:47:43+08:00",
+  "updatedAt": "2026-10-23T03:01:19+08:00",
+  "history": [
+    {
+      "at": "2026-10-22T21:47:43+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-22T21:48:24+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "EOP-V1",
+      "note": "两个真实场景、反向用例与专用域包完成"
+    },
+    {
+      "at": "2026-10-22T21:48:24+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "EOP-V1",
+      "note": "DEC-083/BR-051/T12-BIZ-20261022-004 已回写；GAP-063 非阻塞"
+    },
+    {
+      "at": "2026-10-22T21:48:24+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "EOP-V1",
+      "note": "五类资产、状态、版本、来源与快照契约已映射到蓝图"
+    },
+    {
+      "at": "2026-10-22T21:48:24+08:00",
+      "phase": "PLAN_READY",
+      "batch": "EOP-V1",
+      "note": "EOP-V1~V6 依赖、退出条件与回滚已冻结；本批仅 V1"
+    },
+    {
+      "at": "2026-10-22T21:48:45+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "EOP-V1",
+      "note": "蓝图和计划门禁通过；进入 EOP-V1 实现"
+    },
+    {
+      "at": "2026-10-22T21:50:48+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EOP-V1",
+      "note": "只读契约/Provider/9项测试完成；mvn定向测试与compile通过；无DDL/权限/金额/UI改动"
+    },
+    {
+      "at": "2026-10-22T21:54:21+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "EOP-V1",
+      "note": "EOP-V1 无页面改动；UI Review 标记 NOT_APPLICABLE"
+    },
+    {
+      "at": "2026-10-22T21:54:21+08:00",
+      "phase": "RECONCILED",
+      "batch": "EOP-V1",
+      "note": "EOP-V1 七个需求均有契约/API/测试/验收映射，无本批 UNMAPPED/STALE"
+    },
+    {
+      "at": "2026-10-22T21:54:22+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EOP-V1",
+      "note": "独立验收 PASS：10/10定向测试、compile、diff-check与无DDL/权限/金额/UI边界审计"
+    },
+    {
+      "at": "2026-10-22T21:54:29+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EOP-V1",
+      "note": "独立验收复核最终版本：10/10定向测试通过；Inactive 可编辑但不可用于新业务；PASS"
+    },
+    {
+      "at": "2026-10-22T22:46:41+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "EOP-V2",
+      "note": "套餐版本行、发布/停用/下一版、报价来源版本、App 管理动作与迁移124实现中"
+    },
+    {
+      "at": "2026-10-22T23:30:51+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EOP-V2",
+      "note": "套餐版本行/发布/停用/下一版/报价来源版本/迁移124与App接入完成；定向25测试、App type-check和构建通过"
+    },
+    {
+      "at": "2026-10-23T00:33:01+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EOP-V2",
+      "note": "EOP-V2独立验收PASS：30用例、真实MySQL并发/迁移回滚、App type-check/build通过；Web/真机留EOP-V6"
+    },
+    {
+      "at": "2026-10-23T00:52:37+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EOP-V3",
+      "note": "付款/施工版本行、当前启用唯一、显式平台升级、App入口、迁移127和定向15测试完成"
+    },
+    {
+      "at": "2026-10-23T01:58:47+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EOP-V3",
+      "note": "EOP-V3独立验收PASS：20定向/1032全量、App构建、MySQL并发默认与127回滚归档通过；Web/真机留EOP-V6"
+    },
+    {
+      "at": "2026-10-23T02:53:34+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "EOP-V4",
+      "note": "EOP-V4 进入实现：item 级锁、期望 revision、不可变审计、报价来源 revision、迁移与双端历史入口"
+    },
+    {
+      "at": "2026-10-23T03:01:19+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EOP-V4",
+      "note": "EOP-V4 开发验证：29 个相关测试类 102/102、App/Web type-check与构建、迁移128/回滚PASS；全量测试阻断于无关 GoodsReceiptRepository 查询"
+    }
+  ]
+}

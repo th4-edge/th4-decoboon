@@ -1,0 +1,12 @@
+{
+  "route": "payroll/sheet/update",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "工资单没有工资项，不可确认",
+      "system": false
+    }
+  }
+}

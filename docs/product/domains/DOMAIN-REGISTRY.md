@@ -3,6 +3,7 @@
 > 状态：`draft`，用于全域盘点与交付调度，不是功能验收清单，也不是对外能力承诺。
 > 事实源：`zhuangdeqing-business / CAP-006`、`CAP-001`、`OBJ-001`、`GAP-058`，并结合当前后端领域包与 App/Web 页面入口做覆盖对账。
 > 最近盘点：2026-10-17。
+> 角色冻结（2026-10-22）：TeamLeader 已冻结，后续产品域与应用规划不再以 TeamLeader 为目标角色；文档中相关角色引用仅保留历史兼容。存量处置见 `docs/product/issue-governance/issues/PI-20261022-002-TeamLeader冻结后的存量角色与技术收口.md`。
 
 ## 1. 结论
 
@@ -50,7 +51,9 @@
 | --- | --- | --- | --- |
 | `material` | `docs/product/domains/material/` | 监督管理中 | 材料计划、选材、作业单、采购、到场、结算、材料助手 |
 | `contract-change` | `docs/product/domains/contract-change/` | `BLUEPRINT_READY`，B2 等代码租约 | 合同生效后的新增/减项/替换、当前有效剩余、审批与履约联动 |
-| `project-delivery` | `docs/product/domains/project-delivery/` | `SCENARIOS_READY`，B1 业务对齐 | 合同施工行→阶段→任务→排期→节点留证→进度/偏差 |
+| `project-delivery` | `docs/product/domains/project-delivery/` | 多批次：业主 UI `DEV_VERIFIED`；`PI-20261022-014/015` 已 `BIZ_DECIDED`，未授权编码 | 合同施工行→阶段→任务→排期→节点留证→日报→进度/偏差；跨端写能力按 `DEC-088/BR-054` |
+| `enterprise-management` | `docs/product/domains/enterprise-management/` | `EMG-V2 ACCEPTED`，问题 `DEV_IN_PROGRESS` | 企业、门店、员工生命周期与审计跨端闭环；Team/TeamLeader 冻结，EMG-V2 独立验收 PASS |
+| `enterprise-operations-standards` | `docs/product/domains/enterprise-operations-standards/` | `EOP-V4 DEV_IN_PROGRESS` | 五类企业运营标准资产的生命周期、版本/修订、平台基线、历史快照与 App/Web 一致性；V1–V3 已验收 |
 
 ## 3. 横向主轴
 

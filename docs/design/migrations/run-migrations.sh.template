@@ -83,7 +83,7 @@ LOCK_DIR="$(canonical_path "$LOCK_DIR")"
 [[ "$MIGRATIONS_DIR" = /* && -d "$MIGRATIONS_DIR" ]] || { echo "MIGRATIONS_DIR 必须是绝对目录"; exit 2; }
 [[ "$LOCK_DIR" = /* ]] || { echo "MIGRATION_LOCK_DIR 必须是绝对路径"; exit 2; }
 reject_dangerous_root "$LOCK_DIR" "迁移锁目录"
-[[ "$MYSQL_DATABASE" =~ ^[A-Za-z0-9_]+$ ]] || { echo "数据库名只允许字母、数字和下划线"; exit 2; }
+[[ "$MYSQL_DATABASE" =~ ^[A-Za-z0-9_-]+$ ]] || { echo "数据库名只允许字母、数字、下划线和连字符"; exit 2; }
 [[ "$MIGRATION_ACTOR" =~ ^[A-Za-z0-9._@-]{1,128}$ ]] || { echo "迁移执行人格式非法"; exit 2; }
 if [[ -n "${DBA_AUDIT_ID:-}" ]]; then
   [[ "$DBA_AUDIT_ID" =~ ^[A-Za-z0-9._:@-]{1,128}$ ]] || { echo "DBA_AUDIT_ID 格式非法"; exit 2; }
@@ -343,7 +343,7 @@ if [[ "$MODE" == "apply" ]]; then
     else
       if mark_ledger_failed "$version"; then
         RUNNING_VERSION=""
-        echo "FAILED $version $description；已停止，不继续后续版本" >&2
+        echo "FAILED $version ${description}；已停止，不继续后续版本" >&2
         exit 4
       fi
       echo "CRITICAL: 迁移 ${version} 失败且账本无法写入 FAILED，请立即人工修复。" >&2

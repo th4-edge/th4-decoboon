@@ -1,0 +1,123 @@
+{
+  "collectedAt": "2026-10-24T06:35:20.524567+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-24/20261024-143519",
+  "counts": {
+    "expected": 58,
+    "unknown": 8
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261024-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 4,
+      "firstSeen": "2026-10-24 02:56:57.921",
+      "lastSeen": "2026-10-24T14:13:14.449+08:00",
+      "samples": [
+        "[2026-10-24 02:56:57.921] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "[2026-10-24 14:13:14.449] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误",
+        "948:2026-10-24T02:56:57.921+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误",
+        "2291:2026-10-24T14:13:14.449+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 4,
+      "firstSeen": "2026-10-24 10:54:34.440",
+      "lastSeen": "2026-10-24T13:10:47.618+08:00",
+      "samples": [
+        "[2026-10-24 10:54:34.440] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "[2026-10-24 13:10:47.618] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .env处理失败:找不到对应的处理服务:.env",
+        "1911:2026-10-24T10:54:34.440+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "2083:2026-10-24T13:10:47.618+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-8f4d3f4876",
+      "signature": "找不到对应的处理服务:.git/config",
+      "signatureHash": "8f4d3f4876",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-10-24 10:54:25.847",
+      "lastSeen": "2026-10-24T13:10:41.707+08:00",
+      "samples": [
+        "[2026-10-24 10:54:25.847] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .git/config处理失败:找不到对应的处理服务:.git/config",
+        "[2026-10-24 13:10:41.707] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .git/config处理失败:找不到对应的处理服务:.git/config",
+        "1825:2026-10-24T10:54:25.847+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config",
+        "1997:2026-10-24T13:10:41.707+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-24 08:39:26.817",
+      "lastSeen": "2026-10-24T08:39:26.817+08:00",
+      "samples": [
+        "[2026-10-24 08:39:26.817] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
+        "1739:2026-10-24T08:39:26.817+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-3c06097867",
+      "signature": "找不到对应的处理服务:v1/auto_login",
+      "signatureHash": "3c06097867",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-24 07:45:42.350",
+      "lastSeen": "2026-10-24T07:45:42.350+08:00",
+      "samples": [
+        "[2026-10-24 07:45:42.350] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/auto_login处理失败:找不到对应的处理服务:v1/auto_login",
+        "1653:2026-10-24T07:45:42.350+08:00 ERROR 323633 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/auto_login处理失败:找不到对应的处理服务:v1/auto_login"
+      ],
+      "reportPaths": [
+        "2026-10-24/20261024-143519"
+      ]
+    },
+    {
+      "incidentId": "INC-20261024-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 50,
+      "firstSeen": "2026-10-24 02:40:09.961",
+      "lastSeen": "2026-10-24T14:35:20.484+08:00",
+      "samples": [
+        "[2026-10-24 02:40:09.961] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-24 02:50:58.248] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-24 02:56:11.804] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-24 02:57:04.508] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - customer/my-customer/overview处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-24 02:57:04.597] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/designer/measure/page处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}

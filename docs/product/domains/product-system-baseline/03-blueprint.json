@@ -1,0 +1,965 @@
+{
+  "id": "product-system-baseline.end-to-end",
+  "title": "装得清产品体系基线",
+  "version": "0.2.0",
+  "status": "approved",
+  "sourceRefs": [
+    "DEC-086",
+    "BR-052",
+    "DEC-071",
+    "DEC-011",
+    "BR-001",
+    "BR-002",
+    "BR-003",
+    "BR-010",
+    "BR-043",
+    "GAP-053",
+    "GAP-065",
+    "ANS-BIZ-20261022-007",
+    "T12-BIZ-20261022-007",
+    "BR-029",
+    "OBJ-007"
+  ],
+  "audience": [
+    "Boss",
+    "StoreManager",
+    "Designer",
+    "Pm",
+    "Finance",
+    "Owner"
+  ],
+  "layers": [
+    "standard",
+    "tenant",
+    "project"
+  ],
+  "objects": [
+    {
+      "id": "UnifiedQuoteView",
+      "name": "统一报价视图",
+      "kind": "projection",
+      "persistence": "none",
+      "identity": [
+        "quoteId",
+        "version",
+        "scene",
+        "groupMode"
+      ],
+      "description": "同一报价版本面向员工、业主、合同、项目和 PDF 的同源投影；场景只裁剪字段、动作和密度。",
+      "relations": [
+        {
+          "object": "Quote",
+          "field": "quoteId",
+          "cardinality": "1"
+        },
+        {
+          "object": "QuoteLine",
+          "field": "sourceLineIds",
+          "cardinality": "1..N"
+        },
+        {
+          "object": "Design",
+          "field": "designId",
+          "cardinality": "0..1"
+        },
+        {
+          "object": "ProjectContract",
+          "field": "contractId",
+          "cardinality": "0..1"
+        },
+        {
+          "object": "Project",
+          "field": "projectId",
+          "cardinality": "0..1"
+        }
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "BR-001",
+        "BR-002"
+      ]
+    },
+    {
+      "id": "QuoteRegionProjection",
+      "name": "报价区域投影",
+      "kind": "projection",
+      "persistence": "none",
+      "identity": [
+        "quoteId",
+        "version",
+        "regionKey"
+      ],
+      "description": "按空间/区域展示原始报价行；空区域统一进入综合项目。",
+      "fields": [
+        "regionId",
+        "regionName",
+        "groupAmount",
+        "items",
+        "unassigned"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "GAP-053"
+      ]
+    },
+    {
+      "id": "QuoteTypeProjection",
+      "name": "报价类型投影",
+      "kind": "projection",
+      "persistence": "none",
+      "identity": [
+        "quoteId",
+        "version",
+        "typeRowId"
+      ],
+      "description": "按 ItemType → Category 展示，并由服务端跨区域合并同款明细。",
+      "fields": [
+        "type",
+        "category",
+        "typeRowId",
+        "mergedQuantity",
+        "mergedAmount",
+        "displayPrice",
+        "sourceLineIds",
+        "sourceRegionIds",
+        "sourceRegionNames",
+        "sourceCount"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "QuoteLineSourceRef",
+      "name": "报价来源行引用",
+      "kind": "value",
+      "persistence": "none",
+      "identity": [
+        "itemId"
+      ],
+      "description": "TYPE 合并行回溯到原始报价行的最小销售来源摘要。",
+      "fields": [
+        "itemId",
+        "regionId",
+        "regionName",
+        "quantity",
+        "saleUnitPrice",
+        "saleAmount"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "QuoteSceneContract",
+      "name": "报价场景契约",
+      "kind": "contract",
+      "persistence": "none",
+      "identity": [
+        "scene"
+      ],
+      "description": "EDIT、READ、OWNER、PROJECT、CONTRACT、SUMMARY、PRINT 的字段和动作边界。",
+      "fields": [
+        "scene",
+        "rawItemsAllowed",
+        "defaultGroupMode",
+        "groupModes",
+        "fieldPolicy",
+        "actionPolicy"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "BR-003",
+        "BR-043"
+      ]
+    },
+    {
+      "id": "ContractFactChain",
+      "name": "合同事实链",
+      "kind": "projection",
+      "persistence": "none",
+      "identity": [
+        "contractId",
+        "contractNo"
+      ],
+      "description": "合同绑定实际报价和设计版本，展示量房、设计、报价、合同及下游履约摘要。",
+      "fields": [
+        "measureNode",
+        "designNode",
+        "quoteNode",
+        "contractNode",
+        "sourceState",
+        "downstreamSummary"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "BR-002",
+        "BR-010",
+        "DEC-071"
+      ]
+    },
+    {
+      "id": "MeasureSummaryNode",
+      "name": "量房摘要节点",
+      "kind": "projection",
+      "persistence": "none",
+      "identity": [
+        "measureId"
+      ],
+      "description": "合同或项目事实链中的最近一次已完成量房摘要。",
+      "fields": [
+        "measureId",
+        "completedAt",
+        "executorName",
+        "regionCount",
+        "measuredCount",
+        "pendingCount",
+        "confirmationState"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "OBJ-007"
+      ]
+    },
+    {
+      "id": "ProjectFactTrace",
+      "name": "项目事实追踪",
+      "kind": "projection",
+      "persistence": "none",
+      "identity": [
+        "projectId",
+        "viewMode"
+      ],
+      "description": "以固定 PHASE 组织项目来源、售前、签约、履约、变更、验收、财务和售后事实节点。",
+      "fields": [
+        "phases",
+        "nodeCount",
+        "currentPhase",
+        "completeness",
+        "navigationAnchor"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "ProjectFactNode",
+      "name": "项目事实节点",
+      "kind": "value",
+      "persistence": "none",
+      "identity": [
+        "nodeKey",
+        "objectType",
+        "objectId",
+        "version"
+      ],
+      "description": "统一事实节点，显示来源、状态、业务时间、记录时间、责任人、摘要和跳转。",
+      "fields": [
+        "nodeKey",
+        "objectType",
+        "objectId",
+        "version",
+        "status",
+        "businessTime",
+        "recordedAt",
+        "actor",
+        "summary",
+        "relations",
+        "visibility",
+        "navigation"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "QuotePdfArchiveContract",
+      "name": "报价 PDF 归档契约",
+      "kind": "contract",
+      "persistence": "existing-document-record",
+      "identity": [
+        "documentId",
+        "quoteId",
+        "version",
+        "groupMode"
+      ],
+      "description": "按报价版本和分组方式生成不可变 PDF；旧归档原样打开，重新生成新建记录。",
+      "fields": [
+        "quoteId",
+        "version",
+        "groupMode",
+        "fileName",
+        "sha256",
+        "generatedAt",
+        "audience"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "BR-003"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "QUOTE_LIFECYCLE",
+      "name": "报价生命周期",
+      "order": [
+        "Draft",
+        "Submitted",
+        "Accepted",
+        "Rejected",
+        "Superseded",
+        "Converted"
+      ],
+      "sourceRefs": [
+        "BR-002",
+        "DEC-071"
+      ]
+    },
+    {
+      "id": "PROJECT_PHASE",
+      "name": "项目事实阶段",
+      "order": [
+        "来源",
+        "售前",
+        "签约",
+        "履约",
+        "变更",
+        "验收",
+        "财务",
+        "售后"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "key": "quote.identity",
+      "label": "报价身份",
+      "fields": [
+        "quoteId",
+        "no",
+        "title",
+        "version",
+        "status",
+        "mode",
+        "createdAt"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Designer",
+        "Pm",
+        "Finance",
+        "Owner"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "key": "quote.context",
+      "label": "报价上下文",
+      "fields": [
+        "customer",
+        "property",
+        "designId",
+        "designVersion",
+        "area",
+        "packageTemplateCode",
+        "packageTemplateVersion"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Designer",
+        "Pm",
+        "Finance",
+        "Owner"
+      ],
+      "sourceRefs": [
+        "BR-001",
+        "DEC-086"
+      ]
+    },
+    {
+      "key": "quote.sales",
+      "label": "销售字段",
+      "fields": [
+        "type",
+        "category",
+        "name",
+        "brand",
+        "spec",
+        "unit",
+        "quantity",
+        "pricingMode",
+        "saleUnitPrice",
+        "saleAmount",
+        "role",
+        "differenceType",
+        "differenceStatus",
+        "included",
+        "discountAmount",
+        "craft",
+        "componentSaleSummary"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Designer",
+        "Pm",
+        "Finance",
+        "Owner"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "key": "quote.cost",
+      "label": "成本与利润字段",
+      "fields": [
+        "cost",
+        "costComplete",
+        "componentCost",
+        "actualCost",
+        "grossProfit",
+        "grossMargin"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Finance"
+      ],
+      "sourceRefs": [
+        "BR-003",
+        "DEC-086"
+      ]
+    },
+    {
+      "key": "quote.formula",
+      "label": "内部计价公式",
+      "fields": [
+        "formula",
+        "quantityFormula",
+        "componentCostFormula"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "DesignerEdit",
+        "Finance"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "key": "quote.acceptance",
+      "label": "报价接受登记",
+      "fields": [
+        "acceptedAt",
+        "acceptedBy"
+      ],
+      "visibilityByScene": {
+        "EDIT": [
+          "Boss",
+          "StoreManager",
+          "Designer"
+        ],
+        "READ": [
+          "Boss",
+          "StoreManager",
+          "Designer",
+          "Pm",
+          "Finance"
+        ],
+        "OWNER": [
+          "acceptedAtOnly"
+        ],
+        "PROJECT": [
+          "acceptedAt"
+        ],
+        "CONTRACT": [
+          "acceptedAt"
+        ],
+        "SUMMARY": [],
+        "PRINT": [
+          "acceptedAt"
+        ]
+      },
+      "sourceRefs": [
+        "DEC-071",
+        "DEC-086"
+      ]
+    },
+    {
+      "key": "type.source",
+      "label": "TYPE 合并来源",
+      "fields": [
+        "typeRowId",
+        "sourceLineIds",
+        "sourceRegionIds",
+        "sourceRegionNames",
+        "sourceCount"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Designer",
+        "Pm",
+        "Finance",
+        "Owner"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "key": "contract.upstream",
+      "label": "合同上游事实",
+      "fields": [
+        "measureNode",
+        "designNode",
+        "quoteNode",
+        "contractNode",
+        "sourceState"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Designer",
+        "Pm",
+        "Finance",
+        "Owner"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "DEC-071"
+      ]
+    },
+    {
+      "key": "project.fact",
+      "label": "项目事实节点",
+      "fields": [
+        "nodeKey",
+        "objectType",
+        "objectId",
+        "version",
+        "status",
+        "businessTime",
+        "recordedAt",
+        "actor",
+        "summary",
+        "relations",
+        "visibility",
+        "navigation"
+      ],
+      "visibility": [
+        "Boss",
+        "StoreManager",
+        "Designer",
+        "Pm",
+        "Finance",
+        "Owner"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "UOV-R01",
+      "statement": "同一 quoteId + version 必须来自同一组原始行，并生成 REGION/TYPE 两套服务端投影。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-R02",
+      "statement": "TYPE 固定 ItemType → Category；目录项使用 catalogItemId 强身份，自定义行使用完整业务描述。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-R03",
+      "statement": "TYPE 合并且仅合并业务身份和商业条件完全相同的行；数量和金额按原始行权威值求和。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-R04",
+      "statement": "场景白名单只裁剪字段、动作和密度，不改变分组、行数、金额和数据范围。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "BR-003"
+      ]
+    },
+    {
+      "id": "UOV-R05",
+      "statement": "合同和项目只使用实际绑定报价版本，禁止用最新报价替代签约依据。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-002",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-R06",
+      "statement": "直接签约不新增来源标记、不做统计隔离；只显示真实关系可证明的无设计方案来源/签约报价基线。",
+      "sourceRefs": [
+        "DEC-071",
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-R07",
+      "statement": "在跑承接显示项目承接（接管基线），并由 BusinessOrigin.Carryover 排除正常首轮指标。",
+      "sourceRefs": [
+        "DEC-011",
+        "BR-010",
+        "DEC-086"
+      ]
+    },
+    {
+      "id": "UOV-R08",
+      "statement": "项目 PHASE 节点按业务时间、记录时间、事实类型、对象 ID 稳定排序；历史/失效折叠保留。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-R09",
+      "statement": "PDF 绑定 quoteId + version + groupMode；旧归档不覆盖；客户版不含成本、内部公式和供应商价。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "BR-003"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "UOV-C01",
+      "check": "REGION 与 TYPE 的源行集合一致，区域小计和类型小计可由原始行金额解释。",
+      "sourceRefs": [
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-C02",
+      "check": "合并键任一字段不同不得合并；单位不同、单价不同、差异状态不同必须拆行。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-C03",
+      "check": "前端不得自行合并、重算或接口失败回退分组。",
+      "sourceRefs": [
+        "BR-052",
+        "GAP-065"
+      ]
+    },
+    {
+      "id": "UOV-C04",
+      "check": "业主投影不得返回成本、成本完整性明细、内部公式、供应商执行价和 acceptedBy。",
+      "sourceRefs": [
+        "BR-003",
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-C05",
+      "check": "合同量房摘要只取最近一次已完成量房；无记录和读取失败必须区分。",
+      "sourceRefs": [
+        "BR-052",
+        "OBJ-007"
+      ]
+    },
+    {
+      "id": "UOV-C06",
+      "check": "直接签约不得新增来源字段或修改接受率；承接必须排除正常首轮指标。",
+      "sourceRefs": [
+        "DEC-071",
+        "DEC-011",
+        "BR-010",
+        "DEC-086"
+      ]
+    },
+    {
+      "id": "UOV-C07",
+      "check": "项目 PHASE 顺序、节点时间、历史折叠和返回锚点稳定。",
+      "sourceRefs": [
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-C08",
+      "check": "PDF 文件名和页眉可识别版本与分组，旧归档文件哈希不变。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-C09",
+      "check": "跨企业、跨门店、跨项目、伪造 quoteId/version/groupMode 全部 403/404。",
+      "sourceRefs": [
+        "BR-001",
+        "BR-052"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "UOV-E01",
+      "condition": "区域为空",
+      "behavior": "统一进入综合项目，不隐藏行、不猜区域。",
+      "sourceRefs": [
+        "GAP-053",
+        "DEC-086"
+      ]
+    },
+    {
+      "id": "UOV-E02",
+      "condition": "原始行金额缺失",
+      "behavior": "显示暂不可确认，禁止用 price × quantity 静默补齐。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "id": "UOV-E03",
+      "condition": "无设计方案来源",
+      "behavior": "显示关系可证明的无设计方案来源/签约报价基线；不得断言客户一定为直接签约。",
+      "sourceRefs": [
+        "DEC-071",
+        "DEC-086"
+      ]
+    },
+    {
+      "id": "UOV-E04",
+      "condition": "在跑项目承接",
+      "behavior": "显示项目承接（接管基线）；成本完整性未知时利润为空。",
+      "sourceRefs": [
+        "DEC-011",
+        "BR-010",
+        "BR-003"
+      ]
+    },
+    {
+      "id": "UOV-E05",
+      "condition": "部分读取失败",
+      "behavior": "显示暂不可确认/部分事实暂不可确认，保留重试与返回路径。",
+      "sourceRefs": [
+        "BR-052",
+        "BR-029"
+      ]
+    },
+    {
+      "id": "UOV-E06",
+      "condition": "版本不匹配",
+      "behavior": "阻断生成和跳转，不得自动切换最新版本。",
+      "sourceRefs": [
+        "DEC-086",
+        "BR-002"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "id": "UOV-M01",
+      "name": "跨端报价事实一致率",
+      "scope": "同一 quoteId + version 的销售字段、行来源、版本、状态和总额",
+      "formula": "一致检查项通过数 / 检查项总数",
+      "missing": "任一入口读取失败记为不可确认，不计为通过",
+      "sourceRefs": [
+        "BR-052",
+        "DEC-086"
+      ]
+    },
+    {
+      "id": "UOV-M02",
+      "name": "TYPE 来源回溯完整率",
+      "scope": "TYPE 合并行",
+      "formula": "可追回全部 sourceLineIds 的合并行数 / 合并行总数",
+      "missing": "来源缺失必须阻断该合并行",
+      "sourceRefs": [
+        "BR-052",
+        "DEC-086"
+      ]
+    }
+  ],
+  "uiBindings": [
+    {
+      "scene": "EDIT",
+      "surface": "Web/App 报价编辑",
+      "defaultGroupMode": "REGION",
+      "groupModes": [
+        "REGION",
+        "TYPE"
+      ],
+      "rawItems": true,
+      "actions": [
+        "save",
+        "submit",
+        "revise",
+        "adjust"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "scene": "READ",
+      "surface": "内部报价详情",
+      "defaultGroupMode": "REGION",
+      "groupModes": [
+        "REGION",
+        "TYPE"
+      ],
+      "rawItems": true,
+      "actions": [
+        "accept",
+        "reject",
+        "prepareContract",
+        "print"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052",
+        "DEC-071"
+      ]
+    },
+    {
+      "scene": "OWNER",
+      "surface": "App 业主报价",
+      "defaultGroupMode": "REGION",
+      "groupModes": [
+        "REGION",
+        "TYPE"
+      ],
+      "rawItems": false,
+      "actions": [
+        "view",
+        "expandSource",
+        "print"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "scene": "PROJECT",
+      "surface": "App/Web 项目详情",
+      "defaultGroupMode": "REGION",
+      "groupModes": [
+        "REGION",
+        "TYPE"
+      ],
+      "rawItems": false,
+      "actions": [
+        "view",
+        "openUnifiedQuote"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "scene": "CONTRACT",
+      "surface": "App/Web 合同详情",
+      "defaultGroupMode": "SUMMARY",
+      "groupModes": [],
+      "rawItems": false,
+      "actions": [
+        "openUnifiedQuote"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "scene": "SUMMARY",
+      "surface": "客户/项目摘要",
+      "defaultGroupMode": "NONE",
+      "groupModes": [],
+      "rawItems": false,
+      "actions": [
+        "openObject"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    },
+    {
+      "scene": "PRINT",
+      "surface": "报价 PDF",
+      "defaultGroupMode": "REGION",
+      "groupModes": [
+        "REGION",
+        "TYPE"
+      ],
+      "rawItems": false,
+      "actions": [
+        "generate",
+        "regenerate",
+        "openArchive"
+      ],
+      "sourceRefs": [
+        "DEC-086",
+        "BR-052"
+      ]
+    }
+  ],
+  "agentTools": [
+    {
+      "id": "UOV-T01",
+      "name": "报价统一投影契约检查",
+      "kind": "read-only-contract-check",
+      "description": "校验 REGION/TYPE 同源、合并键、来源字段、场景白名单和版本绑定。",
+      "sourceRefs": [
+        "BR-052",
+        "T12-BIZ-20261022-007"
+      ]
+    }
+  ]
+}

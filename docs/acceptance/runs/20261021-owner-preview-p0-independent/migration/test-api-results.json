@@ -1,0 +1,304 @@
+{
+  "checks": [
+    {
+      "id": "LOGIN-boss",
+      "pass": true,
+      "detail": "13910000100 login http=200"
+    },
+    {
+      "id": "LOGIN-storeManager",
+      "pass": true,
+      "detail": "13910000110 login http=200"
+    },
+    {
+      "id": "LOGIN-teamLeader",
+      "pass": true,
+      "detail": "13910000109 login http=200"
+    },
+    {
+      "id": "LOGIN-designer",
+      "pass": true,
+      "detail": "13910000111 login http=200"
+    },
+    {
+      "id": "LOGIN-pm",
+      "pass": true,
+      "detail": "13910000113 login http=200"
+    },
+    {
+      "id": "LOGIN-finance",
+      "pass": true,
+      "detail": "13910000114 login http=200"
+    },
+    {
+      "id": "LOGIN-marketer",
+      "pass": true,
+      "detail": "13910000112 login http=200"
+    },
+    {
+      "id": "LOGIN-nonMemberDesigner",
+      "pass": true,
+      "detail": "13910000121 login http=200"
+    },
+    {
+      "id": "LOGIN-crossCompanyBoss",
+      "pass": true,
+      "detail": "13910000200 login http=200"
+    },
+    {
+      "id": "LOGIN-otherStoreManager",
+      "pass": true,
+      "detail": "13910000120 login http=200"
+    },
+    {
+      "id": "LOGIN-otherTeamLeader",
+      "pass": true,
+      "detail": "13910000119 login http=200"
+    },
+    {
+      "id": "ALLOW-boss",
+      "pass": true,
+      "detail": "project preview"
+    },
+    {
+      "id": "ACTIONS-boss",
+      "pass": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "NO-FEEDBACK-boss",
+      "pass": true,
+      "detail": "measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-boss",
+      "pass": true,
+      "detail": "previewMeta readOnly"
+    },
+    {
+      "id": "WATERMARK-boss",
+      "pass": true,
+      "detail": "业主视角预览 · 仅内部使用 · 造数M负责人 · 工号999200000000000025 · 2026-10-21 03:36"
+    },
+    {
+      "id": "NO-INTERNAL-boss",
+      "pass": true,
+      "detail": "no internal keys"
+    },
+    {
+      "id": "ALLOW-storeManager",
+      "pass": true,
+      "detail": "project preview"
+    },
+    {
+      "id": "ACTIONS-storeManager",
+      "pass": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "NO-FEEDBACK-storeManager",
+      "pass": true,
+      "detail": "measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-storeManager",
+      "pass": true,
+      "detail": "previewMeta readOnly"
+    },
+    {
+      "id": "WATERMARK-storeManager",
+      "pass": true,
+      "detail": "业主视角预览 · 仅内部使用 · A 总店店长 · 工号999200000000000026 · 2026-10-21 03:36"
+    },
+    {
+      "id": "NO-INTERNAL-storeManager",
+      "pass": true,
+      "detail": "no internal keys"
+    },
+    {
+      "id": "ALLOW-teamLeader",
+      "pass": true,
+      "detail": "project preview"
+    },
+    {
+      "id": "ACTIONS-teamLeader",
+      "pass": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "NO-FEEDBACK-teamLeader",
+      "pass": true,
+      "detail": "measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-teamLeader",
+      "pass": true,
+      "detail": "previewMeta readOnly"
+    },
+    {
+      "id": "WATERMARK-teamLeader",
+      "pass": true,
+      "detail": "业主视角预览 · 仅内部使用 · A店验收团队长 · 工号999200000000000041 · 2026-10-21 03:36"
+    },
+    {
+      "id": "NO-INTERNAL-teamLeader",
+      "pass": true,
+      "detail": "no internal keys"
+    },
+    {
+      "id": "ALLOW-designer",
+      "pass": true,
+      "detail": "project preview"
+    },
+    {
+      "id": "ACTIONS-designer",
+      "pass": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "NO-FEEDBACK-designer",
+      "pass": true,
+      "detail": "measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-designer",
+      "pass": true,
+      "detail": "previewMeta readOnly"
+    },
+    {
+      "id": "WATERMARK-designer",
+      "pass": true,
+      "detail": "业主视角预览 · 仅内部使用 · A 总店设计 · 工号999200000000000027 · 2026-10-21 03:36"
+    },
+    {
+      "id": "NO-INTERNAL-designer",
+      "pass": true,
+      "detail": "no internal keys"
+    },
+    {
+      "id": "ALLOW-pm",
+      "pass": true,
+      "detail": "project preview"
+    },
+    {
+      "id": "ACTIONS-pm",
+      "pass": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "NO-FEEDBACK-pm",
+      "pass": true,
+      "detail": "measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-pm",
+      "pass": true,
+      "detail": "previewMeta readOnly"
+    },
+    {
+      "id": "WATERMARK-pm",
+      "pass": true,
+      "detail": "业主视角预览 · 仅内部使用 · A 总店项目经理 · 工号999200000000000029 · 2026-10-21 03:36"
+    },
+    {
+      "id": "NO-INTERNAL-pm",
+      "pass": true,
+      "detail": "no internal keys"
+    },
+    {
+      "id": "FIELD-CONSISTENCY",
+      "pass": true,
+      "detail": "all allowed roles same projection"
+    },
+    {
+      "id": "DENY-finance",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "DENY-marketer",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "DENY-SCOPE-crossCompanyBoss",
+      "pass": true,
+      "detail": "404"
+    },
+    {
+      "id": "DENY-SCOPE-otherStoreManager",
+      "pass": true,
+      "detail": "404"
+    },
+    {
+      "id": "DENY-SCOPE-otherTeamLeader",
+      "pass": true,
+      "detail": "404"
+    },
+    {
+      "id": "DENY-SCOPE-nonMemberDesigner",
+      "pass": true,
+      "detail": "404"
+    },
+    {
+      "id": "OWNER-ENDPOINT",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "ACCEPT-WRITE",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "SHARE-WRITE",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "FEEDBACK-WRITE",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "DENY-RESIGNED",
+      "pass": true,
+      "detail": "403"
+    },
+    {
+      "id": "NO-SIDE-EFFECT",
+      "pass": true,
+      "detail": "business table checksums unchanged"
+    },
+    {
+      "id": "NO-CUSTOMER-ACCESS",
+      "pass": true,
+      "detail": "CustomerAccess unchanged"
+    },
+    {
+      "id": "NO-SHARE-TOKEN",
+      "pass": true,
+      "detail": "ShareLink unchanged"
+    },
+    {
+      "id": "AUDIT-SUCCESS",
+      "pass": true,
+      "detail": "Boss\tNotFound\t1\nBoss\tSuccess\t2\nDesigner\tNotFound\t1\nDesigner\tSuccess\t1\nFinance\tForbidden\t1\nMarketer\tForbidden\t1\nPm\tSuccess\t1\nStoreManager\tNotFound\t1\nStoreManager\tSuccess\t1\nTeamLeader\tNotFound\t1\nTeamLeader\tSuccess\t1"
+    },
+    {
+      "id": "AUDIT-DENY",
+      "pass": true,
+      "detail": "Boss\tNotFound\t1\nBoss\tSuccess\t2\nDesigner\tNotFound\t1\nDesigner\tSuccess\t1\nFinance\tForbidden\t1\nMarketer\tForbidden\t1\nPm\tSuccess\t1\nStoreManager\tNotFound\t1\nStoreManager\tSuccess\t1\nTeamLeader\tNotFound\t1\nTeamLeader\tSuccess\t1"
+    },
+    {
+      "id": "AUDIT-PRIVACY",
+      "pass": true,
+      "detail": "log_id\ncreate_date\ncreate_date_time\ncreate_day\ncreate_hour\ncreate_minute\ncreate_month\ncreate_second\ncreate_time\ncreate_week\ncreate_year\nupdate_date\nupdate_date_time\nupdate_day\nupdate_hour\nupdate_minute\nupdate_month\nupdate_second\nupdate_time\nupdate_week\nupdate_year\ncom_id\nproject_id\nrequested_project_id\nemployee_id\nemployee_name\nemployee_role\nsource\nresult\nopened_at\nrequest_id"
+    }
+  ],
+  "audit": "Boss\tNotFound\t1\nBoss\tSuccess\t2\nDesigner\tNotFound\t1\nDesigner\tSuccess\t1\nFinance\tForbidden\t1\nMarketer\tForbidden\t1\nPm\tSuccess\t1\nStoreManager\tNotFound\t1\nStoreManager\tSuccess\t1\nTeamLeader\tNotFound\t1\nTeamLeader\tSuccess\t1",
+  "before": "decoboon-test.db_project\t3446882660\ndecoboon-test.db_project_stage\t2134369452\ndecoboon-test.db_project_task\t3217927639\ndecoboon-test.db_acceptance\t0\ndecoboon-test.db_finance_receivable\t2627664824\ndecoboon-test.db_finance_receipt\t2758088575\ndecoboon-test.cust_customer\t462506192\ndecoboon-test.cust_customer_access\t0\ndecoboon-test.cust_project_share_link\t0",
+  "after": "decoboon-test.db_project\t3446882660\ndecoboon-test.db_project_stage\t2134369452\ndecoboon-test.db_project_task\t3217927639\ndecoboon-test.db_acceptance\t0\ndecoboon-test.db_finance_receivable\t2627664824\ndecoboon-test.db_finance_receipt\t2758088575\ndecoboon-test.cust_customer\t462506192\ndecoboon-test.cust_customer_access\t0\ndecoboon-test.cust_project_share_link\t0",
+  "beforeCounts": "access\t0\nshare\t0",
+  "afterCounts": "access\t0\nshare\t0"
+}

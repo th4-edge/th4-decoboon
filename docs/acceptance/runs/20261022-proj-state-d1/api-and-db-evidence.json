@@ -1,0 +1,75 @@
+{
+  "environment": "local MySQL 8.4 @127.0.0.1:3307 / database decoboon_accept",
+  "fixture": {
+    "projectId": 9101,
+    "projectNo": "D1-PJ-001",
+    "stageIds": [
+      9201,
+      9202,
+      9203,
+      9204
+    ]
+  },
+  "owner_stage_list": {
+    "success": true,
+    "rows": [
+      {
+        "stageCode": "PREPARE",
+        "acceptanceMode": "None"
+      },
+      {
+        "stageCode": "WATER_ELECTRIC",
+        "acceptanceMode": "AcceptanceDone"
+      },
+      {
+        "stageCode": "MASONRY",
+        "acceptanceMode": "ConstructionDone"
+      },
+      {
+        "stageCode": "LEGACY",
+        "acceptanceMode": null
+      }
+    ]
+  },
+  "employee_stage_page": {
+    "success": true,
+    "rows": [
+      {
+        "stageCode": "PREPARE",
+        "acceptanceMode": "None"
+      },
+      {
+        "stageCode": "WATER_ELECTRIC",
+        "acceptanceMode": "AcceptanceDone"
+      },
+      {
+        "stageCode": "MASONRY",
+        "acceptanceMode": "ConstructionDone"
+      },
+      {
+        "stageCode": "LEGACY",
+        "acceptanceMode": null
+      }
+    ]
+  },
+  "web_render": {
+    "path": "screenshots/web-pm-workbench.png",
+    "visible_values": [
+      "验收方式 无需验收",
+      "验收方式 业主验收",
+      "验收方式 施工完成",
+      "验收方式 待核验"
+    ]
+  },
+  "mysql_migration": {
+    "isolated_database": "decoboon_d1_verify_20261022_233855",
+    "forward": "PASS",
+    "backfill": {
+      "101": "None",
+      "102": "AcceptanceDone",
+      "103": "ConstructionDone",
+      "104": null
+    },
+    "rollback": "PASS"
+  }
+}

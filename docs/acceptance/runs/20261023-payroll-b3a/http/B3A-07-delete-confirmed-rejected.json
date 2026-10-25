@@ -1,0 +1,12 @@
+{
+  "route": "payroll/sheet/delete",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "409",
+      "message": "仅草稿状态工资单可以删除",
+      "system": false
+    }
+  }
+}

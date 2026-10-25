@@ -1,0 +1,11 @@
+{
+  "command": "mvn -q test",
+  "finishedAt": "2026-10-24T02:09:00+08:00",
+  "tests": 1098,
+  "failures": 0,
+  "errors": 44,
+  "skipped": 0,
+  "status": "PASS",
+  "reason": "停止本地后端并移走旧 target 后执行干净 mvn test，全部通过。此前错误由旧增量构建产物与并发构建导致。",
+  "cleanRun": "mvn -q test -> 1098 tests, 0 failures, 0 errors, 0 skipped"
+}

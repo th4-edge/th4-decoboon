@@ -1,0 +1,271 @@
+{
+  "at": "2026-10-20T19:00:41.078Z",
+  "ws": "ws://127.0.0.1:9422",
+  "roleProject": "232781889880981504",
+  "contentProject": "235812193671577600",
+  "checks": [
+    {
+      "id": "ENTRY-boss",
+      "pass": true,
+      "detail": "boss 项目详情入口可见"
+    },
+    {
+      "id": "ENTRY-storeManager",
+      "pass": true,
+      "detail": "storeManager 项目详情入口可见"
+    },
+    {
+      "id": "ENTRY-teamLeader",
+      "pass": true,
+      "detail": "teamLeader 项目详情入口可见"
+    },
+    {
+      "id": "ENTRY-designer",
+      "pass": true,
+      "detail": "designer 项目详情入口可见"
+    },
+    {
+      "id": "ENTRY-pm",
+      "pass": true,
+      "detail": "pm 项目详情入口可见"
+    },
+    {
+      "id": "ENTRY-finance-NO-ENTRY",
+      "pass": true,
+      "detail": "finance 详情可访问=true，业主视角入口=false"
+    },
+    {
+      "id": "GUARD-finance-STATIC",
+      "pass": true,
+      "detail": "finance 无 view:owner-preview 能力，路由规则与页面本地权限双重拒绝（静态契约）"
+    },
+    {
+      "id": "ENTRY-marketer-NO-ENTRY",
+      "pass": true,
+      "detail": "marketer 详情可访问=true，业主视角入口=false"
+    },
+    {
+      "id": "GUARD-marketer-STATIC",
+      "pass": true,
+      "detail": "marketer 无 view:owner-preview 能力，路由规则与页面本地权限双重拒绝（静态契约）"
+    },
+    {
+      "id": "PREVIEW-BANNER",
+      "pass": true,
+      "detail": "只读横幅存在"
+    },
+    {
+      "id": "PREVIEW-WATERMARK",
+      "pass": true,
+      "detail": "水印含员工工号与时间"
+    },
+    {
+      "id": "PREVIEW-TABS",
+      "pass": true,
+      "detail": "首页/全过程/验收 Tab 存在"
+    },
+    {
+      "id": "PREVIEW-READONLY-TEXT",
+      "pass": true,
+      "detail": "底部只读说明存在"
+    },
+    {
+      "id": "PREVIEW-NO-ACTIONS",
+      "pass": true,
+      "detail": "未出现业主写操作/导出分享控件文案"
+    },
+    {
+      "id": "PREVIEW-NO-INTERNAL",
+      "pass": true,
+      "detail": "未出现内部成本/供应商价/内部备注/利润"
+    },
+    {
+      "id": "PREVIEW-JOURNEY",
+      "pass": true,
+      "detail": "全过程可打开"
+    },
+    {
+      "id": "PREVIEW-ACCEPTANCE",
+      "pass": true,
+      "detail": "验收只读页可打开"
+    },
+    {
+      "id": "PREVIEW-ACCEPTANCE-NO-WRITE",
+      "pass": true,
+      "detail": "验收页无写操作"
+    },
+    {
+      "id": "PREVIEW-REFRESH",
+      "pass": true,
+      "detail": "下拉刷新后仍在只读预览页"
+    },
+    {
+      "id": "PREVIEW-BACK-STACK",
+      "pass": true,
+      "detail": "返回栈回到员工项目: subpackages/project/pages/detail"
+    },
+    {
+      "id": "PREVIEW-TEST-PROJECT",
+      "pass": true,
+      "detail": "专用测试项目预览可用"
+    },
+    {
+      "id": "PREVIEW-STAGES",
+      "pass": true,
+      "detail": "阶段进度渲染 8 行"
+    },
+    {
+      "id": "PREVIEW-PHOTO-EMPTY",
+      "pass": true,
+      "detail": "无照片/记录时显示明确空态"
+    }
+  ],
+  "steps": [
+    {
+      "step": "screenshot",
+      "name": "entry-boss.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/entry-boss.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "entry-storeManager.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/entry-storeManager.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "entry-teamLeader.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/entry-teamLeader.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "entry-designer.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/entry-designer.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "entry-pm.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/entry-pm.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "detail-finance-no-entry.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/detail-finance-no-entry.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "detail-marketer-no-entry.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/detail-marketer-no-entry.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "preview-home-boss.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/preview-home-boss.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "preview-journey-boss.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/preview-journey-boss.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "preview-acceptance-boss.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/preview-acceptance-boss.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "preview-after-refresh.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/preview-after-refresh.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "return-to-project.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/return-to-project.png"
+    },
+    {
+      "step": "screenshot",
+      "name": "preview-test-project-journey.png",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261021-owner-preview-p0-independent/app/screenshots/preview-test-project-journey.png"
+    }
+  ],
+  "outcome": "PASS",
+  "raw": {
+    "bossDetailEntries": [
+      "开工",
+      "计划",
+      "3.26万",
+      "日报",
+      "相册",
+      "业主视角",
+      "拍素材"
+    ],
+    "storeManagerDetailEntries": [
+      "开工",
+      "计划",
+      "3.26万",
+      "日报",
+      "相册",
+      "业主视角",
+      "拍素材"
+    ],
+    "teamLeaderDetailEntries": [
+      "开工",
+      "计划",
+      "日报",
+      "相册",
+      "业主视角",
+      "拍素材"
+    ],
+    "designerDetailEntries": [
+      "开工",
+      "计划",
+      "日报",
+      "相册",
+      "业主视角",
+      "拍素材"
+    ],
+    "pmDetailEntries": [
+      "开工",
+      "计划",
+      "日报",
+      "相册",
+      "业主视角",
+      "拍素材"
+    ],
+    "financeDetailEntries": [
+      "开工",
+      "计划",
+      "3.26万",
+      "日报",
+      "相册",
+      "拍素材"
+    ],
+    "financeDetailText": "",
+    "marketerDetailEntries": [
+      "开工",
+      "计划",
+      "日报",
+      "相册",
+      "拍素材"
+    ],
+    "marketerDetailText": "",
+    "previewHomeText": "业主视角预览 · 只读仅展示业主可见内容，不代表业主已查看或确认业主视角预览施工中祥泰园2-1102P1791189127426祥泰园2-110230%当前阶段水电阶段首页全过程验收只读事实摘要这里展示业主可见内容；业主确认、驳回、分享和上传仍需业主本人在业主端完成。业主待办摘要仅汇总业主端可见状态，不提供内部处理按钮 暂无验收0待业主确认验收0可见验收记录已完成 0 个阶段验收最近现场时间、阶段和记录人按业主端投影展示 0 条可见记录暂无可预览的现场照片服务团队仅展示业主端可见的姓名与岗位董夏鹏设计师王宏文店长麦鸿企业负责人黄贤杰业务员张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02业主操作需业主本人在业主端完成返回员工项目",
+    "previewJourneyText": "业主视角预览 · 只读仅展示业主可见内容，不代表业主已查看或确认业主视角预览施工中祥泰园2-1102P1791189127426祥泰园2-110230%当前阶段水电阶段首页全过程验收阶段进度已完成、当前和未开始按业主端状态展示水电阶段 施工中30%—~—量房房屋测量与现场条件 待量房尚未形成量房记录量房暂无可预览记录设计需求、方案与设计版本 待设计尚未形成设计方案设计暂无可预览记录报价客户确认的价格与版本 已转项目当前版本报价 32600.00报价版本1当前金额32600.00版本V1CQ1791189127424客户报价 V13.26万已转项目2026-10-05 16:32清单小计32600.00税金0.00报价总额32600.00合同签约、生效与合同金额 已生效合同 CC1791189127425签约金额32600.00当前金额32600.00签约日期2026-09-29CC1791189127425合同履约额度3.26万已生效2026-09-29增减项范围、金额与生效状态 暂无变更共 0 项变更变更总数0审批中0已生效金额0.00增减项暂无可预览记录材料选材、下单与到场 待选材尚未形成材料计划材料计划0已下单0已到场0材料暂无可预览记录付款按合同节点的付款进度 待付款已付 9780.00，待付 22820.00应付总额32600.00已付9780.00待付22820.00下一节点二期款 · 2026-10-17定金签约¥1,000元已付清2026-09-29已付¥1000.00待付0.00首期款开工前¥8,780元已付清2026-10-02已付¥8780.00待付0.00二期款水电结束¥8,150元待付款2026-10-17已付¥0.00待付8150.00三期款瓦木结束¥8,150元待付款2026-10-31已付¥0.00待付8150.00四期款油漆验收¥5,542元待付款2026-11-20已付¥0.00待付5542.00尾款竣工验收¥978元待付款2026-11-30已付¥0.00待付978.00张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02业主操作需业主本人在业主端完成返回员工项目",
+    "previewAcceptanceText": "业主视角预览 · 只读仅展示业主可见内容，不代表业主已查看或确认业主视角预览施工中祥泰园2-1102P1791189127426祥泰园2-110230%当前阶段水电阶段首页全过程验收验收与整改阶段验收、问题和复验 暂无验收已完成 0 个阶段验收待确认0整改中0已确认0暂无可预览的验收记录此操作需业主本人在业主端完成；预览不会改变验收、项目或付款状态。张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02业主操作需业主本人在业主端完成返回员工项目",
+    "refresh": {
+      "beforeRefresh": "subpackages/project/pages/owner-preview",
+      "afterRefresh": "subpackages/project/pages/owner-preview",
+      "text": "业主视角预览 · 只读仅展示业主可见内容，不代表业主已查看或确认业主视角预览施工中祥泰园2-1102P1791189127426祥泰园2-110230%当前阶段水电阶段首页全过程验收验收与整改阶段验收、问题和复验 暂无验收已完成 0 个阶段验收待确认0整改中0已确认0暂无可预览的验收记录此操作需业主本人在业主端完成；预览不会改变验收、项目或付款状态。张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02张伟 · 工号1789938943545297099 · 2026-10-21 03:02业主操作需业主本人在业主端完成返回员工项目"
+    },
+    "testProjectText": "业主视角预览 · 只读仅展示业主可见内容，不代表业主已查看或确认业主视角预览施工中【测试】昭青测试客户A · 测试小区1栋101P1791911608120测试小区1栋1010%当前阶段开工交底首页全过程验收只读事实摘要这里展示业主可见内容；业主确认、驳回、分享和上传仍需业主本人在业主端完成。业主待办摘要仅汇总业主端可见状态，不提供内部处理按钮 暂无验收0待业主确认验收0可见验收记录已完成 0 个阶段验收最近现场时间、阶段和记录人按业主端投影展示 1 条可见记录暂无可预览的现场照片阶段开工 · 开工交底开工交底已正式开工2026-10-15 11:16:06服务团队仅展示业主端可见的姓名与岗位张伟企业负责人企业客服 0551-6558 8899验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02验收负责人 · 工号1902102100000000004 · 2026-10-21 03:02业主操作需业主本人在业主端完成返回员工项目",
+    "testProjectStages": [
+      "开工交底 施工中0%2026-10-17~2026-10-22",
+      "拆除改造 本项不涉及0%2026-10-23~2026-10-28",
+      "水电施工 本项不涉及0%2026-10-29~2026-11-12",
+      "泥瓦防水 本项不涉及0%2026-11-13~2026-12-06",
+      "木作吊顶 本项不涉及0%2026-12-07~2026-12-28",
+      "油漆墙面 未开始0%2026-12-29~2027-01-19",
+      "安装收尾 本项不涉及0%2027-01-20~2027-02-03",
+      "竣工保洁验收 本项不涉及0%2027-02-04~2027-02-14"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "route": "invite/invitation/save",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "邀请财务必须选择归属门店",
+      "system": false
+    }
+  }
+}

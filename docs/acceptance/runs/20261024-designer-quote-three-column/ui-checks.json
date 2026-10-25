@@ -1,0 +1,44 @@
+{
+  "route": "/designer/quotes",
+  "layout_model": "queue-workspace-guide",
+  "viewport_1440": {
+    "columns": "290px 488px 290px",
+    "queue": true,
+    "workspace": true,
+    "guide": true,
+    "overflow_x": false
+  },
+  "viewport_1024": {
+    "columns": "920px",
+    "guide_visible": true,
+    "overflow_x": false
+  },
+  "selected_quote": "Q1790383677036",
+  "object_anchors": [
+    "customerId",
+    "activePropertyId",
+    "quoteId"
+  ],
+  "guide_actions": [
+    "进入报价工作区",
+    "联系客户",
+    "完整档案",
+    "报价历史",
+    "刷新数据",
+    "查看下一项"
+  ],
+  "server_pagination_preserved": true,
+  "console_errors": 0,
+  "post_review_fixes": {
+    "pager_visible": true,
+    "pager_display": "flex",
+    "eyebrow_color": "rgb(38,101,74)",
+    "customer_hero_card": true,
+    "hero_focus_items": true,
+    "workbench_quick_actions": 4
+  },
+  "final_screenshots": [
+    "output/playwright/20261024-designer-quotes-aligned-final-1440.png",
+    "output/playwright/20261024-designer-quotes-aligned-final-1024.png"
+  ]
+}

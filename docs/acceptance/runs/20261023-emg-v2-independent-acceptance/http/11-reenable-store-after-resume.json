@@ -1,0 +1,16 @@
+{
+  "route": "user/store/status",
+  "response": {
+    "data": {
+      "storeId": "2002",
+      "name": "验收二店",
+      "defaultStore": false,
+      "status": {
+        "name": "启用",
+        "key": "Active"
+      },
+      "sort": 1
+    },
+    "success": true
+  }
+}

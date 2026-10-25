@@ -1,0 +1,26 @@
+{
+  "web_dev_token_login": {
+    "success": true,
+    "redirected_to": "/designer/workbench",
+    "token_removed_from_url": true
+  },
+  "app_devtools_token_login": {
+    "success": true,
+    "path": "pages/mine/index",
+    "name": "张伟",
+    "role": "designer",
+    "company": "安徽昭青网络科技",
+    "token_present": true
+  },
+  "same_sign_scenario": {
+    "web_visible": true,
+    "app_visible": true,
+    "quote_no": "Q-SIGN-DEMO-001",
+    "customer": "【验收·待签约】周先生"
+  },
+  "cleaned_pagination_fixtures": {
+    "temporary_quotes": 0,
+    "temporary_dormant_customer": 0
+  },
+  "console_errors": 0
+}

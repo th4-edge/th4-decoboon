@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-22T01:35:00+08:00",
+  "decisions": [
+    {
+      "id": "USER-DEC-20261022-001",
+      "title": "角色体系、材料履约、跨端边界与 TeamLeader 冻结",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_SYNC",
+      "decidedAt": "2026-10-22",
+      "file": "docs/product/decisions/USER-DEC-20261022-001-角色体系与跨端边界.md",
+      "affected": [
+        "product-system-baseline",
+        "issue-governance/PI-20261022-001",
+        "issue-governance/PI-20261022-002",
+        "issue-governance/PI-20261022-004"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261022-002",
+      "title": "报价统一视图",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_SYNC",
+      "decidedAt": "2026-10-22",
+      "file": "docs/product/decisions/USER-DEC-20261022-002-报价统一视图.md",
+      "affected": [
+        "quote",
+        "App",
+        "Web",
+        "owner-portal",
+        "contract",
+        "project",
+        "customer-journey"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261022-003",
+      "title": "统一业务对象视图标准",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_SYNC",
+      "decidedAt": "2026-10-22",
+      "file": "docs/product/decisions/USER-DEC-20261022-003-统一业务对象视图标准.md",
+      "affected": [
+        "quote",
+        "design",
+        "contract",
+        "project",
+        "plan",
+        "material",
+        "change",
+        "acceptance",
+        "finance",
+        "app",
+        "web",
+        "owner"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261022-004",
+      "title": "项目事实追踪",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_SYNC",
+      "decidedAt": "2026-10-22",
+      "file": "docs/product/decisions/USER-DEC-20261022-004-项目事实追踪.md",
+      "affected": [
+        "project",
+        "measure",
+        "design",
+        "quote",
+        "contract",
+        "change",
+        "material",
+        "acceptance",
+        "finance",
+        "app",
+        "web",
+        "owner"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261022-005",
+      "title": "合同事实追踪",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_SYNC",
+      "decidedAt": "2026-10-22",
+      "file": "docs/product/decisions/USER-DEC-20261022-005-合同事实追踪.md",
+      "affected": [
+        "contract",
+        "measure",
+        "design",
+        "quote",
+        "project",
+        "change",
+        "material",
+        "acceptance",
+        "finance",
+        "app",
+        "web",
+        "owner"
+      ]
+    }
+  ]
+}

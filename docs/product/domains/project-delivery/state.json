@@ -5,17 +5,15 @@
   "northStar": "合同施工范围通过阶段、任务、排期、节点留证和进度投影形成可追溯的履约闭环，不脱离合同或已生效变更独立造任务",
   "owner": "codex",
   "phase": "DEV_VERIFIED",
-  "batch": "OWNER-UI-V2-C",
-  "nextAction": "补齐 390×844、430×932、375×812 微信运行时检查及空态/错误态/长内容/部分同步矩阵后，再评审是否推进 UI_REVIEWED",
+  "batch": "PD-X1",
+  "nextAction": "PD-X1 交独立验收：真实角色写入/回滚、真实 Provider 页面、跨端和越权证据；通过后进入 MAT-X1 授权评审",
   "openDecisions": [
     "GAP-034：阶段计划两套算法如何统一",
-    "GAP-034 G-01：acceptanceMode 是否落到 ProjectStage",
-    "GAP-034：现场动态/日报发布角色是否收敛为 Boss/店长/PM",
-    "GAP-034 G-07：取消任务是否参与阶段验收门禁",
     "GAP-034 G-02/G-06：工艺库与阶段/区域绑定形态"
   ],
   "blockers": [
-    "B1 业务对齐等待 GAP-034 五项业务裁决；裁决前不得进入编码"
+    "B1 业务对齐仍待 GAP-034 其他子项裁决；PI-20261022-015 已业务裁决，新增 PD-X1 切片但未授权编码",
+    "PROJ-STATE-D1 待独立验收与 App 真机；125 在完整 dev/test 库的账本登记未完成"
   ],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
@@ -34,7 +32,7 @@
     "ownerUiInteractionSpec": "14-owner-ui-v2-technical-interaction-spec.md"
   },
   "createdAt": "2026-10-17T22:33:38+08:00",
-  "updatedAt": "2026-10-21T23:35:45+08:00",
+  "updatedAt": "2026-10-23T00:29:00+08:00",
   "history": [
     {
       "at": "2026-10-17T22:33:38+08:00",
@@ -107,6 +105,48 @@
       "phase": "DEV_VERIFIED",
       "batch": "OWNER-UI-V2-C",
       "note": "OWNER-UI-V2-C: 微信开发者工具 375×667 完成 10 页业主真实会话与员工预览业务区同屏一致性；修复反馈能力误计待办、身份残留和旧 app.json；多分辨率、异常状态与独立验收仍待完成"
+    },
+    {
+      "at": "2026-10-22T22:27:45+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PI-014-BIZ",
+      "note": "PI-20261022-014 业务裁决完成：DEC-087/BR-053 冻结三模式完成路径、合同快照继承、停复工生命周期和下游影响；GAP-034 G-01/G-07 收敛；未修改代码、权限、DDL 或状态机"
+    },
+    {
+      "at": "2026-10-22T22:32:54+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "OWNER-UI-V2-C",
+      "note": "PI-20261022-015 取得 ANS/T12-BIZ-20261022-009、DEC-088、BR-054；现场日报发布角色关闭为 PM + BOSS/店长，新增 PD-X1 双端写能力切片，未授权编码"
+    },
+    {
+      "at": "2026-10-22T22:46:31+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "PROJ-STATE-D1",
+      "note": "PROJ-STATE-D1 蓝图 0.3.0 已建立：合同阶段快照、ProjectStage.acceptanceMode、回读 UI 绑定、继承规则与来源丢失检查均有 DEC-087/BR-053 来源"
+    },
+    {
+      "at": "2026-10-22T22:46:31+08:00",
+      "phase": "PLAN_READY",
+      "batch": "PROJ-STATE-D1",
+      "note": "D1 单切片计划已存在：字段迁移、合同快照复制、历史回填/待核验、App/Web 阶段读投影、定向测试；不进入 D2-D5"
+    },
+    {
+      "at": "2026-10-22T23:30:18+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PROJ-STATE-D1",
+      "note": "D1 实现阶段验收模式字段、合同快照复制、Provider 回读、历史回填、App/Web 只读展示；隔离定向测试与三端构建通过；MySQL 迁移和独立验收未完成"
+    },
+    {
+      "at": "2026-10-22T23:55:00+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PD-X1",
+      "note": "PD-X1 实施：Web 统一履约工作面（排期/三类节点/日报）、App 日报权限对齐、后端发布角色门禁；Web 构建/治理与 App type-check/动作契约通过，全量测试与真实页面验收待完成"
+    },
+    {
+      "at": "2026-10-23T00:29:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PD-X1",
+      "note": "PD-X1 开发自测收口：Web type-check/build/治理、App type-check/build/分包、后端定向与干净基线全量（930 项，0 failures，1 个既有并发用例瞬时错误且单独重跑 PASS）、Playwright 夹具渲染均完成；独立验收待执行"
     }
   ]
 }

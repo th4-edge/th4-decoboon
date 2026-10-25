@@ -1,0 +1,1352 @@
+{
+  "generatedAt": "2026-10-23T00:43:30+0800",
+  "cases": {
+    "01": {
+      "id": "01",
+      "title": "BOSS 邀请财务不选门店",
+      "expected": "400",
+      "actual": {
+        "success": false,
+        "code": "400",
+        "message": "邀请财务必须选择归属门店"
+      },
+      "result": "PASS",
+      "evidence": [
+        "01-boss-finance-no-store.json"
+      ]
+    },
+    "02": {
+      "id": "02",
+      "title": "店长邀请本店财务",
+      "expected": "成功，storeId=2001",
+      "actual": {
+        "success": true,
+        "inviteId": "1792687401274365047",
+        "role": "Finance",
+        "storeId": "2001"
+      },
+      "result": "PASS",
+      "evidence": [
+        "02-manager-finance-own-store.json"
+      ]
+    },
+    "03": {
+      "id": "03",
+      "title": "店长邀请其他门店财务",
+      "expected": "403",
+      "actual": {
+        "success": false,
+        "code": "403",
+        "message": "店长只能邀请本店财务"
+      },
+      "result": "PASS",
+      "evidence": [
+        "03-manager-finance-other-store.json"
+      ]
+    },
+    "04": {
+      "id": "04",
+      "title": "店长邀请岗位边界",
+      "expected": "拒绝店长/TeamLeader/Team 写入",
+      "actual": {
+        "storeManager": {
+          "code": "403",
+          "message": "店长不能邀请其他店长"
+        },
+        "teamLeader": {
+          "code": "403",
+          "message": "团队负责人角色已冻结，不能用于新邀请或岗位调整"
+        },
+        "teamWrite": {
+          "code": "400",
+          "message": "团队已冻结，不能创建或分配团队"
+        }
+      },
+      "result": "PASS",
+      "evidence": [
+        "04-manager-invite-storemanager.json",
+        "04-manager-invite-teamleader.json",
+        "04-manager-invite-with-team-id.json"
+      ]
+    },
+    "06": {
+      "id": "06",
+      "title": "店长本店调岗",
+      "expected": "成功，3004=Pm@2001",
+      "actual": {
+        "success": true,
+        "role": "Pm",
+        "storeId": "2001",
+        "code": ""
+      },
+      "result": "PASS",
+      "evidence": [
+        "06-manager-same-store-role-change.json"
+      ]
+    },
+    "08": {
+      "id": "08",
+      "title": "店长提升他人为店长",
+      "expected": "403，仅 BOSS 可设置店长",
+      "actual": {
+        "success": false,
+        "code": "403",
+        "message": "只有企业负责人可以设置店长"
+      },
+      "result": "PASS",
+      "evidence": [
+        "08-manager-promote-manager.json"
+      ]
+    },
+    "05": {
+      "id": "05",
+      "title": "BOSS 跨店调岗调店",
+      "expected": "成功，3004=Designer@2002，日志前后值正确",
+      "actual": {
+        "success": true,
+        "role": "Designer",
+        "storeId": "2002",
+        "sql": "emp_id\tname\trole\tstatus\tstore_id\tteam_id\tcom_id\n3004\t验收项目经理\tDesigner\tActive\t2002\tNULL\t1001\nlog_id\temp_id\taction\toperator_id\tbefore_snapshot\tafter_snapshot\n1792687402378585315\t3004\tRoleChange\t3002\tcompany=1001,store=2001,team=null,role=Marketer,status=Active\tcompany=1001,store=2001,team=null,role=Pm,status=Active\n1792687402756499661\t3004\tRoleChange\t3001\tcompany=1001,store=2001,team=null,role=Pm,status=Active\tcompany=1001,store=2002,team=null,role=Designer,status=Active\n1792683737813662683\t3004\tRoleChange\t3002\tcompany=1001,store=2001,team=null,role=Pm,status=Active\tcompany=1001,store=2001,team=null,role=Marketer,status=Active"
+      },
+      "result": "FAIL",
+      "evidence": [
+        "05-boss-cross-store-role-store.json",
+        "sql/05-boss-cross-store.txt"
+      ]
+    },
+    "07": {
+      "id": "07",
+      "title": "店长跨店调整",
+      "expected": "403",
+      "actual": {
+        "success": false,
+        "code": "403",
+        "message": "无权管理该员工"
+      },
+      "result": "PASS",
+      "evidence": [
+        "07-manager-cross-store.json"
+      ]
+    },
+    "15": {
+      "id": "15",
+      "title": "跨企业成员/门店",
+      "expected": "404/拒绝，不泄露存在性",
+      "actual": {
+        "member": {
+          "success": false,
+          "code": "404",
+          "message": "员工不存在"
+        },
+        "store": {
+          "success": false,
+          "code": "403",
+          "message": "门店不存在或无权访问"
+        }
+      },
+      "result": "PASS",
+      "evidence": [
+        "15-cross-company-member-info.json",
+        "15-cross-company-store-update.json"
+      ]
+    },
+    "09": {
+      "id": "09",
+      "title": "店长操作自己/BOSS/其他店长",
+      "expected": "页面无入口，接口均拒绝",
+      "actual": {
+        "setupOtherManager": true,
+        "self": {
+          "success": false,
+          "code": "400",
+          "message": "不能操作自己的员工记录"
+        },
+        "boss": {
+          "success": false,
+          "code": "403",
+          "message": "无权管理该员工"
+        },
+        "otherManager": {
+          "success": false,
+          "code": "403",
+          "message": "无权管理该员工"
+        }
+      },
+      "result": "PASS",
+      "evidence": [
+        "09-boss-promote-other-manager.json",
+        "09-manager-update-self.json",
+        "09-manager-suspend-boss.json",
+        "09-manager-update-other-manager.json"
+      ]
+    },
+    "10": {
+      "id": "10",
+      "title": "停用员工访问",
+      "expected": "停用成功，登录 403",
+      "actual": {
+        "suspendSuccess": true,
+        "status": "Suspended",
+        "loginSuccess": false,
+        "loginCode": "403"
+      },
+      "result": "PASS",
+      "evidence": [
+        "10-boss-suspend-employee.json",
+        "10-suspended-login.json"
+      ]
+    },
+    "11": {
+      "id": "11",
+      "title": "恢复员工",
+      "expected": "成功，登录恢复；重复恢复明确 400",
+      "actual": {
+        "resumeSuccess": true,
+        "status": "Active",
+        "loginSuccess": true,
+        "duplicateResumeCode": "400"
+      },
+      "result": "PASS",
+      "evidence": [
+        "11-boss-resume-employee.json",
+        "11-resumed-login.json",
+        "17-duplicate-resume.json"
+      ]
+    },
+    "12": {
+      "id": "12",
+      "title": "有在手责任员工普通离职",
+      "expected": "409，要求交接或强制确认",
+      "actual": {
+        "success": false,
+        "code": "409",
+        "message": "存在未交接的客户、房屋、报价、项目或应收，请先完成交接或确认强制离职"
+      },
+      "result": "PASS",
+      "evidence": [
+        "12-resign-with-responsibility.json"
+      ]
+    },
+    "13": {
+      "id": "13",
+      "title": "确认强制离职",
+      "expected": "Resigned；原因/时间落库；客户历史归属仍为 3004",
+      "actual": {
+        "success": true,
+        "status": null,
+        "customerCount": 1,
+        "sql": "emp_id\tname\trole\tstatus\tstore_id\tteam_id\tcom_id\tresigned_at\tresign_reason\n3004\t验收项目经理\tDesigner\tResigned\t2002\tNULL\t1001\t2026-10-23 00:43:27.529011\tEMG-V2 独立验收强制离职\ncust_id\temp_id\tstore_id\tstatus\n88001\t3004\t2002\tServing\nlog_id\temp_id\taction\toperator_id\treason\tbefore_snapshot\tafter_snapshot\n1792687407529235812\t3004\tResign\t3001\tEMG-V2 独立验收强制离职\tcompany=1001,store=2002,team=null,role=Designer,status=Active\tcompany=1001,store=2002,team=null,role=Designer,status=Resigned\n1792687404628955239\t3004\tResume\t3001\t管理员恢复员工\tcompany=1001,store=2002,team=null,role=Designer,status=Suspended\tcompany=1001,store=2002,team=null,role=Designer,status=Active\n1792687403851251323\t3004\tSuspend\t3001\t管理员停用员工\tcompany=1001,store=2002,team=null,role=Designer,status=Active\tcompany=1001,store=2002,team=null,role=Designer,status=Suspended"
+      },
+      "result": "FAIL",
+      "evidence": [
+        "13-resign-force-confirmed.json",
+        "sql/13-force-resign-facts.txt"
+      ]
+    },
+    "16": {
+      "id": "16",
+      "title": "Team/TeamLeader 回归",
+      "expected": "Team 只读空列表；写路由不存在；TeamLeader 邀请/登录拒绝",
+      "actual": {
+        "teamList": [],
+        "teamSave": {
+          "success": false,
+          "code": "canNotFoundHandler"
+        },
+        "tlInvite": {
+          "success": false,
+          "code": "403"
+        },
+        "tlLogin": {
+          "success": false,
+          "code": "403"
+        }
+      },
+      "result": "FAIL",
+      "evidence": [
+        "16-team-list-readonly.json",
+        "16-team-save-absent.json",
+        "16-invite-teamleader-boss.json",
+        "16-teamleader-login.json"
+      ]
+    },
+    "14": {
+      "id": "14",
+      "title": "管理员代办离职",
+      "expected": "操作人=3001，目标=3003",
+      "actual": {
+        "success": true,
+        "status": null,
+        "sql": "emp_id\tname\trole\tstatus\tstore_id\tcom_id\tresigned_at\tresign_reason\n3003\t验收设计师\tStoreManager\tResigned\t2002\t1001\t2026-10-23 00:43:29.994526\tEMG-V2 独立验收管理员代办离职\nlog_id\temp_id\taction\toperator_id\treason\tbefore_snapshot\tafter_snapshot\n1792687409994438124\t3003\tResign\t3001\tEMG-V2 独立验收管理员代办离职\tcompany=1001,store=2002,team=null,role=StoreManager,status=Active\tcompany=1001,store=2002,team=null,role=StoreManager,status=Resigned\n1792687403279615308\t3003\tRoleChange\t3001\t管理员调整成员组织或角色\tcompany=1001,store=2002,team=null,role=Pm,status=Active\tcompany=1001,store=2002,team=null,role=StoreManager,status=Active\n1792683676757249292\t3003\tResume\t3001\t管理员恢复员工\tcompany=1001,store=2002,team=null,role=Pm,status=Suspended\tcompany=1001,store=2002,team=null,role=Pm,status=Active"
+      },
+      "result": "FAIL",
+      "evidence": [
+        "14-boss-delegated-resign.json",
+        "sql/14-admin-delegated-facts.txt"
+      ]
+    },
+    "17": {
+      "id": "17",
+      "title": "重复停用/恢复/离职",
+      "expected": "均明确状态错误，不产生错误有效状态",
+      "actual": {
+        "duplicateSuspend": "400",
+        "duplicateResume": "400",
+        "duplicateResign": "400"
+      },
+      "result": "PASS",
+      "evidence": [
+        "17-duplicate-suspend.json",
+        "17-duplicate-resume.json",
+        "17-duplicate-resign.json"
+      ]
+    },
+    "18": {
+      "id": "18",
+      "title": "App/Web 双端同源",
+      "expected": "页面状态/门店/岗位与接口一致",
+      "actual": {
+        "apiSuccess": true,
+        "rows": {
+          "3001": {
+            "name": "验收老板",
+            "role": "Boss",
+            "status": "Active",
+            "storeId": "2001"
+          },
+          "3002": {
+            "name": "验收店长",
+            "role": "StoreManager",
+            "status": "Active",
+            "storeId": "2001"
+          },
+          "3003": {
+            "name": "验收设计师",
+            "role": "StoreManager",
+            "status": "Resigned",
+            "storeId": "2002"
+          },
+          "3004": {
+            "name": "验收项目经理",
+            "role": "Designer",
+            "status": "Resigned",
+            "storeId": "2002"
+          },
+          "3105": {
+            "name": "验收调岗对象",
+            "role": "Designer",
+            "status": "Resigned",
+            "storeId": "2002"
+          },
+          "3106": {
+            "name": "验收审计对象",
+            "role": "Marketer",
+            "status": "Resigned",
+            "storeId": "2001"
+          }
+        },
+        "pageEvidencePending": true
+      },
+      "result": "PASS",
+      "evidence": [
+        "18-final-api-members.json"
+      ]
+    }
+  },
+  "httpResponses": {
+    "login-boss": [
+      {
+        "route": "auth/session/password-login",
+        "http": 200,
+        "response": {
+          "success": true,
+          "data": {
+            "token": "<redacted>"
+          },
+          "errorCode": null
+        }
+      }
+    ],
+    "login-manager": [
+      {
+        "route": "auth/session/password-login",
+        "http": 200,
+        "response": {
+          "success": true,
+          "data": {
+            "token": "<redacted>"
+          },
+          "errorCode": null
+        }
+      }
+    ],
+    "login-employee": [
+      {
+        "route": "auth/session/password-login",
+        "http": 200,
+        "response": {
+          "success": true,
+          "data": {
+            "token": "<redacted>"
+          },
+          "errorCode": null
+        }
+      }
+    ],
+    "login-other": [
+      {
+        "route": "auth/session/password-login",
+        "http": 200,
+        "response": {
+          "success": true,
+          "data": {
+            "token": "<redacted>"
+          },
+          "errorCode": null
+        }
+      }
+    ],
+    "01": [
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "400",
+            "message": "邀请财务必须选择归属门店",
+            "system": false
+          }
+        }
+      }
+    ],
+    "02": [
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "data": {
+            "inviteId": "1792687401274365047",
+            "company": {
+              "comId": "1001",
+              "title": "验收装企有限公司",
+              "name": "验收装企"
+            },
+            "store": {
+              "storeId": "2001",
+              "name": "验收总店"
+            },
+            "inviter": {
+              "empId": "3002",
+              "name": "验收店长",
+              "role": {
+                "name": "店长",
+                "value": "StoreManager",
+                "key": "StoreManager"
+              }
+            },
+            "inviteName": "验收本店财务",
+            "telNo": "13992000002",
+            "role": {
+              "name": "财务",
+              "value": "Finance",
+              "key": "Finance"
+            },
+            "status": {
+              "name": "待接受",
+              "value": "Pending",
+              "key": "Pending"
+            },
+            "expireTime": "2026-10-30 00:43:21",
+            "createTime": {
+              "dateTime": "2026-10-23 00:43:21"
+            }
+          },
+          "success": true
+        }
+      },
+      {
+        "route": "invite/invitation/cancel",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "undefinedErrorCode",
+            "message": "未定义错误信息:{0}",
+            "system": false
+          }
+        }
+      }
+    ],
+    "03": [
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "店长只能邀请本店财务",
+            "system": false
+          }
+        }
+      }
+    ],
+    "04": [
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "店长不能邀请其他店长",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "团队负责人角色已冻结，不能用于新邀请或岗位调整",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "400",
+            "message": "团队已冻结，不能创建或分配团队",
+            "system": false
+          }
+        }
+      }
+    ],
+    "06": [
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "data": {
+            "empId": "3004",
+            "name": "验收项目经理",
+            "telNo": "13990000004",
+            "store": {
+              "storeId": "2001",
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "name": "验收总店",
+              "defaultStore": true,
+              "status": {
+                "name": "启用",
+                "key": "Active"
+              },
+              "sort": 0
+            },
+            "company": {
+              "comId": "1001",
+              "title": "验收装企有限公司",
+              "name": "验收装企",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "setting": {
+                "enableStore": true
+              }
+            },
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            },
+            "joinedAt": "2026-10-22 23:33:48"
+          },
+          "success": true
+        }
+      }
+    ],
+    "08": [
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "只有企业负责人可以设置店长",
+            "system": false
+          }
+        }
+      }
+    ],
+    "05": [
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "data": {
+            "empId": "3004",
+            "name": "验收项目经理",
+            "telNo": "13990000004",
+            "store": {
+              "storeId": "2002",
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "name": "验收二店",
+              "defaultStore": false,
+              "status": {
+                "name": "启用",
+                "key": "Active"
+              },
+              "sort": 1
+            },
+            "company": {
+              "comId": "1001",
+              "title": "验收装企有限公司",
+              "name": "验收装企",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "setting": {
+                "enableStore": true
+              }
+            },
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            },
+            "joinedAt": "2026-10-22 23:33:48"
+          },
+          "success": true
+        }
+      }
+    ],
+    "07": [
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "无权管理该员工",
+            "system": false
+          }
+        }
+      }
+    ],
+    "15": [
+      {
+        "route": "company/member/info",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "404",
+            "message": "员工不存在",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "门店不存在或无权访问",
+            "system": false
+          }
+        }
+      }
+    ],
+    "09": [
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "data": {
+            "empId": "3003",
+            "name": "验收设计师",
+            "telNo": "13990000003",
+            "store": {
+              "storeId": "2002",
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "name": "验收二店",
+              "defaultStore": false,
+              "status": {
+                "name": "启用",
+                "key": "Active"
+              },
+              "sort": 1
+            },
+            "company": {
+              "comId": "1001",
+              "title": "验收装企有限公司",
+              "name": "验收装企",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "setting": {
+                "enableStore": true
+              }
+            },
+            "role": {
+              "name": "店长",
+              "value": "StoreManager",
+              "key": "StoreManager"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            },
+            "joinedAt": "2026-10-22 23:41:16"
+          },
+          "success": true
+        }
+      },
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "400",
+            "message": "不能操作自己的员工记录",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "company/member/suspend",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "无权管理该员工",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "company/member/update",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "无权管理该员工",
+            "system": false
+          }
+        }
+      }
+    ],
+    "10": [
+      {
+        "route": "company/member/suspend",
+        "http": 200,
+        "response": {
+          "data": {
+            "empId": "3004",
+            "name": "验收项目经理",
+            "telNo": "13990000004",
+            "store": {
+              "storeId": "2002",
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "name": "验收二店",
+              "defaultStore": false,
+              "status": {
+                "name": "启用",
+                "key": "Active"
+              },
+              "sort": 1
+            },
+            "company": {
+              "comId": "1001",
+              "title": "验收装企有限公司",
+              "name": "验收装企",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "setting": {
+                "enableStore": true
+              }
+            },
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            },
+            "status": {
+              "name": "停用",
+              "key": "Suspended"
+            },
+            "joinedAt": "2026-10-22 23:33:48"
+          },
+          "success": true
+        }
+      },
+      {
+        "route": "auth/session/password-login (suspended)",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "当前账号已停用或未加入企业",
+            "system": false
+          }
+        }
+      }
+    ],
+    "17": [
+      {
+        "route": "company/member/suspend",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "400",
+            "message": "仅在职员工可以停用",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "company/member/resume",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "400",
+            "message": "仅停用员工可以恢复",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "company/member/resign",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "400",
+            "message": "当前员工不是在职状态",
+            "system": false
+          }
+        }
+      }
+    ],
+    "11": [
+      {
+        "route": "company/member/resume",
+        "http": 200,
+        "response": {
+          "data": {
+            "empId": "3004",
+            "name": "验收项目经理",
+            "telNo": "13990000004",
+            "store": {
+              "storeId": "2002",
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "name": "验收二店",
+              "defaultStore": false,
+              "status": {
+                "name": "启用",
+                "key": "Active"
+              },
+              "sort": 1
+            },
+            "company": {
+              "comId": "1001",
+              "title": "验收装企有限公司",
+              "name": "验收装企",
+              "size": {
+                "name": "10人以下",
+                "value": "A",
+                "key": "A"
+              },
+              "setting": {
+                "enableStore": true
+              }
+            },
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            },
+            "joinedAt": "2026-10-23 00:43:24"
+          },
+          "success": true
+        }
+      },
+      {
+        "route": "auth/session/password-login (resumed)",
+        "http": 200,
+        "response": {
+          "success": true,
+          "data": {
+            "token": "<redacted>"
+          },
+          "errorCode": null
+        }
+      }
+    ],
+    "12": [
+      {
+        "route": "company/member/resign",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "409",
+            "message": "存在未交接的客户、房屋、报价、项目或应收，请先完成交接或确认强制离职",
+            "system": false
+          }
+        }
+      }
+    ],
+    "13": [
+      {
+        "route": "company/member/resign",
+        "http": 200,
+        "response": {
+          "data": {
+            "employee": {
+              "empId": "3004",
+              "name": "验收项目经理",
+              "store": {
+                "storeId": "2002",
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "setting": {
+                    "enableStore": true
+                  }
+                },
+                "name": "验收二店",
+                "defaultStore": false,
+                "status": {
+                  "name": "启用",
+                  "key": "Active"
+                },
+                "sort": 1
+              },
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              },
+              "status": {
+                "name": "已离职",
+                "key": "Resigned"
+              }
+            },
+            "customerCount": 1,
+            "propertyCount": 0,
+            "quoteCount": 0,
+            "projectCount": 0,
+            "taskCount": 0,
+            "receivableCount": 0
+          },
+          "success": true
+        }
+      }
+    ],
+    "16": [
+      {
+        "route": "user/team/list",
+        "http": 200,
+        "response": {
+          "data": [],
+          "success": true
+        }
+      },
+      {
+        "route": "user/team/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "canNotFoundHandler",
+            "message": "找不到对应的处理服务:user/team/save",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "invite/invitation/save",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "团队负责人角色已冻结，不能用于新邀请或岗位调整",
+            "system": false
+          }
+        }
+      },
+      {
+        "route": "auth/session/password-login (temporary TeamLeader)",
+        "http": 200,
+        "response": {
+          "success": false,
+          "errorCode": {
+            "code": "403",
+            "message": "团队负责人角色已冻结，请联系企业负责人改为其他岗位",
+            "system": false
+          }
+        }
+      }
+    ],
+    "14": [
+      {
+        "route": "company/member/resign",
+        "http": 200,
+        "response": {
+          "data": {
+            "employee": {
+              "empId": "3003",
+              "name": "验收设计师",
+              "store": {
+                "storeId": "2002",
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企",
+                  "size": {
+                    "name": "10人以下",
+                    "value": "A",
+                    "key": "A"
+                  },
+                  "setting": {
+                    "enableStore": true
+                  }
+                },
+                "name": "验收二店",
+                "defaultStore": false,
+                "status": {
+                  "name": "启用",
+                  "key": "Active"
+                },
+                "sort": 1
+              },
+              "company": {
+                "comId": "1001",
+                "title": "验收装企有限公司",
+                "name": "验收装企",
+                "size": {
+                  "name": "10人以下",
+                  "value": "A",
+                  "key": "A"
+                },
+                "setting": {
+                  "enableStore": true
+                }
+              },
+              "role": {
+                "name": "店长",
+                "value": "StoreManager",
+                "key": "StoreManager"
+              },
+              "status": {
+                "name": "已离职",
+                "key": "Resigned"
+              }
+            },
+            "customerCount": 0,
+            "propertyCount": 0,
+            "quoteCount": 0,
+            "projectCount": 0,
+            "taskCount": 0,
+            "receivableCount": 0
+          },
+          "success": true
+        }
+      }
+    ],
+    "18": [
+      {
+        "route": "company/member/page",
+        "http": 200,
+        "response": {
+          "data": {
+            "content": [
+              {
+                "empId": "3001",
+                "name": "验收老板",
+                "telNo": "13990000001",
+                "store": {
+                  "storeId": "2001",
+                  "name": "验收总店"
+                },
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企"
+                },
+                "role": {
+                  "name": "企业负责人",
+                  "value": "Boss",
+                  "key": "Boss"
+                },
+                "status": {
+                  "name": "在职",
+                  "key": "Active"
+                },
+                "joinedAt": "2026-10-22 23:33:48"
+              },
+              {
+                "empId": "3002",
+                "name": "验收店长",
+                "telNo": "13990000002",
+                "store": {
+                  "storeId": "2001",
+                  "name": "验收总店"
+                },
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企"
+                },
+                "role": {
+                  "name": "店长",
+                  "value": "StoreManager",
+                  "key": "StoreManager"
+                },
+                "status": {
+                  "name": "在职",
+                  "key": "Active"
+                },
+                "joinedAt": "2026-10-22 23:33:48"
+              },
+              {
+                "empId": "3003",
+                "name": "验收设计师",
+                "telNo": "13990000003",
+                "store": {
+                  "storeId": "2002",
+                  "name": "验收二店"
+                },
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企"
+                },
+                "role": {
+                  "name": "店长",
+                  "value": "StoreManager",
+                  "key": "StoreManager"
+                },
+                "status": {
+                  "name": "已离职",
+                  "key": "Resigned"
+                },
+                "joinedAt": "2026-10-22 23:41:16",
+                "resignedAt": "2026-10-23 00:43:29",
+                "resignReason": "EMG-V2 独立验收管理员代办离职"
+              },
+              {
+                "empId": "3004",
+                "name": "验收项目经理",
+                "telNo": "13990000004",
+                "store": {
+                  "storeId": "2002",
+                  "name": "验收二店"
+                },
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企"
+                },
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                },
+                "status": {
+                  "name": "已离职",
+                  "key": "Resigned"
+                },
+                "joinedAt": "2026-10-23 00:43:24",
+                "resignedAt": "2026-10-23 00:43:27",
+                "resignReason": "EMG-V2 独立验收强制离职"
+              },
+              {
+                "empId": "3105",
+                "name": "验收调岗对象",
+                "telNo": "13991000005",
+                "store": {
+                  "storeId": "2002",
+                  "name": "验收二店"
+                },
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企"
+                },
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                },
+                "status": {
+                  "name": "已离职",
+                  "key": "Resigned"
+                },
+                "joinedAt": "2026-10-22 23:42:18",
+                "resignedAt": "2026-10-22 23:42:21",
+                "resignReason": "验收离职"
+              },
+              {
+                "empId": "3106",
+                "name": "验收审计对象",
+                "telNo": "13991000006",
+                "store": {
+                  "storeId": "2001",
+                  "name": "验收总店"
+                },
+                "company": {
+                  "comId": "1001",
+                  "title": "验收装企有限公司",
+                  "name": "验收装企"
+                },
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                },
+                "status": {
+                  "name": "已离职",
+                  "key": "Resigned"
+                },
+                "joinedAt": "2026-10-23 00:04:03",
+                "resignedAt": "2026-10-23 00:04:09",
+                "resignReason": "审计操作人验证"
+              }
+            ],
+            "totalPages": 1,
+            "last": true,
+            "totalElements": "6",
+            "first": true,
+            "size": 200
+          },
+          "success": true
+        }
+      }
+    ]
+  },
+  "notes": [
+    "Tokens redacted from all evidence.",
+    "Direct SQL was used only for acceptance fixtures and readback, not implementation changes.",
+    "Case 18 page evidence is captured separately and final verdict is assembled after page review."
+  ]
+}

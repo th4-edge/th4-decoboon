@@ -1,0 +1,75 @@
+{
+  "viewport": {
+    "designer_queue_1440_overflow_x": false,
+    "designer_queue_1024_overflow_x": false,
+    "designer_history_1024_overflow_x": false,
+    "designer_sign_effective_1024_overflow_x": false
+  },
+  "console": {
+    "errors": 0,
+    "warnings": 1
+  },
+  "designer_quote_queue": {
+    "provider": "statistic/workbench/quote/page",
+    "draft_count": 1,
+    "submitted_count": 1,
+    "draft_stay_days": 17,
+    "submitted_stay_days": 4,
+    "filter_search_selection_verified": true
+  },
+  "designer_quote_history": {
+    "provider": "quote/designer/page",
+    "page1_request": {
+      "current": 1,
+      "size": 20
+    },
+    "page2_request": {
+      "current": 2,
+      "size": 20
+    },
+    "total_elements": 23,
+    "total_pages": 2,
+    "page1_content_count": 20,
+    "page2_content_count": 3,
+    "status_filter_request": {
+      "current": 1,
+      "size": 20,
+      "status": "Draft"
+    },
+    "status_filter_total": 5
+  },
+  "designer_sign": {
+    "provider": "statistic/workbench/sign/page",
+    "selected_contract_detail_requests_per_selection": 1,
+    "contract_info_and_workbench_only_for_selected": true,
+    "states_verified": [
+      "createContract",
+      "waitEnterpriseSign",
+      "waitEnterpriseEffective",
+      "waitProjectCreated"
+    ],
+    "effective_without_project_server_next_action": "waitProjectCreated",
+    "effective_without_project_server_label": "合同已生效待项目建立",
+    "page_matches_server_label_after_fix": true
+  },
+  "store_manager_scope": {
+    "quote_queue_count": 2,
+    "quote_history_total": 8,
+    "sign_count": 6,
+    "cross_store_visible": false,
+    "cross_store_search_empty": true
+  },
+  "fixture_cleanup": {
+    "temporary_quotes_remaining": 0,
+    "temporary_customer_remaining": 0,
+    "temporary_store_remaining": 0,
+    "original_quote_rows_restored": true,
+    "original_contract_row_restored": true,
+    "credential_hashes_restored": true
+  },
+  "not_covered": [
+    "201+ queue pressure",
+    "Dormant customer exclusion via UI",
+    "independent acceptance"
+  ]
+}

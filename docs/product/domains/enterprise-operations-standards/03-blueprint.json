@@ -1,0 +1,468 @@
+{
+  "id": "enterprise-operations-standards.eop-v1",
+  "title": "企业运营标准资产生命周期契约与只读投影",
+  "version": "0.1.0",
+  "status": "dev_verified",
+  "sourceRefs": [
+    "DEC-083",
+    "BR-051",
+    "T12-BIZ-20261022-004",
+    "ANS-BIZ-20261022-004"
+  ],
+  "audience": [
+    "Boss",
+    "StoreManager",
+    "Finance",
+    "Designer",
+    "Marketer",
+    "Pm"
+  ],
+  "layers": [
+    "platform-standard",
+    "company-standard",
+    "business-reference",
+    "business-snapshot"
+  ],
+  "objects": [
+    {
+      "id": "StandardAssetLifecycleContract",
+      "type": "read_projection",
+      "fields": [
+        "assetType",
+        "productName",
+        "statuses",
+        "versionMode",
+        "sourceMode",
+        "defaultPolicy",
+        "referenceFields",
+        "snapshotFields",
+        "historyPolicy"
+      ],
+      "sourceRefs": [
+        "DEC-083",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "StandardAssetStatusContract",
+      "type": "read_projection",
+      "fields": [
+        "key",
+        "label",
+        "editable",
+        "newBusinessEligible",
+        "historyReadable"
+      ],
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "CatalogItem",
+      "type": "business_object",
+      "lifecycle": [
+        "Active",
+        "Inactive"
+      ],
+      "versionMode": "Revision",
+      "fields": [
+        "itemId",
+        "revision",
+        "code",
+        "name",
+        "pricingMode",
+        "materialPrice",
+        "manualPrice",
+        "costPrice",
+        "formula",
+        "craft",
+        "active"
+      ],
+      "sourceRefs": [
+        "DEC-083",
+        "DEC-079"
+      ]
+    },
+    {
+      "id": "CatalogItemRevision",
+      "type": "immutable_audit",
+      "fields": [
+        "revisionId",
+        "itemId",
+        "itemCode",
+        "revision",
+        "changeType",
+        "snapshotJson",
+        "snapshotHash",
+        "changedBy",
+        "changedAt"
+      ],
+      "sourceRefs": [
+        "DEC-083",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "QuoteCatalogSourceSnapshot",
+      "type": "business_snapshot",
+      "fields": [
+        "catalogSourceId",
+        "catalogSourceCode",
+        "catalogSourceRevision",
+        "name",
+        "spec",
+        "unit",
+        "pricingMode",
+        "materialPrice",
+        "manualPrice",
+        "costPrice",
+        "formula",
+        "craft",
+        "quantity"
+      ],
+      "sourceRefs": [
+        "DEC-083",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "PackageTemplate",
+      "type": "business_object",
+      "lifecycle": [
+        "Draft",
+        "Published",
+        "Disabled"
+      ],
+      "versionMode": "ImmutableVersion",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "CompanyPaymentPlan",
+      "type": "business_object",
+      "lifecycle": [
+        "Draft",
+        "Enabled",
+        "Disabled"
+      ],
+      "versionMode": "ImmutableVersion",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "CompanyConstructionPlan",
+      "type": "business_object",
+      "lifecycle": [
+        "Draft",
+        "Enabled",
+        "Disabled"
+      ],
+      "versionMode": "ImmutableVersion",
+      "sourceRefs": [
+        "DEC-083",
+        "DEC-048"
+      ]
+    },
+    {
+      "id": "DocumentTemplate",
+      "type": "business_object",
+      "lifecycle": [
+        "Draft",
+        "Published",
+        "Disabled"
+      ],
+      "versionMode": "ImmutableVersion",
+      "sourceRefs": [
+        "DEC-020",
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "PackageTemplateVersionRow",
+      "type": "business_object",
+      "fields": [
+        "templateId",
+        "code",
+        "version",
+        "status",
+        "currentPublished",
+        "publishedAt",
+        "publishedBy",
+        "snapshotJson",
+        "snapshotHash"
+      ],
+      "sourceRefs": [
+        "DEC-083",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "PackageLineSnapshot",
+      "type": "business_object",
+      "fields": [
+        "sectionNameSnapshot",
+        "catalogTypeSnapshot",
+        "catalogCategorySnapshot",
+        "craftSnapshot",
+        "costPriceSnapshot"
+      ],
+      "sourceRefs": [
+        "BR-051"
+      ]
+    },
+    {
+      "id": "QuotePackageSourceSnapshot",
+      "type": "business_object",
+      "fields": [
+        "packageTemplate",
+        "packageTemplateCode",
+        "packageTemplateVersion",
+        "packageTemplateSnapshotHash"
+      ],
+      "sourceRefs": [
+        "BR-051"
+      ]
+    },
+    {
+      "id": "CompanyPlanVersionRow",
+      "type": "business_object",
+      "fields": [
+        "templateId",
+        "code",
+        "version",
+        "status",
+        "currentEnabled",
+        "defaultPlan",
+        "sourceBaselineCode",
+        "sourceBaselineVersion"
+      ],
+      "sourceRefs": [
+        "DEC-083",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "ContractPlanSourceSnapshot",
+      "type": "business_object",
+      "fields": [
+        "sourceCode",
+        "sourceVersion",
+        "sourceTotalDays",
+        "nodes",
+        "stages"
+      ],
+      "sourceRefs": [
+        "DEC-048",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "PlanExplicitDefaultPolicy",
+      "type": "rule",
+      "fields": [
+        "currentEnabled",
+        "defaultPlan",
+        "explicitSelection"
+      ],
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "id": "Maintain",
+      "label": "维护",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "PublishOrEnable",
+      "label": "发布/启用",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "ReferenceAndSnapshot",
+      "label": "业务引用与快照",
+      "sourceRefs": [
+        "BR-051"
+      ]
+    },
+    {
+      "id": "DisableOrUpgrade",
+      "label": "停用或升级",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "object": "StandardAssetLifecycleContract",
+      "name": "assetType",
+      "type": "StandardAssetType"
+    },
+    {
+      "object": "StandardAssetLifecycleContract",
+      "name": "versionMode",
+      "type": "StandardAssetVersionMode"
+    },
+    {
+      "object": "StandardAssetLifecycleContract",
+      "name": "sourceMode",
+      "type": "StandardAssetSourceMode"
+    },
+    {
+      "object": "StandardAssetLifecycleContract",
+      "name": "defaultPolicy",
+      "type": "StandardAssetDefaultPolicy"
+    }
+  ],
+  "rules": [
+    {
+      "id": "status_by_semantics",
+      "statement": "不同资产可使用不同状态集合",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "immutable_published",
+      "statement": "发布/启用版本不可原地覆盖",
+      "sourceRefs": [
+        "BR-051"
+      ]
+    },
+    {
+      "id": "revision_audit",
+      "statement": "报价项目库使用 revision 和不可变变更审计",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "effective_change_only",
+      "statement": "只有影响业务值的变更才递增 revision 并生成审计",
+      "sourceRefs": [
+        "DEC-083",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "expected_revision_conflict",
+      "statement": "并发写入基于旧 revision 时返回 409，不静默覆盖",
+      "sourceRefs": [
+        "BR-051"
+      ]
+    },
+    {
+      "id": "cost_masked_revision_history",
+      "statement": "修订历史中的成本快照仅 BOSS/店长/财务可见",
+      "sourceRefs": [
+        "DEC-079",
+        "BR-051"
+      ]
+    },
+    {
+      "id": "no_auto_baseline_upgrade",
+      "statement": "平台基线升级不得自动改写企业副本",
+      "sourceRefs": [
+        "BR-051"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "five_assets_present",
+      "statement": "契约必须覆盖五类资产",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "no_unified_state_machine",
+      "statement": "不得为五类资产返回同一状态集合",
+      "sourceRefs": [
+        "DEC-083"
+      ]
+    },
+    {
+      "id": "no_money_fields",
+      "statement": "EOP-V1 只读契约不得承载或计算金额",
+      "sourceRefs": [
+        "T12-BIZ-20261022-004"
+      ]
+    },
+    {
+      "id": "revision_history_company_scope",
+      "statement": "修订历史只能按登录员工企业读取，不可跨企业泄漏",
+      "sourceRefs": [
+        "AGENTS.md",
+        "BR-051"
+      ]
+    }
+  ],
+  "exceptions": [
+    {
+      "id": "source_missing",
+      "statement": "历史来源版本不可确认时显式标记",
+      "sourceRefs": [
+        "T12-BIZ-20261022-004"
+      ]
+    },
+    {
+      "id": "baseline_upgrade",
+      "statement": "平台升级只能显式创建新企业版本",
+      "sourceRefs": [
+        "BR-051"
+      ]
+    }
+  ],
+  "metrics": [],
+  "uiBindings": [
+    {
+      "id": "provider.payment-plan-build",
+      "value": "plan/payment-template/build"
+    },
+    {
+      "id": "provider.construction-plan-build",
+      "value": "plan/construction-template/build"
+    },
+    {
+      "id": "app.payment-plan-version",
+      "value": "下一版/平台升级/启停",
+      "status": "implemented"
+    },
+    {
+      "id": "app.construction-plan-version",
+      "value": "下一版/平台升级/启停",
+      "status": "implemented"
+    },
+    {
+      "id": "web.plan-version",
+      "value": "待 EOP-V6",
+      "status": "pending-ui"
+    },
+    {
+      "id": "provider.catalog-revision-history",
+      "value": "catalog/item/revision/page",
+      "status": "implemented"
+    },
+    {
+      "id": "app.catalog-revision-history",
+      "value": "报价项目库 R{n} 与变更历史",
+      "status": "implemented-pending-real-ui"
+    },
+    {
+      "id": "web.catalog-revision-history",
+      "value": "报价项目详情 R{n} 与变更历史",
+      "status": "implemented-pending-real-ui"
+    }
+  ],
+  "agentTools": []
+}

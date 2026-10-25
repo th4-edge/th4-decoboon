@@ -1,0 +1,24 @@
+{
+  "route": "payroll/sheet/update",
+  "http": 200,
+  "response": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-10-23 19:12:31"
+      },
+      "sheetId": "239345238584328192",
+      "period": "2026-10",
+      "status": {
+        "name": "草稿",
+        "key": "Draft"
+      },
+      "attendanceComplete": true,
+      "commissionComplete": false,
+      "totalGrossAmount": 21000.0,
+      "totalDeductionAmount": 0.0,
+      "totalNetAmount": 21000.0,
+      "remark": "退回原因：本月数据需修正"
+    },
+    "success": true
+  }
+}

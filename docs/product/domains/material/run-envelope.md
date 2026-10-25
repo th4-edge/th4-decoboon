@@ -28,7 +28,7 @@
 | B2 | Web 业务蓝图中心 + 项目材料业务体检 | 只读 Provider、Web 页面、真实浏览器证据 | `DEV_VERIFIED` + `UI_REVIEWED` | COMPLETE (2026-10-17) |
 | B3 | App 业务体检 + 页面上下文说明 | App 页面、字段帮助、错误解释、真机/开发者工具证据 | `DEV_VERIFIED` + `UI_REVIEWED` | COMPLETE (2026-10-17) |
 | B4 | 只读材料业务助手 | 知识检索、Provider 工具、确定性校核、权限与审计 | 50 个黄金问题、权限/反向验证 PASS | COMPLETE (2026-10-17) |
-| B5 | App 单端材料下单与结算闭环 | App 下单/到场/结算页面、后端编排、旧直采下线 | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | COMPLETE (2026-10-17) |
+| B5 | App 材料下单与结算闭环（历史） | App 下单/到场/结算页面、后端编排、旧直采下线；跨端边界已由 `DEC-088/BR-054` 覆盖 | `DEV_VERIFIED` + `UI_REVIEWED` + `RECONCILED` | COMPLETE (2026-10-17) |
 | B6 | 独立验收与对账 | 黑盒验收、跨端、越权、幂等、边界 | `ACCEPTED`；无 UNMAPPED/STALE | FAIL（2026-10-17；121/127 PASS，5 P1/1 P2 开放） |
 | B6.1 | 修复 B6 独立验收缺陷 | 成本/采购/结算读权限、下单幂等、结算到场门禁、暂估应付投影 | `DEV_VERIFIED` + `RECONCILED` | COMPLETE (2026-10-17) |
 | B6.2 | B6 缺陷修复复验 | 独立复跑受影响矩阵与回归，不改实现 | `ACCEPTED` 或新缺陷 | FAIL（2026-10-17；149/150；B62-DEF-001 P2 开放） |

@@ -1,0 +1,33 @@
+{
+  "rc": 0,
+  "tests": 33,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "classes": [
+    {
+      "class": "com.th4.edge.decoboon.project.ProjectCostProjectionTest",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": "0.021"
+    },
+    {
+      "class": "com.th4.edge.decoboon.project.ProjectCostUnpricedCompletenessTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": "0.679"
+    },
+    {
+      "class": "com.th4.edge.decoboon.project.context.ProjectCostContextTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time": "0.073"
+    }
+  ]
+}

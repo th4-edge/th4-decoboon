@@ -75,3 +75,47 @@
 - UI 与交互门禁：`PASS`
 - 当前阶段：`UI_REVIEWED`
 - 下一阶段：`RECONCILED`，逐条核对 REQ-B1-01～11，再进入独立验收。
+
+
+## H1 Web 角色矩阵真实页面复核（2026-10-23）
+
+- 环境：Vite `127.0.0.1:8085`，真实密码登录态。
+- BOSS：员工工资页显示薪酬方案、月度考勤、生成工资单；选中草稿后显示最终确认，受考勤/金额前置约束。
+- Finance：显示薪酬方案、月度考勤、生成工资单；不显示最终确认；员工提成页显示“计提提成”。
+- StoreManager：显示月度考勤与只读提示；不显示薪酬方案、生成工资单、最终确认或计提提成。
+- 三页 console error 均为 0。
+- 证据：`docs/acceptance/runs/20261023-payroll-h1/02-black-box-acceptance.md` 与 screenshots。
+
+
+## B2 月度考勤 Web 复核（2026-10-23）
+
+- 选择 27 天方案员工后显示 27 天，不再显示 22。
+- 新表单完整展示正常出勤、事假、病假、旷工、外勤、年假、调休和备注。
+- 编辑已有考勤时回填应出勤 27、正常出勤 27，并进入更新状态。
+- 无当月方案时明确显示“该工资月份没有生效薪酬方案”。
+- 从 2026-09 工资单跳考勤时，抽屉工资月份为 2026-09。
+- 考勤历史提供编辑、确认、删除入口。
+- console error 0；截图见 `docs/acceptance/runs/20261023-payroll-b2/screenshots/`。
+
+
+## B3A 工资单执行链 Web 复核（2026-10-23）
+
+- 环境：Vite `127.0.0.1:8085` + Java22 后端 `8090` + 独立 MySQL schema。
+- BOSS：完整工资单摘要与工资项构成可见；确认按钮触发二次确认；确认后状态、确认人、确认时间和工资项状态回读正确；Draft 显示“删除草稿”并二次确认。
+- Finance：完整详情可见；“确认工资单”“删除草稿”均不显示。
+- StoreManager：显示“本店财务只读”；本店详情可见；生成、确认、删除入口不显示。
+- App/PWA：本批为 Web 对齐 App 已有执行链，不修改 App。
+- Console error：0；既有 Vue Router 首路由 warning 保留为非阻塞壳层观察。
+- 截图证据：`docs/acceptance/runs/20261023-payroll-b3a/screenshots/`。
+
+
+## B3B1 复核与发放权限 Web/App 复核（2026-10-23）
+
+- Web Finance：Draft 工资单显示“提交复核”和“员工发放”，不显示确认/删除；提交后正确显示待确认。
+- Web BOSS：Pending 显示“退回草稿”和“确认工资单”；退回原因通过输入弹窗必填，退回后详情显示原因；可从 Draft 直接确认。
+- Web StoreManager：本店详情可读，不显示员工发放、提交复核、确认工资单。
+- App H5 Finance：Draft 显示“提交复核”，二次确认后变为待确认。
+- App H5 BOSS：Pending 显示“退回草稿”和“确认工资单”，退回原因回读正确。
+- App H5 StoreManager：薪酬工作台不出现“员工发放”。
+- Web/App console error：0。
+- 截图证据：`docs/acceptance/runs/20261023-payroll-b3b1/screenshots/`。

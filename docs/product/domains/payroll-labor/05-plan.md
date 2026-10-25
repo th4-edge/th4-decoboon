@@ -156,3 +156,24 @@ App 不新增页面、不新增能力键，只做 B1 同能力回归和锁定状
 
 - B1 完成后由监督流程生成 Web UI 审查提示词；UI 通过后再进入独立验收。
 - B2 月度考勤修正批次不得在 B1 未闭环时并行修改。
+
+
+## 2026-10-23 跨端一致性与权限修复队列
+
+来源：`PI-20261023-001`、`REQ-BIZ-20261023-001`、`ANS-BIZ-20261023-001`、`T12-BIZ-20261023-001`。
+
+| 批次 | 垂直切片 | 前置 | 状态 | 任务书 |
+| --- | --- | --- | --- | --- |
+| H1 | 提成解耦回归、Web 薪酬按钮权限、考勤详情门店范围 | 用户确认 | BLACK_BOX_PASS / USER_ACCEPTED_NON_INDEPENDENT | `H1-payroll-p0-hotfix-task.md` |
+| B2 | Web 月度考勤完整对齐 App；店长考勤后端权限 | H1 | USER_ACCEPTED_NON_INDEPENDENT | `B2-payroll-attendance-parity-task.md` |
+| B3A | 工资单详情、草稿删除、确认弹窗、历史月份上下文 | H1、B2 | USER_ACCEPTED_NON_INDEPENDENT | `B3A-payroll-sheet-parity-task.md` |
+| B3B1 | 财务可选复核、Pending 退回、店长发放权限闭环 | DEC-093 / T12-BIZ-20261023-002 | RECONCILED / PENDING_USER | `B3B1-payroll-review-payment-permission-task.md` |
+| B3B2 | BOSS 作废、反向应付/成本、工资条作废、版本与幂等 | DEC-093 / DEC-043 | BLOCKED_DDL_AND_VERSION_DESIGN | `B3B2-payroll-void-reversal-task.md` |
+| B4 | 提成释放、人工调整、批量/部分发放、两端剩余体验 | B3A + 批量/部分发放裁决 | BACKLOG_BLOCKED | 待建 |
+
+门禁：
+
+- H1/B2/B3A 均含权限或金额语义，属于 L3；
+- B3B1 已完成黑盒验证，等待用户验收；B3B2 需 DDL 设计确认；B4 批量/部分发放仍待裁决；
+- 每批完成后必须更新 `state.json`、`06-implementation.md` 和 `10-reconciliation.md`；
+- 独立验收前不得标记 CLOSED。

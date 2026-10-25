@@ -10,6 +10,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | B1 | 设计师与经营角色看到同一方案当前价格，并完成只读运营查看 | Designer、Boss、StoreManager、Finance | Design、DesignItem、Quote | 价格读模型、当前报价、成本裁剪、范围过滤 | App 工作台/列表/只读详情；Web 方案卡/查看列表/只读详情 | DEC-078、BR-003、DEC-065 | 三端价格一致；运营查看无写动作；跨范围拒绝；性能达标 | ACCEPTED |
 | B2 | 后续风险增强 | 经营角色 | Design、Quote | 报价过期、缺口统计 | 列表筛选 | GAP-061 关闭后 | 不阻塞 B1 | BLOCKED_BY_DECISION |
+| DQ-X1 | 待我谈单工作队列数据库分页与批量组装 | Designer、Boss、StoreManager | Quote、Customer、Property | `statistic/workbench/quote/page` 改为 ID 分页 + 页面实体批量预取；筛选、排序、范围与 Dormant 排除下推 SQL | Web 待我谈单消费现有分页契约 | BR-031、DEC-029、BR-027 | 固定 3 条 SQL；页大小服务端上限 100；Boss 企业、店长本店、设计师本人；其他角色 403 | ACCEPTED |
 
 ## 依赖与顺序
 
@@ -17,6 +18,7 @@
 2. Web/App 消费同一字段，不自行选择当前报价。
 3. 运营查看仅跳转既有工作面，不新增写入接口。
 4. 报价过期判断等待 `GAP-061`，B1 不做推断。
+5. `DQ-X1` 只整改查询契约与权限，不改变报价状态机、金额口径或页面业务规则。
 
 ## 回滚
 

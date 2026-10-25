@@ -1,0 +1,173 @@
+{
+  "runId": "20261021-owner-preview-p0-independent",
+  "date": "2026-10-21",
+  "mode": "independent_acceptance_read_only",
+  "scope": {
+    "product": "装企同频业主视角只读预览 P0",
+    "backendRepo": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon",
+    "appRepo": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app",
+    "backendHead": "dbde1e300be56006ad653fc9b4c41430559a3c6e",
+    "appHead": "ad3fa58b954dc23034717462eb4998e8343a8186",
+    "productionTouched": false,
+    "productCodeModified": false
+  },
+  "environment": {
+    "mysql": "8.0.24 @ 127.0.0.1:3306",
+    "migrationSource": "decoboon",
+    "migrationTargetClone": "decoboon_owner_preview_acceptance",
+    "migrationSqlSmoke": "decoboon_owner_preview_migration_smoke",
+    "backendRuntimeProfile": "dev, isolated clone, port 18090",
+    "backendRuntimeOsiv": true,
+    "wechatDevtools": "2.02.2609231 RC",
+    "appBuild": "dist/dev/mp-weixin, API override 192.168.31.249:18090"
+  },
+  "overall": {
+    "status": "PASS_TEST_ENV_RELEASE_PENDING",
+    "releaseAllowed": false,
+    "reason": "Test-environment independent acceptance passed; production migration/release and formal review remain outside this acceptance."
+  },
+  "verification": {
+    "backendFullTests": "PASS 893/893",
+    "appVerify": "PASS",
+    "apiAcceptance": "PASS 59/59 checks on OSIV=true isolated MySQL",
+    "appAutomation": "PASS 23/23 covered checks",
+    "migrationSqlSmoke": "PASS",
+    "migrationFormalChain": "BLOCKED",
+    "ownerUiSideBySide": "PARTIAL: forbidden to create/reuse owner token; same-source contract covered by backend test",
+    "loadingSkeleton": "PARTIAL: code path present; no dedicated rendered capture"
+  },
+  "itemResults": [
+    {
+      "item": "确认目标环境与备份",
+      "status": "PASS",
+      "evidence": "migration/00-clone-preflight.txt"
+    },
+    {
+      "item": "正式账本 121→123 连续迁移",
+      "status": "BLOCKED",
+      "evidence": "migration/02-apply-121-123.log"
+    },
+    {
+      "item": "123 表/主键/索引/外键",
+      "status": "PASS",
+      "evidence": "migration/08-sql-smoke-structure-ledger.txt"
+    },
+    {
+      "item": "123 重复执行账本行为",
+      "status": "PASS",
+      "evidence": "migration/06-sql-smoke-repeat-skip.log"
+    },
+    {
+      "item": "123 回滚后重放",
+      "status": "PASS",
+      "evidence": "migration/09-actual-clone-rollback-reapply.txt"
+    },
+    {
+      "item": "BOSS/店长/团队负责人/设计师/PM 可预览",
+      "status": "PASS",
+      "evidence": "api/04-api-results.json"
+    },
+    {
+      "item": "业务员/财务 403 且无入口",
+      "status": "PASS",
+      "evidence": "api/04-api-results.json; app/walkthrough.json"
+    },
+    {
+      "item": "跨企业/门店/团队/非成员拒绝",
+      "status": "PASS",
+      "evidence": "api/04-api-results.json"
+    },
+    {
+      "item": "离职/停用员工拒绝",
+      "status": "PASS",
+      "evidence": "api/04-api-results.json"
+    },
+    {
+      "item": "actions=[] 且无 feedback",
+      "status": "PASS",
+      "evidence": "api/04-api-results.json"
+    },
+    {
+      "item": "无 CustomerAccess / 业主 token / 业务副作用",
+      "status": "PASS",
+      "evidence": "api/04-api-results.json"
+    },
+    {
+      "item": "成功/拒绝最小审计与隐私字段",
+      "status": "PASS",
+      "evidence": "api/08-audit-matrix.txt"
+    },
+    {
+      "item": "预览与业主端字段同源",
+      "status": "PARTIAL",
+      "evidence": "backend OwnerPreviewInfoAcceptanceTest; Owner UI token boundary"
+    },
+    {
+      "item": "App 入口、路由、三 Tab、刷新、返回",
+      "status": "PASS",
+      "evidence": "app/walkthrough.json"
+    },
+    {
+      "item": "App 空态与错误态",
+      "status": "PASS",
+      "evidence": "app/walkthrough.json; app/09-error-state.json"
+    },
+    {
+      "item": "固定水印完整文案",
+      "status": "FAIL",
+      "evidence": "defects/D-003-watermark-fixed-prefix-missing.md"
+    },
+    {
+      "item": "OSIV=false 时入口可达",
+      "status": "FAIL",
+      "evidence": "defects/D-004-osiv-false-project-detail.md"
+    },
+    {
+      "item": "后端全量测试",
+      "status": "PASS",
+      "evidence": "backend-full-test.log"
+    },
+    {
+      "item": "App verify",
+      "status": "PASS",
+      "evidence": "app/app-verify.log"
+    },
+    {
+      "item": "发布前门禁",
+      "status": "FAIL",
+      "evidence": "defects/D-000-summary.md"
+    }
+  ],
+  "defects": [
+    "D-001",
+    "D-002",
+    "D-003",
+    "D-004"
+  ],
+  "evidence": {
+    "readme": "README.md",
+    "migration": "migration/README.md",
+    "api": "api/README.md",
+    "app": "app/README.md",
+    "defects": "defects/D-000-summary.md"
+  },
+  "postAcceptanceFixes": {
+    "status": "PASS_TEST_ENV_RELEASE_PENDING",
+    "fixed": [
+      "D-002",
+      "D-003",
+      "D-004"
+    ],
+    "remainingBlockers": [],
+    "evidence": "fix-verification/README.md",
+    "releaseAllowed": false,
+    "D001IsolatedChain": "PASS",
+    "D001OriginalEnv": "dev still has historical drift; decoboon-test repaired and reaccepted",
+    "testEnvironment": "PASS 59/59 API + 15/15 App; 894/894 backend; App verify PASS",
+    "residualRisks": [
+      "D-005 P2 optional OSIV=false report/finance projections"
+    ],
+    "production": "not touched; separate L3 authorization required",
+    "exactUiParity": "PASS: owner-preview routes into shared journey.vue?preview=1"
+  }
+}

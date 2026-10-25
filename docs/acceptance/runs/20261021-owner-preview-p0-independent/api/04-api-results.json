@@ -1,0 +1,3351 @@
+{
+  "environment": {
+    "base": "http://127.0.0.1:18090/api/",
+    "database": "decoboon_owner_preview_acceptance",
+    "projectId": "232781889880981504",
+    "osiv": false
+  },
+  "results": [
+    {
+      "id": "LOGIN-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 boss 密码登录"
+    },
+    {
+      "id": "LOGIN-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 storeManager 密码登录"
+    },
+    {
+      "id": "LOGIN-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 teamLeader 密码登录"
+    },
+    {
+      "id": "LOGIN-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 designer 密码登录"
+    },
+    {
+      "id": "LOGIN-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 pm 密码登录"
+    },
+    {
+      "id": "LOGIN-finance",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 finance 密码登录"
+    },
+    {
+      "id": "LOGIN-marketer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 marketer 密码登录"
+    },
+    {
+      "id": "LOGIN-nonMemberDesigner",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 nonMemberDesigner 密码登录"
+    },
+    {
+      "id": "LOGIN-crossCompanyBoss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 crossCompanyBoss 密码登录"
+    },
+    {
+      "id": "LOGIN-otherTeamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 otherTeamLeader 密码登录"
+    },
+    {
+      "id": "LOGIN-otherStoreManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "账号 otherStoreManager 密码登录"
+    },
+    {
+      "id": "ALLOW-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "boss 可预览指定项目",
+      "evidence": "bossPreview"
+    },
+    {
+      "id": "ACTIONS-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "FEEDBACK-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "不含 feedback 分区：measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "previewMeta 只读标识"
+    },
+    {
+      "id": "WATERMARK-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "水印含员工工号与时间"
+    },
+    {
+      "id": "NO-INTERNAL-boss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未发现成本/利润/供应商/内部备注键"
+    },
+    {
+      "id": "ALLOW-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "storeManager 可预览指定项目",
+      "evidence": "storeManagerPreview"
+    },
+    {
+      "id": "ACTIONS-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "FEEDBACK-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "不含 feedback 分区：measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "previewMeta 只读标识"
+    },
+    {
+      "id": "WATERMARK-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "水印含员工工号与时间"
+    },
+    {
+      "id": "NO-INTERNAL-storeManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未发现成本/利润/供应商/内部备注键"
+    },
+    {
+      "id": "ALLOW-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "teamLeader 可预览指定项目",
+      "evidence": "teamLeaderPreview"
+    },
+    {
+      "id": "ACTIONS-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "FEEDBACK-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "不含 feedback 分区：measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "previewMeta 只读标识"
+    },
+    {
+      "id": "WATERMARK-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "水印含员工工号与时间"
+    },
+    {
+      "id": "NO-INTERNAL-teamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未发现成本/利润/供应商/内部备注键"
+    },
+    {
+      "id": "ALLOW-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "designer 可预览指定项目",
+      "evidence": "designerPreview"
+    },
+    {
+      "id": "ACTIONS-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "FEEDBACK-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "不含 feedback 分区：measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "previewMeta 只读标识"
+    },
+    {
+      "id": "WATERMARK-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "水印含员工工号与时间"
+    },
+    {
+      "id": "NO-INTERNAL-designer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未发现成本/利润/供应商/内部备注键"
+    },
+    {
+      "id": "ALLOW-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "pm 可预览指定项目",
+      "evidence": "pmPreview"
+    },
+    {
+      "id": "ACTIONS-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "actions=[]"
+    },
+    {
+      "id": "FEEDBACK-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "不含 feedback 分区：measure,design,quote,contract,change,material,construction,acceptance,payment"
+    },
+    {
+      "id": "META-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "previewMeta 只读标识"
+    },
+    {
+      "id": "WATERMARK-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "水印含员工工号与时间"
+    },
+    {
+      "id": "NO-INTERNAL-pm",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未发现成本/利润/供应商/内部备注键"
+    },
+    {
+      "id": "FIELD-CONSISTENCY",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "五类允许角色返回同一业主投影字段与内容"
+    },
+    {
+      "id": "DENY-finance",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "finance 接口拒绝，code=403"
+    },
+    {
+      "id": "DENY-marketer",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "marketer 接口拒绝，code=403"
+    },
+    {
+      "id": "DENY-SCOPE-crossCompanyBoss",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "crossCompanyBoss 项目范围拒绝，code=404"
+    },
+    {
+      "id": "DENY-SCOPE-otherStoreManager",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "otherStoreManager 项目范围拒绝，code=404"
+    },
+    {
+      "id": "DENY-SCOPE-otherTeamLeader",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "otherTeamLeader 项目范围拒绝，code=404"
+    },
+    {
+      "id": "DENY-SCOPE-nonMemberDesigner",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "nonMemberDesigner 项目范围拒绝，code=404"
+    },
+    {
+      "id": "OWNER-ENDPOINT-EMPLOYEE-TOKEN",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "员工 token 调业主旅程接口被拒，code=403"
+    },
+    {
+      "id": "EMPLOYEE-ACCEPTANCE-WRITE-DENIED",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "员工 token 不可确认验收，code=403"
+    },
+    {
+      "id": "EMPLOYEE-SHARE-WRITE-DENIED",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "员工 token 不可生成业主分享 token，code=403"
+    },
+    {
+      "id": "EMPLOYEE-FEEDBACK-WRITE-DENIED",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "员工 token 不可提交业主反馈，code=403"
+    },
+    {
+      "id": "DENY-RESIGNED",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "离职员工访问被拒，code=403"
+    },
+    {
+      "id": "NO-SIDE-EFFECT-CHECKSUM",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "业务表校验和、计数与关键行快照前后一致"
+    },
+    {
+      "id": "NO-CUSTOMER-ACCESS",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未创建 CustomerAccess"
+    },
+    {
+      "id": "NO-SHARE-TOKEN",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "未生成业主分享 token"
+    },
+    {
+      "id": "AUDIT-HAS-SUCCESS",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "存在成功审计"
+    },
+    {
+      "id": "AUDIT-HAS-DENY",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "存在拒绝/无权审计"
+    },
+    {
+      "id": "AUDIT-PRIVACY",
+      "passed": true,
+      "expected": "x => x === true",
+      "actual": true,
+      "detail": "审计表无业主点击/停留/路径/正文/已读字段"
+    }
+  ],
+  "audit": {
+    "rows": "Boss\tNotFound\t3\t3\t3\nBoss\tSuccess\t9\t0\t4\nDesigner\tNotFound\t3\t3\t3\nDesigner\tSuccess\t3\t0\t3\nFinance\tForbidden\t3\t3\t3\nMarketer\tForbidden\t3\t3\t3\nPm\tSuccess\t3\t0\t3\nStoreManager\tNotFound\t3\t3\t3\nStoreManager\tSuccess\t3\t0\t3\nTeamLeader\tNotFound\t4\t4\t4\nTeamLeader\tSuccess\t2\t0\t2",
+    "columns": [
+      "log_id",
+      "create_date",
+      "create_date_time",
+      "create_day",
+      "create_hour",
+      "create_minute",
+      "create_month",
+      "create_second",
+      "create_time",
+      "create_week",
+      "create_year",
+      "update_date",
+      "update_date_time",
+      "update_day",
+      "update_hour",
+      "update_minute",
+      "update_month",
+      "update_second",
+      "update_time",
+      "update_week",
+      "update_year",
+      "com_id",
+      "project_id",
+      "requested_project_id",
+      "employee_id",
+      "employee_name",
+      "employee_role",
+      "source",
+      "result",
+      "opened_at",
+      "request_id"
+    ]
+  },
+  "sideEffects": {
+    "beforeChecksums": "decoboon_owner_preview_acceptance.db_project\t3834200078\ndecoboon_owner_preview_acceptance.db_project_stage\t3602722646\ndecoboon_owner_preview_acceptance.db_project_task\t3768803543\ndecoboon_owner_preview_acceptance.db_acceptance\t0\ndecoboon_owner_preview_acceptance.db_finance_receivable\t1066010959\ndecoboon_owner_preview_acceptance.db_finance_receipt\t2305526763\ndecoboon_owner_preview_acceptance.cust_customer\t624680106\ndecoboon_owner_preview_acceptance.cust_customer_access\t0\ndecoboon_owner_preview_acceptance.cust_project_share_link\t0",
+    "afterChecksums": "decoboon_owner_preview_acceptance.db_project\t3834200078\ndecoboon_owner_preview_acceptance.db_project_stage\t3602722646\ndecoboon_owner_preview_acceptance.db_project_task\t3768803543\ndecoboon_owner_preview_acceptance.db_acceptance\t0\ndecoboon_owner_preview_acceptance.db_finance_receivable\t1066010959\ndecoboon_owner_preview_acceptance.db_finance_receipt\t2305526763\ndecoboon_owner_preview_acceptance.cust_customer\t624680106\ndecoboon_owner_preview_acceptance.cust_customer_access\t0\ndecoboon_owner_preview_acceptance.cust_project_share_link\t0",
+    "beforeCounts": "project\t1\nstage\t1\ntask\t0\nacceptance\t0\nreceivable\t6\ncustomer_access_all\t0\nshare_link_project\t0",
+    "afterCounts": "project\t1\nstage\t1\ntask\t0\nacceptance\t0\nreceivable\t6\ncustomer_access_all\t0\nshare_link_project\t0",
+    "beforeRows": "project\t232781889880981504\tOngoing\t30\t1790066191588014876\t1790221396230505495\t1790221790492843136\t1790224826490830054\t20261005163207\nstage\t232781889885175808\tDoing\t30\tNULL\tNULL\tNULL\tNULL\t20261005163207\ncustomer\t232781889855815680\tServing\tNULL\t1790066191588014876\t1790221396230505495\t1790222057930837664\tNULL\t20261005163207",
+    "afterRows": "project\t232781889880981504\tOngoing\t30\t1790066191588014876\t1790221396230505495\t1790221790492843136\t1790224826490830054\t20261005163207\nstage\t232781889885175808\tDoing\t30\tNULL\tNULL\tNULL\tNULL\t20261005163207\ncustomer\t232781889855815680\tServing\tNULL\t1790066191588014876\t1790221396230505495\t1790222057930837664\tNULL\t20261005163207"
+  },
+  "raw": {
+    "bossLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "storeManagerLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "teamLeaderLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "designerLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "pmLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "financeLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "marketerLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "nonMemberDesignerLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "crossCompanyBossLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "otherTeamLeaderLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "otherStoreManagerLogin": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "token": "<redacted>"
+        },
+        "success": true
+      }
+    },
+    "bossPreview": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "projectId": "232781889880981504",
+          "projectNo": "P1791189127426",
+          "projectName": "祥泰园2-1102",
+          "projectStatus": "Ongoing",
+          "projectStatusName": "施工中",
+          "progress": 30,
+          "currentStageName": "水电阶段",
+          "propertyAddress": "祥泰园2-1102",
+          "asOf": "2026-10-21 02:55:30",
+          "sections": [
+            {
+              "key": "measure",
+              "title": "量房",
+              "subtitle": "房屋测量与现场条件",
+              "status": "pending",
+              "statusName": "待量房",
+              "summary": "尚未形成量房记录",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "design",
+              "title": "设计",
+              "subtitle": "需求、方案与设计版本",
+              "status": "pending",
+              "statusName": "待设计",
+              "summary": "尚未形成设计方案",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "quote",
+              "title": "报价",
+              "subtitle": "客户确认的价格与版本",
+              "status": "Converted",
+              "statusName": "已转项目",
+              "summary": "当前版本报价 32600.00",
+              "facts": [
+                {
+                  "key": "count",
+                  "label": "报价版本",
+                  "value": "1",
+                  "valueType": "count"
+                },
+                {
+                  "key": "amount",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "version",
+                  "label": "版本",
+                  "value": "V1",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "quote-232781889872592896",
+                  "title": "CQ1791189127424",
+                  "subtitle": "客户报价 V1",
+                  "status": "Converted",
+                  "statusName": "已转项目",
+                  "amount": "32600.00",
+                  "date": "2026-10-05 16:32:07",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "subtotal",
+                      "label": "清单小计",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "tax",
+                      "label": "税金",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "amount",
+                      "label": "报价总额",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "contract",
+              "title": "合同",
+              "subtitle": "签约、生效与合同金额",
+              "status": "Effective",
+              "statusName": "已生效",
+              "summary": "合同 CC1791189127425",
+              "facts": [
+                {
+                  "key": "signed",
+                  "label": "签约金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "current",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "signedAt",
+                  "label": "签约日期",
+                  "value": "2026-09-29",
+                  "valueType": "date"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "contract-232781889876787200",
+                  "title": "CC1791189127425",
+                  "subtitle": "合同履约额度",
+                  "status": "Effective",
+                  "statusName": "已生效",
+                  "amount": "32600.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "change",
+              "title": "增减项",
+              "subtitle": "范围、金额与生效状态",
+              "status": "none",
+              "statusName": "暂无变更",
+              "summary": "共 0 项变更",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "变更总数",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "pending",
+                  "label": "审批中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已生效金额",
+                  "value": "0.00",
+                  "valueType": "money"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "material",
+              "title": "材料",
+              "subtitle": "选材、下单与到场",
+              "status": "pending",
+              "statusName": "待选材",
+              "summary": "尚未形成材料计划",
+              "facts": [
+                {
+                  "key": "plans",
+                  "label": "材料计划",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "ordered",
+                  "label": "已下单",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "arrived",
+                  "label": "已到场",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "construction",
+              "title": "施工",
+              "subtitle": "阶段、进度与现场证据",
+              "status": "Ongoing",
+              "statusName": "施工中",
+              "summary": "施工准备中",
+              "facts": [
+                {
+                  "key": "progress",
+                  "label": "整体进度",
+                  "value": "30%",
+                  "valueType": "percent"
+                },
+                {
+                  "key": "stages",
+                  "label": "已完成阶段",
+                  "value": "0/1",
+                  "valueType": "text"
+                },
+                {
+                  "key": "reports",
+                  "label": "现场更新",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "stage-232781889885175808",
+                  "title": "水电阶段",
+                  "subtitle": "施工阶段",
+                  "status": "Doing",
+                  "statusName": "施工中",
+                  "date": "—~—",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "progress",
+                      "label": "进度",
+                      "value": "30%",
+                      "valueType": "percent"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "acceptance",
+              "title": "验收与整改",
+              "subtitle": "阶段验收、问题和复验",
+              "status": "none",
+              "statusName": "暂无验收",
+              "summary": "已完成 0 个阶段验收",
+              "facts": [
+                {
+                  "key": "pending",
+                  "label": "待确认",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "rejected",
+                  "label": "整改中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已确认",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "payment",
+              "title": "付款",
+              "subtitle": "按合同节点的付款进度",
+              "status": "pending",
+              "statusName": "待付款",
+              "summary": "已付 9780.00，待付 22820.00",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "应付总额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "received",
+                  "label": "已付",
+                  "value": "9780.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "outstanding",
+                  "label": "待付",
+                  "value": "22820.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "next",
+                  "label": "下一节点",
+                  "value": "二期款 · 2026-10-17",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "payment-232781889893564416",
+                  "title": "定金",
+                  "subtitle": "签约",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "1000.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "1000.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233146762716512256",
+                  "title": "首期款",
+                  "subtitle": "开工前",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "8780.00",
+                  "date": "2026-10-02",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "8780.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147119446261760",
+                  "title": "二期款",
+                  "subtitle": "水电结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-17",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147361440825344",
+                  "title": "三期款",
+                  "subtitle": "瓦木结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-31",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147643071561728",
+                  "title": "四期款",
+                  "subtitle": "油漆验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "5542.00",
+                  "date": "2026-11-20",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "5542.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147812525637632",
+                  "title": "尾款",
+                  "subtitle": "竣工验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "978.00",
+                  "date": "2026-11-30",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "978.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            }
+          ],
+          "actions": [],
+          "openFeedbackCount": 0,
+          "pendingActionCount": 0,
+          "vendor": {
+            "name": "安徽麦鸿装饰设计工程有限公司",
+            "custodianCredit": false
+          },
+          "team": [
+            {
+              "name": "董夏鹏",
+              "roleName": "设计师"
+            },
+            {
+              "name": "王宏文",
+              "roleName": "店长"
+            },
+            {
+              "name": "麦鸿",
+              "roleName": "企业负责人"
+            },
+            {
+              "name": "黄贤杰",
+              "roleName": "业务员"
+            }
+          ],
+          "previewMeta": {
+            "mode": "EmployeeOwnerPreview",
+            "readOnly": true,
+            "notice": "业主视角预览 · 只读，不代表业主已查看或确认",
+            "watermark": "张伟 · 工号1789938943545297099 · 2026-10-21 02:55",
+            "asOf": "2026-10-21 02:55:30"
+          }
+        },
+        "success": true
+      }
+    },
+    "storeManagerPreview": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "projectId": "232781889880981504",
+          "projectNo": "P1791189127426",
+          "projectName": "祥泰园2-1102",
+          "projectStatus": "Ongoing",
+          "projectStatusName": "施工中",
+          "progress": 30,
+          "currentStageName": "水电阶段",
+          "propertyAddress": "祥泰园2-1102",
+          "asOf": "2026-10-21 02:55:30",
+          "sections": [
+            {
+              "key": "measure",
+              "title": "量房",
+              "subtitle": "房屋测量与现场条件",
+              "status": "pending",
+              "statusName": "待量房",
+              "summary": "尚未形成量房记录",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "design",
+              "title": "设计",
+              "subtitle": "需求、方案与设计版本",
+              "status": "pending",
+              "statusName": "待设计",
+              "summary": "尚未形成设计方案",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "quote",
+              "title": "报价",
+              "subtitle": "客户确认的价格与版本",
+              "status": "Converted",
+              "statusName": "已转项目",
+              "summary": "当前版本报价 32600.00",
+              "facts": [
+                {
+                  "key": "count",
+                  "label": "报价版本",
+                  "value": "1",
+                  "valueType": "count"
+                },
+                {
+                  "key": "amount",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "version",
+                  "label": "版本",
+                  "value": "V1",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "quote-232781889872592896",
+                  "title": "CQ1791189127424",
+                  "subtitle": "客户报价 V1",
+                  "status": "Converted",
+                  "statusName": "已转项目",
+                  "amount": "32600.00",
+                  "date": "2026-10-05 16:32:07",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "subtotal",
+                      "label": "清单小计",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "tax",
+                      "label": "税金",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "amount",
+                      "label": "报价总额",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "contract",
+              "title": "合同",
+              "subtitle": "签约、生效与合同金额",
+              "status": "Effective",
+              "statusName": "已生效",
+              "summary": "合同 CC1791189127425",
+              "facts": [
+                {
+                  "key": "signed",
+                  "label": "签约金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "current",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "signedAt",
+                  "label": "签约日期",
+                  "value": "2026-09-29",
+                  "valueType": "date"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "contract-232781889876787200",
+                  "title": "CC1791189127425",
+                  "subtitle": "合同履约额度",
+                  "status": "Effective",
+                  "statusName": "已生效",
+                  "amount": "32600.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "change",
+              "title": "增减项",
+              "subtitle": "范围、金额与生效状态",
+              "status": "none",
+              "statusName": "暂无变更",
+              "summary": "共 0 项变更",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "变更总数",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "pending",
+                  "label": "审批中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已生效金额",
+                  "value": "0.00",
+                  "valueType": "money"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "material",
+              "title": "材料",
+              "subtitle": "选材、下单与到场",
+              "status": "pending",
+              "statusName": "待选材",
+              "summary": "尚未形成材料计划",
+              "facts": [
+                {
+                  "key": "plans",
+                  "label": "材料计划",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "ordered",
+                  "label": "已下单",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "arrived",
+                  "label": "已到场",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "construction",
+              "title": "施工",
+              "subtitle": "阶段、进度与现场证据",
+              "status": "Ongoing",
+              "statusName": "施工中",
+              "summary": "施工准备中",
+              "facts": [
+                {
+                  "key": "progress",
+                  "label": "整体进度",
+                  "value": "30%",
+                  "valueType": "percent"
+                },
+                {
+                  "key": "stages",
+                  "label": "已完成阶段",
+                  "value": "0/1",
+                  "valueType": "text"
+                },
+                {
+                  "key": "reports",
+                  "label": "现场更新",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "stage-232781889885175808",
+                  "title": "水电阶段",
+                  "subtitle": "施工阶段",
+                  "status": "Doing",
+                  "statusName": "施工中",
+                  "date": "—~—",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "progress",
+                      "label": "进度",
+                      "value": "30%",
+                      "valueType": "percent"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "acceptance",
+              "title": "验收与整改",
+              "subtitle": "阶段验收、问题和复验",
+              "status": "none",
+              "statusName": "暂无验收",
+              "summary": "已完成 0 个阶段验收",
+              "facts": [
+                {
+                  "key": "pending",
+                  "label": "待确认",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "rejected",
+                  "label": "整改中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已确认",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "payment",
+              "title": "付款",
+              "subtitle": "按合同节点的付款进度",
+              "status": "pending",
+              "statusName": "待付款",
+              "summary": "已付 9780.00，待付 22820.00",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "应付总额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "received",
+                  "label": "已付",
+                  "value": "9780.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "outstanding",
+                  "label": "待付",
+                  "value": "22820.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "next",
+                  "label": "下一节点",
+                  "value": "二期款 · 2026-10-17",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "payment-232781889893564416",
+                  "title": "定金",
+                  "subtitle": "签约",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "1000.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "1000.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233146762716512256",
+                  "title": "首期款",
+                  "subtitle": "开工前",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "8780.00",
+                  "date": "2026-10-02",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "8780.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147119446261760",
+                  "title": "二期款",
+                  "subtitle": "水电结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-17",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147361440825344",
+                  "title": "三期款",
+                  "subtitle": "瓦木结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-31",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147643071561728",
+                  "title": "四期款",
+                  "subtitle": "油漆验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "5542.00",
+                  "date": "2026-11-20",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "5542.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147812525637632",
+                  "title": "尾款",
+                  "subtitle": "竣工验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "978.00",
+                  "date": "2026-11-30",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "978.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            }
+          ],
+          "actions": [],
+          "openFeedbackCount": 0,
+          "pendingActionCount": 0,
+          "vendor": {
+            "name": "安徽麦鸿装饰设计工程有限公司",
+            "custodianCredit": false
+          },
+          "team": [
+            {
+              "name": "董夏鹏",
+              "roleName": "设计师"
+            },
+            {
+              "name": "王宏文",
+              "roleName": "店长"
+            },
+            {
+              "name": "麦鸿",
+              "roleName": "企业负责人"
+            },
+            {
+              "name": "黄贤杰",
+              "roleName": "业务员"
+            }
+          ],
+          "previewMeta": {
+            "mode": "EmployeeOwnerPreview",
+            "readOnly": true,
+            "notice": "业主视角预览 · 只读，不代表业主已查看或确认",
+            "watermark": "王宏文 · 工号1790221790492843136 · 2026-10-21 02:55",
+            "asOf": "2026-10-21 02:55:30"
+          }
+        },
+        "success": true
+      }
+    },
+    "teamLeaderPreview": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "projectId": "232781889880981504",
+          "projectNo": "P1791189127426",
+          "projectName": "祥泰园2-1102",
+          "projectStatus": "Ongoing",
+          "projectStatusName": "施工中",
+          "progress": 30,
+          "currentStageName": "水电阶段",
+          "propertyAddress": "祥泰园2-1102",
+          "asOf": "2026-10-21 02:55:30",
+          "sections": [
+            {
+              "key": "measure",
+              "title": "量房",
+              "subtitle": "房屋测量与现场条件",
+              "status": "pending",
+              "statusName": "待量房",
+              "summary": "尚未形成量房记录",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "design",
+              "title": "设计",
+              "subtitle": "需求、方案与设计版本",
+              "status": "pending",
+              "statusName": "待设计",
+              "summary": "尚未形成设计方案",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "quote",
+              "title": "报价",
+              "subtitle": "客户确认的价格与版本",
+              "status": "Converted",
+              "statusName": "已转项目",
+              "summary": "当前版本报价 32600.00",
+              "facts": [
+                {
+                  "key": "count",
+                  "label": "报价版本",
+                  "value": "1",
+                  "valueType": "count"
+                },
+                {
+                  "key": "amount",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "version",
+                  "label": "版本",
+                  "value": "V1",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "quote-232781889872592896",
+                  "title": "CQ1791189127424",
+                  "subtitle": "客户报价 V1",
+                  "status": "Converted",
+                  "statusName": "已转项目",
+                  "amount": "32600.00",
+                  "date": "2026-10-05 16:32:07",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "subtotal",
+                      "label": "清单小计",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "tax",
+                      "label": "税金",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "amount",
+                      "label": "报价总额",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "contract",
+              "title": "合同",
+              "subtitle": "签约、生效与合同金额",
+              "status": "Effective",
+              "statusName": "已生效",
+              "summary": "合同 CC1791189127425",
+              "facts": [
+                {
+                  "key": "signed",
+                  "label": "签约金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "current",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "signedAt",
+                  "label": "签约日期",
+                  "value": "2026-09-29",
+                  "valueType": "date"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "contract-232781889876787200",
+                  "title": "CC1791189127425",
+                  "subtitle": "合同履约额度",
+                  "status": "Effective",
+                  "statusName": "已生效",
+                  "amount": "32600.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "change",
+              "title": "增减项",
+              "subtitle": "范围、金额与生效状态",
+              "status": "none",
+              "statusName": "暂无变更",
+              "summary": "共 0 项变更",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "变更总数",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "pending",
+                  "label": "审批中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已生效金额",
+                  "value": "0.00",
+                  "valueType": "money"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "material",
+              "title": "材料",
+              "subtitle": "选材、下单与到场",
+              "status": "pending",
+              "statusName": "待选材",
+              "summary": "尚未形成材料计划",
+              "facts": [
+                {
+                  "key": "plans",
+                  "label": "材料计划",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "ordered",
+                  "label": "已下单",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "arrived",
+                  "label": "已到场",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "construction",
+              "title": "施工",
+              "subtitle": "阶段、进度与现场证据",
+              "status": "Ongoing",
+              "statusName": "施工中",
+              "summary": "施工准备中",
+              "facts": [
+                {
+                  "key": "progress",
+                  "label": "整体进度",
+                  "value": "30%",
+                  "valueType": "percent"
+                },
+                {
+                  "key": "stages",
+                  "label": "已完成阶段",
+                  "value": "0/1",
+                  "valueType": "text"
+                },
+                {
+                  "key": "reports",
+                  "label": "现场更新",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "stage-232781889885175808",
+                  "title": "水电阶段",
+                  "subtitle": "施工阶段",
+                  "status": "Doing",
+                  "statusName": "施工中",
+                  "date": "—~—",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "progress",
+                      "label": "进度",
+                      "value": "30%",
+                      "valueType": "percent"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "acceptance",
+              "title": "验收与整改",
+              "subtitle": "阶段验收、问题和复验",
+              "status": "none",
+              "statusName": "暂无验收",
+              "summary": "已完成 0 个阶段验收",
+              "facts": [
+                {
+                  "key": "pending",
+                  "label": "待确认",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "rejected",
+                  "label": "整改中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已确认",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "payment",
+              "title": "付款",
+              "subtitle": "按合同节点的付款进度",
+              "status": "pending",
+              "statusName": "待付款",
+              "summary": "已付 9780.00，待付 22820.00",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "应付总额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "received",
+                  "label": "已付",
+                  "value": "9780.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "outstanding",
+                  "label": "待付",
+                  "value": "22820.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "next",
+                  "label": "下一节点",
+                  "value": "二期款 · 2026-10-17",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "payment-232781889893564416",
+                  "title": "定金",
+                  "subtitle": "签约",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "1000.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "1000.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233146762716512256",
+                  "title": "首期款",
+                  "subtitle": "开工前",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "8780.00",
+                  "date": "2026-10-02",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "8780.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147119446261760",
+                  "title": "二期款",
+                  "subtitle": "水电结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-17",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147361440825344",
+                  "title": "三期款",
+                  "subtitle": "瓦木结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-31",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147643071561728",
+                  "title": "四期款",
+                  "subtitle": "油漆验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "5542.00",
+                  "date": "2026-11-20",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "5542.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147812525637632",
+                  "title": "尾款",
+                  "subtitle": "竣工验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "978.00",
+                  "date": "2026-11-30",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "978.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            }
+          ],
+          "actions": [],
+          "openFeedbackCount": 0,
+          "pendingActionCount": 0,
+          "vendor": {
+            "name": "安徽麦鸿装饰设计工程有限公司",
+            "custodianCredit": false
+          },
+          "team": [
+            {
+              "name": "董夏鹏",
+              "roleName": "设计师"
+            },
+            {
+              "name": "王宏文",
+              "roleName": "店长"
+            },
+            {
+              "name": "麦鸿",
+              "roleName": "企业负责人"
+            },
+            {
+              "name": "黄贤杰",
+              "roleName": "业务员"
+            }
+          ],
+          "previewMeta": {
+            "mode": "EmployeeOwnerPreview",
+            "readOnly": true,
+            "notice": "业主视角预览 · 只读，不代表业主已查看或确认",
+            "watermark": "验收团队负责人 · 工号1902102100000000001 · 2026-10-21 02:55",
+            "asOf": "2026-10-21 02:55:30"
+          }
+        },
+        "success": true
+      }
+    },
+    "designerPreview": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "projectId": "232781889880981504",
+          "projectNo": "P1791189127426",
+          "projectName": "祥泰园2-1102",
+          "projectStatus": "Ongoing",
+          "projectStatusName": "施工中",
+          "progress": 30,
+          "currentStageName": "水电阶段",
+          "propertyAddress": "祥泰园2-1102",
+          "asOf": "2026-10-21 02:55:30",
+          "sections": [
+            {
+              "key": "measure",
+              "title": "量房",
+              "subtitle": "房屋测量与现场条件",
+              "status": "pending",
+              "statusName": "待量房",
+              "summary": "尚未形成量房记录",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "design",
+              "title": "设计",
+              "subtitle": "需求、方案与设计版本",
+              "status": "pending",
+              "statusName": "待设计",
+              "summary": "尚未形成设计方案",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "quote",
+              "title": "报价",
+              "subtitle": "客户确认的价格与版本",
+              "status": "Converted",
+              "statusName": "已转项目",
+              "summary": "当前版本报价 32600.00",
+              "facts": [
+                {
+                  "key": "count",
+                  "label": "报价版本",
+                  "value": "1",
+                  "valueType": "count"
+                },
+                {
+                  "key": "amount",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "version",
+                  "label": "版本",
+                  "value": "V1",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "quote-232781889872592896",
+                  "title": "CQ1791189127424",
+                  "subtitle": "客户报价 V1",
+                  "status": "Converted",
+                  "statusName": "已转项目",
+                  "amount": "32600.00",
+                  "date": "2026-10-05 16:32:07",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "subtotal",
+                      "label": "清单小计",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "tax",
+                      "label": "税金",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "amount",
+                      "label": "报价总额",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "contract",
+              "title": "合同",
+              "subtitle": "签约、生效与合同金额",
+              "status": "Effective",
+              "statusName": "已生效",
+              "summary": "合同 CC1791189127425",
+              "facts": [
+                {
+                  "key": "signed",
+                  "label": "签约金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "current",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "signedAt",
+                  "label": "签约日期",
+                  "value": "2026-09-29",
+                  "valueType": "date"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "contract-232781889876787200",
+                  "title": "CC1791189127425",
+                  "subtitle": "合同履约额度",
+                  "status": "Effective",
+                  "statusName": "已生效",
+                  "amount": "32600.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "change",
+              "title": "增减项",
+              "subtitle": "范围、金额与生效状态",
+              "status": "none",
+              "statusName": "暂无变更",
+              "summary": "共 0 项变更",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "变更总数",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "pending",
+                  "label": "审批中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已生效金额",
+                  "value": "0.00",
+                  "valueType": "money"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "material",
+              "title": "材料",
+              "subtitle": "选材、下单与到场",
+              "status": "pending",
+              "statusName": "待选材",
+              "summary": "尚未形成材料计划",
+              "facts": [
+                {
+                  "key": "plans",
+                  "label": "材料计划",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "ordered",
+                  "label": "已下单",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "arrived",
+                  "label": "已到场",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "construction",
+              "title": "施工",
+              "subtitle": "阶段、进度与现场证据",
+              "status": "Ongoing",
+              "statusName": "施工中",
+              "summary": "施工准备中",
+              "facts": [
+                {
+                  "key": "progress",
+                  "label": "整体进度",
+                  "value": "30%",
+                  "valueType": "percent"
+                },
+                {
+                  "key": "stages",
+                  "label": "已完成阶段",
+                  "value": "0/1",
+                  "valueType": "text"
+                },
+                {
+                  "key": "reports",
+                  "label": "现场更新",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "stage-232781889885175808",
+                  "title": "水电阶段",
+                  "subtitle": "施工阶段",
+                  "status": "Doing",
+                  "statusName": "施工中",
+                  "date": "—~—",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "progress",
+                      "label": "进度",
+                      "value": "30%",
+                      "valueType": "percent"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "acceptance",
+              "title": "验收与整改",
+              "subtitle": "阶段验收、问题和复验",
+              "status": "none",
+              "statusName": "暂无验收",
+              "summary": "已完成 0 个阶段验收",
+              "facts": [
+                {
+                  "key": "pending",
+                  "label": "待确认",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "rejected",
+                  "label": "整改中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已确认",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "payment",
+              "title": "付款",
+              "subtitle": "按合同节点的付款进度",
+              "status": "pending",
+              "statusName": "待付款",
+              "summary": "已付 9780.00，待付 22820.00",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "应付总额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "received",
+                  "label": "已付",
+                  "value": "9780.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "outstanding",
+                  "label": "待付",
+                  "value": "22820.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "next",
+                  "label": "下一节点",
+                  "value": "二期款 · 2026-10-17",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "payment-232781889893564416",
+                  "title": "定金",
+                  "subtitle": "签约",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "1000.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "1000.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233146762716512256",
+                  "title": "首期款",
+                  "subtitle": "开工前",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "8780.00",
+                  "date": "2026-10-02",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "8780.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147119446261760",
+                  "title": "二期款",
+                  "subtitle": "水电结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-17",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147361440825344",
+                  "title": "三期款",
+                  "subtitle": "瓦木结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-31",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147643071561728",
+                  "title": "四期款",
+                  "subtitle": "油漆验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "5542.00",
+                  "date": "2026-11-20",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "5542.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147812525637632",
+                  "title": "尾款",
+                  "subtitle": "竣工验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "978.00",
+                  "date": "2026-11-30",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "978.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            }
+          ],
+          "actions": [],
+          "openFeedbackCount": 0,
+          "pendingActionCount": 0,
+          "vendor": {
+            "name": "安徽麦鸿装饰设计工程有限公司",
+            "custodianCredit": false
+          },
+          "team": [
+            {
+              "name": "董夏鹏",
+              "roleName": "设计师"
+            },
+            {
+              "name": "王宏文",
+              "roleName": "店长"
+            },
+            {
+              "name": "麦鸿",
+              "roleName": "企业负责人"
+            },
+            {
+              "name": "黄贤杰",
+              "roleName": "业务员"
+            }
+          ],
+          "previewMeta": {
+            "mode": "EmployeeOwnerPreview",
+            "readOnly": true,
+            "notice": "业主视角预览 · 只读，不代表业主已查看或确认",
+            "watermark": "董夏鹏 · 工号1790221396230505495 · 2026-10-21 02:55",
+            "asOf": "2026-10-21 02:55:30"
+          }
+        },
+        "success": true
+      }
+    },
+    "pmPreview": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "projectId": "232781889880981504",
+          "projectNo": "P1791189127426",
+          "projectName": "祥泰园2-1102",
+          "projectStatus": "Ongoing",
+          "projectStatusName": "施工中",
+          "progress": 30,
+          "currentStageName": "水电阶段",
+          "propertyAddress": "祥泰园2-1102",
+          "asOf": "2026-10-21 02:55:30",
+          "sections": [
+            {
+              "key": "measure",
+              "title": "量房",
+              "subtitle": "房屋测量与现场条件",
+              "status": "pending",
+              "statusName": "待量房",
+              "summary": "尚未形成量房记录",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "design",
+              "title": "设计",
+              "subtitle": "需求、方案与设计版本",
+              "status": "pending",
+              "statusName": "待设计",
+              "summary": "尚未形成设计方案",
+              "facts": [],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "quote",
+              "title": "报价",
+              "subtitle": "客户确认的价格与版本",
+              "status": "Converted",
+              "statusName": "已转项目",
+              "summary": "当前版本报价 32600.00",
+              "facts": [
+                {
+                  "key": "count",
+                  "label": "报价版本",
+                  "value": "1",
+                  "valueType": "count"
+                },
+                {
+                  "key": "amount",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "version",
+                  "label": "版本",
+                  "value": "V1",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "quote-232781889872592896",
+                  "title": "CQ1791189127424",
+                  "subtitle": "客户报价 V1",
+                  "status": "Converted",
+                  "statusName": "已转项目",
+                  "amount": "32600.00",
+                  "date": "2026-10-05 16:32:07",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "subtotal",
+                      "label": "清单小计",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "tax",
+                      "label": "税金",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "amount",
+                      "label": "报价总额",
+                      "value": "32600.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "contract",
+              "title": "合同",
+              "subtitle": "签约、生效与合同金额",
+              "status": "Effective",
+              "statusName": "已生效",
+              "summary": "合同 CC1791189127425",
+              "facts": [
+                {
+                  "key": "signed",
+                  "label": "签约金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "current",
+                  "label": "当前金额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "signedAt",
+                  "label": "签约日期",
+                  "value": "2026-09-29",
+                  "valueType": "date"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "contract-232781889876787200",
+                  "title": "CC1791189127425",
+                  "subtitle": "合同履约额度",
+                  "status": "Effective",
+                  "statusName": "已生效",
+                  "amount": "32600.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "change",
+              "title": "增减项",
+              "subtitle": "范围、金额与生效状态",
+              "status": "none",
+              "statusName": "暂无变更",
+              "summary": "共 0 项变更",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "变更总数",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "pending",
+                  "label": "审批中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已生效金额",
+                  "value": "0.00",
+                  "valueType": "money"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "material",
+              "title": "材料",
+              "subtitle": "选材、下单与到场",
+              "status": "pending",
+              "statusName": "待选材",
+              "summary": "尚未形成材料计划",
+              "facts": [
+                {
+                  "key": "plans",
+                  "label": "材料计划",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "ordered",
+                  "label": "已下单",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "arrived",
+                  "label": "已到场",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "construction",
+              "title": "施工",
+              "subtitle": "阶段、进度与现场证据",
+              "status": "Ongoing",
+              "statusName": "施工中",
+              "summary": "施工准备中",
+              "facts": [
+                {
+                  "key": "progress",
+                  "label": "整体进度",
+                  "value": "30%",
+                  "valueType": "percent"
+                },
+                {
+                  "key": "stages",
+                  "label": "已完成阶段",
+                  "value": "0/1",
+                  "valueType": "text"
+                },
+                {
+                  "key": "reports",
+                  "label": "现场更新",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "stage-232781889885175808",
+                  "title": "水电阶段",
+                  "subtitle": "施工阶段",
+                  "status": "Doing",
+                  "statusName": "施工中",
+                  "date": "—~—",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "progress",
+                      "label": "进度",
+                      "value": "30%",
+                      "valueType": "percent"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            },
+            {
+              "key": "acceptance",
+              "title": "验收与整改",
+              "subtitle": "阶段验收、问题和复验",
+              "status": "none",
+              "statusName": "暂无验收",
+              "summary": "已完成 0 个阶段验收",
+              "facts": [
+                {
+                  "key": "pending",
+                  "label": "待确认",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "rejected",
+                  "label": "整改中",
+                  "value": "0",
+                  "valueType": "count"
+                },
+                {
+                  "key": "confirmed",
+                  "label": "已确认",
+                  "value": "0",
+                  "valueType": "count"
+                }
+              ],
+              "actions": [],
+              "items": []
+            },
+            {
+              "key": "payment",
+              "title": "付款",
+              "subtitle": "按合同节点的付款进度",
+              "status": "pending",
+              "statusName": "待付款",
+              "summary": "已付 9780.00，待付 22820.00",
+              "facts": [
+                {
+                  "key": "total",
+                  "label": "应付总额",
+                  "value": "32600.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "received",
+                  "label": "已付",
+                  "value": "9780.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "outstanding",
+                  "label": "待付",
+                  "value": "22820.00",
+                  "valueType": "money"
+                },
+                {
+                  "key": "next",
+                  "label": "下一节点",
+                  "value": "二期款 · 2026-10-17",
+                  "valueType": "text"
+                }
+              ],
+              "actions": [],
+              "items": [
+                {
+                  "key": "payment-232781889893564416",
+                  "title": "定金",
+                  "subtitle": "签约",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "1000.00",
+                  "date": "2026-09-29",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "1000.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233146762716512256",
+                  "title": "首期款",
+                  "subtitle": "开工前",
+                  "status": "Received",
+                  "statusName": "已付清",
+                  "amount": "8780.00",
+                  "date": "2026-10-02",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "8780.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147119446261760",
+                  "title": "二期款",
+                  "subtitle": "水电结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-17",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147361440825344",
+                  "title": "三期款",
+                  "subtitle": "瓦木结束",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "8150.00",
+                  "date": "2026-10-31",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "8150.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147643071561728",
+                  "title": "四期款",
+                  "subtitle": "油漆验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "5542.00",
+                  "date": "2026-11-20",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "5542.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                },
+                {
+                  "key": "payment-233147812525637632",
+                  "title": "尾款",
+                  "subtitle": "竣工验收",
+                  "status": "Pending",
+                  "statusName": "待付款",
+                  "amount": "978.00",
+                  "date": "2026-11-30",
+                  "images": [],
+                  "lines": [],
+                  "facts": [
+                    {
+                      "key": "received",
+                      "label": "已付",
+                      "value": "0.00",
+                      "valueType": "money"
+                    },
+                    {
+                      "key": "outstanding",
+                      "label": "待付",
+                      "value": "978.00",
+                      "valueType": "money"
+                    }
+                  ],
+                  "media": [],
+                  "regions": [],
+                  "priceGroups": []
+                }
+              ]
+            }
+          ],
+          "actions": [],
+          "openFeedbackCount": 0,
+          "pendingActionCount": 0,
+          "vendor": {
+            "name": "安徽麦鸿装饰设计工程有限公司",
+            "custodianCredit": false
+          },
+          "team": [
+            {
+              "name": "董夏鹏",
+              "roleName": "设计师"
+            },
+            {
+              "name": "王宏文",
+              "roleName": "店长"
+            },
+            {
+              "name": "麦鸿",
+              "roleName": "企业负责人"
+            },
+            {
+              "name": "黄贤杰",
+              "roleName": "业务员"
+            }
+          ],
+          "previewMeta": {
+            "mode": "EmployeeOwnerPreview",
+            "readOnly": true,
+            "notice": "业主视角预览 · 只读，不代表业主已查看或确认",
+            "watermark": "徐勇 · 工号1790224826490830054 · 2026-10-21 02:55",
+            "asOf": "2026-10-21 02:55:30"
+          }
+        },
+        "success": true
+      }
+    },
+    "financePreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前账号无权执行该操作",
+          "system": false
+        }
+      }
+    },
+    "marketerPreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前账号无权执行该操作",
+          "system": false
+        }
+      }
+    },
+    "crossCompanyBossPreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "otherStoreManagerPreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "otherTeamLeaderPreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "nonMemberDesignerPreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "ownerEndpointWithEmployeeToken": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    "employeeAcceptanceWrite": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    "employeeShareWrite": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    "employeeFeedbackWrite": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    "resignedPreview": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前员工已离职或停用",
+          "system": false
+        }
+      }
+    },
+    "auditRows": "Boss\tNotFound\t3\t3\t3\nBoss\tSuccess\t9\t0\t4\nDesigner\tNotFound\t3\t3\t3\nDesigner\tSuccess\t3\t0\t3\nFinance\tForbidden\t3\t3\t3\nMarketer\tForbidden\t3\t3\t3\nPm\tSuccess\t3\t0\t3\nStoreManager\tNotFound\t3\t3\t3\nStoreManager\tSuccess\t3\t0\t3\nTeamLeader\tNotFound\t4\t4\t4\nTeamLeader\tSuccess\t2\t0\t2",
+    "auditColumns": "log_id\ncreate_date\ncreate_date_time\ncreate_day\ncreate_hour\ncreate_minute\ncreate_month\ncreate_second\ncreate_time\ncreate_week\ncreate_year\nupdate_date\nupdate_date_time\nupdate_day\nupdate_hour\nupdate_minute\nupdate_month\nupdate_second\nupdate_time\nupdate_week\nupdate_year\ncom_id\nproject_id\nrequested_project_id\nemployee_id\nemployee_name\nemployee_role\nsource\nresult\nopened_at\nrequest_id"
+  }
+}

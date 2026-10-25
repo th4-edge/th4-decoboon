@@ -78,3 +78,48 @@
 - 当前阶段：`PASS`
 - 是否可进入 `RELEASED` 门禁：**是**
 - 实际部署/发布：本次未执行
+
+
+## H1 黑盒验证（2026-10-23）
+
+- API：14 PASS / 0 FAIL；覆盖提成解耦、财务拒绝、异常前置、重复确认幂等和跨店/跨企业考勤详情。
+- Web：BOSS/Finance/StoreManager 三角色按钮矩阵 PASS。
+- 证据：`docs/acceptance/runs/20261023-payroll-h1/02-black-box-acceptance.md`。
+- 结论：`BLACK_BOX_PASS_PENDING_INDEPENDENT_SIGNOFF`；不冒充独立验收。
+
+
+## B2 黑盒验证（2026-10-23）
+
+- API：10 PASS / 0 FAIL。
+- Web：27 天联动、编辑回填、完整字段、无方案提示、历史月份上下文 PASS。
+- 店长本店新增/编辑/删除 PASS；跨店新增/更新/删除 404；已生成工资项考勤更新 409。
+- 隔离 JDK 22 全量：931/0/0/0。
+- 证据：`docs/acceptance/runs/20261023-payroll-b2/`。
+- 结论：`BLACK_BOX_PASS_PENDING_USER_ACCEPTANCE`；不冒充独立验收。
+- 用户验收：2026-10-23 用户指令“下一步”承接 B3A，记为 `USER_ACCEPTED_NON_INDEPENDENT`。
+- 用户验收：2026-10-23 用户指令“下一步”承接 B2 结果，记为 `USER_ACCEPTED_NON_INDEPENDENT`。
+
+
+## B3A 黑盒验证（2026-10-23）
+
+- API：20 PASS / 0 FAIL。
+- BOSS：详情、完整工资项、确认二次确认、确认后回读、Draft 删除 PASS。
+- Finance：详情可读；最终确认与删除 403；生成草稿成功。
+- StoreManager：本店详情可读；确认、删除、生成 403；他店已知 `sheetId` 详情 404。
+- 总部 Finance：企业范围读取他店工资单成功。
+- 重复确认后应付与工资条保持 `5/5`，无重复财务事实。
+- 表头应发/扣款/实发与工资项汇总三组一致。
+- 隔离 JDK22 全量：932/0/0/0。
+- 证据：`docs/acceptance/runs/20261023-payroll-b3a/`。
+- 结论：`BLACK_BOX_PASS_PENDING_USER_ACCEPTANCE`；不冒充独立验收。
+
+
+## B3B1 黑盒验证（2026-10-23）
+
+- API：14 PASS / 0 FAIL；覆盖复核提交、Pending 展示、无原因退回、原因回读、BOSS 直接确认、重复确认幂等、店长发放 403 与草稿删除回归。
+- Web：Finance/BOSS/StoreManager 三角色运行态 PASS，console error 0。
+- App H5：Finance 提交复核、BOSS 退回、店长无员工发放入口 PASS，console error 0。
+- 结构化审计：`SUBMIT_REVIEW`、`RETURN_TO_DRAFT`、`CONFIRM` 均记录操作人、范围、状态和原因。
+- 隔离 JDK22 全量：938/0/0/0。
+- 证据：`docs/acceptance/runs/20261023-payroll-b3b1/`。
+- 结论：`BLACK_BOX_PASS_PENDING_USER_ACCEPTANCE`；不冒充独立验收。

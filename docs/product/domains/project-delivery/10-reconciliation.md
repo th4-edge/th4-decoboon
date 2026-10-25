@@ -17,7 +17,7 @@
 
 ## 未映射
 
-- 本批仅完成业务与初始蓝图，代码/页面映射待 B1 完成。
+- 本批仅完成业务与初始蓝图；PI-20261022-014 已完成 T06/T12，代码/页面映射待研发切片。
 
 ## 已过期
 
@@ -26,16 +26,28 @@
 ## 未决业务问题
 
 - GAP-034 阶段计划算法；
-- acceptanceMode 落 ProjectStage；
-- 现场汇报/日报角色；
-- 取消任务是否进入阶段验收门禁；
-- 工艺库与阶段/区域绑定。
+- GAP-034 G-02/G-06 工艺库与阶段/区域绑定。
+
+已收敛：`GAP-034 G-01` 与 `G-07` 由 `DEC-087 / BR-053` 冻结；现场日报发布角色由 `DEC-088 / BR-054` 冻结为 PM + BOSS/本店店长。实现缺口分别转入 `GAP-066 / PI-20261022-014` 与 `GAP-067 / PI-20261022-015`。
 
 ## 本批结论
 
 - 已对齐：核心任务来源、工期层次、节点、空阶段与偏差规则；
-- 待对齐：GAP-034 未决子项、结构化字段字典、实现与页面；
-- 当前停在：`SCENARIOS_READY`，下一步 BIZ_ALIGNED。
+- 待对齐：GAP-034 剩余子项、结构化字段字典、实现与页面；
+- PI-014/015 业务已对齐；`PROJ-STATE-D1` 已取得真实 MySQL/API/Web 证据，待独立验收和 App 真机；`PROJ-STATE-D2`～`D5` 未授权，`PD-X1` 为并行实施批次。
+- 原 B1 业务门禁仍受 GAP-034 剩余项影响。
+
+## PI-20261022-014 业务裁决对账（2026-10-22）
+
+| REQ | 业务规则 | 蓝图/对象 | 字段/API | 页面 | 测试 | 验收 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| PI14-D1 | `DEC-087 / BR-053` | ProjectStage.acceptanceMode | 合同快照→项目阶段 | App/Web 阶段读投影 | 隔离定向测试/构建 PASS | 独立验收待执行；MySQL 迁移待执行 | DEV_VERIFIED / ACCEPTANCE_PENDING |
+| PI14-D2 | `DEC-087 / BR-053` | None/ConstructionDone/AcceptanceDone | 阶段完成分流、取消任务门禁 | App/Web/业主端 | D2 用例待建 | 独立验收待执行 | BIZ_ALIGNED / UNMAPPED |
+| PI14-D3 | `DEC-087 / BR-053` | ProjectSuspension | 申请/审批/复工/审计/通知 | App/Web/业主端 | D3 用例待建 | 独立验收待执行 | BIZ_ALIGNED / UNMAPPED |
+| PI14-D4 | `DEC-087 / BR-053` | 停工动作矩阵与下游联动 | 项目/任务/材料/变更/偏差/应收 | 三端状态与恢复路径 | D4 用例待建 | 独立验收待执行 | BIZ_ALIGNED / UNMAPPED |
+| PI14-D5 | `DEC-087 / BR-053` | 三端一致性 | 同源服务端投影 | App/Web/业主端 | 跨端/越权/幂等待建 | 独立验收待执行 | BIZ_ALIGNED / UNMAPPED |
+
+说明：D1 已进入 `DEV_VERIFIED`；D2-D5 仍为 `BIZ_ALIGNED / UNMAPPED`。MySQL 迁移、真实页面和独立验收完成前不得关闭问题。
 
 ## 独立切片对账：业主视角只读预览 P0（2026-10-21）
 
@@ -99,3 +111,14 @@
 | 状态矩阵 | 空态、错误态、部分同步、长内容、极端数值 | PENDING |
 
 结论：设计已冻结，A/B 主要代码已进入 DEV_VERIFIED，并完成 375×667 微信开发者工具首轮同屏审查；多分辨率、异常状态和独立验收未完成，不得标记 UI_REVIEWED。
+
+## PI-20261022-015 跨端写能力（BIZ_DECIDED / 未实现）
+
+| REQ | 业务规则 | 蓝图/对象 | 字段/API | 页面 | 测试 | 验收 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| REQ-PD-004 | `SCN-003/DEC-088` | TaskNode | project/task-node/save | App 任务详情/Web `/workbench/project-execution` | 三类节点状态夹具走查 + 构建通过；真实写入待独立验收 | 独立验收待执行 | DEV_VERIFIED |
+| REQ-PD-011 | `DEC-049/DEC-088` | ProjectTask | project/task/save | App 排期/Web 统一履约工作面 | 任务来源/删除门禁保持；Web 构建/可达性 PASS | 独立验收待执行 | DEV_VERIFIED |
+| REQ-PD-012 | `DEC-088/BR-054` | ProjectReport | project/report/save | App 日报/Web 统一履约工作面 | 权限定向 2/2 PASS + 对话框夹具走查 | 独立验收待执行 | DEV_VERIFIED |
+
+说明：`PD-X1` 已进入实现；Web 静态页面、App 权限对齐和构建/定向门禁通过，但真实页面操作与独立验收尚未完成。
+

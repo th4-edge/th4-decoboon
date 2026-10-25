@@ -59,18 +59,18 @@
 - 已下单后直接取消作业单：必须走采购调整或退货，不得直接删除事实；
 - 业务助手越权读取其他企业/项目：工具层拒绝并返回无权限。
 
-## 场景 D：App 单端完成下单、到场与结算
+## 场景 D：App/Web 双端完成下单、到场与结算（2026-10-22 修订）
 
 | 项 | 内容 |
 | --- | --- |
 | 使用人/角色 | Designer、PM、Finance/Boss/StoreManager |
 | 触发事件 | 合同生效、主材选材完成，项目进入材料准备阶段 |
 | 前置条件 | 材料计划存在且已选材；App 登录员工属于项目可见范围 |
-| 当前动作 | ① Designer 在 App 建品类作业单并提交请购；② PM 在 App 测量/确认时间；③ Finance 在 App 选择供应商、填本次数量和可空单价并下单；④ PM 在 App 确认到场；⑤ Finance 在 App 做逐单或月结，回填结算价并确认成本 |
-| 系统下一步 | 生成采购单与应付；无价形成暂估应付；到场回填账期和实际成本；结算修正应付、收敛实际成本；任一成本缺失时利润保持 `null` |
-| 成功结果 | 整个材料下单与结算过程不需要打开 Web；作业单、采购单、应付、到场、结算和成本可追溯一致 |
+| 当前动作 | ① Designer 在 App 或 Web 建品类作业单并提交请购；② PM 在任一端测量/确认时间；③ Finance 在任一端选择供应商、填本次数量和可空单价并下单；④ PM/Designer 在任一端确认到场；⑤ Finance 在任一端做逐单或月结，回填结算价并确认成本；⑥ 按需在任一端发起退货/补发/换货 |
+| 系统下一步 | 生成采购单与应付；无价形成暂估应付；到场回填账期和实际成本；异常处置按类型冲减应付/成本/库存/往来；结算修正应付、收敛实际成本；作业单由事实重推 `Settled/Closed`；任一成本缺失时利润保持 `null` |
+| 成功结果 | 同一角色在 App/Web 都具备同一动作集合；作业单、采购单、应付、到场、异常处置、结算和成本可追溯一致 |
 | 异常/恢复 | 未选材/超量/无供应商阻断；无价允许下单但成本不完整；同一明细不得重复结算；已下单作业单取消走采购调整/退货；失败后保留原状态并提供恢复路径 |
 | 涉及对象 | MaterialPlan、MaterialOrderSheet、PurchaseOrder、PurchaseOrderItem、Payable、GoodsReceipt、MaterialSettlement、ProjectCostContext |
-| 状态变化 | Sheet Draft→Submitted→Ordered/PartiallyOrdered→PartiallyArrived/Arrived→Settled；Plan 由采购/到场事实派生；Settlement Confirmed/Cancelled |
-| 金额/成本/权限 | 财务/Boss/店长在 App 下单和结算；Designer/PM 不决定供应商和价格；P2 采购价、P3 结算价；无价不得以 0 冒充成本 |
-| 证据/来源 | SCN-021、OBJ-008、BR-044、BR-045、DEC-072、DEC-073、DEC-074；2026-10-17 用户裁决 |
+| 状态变化 | Sheet Draft→Measuring→Measured→Submitted→PartiallyOrdered→Ordered→PartiallyArrived→Arrived→Settled→Closed；Pricing 仅历史兼容；Plan 由采购/到场事实派生；Settlement Confirmed/Cancelled；异常处置 Draft/PendingSupplier/Confirmed/Executing/Completed/Rejected/Cancelled |
+| 金额/成本/权限 | 财务/Boss/店长在双端下单和结算；Designer/PM 不决定供应商和价格；P2 采购价、P3 结算价；无价不得以 0 冒充成本；补发不重复形成应付/成本 |
+| 证据/来源 | SCN-021、OBJ-008、BR-044、BR-045、DEC-072、DEC-073、DEC-074、DEC-088、BR-054；2026-10-22 跨端裁决 |

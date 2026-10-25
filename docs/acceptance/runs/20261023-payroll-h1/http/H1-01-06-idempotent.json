@@ -1,0 +1,30 @@
+{
+  "route": "payroll/sheet/update",
+  "http": 200,
+  "response": {
+    "data": {
+      "sheetId": "9100000000000000701",
+      "period": "2026-10",
+      "status": {
+        "name": "已确认",
+        "key": "Confirmed"
+      },
+      "attendanceComplete": true,
+      "commissionComplete": false,
+      "totalGrossAmount": 6000.0,
+      "totalDeductionAmount": 0.0,
+      "totalNetAmount": 6000.0,
+      "confirmedBy": {
+        "empId": "9100000000000000201",
+        "name": "H1负责人",
+        "role": {
+          "name": "企业负责人",
+          "value": "Boss",
+          "key": "Boss"
+        }
+      },
+      "confirmedAt": "2026-10-23 18:22:25"
+    },
+    "success": true
+  }
+}

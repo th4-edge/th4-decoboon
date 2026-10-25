@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-10-18T03:34:40+08:00",
+  "updatedAt": "2026-10-22T22:32:54+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -280,6 +280,12 @@
       "phase": "UI_REVIEWED",
       "batch": "U3",
       "note": "U3 追加清理：材料业务说明页移除 BR/DEC/OBJ/SCN/MET/CAP/GAP/EX 等内部编号与 source refs；P1-P3/英文对象名/condition 转业务语言；字段字典默认隐藏并标注实施/培训用"
+    },
+    {
+      "at": "2026-10-22T22:32:54+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "U3",
+      "note": "PI-20261022-015 取得 ANS/T12-BIZ-20261022-009、DEC-088、BR-054、GAP-067；材料跨端/状态/异常处置切片形成，未授权编码"
     }
   ]
 }

@@ -65,3 +65,19 @@
 - App H5 同源渲染：通过。
 - 微信小程序原生页面：BOSS、店长、财务、设计师工作台与权限拦截均通过。
 - UI 门禁：通过，可推进 `UI_REVIEWED`；独立验收仍不可由开发自签。
+
+## DQ-X1 待我谈单页面复核（2026-10-24）
+
+| 角色 | 视口 | 结果 | 证据 |
+| --- | --- | --- | --- |
+| Designer | 1440×1000 | 14 个当前任务；1/1 页；console 0 error | `docs/acceptance/runs/20261024-dq-x1/screenshots/designer-quotes-1440.png` |
+| Boss | 1440×1000 / 1280×900 | 22 个当前任务；1/2 页；翻页后 2/2 且总数不变；console 0 error | `boss-quotes-1440.png`、`boss-quotes-page2-1440.png`、`boss-quotes-page2-1280.png` |
+| StoreManager | 1440×1000 | 22 个本店当前任务；1/2 页；console 0 error | `store-manager-quotes-1440.png` |
+| Finance | 1440×1000 | 直链跳转 `/forbidden`；console 0 error | `finance-forbidden-1440.png` |
+
+复核中发现并修复两个阻断页面渲染的既有未提交问题：
+
+- `CustomerHeroCard.vue` 引用未定义 Sass token `$danger-600`，改为 `$danger-500`。
+- `DesignerMeasureTasksView.vue` 将 `number | null` 直接绑定到字符串房屋 ID，改为显式转换。
+
+本记录为开发侧 UI 证据，不替代独立验收。

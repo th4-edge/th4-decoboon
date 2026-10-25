@@ -5,12 +5,20 @@
   "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
   "owner": "codex",
   "phase": "ACCEPTED",
-  "batch": "B1",
-  "nextAction": "准备test环境发布与回滚方案；生产发布、小程序体验版上传和正式提审均需用户明确确认",
+  "batch": "DQ-X1+DQ-X2",
+  "nextAction": "等待用户明确确认是否执行迁移 131 与生产发布；同时仍需从脏工作区拆分 DQ-X1/DQ-X2 干净提交、处理 Web origin/dev 分叉、test 冒烟和 App 版本决策",
   "openDecisions": [
     "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
   ],
-  "blockers": [],
+  "blockers": [
+    "REL-B01 三仓工作区不干净，无法确定唯一发布提交",
+    "REL-B02 Web dev 与 origin/dev 分叉",
+    "REL-B03 当前工作区混入未裁决迁移 124–131 与 rollback",
+    "REL-B04 无独立远端 test 环境入口，test/prod 分支落后",
+    "REL-B05 App 版本仍为 1.0.66 / 166",
+    "REL-B06 未取得生产发布授权",
+    "REL-B07 生产缺少 cust_customer_loss，DQ-X1 依赖迁移 131"
+  ],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -26,7 +34,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T22:14:57+08:00",
-  "updatedAt": "2026-10-22T01:05:57+08:00",
+  "updatedAt": "2026-10-23T18:40:27.138Z",
   "history": [
     {
       "at": "2026-10-21T22:14:57+08:00",
@@ -93,6 +101,72 @@
       "phase": "ACCEPTED",
       "batch": "B1",
       "note": "独立只读验收24/24通过：金额、当前报价、成本裁剪、跨店跨企业、非法对象和只读无副作用均符合；无P0/P1缺陷，测试数据与凭据已恢复。"
+    },
+    {
+      "at": "2026-10-24T01:33:11+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X1",
+      "note": "DQ-X1 待我谈单工作队列改为数据库 ID 分页 + 单次页面批量预取；权限与 N+1 定向测试通过，无 DDL"
+    },
+    {
+      "at": "2026-10-24T02:08:44+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "DQ-X1",
+      "note": "DQ-X1 HTTP 17/17、四角色页面与 Web 构建通过；最终全量测试受共享工作区并发构建造成的 target/classes 缺失阻断，保持 UI_REVIEWED"
+    },
+    {
+      "at": "2026-10-24T02:14:24+08:00",
+      "phase": "RECONCILED",
+      "batch": "DQ-X1",
+      "note": "DQ-X1 干净全量 1098/1098、Web build、HTTP 17/17 与四角色页面复核全部通过；无 UNMAPPED/STALE，等待独立验收"
+    },
+    {
+      "at": "2026-10-24T02:14:33+08:00",
+      "phase": "RECONCILED",
+      "batch": "DQ-X2",
+      "note": "设计师五阶段 App/Web 名称、顺序、筛选、关键词与 App 触底加载参数已统一；App 原生自动复核24/24 PASS，App/Web构建与治理门禁PASS，独立验收待执行。"
+    },
+    {
+      "at": "2026-10-24T02:16:07+08:00",
+      "phase": "RECONCILED",
+      "batch": "DQ-X2",
+      "note": "App 24/24自动审计PASS；Web同一设计师账号1440×900五页真实复核PASS；App/Web构建与治理门禁PASS；独立验收待执行。"
+    },
+    {
+      "at": "2026-10-24T02:24:03+08:00",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X2",
+      "note": "App 24/24、Web 20/20只读验收PASS；五阶段入口、标题、筛选、搜索和同一业务样本一致；Web console 0 error；无业务写和DB变更。"
+    },
+    {
+      "at": "2026-10-24T02:24:10+08:00",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X2",
+      "note": "DQ-X2 独立黑盒验收 PASS：API 103/103、App 24/24、Web 6/6；App release 与 Web 构建/权限/工作台门禁 PASS；无 P0/P1"
+    },
+    {
+      "at": "2026-10-24T02:24:28+08:00",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X2",
+      "note": "DQ-X2 独立验收 hat 复跑 PASS：API 103/103、App 24/24、Web 6/6；构建、权限和工作台门禁 PASS；P0/P1=0"
+    },
+    {
+      "at": "2026-10-24T02:27:14+08:00",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X1+DQ-X2",
+      "note": "DQ-X1 独立验收 18/18 PASS：固定 3 条 SQL、无 N+1、权限/跨企业/无令牌/页大小上限/无副作用通过；DQ-X1 与 DQ-X2 均 ACCEPTED"
+    },
+    {
+      "at": "2026-10-23T18:30:16.081Z",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X1+DQ-X2",
+      "note": "发布前复核 BLOCKED：工作区混入大量未提交改动与迁移 124–131，Web dev 分叉，App 未 bump，test 环境与生产授权未就绪；未提交/推送/部署"
+    },
+    {
+      "at": "2026-10-23T18:40:27.139Z",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X1+DQ-X2",
+      "note": "生产只读核对发现 cust_customer_loss 不存在；DQ-X1 依赖迁移 131，发布升级为需要用户明确确认的 L3 DDL 发布，未执行任何写操作"
     }
   ]
 }

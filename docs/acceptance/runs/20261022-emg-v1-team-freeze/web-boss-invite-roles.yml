@@ -1,0 +1,248 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - complementary [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - generic [ref=f1e6]: 装
+        - generic [ref=f1e7]:
+          - strong [ref=f1e8]: 装得清
+          - generic [ref=f1e9]: 经营管控中心
+      - navigation "角色工作台导航" [ref=f1e11]:
+        - generic [ref=f1e12]:
+          - paragraph [ref=f1e13]: 业务工作台
+          - link "业务工作台" [ref=f1e14] [cursor=pointer]:
+            - /url: /workbench?storeId=0
+        - generic [ref=f1e19]:
+          - paragraph [ref=f1e20]: 客户经营
+          - link "客户跟进" [ref=f1e21] [cursor=pointer]:
+            - /url: /designer/customers?storeId=0
+          - link "待我跟进" [ref=f1e27] [cursor=pointer]:
+            - /url: /designer/followup?storeId=0
+          - link "待我量房" [ref=f1e33] [cursor=pointer]:
+            - /url: /designer/measure?storeId=0
+          - link "设计方案" [ref=f1e38] [cursor=pointer]:
+            - /url: /workbench/design-reviews?storeId=0
+        - generic [ref=f1e44]:
+          - paragraph [ref=f1e45]: 商务财务
+          - link "待我谈单" [ref=f1e46] [cursor=pointer]:
+            - /url: /designer/quotes?storeId=0
+          - link "待我签约" [ref=f1e51] [cursor=pointer]:
+            - /url: /designer/contract?storeId=0
+          - link "待我收款" [ref=f1e56] [cursor=pointer]:
+            - /url: /finance/receivables?storeId=0
+          - link "待我付款" [ref=f1e60] [cursor=pointer]:
+            - /url: /finance/payables?storeId=0
+          - link "资金台账" [ref=f1e64] [cursor=pointer]:
+            - /url: /finance/ledger?storeId=0
+          - link "收付凭证" [ref=f1e69] [cursor=pointer]:
+            - /url: /finance/vouchers?storeId=0
+          - link "凭证模板" [ref=f1e73] [cursor=pointer]:
+            - /url: /finance/voucher-templates?storeId=0
+        - generic [ref=f1e77]:
+          - paragraph [ref=f1e78]: 项目工地
+          - link "项目推进" [ref=f1e79] [cursor=pointer]:
+            - /url: /designer/projects?storeId=0
+          - link "业务承接" [ref=f1e83] [cursor=pointer]:
+            - /url: /workbench/store-carryover?storeId=0
+          - link "主材选材" [ref=f1e87] [cursor=pointer]:
+            - /url: /workbench/material-selection?storeId=0
+          - link "增减项" [ref=f1e92] [cursor=pointer]:
+            - /url: /workbench/contract-changes?storeId=0
+          - link "客户意见投诉" [ref=f1e97] [cursor=pointer]:
+            - /url: /workbench/customer-feedback?storeId=0
+          - link "整改跟进" [ref=f1e103] [cursor=pointer]:
+            - /url: /workbench/rectification?storeId=0
+        - generic [ref=f1e108]:
+          - paragraph [ref=f1e109]: 经营分析
+          - link "成员与组织" [ref=f1e110] [cursor=pointer]:
+            - /url: /workbench/organization?storeId=0
+          - link "待我处置风险" [ref=f1e114] [cursor=pointer]:
+            - /url: /workbench/risk?storeId=0
+        - generic [ref=f1e119]:
+          - paragraph [ref=f1e120]: 帮助与说明
+          - link "材料业务说明" [ref=f1e121] [cursor=pointer]:
+            - /url: /business-blueprints?storeId=0
+      - button "退出登录" [ref=f1e128]
+    - generic [ref=f1e131]:
+      - banner [ref=f1e132]:
+        - generic [ref=f1e134]:
+          - generic [ref=f1e135]: 经营管控中心
+          - generic [ref=f1e136]: /
+          - generic [ref=f1e137]: 成员与组织
+        - generic [ref=f1e138]:
+          - searchbox "⌘K" [ref=f1e143]
+          - generic [ref=f1e144]: ⌘K
+        - generic [ref=f1e145]:
+          - generic [ref=f1e146]:
+            - generic [ref=f1e147]: 门店维度
+            - combobox "门店维度" [ref=f1e148]:
+              - option "全部门店" [selected]
+              - option "验收总店 · 总店"
+              - option "验收二店"
+          - button "通知" [ref=f1e149]
+          - generic [ref=f1e152]: 企业负责人 · 全公司
+          - button "板 验收老板 企业负责人 · 全公司" [ref=f1e154]:
+            - generic [ref=f1e155]: 板
+            - generic [ref=f1e156]:
+              - strong [ref=f1e157]: 验收老板
+              - generic [ref=f1e158]: 企业负责人 · 全公司
+      - main [ref=f1e159]:
+        - generic [ref=f1e160]:
+          - generic [ref=f1e161]:
+            - generic [ref=f1e162]:
+              - generic [ref=f1e163]: ORGANIZATION · 成员与组织
+              - heading "成员与组织全部门店" [level=1] [ref=f1e164]
+              - paragraph [ref=f1e165]: 维护财务账号与所属门店，并查看本范围的人均产出、角色产能和人员排行。
+            - button "刷新" [ref=f1e167] [cursor=pointer]
+          - generic [ref=f1e169]:
+            - generic [ref=f1e170]:
+              - generic [ref=f1e171]:
+                - heading "成员与组织" [level=2] [ref=f1e172]
+                - paragraph [ref=f1e173]: BOSS 可邀请任意本企业门店财务；店长只能邀请本店财务。调整财务门店后，总部/门店身份即时变化，历史业务门店不回溯。
+              - button "邀请员工" [ref=f1e175] [cursor=pointer]
+            - generic [ref=f1e179]:
+              - table [ref=f1e181]:
+                - rowgroup [ref=f1e188]:
+                  - row [ref=f1e189]:
+                    - columnheader "姓名" [ref=f1e190]
+                    - columnheader "岗位" [ref=f1e192]
+                    - columnheader "所属门店" [ref=f1e194]
+                    - columnheader "手机号" [ref=f1e196]
+                    - columnheader "范围身份" [ref=f1e198]
+              - table [ref=f1e204]:
+                - rowgroup [ref=f1e211]:
+                  - row [ref=f1e212]:
+                    - cell "验收老板" [ref=f1e213]
+                    - cell "企业负责人" [ref=f1e215]
+                    - cell "验收总店" [ref=f1e217]
+                    - cell "13990000001" [ref=f1e219]
+                    - cell "企业负责人" [ref=f1e221]
+                  - row [ref=f1e223]:
+                    - cell "验收设计师" [ref=f1e224]
+                    - cell "设计师" [ref=f1e226]
+                    - cell "验收总店" [ref=f1e228]
+                    - cell "13990000002" [ref=f1e230]
+                    - cell "设计师" [ref=f1e232]
+          - alert [ref=f1e234]:
+            - generic [ref=f1e238]:
+              - generic [ref=f1e239]: 样本不足
+              - paragraph [ref=f1e240]: 本月数据量较小，比率类指标仅供参考。
+          - generic [ref=f1e241]:
+            - article [ref=f1e242]:
+              - generic [ref=f1e243]: 在职人数
+              - strong [ref=f1e244]: "2"
+              - generic [ref=f1e245]: 新增 2
+            - article [ref=f1e246]:
+              - generic [ref=f1e247]: 本月签约额
+              - strong [ref=f1e248]:
+                - generic [ref=f1e249]: ¥0.00
+              - generic [ref=f1e250]: 新项目 0
+            - article [ref=f1e251]:
+              - generic [ref=f1e252]: 人均产出
+              - strong [ref=f1e253]:
+                - generic [ref=f1e254]: ¥0.00
+              - generic [ref=f1e255]: 签约额 / 在职人数
+            - article [ref=f1e256]:
+              - generic [ref=f1e257]: 人均订单
+              - strong [ref=f1e258]: "0.00"
+              - generic [ref=f1e259]: 订单 / 在职人数
+          - generic [ref=f1e260]:
+            - generic [ref=f1e262]:
+              - heading "角色产能" [level=2] [ref=f1e263]
+              - paragraph [ref=f1e264]: 按角色统计在职人数与核心指标。
+            - generic [ref=f1e267]:
+              - table [ref=f1e269]:
+                - rowgroup [ref=f1e275]:
+                  - row [ref=f1e276]:
+                    - columnheader "角色" [ref=f1e277]
+                    - columnheader "人数" [ref=f1e279]
+                    - columnheader "核心指标" [ref=f1e281]
+                    - columnheader "指标值" [ref=f1e283]
+              - table [ref=f1e289]:
+                - rowgroup [ref=f1e295]:
+                  - row [ref=f1e296]:
+                    - cell "设计师" [ref=f1e297]
+                    - cell "1" [ref=f1e299]
+                    - cell "最终报价接受率" [ref=f1e301]
+                    - cell "0.00" [ref=f1e303]
+                  - row [ref=f1e305]:
+                    - cell "业务员" [ref=f1e306]
+                    - cell "0" [ref=f1e308]
+                    - cell "签约率" [ref=f1e310]
+                    - cell "0.00" [ref=f1e312]
+                  - row [ref=f1e314]:
+                    - cell "项目经理" [ref=f1e315]
+                    - cell "0" [ref=f1e317]
+                    - cell "准时交付率" [ref=f1e319]
+                    - cell "0.00" [ref=f1e321]
+          - generic [ref=f1e323]:
+            - generic [ref=f1e325]:
+              - heading "设计师排行" [level=2] [ref=f1e326]
+              - paragraph [ref=f1e327]: 按报价与接受情况。
+            - generic [ref=f1e330]:
+              - table [ref=f1e332]:
+                - rowgroup [ref=f1e338]:
+                  - row [ref=f1e339]:
+                    - columnheader "设计师" [ref=f1e340]
+                    - columnheader "报价" [ref=f1e342]
+                    - columnheader "接受" [ref=f1e344]
+                    - columnheader "转化率" [ref=f1e346]
+              - table [ref=f1e352]:
+                - rowgroup [ref=f1e358]:
+                  - row [ref=f1e359]:
+                    - cell "验收设计师" [ref=f1e360]
+                    - cell "0" [ref=f1e362]
+                    - cell "0" [ref=f1e364]
+                    - cell "0.0%" [ref=f1e366]
+          - generic [ref=f1e368]:
+            - generic [ref=f1e370]:
+              - heading "业务员排行" [level=2] [ref=f1e371]
+              - paragraph [ref=f1e372]: 按客户与签约情况。
+            - status [ref=f1e374]:
+              - generic [aria-hidden] [ref=f1e375]: —
+              - paragraph [ref=f1e376]: 暂无业务员数据
+              - paragraph [ref=f1e377]: 业务员建立客户后进入排行。
+          - generic [ref=f1e378]:
+            - generic [ref=f1e380]:
+              - heading "项目经理排行" [level=2] [ref=f1e381]
+              - paragraph [ref=f1e382]: 按交付与准时情况。
+            - status [ref=f1e384]:
+              - generic [aria-hidden] [ref=f1e385]: —
+              - paragraph [ref=f1e386]: 暂无项目经理数据
+              - paragraph [ref=f1e387]: 项目经理交付项目后进入排行。
+          - generic [ref=f1e388]: 样本不足
+          - dialog "邀请员工" [ref=f1e393]:
+            - generic [ref=f1e394]:
+              - generic [ref=f1e395]:
+                - heading "邀请员工" [level=2] [ref=f1e396]
+                - button "关闭此对话框" [ref=f1e397] [cursor=pointer]
+              - generic [ref=f1e402]:
+                - generic [ref=f1e403]:
+                  - generic [ref=f1e404]: 姓名
+                  - textbox "姓名" [ref=f1e408]
+                - generic [ref=f1e409]:
+                  - generic [ref=f1e410]: 手机号
+                  - textbox "手机号" [ref=f1e414]
+                - generic [ref=f1e415]:
+                  - generic [ref=f1e416]: 岗位
+                  - generic [ref=f1e419] [cursor=pointer]:
+                    - generic:
+                      - combobox "岗位" [expanded] [active] [ref=f1e421]
+                      - generic [ref=f1e422]: 财务
+                - generic [ref=f1e427]:
+                  - generic [ref=f1e428]: "*目标门店"
+                  - generic [ref=f1e431] [cursor=pointer]:
+                    - generic:
+                      - combobox "*目标门店" [ref=f1e433]
+                      - generic [ref=f1e434]: 必须选择目标门店
+                - alert [ref=f1e439]:
+                  - generic [ref=f1e443]: 选择默认总店即邀请总部财务；选择普通门店即邀请门店财务。
+              - generic [ref=f1e445]:
+                - button "取消" [ref=f1e446] [cursor=pointer]
+                - button "创建邀请" [ref=f1e448] [cursor=pointer]
+  - tooltip "财务" [ref=f1e450]:
+    - listbox [ref=f1e454]:
+      - option "店长" [ref=f1e455] [cursor=pointer]
+      - option "设计师" [ref=f1e456] [cursor=pointer]
+      - option "业务员" [ref=f1e457] [cursor=pointer]
+      - option "项目经理" [ref=f1e458] [cursor=pointer]
+      - option "财务" [selected] [ref=f1e459] [cursor=pointer]

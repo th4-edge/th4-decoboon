@@ -1,0 +1,12 @@
+{
+  "route": "invite/invitation/save",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "403",
+      "message": "团队负责人角色已冻结，不能用于新邀请或岗位调整",
+      "system": false
+    }
+  }
+}

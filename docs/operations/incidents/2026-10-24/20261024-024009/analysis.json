@@ -1,0 +1,582 @@
+{
+  "collectedAt": "2026-10-23T18:40:10.131826+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/operations/incidents/2026-10-24/20261024-024009",
+  "counts": {
+    "unknown": 54,
+    "expected": 78
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261024-979f5a015e",
+      "signature": "当前账号无权执行该操作",
+      "signatureHash": "979f5a015e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 9,
+      "firstSeen": "2026-10-22T14:33:35.960+08:00",
+      "lastSeen": "2026-10-23T14:38:37.899+08:00",
+      "samples": [
+        "4304:2026-10-22T14:33:35.960+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/employee/page处理失败:当前账号无权执行该操作",
+        "4420:2026-10-22T14:33:39.531+08:00 ERROR 314434 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/employee/page处理失败:当前账号无权执行该操作",
+        "4536:2026-10-22T14:33:42.973+08:00 ERROR 314434 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/employee/page处理失败:当前账号无权执行该操作",
+        "4652:2026-10-22T14:33:45.293+08:00 ERROR 314434 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/employee/page处理失败:当前账号无权执行该操作",
+        "4768:2026-10-22T14:33:46.043+08:00 ERROR 314434 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/employee/page处理失败:当前账号无权执行该操作"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 1,
+      "firstSeen": "2026-10-22T13:21:47.862+08:00",
+      "lastSeen": "2026-10-22T13:21:47.862+08:00",
+      "samples": [
+        "1670:2026-10-22T13:21:47.862+08:00 ERROR 314434 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-9b9b999094",
+      "signature": "找不到对应的处理服务:.env",
+      "signatureHash": "9b9b999094",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 4,
+      "firstSeen": "2026-10-22T15:48:06.572+08:00",
+      "lastSeen": "2026-10-23T08:33:44.427+08:00",
+      "samples": [
+        "4955:2026-10-22T15:48:06.572+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "6970:2026-10-22T19:09:26.010+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "9244:2026-10-23T00:07:56.591+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env",
+        "10614:2026-10-23T08:33:44.427+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .env处理失败:找不到对应的处理服务:.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-8f4d3f4876",
+      "signature": "找不到对应的处理服务:.git/config",
+      "signatureHash": "8f4d3f4876",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T20:16:49.301+08:00",
+      "lastSeen": "2026-10-22T20:16:49.301+08:00",
+      "samples": [
+        "9060:2026-10-22T20:16:49.301+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-1426096679",
+      "signature": "找不到对应的处理服务:actuator",
+      "signatureHash": "1426096679",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:38.418+08:00",
+      "lastSeen": "2026-10-22T19:09:38.418+08:00",
+      "samples": [
+        "8002:2026-10-22T19:09:38.418+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : actuator处理失败:找不到对应的处理服务:actuator"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-92500a7f2c",
+      "signature": "找不到对应的处理服务:actuator/env",
+      "signatureHash": "92500a7f2c",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-22T19:09:36.158+08:00",
+      "lastSeen": "2026-10-22T19:09:38.408+08:00",
+      "samples": [
+        "7744:2026-10-22T19:09:36.158+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : actuator/env处理失败:找不到对应的处理服务:actuator/env",
+        "7916:2026-10-22T19:09:38.408+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : actuator/env处理失败:找不到对应的处理服务:actuator/env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-c50a9523db",
+      "signature": "找不到对应的处理服务:dev/.env",
+      "signatureHash": "c50a9523db",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T15:48:23.854+08:00",
+      "lastSeen": "2026-10-22T15:48:23.854+08:00",
+      "samples": [
+        "5299:2026-10-22T15:48:23.854+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-1dc72d18c6",
+      "signature": "找不到对应的处理服务:docker/config",
+      "signatureHash": "1dc72d18c6",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:37.959+08:00",
+      "lastSeen": "2026-10-22T19:09:37.959+08:00",
+      "samples": [
+        "7830:2026-10-22T19:09:37.959+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : docker/config处理失败:找不到对应的处理服务:docker/config"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-4b58a9edf5",
+      "signature": "找不到对应的处理服务:download",
+      "signatureHash": "4b58a9edf5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:35.381+08:00",
+      "lastSeen": "2026-10-22T19:09:35.381+08:00",
+      "samples": [
+        "7658:2026-10-22T19:09:35.381+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : download处理失败:找不到对应的处理服务:download"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-972186b589",
+      "signature": "找不到对应的处理服务:gql",
+      "signatureHash": "972186b589",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:39.389+08:00",
+      "lastSeen": "2026-10-22T19:09:39.389+08:00",
+      "samples": [
+        "8174:2026-10-22T19:09:39.389+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : gql处理失败:找不到对应的处理服务:gql"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-8478b5fd37",
+      "signature": "找不到对应的处理服务:graphql",
+      "signatureHash": "8478b5fd37",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-22T19:09:28.533+08:00",
+      "lastSeen": "2026-10-22T19:09:40.117+08:00",
+      "samples": [
+        "7314:2026-10-22T19:09:28.533+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql",
+        "8088:2026-10-22T19:09:39.176+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql",
+        "8260:2026-10-22T19:09:40.117+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : graphql处理失败:找不到对应的处理服务:graphql"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-5b44ec0c8f",
+      "signature": "找不到对应的处理服务:json",
+      "signatureHash": "5b44ec0c8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:46.369+08:00",
+      "lastSeen": "2026-10-22T19:09:46.369+08:00",
+      "samples": [
+        "8888:2026-10-22T19:09:46.369+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : json处理失败:找不到对应的处理服务:json"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-22T15:53:11.043+08:00",
+      "lastSeen": "2026-10-23T19:52:07.782+08:00",
+      "samples": [
+        "5471:2026-10-22T15:53:11.043+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "8974:2026-10-22T19:55:06.326+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
+        "13450:2026-10-23T19:52:07.782+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-d2d7eee4e6",
+      "signature": "找不到对应的处理服务:mongo",
+      "signatureHash": "d2d7eee4e6",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:44.271+08:00",
+      "lastSeen": "2026-10-22T19:09:44.271+08:00",
+      "samples": [
+        "8802:2026-10-22T19:09:44.271+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mongo处理失败:找不到对应的处理服务:mongo"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-090b7ceb5e",
+      "signature": "找不到对应的处理服务:openapi.json",
+      "signatureHash": "090b7ceb5e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:40.746+08:00",
+      "lastSeen": "2026-10-22T19:09:40.746+08:00",
+      "samples": [
+        "8518:2026-10-22T19:09:40.746+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : openapi.json处理失败:找不到对应的处理服务:openapi.json"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-8f59be778a",
+      "signature": "找不到对应的处理服务:phpinfo.php",
+      "signatureHash": "8f59be778a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:30.344+08:00",
+      "lastSeen": "2026-10-22T19:09:30.344+08:00",
+      "samples": [
+        "7486:2026-10-22T19:09:30.344+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : phpinfo.php处理失败:找不到对应的处理服务:phpinfo.php"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-205c0c8ca3",
+      "signature": "找不到对应的处理服务:redis",
+      "signatureHash": "205c0c8ca3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:44.042+08:00",
+      "lastSeen": "2026-10-22T19:09:44.042+08:00",
+      "samples": [
+        "8716:2026-10-22T19:09:44.042+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : redis处理失败:找不到对应的处理服务:redis"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-7b4ee7ccd3",
+      "signature": "找不到对应的处理服务:secrets.yml",
+      "signatureHash": "7b4ee7ccd3",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-23T00:08:21.221+08:00",
+      "lastSeen": "2026-10-23T08:33:51.230+08:00",
+      "samples": [
+        "9330:2026-10-23T00:08:21.221+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml",
+        "10700:2026-10-23T08:33:51.230+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : secrets.yml处理失败:找不到对应的处理服务:secrets.yml"
+      ],
+      "reportPaths": [
+        "2026-10-24/20261024-024009"
+      ]
+    },
+    {
+      "incidentId": "INC-20261024-e4bbca461d",
+      "signature": "找不到对应的处理服务:staging/.env",
+      "signatureHash": "e4bbca461d",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T15:48:24.133+08:00",
+      "lastSeen": "2026-10-22T15:48:24.133+08:00",
+      "samples": [
+        "5385:2026-10-22T15:48:24.133+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-682ec6e4ac",
+      "signature": "找不到对应的处理服务:swagger.json",
+      "signatureHash": "682ec6e4ac",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:40.555+08:00",
+      "lastSeen": "2026-10-22T19:09:40.555+08:00",
+      "samples": [
+        "8346:2026-10-22T19:09:40.555+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : swagger.json处理失败:找不到对应的处理服务:swagger.json"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-416878e316",
+      "signature": "找不到对应的处理服务:v1/.env",
+      "signatureHash": "416878e316",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-22T15:48:21.580+08:00",
+      "lastSeen": "2026-10-22T19:09:28.826+08:00",
+      "samples": [
+        "5041:2026-10-22T15:48:21.580+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
+        "7400:2026-10-22T19:09:28.826+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-7fd92200c6",
+      "signature": "找不到对应的处理服务:v1/download",
+      "signatureHash": "7fd92200c6",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:34.923+08:00",
+      "lastSeen": "2026-10-22T19:09:34.923+08:00",
+      "samples": [
+        "7572:2026-10-22T19:09:34.923+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/download处理失败:找不到对应的处理服务:v1/download"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-9289c56779",
+      "signature": "找不到对应的处理服务:v1/models",
+      "signatureHash": "9289c56779",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:27.853+08:00",
+      "lastSeen": "2026-10-22T19:09:27.853+08:00",
+      "samples": [
+        "7228:2026-10-22T19:09:27.853+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/models处理失败:找不到对应的处理服务:v1/models"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-65349a9ff0",
+      "signature": "找不到对应的处理服务:v1/namespaces/default/secrets",
+      "signatureHash": "65349a9ff0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:27.626+08:00",
+      "lastSeen": "2026-10-22T19:09:27.626+08:00",
+      "samples": [
+        "7056:2026-10-22T19:09:27.626+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/namespaces/default/secrets处理失败:找不到对应的处理服务:v1/namespaces/default/secrets"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-e1e4d601d0",
+      "signature": "找不到对应的处理服务:v1/namespaces/kube-system/configmaps",
+      "signatureHash": "e1e4d601d0",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:27.643+08:00",
+      "lastSeen": "2026-10-22T19:09:27.643+08:00",
+      "samples": [
+        "7142:2026-10-22T19:09:27.643+08:00 ERROR 314434 --- [  XNIO-1 task-8] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/namespaces/kube-system/configmaps处理失败:找不到对应的处理服务:v1/namespaces/kube-system/configmaps"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-95f49bb14f",
+      "signature": "找不到对应的处理服务:v1/openapi.json",
+      "signatureHash": "95f49bb14f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:40.746+08:00",
+      "lastSeen": "2026-10-22T19:09:40.746+08:00",
+      "samples": [
+        "8438:2026-10-22T19:09:40.746+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/openapi.json处理失败:找不到对应的处理服务:v1/openapi.json"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-e359a7a32a",
+      "signature": "找不到对应的处理服务:v2/.env",
+      "signatureHash": "e359a7a32a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T15:48:21.844+08:00",
+      "lastSeen": "2026-10-22T15:48:21.844+08:00",
+      "samples": [
+        "5127:2026-10-22T15:48:21.844+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-7cc2b644b1",
+      "signature": "找不到对应的处理服务:v3/.env",
+      "signatureHash": "7cc2b644b1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T15:48:23.575+08:00",
+      "lastSeen": "2026-10-22T15:48:23.575+08:00",
+      "samples": [
+        "5213:2026-10-22T15:48:23.575+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-dfb2d5ba8f",
+      "signature": "找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+      "signatureHash": "dfb2d5ba8f",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-22T16:06:56.960+08:00",
+      "lastSeen": "2026-10-23T16:19:34.073+08:00",
+      "samples": [
+        "5759:2026-10-22T16:06:56.960+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+        "10528:2026-10-23T05:55:56.980+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+        "11821:2026-10-23T16:19:34.073+08:00 ERROR 314434 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-63b08295b5",
+      "signature": "找不到对应的实体处理服务[ui.html]",
+      "signatureHash": "63b08295b5",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-22T19:09:40.811+08:00",
+      "lastSeen": "2026-10-22T19:09:40.811+08:00",
+      "samples": [
+        "8630:2026-10-22T19:09:40.811+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : swagger-ui.html处理失败:找不到对应的实体处理服务[ui.html]"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 7,
+      "firstSeen": "2026-10-22T15:54:41.820+08:00",
+      "lastSeen": "2026-10-23T19:15:23.172+08:00",
+      "samples": [
+        "5572:2026-10-22T15:54:41.820+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/designer/measure/list处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "5857:2026-10-22T16:13:28.805+08:00 ERROR 314434 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : catalog/item/page处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "9158:2026-10-22T23:38:57.556+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "10798:2026-10-23T11:38:09.736+08:00 ERROR 314434 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。",
+        "10896:2026-10-23T14:38:25.710+08:00 ERROR 314434 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 73,
+      "firstSeen": "2026-10-22T13:16:38.611+08:00",
+      "lastSeen": "2026-10-24T02:40:09.961+08:00",
+      "samples": [
+        "[2026-10-24 02:40:09.961] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "840:2026-10-22T13:16:38.611+08:00 ERROR 314434 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "943:2026-10-22T13:16:45.804+08:00 ERROR 314434 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "1045:2026-10-22T13:16:48.826+08:00 ERROR 314434 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "1150:2026-10-22T13:16:48.956+08:00 ERROR 314434 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : content/employee-content/generate处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-73448c7d67",
+      "signature": "该员工本月考勤已存在",
+      "signatureHash": "73448c7d67",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-23T15:20:52.003+08:00",
+      "lastSeen": "2026-10-23T15:20:52.003+08:00",
+      "samples": [
+        "11129:2026-10-23T15:20:52.003+08:00 ERROR 314434 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : attendance/summary/save处理失败:该员工本月考勤已存在"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261024-b6c6f6a3e1",
+      "signature": "该工资月份没有生效薪酬方案",
+      "signatureHash": "b6c6f6a3e1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-23T19:34:13.884+08:00",
+      "lastSeen": "2026-10-23T19:34:13.884+08:00",
+      "samples": [
+        "13364:2026-10-23T19:34:13.884+08:00 ERROR 314434 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : payroll/compensation/info处理失败:该工资月份没有生效薪酬方案"
+      ],
+      "reportPaths": [
+        "2026-10-24/20261024-024009"
+      ]
+    }
+  ]
+}

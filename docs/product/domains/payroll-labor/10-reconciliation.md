@@ -49,3 +49,32 @@
 - 独立验收：`PASS`；ACC-B1-001/002/003 已关闭，ACC-B1-U01 已关闭。
 - 当前状态：`ACCEPTED`
 - 下一阶段：`RELEASED` 发布门禁；必须由用户确认 L3 生产发布，未确认前不得部署。
+
+
+## 2026-10-23 跨端一致性与权限修复对账
+
+| 需求 | 蓝图/规则 | Provider/API | Web | App | 测试/证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| H1-01 工资与提成解耦 | BR-039、DEC-047、EV-149、GAP-072 | `payroll/sheet/update` | 已按非阻断提示实现 | 已按非阻断提示实现 | 生产制品无阻断；源码已恢复；定向 1/1、H1 隔离 JDK22 全量 931/0/0/0、API 黑盒 PASS | MAPPED_PENDING_INDEPENDENT |
+| H1-02 Web 薪酬能力键 | BR-038、DEC-046、DEC-065、GAP-073 | 薪酬 Provider 不变 | 已改用薪酬能力键；员工发放保持待裁决 | 能力键基本正确 | Web type-check/build/权限/门店/工作台门禁 PASS；三角色真实页面 PASS | MAPPED_PENDING_INDEPENDENT |
+| H1-03 考勤详情门店范围 | BR-038、DEC-065、GAP-073 | `attendance/summary/info` | 未接详情 | 已接详情 | 已改为 DataScope Specification；单测 2/2；真实跨店/跨企业 HTTP PASS | MAPPED_PENDING_INDEPENDENT |
+| B2-01 应出勤方案联动 | BR-015、BR-038、DEC-045、GAP-073 | `payroll/compensation/info` | 已只读联动并显示 27 | 已联动 | API + 真实 Web PASS；用户 2026-10-23 承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B2-02 考勤编辑/删除/字段 | BR-038、GAP-073 | `attendance/summary/info|delete|update` | 已支持编辑、删除和完整字段 | 已实现 | API + 真实 Web PASS；用户 2026-10-23 承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B2-03 店长本店考勤权限 | BR-038、DEC-065 | `attendance/summary/save|delete|update` | 店长本店入口可用 | 同源 | 本店成功、跨店 404、已生成工资项 409；用户承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B3A-01 工资单详情与金额构成 | BR-038、DEC-046 | `payroll/sheet/info`、`payroll/item/page` | 已接详情并展示全部金额构成 | 完整展示 | API 20/20；真实三角色 Web；JDK22 全量 932/0/0/0；用户 2026-10-23 承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B3A-02 草稿删除与确认交互 | BR-038、DEC-046 | `payroll/sheet/delete|update` | BOSS 二次确认、草稿删除、确认后回读 | 已实现 | API 20/20；确认幂等 `5/5`；真实 Web PASS；用户承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B3A-03 详情组织范围 | BR-038、DEC-065 | `payroll/sheet/info` | 详情与列表使用同一范围 | 同源 | StoreManager 他店 404；总部 Finance 企业范围成功；单测 2/2；用户承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B3B1 可选复核与发放权限 | DEC-093、BR-038、T12-BIZ-20261023-002 | `payroll/sheet/update|delete`、`finance/payment/employee/*` | 复核/退回/原因回读/发放入口 | 复核/退回/发放入口 | 定向 9/9；API 14/14；JDK22 全量 938/0/0/0；Web/App H5 PASS | MAPPED_PENDING_USER |
+| B3B2 作废与反向事实 | DEC-093、DEC-043 | `payroll/sheet/*`、应付/成本/工资条反向 | 未开始 | 未开始 | 需 DDL/版本设计 | BLOCKED |
+| B4 批量/部分发放与剩余体验 | BR-038、DEC-017 | 待设计 | 未开始 | 未开始 | 批量/部分发放未裁决 | BLOCKED |
+
+本表状态在批次完成并取得证据前全部保持 `UNMAPPED` 或 `BLOCKED`，不得宣称整域已对账通过。
+
+
+## B3A 对账结论
+
+- B3A-01～03 均有业务规则、Provider/API、Web、测试、真实 UI 与黑盒证据。
+- 本批无 `UNMAPPED` 或 `STALE`。
+- H1/B2/B3A 状态均为 `MAPPED_USER_ACCEPTED_NON_INDEPENDENT`；独立评审仍需另行执行。
+- 业务裁决已完成：`DEC-093` / `T12-BIZ-20261023-002`。
+- B3B1 已完成并黑盒 PASS，等待用户验收；B3B2 因 DDL/版本设计阻塞；B4 批量/部分发放仍待业务裁决。

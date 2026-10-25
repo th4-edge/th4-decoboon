@@ -1,0 +1,58 @@
+{
+  "route": "company/member/update",
+  "http": 200,
+  "response": {
+    "data": {
+      "empId": "3004",
+      "name": "验收项目经理",
+      "telNo": "13990000004",
+      "store": {
+        "storeId": "2002",
+        "company": {
+          "comId": "1001",
+          "title": "验收装企有限公司",
+          "name": "验收装企",
+          "size": {
+            "name": "10人以下",
+            "value": "A",
+            "key": "A"
+          },
+          "setting": {
+            "enableStore": true
+          }
+        },
+        "name": "验收二店",
+        "defaultStore": false,
+        "status": {
+          "name": "启用",
+          "key": "Active"
+        },
+        "sort": 1
+      },
+      "company": {
+        "comId": "1001",
+        "title": "验收装企有限公司",
+        "name": "验收装企",
+        "size": {
+          "name": "10人以下",
+          "value": "A",
+          "key": "A"
+        },
+        "setting": {
+          "enableStore": true
+        }
+      },
+      "role": {
+        "name": "设计师",
+        "value": "Designer",
+        "key": "Designer"
+      },
+      "status": {
+        "name": "在职",
+        "key": "Active"
+      },
+      "joinedAt": "2026-10-22 23:33:48"
+    },
+    "success": true
+  }
+}

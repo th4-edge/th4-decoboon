@@ -1,0 +1,53 @@
+{
+  "route": "payroll/compensation/info",
+  "http": 200,
+  "response": {
+    "data": {
+      "schemeId": "9100000000000000401",
+      "employee": {
+        "empId": "9100000000000000204",
+        "name": "H1总店员工",
+        "store": {
+          "storeId": "9100000000000000101",
+          "name": "H1总店"
+        },
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        },
+        "status": {
+          "name": "在职",
+          "key": "Active"
+        }
+      },
+      "baseSalary": 6000.0,
+      "scheduledDays": 27,
+      "effectiveFrom": "2026-07-15",
+      "status": {
+        "name": "生效",
+        "key": "Active"
+      },
+      "createdBy": {
+        "empId": "9100000000000000201",
+        "name": "H1负责人",
+        "store": {
+          "storeId": "9100000000000000101",
+          "name": "H1总店"
+        },
+        "role": {
+          "name": "企业负责人",
+          "value": "Boss",
+          "key": "Boss"
+        },
+        "status": {
+          "name": "在职",
+          "key": "Active"
+        }
+      },
+      "locked": true,
+      "lockedReason": "已形成考勤、提成或工资事实，方案已锁定；请新增更晚生效的后续方案"
+    },
+    "success": true
+  }
+}

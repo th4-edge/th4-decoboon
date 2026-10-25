@@ -1,8 +1,8 @@
 {
   "id": "project-delivery.end-to-end",
   "title": "项目施工履约与进度",
-  "version": "0.2.0",
-  "status": "draft",
+  "version": "0.3.0",
+  "status": "ready",
   "sourceRefs": [
     "OBJ-001",
     "BR-001",
@@ -23,7 +23,9 @@
     "USER-DECISION-20261021-001",
     "USER-DECISION-20261021-002",
     "T12-BIZ-20261021-001",
-    "T12-BIZ-20261021-002"
+    "T12-BIZ-20261021-002",
+    "DEC-087",
+    "BR-053"
   ],
   "audience": [
     "boss",
@@ -67,13 +69,16 @@
         "project",
         "name",
         "status",
+        "acceptanceMode",
         "plannedStart",
         "plannedEnd",
         "notApplicableReason"
       ],
       "sources": [
         "DEC-048",
-        "DEC-057"
+        "DEC-057",
+        "DEC-087",
+        "BR-053"
       ]
     },
     {
@@ -149,6 +154,28 @@
       ]
     },
     {
+      "id": "ContractConstructionStage",
+      "name": "合同施工阶段快照",
+      "meaning": "合同签约时冻结的阶段名称、计划窗口、权重来源与验收模式",
+      "keyFields": [
+        "stageId",
+        "plan",
+        "code",
+        "name",
+        "sort",
+        "defaultDays",
+        "plannedStart",
+        "plannedEnd",
+        "acceptanceMode",
+        "projectStage"
+      ],
+      "sources": [
+        "DEC-048",
+        "DEC-087",
+        "BR-053"
+      ]
+    },
+    {
       "id": "ContractLine",
       "name": "合同施工行",
       "meaning": "施工任务的合法来源与金额成本快照",
@@ -193,6 +220,16 @@
       "sources": [
         "BR-002",
         "DEC-048"
+      ]
+    },
+    {
+      "id": "stage-acceptance-mode",
+      "no": "01a",
+      "name": "阶段验收模式继承",
+      "system": "立项时把合同阶段 acceptanceMode 原样复制到 ProjectStage；日期重排不改模式，历史来源缺失显示待核验",
+      "sources": [
+        "DEC-087",
+        "BR-053"
       ]
     },
     {
@@ -307,6 +344,14 @@
       "sources": [
         "DEC-051"
       ]
+    },
+    {
+      "id": "R-STAGE-ACCEPTANCE-INHERIT",
+      "text": "项目阶段必须继承合同阶段验收模式；不得按名称推断或由日期重排改写",
+      "sources": [
+        "DEC-087",
+        "BR-053"
+      ]
     }
   ],
   "checks": [
@@ -363,6 +408,16 @@
       "nextAction": "区分本项不涉及与应有任务缺失",
       "refs": [
         "DEC-057"
+      ]
+    },
+    {
+      "id": "CHK-STAGE-MODE-GUESS",
+      "label": "阶段验收模式被猜测或来源丢失",
+      "severity": "P0",
+      "nextAction": "阻断自动完成；显示待核验并要求回查合同施工计划快照",
+      "refs": [
+        "DEC-087",
+        "BR-053"
       ]
     }
   ],
@@ -533,6 +588,30 @@
         "teamLeader",
         "designer",
         "pm"
+      ]
+    },
+    {
+      "surface": "app",
+      "route": "/subpackages/project/pages/stage/detail",
+      "objectType": "ProjectStage",
+      "blueprintNode": "project-delivery.stage-acceptance-mode",
+      "roles": [
+        "pm",
+        "boss",
+        "storeManager",
+        "designer",
+        "customer"
+      ]
+    },
+    {
+      "surface": "web",
+      "route": "/pm/workbench",
+      "objectType": "ProjectStage",
+      "blueprintNode": "project-delivery.stage-acceptance-mode",
+      "roles": [
+        "pm",
+        "boss",
+        "storeManager"
       ]
     }
   ],

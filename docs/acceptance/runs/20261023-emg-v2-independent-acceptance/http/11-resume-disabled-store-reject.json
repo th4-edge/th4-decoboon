@@ -1,0 +1,11 @@
+{
+  "route": "company/member/resume",
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "门店「验收二店」已停用，不能作为新的归属门店：请先在门店主数据中启用该门店，或改选在用门店；停用门店的历史数据仍可查看",
+      "system": false
+    }
+  }
+}
