@@ -235,6 +235,10 @@ public class Design extends AuditModel {
     @Note("当前正式报价金额")
     private BigDecimal currentQuoteAmount;
 
+    @Transient
+    @Note("当前登录员工是否可编辑设计内容（由服务端按业务锁定推导）")
+    private Boolean editable = Boolean.FALSE;
+
     public Long getDesignId() { return designId; }
     public void setDesignId(Long designId) { this.designId = designId; }
     public String getNo() { return no; }
@@ -310,6 +314,8 @@ public class Design extends AuditModel {
     public void setCurrentQuoteStatusName(String currentQuoteStatusName) { this.currentQuoteStatusName = currentQuoteStatusName; }
     public BigDecimal getCurrentQuoteAmount() { return currentQuoteAmount; }
     public void setCurrentQuoteAmount(BigDecimal currentQuoteAmount) { this.currentQuoteAmount = currentQuoteAmount; }
+    public Boolean getEditable() { return editable; }
+    public void setEditable(Boolean editable) { this.editable = editable; }
 
     public Property getProperty() { return property; }
     public void setProperty(Property property) { this.property = property; }

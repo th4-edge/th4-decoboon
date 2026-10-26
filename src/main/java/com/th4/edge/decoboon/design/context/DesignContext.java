@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.property.context.PropertyContext;
 import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.customer.repository.CustomerRepository;
+import com.th4.edge.decoboon.design.configure.DesignStatus;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.decoboon.design.model.DesignItem;
 import com.th4.edge.decoboon.design.model.Requirement;
@@ -242,22 +243,47 @@ public class DesignContext {
     }
 
     public void requirePropertyOpen(Property property) {
+        String blockedReason = propertyWriteBlockedReason(property);
+        if (blockedReason != null) {
+            throw new DefinedException(new DefaultErrorCode("400", blockedReason));
+        }
+    }
+
+    /** 服务端唯一可编辑投影：Web/App 只消费该结论，不各自复制状态门禁。 */
+    public boolean canEdit(Design design, Employee employee) {
+        if (employee == null || employee.getRole() == null
+                || !DESIGN_WRITE_ROLES.contains(employee.getRole())) {
+            return false;
+        }
+        if (design == null || design.getStatus() == DesignStatus.Archived) {
+            return false;
+        }
+        return propertyWriteBlockedReason(design.getProperty()) == null;
+    }
+
+    public void requireEditable(Design design) {
+        if (design.getStatus() == DesignStatus.Archived) {
+            throw new DefinedException(new DefaultErrorCode("400", "方案已归档，不能修改"));
+        }
+        if (design.getProperty() != null) requirePropertyOpen(design.getProperty());
+        else requireCustomerOpen(design.getCustomer());
+    }
+
+    private String propertyWriteBlockedReason(Property property) {
         if (property == null || property.getPropertyId() == null) {
-            throw new DefinedException(new DefaultErrorCode("400", "装修业务必须绑定房屋"));
+            return "装修业务必须绑定房屋";
         }
         Long propertyId = property.getPropertyId();
+        if (property.getCompany() == null || property.getCompany().getComId() == null) {
+            return "房屋所属企业不完整，暂不可确认编辑权限";
+        }
         Long comId = property.getCompany().getComId();
         if (quoteRepository.existsByProperty_PropertyIdAndStatusIn(propertyId,
                 java.util.List.of(QuoteStatus.Accepted, QuoteStatus.Converted))
                 || projectRepository.existsByCompany_ComIdAndProperty_PropertyId(comId, propertyId)) {
-            throw new DefinedException(new DefaultErrorCode("400",
-                    "该房屋已有客户确认报价或唯一项目，设计方案已锁定；调整请发起合同变更单"));
+            return "该房屋已有客户确认报价或唯一项目，设计方案已锁定；调整请发起合同变更单";
         }
-    }
-
-    public void requireEditable(Design design) {
-        if (design.getProperty() != null) requirePropertyOpen(design.getProperty());
-        else requireCustomerOpen(design.getCustomer());
+        return null;
     }
 
     public void requireDesignOwner(Design design, Employee employee) {

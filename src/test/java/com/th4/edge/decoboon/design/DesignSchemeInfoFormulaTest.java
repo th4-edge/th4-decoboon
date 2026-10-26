@@ -50,6 +50,7 @@ class DesignSchemeInfoFormulaTest {
         DesignItem unsupportedQuantity = item(102L, "(材料单价) × 工程量", "(人工单价) × 工程量");
 
         when(designContext.requireReadableDesign(10L, null)).thenReturn(design);
+        when(designContext.canEdit(design, null)).thenReturn(true);
         when(spaceRepository.findByDesign_DesignIdOrderBySortAsc(10L)).thenReturn(List.of());
         when(itemRepository.findByDesign_DesignIdOrderBySortAsc(10L))
                 .thenReturn(List.of(pricingOnly, supportedQuantity, unsupportedQuantity));
@@ -65,6 +66,7 @@ class DesignSchemeInfoFormulaTest {
         assertThat(unsupportedQuantity.getFormulaRevisionNeeded()).isTrue();
         assertThat(pricingOnly.getFormula()).isEqualTo("(材料单价) × 工程量");
         assertThat(pricingOnly.getQuantityFormula()).isNull();
+        assertThat(design.getEditable()).isTrue();
     }
 
     private DesignItem item(Long id, String formula, String quantityFormula) {

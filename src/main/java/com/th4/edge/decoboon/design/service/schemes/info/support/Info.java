@@ -24,6 +24,7 @@ import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ import java.util.List;
                         "masonryUrl", "optimizationUrl", "sitePhotos", "surveyPhotos", "originalPlanImages", "spaces", "items",
                         "requirements", "createTime", "updateTime", "property", "store",
                         "calculatedAmount", "spaceCount", "itemCount", "currentQuoteId", "currentQuoteNo",
-                        "currentQuoteVersion", "currentQuoteStatus", "currentQuoteStatusName", "currentQuoteAmount"}),
+                        "currentQuoteVersion", "currentQuoteStatus", "currentQuoteStatusName", "currentQuoteAmount", "editable"}),
         @AllowProperties(model = Space.class,
                 properties = {"spaceId", "type", "name", "length", "width", "height", "area", "perimeter", "areaSource", "valueOrigin", "sourceMeasureRegionId",
                         "sort", "remark", "images"}),
@@ -95,9 +96,11 @@ public class Info implements com.th4.edge.decoboon.design.service.schemes.info.I
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Design call(Design request) {
         Employee current = designContext.requireEmployee(employee);
         Design design = designContext.requireReadableDesign(designId, current);
+        design.setEditable(designContext.canEdit(design, current));
         design.setSpaces(spaceRepository.findByDesign_DesignIdOrderBySortAsc(designId));
         List<DesignItem> items = itemRepository.findByDesign_DesignIdOrderBySortAsc(designId);
         // DEC-063 / GAP-042：formula 只承载报价项目的计价说明；工程量公式独立使用 quantityFormula。
