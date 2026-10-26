@@ -37,6 +37,8 @@ import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import com.th4.edge.tenant.user.repository.InviteRepository;
 import com.th4.edge.tenant.user.repository.StoreRepository;
 import com.th4.edge.tenant.user.repository.TeamRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +51,7 @@ import java.util.Objects;
 @Component
 public class MembershipContext {
 
+    private static final Logger log = LoggerFactory.getLogger(MembershipContext.class);
     private static final int COOLDOWN_DAYS = 30;
     private static final int BLACKLIST_DAYS = 90;
     private static final int JOIN_WINDOW_DAYS = 180;
@@ -124,6 +127,24 @@ public class MembershipContext {
         EmployeeRole inviteRole = role == null ? EmployeeRole.Marketer : role;
         EmployeeRolePolicy.requireAssignableRole(inviteRole);
         requireInviteScope(inviter, inviteRole);
+        LocalDateTime now = LocalDateTime.now();
+        Invite pendingSamePhone = inviteRepository
+                .findFirstByCompany_ComIdAndTelNoAndStatusOrderByInviteIdDesc(
+                        inviter.getCompany().getComId(), phone, InviteStatus.Pending);
+        if (pendingSamePhone != null && pendingSamePhone.getExpireTime() != null
+                && !pendingSamePhone.getExpireTime().isAfter(now)) {
+            pendingSamePhone.setStatus(InviteStatus.Expired);
+            inviteRepository.save(pendingSamePhone);
+            pendingSamePhone = null;
+        }
+        if (pendingSamePhone != null) {
+            requireExistingInviteScope(inviter, pendingSamePhone);
+            pendingSamePhone.setReusedPending(true);
+            log.info("invite_event=reused companyId={} inviterId={} inviteId={} role={}",
+                    inviter.getCompany().getComId(), inviter.getEmpId(),
+                    pendingSamePhone.getInviteId(), pendingSamePhone.getRole());
+            return pendingSamePhone;
+        }
         validateInviteFrequency(inviter, phone);
         subscriptionContext.requireWritable(inviter.getCompany());
         subscriptionContext.lockCurrent(inviter.getCompany());
@@ -143,8 +164,11 @@ public class MembershipContext {
         invite.setTelNo(phone);
         invite.setRole(inviteRole);
         invite.setStatus(InviteStatus.Pending);
-        invite.setExpireTime(LocalDateTime.now().plusDays(7));
-        return inviteRepository.save(modelIdentityContext.prepare(invite));
+        invite.setExpireTime(now.plusDays(7));
+        Invite saved = inviteRepository.save(modelIdentityContext.prepare(invite));
+        log.info("invite_event=created companyId={} inviterId={} inviteId={} role={}",
+                saved.getCompany().getComId(), inviter.getEmpId(), saved.getInviteId(), saved.getRole());
+        return saved;
     }
 
     public Invite requireInvite(Long inviteId) {
@@ -230,6 +254,10 @@ public class MembershipContext {
                 "接受企业邀请");
         userContext.log(user, SecurityAction.CompanyJoin, SecurityResult.Success, employee, null,
                 invite.getCompany().getName());
+        log.info("invite_event=accepted companyId={} inviterId={} inviteId={} employeeId={} role={}",
+                invite.getCompany().getComId(),
+                invite.getInviter() == null ? null : invite.getInviter().getEmpId(), invite.getInviteId(),
+                employee.getEmpId(), invite.getRole());
         return employee;
     }
 
@@ -267,7 +295,10 @@ public class MembershipContext {
         invite.setStatus(InviteStatus.Cancelled);
         invite.setCancelledAt(LocalDateTime.now());
         invite.setCancelledBy(operator);
-        return inviteRepository.save(invite);
+        Invite saved = inviteRepository.save(invite);
+        log.info("invite_event=cancelled companyId={} operatorId={} inviteId={}",
+                invite.getCompany().getComId(), operator.getEmpId(), invite.getInviteId());
+        return saved;
     }
 
     private Credentials userRepositoryForPhone(String phone) {
@@ -512,11 +543,6 @@ public class MembershipContext {
         if (pending >= COMPANY_PENDING_LIMIT) {
             throw new DefinedException(new DefaultErrorCode("429", "企业待接受邀请已达上限"));
         }
-        Invite pendingSamePhone = inviteRepository
-                .findFirstByCompany_ComIdAndTelNoAndStatusOrderByInviteIdDesc(comId, phone, InviteStatus.Pending);
-        if (pendingSamePhone != null) {
-            throw new DefinedException(new DefaultErrorCode("400", "该手机号已有待接受邀请"));
-        }
         List<Invite> phoneInvites = inviteRepository.findByTelNoOrderByInviteIdDesc(phone);
         long total = phoneInvites.stream().filter(invite -> after(invite, now.minusDays(INVITE_WINDOW_DAYS))).count();
         if (total >= MAX_PHONE_INVITES) {
@@ -532,6 +558,25 @@ public class MembershipContext {
         if (rejected) {
             throw new DefinedException(new DefaultErrorCode("429", "对方已拒绝邀请，7 天内不能重复邀请"));
         }
+    }
+
+    /**
+     * 复用待接受邀请时必须保持原邀请的数据范围：BOSS 可见全企业；店长只能复用本店邀请。
+     * 不满足时只返回通用拒绝，避免向其他门店泄露手机号是否已有邀请。
+     */
+    private void requireExistingInviteScope(Employee inviter, Invite invite) {
+        if (invite.getCompany() == null || inviter.getCompany() == null
+                || !Objects.equals(invite.getCompany().getComId(), inviter.getCompany().getComId())) {
+            throw new DefinedException(new DefaultErrorCode("404", "邀请不存在"));
+        }
+        requireInviteScope(inviter, invite.getRole());
+        if (inviter.getRole() == EmployeeRole.Boss) return;
+        if (inviter.getRole() == EmployeeRole.StoreManager
+                && inviter.getStore() != null && invite.getStore() != null
+                && Objects.equals(inviter.getStore().getStoreId(), invite.getStore().getStoreId())) {
+            return;
+        }
+        throw new DefinedException(new DefaultErrorCode("403", "该手机号已有待接受邀请，请联系原邀请人"));
     }
 
     private void requireInviteScope(Employee inviter, EmployeeRole inviteRole) {
