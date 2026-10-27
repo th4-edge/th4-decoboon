@@ -1,0 +1,5 @@
+type-check PASS
+check:permissions PASS
+check:workbenches PASS
+production build PASS
+commit=d38e553

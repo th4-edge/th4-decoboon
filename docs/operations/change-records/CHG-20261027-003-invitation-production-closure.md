@@ -7,7 +7,7 @@
 | 变更 ID | CHG-20261027-003 |
 | 类型 | 线上缺陷 / 权限与组织主链修复 |
 | 风险级别 | L3（员工身份、邀请与权限） |
-| 状态 | 待发布 |
+| 状态 | 已发布 / 待真实邀请人验收 |
 | 负责人 | Codex |
 | 日期 | 2026-10-27 |
 | 关联需求/事故/业务裁决 | `EMG-V2.2`、`DEC-081`、`DEC-082`、`DEC-085`、`INC-design-editable-projection-regression` |
@@ -54,7 +54,7 @@
 | App 契约/类型/构建 | `check:invite-flow`、`type-check`、`build:mp-weixin:release`、`check:subpackages` | PASS | App 1.0.72 |
 | Web 门禁/构建 | `type-check`、`check:permissions`、`check:workbenches`、`build` | PASS | Web `d38e553` |
 | 真实页面运行态 | App 邀请页待接受列表/分享/取消确认 | PASS（1.0.72 发布记录） | `docs/71-微信小程序发布记录-2026-10-27-1.0.72.md` |
-| 发布后生产冒烟 |  | 待发布后执行 |  |
+| 发布后生产冒烟 | release/JAR/Web chunk/health | PASS；真实邀请接受待用户完成 | 验收记录 `20261027-emg-v2.2-production-closure` |
 
 - 未执行项及原因：实施中。
 - 已知失败及是否与本次相关：生产已出现取消邀请 NPE 36 次、邀请页主体注入异常 12 次。
@@ -63,12 +63,12 @@
 
 | 字段 | 内容 |
 | --- | --- |
-| Release ID | 待定 |
-| 制品路径/SHA-256 | 待定 |
-| 生产 release/版本 | 待定 |
-| 上一版本/回滚点 | `/opt/decoboon/releases/20261027-103227` |
-| 健康检查 | 待定 |
-| 发布后观察 | 待定 |
+| Release ID | `20261027-161846` / Web `20261027-162200` |
+| 制品路径/SHA-256 | `/opt/decoboon/releases/20261027-161846` / `17df89d07d71fd54328dc6ea98c94376353d80bdf87beda64231c46e82975831` |
+| 生产 release/版本 | 后端 `20261027-161846`；Web `20261027-162200`；App 1.0.72 候选 |
+| 上一版本/回滚点 | 后端 `/opt/decoboon/releases/20261027-103227`；Web `/opt/decoboon-web/releases/20261026-110450` |
+| 健康检查 | 后端 HTTPS 200、active；Web HTTP 200 |
+| 发布后观察 | 10 分钟监控未出现新增邀请相关异常 |
 
 - 数据库迁移：无
 - 配置/密钥变化：无

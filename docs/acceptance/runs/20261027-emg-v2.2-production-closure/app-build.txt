@@ -1,0 +1,6 @@
+check:invite-flow PASS
+type-check PASS
+build:mp-weixin:release PASS
+check:subpackages PASS
+version=1.0.72
+commit=006d22f

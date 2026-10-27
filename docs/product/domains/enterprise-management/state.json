@@ -4,10 +4,10 @@
   "title": "企业管理组织操作与审计跨端闭环",
   "northStar": "企业、门店、员工与审计事实在 App/Web/后端同源闭环，组织调整不破坏历史归属和数据权限",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
+  "phase": "RELEASED",
   "batch": "EMG-V2.2",
   "currentSliceStatus": "PASS",
-  "nextAction": "完成 App 1.0.72 体验版/正式版用户发布边界确认，并部署后端与 Web 生产基线后做真实邀请复验",
+  "nextAction": "钱亮使用 15905600230 打开有效邀请卡片完成接受，并验证进入麦鸿业务员工作台",
   "openDecisions": [],
   "blockers": [],
   "artifacts": {
@@ -34,7 +34,7 @@
     "taskV2_2": "EMG-V2.2-邀请生产闭环研发任务.md"
   },
   "createdAt": "2026-10-23T00:09:26+08:00",
-  "updatedAt": "2026-10-27T16:18:09+08:00",
+  "updatedAt": "2026-10-27T16:21:08+08:00",
   "history": [
     {
       "at": "2026-10-22T21:53:00+08:00",
@@ -101,6 +101,12 @@
       "phase": "DEV_VERIFIED",
       "batch": "EMG-V2.2",
       "note": "邀请 Provider 主体注入、取消完整员工加载、App 1.0.72 邀请管理、Web 邀请管理均完成定向与构建验证；后端全量 949/0/0"
+    },
+    {
+      "at": "2026-10-27T16:21:08+08:00",
+      "phase": "RELEASED",
+      "batch": "EMG-V2.2",
+      "note": "后端 20261027-161846 与 Web 20261027-162200 已发布；949/949 后端测试通过；App 1.0.72 已上传；真实被邀请人接受待完成"
     }
   ]
 }
