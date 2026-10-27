@@ -67,3 +67,10 @@
 - 场景 `15905600230`：当前 3 条邀请均为 `Cancelled`，修复后不再被 7 天上限阻塞，BOSS 可立即重新创建一条 `Pending` 邀请。
 - 回归：`cancelledInvitesDoNotConsumeReinviteQuota` PASS；后端全量 245 套件 / 950 用例 / 0 失败。
 - 状态：`DEV_VERIFIED_PENDING_RELEASE`。
+
+### EMG-V2.3 发布结果
+
+- 后端已发布 `/opt/decoboon/releases/20261027-172000`，源码提交 `293c39b`。
+- 生产 JAR 已确认 `Cancelled` 被排除出 7 天/180 天频控。
+- `15905600230` 当前 3 条 Cancelled，按新口径计数为 `0`，可立即重新创建邀请。
+- 下一步：麦鸿创建新业务员邀请并分享；钱亮完成手机号授权接受。

@@ -4,10 +4,10 @@
   "title": "企业管理组织操作与审计跨端闭环",
   "northStar": "企业、门店、员工与审计事实在 App/Web/后端同源闭环，组织调整不破坏历史归属和数据权限",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
+  "phase": "RELEASED",
   "batch": "EMG-V2.3",
   "currentSliceStatus": "PASS",
-  "nextAction": "发布取消邀请不占频控额度的修复，并由麦鸿重新创建钱亮业务员邀请",
+  "nextAction": "麦鸿立即重新创建钱亮业务员邀请并分享微信邀请卡片；钱亮完成手机号授权接受",
   "openDecisions": [],
   "blockers": [],
   "artifacts": {
@@ -34,7 +34,7 @@
     "taskV2_2": "EMG-V2.2-邀请生产闭环研发任务.md"
   },
   "createdAt": "2026-10-23T00:09:26+08:00",
-  "updatedAt": "2026-10-27T17:19:31+08:00",
+  "updatedAt": "2026-10-27T17:21:38+08:00",
   "history": [
     {
       "at": "2026-10-22T21:53:00+08:00",
@@ -113,6 +113,12 @@
       "phase": "DEV_VERIFIED",
       "batch": "EMG-V2.3",
       "note": "用户确认解决 15905600230 因 3 条 Cancelled 邀请被 7 天频控锁死的问题；全量 950/0/0"
+    },
+    {
+      "at": "2026-10-27T17:21:38+08:00",
+      "phase": "RELEASED",
+      "batch": "EMG-V2.3",
+      "note": "取消邀请不再占频控额度已发布 20261027-172000；全量950/0/0；生产新口径计数0"
     }
   ]
 }

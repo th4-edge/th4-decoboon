@@ -7,7 +7,7 @@
 | 变更 ID | CHG-20261027-004 |
 | 类型 | 线上缺陷 / 业务规则恢复 |
 | 风险级别 | L3（邀请与员工身份准入） |
-| 状态 | 待发布 |
+| 状态 | 已发布 |
 | 负责人 | Codex |
 | 日期 | 2026-10-27 |
 | 关联需求/事故/业务裁决 | `EMG-V2.2`；用户确认修复取消后无法重新邀请问题 |
@@ -46,19 +46,19 @@
 | --- | --- | --- | --- |
 | 定向测试 | `InviteIdempotencyTest` 等 | PASS | Maven surefire |
 | 全量后端测试 | `mvn -o -q test` | 245 套件 / 950 用例 / 0 失败 | Maven surefire |
-| 标准构建 | `build-release.sh` | 待执行发布构建 |  |
-| 生产重新邀请 | Web/App BOSS | 待执行 |  |
+| 标准构建 | `build-release.sh` | PASS，4 项生产契约校验通过 | `20261027-171937` |
+| 生产发布 | `deploy-prod.sh` | PASS，服务 active，HTTPS 200 | `/opt/decoboon/releases/20261027-172000` |
 
 ## 7. 发布
 
 | 字段 | 内容 |
 | --- | --- |
-| Release ID | 待定 |
-| 制品路径/SHA-256 | 待定 |
-| 生产 release/版本 | 待定 |
+| Release ID | `20261027-172000` |
+| 制品路径/SHA-256 | `/opt/decoboon/releases/20261027-172000` / `d39a39818acd8a76c8d130a29302dd51ebf43de23854f7d58bce80fe1b795450` |
+| 生产 release/版本 | `20261027-172000` |
 | 上一版本/回滚点 | `/opt/decoboon/releases/20261027-161846` |
-| 健康检查 | 待定 |
-| 发布后观察 | 待定 |
+| 健康检查 | HTTPS 200、服务 active、生产 JAR 已确认过滤 Cancelled |
+| 发布后观察 | 当前 3 条 Cancelled 按新口径计数为 0，麦鸿可立即重新邀请 |
 
 ## 8. 回滚
 
