@@ -25,6 +25,7 @@
   - 房屋存在 `Accepted/Converted` 报价或唯一项目时不可编辑；
   - 不改变既有写接口权限，不放宽数据范围。
 - 新增 `DesignWritePermissionTest` 与方案详情公式回归断言。
+- 新增发布制品契约门禁：`scripts/verify-release-contracts.py` 在构建和部署前检查 `Design.getEditable/setEditable` 与方案详情 `editable` 白名单；缺失即阻断发布。
 
 ## 验证与发布
 

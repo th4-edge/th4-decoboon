@@ -35,6 +35,7 @@ fi
 # BOOT-INF/classes 会与外部 lib/th4-framework.jar 分裂 ClassLoader，
 # 导致 JWT audience 类无法加载，并表现为 tokenIsUndefined。
 python3 scripts/verify-release-boot-jar.py "$ARCHIVE"
+python3 scripts/verify-release-contracts.py "$ARCHIVE"
 
 mkdir -p "$RELEASE_DIR"
 cp "$ARCHIVE" "$RELEASE_DIR/"

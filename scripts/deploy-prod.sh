@@ -47,6 +47,7 @@ fi
 
 # 防止绕过标准构建、直接上传 Spring Boot repackage JAR。
 python3 "$ROOT_DIR/scripts/verify-release-boot-jar.py" "$ARCHIVE"
+python3 "$ROOT_DIR/scripts/verify-release-contracts.py" "$ARCHIVE"
 
 (
   cd "$RELEASE_DIR"
