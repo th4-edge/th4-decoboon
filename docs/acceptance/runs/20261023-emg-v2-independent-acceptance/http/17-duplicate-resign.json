@@ -1,0 +1,12 @@
+{
+  "route": "company/member/resign",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "当前员工不是在职状态",
+      "system": false
+    }
+  }
+}

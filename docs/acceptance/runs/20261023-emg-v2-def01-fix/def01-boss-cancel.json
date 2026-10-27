@@ -1,0 +1,24 @@
+{
+  "route": "invite/invitation/cancel",
+  "http": 200,
+  "response": {
+    "data": {
+      "inviteId": "1792689379170746873",
+      "inviteName": "DEF01 BOSS取消",
+      "telNo": "13994689378",
+      "role": {
+        "name": "业务员",
+        "value": "Marketer",
+        "key": "Marketer"
+      },
+      "status": {
+        "name": "已取消",
+        "value": "Cancelled",
+        "key": "Cancelled"
+      },
+      "expireTime": "2026-10-30 01:16:19",
+      "cancelledAt": "2026-10-23 01:16:19"
+    },
+    "success": true
+  }
+}

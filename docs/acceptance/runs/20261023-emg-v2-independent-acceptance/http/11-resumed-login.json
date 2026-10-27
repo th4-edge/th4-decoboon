@@ -1,0 +1,11 @@
+{
+  "route": "auth/session/password-login",
+  "http": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "token": "<redacted>"
+    },
+    "errorCode": null
+  }
+}

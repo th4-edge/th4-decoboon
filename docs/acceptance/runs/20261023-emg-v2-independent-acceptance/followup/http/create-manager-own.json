@@ -1,0 +1,43 @@
+{
+  "route": "invite/invitation/save",
+  "response": {
+    "data": {
+      "inviteId": "1792689454791342807",
+      "company": {
+        "comId": "1001",
+        "title": "验收装企有限公司",
+        "name": "验收装企"
+      },
+      "store": {
+        "storeId": "2001",
+        "name": "验收总店"
+      },
+      "inviter": {
+        "empId": "3002",
+        "name": "验收店长",
+        "role": {
+          "name": "店长",
+          "value": "StoreManager",
+          "key": "StoreManager"
+        }
+      },
+      "inviteName": "独立复验店长取消",
+      "telNo": "13994000003",
+      "role": {
+        "name": "财务",
+        "value": "Finance",
+        "key": "Finance"
+      },
+      "status": {
+        "name": "待接受",
+        "value": "Pending",
+        "key": "Pending"
+      },
+      "expireTime": "2026-10-30 01:17:34",
+      "createTime": {
+        "dateTime": "2026-10-23 01:17:34"
+      }
+    },
+    "success": true
+  }
+}

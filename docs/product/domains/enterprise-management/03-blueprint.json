@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "domain": "enterprise-management",
+  "batch": "EMG-V2",
+  "status": "DEV_VERIFIED",
+  "source": {
+    "contract": "EMG-V0-企业管理组织跨端契约.md",
+    "businessDecision": ["DEC-085", "DEC-081", "DEC-082", "DEC-070", "EV-353"],
+    "acceptance": ["ACC-EMG-03", "ACC-EMG-04", "ACC-EMG-05", "ACC-EMG-08", "ACC-EMG-09", "ACC-EMG-10"]
+  },
+  "objectGraph": [
+    {"from": "Company", "relation": "1:N", "to": "Employee"},
+    {"from": "Company", "relation": "1:N", "to": "Store"},
+    {"from": "Store", "relation": "1:N", "to": "Employee"},
+    {"from": "Company", "relation": "1:N", "to": "Invite"},
+    {"from": "Employee", "relation": "1:N", "to": "CompanyMemberLog"},
+    {"from": "Team", "relation": "historical-only", "to": "Employee"}
+  ],
+  "nodes": [
+    {
+      "id": "BP-EMG-EMPLOYEE-STATE",
+      "type": "state-machine",
+      "label": "员工生命周期",
+      "states": ["Active", "Suspended", "Resigned"],
+      "transitions": ["Active->Suspended", "Suspended->Active", "Active->Resigned", "Suspended->Resigned"],
+      "rules": ["Resigned 终态", "停用/离职立即撤销访问", "恢复校验门店与席位"],
+      "sourceRefs": ["DEC-085", "EV-353", "EMG-V0#2.2"]
+    },
+    {
+      "id": "BP-EMG-INVITE-SCOPE",
+      "type": "command",
+      "label": "邀请角色与门店范围",
+      "fields": ["inviteName", "invitePhone", "role", "storeId"],
+      "rules": ["店长仅本店", "店长不能邀请店长", "BOSS 邀请财务必须选门店", "Team 参数拒绝"],
+      "sourceRefs": ["DEC-081", "DEC-082", "EMG-V0#2.3"]
+    },
+    {
+      "id": "BP-EMG-MEMBER-ADJUST",
+      "type": "command",
+      "label": "调岗与调店",
+      "fields": ["empId", "role", "storeId"],
+      "rules": ["BOSS 全企业", "店长本店且目标不能是 BOSS/店长/自己", "仅 BOSS 可设置店长", "历史归属不回溯"],
+      "sourceRefs": ["DEC-085", "DEC-070", "EMG-V0#3", "EMG-V0#4.2"]
+    },
+    {
+      "id": "BP-EMG-LIFECYCLE-ACTIONS",
+      "type": "command",
+      "label": "停用、恢复、离职",
+      "rules": ["状态错误明确拒绝", "强制离职需二次确认", "离职原因落库", "会员日志记录前后值"],
+      "sourceRefs": ["DEC-085", "EMG-V0#4.2"]
+    },
+    {
+      "id": "BP-EMG-AUDIT",
+      "type": "audit",
+      "label": "成员变更审计",
+      "fields": ["operator", "employee", "action", "reason", "beforeSnapshot", "afterSnapshot"],
+      "rules": ["管理员代办离职记录管理员为 operator", "目标员工为 employee", "不泄露 openId/unionId"],
+      "sourceRefs": ["DEC-032", "DEC-085", "EMG-V0#4.5"]
+    },
+    {
+      "id": "BP-EMG-APP-SURFACE",
+      "type": "ui",
+      "label": "App 成员管理",
+      "bindings": ["members", "member-detail", "invite"],
+      "states": ["active", "suspended", "resigned", "no-permission", "seat-full"],
+      "sourceRefs": ["EMG-V0#5", "REQ-EMG-04"]
+    },
+    {
+      "id": "BP-EMG-WEB-SURFACE",
+      "type": "ui",
+      "label": "Web 成员与组织",
+      "bindings": ["member list filters", "edit dialog", "invite dialog", "suspend/resume/resign actions"],
+      "states": ["loading", "empty", "error", "readonly", "no-permission"],
+      "sourceRefs": ["EMG-V0#5", "REQ-EMG-04"]
+    },
+    {
+      "id": "BP-EMG-TEAM-FROZEN",
+      "type": "boundary",
+      "label": "Team 与 TeamLeader 冻结",
+      "rules": ["无新写入口", "历史只读", "不参与权限", "不得出现在邀请/改岗选项"],
+      "sourceRefs": ["DEC-082", "EV-353", "EMG-V1#1"]
+    }
+  ]
+}

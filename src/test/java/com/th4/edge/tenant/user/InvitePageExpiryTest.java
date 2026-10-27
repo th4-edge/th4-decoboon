@@ -39,11 +39,11 @@ class InvitePageExpiryTest {
         expired.setStatus(InviteStatus.Pending);
         expired.setExpireTime(LocalDateTime.now().minusMinutes(1));
         when(tenantContext.requireRole(any(Employee.class), eq(EmployeeRole.Boss),
-                eq(EmployeeRole.StoreManager), eq(EmployeeRole.TeamLeader))).thenReturn(boss);
+                eq(EmployeeRole.StoreManager))).thenReturn(boss);
         when(inviteRepository.findByCompany_ComId(eq(1L), any(PageRequest.class)))
                 .thenReturn(new PageImpl<>(List.of(expired)));
         Page page = new Page(tenantContext, inviteRepository);
-        ReflectionTestUtils.setField(page, "employee", boss);
+        ReflectionTestUtils.setField(page, "principal", boss);
         ReflectionTestUtils.setField(page, "current", 1);
         ReflectionTestUtils.setField(page, "size", 20);
 

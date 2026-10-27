@@ -1,0 +1,18 @@
+{
+  "boss_cancel": {
+    "success": false,
+    "errorCode": {
+      "code": "undefinedErrorCode",
+      "message": "未定义错误信息:{0}",
+      "system": false
+    }
+  },
+  "manager_cancel": {
+    "success": false,
+    "errorCode": {
+      "code": "undefinedErrorCode",
+      "message": "未定义错误信息:{0}",
+      "system": false
+    }
+  }
+}

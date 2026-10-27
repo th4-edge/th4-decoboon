@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "domain": "enterprise-management",
+  "title": "企业管理组织操作与审计跨端闭环",
+  "northStar": "企业、门店、员工与审计事实在 App/Web/后端同源闭环，组织调整不破坏历史归属和数据权限",
+  "owner": "codex",
+  "phase": "DEV_VERIFIED",
+  "batch": "EMG-V2.2",
+  "currentSliceStatus": "PASS",
+  "nextAction": "完成 App 1.0.72 体验版/正式版用户发布边界确认，并部署后端与 Web 生产基线后做真实邀请复验",
+  "openDecisions": [],
+  "blockers": [],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md",
+    "contract": "EMG-V0-企业管理组织跨端契约.md",
+    "taskV1": "EMG-V1-Team生命周期研发任务.md",
+    "taskV2": "EMG-V2-员工生命周期研发任务.md",
+    "independentAcceptance": "docs/acceptance/runs/20261023-emg-v2-independent-acceptance/README.md",
+    "independentEvidence": "docs/acceptance/runs/20261023-emg-v2-independent-acceptance",
+    "defects": "docs/acceptance/runs/20261023-emg-v2-independent-acceptance/defects.md",
+    "followUpAcceptance": "docs/acceptance/runs/20261023-emg-v2-independent-acceptance/followup/README.md",
+    "defectFixEvidence": "docs/acceptance/runs/20261023-emg-v2-def01-fix/README.md",
+    "taskV2_2": "EMG-V2.2-邀请生产闭环研发任务.md"
+  },
+  "createdAt": "2026-10-23T00:09:26+08:00",
+  "updatedAt": "2026-10-27T16:18:09+08:00",
+  "history": [
+    {
+      "at": "2026-10-22T21:53:00+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "EMG-V0",
+      "note": "DEC-085 / EV-353 契约冻结"
+    },
+    {
+      "at": "2026-10-22T22:39:00+08:00",
+      "phase": "PLAN_READY",
+      "batch": "EMG-V1",
+      "note": "Team 冻结切片形成并执行"
+    },
+    {
+      "at": "2026-10-22T23:20:00+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EMG-V1",
+      "note": "EMG-V1 独立验收 PASS，仅代表该切片"
+    },
+    {
+      "at": "2026-10-23T00:15:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EMG-V2",
+      "note": "员工生命周期实现与定向/运行态证据收口，独立验收 PENDING"
+    },
+    {
+      "at": "2026-10-23T00:21:51+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EMG-V2",
+      "note": "EMG-V2 实现、定向测试、隔离构建、运行态和证据包收口；独立验收 PENDING"
+    },
+    {
+      "at": "2026-10-23T01:05:32+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EMG-V2",
+      "note": "EMG-V2 独立黑盒验收 18/18 P0 PASS；P1 邀请取消缺陷、P2 组织页告警开放"
+    },
+    {
+      "at": "2026-10-23T01:21:17+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EMG-V2",
+      "note": "DEF-01/DEF-02 follow-up 独立复验关闭；EMG-V2 18/18 P0 + 2/2 defects PASS"
+    },
+    {
+      "at": "2026-10-23T01:23:16+08:00",
+      "phase": "ACCEPTED",
+      "batch": "EMG-V2",
+      "note": "独立验收 PASS（18/18 P0 + 2/2 defects CLOSED）；研发缺陷修复证据归档"
+    },
+    {
+      "at": "2026-10-26T23:40:10+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EMG-V2.1",
+      "note": "邀请幂等与重发闭环完成定向测试与三端构建；未部署、未独立验收"
+    },
+    {
+      "at": "2026-10-27T16:06:04+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "EMG-V2.2",
+      "note": "生产事故：15905600230 仍有 Pending 邀请但无员工；取消接口 36 次 NPE，邀请页出现 Credentials/Employee 注入异常"
+    },
+    {
+      "at": "2026-10-27T16:18:09+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "EMG-V2.2",
+      "note": "邀请 Provider 主体注入、取消完整员工加载、App 1.0.72 邀请管理、Web 邀请管理均完成定向与构建验证；后端全量 949/0/0"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "route": "invite/invitation/save",
+  "http": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "团队已冻结，不能创建或分配团队",
+      "system": false
+    }
+  }
+}
