@@ -4,6 +4,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
+bash scripts/verify-release-baseline.sh
+SOURCE_COMMIT="$(git rev-parse HEAD)"
+
 VERSION="$(sed -n 's/.*<version>\([^<]*\)<\/version>.*/\1/p' pom.xml | head -1)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 RELEASE_DIR="$ROOT_DIR/dist/releases/$STAMP"
@@ -39,6 +42,7 @@ python3 scripts/verify-release-contracts.py "$ARCHIVE"
 
 mkdir -p "$RELEASE_DIR"
 cp "$ARCHIVE" "$RELEASE_DIR/"
+printf '%s\n' "$SOURCE_COMMIT" > "$RELEASE_DIR/SOURCE_COMMIT"
 cp .env.prod.example "$RELEASE_DIR/"
 cp docs/deploy/PRODUCTION.md "$RELEASE_DIR/"
 cp docs/deploy/www.joytsing.com.http.conf "$RELEASE_DIR/"

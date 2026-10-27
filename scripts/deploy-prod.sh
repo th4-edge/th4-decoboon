@@ -45,6 +45,16 @@ if [ ! -f "$RELEASE_DIR/SHA256SUMS" ]; then
   exit 2
 fi
 
+bash "$ROOT_DIR/scripts/verify-release-baseline.sh"
+if [ ! -f "$RELEASE_DIR/SOURCE_COMMIT" ]; then
+  echo "SOURCE_COMMIT not found in $RELEASE_DIR" >&2
+  exit 2
+fi
+if [ "$(tr -d '[:space:]' < "$RELEASE_DIR/SOURCE_COMMIT")" != "$(git -C "$ROOT_DIR" rev-parse HEAD)" ]; then
+  echo "Release artifact source commit does not match current release baseline" >&2
+  exit 2
+fi
+
 # 防止绕过标准构建、直接上传 Spring Boot repackage JAR。
 python3 "$ROOT_DIR/scripts/verify-release-boot-jar.py" "$ARCHIVE"
 python3 "$ROOT_DIR/scripts/verify-release-contracts.py" "$ARCHIVE"

@@ -26,6 +26,7 @@
   - 不改变既有写接口权限，不放宽数据范围。
 - 新增 `DesignWritePermissionTest` 与方案详情公式回归断言。
 - 新增发布制品契约门禁：`scripts/verify-release-contracts.py` 在构建和部署前检查 `Design.getEditable/setEditable` 与方案详情 `editable` 白名单；缺失即阻断发布。
+- 新增发布基线门禁：`scripts/verify-release-baseline.sh` 要求工作区干净且 `origin/prod=origin/test=origin/dev=HEAD`；制品记录 `SOURCE_COMMIT`，部署时再次校验，禁止旧分支包和历史包复用。
 
 ## 验证与发布
 
