@@ -45,7 +45,7 @@ if [ ! -f "$RELEASE_DIR/SHA256SUMS" ]; then
   exit 2
 fi
 
-bash "$ROOT_DIR/scripts/verify-release-baseline.sh"
+bash "$ROOT_DIR/scripts/verify-release-baseline.sh" --deploy
 if [ ! -f "$RELEASE_DIR/SOURCE_COMMIT" ]; then
   echo "SOURCE_COMMIT not found in $RELEASE_DIR" >&2
   exit 2
