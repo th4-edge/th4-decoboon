@@ -544,11 +544,18 @@ public class MembershipContext {
             throw new DefinedException(new DefaultErrorCode("429", "企业待接受邀请已达上限"));
         }
         List<Invite> phoneInvites = inviteRepository.findByTelNoOrderByInviteIdDesc(phone);
-        long total = phoneInvites.stream().filter(invite -> after(invite, now.minusDays(INVITE_WINDOW_DAYS))).count();
+        // 取消记录保留审计，但不应阻塞企业修正错误后重新邀请。
+        long total = phoneInvites.stream()
+                .filter(invite -> invite.getStatus() != InviteStatus.Cancelled)
+                .filter(invite -> after(invite, now.minusDays(INVITE_WINDOW_DAYS)))
+                .count();
         if (total >= MAX_PHONE_INVITES) {
             throw new DefinedException(new DefaultErrorCode("429", "该手机号邀请次数已达上限"));
         }
-        long weekly = phoneInvites.stream().filter(invite -> after(invite, now.minusDays(PHONE_INVITE_WEEK))).count();
+        long weekly = phoneInvites.stream()
+                .filter(invite -> invite.getStatus() != InviteStatus.Cancelled)
+                .filter(invite -> after(invite, now.minusDays(PHONE_INVITE_WEEK)))
+                .count();
         if (weekly >= MAX_WEEK_INVITES) {
             throw new DefinedException(new DefaultErrorCode("429", "该手机号 7 天内邀请次数已达上限"));
         }

@@ -60,3 +60,10 @@
 - App 1.0.72 已上传，但仍在用户正式提审/发布边界之外。
 - `15905600230` 邀请仍为 Pending，凭证无员工；真实接受与正确工作台复验为当前唯一未闭环业务事实。
 - 对账状态：技术实现 `RELEASED`；真实用户接受 `PENDING_REAL_USER`。
+
+## EMG-V2.3 取消邀请频控恢复（2026-10-27）
+
+- 业务口径：`Cancelled` 邀请保留审计，但不再占用 7 天或 180 天邀请次数；`Pending/Accepted/Expired/Rejected` 仍按既有规则统计。
+- 场景 `15905600230`：当前 3 条邀请均为 `Cancelled`，修复后不再被 7 天上限阻塞，BOSS 可立即重新创建一条 `Pending` 邀请。
+- 回归：`cancelledInvitesDoNotConsumeReinviteQuota` PASS；后端全量 245 套件 / 950 用例 / 0 失败。
+- 状态：`DEV_VERIFIED_PENDING_RELEASE`。

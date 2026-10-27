@@ -8,6 +8,7 @@ import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
 import com.th4.edge.decoboon.property.repository.PropertyRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.exception.DefinedException;
+import com.th4.edge.framework.data.date.model.DateTime;
 import com.th4.edge.tenant.billing.context.SubscriptionContext;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -108,6 +110,27 @@ class InviteIdempotencyTest {
                 .hasMessageContaining("请联系原邀请人");
     }
 
+    @Test
+    void cancelledInvitesDoNotConsumeReinviteQuota() {
+        Employee boss = employee(1L, defaultStore, EmployeeRole.Boss);
+        String phone = "13900000014";
+        List<Invite> cancelled = List.of(
+                cancelledInvite(51L, phone, LocalDateTime.now().minusHours(3)),
+                cancelledInvite(52L, phone, LocalDateTime.now().minusHours(2)),
+                cancelledInvite(53L, phone, LocalDateTime.now().minusHours(1)));
+        when(inviteRepository.findFirstByCompany_ComIdAndTelNoAndStatusOrderByInviteIdDesc(
+                1L, phone, InviteStatus.Pending)).thenReturn(null);
+        when(inviteRepository.findByCompany_ComIdOrderByInviteIdDesc(1L)).thenReturn(List.of());
+        when(inviteRepository.findByTelNoOrderByInviteIdDesc(phone)).thenReturn(cancelled);
+
+        Invite result = context.createInvite(boss, "重新邀请", phone,
+                EmployeeRole.Marketer, null, null);
+
+        assertThat(result.getStatus()).isEqualTo(InviteStatus.Pending);
+        assertThat(result.getReusedPending()).isFalse();
+        verify(inviteRepository).save(any(Invite.class));
+    }
+
     private Employee employee(Long id, Store store, EmployeeRole role) {
         Employee employee = new Employee();
         employee.setEmpId(id);
@@ -127,6 +150,13 @@ class InviteIdempotencyTest {
         invite.setRole(role);
         invite.setStatus(InviteStatus.Pending);
         invite.setExpireTime(expireTime);
+        return invite;
+    }
+
+    private Invite cancelledInvite(Long id, String phone, LocalDateTime createTime) {
+        Invite invite = invite(id, defaultStore, EmployeeRole.Marketer, phone, createTime.plusDays(7));
+        invite.setStatus(InviteStatus.Cancelled);
+        invite.setCreateTime(new DateTime(createTime));
         return invite;
     }
 
