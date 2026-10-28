@@ -6,7 +6,7 @@
 
     <groupId>com.th4.edge</groupId>
     <artifactId>th4-decoboon</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.73</version>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
@@ -186,6 +186,9 @@
                         <manifest>
                             <!-- 项目启动类 -->
                             <mainClass>com.th4.edge.Application</mainClass>
+                            <!-- 生产运维页读取 appVersion；禁止 Maven 制品继续在运行时显示 dev -->
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <!-- 依赖的jar的目录前缀 -->
                             <classpathPrefix>../lib</classpathPrefix>
                             <addClasspath>true</addClasspath>
