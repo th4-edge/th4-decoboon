@@ -112,6 +112,7 @@ th4:
 
 # 平台运营管理端首次初始化；默认关闭，创建完成后应移除或关闭环境变量。
 decoboon:
+  build-version: ${BUILD_VERSION:@project.version@}
   platform:
     bootstrap:
       enabled: ${PLATFORM_BOOTSTRAP_ENABLED:false}

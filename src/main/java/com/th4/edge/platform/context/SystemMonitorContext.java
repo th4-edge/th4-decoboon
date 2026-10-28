@@ -6,6 +6,7 @@ import com.th4.edge.platform.model.SystemMetricPoint;
 import com.th4.edge.platform.model.SystemStatus;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -32,6 +33,8 @@ import java.util.List;
 public class SystemMonitorContext {
 
     private static final int MAX_POINTS = 120;
+    @Value("${decoboon.build-version:dev}")
+    private String buildVersion;
     private final DataSource dataSource;
     private final RedisConnectionFactory redisConnectionFactory;
     private final Deque<SystemMetricPoint> history = new ArrayDeque<>();
@@ -162,8 +165,8 @@ public class SystemMonitorContext {
 
     private String appVersion() {
         Package applicationPackage = getClass().getPackage();
-        return applicationPackage == null || applicationPackage.getImplementationVersion() == null
-                ? "dev" : applicationPackage.getImplementationVersion();
+        String implementationVersion = applicationPackage == null ? null : applicationPackage.getImplementationVersion();
+        return implementationVersion != null && !implementationVersion.isBlank() ? implementationVersion : buildVersion;
     }
 
     private double safePercent(double value) {
