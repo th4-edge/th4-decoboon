@@ -1,0 +1,43 @@
+{
+  "schema": "starwork.disabled_skills.v0.1",
+  "disabled_at": "2026-10-28T02:50:00+08:00",
+  "scope": "装得清 Web UI 专属智能体",
+  "reason": "用户明确要求全部禁用",
+  "history_retained": true,
+  "items": [
+    {
+      "id": "zhuangdeqing-web-ui-interaction",
+      "name": "装得清 Web UI 与交互设计智能体",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/.agents/skills/zhuangdeqing-web-ui-interaction",
+      "scope": "project",
+      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "active_registry_entry_removed": true
+    },
+    {
+      "id": "zhuangdeqing-product-web-development",
+      "name": "装得清 Product Web Development Agent",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/.agents/skills/zhuangdeqing-product-web-development",
+      "scope": "project",
+      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "active_registry_entry_removed": true
+    },
+    {
+      "id": "zhuangdeqing-web-immersion-audit",
+      "name": "装得清 Web 沉浸审计智能体",
+      "path": "/Users/zhangwei/.codex/skills/zhuangdeqing-web-immersion-audit",
+      "scope": "global",
+      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "active_registry_entry_removed": false
+    },
+    {
+      "id": "decoboon-web-frame",
+      "name": "装得清 Web 框架与交互设计智能体",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/.agents/skills/decoboon-web-frame",
+      "scope": "web-project",
+      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "active_registry_entry_removed": true,
+      "replaced_by": "zhuangdeqing-ui-craft"
+    }
+  ],
+  "updated_at": "2026-10-28T03:15:00+08:00"
+}

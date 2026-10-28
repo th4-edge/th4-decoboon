@@ -1,0 +1,240 @@
+{
+  "id": "owner-operating-system.panorama",
+  "title": "装企负责人经营管理全景",
+  "version": "0.1.0",
+  "status": "prototype",
+  "sourceRefs": [
+    "BR-028",
+    "BR-030",
+    "BR-037",
+    "BR-049",
+    "DEC-032",
+    "DEC-067",
+    "DEC-075",
+    "DEC-076",
+    "DEC-085",
+    "CAP-004",
+    "CAP-005",
+    "CAP-006",
+    "SCN-016",
+    "MET-001",
+    "MET-002",
+    "MET-004",
+    "MET-005"
+  ],
+  "audience": ["Boss", "one-person-company-boss", "multi-store-boss"],
+  "surfaces": [
+    {
+      "id": "web",
+      "label": "Web 经营管控中心",
+      "primaryUse": "全局观察、批量分析、配置、审批和对象工作空间",
+      "sourceRefs": ["CAP-004", "CAP-005", "BR-030"]
+    },
+    {
+      "id": "app",
+      "label": "App 负责人工作台",
+      "primaryUse": "移动观察、风险处置、审批、现场协同和快速回读",
+      "sourceRefs": ["BR-028", "BR-030", "BR-037"]
+    },
+    {
+      "id": "mini-program",
+      "label": "微信小程序负责人入口",
+      "primaryUse": "微信场景下的轻量经营提醒、关键事实与处置",
+      "sourceRefs": ["GAP-BOS-001"],
+      "status": "gap"
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "business-progress",
+      "label": "业务推进",
+      "question": "客户到交付现在走到哪里，哪里停住，下一步是谁做什么？",
+      "capabilities": [
+        "客户与房屋",
+        "量房与设计",
+        "报价与合同",
+        "项目与施工",
+        "材料与变更",
+        "验收与整改",
+        "收付款与结算",
+        "交付与复购"
+      ],
+      "sourceRefs": ["CAP-006", "BR-030", "SCN-016", "CAP-004"]
+    },
+    {
+      "id": "enterprise-operation",
+      "label": "企业经营",
+      "question": "签约、回款、应付、成本和经营目标当前是什么状态？",
+      "capabilities": [
+        "签约与合同额",
+        "应收与回款",
+        "应付与付款",
+        "资金台账",
+        "项目毛利与成本完整性",
+        "公司与门店目标",
+        "经营利润参考（待确认）"
+      ],
+      "sourceRefs": ["MET-001", "MET-002", "MET-004", "MET-005", "BR-049", "GAP-070"]
+    },
+    {
+      "id": "operating-tools",
+      "label": "运营工具",
+      "question": "企业用什么标准、模板和主数据支撑未来业务？",
+      "capabilities": [
+        "报价项目库与标准成本",
+        "套餐模板",
+        "付款计划模板",
+        "施工计划模板",
+        "合同与凭证模板",
+        "材料与供应商主数据",
+        "企业对外信息与品牌配置"
+      ],
+      "sourceRefs": ["BR-037", "DEC-044", "DEC-079", "DEC-084"]
+    },
+    {
+      "id": "organization-management",
+      "label": "组织管理",
+      "question": "企业、门店、员工、角色、权限和审计是否支撑当前经营规模？",
+      "capabilities": [
+        "企业主体",
+        "门店",
+        "员工生命周期",
+        "邀请与加入",
+        "岗位角色与数据范围",
+        "审计与操作留痕",
+        "订阅与席位边界"
+      ],
+      "sourceRefs": ["BR-028", "DEC-075", "DEC-076", "DEC-085"]
+    }
+  ],
+  "businessFlow": [
+    {
+      "id": "stage-customer",
+      "label": "获客与客户",
+      "objectAnchors": ["Lead", "Customer", "Property"],
+      "entry": "线索进入或客户登记",
+      "exit": "客户归属明确、房屋建立、进入量房",
+      "observations": [
+        {"key": "unfollowed", "label": "超时未跟进", "fact": "客户最近跟进时间与下次跟进时间", "risk": "跟进超期或无人负责"},
+        {"key": "customer-owner", "label": "负责人与来源", "fact": "客户负责人、来源、门店", "risk": "归属不清或跨店冲突"},
+        {"key": "churn", "label": "休眠与流失", "fact": "客户状态与最近业务事件", "risk": "高价值客户无后续动作"}
+      ],
+      "sourceRefs": ["SCN-001", "SCN-020", "BR-030"]
+    },
+    {
+      "id": "stage-design",
+      "label": "量房与设计",
+      "objectAnchors": ["Measure", "Design"],
+      "entry": "客户进入量房或设计",
+      "exit": "量房完成、方案与分项可进入报价",
+      "observations": [
+        {"key": "measure-delay", "label": "量房待安排/延期", "fact": "预约时间、责任人、量房状态", "risk": "客户等待或交接断档"},
+        {"key": "design-cycle", "label": "设计停留", "fact": "方案状态、最近修改时间", "risk": "方案长期停留或反复返工"},
+        {"key": "design-ready", "label": "报价就绪度", "fact": "方案分项、工程量、成本完整性", "risk": "不满足报价条件"}
+      ],
+      "sourceRefs": ["SCN-001", "SCN-002", "SCN-007", "MET-001"]
+    },
+    {
+      "id": "stage-quote-contract",
+      "label": "报价与合同",
+      "objectAnchors": ["Quote", "Contract"],
+      "entry": "报价提交或合同登记",
+      "exit": "客户决策明确、合同生效",
+      "observations": [
+        {"key": "pending-decision", "label": "待决策报价", "fact": "报价状态、客户决策时间", "risk": "报价停留或客户无反馈"},
+        {"key": "acceptance-rate", "label": "最终报价接受率", "fact": "已接受/已拒绝/已转项目的有效机会", "risk": "转化偏低"},
+        {"key": "contract-effective", "label": "合同生效与签约额", "fact": "合同状态、签约额、生效时间", "risk": "合同未生效或金额口径混用"}
+      ],
+      "sourceRefs": ["MET-001", "MET-004", "SCN-002", "BR-001"]
+    },
+    {
+      "id": "stage-project",
+      "label": "项目与施工",
+      "objectAnchors": ["Project", "ProjectStage", "Task"],
+      "entry": "合同生效并满足项目立项条件",
+      "exit": "施工节点完成并进入验收",
+      "observations": [
+        {"key": "start-readiness", "label": "开工就绪度", "fact": "项目、阶段、计划、责任人、材料条件", "risk": "未具备条件提前开工"},
+        {"key": "stage-delay", "label": "阶段/任务延期", "fact": "计划日期、实际日期、责任人", "risk": "工期和客户体验受损"},
+        {"key": "site-evidence", "label": "现场留证", "fact": "节点、日报、照片、异常", "risk": "现场事实不可核对"}
+      ],
+      "sourceRefs": ["SCN-003", "BR-030", "CAP-004"]
+    },
+    {
+      "id": "stage-material-change",
+      "label": "材料与变更",
+      "objectAnchors": ["MaterialPlan", "Purchase", "ContractChange"],
+      "entry": "选材、采购、到场或变更发起",
+      "exit": "材料到场、变更生效并触发后续重算",
+      "observations": [
+        {"key": "selection-pending", "label": "选材待确认", "fact": "项目、选材项、客户确认", "risk": "采购条件不满足"},
+        {"key": "material-delay", "label": "材料未到场", "fact": "采购、到货、计划日期", "risk": "施工等待和成本不确定性"},
+        {"key": "change-pending", "label": "变更待审批", "fact": "变更金额、原因、责任人、影响", "risk": "施工/材料/应收未重算"},
+        {"key": "cost-completeness", "label": "成本完整性", "fact": "采购/结算/应计成本", "risk": "毛利不可计算"}
+      ],
+      "sourceRefs": ["SCN-004", "SCN-005", "SCN-006", "SCN-021", "MET-002"]
+    },
+    {
+      "id": "stage-acceptance",
+      "label": "验收与整改",
+      "objectAnchors": ["Acceptance", "Rectification"],
+      "entry": "阶段完工并提交验收申请",
+      "exit": "业主确认或整改复验通过",
+      "observations": [
+        {"key": "acceptance-pending", "label": "待验收", "fact": "阶段、申请时间、确认主体", "risk": "收入/阶段推进受阻"},
+        {"key": "owner-confirmation", "label": "业主确认", "fact": "外部主体确认记录", "risk": "BOSS 冒名确认"},
+        {"key": "rectification-overdue", "label": "整改逾期", "fact": "整改项、责任人、期限", "risk": "复验延期和投诉"}
+      ],
+      "sourceRefs": ["SCN-010", "DEC-032", "SCN-016"]
+    },
+    {
+      "id": "stage-finance",
+      "label": "收付款与结算",
+      "objectAnchors": ["Receivable", "Receipt", "Payable", "Payment", "ProjectCostContext"],
+      "entry": "合同付款计划、采购结算、工资或费用形成应收应付",
+      "exit": "收款/付款事实登记、项目成本完整、可进行结算分析",
+      "observations": [
+        {"key": "receivable-overdue", "label": "应收逾期", "fact": "到期日、应收额、已收额、责任人", "risk": "现金流风险"},
+        {"key": "received-amount", "label": "本月回款", "fact": "有效收款与冲正净额", "risk": "把冲正当新增收入"},
+        {"key": "payable-due", "label": "应付到期", "fact": "应付、到期日、供应商", "risk": "逾期和供应关系风险"},
+        {"key": "gross-margin", "label": "项目毛利", "fact": "合同额、动态成本、成本完整性", "risk": "成本不完整时利润为空"}
+      ],
+      "sourceRefs": ["MET-002", "MET-005", "SCN-005", "SCN-008", "BR-028"]
+    },
+    {
+      "id": "stage-review",
+      "label": "交付与经营复盘",
+      "objectAnchors": ["Project", "CustomerJourney", "Feedback", "BusinessTarget"],
+      "entry": "项目完工、交付或进入售后",
+      "exit": "经营结果被复盘，问题进入下一轮改进",
+      "observations": [
+        {"key": "delivery", "label": "交付与售后", "fact": "交付、反馈、质保、维保", "risk": "满意度与复购机会流失"},
+        {"key": "target", "label": "经营目标与实际", "fact": "公司/门店目标、签约、回款、毛利", "risk": "目标与事实混用"},
+        {"key": "profit-reference", "label": "经营利润参考", "fact": "项目毛利、企业费用、非项目收入", "risk": "口径未冻结时展示确定利润"}
+      ],
+      "sourceRefs": ["CAP-006", "MET-002", "BR-049", "MET-007", "MET-011", "GAP-070"]
+    }
+  ],
+  "crossSurfaceRules": [
+    "同一能力只消费同一 Provider 和同一业务事实",
+    "Web 以全局、批量、配置和深度分析为主",
+    "App 以移动风险处置、审批、现场协同和快速回读为主",
+    "微信小程序是否独立成壳仍为 GAP-BOS-001，原型只演示轻量入口，不作为正式边界",
+    "任何端缺失正式事实时显示暂不可确认，并保留重试或回到 Web 的恢复路径"
+  ],
+  "rules": [
+    {"id": "RULE-BOSS-SUPERSET", "label": "BOSS 内部能力超集", "sourceRefs": ["BR-028", "DEC-032"]},
+    {"id": "RULE-EXTERNAL-CONFIRM", "label": "外部主体确认不可由 BOSS 冒充", "sourceRefs": ["DEC-032"]},
+    {"id": "RULE-QUEUE-CONTEXT", "label": "风险队列保留上下文并显式下一项", "sourceRefs": ["SCN-016", "CAP-004"]},
+    {"id": "RULE-METRIC-NULL", "label": "成本不完整时毛利为空", "sourceRefs": ["MET-002"]},
+    {"id": "RULE-APP-TOOLS", "label": "经营工具按角色读写并裁剪成本", "sourceRefs": ["BR-037"]},
+    {"id": "RULE-TARGET-SCOPE", "label": "公司目标和门店目标分层", "sourceRefs": ["BR-049"]},
+    {"id": "RULE-PROFIT-GAP", "label": "经营利润口径未冻结前不展示确定金额", "sourceRefs": ["GAP-070", "MET-007", "MET-011"]}
+  ],
+  "gaps": [
+    {"id": "GAP-BOS-001", "label": "微信小程序独立壳层定位待确认", "blocking": false},
+    {"id": "GAP-BOS-002", "label": "负责人风险观察阈值待业务裁决", "blocking": false},
+    {"id": "GAP-BOS-003", "label": "运营工具一级名称待确认", "blocking": false},
+    {"id": "GAP-070", "label": "经营利润与费用分摊口径待冻结", "blocking": true}
+  ]
+}

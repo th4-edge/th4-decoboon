@@ -29,7 +29,7 @@
       "fixSummary": "财务报价库价格维护权限已修复；后端 82dcd21，生产 release 20261021-141548，发布后同一指纹未再增长。"
     },
     {
-      "incidentId": "INC-20261024-a1233597b0",
+      "incidentId": "INC-20261027-a1233597b0",
       "signature": "LazyInitializationException: Could not initialize proxy - no session",
       "signatureHash": "a1233597b0",
       "classification": "code_bug",
@@ -135,9 +135,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 132,
+      "count": 163,
       "firstSeen": "2026-09-16 12:29:27.868",
-      "lastSeen": "2026-10-23T19:15:23.172+08:00",
+      "lastSeen": "2026-10-27T15:38:12.775+08:00",
       "samples": [
         "[2026-09-16 12:29:27.868] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
         "1696:2026-09-16T12:29:27.868+08:00 ERROR 33085 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : statistic/boss/dashboard处理失败:访问受限，授权已过期，请重新登录后再访问。",
@@ -146,9 +146,6 @@
         "[2026-10-20 14:16:59.117] [ERROR] [XNIO-1 task-9] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-192227",
-        "2026-10-07/20261007-165437",
-        "2026-10-07/20261007-215347",
         "2026-10-08/20261008-180932",
         "2026-10-08/20261008-190001",
         "2026-10-08/20261008-193012",
@@ -165,7 +162,10 @@
         "2026-10-22/20261022-131826",
         "2026-10-22/20261022-132149",
         "2026-10-22/20261022-132152",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146",
+        "2026-10-27/20261027-155735"
       ]
     },
     {
@@ -176,9 +176,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 29,
+      "count": 31,
       "firstSeen": "2026-09-17 01:50:01.179",
-      "lastSeen": "2026-10-21 11:36:37.604",
+      "lastSeen": "2026-10-26T17:37:52.524+08:00",
       "samples": [
         "[2026-09-17 01:50:01.179] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:不能操作自己的员工记录",
         "[2026-09-17 14:01:10.550] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - company/member/info处理失败:不能操作自己的员工记录",
@@ -192,7 +192,8 @@
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-10-21/20261021-142027",
-        "2026-10-21/20261021-143252"
+        "2026-10-21/20261021-143252",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -248,9 +249,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 33,
+      "count": 36,
       "firstSeen": "2026-09-17 11:25:08.128",
-      "lastSeen": "2026-10-22T15:48:23.854+08:00",
+      "lastSeen": "2026-10-26 07:04:35.350",
       "samples": [
         "[2026-09-17 11:25:08.128] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env",
         "4391:2026-09-17T11:25:08.128+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : dev/.env处理失败:找不到对应的处理服务:dev/.env",
@@ -259,8 +260,6 @@
         "[2026-10-22 06:12:57.146] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - dev/.env处理失败:找不到对应的处理服务:dev/.env"
       ],
       "reportPaths": [
-        "2026-09-20/20260920-130110",
-        "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
@@ -278,7 +277,9 @@
         "2026-10-22/20261022-131826",
         "2026-10-22/20261022-132149",
         "2026-10-22/20261022-132152",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -320,9 +321,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 33,
+      "count": 36,
       "firstSeen": "2026-09-17 11:25:08.425",
-      "lastSeen": "2026-10-22T15:48:24.133+08:00",
+      "lastSeen": "2026-10-26 07:04:35.803",
       "samples": [
         "[2026-09-17 11:25:08.425] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env",
         "4477:2026-09-17T11:25:08.425+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : staging/.env处理失败:找不到对应的处理服务:staging/.env",
@@ -331,8 +332,6 @@
         "[2026-10-22 06:12:57.385] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - staging/.env处理失败:找不到对应的处理服务:staging/.env"
       ],
       "reportPaths": [
-        "2026-09-20/20260920-130110",
-        "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
@@ -350,7 +349,9 @@
         "2026-10-22/20261022-131826",
         "2026-10-22/20261022-132149",
         "2026-10-22/20261022-132152",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -361,9 +362,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 38,
+      "count": 41,
       "firstSeen": "2026-09-17 11:25:05.462",
-      "lastSeen": "2026-10-22T19:09:28.826+08:00",
+      "lastSeen": "2026-10-26 07:04:31.748",
       "samples": [
         "[2026-09-17 11:25:05.462] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env",
         "4133:2026-09-17T11:25:05.462+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v1/.env处理失败:找不到对应的处理服务:v1/.env",
@@ -372,8 +373,6 @@
         "[2026-10-21 04:18:38.743] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v1/.env处理失败:找不到对应的处理服务:v1/.env"
       ],
       "reportPaths": [
-        "2026-09-23/20260923-130103",
-        "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
         "2026-09-27/20260927-161931",
         "2026-10-05/20261005-050906",
@@ -391,7 +390,9 @@
         "2026-10-22/20261022-131826",
         "2026-10-22/20261022-132149",
         "2026-10-22/20261022-132152",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -402,9 +403,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 33,
+      "count": 36,
       "firstSeen": "2026-09-17 11:25:05.739",
-      "lastSeen": "2026-10-22T15:48:21.844+08:00",
+      "lastSeen": "2026-10-26 07:04:32.043",
       "samples": [
         "[2026-09-17 11:25:05.739] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env",
         "4219:2026-09-17T11:25:05.739+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v2/.env处理失败:找不到对应的处理服务:v2/.env",
@@ -413,8 +414,6 @@
         "[2026-10-22 06:12:55.523] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v2/.env处理失败:找不到对应的处理服务:v2/.env"
       ],
       "reportPaths": [
-        "2026-09-20/20260920-130110",
-        "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
@@ -432,7 +431,9 @@
         "2026-10-22/20261022-131826",
         "2026-10-22/20261022-132149",
         "2026-10-22/20261022-132152",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -443,9 +444,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 33,
+      "count": 36,
       "firstSeen": "2026-09-17 11:25:07.690",
-      "lastSeen": "2026-10-22T15:48:23.575+08:00",
+      "lastSeen": "2026-10-26 07:04:34.100",
       "samples": [
         "[2026-09-17 11:25:07.690] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env",
         "4305:2026-09-17T11:25:07.690+08:00 ERROR 39976 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : v3/.env处理失败:找不到对应的处理服务:v3/.env",
@@ -454,8 +455,6 @@
         "[2026-10-22 06:12:56.913] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - v3/.env处理失败:找不到对应的处理服务:v3/.env"
       ],
       "reportPaths": [
-        "2026-09-20/20260920-130110",
-        "2026-09-22/20260922-130146",
         "2026-09-23/20260923-130103",
         "2026-09-24/20260924-043234",
         "2026-09-27/20260927-160708",
@@ -473,7 +472,9 @@
         "2026-10-22/20261022-131826",
         "2026-10-22/20261022-132149",
         "2026-10-22/20261022-132152",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -484,9 +485,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 20,
+      "count": 21,
       "firstSeen": "2026-09-17 17:49:39.098",
-      "lastSeen": "2026-10-23T16:19:34.073+08:00",
+      "lastSeen": "2026-10-25T20:01:35.494+08:00",
       "samples": [
         "[2026-09-17 17:49:39.098] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
         "15131:2026-09-17T17:49:39.098+08:00 ERROR 39976 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php处理失败:找不到对应的处理服务:vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
@@ -507,7 +508,8 @@
         "2026-10-17/20261017-123804",
         "2026-10-17/20261017-124308",
         "2026-10-17/20261017-150230",
-        "2026-10-24/20261024-024009"
+        "2026-10-24/20261024-024009",
+        "2026-10-26/20261026-103411"
       ]
     },
     {
@@ -563,9 +565,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 88,
+      "count": 94,
       "firstSeen": "2026-09-17T23:54:36.942+08:00",
-      "lastSeen": "2026-10-24 08:39:26.817",
+      "lastSeen": "2026-10-27T12:10:02.020+08:00",
       "samples": [
         "16438:2026-09-17T23:54:36.942+08:00 ERROR 39976 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp",
         "[2026-09-20 02:26:19.563] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp",
@@ -574,9 +576,6 @@
         "2909:2026-09-18T20:04:07.556+08:00 ERROR 47233 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : mcp处理失败:找不到对应的处理服务:mcp"
       ],
       "reportPaths": [
-        "2026-09-20/20260920-130110",
-        "2026-09-20/20260920-142638",
-        "2026-09-20/20260920-142653",
         "2026-09-21/20260921-051122",
         "2026-10-08/20261008-181622",
         "2026-10-17/20261017-123804",
@@ -593,7 +592,10 @@
         "2026-10-24/20261024-143659",
         "2026-10-24/20261024-143825",
         "2026-10-24/20261024-151152",
-        "2026-10-24/20261024-151633"
+        "2026-10-24/20261024-151633",
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146",
+        "2026-10-27/20261027-155735"
       ]
     },
     {
@@ -1265,9 +1267,9 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 33,
+      "count": 34,
       "firstSeen": "2026-09-22 06:26:40.863",
-      "lastSeen": "2026-10-24 13:10:41.707",
+      "lastSeen": "2026-10-25T09:37:21.552+08:00",
       "samples": [
         "[2026-09-22 06:26:40.863] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - .git/config处理失败:找不到对应的处理服务:.git/config",
         "5282:2026-09-22T06:26:40.863+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : .git/config处理失败:找不到对应的处理服务:.git/config",
@@ -1291,7 +1293,8 @@
         "2026-10-24/20261024-143659",
         "2026-10-24/20261024-143825",
         "2026-10-24/20261024-151152",
-        "2026-10-24/20261024-151633"
+        "2026-10-24/20261024-151633",
+        "2026-10-26/20261026-103411"
       ]
     },
     {
@@ -1349,15 +1352,20 @@
       "severity": "medium",
       "status": "open",
       "actionable": true,
-      "count": 2,
+      "count": 6,
       "firstSeen": "2026-09-22T16:17:26.992+08:00",
-      "lastSeen": "2026-09-22T16:17:26.992+08:00",
+      "lastSeen": "2026-10-26T17:50:12.949+08:00",
       "samples": [
-        "8173:2026-09-22T16:17:26.992+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请"
+        "8173:2026-09-22T16:17:26.992+08:00 ERROR 63746 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请",
+        "[2026-10-26 17:50:10.368] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/save处理失败:该手机号已有待接受邀请",
+        "[2026-10-26 17:50:12.949] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/save处理失败:该手机号已有待接受邀请",
+        "6614:2026-10-26T17:50:10.368+08:00 ERROR 338867 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请",
+        "6742:2026-10-26T17:50:12.949+08:00 ERROR 338867 --- [  XNIO-1 task-7] c.t.e.f.w.m.processor.ApiHttpProcessor   : invite/invitation/save处理失败:该手机号已有待接受邀请"
       ],
       "reportPaths": [
         "2026-09-23/20260923-130103",
-        "2026-09-24/20260924-043234"
+        "2026-09-24/20260924-043234",
+        "2026-10-26/20261026-232146"
       ]
     },
     {
@@ -3560,18 +3568,21 @@
       "severity": "critical",
       "status": "open",
       "actionable": true,
-      "count": 3,
+      "count": 39,
       "firstSeen": "2026-10-17 11:22:24.423",
-      "lastSeen": "2026-10-17 11:22:24.423",
+      "lastSeen": "2026-10-27T15:44:25.586+08:00",
       "samples": [
         "[2026-10-17 11:22:24.423] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
         "[2026-10-17 11:22:24.423] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
-        "[2026-10-17 11:22:24.423] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null"
+        "[2026-10-17 11:22:24.423] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - material/sheet/enums处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+        "[2026-10-27 15:38:31.126] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+        "[2026-10-27 15:38:32.348] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null"
       ],
       "reportPaths": [
         "2026-10-17/20261017-123804",
         "2026-10-17/20261017-124308",
-        "2026-10-17/20261017-150230"
+        "2026-10-17/20261017-150230",
+        "2026-10-27/20261027-155735"
       ]
     },
     {
@@ -4903,7 +4914,335 @@
         "2026-10-24/20261024-151152",
         "2026-10-24/20261024-151633"
       ]
+    },
+    {
+      "incidentId": "INC-20261026-1e5e8eab34",
+      "signature": "任务状态或动作不能为空",
+      "signatureHash": "1e5e8eab34",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-25T18:55:04.310+08:00",
+      "lastSeen": "2026-10-25T18:55:04.374+08:00",
+      "samples": [
+        "13306:2026-10-25T18:55:04.310+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/task/update处理失败:任务状态或动作不能为空",
+        "13412:2026-10-25T18:55:04.374+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/task/update处理失败:任务状态或动作不能为空"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-d9b924eefd",
+      "signature": "客户已完成首联跟进，手机号不允许修改",
+      "signatureHash": "d9b924eefd",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-25T18:29:46.500+08:00",
+      "lastSeen": "2026-10-25T18:29:46.500+08:00",
+      "samples": [
+        "11462:2026-10-25T18:29:46.500+08:00 ERROR 328325 --- [  XNIO-1 task-9] c.t.e.f.w.m.processor.ApiHttpProcessor   : customer/customer/update处理失败:客户已完成首联跟进，手机号不允许修改"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-74fa9d02c1",
+      "signature": "找不到对应的处理服务:account",
+      "signatureHash": "74fa9d02c1",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 9,
+      "firstSeen": "2026-10-26 00:03:55.118",
+      "lastSeen": "2026-10-26 00:51:11.101",
+      "samples": [
+        "[2026-10-26 00:03:55.118] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - account处理失败:找不到对应的处理服务:account",
+        "[2026-10-26 00:27:08.222] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - account处理失败:找不到对应的处理服务:account",
+        "[2026-10-26 00:51:11.101] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - account处理失败:找不到对应的处理服务:account",
+        "14150:2026-10-26T00:03:55.118+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : account处理失败:找不到对应的处理服务:account",
+        "14236:2026-10-26T00:27:08.222+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : account处理失败:找不到对应的处理服务:account"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-a69432181b",
+      "signature": "找不到对应的处理服务:credentials.json",
+      "signatureHash": "a69432181b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-25T09:03:11.605+08:00",
+      "lastSeen": "2026-10-25T09:03:11.605+08:00",
+      "samples": [
+        "6884:2026-10-25T09:03:11.605+08:00 ERROR 328325 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : credentials.json处理失败:找不到对应的处理服务:credentials.json"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-57044ecb62",
+      "signature": "找不到对应的处理服务:market/fastBuy",
+      "signatureHash": "57044ecb62",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 3,
+      "firstSeen": "2026-10-26 00:57:42.753",
+      "lastSeen": "2026-10-26 00:57:42.753",
+      "samples": [
+        "[2026-10-26 00:57:42.753] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - market/fastBuy处理失败:找不到对应的处理服务:market/fastBuy",
+        "14408:2026-10-26T00:57:42.753+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : market/fastBuy处理失败:找不到对应的处理服务:market/fastBuy",
+        "[2026-10-26 00:57:42.753] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - market/fastBuy处理失败:找不到对应的处理服务:market/fastBuy"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411",
+        "2026-10-26/20261026-232146"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-6cf834f73e",
+      "signature": "提交阶段验收前必须上传现场照片或视频",
+      "signatureHash": "6cf834f73e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-25T18:56:16.625+08:00",
+      "lastSeen": "2026-10-25T18:56:29.001+08:00",
+      "samples": [
+        "13852:2026-10-25T18:56:16.625+08:00 ERROR 328325 --- [  XNIO-1 task-4] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/acceptance/save处理失败:提交阶段验收前必须上传现场照片或视频",
+        "13973:2026-10-25T18:56:29.001+08:00 ERROR 328325 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/acceptance/save处理失败:提交阶段验收前必须上传现场照片或视频"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-024a9002f2",
+      "signature": "设计分项不存在或无权访问",
+      "signatureHash": "024a9002f2",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 5,
+      "firstSeen": "2026-10-25T11:45:21.071+08:00",
+      "lastSeen": "2026-10-25T11:51:02.526+08:00",
+      "samples": [
+        "7280:2026-10-25T11:45:21.071+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:设计分项不存在或无权访问",
+        "7390:2026-10-25T11:45:22.855+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:设计分项不存在或无权访问",
+        "7500:2026-10-25T11:45:27.209+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:设计分项不存在或无权访问",
+        "7610:2026-10-25T11:45:33.258+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:设计分项不存在或无权访问",
+        "7720:2026-10-25T11:51:02.526+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : design/items/save处理失败:设计分项不存在或无权访问"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-c5a21e677b",
+      "signature": "量房完成时间不能早于预约时间",
+      "signatureHash": "c5a21e677b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 5,
+      "firstSeen": "2026-10-24T16:52:46.464+08:00",
+      "lastSeen": "2026-10-27 10:16:26.502",
+      "samples": [
+        "1968:2026-10-24T16:52:46.464+08:00 ERROR 328325 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : property/measure/save处理失败:量房完成时间不能早于预约时间",
+        "[2026-10-27 10:16:09.294] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:量房完成时间不能早于预约时间",
+        "[2026-10-27 10:16:26.502] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:量房完成时间不能早于预约时间",
+        "[2026-10-27 10:16:09.294] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:量房完成时间不能早于预约时间",
+        "[2026-10-27 10:16:26.502] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:量房完成时间不能早于预约时间"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411",
+        "2026-10-27/20261027-103417",
+        "2026-10-27/20261027-155735"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-01b3a2e389",
+      "signature": "阶段内仍有未完成施工任务",
+      "signatureHash": "01b3a2e389",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-25T18:54:53.081+08:00",
+      "lastSeen": "2026-10-25T18:55:04.563+08:00",
+      "samples": [
+        "13198:2026-10-25T18:54:53.081+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/acceptance/save处理失败:阶段内仍有未完成施工任务",
+        "13531:2026-10-25T18:55:04.563+08:00 ERROR 328325 --- [  XNIO-1 task-5] c.t.e.f.w.m.processor.ApiHttpProcessor   : project/acceptance/save处理失败:阶段内仍有未完成施工任务"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-103411"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-8796714619",
+      "signature": "Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.user.store.list.support.List.employee to com.th4.edge.tenant.user.model.Credentials",
+      "signatureHash": "8796714619",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 6,
+      "firstSeen": "2026-10-26 17:51:26.179",
+      "lastSeen": "2026-10-26T17:56:40.882+08:00",
+      "samples": [
+        "[2026-10-26 17:51:26.179] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/store/list处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.user.store.list.support.List.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-26 17:56:08.787] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/store/list处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.user.store.list.support.List.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-26 17:56:40.882] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - user/store/list处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.user.store.list.support.List.employee to com.th4.edge.tenant.user.model.Credentials",
+        "6849:2026-10-26T17:51:26.179+08:00 ERROR 338867 --- [  XNIO-1 task-3] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.user.store.list.support.List.employee to com.th4.edge.tenant.user.model.Credentials",
+        "6956:2026-10-26T17:56:08.787+08:00 ERROR 338867 --- [  XNIO-1 task-6] c.t.e.f.w.m.processor.ApiHttpProcessor   : user/store/list处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.user.store.list.support.List.employee to com.th4.edge.tenant.user.model.Credentials"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-232146"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-c0d1327688",
+      "signature": "当前微信凭证不存在",
+      "signatureHash": "c0d1327688",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-26 10:55:15.605",
+      "lastSeen": "2026-10-26 10:55:15.605",
+      "samples": [
+        "[2026-10-26 10:55:15.605] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:当前微信凭证不存在"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-232146"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-39e86e5721",
+      "signature": "收款金额不能超过应收余额",
+      "signatureHash": "39e86e5721",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 28,
+      "firstSeen": "2026-10-26 17:38:47.432",
+      "lastSeen": "2026-10-26T17:38:58.397+08:00",
+      "samples": [
+        "[2026-10-26 17:38:47.432] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/receipt/save处理失败:收款金额不能超过应收余额",
+        "[2026-10-26 17:38:49.823] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/receipt/save处理失败:收款金额不能超过应收余额",
+        "[2026-10-26 17:38:50.484] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/receipt/save处理失败:收款金额不能超过应收余额",
+        "[2026-10-26 17:38:51.011] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/receipt/save处理失败:收款金额不能超过应收余额",
+        "[2026-10-26 17:38:51.460] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - finance/receipt/save处理失败:收款金额不能超过应收余额"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-232146"
+      ]
+    },
+    {
+      "incidentId": "INC-20261026-fc704da7af",
+      "signature": "设计方案不存在或无权访问",
+      "signatureHash": "fc704da7af",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-26 10:50:30.432",
+      "lastSeen": "2026-10-26 10:50:30.432",
+      "samples": [
+        "[2026-10-26 10:50:30.432] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - design/scheme/info处理失败:设计方案不存在或无权访问"
+      ],
+      "reportPaths": [
+        "2026-10-26/20261026-232146"
+      ]
+    },
+    {
+      "incidentId": "INC-20261027-9c36075e08",
+      "signature": "Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+      "signatureHash": "9c36075e08",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 16,
+      "firstSeen": "2026-10-27 00:07:05.612",
+      "lastSeen": "2026-10-27T15:39:40.759+08:00",
+      "samples": [
+        "[2026-10-27 00:07:05.612] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:12:53.388] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:13:30.594] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:13:34.008] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:07:05.612] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-103417",
+        "2026-10-27/20261027-155735"
+      ]
+    },
+    {
+      "incidentId": "INC-20261027-4b40ffd35e",
+      "signature": "该阶段无合同施工任务，不能提交验收，请先核对报价与合同施工行",
+      "signatureHash": "4b40ffd35e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-27 09:39:32.257",
+      "lastSeen": "2026-10-27 09:39:32.257",
+      "samples": [
+        "[2026-10-27 09:39:32.257] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/acceptance/save处理失败:该阶段无合同施工任务，不能提交验收，请先核对报价与合同施工行",
+        "[2026-10-27 09:39:32.257] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/acceptance/save处理失败:该阶段无合同施工任务，不能提交验收，请先核对报价与合同施工行"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-103417",
+        "2026-10-27/20261027-155735"
+      ]
+    },
+    {
+      "incidentId": "INC-20261027-c0fb198c0a",
+      "signature": "邀请已过期",
+      "signatureHash": "c0fb198c0a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 4,
+      "firstSeen": "2026-10-27 00:09:51.230",
+      "lastSeen": "2026-10-27 00:09:56.841",
+      "samples": [
+        "[2026-10-27 00:09:51.230] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:邀请已过期",
+        "[2026-10-27 00:09:56.841] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:邀请已过期",
+        "[2026-10-27 00:09:51.230] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:邀请已过期",
+        "[2026-10-27 00:09:56.841] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:邀请已过期"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-103417",
+        "2026-10-27/20261027-155735"
+      ]
     }
   ],
-  "updatedAt": "2026-10-24T07:16:34.469034+00:00"
+  "updatedAt": "2026-10-27T07:57:36.377014+00:00"
 }

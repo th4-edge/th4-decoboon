@@ -4,9 +4,9 @@
   "title": "装得清产品体系基线",
   "northStar": "以角色、业务域、功能、对象概念和跨端展示的同源基线，支撑产品持续扩展、变更影响识别与规则一致性",
   "owner": "codex",
-  "phase": "PLAN_READY",
-  "batch": "B2E-PI-017-D2",
-  "nextAction": "COST-D2 计划完成，等待用户明确授权编码；COST-D1 ACCEPTED，COST-D3~D5 未授权，GAP-071 OPEN，不发布",
+  "phase": "DEV_VERIFIED",
+  "batch": "INFO-D1",
+  "nextAction": "启动 INFO-D2：优先修复设计工艺/验收标准→报价→合同→项目任务→验收的快照链",
   "openDecisions": [
     {
       "id": "RQ-04",
@@ -87,10 +87,14 @@
     "expenseD3DevEvidence": "../../acceptance/runs/20261022-expense-d1/05-dev-evidence-d3.md",
     "expenseD3AcceptanceRunbook": "../../acceptance/runs/20261022-expense-d1/06-acceptance-runbook-d3.md",
     "expenseD3AcceptanceRecord": "../../acceptance/runs/20261022-expense-d1/07-acceptance-record-d3.md",
-    "expenseD3AcceptanceEvidence": "../../acceptance/runs/20261022-expense-d1/evidence/d3/independent-reacceptance-20261023"
+    "expenseD3AcceptanceEvidence": "../../acceptance/runs/20261022-expense-d1/evidence/d3/independent-reacceptance-20261023",
+    "businessInfoRegistry": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清业务智能体/00-治理/业务信息项注册表-v0.1.json",
+    "infoD1MappingJson": "docs/product/domains/product-system-baseline/INFO-D1-info-item-code-mapping.json",
+    "infoD1MappingMd": "docs/product/domains/product-system-baseline/INFO-D1-info-item-code-mapping.md",
+    "infoRegistryBuilder": "scripts/build-info-item-code-mapping.py"
   },
   "createdAt": "2026-10-22T20:52:09+08:00",
-  "updatedAt": "2026-10-23T19:08:09+08:00",
+  "updatedAt": "2026-10-28T04:28:42+08:00",
   "history": [
     {
       "at": "2026-10-22T20:52:09+08:00",
@@ -589,6 +593,30 @@
       "phase": "PLAN_READY",
       "batch": "B2E-PI-017-D2",
       "note": "COST-D2 只读计划完成：P1/P2/P3分类、完整性、项目Expense与手工零星成本二选一、移除max及性能/权限验收矩阵；未改生产公式，等待编码授权，GAP-071 OPEN"
+    },
+    {
+      "at": "2026-10-28T03:43:24+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PROMO-D1",
+      "note": "推广前最低闭环标准与PI-20261028-001建立；三仓基线检查、App首页治理校正、Web财务报价静态门禁与四类状态渲染通过；真实项目闭环、独立验收和发布候选未完成"
+    },
+    {
+      "at": "2026-10-28T04:11:15+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PROMO-D1/INFO-AUDIT-2",
+      "note": "完成设计→报价→合同→项目→任务→材料→变更→验收→收付款全链首轮信息作用审计；新增确认17个断点，累计39个（P1 19/P2 15/P3 5）；未改业务代码、未验收、未发布"
+    },
+    {
+      "at": "2026-10-28T04:23:03+08:00",
+      "phase": "PLAN_READY",
+      "batch": "INFO-D0",
+      "note": "建立业务信息架构 V0.1：BR-059、OBJ-010、70 个信息项注册表、可读总表、生成与校验脚本、研发登记模板；未改业务代码"
+    },
+    {
+      "at": "2026-10-28T04:28:42+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "INFO-D1",
+      "note": "70个信息项完成代码映射：ALIGNED20/PARTIAL44/SNAPSHOT_MISSING3/DUPLICATE_SOURCE1/NO_OPERATIONAL_CONSUMER1/UNMAPPED1；39个审计问题全部关联；映射仅DEV_VERIFIED，未改业务代码、未验收"
     }
   ],
   "frozenRoles": [

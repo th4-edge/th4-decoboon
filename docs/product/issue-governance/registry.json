@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-24T01:51:13+08:00",
+  "updatedAt": "2026-10-28T06:05:00+08:00",
   "issues": [
     {
       "id": "PI-20261022-001",
@@ -2035,6 +2035,120 @@
       },
       "dedicatedThreadId": null,
       "nextAction": "等待用户扫码完成 App 真机走查；确认可发布提交范围后再执行生产迁移、部署和发布"
+    },
+    {
+      "id": "PI-20261028-001",
+      "title": "推广前最低业务闭环与跨端质量总收口",
+      "status": "DEV_IN_PROGRESS",
+      "priority": "P0",
+      "domain": "promotion-readiness",
+      "source": "用户 2026-10-28 反馈：多端不一致、研发缺陷、信息无作用、Web 视觉与 App 细节不足，要求完成基本闭环后进入推广",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261028-001-推广前最低业务闭环与跨端质量总收口.md",
+      "analysisFile": "docs/product/01-推广前最低业务闭环与跨端质量门禁.md",
+      "businessSync": {
+        "status": "EXISTING_DECISIONS_CONSUMED",
+        "decisions": [
+          "DEC-003",
+          "DEC-013",
+          "BR-043",
+          "DPR-D01"
+        ],
+        "newBusinessDecisionRequired": false
+      },
+      "developmentTask": {
+        "id": "PROMO-D1",
+        "status": "DEV_VERIFIED_STATIC_AND_UI_SLICE",
+        "scope": "治理基线、App 首页门禁校正、Web 财务报价页质量收口与状态渲染",
+        "evidence": "docs/acceptance/runs/20261028-promotion-d1/README.md"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "开发自测和 UI 渲染证据不得替代独立验收"
+      },
+      "dedicatedThreadId": null,
+      "nextAction": "冻结三仓首发提交、构建产物与回滚点；随后选择一个真实项目启动 PROMO-D2 入口场景闭环",
+      "auditFiles": [
+        "docs/product/audits/2026-10-28-客户到诉求录入信息下游使用审计.md",
+        "docs/product/audits/2026-10-28-设计到成本录入信息下游使用审计.md"
+      ],
+      "informationUtilityAudit": {
+        "status": "FULL_CHAIN_FIRST_PASS_COMPLETE_REMAINING_SPECIAL_DOMAINS_PENDING",
+        "batches": [
+          {
+            "scope": "客户登记到客户诉求前段",
+            "inputFieldsAudited": 52,
+            "downstreamActionFields": 25,
+            "evidenceOnlyFields": 5,
+            "ineffectiveOrDuplicatedFields": 22,
+            "p1": 12,
+            "p2": 7,
+            "p3": 3
+          },
+          {
+            "scope": "设计到成本主链",
+            "issues": 17,
+            "p1": 7,
+            "p2": 8,
+            "p3": 2
+          }
+        ],
+        "totalIssues": 39,
+        "totalP1": 19,
+        "totalP2": 15,
+        "totalP3": 5
+      }
+    },
+    {
+      "id": "PI-20261028-002",
+      "title": "业务信息项主源与闭环规范落地",
+      "status": "DEV_IN_PROGRESS",
+      "priority": "P1",
+      "domain": "business-information-architecture",
+      "source": "用户 2026-10-28 要求从装企业务场景中的信息布局、概念归属和闭环动作出发构建信息规范",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261028-002-业务信息项主源与闭环规范落地.md",
+      "analysisFiles": [
+        "docs/product/audits/2026-10-28-客户到诉求录入信息下游使用审计.md",
+        "docs/product/audits/2026-10-28-设计到成本录入信息下游使用审计.md"
+      ],
+      "businessSync": {
+        "status": "DRAFT_RULE_AND_OBJECT_CREATED",
+        "rules": [
+          "BR-059"
+        ],
+        "objects": [
+          "OBJ-010"
+        ],
+        "registry": "00-治理/业务信息项注册表-v0.1.json",
+        "itemCount": 70,
+        "conceptCount": 53,
+        "domainCount": 16
+      },
+      "developmentTask": {
+        "id": "INFO-D1",
+        "status": "DEV_VERIFIED_MAPPING_ONLY",
+        "scope": "70 个信息项与后端实体/Provider、App、Web、业主端和测试入口映射",
+        "evidence": [
+          "docs/product/domains/product-system-baseline/INFO-D1-info-item-code-mapping.json",
+          "docs/product/domains/product-system-baseline/INFO-D1-info-item-code-mapping.md"
+        ],
+        "statusCounts": {
+          "ALIGNED": 20,
+          "PARTIAL": 44,
+          "SNAPSHOT_MISSING": 3,
+          "DUPLICATE_SOURCE": 1,
+          "NO_OPERATIONAL_CONSUMER": 1,
+          "UNMAPPED": 1
+        },
+        "findingsMapped": 39
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "映射不是代码修复或独立验收"
+      },
+      "standardDraft": "docs/product/02-业务信息架构与字段闭环标准.md",
+      "nextAction": "启动 INFO-D2：优先修复设计工艺/验收标准 → 报价 → 合同 → 项目任务 → 验收的快照链"
     }
   ]
 }

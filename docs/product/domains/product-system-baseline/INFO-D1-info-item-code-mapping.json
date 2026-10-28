@@ -1,0 +1,2556 @@
+{
+  "schemaVersion": "1.0",
+  "batch": "INFO-D1",
+  "updated": "2026-10-28",
+  "registry": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清业务智能体/00-治理/业务信息项注册表-v0.1.json",
+  "summary": {
+    "items": 70,
+    "statusCounts": {
+      "ALIGNED": 20,
+      "DUPLICATE_SOURCE": 1,
+      "NO_OPERATIONAL_CONSUMER": 1,
+      "PARTIAL": 44,
+      "SNAPSHOT_MISSING": 3,
+      "UNMAPPED": 1
+    },
+    "findingsMapped": 39
+  },
+  "unregisteredCurrentFields": [
+    {
+      "field": "Customer.gender",
+      "reason": "当前仅展示，未登记为正式业务信息项；候选删除或降为个人资料。"
+    },
+    {
+      "field": "Customer.remark",
+      "reason": "与跟进/画像/诉求职责重叠；候选降为备注或删除。"
+    },
+    {
+      "field": "Customer.wechatNo",
+      "reason": "未形成身份、触达或协作动作；候选仅保留微信已添加事实。"
+    }
+  ],
+  "findingMappings": {
+    "INFO-01": [
+      "INFO-DEMAND-001"
+    ],
+    "INFO-02": [
+      "INFO-CUSTOMER-006"
+    ],
+    "INFO-03": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-04": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-05": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-06": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-07": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-08": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-09": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-10": [
+      "INFO-MEASURE-004",
+      "INFO-DEMAND-004"
+    ],
+    "INFO-11": [
+      "INFO-MEASURE-004",
+      "INFO-DESIGN-004"
+    ],
+    "INFO-12": [
+      "INFO-DEMAND-005"
+    ],
+    "INFO-13": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-14": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-15": [
+      "INFO-DEMAND-003"
+    ],
+    "INFO-16": [
+      "INFO-MEASURE-004"
+    ],
+    "INFO-17": [
+      "INFO-MEASURE-004"
+    ],
+    "INFO-18": [
+      "INFO-CUSTOMER-001"
+    ],
+    "INFO-19": [
+      "INFO-CUSTOMER-001"
+    ],
+    "INFO-20": [
+      "INFO-CUSTOMER-001"
+    ],
+    "INFO-21": [
+      "INFO-PROPERTY-001"
+    ],
+    "INFO-22": [
+      "INFO-DEMAND-005"
+    ],
+    "CHAIN-01": [
+      "INFO-DESIGN-001"
+    ],
+    "CHAIN-02": [
+      "INFO-DESIGN-004",
+      "INFO-QUOTE-002",
+      "INFO-CONTRACT-003"
+    ],
+    "CHAIN-03": [
+      "INFO-DESIGN-004",
+      "INFO-CONTRACT-003",
+      "INFO-ACCEPTANCE-001"
+    ],
+    "CHAIN-04": [
+      "INFO-CONTRACT-006"
+    ],
+    "CHAIN-05": [
+      "INFO-MATERIAL-004",
+      "INFO-MATERIAL-005"
+    ],
+    "CHAIN-06": [
+      "INFO-TASK-003",
+      "INFO-ACCEPTANCE-001"
+    ],
+    "CHAIN-07": [
+      "INFO-ACCEPTANCE-002"
+    ],
+    "CHAIN-08": [
+      "INFO-DESIGN-005"
+    ],
+    "CHAIN-09": [
+      "INFO-QUOTE-003"
+    ],
+    "CHAIN-10": [
+      "INFO-CONTRACT-004"
+    ],
+    "CHAIN-11": [
+      "INFO-CONTRACT-006"
+    ],
+    "CHAIN-12": [
+      "INFO-MATERIAL-003"
+    ],
+    "CHAIN-13": [
+      "INFO-MATERIAL-003"
+    ],
+    "CHAIN-14": [
+      "INFO-REPORT-001"
+    ],
+    "CHAIN-15": [
+      "INFO-FINANCE-004"
+    ],
+    "CHAIN-16": [
+      "INFO-FINANCE-010"
+    ],
+    "CHAIN-17": [
+      "INFO-TASK-001"
+    ]
+  },
+  "items": [
+    {
+      "id": "INFO-ORG-001",
+      "domain": "组织与权限",
+      "name": "企业主体",
+      "concept": "Company",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Company.comId/name/title/logo/color/addr/setting",
+        "providerRoutes": "company/company/save|update|info"
+      },
+      "app": [
+        "pages/mine/index",
+        "subpackages/company/pages/members",
+        "subpackages/company/pages/invite"
+      ],
+      "web": [
+        "BossOrganizationView",
+        "RoleAreaShell/session",
+        "WorkbenchHomeView"
+      ],
+      "owner": [
+        "不适用"
+      ],
+      "tests": [
+        "UserIdentityContextTest",
+        "EmployeeRoleContractTest",
+        "MembershipContextTest",
+        "SubscriptionAccessFilterAcceptanceTest",
+        "FinanceOrganizationRulesTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-ORG-002",
+      "domain": "组织与权限",
+      "name": "门店与团队",
+      "concept": "StoreTeam",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Store.storeId/name/defaultStore; Team.teamId/name",
+        "providerRoutes": "company/store/*; company/team/*"
+      },
+      "app": [
+        "pages/mine/index",
+        "subpackages/company/pages/members",
+        "subpackages/company/pages/invite"
+      ],
+      "web": [
+        "BossOrganizationView",
+        "RoleAreaShell/session",
+        "WorkbenchHomeView"
+      ],
+      "owner": [
+        "不适用"
+      ],
+      "tests": [
+        "UserIdentityContextTest",
+        "EmployeeRoleContractTest",
+        "MembershipContextTest",
+        "SubscriptionAccessFilterAcceptanceTest",
+        "FinanceOrganizationRulesTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-ORG-003",
+      "domain": "组织与权限",
+      "name": "员工身份与联系方式",
+      "concept": "Employee",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Employee.empId/name/telNo/avatarUrl/role/status/store/team",
+        "providerRoutes": "company/member/*; identity/*"
+      },
+      "app": [
+        "pages/mine/index",
+        "subpackages/company/pages/members",
+        "subpackages/company/pages/invite"
+      ],
+      "web": [
+        "BossOrganizationView",
+        "RoleAreaShell/session",
+        "WorkbenchHomeView"
+      ],
+      "owner": [
+        "不适用"
+      ],
+      "tests": [
+        "UserIdentityContextTest",
+        "EmployeeRoleContractTest",
+        "MembershipContextTest",
+        "SubscriptionAccessFilterAcceptanceTest",
+        "FinanceOrganizationRulesTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-ORG-004",
+      "domain": "组织与权限",
+      "name": "角色、能力与数据范围",
+      "concept": "AccessScope",
+      "semantic": "Derived",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "EmployeeRole; DataScope; ProjectMember/参与关系",
+        "providerRoutes": "roles/permission; DataScopeContext"
+      },
+      "app": [
+        "pages/mine/index",
+        "subpackages/company/pages/members",
+        "subpackages/company/pages/invite"
+      ],
+      "web": [
+        "BossOrganizationView",
+        "RoleAreaShell/session",
+        "WorkbenchHomeView"
+      ],
+      "owner": [
+        "不适用"
+      ],
+      "tests": [
+        "UserIdentityContextTest",
+        "EmployeeRoleContractTest",
+        "MembershipContextTest",
+        "SubscriptionAccessFilterAcceptanceTest",
+        "FinanceOrganizationRulesTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-ORG-005",
+      "domain": "组织与权限",
+      "name": "订阅、套餐与功能权益",
+      "concept": "Subscription",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Subscription.plan/startTime/endTime/status; Plan.maxStores/maxSeats/modules",
+        "providerRoutes": "order/subscription/*; platform subscription"
+      },
+      "app": [
+        "pages/mine/index",
+        "subpackages/company/pages/members",
+        "subpackages/company/pages/invite"
+      ],
+      "web": [
+        "BossOrganizationView",
+        "RoleAreaShell/session",
+        "WorkbenchHomeView"
+      ],
+      "owner": [
+        "不适用"
+      ],
+      "tests": [
+        "UserIdentityContextTest",
+        "EmployeeRoleContractTest",
+        "MembershipContextTest",
+        "SubscriptionAccessFilterAcceptanceTest",
+        "FinanceOrganizationRulesTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CUSTOMER-001",
+      "domain": "客户经营",
+      "name": "客户姓名",
+      "concept": "Customer",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Customer.custId/name",
+        "providerRoutes": "customer/cust/save|update"
+      },
+      "app": [
+        "pages/customer/list",
+        "subpackages/customer/pages/detail",
+        "subpackages/customer/pages/edit"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View",
+        "DesignerFollowUpTasksView"
+      ],
+      "owner": [
+        "项目码/邀请手机号校验后进入我的家"
+      ],
+      "tests": [
+        "CustomerInsightContextTest",
+        "CustomerOwnerAssignmentTest",
+        "CustomerLossContextTest",
+        "ScanEnterAccessTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [
+        "INFO-18",
+        "INFO-19",
+        "INFO-20"
+      ],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CUSTOMER-002",
+      "domain": "客户经营",
+      "name": "客户手机号",
+      "concept": "Customer",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Customer.telNo; CustomerAccess 手机号校验",
+        "providerRoutes": "customer/cust/save|update; identity/customer-access"
+      },
+      "app": [
+        "pages/customer/list",
+        "subpackages/customer/pages/detail",
+        "subpackages/customer/pages/edit"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View",
+        "DesignerFollowUpTasksView"
+      ],
+      "owner": [
+        "项目码/邀请手机号校验后进入我的家"
+      ],
+      "tests": [
+        "CustomerInsightContextTest",
+        "CustomerOwnerAssignmentTest",
+        "CustomerLossContextTest",
+        "ScanEnterAccessTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CUSTOMER-003",
+      "domain": "客户经营",
+      "name": "客户来源与负责人",
+      "concept": "Customer",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Customer.source/owner/designer/store/team",
+        "providerRoutes": "customer/cust/save|update|handoff"
+      },
+      "app": [
+        "pages/customer/list",
+        "subpackages/customer/pages/detail",
+        "subpackages/customer/pages/edit"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View",
+        "DesignerFollowUpTasksView"
+      ],
+      "owner": [
+        "项目码/邀请手机号校验后进入我的家"
+      ],
+      "tests": [
+        "CustomerInsightContextTest",
+        "CustomerOwnerAssignmentTest",
+        "CustomerLossContextTest",
+        "ScanEnterAccessTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CUSTOMER-004",
+      "domain": "客户经营",
+      "name": "客户阶段、风险与标签",
+      "concept": "Customer",
+      "semantic": "Derived",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Customer.status/idleDays/riskLevel/riskReason/nextAction/mainline*; CustomerTag",
+        "providerRoutes": "customer/cust/info; customer/overview; CustomerInsightContext"
+      },
+      "app": [
+        "pages/customer/list",
+        "subpackages/customer/pages/detail",
+        "subpackages/customer/pages/edit"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View",
+        "DesignerFollowUpTasksView"
+      ],
+      "owner": [
+        "项目码/邀请手机号校验后进入我的家"
+      ],
+      "tests": [
+        "CustomerInsightContextTest",
+        "CustomerOwnerAssignmentTest",
+        "CustomerLossContextTest",
+        "ScanEnterAccessTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-CUSTOMER-005",
+      "domain": "客户经营",
+      "name": "客户访问身份",
+      "concept": "CustomerAccess",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "CustomerAccess.creId/customer/status; 项目码 scene",
+        "providerRoutes": "identity/customer-access/*; project owner qrcode"
+      },
+      "app": [
+        "pages/customer/list",
+        "subpackages/customer/pages/detail",
+        "subpackages/customer/pages/edit"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View",
+        "DesignerFollowUpTasksView"
+      ],
+      "owner": [
+        "项目码/邀请手机号校验后进入我的家"
+      ],
+      "tests": [
+        "CustomerInsightContextTest",
+        "CustomerOwnerAssignmentTest",
+        "CustomerLossContextTest",
+        "ScanEnterAccessTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-CUSTOMER-006",
+      "domain": "客户经营",
+      "name": "装修预算",
+      "concept": "Customer",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Customer.budget",
+        "providerRoutes": "customer/cust/save|update; customer portrait"
+      },
+      "app": [
+        "pages/customer/list",
+        "subpackages/customer/pages/detail",
+        "subpackages/customer/pages/edit"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View",
+        "DesignerFollowUpTasksView"
+      ],
+      "owner": [
+        "项目码/邀请手机号校验后进入我的家"
+      ],
+      "tests": [
+        "CustomerInsightContextTest",
+        "CustomerOwnerAssignmentTest",
+        "CustomerLossContextTest",
+        "ScanEnterAccessTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [
+        "INFO-02"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-PROPERTY-001",
+      "domain": "房屋资产",
+      "name": "房屋身份与地址",
+      "concept": "Property",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Property.propertyId/propertyNo/community/building/roomNo/address",
+        "providerRoutes": "property/property/save|update|info"
+      },
+      "app": [
+        "subpackages/customer/pages/property-edit",
+        "subpackages/customer/pages/detail"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "我的家/量房档案"
+      ],
+      "tests": [
+        "PropertyHandoffOwnershipTest",
+        "PropertyPageDesignerVisibilityTest",
+        "PropertyProjectManagerVisibilityTest"
+      ],
+      "findingIds": [
+        "INFO-21"
+      ],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-PROPERTY-002",
+      "domain": "房屋资产",
+      "name": "房屋结构与面积摘要",
+      "concept": "Property",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Property.area/layout/status",
+        "providerRoutes": "property/property/save|update"
+      },
+      "app": [
+        "subpackages/customer/pages/property-edit",
+        "subpackages/customer/pages/detail"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "我的家/量房档案"
+      ],
+      "tests": [
+        "PropertyHandoffOwnershipTest",
+        "PropertyPageDesignerVisibilityTest",
+        "PropertyProjectManagerVisibilityTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-PROPERTY-003",
+      "domain": "房屋资产",
+      "name": "客户与房屋关系",
+      "concept": "Property",
+      "semantic": "Reference",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Property.customer/owner/designer",
+        "providerRoutes": "property/property/save; customer/*"
+      },
+      "app": [
+        "subpackages/customer/pages/property-edit",
+        "subpackages/customer/pages/detail"
+      ],
+      "web": [
+        "DesignerCustomersView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "我的家/量房档案"
+      ],
+      "tests": [
+        "PropertyHandoffOwnershipTest",
+        "PropertyPageDesignerVisibilityTest",
+        "PropertyProjectManagerVisibilityTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-DEMAND-001",
+      "domain": "需求与跟进",
+      "name": "客户跟进记录",
+      "concept": "CustomerFollow",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "CustomerFollow.way/content/nextFollowAt/images/emp/createTime",
+        "providerRoutes": "customer/follows/save|page"
+      },
+      "app": [
+        "subpackages/customer/pages/follow",
+        "subpackages/customer/pages/portrait-edit",
+        "subpackages/design/pages/requirement"
+      ],
+      "web": [
+        "DesignerFollowUpTasksView",
+        "DesignerCustomer360View",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "方案与档案中的授权摘要"
+      ],
+      "tests": [
+        "CustomerFollowImageTest",
+        "RequirementSaveUpdateTest",
+        "TalkContextTest"
+      ],
+      "findingIds": [
+        "INFO-01"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-DEMAND-002",
+      "domain": "需求与跟进",
+      "name": "下次跟进计划",
+      "concept": "CustomerFollow",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "CustomerFollow.nextFollowAt; Customer.nextFollowAt",
+        "providerRoutes": "customer/follows/save"
+      },
+      "app": [
+        "subpackages/customer/pages/follow",
+        "subpackages/customer/pages/portrait-edit",
+        "subpackages/design/pages/requirement"
+      ],
+      "web": [
+        "DesignerFollowUpTasksView",
+        "DesignerCustomer360View",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "方案与档案中的授权摘要"
+      ],
+      "tests": [
+        "CustomerFollowImageTest",
+        "RequirementSaveUpdateTest",
+        "TalkContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-DEMAND-003",
+      "domain": "需求与跟进",
+      "name": "客户画像",
+      "concept": "CustomerPortrait",
+      "semantic": "Primary",
+      "status": "NO_OPERATIONAL_CONSUMER",
+      "backend": {
+        "fields": "CustomerPortrait.decisionRole/purpose/houseCondition/startWindow/style/eco/household/payment/concerns/competitor",
+        "providerRoutes": "customer/portrait/save; customer/cust/info"
+      },
+      "app": [
+        "subpackages/customer/pages/follow",
+        "subpackages/customer/pages/portrait-edit",
+        "subpackages/design/pages/requirement"
+      ],
+      "web": [
+        "DesignerFollowUpTasksView",
+        "DesignerCustomer360View",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "方案与档案中的授权摘要"
+      ],
+      "tests": [
+        "CustomerFollowImageTest",
+        "RequirementSaveUpdateTest",
+        "TalkContextTest"
+      ],
+      "findingIds": [
+        "INFO-03",
+        "INFO-04",
+        "INFO-05",
+        "INFO-06",
+        "INFO-07",
+        "INFO-08",
+        "INFO-09",
+        "INFO-13",
+        "INFO-14",
+        "INFO-15"
+      ],
+      "nextAction": "将画像字段接入设计约束、谈单任务、报价预警或跟进队列；未接入前不作为有效业务信息。"
+    },
+    {
+      "id": "INFO-DEMAND-004",
+      "domain": "需求与跟进",
+      "name": "客户诉求",
+      "concept": "Requirement",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Requirement.type/spaceName/kind/category/priority/title/detail/source",
+        "providerRoutes": "design/requirements/save|page"
+      },
+      "app": [
+        "subpackages/customer/pages/follow",
+        "subpackages/customer/pages/portrait-edit",
+        "subpackages/design/pages/requirement"
+      ],
+      "web": [
+        "DesignerFollowUpTasksView",
+        "DesignerCustomer360View",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "方案与档案中的授权摘要"
+      ],
+      "tests": [
+        "CustomerFollowImageTest",
+        "RequirementSaveUpdateTest",
+        "TalkContextTest"
+      ],
+      "findingIds": [
+        "INFO-10"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-DEMAND-005",
+      "domain": "需求与跟进",
+      "name": "诉求优先级、状态与设计回应",
+      "concept": "Requirement",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Requirement.status/response/confirmedAt/owner",
+        "providerRoutes": "design/requirements/save|update"
+      },
+      "app": [
+        "subpackages/customer/pages/follow",
+        "subpackages/customer/pages/portrait-edit",
+        "subpackages/design/pages/requirement"
+      ],
+      "web": [
+        "DesignerFollowUpTasksView",
+        "DesignerCustomer360View",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "方案与档案中的授权摘要"
+      ],
+      "tests": [
+        "CustomerFollowImageTest",
+        "RequirementSaveUpdateTest",
+        "TalkContextTest"
+      ],
+      "findingIds": [
+        "INFO-12",
+        "INFO-22"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MEASURE-001",
+      "domain": "量房",
+      "name": "量房预约与执行",
+      "concept": "Measure",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Measure.scheduledAt/executor/completedAt/status/designer",
+        "providerRoutes": "property/measures/save; designer measure workbench"
+      },
+      "app": [
+        "subpackages/customer/pages/measure",
+        "subpackages/customer/pages/measure-record"
+      ],
+      "web": [
+        "DesignerMeasureTasksView",
+        "DesignerCustomersView",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "量房档案"
+      ],
+      "tests": [
+        "MeasureRegionSaveTest",
+        "MeasureScheduleFactTest",
+        "MeasureStateGuardTest",
+        "CustomerMeasureStateGateTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-MEASURE-002",
+      "domain": "量房",
+      "name": "量房证据",
+      "concept": "Measure",
+      "semantic": "Evidence",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Measure.sitePhotos/structureImages/attachments",
+        "providerRoutes": "property/measures/save; file grant"
+      },
+      "app": [
+        "subpackages/customer/pages/measure",
+        "subpackages/customer/pages/measure-record"
+      ],
+      "web": [
+        "DesignerMeasureTasksView",
+        "DesignerCustomersView",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "量房档案"
+      ],
+      "tests": [
+        "MeasureRegionSaveTest",
+        "MeasureScheduleFactTest",
+        "MeasureStateGuardTest",
+        "CustomerMeasureStateGateTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MEASURE-003",
+      "domain": "量房",
+      "name": "量房原始区域",
+      "concept": "MeasureRegion",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "MeasureRegion.roomType/name/length/width/height/area/perimeter/areaSource/measuredBy/measuredAt",
+        "providerRoutes": "property/measure-region/save|list"
+      },
+      "app": [
+        "subpackages/customer/pages/measure",
+        "subpackages/customer/pages/measure-record"
+      ],
+      "web": [
+        "DesignerMeasureTasksView",
+        "DesignerCustomersView",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "量房档案"
+      ],
+      "tests": [
+        "MeasureRegionSaveTest",
+        "MeasureScheduleFactTest",
+        "MeasureStateGuardTest",
+        "CustomerMeasureStateGateTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-MEASURE-004",
+      "domain": "量房",
+      "name": "量房文字结论",
+      "concept": "Measure",
+      "semantic": "Evidence",
+      "status": "DUPLICATE_SOURCE",
+      "backend": {
+        "fields": "Measure.originalStructure/dimensions/customerRequirements/designerConclusion",
+        "providerRoutes": "property/measures/save"
+      },
+      "app": [
+        "subpackages/customer/pages/measure",
+        "subpackages/customer/pages/measure-record"
+      ],
+      "web": [
+        "DesignerMeasureTasksView",
+        "DesignerCustomersView",
+        "DesignerDesignWorkspaceView"
+      ],
+      "owner": [
+        "量房档案"
+      ],
+      "tests": [
+        "MeasureRegionSaveTest",
+        "MeasureScheduleFactTest",
+        "MeasureStateGuardTest",
+        "CustomerMeasureStateGateTest"
+      ],
+      "findingIds": [
+        "INFO-10",
+        "INFO-11",
+        "INFO-16",
+        "INFO-17"
+      ],
+      "nextAction": "确定 MeasureRegion/Requirement 唯一主源，量房文字仅保留为证据摘要。"
+    },
+    {
+      "id": "INFO-DESIGN-001",
+      "domain": "设计",
+      "name": "设计方案身份与版本",
+      "concept": "Design",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Design.designId/no/name/version/status/customer/property/owner",
+        "providerRoutes": "design/schemes/save|update|info"
+      },
+      "app": [
+        "subpackages/design/pages/scheme",
+        "subpackages/design/pages/workbench",
+        "subpackages/design/pages/requirements"
+      ],
+      "web": [
+        "DesignerDesignWorkspaceView",
+        "DesignerQuoteWorkspaceView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "设计方案"
+      ],
+      "tests": [
+        "DesignSchemeSaveTest",
+        "DesignItemBatchSaveTest",
+        "DesignSpaceSaveMeasuredTest",
+        "DesignWritePermissionTest",
+        "TalkPptContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-01"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-DESIGN-002",
+      "domain": "设计",
+      "name": "设计空间",
+      "concept": "Space",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Space.spaceId/type/name/length/width/height/area/perimeter/valueOrigin/sourceMeasureRegionId",
+        "providerRoutes": "design/spaces/save|list"
+      },
+      "app": [
+        "subpackages/design/pages/scheme",
+        "subpackages/design/pages/workbench",
+        "subpackages/design/pages/requirements"
+      ],
+      "web": [
+        "DesignerDesignWorkspaceView",
+        "DesignerQuoteWorkspaceView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "设计方案"
+      ],
+      "tests": [
+        "DesignSchemeSaveTest",
+        "DesignItemBatchSaveTest",
+        "DesignSpaceSaveMeasuredTest",
+        "DesignWritePermissionTest",
+        "TalkPptContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-DESIGN-003",
+      "domain": "设计",
+      "name": "设计分项商业事实",
+      "concept": "DesignItem",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "DesignItem.type/category/catalogItem/name/brand/spec/unit/quantity/materialPrice/manualPrice/amount/cost",
+        "providerRoutes": "design/items/batchsave|save"
+      },
+      "app": [
+        "subpackages/design/pages/scheme",
+        "subpackages/design/pages/workbench",
+        "subpackages/design/pages/requirements"
+      ],
+      "web": [
+        "DesignerDesignWorkspaceView",
+        "DesignerQuoteWorkspaceView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "设计方案"
+      ],
+      "tests": [
+        "DesignSchemeSaveTest",
+        "DesignItemBatchSaveTest",
+        "DesignSpaceSaveMeasuredTest",
+        "DesignWritePermissionTest",
+        "TalkPptContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-DESIGN-004",
+      "domain": "设计",
+      "name": "设计工艺与验收标准",
+      "concept": "DesignItem",
+      "semantic": "Primary",
+      "status": "SNAPSHOT_MISSING",
+      "backend": {
+        "fields": "DesignItem.craft/criterion; QuoteLine.craft/criterion",
+        "providerRoutes": "design/items/save|batchsave; catalog snapshot"
+      },
+      "app": [
+        "subpackages/design/pages/scheme",
+        "subpackages/design/pages/workbench",
+        "subpackages/design/pages/requirements"
+      ],
+      "web": [
+        "DesignerDesignWorkspaceView",
+        "DesignerQuoteWorkspaceView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "设计方案"
+      ],
+      "tests": [
+        "DesignSchemeSaveTest",
+        "DesignItemBatchSaveTest",
+        "DesignSpaceSaveMeasuredTest",
+        "DesignWritePermissionTest",
+        "TalkPptContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-02",
+        "CHAIN-03",
+        "INFO-11"
+      ],
+      "nextAction": "补齐来源 ID、版本、冻结点和下游快照消费，禁止回读当前主数据改写历史。"
+    },
+    {
+      "id": "INFO-DESIGN-005",
+      "domain": "设计",
+      "name": "设计资产与谈单材料",
+      "concept": "DesignAsset",
+      "semantic": "Evidence",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Design.coverUrl/cadUrl/cadPreviewUrl/originalPlan*/demolitionUrl/masonryUrl/optimizationUrl/sitePhotos/surveyPhotos; Talk.*",
+        "providerRoutes": "design/schemes/*; design/talks/*; file"
+      },
+      "app": [
+        "subpackages/design/pages/scheme",
+        "subpackages/design/pages/workbench",
+        "subpackages/design/pages/requirements"
+      ],
+      "web": [
+        "DesignerDesignWorkspaceView",
+        "DesignerQuoteWorkspaceView",
+        "DesignerCustomer360View"
+      ],
+      "owner": [
+        "设计方案"
+      ],
+      "tests": [
+        "DesignSchemeSaveTest",
+        "DesignItemBatchSaveTest",
+        "DesignSpaceSaveMeasuredTest",
+        "DesignWritePermissionTest",
+        "TalkPptContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-08"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-QUOTE-001",
+      "domain": "报价",
+      "name": "报价身份、版本与状态",
+      "concept": "Quote",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Quote.quoteId/no/customer/property/design/createdBy/version/mode/status",
+        "providerRoutes": "quote/save|update|info|page"
+      },
+      "app": [
+        "subpackages/quote/pages/workbench",
+        "subpackages/quote/pages/detail",
+        "subpackages/quote/pages/edit"
+      ],
+      "web": [
+        "DesignerQuoteListView",
+        "DesignerQuoteWorkspaceView",
+        "FinanceQuotesView",
+        "FinanceQuoteDetailView"
+      ],
+      "owner": [
+        "报价清单"
+      ],
+      "tests": [
+        "QuoteCalcContextTest",
+        "QuoteViewContractTest",
+        "QuoteContextBusinessRulesTest",
+        "QuoteWorkbookFileContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-QUOTE-002",
+      "domain": "报价",
+      "name": "报价行商业快照",
+      "concept": "QuoteLine",
+      "semantic": "Snapshot",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "QuoteLine.type/category/name/brand/spec/unit/quantity/price/amount/cost/source*",
+        "providerRoutes": "quote/lines/save|batchsave"
+      },
+      "app": [
+        "subpackages/quote/pages/workbench",
+        "subpackages/quote/pages/detail",
+        "subpackages/quote/pages/edit"
+      ],
+      "web": [
+        "DesignerQuoteListView",
+        "DesignerQuoteWorkspaceView",
+        "FinanceQuotesView",
+        "FinanceQuoteDetailView"
+      ],
+      "owner": [
+        "报价清单"
+      ],
+      "tests": [
+        "QuoteCalcContextTest",
+        "QuoteViewContractTest",
+        "QuoteContextBusinessRulesTest",
+        "QuoteWorkbookFileContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-02"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-QUOTE-003",
+      "domain": "报价",
+      "name": "报价金额组成",
+      "concept": "Quote",
+      "semantic": "Derived",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Quote.subtotal/discount/taxRate/taxAmount/amount/designFee/managementFee",
+        "providerRoutes": "QuoteCalcContext; quote/info"
+      },
+      "app": [
+        "subpackages/quote/pages/workbench",
+        "subpackages/quote/pages/detail",
+        "subpackages/quote/pages/edit"
+      ],
+      "web": [
+        "DesignerQuoteListView",
+        "DesignerQuoteWorkspaceView",
+        "FinanceQuotesView",
+        "FinanceQuoteDetailView"
+      ],
+      "owner": [
+        "报价清单"
+      ],
+      "tests": [
+        "QuoteCalcContextTest",
+        "QuoteViewContractTest",
+        "QuoteContextBusinessRulesTest",
+        "QuoteWorkbookFileContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-09"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-QUOTE-004",
+      "domain": "报价",
+      "name": "报价确认与决策",
+      "concept": "Quote",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Quote.status/submittedAt/acceptedAt/acceptedBy/rejectedAt/convertedAt",
+        "providerRoutes": "quote/update; contract generation"
+      },
+      "app": [
+        "subpackages/quote/pages/workbench",
+        "subpackages/quote/pages/detail",
+        "subpackages/quote/pages/edit"
+      ],
+      "web": [
+        "DesignerQuoteListView",
+        "DesignerQuoteWorkspaceView",
+        "FinanceQuotesView",
+        "FinanceQuoteDetailView"
+      ],
+      "owner": [
+        "报价清单"
+      ],
+      "tests": [
+        "QuoteCalcContextTest",
+        "QuoteViewContractTest",
+        "QuoteContextBusinessRulesTest",
+        "QuoteWorkbookFileContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CONTRACT-001",
+      "domain": "合同",
+      "name": "合同身份、状态与日期",
+      "concept": "ProjectContract",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ProjectContract.contractId/no/quote/project/customer/property/status/signedAt/effectiveAt/startDate/planEndDate",
+        "providerRoutes": "project/contract/save|update|confirm"
+      },
+      "app": [
+        "subpackages/project/pages/sign-workbench",
+        "subpackages/project/pages/create",
+        "subpackages/project/pages/contract"
+      ],
+      "web": [
+        "DesignerContractHandoffView",
+        "DesignerProjectContractView",
+        "DesignerContractChangesView"
+      ],
+      "owner": [
+        "合同档案"
+      ],
+      "tests": [
+        "ProjectContractContextTest",
+        "ContractSignRoleTest",
+        "ContractChangeFulfillmentContextTest",
+        "ContractFactTraceTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-CONTRACT-002",
+      "domain": "合同",
+      "name": "合同金额",
+      "concept": "ProjectContract",
+      "semantic": "Snapshot",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "ProjectContract.baselineAmount/signedAmount/currentAmount/signedCost/costComplete",
+        "providerRoutes": "project/contract/*; ContractChange"
+      },
+      "app": [
+        "subpackages/project/pages/sign-workbench",
+        "subpackages/project/pages/create",
+        "subpackages/project/pages/contract"
+      ],
+      "web": [
+        "DesignerContractHandoffView",
+        "DesignerProjectContractView",
+        "DesignerContractChangesView"
+      ],
+      "owner": [
+        "合同档案"
+      ],
+      "tests": [
+        "ProjectContractContextTest",
+        "ContractSignRoleTest",
+        "ContractChangeFulfillmentContextTest",
+        "ContractFactTraceTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CONTRACT-003",
+      "domain": "合同",
+      "name": "合同清单",
+      "concept": "ContractLine",
+      "semantic": "Snapshot",
+      "status": "SNAPSHOT_MISSING",
+      "backend": {
+        "fields": "ContractLine.type/category/name/brand/spec/unit/quantity/materialPrice/manualPrice/amount/cost/spaceName",
+        "providerRoutes": "ProjectContractContext"
+      },
+      "app": [
+        "subpackages/project/pages/sign-workbench",
+        "subpackages/project/pages/create",
+        "subpackages/project/pages/contract"
+      ],
+      "web": [
+        "DesignerContractHandoffView",
+        "DesignerProjectContractView",
+        "DesignerContractChangesView"
+      ],
+      "owner": [
+        "合同档案"
+      ],
+      "tests": [
+        "ProjectContractContextTest",
+        "ContractSignRoleTest",
+        "ContractChangeFulfillmentContextTest",
+        "ContractFactTraceTest"
+      ],
+      "findingIds": [
+        "CHAIN-02",
+        "CHAIN-03"
+      ],
+      "nextAction": "补齐来源 ID、版本、冻结点和下游快照消费，禁止回读当前主数据改写历史。"
+    },
+    {
+      "id": "INFO-CONTRACT-004",
+      "domain": "合同",
+      "name": "付款计划",
+      "concept": "ContractPaymentPlan",
+      "semantic": "Snapshot",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "ContractPaymentPlan/ContractPaymentNode; Receivable",
+        "providerRoutes": "plan/payment/*; project/contract/*"
+      },
+      "app": [
+        "subpackages/project/pages/sign-workbench",
+        "subpackages/project/pages/create",
+        "subpackages/project/pages/contract"
+      ],
+      "web": [
+        "DesignerContractHandoffView",
+        "DesignerProjectContractView",
+        "DesignerContractChangesView"
+      ],
+      "owner": [
+        "合同档案"
+      ],
+      "tests": [
+        "ProjectContractContextTest",
+        "ContractSignRoleTest",
+        "ContractChangeFulfillmentContextTest",
+        "ContractFactTraceTest"
+      ],
+      "findingIds": [
+        "CHAIN-10"
+      ],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CONTRACT-005",
+      "domain": "合同",
+      "name": "施工计划",
+      "concept": "ContractConstructionPlan",
+      "semantic": "Snapshot",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "ContractConstructionPlan/ContractConstructionStage; ProjectStage.acceptanceMode",
+        "providerRoutes": "plan/construction/*; project/contract/*"
+      },
+      "app": [
+        "subpackages/project/pages/sign-workbench",
+        "subpackages/project/pages/create",
+        "subpackages/project/pages/contract"
+      ],
+      "web": [
+        "DesignerContractHandoffView",
+        "DesignerProjectContractView",
+        "DesignerContractChangesView"
+      ],
+      "owner": [
+        "合同档案"
+      ],
+      "tests": [
+        "ProjectContractContextTest",
+        "ContractSignRoleTest",
+        "ContractChangeFulfillmentContextTest",
+        "ContractFactTraceTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-CONTRACT-006",
+      "domain": "合同",
+      "name": "合同变更",
+      "concept": "ContractChange",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ContractChange.type/reason/status/items/customerConfirmed*/evidenceImages/signatureUrl/approvedBy/conclusion",
+        "providerRoutes": "project/contract-change/save|save|approve|confirm"
+      },
+      "app": [
+        "subpackages/project/pages/sign-workbench",
+        "subpackages/project/pages/create",
+        "subpackages/project/pages/contract"
+      ],
+      "web": [
+        "DesignerContractHandoffView",
+        "DesignerProjectContractView",
+        "DesignerContractChangesView"
+      ],
+      "owner": [
+        "合同档案"
+      ],
+      "tests": [
+        "ProjectContractContextTest",
+        "ContractSignRoleTest",
+        "ContractChangeFulfillmentContextTest",
+        "ContractFactTraceTest"
+      ],
+      "findingIds": [
+        "CHAIN-04",
+        "CHAIN-11"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-PROJECT-001",
+      "domain": "项目履约",
+      "name": "项目身份与关系",
+      "concept": "Project",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Project.projectId/no/name/customer/property/contract/designer/manager/support/status",
+        "providerRoutes": "project/projects/save|info; ProjectAccessContext"
+      },
+      "app": [
+        "subpackages/project/pages/detail",
+        "subpackages/project/pages/plan"
+      ],
+      "web": [
+        "ProjectExecutionView",
+        "DesignerProjectsView"
+      ],
+      "owner": [
+        "我的家/进度"
+      ],
+      "tests": [
+        "ProjectCreationScopeGuardTest",
+        "ProjectOverviewContextTest",
+        "ProjectBusinessStateContextTest",
+        "ProjectFactTraceContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-PROJECT-002",
+      "domain": "项目履约",
+      "name": "项目阶段",
+      "concept": "ProjectStage",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ProjectStage.stageCode/name/status/progress/plannedStart/plannedEnd/acceptanceMode",
+        "providerRoutes": "project/stages/*; plan"
+      },
+      "app": [
+        "subpackages/project/pages/detail",
+        "subpackages/project/pages/plan"
+      ],
+      "web": [
+        "ProjectExecutionView",
+        "DesignerProjectsView"
+      ],
+      "owner": [
+        "我的家/进度"
+      ],
+      "tests": [
+        "ProjectCreationScopeGuardTest",
+        "ProjectOverviewContextTest",
+        "ProjectBusinessStateContextTest",
+        "ProjectFactTraceContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-TASK-001",
+      "domain": "施工执行",
+      "name": "施工任务",
+      "concept": "ProjectTask",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ProjectTask.taskId/name/zone/craft/spec/quantity/unit/status/source*",
+        "providerRoutes": "project/tasks/save|update|page"
+      },
+      "app": [
+        "subpackages/project/pages/plan",
+        "subpackages/project/pages/task/detail"
+      ],
+      "web": [
+        "ProjectExecutionView"
+      ],
+      "owner": [
+        "进度与现场动态摘要"
+      ],
+      "tests": [
+        "TaskNodeSaveAcceptanceTest",
+        "ProjectPlanFromScheduleTest",
+        "TaskUpdateTransitionPolicyTest"
+      ],
+      "findingIds": [
+        "CHAIN-17"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-TASK-002",
+      "domain": "施工执行",
+      "name": "任务计划与责任",
+      "concept": "ProjectTask",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ProjectTask.owner/creator/priority/conceal/plannedStart/plannedEnd/actualStart/actualEnd",
+        "providerRoutes": "project/tasks/*; plan"
+      },
+      "app": [
+        "subpackages/project/pages/plan",
+        "subpackages/project/pages/task/detail"
+      ],
+      "web": [
+        "ProjectExecutionView"
+      ],
+      "owner": [
+        "进度与现场动态摘要"
+      ],
+      "tests": [
+        "TaskNodeSaveAcceptanceTest",
+        "ProjectPlanFromScheduleTest",
+        "TaskUpdateTransitionPolicyTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-TASK-003",
+      "domain": "施工执行",
+      "name": "任务节点与证据",
+      "concept": "TaskNode",
+      "semantic": "Evidence",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "TaskNode.nodeKey/note/medias/confirmedBy; ProjectTask.evidenceUrls",
+        "providerRoutes": "project/task-node/save"
+      },
+      "app": [
+        "subpackages/project/pages/plan",
+        "subpackages/project/pages/task/detail"
+      ],
+      "web": [
+        "ProjectExecutionView"
+      ],
+      "owner": [
+        "进度与现场动态摘要"
+      ],
+      "tests": [
+        "TaskNodeSaveAcceptanceTest",
+        "ProjectPlanFromScheduleTest",
+        "TaskUpdateTransitionPolicyTest"
+      ],
+      "findingIds": [
+        "CHAIN-06"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-REPORT-001",
+      "domain": "现场协同",
+      "name": "项目动态与日报",
+      "concept": "ProjectReport",
+      "semantic": "Evidence",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ProjectReport.type/title/content/customerSummary/images/author/authorRole/visibleToCustomer",
+        "providerRoutes": "project/reports/save|page"
+      },
+      "app": [
+        "subpackages/project/pages/report/edit",
+        "subpackages/project/pages/report/daily"
+      ],
+      "web": [
+        "ProjectExecutionView",
+        "DesignerProjectsView"
+      ],
+      "owner": [
+        "现场动态"
+      ],
+      "tests": [
+        "ProjectReportPublisherAccessTest",
+        "ProjectReportStoreManagerScopeTest",
+        "BusinessEventContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-14"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-PROJECT-003",
+      "domain": "项目履约",
+      "name": "项目风险与下一步",
+      "concept": "Project",
+      "semantic": "Derived",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Project.riskLevel/riskCount/mainRiskType/riskReason/nextAction/overdueDays",
+        "providerRoutes": "ProjectInsightContext; business-state; risk queue"
+      },
+      "app": [
+        "subpackages/project/pages/detail",
+        "subpackages/project/pages/plan"
+      ],
+      "web": [
+        "ProjectExecutionView",
+        "DesignerProjectsView"
+      ],
+      "owner": [
+        "我的家/进度"
+      ],
+      "tests": [
+        "ProjectCreationScopeGuardTest",
+        "ProjectOverviewContextTest",
+        "ProjectBusinessStateContextTest",
+        "ProjectFactTraceContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-ACCEPTANCE-001",
+      "domain": "质量验收",
+      "name": "阶段验收",
+      "concept": "Acceptance",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Acceptance.stage/status/conclusion/issues/evidenceUrls/rectificationOwner/rectificationDueDate/confirmedBy/confirmedAt",
+        "providerRoutes": "project/acceptance/save; customer/acceptance/update"
+      },
+      "app": [
+        "subpackages/project/pages/accept/edit",
+        "subpackages/project/pages/rectify-board"
+      ],
+      "web": [
+        "DesignerAcceptanceView",
+        "ProjectExecutionView"
+      ],
+      "owner": [
+        "阶段验收/整改复验"
+      ],
+      "tests": [
+        "ProjectProgressCompletionGateTest",
+        "DecoboonClosedLoopTest",
+        "CustomerJourneyOwnerPreviewModeTest"
+      ],
+      "findingIds": [
+        "CHAIN-03",
+        "CHAIN-06"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-ACCEPTANCE-002",
+      "domain": "质量验收",
+      "name": "验收轮次与整改",
+      "concept": "AcceptanceRound",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "AcceptanceRound.roundNo/result/issues/rectificationNote/rectificationEvidenceUrls/confirmedBy/confirmedAt",
+        "providerRoutes": "ProjectContext.submitAcceptance; customer acceptance"
+      },
+      "app": [
+        "subpackages/project/pages/accept/edit",
+        "subpackages/project/pages/rectify-board"
+      ],
+      "web": [
+        "DesignerAcceptanceView",
+        "ProjectExecutionView"
+      ],
+      "owner": [
+        "阶段验收/整改复验"
+      ],
+      "tests": [
+        "ProjectProgressCompletionGateTest",
+        "DecoboonClosedLoopTest",
+        "CustomerJourneyOwnerPreviewModeTest"
+      ],
+      "findingIds": [
+        "CHAIN-07"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FEEDBACK-001",
+      "domain": "服务与投诉",
+      "name": "业主意见与投诉",
+      "concept": "CustomerFeedback",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "CustomerFeedback.kind/type/title/content/images/handler/response/status/dueAt/closedAt/satisfaction",
+        "providerRoutes": "customer/feedback/save; project/feedback/update"
+      },
+      "app": [
+        "subpackages/project/pages/feedback-edit",
+        "subpackages/project/pages/feedback-list"
+      ],
+      "web": [
+        "FeedbackBoardView",
+        "FeedbackDetailView",
+        "ProjectExecutionView"
+      ],
+      "owner": [
+        "意见与投诉"
+      ],
+      "tests": [
+        "ProjectFeedbackScopeTest",
+        "CustomerJourneyOwnerPreviewModeTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-001",
+      "domain": "材料供应链",
+      "name": "材料计划",
+      "concept": "MaterialPlan",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "MaterialPlan.contractLine/changeItem/quoteItem/catalogItem/quantity/unit/selectedBrand/selectedSpec/selectedModel/requiredAt/arrivedAt/status",
+        "providerRoutes": "project/material-plan/*; ProjectContext"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-002",
+      "domain": "材料供应链",
+      "name": "主材选材",
+      "concept": "MaterialSelection",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "MaterialSelection.contract/project/version/status/title/content/selectionJson/attachments/items",
+        "providerRoutes": "material/selections/save; project/material-selection"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-003",
+      "domain": "材料供应链",
+      "name": "主材作业单",
+      "concept": "MaterialOrderSheet",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "MaterialOrderSheet.sheetType/category/supplier/measureAt/groupChatAt/deliverAt/installAt/signatures/status/priceState",
+        "providerRoutes": "material/sheet/*"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-12",
+        "CHAIN-13"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-004",
+      "domain": "材料供应链",
+      "name": "作业单行规格",
+      "concept": "MaterialOrderSheetItem",
+      "semantic": "Snapshot",
+      "status": "SNAPSHOT_MISSING",
+      "backend": {
+        "fields": "MaterialOrderSheetItem.spaceName/locationName/materialName/brand/model/spec/color/size/craft/glass/quantity/unit/purchasePrice/settlementPrice",
+        "providerRoutes": "material/sheet/item/*"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-05"
+      ],
+      "nextAction": "补齐来源 ID、版本、冻结点和下游快照消费，禁止回读当前主数据改写历史。"
+    },
+    {
+      "id": "INFO-MATERIAL-005",
+      "domain": "材料供应链",
+      "name": "采购单",
+      "concept": "PurchaseOrder",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "PurchaseOrder.supplier/deliveryMode/quantity/unitPrice/amount/expectedAt/priceState/status/source*",
+        "providerRoutes": "project/purchase/*"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-05"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-008",
+      "domain": "材料供应链",
+      "name": "材料到场记录",
+      "concept": "GoodsReceipt",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "GoodsReceipt.purchase/purchaseItem/materialPlan/quantity/batchNo/expiryDate/arrivedAt/inspector/images",
+        "providerRoutes": "project/goods-receipt/*"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-006",
+      "domain": "材料供应链",
+      "name": "库存、退换与损耗",
+      "concept": "Inventory",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Inventory/StockMove/Return/Deduction 相关库存、退换和损耗字段",
+        "providerRoutes": "material/inventory/*; returns"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-MATERIAL-007",
+      "domain": "材料供应链",
+      "name": "供应商与合作方",
+      "concept": "Partner",
+      "semantic": "Primary",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Partner.name/type/contact/账期/settlementMode/enabled",
+        "providerRoutes": "supply/partner/*; finance/partner/*"
+      },
+      "app": [
+        "subpackages/project/pages/material-plan",
+        "subpackages/project/pages/selection-board",
+        "subpackages/project/pages/material-sheet"
+      ],
+      "web": [
+        "FinanceMaterialOrderingView",
+        "FinanceMaterialSettlementView",
+        "DesignerMaterialSelectionBoardView"
+      ],
+      "owner": [
+        "选材记录/材料计划"
+      ],
+      "tests": [
+        "MaterialSelectionFlowTest",
+        "MaterialSheetOrderFlowTest",
+        "MaterialGoodsReceiptFlowTest",
+        "MaterialSettlementFlowTest",
+        "InventoryContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-FINANCE-001",
+      "domain": "财务经营",
+      "name": "应收计划与余额",
+      "concept": "Receivable",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Receivable.project/contract/stage/type/amount/receivedAmount/dueDate/status/invoice*",
+        "providerRoutes": "finance/receivables/*; contract change"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-002",
+      "domain": "财务经营",
+      "name": "收款与退款",
+      "concept": "Receipt",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Receipt.project/receivable/amount/account/receivedAt/payerName/voucherUrl/status/reversal*",
+        "providerRoutes": "finance/receipts/*; refunds/reverse"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-003",
+      "domain": "财务经营",
+      "name": "应付",
+      "concept": "Payable",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Payable.project/source*/payee*/amount/paidAmount/period/dueDate/status/estimated",
+        "providerRoutes": "finance/payables/*"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-010",
+      "domain": "财务经营",
+      "name": "付款",
+      "concept": "Payment",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Payment.payable/amount/account/paidAt/payeeName/partner/worker/payeeEmployee/batchNo/transactionNo/voucherUrl",
+        "providerRoutes": "finance/payments/*"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-16"
+      ],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-004",
+      "domain": "财务经营",
+      "name": "发票信息",
+      "concept": "Invoice",
+      "semantic": "Primary",
+      "status": "UNMAPPED",
+      "backend": {
+        "fields": "Receivable.invoiceRequired/invoiceNo; Invoice 对象未落地",
+        "providerRoutes": "finance/receivables/*; document/invoice"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [
+        "CHAIN-15"
+      ],
+      "nextAction": "建立正式 Invoice 对象、状态、权限和来源链，或从正式表单移除。"
+    },
+    {
+      "id": "INFO-FINANCE-005",
+      "domain": "财务经营",
+      "name": "资金台账",
+      "concept": "Ledger",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Ledger.direction/category/purpose/project/source/sourceId/amount/account/occurredAt/counterparty/summary/remark",
+        "providerRoutes": "finance/ledgers/*; automatic receipt/payment/refund"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-006",
+      "domain": "财务经营",
+      "name": "凭证",
+      "concept": "Voucher",
+      "semantic": "Snapshot",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "VoucherRecord/Template/version/amount/party/date/PDF/重打记录",
+        "providerRoutes": "document/voucher/*; template"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-007",
+      "domain": "财务经营",
+      "name": "项目成本",
+      "concept": "ProjectCost",
+      "semantic": "Derived",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ProjectCostContext P1/P2/P3、costComplete、profitAmount/grossMargin",
+        "providerRoutes": "ProjectCostContext"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-008",
+      "domain": "财务经营",
+      "name": "结算与利润",
+      "concept": "Settlement",
+      "semantic": "Snapshot",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Settlement.contractAmount/finalAmount/finalCost/profitAmount/grossMargin/status",
+        "providerRoutes": "finance/settlement/*; project settlement"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-FINANCE-009",
+      "domain": "财务经营",
+      "name": "工资与提成",
+      "concept": "Payroll",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "PayrollSheet/PayrollItem/Attendance/Commission/Payment/Voucher",
+        "providerRoutes": "payroll/*; finance payment"
+      },
+      "app": [
+        "pages/finance/index",
+        "subpackages/finance/pages/receivables",
+        "subpackages/finance/pages/payments"
+      ],
+      "web": [
+        "FinanceWorkbenchView",
+        "FinanceReceivablesView",
+        "FinancePayablesView",
+        "FinanceLedgerView",
+        "FinanceVouchersView"
+      ],
+      "owner": [
+        "我的钱/付款计划"
+      ],
+      "tests": [
+        "FinanceClosedLoopTest",
+        "FinanceAgingContextTest",
+        "PaymentIdempotencyTest",
+        "ReceiptIdempotencyTest",
+        "ReceiptReversalContextTest",
+        "ProjectCostContextTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-OWNER-001",
+      "domain": "业主服务",
+      "name": "业主访问与项目码",
+      "concept": "CustomerAccess",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "CustomerAccess; Project.ownerQrcodeScene/Path/Url/EnvVersion",
+        "providerRoutes": "identity/customer-access; project owner qrcode"
+      },
+      "app": [
+        "pages/index/index",
+        "subpackages/project/pages/journey",
+        "subpackages/project/pages/owner-acceptance"
+      ],
+      "web": [
+        "NO_WEB_OWNER_UI; App-only owner projection"
+      ],
+      "owner": [
+        "我的家/装修历程/家档案/服务团队"
+      ],
+      "tests": [
+        "ScanEnterAccessTest",
+        "CustomerJourneyEnrichmentTest",
+        "CustomerJourneyOwnerPreviewModeTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-OWNER-002",
+      "domain": "业主服务",
+      "name": "业主可见事实投影",
+      "concept": "OwnerProjection",
+      "semantic": "Projection",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "CustomerJourney.sections/actions/progress/currentStageName/vendor/team/previewMeta",
+        "providerRoutes": "CustomerJourneyContext"
+      },
+      "app": [
+        "pages/index/index",
+        "subpackages/project/pages/journey",
+        "subpackages/project/pages/owner-acceptance"
+      ],
+      "web": [
+        "NO_WEB_OWNER_UI; App-only owner projection"
+      ],
+      "owner": [
+        "我的家/装修历程/家档案/服务团队"
+      ],
+      "tests": [
+        "ScanEnterAccessTest",
+        "CustomerJourneyEnrichmentTest",
+        "CustomerJourneyOwnerPreviewModeTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-OWNER-003",
+      "domain": "业主服务",
+      "name": "业主确认记录",
+      "concept": "OwnerConfirmation",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "Acceptance.confirmedBy/confirmedAt/status; AcceptanceRound.confirmedBy/confirmedAt/result",
+        "providerRoutes": "customer/acceptance/update"
+      },
+      "app": [
+        "pages/index/index",
+        "subpackages/project/pages/journey",
+        "subpackages/project/pages/owner-acceptance"
+      ],
+      "web": [
+        "NO_WEB_OWNER_UI; App-only owner projection"
+      ],
+      "owner": [
+        "我的家/装修历程/家档案/服务团队"
+      ],
+      "tests": [
+        "ScanEnterAccessTest",
+        "CustomerJourneyEnrichmentTest",
+        "CustomerJourneyOwnerPreviewModeTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    },
+    {
+      "id": "INFO-OWNER-004",
+      "domain": "业主服务",
+      "name": "分享、反馈与售后",
+      "concept": "OwnerService",
+      "semantic": "Primary",
+      "status": "PARTIAL",
+      "backend": {
+        "fields": "ShareJourneyView; CustomerFeedback; 售后/质保对象待建设",
+        "providerRoutes": "customer/shareview; customer/feedback; future warranty"
+      },
+      "app": [
+        "pages/index/index",
+        "subpackages/project/pages/journey",
+        "subpackages/project/pages/owner-acceptance"
+      ],
+      "web": [
+        "NO_WEB_OWNER_UI; App-only owner projection"
+      ],
+      "owner": [
+        "我的家/装修历程/家档案/服务团队"
+      ],
+      "tests": [
+        "ScanEnterAccessTest",
+        "CustomerJourneyEnrichmentTest",
+        "CustomerJourneyOwnerPreviewModeTest",
+        "ShareViewInfoTest"
+      ],
+      "findingIds": [],
+      "nextAction": "补齐唯一主源、下游动作、真实页面和闭环测试。"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "装得清 UI Craft 智能体"
+  short_description: "按企业工作台规范设计、改造和审查装得清 Web UI 与空间场景"
+  brand_color: "#2F7D5A"
+  default_prompt: "Use $zhuangdeqing-ui-craft to design and review a ZHUANGDEQING Web workbench page from role duty, business object, task flow, interaction, visual system, and professional UI critique; add 2.5D/3D only when it proves business value over 2D."

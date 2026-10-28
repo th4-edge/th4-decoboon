@@ -1,0 +1,1452 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%232f7d5a'/%3E%3Cpath d='M9 8h14v16H9zM12 12h3m3 0h3m-9 4h3m3 0h3m-5 4h5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>装得清 · 企业负责人经营管理全景</title>
+  <style>
+    :root{
+      --brand-950:#071b13;
+      --brand-900:#0c221a;
+      --brand-800:#153829;
+      --brand-700:#1d4e39;
+      --brand-600:#26654a;
+      --brand-500:#2f7d5a;
+      --brand-400:#529e77;
+      --brand-300:#7fbb9b;
+      --brand-200:#add5bf;
+      --brand-100:#d6eadf;
+      --brand-50:#eef6f1;
+      --lime:#d8ff59;
+      --ink-950:#1a1a17;
+      --ink-800:#2e2e2a;
+      --ink-600:#66665f;
+      --ink-400:#74746d;
+      --line:#e7e8e3;
+      --line-strong:#d8dbd4;
+      --surface:#f6f6f3;
+      --surface-2:#efefeb;
+      --card:#ffffff;
+      --success:#22a06b;
+      --success-soft:#e9f7f0;
+      --warning:#8f5a12;
+      --warning-strong:#e8a020;
+      --warning-soft:#fdf4e3;
+      --danger:#c53a40;
+      --danger-soft:#fdecec;
+      --info:#3b7de8;
+      --info-soft:#ebf2fe;
+      --purple:#6958c8;
+      --purple-soft:#f0eefc;
+      --radius-xs:6px;
+      --radius-sm:8px;
+      --radius-md:12px;
+      --radius-lg:16px;
+      --radius-xl:22px;
+      --shadow-card:0 1px 3px rgba(26,26,23,.045),0 1px 2px rgba(26,26,23,.025);
+      --shadow-float:0 20px 50px rgba(12,34,26,.16),0 4px 12px rgba(12,34,26,.08);
+      --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;min-height:100vh;background:#e9ece7;color:var(--ink-950);font-family:var(--font);
+      font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+    }
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid rgba(47,125,90,.3);outline-offset:2px}
+    ::selection{background:var(--brand-100);color:var(--brand-900)}
+    ::-webkit-scrollbar{width:8px;height:8px}
+    ::-webkit-scrollbar-thumb{background:#c8cec6;border-radius:8px}
+    ::-webkit-scrollbar-track{background:transparent}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+    /* Prototype chrome */
+    .proto-top{
+      height:58px;background:rgba(255,255,255,.92);border-bottom:1px solid rgba(216,219,212,.9);
+      backdrop-filter:blur(14px);display:flex;align-items:center;gap:18px;padding:0 24px;position:sticky;top:0;z-index:100;
+    }
+    .proto-brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .proto-brand img{width:112px;height:42px;object-fit:contain;object-position:left center}
+    .proto-pill{font-size:12px;font-weight:600;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-100);padding:4px 9px;border-radius:999px;white-space:nowrap}
+    .proto-title{font-size:13px;color:var(--ink-600);padding-left:14px;border-left:1px solid var(--line);white-space:nowrap}
+    .demo-badge{margin-left:auto;font-size:12px;color:#775715;background:#fff7d7;border:1px solid #f2df9b;border-radius:999px;padding:4px 9px;white-space:nowrap}
+    .surface-switch{display:flex;gap:4px;padding:3px;background:var(--surface-2);border-radius:10px}
+    .surface-switch button{border:0;background:transparent;color:var(--ink-600);border-radius:7px;padding:6px 13px;font-size:12px;font-weight:600}
+    .surface-switch button.active{background:var(--card);color:var(--brand-700);box-shadow:var(--shadow-card)}
+    .stage{min-height:calc(100vh - 58px);padding:22px}
+    .surface{display:none;animation:surface-in .22s ease}
+    .surface.active{display:block}
+    @keyframes surface-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .surface-caption{max-width:1440px;margin:0 auto 12px;display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--ink-600);font-size:12px}
+    .surface-caption strong{color:var(--ink-950);font-size:13px}
+    .surface-caption span{display:inline-flex;align-items:center;gap:6px}
+    .surface-caption i{width:7px;height:7px;border-radius:50%;background:var(--brand-500);display:inline-block}
+
+    /* Shared web shell */
+    .web-shell{
+      width:min(1540px,100%);height:calc(100vh - 134px);min-height:740px;margin:0 auto;background:var(--surface);
+      border:1px solid #dfe2dc;border-radius:20px;overflow:hidden;display:grid;grid-template-columns:236px minmax(0,1fr);
+      box-shadow:0 18px 50px rgba(20,40,30,.11);
+    }
+    .sidebar{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;position:relative}
+    .side-brand{padding:18px 18px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+    .side-brand img{width:104px;height:39px;object-fit:contain;object-position:left center}
+    .side-brand .role-chip{margin-left:auto;font-size:10px;font-weight:700;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-100);border-radius:999px;padding:3px 7px;white-space:nowrap}
+    .nav-scroll{padding:14px 11px;overflow-y:auto;flex:1;min-height:0}
+    .nav-label{margin:4px 10px 8px;color:var(--ink-400);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+    .nav-item{width:100%;border:0;background:transparent;color:var(--ink-600);display:flex;align-items:center;gap:11px;padding:10px 11px;border-radius:10px;text-align:left;margin-bottom:3px;position:relative}
+    .nav-item:hover{background:var(--surface);color:var(--ink-800)}
+    .nav-item.active{background:var(--brand-50);color:var(--brand-700);font-weight:600}
+    .nav-item.active::before{content:"";position:absolute;left:-11px;top:9px;bottom:9px;width:3px;border-radius:0 3px 3px 0;background:var(--brand-500)}
+    .nav-item svg{width:18px;height:18px;flex:0 0 auto}
+    .nav-item .nav-badge{margin-left:auto;font-size:11px;font-weight:700;min-width:19px;height:19px;padding:0 6px;border-radius:999px;background:var(--danger-soft);color:var(--danger);display:inline-flex;align-items:center;justify-content:center}
+    .nav-item .nav-badge.neutral{background:var(--surface-2);color:var(--ink-600)}
+    .side-foot{padding:13px 13px 16px;border-top:1px solid var(--line);background:#fbfbf9}
+    .perspective-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-400);padding:0 4px 8px}
+    .perspective-label b{color:var(--ink-600);font-size:12px}
+    .perspective-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+    .perspective-btn{border:1px solid var(--line);background:#fff;color:var(--ink-600);border-radius:7px;padding:6px 4px;font-size:12px;white-space:nowrap}
+    .perspective-btn.active{border-color:var(--brand-300);background:var(--brand-50);color:var(--brand-700);font-weight:600}
+    .perspective-note{font-size:12px;color:var(--ink-400);line-height:1.45;margin:8px 2px 0}
+    .web-main{min-width:0;min-height:0;display:flex;flex-direction:column}
+    .web-topbar{
+      height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 22px;flex:0 0 auto;position:relative;z-index:20;
+    }
+    .scope-switch{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:12px;color:var(--ink-600);white-space:nowrap}
+    .scope-switch .store-dot{width:7px;height:7px;border-radius:50%;background:var(--brand-500);box-shadow:0 0 0 3px var(--brand-100)}
+    .scope-switch svg{width:14px;height:14px}
+    .global-search{height:36px;flex:1;max-width:430px;background:var(--surface);border:1px solid transparent;border-radius:9px;display:flex;align-items:center;gap:9px;padding:0 11px;color:var(--ink-400);transition:.15s}
+    .global-search:focus-within{background:#fff;border-color:var(--brand-300);box-shadow:0 0 0 3px rgba(47,125,90,.1)}
+    .global-search input{border:0;outline:0;background:transparent;flex:1;min-width:0;color:var(--ink-800);font-size:12.5px}
+    .global-search svg{width:16px;height:16px;flex:0 0 auto}
+    .top-actions{margin-left:auto;display:flex;align-items:center;gap:7px}
+    .icon-button{width:34px;height:34px;border:1px solid transparent;background:transparent;border-radius:9px;color:var(--ink-600);display:inline-flex;align-items:center;justify-content:center;position:relative}
+    .icon-button:hover{background:var(--surface);border-color:var(--line)}
+    .icon-button svg{width:17px;height:17px}
+    .icon-button .dot{position:absolute;right:7px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--danger);box-shadow:0 0 0 2px #fff}
+    .avatar{width:34px;height:34px;border-radius:50%;border:1px solid var(--brand-200);background:linear-gradient(145deg,var(--brand-100),#fff);color:var(--brand-700);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-left:3px}
+    .web-content{overflow-y:auto;min-height:0;flex:1}
+    .risk-strip{height:42px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 20px;overflow:hidden;position:sticky;top:0;z-index:15}
+    .risk-label{display:flex;align-items:center;gap:7px;color:var(--danger);font-size:12px;font-weight:700;padding-right:12px;border-right:1px solid var(--line);flex:0 0 auto}
+    .risk-label i{width:7px;height:7px;border-radius:50%;background:var(--danger);animation:pulse 1.8s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+    .risk-scroll{display:flex;gap:7px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none}
+    .risk-scroll::-webkit-scrollbar{display:none}
+    .risk-chip{flex:0 0 auto;border:1px solid #f2d1d1;background:var(--danger-soft);color:#a6383d;border-radius:999px;padding:4px 9px;font-size:12px;white-space:nowrap}
+    .risk-chip.warn{border-color:#f1dfbd;background:var(--warning-soft);color:#8b5b16}
+    .risk-chip.info{border-color:#cad9f8;background:var(--info-soft);color:#2e5da9}
+    .risk-chip b{font-weight:700}
+    .web-page{padding:20px 22px 34px;display:none}
+    .web-page.active{display:block;animation:page-in .2s ease}
+    @keyframes page-in{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+    .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+    .page-head .eyebrow{font-size:12px;color:var(--brand-600);font-weight:700;letter-spacing:.08em;margin:0 0 5px}
+    .page-head h1{font-size:22px;line-height:1.25;letter-spacing:-.3px;margin:0 0 5px}
+    .page-head p{margin:0;color:var(--ink-600);font-size:13px;line-height:1.65}
+    .page-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+    .segmented{display:flex;background:var(--surface-2);padding:3px;border-radius:9px;gap:2px}
+    .segmented button{border:0;background:transparent;border-radius:7px;padding:6px 9px;font-size:12px;color:var(--ink-600)}
+    .segmented button.active{background:#fff;color:var(--ink-950);box-shadow:var(--shadow-card);font-weight:600}
+    .btn{border:1px solid var(--line-strong);background:#fff;color:var(--ink-800);border-radius:8px;padding:7px 11px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+    .btn:hover{border-color:var(--brand-300);color:var(--brand-700)}
+    .btn.primary{background:var(--brand-700);border-color:var(--brand-700);color:#fff}
+    .btn.primary:hover{background:var(--brand-800);border-color:var(--brand-800);color:#fff}
+    .btn.ghost{background:transparent;border-color:transparent;color:var(--ink-600)}
+    .btn svg{width:14px;height:14px}
+    .demo-note{display:flex;align-items:flex-start;gap:8px;border:1px solid #f0dfaa;background:#fffaf0;color:#75591f;border-radius:9px;padding:8px 10px;font-size:12px;line-height:1.55;margin-bottom:14px}
+    .demo-note b{white-space:nowrap}
+    .demo-note svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px}
+
+    /* Overview */
+    .dimension-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:14px}
+    .dimension-card{text-align:left;border:1px solid var(--line);background:#fff;border-radius:var(--radius-md);padding:12px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:6px;min-height:112px;transition:.15s}
+    .dimension-card:hover{border-color:var(--brand-300);background:var(--brand-50);transform:translateY(-1px)}
+    .dimension-card .dimension-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .dimension-card .dimension-icon{width:28px;height:28px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);display:flex;align-items:center;justify-content:center}
+    .dimension-card:hover .dimension-icon{background:#fff}
+    .dimension-card .dimension-icon svg{width:15px;height:15px}
+    .dimension-card .dimension-count{font-size:11px;color:var(--ink-400)}
+    .dimension-card strong{font-size:13px}
+    .dimension-card p{font-size:12px;color:var(--ink-600);line-height:1.5;margin:0}
+    .dimension-card em{font-style:normal;color:var(--brand-700);font-size:11px;font-weight:600;margin-top:auto}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.72fr);gap:14px;margin-bottom:14px}
+    .hero-card{
+      min-height:220px;border-radius:var(--radius-lg);padding:22px;color:#fff;position:relative;overflow:hidden;
+      background:
+        radial-gradient(circle at 94% 8%,rgba(216,255,89,.16),transparent 30%),
+        radial-gradient(circle at 10% 100%,rgba(127,187,155,.2),transparent 40%),
+        linear-gradient(145deg,var(--brand-800),var(--brand-950) 74%);
+      box-shadow:0 20px 44px rgba(18,57,48,.14)
+    }
+    .hero-card::after{content:"";position:absolute;right:-80px;bottom:-130px;width:300px;height:300px;border:1px solid rgba(255,255,255,.07);border-radius:50%;box-shadow:0 0 0 40px rgba(255,255,255,.025),0 0 0 80px rgba(255,255,255,.018)}
+    .hero-kicker{display:flex;align-items:center;gap:8px;margin:0 0 9px;color:var(--brand-200);font-size:12px;font-weight:700;letter-spacing:.09em}
+    .hero-kicker i{width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px rgba(216,255,89,.5)}
+    .hero-card h2{font-size:23px;line-height:1.35;max-width:720px;margin:0 0 8px;letter-spacing:-.3px}
+    .hero-card>p{max-width:720px;margin:0;color:rgba(255,255,255,.74);font-size:13px;line-height:1.72}
+    .hero-risks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px;position:relative;z-index:2}
+    .hero-risk{
+      min-width:0;text-align:left;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.075);color:#fff;border-radius:11px;padding:10px 11px;transition:.16s;
+    }
+    .hero-risk:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);transform:translateY(-1px)}
+    .hero-risk .risk-type{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px;color:rgba(255,255,255,.7);margin-bottom:5px}
+    .hero-risk .risk-type em{font-style:normal;color:var(--lime);font-weight:700}
+    .hero-risk strong{display:block;font-size:13px;line-height:1.45;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .hero-risk small{display:block;color:rgba(255,255,255,.7);font-size:12px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .signal-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:16px;display:flex;flex-direction:column;min-height:220px;box-shadow:var(--shadow-card)}
+    .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .card-head h3{font-size:14px;margin:0 0 3px}
+    .card-head p{margin:0;font-size:12px;color:var(--ink-400);line-height:1.5}
+    .tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;border-radius:999px;padding:3px 8px;background:var(--surface-2);color:var(--ink-600);white-space:nowrap}
+    .tag.success{background:var(--success-soft);color:#157a50}
+    .tag.warning{background:var(--warning-soft);color:#8b5b16}
+    .tag.danger{background:var(--danger-soft);color:#a6383d}
+    .tag.info{background:var(--info-soft);color:#2e5da9}
+    .tag i{width:5px;height:5px;border-radius:50%;background:currentColor}
+    .signal-score{display:flex;align-items:baseline;gap:8px;margin:2px 0 12px}
+    .signal-score strong{font-size:30px;letter-spacing:-1px}
+    .signal-score span{font-size:12px;color:var(--ink-400)}
+    .signal-list{display:flex;flex-direction:column;gap:9px;margin-top:auto}
+    .signal-row{display:grid;grid-template-columns:72px minmax(0,1fr) 34px;gap:8px;align-items:center;font-size:12px;color:var(--ink-600)}
+    .signal-row .bar{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+    .signal-row .bar i{display:block;height:100%;border-radius:999px;background:var(--brand-500)}
+    .signal-row.warn .bar i{background:var(--warning-strong)}
+    .signal-row.danger .bar i{background:var(--danger)}
+    .signal-row b{text-align:right;color:var(--ink-800);font-size:12px}
+    .kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    .kpi-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 14px;box-shadow:var(--shadow-card);min-width:0}
+    .kpi-card .kpi-label{display:flex;align-items:center;justify-content:space-between;gap:6px;color:var(--ink-600);font-size:12px;margin-bottom:7px}
+    .kpi-card .kpi-label svg{width:15px;height:15px;color:var(--brand-500)}
+    .kpi-card .kpi-value{font-size:22px;font-weight:700;letter-spacing:-.55px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .kpi-card .kpi-value small{font-size:12px;color:var(--ink-600);font-weight:500;margin-left:2px}
+    .kpi-card .kpi-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:7px;font-size:12px;color:var(--ink-400);white-space:nowrap}
+    .kpi-card .up{color:var(--success);font-weight:600}
+    .kpi-card .warn{color:var(--warning);font-weight:600}
+    .kpi-card .danger{color:var(--danger);font-weight:600}
+    .kpi-card.pending{background:linear-gradient(145deg,#fff,#fffdf7);border-color:#eadfc8}
+    .content-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:14px;margin-bottom:14px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:15px;box-shadow:var(--shadow-card);min-width:0}
+    .panel.flush{padding:0;overflow:hidden}
+    .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}
+    .panel-head h3{font-size:14px;margin:0 0 3px}
+    .panel-head p{margin:0;color:var(--ink-400);font-size:12px;line-height:1.5}
+    .mini-pipeline{display:grid;grid-template-columns:repeat(8,minmax(74px,1fr));gap:5px;align-items:stretch}
+    .mini-stage{border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:8px 8px 7px;position:relative;min-width:0}
+    .mini-stage::after{content:"›";position:absolute;right:-7px;top:50%;transform:translateY(-52%);font-size:14px;color:var(--ink-400);z-index:2}
+    .mini-stage:last-child::after{display:none}
+    .mini-stage .num{font-size:12px;color:var(--ink-400);margin-bottom:4px}
+    .mini-stage strong{display:block;font-size:12px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mini-stage span{display:block;margin-top:5px;font-size:12px;color:var(--ink-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .mini-stage.risk{border-color:#f0cece;background:var(--danger-soft)}
+    .mini-stage.warn{border-color:#efdfbf;background:var(--warning-soft)}
+    .risk-list{display:flex;flex-direction:column;gap:7px}
+    .risk-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:9px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff;text-align:left;width:100%;color:var(--ink-800)}
+    .risk-row:hover{border-color:var(--brand-300);background:var(--brand-50)}
+    .risk-row .risk-icon{width:32px;height:32px;border-radius:9px;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center}
+    .risk-row.warn .risk-icon{background:var(--warning-soft);color:var(--warning)}
+    .risk-row.info .risk-icon{background:var(--info-soft);color:var(--info)}
+    .risk-row .risk-icon svg{width:15px;height:15px}
+    .risk-row strong{display:block;font-size:12px;line-height:1.4;margin-bottom:2px}
+    .risk-row small{display:block;font-size:12px;color:var(--ink-400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .risk-row .arrow{color:var(--ink-400)}
+    .risk-row .arrow svg{width:14px;height:14px}
+    .chart-card{height:200px;display:flex;flex-direction:column}
+    .chart{display:flex;align-items:flex-end;gap:12px;flex:1;padding:8px 2px 0;position:relative;min-height:110px}
+    .chart::before,.chart::after{content:"";position:absolute;left:0;right:0;border-top:1px dashed var(--line);pointer-events:none}
+    .chart::before{top:35%}.chart::after{top:70%}
+    .bar-group{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:3px;height:100%;position:relative;z-index:1}
+    .bar{width:12px;border-radius:5px 5px 2px 2px;min-height:8px;background:var(--brand-400);transition:height .35s ease}
+    .bar.out{background:#d5d9d2}
+    .bar-labels{display:flex;gap:12px;margin-top:5px}
+    .bar-labels span{flex:1;text-align:center;font-size:12px;color:var(--ink-400)}
+    .legend{display:flex;gap:12px;font-size:12px;color:var(--ink-600)}
+    .legend span{display:flex;align-items:center;gap:5px}.legend i{width:8px;height:8px;border-radius:2px;background:var(--brand-400)}.legend .out{background:#d5d9d2}
+    .age-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}
+    .age{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:9px}
+    .age span{display:block;font-size:12px;color:var(--ink-400);margin-bottom:4px}
+    .age strong{font-size:15px;letter-spacing:-.2px}
+    .age.danger{background:var(--danger-soft);border-color:#f0cece}.age.danger strong{color:var(--danger)}
+    .table{width:100%;border-collapse:collapse;font-size:12px}
+    .table th{text-align:left;color:var(--ink-400);font-weight:600;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+    .table td{padding:9px 8px;border-bottom:1px solid var(--line);color:var(--ink-600);white-space:nowrap}
+    .table tr:last-child td{border-bottom:0}
+    .table td strong{color:var(--ink-800);font-weight:600}
+    .money{font-variant-numeric:tabular-nums;text-align:right}
+    .empty-metric{color:var(--warning);font-weight:600}
+
+    /* Flow page */
+    .flow-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow-card)}
+    .flow-toolbar p{margin:0;font-size:12px;color:var(--ink-600)}
+    .flow-toggle{display:flex;gap:4px}
+    .flow-toggle button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 9px;font-size:12px;color:var(--ink-600)}
+    .flow-toggle button.active{background:var(--brand-50);border-color:var(--brand-200);color:var(--brand-700);font-weight:600}
+    .flow-board{background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow-card);margin-bottom:14px;overflow:hidden}
+    .flow-stage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+    .flow-stage-head h3{font-size:14px;margin:0}
+    .flow-stage-head p{font-size:10.5px;color:var(--ink-400);margin:3px 0 0}
+    .flow-track{display:grid;grid-template-columns:repeat(8,minmax(118px,1fr));gap:8px;overflow-x:auto;padding:2px 1px 7px}
+    .flow-node{
+      border:1px solid var(--line);background:var(--surface);border-radius:11px;padding:10px;text-align:left;min-width:0;position:relative;transition:.15s;
+    }
+    .flow-node::after{content:"";position:absolute;right:-9px;top:50%;width:8px;height:1px;background:var(--line-strong)}
+    .flow-node:last-child::after{display:none}
+    .flow-node:hover{border-color:var(--brand-300);background:var(--brand-50)}
+    .flow-node.active{border-color:var(--brand-500);background:var(--brand-50);box-shadow:0 0 0 2px rgba(47,125,90,.08)}
+    .flow-node .flow-step{display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:7px}
+    .flow-node .flow-step span{font-size:12px;color:var(--ink-400);font-weight:700}
+    .flow-node .flow-step i{width:7px;height:7px;border-radius:50%;background:var(--success)}
+    .flow-node.warn .flow-step i{background:var(--warning-strong)}.flow-node.danger .flow-step i{background:var(--danger)}
+    .flow-node strong{display:block;font-size:12px;line-height:1.35;margin-bottom:6px}
+    .flow-node p{font-size:12px;color:var(--ink-600);line-height:1.4;margin:0;height:28px;overflow:hidden}
+    .flow-node .flow-count{display:inline-flex;margin-top:8px;font-size:12px;font-weight:600;color:var(--brand-700);background:#fff;border:1px solid var(--brand-100);padding:2px 6px;border-radius:999px;white-space:nowrap}
+    .flow-node.danger .flow-count{color:var(--danger);border-color:#f0cece}.flow-node.warn .flow-count{color:var(--warning);border-color:#efdfbf}
+    .flow-detail-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.7fr);gap:14px}
+    .stage-detail{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);box-shadow:var(--shadow-card);overflow:hidden}
+    .stage-detail-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .stage-detail-head .stage-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:9px;background:var(--brand-50);color:var(--brand-700);font-size:11px;font-weight:700}
+    .stage-detail-head h3{font-size:16px;margin:0 0 4px}
+    .stage-detail-head p{margin:0;font-size:12px;color:var(--ink-400);line-height:1.5}
+    .stage-detail-body{padding:4px 15px 14px}
+    .observation-table{width:100%;border-collapse:collapse;font-size:12px}
+    .observation-table th{text-align:left;color:var(--ink-400);font-weight:600;padding:9px 7px;border-bottom:1px solid var(--line);white-space:nowrap}
+    .observation-table td{padding:10px 7px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;color:var(--ink-600)}
+    .observation-table tr:last-child td{border-bottom:0}
+    .observation-table td strong{color:var(--ink-800);font-weight:600}
+    .observation-table .mini-tag{display:inline-flex;font-size:9px;border-radius:999px;padding:2px 6px;background:var(--surface-2);color:var(--ink-600);margin-top:3px}
+    .observation-table .mini-tag.danger{background:var(--danger-soft);color:var(--danger)}.observation-table .mini-tag.warn{background:var(--warning-soft);color:var(--warning)}
+    .observer-card{background:linear-gradient(155deg,var(--brand-900),#133627);color:#fff;border-radius:var(--radius-md);padding:16px;position:relative;overflow:hidden}
+    .observer-card::after{content:"";position:absolute;right:-40px;bottom:-70px;width:170px;height:170px;border-radius:50%;border:1px solid rgba(255,255,255,.08);box-shadow:0 0 0 28px rgba(255,255,255,.02)}
+    .observer-card h3{font-size:14px;margin:0 0 5px}
+    .observer-card>p{font-size:12px;color:rgba(255,255,255,.56);margin:0 0 14px;line-height:1.6}
+    .observer-list{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+    .observer-item{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;align-items:start}
+    .observer-item span{width:22px;height:22px;border-radius:7px;background:rgba(216,255,89,.14);color:var(--lime);font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .observer-item strong{display:block;font-size:12px;margin-bottom:2px}
+    .observer-item small{display:block;font-size:12px;color:rgba(255,255,255,.52);line-height:1.5}
+    .handoff-strip{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 15px;margin-top:14px;box-shadow:var(--shadow-card)}
+    .handoff-strip h3{font-size:13px;margin:0 0 10px}
+    .handoff-line{display:flex;align-items:center;gap:8px;overflow-x:auto;color:var(--ink-600);font-size:12px}
+    .handoff-line span{white-space:nowrap;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 8px}
+    .handoff-line i{color:var(--ink-400);font-style:normal}
+
+    /* Operations */
+    .finance-hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:14px;margin-bottom:14px}
+    .finance-summary{background:linear-gradient(145deg,#f9fbf8,#eef6f1);border:1px solid var(--brand-100);border-radius:var(--radius-lg);padding:17px;display:flex;flex-direction:column;justify-content:space-between;min-height:190px}
+    .finance-summary h2{font-size:20px;margin:0 0 6px;letter-spacing:-.25px}
+    .finance-summary p{font-size:12px;color:var(--ink-600);margin:0;line-height:1.65;max-width:680px}
+    .finance-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+    .finance-quick div{border:1px solid rgba(47,125,90,.16);background:rgba(255,255,255,.65);border-radius:9px;padding:9px 10px}
+    .finance-quick span{display:block;font-size:12px;color:var(--ink-600);margin-bottom:4px}.finance-quick strong{font-size:15px}
+    .blocked-card{background:linear-gradient(150deg,#fff,#fffaf0);border:1px solid #eadfc8;border-radius:var(--radius-lg);padding:17px;min-height:190px;display:flex;flex-direction:column}
+    .blocked-card .blocked-head{display:flex;align-items:center;gap:8px;color:var(--warning);font-size:12px;font-weight:700;margin-bottom:10px}
+    .blocked-card .blocked-head svg{width:16px;height:16px}
+    .blocked-card strong{font-size:17px;margin-bottom:6px}
+    .blocked-card p{font-size:12px;color:var(--ink-600);line-height:1.65;margin:0}
+    .blocked-card .blocked-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--ink-400);padding-top:14px}
+    .goal-row{display:grid;grid-template-columns:90px minmax(0,1fr) 58px;gap:9px;align-items:center;margin-bottom:11px;font-size:12px;color:var(--ink-600)}
+    .goal-row:last-child{margin-bottom:0}
+    .goal-row .goal-bar{height:8px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+    .goal-row .goal-bar i{display:block;height:100%;border-radius:999px;background:var(--brand-500)}
+    .goal-row.warn .goal-bar i{background:var(--warning-strong)}
+    .goal-row b{text-align:right;font-size:12px;color:var(--ink-800)}
+    .split-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;font-size:12px;color:var(--ink-400)}
+    .compact-table-wrap{overflow:x;auto}
+
+    /* Tools */
+    .standard-chain{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:13px 14px;margin-bottom:14px;box-shadow:var(--shadow-card);overflow-x:auto}
+    .standard-chain .chain-step{display:flex;align-items:center;gap:8px;flex:1;min-width:150px}
+    .standard-chain .chain-step span{width:25px;height:25px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex:0 0 auto}
+    .standard-chain .chain-step strong{display:block;font-size:12px;margin-bottom:2px}.standard-chain .chain-step small{display:block;font-size:12px;color:var(--ink-400);line-height:1.4}
+    .standard-chain .chain-arrow{color:var(--ink-400);font-size:16px;flex:0 0 auto}
+    .tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .tool-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;min-height:172px}
+    .tool-card .tool-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:9px}
+    .tool-icon{width:34px;height:34px;border-radius:10px;background:var(--brand-50);color:var(--brand-700);display:flex;align-items:center;justify-content:center}
+    .tool-icon svg{width:17px;height:17px}
+    .tool-card h3{font-size:13px;margin:0 0 5px}.tool-card p{font-size:12px;color:var(--ink-600);line-height:1.55;margin:0}
+    .surface-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
+    .surface-tags span{font-size:11px;border-radius:999px;padding:2px 6px;background:var(--surface-2);color:var(--ink-600)}
+    .surface-tags span.maintain{background:var(--brand-50);color:var(--brand-700)}
+    .tool-card .impact{margin-top:10px;padding-top:9px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-400);line-height:1.45}
+
+    /* Organization */
+    .org-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:14px}
+    .org-tree{display:flex;flex-direction:column;gap:8px}
+    .org-root{display:flex;align-items:center;gap:10px;border:1px solid var(--brand-200);background:var(--brand-50);border-radius:10px;padding:10px 11px}
+    .org-root .org-icon{width:31px;height:31px;border-radius:9px;background:var(--brand-700);color:#fff;display:flex;align-items:center;justify-content:center}.org-root .org-icon svg{width:16px;height:16px}
+    .org-root strong{display:block;font-size:12px}.org-root small{display:block;font-size:12px;color:var(--ink-600);margin-top:2px}
+    .org-branches{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding-left:18px;position:relative}
+    .org-branches::before{content:"";position:absolute;left:8px;top:0;bottom:50%;border-left:1px solid var(--brand-200);border-bottom:1px solid var(--brand-200);width:10px;border-radius:0 0 0 8px}
+    .store-branch{border:1px solid var(--line);border-radius:9px;padding:9px;background:var(--surface)}
+    .store-branch strong{display:block;font-size:12px}.store-branch span{display:block;font-size:12px;color:var(--ink-400);margin-top:2px}
+    .store-people{display:flex;gap:3px;margin-top:7px;flex-wrap:wrap}
+    .person-dot{width:19px;height:19px;border-radius:50%;background:#fff;border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--ink-600)}
+    .audit-feed{display:flex;flex-direction:column;gap:8px}
+    .audit-row{display:grid;grid-template-columns:6px minmax(0,1fr) auto;gap:8px;align-items:start;padding-bottom:8px;border-bottom:1px solid var(--line)}
+    .audit-row:last-child{border-bottom:0;padding-bottom:0}
+    .audit-row i{width:6px;height:6px;border-radius:50%;background:var(--brand-500);margin-top:6px}.audit-row.warn i{background:var(--warning-strong)}.audit-row.danger i{background:var(--danger)}
+    .audit-row strong{display:block;font-size:12px;line-height:1.4}.audit-row small{display:block;font-size:12px;color:var(--ink-400);margin-top:2px;line-height:1.4}.audit-row time{font-size:12px;color:var(--ink-400);white-space:nowrap}
+    .role-table{width:100%;border-collapse:collapse;font-size:12px}
+    .role-table th{text-align:left;color:var(--ink-400);font-weight:600;padding:8px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
+    .role-table td{padding:8px 6px;border-bottom:1px solid var(--line);color:var(--ink-600)}
+    .role-table tr:last-child td{border-bottom:0}.role-table td strong{color:var(--ink-800);font-weight:600}
+
+    /* Drawer */
+    .drawer-overlay{position:fixed;inset:0;background:rgba(8,24,17,.3);backdrop-filter:blur(3px);z-index:200;opacity:0;pointer-events:none;transition:.18s}
+    .drawer-overlay.open{opacity:1;pointer-events:auto}
+    .drawer{position:absolute;right:0;top:0;bottom:0;width:min(460px,92vw);background:#fff;box-shadow:var(--shadow-float);transform:translateX(30px);transition:.22s;display:flex;flex-direction:column}
+    .drawer-overlay.open .drawer{transform:none}
+    .drawer-head{padding:18px 20px 15px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .drawer-head .eyebrow{font-size:12px;color:var(--brand-600);font-weight:700;letter-spacing:.08em;margin-bottom:5px}
+    .drawer-head h2{font-size:18px;line-height:1.35;margin:0 0 5px}.drawer-head p{font-size:12px;color:var(--ink-400);margin:0;line-height:1.5}
+    .drawer-body{padding:17px 20px;overflow-y:auto;flex:1}
+    .fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+    .fact-box{border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:var(--surface)}
+    .fact-box span{display:block;font-size:12px;color:var(--ink-400);margin-bottom:4px}.fact-box strong{display:block;font-size:12px;line-height:1.4}
+    .drawer-section{margin-bottom:17px}.drawer-section h3{font-size:12px;margin:0 0 8px}.drawer-section p{font-size:12px;color:var(--ink-600);line-height:1.7;margin:0}
+    .drawer-callout{border-left:3px solid var(--brand-500);background:var(--brand-50);border-radius:0 9px 9px 0;padding:10px 11px;font-size:12px;color:var(--brand-800);line-height:1.6}
+    .drawer-callout.warn{border-color:var(--warning-strong);background:var(--warning-soft);color:#75591f}
+    .drawer-foot{padding:14px 20px 18px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;background:#fbfbf9}
+    .close-button{width:32px;height:32px;border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--ink-600);display:flex;align-items:center;justify-content:center}.close-button svg{width:16px;height:16px}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,16px);background:var(--brand-900);color:#fff;box-shadow:var(--shadow-float);border-radius:999px;padding:9px 15px;font-size:12px;z-index:300;opacity:0;pointer-events:none;transition:.2s}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    /* Mobile surfaces */
+    .mobile-stage{min-height:calc(100vh - 100px);display:grid;grid-template-columns:minmax(340px,420px) minmax(300px,420px);justify-content:center;gap:30px;align-items:start;padding:18px 20px 70px}
+    .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:11px}
+    .phone-meta{text-align:center}.phone-meta strong{display:block;font-size:12px;margin-bottom:2px}.phone-meta span{font-size:10px;color:var(--ink-400)}
+    .phone{width:390px;height:812px;background:#fff;border:10px solid #15251e;border-radius:48px;box-shadow:0 30px 70px rgba(13,32,24,.23);overflow:hidden;position:relative}
+    .phone::before{content:"";position:absolute;left:50%;top:7px;transform:translateX(-50%);width:112px;height:25px;border-radius:0 0 17px 17px;background:#15251e;z-index:30}
+    .phone-screen{height:100%;background:var(--surface);overflow-y:auto;position:relative;scrollbar-width:none;padding-bottom:78px}
+    .phone-screen::-webkit-scrollbar{display:none}
+    .app-statusbar{height:36px;padding:11px 18px 0;display:flex;align-items:center;justify-content:space-between;background:#fff;font-size:10px;font-weight:600;color:var(--ink-800);position:relative;z-index:20}
+    .app-statusbar .status-icons{display:flex;align-items:center;gap:5px}.status-icons i{display:block;width:4px;height:7px;background:var(--ink-800);border-radius:1px}.status-icons .wifi{width:12px;height:7px;border:1.5px solid var(--ink-800);border-radius:50% 50% 0 0;border-bottom:0}.status-icons .battery{width:16px;height:8px;border:1.2px solid var(--ink-800);border-radius:2px;position:relative}.status-icons .battery::after{content:"";position:absolute;right:-3px;top:2px;height:3px;width:2px;background:var(--ink-800);border-radius:0 1px 1px 0}
+    .app-header{background:#fff;padding:8px 16px 11px;display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:19;border-bottom:1px solid rgba(235,235,230,.7)}
+    .app-brand{display:flex;align-items:center;gap:8px}.app-brand img{width:29px;height:29px;border-radius:9px;object-fit:contain;background:var(--brand-50);padding:4px}.app-brand strong{display:block;font-size:13px;line-height:1.25}.app-brand small{display:block;font-size:9.5px;color:var(--ink-400);margin-top:1px}
+    .app-header-actions{display:flex;gap:5px}.app-icon-btn{width:30px;height:30px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink-600);display:flex;align-items:center;justify-content:center;position:relative}.app-icon-btn svg{width:15px;height:15px}.app-icon-btn .dot{position:absolute;right:6px;top:5px;width:5px;height:5px;background:var(--danger);border-radius:50%;box-shadow:0 0 0 1.5px #fff}
+    .app-content{padding:12px 14px 18px}
+    .app-greeting{margin-bottom:11px}.app-greeting p{margin:0 0 3px;font-size:12px;color:var(--ink-400)}.app-greeting h1{margin:0;font-size:20px;letter-spacing:-.3px;line-height:1.3}
+    .app-hero{border-radius:18px;padding:16px;color:#fff;background:radial-gradient(circle at 92% 4%,rgba(216,255,89,.16),transparent 28%),linear-gradient(145deg,var(--brand-800),var(--brand-950) 75%);box-shadow:0 16px 34px rgba(18,57,48,.17)}
+    .app-hero .mini-kicker{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--brand-200);font-weight:700;letter-spacing:.08em;margin-bottom:8px}.app-hero .mini-kicker i{width:5px;height:5px;background:var(--lime);border-radius:50%}
+    .app-hero h2{font-size:17px;line-height:1.4;margin:0 0 6px}.app-hero>p{font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;margin:0}
+    .app-action-stack{display:flex;flex-direction:column;gap:6px;margin-top:13px}
+    .app-action{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:7px;align-items:center;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.075);border-radius:10px;padding:8px;color:#fff;text-align:left}
+    .app-action:hover{background:rgba(255,255,255,.12)}.app-action .action-icon{width:25px;height:25px;border-radius:8px;background:rgba(216,255,89,.14);color:var(--lime);display:flex;align-items:center;justify-content:center}.app-action .action-icon svg{width:13px;height:13px}.app-action strong{display:block;font-size:12px;line-height:1.35}.app-action small{display:block;font-size:12px;color:rgba(255,255,255,.5);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.app-action .go{font-size:12px;color:rgba(255,255,255,.55)}
+    .app-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+    .app-kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px}.app-kpi span{display:block;font-size:12px;color:var(--ink-400);margin-bottom:4px}.app-kpi strong{font-size:18px;letter-spacing:-.35px}.app-kpi small{font-size:12px;color:var(--ink-400);margin-left:2px}.app-kpi em{display:block;font-style:normal;font-size:12px;color:var(--warning);margin-top:4px}
+    .app-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:15px 1px 8px}.app-section-head h3{font-size:13px;margin:0}.app-section-head span{font-size:12px;color:var(--ink-400)}
+    .app-risk-list{display:flex;flex-direction:column;gap:7px}
+    .app-risk{display:grid;grid-template-columns:31px minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;background:#fff;padding:9px;text-align:left;color:var(--ink-800)}
+    .app-risk .risk-icon{width:30px;height:30px;border-radius:9px;background:var(--danger-soft);color:var(--danger);display:flex;align-items:center;justify-content:center}.app-risk .risk-icon svg{width:14px;height:14px}.app-risk strong{display:block;font-size:12px;line-height:1.35}.app-risk small{display:block;font-size:12px;color:var(--ink-400);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.app-risk .arrow{color:var(--ink-400);font-size:14px}
+    .app-stage-list{display:flex;flex-direction:column;gap:5px}
+    .app-stage{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:7px;align-items:center;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px;text-align:left;color:var(--ink-800)}
+    .app-stage .stage-num{width:22px;height:22px;border-radius:7px;background:var(--brand-50);color:var(--brand-700);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .app-stage strong{display:block;font-size:12px}.app-stage small{display:block;font-size:12px;color:var(--ink-400);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.app-stage .stage-count{font-size:11px;color:var(--brand-700);background:var(--brand-50);border-radius:999px;padding:2px 6px;white-space:nowrap}.app-stage.danger .stage-count{background:var(--danger-soft);color:var(--danger)}.app-stage.warn .stage-count{background:var(--warning-soft);color:var(--warning)}
+    .app-bottom{position:absolute;left:0;right:0;bottom:0;height:66px;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);z-index:22;padding:6px 4px 5px}
+    .app-tab{border:0;background:transparent;color:var(--ink-400);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;border-radius:9px;padding:2px}.app-tab svg{width:17px;height:17px}.app-tab.active{color:var(--brand-700);font-weight:600}.app-tab.active svg{stroke-width:2.4}
+    .mini-nav{height:44px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 13px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+    .mini-nav .back{width:28px;height:28px;display:flex;align-items:center;justify-content:center;color:var(--ink-800)}.mini-nav .back svg{width:18px;height:18px}.mini-nav strong{font-size:12px}.mini-capsule{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:999px;height:26px;padding:0 7px}.mini-capsule span{width:18px;text-align:center;font-size:13px;color:var(--ink-800)}.mini-capsule i{width:1px;height:12px;background:var(--line)}
+    .mini-wechatbar{background:#fff;padding:12px 15px 8px;display:flex;align-items:center;justify-content:space-between;gap:10px}.mini-wechatbar div strong{display:block;font-size:14px}.mini-wechatbar div small{display:block;font-size:12px;color:var(--ink-400);margin-top:2px}.mini-avatar{width:28px;height:28px;border-radius:50%;background:var(--brand-50);border:1px solid var(--brand-200);color:var(--brand-700);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .mini-content{padding:10px 13px 20px}
+    .mini-brief{background:linear-gradient(145deg,var(--brand-800),var(--brand-950));border-radius:17px;padding:15px;color:#fff;box-shadow:0 14px 30px rgba(18,57,48,.16)}
+    .mini-brief .mini-kicker{display:flex;align-items:center;gap:6px;color:var(--brand-200);font-size:12px;font-weight:700;margin-bottom:7px}.mini-brief .mini-kicker i{width:5px;height:5px;border-radius:50%;background:var(--lime)}.mini-brief h2{font-size:16px;line-height:1.4;margin:0 0 5px}.mini-brief p{font-size:12px;line-height:1.6;color:rgba(255,255,255,.58);margin:0}.mini-brief .brief-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:12px}.mini-brief .brief-metrics div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:7px}.mini-brief .brief-metrics span{display:block;font-size:12px;color:rgba(255,255,255,.48);margin-bottom:3px}.mini-brief .brief-metrics strong{font-size:13px}
+    .mini-panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px;margin-top:9px}.mini-panel h3{font-size:13px;margin:0 0 8px}.mini-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.mini-item:last-child{border-bottom:0;padding-bottom:0}.mini-item .mini-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);flex:0 0 auto}.mini-item.warn .mini-dot{background:var(--warning-strong)}.mini-item.info .mini-dot{background:var(--info)}.mini-item div{min-width:0;flex:1}.mini-item strong{display:block;font-size:12px;line-height:1.35}.mini-item small{display:block;font-size:12px;color:var(--ink-400);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini-item span{font-size:12px;color:var(--ink-400)}
+    .mini-tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.mini-tool{border:1px solid var(--line);border-radius:11px;padding:9px;background:var(--surface)}.mini-tool strong{display:block;font-size:12px;margin-bottom:3px}.mini-tool span{font-size:12px;color:var(--ink-400)}
+    .phone-side-notes{max-width:380px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:18px;box-shadow:var(--shadow-card);position:sticky;top:82px}
+    .phone-side-notes .eyebrow{font-size:11px;color:var(--brand-600);font-weight:700;letter-spacing:.08em;margin:0 0 6px}.phone-side-notes h2{font-size:18px;margin:0 0 8px}.phone-side-notes>p{font-size:12px;color:var(--ink-600);line-height:1.7;margin:0 0 14px}
+    .surface-rule-list{display:flex;flex-direction:column;gap:9px}.surface-rule{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:start}.surface-rule .rule-num{width:26px;height:26px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}.surface-rule strong{display:block;font-size:12px;margin-bottom:2px}.surface-rule small{display:block;font-size:12px;color:var(--ink-400);line-height:1.5}
+    .gap-note{margin-top:14px;border-left:3px solid var(--warning-strong);background:var(--warning-soft);border-radius:0 9px 9px 0;padding:9px 10px;font-size:12px;color:#75591f;line-height:1.55}
+
+    /* Responsive */
+    @media (max-width:1280px){
+      .dimension-map{grid-template-columns:repeat(2,1fr)}
+      .hero-grid{grid-template-columns:1.35fr .65fr}
+      .kpi-grid{grid-template-columns:repeat(3,1fr)}
+      .mini-pipeline{grid-template-columns:repeat(4,1fr)}
+      .mini-stage:nth-child(4)::after{display:none}
+    }
+    @media (max-width:1100px){
+      .web-shell{grid-template-columns:76px minmax(0,1fr)}
+      .side-brand{justify-content:center;padding:14px 8px}.side-brand img{display:none}.side-brand .role-chip{margin:0;font-size:8px;padding:2px 5px}
+      .nav-label{display:none}.nav-item{justify-content:center;padding:11px 8px}.nav-item span{display:none}.nav-item .nav-badge{position:absolute;top:3px;right:3px;min-width:15px;height:15px;padding:0 3px;font-size:8px}.nav-item.active::before{left:-11px}
+      .side-foot .perspective-label,.side-foot .perspective-note{display:none}.perspective-grid{grid-template-columns:1fr}.perspective-btn{font-size:0;padding:7px 4px}.perspective-btn::before{content:"视角";font-size:8px}.perspective-btn.active::before{content:"已选";}
+      .hero-grid,.content-grid,.finance-hero,.org-grid,.flow-detail-grid{grid-template-columns:1fr}
+      .flow-track{grid-template-columns:repeat(4,minmax(130px,1fr))}
+      .flow-node:nth-child(4)::after{display:none}
+      .tool-grid{grid-template-columns:repeat(2,1fr)}
+      .mobile-stage{grid-template-columns:minmax(340px,420px) minmax(280px,340px);gap:18px}
+    }
+    @media (max-width:860px){
+      .proto-top{padding:0 12px;gap:8px}.proto-title,.demo-badge{display:none}.proto-brand img{width:90px}.surface-switch button{padding:6px 9px}
+      .stage{padding:8px}
+      .surface-caption{display:none}
+      .web-shell{height:calc(100vh - 74px);min-height:680px}
+      .page-head{flex-direction:column}.page-actions{justify-content:flex-start}
+      .hero-grid{grid-template-columns:1fr}.hero-risks{grid-template-columns:1fr}
+      .dimension-map{grid-template-columns:1fr 1fr}
+      .kpi-grid{grid-template-columns:repeat(2,1fr)}
+      .mini-pipeline{grid-template-columns:repeat(2,1fr)}
+      .mini-stage:nth-child(2n)::after{display:none}
+      .mobile-stage{grid-template-columns:1fr;justify-items:center;align-items:stretch;height:calc(100vh - 74px);min-height:0;padding:0}.phone-side-notes{display:none}.phone-meta{display:none}
+      .phone-wrap{height:calc(100vh - 74px);min-height:0}.phone{width:min(390px,calc(100vw - 16px));height:100%;min-height:0;max-height:none;border-width:6px;border-radius:40px}
+      .web-topbar{padding:0 12px}.scope-switch{display:none}.global-search{max-width:none}
+      .content-grid,.finance-hero,.org-grid{grid-template-columns:1fr}
+      .flow-track{display:flex;overflow-x:auto}.flow-node{min-width:132px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h4a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h0"/><path d="m14 12 3-3 3 3"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20V7"/><path d="M2 20h21"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5 5L4 17v3h3l5.7-5.7a4 4 0 0 0 5-5l-2.6 2.6-2.4-2.4 2-3.2Z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.7 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h16v12H5a2 2 0 0 1-2-2V5"/><path d="M16 13h.01"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 9h2a2 2 0 0 1 2 2v10"/><path d="M2 21h20"/><path d="M8 7h4"/><path d="M8 11h4"/><path d="M8 15h4"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M3 10h18"/></symbol>
+  </svg>
+
+  <header class="proto-top">
+    <div class="proto-brand">
+      <img src="./assets/logo-horizontal-color.svg" alt="装得清">
+      <span class="proto-pill">负责人视角</span>
+      <span class="proto-title">经营管理全景 · 交互概念原型</span>
+    </div>
+    <span class="demo-badge">演示数据 · 非生产事实</span>
+    <div class="surface-switch" role="group" aria-label="切换展示端">
+      <button type="button" data-device="web" class="active">Web</button>
+      <button type="button" data-device="app">App</button>
+      <button type="button" data-device="mini">微信小程序</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="surface active" id="surface-web" aria-label="Web 经营管控中心">
+      <div class="surface-caption"><span><i></i><strong>Web</strong> 全局经营、批量分析、配置与对象处置</span><span>场景驱动工作台 · 同一 Provider 事实</span></div>
+      <div class="web-shell">
+        <aside class="sidebar">
+          <div class="side-brand">
+            <img src="./assets/logo-horizontal-color.svg" alt="装得清">
+            <span class="role-chip">BOSS</span>
+          </div>
+          <nav class="nav-scroll" aria-label="负责人经营导航">
+            <p class="nav-label">经营管理</p>
+            <button type="button" class="nav-item active" data-dimension="overview"><svg><use href="#i-dashboard"/></svg><span>经营总览</span></button>
+            <button type="button" class="nav-item" data-dimension="flow"><svg><use href="#i-route"/></svg><span>业务推进</span><span class="nav-badge">7</span></button>
+            <button type="button" class="nav-item" data-dimension="operations"><svg><use href="#i-chart"/></svg><span>企业经营</span></button>
+            <button type="button" class="nav-item" data-dimension="tools"><svg><use href="#i-tool"/></svg><span>运营工具</span><span class="nav-badge neutral">6</span></button>
+            <button type="button" class="nav-item" data-dimension="organization"><svg><use href="#i-users"/></svg><span>组织管理</span></button>
+            <p class="nav-label" style="margin-top:18px">岗位视角</p>
+            <button type="button" class="nav-item" data-perspective="marketer"><svg><use href="#i-users"/></svg><span>业务员视角</span></button>
+            <button type="button" class="nav-item" data-perspective="designer"><svg><use href="#i-file"/></svg><span>设计师视角</span></button>
+            <button type="button" class="nav-item" data-perspective="pm"><svg><use href="#i-building"/></svg><span>项目经理视角</span></button>
+            <button type="button" class="nav-item" data-perspective="finance"><svg><use href="#i-wallet"/></svg><span>财务视角</span></button>
+          </nav>
+          <div class="side-foot">
+            <div class="perspective-label"><b>当前视角</b><span id="perspective-text">负责人本人</span></div>
+            <div class="perspective-grid" id="perspective-grid">
+              <button class="perspective-btn active" data-perspective="boss">负责人</button>
+              <button class="perspective-btn" data-perspective="marketer">业务员</button>
+              <button class="perspective-btn" data-perspective="designer">设计师</button>
+              <button class="perspective-btn" data-perspective="pm">项目经理</button>
+              <button class="perspective-btn" data-perspective="finance">财务</button>
+              <button class="perspective-btn" data-perspective="store">店长</button>
+            </div>
+            <p class="perspective-note">仅切换查看视角；身份、数据范围和审计主体仍为企业负责人本人。</p>
+          </div>
+        </aside>
+
+        <div class="web-main">
+          <header class="web-topbar">
+            <div class="scope-switch"><span class="store-dot"></span><span>安徽麦鸿装饰 · 全企业</span><svg><use href="#i-chevron-down"/></svg></div>
+            <label class="global-search"><svg><use href="#i-search"/></svg><input type="search" placeholder="搜索客户 / 项目 / 合同 / 员工"><span class="sr-only">全局搜索</span></label>
+            <div class="top-actions">
+              <button class="icon-button" type="button" data-toast="原型演示：导出经营简报"><svg><use href="#i-file"/></svg></button>
+              <button class="icon-button" type="button" data-toast="原型演示：3 条经营提醒"><svg><use href="#i-bell"/></svg><span class="dot"></span></button>
+              <button class="btn" type="button" data-toast="原型演示：时间范围切换"><svg><use href="#i-calendar"/></svg>本月</button>
+              <div class="avatar" aria-label="负责人王总">王</div>
+            </div>
+          </header>
+          <div class="web-content">
+            <div class="risk-strip">
+              <div class="risk-label"><i></i>负责人观测</div>
+              <div class="risk-scroll">
+                <button class="risk-chip" data-risk="material"><b>1</b> 个材料节点可能延期</button>
+                <button class="risk-chip" data-risk="receivable"><b>1</b> 笔首期款逾期</button>
+                <button class="risk-chip warn" data-risk="quotes"><b>2</b> 份报价等待客户决策</button>
+                <button class="risk-chip info" data-risk="change"><b>2</b> 项合同变更待审批</button>
+                <button class="risk-chip warn" data-risk="cost"><b>3</b> 个项目成本未完整</button>
+              </div>
+            </div>
+
+            <section class="web-page active" data-page="overview">
+              <div class="page-head">
+                <div><p class="eyebrow">THURSDAY · 10月28日</p><h1>经营总览</h1><p>先用经营事实判断今天该干预什么，再从对象直接进入处置。</p></div>
+                <div class="page-actions"><div class="segmented"><button class="active">本月</button><button>本季</button><button>本年</button></div><button class="btn" data-toast="原型演示：经营简报预览"><svg><use href="#i-file"/></svg>经营简报</button></div>
+              </div>
+              <div class="demo-note"><svg><use href="#i-info"/></svg><span><b>演示数据。</b> 金额、风险数量和对象名称均为概念原型样例；“经营利润”因口径未冻结，只展示观测位，不展示确定金额。</span></div>
+
+              <div class="hero-grid">
+                <section class="hero-card">
+                  <p class="hero-kicker"><i></i>今日经营判断</p>
+                  <h2>本月签约在推进，但回款节奏偏慢；先处理材料延期、逾期应收和两份待决策报价。</h2>
+                  <p>从影响结果最大的对象开始，不先找菜单。处置完成后回到当前队列，继续下一项。</p>
+                  <div class="hero-risks">
+                    <button class="hero-risk" data-risk="material"><span class="risk-type"><span>项目履约</span><em>今天</em></span><strong>云栖府 7-2 材料未到场</strong><small>A 店 · 赵强 · 泥木验收可能延期</small></button>
+                    <button class="hero-risk" data-risk="receivable"><span class="risk-type"><span>资金回收</span><em>逾期 3 天</em></span><strong>周先生首期款待收 12.8 万</strong><small>B 店 · 吴濛 · 需确认客户承诺</small></button>
+                    <button class="hero-risk" data-risk="quotes"><span class="risk-type"><span>客户决策</span><em>待推进</em></span><strong>林女士、陈先生报价待决策</strong><small>设计报价 · 陈晨 · 可进入谈单</small></button>
+                  </div>
+                </section>
+                <section class="signal-card">
+                  <div class="card-head"><div><h3>经营观测</h3><p>按事实完整性显示，不把未知折叠为 0</p></div><span class="tag success"><i></i>事实可读</span></div>
+                  <div class="signal-score"><strong>稳定</strong><span>需关注 3 项</span></div>
+                  <div class="signal-list">
+                    <div class="signal-row"><span>回款进度</span><div class="bar"><i style="width:69%"></i></div><b>69%</b></div>
+                    <div class="signal-row warn"><span>项目延期</span><div class="bar"><i style="width:27%"></i></div><b>3 个</b></div>
+                    <div class="signal-row danger"><span>应收逾期</span><div class="bar"><i style="width:13%"></i></div><b>1 笔</b></div>
+                    <div class="signal-row warn"><span>成本完整</span><div class="bar"><i style="width:73%"></i></div><b>8/11</b></div>
+                  </div>
+                </section>
+              </div>
+
+              <div class="dimension-map" aria-label="负责人四维能力地图">
+                <button class="dimension-card" data-jump="flow"><span class="dimension-top"><span class="dimension-icon"><svg><use href="#i-route"/></svg></span><span class="dimension-count">8 个阶段</span></span><strong>业务推进</strong><p>客户到交付，哪里停住、谁负责、下一步是什么。</p><em>看推进全景 →</em></button>
+                <button class="dimension-card" data-jump="operations"><span class="dimension-top"><span class="dimension-icon"><svg><use href="#i-chart"/></svg></span><span class="dimension-count">5 类事实</span></span><strong>企业经营</strong><p>签约、回款、应收、应付、成本与目标分开看。</p><em>看经营结果 →</em></button>
+                <button class="dimension-card" data-jump="tools"><span class="dimension-top"><span class="dimension-icon"><svg><use href="#i-tool"/></svg></span><span class="dimension-count">6 类标准</span></span><strong>运营工具</strong><p>报价库、套餐、计划、模板和主数据支撑下一单。</p><em>看企业标准 →</em></button>
+                <button class="dimension-card" data-jump="organization"><span class="dimension-top"><span class="dimension-icon"><svg><use href="#i-users"/></svg></span><span class="dimension-count">28 名员工</span></span><strong>组织管理</strong><p>企业、门店、员工、角色、邀请、权限与审计。</p><em>看组织健康 →</em></button>
+              </div>
+              <div class="kpi-grid">
+                <article class="kpi-card"><div class="kpi-label"><span>本月签约额</span><svg><use href="#i-file"/></svg></div><div class="kpi-value">186.4<small>万</small></div><div class="kpi-foot"><span class="up">▲ 12.6%</span><span>较上月</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>本月回款</span><svg><use href="#i-wallet"/></svg></div><div class="kpi-value">128.7<small>万</small></div><div class="kpi-foot"><span>回款进度 69%</span><span>按有效收款</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>应收待收</span><svg><use href="#i-clock"/></svg></div><div class="kpi-value">94.3<small>万</small></div><div class="kpi-foot"><span class="danger">逾期 12.8 万</span><span>1 笔</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>未来 7 天应付</span><svg><use href="#i-calendar"/></svg></div><div class="kpi-value">36.5<small>万</small></div><div class="kpi-foot"><span class="warn">待核对来源</span><span>2 笔</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>项目毛利 · 成本完整</span><svg><use href="#i-chart"/></svg></div><div class="kpi-value">28.6<small>万</small></div><div class="kpi-foot"><span class="warn">3 个项目不可计算</span><span>8/11</span></div></article>
+              </div>
+
+              <div class="content-grid">
+                <section class="panel">
+                  <div class="panel-head"><div><h3>业务推进 · 当前停留点</h3><p>八个阶段只展示负责人需要看的结论，点击进入完整观测图</p></div><button class="btn ghost" data-jump="flow">查看全景 <svg><use href="#i-arrow-right"/></svg></button></div>
+                  <div class="mini-pipeline">
+                    <button class="mini-stage" data-jump="flow" data-stage-jump="customer"><span class="num">A1–A2</span><strong>获客与客户</strong><span>3 户待跟进</span></button>
+                    <button class="mini-stage" data-jump="flow" data-stage-jump="design"><span class="num">A3–A4</span><strong>量房与设计</strong><span>2 个量房待完成</span></button>
+                    <button class="mini-stage warn" data-jump="flow" data-stage-jump="quote-contract"><span class="num">A5–A6</span><strong>报价与合同</strong><span>2 份待决策</span></button>
+                    <button class="mini-stage danger" data-jump="flow" data-stage-jump="project"><span class="num">A7–A8</span><strong>项目与施工</strong><span>3 个延期风险</span></button>
+                    <button class="mini-stage warn" data-jump="flow" data-stage-jump="material-change"><span class="num">A9–A10</span><strong>材料与变更</strong><span>1 个未到场</span></button>
+                    <button class="mini-stage" data-jump="flow" data-stage-jump="acceptance"><span class="num">A11</span><strong>验收与整改</strong><span>1 个待验收</span></button>
+                    <button class="mini-stage danger" data-jump="flow" data-stage-jump="finance"><span class="num">A12–A13</span><strong>收付款与结算</strong><span>1 笔逾期</span></button>
+                    <button class="mini-stage" data-jump="flow" data-stage-jump="review"><span class="num">A15–A16</span><strong>交付与复盘</strong><span>目标待对比</span></button>
+                  </div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><div><h3>需要你先看</h3><p>按影响和阻断程度排序</p></div><span class="tag danger"><i></i>3 项</span></div>
+                  <div class="risk-list">
+                    <button class="risk-row" data-risk="material"><span class="risk-icon"><svg><use href="#i-clock"/></svg></span><span><strong>材料节点可能延期</strong><small>云栖府 7-2 · 赵强 · 泥木验收</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row warn" data-risk="quotes"><span class="risk-icon"><svg><use href="#i-file"/></svg></span><span><strong>两份报价等待客户决策</strong><small>林女士、陈先生 · 陈晨</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row info" data-risk="change"><span class="risk-icon"><svg><use href="#i-route"/></svg></span><span><strong>合同变更待审批</strong><small>王女士厨房扩容 · 增加 2.35 万</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                  </div>
+                </section>
+              </div>
+
+              <div class="content-grid">
+                <section class="panel chart-card">
+                  <div class="panel-head"><div><h3>现金进出 · 近 6 个月</h3><p>收款与付款分开展示，冲正按净额处理</p></div><div class="legend"><span><i></i>收款</span><span><i class="out"></i>付款</span></div></div>
+                  <div class="chart" aria-label="近六个月收款付款示意图">
+                    <div class="bar-group"><div class="bar" style="height:59%"></div><div class="bar out" style="height:39%"></div></div>
+                    <div class="bar-group"><div class="bar" style="height:72%"></div><div class="bar out" style="height:43%"></div></div>
+                    <div class="bar-group"><div class="bar" style="height:64%"></div><div class="bar out" style="height:51%"></div></div>
+                    <div class="bar-group"><div class="bar" style="height:87%"></div><div class="bar out" style="height:56%"></div></div>
+                    <div class="bar-group"><div class="bar" style="height:78%"></div><div class="bar out" style="height:47%"></div></div>
+                    <div class="bar-group"><div class="bar" style="height:91%"></div><div class="bar out" style="height:54%"></div></div>
+                  </div>
+                  <div class="bar-labels"><span>5月</span><span>6月</span><span>7月</span><span>8月</span><span>9月</span><span>10月</span></div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><div><h3>应收账龄</h3><p>观察资金回收，不替代收入</p></div><span class="tag danger"><i></i>1 笔逾期</span></div>
+                  <div class="age-grid"><div class="age"><span>未到期</span><strong>81.5万</strong></div><div class="age"><span>1–30 天</span><strong>12.8万</strong></div><div class="age danger"><span>逾期</span><strong>12.8万</strong></div><div class="age"><span>待确认</span><strong>—</strong></div></div>
+                  <div class="split-footer"><span>账龄按应收到期日计算</span><button class="btn ghost" type="button" data-jump="operations">看明细 <svg><use href="#i-arrow-right"/></svg></button></div>
+                </section>
+              </div>
+            </section>
+
+            <section class="web-page" data-page="flow">
+              <div class="page-head">
+                <div><p class="eyebrow">BUSINESS PROGRESS</p><h1>业务推进</h1><p>沿客户经营主链看每一步的进入条件、停留点、责任人和下一步，不用全量台账代替经营判断。</p></div>
+                <div class="page-actions"><button class="btn"><svg><use href="#i-calendar"/></svg>本月</button><button class="btn" data-toast="原型演示：按风险筛选阶段"><svg><use href="#i-alert"/></svg>只看风险</button></div>
+              </div>
+              <div class="flow-toolbar">
+                <p><strong>当前视角：</strong>负责人看“是否推进、哪里停住、谁负责、怎样恢复”；点击任一阶段查看完整观测点。</p>
+                <div class="flow-toggle"><button class="active">八阶段全景</button><button data-toast="原型演示：切换为项目级时间线">项目实例</button></div>
+              </div>
+              <section class="flow-board">
+                <div class="flow-stage-head"><div><h3>客户经营主链 · 八个负责人观测段</h3><p>阶段按真实对象状态推进；风险颜色只表示需要关注，不新增状态机。</p></div><span class="tag warning"><i></i>7 个关注点</span></div>
+                <div class="flow-track" aria-label="业务推进流程">
+                  <button class="flow-node" data-stage="customer"><div class="flow-step"><span>01 · A1–A2</span><i></i></div><strong>获客与客户</strong><p>客户、房屋、归属与跟进</p><span class="flow-count">3 户待跟进</span></button>
+                  <button class="flow-node" data-stage="design"><div class="flow-step"><span>02 · A3–A4</span><i></i></div><strong>量房与设计</strong><p>预约、量房、方案与分项</p><span class="flow-count">2 个量房待完成</span></button>
+                  <button class="flow-node warn" data-stage="quote-contract"><div class="flow-step"><span>03 · A5–A6</span><i></i></div><strong>报价与合同</strong><p>客户决策、合同生效与签约</p><span class="flow-count">2 份报价待决策</span></button>
+                  <button class="flow-node danger" data-stage="project"><div class="flow-step"><span>04 · A7–A8</span><i></i></div><strong>项目与施工</strong><p>立项、计划、现场与节点</p><span class="flow-count">3 个延期风险</span></button>
+                  <button class="flow-node warn" data-stage="material-change"><div class="flow-step"><span>05 · A9–A10</span><i></i></div><strong>材料与变更</strong><p>选材、采购、到场与重算</p><span class="flow-count">1 个未到场</span></button>
+                  <button class="flow-node" data-stage="acceptance"><div class="flow-step"><span>06 · A11</span><i></i></div><strong>验收与整改</strong><p>申请、业主确认、整改复验</p><span class="flow-count">1 个待验收</span></button>
+                  <button class="flow-node danger" data-stage="finance"><div class="flow-step"><span>07 · A12–A13</span><i></i></div><strong>收付款与结算</strong><p>应收、应付、回款与毛利</p><span class="flow-count">1 笔逾期</span></button>
+                  <button class="flow-node" data-stage="review"><div class="flow-step"><span>08 · A15–A16</span><i></i></div><strong>交付与经营复盘</strong><p>交付、售后、目标与复盘</p><span class="flow-count">目标待对比</span></button>
+                </div>
+              </section>
+
+              <div class="flow-detail-grid">
+                <section class="stage-detail" id="stage-detail">
+                  <div class="stage-detail-head">
+                    <div style="display:flex;gap:11px;align-items:flex-start"><span class="stage-number" id="stage-number">04</span><div><h3 id="stage-title">项目与施工</h3><p id="stage-desc">合同生效并满足项目立项条件后，进入现场履约。负责人重点看开工就绪、阶段延期、现场事实和责任交接。</p></div></div>
+                    <span class="tag danger" id="stage-status"><i></i>需要干预</span>
+                  </div>
+                  <div class="stage-detail-body">
+                    <table class="observation-table">
+                      <thead><tr><th>负责人观测点</th><th>当前事实</th><th>责任与阻断</th><th>下一步</th></tr></thead>
+                      <tbody id="stage-observation-body"></tbody>
+                    </table>
+                  </div>
+                </section>
+                <aside class="observer-card">
+                  <h3>负责人怎么看这一段</h3>
+                  <p>先判断事实是否完整，再判断是否卡住，最后才看能不能操作。</p>
+                  <div class="observer-list">
+                    <div class="observer-item"><span>1</span><div><strong>对象是否明确</strong><small>客户、项目、合同或资金对象必须可定位，不能只有汇总数字。</small></div></div>
+                    <div class="observer-item"><span>2</span><div><strong>责任人是否在位</strong><small>每项停留都显示当前负责人和上一个动作人。</small></div></div>
+                    <div class="observer-item"><span>3</span><div><strong>为什么停住</strong><small>说明缺参、越权、未确认、成本不完整或状态未满足。</small></div></div>
+                    <div class="observer-item"><span>4</span><div><strong>动作是否唯一</strong><small>当前状态只突出一个主行动，其他动作降级。</small></div></div>
+                    <div class="observer-item"><span>5</span><div><strong>处置后能否回读</strong><small>状态、金额、待办和时间线必须从服务端重新读取。</small></div></div>
+                  </div>
+                </aside>
+              </div>
+
+              <section class="handoff-strip">
+                <h3>阶段交接 · 负责人只关心“下一棒交给谁”</h3>
+                <div class="handoff-line"><span>客户负责人</span><i>→</i><span>量房/设计师</span><i>→</i><span>报价/谈单</span><i>→</i><span>负责人确认合同</span><i>→</i><span>项目经理</span><i>→</i><span>材料/财务</span><i>→</i><span>业主确认验收</span><i>→</i><span>财务结算</span><i>→</i><span>经营复盘</span></div>
+              </section>
+            </section>
+
+            <section class="web-page" data-page="operations">
+              <div class="page-head">
+                <div><p class="eyebrow">ENTERPRISE OPERATION</p><h1>企业经营</h1><p>把签约、回款、应收、应付、成本和目标分开看；利润只有在成本完整和口径确认后才成立。</p></div>
+                <div class="page-actions"><div class="segmented"><button class="active">本月</button><button>本季</button><button>本年</button></div><button class="btn" data-toast="原型演示：切换公司/门店范围"><svg><use href="#i-building"/></svg>全企业</button></div>
+              </div>
+
+              <div class="finance-hero">
+                <section class="finance-summary">
+                  <div><h2>经营判断：回款是当前第一优先级</h2><p>本月签约额继续增长，但回款进度低于签约进度；1 笔首期款逾期、3 个项目成本未完整，先处理可恢复的事实。</p></div>
+                  <div class="finance-quick"><div><span>签约额</span><strong>186.4 万</strong></div><div><span>回款额</span><strong>128.7 万</strong></div><div><span>应收待收</span><strong>94.3 万</strong></div></div>
+                </section>
+                <section class="blocked-card">
+                  <div class="blocked-head"><svg><use href="#i-alert"/></svg>经营利润（参考） · 口径待确认</div>
+                  <strong>暂不展示确定金额</strong>
+                  <p>公司/门店经营利润、企业费用分摊、非项目收入和期间口径仍未冻结（`MET-007/011`、`GAP-070`）。当前只展示项目毛利和成本完整性。</p>
+                  <div class="blocked-foot"><span>数据缺失不按 0 计算</span><span class="tag warning">BLOCKED</span></div>
+                </section>
+              </div>
+
+              <div class="kpi-grid">
+                <article class="kpi-card"><div class="kpi-label"><span>本月签约额</span><svg><use href="#i-file"/></svg></div><div class="kpi-value">186.4<small>万</small></div><div class="kpi-foot"><span class="up">▲ 12.6%</span><span>按合同生效</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>本月回款</span><svg><use href="#i-wallet"/></svg></div><div class="kpi-value">128.7<small>万</small></div><div class="kpi-foot"><span>净额口径</span><span>已冲正</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>应收待收</span><svg><use href="#i-clock"/></svg></div><div class="kpi-value">94.3<small>万</small></div><div class="kpi-foot"><span class="danger">12.8 万逾期</span><span>1 笔</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>未来 7 天应付</span><svg><use href="#i-calendar"/></svg></div><div class="kpi-value">36.5<small>万</small></div><div class="kpi-foot"><span class="warn">2 笔待核对</span><span>按到期日</span></div></article>
+                <article class="kpi-card pending"><div class="kpi-label"><span>项目毛利 · 完整</span><svg><use href="#i-chart"/></svg></div><div class="kpi-value">28.6<small>万</small></div><div class="kpi-foot"><span class="warn">8/11 项目可算</span><span>3 个待补</span></div></article>
+              </div>
+
+              <div class="content-grid">
+                <section class="panel">
+                  <div class="panel-head"><div><h3>项目毛利完整性</h3><p>成本不完整的项目不展示毛利，不按 0 计算</p></div><span class="tag warning"><i></i>3 个项目待补</span></div>
+                  <div class="compact-table-wrap">
+                    <table class="table">
+                      <thead><tr><th>项目</th><th>当前收入</th><th>动态成本</th><th>动态毛利</th><th>成本状态</th><th>负责人</th></tr></thead>
+                      <tbody>
+                        <tr><td><strong>云栖府 7-2</strong></td><td class="money">32.8 万</td><td class="money">20.1 万</td><td class="money">12.7 万</td><td><span class="tag success"><i></i>完整</span></td><td>赵强</td></tr>
+                        <tr><td><strong>滨江壹号 3-1</strong></td><td class="money">28.6 万</td><td class="money">18.4 万</td><td class="money">10.2 万</td><td><span class="tag success"><i></i>完整</span></td><td>赵强</td></tr>
+                        <tr><td><strong>翡翠公馆 2-2</strong></td><td class="money">24.2 万</td><td class="money">待补结算</td><td class="empty-metric">成本未完整</td><td><span class="tag warning"><i></i>待补</span></td><td>孙磊</td></tr>
+                        <tr><td><strong>湖畔云庐 5-1</strong></td><td class="money">18.9 万</td><td class="money">待补工资</td><td class="empty-metric">成本未完整</td><td><span class="tag warning"><i></i>待补</span></td><td>赵强</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="split-footer"><span>项目毛利按 `MET-002`，预计/动态/最终三态不混用</span><button class="btn ghost" data-toast="原型演示：查看 3 个成本未完整项目"><svg><use href="#i-arrow-right"/></svg>查看待补项目</button></div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><div><h3>本月目标与实际</h3><p>公司目标与门店目标分层，不自动相加</p></div><span class="tag info"><i></i>目标非承诺</span></div>
+                  <div class="goal-row"><span>签约目标</span><div class="goal-bar"><i style="width:78%"></i></div><b>78%</b></div>
+                  <div class="goal-row warn"><span>回款目标</span><div class="goal-bar"><i style="width:59%"></i></div><b>59%</b></div>
+                  <div class="goal-row"><span>毛利目标</span><div class="goal-bar"><i style="width:66%"></i></div><b>66%</b></div>
+                  <div class="goal-row warn"><span>在建项目</span><div class="goal-bar"><i style="width:92%"></i></div><b>11/12</b></div>
+                  <div class="split-footer"><span>目标月份：2026-10</span><span>仅展示，不替代实际</span></div>
+                  <hr style="border:0;border-top:1px solid var(--line);margin:12px 0">
+                  <div class="panel-head" style="margin-bottom:8px"><div><h3>经营利润观测</h3><p>GAP-070 关闭后才可展示金额</p></div><span class="tag warning">待确认</span></div>
+                  <p style="font-size:10.5px;color:var(--ink-600);line-height:1.65;margin:0">项目毛利合计可以观测，但企业费用、非项目收入、税费、公共费用分摊和期间口径尚未冻结。负责人只能看到“哪些数据未齐”，不能看到伪利润。</p>
+                </section>
+              </div>
+
+              <div class="content-grid">
+                <section class="panel">
+                  <div class="panel-head"><div><h3>应收与账龄</h3><p>回款与本月经手金额分开；冲正按净额</p></div><button class="btn ghost" data-risk="receivable">查看逾期 <svg><use href="#i-arrow-right"/></svg></button></div>
+                  <div class="age-grid"><div class="age"><span>未到期</span><strong>81.5 万</strong></div><div class="age"><span>1–30 天</span><strong>12.8 万</strong></div><div class="age danger"><span>逾期</span><strong>12.8 万</strong></div><div class="age"><span>待确认</span><strong>—</strong></div></div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><div><h3>应付与资金计划</h3><p>应付、付款和实际成本不能互相替代</p></div><span class="tag warning"><i></i>2 笔待核对</span></div>
+                  <div class="risk-list">
+                    <button class="risk-row warn" data-risk="payable"><span class="risk-icon"><svg><use href="#i-calendar"/></svg></span><span><strong>供应材料款 22.4 万</strong><small>10月31日到期 · 云栖府 7-2</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row" data-risk="cost"><span class="risk-icon"><svg><use href="#i-chart"/></svg></span><span><strong>项目成本未完整 3 个</strong><small>需补采购结算、工资或应计成本</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                  </div>
+                </section>
+              </div>
+            </section>
+
+            <section class="web-page" data-page="tools">
+              <div class="page-head">
+                <div><p class="eyebrow">OPERATING TOOLS</p><h1>运营工具</h1><p>企业先把“以后按什么标准做”定义清楚，再由每一单业务实例引用；修改不回溯历史单据。</p></div>
+                <div class="page-actions"><button class="btn"><svg><use href="#i-shield"/></svg>影响范围提示</button><button class="btn primary" data-toast="原型演示：新增企业标准"><svg><use href="#i-tool"/></svg>新建标准</button></div>
+              </div>
+
+              <div class="standard-chain">
+                <div class="chain-step"><span>1</span><div><strong>企业标准层</strong><small>报价库、套餐、计划、模板、主数据</small></div></div><div class="chain-arrow">→</div>
+                <div class="chain-step"><span>2</span><div><strong>业务实例</strong><small>客户报价、合同付款计划、项目计划</small></div></div><div class="chain-arrow">→</div>
+                <div class="chain-step"><span>3</span><div><strong>财务事实</strong><small>应收、收款、应付、成本和凭证</small></div></div>
+              </div>
+
+              <div class="tool-grid">
+                <article class="tool-card">
+                  <div class="tool-top"><span class="tool-icon"><svg><use href="#i-file"/></svg></span><span class="tag success"><i></i>可用</span></div><h3>报价项目库</h3><p>企业级标准价格、标准成本和工艺项目，是未来客户报价的基础。</p>
+                  <div class="surface-tags"><span class="maintain">Web 维护</span><span class="maintain">App 可维护</span><span>小程序 查看</span></div><div class="impact">当前有 2 个分项缺标准成本；修改影响未来报价，不回溯历史。</div>
+                </article>
+                <article class="tool-card">
+                  <div class="tool-top"><span class="tool-icon"><svg><use href="#i-tool"/></svg></span><span class="tag success"><i></i>可用</span></div><h3>套餐模板</h3><p>把常用组合、包含项、扣减项和替换关系沉淀成可复用方案。</p>
+                  <div class="surface-tags"><span class="maintain">Web 维护</span><span class="maintain">App 可维护</span><span>小程序 只读</span></div><div class="impact">模板改动会影响新项目推荐，不影响已签约套餐。</div>
+                </article>
+                <article class="tool-card">
+                  <div class="tool-top"><span class="tool-icon"><svg><use href="#i-calendar"/></svg></span><span class="tag success"><i></i>可用</span></div><h3>付款计划模板</h3><p>定义企业默认收款节点、比例和条件，签约时冻结为合同付款计划。</p>
+                  <div class="surface-tags"><span class="maintain">Web 维护</span><span class="maintain">App 可维护</span><span>小程序 只读</span></div><div class="impact">模板变更只影响未来合同快照。</div>
+                </article>
+                <article class="tool-card">
+                  <div class="tool-top"><span class="tool-icon"><svg><use href="#i-route"/></svg></span><span class="tag warning"><i></i>待补齐</span></div><h3>施工计划模板</h3><p>定义阶段、工期、节点和验收方式，项目立项后形成实际施工计划。</p>
+                  <div class="surface-tags"><span class="maintain">Web 维护</span><span class="maintain">App 可维护</span><span>小程序 只读</span></div><div class="impact">3 处模板节点未配置验收方式，暂不能用于新项目。</div>
+                </article>
+                <article class="tool-card">
+                  <div class="tool-top"><span class="tool-icon"><svg><use href="#i-file"/></svg></span><span class="tag success"><i></i>可用</span></div><h3>合同与凭证模板</h3><p>统一合同、收款、付款、工资和报销单据的展示和归档规则。</p>
+                  <div class="surface-tags"><span class="maintain">Web 维护</span><span>App 查看</span><span>小程序 查看</span></div><div class="impact">模板版本化，历史归档不随模板变化而重写。</div>
+                </article>
+                <article class="tool-card">
+                  <div class="tool-top"><span class="tool-icon"><svg><use href="#i-building"/></svg></span><span class="tag info"><i></i>主数据</span></div><h3>材料与供应商主数据</h3><p>维护材料名称、品牌、供应商关系和采购协同基础。</p>
+                  <div class="surface-tags"><span class="maintain">Web 维护</span><span>App 查看</span><span>小程序 查看</span></div><div class="impact">供应商关系异常 1 项，可能影响材料下单和结算。</div>
+                </article>
+              </div>
+
+              <div class="content-grid" style="margin-top:14px">
+                <section class="panel">
+                  <div class="panel-head"><div><h3>负责人观测点</h3><p>不是“有多少模板”，而是“这些模板能不能支撑下一单”</p></div></div>
+                  <div class="risk-list">
+                    <button class="risk-row warn" data-risk="tool-standard"><span class="risk-icon"><svg><use href="#i-alert"/></svg></span><span><strong>标准覆盖不完整</strong><small>施工计划模板有 3 处节点缺验收方式</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row info" data-risk="tool-impact"><span class="risk-icon"><svg><use href="#i-shield"/></svg></span><span><strong>修改影响未来业务</strong><small>报价库和模板变更必须提示影响范围</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row" data-risk="tool-app"><span class="risk-icon"><svg><use href="#i-check"/></svg></span><span><strong>App 权限分层</strong><small>BOSS/店长/财务可维护报价项目库；其他角色只读</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                  </div>
+                </section>
+                <aside class="observer-card">
+                  <h3>负责人别把“标准层”当业务结果</h3>
+                  <p>模板存在不等于本单可用，标准生效也不等于历史单据重算。负责人要观察覆盖、版本和实际引用。</p>
+                  <div class="observer-list">
+                    <div class="observer-item"><span>1</span><div><strong>是否已覆盖高频项目</strong><small>缺标准成本、缺验收方式会直接阻断报价或履约。</small></div></div>
+                    <div class="observer-item"><span>2</span><div><strong>是否区分模板与实例</strong><small>企业标准、合同快照、项目计划不能混成一个对象。</small></div></div>
+                    <div class="observer-item"><span>3</span><div><strong>修改是否留痕</strong><small>谁能改、影响哪些未来业务、历史是否冻结。</small></div></div>
+                  </div>
+                </aside>
+              </div>
+            </section>
+
+            <section class="web-page" data-page="organization">
+              <div class="page-head">
+                <div><p class="eyebrow">ORGANIZATION MANAGEMENT</p><h1>组织管理</h1><p>企业、门店、员工、角色、邀请、权限和审计共同决定谁可以做什么；组织治理不新增重复岗位。</p></div>
+                <div class="page-actions"><button class="btn" data-toast="原型演示：邀请员工"><svg><use href="#i-users"/></svg>邀请成员</button><button class="btn primary" data-toast="原型演示：打开企业设置"><svg><use href="#i-building"/></svg>企业设置</button></div>
+              </div>
+
+              <div class="kpi-grid">
+                <article class="kpi-card"><div class="kpi-label"><span>在职员工</span><svg><use href="#i-users"/></svg></div><div class="kpi-value">28<small>人</small></div><div class="kpi-foot"><span>3 家门店</span><span>固定岗位</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>待接受邀请</span><svg><use href="#i-clock"/></svg></div><div class="kpi-value">2<small>个</small></div><div class="kpi-foot"><span class="warn">1 个即将过期</span><span>可重发</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>本月组织变更</span><svg><use href="#i-route"/></svg></div><div class="kpi-value">5<small>项</small></div><div class="kpi-foot"><span>调岗/调店</span><span>已留痕</span></div></article>
+                <article class="kpi-card"><div class="kpi-label"><span>权限异常</span><svg><use href="#i-shield"/></svg></div><div class="kpi-value">0<small>项</small></div><div class="kpi-foot"><span class="up">服务端校验</span><span>无越权</span></div></article>
+                <article class="kpi-card pending"><div class="kpi-label"><span>组织观察</span><svg><use href="#i-building"/></svg></div><div class="kpi-value">可控</div><div class="kpi-foot"><span>1 个待跟进</span><span>看审计</span></div></article>
+              </div>
+
+              <div class="org-grid">
+                <section class="panel">
+                  <div class="panel-head"><div><h3>企业组织地图</h3><p>组织维度按角色 + 门店，不新增部门；TeamLeader 仅历史兼容</p></div><span class="tag info"><i></i>全企业</span></div>
+                  <div class="org-tree">
+                    <div class="org-root"><span class="org-icon"><svg><use href="#i-building"/></svg></span><div><strong>安徽麦鸿装饰</strong><small>Company · BOSS 全企业范围 · 28 名员工</small></div></div>
+                    <div class="org-branches">
+                      <div class="store-branch"><strong>A 店</strong><span>11 人 · 店长 王敏</span><div class="store-people"><span class="person-dot">王</span><span class="person-dot">陈</span><span class="person-dot">赵</span><span class="person-dot">吴</span><span class="person-dot">+7</span></div></div>
+                      <div class="store-branch"><strong>B 店</strong><span>9 人 · 店长 李强</span><div class="store-people"><span class="person-dot">李</span><span class="person-dot">周</span><span class="person-dot">孙</span><span class="person-dot">+6</span></div></div>
+                      <div class="store-branch"><strong>C 店</strong><span>8 人 · 店长 何敏</span><div class="store-people"><span class="person-dot">何</span><span class="person-dot">张</span><span class="person-dot">+6</span></div></div>
+                    </div>
+                  </div>
+                  <div class="split-footer"><span>数据范围：BOSS Company · 店长 Store · 普通员工 Self</span><button class="btn ghost" data-toast="原型演示：成员与组织页面"><svg><use href="#i-arrow-right"/></svg>成员与组织</button></div>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><div><h3>负责人要看的组织风险</h3><p>组织变化必须能解释业务影响</p></div><span class="tag warning"><i></i>1 项</span></div>
+                  <div class="risk-list">
+                    <button class="risk-row warn" data-risk="invite"><span class="risk-icon"><svg><use href="#i-users"/></svg></span><span><strong>1 个邀请即将过期</strong><small>候选人：设计师 · 139****6021</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row" data-risk="handoff"><span class="risk-icon"><svg><use href="#i-route"/></svg></span><span><strong>客户交接已完成</strong><small>业务员李娜 → 王敏 · 6 个客户、1 个报价</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                    <button class="risk-row info" data-risk="audit"><span class="risk-icon"><svg><use href="#i-shield"/></svg></span><span><strong>审计可用</strong><small>本周 42 条组织与权限操作已留痕</small></span><span class="arrow"><svg><use href="#i-chevron-right"/></svg></span></button>
+                  </div>
+                </section>
+              </div>
+
+              <div class="org-grid" style="margin-top:14px">
+                <section class="panel">
+                  <div class="panel-head"><div><h3>岗位与数据范围</h3><p>角色决定业务责任，数据范围由组织归属派生</p></div></div>
+                  <table class="role-table">
+                    <thead><tr><th>岗位</th><th>默认数据范围</th><th>负责人关注点</th></tr></thead>
+                    <tbody>
+                      <tr><td><strong>企业负责人</strong></td><td>Company</td><td>全企业业务、资金、组织与治理</td></tr>
+                      <tr><td><strong>店长</strong></td><td>Store</td><td>本店完整业务能力，不含企业治理</td></tr>
+                      <tr><td><strong>财务</strong></td><td>Store / Company</td><td>资金、成本、工资、凭证与材料协同</td></tr>
+                      <tr><td><strong>设计师 / 业务员 / 项目经理</strong></td><td>Self + 参与关系</td><td>各自岗位主链，不扩权到经营治理</td></tr>
+                      <tr><td><strong>团队负责人</strong></td><td>历史兼容</td><td>不新建入口、不分配新业务</td></tr>
+                    </tbody>
+                  </table>
+                </section>
+                <section class="panel">
+                  <div class="panel-head"><div><h3>最近组织审计</h3><p>动作人、对象、前后值和结果可回读</p></div><span class="tag success"><i></i>可追溯</span></div>
+                  <div class="audit-feed">
+                    <div class="audit-row"><i></i><div><strong>王敏调整陈晨为 A 店设计师</strong><small>操作人：王总 · 原门店：B 店</small></div><time>10:18</time></div>
+                    <div class="audit-row warn"><i></i><div><strong>邀请待接受：设计师候选人</strong><small>有效期至 10月29日 · 可重发或取消</small></div><time>09:42</time></div>
+                    <div class="audit-row"><i></i><div><strong>客户交接完成：李娜 → 王敏</strong><small>6 个客户 · 1 个报价 · 后续待办已同步</small></div><time>昨天</time></div>
+                    <div class="audit-row"><i></i><div><strong>企业负责人查看全企业组织</strong><small>数据范围：Company · 审计记录已写入</small></div><time>昨天</time></div>
+                  </div>
+                </section>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="surface" id="surface-app" aria-label="App 负责人工作台">
+      <div class="surface-caption"><span><i></i><strong>App</strong> 移动观察、风险处置、审批与现场协同</span><span>同一 Provider · 同一对象事实</span></div>
+      <div class="mobile-stage">
+        <div class="phone-wrap">
+          <div class="phone-meta"><strong>企业负责人 · App</strong><span>移动端不是缩小版 Web，而是“先处理、再回读”</span></div>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="app-statusbar"><span>9:41</span><div class="status-icons"><i></i><i></i><i></i><span class="wifi"></span><span class="battery"></span></div></div>
+              <header class="app-header">
+                <div class="app-brand"><img src="./assets/logo-mark-color.png" alt=""><div><strong>负责人工作台</strong><small>安徽麦鸿装饰 · 全企业</small></div></div>
+                <div class="app-header-actions"><button class="app-icon-btn" type="button" data-toast="原型演示：经营提醒"><svg><use href="#i-bell"/></svg><span class="dot"></span></button><div class="mini-avatar">王</div></div>
+              </header>
+              <div class="app-content" id="app-content"></div>
+              <nav class="app-bottom" aria-label="App 负责人导航">
+                <button class="app-tab active" data-mobile-page="overview"><svg><use href="#i-home"/></svg><span>总览</span></button>
+                <button class="app-tab" data-mobile-page="flow"><svg><use href="#i-route"/></svg><span>推进</span></button>
+                <button class="app-tab" data-mobile-page="operations"><svg><use href="#i-chart"/></svg><span>经营</span></button>
+                <button class="app-tab" data-mobile-page="tools"><svg><use href="#i-tool"/></svg><span>工具</span></button>
+                <button class="app-tab" data-mobile-page="organization"><svg><use href="#i-users"/></svg><span>组织</span></button>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <aside class="phone-side-notes">
+          <p class="eyebrow">APP SURFACE</p>
+          <h2>把负责人的“移动判断”做完整</h2>
+          <p>App 不要求把所有表格搬进来。它优先解决三件事：风险是否真实、对象现在怎么样、我能不能现场做一个关键动作。</p>
+          <div class="surface-rule-list">
+            <div class="surface-rule"><span class="rule-num">1</span><div><strong>先结论，后明细</strong><small>打开即看到今日判断、风险对象和下一步。</small></div></div>
+            <div class="surface-rule"><span class="rule-num">2</span><div><strong>动作唯一</strong><small>每一张风险卡只突出当前最重要的动作。</small></div></div>
+            <div class="surface-rule"><span class="rule-num">3</span><div><strong>失败可恢复</strong><small>弱网、缺数据、无权限显示可理解原因和重试路径。</small></div></div>
+            <div class="surface-rule"><span class="rule-num">4</span><div><strong>事实同源</strong><small>同一项目在 Web 和 App 上显示同一状态、金额与责任人。</small></div></div>
+          </div>
+          <div class="gap-note">原型中的 App 与微信小程序并列展示；是否将小程序作为独立负责人壳层仍未裁决（`GAP-BOS-001`）。</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="surface" id="surface-mini" aria-label="微信小程序负责人入口">
+      <div class="surface-caption"><span><i></i><strong>微信小程序</strong> 轻量经营提醒、关键事实与审批入口</span><span>概念入口 · 产品边界待确认</span></div>
+      <div class="mobile-stage">
+        <div class="phone-wrap">
+          <div class="phone-meta"><strong>企业负责人 · 微信小程序</strong><span>适合“收到提醒 → 看关键事实 → 做一个决定”</span></div>
+          <div class="phone">
+            <div class="phone-screen" style="background:#f5f5f2">
+              <div class="app-statusbar"><span>9:41</span><div class="status-icons"><i></i><i></i><i></i><span class="wifi"></span><span class="battery"></span></div></div>
+              <div class="mini-nav"><span class="back" data-toast="原型演示：返回上一页"><svg><use href="#i-chevron-right" style="transform:rotate(180deg)"/></svg></span><strong>装得清经营</strong><span class="mini-capsule"><span>•••</span><i></i><span>◉</span></span></div>
+              <div class="mini-wechatbar"><div><strong>王总，下午好</strong><small>安徽麦鸿装饰 · 10月28日</small></div><div class="mini-avatar">王</div></div>
+              <div class="mini-content" id="mini-content"></div>
+              <nav class="app-bottom" aria-label="微信小程序负责人导航">
+                <button class="app-tab active" data-mobile-page="overview"><svg><use href="#i-home"/></svg><span>首页</span></button>
+                <button class="app-tab" data-mobile-page="flow"><svg><use href="#i-route"/></svg><span>推进</span></button>
+                <button class="app-tab" data-mobile-page="operations"><svg><use href="#i-chart"/></svg><span>经营</span></button>
+                <button class="app-tab" data-mobile-page="tools"><svg><use href="#i-tool"/></svg><span>工具</span></button>
+                <button class="app-tab" data-mobile-page="organization"><svg><use href="#i-users"/></svg><span>我的</span></button>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <aside class="phone-side-notes">
+          <p class="eyebrow">MINI PROGRAM SURFACE</p>
+          <h2>微信场景下，只做最短闭环</h2>
+          <p>小程序优先承接外部触达后的轻量动作：看一条经营提醒、确认一个事实、进入一个对象或把处理交给 Web/App。</p>
+          <div class="surface-rule-list">
+            <div class="surface-rule"><span class="rule-num">1</span><div><strong>消息到动作</strong><small>从服务通知、分享或扫码进入时不丢对象上下文。</small></div></div>
+            <div class="surface-rule"><span class="rule-num">2</span><div><strong>不重复造事实</strong><small>读取同一 Provider，不在小程序里重算状态或金额。</small></div></div>
+            <div class="surface-rule"><span class="rule-num">3</span><div><strong>复杂处理回 Web</strong><small>批量配置、复杂对账和批量分析明确提示回 Web 继续。</small></div></div>
+          </div>
+          <div class="gap-note">当前原型是“轻量负责人入口”假设，不代表小程序独立产品已确认。正式边界需用户裁决后再进入真实研发。</div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true">
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+      <div class="drawer-head">
+        <div><p class="eyebrow" id="drawer-eyebrow">负责人观测点</p><h2 id="drawer-title">对象处置</h2><p id="drawer-subtitle">从风险进入对象，完成当前主行动后回读事实。</p></div>
+        <button class="close-button" id="drawer-close" type="button" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="drawer-body" id="drawer-body"></div>
+      <div class="drawer-foot">
+        <button class="btn" id="drawer-secondary" type="button">稍后处理</button>
+        <button class="btn primary" id="drawer-primary" type="button">查看对象</button>
+      </div>
+    </aside>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const riskData = {
+      material: {
+        eyebrow: '项目履约 · 负责人观测',
+        title: '云栖府 7-2 材料未到场',
+        subtitle: 'A 店 · 泥木阶段 · 责任人赵强',
+        level: 'danger',
+        facts: { '对象状态': '施工中', '计划节点': '泥木验收 · 10月30日', '材料状态': '已下单，预计晚到 2 天', '影响': '阶段验收可能延期' },
+        body: '瓷砖采购已下单，供应商当前承诺晚到 2 天；现场任务和阶段验收日期尚未调整。负责人当前需要判断：先协调供应商，还是先调整计划并把影响同步给客户。',
+        callout: '动作完成后回读项目阶段、任务、材料到场和客户通知，不把“已联系供应商”当作材料已到场。',
+        primary: '协调材料到场',
+        secondary: '打开项目工作面'
+      },
+      receivable: {
+        eyebrow: '资金回收 · 负责人观测',
+        title: '周先生首期款待收 12.8 万',
+        subtitle: 'B 店 · 合同 C-2026-018 · 责任人吴濛',
+        level: 'danger',
+        facts: { '应收状态': '已逾期 3 天', '到期日': '10月25日', '已收金额': '0.00 元', '合同金额': '42.8 万' },
+        body: '首期款已到期但尚未形成有效收款。负责人需要先确认客户承诺和责任人动作，再决定是否升级处理；不能用项目开工或材料下单代替回款事实。',
+        callout: '登记收款后才改变核销与回款额；“客户说会转”只能作为沟通记录，不能当作已收款。',
+        primary: '安排回款跟进',
+        secondary: '查看应收详情'
+      },
+      quotes: {
+        eyebrow: '客户决策 · 负责人观测',
+        title: '两份报价等待客户决策',
+        subtitle: '设计师陈晨 · 报价已提交 · 建议进入谈单',
+        level: 'warning',
+        facts: { '待决策报价': '2 份', '客户': '林女士 / 陈先生', '报价金额': '22.6 万 / 18.9 万', '停留': '超过观察窗口' },
+        body: '两份报价已经提交，但还没有形成客户接受、拒绝或转项目的最终事实。负责人应看到报价版本、客户反馈和下一步谈单动作，而不是把 Submitted 直接当作成交或失败。',
+        callout: '最终报价接受率只按已经形成客户决策的有效机会计算；待决策报价单独展示为待决策量。',
+        primary: '进入谈单跟进',
+        secondary: '查看报价版本'
+      },
+      change: {
+        eyebrow: '合同变更 · 负责人观测',
+        title: '王女士厨房扩容变更待审批',
+        subtitle: '变更金额 +2.35 万 · 影响施工、材料与应收',
+        level: 'warning',
+        facts: { '变更状态': '待审批', '发起人': '设计师陈晨', '变更金额': '+2.35 万', '关联项目': '湖畔云庐 5-1' },
+        body: '变更一旦批准，后续可能触发施工任务、材料计划和应收重算。当前需要先核对变更原因、增减项、客户确认证据和金额，而不是只看一个审批按钮。',
+        callout: '合同变更审批不等于金额已收；审批通过只是允许后续履约和重算事实推进。',
+        primary: '审批变更',
+        secondary: '查看变更明细'
+      },
+      cost: {
+        eyebrow: '成本完整性 · 负责人观测',
+        title: '3 个项目成本未完整',
+        subtitle: '项目毛利暂不可计算',
+        level: 'warning',
+        facts: { '可计算项目': '8 / 11', '缺采购结算': '2 个项目', '缺工资/计提': '1 个项目', '利润展示': 'null' },
+        body: '当前缺少采购结算、工资或应计成本，任一必做成本分类缺失时项目毛利和毛利率都应为空。负责人需要看到“哪一项成本缺失、谁负责补齐”，而不是一个 0 成本利润。',
+        callout: '成本未完整时毛利为空；应付不等于成本，付款也不等于成本，禁止用 0 或 max 拼接利润。',
+        primary: '查看待补清单',
+        secondary: '打开项目成本'
+      },
+      payable: {
+        eyebrow: '资金计划 · 负责人观测',
+        title: '供应材料款 22.4 万即将到期',
+        subtitle: '云栖府 7-2 · 10月31日到期',
+        level: 'warning',
+        facts: { '应付金额': '22.4 万', '到期日': '10月31日', '供应商': '合肥品牌瓷砖', '来源': '采购结算待核对' },
+        body: '应付已形成但来源仍需核对。负责人需要区分应付、付款和实际成本：付款动作完成才形成资金流出，实际成本仍按结算事实归集。',
+        callout: '不能根据应付或付款反推项目毛利。',
+        primary: '核对付款计划',
+        secondary: '查看采购明细'
+      },
+      invite: {
+        eyebrow: '组织管理 · 负责人观测',
+        title: '1 个员工邀请即将过期',
+        subtitle: '设计师候选人 · 139****6021',
+        level: 'warning',
+        facts: { '邀请状态': '待接受', '有效期至': '10月29日', '归属门店': 'A 店', '邀请人': '王敏' },
+        body: '邀请即将过期，需要确认是否重发、取消还是联系候选人。邀请过期和取消都应进入终态并保留审计，不物理删除记录。',
+        callout: '邀请过期不会自动产生员工；接受邀请后还要校验手机号、归属和角色。',
+        primary: '重发邀请',
+        secondary: '取消邀请'
+      },
+      handoff: {
+        eyebrow: '组织管理 · 负责人观测',
+        title: '客户交接已完成',
+        subtitle: '业务员李娜 → 店长王敏',
+        level: 'info',
+        facts: { '客户': '6 个', '报价': '1 个', '未完成跟进': '2 项', '责任归属': '已更新' },
+        body: '交接不仅改变客户负责人，还影响待办、数据范围和后续跟进责任。负责人需要看到交接后的待办是否已经落到新负责人。',
+        callout: '历史动作人保留，不因负责人变更而改写历史。',
+        primary: '查看交接影响',
+        secondary: '打开组织审计'
+      },
+      audit: {
+        eyebrow: '组织管理 · 负责人观测',
+        title: '组织与权限审计可追溯',
+        subtitle: '本周 42 条操作 · 全部可回读',
+        level: 'info',
+        facts: { '调岗': '3 条', '邀请': '4 条', '交接': '2 条', '权限异常': '0 条' },
+        body: '负责人可以查看动作人、时间、对象、前后值和结果。审计不是财务报表，但能解释“谁在什么时候改变了组织事实”。',
+        callout: '审计存在不代表业务正确；仍需回读对象当前状态和下游影响。',
+        primary: '查看审计清单',
+        secondary: '导出审计摘要'
+      },
+      toolStandard: {
+        eyebrow: '运营工具 · 负责人观测',
+        title: '施工计划模板仍有 3 处缺验收方式',
+        subtitle: '企业标准层 · 影响未来项目计划',
+        level: 'warning',
+        facts: { '模板状态': '部分可用', '缺失节点': '3 处', '影响对象': '未来项目与验收', '历史单据': '不回溯' },
+        body: '模板不完整会影响未来项目立项和阶段验收。负责人需要看到缺口、责任人和补齐后的生效范围，而不是简单把模板设为启用。',
+        callout: '模板修改不回溯历史项目；新项目引用新版本。',
+        primary: '补齐模板',
+        secondary: '查看影响范围'
+      },
+      toolImpact: {
+        eyebrow: '运营工具 · 负责人观测',
+        title: '修改企业标准会改变未来业务',
+        subtitle: '报价库 / 套餐 / 计划模板',
+        level: 'info',
+        facts: { '影响范围': '未来报价与新项目', '历史事实': '快照冻结', '审计': '必须留痕', '版本化': '必须' },
+        body: '负责人需要区分“企业标准”与“具体业务实例”：修改报价库不会改写已签约合同，修改施工模板也不会改写已立项项目。',
+        callout: '标准层修改应有影响范围提示和变更留痕，不把模板当业务结果。',
+        primary: '查看影响清单',
+        secondary: '返回模板列表'
+      },
+      toolApp: {
+        eyebrow: '运营工具 · 跨端权限',
+        title: 'App 的维护权限按角色分层',
+        subtitle: '报价项目库维护：BOSS / 店长 / 财务',
+        level: 'info',
+        facts: { 'BOSS': '查看 / 维护', '店长': '查看 / 维护', '财务': '查看 / 维护', '其他员工': '只读且成本裁剪' },
+        body: '跨端页面可以不同，但服务端权限与返回字段必须同源。前端隐藏按钮不等于权限控制。',
+        callout: '标准成本仅 BOSS、店长、财务可见；其他角色响应直接裁剪。',
+        primary: '查看权限矩阵',
+        secondary: '查看 App 入口'
+      }
+    };
+
+    const stageData = {
+      customer: { num: '01', title: '获客与客户', desc: '客户登记、房屋建立、来源与负责人确定。负责人重点看客户是否有人跟、下一次跟进是否明确。', status: '可控', tone: 'success', rows: [
+        ['超时未跟进', '3 户客户超过当前观察窗口', '客户负责人王敏；未有人为长期未跟进兜底', '安排跟进 / 调整责任人'],
+        ['客户归属', '18 个新增客户均已归属门店与负责人', '无跨店冲突', '抽查高价值客户来源'],
+        ['今日量房预约', '2 个预约待确认', '设计师陈晨 / 业务员李娜', '确认到店与量房时间']
+      ]},
+      design: { num: '02', title: '量房与设计', desc: '量房完成、方案分项和工程量准备。负责人重点看客户等待、设计返工与报价就绪。', status: '关注', tone: 'warning', rows: [
+        ['量房待完成', '2 个量房任务处于进行中', '陈晨；最早预约于今天上午', '确认量房完成与资料回传'],
+        ['设计停留', '1 个方案超过观察窗口未更新', '设计师陈晨；客户反馈待补充', '补充诉求或明确退出'],
+        ['报价就绪', '3 个方案分项与工程量已具备报价条件', '设计负责人确认', '进入报价/谈单准备']
+      ]},
+      'quote-contract': { num: '03', title: '报价与合同', desc: '报价提交、客户决策、合同登记与生效。负责人重点看待决策报价、最终报价接受率和合同生效。', status: '2 份待决策', tone: 'warning', rows: [
+        ['待决策报价', '2 份已提交，尚未形成接受或拒绝', '陈晨负责谈单；客户反馈未留痕', '进入谈单并记录客户决策'],
+        ['最终报价接受率', '演示值 62.5%，按已形成决策的机会计算', '待决策报价不进入分母', '回读更多报价机会后复核'],
+        ['合同待生效', '1 份合同已登记，生效条件未完成', '负责人与财务核对付款条件', '完成生效前置条件']
+      ]},
+      project: { num: '04', title: '项目与施工', desc: '合同生效并满足项目立项条件后，进入现场履约。负责人重点看开工就绪、阶段延期、现场事实和责任交接。', status: '需要干预', tone: 'danger', rows: [
+        ['开工就绪度', '11 个在建项目均有项目、阶段与责任人', '1 个项目材料未到场', '协调材料或调整阶段计划'],
+        ['阶段/任务延期', '3 个项目存在延期风险，云栖府 7-2 最靠前', '项目经理赵强；节点 10月30日', '指派处理并同步客户'],
+        ['现场留证', '今日应完成 6 个节点，已上传 4 个', '2 个节点等待现场回传', '提示责任人补证据']
+      ]},
+      'material-change': { num: '05', title: '材料与变更', desc: '选材、采购、到场和合同变更。负责人重点看材料是否到位、变更是否批准、成本是否完整。', status: '2 项待处理', tone: 'warning', rows: [
+        ['材料未到场', '瓷砖预计晚到 2 天', '供应商协同：财务/项目经理', '确认新的到场时间并重排任务'],
+        ['合同变更待审批', '2 项，其中厨房扩容 +2.35 万', '店长/负责人审批；影响后续重算', '核对客户确认和增减项'],
+        ['成本完整性', '3 个项目缺少采购结算、工资或应计成本', '财务吴濛', '补齐后再计算项目毛利']
+      ]},
+      acceptance: { num: '06', title: '验收与整改', desc: '阶段完工申请、业主确认、整改和复验。负责人重点看谁确认、是否逾期、复验是否闭环。', status: '可控', tone: 'success', rows: [
+        ['待验收', '1 个阶段已申请，等待业主确认', '项目经理提交，业主确认主体独立', '跟进确认或补充现场证据'],
+        ['整改中', '2 个整改项尚未复验', '项目经理赵强；1 项次日到期', '查看整改证据并提交复验'],
+        ['复验闭环', '本周已完成 4 次复验', '历史记录可回读', '抽查业主确认与照片证据']
+      ]},
+      finance: { num: '07', title: '收付款与结算', desc: '应收、应付、收付款、台账和成本。负责人重点看回款、逾期、应付到期和成本完整项目毛利。', status: '1 笔逾期', tone: 'danger', rows: [
+        ['应收逾期', '周先生首期款 12.8 万逾期 3 天', '吴濛；合同 C-2026-018', '安排回款跟进'],
+        ['未来 7 天应付', '2 笔合计 36.5 万，来源待核对', '财务吴濛；供应商结算', '核对来源与付款计划'],
+        ['项目毛利', '8/11 项目成本完整，可计算毛利 28.6 万', '3 个项目成本未完整，利润为空', '补齐成本后回读']
+      ]},
+      review: { num: '08', title: '交付与经营复盘', desc: '项目交付、售后、目标与经营复盘。负责人重点看结果、目标差距和是否形成下一轮改进。', status: '待对比', tone: 'success', rows: [
+        ['本月交付', '2 个项目进入交付/售后观察', '项目经理与客服责任待明确', '确认交付后反馈与质保'],
+        ['目标与实际', '公司目标和门店目标分开保存', '目标不作为实际结果', '月末复盘目标差距'],
+        ['经营利润', '公式与费用口径仍未冻结', 'GAP-070 OPEN', '只展示观测位，不展示金额']
+      ]}
+    };
+
+    const dimensionOrder = ['overview', 'flow', 'operations', 'tools', 'organization'];
+    const state = { device: 'web', dimension: 'overview', stage: 'project', perspective: 'boss' };
+    const perspectiveLabels = { boss: '负责人本人', marketer: '业务员', designer: '设计师', pm: '项目经理', finance: '财务', store: '店长' };
+
+    function icon(name, cls='') { return '<svg class="'+cls+'"><use href="#i-'+name+'"/></svg>'; }
+
+    function openDrawer(key) {
+      const data = riskData[key];
+      if (!data) return;
+      document.getElementById('drawer-eyebrow').textContent = data.eyebrow;
+      document.getElementById('drawer-title').textContent = data.title;
+      document.getElementById('drawer-subtitle').textContent = data.subtitle;
+      const facts = Object.entries(data.facts).map(([label, value]) => '<div class="fact-box"><span>'+label+'</span><strong>'+value+'</strong></div>').join('');
+      document.getElementById('drawer-body').innerHTML =
+        '<div class="fact-grid">'+facts+'</div>'+
+        '<section class="drawer-section"><h3>负责人判断</h3><p>'+data.body+'</p></section>'+
+        '<section class="drawer-section"><div class="drawer-callout '+(data.level==='warning'?'warn':'')+'">'+data.callout+'</div></section>'+
+        '<section class="drawer-section"><h3>处置后需要回读</h3><p>对象状态 · 责任人 · 金额/成本 · 待办 · 最近动作 · 审计时间线</p></section>'+
+        '<section class="drawer-section"><h3>事实边界</h3><p>本页为概念原型，不执行真实审批、付款、删除或权限变更。真实动作必须经过服务端校验、幂等和审计。</p></section>';
+      document.getElementById('drawer-primary').textContent = data.primary;
+      document.getElementById('drawer-secondary').textContent = data.secondary;
+      document.getElementById('drawer-primary').dataset.action = key;
+      document.getElementById('drawer-secondary').dataset.action = key;
+      const overlay = document.getElementById('drawer-overlay');
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      document.getElementById('drawer-close').focus();
+    }
+
+    function openStageDrawer(stage) {
+      const data = stageData[stage];
+      if (!data) return;
+      document.getElementById('drawer-eyebrow').textContent = '业务推进 · 阶段观测';
+      document.getElementById('drawer-title').textContent = data.title;
+      document.getElementById('drawer-subtitle').textContent = data.num + ' · ' + data.status;
+      document.getElementById('drawer-body').innerHTML =
+        '<section class="drawer-section"><h3>阶段判断</h3><p>'+data.desc+'</p></section>'+
+        '<section class="drawer-section"><h3>负责人观测点</h3><div class="audit-feed">'+data.rows.map(row=>'<div class="audit-row '+(data.tone==='danger'?'danger':data.tone==='warning'?'warn':'')+'"><i></i><div><strong>'+row[0]+'</strong><small>'+row[1]+' · '+row[2]+'</small></div><time>'+row[3]+'</time></div>').join('')+'</div></section>'+
+        '<section class="drawer-section"><div class="drawer-callout '+(data.tone==='warning'?'warn':'')+'">负责人看到的不是单一数字，而是对象、当前事实、责任人、阻断原因、允许动作和处置后的回读证据。</div></section>'+
+        '<section class="drawer-section"><h3>事实边界</h3><p>阶段状态和允许动作必须由服务端投影返回；本页为概念原型，不推进真实状态。</p></section>';
+      document.getElementById('drawer-primary').textContent = '查看阶段对象';
+      document.getElementById('drawer-secondary').textContent = '返回推进图';
+      const overlay = document.getElementById('drawer-overlay');
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      document.getElementById('drawer-close').focus();
+    }
+
+    function closeDrawer() {
+      const overlay = document.getElementById('drawer-overlay');
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function setDevice(device) {
+      state.device = device;
+      document.querySelectorAll('.surface').forEach(el => el.classList.toggle('active', el.id === 'surface-' + device));
+      document.querySelectorAll('[data-device]').forEach(el => el.classList.toggle('active', el.dataset.device === device));
+      if (device !== 'web') renderMobile(device);
+    }
+
+    function setDimension(dimension) {
+      if (!dimensionOrder.includes(dimension)) return;
+      state.dimension = dimension;
+      document.querySelectorAll('.nav-item[data-dimension]').forEach(el => el.classList.toggle('active', el.dataset.dimension === dimension));
+      document.querySelectorAll('.web-page').forEach(el => el.classList.toggle('active', el.dataset.page === dimension));
+      document.querySelectorAll('[data-mobile-page]').forEach(el => el.classList.toggle('active', el.dataset.mobilePage === dimension));
+      if (state.device !== 'web') renderMobile(state.device);
+      document.querySelector('.web-content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setStage(stage) {
+      if (!stageData[stage]) return;
+      state.stage = stage;
+      const data = stageData[stage];
+      document.querySelectorAll('[data-stage]').forEach(el => el.classList.toggle('active', el.dataset.stage === stage));
+      document.getElementById('stage-number').textContent = data.num;
+      document.getElementById('stage-title').textContent = data.title;
+      document.getElementById('stage-desc').textContent = data.desc;
+      const status = document.getElementById('stage-status');
+      status.className = 'tag ' + (data.tone === 'danger' ? 'danger' : data.tone === 'warning' ? 'warning' : 'success');
+      status.innerHTML = '<i></i>' + data.status;
+      document.getElementById('stage-observation-body').innerHTML = data.rows.map(row => (
+        '<tr><td><strong>'+row[0]+'</strong></td><td>'+row[1]+'</td><td>'+row[2]+'</td><td>'+row[3]+'</td></tr>'
+      )).join('');
+    }
+
+    function setPerspective(perspective) {
+      if (!perspectiveLabels[perspective]) return;
+      state.perspective = perspective;
+      document.getElementById('perspective-text').textContent = perspectiveLabels[perspective];
+      document.querySelectorAll('[data-perspective]').forEach(el => el.classList.toggle('active', el.dataset.perspective === perspective));
+      showToast('已切换为' + perspectiveLabels[perspective] + '视角；身份与数据范围不变');
+    }
+
+    function stageList(compact=false) {
+      return Object.entries(stageData).map(([key, value]) => (
+        '<button class="app-stage '+(value.tone==='danger'?'danger':value.tone==='warning'?'warn':'')+'" type="button" data-mobile-stage="'+key+'">'+
+          '<span class="stage-num">'+value.num+'</span><div><strong>'+value.title+'</strong><small>'+value.rows[0][1]+'</small></div><span class="stage-count">'+value.status+'</span>'+
+        '</button>'
+      )).join('');
+    }
+
+    function riskList(limit=3) {
+      const items = [
+        ['material','材料节点可能延期','云栖府 7-2 · 赵强 · 泥木验收','danger','clock'],
+        ['receivable','首期款逾期 12.8 万','周先生 · 吴濛 · 逾期 3 天','danger','wallet'],
+        ['quotes','两份报价等待客户决策','林女士 / 陈先生 · 陈晨','warning','file'],
+        ['change','厨房扩容变更待审批','王女士 · +2.35 万','warning','route']
+      ];
+      return items.slice(0, limit).map(item => (
+        '<button class="app-risk" type="button" data-risk="'+item[0]+'">'+
+          '<span class="risk-icon" style="'+(item[3]==='warning'?'background:var(--warning-soft);color:var(--warning)':'')+'">'+icon(item[4])+'</span>'+
+          '<span><strong>'+item[1]+'</strong><small>'+item[2]+'</small></span><span class="arrow">›</span>'+
+        '</button>'
+      )).join('');
+    }
+
+    function renderMobile(device) {
+      const target = document.getElementById(device === 'app' ? 'app-content' : 'mini-content');
+      if (!target) return;
+      const dim = state.dimension;
+      let html = '';
+
+      if (dim === 'overview') {
+        if (device === 'app') {
+          html += '<div class="app-greeting"><p>10月28日 · 全企业</p><h1>王总，今天先看结果。</h1></div>'+
+            '<section class="app-hero"><div class="mini-kicker"><i></i>今日经营判断</div><h2>签约在推进，回款偏慢。先处理 3 件会影响本月结果的事。</h2><p>处置后回到当前队列，继续下一项。</p><div class="app-action-stack">'+
+              '<button class="app-action" data-risk="material"><span class="action-icon">'+icon('clock')+'</span><span><strong>材料未到场 · 云栖府 7-2</strong><small>赵强 · 泥木验收可能延期</small></span><span class="go">›</span></button>'+
+              '<button class="app-action" data-risk="receivable"><span class="action-icon">'+icon('wallet')+'</span><span><strong>首期款逾期 · 12.8 万</strong><small>吴濛 · 逾期 3 天</small></span><span class="go">›</span></button>'+
+              '<button class="app-action" data-risk="quotes"><span class="action-icon">'+icon('file')+'</span><span><strong>两份报价待决策</strong><small>陈晨 · 建议进入谈单</small></span><span class="go">›</span></button>'+
+            '</div></section>'+
+            '<div class="app-kpis"><div class="app-kpi"><span>本月签约</span><strong>186.4<small>万</small></strong></div><div class="app-kpi"><span>本月回款</span><strong>128.7<small>万</small></strong></div><div class="app-kpi"><span>应收待收</span><strong>94.3<small>万</small></strong><em>1 笔逾期</em></div><div class="app-kpi"><span>成本完整毛利</span><strong>28.6<small>万</small></strong><em>3 个项目未完整</em></div></div>'+
+            '<div class="app-section-head"><h3>需要你处理</h3><span>按影响排序</span></div><div class="app-risk-list">'+riskList(3)+'</div>'+
+            '<div class="app-section-head"><h3>业务推进 · 停留点</h3><span>查看完整</span></div><div class="app-stage-list">'+stageList()+'</div>';
+        } else {
+          html += '<div class="mini-brief"><div class="mini-kicker"><i></i>负责人经营简报</div><h2>今天先处理 3 件会影响本月结果的事。</h2><p>材料延期、首期款逾期、两份报价待决策。</p><div class="brief-metrics"><div><span>本月签约</span><strong>186.4万</strong></div><div><span>本月回款</span><strong>128.7万</strong></div><div><span>应收逾期</span><strong>12.8万</strong></div></div></div>'+
+            '<section class="mini-panel"><h3>待你处置</h3><div class="mini-item"><i class="mini-dot"></i><div><strong>材料节点可能延期</strong><small>云栖府 7-2 · 赵强</small></div><span>去处理</span></div><div class="mini-item warn"><i class="mini-dot"></i><div><strong>首期款逾期 12.8 万</strong><small>周先生 · 吴濛</small></div><span>去跟进</span></div><div class="mini-item info"><i class="mini-dot"></i><div><strong>两份报价待决策</strong><small>林女士 / 陈先生</small></div><span>看谈单</span></div></section>'+
+            '<section class="mini-panel"><h3>今日观测</h3><div class="mini-item warn"><i class="mini-dot"></i><div><strong>成本完整 8 / 11 个项目</strong><small>3 个项目毛利暂不可计算</small></div><span>详细</span></div><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>1 个阶段待业主确认</strong><small>湖畔云庐 5-1 · 项目经理已提交</small></div><span>查看</span></div></section>'+
+            '<section class="mini-panel"><h3>轻量操作</h3><div class="mini-tool-grid"><div class="mini-tool"><strong>经营简报</strong><span>发给管理群</span></div><div class="mini-tool"><strong>待我审批</strong><span>2 项变更</span></div><div class="mini-tool"><strong>打开 Web</strong><span>批量分析与配置</span></div><div class="mini-tool"><strong>经营口径</strong><span>查看数据说明</span></div></div></section>';
+        }
+      } else if (dim === 'flow') {
+        if (device === 'app') {
+          html += '<div class="app-greeting"><p>业务推进 · 八阶段</p><h1>先看哪里停住。</h1></div>'+
+            '<section class="app-hero"><div class="mini-kicker"><i></i>负责人观测</div><h2>业务推进不是一条绿线，而是每一步都能说明“谁负责、为什么停、下一步是什么”。</h2><p>点击阶段查看当前事实与处置动作。</p></section>'+
+            '<div class="app-section-head"><h3>客户经营主链</h3><span>7 个关注点</span></div><div class="app-stage-list">'+stageList()+'</div>';
+        } else {
+          html += '<div class="mini-brief"><div class="mini-kicker"><i></i>业务推进</div><h2>从获客到经营复盘，先看 7 个停留点。</h2><p>点击阶段进入观测点；复杂分析回 Web。</p></div>'+
+            '<section class="mini-panel"><h3>阶段停留</h3><div class="mini-item"><i class="mini-dot"></i><div><strong>项目与施工 · 3 个延期风险</strong><small>云栖府 7-2 最靠前</small></div><span>查看</span></div><div class="mini-item warn"><i class="mini-dot"></i><div><strong>报价与合同 · 2 份待决策</strong><small>客户反馈与谈单动作待记录</small></div><span>查看</span></div><div class="mini-item info"><i class="mini-dot"></i><div><strong>材料与变更 · 2 项待处理</strong><small>材料未到场 / 变更待审批</small></div><span>查看</span></div></section>'+
+            '<section class="mini-panel"><h3>负责人怎么看</h3><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>对象是否明确</strong><small>从汇总直接定位到项目或客户</small></div></div><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>责任是否在位</strong><small>显示责任人和最近动作</small></div></div><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>动作是否唯一</strong><small>当前状态只突出一个主行动</small></div></div></section>';
+        }
+      } else if (dim === 'operations') {
+        const profitNote = '<section class="blocked-card" style="min-height:0;padding:12px;margin-top:9px"><div class="blocked-head">'+icon('alert')+'经营利润（参考） · 口径待确认</div><strong style="font-size:12px">不展示确定金额</strong><p style="font-size:12px">企业费用、非项目收入、分摊和期间口径未冻结。</p></section>';
+        if (device === 'app') {
+          html += '<div class="app-greeting"><p>企业经营 · 本月</p><h1>钱和成本，分开看。</h1></div>'+
+            '<section class="app-hero"><div class="mini-kicker"><i></i>经营判断</div><h2>回款是当前第一优先级。</h2><p>签约继续增长，但回款进度偏慢；先处理逾期应收和成本完整性。</p></section>'+
+            '<div class="app-kpis"><div class="app-kpi"><span>本月签约</span><strong>186.4<small>万</small></strong></div><div class="app-kpi"><span>本月回款</span><strong>128.7<small>万</small></strong></div><div class="app-kpi"><span>应收待收</span><strong>94.3<small>万</small></strong><em>逾期 12.8 万</em></div><div class="app-kpi"><span>近 7 天应付</span><strong>36.5<small>万</small></strong><em>2 笔待核对</em></div></div>'+profitNote+
+            '<div class="app-section-head"><h3>需要核对</h3><span>负责人观测</span></div><div class="app-risk-list"><button class="app-risk" data-risk="receivable"><span class="risk-icon">'+icon('wallet')+'</span><span><strong>首期款逾期 12.8 万</strong><small>周先生 · 吴濛</small></span><span class="arrow">›</span></button><button class="app-risk" data-risk="cost"><span class="risk-icon" style="background:var(--warning-soft);color:var(--warning)">'+icon('chart')+'</span><span><strong>成本完整 8 / 11 个项目</strong><small>3 个项目毛利暂不可计算</small></span><span class="arrow">›</span></button></div>';
+        } else {
+          html += '<div class="mini-brief"><div class="mini-kicker"><i></i>经营简报</div><h2>回款第一，利润口径待确认。</h2><p>签约、回款、应收和成本完整性分开展示。</p><div class="brief-metrics"><div><span>签约</span><strong>186.4万</strong></div><div><span>回款</span><strong>128.7万</strong></div><div><span>逾期</span><strong>12.8万</strong></div></div></div>'+
+            '<section class="mini-panel"><h3>经营观测</h3><div class="mini-item warn"><i class="mini-dot"></i><div><strong>成本完整 8 / 11 个项目</strong><small>项目毛利仅对完整项目展示</small></div><span>查看</span></div><div class="mini-item info"><i class="mini-dot"></i><div><strong>公司 / 门店经营利润</strong><small>口径待确认，暂不展示金额</small></div><span>说明</span></div><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>本月回款进度 69%</strong><small>按有效收款净额</small></div><span>详情</span></div></section>'+
+            '<section class="mini-panel"><h3>目标与实际</h3><div class="mini-item"><i class="mini-dot" style="background:var(--brand-500)"></i><div><strong>签约目标 78%</strong><small>目标不是承诺</small></div></div><div class="mini-item warn"><i class="mini-dot"></i><div><strong>回款目标 59%</strong><small>未完成不伪装为完成</small></div></div></section>';
+        }
+      } else if (dim === 'tools') {
+        if (device === 'app') {
+          html += '<div class="app-greeting"><p>运营工具 · 企业标准</p><h1>标准先于下一单。</h1></div>'+
+            '<section class="app-hero"><div class="mini-kicker"><i></i>标准层</div><h2>模板存在，不等于本单可用。</h2><p>负责人看覆盖、版本、权限和历史影响。</p></section>'+
+            '<div class="app-section-head"><h3>经营工具</h3><span>App 权限分层</span></div><div class="app-stage-list">'+
+              '<button class="app-stage" data-risk="tool-standard"><span class="stage-num">01</span><div><strong>报价项目库</strong><small>维护 / 导入 / 成本可见</small></div><span class="stage-count">可用</span></button>'+
+              '<button class="app-stage" data-risk="tool-impact"><span class="stage-num">02</span><div><strong>套餐模板</strong><small>查看 / 维护</small></div><span class="stage-count">可用</span></button>'+
+              '<button class="app-stage warn" data-risk="tool-standard"><span class="stage-num">03</span><div><strong>施工计划模板</strong><small>3 处节点缺验收方式</small></div><span class="stage-count">待补</span></button>'+
+              '<button class="app-stage" data-risk="tool-app"><span class="stage-num">04</span><div><strong>付款计划 / 凭证模板</strong><small>查看与维护按角色</small></div><span class="stage-count">可用</span></button>'+
+            '</div>';
+        } else {
+          html += '<div class="mini-brief"><div class="mini-kicker"><i></i>运营工具</div><h2>标准层是否支撑下一单？</h2><p>报价库、模板和主数据不回溯历史单据。</p><div class="brief-metrics"><div><span>可用</span><strong>5</strong></div><div><span>待补</span><strong>1</strong></div><div><span>App 维护</span><strong>部分</strong></div></div></div>'+
+            '<section class="mini-panel"><h3>工具状态</h3><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>报价项目库</strong><small>BOSS/店长/财务可维护</small></div><span>查看</span></div><div class="mini-item warn"><i class="mini-dot"></i><div><strong>施工计划模板</strong><small>3 处节点缺验收方式</small></div><span>查看</span></div><div class="mini-item info"><i class="mini-dot"></i><div><strong>复杂配置建议回 Web</strong><small>批量导入、影响范围和版本对比</small></div><span>打开</span></div></section>';
+        }
+      } else {
+        if (device === 'app') {
+          html += '<div class="app-greeting"><p>组织管理 · 全企业</p><h1>谁在做什么，能查清。</h1></div>'+
+            '<section class="app-hero"><div class="mini-kicker"><i></i>组织观测</div><h2>28 名员工，3 家门店，1 个邀请待跟进。</h2><p>负责人重点看组织变化、责任交接和审计，不把部门当成新角色。</p></section>'+
+            '<div class="app-kpis"><div class="app-kpi"><span>在职员工</span><strong>28<small>人</small></strong></div><div class="app-kpi"><span>待接受邀请</span><strong>2<small>个</small></strong><em>1 个即将过期</em></div><div class="app-kpi"><span>权限异常</span><strong>0<small>项</small></strong></div><div class="app-kpi"><span>组织变更</span><strong>5<small>项</small></strong></div></div>'+
+            '<div class="app-section-head"><h3>组织风险</h3><span>可追溯</span></div><div class="app-risk-list"><button class="app-risk" data-risk="invite"><span class="risk-icon" style="background:var(--warning-soft);color:var(--warning)">'+icon('users')+'</span><span><strong>1 个邀请即将过期</strong><small>设计师候选人 · 139****6021</small></span><span class="arrow">›</span></button><button class="app-risk" data-risk="handoff"><span class="risk-icon" style="background:var(--info-soft);color:var(--info)">'+icon('route')+'</span><span><strong>客户交接已完成</strong><small>李娜 → 王敏 · 6 个客户</small></span><span class="arrow">›</span></button></div>';
+        } else {
+          html += '<div class="mini-brief"><div class="mini-kicker"><i></i>我的企业</div><h2>组织稳定，1 个邀请待跟进。</h2><p>门店、员工、角色和审计都从同一组织事实读取。</p><div class="brief-metrics"><div><span>员工</span><strong>28</strong></div><div><span>门店</span><strong>3</strong></div><div><span>异常</span><strong>0</strong></div></div></div>'+
+            '<section class="mini-panel"><h3>组织提醒</h3><div class="mini-item warn"><i class="mini-dot"></i><div><strong>邀请即将过期</strong><small>设计师候选人 · 可重发或取消</small></div><span>处理</span></div><div class="mini-item"><i class="mini-dot" style="background:var(--success)"></i><div><strong>客户交接完成</strong><small>6 个客户已落到新负责人</small></div><span>查看</span></div><div class="mini-item info"><i class="mini-dot"></i><div><strong>审计可追溯</strong><small>本周 42 条组织与权限操作</small></div><span>查看</span></div></section>';
+        }
+      }
+      target.innerHTML = html;
+    }
+
+    document.addEventListener('click', (event) => {
+      const deviceButton = event.target.closest('[data-device]');
+      if (deviceButton) { setDevice(deviceButton.dataset.device); return; }
+      const dimensionButton = event.target.closest('[data-dimension]');
+      if (dimensionButton) { setDimension(dimensionButton.dataset.dimension); return; }
+      const jumpButton = event.target.closest('[data-jump]');
+      if (jumpButton) {
+        setDimension(jumpButton.dataset.jump);
+        if (jumpButton.dataset.stageJump) setStage(jumpButton.dataset.stageJump === 'quote-contract' ? 'quote-contract' : jumpButton.dataset.stageJump);
+        return;
+      }
+      const stageButton = event.target.closest('[data-stage]');
+      if (stageButton) { setStage(stageButton.dataset.stage); return; }
+      const mobileStage = event.target.closest('[data-mobile-stage]');
+      if (mobileStage) {
+        setStage(mobileStage.dataset.mobileStage);
+        openStageDrawer(mobileStage.dataset.mobileStage);
+        return;
+      }
+      const mobilePage = event.target.closest('[data-mobile-page]');
+      if (mobilePage) { setDimension(mobilePage.dataset.mobilePage); return; }
+      const perspective = event.target.closest('[data-perspective]');
+      if (perspective) { setPerspective(perspective.dataset.perspective); return; }
+      const riskButton = event.target.closest('[data-risk]');
+      if (riskButton) { openDrawer(riskButton.dataset.risk); return; }
+      const toastButton = event.target.closest('[data-toast]');
+      if (toastButton) { showToast(toastButton.dataset.toast); return; }
+    });
+
+    document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+    document.getElementById('drawer-overlay').addEventListener('click', (event) => { if (event.target.id === 'drawer-overlay') closeDrawer(); });
+    document.getElementById('drawer-primary').addEventListener('click', () => showToast('原型演示：已进入对象处置；未写入真实数据'));
+    document.getElementById('drawer-secondary').addEventListener('click', () => showToast('原型演示：已保留当前队列位置'));
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeDrawer(); });
+
+    setStage('project');
+    renderMobile('app');
+    renderMobile('mini');
+  </script>
+</body>
+</html>

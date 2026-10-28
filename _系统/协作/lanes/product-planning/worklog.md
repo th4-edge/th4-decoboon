@@ -265,3 +265,7 @@
 - 验证：`type-check` PASS、`build` PASS、`verify:ui` PASS。`verify:system`/`verify:roles` 仍为现有 Web 基线历史失败，需在导航切换批次统一修复。
 - 当前提交：`1a684db`。
 - 后续提交：`9d97870` 修正三档布局溢出、金额两位小数和最小字号；`b22653d` 记录运行验收。本地 Designer `19900000005` 登录及 B1/B2 真实 Provider 三档浏览器检查通过：横向溢出 0、<12px 文本 0、运行时错误 0。
+
+## Archived
+
+- 2026-10-28：用户要求归档并切换单 Agent 工作模式。对应 Codex 会话已归档；lane 已从 `_系统/协作/agent-lanes.md` 活跃名单移除，`.starwork/agent-lanes/state.json` 绑定已清除。历史 worklog、workspace、shared requests 和业务产出保留。

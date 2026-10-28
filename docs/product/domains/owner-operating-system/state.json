@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "domain": "owner-operating-system",
+  "title": "装企负责人经营管理体系",
+  "northStar": "以负责人视角统一多端能力，沿客户经营主链看清业务推进、经营结果、运营标准和组织效能，并能从观测点直接进入处置",
+  "owner": "codex",
+  "phase": "PLAN_READY",
+  "batch": "BOS-P8",
+  "nextAction": "评审 Dig UI 重构方向，确定后把三页拆成生产级组件与页面模板",
+  "openDecisions": [
+    {
+      "id": "GAP-BOS-001",
+      "question": "微信小程序是否作为独立负责人壳层，还是 App 的轻量入口",
+      "status": "pending",
+      "owner": "user/zhuangdeqing-business"
+    },
+    {
+      "id": "GAP-BOS-002",
+      "question": "负责人风险观测阈值是否允许企业级配置",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "GAP-BOS-003",
+      "question": "运营工具是否作为正式一级产品名称",
+      "status": "pending",
+      "owner": "user/product"
+    }
+  ],
+  "blockers": [
+    "GAP-070：公司/门店经营利润与费用分摊口径未冻结",
+    "真实 Provider、账号、租户和写操作尚未进入本批原型",
+    "微信小程序独立产品边界未确认",
+    "当前能力清单尚未用真实生产账号逐项复核"
+  ],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md",
+    "prototype": "../../prototypes/owner-operating-system/index.html",
+    "prototypeEvidence": "../../../acceptance/runs/20261028-owner-operating-system-prototype/README.md",
+    "currentCapabilities": "current-capabilities.json",
+    "currentCapabilityReport": "11-current-capability-inventory.md",
+    "currentCapabilitiesCsv": "current-capabilities.csv",
+    "integratedPrototype": "../../prototypes/owner-operating-system/index-v2.html",
+    "integratedPrototypeReview": "13-integrated-v2-review.md",
+    "integratedPrototypeEvidence": "../../../acceptance/runs/20261028-owner-operating-system-v2/README.md",
+    "uiBaselinePrototype": "../../prototypes/owner-operating-system/index-v3.html",
+    "uiBaselineSpec": "14-ui-baseline-v1.md",
+    "uiBaselineEvidence": "../../../acceptance/runs/20261028-owner-operating-system-ui-baseline-v1/README.md",
+    "digUiPrototype": "../../prototypes/owner-operating-system/dig-v1.html",
+    "digUiReview": "15-dig-ui-review-and-redesign.md",
+    "digUiEvidence": "../../../acceptance/runs/20261028-owner-dig-ui-review/README.md"
+  },
+  "createdAt": "2026-10-28T00:34:10+08:00",
+  "updatedAt": "2026-10-28T02:21:35+08:00",
+  "history": [
+    {
+      "at": "2026-10-28T00:34:10+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-28T00:35:44+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "BOS-P0",
+      "note": "三个负责人场景和反向矩阵已完成，覆盖多店、单人和移动现场"
+    },
+    {
+      "at": "2026-10-28T00:35:44+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "BOS-P0",
+      "note": "消费 BR-028/030/037/049、DEC-032/067/075/085、CAP-004/005/006、MET-001/002/004/005；利润与跨端壳层保留开放缺口"
+    },
+    {
+      "at": "2026-10-28T00:35:44+08:00",
+      "phase": "BLUEPRINT_READY",
+      "batch": "BOS-P0",
+      "note": "四维能力、八阶段业务推进、三端职责、观测点、规则和缺口已写入蓝图"
+    },
+    {
+      "at": "2026-10-28T00:35:44+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-P0",
+      "note": "BOS-P0 至 BOS-P5 切片、依赖、退出条件和回滚已定义"
+    },
+    {
+      "at": "2026-10-28T00:43:46+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-P0",
+      "note": "完成负责人经营管理全景首版概念原型：四维 IA、八阶段业务推进、观测点、三端壳层、两轮渲染评审；待用户确认三端边界与风险阈值"
+    },
+    {
+      "at": "2026-10-28T01:15:22+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-C1",
+      "note": "完成生产分支负责人当前能力盘点：62个能力组，区分42项生产可见、17项部分覆盖及4项后端/未上线/口径阻塞"
+    },
+    {
+      "at": "2026-10-28T01:15:43+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-C1",
+      "note": "复核能力成熟度：41项生产可见、18项部分覆盖、1项后端未露出、1项未上线、1项口径阻塞"
+    },
+    {
+      "at": "2026-10-28T01:52:35+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-P6",
+      "note": "基于62个生产能力组完成负责人经营管理整合版V2，五页Web与移动端真实渲染通过，旧版原型保留"
+    },
+    {
+      "at": "2026-10-28T02:02:53+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-P7",
+      "note": "完成工程蓝图+经营账本视觉方向、三页样板、Token/组件/模板和两轮渲染检查"
+    },
+    {
+      "at": "2026-10-28T02:21:35+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-P8",
+      "note": "完成 Dig UI 现状审查与高保真重构原型，覆盖 Web/App、深浅主题、关键控件双语与三页样板"
+    }
+  ]
+}

@@ -2665,3 +2665,7 @@ size=12 -> 返回 9 条（全量），响应 size 字段 = 12
 - 发布：后端 `/opt/decoboon/releases/20260927-161525`，Admin `/opt/decoboon-admin/releases/20260927-161700`。
 - 事故：`INC-20260927-9e5cc3140b` 已 fixed。
 
+
+## Archived
+
+- 2026-10-28：用户要求归档并切换单 Agent 工作模式。对应 Codex 会话已归档；lane 已从 `_系统/协作/agent-lanes.md` 活跃名单移除，`.starwork/agent-lanes/state.json` 绑定已清除。历史 worklog、workspace、shared requests 和业务产出保留。
