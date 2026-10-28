@@ -19,11 +19,11 @@
 ## 2. 解包结构
 
 ```text
-th4-decoboon-1.0.0-build/
+th4-decoboon-1.0.73-build/
 ├── bin/
 │   ├── cmd.sh
 │   └── decoboon.service.example
-├── boot/th4-decoboon-1.0.0.jar
+├── boot/th4-decoboon-1.0.73.jar
 ├── config/
 │   ├── application.yml
 │   ├── application-prod.yml

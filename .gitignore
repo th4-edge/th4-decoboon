@@ -103,3 +103,6 @@ docs/acceptance/**/evidence/**/*.java
 docs/operations/incidents/**/raw.txt
 docs/acceptance/**/*.cjs
 docs/product/**/evidence/**/*.png
+
+# Local StarWork backups
+.starwork/backups/

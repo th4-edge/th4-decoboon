@@ -59,7 +59,9 @@ class SummaryImplementationRulesTest {
             // 2026-10-15 主材下单作业单报表（BR-031）：品类汇总改为聚合投影 SQL，返回行数 = 品类数。
             "material/context/MaterialSheetContext.java",
             // 2026-10-17 材料蓝图业务体检：项目级材料健康计数/成本完整性聚合
-            "material/context/MaterialHealthContext.java");
+            "material/context/MaterialHealthContext.java",
+            // 财务报价设计师聚合：服务端聚合报表
+            "quote/service/quotes/financereport/");
 
     /**
      * 存量违规基线（GAP-027 整改完成后必须逐条删除）。

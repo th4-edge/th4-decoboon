@@ -28,6 +28,7 @@ import com.th4.edge.tenant.user.repository.CompanyMemberLogRepository;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import com.th4.edge.tenant.user.repository.InviteRepository;
 import com.th4.edge.tenant.user.repository.StoreRepository;
+import com.th4.edge.tenant.user.repository.TeamRepository;
 import com.th4.edge.tenant.user.service.invite.invitation.cancel.support.Cancel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,7 @@ class FinanceOrganizationRulesTest {
     private EmployeeRepository employeeRepository;
     private InviteRepository inviteRepository;
     private StoreRepository storeRepository;
+    private TeamRepository teamRepository;
     private CompanyMemberLogRepository memberLogRepository;
     private SubscriptionContext subscriptionContext;
     private StoreAttributionContext storeAttributionContext;
@@ -67,13 +69,14 @@ class FinanceOrganizationRulesTest {
         employeeRepository = mock(EmployeeRepository.class);
         inviteRepository = mock(InviteRepository.class);
         storeRepository = mock(StoreRepository.class);
+        teamRepository = mock(TeamRepository.class);
         memberLogRepository = mock(CompanyMemberLogRepository.class);
         subscriptionContext = mock(SubscriptionContext.class);
         storeAttributionContext = mock(StoreAttributionContext.class);
         modelIdentityContext = mock(ModelIdentityContext.class);
 
         context = new MembershipContext(
-                userContext, employeeRepository, inviteRepository, storeRepository,
+                userContext, employeeRepository, inviteRepository, teamRepository, storeRepository,
                 memberLogRepository, mock(CompanyJoinLimitRepository.class), subscriptionContext,
                 storeAttributionContext, modelIdentityContext, mock(CustomerRepository.class),
                 mock(PropertyRepository.class), mock(QuoteRepository.class), mock(ProjectRepository.class),
@@ -147,7 +150,7 @@ class FinanceOrganizationRulesTest {
         credentials.setEmployee(finance);
 
         when(employeeRepository.findByEmpId(5L)).thenReturn(finance);
-        when(storeAttributionContext.requireCompanyStore(20L, 1L)).thenReturn(secondStore);
+        when(storeRepository.findByStoreId(20L)).thenReturn(secondStore);
         when(employeeRepository.save(any(Employee.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(userContext.requireWx(finance)).thenReturn(credentials);
         when(memberLogRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
@@ -169,24 +172,36 @@ class FinanceOrganizationRulesTest {
     }
 
     @Test
-    void frozenTeamCannotBeAssignedOnInvite() {
+    void crossStoreTeamCannotBeAssignedOnInvite() {
         Employee boss = employee(1L, company, defaultStore, EmployeeRole.Boss);
+        Team secondStoreTeam = new Team();
+        secondStoreTeam.setTeamId(60L);
+        secondStoreTeam.setName("二店团队");
+        secondStoreTeam.setCompany(company);
+        secondStoreTeam.setStore(secondStore);
+        when(teamRepository.findByTeamIdAndCompany_ComId(60L, 1L)).thenReturn(secondStoreTeam);
 
         assertThatThrownBy(() -> context.createInvite(boss, "设计师", "13900000008",
-                EmployeeRole.Designer, null, 60L, "历史团队"))
+                EmployeeRole.Designer, null, 60L, "二店团队"))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("团队已冻结");
+                .hasMessageContaining("团队不属于当前门店");
     }
 
     @Test
-    void frozenTeamCannotBeChangedOnMemberUpdate() {
+    void crossStoreTeamCannotBeChangedOnMemberUpdate() {
         Employee boss = employee(1L, company, defaultStore, EmployeeRole.Boss);
         Employee designer = employee(8L, company, defaultStore, EmployeeRole.Designer);
+        Team secondStoreTeam = new Team();
+        secondStoreTeam.setTeamId(60L);
+        secondStoreTeam.setName("二店团队");
+        secondStoreTeam.setCompany(company);
+        secondStoreTeam.setStore(secondStore);
         when(employeeRepository.findByEmpId(8L)).thenReturn(designer);
+        when(teamRepository.findByTeamIdAndCompany_ComId(60L, 1L)).thenReturn(secondStoreTeam);
 
         assertThatThrownBy(() -> context.updateMember(boss, 8L, EmployeeRole.Designer, null, 60L))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("团队已冻结");
+                .hasMessageContaining("团队不属于员工门店");
     }
 
     @Test
@@ -225,7 +240,7 @@ class FinanceOrganizationRulesTest {
         Employee accepted = context.accept(31L, "open-id", "union-id", invite.getTelNo(),
                 "新设计师", false, null, null);
 
-        assertThat(accepted.getTeam()).isNull();
+        assertThat(accepted.getTeam()).isSameAs(historicalTeam);
         assertThat(invite.getTeam()).isSameAs(historicalTeam);
     }
 
@@ -259,7 +274,7 @@ class FinanceOrganizationRulesTest {
         Invite invite = new Invite();
         invite.setInviteId(31L);
 
-        ReflectionTestUtils.setField(cancel, "employee", principal);
+        ReflectionTestUtils.setField(cancel, "principal", principal);
         ReflectionTestUtils.setField(cancel, "inviteId", 31L);
         ReflectionTestUtils.setField(cancel, "reason", "验收取消");
         when(tenantContext.requireEmployee(principal)).thenReturn(current);
@@ -368,7 +383,7 @@ class FinanceOrganizationRulesTest {
         Employee finance = employee(5L, company, defaultStore, EmployeeRole.Finance);
 
         when(employeeRepository.findByEmpId(5L)).thenReturn(finance);
-        when(storeAttributionContext.requireCompanyStore(20L, 1L)).thenReturn(secondStore);
+        when(storeRepository.findByStoreId(20L)).thenReturn(secondStore);
 
         assertThatThrownBy(() -> context.updateMember(manager, 5L, EmployeeRole.Finance, 20L, null))
                 .isInstanceOf(DefinedException.class)

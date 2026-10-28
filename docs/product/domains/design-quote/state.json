@@ -4,21 +4,13 @@
   "title": "设计方案与设计报价审视",
   "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
   "owner": "codex",
-  "phase": "ACCEPTED",
-  "batch": "DQ-X1+DQ-X2",
-  "nextAction": "等待用户明确确认是否执行迁移 131 与生产发布；同时仍需从脏工作区拆分 DQ-X1/DQ-X2 干净提交、处理 Web origin/dev 分叉、test 冒烟和 App 版本决策",
+  "phase": "RELEASED",
+  "batch": "DQ-X2",
+  "nextAction": "等待用户设置并验证 App 1.0.67 体验版；正式审核与发布由用户本人完成。",
   "openDecisions": [
     "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
   ],
-  "blockers": [
-    "REL-B01 三仓工作区不干净，无法确定唯一发布提交",
-    "REL-B02 Web dev 与 origin/dev 分叉",
-    "REL-B03 当前工作区混入未裁决迁移 124–131 与 rollback",
-    "REL-B04 无独立远端 test 环境入口，test/prod 分支落后",
-    "REL-B05 App 版本仍为 1.0.66 / 166",
-    "REL-B06 未取得生产发布授权",
-    "REL-B07 生产缺少 cust_customer_loss，DQ-X1 依赖迁移 131"
-  ],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -34,7 +26,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T22:14:57+08:00",
-  "updatedAt": "2026-10-23T18:40:27.138Z",
+  "updatedAt": "2026-10-24T14:40:00+08:00",
   "history": [
     {
       "at": "2026-10-21T22:14:57+08:00",
@@ -167,6 +159,18 @@
       "phase": "ACCEPTED",
       "batch": "DQ-X1+DQ-X2",
       "note": "生产只读核对发现 cust_customer_loss 不存在；DQ-X1 依赖迁移 131，发布升级为需要用户明确确认的 L3 DDL 发布，未执行任何写操作"
+    },
+    {
+      "at": "2026-10-24T02:57:31+08:00",
+      "phase": "RELEASED",
+      "batch": "DQ-X2",
+      "note": "后端e627bbb、Web4cd9238、App efe2bae已发布到dev/test/prod；后端和Web生产上线，App 1.0.67上传成功；无DDL，生产健康与路由冒烟通过。"
+    },
+    {
+      "at": "2026-10-24T14:40:00+08:00",
+      "phase": "RELEASED",
+      "batch": "DQ-X2",
+      "note": "发布后纠正：生产 e627bbb 依赖 cust_customer_loss，已补执行迁移 131 并登记账本；备份校验和已留痕；124–130 未执行"
     }
   ]
 }

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Note("创建邀请")
 @Properties(allow = {
-        @AllowProperties(model = Invite.class, properties = {"inviteId", "company", "store", "team", "inviter", "inviteName", "telNo", "role", "status", "expireTime", "createTime"}),
+        @AllowProperties(model = Invite.class, properties = {"inviteId", "company", "store", "team", "inviter", "inviteName", "telNo", "role", "status", "expireTime", "createTime", "reusedPending"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),

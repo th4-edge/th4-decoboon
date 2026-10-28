@@ -1,0 +1,177 @@
+{
+  "collectedAt": "2026-10-27T08:20:25.778810+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon-ready-edit-hotfix/docs/operations/incidents/2026-10-27/20261027-162024",
+  "counts": {
+    "code_bug": 18,
+    "unknown": 15,
+    "expected": 48
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261027-b63f1ec203",
+      "signature": "Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+      "signatureHash": "b63f1ec203",
+      "classification": "code_bug",
+      "severity": "critical",
+      "status": "open",
+      "actionable": true,
+      "count": 18,
+      "firstSeen": "2026-10-27 15:38:31.126",
+      "lastSeen": "2026-10-27 15:44:25.586",
+      "samples": [
+        "[2026-10-27 15:38:31.126] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+        "[2026-10-27 15:38:32.348] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+        "[2026-10-27 15:40:06.122] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+        "[2026-10-27 15:40:06.839] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null",
+        "[2026-10-27 15:40:07.026] [ERROR] [XNIO-1 task-7] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:Cannot invoke \"com.th4.edge.tenant.user.model.Company.getComId()\" because the return value of \"com.th4.edge.tenant.user.model.Employee.getCompany()\" is null"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261027-9c36075e08",
+      "signature": "Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+      "signatureHash": "9c36075e08",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 8,
+      "firstSeen": "2026-10-27 00:07:05.612",
+      "lastSeen": "2026-10-27 15:39:40.759",
+      "samples": [
+        "[2026-10-27 00:07:05.612] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:12:53.388] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:13:30.594] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 00:13:34.008] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials",
+        "[2026-10-27 14:32:52.070] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/page处理失败:Can not set com.th4.edge.tenant.user.model.Employee field com.th4.edge.tenant.user.service.invite.invitation.page.support.Page.employee to com.th4.edge.tenant.user.model.Credentials"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-162024"
+      ]
+    },
+    {
+      "incidentId": "INC-20261027-a6dfdbf625",
+      "signature": "手机号或密码错误",
+      "signatureHash": "a6dfdbf625",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 1,
+      "firstSeen": "2026-10-27 00:26:34.838",
+      "lastSeen": "2026-10-27 00:26:34.838",
+      "samples": [
+        "[2026-10-27 00:26:34.838] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/password-login处理失败:手机号或密码错误"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261027-0277f97d16",
+      "signature": "找不到对应的处理服务:mcp",
+      "signatureHash": "0277f97d16",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-27 12:10:02.020",
+      "lastSeen": "2026-10-27 12:10:02.020",
+      "samples": [
+        "[2026-10-27 12:10:02.020] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - mcp处理失败:找不到对应的处理服务:mcp"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261027-060771017b",
+      "signature": "访问受限，授权已过期，请重新登录后再访问。",
+      "signatureHash": "060771017b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-27 15:38:12.775",
+      "lastSeen": "2026-10-27 15:38:12.775",
+      "samples": [
+        "[2026-10-27 15:38:12.775] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - carryover/batch/info处理失败:访问受限，授权已过期，请重新登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261027-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 47,
+      "firstSeen": "2026-10-27 00:05:39.296",
+      "lastSeen": "2026-10-27T16:20:25.667+08:00",
+      "samples": [
+        "[2026-10-27 00:05:39.296] [ERROR] [XNIO-1 task-6] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - collab/notice/count处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-27 00:05:39.315] [ERROR] [XNIO-1 task-5] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-27 00:05:39.328] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/report/page处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-27 00:05:39.343] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/project/page处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-10-27 00:05:39.370] [ERROR] [XNIO-1 task-3] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - statistic/store/report处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    },
+    {
+      "incidentId": "INC-20261027-4b40ffd35e",
+      "signature": "该阶段无合同施工任务，不能提交验收，请先核对报价与合同施工行",
+      "signatureHash": "4b40ffd35e",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 1,
+      "firstSeen": "2026-10-27 09:39:32.257",
+      "lastSeen": "2026-10-27 09:39:32.257",
+      "samples": [
+        "[2026-10-27 09:39:32.257] [ERROR] [XNIO-1 task-8] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - project/acceptance/save处理失败:该阶段无合同施工任务，不能提交验收，请先核对报价与合同施工行"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-162024"
+      ]
+    },
+    {
+      "incidentId": "INC-20261027-c0fb198c0a",
+      "signature": "邀请已过期",
+      "signatureHash": "c0fb198c0a",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-27 00:09:51.230",
+      "lastSeen": "2026-10-27 00:09:56.841",
+      "samples": [
+        "[2026-10-27 00:09:51.230] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:邀请已过期",
+        "[2026-10-27 00:09:56.841] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - invite/invitation/cancel处理失败:邀请已过期"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-162024"
+      ]
+    },
+    {
+      "incidentId": "INC-20261027-c5a21e677b",
+      "signature": "量房完成时间不能早于预约时间",
+      "signatureHash": "c5a21e677b",
+      "classification": "unknown",
+      "severity": "medium",
+      "status": "open",
+      "actionable": true,
+      "count": 2,
+      "firstSeen": "2026-10-27 10:16:09.294",
+      "lastSeen": "2026-10-27 10:16:26.502",
+      "samples": [
+        "[2026-10-27 10:16:09.294] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:量房完成时间不能早于预约时间",
+        "[2026-10-27 10:16:26.502] [ERROR] [XNIO-1 task-4] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - property/measure/save处理失败:量房完成时间不能早于预约时间"
+      ],
+      "reportPaths": [
+        "2026-10-27/20261027-162024"
+      ]
+    }
+  ]
+}

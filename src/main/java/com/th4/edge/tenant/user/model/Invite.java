@@ -114,6 +114,10 @@ public class Invite extends AbstractModel {
     })
     private DateTime createTime;
 
+    @Note("本次创建是否复用已有待接受邀请（响应投影，不持久化）")
+    @Transient
+    private Boolean reusedPending = Boolean.FALSE;
+
     public Long getInviteId() {
         return inviteId;
     }
@@ -220,4 +224,7 @@ public class Invite extends AbstractModel {
     public void setCreateTime(DateTime createTime) {
         this.createTime = createTime;
     }
+
+    public Boolean getReusedPending() { return reusedPending; }
+    public void setReusedPending(Boolean reusedPending) { this.reusedPending = Boolean.TRUE.equals(reusedPending); }
 }

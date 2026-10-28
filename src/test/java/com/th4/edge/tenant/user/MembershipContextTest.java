@@ -34,7 +34,7 @@ class MembershipContextTest {
         EmployeeRepository employees = mock(EmployeeRepository.class);
         MembershipContext context = new MembershipContext(
                 mock(UserIdentityContext.class), employees, mock(InviteRepository.class),
-                mock(com.th4.edge.tenant.user.repository.StoreRepository.class), mock(CompanyMemberLogRepository.class),
+                mock(TeamRepository.class), mock(com.th4.edge.tenant.user.repository.StoreRepository.class), mock(CompanyMemberLogRepository.class),
                 mock(CompanyJoinLimitRepository.class), mock(SubscriptionContext.class),
                 mock(StoreAttributionContext.class), mock(ModelIdentityContext.class), mock(CustomerRepository.class),
                 mock(PropertyRepository.class), mock(QuoteRepository.class),

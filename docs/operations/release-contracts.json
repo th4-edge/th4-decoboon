@@ -1,0 +1,24 @@
+{
+  "contracts": [
+    {
+      "name": "设计方案编辑权限投影",
+      "class": "com/th4/edge/decoboon/design/model/Design.class",
+      "requiredStrings": ["getEditable", "setEditable"]
+    },
+    {
+      "name": "设计方案详情 editable 白名单",
+      "class": "com/th4/edge/decoboon/design/service/schemes/info/support/Info.class",
+      "requiredStrings": ["editable", "setEditable"]
+    },
+    {
+      "name": "邀请取消必须加载完整员工上下文",
+      "class": "com/th4/edge/tenant/user/service/invite/invitation/cancel/support/Cancel.class",
+      "requiredStrings": ["principal", "requireEmployee", "membershipContext"]
+    },
+    {
+      "name": "邀请分页仅允许 BOSS/店长且拒绝无员工凭证",
+      "class": "com/th4/edge/tenant/user/service/invite/invitation/page/support/Page.class",
+      "requiredStrings": ["principal", "requireRole", "StoreManager"]
+    }
+  ]
+}
