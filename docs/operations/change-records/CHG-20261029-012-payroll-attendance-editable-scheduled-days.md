@@ -38,8 +38,8 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | `hotfix/payroll-attendance-editable-20261029` | 待提交 | attendance summary save/update、测试、决策记录 |
-| th4-decoboon-web | `hotfix/payroll-attendance-editable-20261029` | 待提交 | `FinanceAttendanceDrawer.vue` |
+| th4-decoboon | `hotfix/payroll-attendance-editable-20261029` | `9ab0b0f` | attendance summary save/update、测试、决策记录 |
+| th4-decoboon-web | `hotfix/payroll-attendance-editable-20261029` | `49f4b35` | `FinanceAttendanceDrawer.vue` |
 
 ## 6. 验证
 
