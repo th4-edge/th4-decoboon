@@ -7,7 +7,7 @@
 | 变更 ID | CHG-20261029-012 |
 | 类型 | 热修 / 缺陷 |
 | 风险级别 | L2 |
-| 状态 | 待发布 |
+| 状态 | 已发布 |
 | 负责人 | Codex |
 | 日期 | 2026-10-29 |
 | 关联需求/事故/业务裁决 | `USER-DEC-20261029-006`、`BR-038`、`DEC-045` |
@@ -38,7 +38,7 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | `hotfix/payroll-attendance-editable-20261029` | `9ab0b0f` | attendance summary save/update、测试、决策记录 |
+| th4-decoboon | `hotfix/payroll-attendance-editable-20261029` | 代码 `9ab0b0f`；制品 `1e34714` | attendance summary save/update、测试、决策记录 |
 | th4-decoboon-web | `hotfix/payroll-attendance-editable-20261029` | `49f4b35` | `FinanceAttendanceDrawer.vue` |
 
 ## 6. 验证
@@ -58,20 +58,20 @@
 
 | 字段 | 内容 |
 | --- | --- |
-| Release ID | 待发布 |
-| 制品路径/SHA-256 | 待生成 |
-| 生产 release/版本 | 待发布 |
-| 上一版本/回滚点 | 后端与 Web 当前生产 release |
-| 健康检查 | 待执行 |
-| 发布后观察 | 待执行 |
+| Release ID | `20261029-152049` |
+| 制品路径/SHA-256 | `th4-decoboon-1.0.0-build.tar.gz` / `747d1fe23c060ecf3c444338e66db580d99fcaedfa807f5668c2b2ff691cd705` |
+| 生产 release/版本 | 后端 `/opt/decoboon/releases/20261029-152049`；Web `/opt/decoboon-web/releases/20261029-152049` |
+| 上一版本/回滚点 | 后端 `/opt/decoboon/releases/20261027-172000`；Web `/opt/decoboon-web/releases/20261027-162200` |
+| 健康检查 | `auth/session/info` HTTP 200；Web `/`、`/login`、`/finance/employee-salaries` HTTP 200；`/v3/` 301 |
+| 发布后观察 | 服务 active；线上考勤 chunk 含可编辑输入和 1～31 天校验 |
 
-- 数据库迁移：无
+- 数据库迁移：无；发布前已备份 8 张薪酬/考勤相关表到 `/opt/backups/th4-decoboon/payroll-before-attendance-editable-20261029-152049.sql.gz`（SHA-256 `8279cd0aded7e1d146168872f21cede550a63fa74f0d573cf987489f0b33066c`）
 - 配置/密钥变化：无
 
 ## 8. 回滚
 
 - 回滚条件：考勤保存失败、应出勤被错误覆盖、工资计算输入异常或生产冒烟失败。
-- 回滚命令/步骤：后端使用 `scripts/deploy-prod.sh` 自动回滚或切回上一 release；Web 切回上一静态资源 release。
+- 回滚命令/步骤：后端切回 `/opt/decoboon/releases/20261027-172000` 并重启；Web 执行 `ln -sfn /opt/decoboon-web/releases/20261027-162200 /opt/decoboon-web/current && nginx -t && systemctl reload nginx`。
 - 回滚验证：登录与月度考勤页面可用，原薪酬方案与历史考勤不受影响。
 - 实际是否回滚：否
 
@@ -79,13 +79,13 @@
 
 - 智能体运行/Token 摘要：未采集
 - 人工耗时：未采集
-- 一次通过：待确认
+- 一次通过：是
 - 返工原因：无
-- 最终结论：待观察
+- 最终结论：已关闭（待财务页面人工确认）
 
 ## 10. 复盘与沉淀
 
 - 是否出现重复问题：是，历史热修只改 Web 只读联动，未支持业务调整。
 - 是否需要新增门禁：暂不新增；现有定向测试覆盖保存与更新。
 - 候选 `EXP/ANT/PATH`：候选 EXP：派生默认值必须支持业务覆盖时，服务端不得再次强制覆盖客户端提交值。
-- 后续动作与负责人：发布后回灌 `prod/test/dev` 并验证远程分支包含本提交。
+- 后续动作与负责人：已回灌 `prod/test/dev`，三线均指向本热修；请财务刷新生产页面确认输入框可编辑。
