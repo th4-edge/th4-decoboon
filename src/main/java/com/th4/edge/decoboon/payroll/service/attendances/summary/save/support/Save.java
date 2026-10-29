@@ -41,6 +41,7 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     @User private Employee employee;
     @AutoInject @NotNull private Long empId;
     @AutoInject @NotEmpty private String month;
+    @AutoInject private Integer scheduledDays;
     @AutoInject private Integer normalDays;
     @AutoInject private Integer personalLeaveDays;
     @AutoInject private Integer sickLeaveDays;
@@ -79,13 +80,14 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
                 .orElseThrow(() -> new com.th4.edge.framework.exception.DefinedException(
                         new com.th4.edge.framework.exception.DefaultErrorCode(
                                 "400", "该工资月份没有生效薪酬方案，请先配置对应生效期的方案")));
-        if (scheme.getScheduledDays() == null || scheme.getScheduledDays() <= 0) {
+        Integer effectiveScheduledDays = scheduledDays != null ? scheduledDays : scheme.getScheduledDays();
+        if (effectiveScheduledDays == null || effectiveScheduledDays < 1 || effectiveScheduledDays > 31) {
             throw new com.th4.edge.framework.exception.DefinedException(
-                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "薪酬方案未设置月应出勤天数"));
+                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "月应出勤天数必须为 1 至 31 天的整数"));
         }
         accessContext.applyOwnership(request, current, target);
         request.setPayrollMonth(month);
-        request.setScheduledDays(scheme.getScheduledDays());
+        request.setScheduledDays(effectiveScheduledDays);
         request.setNormalDays(value(normalDays));
         request.setPersonalLeaveDays(value(personalLeaveDays));
         request.setSickLeaveDays(value(sickLeaveDays));
