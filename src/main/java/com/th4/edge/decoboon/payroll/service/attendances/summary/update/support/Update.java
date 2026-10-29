@@ -37,6 +37,7 @@ import java.time.LocalDateTime;
 public class Update implements com.th4.edge.decoboon.payroll.service.attendances.summary.update.Update {
     @User private Employee employee;
     @AutoInject @NotNull private Long summaryId;
+    @AutoInject private Integer scheduledDays;
     @AutoInject private Integer normalDays;
     @AutoInject private Integer personalLeaveDays;
     @AutoInject private Integer sickLeaveDays;
@@ -70,6 +71,12 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
         if (payrollItemRepository.existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(
                 current.getCompany().getComId(), summary.getEmployee().getEmpId(), summary.getPayrollMonth())) {
             throw new DefinedException(new DefaultErrorCode("409", "该员工当月工资项已生成，不能修改考勤"));
+        }
+        if (scheduledDays != null) {
+            if (scheduledDays < 1 || scheduledDays > 31) {
+                throw new DefinedException(new DefaultErrorCode("400", "月应出勤天数必须为 1 至 31 天的整数"));
+            }
+            summary.setScheduledDays(scheduledDays);
         }
         if (normalDays != null) summary.setNormalDays(normalDays);
         if (personalLeaveDays != null) summary.setPersonalLeaveDays(personalLeaveDays);
