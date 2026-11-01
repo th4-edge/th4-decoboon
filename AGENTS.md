@@ -52,7 +52,7 @@
 
 ### 3.5 智能体边界
 
-- Web UI 唯一启用 `zhuangdeqing-ui-craft`；`zhuangdeqing-web-ui-interaction`、`zhuangdeqing-product-web-development`、`zhuangdeqing-web-immersion-audit` 和 `decoboon-web-frame` 均禁用，旧技能和历史规范仅作人工参考。恢复必须经用户明确授权，并同步 `.starwork/skills.json`、`.starwork/disabled-skills.json` 和本文件。
+- 当前没有项目级 Web UI 执行 Skill。Web UI 按 Web 仓库 `src/AGENTS.md` 和 `docs/standards/**` 执行；`zhuangdeqing-ui-craft` 已按用户要求于 2026-11-02 从活跃 Skill 删除并归档。旧 Web UI 技能和历史规范仅作人工参考，恢复必须经用户明确授权并同步 Registry。
 - 独立验收只使用 `zhuangdeqing-acceptance-agent`；执行前读取冻结用例、Oracle Lock、追溯矩阵，不修改业务事实或产品代码。
 - 生产巡检与后端事故处理只使用 `backend-prod-sentinel`；只读巡检命令为 `bash scripts/prod-monitor.sh collect "30 minutes ago"`。
 - 复杂业务域使用 `domain-delivery-orchestrator`，必须读取领域 `state.json`、章程和对账矩阵；一次只推进一个垂直切片。
@@ -69,7 +69,19 @@
 
 - Logo 只能使用 `logo-export` 同一套 Mark：App 用 `JzBrandLogo`，Admin 用 `BrandLogo`，Site 用 `brand-logo`；禁止页面另存图片或复制路径。
 
-## 4. 按任务读取，不预读全部
+## 4. 固定读取纪律与任务路由
+
+### 4.1 固定读取纪律（强制）
+
+1. 问题台账按 ID 或状态查询，禁止全文读取 `registry.json`。
+2. 业务领域只读 `state.json`、`00-charter.md`、`10-reconciliation.md`；需要时再补一个业务卡或一个实现文件，不读完整领域包和 evidence。
+3. `rules.md` 先用标题/章节定位，只读相关 30–80 行，不全文加载。
+4. Skill references 只读当前模式实际需要的一份；不得把全部 references 一起装入。
+5. 验收只读 RUN 摘要、`run.json`、当前 case-result、defect 和关键证据；不读 raw 全目录和大日志。
+6. 构建和监控只读失败行、结论和新增指纹；完整日志留在文件。
+7. 一个任务只允许一个主 Skill。业务智能体是事实源，不计作额外执行 Skill；需要第二主 Skill 时先拆任务。
+
+### 4.2 按任务读取
 
 | 任务 | 必读入口 | 按需读取 |
 | --- | --- | --- |
@@ -77,7 +89,7 @@
 | 后端测试 | `src/test/AGENTS.md` | `rules.md` §4.5、§8；对应 Provider 契约和安全测试 |
 | 产品需求/业务方案 | `docs/product/AGENTS.md` | `zhuangdeqing-business`、领域 `state.json`、相关 `BR/DEC/OBJ/GAP` |
 | 跨端/接口/选择器设计 | `docs/design/AGENTS.md` | `docs/design/31`–`35`、相关 App/Web 页面和 Provider |
-| Web 页面实现 | Web 仓库 `AGENTS.md` | `zhuangdeqing-ui-craft`、Web 标准、后端对应 Provider |
+| Web 页面实现 | Web 仓库 `AGENTS.md`、`src/AGENTS.md` | Web 标准、后端对应 Provider、真实渲染证据 |
 | App 页面实现 | App 仓库 `AGENTS.md` | App 专项规范、后端对应 Provider、真机证据要求 |
 | 独立验收 | `zhuangdeqing-acceptance-agent` | 冻结测试资产、Oracle、当前 `RUN-*` 目录 |
 | 生产事件 | `backend-prod-sentinel` | 事故记录、最近发布、相关日志和回滚点 |

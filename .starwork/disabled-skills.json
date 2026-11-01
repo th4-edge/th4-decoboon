@@ -36,8 +36,17 @@
       "scope": "web-project",
       "disabled_method": "archived to web _系统/归档/20261102/skills",
       "active_registry_entry_removed": true,
-      "replaced_by": "zhuangdeqing-ui-craft"
+      "replaced_by": "Web src/AGENTS.md + docs/standards/**"
+    },
+    {
+      "id": "zhuangdeqing-ui-craft",
+      "name": "Zhuangdeqing UI Craft Agent",
+      "path": "_系统/归档/20261102/技能/删除/zhuangdeqing-ui-craft",
+      "scope": "project",
+      "disabled_method": "removed from active skill registry by user request; archived for recovery only",
+      "active_registry_entry_removed": true,
+      "deleted_by_user": true
     }
   ],
-  "updated_at": "2026-11-02T04:45:00+08:00"
+  "updated_at": "2026-11-02T05:45:00+08:00"
 }

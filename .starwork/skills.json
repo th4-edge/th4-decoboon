@@ -1,6 +1,6 @@
 {
   "schema": "starwork.project_skills.v0.1",
-  "updated_at": "2026-11-02T04:30:00+08:00",
+  "updated_at": "2026-11-02T05:45:00+08:00",
   "skills": [
     {
       "id": "neat-freak",
@@ -84,25 +84,6 @@
       "reason": "以真实中小装企角色和多租户场景驱动装得清 App 应用推演、主链与账务体验迭代，并通过冻结包和分批验证降低跨智能体 token 消耗。",
       "installed_by": "user-request",
       "installed_at": "2026-09-18T03:20:00+08:00"
-    },
-    {
-      "id": "zhuangdeqing-ui-craft",
-      "name": "Zhuangdeqing UI Craft Agent",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/zhuangdeqing-ui-craft"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/zhuangdeqing-ui-craft",
-          "mode": "local"
-        }
-      ],
-      "reason": "装得清 Web UI 唯一启用智能体：按角色职责、任务链、产品真实性和专业 UI 评审设计页面；通过 Token、七态、可访问性与真实渲染门禁，并接入 Ollama qwen2.5vl:7b 本地视觉评审桥，对 2.5D/3D 做业务价值证明。",
-      "installed_by": "user-request",
-      "installed_at": "2026-10-28T03:10:00+08:00"
     },
     {
       "id": "zhuangdeqing-acceptance-agent",
