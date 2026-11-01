@@ -53,11 +53,16 @@
     "evidence/TC-CRM-MANAGER-HANDOFF-003/03-customer-detail.png",
     "evidence/TC-CRM-MANAGER-HANDOFF-003/04-after-handoff.png",
     "evidence/TC-CRM-MANAGER-HANDOFF-003/05-after-handoff.json",
-    "evidence/TC-CRM-MANAGER-HANDOFF-003/06-handoff-api-db.json"
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/06-handoff-api-db.json",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/11-clean-candidate-customer360.json",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/11-clean-candidate-customer360.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/12-clean-candidate-assign-dialog.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/13-clean-candidate-customer360-direct.json",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/13-clean-candidate-customer360-direct.png"
   ],
   "defectIds": [
     "DEF-20261102-003"
   ],
-  "blockedReason": "App授权微信身份不可用；Web/API/DB转交链已通过。",
-  "notes": "转交前发现店长客户360路由缺失，修复后页面完成转交。整条用例仍需App证据。"
+  "blockedReason": "客户360 Web 修复已可复现并提交；App 授权微信身份仍不可用，跨端 CRM 用例不能PASS。",
+  "notes": "转交前发现店长客户360路由缺失，修复后页面完成转交。整条用例仍需App证据。\n客户360已从混合工作区抽出为 Web commit 3b2e220；干净提交构建通过，店长真实页面可进入并打开指派设计师对话框。"
 }

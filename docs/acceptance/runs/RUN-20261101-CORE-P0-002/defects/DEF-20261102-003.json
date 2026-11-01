@@ -33,6 +33,14 @@
   "retestEvidence": [
     "evidence/TC-CRM-MANAGER-HANDOFF-003/04-after-handoff.png",
     "evidence/TC-CRM-MANAGER-HANDOFF-003/05-after-handoff.json",
-    "evidence/TC-CRM-MANAGER-HANDOFF-003/06-handoff-api-db.json"
-  ]
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/06-handoff-api-db.json",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/11-clean-candidate-customer360.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/12-clean-candidate-assign-dialog.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/13-clean-candidate-customer360-direct.png"
+  ],
+  "committedFix": {
+    "changeId": "CHG-20261102-004",
+    "repository": "th4-decoboon-web",
+    "commit": "3b2e220"
+  }
 }

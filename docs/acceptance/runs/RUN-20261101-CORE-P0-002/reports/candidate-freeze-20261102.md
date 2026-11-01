@@ -10,6 +10,7 @@
 | th4-decoboon | `64abe92e` | 结算列表统一使用 ProjectCostContext 成本完整性投影，新增定向测试 |
 | th4-decoboon-web | `54d4fb2` | 报价模型归一化并展示 acceptedBy/acceptedAt 与员工登记边界 |
 | th4-decoboon | `7dd71442` | `quote/designer/info` 白名单加入 acceptedBy，补合同结构测试 |
+| th4-decoboon-web | `3b2e220` | 店长独立客户360页面、CRM overview 同源投影、内容归因 Provider 与路由 |
 
 ## 干净提交复验
 
@@ -22,9 +23,8 @@
 
 ## 已拒绝的错误提交
 
-- CHG-20261102-002 店长客户360路由：当前 retest 依赖尚未提交的 `StoreCustomerView.vue` 客户360实现。
-- 曾生成仅含两条路由改动的临时提交，随后从本地 dev 回退，未保留。
-- 原因：只提交路由会让干净版本“能进入页面”但页面不具备已验证的客户360能力，属于假修复。
+- CHG-20261102-002 最初仅路由提交被拒绝：它依赖当时尚未提交的客户360页面实现。
+- 已通过 `CHG-20261102-004` 建立最小依赖闭包：页面、CRM overview、内容归因 Provider、店长路由一并提交为 `3b2e220`，干净 worktree build 通过。
 
 ## 当前工作区
 
@@ -35,6 +35,6 @@
 
 ## 下一步
 
-1. 将 `StoreCustomerView.vue` 客户360实现按独立 CHG 拆分、审查、验证并提交，再重做 CHG-002。
-2. 处理未被版本库跟踪的 Provider 契约检查脚本，确保发布门禁可从干净提交复现。
-3. 继续 `PI-20261022-015 MAT-X2`：补齐 Web 作业单新建/编辑/测量/提交/取消。
+1. 处理未被版本库跟踪的 Provider 契约检查脚本，确保发布门禁可从干净提交复现。
+2. 继续 `PI-20261022-015 MAT-X2`：补齐 Web 作业单新建/编辑/测量/提交/取消。
+3. App/Owner 授权身份可用后，新 RUN 复验 CRM 与材料跨端分支。
