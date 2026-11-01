@@ -1,0 +1,3405 @@
+{
+  "contractInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 14:53:12"
+        },
+        "contractId": "242541468600762368",
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100",
+            "addr": "滨湖世纪城1栋102"
+          },
+          "property": {
+            "propertyId": "242541216497926144",
+            "propertyNo": "H1793515932211",
+            "community": "滨湖世纪城",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "quote": {
+            "quoteId": "242541219522019328",
+            "no": "Q1793515932929",
+            "title": "造数方案 5100设计报价",
+            "amount": 2495.75,
+            "status": {
+              "name": "已转项目",
+              "key": "Converted"
+            }
+          },
+          "siteAddr": "滨湖世纪城1栋102",
+          "contractAmount": 2495.75,
+          "status": {
+            "name": "待开工",
+            "key": "Preparing"
+          }
+        },
+        "quote": {
+          "quoteId": "242541219522019328",
+          "no": "Q1793515932929",
+          "title": "造数方案 5100设计报价",
+          "amount": 2495.75,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100",
+          "addr": "滨湖世纪城1栋102"
+        },
+        "property": {
+          "propertyId": "242541216497926144",
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "no": "C1793515992311",
+        "baselineAmount": 2495.75,
+        "signedAmount": 2495.75,
+        "currentAmount": 2495.75,
+        "status": {
+          "name": "已生效",
+          "key": "Effective"
+        },
+        "signedAt": "2026-11-01",
+        "startDate": "2026-11-05",
+        "planEndDate": "2027-03-04",
+        "effectiveAt": "2026-11-01 14:53:48",
+        "paymentTerms": "合同签约款30% / 项目开工款40% / 竣工尾款30%",
+        "createdBy": {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "receivableCount": 3,
+        "receivableAmount": 2495.75,
+        "receivedAmount": 0.0,
+        "pendingChangeCount": 0,
+        "paymentPlan": {
+          "planId": "242541468848226304",
+          "sourceCode": "PAY_CUSTOM_0A7B2CDC728A",
+          "sourceVersion": 1,
+          "name": "全链路验收付款计划",
+          "totalAmount": 2495.75,
+          "status": {
+            "name": "已确认",
+            "key": "Confirmed"
+          },
+          "nodes": [
+            {
+              "nodeId": "242541468953083904",
+              "code": "SIGN_30",
+              "name": "合同签约款",
+              "ratio": 0.3,
+              "amount": 748.73,
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "triggerType": {
+                "name": "合同签约",
+                "key": "ContractSigned"
+              },
+              "offsetDays": 0,
+              "dueDate": "2026-11-01",
+              "sort": 1
+            },
+            {
+              "nodeId": "242541468957278208",
+              "code": "START_40",
+              "name": "项目开工款",
+              "ratio": 0.4,
+              "amount": 998.3,
+              "type": {
+                "name": "进度款",
+                "key": "Progress"
+              },
+              "triggerType": {
+                "name": "阶段开工",
+                "key": "StageStarted"
+              },
+              "triggerStageCode": "PREPARE",
+              "triggerStageName": "开工交底",
+              "offsetDays": 0,
+              "dueDate": "2026-11-01",
+              "sort": 2
+            },
+            {
+              "nodeId": "242541468957278209",
+              "code": "FINAL_30",
+              "name": "竣工尾款",
+              "ratio": 0.3,
+              "amount": 748.72,
+              "type": {
+                "name": "尾款",
+                "key": "Final"
+              },
+              "triggerType": {
+                "name": "项目竣工",
+                "key": "ProjectFinished"
+              },
+              "triggerStageCode": "COMPLETION",
+              "triggerStageName": "竣工保洁验收",
+              "offsetDays": 0,
+              "dueDate": "2027-01-30",
+              "sort": 3
+            }
+          ]
+        },
+        "constructionPlan": {
+          "planId": "242541468785311744",
+          "sourceCode": "CON_CUSTOM_FB6B8C9B0265",
+          "sourceVersion": 1,
+          "sourceTotalDays": 120,
+          "name": "全链路验收施工计划",
+          "startDate": "2026-11-01",
+          "endDate": "2027-02-28",
+          "status": {
+            "name": "已确认",
+            "key": "Confirmed"
+          },
+          "stages": [
+            {
+              "stageId": "242541468789506048",
+              "code": "PREPARE",
+              "name": "开工交底",
+              "sort": 1,
+              "defaultDays": 5,
+              "plannedStart": "2026-11-01",
+              "plannedEnd": "2026-11-06",
+              "acceptanceMode": {
+                "name": "无需验收",
+                "key": "None"
+              },
+              "description": "现场交底、保护、放线和开工准备"
+            },
+            {
+              "stageId": "242541468789506049",
+              "code": "DEMOLITION",
+              "name": "拆除改造",
+              "sort": 2,
+              "defaultDays": 5,
+              "plannedStart": "2026-11-07",
+              "plannedEnd": "2026-11-12",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "拆除、清运和结构条件确认"
+            },
+            {
+              "stageId": "242541468789506050",
+              "code": "WATER_ELECTRIC",
+              "name": "水电施工",
+              "sort": 3,
+              "defaultDays": 12,
+              "plannedStart": "2026-11-13",
+              "plannedEnd": "2026-11-26",
+              "acceptanceMode": {
+                "name": "验收完成",
+                "key": "AcceptanceDone"
+              },
+              "description": "水电定位、布管布线和隐蔽验收"
+            },
+            {
+              "stageId": "242541468789506051",
+              "code": "MASONRY",
+              "name": "泥瓦防水",
+              "sort": 4,
+              "defaultDays": 20,
+              "plannedStart": "2026-11-27",
+              "plannedEnd": "2026-12-20",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "防水、找平、贴砖和泥瓦施工"
+            },
+            {
+              "stageId": "242541468789506052",
+              "code": "CARPENTRY",
+              "name": "木作吊顶",
+              "sort": 5,
+              "defaultDays": 18,
+              "plannedStart": "2026-12-21",
+              "plannedEnd": "2027-01-11",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "吊顶、木作基层和定制复尺"
+            },
+            {
+              "stageId": "242541468789506053",
+              "code": "PAINTING",
+              "name": "油漆墙面",
+              "sort": 6,
+              "defaultDays": 18,
+              "plannedStart": "2027-01-12",
+              "plannedEnd": "2027-02-02",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "腻子、乳胶漆和墙面收口"
+            },
+            {
+              "stageId": "242541468789506054",
+              "code": "INSTALL",
+              "name": "安装收尾",
+              "sort": 7,
+              "defaultDays": 12,
+              "plannedStart": "2027-02-03",
+              "plannedEnd": "2027-02-16",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "灯具、洁具、主材和设备安装"
+            },
+            {
+              "stageId": "242541468789506055",
+              "code": "COMPLETION",
+              "name": "竣工保洁验收",
+              "sort": 8,
+              "defaultDays": 10,
+              "plannedStart": "2027-02-17",
+              "plannedEnd": "2027-02-28",
+              "acceptanceMode": {
+                "name": "验收完成",
+                "key": "AcceptanceDone"
+              },
+              "description": "开荒保洁、竣工自检和客户验收"
+            }
+          ]
+        },
+        "businessStateView": {
+          "objectKey": "contract",
+          "objectId": "242541468600762368",
+          "status": "Effective",
+          "statusLabel": "已生效",
+          "statusTone": "done",
+          "derivedLabels": [
+            {
+              "key": "signed",
+              "label": "已签约",
+              "tone": "progress"
+            },
+            {
+              "key": "effective",
+              "label": "已生效",
+              "tone": "done"
+            },
+            {
+              "key": "projectCreated",
+              "label": "项目已创建",
+              "tone": "done"
+            }
+          ],
+          "nextAction": {
+            "key": "project/open",
+            "label": "查看项目",
+            "hint": "合同已生效，进入项目履约、收款和变更。",
+            "ownerRole": "项目参与角色",
+            "fromStatus": "Effective",
+            "toStatus": "Effective",
+            "enabled": true,
+            "blockedReasons": [],
+            "missingFields": [],
+            "reloadScopes": [
+              "contract",
+              "project",
+              "receivable",
+              "materials"
+            ],
+            "businessRefs": [
+              "BR-002",
+              "BR-010"
+            ]
+          },
+          "blockedReasons": [],
+          "nextOwner": "项目经理 / 财务",
+          "updatedAt": "2026-11-01 14:53:48",
+          "businessRefs": [
+            "BR-002",
+            "BR-010"
+          ]
+        }
+      },
+      "success": true
+    }
+  },
+  "quoteInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 14:52:12"
+        },
+        "quoteId": "242541219522019328",
+        "no": "Q1793515932929",
+        "title": "造数方案 5100设计报价",
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100",
+          "community": "滨湖世纪城",
+          "addr": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "budget": 30.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          }
+        },
+        "property": {
+          "propertyId": "242541216497926144",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100",
+            "community": "滨湖世纪城",
+            "addr": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "design": {
+          "designId": "242541218263728128",
+          "no": "D1793515932628",
+          "name": "造数方案 5100",
+          "version": 1,
+          "style": "现代简约",
+          "status": {
+            "name": "客户选中",
+            "value": "Selected",
+            "key": "Selected"
+          },
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫"
+        },
+        "createdBy": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "version": 1,
+        "mode": {
+          "name": "自定义报价",
+          "value": "Custom",
+          "key": "Custom"
+        },
+        "area": 130.0,
+        "subtotal": 2502.0,
+        "discount": 0.95,
+        "taxAmount": 118.85,
+        "taxRate": 0.05,
+        "amount": 2495.75,
+        "cost": 1760.0,
+        "costComplete": true,
+        "designFee": 0.0,
+        "managementFee": 0.0,
+        "status": {
+          "name": "已转项目",
+          "key": "Converted"
+        },
+        "items": [
+          {
+            "itemId": "242541219534602240",
+            "catalogItem": {
+              "itemId": "242296909367083008",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "formula": "(人工单价) × 工程量"
+            },
+            "catalogSourceId": "242296909367083008",
+            "catalogSourceCode": "SG-0001",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "人工",
+                  "value": "Labor",
+                  "key": "Labor"
+                },
+                "name": "人工",
+                "saleAmount": 68.0,
+                "costAmount": 0.0,
+                "formula": "人工单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 45.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 10.0,
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "price": 6.8,
+            "amount": 68.0,
+            "cost": 45.0,
+            "formula": "(人工单价) × 工程量",
+            "sort": 0,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          },
+          {
+            "itemId": "242541219547185152",
+            "catalogItem": {
+              "itemId": "242296909681655808",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "水电",
+              "name": "水电--强电布线（含开槽）",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 38.0,
+              "formula": "(人工单价) × 工程量"
+            },
+            "catalogSourceId": "242296909681655808",
+            "catalogSourceCode": "SG-0002",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "人工",
+                  "value": "Labor",
+                  "key": "Labor"
+                },
+                "name": "人工",
+                "saleAmount": 418.0,
+                "costAmount": 0.0,
+                "formula": "人工单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 275.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "name": "水电--强电布线（含开槽）",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 11.0,
+            "materialPrice": 0.0,
+            "manualPrice": 38.0,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "price": 38.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "formula": "(人工单价) × 工程量",
+            "sort": 1,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          },
+          {
+            "itemId": "242541219547185153",
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "category": "地板",
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅材料",
+                "value": "MaterialOnly",
+                "key": "MaterialOnly"
+              },
+              "materialPrice": 168.0,
+              "manualPrice": 0.0,
+              "formula": "(材料单价) × 工程量"
+            },
+            "catalogSourceId": "242296910222721024",
+            "catalogSourceCode": "ZC-0002",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "材料",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "name": "材料",
+                "saleAmount": 2016.0,
+                "costAmount": 0.0,
+                "formula": "材料单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 1440.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "name": "主材--实木复合地板",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 12.0,
+            "materialPrice": 168.0,
+            "manualPrice": 0.0,
+            "pricingMode": {
+              "name": "仅材料",
+              "value": "MaterialOnly",
+              "key": "MaterialOnly"
+            },
+            "price": 168.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "formula": "(材料单价) × 工程量",
+            "sort": 2,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          }
+        ],
+        "regionGroups": [
+          {
+            "key": "general",
+            "name": "综合项目",
+            "groupMode": {
+              "name": "按区域",
+              "value": "REGION",
+              "key": "REGION"
+            },
+            "quantity": 33.0,
+            "amount": 2502.0,
+            "cost": 1760.0,
+            "items": [
+              {
+                "itemId": "242541219534602240",
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              },
+              {
+                "itemId": "242541219547185152",
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              },
+              {
+                "itemId": "242541219547185153",
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "typeGroups": [
+          {
+            "key": "Construction|拆除",
+            "name": "拆除",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "quantity": 10.0,
+            "amount": 68.0,
+            "cost": 45.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "typeRowId": "quote-type-bbd662f8c9ea6a203cda2c891f56692e",
+                "sourceLineIds": [
+                  "242541219534602240"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          },
+          {
+            "key": "Construction|水电",
+            "name": "水电",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "quantity": 11.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "typeRowId": "quote-type-fe9e4dfd3ebfa360c5c74ae3b5e4b485",
+                "sourceLineIds": [
+                  "242541219547185152"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          },
+          {
+            "key": "Material|地板",
+            "name": "地板",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "quantity": 12.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "typeRowId": "quote-type-bef408e2a63ef56651e439ac9316985f",
+                "sourceLineIds": [
+                  "242541219547185153"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          }
+        ],
+        "constructionGroups": [
+          {
+            "key": "Construction-拆除",
+            "name": "拆除",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "quantity": 10.0,
+            "amount": 68.0,
+            "cost": 45.0,
+            "items": [
+              {
+                "itemId": "242541219534602240",
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          },
+          {
+            "key": "Construction-水电",
+            "name": "水电",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "quantity": 11.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "items": [
+              {
+                "itemId": "242541219547185152",
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "materialGroups": [
+          {
+            "key": "Material-地板",
+            "name": "地板",
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "quantity": 12.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "items": [
+              {
+                "itemId": "242541219547185153",
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "otherGroups": []
+      },
+      "success": true
+    }
+  },
+  "projectInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 14:53:48"
+        },
+        "projectId": "242541620656865280",
+        "businessOrigin": {
+          "name": "正常业务",
+          "value": "New",
+          "key": "New"
+        },
+        "no": "P1793516028568",
+        "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100",
+          "community": "滨湖世纪城",
+          "addr": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "budget": 30.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          },
+          "owner": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "telNo": "13910002005",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          }
+        },
+        "property": {
+          "propertyId": "242541216497926144",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100",
+            "community": "滨湖世纪城",
+            "addr": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            }
+          },
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "telNo": "13910002005",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "telNo": "13910002004",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "latestMeasureAt": "2026-11-02 16:52:12"
+        },
+        "quote": {
+          "quoteId": "242541219522019328",
+          "no": "Q1793515932929",
+          "property": {
+            "propertyId": "242541216497926144",
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100",
+              "community": "滨湖世纪城",
+              "addr": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "budget": 30.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "propertyNo": "H1793515932211",
+            "community": "滨湖世纪城",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "telNo": "13910002004",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "latestMeasureAt": "2026-11-02 16:52:12"
+          },
+          "createdBy": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "telNo": "13910002004",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "discount": 0.95,
+          "amount": 2495.75,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        "designer": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "telNo": "13910002004",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "siteAddr": "滨湖世纪城1栋102",
+        "area": 130.0,
+        "contractAmount": 2495.75,
+        "status": {
+          "name": "待开工",
+          "key": "Preparing"
+        },
+        "progress": 0,
+        "startDate": "2026-11-05",
+        "planEndDate": "2027-03-04",
+        "currentStageName": "开工交底",
+        "businessStateView": {
+          "objectKey": "project",
+          "objectId": "242541620656865280",
+          "status": "Preparing",
+          "statusLabel": "待开工",
+          "statusTone": "info",
+          "derivedLabels": [
+            {
+              "key": "currentStage",
+              "label": "开工交底",
+              "tone": "info"
+            },
+            {
+              "key": "progress",
+              "label": "0%",
+              "tone": "progress"
+            },
+            {
+              "key": "risk",
+              "label": "正常",
+              "tone": "alert"
+            }
+          ],
+          "nextAction": {
+            "key": "project/start-preparation",
+            "label": "开工准备",
+            "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+            "ownerRole": "项目经理 / 店长",
+            "fromStatus": "Preparing",
+            "toStatus": "Ongoing",
+            "enabled": true,
+            "blockedReasons": [],
+            "missingFields": [],
+            "reloadScopes": [
+              "project",
+              "projectStage",
+              "projectTask",
+              "contract"
+            ],
+            "businessRefs": [
+              "BR-008",
+              "BR-010",
+              "SCN-003"
+            ]
+          },
+          "blockedReasons": [],
+          "nextOwner": "项目经理",
+          "updatedAt": "2026-11-01 14:53:48",
+          "businessRefs": [
+            "BR-008",
+            "BR-010",
+            "SCN-003"
+          ]
+        },
+        "factTrace": {
+          "projectId": "242541620656865280",
+          "projectNo": "P1793516028568",
+          "projectName": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "defaultViewMode": {
+            "name": "阶段",
+            "value": "PHASE",
+            "key": "PHASE"
+          },
+          "asOf": "2026-11-01 14:54:04",
+          "nodes": [
+            {
+              "nodeId": "Customer-Customer-242541216321765376",
+              "nodeKey": "Customer:Customer:242541216321765376:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "客户",
+                "value": "Customer",
+                "key": "Customer"
+              },
+              "objectType": "Customer",
+              "objectId": "242541216321765376",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "businessTime": "2026-11-01 14:52:12",
+              "recordedAt": "2026-11-01 14:54:04",
+              "title": "王芳（造数5100）",
+              "summary": "客户经营对象",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "customer:242541216321765376",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Property-Property-242541216497926144",
+              "nodeKey": "Property:Property:242541216497926144:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "房屋",
+                "value": "Property",
+                "key": "Property"
+              },
+              "objectType": "Property",
+              "objectId": "242541216497926144",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Serving",
+              "statusName": "施工中",
+              "businessTime": "2026-11-01 14:52:12",
+              "recordedAt": "2026-11-01 14:54:04",
+              "title": "滨湖世纪城",
+              "summary": "滨湖世纪城1栋102",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "property:242541216497926144",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "ProjectOrigin-Project-242541620656865280",
+              "nodeKey": "ProjectOrigin:Project:242541620656865280:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "项目来源",
+                "value": "ProjectOrigin",
+                "key": "ProjectOrigin"
+              },
+              "objectType": "Project",
+              "objectId": "242541620656865280",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "New",
+              "statusName": "正常业务",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "项目来源",
+              "summary": "正常业务",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project:242541620656865280",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Design-Design-242541218263728128",
+              "nodeKey": "Design:Design:property:242541216497926144",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "设计方案",
+                "value": "Design",
+                "key": "Design"
+              },
+              "objectType": "Design",
+              "objectId": "242541218263728128",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Selected",
+              "statusName": "客户选中",
+              "businessTime": "2026-11-01 14:52:12",
+              "recordedAt": "2026-11-01 14:52:12",
+              "actorName": "审计设计",
+              "title": "造数方案 5100",
+              "summary": "设计方案 V1",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "design:242541218263728128",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Quote-Quote-242541219522019328",
+              "nodeKey": "Quote:Quote:design:242541218263728128",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "报价",
+                "value": "Quote",
+                "key": "Quote"
+              },
+              "objectType": "Quote",
+              "objectId": "242541219522019328",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Converted",
+              "statusName": "已转项目",
+              "businessTime": "2026-11-01 14:52:18",
+              "recordedAt": "2026-11-01 14:52:12",
+              "actorName": "审计设计",
+              "title": "Q1793515932929",
+              "summary": "报价 V1",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "quote:242541219522019328",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Measure-Measure-242541216812498944",
+              "nodeKey": "Measure:Measure:242541216812498944:1",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "量房",
+                "value": "Measure",
+                "key": "Measure"
+              },
+              "objectType": "Measure",
+              "objectId": "242541216812498944",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Completed",
+              "statusName": "已完成",
+              "businessTime": "2026-11-02 16:52:12",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计设计",
+              "title": "量房记录",
+              "summary": "区域 0 · 实测 0 · 待补 0",
+              "sourceLabel": "项目关联事实",
+              "quantity": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "measure:242541216812498944",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "QuoteAcceptance-Quote-242541219522019328",
+              "nodeKey": "QuoteAcceptance:Quote:242541219522019328:1",
+              "stage": {
+                "name": "签约",
+                "value": "Signing",
+                "key": "Signing"
+              },
+              "factType": {
+                "name": "报价接受",
+                "value": "QuoteAcceptance",
+                "key": "QuoteAcceptance"
+              },
+              "objectType": "Quote",
+              "objectId": "242541219522019328",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Accepted",
+              "statusName": "已接受",
+              "businessTime": "2026-11-01 14:52:18",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计设计",
+              "title": "报价接受登记",
+              "summary": "客户报价已登记接受",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "quote:242541219522019328",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Contract-Contract-242541468600762368",
+              "nodeKey": "Contract:Contract:242541468600762368:1",
+              "stage": {
+                "name": "签约",
+                "value": "Signing",
+                "key": "Signing"
+              },
+              "factType": {
+                "name": "合同",
+                "value": "Contract",
+                "key": "Contract"
+              },
+              "objectType": "Contract",
+              "objectId": "242541468600762368",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Effective",
+              "statusName": "已生效",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计负责人",
+              "title": "C1793515992311",
+              "summary": "合同当前金额",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "contract:242541468600762368",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Project-Project-242541620656865280",
+              "nodeKey": "Project:Project:242541620656865280:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "项目",
+                "value": "Project",
+                "key": "Project"
+              },
+              "objectType": "Project",
+              "objectId": "242541620656865280",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Preparing",
+              "statusName": "待开工",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "title": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "summary": "项目当前进度",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project:242541620656865280",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620682031104",
+              "nodeKey": "Stage:ProjectStage:242541620682031104:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620682031104",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "开工交底",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620682031104",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620686225408",
+              "nodeKey": "Stage:ProjectStage:242541620686225408:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620686225408",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "拆除改造",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620686225408",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620690419712",
+              "nodeKey": "Stage:ProjectStage:242541620690419712:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620690419712",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "水电施工",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620690419712",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620690419713",
+              "nodeKey": "Stage:ProjectStage:242541620690419713:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620690419713",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "泥瓦防水",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620690419713",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620690419714",
+              "nodeKey": "Stage:ProjectStage:242541620690419714:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620690419714",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "木作吊顶",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620690419714",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620690419715",
+              "nodeKey": "Stage:ProjectStage:242541620690419715:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620690419715",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "油漆墙面",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620690419715",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620690419716",
+              "nodeKey": "Stage:ProjectStage:242541620690419716:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620690419716",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "安装收尾",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620690419716",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242541620690419717",
+              "nodeKey": "Stage:ProjectStage:242541620690419717:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242541620690419717",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "竣工保洁验收",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242541620690419717",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Task-ProjectTask-242541620711391232",
+              "nodeKey": "Task:ProjectTask:242541620711391232:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工任务",
+                "value": "Task",
+                "key": "Task"
+              },
+              "objectType": "ProjectTask",
+              "objectId": "242541620711391232",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "拆除--墙顶面白灰/腻子粉铲除",
+              "summary": "施工任务",
+              "sourceLabel": "项目关联事实",
+              "quantity": 10.0,
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-task:242541620711391232",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Task-ProjectTask-242541620719779840",
+              "nodeKey": "Task:ProjectTask:242541620719779840:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工任务",
+                "value": "Task",
+                "key": "Task"
+              },
+              "objectType": "ProjectTask",
+              "objectId": "242541620719779840",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "水电--强电布线（含开槽）",
+              "summary": "施工任务",
+              "sourceLabel": "项目关联事实",
+              "quantity": 11.0,
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-task:242541620719779840",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialPlan-MaterialPlan-242541620837220352",
+              "nodeKey": "MaterialPlan:MaterialPlan:242541620837220352:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "材料计划",
+                "value": "MaterialPlan",
+                "key": "MaterialPlan"
+              },
+              "objectType": "MaterialPlan",
+              "objectId": "242541620837220352",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Planned",
+              "statusName": "待选材",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "actorName": "审计业务",
+              "title": "材料计划",
+              "summary": "1 项材料计划",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-plan:242541620837220352",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Receivable-Receivable-242541621281816577",
+              "nodeKey": "Receivable:Receivable:242541621281816577:1",
+              "stage": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              },
+              "factType": {
+                "name": "应收",
+                "value": "Receivable",
+                "key": "Receivable"
+              },
+              "objectType": "Receivable",
+              "objectId": "242541621281816577",
+              "projectId": "242541620656865280",
+              "version": 1,
+              "current": true,
+              "status": "Pending",
+              "statusName": "待收",
+              "businessTime": "2026-11-01 14:53:48",
+              "recordedAt": "2026-11-01 14:54:04",
+              "title": "应收计划",
+              "summary": "3 个节点 · 待收 2495.75",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "receivable:242541621281816577",
+              "returnPath": "project:242541620656865280",
+              "returnAnchor": "project-facts"
+            }
+          ],
+          "sourceGaps": []
+        },
+        "receivedAmount": 0.0,
+        "receivableAmount": 2495.75
+      },
+      "success": true
+    }
+  },
+  "stages": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620682031104",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "开工交底",
+            "stageCode": "PREPARE",
+            "sort": 1,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "无需验收",
+              "key": "None"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-01",
+            "plannedEnd": "2026-11-06",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-11-01 14:53:48"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620686225408",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "拆除改造",
+            "stageCode": "DEMOLITION",
+            "sort": 2,
+            "weight": 14.06,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "未开始",
+              "key": "Todo"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-07",
+            "plannedEnd": "2026-11-12"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620690419712",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "水电施工",
+            "stageCode": "WATER_ELECTRIC",
+            "sort": 3,
+            "weight": 85.94,
+            "acceptanceMode": {
+              "name": "验收完成",
+              "key": "AcceptanceDone"
+            },
+            "status": {
+              "name": "未开始",
+              "key": "Todo"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-13",
+            "plannedEnd": "2026-11-26"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620690419713",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "泥瓦防水",
+            "stageCode": "MASONRY",
+            "sort": 4,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-27",
+            "plannedEnd": "2026-12-20",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-11-01 14:53:48"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620690419714",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "木作吊顶",
+            "stageCode": "CARPENTRY",
+            "sort": 5,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2026-12-21",
+            "plannedEnd": "2027-01-11",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-11-01 14:53:48"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620690419715",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "油漆墙面",
+            "stageCode": "PAINTING",
+            "sort": 6,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-01-12",
+            "plannedEnd": "2027-02-02",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-11-01 14:53:48"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620690419716",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "安装收尾",
+            "stageCode": "INSTALL",
+            "sort": 7,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-03",
+            "plannedEnd": "2027-02-16",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-11-01 14:53:48"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "stageId": "242541620690419717",
+            "project": {
+              "projectId": "242541620656865280",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "name": "竣工保洁验收",
+            "stageCode": "COMPLETION",
+            "sort": 8,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "验收完成",
+              "key": "AcceptanceDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-17",
+            "plannedEnd": "2027-02-28",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-11-01 14:53:48"
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "8",
+        "first": true,
+        "size": 8
+      },
+      "success": true
+    }
+  },
+  "materialPlans": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "planId": "242541620837220352",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              }
+            },
+            "quantity": 12.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "unitPrice": 168.0,
+            "cost": 1440.0,
+            "status": {
+              "name": "待选材",
+              "key": "Planned"
+            },
+            "requiredAt": "2026-11-05",
+            "materialKey": "ci:242296910222721024|unit:Area",
+            "netQuantity": 12.0,
+            "lossRate": 0.0,
+            "lossQuantity": 0.0
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "1",
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  },
+  "receivables": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "receivableId": "242541621281816576",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "stageCode": "PREPARE",
+            "triggerType": {
+              "name": "阶段开工",
+              "key": "StageStarted"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "name": "项目开工款",
+            "stageName": "开工交底",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 998.3,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-01",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / START_40",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "receivableId": "242541621277622272",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "triggerType": {
+              "name": "合同签约",
+              "key": "ContractSigned"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "name": "合同签约款",
+            "type": {
+              "name": "首期款",
+              "key": "First"
+            },
+            "amount": 748.73,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-01",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "receivableId": "242541621281816577",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "stageCode": "COMPLETION",
+            "triggerType": {
+              "name": "项目竣工",
+              "key": "ProjectFinished"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工保洁验收",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 748.72,
+            "receivedAmount": 0.0,
+            "dueDate": "2027-01-30",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "3",
+        "first": true,
+        "size": 50
+      },
+      "success": true
+    }
+  },
+  "dbRow": [
+    "242541468600762368",
+    "Effective",
+    "2495.75",
+    "242541620656865280",
+    "Converted",
+    "8",
+    "1",
+    "3"
+  ]
+}

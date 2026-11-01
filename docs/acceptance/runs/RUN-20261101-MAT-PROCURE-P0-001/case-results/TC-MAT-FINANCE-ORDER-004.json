@@ -1,0 +1,96 @@
+{
+  "caseId": "TC-MAT-FINANCE-ORDER-004",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:35:01+08:00",
+  "finishedAt": "2026-11-01T15:35:01+08:00",
+  "executor": "codex",
+  "role": "Boss/Finance",
+  "surface": "Web+App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATPROCUREP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "API",
+      "page_path": "material/sheet/measure|submit",
+      "control": "提交请购",
+      "control_state": "N/A",
+      "business_state_before": "Draft",
+      "business_state_after": "Submitted",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-order-idempotency-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "API",
+      "page_path": "material/sheet/order",
+      "control": "首次下单",
+      "control_state": "N/A",
+      "business_state_before": "Submitted，purchase0，payable0",
+      "business_state_after": "Ordered，purchase1，payable1",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-order-idempotency-api.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "API",
+      "page_path": "material/sheet/order",
+      "control": "同幂等键重复下单",
+      "control_state": "N/A",
+      "business_state_before": "purchase1，payable1",
+      "business_state_after": "仍purchase1，payable1",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-order-idempotency-api.json"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web+App",
+      "page_path": "/finance/material-ordering|/subpackages/finance/pages/payables",
+      "control": "采购与应付回读",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "已下单",
+      "business_state_after": "Web显示已下单；App应付显示材料采购¥240",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-finance-material-ordering-web.png",
+        "11-web-material-ordering.json",
+        "02-finance-payables-app.png",
+        "12-app-payables.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Web主材下单显示作业单已下单",
+    "App应付账款显示全链路验收材料供应商¥240待付款"
+  ],
+  "actualState": [
+    "1张采购单POb69125551f7cc1f275a014315ea0b202",
+    "采购数量2，金额240",
+    "1条应付240，来源号一致",
+    "重复下单后数量不增加"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-FINANCE-ORDER-004/10-order-idempotency-api.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/20-material-procurement-db.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/01-finance-material-ordering-web.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/11-web-material-ordering.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/02-finance-payables-app.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/12-app-payables.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "第一次下单与重复下单返回同一作业单状态；DB仅一张采购单和一条应付。"
+}

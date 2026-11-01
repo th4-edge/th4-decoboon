@@ -1,7 +1,8 @@
 package com.th4.edge.decoboon.project.service.acceptances.rectify.page.support;
 
-import com.th4.edge.framework.data.jackson.annotation.Properties;
+
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Acceptance;

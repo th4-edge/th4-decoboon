@@ -1,0 +1,28 @@
+{
+  "templatePage": {
+    "bytes": 583,
+    "count": 1,
+    "item": {
+      "templateId": "242591657478848512",
+      "name": "AUDIT-20261101-PKGCLOSE-001-套餐A",
+      "status": {
+        "name": "已发布",
+        "value": "Published",
+        "key": "Published"
+      },
+      "currentPublished": true,
+      "hasItems": false,
+      "itemsLength": null
+    }
+  },
+  "templateInfo": {
+    "lineCount": 2,
+    "sectionCount": 1,
+    "cost": 9,
+    "status": {
+      "name": "已发布",
+      "value": "Published",
+      "key": "Published"
+    }
+  }
+}

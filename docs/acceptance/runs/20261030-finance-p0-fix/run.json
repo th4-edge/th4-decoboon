@@ -1,0 +1,24 @@
+{
+  "runId": "FIN-P0-FIX-20261030",
+  "status": "DEV_VERIFIED_REAL_UI_PASS_DATA_REPAIR_PENDING",
+  "riskLevel": "L3",
+  "changeId": "CHG-20261030-034",
+  "issueId": "PI-20261030-001",
+  "environment": {
+    "backend": "http://127.0.0.1:8091",
+    "database": "decoboon-test",
+    "web": "http://127.0.0.1:8081",
+    "app": "dist/dev/mp-weixin / 微信开发者工具 iPhone 16"
+  },
+  "tests": {
+    "backendFull": {"tests": 1153, "failures": 0, "errors": 0},
+    "backendTargeted": {"tests": 52, "failures": 0, "errors": 0},
+    "webBuild": "PASS",
+    "appReleaseBuild": "PASS",
+    "appFullVerify": "BLOCKED_UNRELATED_INVITE_CONTRACT"
+  },
+  "accounting": {
+    "coreBalanced": false,
+    "reason": "historical data repair not authorized/executed"
+  }
+}

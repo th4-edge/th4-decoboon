@@ -210,6 +210,37 @@ class HandoffDesignerChangeTest {
                 .hasMessageContaining("客户已流失");
     }
 
+    @Test
+    void financeShouldNotAssignDesigner() {
+        Company company = company(1L);
+        Store store = store(7L);
+        Employee finance = employee(9L, "财务", EmployeeRole.Finance, company);
+        finance.setStore(store);
+
+        Customer customer = new Customer();
+        customer.setCustId(20L);
+        customer.setName("王女士");
+        customer.setCompany(company);
+        customer.setStore(store);
+        customer.setStatus(CustStatus.PendingMeasure);
+
+        CustomerRepository customers = mock(CustomerRepository.class);
+        DataScopeContext dataScope = mock(DataScopeContext.class);
+        when(dataScope.requireEmployee(finance)).thenReturn(finance);
+        when(dataScope.resolve(finance)).thenReturn(new DataScope(DataScopeType.Store, 1L, 7L, null, 9L));
+        when(customers.findOne(any(Specification.class))).thenReturn(Optional.of(customer));
+
+        Handoff handoff = new Handoff(customers, mock(EmployeeRepository.class), dataScope,
+                mock(NoticeContext.class), mock(PropertyContext.class), mock(PropertyRepository.class),
+                mock(MeasureRepository.class), mock(DesignRepository.class), mock(RequirementRepository.class));
+        ReflectionTestUtils.setField(handoff, "employee", finance);
+        ReflectionTestUtils.setField(handoff, "customerId", 20L);
+        ReflectionTestUtils.setField(handoff, "designerId", 11L);
+
+        assertThatThrownBy(() -> handoff.call(customer))
+                .hasMessageContaining("仅团队负责人、店长或企业负责人可以指定设计师");
+    }
+
     private Company company(Long id) {
         Company company = new Company();
         company.setComId(id);

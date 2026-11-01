@@ -1,0 +1,37 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SELECTION-001",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "fa9e9b95dc88e92949e0ca7cc7ab0b27b9ad58f8b624e6d82c19250be1614e61",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-004",
+    "BR-009",
+    "DEC-008",
+    "DEC-056",
+    "SCN-006"
+  ],
+  "pageTargets": [
+    "web:/designer/projects/:projectId/materials",
+    "app:/subpackages/project/pages/selection-board",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/selection/save",
+    "project/material-plan/page",
+    "material/sheet/save"
+  ]
+}

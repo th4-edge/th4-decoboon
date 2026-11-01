@@ -1,0 +1,109 @@
+{
+  "acceptanceId": "242297272967102464",
+  "attempts": [
+    {
+      "role": "Boss",
+      "route": "customer/acceptance/info",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Boss",
+      "route": "customer/acceptance/update",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "StoreManager",
+      "route": "customer/acceptance/info",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "StoreManager",
+      "route": "customer/acceptance/update",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Finance",
+      "route": "customer/acceptance/info",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Finance",
+      "route": "customer/acceptance/update",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Pm",
+      "route": "customer/acceptance/info",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Pm",
+      "route": "customer/acceptance/update",
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前会话不是业主身份",
+          "system": false
+        }
+      }
+    }
+  ]
+}

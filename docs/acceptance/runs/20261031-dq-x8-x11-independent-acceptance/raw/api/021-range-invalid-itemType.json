@@ -1,0 +1,24 @@
+{
+  "request": {
+    "route": "project/contract-change/range",
+    "body": {
+      "contractId": "241939522005237760",
+      "current": 1,
+      "size": 20,
+      "itemType": "NotAnItemType"
+    }
+  },
+  "response": {
+    "status": 200,
+    "elapsedMs": 18.08,
+    "bytes": 93,
+    "json": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "分项类型不合法",
+        "system": false
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "defectId": "DEF-20261101-004",
+  "caseIds": [],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "套餐选品多选未完整落库，重复确认产生同一项目重复行",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/package-edit",
+  "businessState": "Published 套餐模板，区域A配置项目行",
+  "expected": "一次选择两个不同项目并确认后，只生成两条不同项目行；重复提交不得产生重复项目行",
+  "actual": "选品面板显示已选2项，但最终数据库只有两条相同“拆除--墙顶面白灰/腻子粉铲除”行，另一项未落库",
+  "minimumReproduction": [
+    "Boss进入套餐配置",
+    "在区域A打开选品面板并选择两个不同项目",
+    "点击加入当前分区",
+    "重新进入套餐配置并按 catalog_item_id 对账"
+  ],
+  "impact": "套餐构成错误、成本和报价重复；模板与实际经营口径不一致",
+  "evidence": [
+    "evidence/EXP-PKG-004/09-catalog-picker-data.json",
+    "evidence/EXP-PKG-004/10-package-after-items.txt",
+    "raw/package-db-state.ndjson"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "研发检查 CatalogPickerSheet confirm 到父页面 batchAddLines 的事件负载，并补批次幂等/去重约束",
+  "retestCondition": "两个不同项目一次加入后分别得到两条不同 package_line，重复点击不新增重复行",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

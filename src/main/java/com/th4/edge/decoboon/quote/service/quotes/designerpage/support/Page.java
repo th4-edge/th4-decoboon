@@ -105,7 +105,7 @@ public class Page implements com.th4.edge.decoboon.quote.service.quotes.designer
                 ? currentEmployee.getStore() == null ? null : currentEmployee.getStore().getStoreId()
                 : null;
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 100);
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
         if (role == EmployeeRole.StoreManager && storeId == null) {
             return new PageImpl<>(List.of(), PageRequest.of(page, pageSize), 0);
         }

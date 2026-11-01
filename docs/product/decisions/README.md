@@ -24,3 +24,11 @@
 | 决策编号 | 标题 | 状态 | 影响 |
 | --- | --- | --- | --- |
 | `USER-DEC-20261022-001` | 角色体系、材料履约、跨端边界与 TeamLeader 冻结 | APPROVED / PENDING_SYNC | 角色矩阵、App/Web 能力、财务角色、TeamLeader 存量 |
+| `USER-DEC-20261029-001` | 线上产品渐进迭代与 App/Web 定位 | APPROVED / PRODUCT_ONLY | 负责人域、全角色细化、App/Web 职责、原型与研发边界 |
+| `USER-DEC-20261029-002` | 装得清内容团队职责边界 | APPROVED / PRODUCT_ONLY | 营销内容智能体、使用内容智能体、内容团队协作与学习闭环 |
+| `USER-DEC-20261029-003` | Company 信息单一主源与渐进信任模型 | APPROVED / PENDING_BIZ_SYNC | Company 分层、入驻信任阶段、占位策略、全场景投影与单据快照 |
+| `USER-DEC-20261029-004` | 企业 Logo 与品牌色默认规则 | APPROVED / PRODUCT_ONLY | 企业 Logo 简称首字占位、品牌色平台语义默认、投影与正式文件边界 |
+| `USER-DEC-20261029-005` | 创建企业快速入驻与资料后置 | APPROVED / PENDING_BIZ_SYNC | 创建企业短表单、微信昵称预填、企业资料后置、在建项目后置承接 |
+| `USER-DEC-20261029-006` | 装企品牌色即应用主题色 | APPROVED / PRODUCT_ONLY | 删除无意义署名配置、品牌色自定义、色阶派生、App/小程序/Web 全局主题同步 |
+| `USER-DEC-20261029-007` | 财务角色渐进优化与双端入口验收 | APPROVED / PRODUCT_ONLY | 保留现有 Web 菜单和小程序 Tab/快捷入口、不改后端逻辑、先逐项验收再做原位优化 |
+| `USER-DEC-20261029-008` | 业务界面不展示内部编号 | APPROVED / SYNCED | 员工/企业等内部主键及报价、合同、项目等系统编号默认不进入业务界面 |

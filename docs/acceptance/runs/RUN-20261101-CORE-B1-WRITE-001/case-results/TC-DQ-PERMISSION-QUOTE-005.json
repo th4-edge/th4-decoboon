@@ -1,0 +1,57 @@
+{
+  "caseId": "TC-DQ-PERMISSION-QUOTE-005",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-01T14:54:52+08:00",
+  "finishedAt": "2026-11-01T14:54:52+08:00",
+  "executor": "codex",
+  "role": "Marketer/Designer/Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261101-RUN20261101COREB1WRITE001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API",
+      "page_path": "quote/update",
+      "control": "Marketer接受报价负向",
+      "control_state": "N/A",
+      "business_state_before": "quote=Submitted",
+      "business_state_after": "Marketer请求403，状态Submitted",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-quote-permission-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API",
+      "page_path": "quote/update",
+      "control": "Designer接受报价",
+      "control_state": "N/A",
+      "business_state_before": "quote=Submitted",
+      "business_state_after": "Designer请求成功，quote=Accepted",
+      "feedback": "实际行为与DEC-071一致，但与旧用例“Designer不可接受”冲突",
+      "evidence_ids": [
+        "10-quote-permission-api.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "未继续执行页面正向后发现测试Oracle冲突"
+  ],
+  "actualState": [
+    "Marketer Accepted请求403",
+    "Designer Accepted请求200",
+    "accepted_by=199500000000000105，accepted_at已写入"
+  ],
+  "evidence": [
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/10-quote-permission-api.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/20-write-fixture.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "TEST_ORACLE_STALE：DEC-071明确允许设计师登记报价接受、仅Marketer不可置位；当前用例仍要求Designer不可接受，必须修正用例后新建retest RUN。",
+  "notes": "实际产品行为符合DEC-071，不能据旧用例判产品FAIL。"
+}

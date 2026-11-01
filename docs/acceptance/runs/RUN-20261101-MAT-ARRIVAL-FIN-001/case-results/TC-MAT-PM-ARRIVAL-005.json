@@ -1,0 +1,147 @@
+{
+  "caseId": "TC-MAT-PM-ARRIVAL-005",
+  "status": "FAIL",
+  "startedAt": "2026-11-01T15:49:54+08:00",
+  "finishedAt": "2026-11-01T16:05:00+08:00",
+  "executor": "codex",
+  "role": "Pm+Finance",
+  "surface": "App+Web+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATAR-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "App",
+      "page_path": "/subpackages/supply/pages/receipt-edit?purchaseId=1793518416069167759",
+      "control": "确认到货",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "purchase=Ordered; receivedQuantity=0/2; payable due date empty",
+      "business_state_after": "提交本次到场 2㎡",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-arrival-before-app.png",
+        "02-arrival-after-app.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "App+DB",
+      "page_path": "/subpackages/supply/pages/receipt-edit?purchaseId=1793518416069167759",
+      "control": "刷新并重进",
+      "control_state": "REFRESHED",
+      "business_state_before": "receipt created",
+      "business_state_after": "已到 2/2；采购和明细 Received；作业单 Arrived；计划 PartiallyArrived",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "03-arrival-refreshed-app.png",
+        "03-arrival-refreshed-app.json",
+        "11-arrival-provider-db-final.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "App",
+      "page_path": "/subpackages/supply/pages/receipt-edit?purchaseId=1793518416069167759",
+      "control": "确认到货（满量后再次点击）",
+      "control_state": "VISIBLE; remaining=0",
+      "business_state_before": "received=2/2",
+      "business_state_after": "未新增到货记录；DB仍为1条receipt、2个数量",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "04-arrival-duplicate-app.png",
+        "04-arrival-duplicate-app.json",
+        "11-arrival-provider-db-final.json"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "App",
+      "page_path": "/subpackages/supply/pages/receipt-edit",
+      "control": "现场证据",
+      "control_state": "MISSING",
+      "business_state_before": "到场记录需要数量、时间、证据和采购来源",
+      "business_state_after": "页面只有数量、日期和到货说明，无照片/附件入口；images=[]",
+      "feedback": "FAIL",
+      "evidence_ids": [
+        "01-arrival-before-app.png",
+        "03-arrival-refreshed-app.png",
+        "03-arrival-refreshed-app.json",
+        "11-arrival-provider-db-final.json"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web+Provider+DB",
+      "page_path": "/finance/projects/242541620656865280",
+      "control": "项目成本与应付回读",
+      "control_state": "READ_ONLY",
+      "business_state_before": "receipt posted",
+      "business_state_after": "materialCost=240; payable receiptDate=2026-11-01; dueDate=2026-12-01; plan/sheet/purchase链路同源",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "11-arrival-provider-db-final.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "App到场页显示采购来源、已到 0/2、本次最多可确认 2，并可确认到货",
+    "刷新重进显示已到 2/2，采购已全部到场",
+    "MaterialSheet详情显示“已到场”“材料已全部到场，等待财务结算”",
+    "App到场页没有现场照片或附件上传控件"
+  ],
+  "actualState": [
+    "GoodsReceipt count=1, quantity=2, inspector=Pm",
+    "PurchaseOrder/PurchaseItem status=Received, receivedQuantity=2",
+    "MaterialPlan status=PartiallyArrived, quantity=12, cost=240",
+    "MaterialOrderSheet status=Arrived",
+    "Payable receiptDate=2026-11-01, dueDate=2026-12-01",
+    "GoodsReceipt images=[]"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-PM-ARRIVAL-005/01-arrival-before-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/02-arrival-after-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/03-arrival-refreshed-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/03-arrival-refreshed-app.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/04-arrival-duplicate-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/04-arrival-duplicate-app.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/06-material-sheet-after-arrival-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/06-material-sheet-after-arrival-app.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/07-pm-workbench-after-arrival-web.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/07-pm-workbench-after-arrival-web.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/11-arrival-provider-db-final.json"
+  ],
+  "defectIds": [
+    "DEF-20261101-003"
+  ],
+  "blockedReason": null,
+  "notes": "核心到场数量与状态联动通过；因显式预期要求显示现场证据，而App无上传入口且images为空，本用例判FAIL。另：采购量仅2，页面首次动作即完成全量到场，未单独执行“先不足数量、再补到全量”的分段路径，列为残余覆盖缺口。",
+  "caseDefinitionHash": "e962461a2363a5dfae79c6663b24141ae352bd927bbd43a679c347dba77018cd",
+  "priority": "P1",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "DEC-072",
+    "DEC-092"
+  ],
+  "pageTargets": [
+    "web:/pm/workbench",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/project/pages/material-sheet-detail"
+  ],
+  "providerRoutes": [
+    "project/goods-receipt/save",
+    "project/goods-receipt/page",
+    "finance/payable/page",
+    "finance/project/report"
+  ]
+}

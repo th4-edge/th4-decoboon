@@ -1,0 +1,36 @@
+{
+  "caseId": "TC-ACC-OWNER-CONFIRM-004",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "3d940f97ee6293e74cbad16b6297292ec97d4f31afaab1585b36a444833328d9",
+  "priority": "P0",
+  "area": "ACCEPTANCE",
+  "businessRuleIds": [
+    "BR-008",
+    "BR-043",
+    "DEC-015"
+  ],
+  "pageTargets": [
+    "owner:/subpackages/project/pages/owner-acceptance",
+    "web:/pm/projects/:projectId/acceptance",
+    "app:/subpackages/project/pages/detail"
+  ],
+  "providerRoutes": [
+    "customer/acceptance/update",
+    "project/acceptance/info",
+    "project/stage/page",
+    "project/project/info"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "httpStatus": 200,
+  "response": {
+    "data": {
+      "projectId": "242297231061811200",
+      "no": "P1793457761546",
+      "name": "麦鸿演示项目 13",
+      "customer": {
+        "custId": "242297227509235712",
+        "name": "胡斌（演示13）"
+      },
+      "property": {
+        "propertyId": "242297227697979392",
+        "community": "万象公馆",
+        "building": "4栋",
+        "roomNo": "1402",
+        "address": "万象公馆4栋1402（主房）"
+      },
+      "siteAddr": "演示项目工地 13",
+      "status": {
+        "name": "待验收",
+        "key": "Accepting"
+      },
+      "ownerQrcodeScene": "P1793457761546",
+      "ownerQrcodePath": "owner-qrcode/199500000000000001/242297231061811200-release.jpg",
+      "ownerQrcodeUrl": "https://decoboon.oss-cn-hangzhou.aliyuncs.com/owner-qrcode/199500000000000001/242297231061811200-release.jpg?Expires=1793521191&OSSAccessKeyId=LTAI5t8Yo1La1RfA6qtJoDt8&Signature=ysbzKXB%2FDbiPLbpI5nlE7L%2BSJvI%3D",
+      "ownerQrcodeEnvVersion": "release"
+    },
+    "success": true
+  },
+  "expected": "valid owner project code metadata for fixture project; no owner session created"
+}

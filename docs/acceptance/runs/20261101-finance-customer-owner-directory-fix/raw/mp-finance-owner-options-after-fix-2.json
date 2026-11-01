@@ -1,0 +1,11 @@
+{
+  "path": "subpackages/customer/pages/detail",
+  "roleTexts": [
+    "客户负责人审审计业务",
+    "负责设计师审审计设计"
+  ],
+  "ownerOptions": [],
+  "sheetText": "",
+  "shot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-finance-customer-owner-directory-fix/evidence/06-finance-customer-owner-options-app-after-fix.png",
+  "readAt": "2026-11-01T08:19:54.712Z"
+}

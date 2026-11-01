@@ -1,0 +1,31 @@
+{
+  "runId": "RUN-20261102-MAT-X2-001",
+  "createdAt": "2026-11-02T01:59:33+08:00",
+  "status": "COMPLETED",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "256cc587dfea26d63fc4ec918caf66d671fe592b",
+  "webCommit": "ec3da3bc8c7db34ddc2996e345e5c8cd495e09ad",
+  "appCommit": "f2fb91e0785bf953940257ce97e3ea84fc2ae808",
+  "artifactHashes": {},
+  "environment": "local-fixture-8093",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261102-MATX2001-",
+  "caseIds": [
+    "TC-MAT-DESIGNER-SHEET-002",
+    "TC-MAT-BOUNDARY-QUANTITY-003",
+    "TC-MAT-FINANCE-ORDER-004",
+    "TC-MAT-PM-ARRIVAL-005"
+  ],
+  "summary": {
+    "total": 4,
+    "pass": 0,
+    "fail": 1,
+    "blocked": 3,
+    "notRun": 0
+  },
+  "completedAt": "2026-11-02T02:06:26+08:00",
+  "result": "FAIL"
+}

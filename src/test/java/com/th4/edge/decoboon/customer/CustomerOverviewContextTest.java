@@ -20,12 +20,17 @@ import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.framework.data.date.model.DateTime;
+import com.th4.edge.tenant.user.access.DataScope;
+import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.DataScopeType;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,6 +40,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -48,13 +55,14 @@ class CustomerOverviewContextTest {
     @BeforeEach
     void setUp() {
         TenantContext tenant = mock(TenantContext.class);
+        DataScopeContext dataScope = mock(DataScopeContext.class);
         CustomerRepository customerRepository = mock(CustomerRepository.class);
         CustomerFollowRepository followRepository = mock(CustomerFollowRepository.class);
         QuoteRepository quoteRepository = mock(QuoteRepository.class);
         ProjectContractRepository contractRepository = mock(ProjectContractRepository.class);
         MeasureRepository measureRepository = mock(MeasureRepository.class);
-        context = new CustomerOverviewContext(tenant, customerRepository, followRepository, quoteRepository,
-                contractRepository, measureRepository, new CustomerInsightContext(), mock(CustomerLossContext.class));
+        context = new CustomerOverviewContext(tenant, dataScope, customerRepository, quoteRepository,
+                contractRepository, new CustomerInsightContext(), mock(CustomerLossContext.class));
 
         Company company = new Company();
         company.setComId(10L);
@@ -62,7 +70,8 @@ class CustomerOverviewContextTest {
         boss.setEmpId(1L);
         boss.setRole(EmployeeRole.Boss);
         boss.setCompany(company);
-        when(tenant.requireBoss(boss)).thenReturn(boss);
+        when(tenant.requireEmployee(boss)).thenReturn(boss);
+        when(dataScope.requireScope(boss)).thenReturn(new DataScope(DataScopeType.Company, 10L, null, null, 1L));
 
         LocalDate today = LocalDate.now();
         Customer overdue = customer(101L, CustStatus.Following, "逾期客户", company, today.minusDays(20).atStartOfDay());
@@ -119,6 +128,23 @@ class CustomerOverviewContextTest {
         when(contractRepository.findByCompany_ComIdOrderByContractIdDesc(10L)).thenReturn(List.of(contract));
         when(measureRepository.findByCompany_ComIdAndCustomer_CustIdInOrderByMeasureIdDesc(
                 10L, List.of(101L, 102L, 103L))).thenReturn(measures);
+        when(customerRepository.countOwnerGroupsByStoreScope(10L, true, null))
+                .thenReturn(List.<Object[]>of(new Object[]{1L, "张伟", 3L, 1L, 1L}));
+        when(customerRepository.countStatusByStoreScope(10L, true, null))
+                .thenReturn(List.<Object[]>of(
+                        new Object[]{CustStatus.Following, 1L},
+                        new Object[]{CustStatus.New, 1L},
+                        new Object[]{CustStatus.Quoted, 1L},
+                        new Object[]{CustStatus.Signed, 1L}));
+        when(customerRepository.countFollowDueByStoreScope(any(), anyBoolean(), any(), any()))
+                .thenReturn(1L);
+        when(customerRepository.countPendingAssignByStoreScope(10L, true, null)).thenReturn(1L);
+        when(customerRepository.findAll(any(org.springframework.data.jpa.domain.Specification.class), any(Pageable.class)))
+                .thenAnswer(invocation -> new PageImpl<>(customers, invocation.getArgument(1), customers.size()));
+        when(quoteRepository.findByCompany_ComIdAndCustomer_CustIdInOrderByQuoteIdDesc(10L, List.of(101L, 102L, 103L)))
+                .thenReturn(List.of(quote));
+        when(contractRepository.findByCompany_ComIdAndCustomer_CustIdInOrderByContractIdDesc(10L, List.of(101L, 102L, 103L)))
+                .thenReturn(List.of(contract));
     }
 
     @Test
@@ -127,32 +153,16 @@ class CustomerOverviewContextTest {
 
         assertThat(report.getMetrics()).hasSize(4);
         assertThat(report.getMetrics()).extracting(CustomerMetricCard::getKey)
-                .containsExactly("newCustomer", "activeFollow", "signedCustomer", "measureCustomer");
+                .containsExactly("newCustomer", "activeFollow", "measureCustomer", "signedCustomer");
         CustomerMetricCard signed = report.getMetrics().stream()
                 .filter(item -> item.getKey().equals("signedCustomer")).findFirst().orElseThrow();
         assertThat(signed.getValue()).isEqualByComparingTo("1");
 
         CustomerMetricCard measureCustomer = report.getMetrics().stream()
                 .filter(item -> item.getKey().equals("measureCustomer")).findFirst().orElseThrow();
-        LocalDate today = LocalDate.now();
-        LocalDateTime monthStart = today.withDayOfMonth(1).atStartOfDay();
-        LocalDateTime now = LocalDateTime.now();
-        Set<Long> expectedMonthCustomers = measures.stream()
-                .filter(item -> item.getStatus() != MeasureStatus.Cancelled)
-                .filter(item -> effectiveScheduledAt(item) != null
-                        && !effectiveScheduledAt(item).isBefore(monthStart)
-                        && effectiveScheduledAt(item).isBefore(now))
-                .map(item -> item.getCustomer().getCustId())
-                .collect(Collectors.toSet());
-        assertThat(measureCustomer.getLabel()).isEqualTo("预约量房客户");
-        assertThat(measureCustomer.getValue()).isEqualByComparingTo(String.valueOf(expectedMonthCustomers.size()));
-        assertThat(measureCustomer.getSubText()).isEqualTo("本月完成 1 户 · 待派单 1 户");
-        assertThat(periodValue(measureCustomer, "today")).isEqualByComparingTo("2");
-        assertThat(periodValue(measureCustomer, "yesterday")).isEqualByComparingTo("1");
-        assertThat(periodValue(measureCustomer, "last7Days")).isEqualByComparingTo("3");
-        assertThat(periodValue(measureCustomer, "month"))
-                .isEqualByComparingTo(String.valueOf(expectedMonthCustomers.size()));
-        assertThat(expectedMonthCustomers).contains(102L, 103L);
+        assertThat(measureCustomer.getLabel()).isEqualTo("待量房");
+        assertThat(measureCustomer.getValue()).isEqualByComparingTo("0");
+        assertThat(measureCustomer.getSubText()).isEqualTo("待指派设计 1 户");
         assertThat(report.getStageCounts()).anySatisfy(item -> {
             if (item.getKey().equals("quote")) assertThat(item.getCount()).isEqualTo(1);
         });
@@ -164,7 +174,7 @@ class CustomerOverviewContextTest {
                 .findFirst().orElseThrow().getSignedAmount()).isEqualByComparingTo("100000");
         assertThat(report.getOwnerGroups()).anySatisfy(group -> {
             if (Long.valueOf(1L).equals(group.getOwnerId())) {
-                assertThat(group.getRiskCustomerCount()).isEqualTo(1);
+                assertThat(group.getPendingMeasureCount()).isEqualTo(1);
             }
         });
     }

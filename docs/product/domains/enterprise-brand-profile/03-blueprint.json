@@ -1,0 +1,18 @@
+{
+  "id": "enterprise-brand-profile.end-to-end",
+  "title": "装企信息与品牌投影",
+  "version": "0.1.0",
+  "status": "draft",
+  "sourceRefs": [],
+  "audience": [],
+  "layers": ["standard", "tenant", "project"],
+  "objects": [],
+  "stages": [],
+  "fields": [],
+  "rules": [],
+  "checks": [],
+  "exceptions": [],
+  "metrics": [],
+  "uiBindings": [],
+  "agentTools": []
+}

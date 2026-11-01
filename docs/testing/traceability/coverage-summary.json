@@ -1,0 +1,442 @@
+{
+  "generatedAt": "2026-11-01T16:40:50+08:00",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "totalCases": 44,
+  "mappedCases": 44,
+  "unmappedCases": 0,
+  "priority": {
+    "P0": 23,
+    "P1": 21
+  },
+  "byArea": {
+    "ACCEPTANCE": {
+      "cases": 5,
+      "priority": {
+        "P0": 3,
+        "P1": 2,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Finance",
+        "Owner",
+        "Pm",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App",
+        "Owner",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-008",
+        "BR-043",
+        "DEC-007",
+        "DEC-009",
+        "DEC-015",
+        "DEC-087",
+        "DEC-088",
+        "SCN-003",
+        "SCN-010"
+      ]
+    },
+    "CHANGE": {
+      "cases": 2,
+      "priority": {
+        "P0": 1,
+        "P1": 1,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Designer",
+        "Finance"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-003",
+        "BR-035",
+        "BR-041",
+        "BR-045",
+        "DEC-055",
+        "DEC-068",
+        "DEC-092",
+        "MET-002",
+        "SCN-004"
+      ]
+    },
+    "CONTRACT": {
+      "cases": 3,
+      "priority": {
+        "P0": 3,
+        "P1": 0,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Designer",
+        "Finance",
+        "Pm"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-001",
+        "BR-002",
+        "DEC-040",
+        "DEC-048",
+        "OBJ-001",
+        "SCN-002"
+      ]
+    },
+    "CRM": {
+      "cases": 6,
+      "priority": {
+        "P0": 3,
+        "P1": 3,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Designer",
+        "Finance",
+        "Marketer",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-001",
+        "BR-059",
+        "DEC-052",
+        "DEC-062",
+        "DEC-065",
+        "DEC-066",
+        "DEC-069",
+        "DEC-070",
+        "DEC-094",
+        "OBJ-001",
+        "OBJ-007",
+        "OBJ-010",
+        "SCN-001",
+        "USER-DEC-20261029-009"
+      ]
+    },
+    "CROSS_CUTTING": {
+      "cases": 4,
+      "priority": {
+        "P0": 2,
+        "P1": 2,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Designer",
+        "Finance",
+        "Marketer",
+        "Pm",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-003",
+        "BR-025",
+        "BR-031",
+        "BR-043",
+        "BR-060",
+        "DEC-016",
+        "DEC-036",
+        "DEC-037",
+        "DEC-070",
+        "DEC-092",
+        "DEC-095",
+        "OBJ-001",
+        "OBJ-010"
+      ]
+    },
+    "DESIGN_QUOTE": {
+      "cases": 5,
+      "priority": {
+        "P0": 1,
+        "P1": 4,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Designer",
+        "Marketer"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-001",
+        "BR-002",
+        "DEC-050",
+        "DEC-069",
+        "DEC-071",
+        "OBJ-007"
+      ]
+    },
+    "FINANCE": {
+      "cases": 7,
+      "priority": {
+        "P0": 5,
+        "P1": 2,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Finance",
+        "Pm",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-002",
+        "BR-003",
+        "BR-043",
+        "BR-045",
+        "BR-057",
+        "BR-059",
+        "DEC-070",
+        "DEC-072",
+        "DEC-077",
+        "DEC-089",
+        "DEC-091",
+        "DEC-092",
+        "MET-002",
+        "MET-005",
+        "MET-006",
+        "SCN-015"
+      ]
+    },
+    "MATERIAL": {
+      "cases": 5,
+      "priority": {
+        "P0": 4,
+        "P1": 1,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Designer",
+        "Finance",
+        "Pm",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-003",
+        "BR-004",
+        "BR-009",
+        "BR-044",
+        "BR-045",
+        "DEC-008",
+        "DEC-056",
+        "DEC-072",
+        "DEC-073",
+        "DEC-092",
+        "OBJ-008",
+        "SCN-005",
+        "SCN-006",
+        "SCN-021"
+      ]
+    },
+    "PROJECT": {
+      "cases": 4,
+      "priority": {
+        "P0": 1,
+        "P1": 3,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Finance",
+        "Pm",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-008",
+        "BR-043",
+        "DEC-016",
+        "DEC-029",
+        "DEC-049",
+        "DEC-057",
+        "DEC-088",
+        "DEC-089",
+        "SCN-003"
+      ]
+    },
+    "WORKBENCH": {
+      "cases": 3,
+      "priority": {
+        "P0": 0,
+        "P1": 3,
+        "P2": 0,
+        "P3": 0
+      },
+      "roles": [
+        "Boss",
+        "Finance",
+        "Pm"
+      ],
+      "surfaces": [
+        "App",
+        "Web"
+      ],
+      "ruleIds": [
+        "BR-005",
+        "BR-029",
+        "BR-030",
+        "DEC-002",
+        "DEC-033",
+        "DEC-034",
+        "SCN-016",
+        "SCN-018"
+      ]
+    }
+  },
+  "byRole": {
+    "Boss": 27,
+    "Designer": 14,
+    "Finance": 23,
+    "Marketer": 5,
+    "Owner": 3,
+    "Pm": 15,
+    "StoreManager": 12
+  },
+  "bySurface": {
+    "App": 42,
+    "Owner": 3,
+    "Web": 42
+  },
+  "ruleUsage": {
+    "BR-001": 10,
+    "BR-002": 7,
+    "BR-003": 8,
+    "BR-004": 1,
+    "BR-005": 1,
+    "BR-008": 6,
+    "BR-009": 2,
+    "BR-025": 1,
+    "BR-029": 2,
+    "BR-030": 3,
+    "BR-031": 1,
+    "BR-035": 1,
+    "BR-041": 2,
+    "BR-043": 6,
+    "BR-044": 3,
+    "BR-045": 7,
+    "BR-057": 1,
+    "BR-059": 2,
+    "BR-060": 1,
+    "DEC-002": 2,
+    "DEC-007": 1,
+    "DEC-008": 1,
+    "DEC-009": 2,
+    "DEC-015": 3,
+    "DEC-016": 2,
+    "DEC-029": 1,
+    "DEC-033": 1,
+    "DEC-034": 1,
+    "DEC-036": 1,
+    "DEC-037": 1,
+    "DEC-040": 2,
+    "DEC-048": 3,
+    "DEC-049": 1,
+    "DEC-050": 1,
+    "DEC-052": 2,
+    "DEC-055": 1,
+    "DEC-056": 1,
+    "DEC-057": 1,
+    "DEC-062": 1,
+    "DEC-065": 2,
+    "DEC-066": 1,
+    "DEC-068": 1,
+    "DEC-069": 2,
+    "DEC-070": 4,
+    "DEC-071": 3,
+    "DEC-072": 5,
+    "DEC-073": 1,
+    "DEC-077": 1,
+    "DEC-087": 1,
+    "DEC-088": 2,
+    "DEC-089": 4,
+    "DEC-091": 1,
+    "DEC-092": 5,
+    "DEC-094": 1,
+    "DEC-095": 1,
+    "MET-002": 3,
+    "MET-005": 2,
+    "MET-006": 2,
+    "OBJ-001": 4,
+    "OBJ-007": 2,
+    "OBJ-008": 1,
+    "OBJ-010": 2,
+    "SCN-001": 1,
+    "SCN-002": 1,
+    "SCN-003": 3,
+    "SCN-004": 1,
+    "SCN-005": 1,
+    "SCN-006": 1,
+    "SCN-010": 1,
+    "SCN-015": 1,
+    "SCN-016": 1,
+    "SCN-018": 1,
+    "SCN-021": 1,
+    "USER-DEC-20261029-009": 1
+  },
+  "unusedOracleRules": [],
+  "actionCoverage": {
+    "totalActions": 6,
+    "roles": [
+      "Boss",
+      "Designer",
+      "Finance",
+      "Marketer",
+      "Pm",
+      "StoreManager"
+    ],
+    "actions": [
+      "ACT-CRM-FIN-TRANSFER-OWNER",
+      "ACT-CRM-ASSIGN-DESIGNER",
+      "ACT-PROJECT-ADJUST-MEMBERS",
+      "ACT-FIN-ARRANGE-PAYMENT",
+      "ACT-MAT-FINANCE-ORDER",
+      "ACT-FIN-EXPENSE-PROXY"
+    ]
+  }
+}

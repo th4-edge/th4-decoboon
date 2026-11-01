@@ -11,6 +11,7 @@ import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.io.StreamFile;
 import com.th4.edge.framework.provider.security.User;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
@@ -55,6 +56,12 @@ public class FileStorageContext {
         if (principal instanceof Employee employee) {
             Employee current = tenantContext.requireEmployee(employee);
             if (projectId != null) projectAccessContext.requireProject(projectId, current);
+            if (businessType == FileScope.Partner
+                    && current.getRole() != EmployeeRole.Boss
+                    && current.getRole() != EmployeeRole.StoreManager
+                    && current.getRole() != EmployeeRole.Finance) {
+                throw new DefinedException(new DefaultErrorCode("403", "当前岗位不能维护供应商付款码"));
+            }
             companyId = current.getCompany().getComId();
         } else if (principal instanceof Credentials credential) {
             // 业主仅可为验收整改问题上传图片，不允许使用通用业务文件上传通道。
@@ -101,7 +108,7 @@ public class FileStorageContext {
     }
 
     private void validateBusinessFile(FileScope businessType, String originalName, StreamFile file) {
-        if (businessType != FileScope.CustomerFollow) return;
+        if (businessType != FileScope.CustomerFollow && businessType != FileScope.Partner) return;
         String extension = keyContext.extension(originalName);
         if (!CUSTOMER_FOLLOW_IMAGE_EXTENSIONS.contains(extension)) {
             throw new DefinedException(new DefaultErrorCode("400", "仅支持 JPG、PNG、WEBP 图片"));

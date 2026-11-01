@@ -1,0 +1,87 @@
+{
+  "api": "http://127.0.0.1:8091/api",
+  "period": "2026-10",
+  "dataset": {
+    "baseline": {
+      "employees": 8,
+      "attendance": 96,
+      "sheets": 12,
+      "items": 96,
+      "payslips": 96,
+      "commissions": 96,
+      "payables": 104
+    },
+    "ten_x": {
+      "employees": 80,
+      "attendance": 960,
+      "sheets": 12,
+      "items": 960,
+      "payslips": 960,
+      "commissions": 960,
+      "payables": 1040
+    }
+  },
+  "sequence": {
+    "baseline_8_employees": {
+      "samples": 30,
+      "p50_ms": 7.04,
+      "p95_ms": 14.63,
+      "p99_ms": 14.93,
+      "max_ms": 14.93,
+      "avg_ms": 8.93,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "response_bytes_last": 498,
+      "throughput_rps": null
+    },
+    "ten_x_sequential": {
+      "samples": 30,
+      "p50_ms": 8.52,
+      "p95_ms": 18.32,
+      "p99_ms": 18.36,
+      "max_ms": 18.36,
+      "avg_ms": 11.04,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "response_bytes_last": 503,
+      "throughput_rps": null
+    },
+    "ten_x_concurrent_20x200": {
+      "samples": 200,
+      "p50_ms": 17.34,
+      "p95_ms": 22.54,
+      "p99_ms": 24.88,
+      "max_ms": 25.59,
+      "avg_ms": 17.65,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "response_bytes_last": 503,
+      "throughput_rps": 1094.62
+    }
+  },
+  "cleanup": {
+    "after": {
+      "employees": 0,
+      "attendance": 0,
+      "sheets": 0,
+      "items": 0,
+      "payslips": 0,
+      "commissions": 0,
+      "payables": 0
+    }
+  },
+  "sql_status": {
+    "baseline": {
+      "questions_delta": 22,
+      "status": 200,
+      "success": true,
+      "response_bytes": 498
+    },
+    "ten_x": {
+      "questions_delta": 22,
+      "status": 200,
+      "success": true,
+      "response_bytes": 503
+    }
+  }
+}

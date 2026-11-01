@@ -1,7 +1,7 @@
 package com.th4.edge.decoboon.statistic.service.boss.workbench.support;
 
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.statistic.context.BossDashboardContext;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.statistic.context.BossWorkbenchContext;
 import com.th4.edge.decoboon.statistic.context.BusinessAlertContext;
 import com.th4.edge.decoboon.statistic.context.BusinessEventContext;

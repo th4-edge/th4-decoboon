@@ -1,0 +1,60 @@
+{
+  "caseId": "TC-ACC-PERMISSION-EMPLOYEE-002",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:18:16+08:00",
+  "finishedAt": "2026-11-01T15:18:16+08:00",
+  "executor": "codex",
+  "role": "Boss/StoreManager/Finance/Pm",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATACCP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss/店长/财务/项目经理",
+      "role": "multiple",
+      "surface": "API",
+      "page_path": "project/acceptance/update",
+      "control": "员工代确认负向",
+      "control_state": "N/A",
+      "business_state_before": "Acceptance=Pending",
+      "business_state_after": "四个员工角色均403；状态仍Pending，confirmed_at/confirmed_by为空",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-employee-confirm-negative-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/projects/242297231061811200/acceptance",
+      "control": "验收确认入口检查",
+      "control_state": "HIDDEN",
+      "business_state_before": "Acceptance=Pending",
+      "business_state_after": "页面明确仅业主本人确认，员工无确认/驳回按钮",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-pm-acceptance-web.png",
+        "11-pm-acceptance-web.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "PM验收页显示待业主确认，员工无确认或驳回动作"
+  ],
+  "actualState": [
+    "Boss/StoreManager/Finance/Pm 403",
+    "Acceptance仍Pending",
+    "confirmed_at=null",
+    "confirmed_by=null"
+  ],
+  "evidence": [
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-pm-acceptance-web.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/10-employee-confirm-negative-api.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/11-pm-acceptance-web.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "Web/API完成；App员工验收页因miniprogram-automator超时未单独执行，后端同一Provider对四角色均403。"
+}

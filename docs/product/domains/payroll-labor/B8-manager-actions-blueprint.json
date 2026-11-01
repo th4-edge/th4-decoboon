@@ -1,0 +1,41 @@
+{
+  "id": "payroll-labor.manager-payroll-actions-b8a",
+  "title": "B8A 店长本店薪酬动作权限",
+  "version": "1.0.0",
+  "status": "dev-verified-pending-real-ui",
+  "batch": "PAY-MANAGER-ACTIONS-B8A",
+  "sourceRefs": ["DEC-097", "ANS-BIZ-20261030-002", "EV-429", "DEC-093", "BR-038"],
+  "audience": ["StoreManager", "Boss", "Finance"],
+  "objects": [
+    {
+      "id": "PayrollSheet",
+      "meaning": "公司级工资单；店长只能对本店工资项全部覆盖的整单执行动作。",
+      "keyFields": ["sheetId", "period", "status", "attendanceComplete", "totalNetAmount"],
+      "sources": ["DEC-097", "BR-038"]
+    },
+    {
+      "id": "Payable",
+      "meaning": "工资或提成的员工应付；店长只可发放本店应付。",
+      "keyFields": ["payableId", "type", "sourceType", "sourceId", "amount", "paidAmount", "status", "store"],
+      "sources": ["DEC-097", "DEC-093"]
+    }
+  ],
+  "actionMatrix": [
+    {"action": "confirm", "boss": "company", "finance": "deny", "storeManager": "own-store-exclusive-sheet"},
+    {"action": "returnToDraft", "boss": "company", "finance": "deny", "storeManager": "own-store-exclusive-sheet"},
+    {"action": "deleteDraft", "boss": "company", "finance": "deny", "storeManager": "own-store-exclusive-sheet"},
+    {"action": "payEmployee", "boss": "company", "finance": "finance-scope", "storeManager": "own-store-payables"},
+    {"action": "void", "boss": "company", "finance": "deny", "storeManager": "authorized-but-blocked-by-b8b"}
+  ],
+  "checks": [
+    {"id": "store-exclusive-confirm", "rule": "StoreManager confirm/return/delete only if all sheet items belong to own store."},
+    {"id": "store-payment", "rule": "StoreManager can only pay own-store employee payables and must preserve idempotency, ledger and payslip publication."},
+    {"id": "finance-boundary", "rule": "Finance can review and pay but cannot confirm, return, delete or void."},
+    {"id": "boss-regression", "rule": "Boss retains enterprise-wide actions."},
+    {"id": "b8b-boundary", "rule": "Void requires DDL, reversal and rollback design; no state-only shortcut."}
+  ],
+  "uiBindings": [
+    {"surface": "App", "paths": ["subpackages/payroll/pages/sheet-detail.vue", "subpackages/payroll/pages/payment-create.vue"], "providers": ["payroll/sheet/update|delete", "finance/payment/employee/page|save"]},
+    {"surface": "Web", "paths": ["FinanceEmployeeSalariesView.vue", "FinanceEmployeeCommissionsView.vue", "FinanceEmployeePaymentDrawer.vue"], "providers": ["payroll/sheet/update|delete", "finance/payment/employee/page|save"]}
+  ]
+}

@@ -78,3 +78,37 @@
 - 覆盖：Web 三页、App 三页、dark/light、关键控件中/EN、能力详情、亲自处理和 UI 基线。
 - 验证：1440/1024/390 无页面级横向溢出，可见文字最小 12px，console 0 error / 0 warning。
 - 状态：UI 概念可评审，生产组件和独立验收未开始。
+
+## BOS-R0 负责人角色与 App/Web 现状对账（2026-10-29）
+
+| 项 | 场景 | 业务规则 | 当前事实 | 页面/Provider 证据 | 测试/渲染 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| BOS-R0-01 | BOSS 角色边界 | `BR-028`、`BR-030` | BOSS 为企业内部岗位能力超集，须逐步留痕，不得冒充业主确认 | 角色矩阵、SCN-016 | 文档核对 | MAPPED |
+| BOS-R0-02 | BOSS 今日判断 | `BR-030`、`SCN-016` | App 已有负责人聚合首屏；Web 仍是通用卡片首页，经营总览无菜单入口 | App `pages/index/index.vue`；Web `workbenchHome.ts`、`workbenchConfig.ts`、`routes.ts` | 静态代码核对 | UNMAPPED |
+| BOS-R0-03 | BOSS 角色认知 | `BR-030` | Web BOSS 首页含“本店经营结果 / 店长查看本店”卡片 | Web `roles/workbenchHome.ts:66-79` | 静态代码核对 | DEFECT |
+| BOS-R0-04 | BOSS 跨端事实 | 一后端多端同源 | App 首屏消费 `statistic/boss/workbench`；Web 经营分析消费 `statistic/boss/business/report`，未完成字段对账 | App statistic API；Web boss API | 静态代码核对 | PENDING |
+| BOS-R0-05 | BOSS 数据诚实 | `GAP-070`、MET-002/004/005 | 毛利已有成本不完整空值逻辑；App 部分补充数据失败退化为空数组/空对象 | BossDashboardContext；App `pages/index/index.vue:361-364` | 静态代码核对 | PARTIAL |
+| BOS-R0-06 | BOSS 首个改造切片 | `BR-030`、`CAP-004`、`CAP-005` | 推荐 `BOS-R1 负责人统一经营总览` | `16-boss-role-product-baseline-v1.md`、`PI-20261029-001` | 待用户决策 | PLAN_READY |
+
+### BOS-R0 未映射/待决
+
+- BOSS Provider 字段对账矩阵：待形成。
+- `BOS-D01～D04`：负责人一级空间、岗位视角、首个切片、首屏事实源待用户确认。
+- `GAP-BOS-001`：微信小程序是否独立负责人壳层未决。
+- `GAP-BOS-002`：负责人风险阈值是否企业可配置未决。
+- `GAP-070`：经营利润、费用分摊、期间及未归属门店费用口径未冻结。
+
+### BOS-R0 结论
+
+- 负责人当前能力广，但默认入口仍按岗位能力平铺，负责人首屏未收口为统一经营工作面。
+- 本次只完成角色/现状对账和问题登记，未修改后端、Web、App、DDL、权限或金额语义。
+- 不宣称负责人工作台已验收或 1.0.73 已发布。
+
+## BOS-R0 高保真交互预览（2026-10-29）
+
+| 项 | 场景 | 业务规则 | 页面能力 | 交互/状态 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| BOS-R0-07 | BOSS 统一经营台直观评审 | `BR-028`、`BR-030`、`SCN-016` | 经营总览、风险表、对象抽屉、业务推进、研发安排 | Web/App、亲自处理、七态、单一主行动 | `docs/product/prototypes/owner-operating-system/unified-v1.html`；`docs/acceptance/runs/20261029-boss-unified-prototype/README.md` | PROTOTYPE_READY_FOR_REVIEW |
+
+- 本行只证明高保真原型可运行、可交互、已真实渲染，不证明生产代码、真实 Provider 或独立验收。
+- 用户尚未确认 `BOS-D01～D04`。

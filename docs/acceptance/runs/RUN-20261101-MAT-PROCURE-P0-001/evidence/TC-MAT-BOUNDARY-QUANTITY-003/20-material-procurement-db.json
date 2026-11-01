@@ -1,0 +1,48 @@
+{
+  "plan": {
+    "planId": "242541620837220352",
+    "status": "PartiallyOrdered",
+    "quantity": "12.00",
+    "netQuantity": "12.00",
+    "lossQuantity": "0.00",
+    "unitPrice": "168.00",
+    "cost": "1440.00"
+  },
+  "sheet": {
+    "sheetId": "1793517336944847641",
+    "status": "Ordered",
+    "priceState": "Priced"
+  },
+  "items": [
+    {
+      "itemId": "1793518392736456618",
+      "materialPlanId": "242541620837220352",
+      "quantity": "2.00",
+      "unit": "Area",
+      "quoteCostPrice": "120.00",
+      "purchasePrice": "120.00",
+      "priceState": "Priced",
+      "orderedQuantity": "2.00"
+    }
+  ],
+  "purchases": [
+    {
+      "purchaseId": "1793518416069167759",
+      "no": "POb69125551f7cc1f275a014315ea0b202",
+      "status": "Ordered",
+      "quantity": "2.000",
+      "amount": "240.00",
+      "receivedQuantity": "0.000"
+    }
+  ],
+  "payables": [
+    {
+      "payableId": "1793518416093711825",
+      "status": "Pending",
+      "type": "Material",
+      "amount": "240.00",
+      "paidAmount": "0.00",
+      "sourceNo": "POb69125551f7cc1f275a014315ea0b202"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "api": "http://127.0.0.1:8090/api",
+  "testedAt": "2026-11-01T18:58:40+0800",
+  "cases": {
+    "contentTemplate": {
+      "route": "content/template/page",
+      "requestedSize": 200,
+      "returnedSize": 50,
+      "totalElements": "0",
+      "contentCount": 0,
+      "elapsedMs": 12.59
+    },
+    "expenseCategory": {
+      "route": "expense/categories/page",
+      "requestedSize": 200,
+      "returnedSize": 50,
+      "totalElements": "0",
+      "contentCount": 0,
+      "elapsedMs": 22.22
+    },
+    "reportProject": {
+      "route": "project/project/page",
+      "requestedSize": 20,
+      "returnedSize": 20,
+      "totalElements": "4",
+      "contentCount": 4,
+      "elapsedMs": 385.82
+    },
+    "employee": {
+      "route": "user/employee/page",
+      "requestedSize": 20,
+      "returnedSize": 20,
+      "totalElements": "9",
+      "contentCount": 9,
+      "elapsedMs": 12.07
+    }
+  }
+}

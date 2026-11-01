@@ -1,0 +1,27 @@
+{
+  "beforeButtons": [
+    {
+      "text": "重算",
+      "disabled": null,
+      "cls": "jz-btn jz-btn--ghost data-v-0d41fb51"
+    },
+    {
+      "text": "确认结算",
+      "disabled": null,
+      "cls": "jz-btn jz-btn--primary data-v-0d41fb51"
+    }
+  ],
+  "afterTapButtons": [
+    {
+      "text": "重算",
+      "disabled": null,
+      "cls": "jz-btn jz-btn--ghost data-v-0d41fb51"
+    },
+    {
+      "text": "确认结算",
+      "disabled": null,
+      "cls": "jz-btn jz-btn--primary data-v-0d41fb51"
+    }
+  ],
+  "dialogText": "王芳（造数1100） · 望江府1栋102P1793457777832 · 望江府1栋102 待开工合同收入¥2,496回款 15.3%付款进度 41.9%待收 ¥6,348总览应收回款应付付款项目流水结算结算状态 待确认—合同金额¥2,496最终结算¥2,496已收金额¥1,148应付成本¥3,440已付金额¥1,440结算构成材料款¥1,440工人工资¥0项目款¥800费用分摊¥0项目总成本¥2,240应收总额¥7,496扣款 / 奖励¥0 / ¥0质保金¥75 · 3%重算确认结算"
+}

@@ -3,11 +3,13 @@ package com.th4.edge.decoboon.pack.repository;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PackageTemplateRepository extends JpaRepository<PackageTemplate, Long> {
+public interface PackageTemplateRepository extends JpaRepository<PackageTemplate, Long>,
+        JpaSpecificationExecutor<PackageTemplate> {
 
     @EntityGraph(attributePaths = {"items", "items.section", "items.item"})
     Optional<PackageTemplate> findByTemplateIdAndCompany_ComId(Long templateId, Long comId);

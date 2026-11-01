@@ -1,0 +1,129 @@
+{
+  "before": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "planId": "242541620837220352",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              }
+            },
+            "quantity": 12.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "unitPrice": 168.0,
+            "cost": 1440.0,
+            "status": {
+              "name": "待选材",
+              "key": "Planned"
+            },
+            "requiredAt": "2026-11-05",
+            "materialKey": "ci:242296910222721024|unit:Area",
+            "netQuantity": 12.0,
+            "lossRate": 0.0,
+            "lossQuantity": 0.0
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "1",
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  },
+  "sheetSaveAttemptBeforeSelection": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "该材料尚未完成主材选材，完成后方可下单",
+        "system": false
+      }
+    }
+  },
+  "after": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "planId": "242541620837220352",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "siteAddr": "滨湖世纪城1栋102"
+            },
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              }
+            },
+            "quantity": 12.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "unitPrice": 168.0,
+            "cost": 1440.0,
+            "status": {
+              "name": "待选材",
+              "key": "Planned"
+            },
+            "requiredAt": "2026-11-05",
+            "materialKey": "ci:242296910222721024|unit:Area",
+            "netQuantity": 12.0,
+            "lossRate": 0.0,
+            "lossQuantity": 0.0
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "1",
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  }
+}

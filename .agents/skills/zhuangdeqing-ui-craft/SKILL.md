@@ -36,6 +36,7 @@ description: "Design, refine, and review ZHUANGDEQING Web enterprise workbench U
 8. 涉及 2.5D/3D、户型、空间、工地、材料位置或项目场景时读取 `references/spatial-scene-system.md` 与 `references/zcool-spatial-research.md`。
 9. 交付或评审时读取 `references/review-rubric.md`；需要图片视觉评审时读取 `references/vision-review-setup.md` 并调用 `scripts/vision_review.py`。
 10. 涉及业务事实时，使用全局 `zhuangdeqing-business` 和对应业务事实源；没有业务依据时停止业务判断，不自行补默认值。
+11. 进行跨页面延续优化、设计评审或待我设计等对象工作面设计时，读取 `references/conversation-playbook-20261029.md`，并读取对应页面专项 brief。
 
 ## 工作流
 

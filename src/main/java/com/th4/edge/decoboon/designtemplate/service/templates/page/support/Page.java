@@ -128,8 +128,6 @@ public class Page implements com.th4.edge.decoboon.designtemplate.service.templa
             }
             if (status != null) {
                 predicates.add(builder.equal(root.get("status"), status));
-            } else {
-                predicates.add(builder.notEqual(root.get("status"), DesignTemplate.Status.Disabled));
             }
 
             boolean needsVersionJoin = hasText(keyword) || hasText(houseType) || areaMin != null || areaMax != null || hasText(tag);

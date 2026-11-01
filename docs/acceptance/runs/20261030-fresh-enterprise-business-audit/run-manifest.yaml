@@ -1,0 +1,69 @@
+# 全新装企业务驱动审计运行清单
+target_enterprise: "麦鸿装饰（只读形态参照，未访问）"
+test_enterprise: "昭青科技"
+lane: local-fixture
+data_mode: no-real-data
+form: controlled-loop
+target_tenant_id: null
+test_tenant_id: "199500000000000001"
+surface: both
+mode: full-role
+backend_url: "http://127.0.0.1:8090"
+web_url: "http://127.0.0.1:8080"
+miniapp_build_dir: "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app/dist/dev/mp-weixin"
+backend_commit: "7b7dc5f0ed3795fbd6d13640f5dfb7f51b8c3dd8"
+app_commit: "f2fb91e0785bf953940257ce97e3ea84fc2ae808"
+web_commit: "e40ca8baf6203d71f5d0375cc043d424a0aa5873"
+db_migration_version: "dev-ddl-auto-update-202"
+knowledge_commit: "11995b9a88852dddb32315a07ecf15f8d515cb40"
+registry_sha256: "e9e3dc8d7594f05255f67b0010070437de4932100b6e901618f17b69ca2b8c90"
+authorization_owner: user
+time_window: "2026-10-30 local audit session"
+side_effect_fence: true
+rollback_owner: codex
+rollback_method: "restore /Users/zhangwei/.decoboon-local/business-rebuild-20261030/decoboon-before-rebuild.sql.gz"
+status: PARTIAL
+baseline:
+  captured_at: "2026-10-30T22:35:07+08:00"
+  counts:
+    stores: 2
+    employees: 8
+    roles: 7
+    customers: 1
+    properties: 1
+    measures: 1
+    designs: 1
+    quotes: 1
+    contracts: 1
+    projects: 1
+    stages: 8
+    tasks: 2
+    receivables: 5
+    receipts: 1
+    payables: 1
+    payments: 1
+    ledgers: 4
+  amount_summary:
+    contract_amount: 2495.75
+    receivable_amount: 3495.75
+    received_amount: 748.73
+    outstanding_amount: 2747.02
+    payable_amount: 2000.00
+    paid_amount: 500.00
+    unpaid_amount: 1500.00
+    ledger_net: -851.27
+    estimated_cost: 1760.00
+    actual_cost: 800.00
+    profit_amount: null
+  status_distribution:
+    customer: Serving
+    project: Preparing
+    cost_complete: false
+  evidence_id: EV-001/EV-010/EV-011
+  schema_evidence: raw/sql/schema-and-data-final.json
+coverage:
+  covered: 0
+  partial: 6
+  not_tested: 2
+  total: 8
+final_report: "07-final-report.md"

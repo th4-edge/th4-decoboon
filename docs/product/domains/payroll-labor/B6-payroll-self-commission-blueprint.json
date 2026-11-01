@@ -1,0 +1,65 @@
+{
+  "id": "payroll-labor.self-commission-b6",
+  "title": "PAY-SELF-COMMISSION 员工本人提成",
+  "version": "1.0.0",
+  "status": "dev-verified-pending-ui",
+  "batch": "PAY-SELF-COMMISSION",
+  "sourceRefs": ["BR-015", "BR-038", "DEC-016", "DEC-017", "REQ-PAY-SELF-COMMISSION-01"],
+  "audience": ["Boss", "Finance", "StoreManager", "Designer", "Marketer", "Pm"],
+  "objects": [
+    {
+      "id": "CommissionItem",
+      "meaning": "员工项目提成事实，包含签约额、手工比例、提成金额和计提/释放/发放进度。",
+      "keyFields": ["commissionId", "employee", "project", "contractAmount", "manualRate", "commissionAmount", "accruedAmount", "releasedAmount", "paidAmount", "status", "remark", "createTime"],
+      "sources": ["BR-015", "BR-038", "DEC-017"]
+    },
+    {
+      "id": "Employee",
+      "meaning": "提成归属员工；本人视角只使用登录员工，不接受客户端 empId。",
+      "keyFields": ["empId", "name", "role"],
+      "sources": ["BR-038", "DEC-017"]
+    },
+    {
+      "id": "PayrollAccessContext",
+      "meaning": "统一解析管理范围与 Self 范围；非管理员工不得获得管理视角。",
+      "keyFields": ["role", "dataScope", "empId", "storeId"],
+      "sources": ["BR-038", "DEC-017"]
+    }
+  ],
+  "views": [
+    {
+      "id": "manager-commission",
+      "audience": ["Boss", "Finance", "StoreManager"],
+      "system": "调用同一 payroll/commission/page|info；企业/门店范围与既有权限保持不变。"
+    },
+    {
+      "id": "self-commission",
+      "audience": ["Boss", "Finance", "StoreManager", "Designer", "Marketer", "Pm"],
+      "system": "列表传 selfOnly=true；服务端固定登录员工本人，客户端不得指定他人或可信门店归属。"
+    }
+  ],
+  "stages": [
+    {"id": "enter-self", "name": "进入本人提成", "system": "App 个人中心或 Web 账户菜单进入本人提成只读页。", "sources": ["BR-038"]},
+    {"id": "list", "name": "查看本人提成列表", "system": "按服务端分页展示项目、签约额、比例、提成金额、释放和发放进度。", "sources": ["BR-015", "BR-038"]},
+    {"id": "detail", "name": "查看提成明细", "system": "展示计算公式对应的服务端字段、状态与备注，不进行前端金额重算。", "sources": ["BR-015", "DEC-017"]},
+    {"id": "recover", "name": "失败恢复", "system": "接口失败显示暂不可确认并保留重试；空记录说明待企业计提后出现。", "sources": ["BR-038"]}
+  ],
+  "checks": [
+    {"id": "self-only", "rule": "非管理员工调用 page/info 时 DataScope 必须为 Self。"},
+    {"id": "self-flag", "rule": "管理角色 selfOnly=true 时只返回登录员工提成，忽略 storeId。"},
+    {"id": "other-denied", "rule": "普通员工读取他人 commissionId 返回不存在或无权访问。"},
+    {"id": "manager-regression", "rule": "管理角色不传 selfOnly 时维持企业/门店原范围。"},
+    {"id": "no-write", "rule": "本人提成页不提供计提、释放、调整、发放或删除动作。"}
+  ],
+  "uiBindings": [
+    {"surface": "App", "path": "/subpackages/payroll/pages/my-commission", "provider": "payroll/commission/page|info"},
+    {"surface": "Web", "path": "/account/commissions", "provider": "payroll/commission/page|info"}
+  ],
+  "states": ["pendingAccrual", "accrued", "released", "inPayment", "paid", "closed", "adjusted"],
+  "exceptions": [
+    "未登录或离职停用：拒绝并要求重新登录或联系企业负责人。",
+    "接口失败：显示暂不可确认和重试，不保留伪数据。",
+    "无本人提成：空态说明待企业计提后出现。",
+    "跨员工/跨企业访问：不泄露记录是否存在。"
+  ]
+}

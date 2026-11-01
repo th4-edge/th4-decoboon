@@ -1,0 +1,81 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SHEET-002",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T02:02:00+08:00",
+  "finishedAt": "2026-11-02T02:06:26+08:00",
+  "executor": "codex",
+  "role": "Designer",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261102-MATX2001-",
+  "steps": [
+    {
+      "step": 1,
+      "action": "Designer 从角色可见入口打开主材作业单并选择麦鸿演示项目12",
+      "result": "PASS",
+      "actualPage": "/workbench/material-sheets"
+    },
+    {
+      "step": 2,
+      "action": "从项目材料计划加入抛釉砖计划行，填写安装位置、型号、花色、尺寸和数量10㎡，保存草稿",
+      "result": "PASS",
+      "actual": "生成 TILE-20261102-002，状态 Measured，来源计划行为 Plan"
+    },
+    {
+      "step": 3,
+      "action": "再次编辑保存并提交请购",
+      "result": "PASS",
+      "actual": "刷新后备注与数量保持，状态 Submitted，页面显示“已提交请购，等待财务下单”"
+    },
+    {
+      "step": 4,
+      "action": "Provider 与数据库回读作业单事实",
+      "result": "PASS",
+      "actual": "sheetId=1793556125456416321；sourceKind=Plan；planId=242297226095755264；quantity=10.00；仅1条材料行"
+    },
+    {
+      "step": 5,
+      "action": "App 创建与回读同一作业单",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/workbench/material-sheets"
+  ],
+  "actualState": [
+    "TILE-20261102-002 为单条计划来源材料行，数量 10㎡，提交后状态 Submitted",
+    "页面仅展示当前项目可加入的材料计划，无自由文本合同外材料入口",
+    "Provider 与 DB 的 sourceKind、materialPlan、quantity 和状态一致",
+    "App 分支无授权微信身份，未以员工账号或 devToken 冒充"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-DESIGNER-SHEET-002/01-filled-draft.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/02-provider-info-after-save.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/03-page-after-save.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/04-provider-info-after-submit.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/05-page-after-submit.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/06-page-after-reload.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/07-db-readback-after-submit.txt"
+  ],
+  "defectIds": [],
+  "blockedReason": "App 授权微信身份不可用；Web/Provider/DB 的设计师建单与提交分支已通过，跨端用例不能判定为 PASS。",
+  "notes": "设计师实际入口为本版本 /workbench/material-sheets；冻结用例 pageTargets 仅列 /finance/material-ordering，属于测试资产路由差异，未按业务缺陷登记。App 分支 BLOCKED，未伪造通过。",
+  "caseDefinitionHash": "69c4d263f518ecc2a0055289853b8c34da566daaceade5c7d2c7d6bd3dbd0200",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-044",
+    "BR-045",
+    "OBJ-008",
+    "DEC-072"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/sheet/save",
+    "material/sheet/submit",
+    "material/sheet/enums",
+    "material/sheet/page"
+  ]
+}

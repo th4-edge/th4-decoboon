@@ -1,0 +1,58 @@
+{
+  "caseId": "TC-MAT-BOUNDARY-QUANTITY-003",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:35:01+08:00",
+  "finishedAt": "2026-11-01T15:35:01+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATPROCUREP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "API",
+      "page_path": "material/sheet/update",
+      "control": "超量数量13",
+      "control_state": "N/A",
+      "business_state_before": "sheet line=1，可下单12",
+      "business_state_after": "400超量；原行数量仍1",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-quantity-boundary-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "API",
+      "page_path": "material/sheet/update",
+      "control": "合法数量2",
+      "control_state": "N/A",
+      "business_state_before": "line=1",
+      "business_state_after": "line=2保存成功",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-quantity-boundary-api.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "未执行单独页面数量编辑，使用Provider和DB校验边界"
+  ],
+  "actualState": [
+    "可下单数量12",
+    "数量13被400拒绝",
+    "失败后数量保持1",
+    "数量2保存成功"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/10-quantity-boundary-api.json",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/20-material-procurement-db.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "API/DB覆盖边界；页面编辑能力待后续全端覆盖。"
+}

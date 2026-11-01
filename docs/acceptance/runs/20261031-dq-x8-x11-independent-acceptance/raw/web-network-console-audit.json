@@ -1,0 +1,20 @@
+{
+  "web-events-stage1.json": {
+    "responseCount": 134,
+    "httpErrors": {},
+    "consoleErrors": [],
+    "exceptions": []
+  },
+  "web-events-stage2.json": {
+    "responseCount": 1,
+    "httpErrors": {},
+    "consoleErrors": [],
+    "exceptions": []
+  },
+  "web-events-contract-page.json": {
+    "responseCount": 104,
+    "httpErrors": {},
+    "consoleErrors": [],
+    "exceptions": []
+  }
+}

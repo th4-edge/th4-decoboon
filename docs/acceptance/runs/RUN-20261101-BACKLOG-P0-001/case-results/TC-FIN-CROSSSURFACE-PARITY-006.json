@@ -1,0 +1,41 @@
+{
+  "caseId": "TC-FIN-CROSSSURFACE-PARITY-006",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "66d6bf619643f8ba803ffcab2922d0cbc0e624bde0c7f5e5b4fa63df9ecc8ec3",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-043",
+    "MET-005",
+    "MET-006",
+    "DEC-070",
+    "DEC-089",
+    "SCN-015",
+    "BR-059"
+  ],
+  "pageTargets": [
+    "web:/finance/projects/:projectId",
+    "web:/pm/workbench",
+    "app:/pages/finance/index",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "finance/project/report",
+    "finance/receivable/report",
+    "finance/payable/report",
+    "project/project/info"
+  ]
+}

@@ -19,6 +19,8 @@ public interface ProjectStageRepository extends JpaRepository<ProjectStage, Long
 
     List<ProjectStage> findByProjectOrderBySort(Project project);
 
+    List<ProjectStage> findByProject_ProjectIdInOrderByProjectProjectIdAscSortAsc(List<Long> projectIds);
+
     /** 阶段详情页所需关联预取；避免 OSIV=false 时序列化 project/store 越界。 */
     @EntityGraph(attributePaths = {"project", "project.store", "project.customer", "notApplicableBy"})
     List<ProjectStage> findDetailedByProjectOrderBySort(Project project);

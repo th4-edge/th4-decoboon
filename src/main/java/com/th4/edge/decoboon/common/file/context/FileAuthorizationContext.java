@@ -42,7 +42,9 @@ import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;
 import com.th4.edge.decoboon.project.repository.TaskNodeRepository;
 import com.th4.edge.decoboon.property.model.Measure;
 import com.th4.edge.decoboon.property.repository.MeasureRepository;
+import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.supply.model.StockMovement;
+import com.th4.edge.decoboon.supply.repository.PartnerRepository;
 import com.th4.edge.decoboon.supply.repository.StockMovementRepository;
 import com.th4.edge.framework.exception.DefaultErrorCode;
 import com.th4.edge.framework.exception.DefinedException;
@@ -50,6 +52,7 @@ import com.th4.edge.framework.provider.security.User;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.DataScopeSpecification;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
+import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Credentials;
 import com.th4.edge.tenant.user.model.Employee;
@@ -86,6 +89,7 @@ public class FileAuthorizationContext {
     private final TaskNodeRepository taskNodeRepository;
     private final GoodsReceiptRepository goodsReceiptRepository;
     private final StockMovementRepository stockMovementRepository;
+    private final PartnerRepository partnerRepository;
     private final CatalogItemRepository catalogItemRepository;
     private final CarryoverAttachmentRepository carryoverAttachmentRepository;
     private final MaterialSelectionRepository materialSelectionRepository;
@@ -113,6 +117,7 @@ public class FileAuthorizationContext {
                                     TaskNodeRepository taskNodeRepository,
                                     GoodsReceiptRepository goodsReceiptRepository,
                                     StockMovementRepository stockMovementRepository,
+                                    PartnerRepository partnerRepository,
                                     CatalogItemRepository catalogItemRepository,
                                     CarryoverAttachmentRepository carryoverAttachmentRepository,
                                     MaterialSelectionRepository materialSelectionRepository,
@@ -139,6 +144,7 @@ public class FileAuthorizationContext {
         this.taskNodeRepository = taskNodeRepository;
         this.goodsReceiptRepository = goodsReceiptRepository;
         this.stockMovementRepository = stockMovementRepository;
+        this.partnerRepository = partnerRepository;
         this.catalogItemRepository = catalogItemRepository;
         this.carryoverAttachmentRepository = carryoverAttachmentRepository;
         this.materialSelectionRepository = materialSelectionRepository;
@@ -301,6 +307,16 @@ public class FileAuthorizationContext {
                 // 与 customer/customer-follow/page 同口径：能看客户即可看该客户的跟进图片。
                 customerContext.requireVisible(follow.getCustomer().getCustId(), employee);
                 add(allowed, follow.getImages());
+            }
+            case Partner -> {
+                Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss,
+                        EmployeeRole.StoreManager, EmployeeRole.Finance);
+                Partner partner = partnerRepository.findById(businessId).orElseThrow(this::notFound);
+                if (partner.getCompany() == null
+                        || !current.getCompany().getComId().equals(partner.getCompany().getComId())) {
+                    throw notFound();
+                }
+                add(allowed, partner.getPaymentCodeImages());
             }
             case Expense -> {
                 DataScope scopeData = dataScopeContext.resolve(employee);

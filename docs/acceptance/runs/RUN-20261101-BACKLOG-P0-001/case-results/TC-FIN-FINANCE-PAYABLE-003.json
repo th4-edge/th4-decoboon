@@ -1,0 +1,38 @@
+{
+  "caseId": "TC-FIN-FINANCE-PAYABLE-003",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "511f5f4f4030b4431a089adfaa3e311378129ca7c3b89dc151d3c63078a26150",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "DEC-072",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/finance/payables",
+    "web:/finance/payments",
+    "app:/subpackages/finance/pages/payables",
+    "app:/subpackages/finance/pages/payments"
+  ],
+  "providerRoutes": [
+    "finance/payable/page",
+    "finance/payment/save",
+    "finance/payment/page",
+    "finance/partner-ledger/report"
+  ]
+}

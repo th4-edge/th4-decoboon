@@ -1,0 +1,3423 @@
+{
+  "schemaVersion": "1.0.0",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "createdAt": "2026-11-01",
+  "status": "READY",
+  "scope": "签约后工地不乱核心全链路",
+  "cases": [
+    {
+      "id": "TC-CRM-BOSS-CUSTOMER-001",
+      "title": "Boss建立客户与房屋并保留经营关系",
+      "priority": "P1",
+      "area": "CRM",
+      "roles": [
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "OBJ-001",
+        "DEC-094",
+        "BR-059",
+        "OBJ-010"
+      ],
+      "objectTypes": [
+        "Customer",
+        "Property"
+      ],
+      "fixture": "FC-20261031-01-new",
+      "preconditions": [
+        "Boss登录昭青科技",
+        "客户手机号在测试前缀下唯一",
+        "房屋绑定明确客户"
+      ],
+      "steps": [
+        "Boss在Web新建客户",
+        "为同一客户新增房屋",
+        "刷新列表和详情",
+        "在小程序回读客户与房屋"
+      ],
+      "expectedPage": [
+        "客户卡显示负责人、门店、当前阶段和下一步",
+        "房屋明确显示所属客户和业务状态"
+      ],
+      "expectedState": [
+        "Customer和Property均写入服务端真实主键",
+        "Company来自登录员工",
+        "App/Web读取同一客户事实"
+      ],
+      "expectedInvariants": [
+        "客户、房屋、负责人、设计师和门店归属必须来自同一服务端事实",
+        "跟进、量房、转交失败时不得改变原客户和房屋状态",
+        "Customer在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "前端伪造companyId改变归属",
+        "房屋未绑定客户",
+        "两端负责人或房屋数量不同"
+      ],
+      "providerRoutes": [
+        "customer/customer/save",
+        "customer/customer/page",
+        "customer/customer/info",
+        "customer/project/page"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "web:/workbench/customers/:customerId",
+        "app:/pages/customer/list",
+        "app:/subpackages/customer/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CRM-MARKETER-MEASURE-002",
+      "title": "业务员完成首联并预约量房",
+      "priority": "P1",
+      "area": "CRM",
+      "roles": [
+        "Marketer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "recovery"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "SCN-001",
+        "DEC-052"
+      ],
+      "objectTypes": [
+        "Customer",
+        "Follow",
+        "Measure"
+      ],
+      "fixture": "FC-20261031-03-pending_measure",
+      "preconditions": [
+        "客户已分配给业务员",
+        "下一步为待首联或待量房"
+      ],
+      "steps": [
+        "登记跟进记录",
+        "预约未来量房时间",
+        "刷新客户详情和量房工作台",
+        "重复进入确认下一步不丢失"
+      ],
+      "expectedPage": [
+        "客户显示已首联、量房时间、负责人和下一动作",
+        "量房预约在工作台可见"
+      ],
+      "expectedState": [
+        "Follow有真实内容和下次跟进时间",
+        "Measure.scheduledAt存在且为待量房",
+        "预约失败时原客户状态不变"
+      ],
+      "expectedInvariants": [
+        "客户、房屋、负责人、设计师和门店归属必须来自同一服务端事实",
+        "跟进、量房、转交失败时不得改变原客户和房屋状态",
+        "Customer在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "空跟进内容被保存",
+        "预约过去时间成功",
+        "员工通过改请求绕过门店范围"
+      ],
+      "providerRoutes": [
+        "customer/customer-follow/save",
+        "customer/customer/measure",
+        "customer/customer/page",
+        "project/manager/customer-follow/page"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "app:/subpackages/customer/pages/follow",
+        "app:/subpackages/customer/pages/measure-workbench"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CRM-MANAGER-HANDOFF-003",
+      "title": "店长把客户与房屋转交设计师",
+      "priority": "P0",
+      "area": "CRM",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "handoff",
+        "permission"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "DEC-066",
+        "OBJ-001"
+      ],
+      "objectTypes": [
+        "Customer",
+        "Property",
+        "Employee"
+      ],
+      "fixture": "FC-20261031-03-pending_measure",
+      "preconditions": [
+        "店长在总店范围",
+        "目标设计师为同企业在职员工",
+        "房屋未绑定其他设计师"
+      ],
+      "steps": [
+        "店长选择目标设计师并转交",
+        "设计师查看待我跟进/待我量房",
+        "Boss回读负责人"
+      ],
+      "expectedPage": [
+        "客户与房屋显示同一承接设计师",
+        "设计师工作台出现该客户",
+        "Boss与店长看到相同事实"
+      ],
+      "expectedState": [
+        "客户设计师、房屋设计师和待办负责人同源",
+        "交接记录保留原负责人和新负责人",
+        "非本店设计师不能承接"
+      ],
+      "expectedInvariants": [
+        "客户、房屋、负责人、设计师和门店归属必须来自同一服务端事实",
+        "跟进、量房、转交失败时不得改变原客户和房屋状态",
+        "Customer在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "跨企业设计师ID被接受",
+        "客户转交但房屋仍指向旧设计师",
+        "设计师可见未转交客户"
+      ],
+      "providerRoutes": [
+        "customer/customer/handoff",
+        "customer/customer/info",
+        "customer/customer/page",
+        "user/designer/list"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers/:customerId",
+        "app:/subpackages/customer/pages/detail",
+        "app:/subpackages/customer/pages/designer-followup-workbench"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CRM-DESIGNER-PROPERTY-004",
+      "title": "设计师完成量房且多房屋绑定不串房",
+      "priority": "P0",
+      "area": "CRM",
+      "roles": [
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "OBJ-007",
+        "DEC-052",
+        "DEC-062",
+        "DEC-069"
+      ],
+      "objectTypes": [
+        "Property",
+        "Measure",
+        "MeasureRegion"
+      ],
+      "fixture": "FC-20261031-04-measured",
+      "preconditions": [
+        "同一客户至少两套房屋",
+        "设计师已承接其中一套"
+      ],
+      "steps": [
+        "打开指定房屋量房",
+        "录入区域实测面积/周长并完成量房",
+        "切换到另一套房屋回读",
+        "刷新并回读量房记录"
+      ],
+      "expectedPage": [
+        "当前房屋名称、地址和量房状态明确",
+        "测量区域显示实测来源与完成时间"
+      ],
+      "expectedState": [
+        "完成时间不得早于预约时间",
+        "量房完成后原始区域冻结",
+        "方案继承量房快照但不反向修改量房事实",
+        "activePropertyId始终明确"
+      ],
+      "expectedInvariants": [
+        "客户、房屋、负责人、设计师和门店归属必须来自同一服务端事实",
+        "跟进、量房、转交失败时不得改变原客户和房屋状态",
+        "Property在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "页面隐式使用第一套房屋",
+        "完成量房自动写设计方案",
+        "修改区域反向改写历史方案快照"
+      ],
+      "providerRoutes": [
+        "property/measure/save",
+        "property/measure/page",
+        "property/measure/region/save",
+        "property/measure/region/list"
+      ],
+      "pageTargets": [
+        "web:/designer/measure",
+        "app:/subpackages/customer/pages/measure-record",
+        "app:/subpackages/design/pages/scheme"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CRM-PERMISSION-STORE-005",
+      "title": "店长不得查看或操作其他门店客户",
+      "priority": "P0",
+      "area": "CRM",
+      "roles": [
+        "StoreManager"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "DEC-065",
+        "DEC-070"
+      ],
+      "objectTypes": [
+        "Customer",
+        "Store"
+      ],
+      "fixture": "NEGATIVE-CROSS-STORE",
+      "preconditions": [
+        "总店店长与滨湖店客户均存在",
+        "账号角色为StoreManager"
+      ],
+      "steps": [
+        "访问本店客户列表",
+        "用已知ID读取滨湖店客户",
+        "尝试修改滨湖店客户"
+      ],
+      "expectedPage": [
+        "列表不出现滨湖店客户",
+        "直接访问显示无权限或不存在",
+        "不泄露其他门店详情"
+      ],
+      "expectedState": [
+        "数据范围由登录员工门店推导",
+        "前端伪造storeId不扩大范围",
+        "越权请求无写副作用"
+      ],
+      "expectedInvariants": [
+        "客户、房屋、负责人、设计师和门店归属必须来自同一服务端事实",
+        "跟进、量房、转交失败时不得改变原客户和房屋状态",
+        "Customer在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "跨店客户出现在列表",
+        "直接ID读取成功",
+        "越权修改返回成功"
+      ],
+      "providerRoutes": [
+        "customer/customer/page",
+        "customer/customer/info",
+        "customer/customer/update"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "app:/pages/customer/list"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-DQ-DESIGNER-DESIGN-001",
+      "title": "设计师从已量房房屋建立需求与方案",
+      "priority": "P1",
+      "area": "DESIGN_QUOTE",
+      "roles": [
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "OBJ-007",
+        "DEC-069"
+      ],
+      "objectTypes": [
+        "Design",
+        "Requirement",
+        "Measure"
+      ],
+      "fixture": "FC-20261031-05-designing",
+      "preconditions": [
+        "房屋已完成量房",
+        "设计师为该客户承接人"
+      ],
+      "steps": [
+        "从量房记录进入设计",
+        "录入需求和空间尺寸",
+        "保存方案并刷新",
+        "回读方案绑定客户和房屋"
+      ],
+      "expectedPage": [
+        "方案显示房号、风格、空间和设计状态",
+        "需求与方案上下文连续"
+      ],
+      "expectedState": [
+        "Design绑定明确customerId/propertyId",
+        "量房快照与服务端数据一致",
+        "方案保存不修改历史量房单"
+      ],
+      "expectedInvariants": [
+        "方案、报价版本和金额快照必须由服务端事实推导",
+        "历史设计/报价版本不得被新版本覆盖",
+        "Design在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "未量房直接创建正式方案",
+        "设计绑定错误房屋",
+        "保存后客户/房屋上下文丢失"
+      ],
+      "providerRoutes": [
+        "design/requirement/save",
+        "design/scheme/save",
+        "design/scheme/page",
+        "property/measure/page"
+      ],
+      "pageTargets": [
+        "web:/designer/customers",
+        "web:/designer/design/:designId",
+        "app:/subpackages/design/pages/list",
+        "app:/subpackages/design/pages/scheme"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-DQ-DESIGNER-SCHEME-002",
+      "title": "设计方案完成前必须绑定有效分项",
+      "priority": "P1",
+      "area": "DESIGN_QUOTE",
+      "roles": [
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative",
+        "boundary"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "DEC-050"
+      ],
+      "objectTypes": [
+        "Design",
+        "DesignItem",
+        "CatalogItem"
+      ],
+      "fixture": "FC-20261031-06-scheme_ready",
+      "preconditions": [
+        "方案处于草稿",
+        "企业报价项目库含施工与材料项"
+      ],
+      "steps": [
+        "添加空间和施工/材料分项",
+        "将方案提交为Ready",
+        "刷新方案和报价入口"
+      ],
+      "expectedPage": [
+        "分项来自企业报价项目库并显示数量、单位、价格来源",
+        "方案Ready后才出现生成报价入口"
+      ],
+      "expectedState": [
+        "DesignItem引用真实CatalogItem",
+        "金额由服务端按目录和数量计算",
+        "空分项或非法数量不能Ready"
+      ],
+      "expectedInvariants": [
+        "方案、报价版本和金额快照必须由服务端事实推导",
+        "历史设计/报价版本不得被新版本覆盖",
+        "Design在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "手改前端金额写库",
+        "无材料项却生成正式报价",
+        "停用项目进入新方案"
+      ],
+      "providerRoutes": [
+        "design/item/save",
+        "design/scheme/build",
+        "design/scheme/info",
+        "catalog/item/page"
+      ],
+      "pageTargets": [
+        "web:/designer/design/:designId",
+        "app:/subpackages/design/pages/scheme"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-DQ-DESIGNER-QUOTE-003",
+      "title": "报价草稿由服务端金额生成并可提交",
+      "priority": "P1",
+      "area": "DESIGN_QUOTE",
+      "roles": [
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "BR-002",
+        "DEC-071"
+      ],
+      "objectTypes": [
+        "Quote",
+        "QuoteLine",
+        "Design"
+      ],
+      "fixture": "FC-20261031-07-quote_draft",
+      "preconditions": [
+        "方案已Ready",
+        "设计分项和折扣条件已确定"
+      ],
+      "steps": [
+        "生成报价",
+        "核对折扣、分项金额和总额",
+        "提交报价",
+        "刷新并跨端回读"
+      ],
+      "expectedPage": [
+        "报价列表显示Draft/Submitted状态和版本",
+        "页面金额与后端汇总一致"
+      ],
+      "expectedState": [
+        "Quote绑定设计、客户和房屋",
+        "总额由服务端计算",
+        "提交后状态不可回到草稿",
+        "历史版本不覆盖"
+      ],
+      "expectedInvariants": [
+        "方案、报价版本和金额快照必须由服务端事实推导",
+        "历史设计/报价版本不得被新版本覆盖",
+        "Quote在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "前端reduce重算正式金额",
+        "空报价提交成功",
+        "刷新后金额变化"
+      ],
+      "providerRoutes": [
+        "quote/save",
+        "quote/update",
+        "quote/info",
+        "quote/line/page"
+      ],
+      "pageTargets": [
+        "web:/designer/quotes/:quoteId",
+        "app:/subpackages/project/pages/owner-quote",
+        "app:/pages/project/list"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-DQ-BOSS-QUOTE-004",
+      "title": "报价驳回、重提和接受保留版本历史",
+      "priority": "P1",
+      "area": "DESIGN_QUOTE",
+      "roles": [
+        "Boss",
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "order",
+        "history"
+      ],
+      "businessRuleIds": [
+        "BR-002",
+        "DEC-071"
+      ],
+      "objectTypes": [
+        "Quote"
+      ],
+      "fixture": "FC-20261031-08-quote_rejected",
+      "preconditions": [
+        "存在已提交报价",
+        "Boss具备接受权限",
+        "设计师可发起新版本"
+      ],
+      "steps": [
+        "Designer提交报价V1",
+        "Boss核对后驳回或接受",
+        "如驳回，设计师修改后生成V2",
+        "回读V1历史与当前V2"
+      ],
+      "expectedPage": [
+        "页面显示当前有效报价和版本历史",
+        "Boss看到客户、房屋、设计、金额和决策入口"
+      ],
+      "expectedState": [
+        "状态按Draft→Submitted→Rejected/Accepted流转",
+        "被替代历史保留只读",
+        "报价接受与客户归属口径不丢失"
+      ],
+      "expectedInvariants": [
+        "方案、报价版本和金额快照必须由服务端事实推导",
+        "历史设计/报价版本不得被新版本覆盖",
+        "Quote在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "V1被覆盖删除",
+        "Marketer直接接受报价",
+        "接受后金额快照变化"
+      ],
+      "providerRoutes": [
+        "quote/update",
+        "quote/info",
+        "quote/page"
+      ],
+      "pageTargets": [
+        "web:/designer/quotes",
+        "web:/designer/quotes/:quoteId",
+        "app:/subpackages/project/pages/owner-quote"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-DQ-PERMISSION-QUOTE-005",
+      "title": "报价接受登记权限与操作人留痕",
+      "priority": "P0",
+      "area": "DESIGN_QUOTE",
+      "roles": [
+        "Marketer",
+        "Designer",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative",
+        "happy",
+        "idempotency"
+      ],
+      "businessRuleIds": [
+        "BR-002",
+        "DEC-071"
+      ],
+      "objectTypes": [
+        "Quote",
+        "EmployeeRole"
+      ],
+      "fixture": "FC-20261031-09-quote_submitted",
+      "preconditions": [
+        "报价已Submitted",
+        "Marketer和Designer登录正常"
+      ],
+      "steps": [
+        "Marketer查看报价只读视图",
+        "尝试接受报价",
+        "Designer尝试Boss确认",
+        "Boss执行合法接受后回读"
+      ],
+      "expectedPage": [
+        "Marketer可查看报价事实但无报价接受动作",
+        "Designer在Submitted报价上看到登记客户接受的合法动作",
+        "Accepted后面显示登记人/时间来源，不写成客户系统自助确认"
+      ],
+      "expectedState": [
+        "Marketer置Accepted返回403且报价保持Submitted",
+        "Designer置Accepted成功，报价进入Accepted并写入acceptedBy=当前设计师、acceptedAt=当前时间",
+        "重复置Accepted被状态机拒绝（400），状态仍Accepted且acceptedBy/acceptedAt不被覆盖"
+      ],
+      "expectedInvariants": [
+        "报价接受登记人来自登录员工，不信任前端employeeId",
+        "acceptedBy与acceptedAt同时存在，重复请求不得覆盖首次登记",
+        "Marketer不能置Accepted",
+        "报价金额和成本快照不因接受动作改变"
+      ],
+      "forbiddenOutcomes": [
+        "Marketer接受报价成功",
+        "acceptedBy为空或由前端伪造",
+        "重复接受覆盖首次acceptedBy或产生第二事实",
+        "把员工登记说成客户本人系统确认"
+      ],
+      "providerRoutes": [
+        "quote/info",
+        "quote/update"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "web:/designer/quotes/:quoteId",
+        "app:/subpackages/quote/pages/detail"
+      ],
+      "evidenceRequired": [
+        "role_api_responses",
+        "before_after_screenshots",
+        "accepted_by_db",
+        "repeat_accept_state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CT-BOSS-CONTRACT-001",
+      "title": "合同从草稿到签约再到生效的顺序不可跳步",
+      "priority": "P0",
+      "area": "CONTRACT",
+      "roles": [
+        "Boss",
+        "Designer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "order"
+      ],
+      "businessRuleIds": [
+        "BR-002",
+        "DEC-040",
+        "DEC-048"
+      ],
+      "objectTypes": [
+        "Contract",
+        "Quote",
+        "Project"
+      ],
+      "fixture": "FC-20261031-11-contract_signed",
+      "preconditions": [
+        "报价Accepted",
+        "存在启用的施工计划和付款计划",
+        "用户授权本地合同测试"
+      ],
+      "steps": [
+        "Boss从报价发起合同草稿",
+        "填写签约金额、开工日和计划模板",
+        "执行签约",
+        "再执行生效"
+      ],
+      "expectedPage": [
+        "合同页显示草稿、待签约、已签约和已生效状态",
+        "签约前不生成立项项目"
+      ],
+      "expectedState": [
+        "合同绑定报价、客户和房屋",
+        "签约金额大于0",
+        "计划开工日与施工模板锁定",
+        "未签约不能生效"
+      ],
+      "expectedInvariants": [
+        "合同签约、生效和项目派生必须按状态机顺序发生",
+        "合同金额与项目、应收派生事实保持一致",
+        "Contract在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "创建合同请求偷偷完成签约",
+        "合同未签先生成项目",
+        "生效后回写报价快照"
+      ],
+      "providerRoutes": [
+        "project/contract/save",
+        "project/contract/update",
+        "project/contract/info"
+      ],
+      "pageTargets": [
+        "web:/designer/contract",
+        "web:/designer/projects/:projectId/contract",
+        "app:/subpackages/project/pages/contract"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CT-BOSS-PROJECT-002",
+      "title": "合同生效后项目、阶段、材料计划和应收同源生成",
+      "priority": "P0",
+      "area": "CONTRACT",
+      "roles": [
+        "Boss",
+        "Finance",
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-002",
+        "BR-001",
+        "DEC-048",
+        "OBJ-001",
+        "SCN-002"
+      ],
+      "objectTypes": [
+        "Contract",
+        "Project",
+        "ProjectStage",
+        "MaterialPlan",
+        "Receivable"
+      ],
+      "fixture": "FC-20261031-11-contract_signed",
+      "preconditions": [
+        "合同已Signed",
+        "施工和付款计划有效"
+      ],
+      "steps": [
+        "Boss执行合同生效",
+        "打开项目和详情",
+        "财务查看应收",
+        "项目经理查看阶段和待办"
+      ],
+      "expectedPage": [
+        "项目状态、合同金额、开工日和负责人可见",
+        "阶段含适用/不适用判断",
+        "应收来自同一合同节点"
+      ],
+      "expectedState": [
+        "合同与项目一对一生成",
+        "项目、阶段、材料计划和应收共享租户/门店/项目归属",
+        "重复生效幂等"
+      ],
+      "expectedInvariants": [
+        "合同签约、生效和项目派生必须按状态机顺序发生",
+        "合同金额与项目、应收派生事实保持一致",
+        "Contract在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "生效后无项目",
+        "重复生效生成两套项目或应收",
+        "财务金额与合同不一致"
+      ],
+      "providerRoutes": [
+        "project/contract/update",
+        "project/project/page",
+        "project/project/info",
+        "project/stage/page",
+        "finance/receivable/page"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers/:customerId",
+        "web:/pm/workbench",
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CT-ORDER-CONTRACT-003",
+      "title": "合同未签约直接生效必须被拒绝",
+      "priority": "P0",
+      "area": "CONTRACT",
+      "roles": [
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "order",
+        "permission"
+      ],
+      "businessRuleIds": [
+        "BR-002",
+        "DEC-040",
+        "DEC-048"
+      ],
+      "objectTypes": [
+        "Contract"
+      ],
+      "fixture": "FC-20261031-11-contract_signed",
+      "preconditions": [
+        "存在Draft合同",
+        "Boss具备生效权限"
+      ],
+      "steps": [
+        "打开合同草稿",
+        "尝试直接执行生效",
+        "刷新合同和项目列表",
+        "按正确顺序签约后再生效"
+      ],
+      "expectedPage": [
+        "页面提示必须完成签约",
+        "刷新后仍为草稿且无项目"
+      ],
+      "expectedState": [
+        "数据库合同状态保持Draft/Signed正确值",
+        "无项目、无应收副作用"
+      ],
+      "expectedInvariants": [
+        "合同签约、生效和项目派生必须按状态机顺序发生",
+        "合同金额与项目、应收派生事实保持一致",
+        "Contract在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "直接生效成功",
+        "出现半成品项目",
+        "仅前端隐藏按钮但API可绕过"
+      ],
+      "providerRoutes": [
+        "project/contract/update",
+        "project/contract/info"
+      ],
+      "pageTargets": [
+        "web:/designer/contract",
+        "app:/subpackages/project/pages/contract"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CHG-DESIGNER-CHANGE-001",
+      "title": "增减项三类动作生成当前有效剩余",
+      "priority": "P1",
+      "area": "CHANGE",
+      "roles": [
+        "Designer",
+        "Boss",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-035",
+        "BR-041",
+        "DEC-055",
+        "DEC-068",
+        "SCN-004"
+      ],
+      "objectTypes": [
+        "ContractChange",
+        "ContractChangeItem",
+        "Project"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "项目合同Effective",
+        "存在可变更合同分项"
+      ],
+      "steps": [
+        "Designer发起Add/Remove/Replace场景",
+        "核对源分项和目标分项",
+        "完成审批或生效流程",
+        "财务与项目回读当前有效剩余"
+      ],
+      "expectedPage": [
+        "变更页显示类型、来源、数量、金额影响和当前状态",
+        "历史变更与当前有效剩余分开显示"
+      ],
+      "expectedState": [
+        "只按当前有效剩余计算下游成本与材料",
+        "Pending不提前扣减",
+        "历史快照不被重写"
+      ],
+      "expectedInvariants": [
+        "当前有效剩余按已确认变更计算，Pending不得提前扣减",
+        "历史合同、报价和成本快照不得被变更回写",
+        "ContractChange在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "删除历史变更",
+        "Pending直接扣减成本",
+        "Replace只关闭来源而不产生目标"
+      ],
+      "providerRoutes": [
+        "project/contract-change/save",
+        "project/contract-change/update",
+        "project/contract-change/page",
+        "project/contract-change/range"
+      ],
+      "pageTargets": [
+        "web:/workbench/contract-changes",
+        "web:/designer/projects/:projectId/changes",
+        "app:/subpackages/project/pages/change"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CHG-FINANCE-COST-002",
+      "title": "有效减项不得制造伪成本完整性或伪利润",
+      "priority": "P0",
+      "area": "CHANGE",
+      "roles": [
+        "Finance",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "BR-041",
+        "BR-045",
+        "MET-002",
+        "DEC-092"
+      ],
+      "objectTypes": [
+        "ProjectCost",
+        "ContractChange",
+        "Settlement"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "项目存在已确认Remove/Quantity变更",
+        "至少一个真实应计成本仍缺失"
+      ],
+      "steps": [
+        "财务打开项目账本",
+        "核对预计成本、实际成本和缺失项",
+        "打开结算草稿",
+        "尝试确认结算"
+      ],
+      "expectedPage": [
+        "成本状态明确显示缺失项",
+        "利润显示成本未完整而非0",
+        "确认结算按钮禁用并说明原因"
+      ],
+      "expectedState": [
+        "有效Remove从材料完整性分母剔除",
+        "未发生成本不得按0计",
+        "costComplete=false时profit和grossMargin为空"
+      ],
+      "expectedInvariants": [
+        "当前有效剩余按已确认变更计算，Pending不得提前扣减",
+        "历史合同、报价和成本快照不得被变更回写",
+        "ProjectCost在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "显示0利润",
+        "以预计值冒充实际成本",
+        "成本不完整仍确认结算"
+      ],
+      "providerRoutes": [
+        "finance/project/report",
+        "finance/settlement/save",
+        "finance/settlement/update"
+      ],
+      "pageTargets": [
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/finance/pages/project"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-PJ-PM-STAGE-001",
+      "title": "项目经理只推进适用阶段且不适用阶段不进入分母",
+      "priority": "P1",
+      "area": "PROJECT",
+      "roles": [
+        "Pm",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-008",
+        "DEC-049",
+        "DEC-057",
+        "SCN-003"
+      ],
+      "objectTypes": [
+        "Project",
+        "ProjectStage",
+        "Task"
+      ],
+      "fixture": "FC-20261031-12-project_started",
+      "preconditions": [
+        "项目已由合同生效生成",
+        "存在无合同施工行的空阶段"
+      ],
+      "steps": [
+        "Pm打开项目工作面",
+        "查看阶段列表和本项不涉及原因",
+        "开启首个适用阶段",
+        "Boss回读项目状态和当前阶段"
+      ],
+      "expectedPage": [
+        "不适用阶段明确显示原因且不可开工",
+        "当前适用阶段可执行开始动作",
+        "项目状态更新为施工中"
+      ],
+      "expectedState": [
+        "NotApplicable阶段排除进度分母",
+        "项目状态与阶段状态一致",
+        "重复开工幂等"
+      ],
+      "expectedInvariants": [
+        "阶段、任务和项目状态由服务端事实单向推进",
+        "失败、重复或越权动作不得产生半成品或重复进度",
+        "Project在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "空阶段可提交开工或验收",
+        "项目进度分母包含不适用阶段",
+        "App/Web当前阶段不一致"
+      ],
+      "providerRoutes": [
+        "project/stage/page",
+        "project/stage/update",
+        "project/project/info"
+      ],
+      "pageTargets": [
+        "web:/pm/workbench",
+        "web:/workbench/customers/:customerId",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-PJ-PM-TASK-002",
+      "title": "施工任务完成必须有真实进度与现场证据",
+      "priority": "P1",
+      "area": "PROJECT",
+      "roles": [
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "businessRuleIds": [
+        "BR-008",
+        "SCN-003",
+        "DEC-088"
+      ],
+      "objectTypes": [
+        "Task",
+        "Evidence"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "适用阶段已开工",
+        "存在Todo任务"
+      ],
+      "steps": [
+        "Pm开始任务",
+        "未上传证据直接尝试完成",
+        "上传合成测试证据后完成",
+        "刷新并回读任务、阶段和项目"
+      ],
+      "expectedPage": [
+        "任务显示负责人、状态、进度和证据",
+        "无证据时完成按钮禁用或后端拒绝"
+      ],
+      "expectedState": [
+        "Task状态按Todo→Doing→Done推进",
+        "完成写真实evidenceUrls",
+        "阶段和项目进度由任务事实推导"
+      ],
+      "expectedInvariants": [
+        "阶段、任务和项目状态由服务端事实单向推进",
+        "失败、重复或越权动作不得产生半成品或重复进度",
+        "Task在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "无证据完成任务",
+        "只在前端伪造100%",
+        "刷新后任务回旧状态但页面显示完成"
+      ],
+      "providerRoutes": [
+        "project/task/update",
+        "project/task/page",
+        "project/task/info"
+      ],
+      "pageTargets": [
+        "web:/pm/workbench",
+        "web:/pm/projects/:projectId/acceptance",
+        "app:/subpackages/project/pages/task/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-PJ-PERMISSION-003",
+      "title": "项目经理不得修改价格、合同或财务归属",
+      "priority": "P0",
+      "area": "PROJECT",
+      "roles": [
+        "Pm",
+        "Boss",
+        "Finance",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-043",
+        "DEC-016",
+        "DEC-089"
+      ],
+      "objectTypes": [
+        "Project",
+        "Contract",
+        "EmployeeRole"
+      ],
+      "fixture": "FC-20261031-12-project_started",
+      "preconditions": [
+        "Pm为项目负责人",
+        "项目合同和财务事实已存在"
+      ],
+      "steps": [
+        "Pm打开项目详情",
+        "尝试修改合同金额或财务归属",
+        "Finance查看金额",
+        "Boss查看成员编辑入口",
+        "Boss和店长打开项目成员调整并验证候选人可加载"
+      ],
+      "expectedPage": [
+        "Pm只看到施工相关动作",
+        "合同和财务字段只读",
+        "Boss/Finance按权限看到对应动作",
+        "Boss和店长可执行项目成员调整；Pm和财务无成员调整入口"
+      ],
+      "expectedState": [
+        "价格、成本和财务归属不因Pm请求变化",
+        "角色能力从登录员工与项目参与关系推导",
+        "拒绝有可读原因"
+      ],
+      "expectedInvariants": [
+        "阶段、任务和项目状态由服务端事实单向推进",
+        "失败、重复或越权动作不得产生半成品或重复进度",
+        "Project在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "Pm修改合同金额成功",
+        "伪造managerId扩大权限",
+        "财务字段出现在无权限页面"
+      ],
+      "providerRoutes": [
+        "project/project/update",
+        "project/task/update",
+        "finance/project/report",
+        "user/employee/page"
+      ],
+      "pageTargets": [
+        "web:/designer/projects",
+        "web:/pm/workbench",
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-PJ-IDEMPOTENCY-004",
+      "title": "重复点击任务完成不产生重复进度或副作用",
+      "priority": "P1",
+      "area": "PROJECT",
+      "roles": [
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "concurrency",
+        "idempotency"
+      ],
+      "businessRuleIds": [
+        "BR-008",
+        "DEC-029"
+      ],
+      "objectTypes": [
+        "Task",
+        "Project"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "任务已有证据",
+        "网络可模拟重复提交"
+      ],
+      "steps": [
+        "双击完成任务或在网络重试中重复提交",
+        "刷新页面",
+        "查询任务和项目进度"
+      ],
+      "expectedPage": [
+        "页面只出现一次成功反馈",
+        "刷新后仍为单个Done事实"
+      ],
+      "expectedState": [
+        "重复请求返回同一结果",
+        "不重复写动态、通知或成本",
+        "项目进度不重复累加"
+      ],
+      "expectedInvariants": [
+        "阶段、任务和项目状态由服务端事实单向推进",
+        "失败、重复或越权动作不得产生半成品或重复进度",
+        "Task在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "生成两条完成记录",
+        "进度超过100%",
+        "第二次请求返回500且状态不明"
+      ],
+      "providerRoutes": [
+        "project/task/update",
+        "project/task/info"
+      ],
+      "pageTargets": [
+        "web:/pm/workbench",
+        "app:/subpackages/project/pages/task/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-MAT-DESIGNER-SELECTION-001",
+      "title": "未完成选材的计划行不能进入主材作业单",
+      "priority": "P0",
+      "area": "MATERIAL",
+      "roles": [
+        "Designer",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-004",
+        "BR-009",
+        "DEC-008",
+        "DEC-056",
+        "SCN-006"
+      ],
+      "objectTypes": [
+        "MaterialPlan",
+        "MaterialSelection"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "合同已生效并生成材料计划",
+        "计划行未完成现场选材确认"
+      ],
+      "steps": [
+        "Designer在App查看材料计划",
+        "尝试直接创建作业单",
+        "完成选材确认后重试",
+        "Finance回读可下单状态"
+      ],
+      "expectedPage": [
+        "未选材行明确显示阻断原因",
+        "完成后状态变为可下单",
+        "选材记录显示品牌、规格、颜色与确认人"
+      ],
+      "expectedState": [
+        "计划行与选材记录同源",
+        "选材完成后采购门禁解除",
+        "未选材不得被前端降级放行"
+      ],
+      "expectedInvariants": [
+        "选材、计划、作业单、采购、到场和应付必须共用项目与计划来源",
+        "重复下单或到场不得重复形成采购、应付或实际成本",
+        "MaterialPlan在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "未选材仍可下单",
+        "作业单绕过计划行",
+        "选材内容跨端不同"
+      ],
+      "providerRoutes": [
+        "material/selection/save",
+        "project/material-plan/page",
+        "material/sheet/save"
+      ],
+      "pageTargets": [
+        "web:/designer/projects/:projectId/materials",
+        "app:/subpackages/project/pages/selection-board",
+        "app:/subpackages/project/pages/material-sheet-create"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-MAT-DESIGNER-SHEET-002",
+      "title": "作业单只能来源于合同材料计划",
+      "priority": "P0",
+      "area": "MATERIAL",
+      "roles": [
+        "Designer",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-044",
+        "BR-045",
+        "OBJ-008",
+        "DEC-072"
+      ],
+      "objectTypes": [
+        "MaterialOrderSheet",
+        "MaterialPlan",
+        "PurchaseOrder"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "材料计划ReadyToOrder",
+        "供应商有效"
+      ],
+      "steps": [
+        "Designer创建Tile作业单并添加计划行",
+        "填写安装位置、数量和单位",
+        "提交请购",
+        "Finance查看作业单与采购入口"
+      ],
+      "expectedPage": [
+        "作业单显示来源计划、安装位置、数量和状态",
+        "提交后进入已提交请购",
+        "合同外材料提示先走增减项"
+      ],
+      "expectedState": [
+        "作业单行sourceKind=Plan",
+        "数量不超过净用量+损耗",
+        "作业单不直接写成本或应付"
+      ],
+      "expectedInvariants": [
+        "选材、计划、作业单、采购、到场和应付必须共用项目与计划来源",
+        "重复下单或到场不得重复形成采购、应付或实际成本",
+        "MaterialOrderSheet在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "作业单添加自由文本合同外材料",
+        "超量保存成功",
+        "提交后生成第二张重复采购单"
+      ],
+      "providerRoutes": [
+        "material/sheet/save",
+        "material/sheet/submit",
+        "material/sheet/enums",
+        "material/sheet/page"
+      ],
+      "pageTargets": [
+        "web:/finance/material-ordering",
+        "app:/subpackages/project/pages/material-sheet-create"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-MAT-BOUNDARY-QUANTITY-003",
+      "title": "材料下单数量不得超过净用量与损耗",
+      "priority": "P0",
+      "area": "MATERIAL",
+      "roles": [
+        "Designer",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "boundary",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-009",
+        "BR-044",
+        "DEC-072"
+      ],
+      "objectTypes": [
+        "MaterialPlan",
+        "MaterialOrderSheetItem"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "计划行净用量为N且损耗率为L",
+        "作业单草稿可编辑"
+      ],
+      "steps": [
+        "输入等于上限的数量并保存",
+        "输入超过上限的数量并提交",
+        "刷新作业单"
+      ],
+      "expectedPage": [
+        "等于上限可保存",
+        "超过上限显示明确超量提示并阻断"
+      ],
+      "expectedState": [
+        "后端按净用量+损耗计算上限",
+        "非法数量不落库",
+        "现有行数量不因失败而改变"
+      ],
+      "expectedInvariants": [
+        "选材、计划、作业单、采购、到场和应付必须共用项目与计划来源",
+        "重复下单或到场不得重复形成采购、应付或实际成本",
+        "MaterialPlan在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "前端任填任意数量",
+        "超量后自动截断且无提示",
+        "失败请求部分写入"
+      ],
+      "providerRoutes": [
+        "material/sheet/save",
+        "material/sheet/update",
+        "material/sheet/submit",
+        "project/material-plan/page"
+      ],
+      "pageTargets": [
+        "web:/finance/material-ordering",
+        "app:/subpackages/project/pages/material-sheet-create"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-MAT-FINANCE-ORDER-004",
+      "title": "作业单下单形成唯一采购单和应付",
+      "priority": "P0",
+      "area": "MATERIAL",
+      "roles": [
+        "Finance",
+        "Boss",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "idempotency",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "BR-044",
+        "BR-045",
+        "SCN-005",
+        "SCN-021",
+        "DEC-072",
+        "DEC-073"
+      ],
+      "objectTypes": [
+        "MaterialOrderSheet",
+        "PurchaseOrder",
+        "Payable"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "作业单Submitted",
+        "存在有效供应商",
+        "采购金额可定价或无价"
+      ],
+      "steps": [
+        "Finance选择供应商和expectedAt下单",
+        "重复提交同一请求",
+        "回读采购单、应付和作业单",
+        "App财务回读同一事实"
+      ],
+      "expectedPage": [
+        "作业单显示Ordered",
+        "采购单显示金额/数量和供应商",
+        "应付显示同一来源编号"
+      ],
+      "expectedState": [
+        "一次业务请求只生成一张采购单和一条应付",
+        "重复请求幂等",
+        "采购金额与应付金额一致"
+      ],
+      "expectedInvariants": [
+        "选材、计划、作业单、采购、到场和应付必须共用项目与计划来源",
+        "重复下单或到场不得重复形成采购、应付或实际成本",
+        "MaterialOrderSheet在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "重复生成采购单",
+        "应付金额与采购金额不一致",
+        "App/Web显示不同单号或金额"
+      ],
+      "providerRoutes": [
+        "partner/page",
+        "material/sheet/page",
+        "material/sheet/order",
+        "project/purchase/page",
+        "finance/payable/page",
+        "material/sheet/info"
+      ],
+      "pageTargets": [
+        "web:/finance/material-ordering",
+        "app:/subpackages/project/pages/material-sheet-order",
+        "app:/subpackages/finance/pages/payables"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-MAT-PM-ARRIVAL-005",
+      "title": "材料到货驱动计划、作业单、采购与成本联动",
+      "priority": "P1",
+      "area": "MATERIAL",
+      "roles": [
+        "Pm",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity",
+        "boundary"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "BR-045",
+        "DEC-072",
+        "DEC-092"
+      ],
+      "objectTypes": [
+        "GoodsReceipt",
+        "PurchaseOrder",
+        "MaterialPlan",
+        "ProjectCost"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "采购单Ordered",
+        "采购价已知或明确为空"
+      ],
+      "steps": [
+        "Pm登记到场数量和测试证据",
+        "Finance回读应付账期与项目成本",
+        "不足数量再次到场",
+        "达到采购量后回读终态"
+      ],
+      "expectedPage": [
+        "到场记录显示数量、时间、证据和采购来源",
+        "采购单显示部分到场或已到货"
+      ],
+      "expectedState": [
+        "到场累计不超过采购数量",
+        "已知价格才写实际成本",
+        "无价采购不得写0成本或伪利润"
+      ],
+      "expectedInvariants": [
+        "选材、计划、作业单、采购、到场和应付必须共用项目与计划来源",
+        "重复下单或到场不得重复形成采购、应付或实际成本",
+        "GoodsReceipt在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "超采购量到场成功",
+        "无价采购显示0实际成本",
+        "作业单/采购/计划状态互相矛盾"
+      ],
+      "providerRoutes": [
+        "project/goods-receipt/save",
+        "project/goods-receipt/page",
+        "finance/payable/page",
+        "finance/project/report"
+      ],
+      "pageTargets": [
+        "web:/pm/workbench",
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/project/pages/material-sheet-detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-ACC-PM-SUBMIT-001",
+      "title": "任务和证据未完成不得提交阶段验收",
+      "priority": "P1",
+      "area": "ACCEPTANCE",
+      "roles": [
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "businessRuleIds": [
+        "BR-008",
+        "SCN-003",
+        "DEC-087",
+        "DEC-088"
+      ],
+      "objectTypes": [
+        "Acceptance",
+        "Task",
+        "Evidence"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "阶段已开工",
+        "至少一个任务未完成"
+      ],
+      "steps": [
+        "Pm尝试提交阶段验收",
+        "完成全部任务并上传证据后重试",
+        "刷新验收工作区"
+      ],
+      "expectedPage": [
+        "未完成时提交被阻断",
+        "完成后可填写说明和证据提交",
+        "提交后显示待业主确认"
+      ],
+      "expectedState": [
+        "Acceptance状态Pending且员工无代确认入口",
+        "证据与阶段绑定",
+        "刷新后状态与轮次不丢失"
+      ],
+      "expectedInvariants": [
+        "员工只能提交验收，业主本人才能确认或驳回",
+        "验收轮次和整改结论只追加不覆盖，历史轮次可回读",
+        "Acceptance在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "未完成任务也能提交",
+        "员工可替业主确认",
+        "提交失败但数据库已生成Pending"
+      ],
+      "providerRoutes": [
+        "project/acceptance/save",
+        "project/acceptance/page",
+        "project/task/page"
+      ],
+      "pageTargets": [
+        "web:/pm/projects/:projectId/acceptance",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-ACC-PERMISSION-EMPLOYEE-002",
+      "title": "任何员工角色都不得代替业主确认验收",
+      "priority": "P0",
+      "area": "ACCEPTANCE",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Pm",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-043",
+        "DEC-015",
+        "DEC-009"
+      ],
+      "objectTypes": [
+        "Acceptance",
+        "EmployeeRole",
+        "Owner"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "验收单Pending",
+        "各员工账号可登录"
+      ],
+      "steps": [
+        "Boss查看验收单",
+        "店长、Pm、财务分别查看",
+        "分别尝试调用确认或驳回入口",
+        "Owner使用匹配身份完成合法确认"
+      ],
+      "expectedPage": [
+        "员工页面文案明确仅业主本人确认",
+        "员工无确认或驳回按钮",
+        "Owner页面有确认和驳回动作"
+      ],
+      "expectedState": [
+        "员工请求返回403",
+        "状态保持Pending",
+        "Owner成功后记录真实确认主体"
+      ],
+      "expectedInvariants": [
+        "员工只能提交验收，业主本人才能确认或驳回",
+        "验收轮次和整改结论只追加不覆盖，历史轮次可回读",
+        "Acceptance在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "员工代确认成功",
+        "通过改localStorage或接口参数伪造owner",
+        "员工拒绝后状态变为Failed"
+      ],
+      "providerRoutes": [
+        "project/acceptance/update",
+        "project/acceptance/info",
+        "customer/acceptance/update"
+      ],
+      "pageTargets": [
+        "web:/pm/projects/:projectId/acceptance",
+        "app:/subpackages/project/pages/owner-acceptance"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-ACC-OWNER-IDENTITY-003",
+      "title": "非业主手机号不能进入项目确认验收",
+      "priority": "P0",
+      "area": "ACCEPTANCE",
+      "roles": [
+        "Owner"
+      ],
+      "surfaces": [
+        "Owner"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-043",
+        "DEC-015",
+        "DEC-009"
+      ],
+      "objectTypes": [
+        "OwnerAccess",
+        "Property",
+        "Acceptance"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "项目码有效",
+        "当前微信授权手机号与客户预留手机号不一致"
+      ],
+      "steps": [
+        "Owner输入项目码",
+        "授权手机号",
+        "尝试读取验收详情",
+        "更换为匹配业主身份后重试"
+      ],
+      "expectedPage": [
+        "非匹配手机号显示拒绝原因和恢复路径",
+        "不显示合同、成本或其他客户信息"
+      ],
+      "expectedState": [
+        "授权访问绑定客户手机号与项目",
+        "拒绝不创建有效owner session",
+        "匹配后可读取同一Pending验收"
+      ],
+      "expectedInvariants": [
+        "员工只能提交验收，业主本人才能确认或驳回",
+        "验收轮次和整改结论只追加不覆盖，历史轮次可回读",
+        "OwnerAccess在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "仅凭项目码进入并确认",
+        "显示其他业主项目",
+        "非匹配身份可调用更新接口"
+      ],
+      "providerRoutes": [
+        "project/owner-qrcode/build",
+        "project/owner-preview/info",
+        "customer/shareview/info"
+      ],
+      "pageTargets": [
+        "owner:/subpackages/project/pages/owner-acceptance",
+        "app:/pages/owner/enter"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-ACC-OWNER-CONFIRM-004",
+      "title": "业主确认后阶段和项目事实继续推进",
+      "priority": "P0",
+      "area": "ACCEPTANCE",
+      "roles": [
+        "Owner",
+        "Pm",
+        "Boss"
+      ],
+      "surfaces": [
+        "Owner",
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-008",
+        "BR-043",
+        "DEC-015"
+      ],
+      "objectTypes": [
+        "Acceptance",
+        "ProjectStage",
+        "Project"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "业主身份匹配",
+        "验收单Pending",
+        "阶段任务已完成"
+      ],
+      "steps": [
+        "Owner打开验收详情查看证据",
+        "执行确认并二次确认",
+        "Pm和Boss刷新回读",
+        "Owner再次进入查看历史"
+      ],
+      "expectedPage": [
+        "Owner看到验收结论确认成功",
+        "阶段状态更新且项目下一步明确",
+        "历史轮次保留确认时间和主体"
+      ],
+      "expectedState": [
+        "确认只影响对应阶段",
+        "员工端看到同一确认事实",
+        "刷新不丢失",
+        "重复确认幂等"
+      ],
+      "expectedInvariants": [
+        "员工只能提交验收，业主本人才能确认或驳回",
+        "验收轮次和整改结论只追加不覆盖，历史轮次可回读",
+        "Acceptance在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "确认后阶段仍Pending",
+        "生成重复验收轮次",
+        "App/Web显示不同确认时间"
+      ],
+      "providerRoutes": [
+        "customer/acceptance/update",
+        "project/acceptance/info",
+        "project/stage/page",
+        "project/project/info"
+      ],
+      "pageTargets": [
+        "owner:/subpackages/project/pages/owner-acceptance",
+        "web:/pm/projects/:projectId/acceptance",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-ACC-OWNER-REJECT-005",
+      "title": "业主驳回后生成整改并进入下一轮复验",
+      "priority": "P1",
+      "area": "ACCEPTANCE",
+      "roles": [
+        "Owner",
+        "Pm"
+      ],
+      "surfaces": [
+        "Owner",
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative",
+        "history"
+      ],
+      "businessRuleIds": [
+        "BR-008",
+        "SCN-010",
+        "DEC-007"
+      ],
+      "objectTypes": [
+        "Acceptance",
+        "Rectification",
+        "AcceptanceRound"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "业主身份匹配",
+        "验收Pending且存在现场证据"
+      ],
+      "steps": [
+        "Owner填写问题和证据并驳回",
+        "Pm查看整改责任、期限和证据",
+        "Pm完成整改并重新提交",
+        "Owner复验并确认或再次驳回"
+      ],
+      "expectedPage": [
+        "驳回后显示整改对象、责任人、截止时间",
+        "重新提交形成第2轮验收",
+        "历史轮次和结论只追加不覆盖"
+      ],
+      "expectedState": [
+        "整改只承接质量事实，不改变金额或合同",
+        "每轮有独立证据",
+        "复验通过后阶段才Done"
+      ],
+      "expectedInvariants": [
+        "员工只能提交验收，业主本人才能确认或驳回",
+        "验收轮次和整改结论只追加不覆盖，历史轮次可回读",
+        "Acceptance在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "驳回直接改项目金额",
+        "第二轮覆盖第一轮",
+        "整改完成但无复验证据"
+      ],
+      "providerRoutes": [
+        "customer/acceptance/update",
+        "project/acceptance/round/page",
+        "project/acceptance/rectify/page",
+        "project/acceptance/save"
+      ],
+      "pageTargets": [
+        "owner:/subpackages/project/pages/owner-acceptance",
+        "web:/pm/projects/:projectId/acceptance",
+        "app:/subpackages/project/pages/rectify-board"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-FINANCE-RECEIVABLE-001",
+      "title": "合同节点应收与手工应收同源形成待收计划",
+      "priority": "P1",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-002",
+        "BR-003",
+        "MET-006",
+        "DEC-089"
+      ],
+      "objectTypes": [
+        "Receivable",
+        "Contract",
+        "Project"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "项目合同Effective",
+        "合同付款节点已生成"
+      ],
+      "steps": [
+        "Finance打开应收计划",
+        "核对自动应收与手工补充应收",
+        "按项目筛选",
+        "Boss在项目账本回读"
+      ],
+      "expectedPage": [
+        "应收列表显示项目、阶段、金额、已收、待收和到期日",
+        "自动和手工来源可区分"
+      ],
+      "expectedState": [
+        "应收归属同一项目和门店",
+        "待收=金额-已收",
+        "合同节点金额不改写合同金额"
+      ],
+      "expectedInvariants": [
+        "应收、收款、应付、付款、台账和结算必须按同一项目与门店核算",
+        "成本不完整时利润为空，不得使用0或预计值伪装实际结果",
+        "Receivable在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "待收为负数",
+        "自动应收重复生成",
+        "Boss与Finance汇总不同"
+      ],
+      "providerRoutes": [
+        "finance/receivable/page",
+        "finance/receivable/report",
+        "finance/project/report"
+      ],
+      "pageTargets": [
+        "web:/finance/receivables",
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/finance/pages/receivables"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-FINANCE-RECEIPT-002",
+      "title": "收款不得超过余额且冲正可恢复应收",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative",
+        "idempotency"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "DEC-077",
+        "MET-005"
+      ],
+      "objectTypes": [
+        "Receipt",
+        "Receivable",
+        "Ledger"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "存在待收应收",
+        "金额和到期日明确"
+      ],
+      "steps": [
+        "登记部分收款",
+        "重复提交同一幂等请求",
+        "尝试超余额收款",
+        "执行收款冲正并回读"
+      ],
+      "expectedPage": [
+        "收款记录、应收余额和台账同步更新",
+        "重复请求只生成一笔收款",
+        "冲正后应收余额恢复"
+      ],
+      "expectedState": [
+        "收款累计不超过应收",
+        "冲正不产生负余额",
+        "重复收款幂等",
+        "台账净额与收付事实一致"
+      ],
+      "expectedInvariants": [
+        "应收、收款、应付、付款、台账和结算必须按同一项目与门店核算",
+        "成本不完整时利润为空，不得使用0或预计值伪装实际结果",
+        "Receipt在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "重复收款",
+        "超余额成功",
+        "冲正后待收不变或变负"
+      ],
+      "providerRoutes": [
+        "finance/receipt/save",
+        "finance/receipt/reverse",
+        "finance/receivable/page",
+        "finance/ledger/report"
+      ],
+      "pageTargets": [
+        "web:/finance/receipts",
+        "web:/finance/receivables",
+        "app:/subpackages/finance/pages/receipts"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-FINANCE-PAYABLE-003",
+      "title": "材料采购应付与付款核销保持同一事实",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "Boss",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "boundary",
+        "idempotency"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "BR-045",
+        "DEC-072",
+        "DEC-089"
+      ],
+      "objectTypes": [
+        "Payable",
+        "Payment",
+        "PurchaseOrder"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "采购单已下单",
+        "自动应付存在",
+        "另有手工应付可测试双路径"
+      ],
+      "steps": [
+        "Finance查看应付列表",
+        "登记部分付款",
+        "重复提交付款",
+        "按采购来源和手工来源分别核对"
+      ],
+      "expectedPage": [
+        "应付显示金额、已付、待付、到期日和来源",
+        "付款后状态为部分付款或已付"
+      ],
+      "expectedState": [
+        "应付余额=金额-已付",
+        "付款不超过余额",
+        "自动和手工应付使用同一核算口径"
+      ],
+      "expectedInvariants": [
+        "应收、收款、应付、付款、台账和结算必须按同一项目与门店核算",
+        "成本不完整时利润为空，不得使用0或预计值伪装实际结果",
+        "Payable在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "付款后待付不更新",
+        "重复付款",
+        "来源编号与金额不一致"
+      ],
+      "providerRoutes": [
+        "finance/payable/page",
+        "finance/payment/save",
+        "finance/payment/page",
+        "finance/partner-ledger/report"
+      ],
+      "pageTargets": [
+        "web:/finance/payables",
+        "web:/finance/payments",
+        "app:/subpackages/finance/pages/payables",
+        "app:/subpackages/finance/pages/payments"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-FINANCE-COST-004",
+      "title": "任一应计成本缺失时利润必须为空",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "BR-045",
+        "MET-002",
+        "DEC-092"
+      ],
+      "objectTypes": [
+        "ProjectCost",
+        "Settlement",
+        "Payable"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "项目存在合同金额和部分实际成本",
+        "至少一个人工或材料成本未发生或未定价"
+      ],
+      "steps": [
+        "财务打开项目核算",
+        "核对预计成本、实际成本和成本完整状态",
+        "Boss回读项目利润",
+        "补齐成本后再回读"
+      ],
+      "expectedPage": [
+        "页面显示成本未完整及缺失项",
+        "利润和毛利率显示为空或不可确认"
+      ],
+      "expectedState": [
+        "costComplete=false时profit和grossMargin为null",
+        "不使用0或预计值伪装实际利润",
+        "同一项目跨端口径一致"
+      ],
+      "expectedInvariants": [
+        "应收、收款、应付、付款、台账和结算必须按同一项目与门店核算",
+        "成本不完整时利润为空，不得使用0或预计值伪装实际结果",
+        "ProjectCost在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "显示0利润",
+        "用预计成本计算实际利润",
+        "成本缺失却显示成本完整"
+      ],
+      "providerRoutes": [
+        "finance/project/report",
+        "finance/project/page",
+        "finance/settlement/page"
+      ],
+      "pageTargets": [
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/finance/pages/project"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-FINANCE-SETTLEMENT-005",
+      "title": "结算确认必须受成本完整与状态门禁约束",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "negative",
+        "order"
+      ],
+      "businessRuleIds": [
+        "BR-045",
+        "MET-002",
+        "DEC-092"
+      ],
+      "objectTypes": [
+        "Settlement",
+        "ProjectCost"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "项目存在结算草稿",
+        "至少一个应计成本缺失"
+      ],
+      "steps": [
+        "Finance生成结算草稿",
+        "核对最终金额、扣减、奖励、质保金和成本",
+        "尝试确认结算",
+        "补齐成本后重新确认（如获授权）"
+      ],
+      "expectedPage": [
+        "草稿显示金额、成本完整度和确认门禁",
+        "成本不完整时确认按钮禁用并说明原因"
+      ],
+      "expectedState": [
+        "Draft→Confirmed只能在前置满足后发生",
+        "结算金额和成本快照稳定",
+        "利润为空时不得确认"
+      ],
+      "expectedInvariants": [
+        "应收、收款、应付、付款、台账和结算必须按同一项目与门店核算",
+        "成本不完整时利润为空，不得使用0或预计值伪装实际结果",
+        "Settlement在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "成本不完整仍确认",
+        "重复生成结算",
+        "确认后金额或成本被回写"
+      ],
+      "providerRoutes": [
+        "finance/settlement/save",
+        "finance/settlement/page",
+        "finance/settlement/update"
+      ],
+      "pageTargets": [
+        "web:/finance/projects/:projectId",
+        "app:/subpackages/finance/pages/project"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-CROSSSURFACE-PARITY-006",
+      "title": "Boss、店长、财务与App回读同一项目金额",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "parity",
+        "permission"
+      ],
+      "businessRuleIds": [
+        "BR-043",
+        "MET-005",
+        "MET-006",
+        "DEC-070",
+        "DEC-089",
+        "SCN-015",
+        "BR-059"
+      ],
+      "objectTypes": [
+        "Project",
+        "Receivable",
+        "Payable",
+        "Settlement"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "项目处于财务可见状态",
+        "合同金额、已收、待收、应付、已付和成本完整度已形成"
+      ],
+      "steps": [
+        "Finance查看项目核算",
+        "Boss查看同一项目",
+        "总店店长查看本店项目",
+        "App财务首页和项目页回读"
+      ],
+      "expectedPage": [
+        "各端显示同项目合同金额、回款、待收、待付和成本状态",
+        "无权限字段不展示"
+      ],
+      "expectedState": [
+        "同一筛选条件下列表total与report count一致",
+        "金额口径来自服务端聚合",
+        "门店范围不改变金额事实"
+      ],
+      "expectedInvariants": [
+        "应收、收款、应付、付款、台账和结算必须按同一项目与门店核算",
+        "成本不完整时利润为空，不得使用0或预计值伪装实际结果",
+        "Project在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "不同端金额相差一分钱以上",
+        "无权限角色看到成本价",
+        "App用默认0伪装缺失金额"
+      ],
+      "providerRoutes": [
+        "finance/project/report",
+        "finance/receivable/report",
+        "finance/payable/report",
+        "project/project/info"
+      ],
+      "pageTargets": [
+        "web:/finance/projects/:projectId",
+        "web:/pm/workbench",
+        "app:/pages/finance/index",
+        "app:/subpackages/finance/pages/project"
+      ],
+      "evidenceRequired": [
+        "four_role_screenshots",
+        "api_summary",
+        "sql_reconciliation"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-WB-BOSS-GUIDANCE-001",
+      "title": "Boss工作台只呈现真实事实和可执行下一步",
+      "priority": "P1",
+      "area": "WORKBENCH",
+      "roles": [
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-029",
+        "BR-030",
+        "DEC-002",
+        "DEC-033",
+        "DEC-034",
+        "SCN-016"
+      ],
+      "objectTypes": [
+        "Workbench",
+        "Risk",
+        "Project",
+        "Receivable"
+      ],
+      "fixture": "FC-20261031-13-acceptance_pending",
+      "preconditions": [
+        "Boss登录企业负责人视角",
+        "存在待验收、待付款或待收风险"
+      ],
+      "steps": [
+        "打开Boss工作台",
+        "点击待验收入口",
+        "返回后点击待付款或待收入口",
+        "核对入口对象与来源"
+      ],
+      "expectedPage": [
+        "首页先显示今日经营判断和待处理事项",
+        "每个卡片显示事实、下一步和责任人"
+      ],
+      "expectedState": [
+        "工作台入口落到真实对象锚点",
+        "汇总数与底层Provider一致",
+        "无数据时显示暂不可确认而非0伪装"
+      ],
+      "expectedInvariants": [
+        "工作台待办与汇总必须来自真实对象和独立汇总Provider",
+        "空态、失败和加载态不得用本地常量伪造业务事实",
+        "Workbench在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "卡片可点击但进入错误对象",
+        "空数据被显示为0",
+        "同一入口落到不同状态源"
+      ],
+      "providerRoutes": [
+        "content/dashboard/report",
+        "project/project/overview",
+        "finance/summary/report"
+      ],
+      "pageTargets": [
+        "web:/workbench",
+        "app:/pages/index/index"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-WB-PM-GUIDANCE-002",
+      "title": "项目经理工作台从真实项目与阶段生成待办",
+      "priority": "P1",
+      "area": "WORKBENCH",
+      "roles": [
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "happy",
+        "parity",
+        "recovery"
+      ],
+      "businessRuleIds": [
+        "BR-030",
+        "BR-005",
+        "SCN-018"
+      ],
+      "objectTypes": [
+        "Workbench",
+        "ProjectStage",
+        "Task"
+      ],
+      "fixture": "FC-20261031-12-project_started",
+      "preconditions": [
+        "Pm被分配到多个项目",
+        "存在施工中和待验收项目"
+      ],
+      "steps": [
+        "Pm打开工作台",
+        "按今日开工、验收或材料待办进入项目",
+        "返回并刷新",
+        "核对待办数量与项目状态"
+      ],
+      "expectedPage": [
+        "工作台显示项目名、阶段、下一步和逾期或异常",
+        "入口直接定位到项目和阶段"
+      ],
+      "expectedState": [
+        "待办来自真实项目、阶段和任务",
+        "无权限项目不出现",
+        "刷新后待办一致"
+      ],
+      "expectedInvariants": [
+        "工作台待办与汇总必须来自真实对象和独立汇总Provider",
+        "空态、失败和加载态不得用本地常量伪造业务事实",
+        "Workbench在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "默认选中第一条项目代替用户选择",
+        "入口只到列表不定位对象",
+        "待办完成后仍显示"
+      ],
+      "providerRoutes": [
+        "project/project/page",
+        "project/stage/page",
+        "project/task/page"
+      ],
+      "pageTargets": [
+        "web:/pm/workbench",
+        "app:/pages/project/list",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-WB-RECOVERY-003",
+      "title": "空态、失败和刷新恢复不得伪装成功",
+      "priority": "P1",
+      "area": "WORKBENCH",
+      "roles": [
+        "Boss",
+        "Finance",
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "recovery",
+        "negative",
+        "boundary"
+      ],
+      "businessRuleIds": [
+        "BR-029",
+        "BR-030",
+        "DEC-002"
+      ],
+      "objectTypes": [
+        "Workbench",
+        "QueryState"
+      ],
+      "fixture": "NEGATIVE-EMPTY-ERROR",
+      "preconditions": [
+        "构造无数据、接口失败和网络中断场景"
+      ],
+      "steps": [
+        "打开空数据页面",
+        "模拟接口失败",
+        "刷新页面并重试",
+        "核对页面和数据库状态"
+      ],
+      "expectedPage": [
+        "空态说明没有真实数据",
+        "失败态显示暂不可确认和恢复路径",
+        "重试成功后显示真实数据"
+      ],
+      "expectedState": [
+        "未完成查询不显示0或成功",
+        "失败请求不产生写副作用",
+        "不出现前端本地演示记录"
+      ],
+      "expectedInvariants": [
+        "工作台待办与汇总必须来自真实对象和独立汇总Provider",
+        "空态、失败和加载态不得用本地常量伪造业务事实",
+        "Workbench在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "用0、22或空数组伪装事实",
+        "提示成功但后端无事实",
+        "刷新后页面自行补默认数据"
+      ],
+      "providerRoutes": [
+        "project/project/page",
+        "finance/receivable/page",
+        "customer/customer/page"
+      ],
+      "pageTargets": [
+        "web:/workbench",
+        "web:/finance/workbench",
+        "app:/pages/index/index"
+      ],
+      "evidenceRequired": [
+        "screenshots_all_states",
+        "network_log",
+        "db_before_after"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-XC-SECURITY-TENANT-001",
+      "title": "跨企业租户ID不得读取或修改业务对象",
+      "priority": "P0",
+      "area": "CROSS_CUTTING",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "OBJ-001",
+        "DEC-070",
+        "BR-043"
+      ],
+      "objectTypes": [
+        "Company",
+        "Customer",
+        "Project",
+        "Finance"
+      ],
+      "fixture": "NEGATIVE-CROSS-TENANT",
+      "preconditions": [
+        "创建第二企业或使用不存在企业ID",
+        "当前账号属于昭青科技"
+      ],
+      "steps": [
+        "尝试用其他企业ID读取客户",
+        "尝试读取项目和财务",
+        "尝试按其他企业ID保存写操作",
+        "用正常账号回读原企业事实"
+      ],
+      "expectedPage": [
+        "其他企业对象显示不存在或无权限",
+        "不泄露名称、金额、联系人"
+      ],
+      "expectedState": [
+        "服务端从登录员工推导com_id",
+        "前端companyId被忽略",
+        "拒绝请求无副作用"
+      ],
+      "expectedInvariants": [
+        "租户、门店、角色和敏感字段必须由登录员工及服务端权限裁剪",
+        "增长型列表必须数据库分页且列表总数与同筛选汇总一致",
+        "Company在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "跨企业列表泄漏",
+        "详情返回其他企业数据",
+        "写请求成功"
+      ],
+      "providerRoutes": [
+        "customer/customer/info",
+        "project/project/info",
+        "finance/project/report"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "app:/pages/customer/list"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-XC-CONTRACT-PAGINATION-002",
+      "title": "增长型列表分页与汇总数量同筛选一致",
+      "priority": "P1",
+      "area": "CROSS_CUTTING",
+      "roles": [
+        "Boss",
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "boundary",
+        "parity",
+        "nonfunctional"
+      ],
+      "businessRuleIds": [
+        "BR-025",
+        "BR-031",
+        "DEC-036",
+        "DEC-037"
+      ],
+      "objectTypes": [
+        "List",
+        "ReportSummary"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "客户、应收或项目列表存在多页数据",
+        "同一筛选条件明确"
+      ],
+      "steps": [
+        "以默认size打开列表",
+        "检查普通列表最大50限制",
+        "切换筛选并核对totalElements",
+        "调用report或count核对同筛选数量"
+      ],
+      "expectedPage": [
+        "列表显示分页、总数与当前筛选",
+        "不出现固定200或500的隐式全量拉取"
+      ],
+      "expectedState": [
+        "列表totalElements等于report.count",
+        "后续页面不靠前端subList伪造",
+        "排序稳定"
+      ],
+      "expectedInvariants": [
+        "租户、门店、角色和敏感字段必须由登录员工及服务端权限裁剪",
+        "增长型列表必须数据库分页且列表总数与同筛选汇总一致",
+        "List在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "超过50的列表仍返回全量",
+        "列表与报告总数不一致",
+        "只在前端分页"
+      ],
+      "providerRoutes": [
+        "customer/customer/page",
+        "finance/receivable/page",
+        "finance/receivable/report"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "web:/finance/receivables",
+        "app:/pages/customer/list"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-XC-COPY-IDENTIFIER-003",
+      "title": "业务界面不展示系统内部编号",
+      "priority": "P1",
+      "area": "CROSS_CUTTING",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Finance",
+        "Marketer",
+        "Designer",
+        "Pm"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-060",
+        "DEC-095"
+      ],
+      "objectTypes": [
+        "Customer",
+        "Quote",
+        "Contract",
+        "Project",
+        "Receivable",
+        "Payable"
+      ],
+      "fixture": "ALL-STAGE-FIXTURES",
+      "preconditions": [
+        "各角色可访问对应页面",
+        "数据中已存在内部主键编号"
+      ],
+      "steps": [
+        "逐页检查列表、详情、表单和搜索提示",
+        "检查内部编号是否出现在副标题或提示",
+        "用名称、地址、状态、责任人识别对象"
+      ],
+      "expectedPage": [
+        "用户无需记忆内部编号",
+        "法定编号和统一社会信用代码仍按规则显示"
+      ],
+      "expectedState": [
+        "内部编号仅保留在API、DB、审计、二维码和文件命名",
+        "页面不以编号作为主要识别"
+      ],
+      "expectedInvariants": [
+        "租户、门店、角色和敏感字段必须由登录员工及服务端权限裁剪",
+        "增长型列表必须数据库分页且列表总数与同筛选汇总一致",
+        "Customer在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "客户编号、项目编号或合同编号出现在UI",
+        "通过编号才能完成搜索",
+        "编号被误删导致接口契约变化"
+      ],
+      "providerRoutes": [
+        "customer/customer/page",
+        "project/project/page",
+        "finance/project/report"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers",
+        "web:/finance/projects/:projectId",
+        "app:/pages/customer/list",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "evidenceRequired": [
+        "multi_page_screenshots",
+        "dom_text_scan"
+      ],
+      "executionMode": "review",
+      "status": "READY"
+    },
+    {
+      "id": "TC-XC-FINANCE-VISIBILITY-004",
+      "title": "成本价与利润字段只对授权角色可见",
+      "priority": "P0",
+      "area": "CROSS_CUTTING",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Finance",
+        "Designer",
+        "Pm",
+        "Marketer"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "negative"
+      ],
+      "businessRuleIds": [
+        "BR-003",
+        "DEC-016",
+        "DEC-092",
+        "OBJ-010"
+      ],
+      "objectTypes": [
+        "Cost",
+        "Profit",
+        "Project"
+      ],
+      "fixture": "FIN-FULL-CHAIN",
+      "preconditions": [
+        "同一项目存在合同价、成本价、实际成本和利润字段"
+      ],
+      "steps": [
+        "Boss、店长、财务查看项目核算",
+        "Designer、Pm、Marketer查看项目详情",
+        "检查API响应字段",
+        "与页面显示对照"
+      ],
+      "expectedPage": [
+        "授权角色看到约定的成本和利润信息",
+        "非授权角色只看销售价或业务状态"
+      ],
+      "expectedState": [
+        "成本字段在响应层裁剪而非仅前端隐藏",
+        "利润为空规则一致",
+        "跨角色数据范围正确"
+      ],
+      "expectedInvariants": [
+        "租户、门店、角色和敏感字段必须由登录员工及服务端权限裁剪",
+        "增长型列表必须数据库分页且列表总数与同筛选汇总一致",
+        "Cost在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "Designer看到标准成本",
+        "Marketer通过API拿到利润",
+        "非授权页面显示伪利润"
+      ],
+      "providerRoutes": [
+        "project/project/info",
+        "finance/project/report",
+        "quote/info"
+      ],
+      "pageTargets": [
+        "web:/finance/projects/:projectId",
+        "web:/designer/projects/:projectId",
+        "app:/subpackages/finance/pages/project"
+      ],
+      "evidenceRequired": [
+        "role_api_responses",
+        "page_screenshots",
+        "schema_field_scan"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-CRM-FINANCE-OWNER-006",
+      "title": "财务客户详情转交负责人候选与权限范围同源",
+      "priority": "P1",
+      "area": "CRM",
+      "roles": [
+        "Finance",
+        "StoreManager",
+        "Marketer",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "happy",
+        "negative",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-001",
+        "DEC-065",
+        "DEC-070",
+        "USER-DEC-20261029-009"
+      ],
+      "objectTypes": [
+        "Customer",
+        "Employee",
+        "Store"
+      ],
+      "fixture": "FC-20261031-03-pending_measure",
+      "preconditions": [
+        "存在总部财务、门店财务、店长和业务员测试账号",
+        "客户处于财务可见数据范围并已绑定客户负责人",
+        "存在可用于真实转交且不影响核心链路的独立测试客户"
+      ],
+      "steps": [
+        "总部财务打开客户详情并点击客户负责人",
+        "验证负责人候选非空且覆盖企业范围后完成一次受控转交",
+        "门店财务点击客户负责人并验证候选人仅为本门店人员",
+        "店长回读候选人范围和转交结果",
+        "业务员尝试加载候选人或直接转交并确认被拒绝",
+        "在Web和App刷新后回读同一负责人事实"
+      ],
+      "expectedPage": [
+        "财务点击客户负责人不出现无权限错误",
+        "财务看到非空负责人候选及岗位/门店摘要",
+        "无权限角色不显示可执行的负责人转交入口或明确说明无权限",
+        "Web与App显示同一客户负责人"
+      ],
+      "expectedState": [
+        "总部财务候选范围为企业，门店财务和店长为本人门店",
+        "财务主更新Provider和候选目录Provider同时允许",
+        "业务员等其他角色被主写Provider或候选Provider明确拒绝",
+        "转交成功后客户负责人、门店和团队归属来自同一负责人事实",
+        "失败或拒绝请求不改变原负责人"
+      ],
+      "expectedInvariants": [
+        "客户负责人转交必须同时验证主写Provider和候选目录依赖Provider",
+        "财务不得获得设计师指派或改派能力",
+        "同一角色的候选数据范围必须与其中台数据范围一致",
+        "Customer在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "财务点击客户负责人后候选目录返回403",
+        "总部财务被错误限制为当前默认门店",
+        "门店财务或店长可跨门店转交",
+        "业务员可加载负责人候选或成功转交",
+        "财务通过客户负责人入口获得设计师指派能力",
+        "转交失败但客户负责人发生变化"
+      ],
+      "providerRoutes": [
+        "user/employee/page",
+        "customer/customer/update",
+        "customer/customer/info"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers/:customerId",
+        "app:/subpackages/customer/pages/detail"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "network_response",
+        "role_api_responses",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-EXPENSE-PROXY-007",
+      "title": "企业费用代填员工候选与代理权限同源",
+      "priority": "P1",
+      "area": "FINANCE",
+      "roles": [
+        "Boss",
+        "StoreManager",
+        "Finance",
+        "Pm"
+      ],
+      "surfaces": [
+        "App"
+      ],
+      "scenarioTypes": [
+        "permission",
+        "happy",
+        "negative",
+        "recovery"
+      ],
+      "businessRuleIds": [
+        "BR-057",
+        "DEC-091"
+      ],
+      "objectTypes": [
+        "Expense",
+        "Employee",
+        "Store"
+      ],
+      "fixture": "FC-20261031-12-project_started",
+      "preconditions": [
+        "Boss、店长、财务和项目经理账号可用",
+        "店长归属门店且存在本店在职员工",
+        "存在费用分类和项目夹具"
+      ],
+      "steps": [
+        "Boss打开费用新增并加载企业员工候选",
+        "店长打开费用新增并加载本店员工候选",
+        "财务和普通员工确认只能提交本人费用",
+        "选择可代理员工后保存费用并回读提交人、归属员工和收款员工",
+        "刷新费用详情确认同一事实"
+      ],
+      "expectedPage": [
+        "Boss可选择企业范围员工",
+        "店长只能选择本店员工且候选加载不报权限错误",
+        "财务和普通员工的费用归属员工只显示本人，不提供代理选择",
+        "候选加载失败时显示可恢复错误而非伪空列表"
+      ],
+      "expectedState": [
+        "Boss可代企业范围员工提交",
+        "店长可代本店员工提交，不得跨店",
+        "财务和普通员工不得代他人提交",
+        "报销收款员工必须等于费用归属员工",
+        "实际提交人与费用归属员工分别留痕"
+      ],
+      "expectedInvariants": [
+        "费用代理动作必须同时验证费用保存Provider和员工候选Provider",
+        "候选数据范围必须与费用归属校验一致",
+        "失败请求不得生成费用或改变既有费用",
+        "Expense在刷新、重进和跨端回读后保持同一事实"
+      ],
+      "forbiddenOutcomes": [
+        "店长打开员工候选时报403",
+        "财务成功代他人提交",
+        "店长选择其他门店员工",
+        "报销收款员工与归属员工不一致",
+        "失败后生成草稿费用"
+      ],
+      "providerRoutes": [
+        "expense/expenses/save",
+        "expense/expenses/page",
+        "payroll/employee/page"
+      ],
+      "pageTargets": [
+        "app:/subpackages/finance/pages/expense-edit",
+        "app:/subpackages/payroll/pages/employee-picker"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "before_after_screenshot",
+        "network_response",
+        "role_api_responses",
+        "state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    }
+  ]
+}

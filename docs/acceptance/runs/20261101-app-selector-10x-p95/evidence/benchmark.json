@@ -1,0 +1,726 @@
+{
+  "generatedAt": "2026-11-01T19:34:22+0800",
+  "api": "http://127.0.0.1:8090/api",
+  "fixture": {
+    "prefix": "BENCH-SELECTOR-10X",
+    "base": 8700000000000000000,
+    "baseline": {
+      "customers": 22,
+      "properties": 15,
+      "designs": 12,
+      "quotes": 21,
+      "projects": 4,
+      "employees": 9,
+      "workers": 0,
+      "partners": 1,
+      "catalog": 33,
+      "templates": 0,
+      "expenseCategories": 0,
+      "ledgerCategories": 0,
+      "receivables": 13,
+      "payables": 3,
+      "packages": 3,
+      "paymentPlans": 1,
+      "constructionPlans": 1,
+      "quoteLines": 111
+    },
+    "after": {
+      "customers": 242,
+      "properties": 215,
+      "designs": 212,
+      "quotes": 231,
+      "projects": 204,
+      "employees": 209,
+      "workers": 200,
+      "partners": 201,
+      "catalog": 233,
+      "templates": 200,
+      "expenseCategories": 200,
+      "ledgerCategories": 200,
+      "receivables": 213,
+      "payables": 203,
+      "packages": 203,
+      "paymentPlans": 201,
+      "constructionPlans": 201,
+      "quoteLines": 311
+    },
+    "context": {
+      "customerId": 8700000000000001000,
+      "propertyId": 8700000000000003000,
+      "designId": 8700000000000005000,
+      "quoteId": 8700000000000007000,
+      "projectId": 8700000000000009000,
+      "partnerId": 8700000000000015000,
+      "catalogItemId": 8700000000000017000
+    }
+  },
+  "criteria": {
+    "p95MsMax": 500,
+    "sqlStatementsMax": 30,
+    "rowCountMaxPerCase": "case.maxRows"
+  },
+  "cases": [
+    {
+      "name": "客户选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 133.25,
+        "rowCount": 20,
+        "totalElements": 242,
+        "sqlStatements": 24
+      },
+      "size10": {
+        "latencyMs": 31.43,
+        "rowCount": 10,
+        "totalElements": 242,
+        "sqlStatements": 24
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 77.78,
+        "p50Ms": 67.43,
+        "p95Ms": 114.67,
+        "maxMs": 117.34
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "房屋选择器",
+      "role": "boss",
+      "maxRows": 200,
+      "single": {
+        "latencyMs": 48.03,
+        "rowCount": 200,
+        "totalElements": 200,
+        "sqlStatements": 9
+      },
+      "size10": null,
+      "sqlGrowthFor10Rows": null,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 59.17,
+        "p50Ms": 62.15,
+        "p95Ms": 72.74,
+        "maxMs": 75.03
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "设计方案选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 71.36,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 19
+      },
+      "size10": {
+        "latencyMs": 23.96,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 19
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 36.84,
+        "p50Ms": 34.85,
+        "p95Ms": 54.76,
+        "maxMs": 54.99
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "套餐模板选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 23.62,
+        "rowCount": 20,
+        "totalElements": 201,
+        "sqlStatements": 14
+      },
+      "size10": {
+        "latencyMs": 15.0,
+        "rowCount": 10,
+        "totalElements": 201,
+        "sqlStatements": 14
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 23.97,
+        "p50Ms": 24.36,
+        "p95Ms": 32.19,
+        "maxMs": 36.93
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "基础报价行选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 29.88,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 14
+      },
+      "size10": {
+        "latencyMs": 17.88,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 14
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 23.17,
+        "p50Ms": 24.58,
+        "p95Ms": 26.41,
+        "maxMs": 26.73
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "客户确认报价选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 29.83,
+        "rowCount": 20,
+        "totalElements": 213,
+        "sqlStatements": 14
+      },
+      "size10": {
+        "latencyMs": 14.44,
+        "rowCount": 10,
+        "totalElements": 213,
+        "sqlStatements": 14
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 29.22,
+        "p50Ms": 27.92,
+        "p95Ms": 37.71,
+        "maxMs": 46.14
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "设计师报价选择器",
+      "role": "designer",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 44.35,
+        "rowCount": 20,
+        "totalElements": 212,
+        "sqlStatements": 14
+      },
+      "size10": {
+        "latencyMs": 48.61,
+        "rowCount": 10,
+        "totalElements": 212,
+        "sqlStatements": 14
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 42.64,
+        "p50Ms": 38.69,
+        "p95Ms": 76.15,
+        "maxMs": 83.83
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "员工选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 26.33,
+        "rowCount": 20,
+        "totalElements": 209,
+        "sqlStatements": 13
+      },
+      "size10": {
+        "latencyMs": 13.95,
+        "rowCount": 10,
+        "totalElements": 209,
+        "sqlStatements": 13
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 19.19,
+        "p50Ms": 20.48,
+        "p95Ms": 29.92,
+        "maxMs": 30.13
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "薪酬员工选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 19.45,
+        "rowCount": 20,
+        "totalElements": 209,
+        "sqlStatements": 13
+      },
+      "size10": {
+        "latencyMs": 13.16,
+        "rowCount": 10,
+        "totalElements": 209,
+        "sqlStatements": 13
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 14.13,
+        "p50Ms": 10.94,
+        "p95Ms": 27.62,
+        "maxMs": 29.3
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "工人选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 13.77,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 12
+      },
+      "size10": {
+        "latencyMs": 9.62,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 37
+      },
+      "sqlGrowthFor10Rows": -25,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 8.96,
+        "p50Ms": 9.15,
+        "p95Ms": 10.31,
+        "maxMs": 10.58
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "供应商选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 51.17,
+        "rowCount": 20,
+        "totalElements": 201,
+        "sqlStatements": 15
+      },
+      "size10": {
+        "latencyMs": 14.59,
+        "rowCount": 10,
+        "totalElements": 201,
+        "sqlStatements": 15
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 19.83,
+        "p50Ms": 23.46,
+        "p95Ms": 25.54,
+        "maxMs": 27.44
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "内容模板选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 13.38,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 12
+      },
+      "size10": {
+        "latencyMs": 12.7,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 12
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 9.62,
+        "p50Ms": 10.02,
+        "p95Ms": 12.12,
+        "maxMs": 12.56
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "内容项目选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 56.95,
+        "rowCount": 20,
+        "totalElements": 204,
+        "sqlStatements": 16
+      },
+      "size10": {
+        "latencyMs": 21.12,
+        "rowCount": 10,
+        "totalElements": 204,
+        "sqlStatements": 16
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 42.76,
+        "p50Ms": 39.64,
+        "p95Ms": 67.32,
+        "maxMs": 70.1
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "增减项项目选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 23.48,
+        "rowCount": 20,
+        "totalElements": 201,
+        "sqlStatements": 16
+      },
+      "size10": {
+        "latencyMs": 34.64,
+        "rowCount": 10,
+        "totalElements": 201,
+        "sqlStatements": 16
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 29.95,
+        "p50Ms": 26.36,
+        "p95Ms": 45.78,
+        "maxMs": 46.23
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "汇报项目选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 38.79,
+        "rowCount": 20,
+        "totalElements": 204,
+        "sqlStatements": 16
+      },
+      "size10": {
+        "latencyMs": 33.06,
+        "rowCount": 10,
+        "totalElements": 204,
+        "sqlStatements": 16
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 34.4,
+        "p50Ms": 30.6,
+        "p95Ms": 53.89,
+        "maxMs": 54.16
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "财务项目选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 40.07,
+        "rowCount": 20,
+        "totalElements": 204,
+        "sqlStatements": 16
+      },
+      "size10": {
+        "latencyMs": 37.14,
+        "rowCount": 10,
+        "totalElements": 204,
+        "sqlStatements": 16
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 29.87,
+        "p50Ms": 22.7,
+        "p95Ms": 53.24,
+        "maxMs": 54.25
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "应收选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 37.67,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 17
+      },
+      "size10": {
+        "latencyMs": 21.83,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 17
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 21.58,
+        "p50Ms": 19.61,
+        "p95Ms": 29.28,
+        "maxMs": 32.43
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "应付选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 29.65,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 17
+      },
+      "size10": {
+        "latencyMs": 20.71,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 17
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 24.57,
+        "p50Ms": 21.5,
+        "p95Ms": 37.16,
+        "maxMs": 41.66
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "账务分类选择器",
+      "role": "boss",
+      "maxRows": 250,
+      "single": {
+        "latencyMs": 29.85,
+        "rowCount": 206,
+        "totalElements": 206,
+        "sqlStatements": 11
+      },
+      "size10": null,
+      "sqlGrowthFor10Rows": null,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 22.85,
+        "p50Ms": 23.16,
+        "p95Ms": 26.19,
+        "maxMs": 26.73
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "费用分类选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 31.81,
+        "rowCount": 20,
+        "totalElements": 200,
+        "sqlStatements": 12
+      },
+      "size10": {
+        "latencyMs": 15.5,
+        "rowCount": 10,
+        "totalElements": 200,
+        "sqlStatements": 12
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 11.89,
+        "p50Ms": 10.72,
+        "p95Ms": 21.13,
+        "maxMs": 21.19
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "付款计划选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 25.68,
+        "rowCount": 20,
+        "totalElements": 20,
+        "sqlStatements": 13
+      },
+      "size10": {
+        "latencyMs": 12.12,
+        "rowCount": 10,
+        "totalElements": 10,
+        "sqlStatements": 13
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 12.45,
+        "p50Ms": 11.29,
+        "p95Ms": 19.12,
+        "maxMs": 19.14
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "施工计划选择器",
+      "role": "boss",
+      "maxRows": 20,
+      "single": {
+        "latencyMs": 28.32,
+        "rowCount": 20,
+        "totalElements": 20,
+        "sqlStatements": 13
+      },
+      "size10": {
+        "latencyMs": 14.65,
+        "rowCount": 10,
+        "totalElements": 10,
+        "sqlStatements": 13
+      },
+      "sqlGrowthFor10Rows": 0,
+      "sqlBudget": 30,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 11.79,
+        "p50Ms": 10.07,
+        "p95Ms": 21.0,
+        "maxMs": 21.75
+      },
+      "result": "PASS"
+    },
+    {
+      "name": "报价库选择器",
+      "role": "boss",
+      "maxRows": 30,
+      "single": {
+        "latencyMs": 54.52,
+        "rowCount": 30,
+        "totalElements": 404,
+        "sqlStatements": 48
+      },
+      "size10": {
+        "latencyMs": 27.73,
+        "rowCount": 10,
+        "totalElements": 404,
+        "sqlStatements": 28
+      },
+      "sqlGrowthFor10Rows": 20,
+      "sqlBudget": 60,
+      "sqlResult": "PASS",
+      "p95": {
+        "samples": 20,
+        "errors": 0,
+        "avgMs": 27.76,
+        "p50Ms": 21.74,
+        "p95Ms": 47.45,
+        "maxMs": 47.74
+      },
+      "result": "PASS"
+    }
+  ],
+  "summary": {
+    "total": 23,
+    "pass": 23,
+    "fail": 0
+  }
+}

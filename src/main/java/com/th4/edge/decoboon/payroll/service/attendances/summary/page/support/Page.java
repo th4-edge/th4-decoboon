@@ -36,6 +36,8 @@ public class Page implements com.th4.edge.decoboon.payroll.service.attendances.s
     @AutoInject private Integer current;
     @AutoInject private Integer size;
     @AutoInject private Long storeId;
+    /** 本人视角：管理角色也可显式限定为登录员工本人，客户端不能借此指定他人。 */
+    @AutoInject private Boolean selfOnly;
     private final AttendanceSummaryRepository repository;
     private final PayrollAccessContext accessContext;
     private final StoreFilterContext storeFilterContext;
@@ -45,17 +47,23 @@ public class Page implements com.th4.edge.decoboon.payroll.service.attendances.s
     }
     @Override
     public org.springframework.data.domain.Page<AttendanceSummary> call(AttendanceSummary request) {
-        Employee currentEmployee = accessContext.requireManager(employee);
-        Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
-        var items = repository.findAll(accessContext.visible(currentEmployee, AttendanceSummary.class))
-                .stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
+        Employee currentEmployee = accessContext.requireAttendanceViewer(employee);
+        var items = repository.findAll(accessContext.visible(currentEmployee, AttendanceSummary.class)).stream();
+        if (Boolean.TRUE.equals(selfOnly) || !accessContext.isPayrollManager(currentEmployee)) {
+            Long currentEmpId = currentEmployee.getEmpId();
+            items = items.filter(item -> item.getEmployee() != null
+                    && currentEmpId.equals(item.getEmployee().getEmpId()));
+        } else {
+            Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
+            items = items.filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter));
+        }
+        var filtered = items
                 .filter(item -> month == null || month.isBlank() || month.equals(item.getPayrollMonth()))
                 .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
         int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, items.size());
-        int to = Math.min(from + pageSize, items.size());
-        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+        int from = Math.min(page * pageSize, filtered.size());
+        int to = Math.min(from + pageSize, filtered.size());
+        return new PageImpl<>(filtered.subList(from, to), PageRequest.of(page, pageSize), filtered.size());
     }
 }

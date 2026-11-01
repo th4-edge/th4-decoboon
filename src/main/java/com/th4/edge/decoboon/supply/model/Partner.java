@@ -13,7 +13,9 @@ import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /** 供应商、工厂、劳务班组等合作方。 */
@@ -58,6 +60,14 @@ public class Partner extends AuditModel {
     @Column(name = "brand", length = 128, nullable = false)
     @Note("可供应品牌")
     private Set<String> brands = new LinkedHashSet<>();
+
+    /** 付款前核对供应商收款主体的付款码图片，仅保存私有存储对象键。 */
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "db_partner_payment_code_image", joinColumns = @JoinColumn(name = "partner_id"))
+    @OrderColumn(name = "sort_no")
+    @Column(name = "url", length = 512, nullable = false)
+    @Note("供应商付款码图片")
+    private List<String> paymentCodeImages = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "creator_id", nullable = false) @Note("创建人") private Employee createdBy;
     @Transient @Note("应付总额") private java.math.BigDecimal payableAmount;
     @Transient @Note("已付总额") private java.math.BigDecimal paidAmount;
@@ -98,6 +108,10 @@ public class Partner extends AuditModel {
     public void setRemark(String remark) { this.remark = remark; }
     public Set<String> getBrands() { return brands; }
     public void setBrands(Set<String> brands) { this.brands = brands == null ? new LinkedHashSet<>() : new LinkedHashSet<>(brands); }
+    public List<String> getPaymentCodeImages() { return paymentCodeImages; }
+    public void setPaymentCodeImages(List<String> paymentCodeImages) {
+        this.paymentCodeImages = paymentCodeImages == null ? new ArrayList<>() : new ArrayList<>(paymentCodeImages);
+    }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
     public java.math.BigDecimal getPayableAmount() { return payableAmount; }

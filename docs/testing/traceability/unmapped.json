@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-01",
+  "items": [
+    {
+      "id": "UNMAPPED-GAP-061",
+      "domain": "DESIGN_QUOTE",
+      "status": "BLOCKED",
+      "reason": "设计方案变更后的正式报价过期口径仍为 GAP-061，暂不生成确定性验收预期",
+      "nextAction": "由装得清业务智能体裁决后新增用例"
+    },
+    {
+      "id": "UNMAPPED-GAP-065",
+      "domain": "CONTRACT",
+      "status": "PARTIAL",
+      "reason": "统一报价与合同/项目事实链仍有实现缺口，V0.1 仅验证已冻结的合同生效派生事实",
+      "nextAction": "实现和契约门禁完成后补齐全链事实追溯用例"
+    },
+    {
+      "id": "UNMAPPED-GAP-067",
+      "domain": "MATERIAL",
+      "status": "PARTIAL",
+      "reason": "项目履约跨端与主材异常实现仍有缺口，V0.1 先覆盖主链路和已知门禁",
+      "nextAction": "补齐跨端异常、退货、取消和采购调整用例"
+    },
+    {
+      "id": "UNMAPPED-GAP-068",
+      "domain": "FINANCE",
+      "status": "PARTIAL",
+      "reason": "财务写路径来源与门店范围处于实现收敛阶段",
+      "nextAction": "写路径统一完成后补充门店归属和混合来源对账矩阵"
+    },
+    {
+      "id": "UNMAPPED-GAP-071",
+      "domain": "FINANCE",
+      "status": "PARTIAL",
+      "reason": "项目成本三态和同源投影仍有实现缺口；V0.1 已有利润为空和成本不完整门禁用例",
+      "nextAction": "实现完成后增加三态投影和所有消费者一致性用例"
+    },
+    {
+      "id": "UNMAPPED-PAYROLL",
+      "domain": "PAYROLL_LABOR",
+      "status": "NOT_TESTED",
+      "reason": "V0.1 范围不包含薪酬、考勤、提成、工资单和发放",
+      "nextAction": "建立 PAYROLL V0.1 测试资产包"
+    },
+    {
+      "id": "UNMAPPED-ENTERPRISE",
+      "domain": "ENTERPRISE_MANAGEMENT",
+      "status": "NOT_TESTED",
+      "reason": "V0.1 未覆盖企业治理、邀请、门店、席位和订阅",
+      "nextAction": "建立企业管理测试资产包"
+    }
+  ]
+}

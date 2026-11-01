@@ -1,0 +1,157 @@
+{
+  "capturedAt": "2026-11-01T16:21:14+08:00",
+  "route": "user/employee/page",
+  "results": {
+    "Finance": {
+      "httpStatus": 200,
+      "success": true,
+      "error": null,
+      "totalElements": "9",
+      "employees": [
+        {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": "Boss",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000103",
+          "name": "审计店长",
+          "role": "StoreManager",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "role": "Finance",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "role": "Designer",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000106",
+          "name": "审计业务",
+          "role": "Marketer",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "role": "Pm",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000108",
+          "name": "审计团队长",
+          "role": "TeamLeader",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000109",
+          "name": "滨湖店长",
+          "role": "StoreManager",
+          "store": "滨湖店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000111",
+          "name": "审计设计二",
+          "role": "Designer",
+          "store": "总店",
+          "status": "Active"
+        }
+      ]
+    },
+    "StoreManager": {
+      "httpStatus": 200,
+      "success": true,
+      "error": null,
+      "totalElements": "8",
+      "employees": [
+        {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": "Boss",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000103",
+          "name": "审计店长",
+          "role": "StoreManager",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "role": "Finance",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "role": "Designer",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000106",
+          "name": "审计业务",
+          "role": "Marketer",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "role": "Pm",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000108",
+          "name": "审计团队长",
+          "role": "TeamLeader",
+          "store": "总店",
+          "status": "Active"
+        },
+        {
+          "empId": "199500000000000111",
+          "name": "审计设计二",
+          "role": "Designer",
+          "store": "总店",
+          "status": "Active"
+        }
+      ]
+    },
+    "Marketer": {
+      "httpStatus": 200,
+      "success": false,
+      "error": {
+        "code": "403",
+        "message": "当前账号无权执行该操作",
+        "system": false
+      },
+      "totalElements": null,
+      "employees": []
+    }
+  },
+  "checks": {
+    "financeAllowed": true,
+    "storeManagerAllowed": true,
+    "marketerStillDenied": true
+  }
+}

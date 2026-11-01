@@ -1,0 +1,58 @@
+{
+  "caseId": "TC-CT-ORDER-CONTRACT-003",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:54:52+08:00",
+  "finishedAt": "2026-11-01T14:54:52+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261101-RUN20261101COREB1WRITE001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "Web",
+      "page_path": "/designer/contract?quoteId=242541219522019328",
+      "control": "合同创建后页面",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "合同已发起",
+      "business_state_after": "页面显示PendingSign/待签署，只提供确认签约，无确认生效动作",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-contract-created-page.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API",
+      "page_path": "project/contract/update",
+      "control": "直接Effective负向",
+      "control_state": "N/A",
+      "business_state_before": "PendingSign且无项目",
+      "business_state_after": "400合同签约后才能生效；状态仍PendingSign；projectId为空",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-direct-effective-negative-api.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "PendingSign页面未出现确认生效主操作，只显示确认签约"
+  ],
+  "actualState": [
+    "直接Effective请求400",
+    "合同仍PendingSign",
+    "无项目生成"
+  ],
+  "evidence": [
+    "evidence/TC-CT-ORDER-CONTRACT-003/10-contract-created-page.json",
+    "evidence/TC-CT-ORDER-CONTRACT-003/10-direct-effective-negative-api.json",
+    "evidence/TC-CT-ORDER-CONTRACT-003/20-contract-effective-api-db.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "负向请求无副作用；正常签约与生效已在TC-CT-BOSS-CONTRACT-001完成。"
+}

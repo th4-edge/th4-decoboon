@@ -1,0 +1,34 @@
+{
+  "caseId": "TC-CRM-PERMISSION-STORE-005",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "1aa18a09279f7ed2724a47c0e577da59d0e38264777560a0b9bf06715cb9b07d",
+  "priority": "P0",
+  "area": "CRM",
+  "businessRuleIds": [
+    "BR-001",
+    "DEC-065",
+    "DEC-070"
+  ],
+  "pageTargets": [
+    "web:/workbench/customers",
+    "app:/pages/customer/list"
+  ],
+  "providerRoutes": [
+    "customer/customer/page",
+    "customer/customer/info",
+    "customer/customer/update"
+  ]
+}

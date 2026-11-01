@@ -1,0 +1,26 @@
+{
+  "defectId": "DEF-20261101-009",
+  "caseIds": [],
+  "priority": "P2",
+  "status": "OPEN",
+  "title": "房屋选择页标题显示URL编码后的客户姓名",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/customer/pages/property-picker",
+  "businessState": "从套餐报价选择刘洋（演示04）名下房屋",
+  "expected": "标题显示“选择房屋 刘洋（演示04） · 显式选择具体房屋”",
+  "actual": "标题显示“选择房屋%E5%88%98%E6%B4%8B... · 显式选择具体房屋”",
+  "minimumReproduction": [
+    "从套餐报价点击选择客户房屋",
+    "观察页面标题"
+  ],
+  "impact": "关键业务对象标题不可读，降低选择确认和上下文辨识",
+  "evidence": [
+    "evidence/EXP-PKG-006/14-property-picker.png",
+    "evidence/EXP-PKG-006/14-property-picker.txt"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "读取 query.customerName 时统一 decodeURIComponent",
+  "retestCondition": "姓名、项目名和地址参数均以明文展示",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

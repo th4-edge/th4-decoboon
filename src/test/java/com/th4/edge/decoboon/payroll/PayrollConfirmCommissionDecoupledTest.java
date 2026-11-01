@@ -61,7 +61,7 @@ class PayrollConfirmCommissionDecoupledTest {
         PayslipRepository payslips = mock(PayslipRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
 
-        when(access.requireBoss(boss)).thenReturn(boss);
+        when(access.requireConfirmActor(boss)).thenReturn(boss);
         when(access.visibleSheets(boss)).thenReturn(mock(Specification.class));
         when(sheets.findOne(any(Specification.class))).thenReturn(Optional.of(sheet));
         when(sheets.save(any(PayrollSheet.class))).thenAnswer(i -> i.getArgument(0));

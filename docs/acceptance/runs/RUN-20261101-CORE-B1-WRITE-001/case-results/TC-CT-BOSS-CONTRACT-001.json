@@ -1,0 +1,111 @@
+{
+  "caseId": "TC-CT-BOSS-CONTRACT-001",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:54:52+08:00",
+  "finishedAt": "2026-11-01T14:54:52+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-RUN20261101COREB1WRITE001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "Web",
+      "page_path": "/designer/contract?quoteId=242541219522019328",
+      "control": "发起合同",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "报价Accepted且无合同",
+      "business_state_after": "合同PendingSign",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-boss-contract-create-queue.png",
+        "02-contract-create-drawer.png",
+        "03-contract-created.png",
+        "10-contract-created-page.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "Web",
+      "page_path": "/designer/contract?quoteId=242541219522019328",
+      "control": "确认签约",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "PendingSign",
+      "business_state_after": "Signed，签署金额2495.75，计划开工2026-11-05",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "04-sign-drawer.png",
+        "05-contract-signed.png",
+        "11-sign-drawer.json",
+        "12-contract-signed-page.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "Web",
+      "page_path": "/designer/contract?quoteId=242541219522019328",
+      "control": "确认生效并生成项目",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "Signed",
+      "business_state_after": "Effective，生成唯一项目242541620656865280",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "06-effect-confirm-dialog.png",
+        "07-contract-effective-project-created.png",
+        "13-contract-effective-page.json"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "project/contract/info",
+      "control": "合同/项目/阶段/材料/应收对账",
+      "control_state": "N/A",
+      "business_state_before": "Effective",
+      "business_state_after": "项目、8阶段、1材料计划、3应收与合同同源",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "20-contract-effective-api-db.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Boss从已接受报价发起合同时合同为PendingSign",
+    "独立确认签约后进入Signed，未生成项目",
+    "再确认生效后进入Effective并显示项目已建立"
+  ],
+  "actualState": [
+    "合同Effective",
+    "签约金额2495.75",
+    "项目242541620656865280",
+    "阶段8",
+    "材料计划1",
+    "应收3",
+    "报价Converted"
+  ],
+  "evidence": [
+    "evidence/TC-CT-BOSS-CONTRACT-001/01-boss-contract-create-queue.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/02-contract-create-drawer.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/03-contract-created.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/04-sign-drawer.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/05-contract-signed.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/06-effect-confirm-dialog.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/07-contract-effective-project-created.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/10-contract-created-page.json",
+    "evidence/TC-CT-BOSS-CONTRACT-001/11-sign-drawer.json",
+    "evidence/TC-CT-BOSS-CONTRACT-001/12-contract-signed-page.json",
+    "evidence/TC-CT-BOSS-CONTRACT-001/13-contract-effective-page.json",
+    "evidence/TC-CT-BOSS-CONTRACT-001/20-contract-effective-api-db.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "全部关键状态通过Web页面动作推进；项目派生事实通过API/DB核对。"
+}

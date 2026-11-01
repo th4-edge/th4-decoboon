@@ -1,0 +1,537 @@
+{
+  "schemaVersion": "0.1",
+  "title": "客户页面业务能力清单",
+  "date": "2026-10-29",
+  "status": "draft_for_rule_review",
+  "positioning": [
+    "全员客户查询",
+    "客户业务关系入口",
+    "角色动作投影",
+    "内部协同锚点"
+  ],
+  "boundaries": {
+    "inScope": [
+      "客户查询与识别",
+      "客户主档",
+      "客户与房屋",
+      "客户生命周期与沟通",
+      "客户业务链聚合",
+      "角色动作与下一步",
+      "协同交接",
+      "数据可信与恢复"
+    ],
+    "outOfScope": [
+      "待我设计等角色任务队列本体",
+      "设计方案编辑",
+      "报价编辑",
+      "合同编辑",
+      "项目工地执行",
+      "财务专业操作台",
+      "验收整改工作台"
+    ]
+  },
+  "domains": [
+    {
+      "id": "CQ",
+      "name": "全员客户查询与识别",
+      "capabilities": [
+        {
+          "id": "CQ-01",
+          "name": "全员客户查询入口",
+          "priority": "P0"
+        },
+        {
+          "id": "CQ-02",
+          "name": "多字段搜索",
+          "priority": "P0"
+        },
+        {
+          "id": "CQ-03",
+          "name": "搜索结果身份摘要",
+          "priority": "P0"
+        },
+        {
+          "id": "CQ-04",
+          "name": "查询范围与服务端权限",
+          "priority": "P0"
+        },
+        {
+          "id": "CQ-05",
+          "name": "当前用户与客户关系提示",
+          "priority": "P0"
+        },
+        {
+          "id": "CQ-06",
+          "name": "重复客户识别",
+          "priority": "P1"
+        },
+        {
+          "id": "CQ-07",
+          "name": "最近访问与筛选上下文恢复",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "CM",
+      "name": "客户主档与经营身份",
+      "capabilities": [
+        {
+          "id": "CM-01",
+          "name": "客户身份摘要",
+          "priority": "P0"
+        },
+        {
+          "id": "CM-02",
+          "name": "客户生命周期",
+          "priority": "P0"
+        },
+        {
+          "id": "CM-03",
+          "name": "客户归属与协同角色",
+          "priority": "P0"
+        },
+        {
+          "id": "CM-04",
+          "name": "客户画像与标签",
+          "priority": "P1"
+        },
+        {
+          "id": "CM-05",
+          "name": "联系方式与敏感字段投影",
+          "priority": "P0"
+        },
+        {
+          "id": "CM-06",
+          "name": "最近/下次跟进与停留时间",
+          "priority": "P0"
+        },
+        {
+          "id": "CM-07",
+          "name": "客户风险与下一步",
+          "priority": "P0"
+        },
+        {
+          "id": "CM-08",
+          "name": "客户档案与低频信息",
+          "priority": "P1"
+        },
+        {
+          "id": "CM-09",
+          "name": "客户流失/休眠状态",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "CP",
+      "name": "客户与房屋",
+      "capabilities": [
+        {
+          "id": "CP-01",
+          "name": "多房屋列表",
+          "priority": "P0"
+        },
+        {
+          "id": "CP-02",
+          "name": "当前房屋上下文",
+          "priority": "P0"
+        },
+        {
+          "id": "CP-03",
+          "name": "房屋摘要",
+          "priority": "P0"
+        },
+        {
+          "id": "CP-04",
+          "name": "房屋业务计数",
+          "priority": "P0"
+        },
+        {
+          "id": "CP-05",
+          "name": "房屋新增/编辑",
+          "priority": "P1"
+        },
+        {
+          "id": "CP-06",
+          "name": "客户级与房屋级信息区分",
+          "priority": "P0"
+        },
+        {
+          "id": "CP-07",
+          "name": "一客户多业务链分组",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "CL",
+      "name": "客户生命周期与沟通",
+      "capabilities": [
+        {
+          "id": "CL-01",
+          "name": "跟进时间轴",
+          "priority": "P0"
+        },
+        {
+          "id": "CL-02",
+          "name": "写跟进",
+          "priority": "P0"
+        },
+        {
+          "id": "CL-03",
+          "name": "记录微信/到店",
+          "priority": "P1"
+        },
+        {
+          "id": "CL-04",
+          "name": "下次跟进行动",
+          "priority": "P0"
+        },
+        {
+          "id": "CL-05",
+          "name": "预约量房",
+          "priority": "P1"
+        },
+        {
+          "id": "CL-06",
+          "name": "休眠/恢复",
+          "priority": "P1"
+        },
+        {
+          "id": "CL-07",
+          "name": "流失/恢复",
+          "priority": "P1"
+        },
+        {
+          "id": "CL-08",
+          "name": "变更与交接历史",
+          "priority": "P1"
+        }
+      ]
+    },
+    {
+      "id": "CB",
+      "name": "客户业务链聚合",
+      "capabilities": [
+        {
+          "id": "CB-01",
+          "name": "量房关联",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-02",
+          "name": "设计关联",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-03",
+          "name": "报价关联",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-04",
+          "name": "合同关联",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-05",
+          "name": "项目关联",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-06",
+          "name": "验收/整改关联",
+          "priority": "P1"
+        },
+        {
+          "id": "CB-07",
+          "name": "收付款摘要",
+          "priority": "P0_PERMISSION_GATED"
+        },
+        {
+          "id": "CB-08",
+          "name": "关联对象主行动",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-09",
+          "name": "业务链状态解释",
+          "priority": "P0"
+        },
+        {
+          "id": "CB-10",
+          "name": "跨业务对象追溯",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "CA",
+      "name": "角色动作投影与下一步",
+      "capabilities": [
+        {
+          "id": "CA-01",
+          "name": "当前用户业务关系",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-02",
+          "name": "可用动作集合",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-03",
+          "name": "唯一主行动",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-04",
+          "name": "阻断原因与恢复路径",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-05",
+          "name": "动作后回读",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-06",
+          "name": "交接待办",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-07",
+          "name": "只读协同模式",
+          "priority": "P0"
+        },
+        {
+          "id": "CA-08",
+          "name": "无权限动作不伪装",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "CC",
+      "name": "内部协同与信息同频",
+      "capabilities": [
+        {
+          "id": "CC-01",
+          "name": "客户作为内部协作锚点",
+          "priority": "P0"
+        },
+        {
+          "id": "CC-02",
+          "name": "当前责任角色",
+          "priority": "P0"
+        },
+        {
+          "id": "CC-03",
+          "name": "跨角色状态同频",
+          "priority": "P0"
+        },
+        {
+          "id": "CC-04",
+          "name": "数据更新时间",
+          "priority": "P0"
+        },
+        {
+          "id": "CC-05",
+          "name": "业务链交接",
+          "priority": "P0"
+        },
+        {
+          "id": "CC-06",
+          "name": "客户沟通摘要",
+          "priority": "P1"
+        },
+        {
+          "id": "CC-07",
+          "name": "跨角色可见范围",
+          "priority": "P0"
+        }
+      ]
+    },
+    {
+      "id": "CT",
+      "name": "状态可信与恢复",
+      "capabilities": [
+        {
+          "id": "CT-01",
+          "name": "正常态",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-02",
+          "name": "加载态",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-03",
+          "name": "真空态",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-04",
+          "name": "失败态",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-05",
+          "name": "无权限态",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-06",
+          "name": "部分失败态",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-07",
+          "name": "长内容/极端值",
+          "priority": "P1"
+        },
+        {
+          "id": "CT-08",
+          "name": "深链恢复",
+          "priority": "P0"
+        },
+        {
+          "id": "CT-09",
+          "name": "App/Web同源",
+          "priority": "P0"
+        }
+      ]
+    }
+  ],
+  "roleProjection": {
+    "allInternalRoles": [
+      "客户查询",
+      "客户身份摘要",
+      "客户主档摘要",
+      "多房屋关系",
+      "被授权业务链查看",
+      "当前责任人/更新时间",
+      "只读协同"
+    ],
+    "roles": [
+      {
+        "role": "Marketer",
+        "defaultFocus": "跟进、量房、客户转化",
+        "primaryActions": [
+          "写跟进",
+          "预约量房"
+        ],
+        "readOnly": [
+          "设计",
+          "报价",
+          "项目"
+        ]
+      },
+      {
+        "role": "Designer",
+        "defaultFocus": "房屋、量房、设计、报价",
+        "primaryActions": [
+          "进入设计",
+          "推进方案"
+        ],
+        "readOnly": [
+          "合同",
+          "项目",
+          "财务摘要"
+        ]
+      },
+      {
+        "role": "Pm",
+        "defaultFocus": "项目、施工、验收",
+        "primaryActions": [
+          "进入工地",
+          "推进阶段"
+        ],
+        "readOnly": [
+          "设计",
+          "报价",
+          "合同"
+        ]
+      },
+      {
+        "role": "Finance",
+        "defaultFocus": "合同、项目、应收、成本",
+        "primaryActions": [
+          "查看应收",
+          "登记收款",
+          "核对成本"
+        ],
+        "readOnly": [
+          "设计",
+          "施工细节"
+        ]
+      },
+      {
+        "role": "StoreManager",
+        "defaultFocus": "本店客户全链、责任分配",
+        "primaryActions": [
+          "转交",
+          "指派",
+          "处理本店阻断"
+        ],
+        "readOnly": []
+      },
+      {
+        "role": "Boss",
+        "defaultFocus": "全企业客户经营和风险",
+        "primaryActions": [
+          "处理跨角色阻断",
+          "经营决策"
+        ],
+        "readOnly": []
+      }
+    ]
+  },
+  "references": [
+    {
+      "name": "App BOSS customer tab",
+      "file": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app/src/pages/customer/list.vue",
+      "adopt": [
+        "全员查询",
+        "角色化经营统计",
+        "阶段/跟进筛选",
+        "负责人分组",
+        "客户卡片含下一步"
+      ],
+      "avoid": [
+        "Boss统计原样复制给所有角色；店长应使用同口径本店统计"
+      ]
+    },
+    {
+      "name": "Web designer customers",
+      "file": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/src/views/designer/DesignerCustomersView.vue",
+      "adopt": [
+        "客户/房屋切换",
+        "当前业务对象上下文",
+        "URL锚点",
+        "动作逻辑"
+      ],
+      "avoid": [
+        "把三栏布局作为客户页母型",
+        "待设计房屋作为客户页默认队列"
+      ]
+    },
+    {
+      "name": "Web customer 360",
+      "file": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/src/views/designer/DesignerCustomer360View.vue",
+      "adopt": [
+        "客户身份条",
+        "多房屋",
+        "业务链页签",
+        "跟进时间轴",
+        "权限裁剪"
+      ],
+      "avoid": [
+        "客户页变成专业工作台集合"
+      ]
+    }
+  ],
+  "layoutRule": "客户页面采用角色化客户卡片场景；Web参考小程序统计/分组/卡片结构并进行桌面增强，不采用三栏对象布局"
+}

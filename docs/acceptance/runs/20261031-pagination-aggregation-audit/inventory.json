@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-31",
+  "scan": {
+    "web": {
+      "fixedLargePageCalls": 51,
+      "fixedLargePageFileValueGroups": 46,
+      "suspiciousClientAggregationExpressions": 92
+    },
+    "app": {
+      "fixedLargePageCalls": 38,
+      "fixedLargePageFileValueGroups": 33,
+      "suspiciousClientAggregationExpressions": 117
+    },
+    "backend": {
+      "pageProviders": 108,
+      "reportProviders": 44,
+      "hardcodedAllPageRequests": 5,
+      "subListOccurrences": 39,
+      "listProvidersReturningList": 15
+    }
+  },
+  "classificationRequired": [
+    "fixedLargePageCalls",
+    "suspiciousClientAggregationExpressions",
+    "subListOccurrences",
+    "listProvidersReturningList"
+  ],
+  "highRiskAreas": [
+    "App 首页材料计划汇总",
+    "App 报价列表金额",
+    "App 选材工作台计数",
+    "App 应收应付选择器合计",
+    "Web 增减项金额",
+    "Web 项目合同行与变更合计",
+    "Web 主材选材看板计数",
+    "后端项目报告内存分页"
+  ],
+  "status": "INVENTORY_ONLY_NOT_ACCEPTANCE"
+}

@@ -1,0 +1,58 @@
+{
+  "defectId": "DEF-20261102-005",
+  "caseIds": [
+    "TC-MAT-PM-ARRIVAL-005"
+  ],
+  "priority": "P1",
+  "status": "VERIFIED",
+  "title": "首批部分到场后作业单被错误标记已到场，尾量到场入口消失",
+  "role": "Pm",
+  "surface": "Web",
+  "pagePath": "/workbench/material-sheets",
+  "businessState": "作业单 TILE-20261102-002 已下单10㎡；采购 POb83ef97308c2a4502626f463d2fa36b6 首批登记到场4㎡。MaterialPlan=部分到场，Purchase=PartiallyReceived(4/10)，但 MaterialOrderSheet=Arrived，页面显示“已到场”且“确认到场”按钮消失。",
+  "expected": "首批4/10㎡后作业单应为 PartiallyArrived，并保留尾量6㎡的确认到场入口；尾量全部到齐后作业单才转 Arrived，采购/计划/作业单状态一致。",
+  "actual": "首批4㎡后作业单直接转 Arrived，确认到场入口消失；刷新和重新进入页面后仍无法登记剩余6㎡，采购单仍是 PartiallyReceived(4/10)。",
+  "minimumReproduction": [
+    "以 Pm 登录 Web，打开 /workbench/material-sheets",
+    "进入 TILE-20261102-002 并点击“确认到场”",
+    "选择采购 POb83ef97308c2a4502626f463d2fa36b6，填写首批到场4㎡并确认",
+    "页面提示“已确认部分到场”，但刷新后作业单显示“已到场”，采购仍显示4/10㎡部分到场",
+    "页面不再提供“确认到场”按钮，无法登记尾量6㎡"
+  ],
+  "impact": "项目经理无法通过页面完成尾量收货；作业单与采购/到场事实冲突，进一步影响计划状态、结算门禁和成本完整性判断。",
+  "evidence": [
+    "docs/acceptance/runs/RUN-20261102-MAT-X2-001/evidence/TC-MAT-PM-ARRIVAL-005/03-after-first-arrival-4.png",
+    "docs/acceptance/runs/RUN-20261102-MAT-X2-001/evidence/TC-MAT-PM-ARRIVAL-005/04-provider-sheet-after-first-arrival.json",
+    "docs/acceptance/runs/RUN-20261102-MAT-X2-001/evidence/TC-MAT-PM-ARRIVAL-005/05-provider-purchases-after-first-arrival.json",
+    "docs/acceptance/runs/RUN-20261102-MAT-X2-001/evidence/TC-MAT-PM-ARRIVAL-005/07-page-after-refresh-no-tail-action.png",
+    "docs/acceptance/runs/RUN-20261102-MAT-X2-001/evidence/TC-MAT-PM-ARRIVAL-005/08-db-after-first-arrival.txt"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "修正到场后作业单状态推导：应按本作业单已下单数量与其对应采购到场事实计算，不能用同一材料计划下所有历史采购的累计到场量直接比较；同时覆盖部分到场、尾量到场和同一计划多作业单场景。",
+  "retestCondition": "新 RUN 中 Pm 页面先登记4㎡，作业单保持 PartiallyArrived 且保留尾量入口；再登记6㎡后作业单、采购、计划同时为全部到场，应付仍唯一且成本为10×88=880。",
+  "createdAt": "2026-11-02T02:06:26+08:00",
+  "verifiedAt": "2026-11-02T02:35:00+08:00",
+  "retestRunId": "RUN-20261102-MAT-X2F-RETEST-001",
+  "retestEvidence": [
+    "evidence/TC-MAT-PM-ARRIVAL-005/41-final-first-arrival-4-result.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/42-final-provider-sheet-after-first-arrival.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/44-final-db-after-first-arrival.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/47-final-db-after-over-limit.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/49-final-tail-arrival-6-result.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/50-final-db-after-tail-arrival.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/51-final-finance-project-report.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/55-final-repeat-arrival-response.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/56-final-db-after-repeat-arrival.txt"
+  ],
+  "fixSummary": "新增db_purchase_order_item.sheet_item_id；新采购写入作业单行；到场状态按sheetItem关联采购累计；计划成本按MaterialPlan全部采购明细累计；无法唯一判定的历史明细保持NULL并禁止猜配。",
+  "changedFiles": [
+    "src/main/java/com/th4/edge/decoboon/project/model/PurchaseOrderItem.java",
+    "src/main/java/com/th4/edge/decoboon/project/repository/PurchaseOrderItemRepository.java",
+    "src/main/java/com/th4/edge/decoboon/material/context/MaterialSheetContext.java",
+    "src/main/java/com/th4/edge/decoboon/project/service/goodsreceipts/save/support/Save.java",
+    "src/test/java/com/th4/edge/decoboon/material/MaterialSheetOrderFlowTest.java",
+    "src/test/java/com/th4/edge/decoboon/material/MaterialGoodsReceiptFlowTest.java",
+    "docs/design/migrations/134-主材采购明细关联作业单行.sql",
+    "docs/design/migrations/rollback/134-主材采购明细关联作业单行-rollback.sql"
+  ]
+}

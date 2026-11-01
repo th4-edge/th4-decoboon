@@ -1,0 +1,381 @@
+{
+  "before": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 15:15:36"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-01 15:15:36"
+        },
+        "sheetId": "1793517336944847641",
+        "property": {
+          "propertyId": "242541216497926144",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102"
+        },
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "siteAddr": "滨湖世纪城1栋102"
+        },
+        "sheetNo": "TILE-20261101-001",
+        "sheetType": "Tile",
+        "supplier": {
+          "partnerId": "1793457851296966369",
+          "type": {
+            "name": "材料供应商",
+            "key": "Supplier"
+          },
+          "name": "全链路验收材料供应商",
+          "contactName": "材料联系人",
+          "telNo": "13910002991",
+          "status": {
+            "name": "合作中",
+            "key": "Active"
+          }
+        },
+        "manufacturerName": "全链路验收材料供应商",
+        "templateVersion": 1,
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "选材完成后的门禁复验作业单",
+        "attachments": [],
+        "items": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 15:15:36"
+            },
+            "itemId": "1793517336953791718",
+            "sourceKind": {
+              "name": "材料计划行（合同选材确认 / 增减项新增）",
+              "key": "Plan"
+            },
+            "materialPlan": {
+              "planId": "242541620837220352",
+              "quantity": 12.0,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              }
+            },
+            "standardIncluded": false,
+            "spaceName": "客餐厅",
+            "locationName": "全屋地面",
+            "materialName": "主材--实木复合地板",
+            "brand": "验收品牌",
+            "spec": "910×125mm",
+            "color": "原木色",
+            "quantity": 1.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "lossRate": 0.0,
+            "lossQuantity": 0.0,
+            "quoteCostPrice": 120.0,
+            "orderedQuantity": 0.0,
+            "priceState": {
+              "name": "未定价（待结算）",
+              "key": "Unpriced"
+            },
+            "sort": 0,
+            "attachments": []
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "overQuantityAttempt": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "本次下单量超过可下单数量 12；如需多备料，请先调整主材分类损耗率或损耗量",
+        "system": false
+      }
+    }
+  },
+  "afterOverQuantity": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 15:15:36"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-01 15:15:36"
+        },
+        "sheetId": "1793517336944847641",
+        "property": {
+          "propertyId": "242541216497926144",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102"
+        },
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "siteAddr": "滨湖世纪城1栋102"
+        },
+        "sheetNo": "TILE-20261101-001",
+        "sheetType": "Tile",
+        "supplier": {
+          "partnerId": "1793457851296966369",
+          "type": {
+            "name": "材料供应商",
+            "key": "Supplier"
+          },
+          "name": "全链路验收材料供应商",
+          "contactName": "材料联系人",
+          "telNo": "13910002991",
+          "status": {
+            "name": "合作中",
+            "key": "Active"
+          }
+        },
+        "manufacturerName": "全链路验收材料供应商",
+        "templateVersion": 1,
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "选材完成后的门禁复验作业单",
+        "attachments": [],
+        "items": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 15:15:36"
+            },
+            "itemId": "1793517336953791718",
+            "sourceKind": {
+              "name": "材料计划行（合同选材确认 / 增减项新增）",
+              "key": "Plan"
+            },
+            "materialPlan": {
+              "planId": "242541620837220352",
+              "quantity": 12.0,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              }
+            },
+            "standardIncluded": false,
+            "spaceName": "客餐厅",
+            "locationName": "全屋地面",
+            "materialName": "主材--实木复合地板",
+            "brand": "验收品牌",
+            "spec": "910×125mm",
+            "color": "原木色",
+            "quantity": 1.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "lossRate": 0.0,
+            "lossQuantity": 0.0,
+            "quoteCostPrice": 120.0,
+            "orderedQuantity": 0.0,
+            "priceState": {
+              "name": "未定价（待结算）",
+              "key": "Unpriced"
+            },
+            "sort": 0,
+            "attachments": []
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "validQuantityUpdate": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 15:15:36"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-01 15:33:12"
+        },
+        "sheetId": "1793517336944847641",
+        "property": {
+          "propertyId": "242541216497926144",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102"
+        },
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "siteAddr": "滨湖世纪城1栋102"
+        },
+        "sheetNo": "TILE-20261101-001",
+        "sheetType": "Tile",
+        "supplier": {
+          "partnerId": "1793457851296966369",
+          "type": {
+            "name": "材料供应商",
+            "key": "Supplier"
+          },
+          "name": "全链路验收材料供应商",
+          "contactName": "材料联系人",
+          "telNo": "13910002991",
+          "status": {
+            "name": "合作中",
+            "key": "Active"
+          }
+        },
+        "manufacturerName": "全链路验收材料供应商",
+        "templateVersion": 1,
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "数量边界通过后保存2单位",
+        "attachments": []
+      },
+      "success": true
+    }
+  },
+  "afterValidQuantity": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 15:15:36"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-01 15:33:12"
+        },
+        "sheetId": "1793517336944847641",
+        "property": {
+          "propertyId": "242541216497926144",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102"
+        },
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "siteAddr": "滨湖世纪城1栋102"
+        },
+        "sheetNo": "TILE-20261101-001",
+        "sheetType": "Tile",
+        "supplier": {
+          "partnerId": "1793457851296966369",
+          "type": {
+            "name": "材料供应商",
+            "key": "Supplier"
+          },
+          "name": "全链路验收材料供应商",
+          "contactName": "材料联系人",
+          "telNo": "13910002991",
+          "status": {
+            "name": "合作中",
+            "key": "Active"
+          }
+        },
+        "manufacturerName": "全链路验收材料供应商",
+        "templateVersion": 1,
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "数量边界通过后保存2单位",
+        "attachments": [],
+        "items": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 15:33:12"
+            },
+            "itemId": "1793518392736456618",
+            "sourceKind": {
+              "name": "材料计划行（合同选材确认 / 增减项新增）",
+              "key": "Plan"
+            },
+            "materialPlan": {
+              "planId": "242541620837220352",
+              "quantity": 12.0,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              }
+            },
+            "standardIncluded": false,
+            "spaceName": "客餐厅",
+            "locationName": "全屋地面",
+            "materialName": "主材--实木复合地板",
+            "brand": "验收品牌",
+            "spec": "910×125mm",
+            "color": "原木色",
+            "quantity": 2.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "lossRate": 0.0,
+            "lossQuantity": 0.0,
+            "quoteCostPrice": 120.0,
+            "orderedQuantity": 0.0,
+            "priceState": {
+              "name": "未定价（待结算）",
+              "key": "Unpriced"
+            },
+            "sort": 0,
+            "attachments": []
+          }
+        ]
+      },
+      "success": true
+    }
+  }
+}

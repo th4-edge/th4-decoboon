@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("邀请详情")
 @Properties(allow = {
         @AllowProperties(model = Invite.class, properties = {"inviteId", "company", "store", "team", "inviter",
-                "inviteName", "role", "status", "expireTime", "acceptedAt", "cancelledAt", "rejectedAt", "createTime"}),
+                "inviteName", "maskedTelNo", "role", "status", "expireTime", "acceptedAt", "cancelledAt", "rejectedAt", "createTime"}),
         @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
@@ -39,6 +39,14 @@ public class Info implements com.th4.edge.tenant.user.service.invite.invitation.
         if (phone != null && !phone.isBlank() && !phone.equals(invite.getTelNo())) {
             throw new DefinedException(new DefaultErrorCode("400", "手机号与邀请不一致"));
         }
+        invite.setMaskedTelNo(mask(invite.getTelNo()));
         return invite;
+    }
+
+    private String mask(String phone) {
+        if (phone == null || phone.isBlank()) return null;
+        String value = phone.trim();
+        if (value.length() < 7) return "****";
+        return value.substring(0, 3) + "****" + value.substring(value.length() - 4);
     }
 }

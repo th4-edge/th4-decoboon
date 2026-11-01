@@ -138,3 +138,153 @@
 - 生产 commit `e627bbb` 的待谈单 SQL 引用 `cust_customer_loss`，原发布记录“无迁移、排除 124–131”不正确。
 - 生产已补执行迁移 131，备份为 `/opt/backups/decoboon/migration-131-20261024-143402/decoboon-before-131.sql.gz`，SHA-256 `0ac0598f...26ed2b`。
 - 迁移 124–130 未执行；发布记录已纠正。
+
+## DQ-X3：App 方案模版库浏览与实例化（2026-10-30）
+
+- Batch：`DQ-X3`
+- 垂直切片：设计师在 App 从方案模版库选择已发布模板，查看区域/分项/公式并实例化到当前客户房屋。
+- 不在本批：模板新建、编辑、发布、停用、复制、区域/分项维护和版本编辑。
+
+### Provider 与客户端
+
+- App 新增 `src/domains/designtemplate/model.ts`、`src/domains/designtemplate/api.ts`。
+- App 复用唯一 Provider：
+  - `design/template/page`
+  - `design/template/info`
+  - `design/template/instantiate`
+- App 新增：
+  - `subpackages/design/pages/templates.vue`
+  - `subpackages/design/pages/template-detail.vue`
+- App 设计转化页新增「从方案模版新建」入口，携带 `customerId/propertyId`。
+- 权限新增 `view:design-template`、`edit:design-template`，仅 Boss/StoreManager/Designer 具备；服务端继续按企业/门店/个人范围裁剪。
+- 模板页面不展示价格、成本、供应商历史价或毛利；实例化只提交 `templateId/propertyId/name`，成功后回读方案详情。
+- 模板列表支持全部/已发布/草稿/已停用筛选；详情要求模板与当前版本均为 `Published` 才允许实例化；草稿/停用/缺房屋上下文显示阻断原因。
+
+### 验证
+
+- App `npm run type-check` PASS。
+- App `check:subpackages`、`check:navigation`、`check:ui`、`check:client-copy`、`check:pagination` PASS。
+- App `npm run build:mp-weixin:release` PASS；主包 1,075,678 B、最大分包 734,997 B、总包 4,186,107 B，178 页。
+- 后端 `DesignTemplateWhitelistContractTest`、`DesignTemplateInstantiateInheritanceTest`、`DesignTemplateFormulaContextTest` PASS。
+- Provider 巡检：`design/template/page|info|instantiate` 已归为 App/Web 共享；剩余模板编辑/发布等 10 项保持 `PARITY_REQUIRED`。
+- 真实开发者工具页面已完成，证据见 `th4-decoboon-app/docs/acceptance/runs/20261030-dq-x3-x5-app-template-acceptance/`；仍未进行物理真机与独立验收。
+
+
+## DQ-X4：App 方案模版创建、区域/分项维护与发布（2026-10-30）
+
+- Batch：`DQ-X4`
+- 垂直切片：设计师/Boss/店长在 App 新建模版草稿，维护区域、分项公式或固定数量，并发布个人/门店/企业模版。
+- 不在本批：复制、停用、已发布模板新建版本和历史版本管理。
+
+### 实现
+
+- App 模板库增加状态筛选和“新建”入口。
+- App 新增 `template-edit.vue`：
+  - 创建模版基础信息；
+  - 草稿区域增删改；
+  - 报价项目库分项选择与公式/固定数量维护；
+  - 发布前区域/分项门禁。
+- App 领域 API 增加 `save/publish/saveRoom/deleteRoom/batchSaveItems`，全部复用既有 Web Provider。
+- Web 清理未使用的 `design/template/item/save|delete` 单行包装；两端统一使用 `design/template/items/batchsave`。
+- 前端不展示或提交模版价格、成本、供应商历史价或毛利。
+
+### 验证
+
+- App `type-check`、分包/导航/UI/文案/分页门禁 PASS。
+- App release 构建 PASS：主包 1,077,007 B、最大分包 734,997 B、总包 4,220,290 B、180 页。
+- Web `type-check` 与完整构建 PASS。
+- Provider 巡检：模板 save/publish/room/save/room/delete/items/batchsave 为 shared；剩余模板写能力仅 copy、disable、version/build。
+- 真实模板编辑器、区域/分项维护、发布确认与发布后只读已在微信开发者工具复核。
+
+
+## DQ-X5：App 已发布模版后续生命周期（2026-10-30）
+
+- Batch：`DQ-X5`
+- 垂直切片：模板卡“更多”动作面板支持复制为个人草稿、停用已发布模板、为已发布模板新建草稿版本。
+- 不在本批：物理真机与独立验收，以及独立于设计模板的房屋删除语义。
+
+### 实现
+
+- 模板库卡新增“更多”动作，按角色/归属展示可用动作。
+- 复制：`design/template/copy`，进入新个人草稿。
+- 新版本：`design/template/version/build`，已有草稿时由服务端幂等复用。
+- 停用：二次确认后调用 `design/template/disable`，历史报价不变。
+- 领域 API 新增 copy/disable/buildVersion；App/Web 设计模板读写与版本 Provider 已全部共享。
+
+### 验证
+
+- App `type-check`、模板契约、导航、UI、文案、分页门禁 PASS。
+- App release 构建 PASS：主包 1,077,228 B、最大分包 734,997 B、总包 4,222,981 B、180 页。
+- Provider 巡检：设计模板 Provider 共享完成，剩余 Web-only 写能力仅 12 项、open review 1 项（房屋删除）。
+- 真实动作面板、复制、停用、新版本链路已在微信开发者工具复核。
+
+## DQ-X3 / DQ-X4 / DQ-X5 · 真实页面复核修复（2026-10-30）
+
+- 真实页面发现并修复：
+  - 模板编辑页补挂 `JzConfirmDialog`，恢复发布/删除确认反馈；
+  - 详情页区域类型由内部枚举映射为中文业务文案；
+  - 新版本和复制完整复制 `referenceArea/referencePerimeter`；
+  - 模板编辑/详情状态标签改用当前版本状态；
+  - 模板分页“全部状态”不再默认排除 `Disabled`；
+  - 模板相关 Provider 的 `CatalogItem` 白名单移除销售价格字段；
+  - 详情页英文 eyebrow 改为“方案模版”。
+- 后端定向测试：`DesignTemplateWhitelistContractTest`、`DesignTemplateVersionCopyTest`、`DesignTemplateInstantiateInheritanceTest`、`DesignTemplateFormulaContextTest` PASS。
+- App：`type-check`、模板/导航/UI/文案/分包门禁与 `build:mp-weixin` PASS；主包 1,077,077 B、最大分包 734,997 B、总包 4,223,451 B、180 页。
+- 真实页面最终列表/详情/方案页 console error=0。
+- 清理：临时员工、客户/房屋、2 个模板及 4 个版本、1 个实例化方案、测试报价项目已删除；30 张相关表与备份基线计数一致，0 mismatch。
+- 边界：物理真机未连接；视觉只有 `qwen2.5vl:7b` 机器预检，最终视觉签字和独立验收仍待执行。
+
+## DQ-X6 财务报价服务端汇总（2026-10-31）
+
+- 新增 `QuoteFinanceSummary`、`QuoteFinanceAggregateContext.summary()` 和 `quote/finance/summary`。
+- 汇总与设计师分组共用 `DataScopeSpecification.visible + status` 谓词；单条 Criteria 聚合返回一行。
+- Web 财务报价页改为用 summary 驱动报价总数、报价总额、成本未完整数和预计毛利，删除三个前端 `reduce`。
+- 定向测试、Provider 白名单审计、Web 构建通过；真实财务页面和 2/2 对账通过。
+- 证据：`docs/acceptance/runs/20261031-dq-x6-quote-finance-summary/`。
+
+## DQ-X7 项目合同档案服务端汇总（2026-10-31）
+
+- `ContractWorkbench` 增加 `lineCount/lineAmount`，由 `ContractLineRepository.summarizeByContract` 单条聚合 SQL 返回。
+- Web 项目合同档案消费 `project/contract/workbench`，删除合同行金额和变更金额两个前端 `reduce`。
+- 合同变更摘要统一使用服务端 `change.confirmedAmount`。
+- 修复施工计划 `acceptanceMode` 枚举对象转中文。
+- 证据：`docs/acceptance/runs/20261031-dq-x7-contract-archive-summary/`。
+
+## DQ-X8 合同基线行数据库分页（2026-10-31）
+
+- `project/contract-line/page` 改为 `Pageable` 数据库查询，默认 20 条、服务端上限 50 条，排序固定为 `sort ASC, lineId ASC`。
+- 合同档案 Web 适配层新增 `ContractLinePage { list, current, size, total }`，页面只渲染当前页，头部仍使用 workbench 的服务端汇总。
+- 合同变更页删除 `listContractLines` 全量加载及 range 失败后的前端拼接，来源只消费 `project/contract-change/range`。
+- 新增 `ContractLinePaginationProviderTest` 覆盖默认值、上限、相邻窗口、稳定排序和无成本角色。
+- 真实合同 6 行/¥977.80；Boss/Designer/StoreManager API 通过，Designer cost 不返回；三档页面无溢出、console error 0。
+- 证据：`docs/acceptance/runs/20261031-dq-x8-contract-line-pagination/`。
+
+## DQ-X9 业主与小程序合同行分页同源（2026-10-31）
+
+- `customer/contract-line/page` 改为 Pageable 数据库查询，默认 20、上限 50、稳定排序 `sort,lineId`。
+- `customer/contract/workbench` 白名单补充 `lineCount/lineAmount`，业主合同范围摘要不再由当前页行计算。
+- App `contractLines` 改为显式 `current/size` 的 `PageData<ContractLine>`，合同履约页按页加载，失败可重试。
+- 未加载全部合同行时隐藏分组合计，只显示 workbench 全量摘要；全部加载后再显示分组合计。
+- 新增 App 合同行分页契约门禁及 5 个负向自测。
+- 真实业主 API 6 项/¥977.80、相邻页无交集、成本不返回；微信开发者工具原生合同页 4/4 PASS。
+- 证据：`docs/acceptance/runs/20261031-dq-x9-owner-contract-line-pagination/`。
+
+## DQ-X10 合同读模型成本聚合（2026-10-31）
+
+- `ProjectContractContext.enrich` 不再全量加载合同行，改用 `summarizeCostByContract` 单条聚合返回行数、成本合计和缺失行数。
+- 成本完整性口径保持：必备成本类型 `cost <= 0` 视为缺失，空合同仍为不完整。
+- 合同详情、合同分页与 workbench 的响应字段和业务金额不变；三角色真实 API 对账通过。
+- 全量测试暴露并修复 DQ-X6 门禁登记缺口：`QuoteFinanceAggregateContext` 纳入汇总治理，Provider 面板更新为 543。
+- L2 全量测试 1184/1184 PASS；合同行表前后 checksum 与摘要一致。
+- 分类完成：`Range` 为下一优先 PICKER_PAGE + N+1 切片，文档生成和写链路材料化单独处理。
+- 证据：`docs/acceptance/runs/20261031-dq-x10-contract-enrich-cost-aggregate/`。
+
+## DQ-X11 增减项来源选择器分页与批量快照（2026-10-31）
+
+- `project/contract-change/range` 改为 PICKER_PAGE：current、size、keyword、itemType、spaceName、group；返回 total/hasMore/facets。
+- 原合同行通过 `Specification + count + findAll(Pageable)` 数据库分页；已生效变更目标来自一次合同变更明细批量加载结果。
+- `ContractChangeRangeContext` 新增批量快照重载，Range 每请求只加载一次变更明细，消除逐来源重复查询。
+- Web 来源选择器增加服务端翻页、防抖搜索、类型/区域筛选和 source cache；App 增加服务端筛选与滚动加载。
+- Web/App 新增合同来源分页门禁，各 4/4 负向样本被拦截。
+- 真实 API、Web 与微信开发者工具原生页面通过；L2 全量 1186/1186。
+- 证据：`docs/acceptance/runs/20261031-dq-x11-contract-change-range-picker/`。

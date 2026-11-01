@@ -1,0 +1,160 @@
+{
+  "status": "DEV_SELF_CHECK",
+  "capturedAt": "2026-11-01T20:10:00+08:00",
+  "identity": {
+    "role": "Boss",
+    "tenant": "昭青科技 · 业务闭环审计"
+  },
+  "web": {
+    "baseUrl": "http://127.0.0.1:5173",
+    "apiBase": "http://127.0.0.1:8090/api",
+    "checks": [
+      {
+        "page": "/workbench/design-reviews",
+        "context": "普通员工目录 / 设计师筛选",
+        "request": {
+          "route": "user/employee/page",
+          "body": {
+            "current": 1,
+            "size": 20,
+            "role": "Designer",
+            "status": "Active"
+          },
+          "httpStatus": 200
+        },
+        "result": {
+          "returnedCount": 2,
+          "selectedSummary": "审计设计 · 在职 · 设计师 · 总店"
+        }
+      },
+      {
+        "page": "/finance/compensation-schemes",
+        "context": "薪酬域员工选择",
+        "request": {
+          "route": "payroll/employee/page",
+          "body": {
+            "current": 1,
+            "size": 20,
+            "status": "Active"
+          },
+          "httpStatus": 200
+        },
+        "result": {
+          "returnedCount": 9,
+          "teamLeaderVisible": true,
+          "roleNavigator": [
+            "企业负责人",
+            "店长",
+            "团队负责人",
+            "业务员",
+            "设计师",
+            "项目经理",
+            "财务"
+          ]
+        }
+      },
+      {
+        "page": "/workbench/customers/:id",
+        "context": "客户负责人转交",
+        "request": {
+          "route": "user/employee/page",
+          "body": {
+            "current": 1,
+            "size": 20,
+            "status": "Active"
+          },
+          "httpStatus": 200
+        },
+        "result": {
+          "pickerOpened": true,
+          "ordinaryDirectoryProviderConfirmed": true
+        }
+      },
+      {
+        "page": "repository gate",
+        "context": "business action registry",
+        "result": "BLOCKED_PRE_EXISTING",
+        "details": [
+          "finance/refund/save unregistered",
+          "finance/payment/employee/page unregistered",
+          "finance/payment/employee/save unregistered"
+        ]
+      }
+    ],
+    "geometry": {
+      "1440": {
+        "viewportWidth": 1440,
+        "documentWidth": 1440,
+        "dialogWidth": 1000,
+        "dialogRight": 1220,
+        "pickerClientWidth": 772,
+        "pickerScrollWidth": 772
+      },
+      "1280": {
+        "viewportWidth": 1280,
+        "documentWidth": 1280,
+        "dialogWidth": 1000,
+        "dialogRight": 1140,
+        "pickerClientWidth": 772,
+        "pickerScrollWidth": 772
+      },
+      "1024": {
+        "viewportWidth": 1024,
+        "documentWidth": 1024,
+        "dialogWidth": 983.03125,
+        "dialogRight": 1003.515625,
+        "pickerClientWidth": 755,
+        "pickerScrollWidth": 755
+      }
+    },
+    "console": {
+      "errors": 0,
+      "warnings": 1,
+      "warning": "Vue Router initial route no-match warning before role routes settle"
+    },
+    "visionReview": {
+      "model": "qwen2.5vl:7b",
+      "result": "机器预检完成，未发现阻断性布局问题",
+      "humanReview": "NOT_RUN"
+    }
+  },
+  "app": {
+    "staticChecks": {
+      "typeCheck": "PASS",
+      "selectors": "PASS",
+      "financePickers": "PASS",
+      "financePaymentWorker": "PASS",
+      "selectorSemantics": "PASS: 263 Vue files, 0 hard violations",
+      "mpWeixinBuild": "PASS",
+      "subpackages": "PASS"
+    },
+    "p1Contracts": {
+      "resignHandover": "PASS: directory + activeOnly + excludeEmpId",
+      "taskOwner": "PASS: directory + activeOnly + role allowlist",
+      "financeWorker": "PASS: worker picker + activeOnly",
+      "contractQuoteSource": "PASS: accepted-only paged quote picker + status recheck",
+      "supplierPrice": "PASS: supplier picker + CatalogPicker + exact ID reread"
+    },
+    "runtime": "NOT_RERUN_IN_THIS_BATCH"
+  },
+  "backend": {
+    "targetedTests": "PASS: 8 classes / 11 tests",
+    "classes": [
+      "EmployeePageAccessTest",
+      "PayrollEmployeePickerAccessTest",
+      "EmployeePageSerializationContractTest",
+      "WorkerPickerPageTest",
+      "PaymentWorkerBackfillTest",
+      "QuotePickerPageTest",
+      "PartnerPickerPageTest",
+      "ProjectPickerPageTest"
+    ]
+  },
+  "boundaries": [
+    "未提交",
+    "未上传体验版",
+    "未发布",
+    "未独立验收",
+    "未做物理真机"
+  ]
+}

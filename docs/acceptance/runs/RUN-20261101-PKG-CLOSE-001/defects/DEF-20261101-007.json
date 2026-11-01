@@ -1,0 +1,28 @@
+{
+  "defectId": "DEF-20261101-007",
+  "caseIds": [],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "套餐报价详情的区域分组丢失，错误显示为“综合项目”",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/detail",
+  "businessState": "套餐报价的报价行带有区域A快照",
+  "expected": "报价详情按套餐区域快照显示“AUDIT-...区域A”",
+  "actual": "API regionGroups 与页面均显示“综合项目”，只有行内 packageSectionNameSnapshot 仍是区域A",
+  "minimumReproduction": [
+    "创建含区域A项目行的套餐报价",
+    "打开报价详情",
+    "展开分项报价"
+  ],
+  "impact": "客户讲解和施工交接无法按区域识别项目，报价事实可读性下降",
+  "evidence": [
+    "evidence/EXP-PKG-006/clean-quote-detail.png",
+    "evidence/EXP-PKG-006/clean-quote-detail.txt",
+    "raw/quote-and-update-readback.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "Quote regionGroups 使用 packageSectionNameSnapshot 作为分组主源并补契约测试",
+  "retestCondition": "页面和API所有套餐报价行按原区域快照分组，名称一致",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

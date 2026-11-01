@@ -11,6 +11,9 @@
 | B1 | 设计师与经营角色看到同一方案当前价格，并完成只读运营查看 | Designer、Boss、StoreManager、Finance | Design、DesignItem、Quote | 价格读模型、当前报价、成本裁剪、范围过滤 | App 工作台/列表/只读详情；Web 方案卡/查看列表/只读详情 | DEC-078、BR-003、DEC-065 | 三端价格一致；运营查看无写动作；跨范围拒绝；性能达标 | ACCEPTED |
 | B2 | 后续风险增强 | 经营角色 | Design、Quote | 报价过期、缺口统计 | 列表筛选 | GAP-061 关闭后 | 不阻塞 B1 | BLOCKED_BY_DECISION |
 | DQ-X1 | 待我谈单工作队列数据库分页与批量组装 | Designer、Boss、StoreManager | Quote、Customer、Property | `statistic/workbench/quote/page` 改为 ID 分页 + 页面实体批量预取；筛选、排序、范围与 Dormant 排除下推 SQL | Web 待我谈单消费现有分页契约 | BR-031、DEC-029、BR-027 | 固定 3 条 SQL；页大小服务端上限 100；Boss 企业、店长本店、设计师本人；其他角色 403 | ACCEPTED |
+| DQ-X3 | App 方案模版库浏览与实例化 | Designer、Boss、StoreManager | DesignTemplate、Design | 复用 `design/template/page|info|instantiate`，不新增 Provider | App 模板库、模板详情、从已发布模板生成设计方案 | DEC-084、BR-040、OBJ-005 | list/info/instantiate 三路由 App/Web 共享；模板不含价格；实例化后回读方案；App type-check/build | DEV_VERIFIED |
+| DQ-X4 | App 个人方案模版创建、区域/分项维护与发布 | Designer、Boss、StoreManager | DesignTemplate、DesignTemplateVersion、TemplateRoom、TemplateItem | 复用 `design/template/save|publish|room/save|room/delete|items/batchsave` | App 新建草稿、区域配置、分项公式配置、发布 | DEC-084、BR-040、OBJ-005 | App/Web 共享上述 Provider；模版不含价格；发布前区域/公式校验；App type-check/build | DEV_VERIFIED |
+| DQ-X5 | App 已发布模版后续生命周期 | Designer、Boss、StoreManager | DesignTemplate、DesignTemplateVersion | 复用 `design/template/copy|disable|version/build` | App 模板卡动作面板：复制、停用、新建草稿版本 | DEC-084、BR-040 | 复制/停用/新版本 App/Web 共享；发布后不可变；历史报价不受影响 | DEV_VERIFIED |
 
 ## 依赖与顺序
 

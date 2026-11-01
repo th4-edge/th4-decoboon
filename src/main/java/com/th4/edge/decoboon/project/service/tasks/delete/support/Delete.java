@@ -1,8 +1,8 @@
 package com.th4.edge.decoboon.project.service.tasks.delete.support;
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 

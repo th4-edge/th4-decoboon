@@ -1,0 +1,43 @@
+{
+  "caseId": "TC-DQ-PERMISSION-QUOTE-005",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:38:00+08:00",
+  "finishedAt": "2026-11-02T00:41:32+08:00",
+  "executor": "codex",
+  "role": "Marketer+Designer",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261102-QUOTETRACERETEST001-",
+  "steps": [
+    {
+      "action": "Marketer拒绝/Designer接受/重复拒绝",
+      "result": "PASS_RETEST"
+    },
+    {
+      "action": "设计师详情与页面回读acceptedBy/acceptedAt",
+      "result": "PASS_RETEST"
+    },
+    {
+      "action": "App回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/designer/quotes/242297077898412032"
+  ],
+  "actualState": [
+    "acceptedBy=审计设计",
+    "acceptedAt=2026-11-02 00:38:27",
+    "金额与成本快照未变",
+    "重复接受400且不覆盖首次登记"
+  ],
+  "evidence": [
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/01-quote-accept-api.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/04-designer-quote-accepted-with-registrar.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/05-designer-quote-accepted-with-registrar.txt"
+  ],
+  "defectIds": [
+    "DEF-20261102-004"
+  ],
+  "blockedReason": "App授权微信身份不可用；Web/API/DB缺陷修复已复验。",
+  "notes": "缺陷级VERIFIED，整条跨端用例BLOCKED。"
+}

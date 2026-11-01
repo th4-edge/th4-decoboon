@@ -308,18 +308,13 @@ public class ProjectContractContext {
         contract.setPendingChangeCount((int) changeRepository.findByContractOrderByChangeIdDesc(contract).stream()
                 .filter(item -> item.getStatus() == ContractChangeStatus.Pending
                         || item.getStatus() == ContractChangeStatus.Approved).count());
-        List<ContractLine> lines = lineRepository.findByContractOrderBySortAsc(contract);
-        BigDecimal signedCost = BigDecimal.ZERO;
-        boolean complete = !lines.isEmpty();
-        for (ContractLine line : lines) {
-            BigDecimal lineCost = value(line.getCost());
-            signedCost = signedCost.add(lineCost);
-            if (requiresCost(line.getType()) && lineCost.signum() <= 0) {
-                complete = false;
-            }
-        }
+        List<Object[]> costSummary = lineRepository.summarizeCostByContract(contract.getContractId());
+        Object[] summary = costSummary == null || costSummary.isEmpty() ? new Object[]{0L, BigDecimal.ZERO, 0L} : costSummary.get(0);
+        long lineCount = summary[0] == null ? 0L : ((Number) summary[0]).longValue();
+        BigDecimal signedCost = summary[1] == null ? BigDecimal.ZERO : new BigDecimal(summary[1].toString());
+        long incompleteCount = summary[2] == null ? 0L : ((Number) summary[2]).longValue();
         contract.setSignedCost(money(signedCost));
-        contract.setCostComplete(complete);
+        contract.setCostComplete(lineCount > 0 && incompleteCount == 0);
         contract.setPaymentPlan(contractPlanContext.paymentPlan(contract));
         contract.setConstructionPlan(contractPlanContext.constructionPlan(contract));
         contractBusinessStateContext.enrich(contract);

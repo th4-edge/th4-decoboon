@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -37,8 +38,9 @@ class PayrollSheetDeleteGuardTest {
         PayrollItemRepository items = mock(PayrollItemRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
-        when(access.requireBoss(boss)).thenReturn(boss);
-        when(sheets.findById(10L)).thenReturn(Optional.of(sheet));
+        when(access.requireDeleteActor(boss)).thenReturn(boss);
+        when(access.visibleSheets(boss)).thenReturn(mock(org.springframework.data.jpa.domain.Specification.class));
+        when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
         when(items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L)).thenReturn(List.of());
 
         Delete delete = new Delete(sheets, items, payables, access);
@@ -60,8 +62,9 @@ class PayrollSheetDeleteGuardTest {
         PayrollItemRepository items = mock(PayrollItemRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
-        when(access.requireBoss(boss)).thenReturn(boss);
-        when(sheets.findById(10L)).thenReturn(Optional.of(sheet));
+        when(access.requireDeleteActor(boss)).thenReturn(boss);
+        when(access.visibleSheets(boss)).thenReturn(mock(org.springframework.data.jpa.domain.Specification.class));
+        when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
 
         Delete delete = new Delete(sheets, items, payables, access);
         ReflectionTestUtils.setField(delete, "employee", boss);

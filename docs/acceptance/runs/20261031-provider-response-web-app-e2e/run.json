@@ -1,0 +1,41 @@
+{
+  "runId": "PROVIDER-RESPONSE-WEB-APP-20261031",
+  "date": "2026-10-31",
+  "surface": "backend+web+miniapp",
+  "environment": {
+    "backend": "http://127.0.0.1:8090",
+    "web": "http://127.0.0.1:8080",
+    "appBuild": "dist/dev/mp-weixin",
+    "runtime": "WeChat DevTools + miniprogram-automator"
+  },
+  "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+  "providerAudit": {
+    "providers": 542,
+    "properties": 537,
+    "allow": 535,
+    "findings": 0
+  },
+  "backendTests": {
+    "tests": 1170,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "apiSmoke": {
+    "routes": 17,
+    "failed": false
+  },
+  "web": {
+    "pagesChecked": 18,
+    "consoleErrors": 0,
+    "networkFailures": 0,
+    "customerFollowWriteReadback": "PASS"
+  },
+  "app": {
+    "mainChainPages": 22,
+    "followWriteReadback": "PASS",
+    "successReport": "PASS"
+  },
+  "release": "NOT_RELEASED",
+  "independentAcceptance": "NOT_STARTED"
+}

@@ -1,0 +1,5 @@
+interface:
+  display_name: "装得清营销内容智能体"
+  short_description: "把已核验装企场景转化为证据可追溯的营销选题、内容策略与短视频图文内容包"
+  brand_color: "#2F7D5A"
+  default_prompt: "Use $zhuangdeqing-marketing-content to turn verified ZHUANGDEQING scenarios into evidence-backed marketing content briefs, narratives, comparisons, and handoff packages without inventing product facts or publishing."

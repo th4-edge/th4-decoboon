@@ -1,0 +1,187 @@
+{
+  "caseId": "TC-ACC-PM-SUBMIT-001",
+  "status": "PASS",
+  "startedAt": "2026-11-01T16:03:05+08:00",
+  "finishedAt": "2026-11-01T16:12:00+08:00",
+  "executor": "codex",
+  "role": "Pm",
+  "surface": "Web+App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101ACCP0-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/workbench?projectId=242541620656865280",
+      "control": "开启阶段",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "拆除改造 stage=Todo; project=Preparing",
+      "business_state_after": "stage=Doing; project=Ongoing",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-pm-workbench-before.png",
+        "02-stage-opened.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/workbench?projectId=242541620656865280",
+      "control": "开始任务",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "拆除任务 Todo 0%",
+      "business_state_after": "拆除任务 Doing 10%",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "03-task-started.png"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/projects/242541620656865280/acceptance?stageId=242541620686225408",
+      "control": "提交阶段验收",
+      "control_state": "VISIBLE_DISABLED",
+      "business_state_before": "1项施工任务未完成",
+      "business_state_after": "提示“该阶段仍有1项施工任务未完成，不能提交验收”，未生成验收单",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "04-acceptance-unfinished.png"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/workbench?projectId=242541620656865280",
+      "control": "完成任务并上传证据",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "任务 Accepting 90%; evidence=0",
+      "business_state_after": "上传1份合成现场证据后任务 Done 100%",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "05-task-evidence-dialog.png",
+        "06-task-evidence-uploaded.png",
+        "07-task-completed.png",
+        "task-evidence-source.png"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/projects/242541620656865280/acceptance?stageId=242541620686225408",
+      "control": "提交阶段验收",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "任务全部完成；无验收单",
+      "business_state_after": "填写验收说明、上传1份证据，提交第1轮验收",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "08-acceptance-ready.png",
+        "09-acceptance-submit-dialog.png",
+        "10-acceptance-form-filled.png",
+        "11-acceptance-submitted.png",
+        "acceptance-evidence-source.png"
+      ]
+    },
+    {
+      "step_id": "S06",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web+App",
+      "page_path": "/pm/projects/242541620656865280/acceptance; /subpackages/project/pages/accept/edit",
+      "control": "刷新/重进",
+      "control_state": "READ_ONLY",
+      "business_state_before": "Acceptance Pending; round 1 Pending",
+      "business_state_after": "Web/App均显示待业主确认；PM无确认/驳回按钮；证据和轮次保留",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "12-acceptance-refreshed.png",
+        "14-pm-acceptance-app.png",
+        "14-pm-acceptance-app.json"
+      ]
+    },
+    {
+      "step_id": "S07",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "project/acceptance/save",
+      "control": "重复提交",
+      "control_state": "N/A",
+      "business_state_before": "Acceptance 242559592377090048 Pending; round=1",
+      "business_state_after": "返回同一 acceptanceId；acceptance仍1条、round仍1条",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "15-duplicate-submit-api.json",
+        "17-acceptance-provider-db-corrected.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "未完成任务时提交按钮 disabled=true 并显示具体阻断原因",
+    "完成任务后提交表单可用且必须填写说明并上传现场证据",
+    "提交后Web/App均显示“待业主确认”，App无员工确认/驳回按钮"
+  ],
+  "actualState": [
+    "acceptanceId=242559592377090048",
+    "status=Pending",
+    "confirmedAt=null",
+    "confirmedBy=null",
+    "roundNo=1",
+    "task status=Done",
+    "task evidence=1",
+    "acceptance evidence=1",
+    "round evidence=1",
+    "stage=Accepting",
+    "project=Accepting / progress=14"
+  ],
+  "evidence": [
+    "evidence/TC-ACC-PM-SUBMIT-001/01-pm-workbench-before.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/02-stage-opened.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/03-task-started.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/04-acceptance-unfinished.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/05-task-evidence-dialog.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/06-task-evidence-uploaded.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/07-task-completed.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/08-acceptance-ready.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/09-acceptance-submit-dialog.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/10-acceptance-form-filled.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/11-acceptance-submitted.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/12-acceptance-refreshed.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/14-pm-acceptance-app.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/14-pm-acceptance-app.json",
+    "evidence/TC-ACC-PM-SUBMIT-001/15-duplicate-submit-api.json",
+    "evidence/TC-ACC-PM-SUBMIT-001/17-acceptance-provider-db-corrected.json",
+    "evidence/TC-ACC-PM-SUBMIT-001/task-evidence-source.png",
+    "evidence/TC-ACC-PM-SUBMIT-001/acceptance-evidence-source.png"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "真实页面推进完成；Provider重复提交返回同一验收单，未追加轮次。",
+  "caseDefinitionHash": "bdfd492478672bf202967dc38b9dc6e45f0d7a4ac3721546ce48e9b5911b5a08",
+  "priority": "P1",
+  "area": "ACCEPTANCE",
+  "businessRuleIds": [
+    "BR-008",
+    "SCN-003",
+    "DEC-087",
+    "DEC-088"
+  ],
+  "pageTargets": [
+    "web:/pm/projects/:projectId/acceptance",
+    "app:/subpackages/project/pages/detail"
+  ],
+  "providerRoutes": [
+    "project/acceptance/save",
+    "project/acceptance/page",
+    "project/task/page"
+  ]
+}

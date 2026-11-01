@@ -1,0 +1,50 @@
+{
+  "id": "payroll-labor.workbench-aggregate-pay-ops-01",
+  "title": "薪酬工作台聚合查询",
+  "version": "1.0.0",
+  "status": "dev-verified",
+  "batch": "PAY-OPS-01",
+  "sourceRefs": [
+    "BR-015",
+    "BR-025",
+    "BR-031",
+    "DEC-036",
+    "DEC-037",
+    "ANS-BIZ-20261031-001"
+  ],
+  "audience": ["boss", "finance", "storeManager"],
+  "objects": [
+    {"id": "AttendanceSummary", "fields": ["company", "store", "payrollMonth", "status"], "query": "O(1) aggregate"},
+    {"id": "PayrollSheet", "fields": ["company", "store", "period", "status", "totalNetAmount"], "query": "O(1) aggregate + LIMIT 1"},
+    {"id": "Payable", "fields": ["company", "store", "type", "period", "amount", "paidAmount"], "query": "O(1) aggregate"},
+    {"id": "CommissionItem", "fields": ["company", "store", "status", "releasedAmount", "paidAmount"], "query": "O(1) aggregate"},
+    {"id": "Payslip", "fields": ["company", "store", "period", "status"], "query": "O(1) aggregate"}
+  ],
+  "metrics": [
+    {"id": "PAY-WB-PENDING-ATT", "formula": "count(status in Pending,Disputed)", "source": "AttendanceSummary"},
+    {"id": "PAY-WB-SHEET-STATUS", "formula": "count by status for target period", "source": "PayrollSheet"},
+    {"id": "PAY-WB-LATEST-SHEET", "formula": "order period desc, sheetId desc limit 1", "source": "PayrollSheet"},
+    {"id": "PAY-WB-EMPLOYEE-PAYABLE", "formula": "sum(max(amount-paidAmount,0)); salary period=target, commission all periods", "source": "Payable"},
+    {"id": "PAY-WB-COMMISSION-UNPAID", "formula": "sum(max(releasedAmount-paidAmount,0)); status in Released,InPayment", "source": "CommissionItem"},
+    {"id": "PAY-WB-PAYSLIP-STATUS", "formula": "count status in PendingPayment,Published for target period", "source": "Payslip"}
+  ],
+  "queryChain": [
+    {"no": 1, "name": "attendance", "maxRows": 1},
+    {"no": 2, "name": "sheet-status", "maxRows": 1},
+    {"no": 3, "name": "latest-sheet", "maxRows": 1},
+    {"no": 4, "name": "payable", "maxRows": 1},
+    {"no": 5, "name": "commission", "maxRows": 1},
+    {"no": 6, "name": "payslip", "maxRows": 1}
+  ],
+  "permissions": {
+    "companyScope": ["boss", "headFinance"],
+    "storeScope": ["storeFinance", "storeManager"],
+    "storeResolution": "PayrollAccessContext + StoreFilterContext"
+  },
+  "exceptions": [
+    {"case": "empty data", "behavior": "count=0, amount=0.00, latestSheetId=null"},
+    {"case": "negative payable", "behavior": "row contribution=0, do not offset other rows"},
+    {"case": "invalid store", "behavior": "403 before aggregate"}
+  ],
+  "evidence": "docs/acceptance/runs/20261031-pay-ops-01/"
+}

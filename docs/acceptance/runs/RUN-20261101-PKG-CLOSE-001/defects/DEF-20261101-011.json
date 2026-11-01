@@ -1,0 +1,26 @@
+{
+  "defectId": "DEF-20261101-011",
+  "caseIds": [],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "套餐报价详情向业务界面暴露系统内部报价编号",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/detail",
+  "businessState": "套餐报价创建成功",
+  "expected": "页面用客户、房屋、套餐和金额识别报价，不展示系统生成的报价编号",
+  "actual": "标题直接展示 Q1793528265484 · V1",
+  "minimumReproduction": [
+    "创建套餐报价",
+    "打开报价详情"
+  ],
+  "impact": "违反 BR-060 / DEC-095，要求用户记忆内部编号",
+  "evidence": [
+    "evidence/EXP-PKG-006/clean-quote-detail.png",
+    "evidence/EXP-PKG-006/clean-quote-detail.txt"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "移除报价编号展示；编号仅保留接口、审计和路由",
+  "retestCondition": "套餐报价详情与列表不出现系统报价编号",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

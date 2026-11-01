@@ -1,0 +1,29 @@
+{
+  "defectId": "DEF-20261101-010",
+  "caseIds": [],
+  "priority": "P2",
+  "status": "OPEN",
+  "title": "非套餐维护角色可通过深链进入套餐编辑页并看到编辑控件",
+  "role": "Designer/Finance/Pm/Marketer",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/package-edit",
+  "businessState": "只有Boss/StoreManager可维护套餐",
+  "expected": "非维护角色深链进入时应被页面守卫拦截并返回只读入口",
+  "actual": "四个角色均可进入 package-edit，页面显示新增、保存和编辑控件；服务端写接口返回403",
+  "minimumReproduction": [
+    "以Designer登录",
+    "直接打开 package-edit?templateId=...",
+    "检查页面控件"
+  ],
+  "impact": "前端权限反馈错误，用户可完成大量编辑后才被服务端拒绝",
+  "evidence": [
+    "evidence/EXP-PKG-008/role-check.json",
+    "evidence/EXP-PKG-008/25-designer-direct-edit.png",
+    "evidence/EXP-PKG-008/25-designer-direct-edit.txt",
+    "raw/role-negative-provider.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "页面守卫和运行时深链校验使用同一 edit:package-template 能力；服务端403继续保留",
+  "retestCondition": "四个非维护角色深链进入均被阻断，且没有任何编辑控件",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

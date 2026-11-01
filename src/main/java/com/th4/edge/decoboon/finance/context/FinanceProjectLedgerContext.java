@@ -304,6 +304,16 @@ public class FinanceProjectLedgerContext {
         report.setSettlementStatusLabel(historicalArchive && settlement == null
                 ? ProjectArchivePolicy.SETTLEMENT_LABEL : null);
         report.setSettlementActionable(!historicalArchive);
+        if (settlement != null) {
+            boolean frozen = settlement.getStatus() != null
+                    && settlement.getStatus() != com.th4.edge.decoboon.finance.configure.SettlementStatus.Draft;
+            boolean settlementCostComplete = frozen ? settlement.getProfitAmount() != null : costComplete;
+            settlement.setCostComplete(settlementCostComplete);
+            settlement.setCostIncompleteCount(!settlementCostComplete
+                    ? Math.max(1, safeCost.incompleteItemCount()) : 0);
+            settlement.setActualCost(frozen ? settlement.getTotalCost() : totalCost);
+            settlement.setEstimatedCost(safeCost.estimatedCost());
+        }
         report.setSettlement(settlement);
         report.setRecentLedgers(ledgers.stream().limit(12).toList());
         return report;

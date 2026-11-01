@@ -1,0 +1,78 @@
+{
+  "projectId": "242297299361857536",
+  "web": {
+    "roles": [
+      "Boss",
+      "StoreManager",
+      "Finance"
+    ],
+    "contractAmountDisplay": "¥2,495.75",
+    "receivedAmountDisplay": "¥1,148.05",
+    "outstandingAmountDisplay": "¥6,347.70",
+    "payableAmountDisplay": "¥3,440.00",
+    "paidAmountDisplay": "¥1,440.00",
+    "totalCostDisplay": "¥2,240.00",
+    "settlementStatus": "待确认",
+    "profitDisplay": "成本未完整",
+    "confirmSettlementDisabled": true,
+    "evidence": [
+      "21-web-role-parity.json",
+      "22-finance-settlement-web-control.png",
+      "23-finance-settlement-web-control.json"
+    ]
+  },
+  "app": {
+    "role": "Finance",
+    "contractAmountDisplay": "¥2,496",
+    "receivedAmountDisplay": "¥1,148",
+    "outstandingAmountDisplay": "¥6,348",
+    "payableAmountDisplay": "¥3,440",
+    "paidAmountDisplay": "¥1,440",
+    "totalCostDisplay": "¥2,240",
+    "settlementStatus": "待确认",
+    "profitNumericDisplay": null,
+    "pageData": {
+      "contractAmount": 2495.75,
+      "receivedAmount": 1148.05,
+      "outstandingAmount": 6347.7,
+      "payableAmount": 3440,
+      "paidAmount": 1440,
+      "totalCost": 2240,
+      "costComplete": false,
+      "costIncompleteCount": 1,
+      "profitAmount": null,
+      "grossMargin": null
+    },
+    "confirmSettlementDisabled": false,
+    "confirmSettlementDisabledAttribute": null,
+    "evidence": [
+      "04-finance-project-app.png",
+      "05-finance-settlement-app.png",
+      "06-finance-overview-app.png",
+      "20-app-control-and-data-state.json",
+      "app-cost-detail.json",
+      "app-cost.json",
+      "app-report-data.json"
+    ]
+  },
+  "differences": [
+    {
+      "id": "DISPLAY-PRECISION",
+      "severity": "P2",
+      "web": "精确到分",
+      "app": "取整到元",
+      "fields": [
+        "contractAmount",
+        "receivedAmount",
+        "outstandingAmount"
+      ]
+    },
+    {
+      "id": "CONTROL-GATE",
+      "severity": "P1",
+      "web": "确认结算 disabled=true",
+      "app": "确认结算 disabled=false/null"
+    }
+  ],
+  "conclusion": "FAIL"
+}

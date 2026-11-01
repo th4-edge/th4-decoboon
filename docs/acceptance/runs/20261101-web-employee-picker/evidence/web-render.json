@@ -1,0 +1,81 @@
+{
+  "status": "DEV_SELF_CHECK",
+  "capturedAt": "2026-11-01T17:09:00+08:00",
+  "identity": {
+    "role": "Boss",
+    "tenant": "昭青科技 · 业务闭环审计"
+  },
+  "pages": [
+    "/workbench/design-reviews",
+    "/designer/projects"
+  ],
+  "network": [
+    {
+      "route": "user/employee/page",
+      "purpose": "design review designer filter",
+      "request": {
+        "current": 1,
+        "size": 20,
+        "role": "Designer",
+        "status": "Active"
+      },
+      "result": "200"
+    },
+    {
+      "route": "user/employee/page",
+      "purpose": "project manager selected employee resolve",
+      "request": {
+        "current": 1,
+        "size": 1,
+        "status": "all",
+        "empId": "199500000000000107"
+      },
+      "result": "200"
+    },
+    {
+      "route": "user/employee/page",
+      "purpose": "project member support picker",
+      "request": {
+        "current": 1,
+        "size": 20,
+        "role": "Boss,Finance",
+        "status": "Active"
+      },
+      "result": "200"
+    }
+  ],
+  "geometry": {
+    "1440": {
+      "pageOverflow": false
+    },
+    "1280": {
+      "documentWidth": 1280,
+      "viewportWidth": 1280,
+      "dialogWidth": 1000,
+      "dialogOverflow": false
+    },
+    "1024": {
+      "documentWidth": 1024,
+      "viewportWidth": 1024,
+      "dialogWidth": 983.03125,
+      "dialogOverflow": false,
+      "pickerOverflow": false,
+      "selectedCardScrollWidthEqualsClientWidth": true,
+      "selectedCardHeight": 165
+    }
+  },
+  "interaction": {
+    "openDialogShowsData": true,
+    "searchEmptyState": true,
+    "selectEmployeeShowsCompactSummary": true,
+    "selectEmployeeShowsFullCard": true,
+    "escapeClosesDialog": true,
+    "focusReturnedToPickerTrigger": true
+  },
+  "console": {
+    "errors": 0,
+    "warnings": 1,
+    "warning": "Vue Router initial no-match warning for /designer/projects before role routes settle; final page and interactions completed."
+  },
+  "visualReview": "VISUAL_REVIEW_UNAVAILABLE: screenshots captured, but this model has no image-input capability."
+}

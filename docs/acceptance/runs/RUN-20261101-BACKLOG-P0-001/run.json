@@ -1,0 +1,86 @@
+{
+  "runId": "RUN-20261101-BACKLOG-P0-001",
+  "createdAt": "2026-11-01T23:54:58+08:00",
+  "status": "BLOCKED",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "7b7dc5f0ed3795fbd6d13640f5dfb7f51b8c3dd8",
+  "webCommit": "e40ca8baf6203d71f5d0375cc043d424a0aa5873",
+  "appCommit": "f2fb91e0785bf953940257ce97e3ea84fc2ae808",
+  "artifactHashes": {
+    "candidateManifestSha256": "4a82dc24c92f885cbe5c1a298d1cc68a98ea981f38a50893ccdd9cbeb519059a"
+  },
+  "environment": "local-prod-snapshot",
+  "tenantId": "1790066191585976744",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "caseIds": [
+    "TC-CRM-MANAGER-HANDOFF-003",
+    "TC-CRM-DESIGNER-PROPERTY-004",
+    "TC-CRM-PERMISSION-STORE-005",
+    "TC-DQ-PERMISSION-QUOTE-005",
+    "TC-CT-BOSS-CONTRACT-001",
+    "TC-CT-BOSS-PROJECT-002",
+    "TC-CT-ORDER-CONTRACT-003",
+    "TC-CHG-FINANCE-COST-002",
+    "TC-PJ-PERMISSION-003",
+    "TC-MAT-DESIGNER-SELECTION-001",
+    "TC-MAT-DESIGNER-SHEET-002",
+    "TC-MAT-BOUNDARY-QUANTITY-003",
+    "TC-MAT-FINANCE-ORDER-004",
+    "TC-ACC-PERMISSION-EMPLOYEE-002",
+    "TC-ACC-OWNER-IDENTITY-003",
+    "TC-ACC-OWNER-CONFIRM-004",
+    "TC-FIN-FINANCE-RECEIPT-002",
+    "TC-FIN-FINANCE-PAYABLE-003",
+    "TC-FIN-FINANCE-COST-004",
+    "TC-FIN-FINANCE-SETTLEMENT-005",
+    "TC-FIN-CROSSSURFACE-PARITY-006",
+    "TC-XC-SECURITY-TENANT-001",
+    "TC-XC-FINANCE-VISIBILITY-004"
+  ],
+  "summary": {
+    "total": 23,
+    "pass": 0,
+    "fail": 0,
+    "blocked": 0,
+    "notRun": 23
+  },
+  "candidateId": "ACC-20261101-01",
+  "candidateManifest": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/candidates/ACC-20261101-01.json",
+  "preflight": {
+    "assetsValidation": "PASS",
+    "candidateIntegrity": "FAIL_DIRTY_WORKSPACE",
+    "environmentContract": "FAIL_ACTIVE_ENV_MISMATCH",
+    "writeAuthorization": "BLOCKED_NEEDS_USER_AUTHORIZATION",
+    "ownerIdentity": "BLOCKED_NEEDS_MATCHED_OWNER_IDENTITY",
+    "conclusion": "BLOCKED"
+  },
+  "blockers": [
+    {
+      "id": "BLK-ACC-001",
+      "type": "IMMUTABLE_CANDIDATE",
+      "detail": "三端工作区均含未提交或未推送改动；当前候选无法由提交或制品完整重放。",
+      "recovery": "将本批涉及改动提取到干净候选分支并提交，重新生成候选清单和制品哈希。"
+    },
+    {
+      "id": "BLK-ACC-002",
+      "type": "FIXTURE_MISMATCH",
+      "detail": "冻结测试资产的数据契约是 decoboon / 昭青科技合成夹具；当前活动环境为 decoboon_prod_20261101 / 麦鸿装饰生产快照。",
+      "recovery": "在最新代码实例上准备与冻结用例匹配的合成验收租户和阶段/财务夹具。"
+    },
+    {
+      "id": "BLK-ACC-003",
+      "type": "WRITE_AUTHORIZATION",
+      "detail": "23 条 P0 中包含合同、量房、材料下单、收付款、验收确认等写入或写拒绝动作，尚未取得本轮本地快照写操作授权与备份回滚确认。",
+      "recovery": "补齐本轮写操作授权、备份和回滚点；仅可在隔离快照/合成库执行。"
+    },
+    {
+      "id": "BLK-ACC-004",
+      "type": "OWNER_IDENTITY",
+      "detail": "业主确认、驳回和身份不匹配用例需要与测试客户预留手机号匹配的授权身份。",
+      "recovery": "提供可用业主匹配身份，或将相关用例标记 BLOCKED，不得由员工代替。"
+    }
+  ]
+}

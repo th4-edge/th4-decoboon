@@ -103,3 +103,17 @@
 - 性能：10 次请求 P95 47.4ms。
 - 构建：后端干净全量 1098/1098 PASS；Web build 与分页/类型/文案门禁 PASS。
 - 证据：`docs/acceptance/runs/20261024-dq-x1-independent/`。
+
+## DQ-X8～X11：合同分页、汇总与来源选择器链路 · 独立验收
+
+- 验收方式：独立验收 hat 只读黑盒，实现冻结后先初验，P1 修复后再独立复验。
+- 初验：140 项，139 PASS / 1 FAIL；P1=`DQ-X11-P1-RANGE-PAGINATION`，range 连续翻页漏 2 条并重复 1 条已生效目标。
+- 修复：`Range.java` 原合同行查询改为正确使用 0 基 `PageRequest(page-1,pageSize)`；新增连续页覆盖测试。
+- 复验：55/55 PASS；连续页严格覆盖 7 个唯一来源，默认/筛选/上限/三角色权限/批量快照/Provider 审计通过。
+- 当前开放缺陷：P0=0，P1=0，P2=0；历史 P1 已 CLOSED。
+- 后端全量补充证据：1187/1187 PASS（实现方执行，独立代理复核日志）。
+- Web：合同档案与增减项来源真实页面、三档视口、network/console 检查通过。
+- 小程序原生：来源初始 7 项、主材 3 项，通过。
+- 未覆盖：业主身份 `customer/contract-line/page` 直接黑盒；视觉签字；当前库无双租户账号，跨企业黑盒未执行。
+- 证据：`docs/acceptance/runs/20261031-dq-x8-x11-independent-acceptance/`。
+- 结论：**ACCEPTED**；未发布。

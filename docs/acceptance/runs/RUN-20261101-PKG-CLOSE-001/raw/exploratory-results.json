@@ -1,0 +1,199 @@
+{
+  "runId": "RUN-20261101-PKG-CLOSE-001",
+  "scope": "套餐专项探索性闭环，不替代缺失的冻结用例",
+  "summary": {
+    "PASS": 6,
+    "FAIL": 8,
+    "BLOCKED": 2
+  },
+  "checks": [
+    {
+      "id": "EXP-PKG-001",
+      "title": "线上基线/数据读取",
+      "status": "PASS",
+      "evidence": [
+        "raw/online-package-readback.json",
+        "raw/online-package-sections.png"
+      ],
+      "note": "线上App 1.0.72；可见3个模板，1个空套餐；20个分区全部显示"
+    },
+    {
+      "id": "EXP-PKG-002",
+      "title": "创建套餐基本信息",
+      "status": "PASS",
+      "evidence": [
+        "evidence/EXP-PKG-002/03-basic-saved.png",
+        "raw/package-db-state.ndjson"
+      ],
+      "note": "Draft创建成功，自动生成code/version/status，名称/面积/价格/折扣/说明回读一致"
+    },
+    {
+      "id": "EXP-PKG-003",
+      "title": "新增空分区即时回显与刷新持久",
+      "status": "PASS",
+      "evidence": [
+        "evidence/EXP-PKG-003/07-region-b-added.png",
+        "evidence/EXP-PKG-003/08-template-reloaded.png"
+      ],
+      "note": "区域A/B新增后立即显示，重新进入仍存在"
+    },
+    {
+      "id": "EXP-PKG-004",
+      "title": "选品与项目行落库",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-004/09-catalog-picker-data.json",
+        "evidence/EXP-PKG-004/10-package-after-items.txt",
+        "raw/package-db-state.ndjson"
+      ],
+      "note": "选择2个不同项目，最终落库为同一项目2条重复行",
+      "defectIds": [
+        "DEF-20261101-004"
+      ]
+    },
+    {
+      "id": "EXP-PKG-005",
+      "title": "删除空分区和阻止删除已用分区",
+      "status": "PASS",
+      "evidence": [
+        "evidence/EXP-PKG-005/23-empty-section-deleted.png",
+        "evidence/EXP-PKG-005/24-used-section-delete-guard.png"
+      ],
+      "note": "空区域B删除成功；已用区域A未触发删除，行和分区保持"
+    },
+    {
+      "id": "EXP-PKG-006",
+      "title": "套餐报价金额与成本",
+      "status": "PASS",
+      "evidence": [
+        "evidence/EXP-PKG-006/clean-quote-detail.png",
+        "raw/quote-and-update-readback.json"
+      ],
+      "note": "130㎡×10000/100=13000，折后11700+税585=12285；成本11.7且页面/API/DB一致"
+    },
+    {
+      "id": "EXP-PKG-007",
+      "title": "套餐列表状态和配置摘要",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-007/before-package-manage.png",
+        "raw/manager-list-readback.json"
+      ],
+      "note": "已发布模板被显示为0分区/0项/配置中",
+      "defectIds": [
+        "DEF-20261101-005"
+      ]
+    },
+    {
+      "id": "EXP-PKG-008",
+      "title": "套餐生命周期页面闭环",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-007/before-package-manage.png",
+        "evidence/EXP-PKG-007/20-published-edit-blocked.png",
+        "raw/quote-and-update-readback.json"
+      ],
+      "note": "无发布/下一版/停用；已发布可进编辑但保存409",
+      "defectIds": [
+        "DEF-20261101-006"
+      ]
+    },
+    {
+      "id": "EXP-PKG-009",
+      "title": "报价区域分组",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-006/clean-quote-detail.png",
+        "raw/quote-and-update-readback.json"
+      ],
+      "note": "行有区域快照，但详情显示综合项目",
+      "defectIds": [
+        "DEF-20261101-007"
+      ]
+    },
+    {
+      "id": "EXP-PKG-010",
+      "title": "套餐入口到报价页的上下文保持",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-006/16-quote-created.txt"
+      ],
+      "note": "选择客户后原有套餐模板被清空",
+      "defectIds": [
+        "DEF-20261101-008"
+      ]
+    },
+    {
+      "id": "EXP-PKG-011",
+      "title": "房屋选择页上下文呈现",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-006/14-property-picker.png"
+      ],
+      "note": "客户姓名被URL编码显示",
+      "defectIds": [
+        "DEF-20261101-009"
+      ]
+    },
+    {
+      "id": "EXP-PKG-012",
+      "title": "套餐维护权限",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-008/role-check.json",
+        "evidence/EXP-PKG-008/25-designer-direct-edit.png",
+        "raw/role-negative-provider.json"
+      ],
+      "note": "按钮隐藏且服务端403通过，但深链页面守卫失效",
+      "defectIds": [
+        "DEF-20261101-010"
+      ]
+    },
+    {
+      "id": "EXP-PKG-013",
+      "title": "成本可见性",
+      "status": "PASS",
+      "evidence": [
+        "raw/cost-visibility.json"
+      ],
+      "note": "Boss/Finance可见成本，Designer/Pm/Marketer服务端裁剪为null"
+    },
+    {
+      "id": "EXP-PKG-014",
+      "title": "内部编号隐藏",
+      "status": "FAIL",
+      "evidence": [
+        "evidence/EXP-PKG-006/clean-quote-detail.png"
+      ],
+      "note": "报价详情展示Q编号",
+      "defectIds": [
+        "DEF-20261101-011"
+      ]
+    },
+    {
+      "id": "EXP-PKG-015",
+      "title": "冻结套餐专项测试资产",
+      "status": "BLOCKED",
+      "evidence": [],
+      "note": "V0.1核心链用例库没有pack/*套餐配置用例，无法形成正式oracle验收PASS"
+    },
+    {
+      "id": "EXP-PKG-016",
+      "title": "线上旧后端空套餐生成报价风险",
+      "status": "BLOCKED",
+      "evidence": [
+        "raw/online-package-readback.json"
+      ],
+      "note": "线上存在0项目空套餐；旧后端代码允许零项目报价，但缺少生产Boss授权不可执行写入，不判正式缺陷"
+    }
+  ],
+  "writeSafety": {
+    "backup": "raw/backup/local-decoboon-before-RUN-20261101-PKG-CLOSE-001.sql.gz",
+    "backupSha256": "3f4d380bf815f42d2e322ee8f85d27ae2ef1e8888be378bb49504f696ea0c56f",
+    "restoredFixtureStatuses": "raw/cleanup-restored-statuses.txt",
+    "restoredCustomerStatus": "PendingMeasure",
+    "restoredPropertyStatus": "Measured",
+    "remainingTestDataPrefix": "AUDIT-20261101-PKGCLOSE-001-",
+    "productionMutation": false
+  }
+}

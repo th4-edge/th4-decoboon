@@ -121,7 +121,7 @@ public class ProjectCostContext {
             List<QuoteLine> lines = project == null || project.getQuote() == null
                     ? List.of() : quoteLineRepository.findByQuote(project.getQuote());
             CostBreakdown post = summarizePostCarryover(project, List.of(), List.of(), List.of(),
-                    List.of(), lines, List.of(), List.of(), ManualLedgerContext.ManualAmounts.ZERO);
+                    List.of(), lines, List.of(), List.of(), List.of(), ManualLedgerContext.ManualAmounts.ZERO);
             return buildSummary(project, post, null);
         }
         return summarizeAll(List.of(project)).get(project.getProjectId());
@@ -181,12 +181,13 @@ public class ProjectCostContext {
             List<QuoteLine> quoteLines = !signedLines.isEmpty() || project.getQuote() == null
                     ? List.of() : quoteLineRepository.findByQuote(project.getQuote());
 
+            List<ContractChangeItem> effectiveChanges = changesByProject.getOrDefault(projectId, List.of());
             CostBreakdown post = summarizePostCarryover(project, projectOrders, projectItems, projectSettlements,
-                    signedLines, quoteLines,
+                    signedLines, quoteLines, effectiveChanges,
                     payablesByProject.getOrDefault(projectId, List.of()),
                     expensesByProject.getOrDefault(projectId, List.of()),
                     manualByProject.getOrDefault(projectId, ManualLedgerContext.ManualAmounts.ZERO));
-            post = applyChangeItems(post, changesByProject.getOrDefault(projectId, List.of()));
+            post = applyChangeItems(post, effectiveChanges);
             result.put(projectId, buildSummary(project, post, snapshots.get(projectId)));
         }
         return result;
@@ -198,6 +199,7 @@ public class ProjectCostContext {
                                                  List<MaterialSettlementItem> settlementItems,
                                                  List<ContractLine> signedLines,
                                                  List<QuoteLine> quoteLines,
+                                                 List<ContractChangeItem> effectiveChanges,
                                                  List<Payable> payables,
                                                  List<Expense> expenses,
                                                  ManualLedgerContext.ManualAmounts manual) {
@@ -222,7 +224,7 @@ public class ProjectCostContext {
             estimatedIncomplete = carryover ? 0 : 1;
         }
 
-        MaterialFacts material = materialFacts(costLines, purchaseOrders, purchaseItems, settlementItems);
+        MaterialFacts material = materialFacts(costLines, effectiveChanges, purchaseOrders, purchaseItems, settlementItems);
         AccrualFacts accrual = accrualFacts(payables, expenses, manual);
         int dynamicIncomplete = material.dynamicIncomplete() + accrual.incomplete();
         int finalIncomplete = material.finalIncomplete() + accrual.incomplete();
@@ -266,6 +268,7 @@ public class ProjectCostContext {
      * 并让最终成本保持不完整。
      */
     private MaterialFacts materialFacts(List<CostLine> costLines,
+                                        List<ContractChangeItem> effectiveChanges,
                                         List<PurchaseOrder> purchaseOrders,
                                         List<PurchaseOrderItem> purchaseItems,
                                         List<MaterialSettlementItem> settlementItems) {
@@ -349,9 +352,17 @@ public class ProjectCostContext {
             List<PurchaseOrder> linked = key == null ? List.of() : ordersByLine.getOrDefault(key, List.of());
             BigDecimal received = key == null ? BigDecimal.ZERO
                     : receivedByLine.getOrDefault(key, BigDecimal.ZERO);
-            if (line.quantity().signum() <= 0
-                    || linked.isEmpty()
-                    || received.compareTo(line.quantity()) < 0
+            BigDecimal effectiveQuantity = effectiveMaterialQuantity(line, effectiveChanges);
+            if (effectiveQuantity.signum() <= 0) {
+                // 已完全减项时不再要求新的采购；但已经到场的遗留事实必须通过退货/调整闭环。
+                if (received.signum() > 0) {
+                    dynamicIncomplete++;
+                    finalIncomplete++;
+                }
+                continue;
+            }
+            if (linked.isEmpty()
+                    || received.compareTo(effectiveQuantity) < 0
                     || linked.stream().anyMatch(order -> order.getStatus() == PurchaseStatus.PartiallyReceived)) {
                 dynamicIncomplete++;
                 finalIncomplete++;
@@ -360,6 +371,14 @@ public class ProjectCostContext {
 
         return new MaterialFacts(money(p2.add(p3)), money(p3),
                 dynamicIncomplete, finalIncomplete, p2.signum() > 0);
+    }
+
+    private BigDecimal effectiveMaterialQuantity(CostLine line, List<ContractChangeItem> effectiveChanges) {
+        if (line.contractLine() == null) {
+            return line.quantity();
+        }
+        return ContractChangeRangeContext.effectiveRemainingQuantityForCost(
+                line.contractLine(), effectiveChanges);
     }
 
     private OrderMaterialFacts orderLevelMaterial(PurchaseOrder order) {

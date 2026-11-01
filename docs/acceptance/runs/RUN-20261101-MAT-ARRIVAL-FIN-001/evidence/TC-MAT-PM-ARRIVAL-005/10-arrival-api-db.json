@@ -1,0 +1,386 @@
+{
+  "before": {
+    "purchase": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "payable": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前账号无权执行该操作",
+          "system": false
+        }
+      }
+    }
+  },
+  "arrival": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "采购订单不存在或无权访问",
+        "system": false
+      }
+    }
+  },
+  "after": {
+    "purchase": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "payable": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-01 15:33:36"
+              },
+              "payableId": "1793518416093711825",
+              "project": {
+                "projectId": "242541620656865280",
+                "no": "P1793516028568",
+                "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+                "customer": {
+                  "custId": "242541216321765376",
+                  "name": "王芳（造数5100）",
+                  "telNo": "13700005100",
+                  "community": "滨湖世纪城",
+                  "addr": "滨湖世纪城1栋102",
+                  "area": 130.0,
+                  "budget": 30.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  }
+                },
+                "property": {
+                  "propertyId": "242541216497926144",
+                  "propertyNo": "H1793515932211",
+                  "community": "滨湖世纪城",
+                  "building": "1栋",
+                  "roomNo": "102",
+                  "address": "滨湖世纪城1栋102",
+                  "area": 130.0,
+                  "layout": "三室两厅一厨两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  }
+                },
+                "siteAddr": "滨湖世纪城1栋102",
+                "contractAmount": 2495.75,
+                "status": {
+                  "name": "待开工",
+                  "key": "Preparing"
+                }
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "materialPlan": {
+                "quantity": 12.0,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "cost": 1440.0,
+                "status": {
+                  "name": "部分下单",
+                  "key": "PartiallyOrdered"
+                },
+                "requiredAt": "2026-11-05"
+              },
+              "name": "材料采购 · 全链路验收材料供应商",
+              "type": {
+                "name": "材料款",
+                "key": "Material"
+              },
+              "payeeName": "全链路验收材料供应商",
+              "payeePartner": {
+                "partnerId": "1793457851296966369",
+                "type": {
+                  "name": "材料供应商",
+                  "key": "Supplier"
+                },
+                "name": "全链路验收材料供应商",
+                "telNo": "13910002991",
+                "settlementMode": {
+                  "name": "收货日加账期天数",
+                  "value": "ReceiptDays",
+                  "key": "ReceiptDays"
+                },
+                "settlementDays": 30,
+                "cutoffDay": 25
+              },
+              "amount": 240.0,
+              "paidAmount": 0.0,
+              "estimated": false,
+              "status": {
+                "name": "待付款",
+                "key": "Pending"
+              },
+              "urgent": false,
+              "sourceNo": "POb69125551f7cc1f275a014315ea0b202",
+              "remark": "确认下单自动形成应付",
+              "createdBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              }
+            }
+          ],
+          "totalPages": 1,
+          "last": true,
+          "totalElements": "1",
+          "first": true,
+          "size": 50
+        },
+        "success": true
+      }
+    },
+    "projectReport": {
+      "httpStatus": 200,
+      "body": {
+        "data": {
+          "project": {
+            "projectId": "242541620656865280",
+            "businessOrigin": {
+              "name": "正常业务",
+              "value": "New",
+              "key": "New"
+            },
+            "no": "P1793516028568",
+            "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "community": "滨湖世纪城",
+              "address": "滨湖世纪城1栋102"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "siteAddr": "滨湖世纪城1栋102",
+            "contractAmount": 2495.75,
+            "cost": 1760.0,
+            "status": {
+              "name": "待开工",
+              "key": "Preparing"
+            },
+            "progress": 0,
+            "startDate": "2026-11-05",
+            "planEndDate": "2027-03-04"
+          },
+          "contractAmount": 2495.75,
+          "contractRevenue": 2495.75,
+          "receivableAmount": 2495.75,
+          "receivedAmount": 0.0,
+          "outstandingAmount": 2495.75,
+          "overdueAmount": 0,
+          "payableAmount": 240.0,
+          "paidAmount": 0.0,
+          "unpaidAmount": 240.0,
+          "receiptCount": 0,
+          "paymentCount": 0,
+          "grossReceiptAmount": 0,
+          "reversalAmount": 0,
+          "receiptAmount": 0,
+          "paymentAmount": 0,
+          "monthReceiptAmount": 0,
+          "monthPaymentAmount": 0,
+          "urgentPayableAmount": 0,
+          "materialAmount": 0.0,
+          "materialCost": 0.0,
+          "salaryAmount": 0.0,
+          "laborCost": 0.0,
+          "projectPaymentAmount": 0.0,
+          "projectCost": 0.0,
+          "employeeSalaryAmount": 0,
+          "employeeCommissionAmount": 0,
+          "otherPayableAmount": 0.0,
+          "expenseAllocation": 0.0,
+          "estimatedCost": 1760.0,
+          "actualCost": 0.0,
+          "manualIncomeAmount": 0,
+          "manualCostAmount": 0,
+          "totalCost": 0.0,
+          "costComplete": false,
+          "costIncompleteCount": 3,
+          "collectionRate": 0.0,
+          "paymentRate": 0.0,
+          "receivableCleared": false,
+          "payableCleared": false,
+          "historicalArchive": false,
+          "settlementActionable": true,
+          "receivables": [
+            {
+              "receivableId": "242541621277622272",
+              "property": {
+                "propertyId": "242541216497926144",
+                "community": "滨湖世纪城",
+                "address": "滨湖世纪城1栋102"
+              },
+              "name": "合同签约款",
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "amount": 748.73,
+              "receivedAmount": 0.0,
+              "dueDate": "2026-11-01",
+              "status": {
+                "name": "待收",
+                "key": "Pending"
+              },
+              "invoiceRequired": false,
+              "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30"
+            },
+            {
+              "receivableId": "242541621281816576",
+              "property": {
+                "propertyId": "242541216497926144",
+                "community": "滨湖世纪城",
+                "address": "滨湖世纪城1栋102"
+              },
+              "name": "项目开工款",
+              "stageName": "开工交底",
+              "type": {
+                "name": "进度款",
+                "key": "Progress"
+              },
+              "amount": 998.3,
+              "receivedAmount": 0.0,
+              "dueDate": "2026-11-01",
+              "status": {
+                "name": "待收",
+                "key": "Pending"
+              },
+              "invoiceRequired": false,
+              "remark": "合同付款计划快照：全链路验收付款计划 / START_40"
+            },
+            {
+              "receivableId": "242541621281816577",
+              "property": {
+                "propertyId": "242541216497926144",
+                "community": "滨湖世纪城",
+                "address": "滨湖世纪城1栋102"
+              },
+              "name": "竣工尾款",
+              "stageName": "竣工保洁验收",
+              "type": {
+                "name": "尾款",
+                "key": "Final"
+              },
+              "amount": 748.72,
+              "receivedAmount": 0.0,
+              "dueDate": "2027-01-30",
+              "status": {
+                "name": "待收",
+                "key": "Pending"
+              },
+              "invoiceRequired": false,
+              "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30"
+            }
+          ],
+          "payables": [
+            {
+              "payableId": "1793518416093711825",
+              "property": {
+                "propertyId": "242541216497926144",
+                "community": "滨湖世纪城",
+                "address": "滨湖世纪城1栋102"
+              },
+              "name": "材料采购 · 全链路验收材料供应商",
+              "type": {
+                "name": "材料款",
+                "key": "Material"
+              },
+              "payeeName": "全链路验收材料供应商",
+              "amount": 240.0,
+              "paidAmount": 0.0,
+              "status": {
+                "name": "待付款",
+                "key": "Pending"
+              },
+              "urgent": false,
+              "sourceNo": "POb69125551f7cc1f275a014315ea0b202",
+              "remark": "确认下单自动形成应付"
+            }
+          ],
+          "recentLedgers": []
+        },
+        "success": true
+      }
+    },
+    "receipts": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "采购订单不存在或无权访问",
+          "system": false
+        }
+      }
+    }
+  },
+  "dbRow": [
+    "Ordered",
+    "0.000",
+    "240.00",
+    "0.000",
+    "Ordered",
+    "PartiallyOrdered",
+    "NULL",
+    "1440.00",
+    "Pending",
+    "Ordered",
+    "0"
+  ]
+}

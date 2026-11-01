@@ -110,6 +110,9 @@ public class Save implements com.th4.edge.decoboon.finance.service.payables.save
         }
         Project project = projectId == null ? null : accessContext.resolveProject(current, projectId);
         PayableType payableType = type == null ? PayableType.Other : type;
+        if (payableType != PayableType.Other && payableType != PayableType.Expense) {
+            throw new DefinedException(new DefaultErrorCode("400", "手工应付仅支持其他应付或费用支出"));
+        }
         Employee payee = null;
         if (payeeEmployeeId != null) {
             payee = employeeRepository.findByEmpIdAndCompany_ComId(payeeEmployeeId, current.getCompany().getComId());

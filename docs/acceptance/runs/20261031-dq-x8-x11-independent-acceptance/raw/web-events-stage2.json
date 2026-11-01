@@ -1,0 +1,1932 @@
+[
+  {
+    "method": "Page.frameStartedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.navigatedWithinDocument",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62",
+      "url": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+      "navigationType": "historyApi"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStoppedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStartedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.navigatedWithinDocument",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62",
+      "url": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+      "navigationType": "historyApi"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStoppedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Runtime.consoleAPICalled",
+    "params": {
+      "type": "warning",
+      "args": [
+        {
+          "type": "object",
+          "subtype": "error",
+          "className": "ElementPlusError",
+          "description": "ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.\nFor more detail, please visit: https://element-plus.org/en-US/component/radio.html\n\n    at debugWarn (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:9111:37)\n    at watch.immediate (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10378:7)\n    at callWithErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2448:19)\n    at callWithAsyncErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2455:17)\n    at baseWatchOptions.call (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3151:47)\n    at job (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2175:18)\n    at watch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2211:7)\n    at doWatch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3179:23)\n    at watch2 (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3111:10)\n    at useDeprecated (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10376:3)",
+          "objectId": "-8928858158924161732.4.2",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.\nFor more detail, please visit: https://element-plus.org/en-US/component/radio.html\n\n    at debugWarn (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:9111:37)\n    at watch.immediate (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10378:7)\n    at callWithErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2448:19)\n    at callWithAsyncErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2455:17)\n    at baseWatchOptions.call (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3151:47)\n    at job (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2175:18)\n    at watch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2211:7)\n    at doWatch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3179:23)\n    at watch2 (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3111:10)\n    at useDeprecated (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10376:3)",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "name",
+                "type": "string",
+                "value": "ElementPlusError"
+              },
+              {
+                "name": "stack",
+                "type": "string",
+                "value": "ElementPlusError: [el-radio] [API] label act as va…/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10376:3)"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "[el-radio] [API] label act as value is about to be…ps://element-plus.org/en-US/component/radio.html\n"
+              }
+            ]
+          }
+        }
+      ],
+      "executionContextId": 4,
+      "timestamp": 1793430247062.794,
+      "stackTrace": {
+        "callFrames": [
+          {
+            "functionName": "debugWarn",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 9111,
+            "columnNumber": 12
+          },
+          {
+            "functionName": "watch.immediate",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 10377,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "callWithErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2447,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "callWithAsyncErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2454,
+            "columnNumber": 16
+          },
+          {
+            "functionName": "baseWatchOptions.call",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 3150,
+            "columnNumber": 46
+          },
+          {
+            "functionName": "job",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2174,
+            "columnNumber": 17
+          },
+          {
+            "functionName": "watch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2210,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "doWatch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 3178,
+            "columnNumber": 22
+          },
+          {
+            "functionName": "watch2",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 3110,
+            "columnNumber": 9
+          },
+          {
+            "functionName": "useDeprecated",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 10375,
+            "columnNumber": 2
+          },
+          {
+            "functionName": "useRadio",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 35970,
+            "columnNumber": 2
+          },
+          {
+            "functionName": "setup",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 36063,
+            "columnNumber": 92
+          },
+          {
+            "functionName": "callWithErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2447,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "setupStatefulComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 10654,
+            "columnNumber": 24
+          },
+          {
+            "functionName": "setupComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 10616,
+            "columnNumber": 35
+          },
+          {
+            "functionName": "mountComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8484,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8450,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8380,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8600,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "setupRenderEffect",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8729,
+            "columnNumber": 4
+          },
+          {
+            "functionName": "mountComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8499,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8450,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8380,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8380,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8600,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "setupRenderEffect",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8729,
+            "columnNumber": 4
+          },
+          {
+            "functionName": "mountComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8499,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8450,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8914,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8424,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8681,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "updateComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8529,
+            "columnNumber": 17
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8461,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8872,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8250,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8077,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8872,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8424,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8872,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8250,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8077,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8681,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "updateComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8529,
+            "columnNumber": 17
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8461,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8681,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "runIfDirty",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 623,
+            "columnNumber": 11
+          },
+          {
+            "functionName": "callWithErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2447,
+            "columnNumber": 32
+          },
+          {
+            "functionName": "flushJobs",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2660,
+            "columnNumber": 8
+          }
+        ]
+      }
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Runtime.consoleAPICalled",
+    "params": {
+      "type": "warning",
+      "args": [
+        {
+          "type": "object",
+          "subtype": "error",
+          "className": "ElementPlusError",
+          "description": "ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.\nFor more detail, please visit: https://element-plus.org/en-US/component/radio.html\n\n    at debugWarn (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:9111:37)\n    at watch.immediate (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10378:7)\n    at callWithErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2448:19)\n    at callWithAsyncErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2455:17)\n    at baseWatchOptions.call (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3151:47)\n    at job (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2175:18)\n    at watch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2211:7)\n    at doWatch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3179:23)\n    at watch2 (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3111:10)\n    at useDeprecated (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10376:3)",
+          "objectId": "-8928858158924161732.4.3",
+          "preview": {
+            "type": "object",
+            "subtype": "error",
+            "description": "ElementPlusError: [el-radio] [API] label act as value is about to be deprecated in version 3.0.0, please use value instead.\nFor more detail, please visit: https://element-plus.org/en-US/component/radio.html\n\n    at debugWarn (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:9111:37)\n    at watch.immediate (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10378:7)\n    at callWithErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2448:19)\n    at callWithAsyncErrorHandling (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2455:17)\n    at baseWatchOptions.call (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3151:47)\n    at job (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2175:18)\n    at watch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:2211:7)\n    at doWatch (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3179:23)\n    at watch2 (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624:3111:10)\n    at useDeprecated (http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10376:3)",
+            "overflow": false,
+            "properties": [
+              {
+                "name": "name",
+                "type": "string",
+                "value": "ElementPlusError"
+              },
+              {
+                "name": "stack",
+                "type": "string",
+                "value": "ElementPlusError: [el-radio] [API] label act as va…/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624:10376:3)"
+              },
+              {
+                "name": "message",
+                "type": "string",
+                "value": "[el-radio] [API] label act as value is about to be…ps://element-plus.org/en-US/component/radio.html\n"
+              }
+            ]
+          }
+        }
+      ],
+      "executionContextId": 4,
+      "timestamp": 1793430247068.589,
+      "stackTrace": {
+        "callFrames": [
+          {
+            "functionName": "debugWarn",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 9111,
+            "columnNumber": 12
+          },
+          {
+            "functionName": "watch.immediate",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 10377,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "callWithErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2447,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "callWithAsyncErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2454,
+            "columnNumber": 16
+          },
+          {
+            "functionName": "baseWatchOptions.call",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 3150,
+            "columnNumber": 46
+          },
+          {
+            "functionName": "job",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2174,
+            "columnNumber": 17
+          },
+          {
+            "functionName": "watch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2210,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "doWatch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 3178,
+            "columnNumber": 22
+          },
+          {
+            "functionName": "watch2",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 3110,
+            "columnNumber": 9
+          },
+          {
+            "functionName": "useDeprecated",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 10375,
+            "columnNumber": 2
+          },
+          {
+            "functionName": "useRadio",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 35970,
+            "columnNumber": 2
+          },
+          {
+            "functionName": "setup",
+            "scriptId": "34",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-FJOHOZ5H.js?v=b1cf8624",
+            "lineNumber": 36063,
+            "columnNumber": 92
+          },
+          {
+            "functionName": "callWithErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2447,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "setupStatefulComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 10654,
+            "columnNumber": 24
+          },
+          {
+            "functionName": "setupComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 10616,
+            "columnNumber": 35
+          },
+          {
+            "functionName": "mountComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8484,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8450,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8380,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8600,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "setupRenderEffect",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8729,
+            "columnNumber": 4
+          },
+          {
+            "functionName": "mountComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8499,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8450,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8380,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8380,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "mountChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8192,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "mountElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8106,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8061,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8600,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "setupRenderEffect",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8729,
+            "columnNumber": 4
+          },
+          {
+            "functionName": "mountComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8499,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8450,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8914,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8424,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8681,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "updateComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8529,
+            "columnNumber": 17
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8461,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8872,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8250,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8077,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8872,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "processFragment",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8424,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7913,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchKeyedChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8872,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patchChildren",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8786,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "patchElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8250,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "processElement",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8077,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7927,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8681,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "updateComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8529,
+            "columnNumber": 17
+          },
+          {
+            "functionName": "processComponent",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8461,
+            "columnNumber": 6
+          },
+          {
+            "functionName": "patch",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 7939,
+            "columnNumber": 10
+          },
+          {
+            "functionName": "componentUpdateFn",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 8681,
+            "columnNumber": 8
+          },
+          {
+            "functionName": "run",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 585,
+            "columnNumber": 18
+          },
+          {
+            "functionName": "runIfDirty",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 623,
+            "columnNumber": 11
+          },
+          {
+            "functionName": "callWithErrorHandling",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2447,
+            "columnNumber": 32
+          },
+          {
+            "functionName": "flushJobs",
+            "scriptId": "12",
+            "url": "http://127.0.0.1:8081/node_modules/.vite/deps/chunk-TTAXFTRU.js?v=b1cf8624",
+            "lineNumber": 2660,
+            "columnNumber": 8
+          }
+        ]
+      }
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.requestWillBeSentExtraInfo",
+    "params": {
+      "requestId": "43533.314",
+      "associatedCookies": [],
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Connection": "keep-alive",
+        "Content-Length": "57",
+        "Content-Type": "application/json",
+        "Host": "127.0.0.1:8081",
+        "Origin": "http://127.0.0.1:8081",
+        "Referer": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "token": "[REDACTED]"
+      },
+      "connectTiming": {
+        "requestTime": 8957.6525
+      },
+      "clientSecurityState": {
+        "initiatorIsSecureContext": true,
+        "initiatorIPAddressSpace": "Loopback",
+        "localNetworkAccessRequestPolicy": "PermissionBlock"
+      },
+      "siteHasCookieInOtherPartition": false
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.requestWillBeSent",
+    "params": {
+      "requestId": "43533.314",
+      "loaderId": "8A2AFF6A5A4062F6E8460886FE8DF1BA",
+      "documentURL": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+      "request": {
+        "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+        "method": "POST",
+        "headers": {
+          "sec-ch-ua-platform": "\"macOS\"",
+          "Referer": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+          "Accept": "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+          "token": "[REDACTED]"
+        },
+        "postData": "{\"contractId\":\"241939522005237760\",\"current\":1,\"size\":20}",
+        "hasPostData": true,
+        "postDataEntries": [
+          {
+            "bytes": "eyJjb250cmFjdElkIjoiMjQxOTM5NTIyMDA1MjM3NzYwIiwiY3VycmVudCI6MSwic2l6ZSI6MjB9"
+          }
+        ],
+        "mixedContentType": "none",
+        "initialPriority": "High",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "isSameSite": true
+      },
+      "timestamp": 8957.651235,
+      "wallTime": 1793430247.110911,
+      "initiator": {
+        "type": "script",
+        "stack": {
+          "callFrames": [
+            {
+              "functionName": "dispatchXhrRequest",
+              "scriptId": "29",
+              "url": "http://127.0.0.1:8081/node_modules/.vite/deps/axios.js?v=b1cf8624",
+              "lineNumber": 2463,
+              "columnNumber": 12
+            },
+            {
+              "functionName": "xhr",
+              "scriptId": "29",
+              "url": "http://127.0.0.1:8081/node_modules/.vite/deps/axios.js?v=b1cf8624",
+              "lineNumber": 2300,
+              "columnNumber": 9
+            },
+            {
+              "functionName": "dispatchRequest",
+              "scriptId": "29",
+              "url": "http://127.0.0.1:8081/node_modules/.vite/deps/axios.js?v=b1cf8624",
+              "lineNumber": 3241,
+              "columnNumber": 9
+            }
+          ]
+        }
+      },
+      "redirectHasExtraInfo": false,
+      "type": "XHR",
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62",
+      "hasUserGesture": true
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.responseReceivedExtraInfo",
+    "params": {
+      "requestId": "43533.314",
+      "blockedCookies": [],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Transfer-Encoding": "chunked",
+        "connection": "close",
+        "content-type": "application/json; charset=UTF-8",
+        "date": "Sat, 31 Oct 2026 07:04:07 GMT"
+      },
+      "resourceIPAddressSpace": "Loopback",
+      "statusCode": 200,
+      "headersText": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nconnection: close\r\ncontent-type: application/json; charset=UTF-8\r\ndate: Sat, 31 Oct 2026 07:04:07 GMT\r\nTransfer-Encoding: chunked\r\n\r\n",
+      "cookiePartitionKey": {
+        "topLevelSite": "http://127.0.0.1",
+        "hasCrossSiteAncestor": false
+      },
+      "cookiePartitionKeyOpaque": false,
+      "exemptedCookies": []
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.responseReceived",
+    "params": {
+      "requestId": "43533.314",
+      "loaderId": "8A2AFF6A5A4062F6E8460886FE8DF1BA",
+      "timestamp": 8957.709181,
+      "type": "XHR",
+      "response": {
+        "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "Transfer-Encoding": "chunked",
+          "Access-Control-Allow-Origin": "*",
+          "date": "Sat, 31 Oct 2026 07:04:07 GMT",
+          "content-type": "application/json; charset=UTF-8",
+          "connection": "close"
+        },
+        "mimeType": "application/json",
+        "charset": "utf-8",
+        "connectionReused": false,
+        "connectionId": 85283,
+        "remoteIPAddress": "127.0.0.1",
+        "remotePort": 8081,
+        "fromDiskCache": false,
+        "fromServiceWorker": false,
+        "fromPrefetchCache": false,
+        "encodedDataLength": 182,
+        "timing": {
+          "requestTime": 8957.6525,
+          "proxyStart": -1,
+          "proxyEnd": -1,
+          "dnsStart": 0.226,
+          "dnsEnd": 1.365,
+          "connectStart": 1.365,
+          "connectEnd": 2.348,
+          "sslStart": -1,
+          "sslEnd": -1,
+          "workerStart": -1,
+          "workerReady": -1,
+          "workerFetchStart": -1,
+          "workerRespondWithSettled": -1,
+          "sendStart": 2.749,
+          "sendEnd": 3.398,
+          "pushStart": 0,
+          "pushEnd": 0,
+          "receiveHeadersStart": 49.732,
+          "receiveHeadersEnd": 49.784
+        },
+        "responseTime": 1793430247161.78,
+        "protocol": "http/1.1",
+        "alternateProtocolUsage": "unspecifiedReason",
+        "securityState": "secure"
+      },
+      "hasExtraInfo": true,
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.dataReceived",
+    "params": {
+      "requestId": "43533.314",
+      "timestamp": 8957.70921,
+      "dataLength": 3038,
+      "encodedDataLength": 0
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.dataReceived",
+    "params": {
+      "requestId": "43533.314",
+      "timestamp": 8957.711473,
+      "dataLength": 0,
+      "encodedDataLength": 3056
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.loadingFinished",
+    "params": {
+      "requestId": "43533.314",
+      "timestamp": 8957.702524,
+      "encodedDataLength": 3238
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStartedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.navigatedWithinDocument",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62",
+      "url": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+      "navigationType": "historyApi"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStoppedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStartedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.navigatedWithinDocument",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62",
+      "url": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+      "navigationType": "historyApi"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameStoppedLoading",
+    "params": {
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.requestWillBeSent",
+    "params": {
+      "requestId": "43533.315",
+      "loaderId": "8A2AFF6A5A4062F6E8460886FE8DF1BA",
+      "documentURL": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+      "request": {
+        "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+        "method": "POST",
+        "headers": {
+          "sec-ch-ua-platform": "\"macOS\"",
+          "Referer": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+          "Accept": "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+          "token": "[REDACTED]"
+        },
+        "postData": "{\"contractId\":\"241939522005237760\",\"current\":1,\"size\":20,\"itemType\":\"Material\"}",
+        "hasPostData": true,
+        "postDataEntries": [
+          {
+            "bytes": "eyJjb250cmFjdElkIjoiMjQxOTM5NTIyMDA1MjM3NzYwIiwiY3VycmVudCI6MSwic2l6ZSI6MjAsIml0ZW1UeXBlIjoiTWF0ZXJpYWwifQ=="
+          }
+        ],
+        "mixedContentType": "none",
+        "initialPriority": "High",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "isSameSite": true
+      },
+      "timestamp": 8960.963595,
+      "wallTime": 1793430250.423302,
+      "initiator": {
+        "type": "script",
+        "stack": {
+          "callFrames": [
+            {
+              "functionName": "dispatchXhrRequest",
+              "scriptId": "29",
+              "url": "http://127.0.0.1:8081/node_modules/.vite/deps/axios.js?v=b1cf8624",
+              "lineNumber": 2463,
+              "columnNumber": 12
+            },
+            {
+              "functionName": "xhr",
+              "scriptId": "29",
+              "url": "http://127.0.0.1:8081/node_modules/.vite/deps/axios.js?v=b1cf8624",
+              "lineNumber": 2300,
+              "columnNumber": 9
+            },
+            {
+              "functionName": "dispatchRequest",
+              "scriptId": "29",
+              "url": "http://127.0.0.1:8081/node_modules/.vite/deps/axios.js?v=b1cf8624",
+              "lineNumber": 3241,
+              "columnNumber": 9
+            }
+          ]
+        }
+      },
+      "redirectHasExtraInfo": false,
+      "type": "XHR",
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62",
+      "hasUserGesture": true
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.requestWillBeSentExtraInfo",
+    "params": {
+      "requestId": "43533.315",
+      "associatedCookies": [],
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Connection": "keep-alive",
+        "Content-Length": "79",
+        "Content-Type": "application/json",
+        "Host": "127.0.0.1:8081",
+        "Origin": "http://127.0.0.1:8081",
+        "Referer": "http://127.0.0.1:8081/designer/projects/241940507872198656/changes?action=create&changeId=1793373550448924493",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+        "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"macOS\"",
+        "token": "[REDACTED]"
+      },
+      "connectTiming": {
+        "requestTime": 8960.964615
+      },
+      "clientSecurityState": {
+        "initiatorIsSecureContext": true,
+        "initiatorIPAddressSpace": "Loopback",
+        "localNetworkAccessRequestPolicy": "PermissionBlock"
+      },
+      "siteHasCookieInOtherPartition": false
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.responseReceivedExtraInfo",
+    "params": {
+      "requestId": "43533.315",
+      "blockedCookies": [],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Transfer-Encoding": "chunked",
+        "connection": "close",
+        "content-type": "application/json; charset=UTF-8",
+        "date": "Sat, 31 Oct 2026 07:04:10 GMT"
+      },
+      "resourceIPAddressSpace": "Loopback",
+      "statusCode": 200,
+      "headersText": "HTTP/1.1 200 OK\r\nAccess-Control-Allow-Origin: *\r\nconnection: close\r\ncontent-type: application/json; charset=UTF-8\r\ndate: Sat, 31 Oct 2026 07:04:10 GMT\r\nTransfer-Encoding: chunked\r\n\r\n",
+      "cookiePartitionKey": {
+        "topLevelSite": "http://127.0.0.1",
+        "hasCrossSiteAncestor": false
+      },
+      "cookiePartitionKeyOpaque": false,
+      "exemptedCookies": []
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.responseReceived",
+    "params": {
+      "requestId": "43533.315",
+      "loaderId": "8A2AFF6A5A4062F6E8460886FE8DF1BA",
+      "timestamp": 8961.016991,
+      "type": "XHR",
+      "response": {
+        "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+        "status": 200,
+        "statusText": "OK",
+        "headers": {
+          "Transfer-Encoding": "chunked",
+          "Access-Control-Allow-Origin": "*",
+          "date": "Sat, 31 Oct 2026 07:04:10 GMT",
+          "content-type": "application/json; charset=UTF-8",
+          "connection": "close"
+        },
+        "mimeType": "application/json",
+        "charset": "utf-8",
+        "connectionReused": false,
+        "connectionId": 85315,
+        "remoteIPAddress": "127.0.0.1",
+        "remotePort": 8081,
+        "fromDiskCache": false,
+        "fromServiceWorker": false,
+        "fromPrefetchCache": false,
+        "encodedDataLength": 182,
+        "timing": {
+          "requestTime": 8960.964615,
+          "proxyStart": -1,
+          "proxyEnd": -1,
+          "dnsStart": 0.18,
+          "dnsEnd": 0.196,
+          "connectStart": 0.196,
+          "connectEnd": 0.835,
+          "sslStart": -1,
+          "sslEnd": -1,
+          "workerStart": -1,
+          "workerReady": -1,
+          "workerFetchStart": -1,
+          "workerRespondWithSettled": -1,
+          "sendStart": 0.98,
+          "sendEnd": 1.08,
+          "pushStart": 0,
+          "pushEnd": 0,
+          "receiveHeadersStart": 39.119,
+          "receiveHeadersEnd": 39.17
+        },
+        "responseTime": 1793430250463.286,
+        "protocol": "http/1.1",
+        "alternateProtocolUsage": "unspecifiedReason",
+        "securityState": "secure"
+      },
+      "hasExtraInfo": true,
+      "frameId": "B0860AA9A7CECE08321C68E14A715E62"
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.dataReceived",
+    "params": {
+      "requestId": "43533.315",
+      "timestamp": 8961.017063,
+      "dataLength": 1658,
+      "encodedDataLength": 0
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.dataReceived",
+    "params": {
+      "requestId": "43533.315",
+      "timestamp": 8961.02144,
+      "dataLength": 0,
+      "encodedDataLength": 1676
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.loadingFinished",
+    "params": {
+      "requestId": "43533.315",
+      "timestamp": 8961.004003,
+      "encodedDataLength": 1858
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Network.webSocketFrameSent",
+    "params": {
+      "requestId": "43533.202",
+      "timestamp": 8961.08928,
+      "response": {
+        "opcode": 1,
+        "mask": true,
+        "payloadData": "{\"type\":\"ping\"}"
+      }
+    },
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameResized",
+    "params": {},
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameResized",
+    "params": {},
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  },
+  {
+    "method": "Page.frameResized",
+    "params": {},
+    "sessionId": "F0DB029195B3CA6F2AB55B98036F2AA4"
+  }
+]

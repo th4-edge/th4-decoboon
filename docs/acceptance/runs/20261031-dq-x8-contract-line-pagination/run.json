@@ -1,0 +1,24 @@
+{
+  "runId": "20261031-dq-x8-contract-line-pagination",
+  "batch": "DQ-X8",
+  "change": "CHG-20261031-045",
+  "environment": "local dev",
+  "backend": "http://127.0.0.1:8090",
+  "web": "http://127.0.0.1:8080",
+  "actors": ["Boss", "Designer", "StoreManager"],
+  "result": "DEV_VERIFIED",
+  "checks": {
+    "backendTest": "7/7 PASS",
+    "backendCompile": "PASS",
+    "webBuild": "PASS",
+    "realApi": "PASS",
+    "realWebPage": "PASS",
+    "contractChangeSourcePicker": "PASS"
+  },
+  "limits": [
+    "真实合同仅 6 行，页面翻页按钮未出现",
+    "未执行独立验收",
+    "未执行视觉签字",
+    "未发布"
+  ]
+}

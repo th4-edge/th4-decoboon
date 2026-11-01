@@ -118,6 +118,10 @@ public class Invite extends AbstractModel {
     @Transient
     private Boolean reusedPending = Boolean.FALSE;
 
+    @Note("脱敏手机号；仅用于邀请确认页")
+    @Transient
+    private String maskedTelNo;
+
     public Long getInviteId() {
         return inviteId;
     }
@@ -227,4 +231,7 @@ public class Invite extends AbstractModel {
 
     public Boolean getReusedPending() { return reusedPending; }
     public void setReusedPending(Boolean reusedPending) { this.reusedPending = Boolean.TRUE.equals(reusedPending); }
+
+    public String getMaskedTelNo() { return maskedTelNo; }
+    public void setMaskedTelNo(String maskedTelNo) { this.maskedTelNo = maskedTelNo; }
 }

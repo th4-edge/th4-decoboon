@@ -24,7 +24,7 @@ import com.th4.edge.decoboon.statistic.model.StoreScopeInfo;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.repository.StoreRepository;
 
-/** 企业负责人客户经营聚合实现。 */
+/** 经营角色客户聚合实现；实际客户范围由 CustomerOverviewContext 按登录员工数据范围解析。 */
 @Note("客户经营聚合")
 @Properties(allow = {
         @AllowProperties(model = CustomerOverviewReport.class,

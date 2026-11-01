@@ -3,6 +3,10 @@ package com.th4.edge.decoboon.design.repository;
 import com.th4.edge.decoboon.design.model.Design;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -12,6 +16,11 @@ import java.util.List;
 /** 设计方案仓储。 */
 public interface DesignRepository extends JpaRepository<Design, Long>,
         JpaSpecificationExecutor<Design> {
+
+    @Override
+    @EntityGraph(attributePaths = {"customer", "property", "owner", "store"})
+    Page<Design> findAll(Specification<Design> specification, Pageable pageable);
+
 
     List<Design> findByCompany_ComIdOrderByDesignIdDesc(Long comId);
     java.util.Optional<Design> findFirstByCompany_ComIdAndProperty_PropertyIdAndDesignTemplateVersion_VersionId(

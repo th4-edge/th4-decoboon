@@ -1,0 +1,107 @@
+{
+  "caseId": "TC-FIN-CROSSSURFACE-PARITY-006",
+  "status": "FAIL",
+  "startedAt": "2026-11-01T14:27:50+08:00",
+  "finishedAt": "2026-11-01T14:27:50+08:00",
+  "executor": "codex",
+  "role": "Boss/StoreManager/Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-RUN20261101FINP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "Web",
+      "page_path": "/finance/projects/242297299361857536",
+      "control": "项目核算读取",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "project finance facts exist",
+      "business_state_after": "合同、回款、待收、应付、成本精确显示",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-boss-project-web.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "StoreManager",
+      "role": "StoreManager",
+      "surface": "Web",
+      "page_path": "/finance/projects/242297299361857536",
+      "control": "本店项目核算读取",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "总店项目可见",
+      "business_state_after": "金额与Boss/Finance一致",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-store-manager-project-web.png"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/finance/pages/project",
+      "control": "项目金额与结算门禁读取",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "costComplete=false; settlement=Draft",
+      "business_state_after": "页面数据金额一致但展示取整；确认结算按钮未禁用",
+      "feedback": "发现跨端展示精度与控制门禁差异",
+      "evidence_ids": [
+        "20-app-control-and-data-state.json",
+        "app-cost.json",
+        "app-cost-detail.json",
+        "app-report-data.json"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "finance/project/report",
+      "control": "同筛选金额对账",
+      "control_state": "N/A",
+      "business_state_before": "same project",
+      "business_state_after": "DB与API金额一致",
+      "feedback": "业务数据一致，展示和控制状态不一致",
+      "evidence_ids": [
+        "10-finance-project-report-api.json",
+        "13-project-finance-db.json",
+        "24-cross-surface-comparison.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Boss/Finance Web exact amounts consistent",
+    "StoreManager Web exact amounts consistent",
+    "App page data exact amounts consistent",
+    "App visible amounts rounded to yuan; App confirm settlement button not disabled while Web disabled"
+  ],
+  "actualState": [
+    "API/DB contractAmount=2495.75; receivedAmount=1148.05; outstandingAmount=6347.70; payableAmount=3440; paidAmount=1440; totalCost=2240",
+    "costComplete=false; profitAmount=null; grossMargin=null; settlement.status=Draft"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/01-boss-project-web.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/02-store-manager-project-web.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/20-app-control-and-data-state.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/21-web-role-parity.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/22-finance-settlement-web-control.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/23-finance-settlement-web-control.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/24-cross-surface-comparison.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/app-cost.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/app-cost-detail.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/app-report-data.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/10-finance-project-report-api.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/13-project-finance-db.json"
+  ],
+  "defectIds": [
+    "DEF-20261101-001",
+    "DEF-20261101-002"
+  ],
+  "blockedReason": null,
+  "notes": "业务金额事实在API/DB及页面数据中一致；失败点是App展示精度与确认结算控件门禁未与Web对齐。"
+}

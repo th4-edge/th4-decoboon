@@ -1,0 +1,23 @@
+{
+  "request": {
+    "route": "project/contract-change/range",
+    "body": {
+      "contractId": "999999999999999999",
+      "current": 1,
+      "size": 20
+    }
+  },
+  "response": {
+    "status": 200,
+    "elapsedMs": 13.04,
+    "bytes": 108,
+    "json": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "合同基线不存在或无权访问",
+        "system": false
+      }
+    }
+  }
+}

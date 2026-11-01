@@ -205,7 +205,7 @@
 
 | REQ | 业务规则 | 蓝图/对象 | 字段/API | 页面 | 测试 | 验收 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | MAT-X2A + MAT-X2B Web 自测通过 | 独立验收待执行 | DEV_VERIFIED |
+| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | MAT-X2A + MAT-X2B Web 自测通过；`RUN-20261102-MAT-X2F-RETEST-001` Web/Provider/DB 复验通过 | Web/DB PASS；App `BLOCKED_IDENTITY`；全量测试被2个既有statistic失败阻断 | DEV_VERIFIED（Web/DB 修复验证，待干净基线提交） |
 | REQ-MAT-018 | `DEC-088/BR-054` | Sheet/Purchase/Receipt/Adjustment/Settlement | 服务端状态推导 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |
 | REQ-MAT-019 | `DEC-088/BR-054` | MaterialAdjustmentOrder 及下层事实 | adjustment/* | App/Web 异常处置 | 待建 | 独立验收待执行 | UNMAPPED |
 | REQ-MAT-020 | `DEC-088/BR-045` | P1/P2/P3 只读投影 | 服务端聚合 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |

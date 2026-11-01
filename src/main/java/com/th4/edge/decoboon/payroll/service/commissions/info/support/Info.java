@@ -13,8 +13,8 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
-import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Note("提成详情")
@@ -38,16 +38,10 @@ public class Info implements com.th4.edge.decoboon.payroll.service.commissions.i
     }
     @Override
     public CommissionItem call(CommissionItem request) {
-        Employee current = accessContext.requireManager(employee);
-        CommissionItem item = repository.findById(commissionId)
-                .filter(value -> value.getCompany() != null
-                        && current.getCompany().getComId().equals(value.getCompany().getComId()))
+        Employee current = accessContext.requireCommissionViewer(employee);
+        Specification<CommissionItem> byId =
+                (root, query, builder) -> builder.equal(root.get("commissionId"), commissionId);
+        return repository.findOne(byId.and(accessContext.visible(current, CommissionItem.class)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "提成不存在或无权访问")));
-        if (current.getRole() == com.th4.edge.tenant.user.configure.EmployeeRole.StoreManager
-                && (item.getStore() == null || current.getStore() == null
-                || !item.getStore().getStoreId().equals(current.getStore().getStoreId()))) {
-            throw new DefinedException(new DefaultErrorCode("404", "提成不存在或无权访问"));
-        }
-        return item;
     }
 }

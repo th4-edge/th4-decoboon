@@ -196,14 +196,18 @@ public class FinanceReportContext {
         summary.setReversalAmount(grossReceiptAmount.subtract(activeReceiptAmount));
         summary.setReceiptCount(activeReceipts.size());
         summary.setPaymentCount(payments.size());
+        List<Receipt> monthReceipts = activeReceipts.stream()
+                .filter(item -> sameMonth(item.getReceivedAt(), month))
+                .toList();
+        List<Payment> monthPayments = payments.stream()
+                .filter(item -> sameMonth(item.getPaidAt(), month))
+                .toList();
+        summary.setMonthReceiptCount(monthReceipts.size());
+        summary.setMonthPaymentCount(monthPayments.size());
         summary.setReceiptAmount(activeReceiptAmount);
         summary.setPaymentAmount(sum(payments.stream().map(Payment::getAmount)));
-        summary.setMonthReceiptAmount(sum(activeReceipts.stream()
-                .filter(item -> sameMonth(item.getReceivedAt(), month))
-                .map(Receipt::getAmount)));
-        summary.setMonthPaymentAmount(sum(payments.stream()
-                .filter(item -> sameMonth(item.getPaidAt(), month))
-                .map(Payment::getAmount)));
+        summary.setMonthReceiptAmount(sum(monthReceipts.stream().map(Receipt::getAmount)));
+        summary.setMonthPaymentAmount(sum(monthPayments.stream().map(Payment::getAmount)));
         summary.setUrgentPayableAmount(payables.stream()
                 .filter(item -> item.getStatus() == PayableStatus.Overdue || Boolean.TRUE.equals(item.getUrgent()))
                 .map(item -> accessContext.outstanding(item.getAmount(), item.getPaidAmount()))
@@ -414,11 +418,26 @@ public class FinanceReportContext {
         report.setSettlementStatusLabel(historicalArchive && settlement == null
                 ? ProjectArchivePolicy.SETTLEMENT_LABEL : null);
         report.setSettlementActionable(!historicalArchive);
+        hydrateSettlementCostState(settlement, costSummary, totalCost);
         report.setSettlement(settlement);
         report.setReceivables(receivables);
         report.setPayables(payables);
         report.setRecentLedgers(ledgers.stream().limit(12).toList());
         return report;
+    }
+
+    /** 结算成本完整度为瞬态字段：草稿按当前成本事实回填，已确认/关闭按冻结利润判断。 */
+    private void hydrateSettlementCostState(Settlement settlement, ProjectCostContext.CostSummary costSummary,
+                                            BigDecimal currentTotalCost) {
+        if (settlement == null) return;
+        boolean frozen = settlement.getStatus() != null
+                && settlement.getStatus() != com.th4.edge.decoboon.finance.configure.SettlementStatus.Draft;
+        boolean complete = frozen ? settlement.getProfitAmount() != null : costSummary.complete();
+        settlement.setCostComplete(complete);
+        settlement.setCostIncompleteCount(!complete
+                ? Math.max(1, costSummary.incompleteItemCount()) : 0);
+        settlement.setActualCost(frozen ? settlement.getTotalCost() : currentTotalCost);
+        settlement.setEstimatedCost(costSummary.estimatedCost());
     }
 
     public Settlement snapshot(Employee principal, Project project, Settlement settlement, Employee operator) {

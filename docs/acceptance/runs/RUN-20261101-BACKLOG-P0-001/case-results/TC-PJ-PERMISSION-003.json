@@ -1,0 +1,37 @@
+{
+  "caseId": "TC-PJ-PERMISSION-003",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "f975a0bb4da51fc0b0ca8aaa501929e6bf8af2184d4a70b15d0f091a341d5125",
+  "priority": "P0",
+  "area": "PROJECT",
+  "businessRuleIds": [
+    "BR-043",
+    "DEC-016",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/designer/projects",
+    "web:/pm/workbench",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/project/pages/detail"
+  ],
+  "providerRoutes": [
+    "project/project/update",
+    "project/task/update",
+    "finance/project/report",
+    "user/employee/page"
+  ]
+}

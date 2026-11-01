@@ -451,6 +451,7 @@ public class MaterialSheetContext {
             item.setContract(savedPurchase.getContract());
             item.setPurchaseOrder(savedPurchase);
             item.setMaterialPlan(orderLine.plan());
+            item.setSheetItem(orderLine.line());
             item.setStore(savedPurchase.getStore());
             item.setTeam(savedPurchase.getTeam());
             item.setOwner(savedPurchase.getOwner());
@@ -566,37 +567,41 @@ public class MaterialSheetContext {
     /**
      * 到场后回写作业单状态（OBJ-008 映射表：Ordered → PartiallyArrived → Arrived）。
      *
-     * <p>**单向推进、只进不退**：由采购到场事实驱动，作业单不反向改写采购或计划事实。
-     * 到场量达到该行已下单量即视为已到场；未下单的行不受影响。</p>
+     * <p>采购明细必须按 {@code sheetItem} 追溯到本作业单行；同一 MaterialPlan 下的历史采购不得混入。
+     * 历史采购明细未回填关联时跳过状态回写，由迁移清单人工核对，禁止按时间或数量猜配。</p>
      */
-    public void applyReceipt(MaterialPlan plan) {
-        if (plan == null || plan.getPlanId() == null) {
+    public void applyReceipt(PurchaseOrderItem receivedItem) {
+        if (receivedItem == null || receivedItem.getSheetItem() == null) {
             return;
         }
-        BigDecimal received = purchaseItemRepository.findByMaterialPlanOrderByPurchaseItemIdAsc(plan).stream()
+        MaterialOrderSheetItem line = receivedItem.getSheetItem();
+        MaterialOrderSheet sheet = line.getSheet();
+        if (sheet == null) {
+            return;
+        }
+        MaterialSheetStatus status = sheet.getStatus();
+        if (status != MaterialSheetStatus.Ordered && status != MaterialSheetStatus.PartiallyOrdered
+                && status != MaterialSheetStatus.PartiallyArrived) {
+            return;
+        }
+        BigDecimal ordered = value(line.getOrderedQuantity());
+        if (ordered.signum() <= 0) {
+            return;
+        }
+        BigDecimal received = purchaseItemRepository
+                .findBySheetItem_ItemIdOrderByPurchaseItemIdAsc(line.getItemId()).stream()
                 .map(item -> value(item.getReceivedQuantity()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         if (received.signum() <= 0) {
             return;
         }
-        for (MaterialOrderSheetItem line : itemRepository.findByMaterialPlan_PlanId(plan.getPlanId())) {
-            MaterialOrderSheet sheet = line.getSheet();
-            if (sheet == null) continue;
-            MaterialSheetStatus status = sheet.getStatus();
-            if (status != MaterialSheetStatus.Ordered && status != MaterialSheetStatus.PartiallyOrdered
-                    && status != MaterialSheetStatus.PartiallyArrived) {
-                continue;
-            }
-            BigDecimal ordered = value(line.getOrderedQuantity());
-            if (ordered.signum() <= 0) continue;
-            MaterialSheetStatus next = received.compareTo(ordered) >= 0
-                    ? MaterialSheetStatus.Arrived : MaterialSheetStatus.PartiallyArrived;
-            if (next == MaterialSheetStatus.PartiallyArrived && status == MaterialSheetStatus.PartiallyArrived) {
-                continue;
-            }
-            sheet.setStatus(next);
-            sheetRepository.save(sheet);
+        MaterialSheetStatus next = received.compareTo(ordered) >= 0
+                ? MaterialSheetStatus.Arrived : MaterialSheetStatus.PartiallyArrived;
+        if (next == status) {
+            return;
         }
+        sheet.setStatus(next);
+        sheetRepository.save(sheet);
     }
 
     // ------------------------------------------------------------------ 校验

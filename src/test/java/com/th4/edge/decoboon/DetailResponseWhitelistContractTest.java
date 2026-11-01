@@ -2,6 +2,7 @@ package com.th4.edge.decoboon;
 
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.material.model.SettlementPreviewRow;
 import com.th4.edge.decoboon.project.model.Acceptance;
 import com.th4.edge.decoboon.project.model.MaterialPlan;
 import com.th4.edge.decoboon.project.model.Project;
@@ -85,17 +86,66 @@ class DetailResponseWhitelistContractTest {
     }
 
     @Test
-    void acceptanceInfoMustWhitelistPropertySummary() {
-        Properties properties = com.th4.edge.decoboon.project.service.acceptances.info.support.Info.class
-                .getAnnotation(Properties.class);
-        assertThat(properties.allow()).anySatisfy(item -> {
-            assertThat(item.model()).isEqualTo(Project.class);
-            assertThat(Arrays.asList(item.properties())).contains("property");
+    void acceptanceProvidersMustWhitelistPropertySummary() {
+        var providers = java.util.List.of(
+                com.th4.edge.decoboon.project.service.acceptances.info.support.Info.class,
+                com.th4.edge.decoboon.project.service.acceptances.page.support.Page.class,
+                com.th4.edge.decoboon.project.service.acceptances.save.support.Save.class,
+                com.th4.edge.decoboon.project.service.acceptances.update.support.Update.class);
+        assertThat(providers).allSatisfy(provider -> {
+            Properties properties = provider.getAnnotation(Properties.class);
+            assertThat(properties).as(provider.getName()).isNotNull();
+            assertThat(properties.allow()).anySatisfy(item -> {
+                assertThat(item.model()).isEqualTo(Project.class);
+                assertThat(Arrays.asList(item.properties())).contains("property");
+            });
+            assertThat(properties.allow()).anySatisfy(item -> {
+                assertThat(item.model()).isEqualTo(Property.class);
+                assertThat(Arrays.asList(item.properties()))
+                        .contains("propertyId", "community", "building", "roomNo", "address", "area")
+                        .doesNotContain("store", "team", "salesman", "designer");
+            });
+            assertThat(properties.allow()).anySatisfy(item -> assertThat(item.model()).isEqualTo(Acceptance.class));
         });
+    }
+    @Test
+    void contractChangePreviewMustWhitelistNestedPropertySummary() {
+        Properties properties = com.th4.edge.decoboon.project.service.contractchange.preview.support.Preview.class
+                .getAnnotation(Properties.class);
+        assertThat(properties).isNotNull();
         assertThat(properties.allow()).anySatisfy(item -> {
             assertThat(item.model()).isEqualTo(Property.class);
-            assertThat(Arrays.asList(item.properties())).doesNotContain("store", "team", "salesman", "designer");
+            assertThat(Arrays.asList(item.properties()))
+                    .contains("propertyId", "propertyNo", "community", "address", "area", "layout", "status");
         });
-        assertThat(properties.allow()).anySatisfy(item -> assertThat(item.model()).isEqualTo(Acceptance.class));
     }
+
+    @Test
+    void materialSettlementPreviewMustExposeSupplierIdentityForConfirmation() {
+        Properties properties = com.th4.edge.decoboon.material.service.settlement.preview.support.Preview.class
+                .getAnnotation(Properties.class);
+        assertThat(properties).isNotNull();
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(SettlementPreviewRow.class);
+            assertThat(Arrays.asList(item.properties())).contains("supplierId", "supplierName");
+        });
+    }
+
+    @Test
+    void taskMutationProvidersMustWhitelistNestedPropertySummary() {
+        var providers = java.util.List.of(
+                com.th4.edge.decoboon.project.service.tasks.save.support.Save.class,
+                com.th4.edge.decoboon.project.service.tasks.update.support.Update.class,
+                com.th4.edge.decoboon.project.service.tasks.delete.support.Delete.class);
+        assertThat(providers).allSatisfy(provider -> {
+            Properties properties = provider.getAnnotation(Properties.class);
+            assertThat(properties).as(provider.getName()).isNotNull();
+            assertThat(properties.allow()).anySatisfy(item -> {
+                assertThat(item.model()).isEqualTo(Property.class);
+                assertThat(Arrays.asList(item.properties()))
+                        .contains("propertyId", "community", "building", "roomNo", "address", "area");
+            });
+        });
+    }
+
 }

@@ -1,0 +1,197 @@
+{
+  "capturedAt": "2026-11-01T16:36:45+08:00",
+  "api": "http://127.0.0.1:8090/api",
+  "matrix": "docs/testing/traceability/role-action-provider-matrix.json",
+  "loginFailures": [],
+  "checks": [
+    {
+      "actionId": "ACT-CRM-FIN-TRANSFER-OWNER",
+      "role": "Finance",
+      "provider": "user/employee/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 9,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-CRM-FIN-TRANSFER-OWNER",
+      "role": "Boss",
+      "provider": "user/employee/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 9,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-CRM-FIN-TRANSFER-OWNER",
+      "role": "StoreManager",
+      "provider": "user/employee/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 8,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-CRM-ASSIGN-DESIGNER",
+      "role": "Boss",
+      "provider": "user/designer/list",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 3,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-CRM-ASSIGN-DESIGNER",
+      "role": "StoreManager",
+      "provider": "user/designer/list",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 3,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-PROJECT-ADJUST-MEMBERS",
+      "role": "Boss",
+      "provider": "user/employee/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 9,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-PROJECT-ADJUST-MEMBERS",
+      "role": "StoreManager",
+      "provider": "user/employee/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 8,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-FIN-ARRANGE-PAYMENT",
+      "role": "Boss",
+      "provider": "finance/payable/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 3,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-FIN-ARRANGE-PAYMENT",
+      "role": "StoreManager",
+      "provider": "finance/payable/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 3,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-FIN-ARRANGE-PAYMENT",
+      "role": "Finance",
+      "provider": "finance/payable/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 3,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-MAT-FINANCE-ORDER",
+      "role": "Boss",
+      "provider": "material/sheet/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 2,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-MAT-FINANCE-ORDER",
+      "role": "Boss",
+      "provider": "partner/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 1,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-MAT-FINANCE-ORDER",
+      "role": "StoreManager",
+      "provider": "material/sheet/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 2,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-MAT-FINANCE-ORDER",
+      "role": "StoreManager",
+      "provider": "partner/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 1,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-MAT-FINANCE-ORDER",
+      "role": "Finance",
+      "provider": "material/sheet/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 2,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-MAT-FINANCE-ORDER",
+      "role": "Finance",
+      "provider": "partner/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 1,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-FIN-EXPENSE-PROXY",
+      "role": "Boss",
+      "provider": "payroll/employee/page",
+      "httpStatus": 200,
+      "success": true,
+      "itemCount": 9,
+      "errorCode": null,
+      "pass": true
+    },
+    {
+      "actionId": "ACT-FIN-EXPENSE-PROXY",
+      "role": "StoreManager",
+      "provider": "payroll/employee/page",
+      "httpStatus": 200,
+      "success": false,
+      "itemCount": 0,
+      "errorCode": {
+        "code": "403",
+        "message": "当前账号无权执行该操作",
+        "system": false
+      },
+      "pass": false
+    }
+  ],
+  "summary": {
+    "total": 18,
+    "pass": 17,
+    "fail": 1
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "domain": "enterprise-brand-profile",
+  "title": "装企信息与品牌投影",
+  "northStar": "装企主体、品牌、地址、联系方式和资质在App、Web、合同、单据导出打印及业主端保持单一主源、清晰语义、冻结快照和可追溯投影",
+  "owner": "codex",
+  "phase": "DEV_VERIFIED",
+  "batch": "BRAND-D1",
+  "nextAction": "用户在本地 Web/小程序感受验收企业信息页、Logo 上传、品牌色选择与小程序品牌投影；合同/PDF/历史快照仍待后续批次",
+  "openDecisions": [
+    {
+      "id": "BRAND-Q01",
+      "question": "企业展示名、法定名、品牌名、简称的正式层级",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q02",
+      "question": "Company作为唯一企业根对象的字段级投影规则（DocumentProfile降为单据投影/快照后的字段映射）",
+      "status": "user_direction_confirmed_field_mapping_pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "BRAND-Q03",
+      "question": "品牌快照冻结时点和历史文件重生成边界",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q04",
+      "question": "法定地址、办公地址、门店地址、施工地址、房屋地址的语义和地图点位",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q05",
+      "question": "Logo资产、品牌色、门店覆盖、占位图形和正式文件规则",
+      "status": "user_confirmed_custom_theme; store_override_and_history_pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "BRAND-Q06",
+      "question": "客服/售后/税号/法人/开户信息/资质的受众和脱敏",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "BRAND-Q07",
+      "question": "合同/报价/凭证/PDF/Excel/打印/邀请/业主端的字段白名单",
+      "status": "mini_program_app_web_theme_scope_user_confirmed; pdf_export_snapshot_pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q08",
+      "question": "各字段在快速入驻、服务可见、合同/财务可用和信任完善的占位/阻断策略",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    }
+  ],
+  "blockers": [
+    "REQ-BIZ-20261029-001 尚未答复",
+    "Company 与 DocumentProfile 存在重复主源",
+    "地址/地图点位和品牌快照未冻结",
+    "合同/PDF/Excel/打印与数据级品牌快照仍未闭环"
+  ],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md",
+    "conceptMap": "01a-company-information-concept-map-v0.1.md",
+    "currentStateGapMatrix": "01b-current-state-and-gap-matrix-v0.1.md",
+    "businessRequest": "../../consultations/REQ-BIZ-20261029-001-装企信息与品牌投影业务咨询.md",
+    "conceptRegistry": "01c-company-information-concepts.json",
+    "companyInformationDesign": "01d-company-information-complete-design-v0.2.md",
+    "companyInformationModel": "01e-company-information-model-v0.2.json",
+    "acceptanceRun": "../../acceptance/runs/20261029-company-brand-acceptance/README.md"
+  },
+  "createdAt": "2026-10-29T13:58:32+08:00",
+  "updatedAt": "2026-10-29T16:35:00+08:00",
+  "history": [
+    {
+      "at": "2026-10-29T13:58:32+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-29T14:00:39+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "BRAND-D0",
+      "note": "完成装企信息概念图谱、三个真实场景、当前字段/消费者/重复源/缺口对账；不进入编码"
+    },
+    {
+      "at": "2026-10-29T15:20:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "按用户现场反馈完成现有 Company.logo/color 的文件上传、品牌色预设、App/Web 企业信息可读性和小程序邀请/业主首页/分享页投影；测试品牌资产已恢复，合同/PDF/历史快照不在本批"
+    },
+    {
+      "at": "2026-10-29T15:50:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "用户确认装企品牌色即 App/小程序/Web 应用主题色：移除无意义对外署名配置，增加自定义色与派生色阶，App 全页面 page-meta 与 Web 根 CSS Variables/Element Plus 已完成交叉验证；测试色已恢复"
+    },
+    {
+      "at": "2026-10-29T16:05:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "补充点击颜色选项即时换肤与取消恢复；企业信息页统一正常字重。App page-meta 实测 #128276→#2563EB→#128276，Web root/Element Plus 实测 #16A394→#2563EB→#16A394。"
+    },
+    {
+      "at": "2026-10-29T16:12:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "修复企业信息编辑页原生setTabBarStyle报错；Logo首字改为大字号3:1阈值，默认青绿与青绿色均显示白字。"
+    },
+    {
+      "at": "2026-10-29T16:20:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "补齐品牌色视觉覆盖：Hero Logo白色承载面、我的用户Hero、员工默认头像、图标底、统计正常点与环比、TabBar边框、财务Hero渐变；页面大背景继续使用装得清中性产品色。"
+    },
+    {
+      "at": "2026-10-29T17:45:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "Web 登录页增加 last-login 企业品牌记忆（手机号/企业名称/Logo/品牌色，不含密码和token），登录页与角色壳层改用官方装得清 Logo Mark；真实浏览器登录、退出、缓存恢复和资产加载通过。"
+    },
+    {
+      "at": "2026-10-29T16:35:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "BRAND-D1",
+      "note": "依据站酷高赞B端研究新增装企可选主题色板（青瓷/松石墨绿/岩蓝/赤陶/胡桃/黛紫/墨灰）；装得清自身产品默认色保持不变（App #16A394 / Web 原产品绿）；App/Web岩蓝即时切换与取消恢复通过。"
+    }
+  ],
+  "constraints": [
+    {
+      "id": "BRAND-C01",
+      "text": "企业Logo优先使用真实资产；无资产时以企业简称首字生成展示占位，简称缺失暂用展示名称首字。企业品牌色默认使用装得清品牌主色语义Token，默认值不持久化为企业自定义事实。",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-004"
+    }
+  ]
+}

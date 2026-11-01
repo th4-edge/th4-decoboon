@@ -1,0 +1,2990 @@
+{
+  "marketerInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 14:52:12"
+        },
+        "quoteId": "242541219522019328",
+        "no": "Q1793515932929",
+        "title": "造数方案 5100设计报价",
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100",
+          "community": "滨湖世纪城",
+          "addr": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "budget": 30.0,
+          "status": {
+            "name": "已报价",
+            "key": "Quoted"
+          }
+        },
+        "property": {
+          "propertyId": "242541216497926144",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100",
+            "community": "滨湖世纪城",
+            "addr": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "budget": 30.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            }
+          },
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "已报价",
+            "key": "Quoted"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "design": {
+          "designId": "242541218263728128",
+          "no": "D1793515932628",
+          "name": "造数方案 5100",
+          "version": 1,
+          "style": "现代简约",
+          "status": {
+            "name": "待谈单",
+            "value": "Ready",
+            "key": "Ready"
+          },
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫"
+        },
+        "createdBy": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "version": 1,
+        "mode": {
+          "name": "自定义报价",
+          "value": "Custom",
+          "key": "Custom"
+        },
+        "area": 130.0,
+        "subtotal": 2502.0,
+        "discount": 0.95,
+        "taxAmount": 118.85,
+        "taxRate": 0.05,
+        "amount": 2495.75,
+        "cost": 1760.0,
+        "costComplete": true,
+        "designFee": 0.0,
+        "managementFee": 0.0,
+        "status": {
+          "name": "已提交",
+          "key": "Submitted"
+        },
+        "items": [
+          {
+            "itemId": "242541219534602240",
+            "catalogItem": {
+              "itemId": "242296909367083008",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "formula": "(人工单价) × 工程量"
+            },
+            "catalogSourceId": "242296909367083008",
+            "catalogSourceCode": "SG-0001",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "人工",
+                  "value": "Labor",
+                  "key": "Labor"
+                },
+                "name": "人工",
+                "saleAmount": 68.0,
+                "costAmount": 0.0,
+                "formula": "人工单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 45.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 10.0,
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "price": 6.8,
+            "amount": 68.0,
+            "cost": 45.0,
+            "formula": "(人工单价) × 工程量",
+            "sort": 0,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          },
+          {
+            "itemId": "242541219547185152",
+            "catalogItem": {
+              "itemId": "242296909681655808",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "水电",
+              "name": "水电--强电布线（含开槽）",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 38.0,
+              "formula": "(人工单价) × 工程量"
+            },
+            "catalogSourceId": "242296909681655808",
+            "catalogSourceCode": "SG-0002",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "人工",
+                  "value": "Labor",
+                  "key": "Labor"
+                },
+                "name": "人工",
+                "saleAmount": 418.0,
+                "costAmount": 0.0,
+                "formula": "人工单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 275.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "name": "水电--强电布线（含开槽）",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 11.0,
+            "materialPrice": 0.0,
+            "manualPrice": 38.0,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "price": 38.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "formula": "(人工单价) × 工程量",
+            "sort": 1,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          },
+          {
+            "itemId": "242541219547185153",
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "category": "地板",
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅材料",
+                "value": "MaterialOnly",
+                "key": "MaterialOnly"
+              },
+              "materialPrice": 168.0,
+              "manualPrice": 0.0,
+              "formula": "(材料单价) × 工程量"
+            },
+            "catalogSourceId": "242296910222721024",
+            "catalogSourceCode": "ZC-0002",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "材料",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "name": "材料",
+                "saleAmount": 2016.0,
+                "costAmount": 0.0,
+                "formula": "材料单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 1440.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "name": "主材--实木复合地板",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 12.0,
+            "materialPrice": 168.0,
+            "manualPrice": 0.0,
+            "pricingMode": {
+              "name": "仅材料",
+              "value": "MaterialOnly",
+              "key": "MaterialOnly"
+            },
+            "price": 168.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "formula": "(材料单价) × 工程量",
+            "sort": 2,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          }
+        ],
+        "regionGroups": [
+          {
+            "key": "general",
+            "name": "综合项目",
+            "groupMode": {
+              "name": "按区域",
+              "value": "REGION",
+              "key": "REGION"
+            },
+            "quantity": 33.0,
+            "amount": 2502.0,
+            "cost": 1760.0,
+            "items": [
+              {
+                "itemId": "242541219534602240",
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              },
+              {
+                "itemId": "242541219547185152",
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              },
+              {
+                "itemId": "242541219547185153",
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "typeGroups": [
+          {
+            "key": "Construction|拆除",
+            "name": "拆除",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "quantity": 10.0,
+            "amount": 68.0,
+            "cost": 45.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "typeRowId": "quote-type-bbd662f8c9ea6a203cda2c891f56692e",
+                "sourceLineIds": [
+                  "242541219534602240"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          },
+          {
+            "key": "Construction|水电",
+            "name": "水电",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "quantity": 11.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "typeRowId": "quote-type-fe9e4dfd3ebfa360c5c74ae3b5e4b485",
+                "sourceLineIds": [
+                  "242541219547185152"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          },
+          {
+            "key": "Material|地板",
+            "name": "地板",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "quantity": 12.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "typeRowId": "quote-type-bef408e2a63ef56651e439ac9316985f",
+                "sourceLineIds": [
+                  "242541219547185153"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          }
+        ],
+        "constructionGroups": [
+          {
+            "key": "Construction-拆除",
+            "name": "拆除",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "quantity": 10.0,
+            "amount": 68.0,
+            "cost": 45.0,
+            "items": [
+              {
+                "itemId": "242541219534602240",
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          },
+          {
+            "key": "Construction-水电",
+            "name": "水电",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "quantity": 11.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "items": [
+              {
+                "itemId": "242541219547185152",
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "materialGroups": [
+          {
+            "key": "Material-地板",
+            "name": "地板",
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "quantity": 12.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "items": [
+              {
+                "itemId": "242541219547185153",
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "otherGroups": []
+      },
+      "success": true
+    }
+  },
+  "marketerAcceptAttempt": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "业务员不参与方案报价状态推进，仅可查看业务流转",
+        "system": false
+      }
+    }
+  },
+  "designerInfo": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "设计师请使用设计师报价详情服务",
+        "system": false
+      }
+    }
+  },
+  "designerAcceptAttempt": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "updateTime": {
+          "dateTime": "2026-11-01 14:52:18"
+        },
+        "quoteId": "242541219522019328",
+        "no": "Q1793515932929",
+        "title": "造数方案 5100设计报价",
+        "property": {
+          "propertyId": "242541216497926144",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100",
+            "community": "滨湖世纪城",
+            "addr": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "budget": 30.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            }
+          },
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "已报价",
+            "key": "Quoted"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "version": 1,
+        "mode": {
+          "name": "自定义报价",
+          "value": "Custom",
+          "key": "Custom"
+        },
+        "area": 130.0,
+        "subtotal": 2502.0,
+        "discount": 0.95,
+        "taxAmount": 118.85,
+        "taxRate": 0.05,
+        "amount": 2495.75,
+        "designFee": 0.0,
+        "managementFee": 0.0,
+        "status": {
+          "name": "客户接受",
+          "key": "Accepted"
+        },
+        "submittedAt": "2026-11-01 14:52:13",
+        "acceptedAt": "2026-11-01 14:52:18",
+        "acceptedBy": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        }
+      },
+      "success": true
+    }
+  },
+  "bossInfoBeforeAccept": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-01 14:52:12"
+        },
+        "quoteId": "242541219522019328",
+        "no": "Q1793515932929",
+        "title": "造数方案 5100设计报价",
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100",
+          "community": "滨湖世纪城",
+          "addr": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "budget": 30.0,
+          "status": {
+            "name": "已报价",
+            "key": "Quoted"
+          }
+        },
+        "property": {
+          "propertyId": "242541216497926144",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100",
+            "community": "滨湖世纪城",
+            "addr": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "budget": 30.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            }
+          },
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "已报价",
+            "key": "Quoted"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          }
+        },
+        "design": {
+          "designId": "242541218263728128",
+          "no": "D1793515932628",
+          "name": "造数方案 5100",
+          "version": 1,
+          "style": "现代简约",
+          "status": {
+            "name": "客户选中",
+            "value": "Selected",
+            "key": "Selected"
+          },
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫"
+        },
+        "createdBy": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "version": 1,
+        "mode": {
+          "name": "自定义报价",
+          "value": "Custom",
+          "key": "Custom"
+        },
+        "area": 130.0,
+        "subtotal": 2502.0,
+        "discount": 0.95,
+        "taxAmount": 118.85,
+        "taxRate": 0.05,
+        "amount": 2495.75,
+        "cost": 1760.0,
+        "costComplete": true,
+        "designFee": 0.0,
+        "managementFee": 0.0,
+        "status": {
+          "name": "客户接受",
+          "key": "Accepted"
+        },
+        "items": [
+          {
+            "itemId": "242541219534602240",
+            "catalogItem": {
+              "itemId": "242296909367083008",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "拆除",
+              "name": "拆除--墙顶面白灰/腻子粉铲除",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 6.8,
+              "formula": "(人工单价) × 工程量"
+            },
+            "catalogSourceId": "242296909367083008",
+            "catalogSourceCode": "SG-0001",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "人工",
+                  "value": "Labor",
+                  "key": "Labor"
+                },
+                "name": "人工",
+                "saleAmount": 68.0,
+                "costAmount": 0.0,
+                "formula": "人工单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 45.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 10.0,
+            "materialPrice": 0.0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "price": 6.8,
+            "amount": 68.0,
+            "cost": 45.0,
+            "formula": "(人工单价) × 工程量",
+            "sort": 0,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          },
+          {
+            "itemId": "242541219547185152",
+            "catalogItem": {
+              "itemId": "242296909681655808",
+              "type": {
+                "name": "施工",
+                "value": "Construction",
+                "key": "Construction"
+              },
+              "category": "水电",
+              "name": "水电--强电布线（含开槽）",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅人工",
+                "value": "ManualOnly",
+                "key": "ManualOnly"
+              },
+              "materialPrice": 0.0,
+              "manualPrice": 38.0,
+              "formula": "(人工单价) × 工程量"
+            },
+            "catalogSourceId": "242296909681655808",
+            "catalogSourceCode": "SG-0002",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "人工",
+                  "value": "Labor",
+                  "key": "Labor"
+                },
+                "name": "人工",
+                "saleAmount": 418.0,
+                "costAmount": 0.0,
+                "formula": "人工单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 275.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "name": "水电--强电布线（含开槽）",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 11.0,
+            "materialPrice": 0.0,
+            "manualPrice": 38.0,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "price": 38.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "formula": "(人工单价) × 工程量",
+            "sort": 1,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          },
+          {
+            "itemId": "242541219547185153",
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "category": "地板",
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "pricingMode": {
+                "name": "仅材料",
+                "value": "MaterialOnly",
+                "key": "MaterialOnly"
+              },
+              "materialPrice": 168.0,
+              "manualPrice": 0.0,
+              "formula": "(材料单价) × 工程量"
+            },
+            "catalogSourceId": "242296910222721024",
+            "catalogSourceCode": "ZC-0002",
+            "catalogSourceRevision": 1,
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "differenceType": {
+              "name": "无差异",
+              "key": "None"
+            },
+            "differenceStatus": {
+              "name": "非混合报价",
+              "key": "None"
+            },
+            "included": true,
+            "discountAmount": 0.0,
+            "components": [
+              {
+                "type": {
+                  "name": "材料",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "name": "材料",
+                "saleAmount": 2016.0,
+                "costAmount": 0.0,
+                "formula": "材料单价 × 工程量",
+                "sort": 0
+              },
+              {
+                "type": {
+                  "name": "其他",
+                  "value": "Other",
+                  "key": "Other"
+                },
+                "name": "成本",
+                "saleAmount": 0.0,
+                "costAmount": 1440.0,
+                "sort": 1
+              }
+            ],
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "name": "主材--实木复合地板",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 12.0,
+            "materialPrice": 168.0,
+            "manualPrice": 0.0,
+            "pricingMode": {
+              "name": "仅材料",
+              "value": "MaterialOnly",
+              "key": "MaterialOnly"
+            },
+            "price": 168.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "formula": "(材料单价) × 工程量",
+            "sort": 2,
+            "sourceLineIds": [],
+            "sourceRegionIds": [],
+            "sourceRegionNames": [],
+            "sourceCount": 0
+          }
+        ],
+        "regionGroups": [
+          {
+            "key": "general",
+            "name": "综合项目",
+            "groupMode": {
+              "name": "按区域",
+              "value": "REGION",
+              "key": "REGION"
+            },
+            "quantity": 33.0,
+            "amount": 2502.0,
+            "cost": 1760.0,
+            "items": [
+              {
+                "itemId": "242541219534602240",
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              },
+              {
+                "itemId": "242541219547185152",
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              },
+              {
+                "itemId": "242541219547185153",
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "typeGroups": [
+          {
+            "key": "Construction|拆除",
+            "name": "拆除",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "quantity": 10.0,
+            "amount": 68.0,
+            "cost": 45.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "typeRowId": "quote-type-bbd662f8c9ea6a203cda2c891f56692e",
+                "sourceLineIds": [
+                  "242541219534602240"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          },
+          {
+            "key": "Construction|水电",
+            "name": "水电",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "quantity": 11.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "typeRowId": "quote-type-fe9e4dfd3ebfa360c5c74ae3b5e4b485",
+                "sourceLineIds": [
+                  "242541219547185152"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          },
+          {
+            "key": "Material|地板",
+            "name": "地板",
+            "groupMode": {
+              "name": "按类型",
+              "value": "TYPE",
+              "key": "TYPE"
+            },
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "quantity": 12.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "items": [
+              {
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "typeRowId": "quote-type-bef408e2a63ef56651e439ac9316985f",
+                "sourceLineIds": [
+                  "242541219547185153"
+                ],
+                "sourceRegionIds": [
+                  null
+                ],
+                "sourceRegionNames": [
+                  "综合项目"
+                ],
+                "sourceCount": 1
+              }
+            ]
+          }
+        ],
+        "constructionGroups": [
+          {
+            "key": "Construction-拆除",
+            "name": "拆除",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "quantity": 10.0,
+            "amount": 68.0,
+            "cost": 45.0,
+            "items": [
+              {
+                "itemId": "242541219534602240",
+                "catalogItem": {
+                  "itemId": "242296909367083008",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "拆除",
+                  "name": "拆除--墙顶面白灰/腻子粉铲除",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 6.8,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909367083008",
+                "catalogSourceCode": "SG-0001",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 68.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 45.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "拆除",
+                "name": "拆除--墙顶面白灰/腻子粉铲除",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 10.0,
+                "materialPrice": 0.0,
+                "manualPrice": 6.8,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 6.8,
+                "amount": 68.0,
+                "cost": 45.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 0,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          },
+          {
+            "key": "Construction-水电",
+            "name": "水电",
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "quantity": 11.0,
+            "amount": 418.0,
+            "cost": 275.0,
+            "items": [
+              {
+                "itemId": "242541219547185152",
+                "catalogItem": {
+                  "itemId": "242296909681655808",
+                  "type": {
+                    "name": "施工",
+                    "value": "Construction",
+                    "key": "Construction"
+                  },
+                  "category": "水电",
+                  "name": "水电--强电布线（含开槽）",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅人工",
+                    "value": "ManualOnly",
+                    "key": "ManualOnly"
+                  },
+                  "materialPrice": 0.0,
+                  "manualPrice": 38.0,
+                  "formula": "(人工单价) × 工程量"
+                },
+                "catalogSourceId": "242296909681655808",
+                "catalogSourceCode": "SG-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "人工",
+                      "value": "Labor",
+                      "key": "Labor"
+                    },
+                    "name": "人工",
+                    "saleAmount": 418.0,
+                    "costAmount": 0.0,
+                    "formula": "人工单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 275.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "施工",
+                  "value": "Construction",
+                  "key": "Construction"
+                },
+                "category": "水电",
+                "name": "水电--强电布线（含开槽）",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 11.0,
+                "materialPrice": 0.0,
+                "manualPrice": 38.0,
+                "pricingMode": {
+                  "name": "仅人工",
+                  "value": "ManualOnly",
+                  "key": "ManualOnly"
+                },
+                "price": 38.0,
+                "amount": 418.0,
+                "cost": 275.0,
+                "formula": "(人工单价) × 工程量",
+                "sort": 1,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "materialGroups": [
+          {
+            "key": "Material-地板",
+            "name": "地板",
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "quantity": 12.0,
+            "amount": 2016.0,
+            "cost": 1440.0,
+            "items": [
+              {
+                "itemId": "242541219547185153",
+                "catalogItem": {
+                  "itemId": "242296910222721024",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "category": "地板",
+                  "name": "主材--实木复合地板",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "pricingMode": {
+                    "name": "仅材料",
+                    "value": "MaterialOnly",
+                    "key": "MaterialOnly"
+                  },
+                  "materialPrice": 168.0,
+                  "manualPrice": 0.0,
+                  "formula": "(材料单价) × 工程量"
+                },
+                "catalogSourceId": "242296910222721024",
+                "catalogSourceCode": "ZC-0002",
+                "catalogSourceRevision": 1,
+                "role": {
+                  "name": "基础项目",
+                  "value": "Base",
+                  "key": "Base"
+                },
+                "differenceType": {
+                  "name": "无差异",
+                  "key": "None"
+                },
+                "differenceStatus": {
+                  "name": "非混合报价",
+                  "key": "None"
+                },
+                "included": true,
+                "discountAmount": 0.0,
+                "components": [
+                  {
+                    "type": {
+                      "name": "材料",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "材料",
+                    "saleAmount": 2016.0,
+                    "costAmount": 0.0,
+                    "formula": "材料单价 × 工程量",
+                    "sort": 0
+                  },
+                  {
+                    "type": {
+                      "name": "其他",
+                      "value": "Other",
+                      "key": "Other"
+                    },
+                    "name": "成本",
+                    "saleAmount": 0.0,
+                    "costAmount": 1440.0,
+                    "sort": 1
+                  }
+                ],
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "地板",
+                "name": "主材--实木复合地板",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 12.0,
+                "materialPrice": 168.0,
+                "manualPrice": 0.0,
+                "pricingMode": {
+                  "name": "仅材料",
+                  "value": "MaterialOnly",
+                  "key": "MaterialOnly"
+                },
+                "price": 168.0,
+                "amount": 2016.0,
+                "cost": 1440.0,
+                "formula": "(材料单价) × 工程量",
+                "sort": 2,
+                "sourceLineIds": [],
+                "sourceRegionIds": [],
+                "sourceRegionNames": [],
+                "sourceCount": 0
+              }
+            ]
+          }
+        ],
+        "otherGroups": []
+      },
+      "success": true
+    }
+  }
+}

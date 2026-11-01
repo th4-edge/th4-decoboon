@@ -1,0 +1,47 @@
+{
+  "quote": {
+    "quoteId": "242592946019368960",
+    "no": "Q1793528265484",
+    "amount": 12285,
+    "cost": 11.7,
+    "costComplete": true,
+    "packageTemplateCode": "PACK-E35F0F92C6DF",
+    "packageTemplateVersion": 1,
+    "packageSnapshotHash": "1fc3447dc50c793680f9e06107f00a5827b776941519ba68f5068701071276e3",
+    "regionGroups": [
+      {
+        "key": "general",
+        "name": "综合项目",
+        "amount": 13000,
+        "itemCount": 2,
+        "sectionNames": [
+          "AUDIT-20261101-PKGCLOSE-001-区域A"
+        ]
+      }
+    ],
+    "lines": [
+      {
+        "itemId": "242592946023563264",
+        "category": "拆除",
+        "packageSectionNameSnapshot": "AUDIT-20261101-PKGCLOSE-001-区域A",
+        "name": "拆除--墙顶面白灰/腻子粉铲除",
+        "amount": 6500,
+        "cost": 5.85
+      },
+      {
+        "itemId": "242592946027757568",
+        "category": "拆除",
+        "packageSectionNameSnapshot": "AUDIT-20261101-PKGCLOSE-001-区域A",
+        "name": "拆除--墙顶面白灰/腻子粉铲除",
+        "amount": 6500,
+        "cost": 5.85
+      }
+    ]
+  },
+  "publishedUpdateAttempt": {
+    "http": 200,
+    "success": false,
+    "code": "409",
+    "message": "已发布或已停用的套餐不能原地修改，请先创建新版本"
+  }
+}

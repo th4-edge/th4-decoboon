@@ -1,6 +1,5 @@
 package com.th4.edge.decoboon.finance.service.payables.page.support;
 
-import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
@@ -9,6 +8,7 @@ import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;

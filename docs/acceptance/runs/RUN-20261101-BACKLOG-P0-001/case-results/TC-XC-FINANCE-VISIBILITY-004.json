@@ -1,0 +1,36 @@
+{
+  "caseId": "TC-XC-FINANCE-VISIBILITY-004",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "a09789f8797f45b696f3d755634434f1ae9005370a8c633fb35c882aae7c20d9",
+  "priority": "P0",
+  "area": "CROSS_CUTTING",
+  "businessRuleIds": [
+    "BR-003",
+    "DEC-016",
+    "DEC-092",
+    "OBJ-010"
+  ],
+  "pageTargets": [
+    "web:/finance/projects/:projectId",
+    "web:/designer/projects/:projectId",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "project/project/info",
+    "finance/project/report",
+    "quote/info"
+  ]
+}

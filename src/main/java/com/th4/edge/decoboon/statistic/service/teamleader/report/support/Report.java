@@ -1,7 +1,7 @@
 package com.th4.edge.decoboon.statistic.service.teamleader.report.support;
 
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
 import com.th4.edge.decoboon.customer.model.Customer;

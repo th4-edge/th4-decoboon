@@ -25,6 +25,10 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -34,6 +38,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -79,6 +86,88 @@ public class CompanyPlanTemplateContext {
         // 所有内部岗位均可进入模板管理页；非负责人/店长仅由 Provider 写权限和后端维护动作阻止修改。
         Employee current = tenantContext.requireEmployee(principal);
         return catalog(current, true);
+    }
+
+    /** 付款/施工计划选择器：数据库分页 + 当前页节点/阶段批量装配。 */
+    @Transactional(readOnly = true)
+    public PlanTemplateCatalog pickerCatalog(Employee principal, String kind, Integer requestedCurrent,
+                                             Integer requestedSize, String keyword) {
+        Employee current = tenantContext.requireEmployee(principal);
+        Long comId = current.getCompany().getComId();
+        int currentPage = requestedCurrent == null || requestedCurrent < 1 ? 1 : requestedCurrent;
+        int pageSize = requestedSize == null || requestedSize < 1 ? 20 : Math.min(requestedSize, 50);
+        String normalized = keyword == null ? "" : keyword.trim().toLowerCase(Locale.ROOT);
+        PlanTemplateCatalog result = new PlanTemplateCatalog();
+        result.setCurrent(currentPage);
+        result.setSize(pageSize);
+
+        if ("Construction".equalsIgnoreCase(kind)) {
+            Specification<CompanyConstructionPlan> spec = (root, query, builder) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(builder.equal(root.get("company").get("comId"), comId));
+                predicates.add(builder.equal(root.get("status"), PlanTemplateStatus.Enabled));
+                predicates.add(builder.isTrue(root.get("currentEnabled")));
+                if (!normalized.isBlank()) {
+                    String pattern = "%" + normalized + "%";
+                    predicates.add(builder.or(
+                            builder.like(builder.lower(root.get("name")), pattern),
+                            builder.like(builder.lower(root.get("code")), pattern)
+                    ));
+                }
+                return builder.and(predicates.toArray(Predicate[]::new));
+            };
+            org.springframework.data.domain.Page<CompanyConstructionPlan> page = constructionPlanRepository.findAll(
+                    spec, PageRequest.of(currentPage - 1, pageSize, Sort.by(Sort.Direction.DESC, "defaultPlan").and(Sort.by(Sort.Direction.ASC, "sort"))));
+            if (page.getTotalElements() == 0) {
+                List<ConstructionPlanTemplate> baselines = baselineContext.catalog().getConstructionPlans().stream()
+                        .filter(item -> normalized.isBlank()
+                                || (item.getName() != null && item.getName().toLowerCase(Locale.ROOT).contains(normalized))
+                                || (item.getCode() != null && item.getCode().toLowerCase(Locale.ROOT).contains(normalized)))
+                        .map(this::baselineConstruction)
+                        .toList();
+                result.setConstructionPlans(baselines);
+                result.setTotal(baselines.size());
+                result.setHasMore(false);
+            } else {
+                result.setConstructionPlans(constructionViews(page.getContent()));
+                result.setTotal(page.getTotalElements());
+                result.setHasMore((long) currentPage * pageSize < page.getTotalElements());
+            }
+            return result;
+        }
+
+        Specification<CompanyPaymentPlan> spec = (root, query, builder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(builder.equal(root.get("company").get("comId"), comId));
+            predicates.add(builder.equal(root.get("status"), PlanTemplateStatus.Enabled));
+            predicates.add(builder.isTrue(root.get("currentEnabled")));
+            if (!normalized.isBlank()) {
+                String pattern = "%" + normalized + "%";
+                predicates.add(builder.or(
+                        builder.like(builder.lower(root.get("name")), pattern),
+                        builder.like(builder.lower(root.get("code")), pattern)
+                ));
+            }
+            return builder.and(predicates.toArray(Predicate[]::new));
+        };
+        org.springframework.data.domain.Page<CompanyPaymentPlan> page = paymentPlanRepository.findAll(
+                spec, PageRequest.of(currentPage - 1, pageSize, Sort.by(Sort.Direction.DESC, "defaultPlan").and(Sort.by(Sort.Direction.ASC, "sort"))));
+        if (page.getTotalElements() == 0) {
+            List<PaymentPlanTemplate> baselines = baselineContext.catalog().getPaymentPlans().stream()
+                    .filter(item -> normalized.isBlank()
+                            || (item.getName() != null && item.getName().toLowerCase(Locale.ROOT).contains(normalized))
+                            || (item.getCode() != null && item.getCode().toLowerCase(Locale.ROOT).contains(normalized)))
+                    .map(this::baselinePayment)
+                    .toList();
+            result.setPaymentPlans(baselines);
+            result.setTotal(baselines.size());
+            result.setHasMore(false);
+        } else {
+            result.setPaymentPlans(paymentViews(page.getContent()));
+            result.setTotal(page.getTotalElements());
+            result.setHasMore((long) currentPage * pageSize < page.getTotalElements());
+        }
+        return result;
     }
 
     @Transactional(readOnly = true)
@@ -604,6 +693,63 @@ public class CompanyPlanTemplateContext {
         baseline.setStatus(PlanTemplateStatus.Enabled);
         baseline.setDefaultPlan(Boolean.FALSE);
         return baseline;
+    }
+
+    private List<PaymentPlanTemplate> paymentViews(List<CompanyPaymentPlan> plans) {
+        if (plans.isEmpty()) return List.of();
+        List<Long> ids = plans.stream().map(CompanyPaymentPlan::getTemplateId).toList();
+        Map<Long, List<PaymentPlanNodeTemplate>> nodes = new HashMap<>();
+        for (CompanyPaymentNode node : paymentNodeRepository.findByPlan_TemplateIdInOrderByPlanTemplateIdAscSortAscNodeIdAsc(ids)) {
+            nodes.computeIfAbsent(node.getPlan().getTemplateId(), ignored -> new ArrayList<>()).add(paymentNodeView(node));
+        }
+        return plans.stream().map(plan -> paymentView(plan, nodes.getOrDefault(plan.getTemplateId(), List.of()))).toList();
+    }
+
+    private PaymentPlanTemplate paymentView(CompanyPaymentPlan plan, List<PaymentPlanNodeTemplate> nodes) {
+        PaymentPlanTemplate view = new PaymentPlanTemplate();
+        view.setTemplateId(plan.getTemplateId());
+        view.setCode(plan.getCode());
+        view.setVersion(plan.getVersion());
+        view.setName(plan.getName());
+        view.setDescription(plan.getDescription());
+        view.setSort(plan.getSort());
+        view.setSource(PlanTemplateSource.Company);
+        view.setSourceBaselineCode(plan.getSourceBaselineCode());
+        view.setSourceBaselineVersion(plan.getSourceBaselineVersion());
+        view.setStatus(plan.getStatus());
+        view.setDefaultPlan(Boolean.TRUE.equals(plan.getDefaultPlan()));
+        view.setCurrentEnabled(Boolean.TRUE.equals(plan.getCurrentEnabled()));
+        view.setNodes(nodes);
+        return view;
+    }
+
+    private List<ConstructionPlanTemplate> constructionViews(List<CompanyConstructionPlan> plans) {
+        if (plans.isEmpty()) return List.of();
+        List<Long> ids = plans.stream().map(CompanyConstructionPlan::getTemplateId).toList();
+        Map<Long, List<ConstructionStageTemplate>> stages = new HashMap<>();
+        for (CompanyConstructionStage stage : constructionStageRepository.findByPlan_TemplateIdInOrderByPlanTemplateIdAscSortAscStageIdAsc(ids)) {
+            stages.computeIfAbsent(stage.getPlan().getTemplateId(), ignored -> new ArrayList<>()).add(constructionStageView(stage));
+        }
+        return plans.stream().map(plan -> constructionView(plan, stages.getOrDefault(plan.getTemplateId(), List.of()))).toList();
+    }
+
+    private ConstructionPlanTemplate constructionView(CompanyConstructionPlan plan, List<ConstructionStageTemplate> stages) {
+        ConstructionPlanTemplate view = new ConstructionPlanTemplate();
+        view.setTemplateId(plan.getTemplateId());
+        view.setCode(plan.getCode());
+        view.setVersion(plan.getVersion());
+        view.setName(plan.getName());
+        view.setDescription(plan.getDescription());
+        view.setTotalDays(plan.getTotalDays());
+        view.setSort(plan.getSort());
+        view.setSource(PlanTemplateSource.Company);
+        view.setSourceBaselineCode(plan.getSourceBaselineCode());
+        view.setSourceBaselineVersion(plan.getSourceBaselineVersion());
+        view.setStatus(plan.getStatus());
+        view.setDefaultPlan(Boolean.TRUE.equals(plan.getDefaultPlan()));
+        view.setCurrentEnabled(Boolean.TRUE.equals(plan.getCurrentEnabled()));
+        view.setStages(stages);
+        return view;
     }
 
     private PaymentPlanTemplate paymentView(CompanyPaymentPlan plan) {

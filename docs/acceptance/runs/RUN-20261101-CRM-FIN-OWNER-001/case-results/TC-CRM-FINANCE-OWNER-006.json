@@ -1,0 +1,142 @@
+{
+  "caseId": "TC-CRM-FINANCE-OWNER-006",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-01T16:31:37+08:00",
+  "finishedAt": "2026-11-01T16:36:00+08:00",
+  "executor": "codex",
+  "role": "Finance+StoreManager+Marketer+Boss",
+  "surface": "Web+App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101CRMFI-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/workbench/customers/242541216321765376",
+      "control": "客户负责人",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "修复前点击返回403且候选为空",
+      "business_state_after": "修复后点击无权限错误，弹层显示9名负责人候选",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-customer-detail-before.png",
+        "02-original-permission-error.png",
+        "03-owner-dialog-after-fix.png",
+        "04-owner-options-after-fix.png",
+        "04-owner-options-after-fix.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/workbench/customers/242541216321765376",
+      "control": "确认转交（选择现任负责人）",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "owner=审计业务",
+      "business_state_after": "提示已转交客户负责人；DB owner仍为审计业务，无业务归属变化",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "07-owner-submit-after-fix.png",
+        "07-owner-submit-after-fix.json",
+        "08-customer-owner-db-after-fix.tsv"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Finance+StoreManager+Marketer",
+      "role": "Role matrix",
+      "surface": "API",
+      "page_path": "user/employee/page",
+      "control": "候选目录权限与数据范围",
+      "control_state": "N/A",
+      "business_state_before": "Finance修复前403",
+      "business_state_after": "Finance 200/9名企业候选；StoreManager 200/8名本店候选；Marketer仍403",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "05-role-scope-api.json"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "TestAsset",
+      "page_path": "docs/testing/traceability/role-action-provider-matrix.json",
+      "control": "动作依赖矩阵门禁",
+      "control_state": "N/A",
+      "business_state_before": "无动作依赖矩阵",
+      "business_state_after": "新增1条动作矩阵；依赖Provider缺失时self-test可检出",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "test-assets-validate.log",
+        "test-assets-self-test.log"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/customer/pages/detail?id=242541216321765376",
+      "control": "客户负责人",
+      "control_state": "NOT_OBSERVABLE",
+      "business_state_before": "dev构建已更新，后端/App共享Provider已修复",
+      "business_state_after": "miniprogram-automator连接状态异常，无法取得页面元数据，未完成App点击证据",
+      "feedback": "BLOCKED",
+      "evidence_ids": [
+        "app-owner-click.error.log"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Web财务客户详情负责人弹层正常打开，无403，候选9人",
+    "选择现任负责人提交成功并提示已转交客户负责人",
+    "App负责人弹层UI因automator连接异常未取得证据"
+  ],
+  "actualState": [
+    "Finance user/employee/page=200, total=9",
+    "StoreManager user/employee/page=200, total=8",
+    "Marketer user/employee/page=403",
+    "Customer owner remains 审计业务",
+    "App dev bundle updated and type-check/build PASS"
+  ],
+  "evidence": [
+    "evidence/TC-CRM-FINANCE-OWNER-006/01-customer-detail-before.png",
+    "evidence/TC-CRM-FINANCE-OWNER-006/02-original-permission-error.png",
+    "evidence/TC-CRM-FINANCE-OWNER-006/03-owner-dialog-after-fix.png",
+    "evidence/TC-CRM-FINANCE-OWNER-006/03-owner-dialog-after-fix.json",
+    "evidence/TC-CRM-FINANCE-OWNER-006/04-owner-options-after-fix.png",
+    "evidence/TC-CRM-FINANCE-OWNER-006/04-owner-options-after-fix.json",
+    "evidence/TC-CRM-FINANCE-OWNER-006/05-role-scope-api.json",
+    "evidence/TC-CRM-FINANCE-OWNER-006/07-owner-submit-after-fix.png",
+    "evidence/TC-CRM-FINANCE-OWNER-006/07-owner-submit-after-fix.json",
+    "evidence/TC-CRM-FINANCE-OWNER-006/08-customer-owner-db-after-fix.tsv",
+    "raw/test-assets-validate.log",
+    "raw/test-assets-self-test.log",
+    "raw/app-owner-click.error.log"
+  ],
+  "defectIds": [],
+  "blockedReason": "Web/API/数据范围/决策矩阵均已通过；App客户详情负责人弹层的点击证据因微信开发者工具miniprogram-automator元数据异常无法完成。该阻断是自动化环境限制，不判产品失败，也不能据此宣称App UI PASS。",
+  "notes": "本用例来自用户实际发现的PI-20261101-003。Web正向、权限负向、数据范围和新增动作依赖门禁均通过；App仍待手工/真机复验。",
+  "caseDefinitionHash": "f7e44e54bb4b06aac204c5917e1a9ac2d1e40b3ff5a36a4156e4aca0419f7edf",
+  "priority": "P1",
+  "area": "CRM",
+  "businessRuleIds": [
+    "BR-001",
+    "DEC-065",
+    "DEC-070",
+    "USER-DEC-20261029-009"
+  ],
+  "pageTargets": [
+    "web:/workbench/customers/:customerId",
+    "app:/subpackages/customer/pages/detail"
+  ],
+  "providerRoutes": [
+    "user/employee/page",
+    "customer/customer/update",
+    "customer/customer/info"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "caseId": "TC-DQ-DESIGNER-QUOTE-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-01T18:25:41+08:00",
+  "finishedAt": "2026-11-01T18:25:41+08:00",
+  "executor": "codex",
+  "role": "Designer",
+  "surface": "App/Web",
+  "dataPrefix": "AUDIT-20261101-PKGCLOSE-001-",
+  "steps": [],
+  "actualPage": [
+    "/subpackages/quote/pages/package-manage",
+    "/subpackages/quote/pages/package-edit",
+    "/subpackages/quote/pages/edit",
+    "/subpackages/quote/pages/detail"
+  ],
+  "actualState": [
+    "Package-specific frozen case missing",
+    "Exploratory package flow executed separately",
+    "8 OPEN defects recorded"
+  ],
+  "evidence": [
+    "raw/exploratory-results.json",
+    "reports/preflight.md"
+  ],
+  "defectIds": [],
+  "blockedReason": "TP-20261101-V0.1 与 core-chain-v0.1 没有 pack/* 套餐配置/发布/停用/版本专项冻结用例；TC-DQ-DESIGNER-QUOTE-003 是设计报价用例，不能代表套餐配置闭环，因此不以该用例伪造 PASS。",
+  "notes": "套餐专项探索性执行见 raw/exploratory-results.json；正式套餐验收需先按测试用例规范冻结专项资产并绑定BR-037/BR-051 Oracle。",
+  "caseDefinitionHash": "b7985b60fc55abff4e53d438bbc59e593069c79a6f372c0bccf72eeefff3aa8f",
+  "priority": "P1",
+  "area": "DESIGN_QUOTE",
+  "businessRuleIds": [
+    "BR-001",
+    "BR-002",
+    "DEC-071"
+  ],
+  "pageTargets": [
+    "web:/designer/quotes/:quoteId",
+    "app:/subpackages/project/pages/owner-quote",
+    "app:/pages/project/list"
+  ],
+  "providerRoutes": [
+    "quote/save",
+    "quote/update",
+    "quote/info",
+    "quote/line/page"
+  ]
+}

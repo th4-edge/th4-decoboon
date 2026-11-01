@@ -1,0 +1,13 @@
+{
+  "id": "provider-response-app-success",
+  "title": "小程序用户成功报告回归",
+  "loginTokenEnv": "ZHUANGDEQING_RECORD_DEV_TOKEN",
+  "projectPath": "dist/dev/mp-weixin",
+  "autoPort": 9420,
+  "continueOnError": false,
+  "steps": [
+    { "id": "S01-success", "action": "reLaunch", "url": "/subpackages/statistic/pages/success", "waitMs": 2200, "assertText": "激活分" },
+    { "id": "S02-success-risk", "action": "capture", "waitMs": 200, "assertText": "风险等级" },
+    { "id": "S03-success-role", "action": "assertText", "text": "岗位业务激活" }
+  ]
+}

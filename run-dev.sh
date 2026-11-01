@@ -2,8 +2,8 @@
 # 装得清后端本地开发启动脚本
 # 用法: ./run-dev.sh
 #
-# 构建采用 boot/lib/config 分离部署结构，jar 本身不包含依赖和配置，
-# 因此本地运行需要通过 loader.path 指定依赖和配置目录。
+# 构建采用 classes/lib/config 分离部署结构，直接使用 target/classes 与
+# target/lib 启动，避免 thin JAR 的 Main-Class 忽略 loader.path。
 
 set -e
 
@@ -36,7 +36,14 @@ if [ -f "$PROJECT_DIR/.env.wechat-pay.local" ]; then
 fi
 
 JAR="target/th4-decoboon-1.0.0.jar"
-LOADER_PATH="target/lib,target/classes"
+CLASS_PATH="$PROJECT_DIR/target/classes:$PROJECT_DIR/target/lib/*"
+if [ -n "${JAVA_HOME:-}" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+  JAVA_BIN="$JAVA_HOME/bin/java"
+elif [ -x "/Library/Java/JavaVirtualMachines/jdk-22.jdk/Contents/Home/bin/java" ]; then
+  JAVA_BIN="/Library/Java/JavaVirtualMachines/jdk-22.jdk/Contents/Home/bin/java"
+else
+  JAVA_BIN="$(command -v java)"
+fi
 
 if [ ! -f "$JAR" ]; then
   echo "[run-dev] 未找到 $JAR，先执行 mvn package..."
@@ -44,9 +51,10 @@ if [ ! -f "$JAR" ]; then
 fi
 
 echo "[run-dev] 启动 th4-decoboon (dev profile)..."
-echo "[run-dev]   jar:    $JAR"
-echo "[run-dev]   loader: $LOADER_PATH"
+echo "[run-dev]   main:   com.th4.edge.Application"
+echo "[run-dev]   java:   $JAVA_BIN"
+echo "[run-dev]   classpath: $CLASS_PATH"
 echo "[run-dev]   port:   8090"
 echo ""
 
-exec java -Dloader.path="$LOADER_PATH" -jar "$JAR" --spring.profiles.active=dev
+exec "$JAVA_BIN" -cp "$CLASS_PATH" com.th4.edge.Application --spring.profiles.active=dev

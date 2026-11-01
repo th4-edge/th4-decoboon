@@ -1,0 +1,35 @@
+{
+  "sessionRole": "finance",
+  "pagePath": "subpackages/finance/pages/project",
+  "overviewText": "王芳（造数1100） · 望江府1栋102P1793457777832 · 望江府1栋102 待开工合同收入¥2,495.75回款 15.3%付款进度 41.9%待收 ¥6,347.70总览应收回款应付付款项目流水结算已收工程款¥1,148.05待收工程款¥6,347.70项目总成本¥2,240.00项目毛利利润核算总成本 ¥2,240.00材料成本¥1,440.00 · 64%人工成本¥0.00 · 0%项目款¥800.00 · 36%费用分摊¥0.00 · 0%结算条件应收已全部收清未满足应付已全部付清未满足项目结算已生成待确认应收节点应付成本",
+  "settlementText": "王芳（造数1100） · 望江府1栋102P1793457777832 · 望江府1栋102 待开工合同收入¥2,495.75回款 15.3%付款进度 41.9%待收 ¥6,347.70总览应收回款应付付款项目流水结算结算状态 待确认—合同金额¥2,495.75最终结算¥2,495.75已收金额¥1,148.05应付成本¥3,440.00已付金额¥1,440.00结算构成材料款¥1,440.00工人工资¥0.00项目款¥800.00费用分摊¥0.00项目总成本¥2,240.00应收总额¥7,495.75扣款 / 奖励¥0.00 / ¥0.00质保金¥74.87 · 3%重算确认结算项目最终成本未完整，补齐成本后才能确认结算；当前结算利润保持为空。",
+  "buttons": [
+    {
+      "text": "重算",
+      "disabled": null,
+      "ariaDisabled": null,
+      "outerWxml": "<button class=\"jz-btn jz-btn--ghost data-v-0d41fb51\"><components/JzIcon class=\"data-v-0d41fb51\" u-i=\"0d41fb51-19\"><image class=\"jz-icon data-v-8905a1db\" style=\"width:12px;height:12px;\" src=\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23128276%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M20%206v5h-5%22%2F%3E%3Cpath%20d%3D%22M4%2018v-5h5%22%2F%3E%3Cpath%20d%3D%22M18.5%209a7%207%200%200%200-12-2L4%2011M5.5%2015a7%207%200%200%200%2012%202L20%2013%22%2F%3E%3C%2Fsvg%3E\" mode=\"aspectFit\"></image></components/JzIcon><text class=\"data-v-0d41fb51\">重算</text></button>"
+    },
+    {
+      "text": "确认结算",
+      "disabled": "true",
+      "ariaDisabled": null,
+      "outerWxml": "<button class=\"jz-btn jz-btn--primary data-v-0d41fb51\" disabled=\"true\"><components/JzIcon class=\"data-v-0d41fb51\" u-i=\"0d41fb51-20\"><image class=\"jz-icon data-v-8905a1db\" style=\"width:12px;height:12px;\" src=\"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22m8%2012%202.5%202.5L16.5%209%22%2F%3E%3C%2Fsvg%3E\" mode=\"aspectFit\"></image></components/JzIcon><text class=\"data-v-0d41fb51\">确认结算</text></button>"
+    }
+  ],
+  "report": {
+    "contractAmount": 2495.75,
+    "receivedAmount": 1148.05,
+    "outstandingAmount": 6347.7,
+    "payableAmount": 3440,
+    "paidAmount": 1440,
+    "totalCost": 2240,
+    "costComplete": false,
+    "costIncompleteCount": 1,
+    "settlementStatus": "draft"
+  },
+  "screenshots": [
+    "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001/evidence/TC-FIN-FINANCE-COST-004/01-finance-overview-app-retest.png",
+    "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001/evidence/TC-FIN-FINANCE-COST-004/02-finance-settlement-app-retest.png"
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "request": {
+    "stageId": "242541620686225408",
+    "result": "pass",
+    "content": "拆除改造现场任务已完成，墙面白灰及腻子粉铲除完成，现场清理完毕，申请业主验收。",
+    "images": [
+      "companies/199500000000000001/projects/242541620656865280/files/acceptance/2026/11/fd7d3b42f55b4626aac1d222354bf97f.png"
+    ]
+  },
+  "httpStatus": 200,
+  "response": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-01 16:05:13"
+      },
+      "acceptanceId": "242559592377090048",
+      "project": {
+        "projectId": "242541620656865280",
+        "no": "P1793516028568",
+        "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+        "property": {
+          "propertyId": "242541216497926144",
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "designer": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "telNo": "13910002004",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "manager": {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "telNo": "13910002006",
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          }
+        },
+        "support": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "telNo": "13910002003",
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          }
+        },
+        "siteAddr": "滨湖世纪城1栋102"
+      },
+      "stage": {
+        "stageId": "242541620686225408",
+        "name": "拆除改造",
+        "status": {
+          "name": "待验收",
+          "key": "Accepting"
+        }
+      },
+      "submittedBy": {
+        "empId": "199500000000000107",
+        "name": "审计项目经理",
+        "telNo": "13910002006",
+        "role": {
+          "name": "项目经理",
+          "value": "Pm",
+          "key": "Pm"
+        }
+      },
+      "status": {
+        "name": "待确认",
+        "key": "Pending"
+      },
+      "conclusion": "拆除改造现场任务已完成，墙面白灰及腻子粉铲除完成，现场清理完毕，申请业主验收。",
+      "issues": [],
+      "evidenceUrls": [
+        "companies/199500000000000001/projects/242541620656865280/files/acceptance/2026/11/fd7d3b42f55b4626aac1d222354bf97f.png"
+      ],
+      "rectificationIssueImages": []
+    },
+    "success": true
+  },
+  "expected": "reject duplicate pending submission; acceptance remains Pending and only 1 round"
+}

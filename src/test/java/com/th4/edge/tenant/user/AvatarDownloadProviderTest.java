@@ -20,6 +20,8 @@ class AvatarDownloadProviderTest {
 
     private static final String AVATAR_KEY =
             "avatar/1789903520997907818/1789903521009050562-1829e9278ffa44fc86fb24244fccb39e.jpg";
+    private static final String COMPANY_BRAND_KEY =
+            "company-brand/1789903520997907818/logo-1829e9278ffa44fc86fb24244fccb39e.png";
 
     @Test
     void shouldAllowOnlyGeneratedAvatarPathWithoutSignature() {
@@ -36,6 +38,27 @@ class AvatarDownloadProviderTest {
     void shouldRejectAvatarLikePathThatDoesNotMatchGeneratedKey() {
         FileSignatureContext context = mock(FileSignatureContext.class);
         Download provider = provider(context, "avatar/12/34-short.jpg");
+
+        assertThatThrownBy(() -> provider.call(new FileGrant()))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("文件不存在或无权访问");
+    }
+
+    @Test
+    void shouldAllowOnlyGeneratedCompanyBrandPathWithoutSignature() {
+        FileSignatureContext context = mock(FileSignatureContext.class);
+        File file = new File("company-logo.png");
+        when(context.materialize(COMPANY_BRAND_KEY, null)).thenReturn(file);
+        Download provider = provider(context, COMPANY_BRAND_KEY);
+
+        assertThat(provider.call(new FileGrant())).isSameAs(file);
+        verify(context).materialize(COMPANY_BRAND_KEY, null);
+    }
+
+    @Test
+    void shouldRejectCompanyBrandLikePathThatDoesNotMatchGeneratedKey() {
+        FileSignatureContext context = mock(FileSignatureContext.class);
+        Download provider = provider(context, "company-brand/12/logo-short.png");
 
         assertThatThrownBy(() -> provider.call(new FileGrant()))
                 .isInstanceOf(DefinedException.class)

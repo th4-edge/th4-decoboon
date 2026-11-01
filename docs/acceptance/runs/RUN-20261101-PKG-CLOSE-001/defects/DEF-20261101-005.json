@@ -1,0 +1,28 @@
+{
+  "defectId": "DEF-20261101-005",
+  "caseIds": [],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "已发布套餐在列表中被显示为“配置中、0分区、0项目”",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/package-manage",
+  "businessState": "AUDIT套餐已发布、状态Published、1个区域、2个项目行",
+  "expected": "页面显示已发布/可使用，并显示真实分区和项目数量",
+  "actual": "页面显示“0套可使用、1套配置中”，套餐卡显示“0个分区、0项”",
+  "minimumReproduction": [
+    "Boss打开套餐模板列表",
+    "查看已发布AUDIT套餐卡片",
+    "与 pack/template/info 和数据库对账"
+  ],
+  "impact": "用户误判套餐未配置完成，无法识别可用套餐，生命周期决策失真",
+  "evidence": [
+    "evidence/EXP-PKG-007/before-package-manage.png",
+    "evidence/EXP-PKG-007/before-package-manage.txt",
+    "raw/manager-list-readback.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "pack/template/page 返回受限摘要（status/version/分区数/项目数）或在独立 readiness summary Provider 中计算，禁止前端依赖缺失 items",
+  "retestCondition": "列表与 template/info/DB 的 status、sectionCount、lineCount 完全一致",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

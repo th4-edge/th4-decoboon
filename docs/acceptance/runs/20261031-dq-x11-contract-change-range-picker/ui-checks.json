@@ -1,0 +1,25 @@
+{
+  "web": {
+    "viewport": "1440x1000",
+    "initialRequest": {"contractId":"241939522005237760","current":1,"size":20},
+    "materialFilterRequest": {"contractId":"241939522005237760","current":1,"size":20,"itemType":"Material"},
+    "materialRows": 3,
+    "consoleErrors": 0,
+    "screenshot": "web-range-filter-material.png"
+  },
+  "appH5": {
+    "viewport": "393x659",
+    "initialRows": 7,
+    "materialFilterRequest": {"contractId":"241939522005237760","current":1,"size":20,"itemType":"Material"},
+    "materialRows": 3,
+    "knownConsoleIssue": "uni-h5 clientWidth + favicon 404，不作为原生通过依据",
+    "screenshot": "app-range-filter-material.png"
+  },
+  "appNative": {
+    "outcome": "PASS",
+    "checks": "2/2",
+    "initialRows": 7,
+    "materialRows": 3,
+    "screenshot": "app-range-native-material.png"
+  }
+}

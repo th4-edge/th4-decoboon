@@ -1,0 +1,79 @@
+{
+  "caseId": "TC-CT-BOSS-PROJECT-002",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:39:46+08:00",
+  "finishedAt": "2026-11-01T14:39:46+08:00",
+  "executor": "codex",
+  "role": "Boss/Finance/Pm",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-RUN20261101COREB1001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "API",
+      "page_path": "project/contract/info",
+      "control": "合同与项目回读",
+      "control_state": "N/A",
+      "business_state_before": "合同Effective",
+      "business_state_after": "合同、项目、客户、房屋同源",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-contract-project-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/projects/242297299361857536",
+      "control": "项目核算页",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "项目已生成",
+      "business_state_after": "合同额、材料计划、应收和成本回读",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-finance-project-web.png"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "App",
+      "page_path": "/subpackages/project/pages/detail?id=242297299361857536",
+      "control": "项目详情",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "项目已生成",
+      "business_state_after": "显示8阶段、合同已生效、项目经理和待开工状态",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-project-detail-app.png",
+        "21-app-pm-project.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Finance Web显示项目、材料计划1条、应收和成本",
+    "App项目详情显示合同履约档案已生效、8阶段、项目经理和待开工",
+    "PM工作台显示该项目在本人3个项目中"
+  ],
+  "actualState": [
+    "合同Effective",
+    "项目Preparing",
+    "合同与项目的customerId/propertyId一致",
+    "阶段8、材料计划1、应收4"
+  ],
+  "evidence": [
+    "evidence/TC-CT-BOSS-PROJECT-002/10-contract-project-api.json",
+    "evidence/TC-CT-BOSS-PROJECT-002/01-finance-project-web.png",
+    "evidence/TC-CT-BOSS-PROJECT-002/02-project-detail-app.png",
+    "evidence/TC-CT-BOSS-PROJECT-002/20-web-project-and-pm.json",
+    "evidence/TC-CT-BOSS-PROJECT-002/21-app-pm-project.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "只读验证，未重新执行合同生效。"
+}

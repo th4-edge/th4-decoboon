@@ -1,6 +1,4 @@
 package com.th4.edge.decoboon.project.service.purchases.page.support;
-import com.th4.edge.framework.data.jackson.annotation.Properties;
-import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.material.context.MaterialCommercialPrivacyContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;

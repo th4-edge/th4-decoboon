@@ -1,6 +1,5 @@
 package com.th4.edge.decoboon.project.service.tasks.save.support;
 
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.SpaceType;
@@ -11,6 +10,7 @@ import com.th4.edge.decoboon.project.context.ProjectPermissionContext;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.model.ProjectTask;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
 import com.th4.edge.decoboon.project.repository.ProjectTaskRepository;

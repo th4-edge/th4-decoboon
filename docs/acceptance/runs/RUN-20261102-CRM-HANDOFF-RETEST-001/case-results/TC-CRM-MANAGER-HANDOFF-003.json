@@ -1,0 +1,47 @@
+{
+  "caseId": "TC-CRM-MANAGER-HANDOFF-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:33:00+08:00",
+  "finishedAt": "2026-11-02T00:34:08+08:00",
+  "executor": "codex",
+  "role": "StoreManager+Designer+Boss",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261102-CRMHANDOFFRETEST001-",
+  "steps": [
+    {
+      "action": "店长打开客户360并完成设计师指派",
+      "result": "PASS_RETEST"
+    },
+    {
+      "action": "设计师/Boss/DB回读同一事实",
+      "result": "PASS_RETEST"
+    },
+    {
+      "action": "App回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/workbench/customers",
+    "/workbench/customers/242297007991947264"
+  ],
+  "actualState": [
+    "客户与房屋designerId=199500000000000105",
+    "设计师客户列表包含目标客户",
+    "Boss/店长看到审计设计",
+    "App未执行"
+  ],
+  "evidence": [
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/01-before-handoff.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/02-store-customers-list.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/03-customer-detail.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/04-after-handoff.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/05-after-handoff.json",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/06-handoff-api-db.json"
+  ],
+  "defectIds": [
+    "DEF-20261102-003"
+  ],
+  "blockedReason": "App授权微信身份不可用；Web/API/DB缺陷修复已复验。",
+  "notes": "DEF-20261102-003缺陷级VERIFIED，整条跨端用例仍BLOCKED。"
+}

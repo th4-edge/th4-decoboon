@@ -1,0 +1,392 @@
+{
+  "beforeSummary": {
+    "pass": 11,
+    "fail": 12
+  },
+  "afterSummary": {
+    "total": 23,
+    "pass": 23,
+    "fail": 0
+  },
+  "criteria": {
+    "p95MsMax": 500,
+    "sqlStatementsMax": 30,
+    "rowCountMaxPerCase": "case.maxRows"
+  },
+  "rows": [
+    {
+      "selector": "客户选择器",
+      "before": {
+        "p95Ms": 154.2,
+        "rows": 20,
+        "sql": 24,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 114.67,
+        "rows": 20,
+        "sql": 24,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "房屋选择器",
+      "before": {
+        "p95Ms": 142.01,
+        "rows": 200,
+        "sql": 9,
+        "result": "FAIL_ROW_LIMIT_BOUNDED_CHILD"
+      },
+      "after": {
+        "p95Ms": 72.74,
+        "rows": 200,
+        "sql": 9,
+        "sqlGrowthFor10Rows": null,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "设计方案选择器",
+      "before": {
+        "p95Ms": 86.67,
+        "rows": 100,
+        "sql": 122,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 54.76,
+        "rows": 20,
+        "sql": 19,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "套餐模板选择器",
+      "before": {
+        "p95Ms": 62.66,
+        "rows": 201,
+        "sql": 213,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 32.19,
+        "rows": 20,
+        "sql": 14,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "基础报价行选择器",
+      "before": {
+        "p95Ms": 303.44,
+        "rows": 200,
+        "sql": 18,
+        "result": "FAIL_ROW_LIMIT"
+      },
+      "after": {
+        "p95Ms": 26.41,
+        "rows": 20,
+        "sql": 14,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "客户确认报价选择器",
+      "before": {
+        "p95Ms": 34.03,
+        "rows": 20,
+        "sql": 14,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 37.71,
+        "rows": 20,
+        "sql": 14,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "设计师报价选择器",
+      "before": {
+        "p95Ms": 34.05,
+        "rows": 20,
+        "sql": 14,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 76.15,
+        "rows": 20,
+        "sql": 14,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "员工选择器",
+      "before": {
+        "p95Ms": 26.74,
+        "rows": 20,
+        "sql": 13,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 29.92,
+        "rows": 20,
+        "sql": 13,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "薪酬员工选择器",
+      "before": {
+        "p95Ms": 24.38,
+        "rows": 20,
+        "sql": 13,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 27.62,
+        "rows": 20,
+        "sql": 13,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "工人选择器",
+      "before": {
+        "p95Ms": 15.46,
+        "rows": 20,
+        "sql": 12,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 10.31,
+        "rows": 20,
+        "sql": 12,
+        "sqlGrowthFor10Rows": -25,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "供应商选择器",
+      "before": {
+        "p95Ms": 26.94,
+        "rows": 20,
+        "sql": 15,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 25.54,
+        "rows": 20,
+        "sql": 15,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "内容模板选择器",
+      "before": {
+        "p95Ms": 15.77,
+        "rows": 20,
+        "sql": 12,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 12.12,
+        "rows": 20,
+        "sql": 12,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "内容项目选择器",
+      "before": {
+        "p95Ms": 206.56,
+        "rows": 20,
+        "sql": 417,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 67.32,
+        "rows": 20,
+        "sql": 16,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "增减项项目选择器",
+      "before": {
+        "p95Ms": 139.84,
+        "rows": 20,
+        "sql": 414,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 45.78,
+        "rows": 20,
+        "sql": 16,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "汇报项目选择器",
+      "before": {
+        "p95Ms": 128.89,
+        "rows": 20,
+        "sql": 417,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 53.89,
+        "rows": 20,
+        "sql": 16,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "财务项目选择器",
+      "before": {
+        "p95Ms": 134.05,
+        "rows": 20,
+        "sql": 417,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 53.24,
+        "rows": 20,
+        "sql": 16,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "应收选择器",
+      "before": {
+        "p95Ms": 13.35,
+        "rows": 20,
+        "sql": 17,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 29.28,
+        "rows": 20,
+        "sql": 17,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "应付选择器",
+      "before": {
+        "p95Ms": 28.58,
+        "rows": 20,
+        "sql": 17,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 37.16,
+        "rows": 20,
+        "sql": 17,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "账务分类选择器",
+      "before": {
+        "p95Ms": 28.46,
+        "rows": 206,
+        "sql": 11,
+        "result": "FAIL_ROW_LIMIT_BOUNDED_TREE"
+      },
+      "after": {
+        "p95Ms": 26.19,
+        "rows": 206,
+        "sql": 11,
+        "sqlGrowthFor10Rows": null,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "费用分类选择器",
+      "before": {
+        "p95Ms": 15.63,
+        "rows": 20,
+        "sql": 12,
+        "result": "PASS"
+      },
+      "after": {
+        "p95Ms": 21.13,
+        "rows": 20,
+        "sql": 12,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "付款计划选择器",
+      "before": {
+        "p95Ms": 139.62,
+        "rows": 204,
+        "sql": 414,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 19.12,
+        "rows": 20,
+        "sql": 13,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "施工计划选择器",
+      "before": {
+        "p95Ms": 105.69,
+        "rows": 203,
+        "sql": 414,
+        "result": "FAIL"
+      },
+      "after": {
+        "p95Ms": 21.0,
+        "rows": 20,
+        "sql": 13,
+        "sqlGrowthFor10Rows": 0,
+        "result": "PASS"
+      }
+    },
+    {
+      "selector": "报价库选择器",
+      "before": {
+        "p95Ms": 21.95,
+        "rows": 30,
+        "sql": 48,
+        "result": "PASS_SQL_OVERHEAD_MULTI_PROVIDER"
+      },
+      "after": {
+        "p95Ms": 47.45,
+        "rows": 30,
+        "sql": 48,
+        "sqlGrowthFor10Rows": 20,
+        "result": "PASS"
+      }
+    }
+  ],
+  "notes": [
+    "房屋选择为客户内 bounded-child，允许200套房夹具但必须P95/SQL稳定。",
+    "账务分类为有界树，允许206节点但必须P95/SQL稳定。",
+    "报价库由两个Provider组成，SQL预算按每Provider 30条计算；20→30行增加20条SQL，当前P95仍<50ms；后续仍可继续优化tree/page组合。"
+  ],
+  "command": "python3 scripts/benchmark-app-selectors-10x.py seed && python3 scripts/benchmark-app-selectors-10x.py benchmark && python3 scripts/benchmark-app-selectors-10x.py cleanup"
+}

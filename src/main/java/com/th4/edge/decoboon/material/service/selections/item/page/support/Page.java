@@ -1,7 +1,8 @@
 package com.th4.edge.decoboon.material.service.selections.item.page.support;
 
-import com.th4.edge.framework.data.jackson.annotation.Properties;
+
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
 import com.th4.edge.decoboon.material.model.MaterialSelectionItem;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;

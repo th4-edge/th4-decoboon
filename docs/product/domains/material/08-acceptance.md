@@ -174,3 +174,24 @@
 - 证据：`evidence/B8/README.md`、`summary.json`、`verification-results.json`、`defects.json`、`golden-question-results.json`、`api-samples.json`、`ui-metrics.json`、`devtools-results.json`、`screenshots/`；
 - 临时作业单删除、材料计划与项目负责人恢复、测试密码哈希恢复；无 DDL/迁移/生产发布/正式小程序提审；
 - 结论：独立验收 **PASS**，满足进入 `ACCEPTED` 用户决策的证据条件；最终正式接受/发布仍由用户确认，本验收不自批 `ACCEPTED`。
+
+## MAT-X2 独立验收（2026-11-02，FAIL）
+
+- RUN：`RUN-20261102-MAT-X2-001`；后端 `256cc587`、Web `ec3da3b`、App `f2fb91e`；隔离库 `decoboon_accept_20261101`。
+- 结果：4 例 `0 PASS / 1 FAIL / 3 BLOCKED / 0 NOT_RUN`；结论 `FAIL`，不进入 `ACCEPTED`。
+- 通过分支：Designer 从计划行建单/编辑/提交；上限10㎡保存成功、10.01㎡明确拒绝且无部分写入；Finance 下单形成唯一采购/应付，重复请求幂等，采购与应付同为 ¥880。
+- P1 缺陷：`DEF-20261102-005`。Pm 首批登记4/10㎡后，`MaterialOrderSheet=Arrived`，但 `PurchaseOrder=PartiallyReceived(4/10)`、`MaterialPlan=PartiallyArrived`；刷新后“确认到场”按钮消失，尾量6㎡无法通过页面完成。
+- App：授权微信身份不可用，Designer/Finance/Pm 分支均 `BLOCKED_IDENTITY`，未用员工账号、devToken 或数据库登录态冒充。
+- 证据：`docs/acceptance/runs/RUN-20261102-MAT-X2-001/`；最终校验 `validate_run.py --final` 为 0 errors / 0 warnings。
+- 下一步：修复 `DEF-20261102-005` 的作业单状态推导，新建独立 RUN 复验“首批4㎡→尾量6㎡→超量拒绝→唯一应付→成本880→刷新/App回读”。
+
+## MAT-X2F 到场状态与成本累计修复复验（2026-11-02，Web/DB PASS，整体 BLOCKED）
+
+- RUN：`RUN-20261102-MAT-X2F-RETEST-001`；baseline `256cc587` + MAT-X2F patch `5011633...`；Web `ec3da3b`；App `f2fb91e`。
+- 修复：`db_purchase_order_item.sheet_item_id` 关联具体作业单行；新采购下单落关联；到场状态只按当前作业单行对应采购累计；同一 MaterialPlan 的实际成本按全部采购到场明细累计。
+- 复验：Pm 首批4㎡后作业单 `PartiallyArrived`、采购 `PartiallyReceived(4/10)`且按钮保留；7㎡超量拒绝无写入；尾量6㎡后作业单/采购/计划全部到场，2条receipt合计10㎡。
+- 财务：新应付唯一¥880、到期日2026-12-02；项目 `actualCost=2640`、`MaterialCost=2640`，计划累计成本2640；重复到场400且无新增。
+- 迁移：134仅在隔离库执行，备份SHA-256 `523a898a...`；克隆库迁移→回滚演练通过，回滚后列/索引为0。
+- 测试：定向24/24 PASS；Provider契约findings=0；`mvn -DskipTests package` PASS。干净baseline全量1121 tests仍有2个既有statistic失败；主工作区全量1206 tests有4 failures+1 error。
+- 缺陷：`DEF-20261102-005` Web/Backend/DB 分支 `VERIFIED`；App `BLOCKED_IDENTITY`；整体结论仍 `BLOCKED`，生产未发布。
+- 下一步：收口132/133等未提交前置迁移并提交MAT-X2F；修复2个既有statistic全量测试失败；App身份可用后补跨端回读；生产迁移/发布另行确认。

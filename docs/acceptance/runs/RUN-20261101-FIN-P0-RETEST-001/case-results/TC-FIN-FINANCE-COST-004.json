@@ -1,0 +1,82 @@
+{
+  "caseId": "TC-FIN-FINANCE-COST-004",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:34:59+08:00",
+  "finishedAt": "2026-11-01T14:34:59+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-RUN20261101FINP0RETEST001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/finance/pages/project",
+      "control": "项目总览",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "costComplete=false",
+      "business_state_after": "成本未完整；项目毛利无数值；金额精确到分",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-finance-overview-app-retest.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/finance/pages/project",
+      "control": "项目结算",
+      "control_state": "VISIBLE_DISABLED",
+      "business_state_before": "settlement=Draft; costComplete=false",
+      "business_state_after": "确认结算 disabled=true；提示补齐成本",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-finance-settlement-app-retest.png"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "finance/project/report",
+      "control": "只读对账",
+      "control_state": "N/A",
+      "business_state_before": "same project",
+      "business_state_after": "profit=null; grossMargin=null; settlement=Draft",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-finance-project-report-api-retest.json",
+        "13-project-finance-db-retest.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "App项目总览成本未完整、毛利无数值、金额精确到分",
+    "App确认结算按钮 disabled=true 并显示补齐成本提示",
+    "Web同状态显示成本未完整且确认结算禁用"
+  ],
+  "actualState": [
+    "costComplete=false",
+    "costIncompleteCount=1",
+    "profitAmount=null",
+    "grossMargin=null",
+    "settlement.status=Draft"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-COST-004/01-finance-overview-app-retest.png",
+    "evidence/TC-FIN-FINANCE-COST-004/02-finance-settlement-app-retest.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/03-finance-settlement-web-retest.png",
+    "evidence/TC-FIN-FINANCE-COST-004/10-finance-project-report-api-retest.json",
+    "evidence/TC-FIN-FINANCE-COST-004/11-receivable-report-api-retest.json",
+    "evidence/TC-FIN-FINANCE-COST-004/12-payable-report-api-retest.json",
+    "evidence/TC-FIN-FINANCE-COST-004/13-project-finance-db-retest.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "复验原 DEF-20261101-001/002 修复后的成本完整性与利润为空。"
+}

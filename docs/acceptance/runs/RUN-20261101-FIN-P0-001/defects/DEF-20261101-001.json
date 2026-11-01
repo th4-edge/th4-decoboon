@@ -1,0 +1,46 @@
+{
+  "defectId": "DEF-20261101-001",
+  "caseIds": [
+    "TC-FIN-CROSSSURFACE-PARITY-006"
+  ],
+  "priority": "P1",
+  "status": "VERIFIED",
+  "title": "成本不完整时小程序仍显示可用的“确认结算”按钮，与Web门禁不一致",
+  "role": "Finance",
+  "surface": "App",
+  "pagePath": "/subpackages/finance/pages/project",
+  "businessState": "project=Preparing; settlement=Draft; costComplete=false; costIncompleteCount=1; profitAmount=null; grossMargin=null",
+  "expected": "成本不完整或项目状态不允许时，小程序应与Web一致禁用确认结算并说明原因。",
+  "actual": "小程序“确认结算”按钮无 disabled/aria-disabled 属性，WXML为可用主按钮；同一状态Web按钮 disabled=true。",
+  "minimumReproduction": [
+    "财务账号登录小程序",
+    "进入项目财务 /subpackages/finance/pages/project?projectId=242297299361857536",
+    "切到项目结算",
+    "查看确认结算按钮状态，并与Web同项目结算页对照"
+  ],
+  "impact": "形成错误可操作预期，用户可能发起注定被后端拒绝的资金结算动作；跨端操作门禁表达不一致。",
+  "evidence": [
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/20-app-control-and-data-state.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/04-app-confirm-false-affordance.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/22-finance-settlement-web-control.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/23-finance-settlement-web-control.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "App 财务项目结算页",
+  "retestCondition": "costComplete=false或项目未验收/完工时，小程序确认结算按钮禁用并展示原因；Web/App状态一致。",
+  "createdAt": "2026-11-01T14:27:50+08:00",
+  "fixedAt": "2026-11-01T14:33:27+08:00",
+  "changedFiles": [
+    "th4-decoboon-app/src/subpackages/finance/pages/project.vue",
+    "th4-decoboon-app/src/core/format.ts",
+    "th4-decoboon-app/scripts/verify-money-format.mjs"
+  ],
+  "devVerification": {
+    "moneyFormat": "11/11 PASS",
+    "typeCheck": "PASS",
+    "buildMpWeixin": "PASS"
+  },
+  "verifiedAt": "2026-11-01T14:34:59+08:00",
+  "retestRun": "docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001",
+  "retestEvidence": "docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001/evidence/TC-FIN-CROSSSURFACE-PARITY-006/24-cross-surface-comparison-retest.json"
+}

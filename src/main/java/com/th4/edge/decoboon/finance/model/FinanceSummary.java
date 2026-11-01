@@ -31,8 +31,14 @@ public class FinanceSummary {
     /** 应收条数（P1 契约补齐：与 receivableAmount 同一过滤清单计数，供跨页对账）。 */
     private Integer receivableCount = 0;
 
+    /** 累计有效收款笔数（用于累计口径页面，不得直接放入“本月资金”）。 */
     private Integer receiptCount = 0;
+    /** 累计付款笔数（用于累计口径页面，不得直接放入“本月资金”）。 */
     private Integer paymentCount = 0;
+    /** 本月实际发生的有效收款笔数。 */
+    private Integer monthReceiptCount = 0;
+    /** 本月实际发生的付款笔数。 */
+    private Integer monthPaymentCount = 0;
     private BigDecimal grossReceiptAmount = BigDecimal.ZERO;
     private BigDecimal reversalAmount = BigDecimal.ZERO;
     private BigDecimal receiptAmount = BigDecimal.ZERO;
@@ -106,6 +112,10 @@ public class FinanceSummary {
     public void setReceiptCount(Integer receiptCount) { this.receiptCount = receiptCount; }
     public Integer getPaymentCount() { return paymentCount; }
     public void setPaymentCount(Integer paymentCount) { this.paymentCount = paymentCount; }
+    public Integer getMonthReceiptCount() { return monthReceiptCount; }
+    public void setMonthReceiptCount(Integer monthReceiptCount) { this.monthReceiptCount = monthReceiptCount; }
+    public Integer getMonthPaymentCount() { return monthPaymentCount; }
+    public void setMonthPaymentCount(Integer monthPaymentCount) { this.monthPaymentCount = monthPaymentCount; }
     public BigDecimal getGrossReceiptAmount() { return grossReceiptAmount; }
     public void setGrossReceiptAmount(BigDecimal grossReceiptAmount) { this.grossReceiptAmount = grossReceiptAmount; }
     public BigDecimal getReversalAmount() { return reversalAmount; }

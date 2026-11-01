@@ -1,0 +1,50 @@
+{
+  "caseId": "TC-FIN-FINANCE-SETTLEMENT-005",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:21:00+08:00",
+  "finishedAt": "2026-11-02T00:23:52+08:00",
+  "executor": "codex",
+  "role": "Finance+StoreManager",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261102-FINFIXRETEST001-",
+  "steps": [
+    {
+      "action": "对比 project/report 与 settlement/page 成本完整性",
+      "result": "PASS_RETEST",
+      "actual": "totalCost=2240、estimated=1760、actual=2240、costComplete=false、incomplete=1、profit=null、grossMargin=null，七项完全一致",
+      "evidence": "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-settlement-parity.json"
+    },
+    {
+      "action": "Web项目结算页回读",
+      "result": "PASS_RETEST",
+      "actual": "结算金额2495.75、质保74.87、成本2240、利润成本未完整、确认结算disabled=true",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-SETTLEMENT-005/02-settlement-page-retest.png",
+        "evidence/TC-FIN-FINANCE-SETTLEMENT-005/03-settlement-page-retest.json"
+      ]
+    },
+    {
+      "action": "App端回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/finance/projects/242297299361857536"
+  ],
+  "actualState": [
+    "Web/API同源七项一致",
+    "确认结算保持禁用",
+    "DB利润和毛利率为NULL",
+    "App未执行"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-settlement-parity.json",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/02-settlement-page-retest.png",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/03-settlement-page-retest.json"
+  ],
+  "defectIds": [
+    "DEF-20261102-002"
+  ],
+  "blockedReason": "App授权微信身份不可用；Web/API缺陷修复已复验。",
+  "notes": "缺陷本身已验证修复；整条跨端用例需App证据后才能PASS。"
+}

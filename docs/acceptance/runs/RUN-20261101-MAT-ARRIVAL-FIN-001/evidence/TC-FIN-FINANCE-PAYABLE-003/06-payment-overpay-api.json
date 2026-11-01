@@ -1,0 +1,21 @@
+{
+  "request": {
+    "payableId": "1793518416093711825",
+    "amount": 240,
+    "account": "CompanyBank",
+    "paidAt": "2026-11-01",
+    "payeeName": "全链路验收材料供应商",
+    "transactionNo": "AUDIT-20261101-RUN20261101MATAR-PAY-OVER-001",
+    "idempotencyKey": "AUDIT-20261101-RUN20261101MATAR-PAY-OVER-001"
+  },
+  "httpStatus": 200,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "付款金额不能超过应付余额",
+      "system": false
+    }
+  },
+  "expected": "reject overpayment; payment count remains 1"
+}

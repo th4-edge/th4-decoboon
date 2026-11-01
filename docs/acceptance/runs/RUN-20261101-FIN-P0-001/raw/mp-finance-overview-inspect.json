@@ -1,0 +1,30 @@
+{
+  "metrics": [
+    {
+      "i": 0,
+      "text": "已收工程款¥1,148",
+      "cls": "fp-metric data-v-0d41fb51"
+    },
+    {
+      "i": 1,
+      "text": "待收工程款¥6,348",
+      "cls": "fp-metric data-v-0d41fb51"
+    },
+    {
+      "i": 2,
+      "text": "项目总成本¥2,240",
+      "cls": "fp-metric data-v-0d41fb51"
+    },
+    {
+      "i": 3,
+      "text": "项目毛利",
+      "cls": "fp-metric data-v-0d41fb51"
+    }
+  ],
+  "costLabel": null,
+  "cardTexts": [
+    "利润核算总成本 ¥2,240材料成本¥1,440 · 64%人工成本¥0 · 0%项目款¥800 · 36%费用分摊¥0 · 0%",
+    "结算条件应收已全部收清未满足应付已全部付清未满足项目结算已生成待确认"
+  ],
+  "screenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-FIN-P0-001/evidence/TC-FIN-FINANCE-COST-004/06-finance-overview-app.png"
+}

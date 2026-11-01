@@ -1,0 +1,15 @@
+{
+  "codePresent": true,
+  "scene": "P1793457761546",
+  "login": {
+    "httpStatus": 200,
+    "success": false,
+    "errorCode": {
+      "code": "PHONE_REQUIRED",
+      "message": "首次登录请授权手机号",
+      "system": false
+    }
+  },
+  "blockedReason": "当前微信开发者身份未取得任何可用手机号授权；无法构造非业主手机号会话，也无法切换到匹配业主身份。",
+  "readAt": "2026-11-01T08:09:03.110Z"
+}

@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-30",
+  "description": "Web-only Provider write/command review registry. Coverage is machine-checked; business approvals are evidence-based and must not be inferred from route existence.",
+  "statusDefinitions": {
+    "WEB_FIRST_APPROVED": "已依据明确业务裁决登记的 Web 优先能力。",
+    "PLATFORM_SPECIFIC_APPROVED": "仅因端侧认证/客户端能力不同而允许的差异，不改变业务语义。",
+    "PARITY_REQUIRED": "业务规则要求 App/Web 完整同源，当前 App 缺失或未对齐。",
+    "ROUTE_MISMATCH": "同一业务动作在 App/Web 使用不同 Provider，需收敛。",
+    "WEB_FIRST_PENDING_REGISTRATION": "业务场景存在已批准依据，但 Web-first 治理备案或边界尚未闭环。",
+    "PENDING_REVIEW": "现有证据不足，不能批准或判定违规。"
+  },
+  "reviews": [
+    {
+      "route": "auth/session/password-login",
+      "status": "PLATFORM_SPECIFIC_APPROVED",
+      "rationale": "Web 使用手机号+密码登录，App 使用微信登录；这是端侧认证方式差异，登录后必须共用同一会话、角色、数据范围和错误语义。",
+      "evidence": [
+        "inventory: Web-only auth route",
+        "web:src/domains/identity/api.ts",
+        "app:src/pages/auth/login.vue"
+      ],
+      "nextAction": "保持登录方式差异，但共用 auth/session/info、角色解析、token 失效和订阅恢复口径。"
+    },
+    {
+      "route": "design/items/reorder",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "桌面端分项排序属于键盘/拖拽编辑效率能力，只改变展示顺序，不改变分项数量、金额或业务状态；App 可继续按服务端 sort 展示。",
+      "evidence": [
+        "GAP-WEB-024 CLOSED",
+        "web:src/views/designer/components/DesignItemSheet.vue",
+        "web:src/domains/design/api.ts"
+      ],
+      "nextAction": "保持排序只写 sort、不重算金额；若未来 App 需要排序交互，复用同一 Provider。"
+    },
+    {
+      "route": "property/property/delete",
+      "status": "WEB_FIRST_PENDING_REGISTRATION",
+      "rationale": "Web 客户工作区需要空房屋删除，但当前后端为物理删除，软删/归档语义仍未确认；在数据删除规则冻结前不得批准 Web-first。",
+      "evidence": [
+        "GAP-WEB-025 OPEN",
+        "WEB-DESIGNER-CUSTOMER360-EDIT-AND-TAB-PLAN Q1/Q2",
+        "后端 property/property/delete 当前为物理删除"
+      ],
+      "nextAction": "先由用户确认物理删除或软删/归档，并验证下游事实阻断；规则冻结后再完成 Web-first 备案。"
+    },
+    {
+      "route": "quote/lines/save",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "方案报价工作台的批量编辑、导入导出属于已冻结的 Web 优先能力，后端统一实现，App 兼容可复用。",
+      "evidence": [
+        "GAP-WEB-002 CLOSED",
+        "WEB-建设核心思路 A2",
+        "docs/product/designer/V2报价功能基线.md"
+      ],
+      "nextAction": "保持服务端权威计算、RevisionToken、错误恢复和写后回读；App 后续复用同一能力时不得另建同义 Provider。"
+    },
+    {
+      "route": "quote/workbook/apply",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "方案报价工作台的批量编辑、导入导出属于已冻结的 Web 优先能力，后端统一实现，App 兼容可复用。",
+      "evidence": [
+        "GAP-WEB-002 CLOSED",
+        "WEB-建设核心思路 A2",
+        "docs/product/designer/V2报价功能基线.md"
+      ],
+      "nextAction": "保持服务端权威计算、RevisionToken、错误恢复和写后回读；App 后续复用同一能力时不得另建同义 Provider。"
+    },
+    {
+      "route": "quote/workbook/build",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "方案报价工作台的批量编辑、导入导出属于已冻结的 Web 优先能力，后端统一实现，App 兼容可复用。",
+      "evidence": [
+        "GAP-WEB-002 CLOSED",
+        "WEB-建设核心思路 A2",
+        "docs/product/designer/V2报价功能基线.md"
+      ],
+      "nextAction": "保持服务端权威计算、RevisionToken、错误恢复和写后回读；App 后续复用同一能力时不得另建同义 Provider。"
+    },
+    {
+      "route": "quote/workbook/import",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "方案报价工作台的批量编辑、导入导出属于已冻结的 Web 优先能力，后端统一实现，App 兼容可复用。",
+      "evidence": [
+        "GAP-WEB-002 CLOSED",
+        "WEB-建设核心思路 A2",
+        "docs/product/designer/V2报价功能基线.md"
+      ],
+      "nextAction": "保持服务端权威计算、RevisionToken、错误恢复和写后回读；App 后续复用同一能力时不得另建同义 Provider。"
+    },
+    {
+      "route": "risk/item/assign",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "负责人风险队列沉浸式处置是已批准 Web 场景，风险写动作在后端统一实现，字段可被 App 复用；现已完成 Web-first 备案。",
+      "evidence": [
+        "GAP-WEB-026 CLOSED",
+        "SCN-016 负责人风险队列沉浸式处置",
+        "CAP-004 Web 沉浸式对象工作空间能力",
+        "web:src/domains/risk/api.ts"
+      ],
+      "nextAction": "保持服务端状态机、权限、幂等和处置时间线；App 后续接入时复用同一 Provider。"
+    },
+    {
+      "route": "risk/item/claim",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "负责人风险队列沉浸式处置是已批准 Web 场景，风险写动作在后端统一实现，字段可被 App 复用；现已完成 Web-first 备案。",
+      "evidence": [
+        "GAP-WEB-026 CLOSED",
+        "SCN-016 负责人风险队列沉浸式处置",
+        "CAP-004 Web 沉浸式对象工作空间能力",
+        "web:src/domains/risk/api.ts"
+      ],
+      "nextAction": "保持服务端状态机、权限、幂等和处置时间线；App 后续接入时复用同一 Provider。"
+    },
+    {
+      "route": "risk/item/close",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "负责人风险队列沉浸式处置是已批准 Web 场景，风险写动作在后端统一实现，字段可被 App 复用；现已完成 Web-first 备案。",
+      "evidence": [
+        "GAP-WEB-026 CLOSED",
+        "SCN-016 负责人风险队列沉浸式处置",
+        "CAP-004 Web 沉浸式对象工作空间能力",
+        "web:src/domains/risk/api.ts"
+      ],
+      "nextAction": "保持服务端状态机、权限、幂等和处置时间线；App 后续接入时复用同一 Provider。"
+    },
+    {
+      "route": "risk/item/record",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "负责人风险队列沉浸式处置是已批准 Web 场景，风险写动作在后端统一实现，字段可被 App 复用；现已完成 Web-first 备案。",
+      "evidence": [
+        "GAP-WEB-026 CLOSED",
+        "SCN-016 负责人风险队列沉浸式处置",
+        "CAP-004 Web 沉浸式对象工作空间能力",
+        "web:src/domains/risk/api.ts"
+      ],
+      "nextAction": "保持服务端状态机、权限、幂等和处置时间线；App 后续接入时复用同一 Provider。"
+    },
+    {
+      "route": "risk/item/reopen",
+      "status": "WEB_FIRST_APPROVED",
+      "rationale": "负责人风险队列沉浸式处置是已批准 Web 场景，风险写动作在后端统一实现，字段可被 App 复用；现已完成 Web-first 备案。",
+      "evidence": [
+        "GAP-WEB-026 CLOSED",
+        "SCN-016 负责人风险队列沉浸式处置",
+        "CAP-004 Web 沉浸式对象工作空间能力",
+        "web:src/domains/risk/api.ts"
+      ],
+      "nextAction": "保持服务端状态机、权限、幂等和处置时间线；App 后续接入时复用同一 Provider。"
+    }
+  ]
+}

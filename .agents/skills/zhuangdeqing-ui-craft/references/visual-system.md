@@ -202,6 +202,9 @@ $info-500: #3b7de8;
 ```scss
 $transition-fast: 120ms cubic-bezier(.4, 0, .2, 1);
 $transition-base: 200ms cubic-bezier(.4, 0, .2, 1);
+$motion-enter-fast: 320ms;
+$motion-enter-base: 520ms;
+$motion-ease-out: cubic-bezier(.22, .61, .36, 1);
 ```
 
 允许：

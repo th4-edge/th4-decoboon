@@ -1,0 +1,28 @@
+{
+  "counts": {
+    "tasks": 2,
+    "quotes": 1,
+    "stages": 8,
+    "projects": 1,
+    "contracts": 1
+  },
+  "project": {
+    "cost": 1760.00,
+    "name": "王芳（造数1100） · 望江府1栋102",
+    "status": "Preparing",
+    "projectId": 241926651905048576,
+    "contractAmount": 2495.75
+  },
+  "customer": {
+    "area": 100.00,
+    "name": "王芳（造数1100）",
+    "custId": 241926285943635968,
+    "status": "Serving"
+  },
+  "property": {
+    "area": 100.00,
+    "status": "Serving",
+    "address": "望江府1栋102",
+    "propertyId": 241926286149156864
+  }
+}

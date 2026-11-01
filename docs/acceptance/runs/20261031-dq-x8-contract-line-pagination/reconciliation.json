@@ -1,0 +1,42 @@
+{
+  "batch": "DQ-X8",
+  "change": "CHG-20261031-045",
+  "projectId": "241940507872198656",
+  "contractId": "241939522005237760",
+  "provider": "project/contract-line/page",
+  "defaultPage": { "current": 1, "size": 20, "pageNumber": 0 },
+  "serverCap": 50,
+  "stableSort": ["sort", "lineId"],
+  "contractLineCount": 6,
+  "contractLineAmount": 977.80,
+  "realPageRequest": { "current": 1, "size": 20 },
+  "realPageRows": 6,
+  "adjacentApiPages": {
+    "size": 2,
+    "page1Ids": ["241939522063958016", "241939522063958017"],
+    "page2Ids": ["241939522063958018", "241939522063958019"],
+    "disjoint": true
+  },
+  "roles": {
+    "boss": { "costFields": 6 },
+    "storeManager": { "costFields": 6 },
+    "designer": { "costFields": 0 }
+  },
+  "contractChangeSources": 7,
+  "contractChangePageCallsContractLinePage": false,
+  "web": {
+    "viewports": [1440, 1280, 1024],
+    "horizontalOverflow": false,
+    "consoleErrors": 0,
+    "network4xxOr5xx": 0
+  },
+  "latency": { "samples": 10, "p50Ms": 30.16, "maxMs": 34.67, "bytes": 5175 },
+  "gates": {
+    "targetedTests": "7/7 PASS",
+    "webBuild": "PASS",
+    "providerResponseAudit": "PASS",
+    "frontendProviderAudit": "PASS"
+  },
+  "independentAcceptance": "PENDING",
+  "visualSignoff": "PENDING"
+}

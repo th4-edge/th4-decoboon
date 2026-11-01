@@ -1,5 +1,4 @@
 package com.th4.edge.decoboon.finance.service.settlements.update.support;
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.customer.model.Customer;
 
 import com.th4.edge.decoboon.finance.configure.SettlementStatus;
@@ -9,6 +8,7 @@ import com.th4.edge.decoboon.finance.model.Settlement;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
 import com.th4.edge.decoboon.project.configure.ProjectStatus;
 import com.th4.edge.decoboon.project.model.Project;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
@@ -91,6 +91,9 @@ public class Update implements com.th4.edge.decoboon.finance.service.settlements
             if (project.getStatus() != ProjectStatus.Accepting
                     && project.getStatus() != ProjectStatus.Finished) {
                 throw new DefinedException(new DefaultErrorCode("400", "项目验收阶段或完工后才能确认结算"));
+            }
+            if (!Boolean.TRUE.equals(settlement.getCostComplete())) {
+                throw new DefinedException(new DefaultErrorCode("400", "项目最终成本未完整，不能确认结算"));
             }
             settlement.setStatus(SettlementStatus.Confirmed);
             settlement.setConfirmedBy(current);

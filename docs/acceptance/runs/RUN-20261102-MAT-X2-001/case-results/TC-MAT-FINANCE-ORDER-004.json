@@ -1,0 +1,91 @@
+{
+  "caseId": "TC-MAT-FINANCE-ORDER-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T02:04:00+08:00",
+  "finishedAt": "2026-11-02T02:06:26+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261102-MATX2001-",
+  "steps": [
+    {
+      "step": 1,
+      "action": "Finance 在 /finance/material-ordering 打开待下单作业单 TILE-20261102-002",
+      "result": "PASS"
+    },
+    {
+      "step": 2,
+      "action": "选择全链路验收材料供应商、要求到场2026-11-06、数量10㎡、单价88元并确认下单",
+      "result": "PASS",
+      "actual": "页面提示“已下单并形成应付”，作业单进入已进入采购列表"
+    },
+    {
+      "step": 3,
+      "action": "重复提交同一 sheetId/itemId/数量/单价请求",
+      "result": "PASS_IDEMPOTENT",
+      "actual": "重复请求返回同一作业单事实；采购和应付数量未增加"
+    },
+    {
+      "step": 4,
+      "action": "页面、Provider、DB 回读采购与应付",
+      "result": "PASS",
+      "actual": "采购 POb83ef97308c2a4502626f463d2fa36b6：10㎡、¥880、供应商一致；应付1793556266130340410：同来源单号、¥880"
+    },
+    {
+      "step": 5,
+      "action": "App 财务下单与应付回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/finance/material-ordering",
+    "/finance/payables"
+  ],
+  "actualState": [
+    "作业单状态 Ordered，priceState Priced，orderedQuantity=10.00",
+    "采购单与采购明细唯一：quantity=10.000，amount=880.00，物品单价=88.00",
+    "应付唯一：sourceNo=POb83ef97308c2a4502626f463d2fa36b6，amount=880.00",
+    "重复同一请求后项目采购单总数仍为2（另1张为既有20㎡采购），应付总数仍为2",
+    "App 分支无授权微信身份"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-FINANCE-ORDER-004/01-finance-pending-before-order.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/02-order-form-before-submit.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/03-provider-sheet-after-order.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/04-page-after-order.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/05-provider-repeat-order-response.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/06-provider-sheet-after-repeat.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/07-db-after-repeat-order.txt",
+    "evidence/TC-MAT-FINANCE-ORDER-004/08-payable-page-after-order.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/09-provider-purchases.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/10-provider-payables.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "App 授权微信身份不可用；Web/Provider/DB 的财务下单、唯一采购应付和重复请求分支已通过，跨端用例不能判定为 PASS。",
+  "notes": "采购头 unitPrice 投影为0，但采购明细 unitPrice=88、amount=880，应付=880；用例要求的金额、数量和来源单号一致。",
+  "caseDefinitionHash": "d43a436271a7815f0411306aa05a6dff8bb946163dbc1262c702f3f78968cfef",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-044",
+    "BR-045",
+    "SCN-005",
+    "SCN-021",
+    "DEC-072",
+    "DEC-073"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-order",
+    "app:/subpackages/finance/pages/payables"
+  ],
+  "providerRoutes": [
+    "partner/page",
+    "material/sheet/page",
+    "material/sheet/order",
+    "project/purchase/page",
+    "finance/payable/page",
+    "material/sheet/info"
+  ]
+}

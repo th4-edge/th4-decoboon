@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:,">
+  <title>客户概念工作台 · 设计预览</title>
+  <style>
+    :root {
+      --brand-900:#0c221a; --brand-800:#153829; --brand-700:#1d4e39; --brand-600:#26654a;
+      --brand-500:#2f7d5a; --brand-400:#529e77; --brand-300:#7fbb9b; --brand-200:#add5bf;
+      --brand-100:#d6eadf; --brand-50:#eef6f1;
+      --ink-950:#1a1a17; --ink-800:#2e2e2a; --ink-600:#66665f; --ink-400:#b8b8b0;
+      --line-200:#ebebe6; --surface-50:#fafaf8; --surface-100:#f5f5f2; --surface-0:#fff;
+      --success:#22a06b; --success-soft:#e9f7f0; --warning:#9a5b13; --warning-soft:#fdf4e3;
+      --danger:#e5484d; --danger-soft:#fdecec; --info:#3b7de8; --info-soft:#ebf2fe;
+      --purple:#6958c8; --purple-soft:#f0eefc;
+      --text-1:var(--ink-950); --text-2:var(--ink-600); --text-3:#8c8c84;
+      --radius-4:4px; --radius-8:8px; --radius-12:12px; --radius-16:16px; --radius-pill:999px;
+      --shadow-card:0 1px 3px rgba(26,26,23,.04),0 1px 2px rgba(26,26,23,.03);
+      --shadow-elevated:0 12px 32px rgba(26,26,23,.10),0 4px 10px rgba(26,26,23,.05);
+      --focus:0 0 0 3px rgba(47,125,90,.18);
+      --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; background:var(--surface-50); color:var(--text-1); font-family:var(--sans); }
+    body { font-size:14px; line-height:1.5; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    svg { display:block; }
+    .num { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+    .muted { color:var(--text-2); }
+    .tiny { color:var(--text-3); font-size:12px; }
+
+    .review-bar { display:flex; align-items:center; gap:16px; min-height:54px; padding:8px 18px; background:#15221c; color:#fff; position:sticky; top:0; z-index:80; }
+    .review-bar[hidden] { display:none; }
+    .review-brand { display:flex; align-items:center; gap:10px; min-width:220px; }
+    .review-logo { width:28px; height:28px; border-radius:8px; background:var(--brand-400); display:grid; place-items:center; font-weight:700; }
+    .review-brand strong { display:block; font-size:13px; }
+    .review-brand small { display:block; color:rgba(255,255,255,.62); font-size:12px; }
+    .review-label { color:rgba(255,255,255,.56); font-size:12px; }
+    .segmented { display:flex; gap:2px; padding:3px; border:1px solid rgba(255,255,255,.18); border-radius:8px; background:rgba(255,255,255,.06); }
+    .segmented button { border:0; padding:6px 10px; border-radius:6px; background:transparent; color:rgba(255,255,255,.72); font-size:12px; }
+    .segmented button[aria-selected="true"] { background:#fff; color:var(--brand-800); font-weight:600; }
+    .review-select { border:1px solid rgba(255,255,255,.2); border-radius:6px; background:#22332a; color:#fff; padding:6px 8px; font-size:12px; }
+    .review-spacer { flex:1; }
+    .review-note { color:rgba(255,255,255,.55); font-size:12px; }
+
+    .shell { min-height:calc(100vh - 54px); display:grid; grid-template-columns:236px minmax(0,1fr); }
+    .sidebar { background:var(--brand-900); color:#fff; padding:18px 12px; display:flex; flex-direction:column; gap:18px; }
+    .brand { display:flex; align-items:center; gap:10px; padding:0 8px 14px; border-bottom:1px solid rgba(255,255,255,.10); }
+    .brand-mark { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:#fff; color:var(--brand-800); font-weight:800; }
+    .brand strong { display:block; font-size:14px; }
+    .brand small { display:block; color:rgba(255,255,255,.58); font-size:12px; margin-top:1px; }
+    .nav { display:flex; flex-direction:column; gap:16px; }
+    .nav-group { display:flex; flex-direction:column; gap:4px; }
+    .nav-title { padding:0 10px 3px; color:rgba(255,255,255,.48); font-size:12px; letter-spacing:.02em; }
+    .nav-item { display:flex; align-items:center; gap:10px; min-height:38px; padding:0 10px; border-radius:8px; color:rgba(255,255,255,.76); font-size:13px; }
+    .nav-item.active { background:rgba(255,255,255,.12); color:#fff; font-weight:600; }
+    .nav-icon { width:18px; height:18px; display:grid; place-items:center; color:currentColor; }
+    .nav-icon svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.7; }
+    .sidebar-foot { margin-top:auto; padding:12px 10px; border-top:1px solid rgba(255,255,255,.10); color:rgba(255,255,255,.56); font-size:12px; }
+
+    .main { min-width:0; }
+    .topbar { min-height:64px; display:flex; align-items:center; gap:16px; padding:0 24px; border-bottom:1px solid var(--line-200); background:var(--surface-0); }
+    .breadcrumb { display:flex; align-items:center; gap:8px; color:var(--text-2); font-size:13px; }
+    .breadcrumb strong { color:var(--text-1); }
+    .topbar-spacer { flex:1; }
+    .role-chip small { display:block; color:var(--text-3); font-size:12px; }
+    .role-chip { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:var(--radius-pill); background:var(--surface-100); color:var(--text-2); font-size:12px; }
+    .avatar { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:var(--brand-100); color:var(--brand-700); font-weight:700; font-size:12px; }
+    .icon-btn { width:34px; height:34px; display:grid; place-items:center; border:1px solid var(--line-200); border-radius:8px; background:#fff; color:var(--text-2); }
+    .icon-btn svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.8; }
+
+    .page { padding:24px; display:flex; flex-direction:column; gap:16px; }
+    .page-head { display:flex; align-items:flex-start; gap:24px; }
+    .page-head-main { flex:1; min-width:0; }
+    .page-kicker { margin:0 0 5px; color:var(--brand-700); font-size:12px; font-weight:700; letter-spacing:.02em; }
+    .page-head h1 { margin:0; font-size:28px; line-height:1.25; letter-spacing:-.02em; }
+    .page-head p { max-width:790px; margin:8px 0 0; color:var(--text-2); font-size:13px; line-height:1.7; }
+    .head-tools { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .select { height:36px; padding:0 30px 0 10px; border:1px solid var(--line-200); border-radius:8px; background:#fff; color:var(--text-1); }
+    .btn { min-height:36px; padding:0 12px; border:1px solid var(--line-200); border-radius:8px; background:#fff; color:var(--text-1); }
+    .btn:hover { border-color:var(--brand-300); background:var(--brand-50); }
+    .btn-primary { border-color:var(--brand-600); background:var(--brand-600); color:#fff; }
+    .btn-primary:hover { background:var(--brand-700); border-color:var(--brand-700); }
+    .btn-text { min-height:30px; padding:0 6px; border:0; background:transparent; color:var(--brand-700); font-weight:600; }
+    :focus-visible { outline:0; box-shadow:var(--focus); }
+
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; box-shadow:var(--shadow-card); overflow:hidden; }
+    .metric { min-width:0; padding:15px 18px 14px; border-left:1px solid var(--line-200); }
+    .metric:first-child { border-left:0; }
+    .metric-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .metric-label { color:var(--text-2); font-size:12px; }
+    .metric-icon { width:24px; height:24px; border-radius:7px; display:grid; place-items:center; background:var(--brand-50); color:var(--brand-700); }
+    .metric-icon svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.8; }
+    .metric-value { margin-top:7px; font-size:28px; font-weight:700; line-height:1.15; letter-spacing:-.02em; }
+    .metric-value small { margin-left:3px; font-family:var(--sans); font-size:12px; font-weight:500; color:var(--text-2); }
+    .metric-note { margin-top:4px; color:var(--text-3); font-size:12px; }
+    .metric.attention .metric-icon { background:var(--warning-soft); color:var(--warning); }
+    .metric.danger .metric-icon { background:var(--danger-soft); color:var(--danger); }
+    .metric.info .metric-icon { background:var(--info-soft); color:var(--info); }
+
+    .customer-workspace { min-height:0; display:grid; grid-template-columns:216px minmax(0,1fr); gap:16px; align-items:start; }
+    .owner-panel { position:sticky; top:16px; border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; overflow:hidden; box-shadow:var(--shadow-card); }
+    .owner-head { padding:14px 14px 12px; border-bottom:1px solid var(--line-200); }
+    .owner-head strong { display:block; font-size:13px; }
+    .owner-head small { display:block; margin-top:3px; color:var(--text-3); font-size:12px; }
+    .owner-list { padding:6px; display:flex; flex-direction:column; gap:2px; }
+    .owner-item { width:100%; display:grid; grid-template-columns:32px minmax(0,1fr) auto; gap:9px; align-items:center; padding:9px 8px; border:0; border-radius:8px; background:transparent; text-align:left; color:var(--text-1); }
+    .owner-item:hover { background:var(--surface-50); }
+    .owner-item.active { background:var(--brand-50); }
+    .owner-avatar { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:var(--surface-100); color:var(--text-2); font-size:12px; font-weight:700; }
+    .owner-item.active .owner-avatar { background:var(--brand-100); color:var(--brand-700); }
+    .owner-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:600; }
+    .owner-meta { margin-top:2px; color:var(--text-3); font-size:12px; }
+    .owner-count { text-align:right; font-family:var(--mono); font-size:12px; color:var(--text-2); }
+    .owner-count small { display:block; color:var(--danger); font-size:12px; }
+
+    .customer-main { min-width:0; display:flex; flex-direction:column; gap:12px; }
+    .query-bar { padding:12px; border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; box-shadow:var(--shadow-card); }
+    .query-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .search { flex:1; min-width:260px; height:38px; display:flex; align-items:center; gap:8px; padding:0 11px; border:1px solid var(--line-200); border-radius:8px; background:#fff; }
+    .search svg { width:16px; height:16px; stroke:var(--text-3); fill:none; stroke-width:1.8; }
+    .search input { width:100%; border:0; outline:0; background:transparent; color:var(--text-1); font-size:13px; }
+    .filter-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:10px; }
+    .filter { min-height:30px; padding:0 10px; border:1px solid var(--line-200); border-radius:var(--radius-pill); background:#fff; color:var(--text-2); font-size:12px; }
+    .filter.active { border-color:var(--brand-200); background:var(--brand-50); color:var(--brand-700); font-weight:600; }
+    .filter-count { margin-left:5px; color:var(--text-3); font-family:var(--mono); }
+    .result-meta { margin-left:auto; color:var(--text-3); font-size:12px; }
+    .sort { height:30px; border:1px solid var(--line-200); border-radius:8px; padding:0 24px 0 8px; color:var(--text-2); background:#fff; font-size:12px; }
+
+    .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+    .customer-card { position:relative; min-width:0; padding:16px; border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; box-shadow:var(--shadow-card); cursor:pointer; transition:border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease; }
+    .customer-card:hover { transform:translateY(-1px); border-color:var(--brand-200); box-shadow:var(--shadow-elevated); }
+    .customer-card.risk-high::before { content:""; position:absolute; inset:14px auto 14px 0; width:3px; border-radius:0 3px 3px 0; background:var(--danger); }
+    .customer-card.risk-attention::before { content:""; position:absolute; inset:14px auto 14px 0; width:3px; border-radius:0 3px 3px 0; background:var(--warning); }
+    .card-head { display:flex; align-items:flex-start; gap:10px; }
+    .card-avatar { width:38px; height:38px; border-radius:10px; display:grid; place-items:center; background:var(--brand-50); color:var(--brand-700); font-size:14px; font-weight:700; flex:0 0 auto; }
+    .card-id { min-width:0; flex:1; }
+    .card-name { display:flex; align-items:center; gap:7px; min-width:0; }
+    .card-name strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:16px; }
+    .card-sub { margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-2); font-size:12px; }
+    .tag { display:inline-flex; align-items:center; gap:4px; min-height:22px; padding:0 7px; border-radius:var(--radius-pill); font-size:12px; font-weight:600; white-space:nowrap; }
+    .tag::before { content:""; width:5px; height:5px; border-radius:50%; background:currentColor; }
+    .tag.stage { background:var(--info-soft); color:var(--info); }
+    .tag.doing { background:var(--warning-soft); color:var(--warning); }
+    .tag.done { background:var(--success-soft); color:var(--success); }
+    .tag.risk { background:var(--danger-soft); color:var(--danger); }
+    .tag.muted { background:var(--surface-100); color:var(--text-2); }
+    .tag.plain { background:var(--surface-100); color:var(--text-2); }
+    .tag.plain::before { display:none; }
+    .card-people { display:flex; flex-wrap:wrap; gap:6px 12px; margin-top:12px; padding-top:11px; border-top:1px solid var(--line-200); color:var(--text-2); font-size:12px; }
+    .person { display:inline-flex; align-items:center; gap:5px; min-width:0; }
+    .person b { color:var(--text-1); font-weight:600; }
+    .person-dot { width:6px; height:6px; border-radius:50%; background:var(--brand-300); }
+    .card-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 12px; margin-top:12px; padding:12px; border-radius:8px; background:var(--surface-50); }
+    .fact { min-width:0; }
+    .fact small { display:block; color:var(--text-3); font-size:12px; }
+    .fact b { display:block; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-1); font-size:13px; font-weight:600; }
+    .fact b.num { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+    .fact .danger { color:var(--danger); }
+    .chain-row { display:flex; flex-wrap:wrap; gap:5px; margin-top:10px; }
+    .chain-chip { display:inline-flex; align-items:center; gap:4px; min-height:24px; padding:0 7px; border-radius:5px; background:var(--surface-100); color:var(--text-2); font-size:12px; }
+    .chain-chip b { color:var(--text-1); font-weight:600; }
+    .next-row { display:flex; align-items:center; gap:10px; margin-top:12px; padding-top:11px; border-top:1px solid var(--line-200); }
+    .next-main { min-width:0; flex:1; }
+    .next-main small { display:block; color:var(--text-3); font-size:12px; }
+    .next-main strong { display:block; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+    .next-hint { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-3); font-size:12px; margin-top:2px; }
+    .card-cta { flex:0 0 auto; min-height:30px; padding:0 9px; border:1px solid var(--brand-200); border-radius:7px; background:var(--brand-50); color:var(--brand-700); font-size:12px; font-weight:600; }
+    .cards-empty { min-height:280px; display:grid; place-items:center; border:1px dashed var(--line-200); border-radius:var(--radius-12); background:#fff; color:var(--text-2); text-align:center; }
+    .empty-inner strong { display:block; color:var(--text-1); font-size:15px; }
+    .empty-inner p { max-width:380px; margin:6px auto 0; font-size:12px; line-height:1.6; }
+    .empty-action { margin-top:12px; }
+    .skeleton-card { min-height:260px; border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; overflow:hidden; }
+    .skeleton-line { height:12px; margin:16px; border-radius:5px; background:linear-gradient(90deg,var(--surface-100),var(--surface-50),var(--surface-100)); background-size:200% 100%; animation:shimmer 1.4s infinite linear; }
+    .skeleton-line:nth-child(2n) { width:64%; }
+    .skeleton-block { height:72px; margin:0 16px 16px; border-radius:8px; background:var(--surface-100); }
+    @keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+    .state-panel { min-height:300px; display:grid; place-items:center; padding:24px; border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; text-align:center; }
+    .state-icon { width:42px; height:42px; margin:0 auto 12px; border-radius:12px; display:grid; place-items:center; background:var(--surface-100); color:var(--text-2); }
+    .state-icon svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.8; }
+    .state-panel h2 { margin:0; font-size:16px; }
+    .state-panel p { max-width:440px; margin:7px auto 0; color:var(--text-2); font-size:12px; line-height:1.65; }
+
+    .drawer-overlay { position:fixed; inset:0; z-index:100; display:none; background:rgba(12,34,26,.26); backdrop-filter:blur(2px); }
+    .drawer-overlay.open { display:block; }
+    .drawer { position:absolute; inset:0 0 0 auto; width:min(760px,calc(100vw - 72px)); display:flex; flex-direction:column; background:var(--surface-50); box-shadow:-18px 0 48px rgba(12,34,26,.18); }
+    .drawer-head { flex:0 0 auto; padding:18px 20px 16px; background:#fff; border-bottom:1px solid var(--line-200); }
+    .drawer-top { display:flex; align-items:flex-start; gap:12px; }
+    .drawer-title { flex:1; min-width:0; }
+    .drawer-title h2 { margin:0; font-size:22px; letter-spacing:-.01em; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .drawer-title p { margin:5px 0 0; color:var(--text-2); font-size:12px; }
+    .drawer-close { width:34px; height:34px; border:1px solid var(--line-200); border-radius:8px; background:#fff; color:var(--text-2); }
+    .drawer-body { overflow:auto; padding:16px 20px 88px; display:flex; flex-direction:column; gap:12px; }
+    .drawer-section { border:1px solid var(--line-200); border-radius:var(--radius-12); background:#fff; box-shadow:var(--shadow-card); }
+    .drawer-section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:14px 16px; border-bottom:1px solid var(--line-200); }
+    .drawer-section-head h3 { margin:0; font-size:14px; }
+    .drawer-section-head p { margin:4px 0 0; color:var(--text-3); font-size:12px; }
+    .property-chips { display:flex; gap:8px; flex-wrap:wrap; padding:12px 16px 14px; }
+    .property-chip { padding:8px 10px; border:1px solid var(--line-200); border-radius:8px; background:#fff; color:var(--text-2); font-size:12px; text-align:left; }
+    .property-chip.active { border-color:var(--brand-200); background:var(--brand-50); color:var(--brand-700); }
+    .property-chip b { display:block; color:inherit; font-size:12px; }
+    .property-chip small { display:block; margin-top:2px; color:var(--text-3); font-size:12px; }
+    .business-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line-200); }
+    .business-cell { padding:14px; background:#fff; }
+    .business-cell small { display:block; color:var(--text-3); font-size:12px; }
+    .business-cell strong { display:block; margin-top:4px; font-size:13px; }
+    .business-cell p { margin:5px 0 0; color:var(--text-2); font-size:12px; line-height:1.5; }
+    .timeline { padding:14px 16px 16px; display:flex; flex-direction:column; gap:14px; }
+    .timeline-item { position:relative; padding-left:20px; }
+    .timeline-item::before { content:""; position:absolute; left:3px; top:5px; width:7px; height:7px; border-radius:50%; background:var(--brand-500); }
+    .timeline-item:not(:last-child)::after { content:""; position:absolute; left:6px; top:16px; bottom:-13px; width:1px; background:var(--line-200); }
+    .timeline-item p { margin:0; font-size:12px; }
+    .timeline-item small { display:block; margin-top:4px; color:var(--text-3); font-size:12px; }
+    .drawer-action { position:absolute; left:0; right:0; bottom:0; display:flex; align-items:center; gap:12px; padding:12px 20px; border-top:1px solid var(--line-200); background:rgba(255,255,255,.96); }
+    .drawer-action-main { flex:1; min-width:0; }
+    .drawer-action-main small { display:block; color:var(--text-3); font-size:12px; }
+    .drawer-action-main strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13px; }
+    .drawer-action .btn { flex:0 0 auto; }
+
+    @media (max-width:1280px) {
+      .page { padding:20px; }
+      .shell { grid-template-columns:192px minmax(0,1fr); }
+      .brand strong { font-size:13px; }
+      .customer-workspace { grid-template-columns:196px minmax(0,1fr); }
+      .cards { grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); }
+    }
+    @media (max-width:1100px) {
+      .shell { grid-template-columns:72px minmax(0,1fr); }
+      .sidebar { padding:16px 8px; }
+      .brand { justify-content:center; padding-inline:0; }
+      .brand-copy, .nav-title, .nav-label, .sidebar-foot { display:none; }
+      .nav-item { justify-content:center; padding:0; }
+      .nav-group { gap:6px; }
+      .page { padding:16px; }
+      .review-note { display:none; }
+      .customer-workspace { grid-template-columns:1fr; }
+      .owner-panel { position:static; }
+      .owner-list { display:flex; flex-direction:row; overflow-x:auto; padding-bottom:8px; }
+      .owner-item { flex:0 0 176px; }
+      .owner-head { display:flex; align-items:center; justify-content:space-between; }
+      .owner-head small { margin-top:0; }
+      .drawer { width:min(720px,calc(100vw - 72px)); }
+    }
+    @media (max-width:820px) {
+      .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .metric:nth-child(3) { border-left:0; border-top:1px solid var(--line-200); }
+      .metric:nth-child(4) { border-top:1px solid var(--line-200); }
+      .page-head { flex-direction:column; }
+      .head-tools { justify-content:flex-start; }
+      .search { min-width:220px; }
+      .business-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="review-bar" id="reviewBar">
+    <div class="review-brand">
+      <div class="review-logo">装</div>
+      <div><strong>客户概念工作台</strong><small>Web 交互设计预览 · 示例数据</small></div>
+    </div>
+    <span class="review-label">角色</span>
+    <div class="segmented" id="roleSwitch" aria-label="角色切换">
+      <button data-role="boss" aria-selected="false">企业负责人</button>
+      <button data-role="store" aria-selected="false">店长</button>
+      <button data-role="finance" aria-selected="true">财务</button>
+    </div>
+    <span class="review-label">状态</span>
+    <select id="stateSwitch" class="review-select" aria-label="状态演练">
+      <option value="normal">正常</option>
+      <option value="loading">加载</option>
+      <option value="empty">空</option>
+      <option value="error">失败</option>
+      <option value="forbidden">无权限</option>
+      <option value="long">长内容</option>
+      <option value="extreme">极端值</option>
+    </select>
+    <div class="review-spacer"></div>
+    <span class="review-note">仅用于设计评审，不接生产数据</span>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="角色导航">
+      <div class="brand">
+        <div class="brand-mark">昭</div>
+        <div class="brand-copy"><strong>昭青装饰</strong><small id="sidebarRole">财务工作台</small></div>
+      </div>
+      <nav class="nav" id="sideNav"></nav>
+      <div class="sidebar-foot">装得清 · 企业经营工作台</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb"><span id="breadRoot">财务工作台</span><span>/</span><strong id="breadCurrent">客户</strong></div>
+        <div class="topbar-spacer"></div>
+        <div class="role-chip"><span class="avatar">伟</span><span><strong id="topRole">财务 · 全公司</strong><small id="topCompany">昭青装饰</small></span></div>
+        <button class="icon-btn" aria-label="通知">
+          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+        </button>
+      </header>
+
+      <section class="page">
+        <header class="page-head">
+          <div class="page-head-main">
+            <p class="page-kicker" id="pageKicker">客户财务协同</p>
+            <h1 id="pageTitle">客户财务协同</h1>
+            <p id="pageDescription">围绕客户查看合同、项目、应收和业务协同；所有角色都可查询客户，卡片动作按角色能力投影。</p>
+          </div>
+          <div class="head-tools">
+            <select class="select" id="storeScope" aria-label="门店筛选">
+              <option value="all">全部门店</option>
+              <option value="binhu">滨湖店</option>
+              <option value="zhengwu">政务店</option>
+              <option value="main">总店</option>
+            </select>
+            <button class="btn" id="refreshButton">刷新</button>
+          </div>
+        </header>
+
+        <section class="metrics" id="metrics" aria-label="角色客户统计"></section>
+
+        <section class="customer-workspace">
+          <aside class="owner-panel" id="ownerPanel">
+            <div class="owner-head"><strong id="ownerPanelTitle">负责人分组</strong><small id="ownerPanelHint">客户深度绑定业务员</small></div>
+            <div class="owner-list" id="ownerList"></div>
+          </aside>
+
+          <div class="customer-main">
+            <div class="query-bar">
+              <div class="query-row">
+                <label class="search">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                  <input id="searchInput" placeholder="搜索客户姓名 / 手机号 / 小区 / 负责人">
+                </label>
+                <button class="btn" id="clearFilters">清除筛选</button>
+                <select class="sort" id="sortMode" aria-label="排序">
+                  <option value="risk">风险优先</option>
+                  <option value="follow">最近跟进</option>
+                  <option value="amount">金额优先</option>
+                </select>
+              </div>
+              <div class="filter-row" id="filterRow"></div>
+            </div>
+            <div class="cards" id="customerCards" aria-live="polite"></div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay">
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+      <header class="drawer-head">
+        <div class="drawer-top">
+          <div class="drawer-title">
+            <h2 id="drawerTitle"></h2>
+            <p id="drawerSubtitle"></p>
+          </div>
+          <button class="drawer-close" id="drawerClose" aria-label="关闭">×</button>
+        </div>
+      </header>
+      <div class="drawer-body" id="drawerBody"></div>
+      <footer class="drawer-action">
+        <div class="drawer-action-main"><small>当前下一步</small><strong id="drawerNext"></strong></div>
+        <button class="btn btn-primary" id="drawerAction">进入处理</button>
+      </footer>
+    </aside>
+  </div>
+
+<script>
+const SVG = {
+  users:'<svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+  follow:'<svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="M8 9h8M8 13h5"/></svg>',
+  sign:'<svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v5h5M9 14l2 2 4-4"/></svg>',
+  alert:'<svg viewBox="0 0 24 24"><path d="M10.3 3.7 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>',
+  contract:'<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
+  project:'<svg viewBox="0 0 24 24"><path d="M4 21h16M6 21V6h8v15M14 10h4v11"/><path d="M9 10h2M9 14h2M9 18h2"/></svg>',
+  measure:'<svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-12a7 7 0 1 0-14 0c0 6.4 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>',
+  money:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/></svg>',
+  design:'<svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="m7 15 3-3 2.5 2.5L16 11l4 4"/></svg>',
+  check:'<svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>',
+  lock:'<svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  refresh:'<svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 6.7M20 4v7h-7"/></svg>'
+};
+
+const roleConfig = {
+  boss: {
+    label:'企业负责人', roleLine:'企业负责人 · 全公司', sidebarRole:'负责人工作台', root:'负责人工作台',
+    kicker:'客户经营', title:'客户经营', description:'从客户变化观察当前经营情况；按负责人查看客户、跟进、报价、签约和项目进展。',
+    metrics:[
+      {key:'new',label:'本月新增客户',value:'18',unit:'位',note:'今日新增 3 位',icon:'users',tone:'info'},
+      {key:'follow',label:'活跃跟进',value:'42',unit:'位',note:'7 日内有沟通',icon:'follow',tone:''},
+      {key:'signed',label:'本月已签约',value:'12',unit:'位',note:'签约额 ¥328.6万',icon:'sign',tone:''},
+      {key:'risk',label:'风险客户',value:'7',unit:'位',note:'逾期或长期未跟进',icon:'alert',tone:'danger'}
+    ],
+    filters:[['all','全部客户'],['risk','风险客户'],['pendingMeasure','待量房'],['quote','报价中'],['sign','已签约'],['construction','施工中']],
+    showOwners:true
+  },
+  store: {
+    label:'店长', roleLine:'店长 · 滨湖店', sidebarRole:'店长工作台', root:'店长工作台',
+    kicker:'本店客户经营', title:'本店客户经营', description:'只看本店客户变化与负责人分布；统计口径与企业负责人一致，数据范围收窄到本店。',
+    metrics:[
+      {key:'new',label:'本月新增客户',value:'6',unit:'位',note:'本店 · 今日新增 1 位',icon:'users',tone:'info'},
+      {key:'follow',label:'活跃跟进',value:'18',unit:'位',note:'本店 · 7 日内有沟通',icon:'follow',tone:''},
+      {key:'signed',label:'本月已签约',value:'5',unit:'位',note:'本店签约额 ¥96.8万',icon:'sign',tone:''},
+      {key:'risk',label:'风险客户',value:'3',unit:'位',note:'逾期或长期未跟进',icon:'alert',tone:'danger'}
+    ],
+    filters:[['all','全部客户'],['risk','风险客户'],['pendingMeasure','待量房'],['quote','报价中'],['sign','已签约'],['construction','施工中']],
+    showOwners:true
+  },
+  finance: {
+    label:'财务', roleLine:'总部财务 · 全公司', sidebarRole:'财务工作台', root:'财务工作台',
+    kicker:'客户财务协同', title:'客户财务协同', description:'围绕客户查看量房、设计、报价、合同、项目和应收；有财务动作时直接进入下一步，无动作时作为业务协同窗口。',
+    metrics:[
+      {key:'contract',label:'有合同客户',value:'56',unit:'位',note:'合同已签约或生效',icon:'contract',tone:'info'},
+      {key:'project',label:'有项目客户',value:'41',unit:'位',note:'项目在途或待开工',icon:'project',tone:''},
+      {key:'receivable',label:'待收客户',value:'23',unit:'位',note:'待收合计 ¥168.4万',icon:'money',tone:'attention'},
+      {key:'overdue',label:'逾期客户',value:'6',unit:'位',note:'逾期合计 ¥32.8万',icon:'alert',tone:'danger'}
+    ],
+    filters:[['all','全部客户'],['contract','有合同'],['project','有项目'],['receivable','有待收'],['overdue','有逾期']],
+    showOwners:false
+  }
+};
+
+const customers = [
+  {id:'C001',name:'张先生',store:'binhu',community:'滨湖云谷 3栋1601',phone:'138****2618',stage:'施工中',stageTone:'doing',grade:'A',risk:'normal',owner:'李娜',designer:'周宁',pm:'徐磊',last:'10-27',next:'10-30',idle:2,quote:286000,signed:268000,project:'施工中',contract:268000,received:200000,outstanding:68000,overdue:0,measure:'已完成',design:'已确认',quoteState:'已接受',nextAction:'查看应收',nextHint:'10月30日下期款 ¥42,000',filters:['contract','project','receivable']},
+  {id:'C002',name:'王女士',store:'binhu',community:'望江台 2栋902',phone:'139****7720',stage:'报价',stageTone:'stage',grade:'B',risk:'high',owner:'王强',designer:'陈晨',pm:'—',last:'10-23',next:'已逾期2天',idle:6,quote:182000,signed:0,project:'未立项',contract:0,received:0,outstanding:0,overdue:0,measure:'已完成',design:'方案已出',quoteState:'待客户确认',nextAction:'跟进报价确认',nextHint:'报价 V3 · ¥182,000',filters:['quote']},
+  {id:'C003',name:'陈先生',store:'zhengwu',community:'荷塘家园 8栋1102',phone:'136****5833',stage:'施工中',stageTone:'doing',grade:'A',risk:'attention',owner:'李娜',designer:'周宁',pm:'徐磊',last:'10-28',next:'10-31',idle:1,quote:435000,signed:425000,project:'施工中',contract:425000,received:302000,outstanding:123000,overdue:32000,measure:'已完成',design:'已确认',quoteState:'已接受',nextAction:'登记收款',nextHint:'逾期 3 天 · ¥32,000',filters:['contract','project','receivable','overdue']},
+  {id:'C004',name:'刘女士',store:'main',community:'高速时代 5栋2203',phone:'137****0941',stage:'待量房',stageTone:'stage',grade:'B',risk:'attention',owner:'未分配',designer:'未指派',pm:'—',last:'10-25',next:'今日跟进',idle:4,quote:0,signed:0,project:'未立项',contract:0,received:0,outstanding:0,overdue:0,measure:'已预约',design:'未开始',quoteState:'未生成',nextAction:'指派设计师',nextHint:'量房预约 10-30 14:00',filters:['pendingMeasure']},
+  {id:'C005',name:'何先生',store:'binhu',community:'保利香槟 1栋701',phone:'135****4108',stage:'已签约',stageTone:'done',grade:'A',risk:'normal',owner:'赵敏',designer:'周宁',pm:'徐磊',last:'10-26',next:'11-02',idle:3,quote:188000,signed:188000,project:'待开工',contract:188000,received:0,outstanding:188000,overdue:0,measure:'已完成',design:'已确认',quoteState:'已接受',nextAction:'核对首期款',nextHint:'合同已生效 · 待立项',filters:['contract','receivable','sign']},
+  {id:'C006',name:'孙女士',store:'zhengwu',community:'万科城 12栋902',phone:'133****6650',stage:'已完工',stageTone:'done',grade:'B',risk:'normal',owner:'陈晨',designer:'周宁',pm:'徐磊',last:'10-20',next:'未安排',idle:9,quote:156000,signed:156000,project:'已完工',contract:156000,received:156000,outstanding:0,overdue:0,measure:'已完成',design:'已确认',quoteState:'已接受',nextAction:'查看结算',nextHint:'应收已清零 · 待结算',filters:['contract','project','sign','construction']},
+  {id:'C007',name:'赵先生',store:'main',community:'翡翠天际 9栋1808',phone:'132****8080',stage:'已流失',stageTone:'muted',grade:'C',risk:'high',owner:'王强',designer:'—',pm:'—',last:'09-18',next:'未安排',idle:41,quote:120000,signed:0,project:'未立项',contract:0,received:0,outstanding:0,overdue:0,measure:'已取消',design:'—',quoteState:'已驳回',nextAction:'查看流失原因',nextHint:'价格或预算不匹配',filters:['risk']}
+];
+
+const ownerGroups = [
+  {name:'全部客户',key:'all'},
+  {name:'李娜',key:'李娜'},
+  {name:'王强',key:'王强'},
+  {name:'陈晨',key:'陈晨'},
+  {name:'赵敏',key:'赵敏'},
+  {name:'未分配',key:'未分配'}
+];
+
+const storeNames = {binhu:'滨湖店',zhengwu:'政务店',main:'总店'};
+let activeRole = new URLSearchParams(location.search).get('role') || 'finance';
+let activeState = new URLSearchParams(location.search).get('state') || 'normal';
+let activeOwner = 'all';
+let activeFilter = 'all';
+let activeStore = 'all';
+let keyword = '';
+let sortMode = 'risk';
+let selected = null;
+let lastFocusedCard = null;
+
+function formatMoney(value) {
+  if (!value) return '¥0';
+  return '¥' + Number(value).toLocaleString('zh-CN');
+}
+function roleCards() {
+  let list = customers;
+  if (activeRole === 'store') list = list.filter(item => item.store === 'binhu');
+  else if (activeStore !== 'all') list = list.filter(item => item.store === activeStore);
+  if (activeOwner !== 'all') list = list.filter(item => item.owner === activeOwner);
+  if (activeFilter !== 'all') {
+    if (activeFilter === 'risk') list = list.filter(item => item.risk !== 'normal');
+    else if (activeFilter === 'pendingMeasure') list = list.filter(item => item.stage === '待量房');
+    else if (activeFilter === 'quote') list = list.filter(item => item.stage === '报价');
+    else if (activeFilter === 'sign') list = list.filter(item => item.stage === '已签约');
+    else if (activeFilter === 'construction') list = list.filter(item => item.project === '施工中' || item.stage === '施工中');
+    else list = list.filter(item => item.filters.includes(activeFilter));
+  }
+  if (keyword.trim()) {
+    const q = keyword.trim().toLowerCase();
+    list = list.filter(item => [item.name,item.phone,item.community,item.owner,item.designer].join(' ').toLowerCase().includes(q));
+  }
+  const riskRank = {high:0,attention:1,normal:2};
+  return [...list].sort((a,b) => {
+    if (sortMode === 'amount') return (b.signed || b.contract) - (a.signed || a.contract);
+    if (sortMode === 'follow') return String(b.last).localeCompare(String(a.last));
+    return riskRank[a.risk] - riskRank[b.risk] || a.idle - b.idle;
+  });
+}
+function displayCards() {
+  let list = roleCards();
+  if (activeState === 'long' && list[0]) list[0] = {...list[0],name:'张先生（滨湖云谷三期改善型住宅项目家庭决策人）',community:'滨湖云谷三期 18号楼2单元2601室（售楼部东侧入口）',owner:'李娜（滨湖店客户经营一组负责人）'};
+  if (activeState === 'extreme' && list[0]) list[0] = {...list[0],contract:123456789.99,signed:123456789.99,outstanding:98765432.1,overdue:87654321.09,nextHint:'超大金额极端值校验 · 应收节点 2026-10-31'};
+  return list;
+}
+function renderShell() {
+  const cfg = roleConfig[activeRole];
+  document.getElementById('sidebarRole').textContent = cfg.sidebarRole;
+  document.getElementById('breadRoot').textContent = cfg.root;
+  document.getElementById('breadCurrent').textContent = activeRole === 'finance' ? '客户' : '客户';
+  document.getElementById('pageKicker').textContent = cfg.kicker;
+  document.getElementById('pageTitle').textContent = cfg.title;
+  document.getElementById('pageDescription').textContent = cfg.description;
+  document.getElementById('topRole').textContent = cfg.roleLine;
+  const navMap = {
+    boss:[['今日',['业务工作台']],['客户',['客户']],['经营',['经营总览','项目工地','组织管理']],['财务',['财务工作台','资金台账']]],
+    store:[['今日',['业务工作台']],['客户',['本店客户']],['经营',['本店设计方案','项目工地','本店经营']],['财务',['财务工作台','本店薪酬']]],
+    finance:[['今日',['业务工作台']],['客户',['客户']],['资金收付',['待我收款','待我付款','付款记录']],['往来与账本',['资金台账','供应商往来']],['项目核算',['项目账本','收付凭证']]]
+  };
+  const nav = navMap[activeRole];
+  document.getElementById('sideNav').innerHTML = nav.map(([group,items]) =>
+    `<div class="nav-group"><div class="nav-title">${group}</div>${items.map((item,index) => {
+      const active = (group === '客户' && (item.includes('客户'))) ? ' active' : '';
+      const icon = group === '客户' ? SVG.users : group === '财务' || group === '资金收付' || group === '往来与账本' ? SVG.money : group === '项目核算' ? SVG.project : SVG.follow;
+      return `<div class="nav-item${active}"><span class="nav-icon">${icon}</span><span class="nav-label">${item}</span></div>`;
+    }).join('')}</div>`).join('');
+  const store = document.getElementById('storeScope');
+  if (activeRole === 'store') {
+    store.innerHTML = '<option value="binhu">滨湖店（本店）</option>';
+    store.value = 'binhu';
+    store.disabled = true;
+  } else {
+    store.disabled = false;
+    store.innerHTML = '<option value="all">全部门店</option><option value="binhu">滨湖店</option><option value="zhengwu">政务店</option><option value="main">总店</option>';
+    store.value = activeStore;
+  }
+  document.querySelectorAll('#roleSwitch button').forEach(button => button.setAttribute('aria-selected', String(button.dataset.role === activeRole)));
+  document.getElementById('stateSwitch').value = activeState;
+}
+function metricIcon(icon) { return SVG[icon] || SVG.users; }
+function renderMetrics() {
+  const metrics = roleConfig[activeRole].metrics.map(metric => ({...metric}));
+  const scopeName = activeRole === 'store' ? '本店' : activeStore === 'all' ? (activeRole === 'boss' ? '全公司' : '全部门店') : storeNames[activeStore];
+  const companyOverrides = {
+    boss: { binhu:['7','19','5','3'], zhengwu:['5','12','3','2'], main:['6','11','4','2'] },
+    finance: { binhu:['21','16','9','2'], zhengwu:['18','14','8','3'], main:['17','11','6','1'] }
+  };
+  const override = activeRole !== 'store' && activeStore !== 'all' ? companyOverrides[activeRole]?.[activeStore] : null;
+  const scopedNotes = activeRole === 'finance'
+    ? ['合同已签约或生效','项目在途或待开工','待收合计按当前范围计算','逾期合计按当前范围计算']
+    : ['今日新增变化','7 日内有沟通','本月签约变化','逾期或长期未跟进'];
+  if (override) metrics.forEach((metric,index) => { metric.value = override[index]; metric.note = scopeName + ' · ' + scopedNotes[index]; });
+  metrics.forEach(metric => { if (!metric.note.startsWith(scopeName + ' ·')) metric.note = scopeName + ' · ' + metric.note; });
+  document.getElementById('metrics').innerHTML = metrics.map(metric => `
+    <article class="metric ${metric.tone || ''}">
+      <div class="metric-top"><span class="metric-label">${metric.label}</span><span class="metric-icon">${metricIcon(metric.icon)}</span></div>
+      <div class="metric-value num">${metric.value}<small>${metric.unit}</small></div>
+      <div class="metric-note">${metric.note}</div>
+    </article>`).join('');
+}
+function renderOwners() {
+  const panel = document.getElementById('ownerPanel');
+  if (!roleConfig[activeRole].showOwners) {
+    panel.hidden = true;
+    return;
+  }
+  panel.hidden = false;
+  document.getElementById('ownerPanelTitle').textContent = activeRole === 'store' ? '本店负责人分组' : '负责人分组';
+  document.getElementById('ownerList').innerHTML = ownerGroups.map(group => {
+    let list = customers;
+    if (activeRole === 'store') list = list.filter(item => item.store === 'binhu');
+    else if (activeStore !== 'all') list = list.filter(item => item.store === activeStore);
+    const filtered = group.key === 'all' ? list : list.filter(item => item.owner === group.key);
+    const riskCount = filtered.filter(item => item.risk !== 'normal').length;
+    return `<button class="owner-item ${activeOwner === group.key ? 'active' : ''}" data-owner="${group.key}">
+      <span class="owner-avatar">${group.key === 'all' ? '全' : group.key.slice(0,1)}</span>
+      <span><span class="owner-name">${group.name}</span><span class="owner-meta">${filtered.length} 位客户</span></span>
+      <span class="owner-count">${filtered.length}${riskCount ? `<small>风险 ${riskCount}</small>` : ''}</span>
+    </button>`;
+  }).join('');
+  document.querySelectorAll('[data-owner]').forEach(button => button.addEventListener('click', () => {
+    activeOwner = button.dataset.owner;
+    renderOwners();
+    renderFilters();
+    renderCards();
+  }));
+}
+function renderFilters() {
+  const list = roleConfig[activeRole].filters;
+  document.getElementById('filterRow').innerHTML = list.map(([key,label]) => `<button class="filter ${activeFilter === key ? 'active' : ''}" data-filter="${key}">${label}</button>`).join('');
+  document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
+    activeFilter = button.dataset.filter;
+    renderFilters();
+    renderCards();
+  }));
+}
+function fact(label,value,className='') { return `<span class="fact"><small>${label}</small><b class="${className}">${value}</b></span>`; }
+function chain(label,value) { return `<span class="chain-chip"><span>${label}</span><b>${value}</b></span>`; }
+function renderCards() {
+  const data = displayCards();
+  const target = document.getElementById('customerCards');
+  if (activeState === 'loading') {
+    target.innerHTML = Array.from({length:4},()=>'<div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-block"></div><div class="skeleton-line"></div></div>').join('');
+    return;
+  }
+  if (activeState === 'error' || activeState === 'forbidden' || activeState === 'empty' || !data.length) {
+    const state = activeState === 'error' ? ['error','客户列表暂不可确认','客户 Provider 没有返回可用数据。保留当前筛选条件，可重试或回到业务工作台。'] : activeState === 'forbidden' ? ['forbidden','当前角色无客户查看权限','客户查询入口存在，但当前账号的数据范围或客户权限不满足。请联系企业负责人确认岗位与门店范围。'] : ['empty','没有符合条件的客户','真实空态与无权限、接口失败已经区分。可以清除筛选或调整负责人分组。'];
+    const icon = state[0] === 'forbidden' ? 'lock' : state[0] === 'error' ? 'alert' : 'users';
+    target.innerHTML = `<div class="state-panel"><div><div class="state-icon">${SVG[icon]}</div><h2>${state[1]}</h2><p>${state[2]}</p></div></div>`;
+    return;
+  }
+  const finance = activeRole === 'finance';
+  target.innerHTML = data.map(item => {
+    const amount = finance ? item.contract : item.signed || item.quote;
+    const facts = finance ? [
+      fact('合同', amount ? formatMoney(amount) : '暂无合同', amount ? 'num' : 'muted'),
+      fact('项目', item.project),
+      fact('待收', formatMoney(item.outstanding), item.outstanding ? 'num' : 'muted'),
+      fact('逾期', formatMoney(item.overdue), item.overdue ? 'num danger' : 'muted')
+    ] : [
+      fact('报价', item.quote ? formatMoney(item.quote) : '暂无报价', item.quote ? 'num' : 'muted'),
+      fact('签约', item.signed ? formatMoney(item.signed) : '未签约', item.signed ? 'num' : 'muted'),
+      fact('项目', item.project),
+      fact('最近跟进', item.last || '未跟进')
+    ];
+    const chainItems = finance ? [
+      chain('量房',item.measure), chain('设计',item.design), chain('报价',item.quoteState), chain('合同',amount ? '已形成' : '未形成'), chain('应收',item.outstanding ? '待收' : '已清')
+    ].join('') : '';
+    return `<article class="customer-card risk-${item.risk}" tabindex="0" role="button" data-customer="${item.id}" aria-label="查看客户 ${item.name}">
+      <div class="card-head">
+        <div class="card-avatar">${item.name.slice(0,1)}</div>
+        <div class="card-id">
+          <div class="card-name"><strong>${item.name}</strong><span class="tag ${item.stageTone}">${item.stage}</span><span class="tag plain">${item.grade}级</span>${item.risk === 'high' ? '<span class="tag risk">高风险</span>' : item.risk === 'attention' ? '<span class="tag risk">需关注</span>' : ''}</div>
+          <div class="card-sub">${item.community} · ${item.phone}</div>
+        </div>
+      </div>
+      <div class="card-people">
+        <span class="person"><span class="person-dot"></span>顾问 <b>${item.owner}</b></span>
+        <span class="person"><span class="person-dot"></span>设计 <b>${item.designer}</b></span>
+        <span class="person"><span class="person-dot"></span>项目 <b>${item.pm}</b></span>
+      </div>
+      <div class="card-facts">${facts.join('')}</div>
+      ${finance ? `<div class="chain-row">${chainItems}</div>` : ''}
+      <div class="next-row">
+        <div class="next-main"><small>下一步 · ${item.next}</small><strong>${item.nextAction}</strong><div class="next-hint">${item.nextHint}</div></div>
+        <button class="card-cta" data-open="${item.id}">查看客户</button>
+      </div>
+    </article>`;
+  }).join('');
+  document.querySelectorAll('[data-customer]').forEach(card => {
+    card.addEventListener('click', event => {
+      if (event.target.closest('[data-open]')) return;
+      openCustomer(card.dataset.customer);
+    });
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openCustomer(card.dataset.customer); }
+    });
+  });
+  document.querySelectorAll('[data-open]').forEach(button => button.addEventListener('click', event => {
+    event.stopPropagation(); openCustomer(button.dataset.open);
+  }));
+}
+function render() {
+  renderShell();
+  renderMetrics();
+  renderOwners();
+  renderFilters();
+  renderCards();
+}
+function openCustomer(id) {
+  lastFocusedCard = document.activeElement;
+  selected = customers.find(item => item.id === id);
+  if (!selected) return;
+  document.getElementById('drawerTitle').innerHTML = `${selected.name}<span class="tag ${selected.stageTone}">${selected.stage}</span>${selected.risk === 'high' ? '<span class="tag risk">高风险</span>' : ''}`;
+  document.getElementById('drawerSubtitle').textContent = `${selected.community} · 顾问 ${selected.owner} · 设计师 ${selected.designer} · 项目经理 ${selected.pm}`;
+  const isFinance = activeRole === 'finance';
+  const properties = [
+    {name:selected.community,status:selected.stage,area:'118㎡',layout:'三室两厅',current:true},
+    ...(selected.id === 'C003' ? [{name:'荷塘家园 8栋1102（另一套）',status:'已量房',area:'89㎡',layout:'两室两厅',current:false}] : [])
+  ];
+  const chain = [
+    ['量房',selected.measure,selected.measure === '已完成' ? '原始结构、尺寸与现场证据已归档' : '等待现场量房事实'],
+    ['设计方案',selected.design,selected.design === '已确认' ? '方案已确认，可作为报价依据' : '方案仍待推进或确认'],
+    ['报价',selected.quoteState,selected.quote ? formatMoney(selected.quote) : '暂无有效报价'],
+    ['合同',selected.contract ? '已形成' : '未形成',selected.contract ? `${formatMoney(selected.contract)} · 合同付款节点可追溯` : '尚无合同事实'],
+    ['项目',selected.project,selected.pm !== '—' ? `项目经理 ${selected.pm}` : '待项目责任人或立项'],
+    ['应收',selected.outstanding ? (selected.overdue ? '存在逾期' : '待收') : '已清零',selected.outstanding ? `${formatMoney(selected.outstanding)}${selected.overdue ? ` · 逾期 ${formatMoney(selected.overdue)}` : ''}` : '当前无待收']
+  ];
+  document.getElementById('drawerBody').innerHTML = `
+    <section class="drawer-section">
+      <div class="drawer-section-head"><div><h3>客户与房屋</h3><p>客户可能有多个房屋；业务链按当前房屋展开</p></div><span class="tiny">更新时间 10:32</span></div>
+      <div class="property-chips">${properties.map((p,index)=>`<button class="property-chip ${p.current ? 'active' : ''}"><b>${p.name}</b><small>${p.status} · ${p.area} · ${p.layout}</small></button>`).join('')}</div>
+    </section>
+    <section class="drawer-section">
+      <div class="drawer-section-head"><div><h3>当前房屋业务链</h3><p>${isFinance ? '财务优先查看合同、项目、应收，同时保留量房、设计、报价事实' : '从客户进入房屋，再查看当前业务链'}</p></div><button class="btn-text">进入业务链 →</button></div>
+      <div class="business-grid">${chain.map(([label,state,note])=>`<div class="business-cell"><small>${label}</small><strong>${state}</strong><p>${note}</p></div>`).join('')}</div>
+    </section>
+    <section class="drawer-section">
+      <div class="drawer-section-head"><div><h3>最近跟进</h3><p>客户是跨角色信息同频的统一锚点</p></div><button class="btn-text">写跟进</button></div>
+      <div class="timeline">
+        <div class="timeline-item"><p>客户确认本周可以推进下一步，约定 ${selected.next} 前完成。</p><small>${selected.last} · ${selected.owner}</small></div>
+        <div class="timeline-item"><p>量房结论已同步，设计与报价可以继续使用当前房屋事实。</p><small>10-24 · ${selected.designer}</small></div>
+        <div class="timeline-item"><p>客户首次到店，完成需求与预算范围确认。</p><small>10-18 · ${selected.owner}</small></div>
+      </div>
+    </section>`;
+  document.getElementById('drawerNext').textContent = selected.nextAction;
+  document.getElementById('drawerAction').textContent = selected.overdue ? '登记收款' : selected.outstanding ? '查看应收' : '查看客户';
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawerClose').focus();
+}
+function closeDrawer() { document.getElementById('drawerOverlay').classList.remove('open'); selected = null; if (lastFocusedCard instanceof HTMLElement) lastFocusedCard.focus(); lastFocusedCard = null; }
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.getElementById('drawerOverlay').addEventListener('click', event => { if (event.target === event.currentTarget) closeDrawer(); });
+document.getElementById('drawerAction').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeDrawer(); });
+document.querySelectorAll('#roleSwitch button').forEach(button => button.addEventListener('click', () => {
+  activeRole = button.dataset.role;
+  activeOwner = 'all';
+  activeFilter = 'all';
+  activeStore = activeRole === 'store' ? 'binhu' : 'all';
+  render();
+}));
+document.getElementById('stateSwitch').addEventListener('change', event => { activeState = event.target.value; render(); });
+document.getElementById('storeScope').addEventListener('change', event => { activeStore = event.target.value; activeOwner = 'all'; render(); });
+document.getElementById('searchInput').addEventListener('input', event => { keyword = event.target.value; renderCards(); });
+document.getElementById('clearFilters').addEventListener('click', () => { keyword = ''; activeFilter = 'all'; activeOwner = 'all'; document.getElementById('searchInput').value = ''; render(); });
+document.getElementById('sortMode').addEventListener('change', event => { sortMode = event.target.value; renderCards(); });
+document.getElementById('refreshButton').addEventListener('click', () => { activeState = 'loading'; renderCards(); setTimeout(() => { activeState = 'normal'; render(); }, 500); });
+
+const query = new URLSearchParams(location.search);
+if (query.get('review') === '0') document.getElementById('reviewBar').hidden = true;
+if (query.get('role') && roleConfig[query.get('role')]) activeRole = query.get('role');
+if (query.get('state')) activeState = query.get('state');
+if (activeRole === 'store') activeStore = 'binhu';
+render();
+</script>
+</body>
+</html>

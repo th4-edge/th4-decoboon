@@ -1,0 +1,76 @@
+{
+  "pages": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "workspace": {
+      "x": 268,
+      "y": 174,
+      "w": 1140,
+      "h": 651
+    },
+    "row": {
+      "x": 269,
+      "y": 239,
+      "w": 1138,
+      "h": 98
+    },
+    "unreadRows": 3,
+    "rowIcons": 6,
+    "pageStage": {
+      "x": 268,
+      "y": 88,
+      "w": 1140,
+      "h": 740
+    }
+  },
+  "menu": {
+    "visible": true,
+    "items": [
+      "个人信息",
+      "企业信息",
+      "我的工资条",
+      "消息通知3",
+      "退出登录"
+    ],
+    "icons": 5,
+    "summary": "理王经理云栖空间设计企业负责人 · 全公司"
+  },
+  "responsive": [
+    {
+      "width": 1280,
+      "height": 800,
+      "name": "notification-1280",
+      "metrics": {
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "rowWidth": 978,
+        "filterWidth": 132,
+        "toolbarDirection": "row"
+      }
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "name": "notification-1024",
+      "metrics": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024,
+        "rowWidth": 958,
+        "filterWidth": 132,
+        "toolbarDirection": "row"
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "name": "notification-390",
+      "metrics": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "rowWidth": 356,
+        "filterWidth": 150,
+        "toolbarDirection": "column"
+      }
+    }
+  ]
+}

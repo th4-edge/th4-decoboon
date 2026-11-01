@@ -1,0 +1,4632 @@
+{
+  "contractInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-31 22:42:57"
+        },
+        "contractId": "242297298732711936",
+        "project": {
+          "projectId": "242297299361857536",
+          "no": "P1793457777832",
+          "name": "王芳（造数1100） · 望江府1栋102",
+          "customer": {
+            "custId": "242297294915895296",
+            "name": "王芳（造数1100）",
+            "telNo": "13700001100",
+            "addr": "望江府1栋102"
+          },
+          "property": {
+            "propertyId": "242297295016558592",
+            "propertyNo": "H1793457776798",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "望江府1栋102",
+            "area": 100.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "quote": {
+            "quoteId": "242297297788993536",
+            "no": "Q1793457777457",
+            "title": "造数方案 1100设计报价",
+            "amount": 2495.75,
+            "status": {
+              "name": "已转项目",
+              "key": "Converted"
+            }
+          },
+          "siteAddr": "望江府1栋102",
+          "contractAmount": 2495.75,
+          "status": {
+            "name": "待开工",
+            "key": "Preparing"
+          }
+        },
+        "quote": {
+          "quoteId": "242297297788993536",
+          "no": "Q1793457777457",
+          "title": "造数方案 1100设计报价",
+          "amount": 2495.75,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        "customer": {
+          "custId": "242297294915895296",
+          "name": "王芳（造数1100）",
+          "telNo": "13700001100",
+          "addr": "望江府1栋102"
+        },
+        "property": {
+          "propertyId": "242297295016558592",
+          "propertyNo": "H1793457776798",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "望江府1栋102",
+          "area": 100.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "no": "C1793457777676",
+        "baselineAmount": 2495.75,
+        "signedAmount": 2495.75,
+        "currentAmount": 2495.75,
+        "status": {
+          "name": "已生效",
+          "key": "Effective"
+        },
+        "signedAt": "2026-10-29",
+        "startDate": "2026-11-05",
+        "planEndDate": "2027-02-08",
+        "effectiveAt": "2026-10-31 22:42:57",
+        "paymentTerms": "签约30%，水电验收30%，泥木验收30%，竣工10%",
+        "createdBy": {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "remark": "造数合同 1100",
+        "receivableCount": 4,
+        "receivableAmount": 7495.75,
+        "receivedAmount": 1148.05,
+        "pendingChangeCount": 0,
+        "paymentPlan": {
+          "planId": "242297298824986624",
+          "sourceCode": "PAY_CUSTOM_0A7B2CDC728A",
+          "sourceVersion": 1,
+          "name": "全链路验收付款计划",
+          "totalAmount": 2495.75,
+          "status": {
+            "name": "已确认",
+            "key": "Confirmed"
+          },
+          "nodes": [
+            {
+              "nodeId": "242297298875318272",
+              "code": "SIGN_30",
+              "name": "合同签约款",
+              "ratio": 0.3,
+              "amount": 748.73,
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "triggerType": {
+                "name": "合同签约",
+                "key": "ContractSigned"
+              },
+              "offsetDays": 0,
+              "dueDate": "2026-10-31",
+              "sort": 1
+            },
+            {
+              "nodeId": "242297298875318273",
+              "code": "START_40",
+              "name": "项目开工款",
+              "ratio": 0.4,
+              "amount": 998.3,
+              "type": {
+                "name": "进度款",
+                "key": "Progress"
+              },
+              "triggerType": {
+                "name": "阶段开工",
+                "key": "StageStarted"
+              },
+              "triggerStageCode": "PREPARE",
+              "triggerStageName": "开工交底",
+              "offsetDays": 0,
+              "dueDate": "2026-11-05",
+              "sort": 2
+            },
+            {
+              "nodeId": "242297298875318274",
+              "code": "FINAL_30",
+              "name": "竣工尾款",
+              "ratio": 0.3,
+              "amount": 748.72,
+              "type": {
+                "name": "尾款",
+                "key": "Final"
+              },
+              "triggerType": {
+                "name": "项目竣工",
+                "key": "ProjectFinished"
+              },
+              "triggerStageCode": "COMPLETION",
+              "triggerStageName": "竣工保洁验收",
+              "offsetDays": 0,
+              "dueDate": "2027-02-08",
+              "sort": 3
+            }
+          ]
+        },
+        "constructionPlan": {
+          "planId": "242297298795626496",
+          "sourceCode": "CON_CUSTOM_FB6B8C9B0265",
+          "sourceVersion": 1,
+          "sourceTotalDays": 120,
+          "name": "全链路验收施工计划",
+          "startDate": "2026-11-05",
+          "endDate": "2027-02-08",
+          "status": {
+            "name": "已确认",
+            "key": "Confirmed"
+          },
+          "stages": [
+            {
+              "stageId": "242297298795626497",
+              "code": "PREPARE",
+              "name": "开工交底",
+              "sort": 1,
+              "defaultDays": 5,
+              "plannedStart": "2026-11-05",
+              "plannedEnd": "2026-11-09",
+              "acceptanceMode": {
+                "name": "无需验收",
+                "key": "None"
+              },
+              "description": "现场交底、保护、放线和开工准备"
+            },
+            {
+              "stageId": "242297298795626498",
+              "code": "DEMOLITION",
+              "name": "拆除改造",
+              "sort": 2,
+              "defaultDays": 5,
+              "plannedStart": "2026-11-10",
+              "plannedEnd": "2026-11-14",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "拆除、清运和结构条件确认"
+            },
+            {
+              "stageId": "242297298795626499",
+              "code": "WATER_ELECTRIC",
+              "name": "水电施工",
+              "sort": 3,
+              "defaultDays": 12,
+              "plannedStart": "2026-11-15",
+              "plannedEnd": "2026-11-26",
+              "acceptanceMode": {
+                "name": "验收完成",
+                "key": "AcceptanceDone"
+              },
+              "description": "水电定位、布管布线和隐蔽验收"
+            },
+            {
+              "stageId": "242297298795626500",
+              "code": "MASONRY",
+              "name": "泥瓦防水",
+              "sort": 4,
+              "defaultDays": 20,
+              "plannedStart": "2026-11-27",
+              "plannedEnd": "2026-12-15",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "防水、找平、贴砖和泥瓦施工"
+            },
+            {
+              "stageId": "242297298795626501",
+              "code": "CARPENTRY",
+              "name": "木作吊顶",
+              "sort": 5,
+              "defaultDays": 18,
+              "plannedStart": "2026-12-16",
+              "plannedEnd": "2027-01-01",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "吊顶、木作基层和定制复尺"
+            },
+            {
+              "stageId": "242297298795626502",
+              "code": "PAINTING",
+              "name": "油漆墙面",
+              "sort": 6,
+              "defaultDays": 18,
+              "plannedStart": "2027-01-02",
+              "plannedEnd": "2027-01-18",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "腻子、乳胶漆和墙面收口"
+            },
+            {
+              "stageId": "242297298795626503",
+              "code": "INSTALL",
+              "name": "安装收尾",
+              "sort": 7,
+              "defaultDays": 12,
+              "plannedStart": "2027-01-19",
+              "plannedEnd": "2027-01-30",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "灯具、洁具、主材和设备安装"
+            },
+            {
+              "stageId": "242297298795626504",
+              "code": "COMPLETION",
+              "name": "竣工保洁验收",
+              "sort": 8,
+              "defaultDays": 10,
+              "plannedStart": "2027-01-31",
+              "plannedEnd": "2027-02-08",
+              "acceptanceMode": {
+                "name": "验收完成",
+                "key": "AcceptanceDone"
+              },
+              "description": "开荒保洁、竣工自检和客户验收"
+            }
+          ]
+        },
+        "businessStateView": {
+          "objectKey": "contract",
+          "objectId": "242297298732711936",
+          "status": "Effective",
+          "statusLabel": "已生效",
+          "statusTone": "done",
+          "derivedLabels": [
+            {
+              "key": "signed",
+              "label": "已签约",
+              "tone": "progress"
+            },
+            {
+              "key": "effective",
+              "label": "已生效",
+              "tone": "done"
+            },
+            {
+              "key": "projectCreated",
+              "label": "项目已创建",
+              "tone": "done"
+            }
+          ],
+          "nextAction": {
+            "key": "project/open",
+            "label": "查看项目",
+            "hint": "合同已生效，进入项目履约、收款和变更。",
+            "ownerRole": "项目参与角色",
+            "fromStatus": "Effective",
+            "toStatus": "Effective",
+            "enabled": true,
+            "blockedReasons": [],
+            "missingFields": [],
+            "reloadScopes": [
+              "contract",
+              "project",
+              "receivable",
+              "materials"
+            ],
+            "businessRefs": [
+              "BR-002",
+              "BR-010"
+            ]
+          },
+          "blockedReasons": [],
+          "nextOwner": "项目经理 / 财务",
+          "updatedAt": "2026-10-31 22:42:57",
+          "businessRefs": [
+            "BR-002",
+            "BR-010"
+          ]
+        }
+      },
+      "success": true
+    }
+  },
+  "bossProjectInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-31 22:42:57"
+        },
+        "projectId": "242297299361857536",
+        "businessOrigin": {
+          "name": "正常业务",
+          "value": "New",
+          "key": "New"
+        },
+        "no": "P1793457777832",
+        "name": "王芳（造数1100） · 望江府1栋102",
+        "customer": {
+          "custId": "242297294915895296",
+          "name": "王芳（造数1100）",
+          "telNo": "13700001100",
+          "community": "望江府",
+          "addr": "望江府1栋102",
+          "area": 100.0,
+          "budget": 30.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          },
+          "owner": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "telNo": "13910002005",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          }
+        },
+        "property": {
+          "propertyId": "242297295016558592",
+          "customer": {
+            "custId": "242297294915895296",
+            "name": "王芳（造数1100）",
+            "telNo": "13700001100",
+            "community": "望江府",
+            "addr": "望江府1栋102",
+            "area": 100.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            }
+          },
+          "propertyNo": "H1793457776798",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "望江府1栋102",
+          "area": 100.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "telNo": "13910002005",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "telNo": "13910002004",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "latestMeasureAt": "2026-11-04 00:42:56"
+        },
+        "quote": {
+          "quoteId": "242297297788993536",
+          "no": "Q1793457777457",
+          "property": {
+            "propertyId": "242297295016558592",
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100",
+              "community": "望江府",
+              "addr": "望江府1栋102",
+              "area": 100.0,
+              "budget": 30.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "propertyNo": "H1793457776798",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "望江府1栋102",
+            "area": 100.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "telNo": "13910002004",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "latestMeasureAt": "2026-11-04 00:42:56"
+          },
+          "createdBy": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "telNo": "13910002004",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "discount": 0.95,
+          "amount": 2495.75,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        "designer": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "telNo": "13910002004",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "manager": {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "telNo": "13910002006",
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          }
+        },
+        "siteAddr": "望江府1栋102",
+        "area": 100.0,
+        "contractAmount": 2495.75,
+        "status": {
+          "name": "待开工",
+          "key": "Preparing"
+        },
+        "progress": 0,
+        "startDate": "2026-11-05",
+        "planEndDate": "2027-02-08",
+        "currentStageName": "开工交底",
+        "businessStateView": {
+          "objectKey": "project",
+          "objectId": "242297299361857536",
+          "status": "Preparing",
+          "statusLabel": "待开工",
+          "statusTone": "info",
+          "derivedLabels": [
+            {
+              "key": "currentStage",
+              "label": "开工交底",
+              "tone": "info"
+            },
+            {
+              "key": "progress",
+              "label": "0%",
+              "tone": "progress"
+            },
+            {
+              "key": "risk",
+              "label": "正常",
+              "tone": "alert"
+            }
+          ],
+          "nextAction": {
+            "key": "project/start-preparation",
+            "label": "开工准备",
+            "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+            "ownerRole": "项目经理 / 店长",
+            "fromStatus": "Preparing",
+            "toStatus": "Ongoing",
+            "enabled": true,
+            "blockedReasons": [],
+            "missingFields": [],
+            "reloadScopes": [
+              "project",
+              "projectStage",
+              "projectTask",
+              "contract"
+            ],
+            "businessRefs": [
+              "BR-008",
+              "BR-010",
+              "SCN-003"
+            ]
+          },
+          "blockedReasons": [],
+          "nextOwner": "项目经理",
+          "updatedAt": "2026-10-31 22:46:00",
+          "businessRefs": [
+            "BR-008",
+            "BR-010",
+            "SCN-003"
+          ]
+        },
+        "factTrace": {
+          "projectId": "242297299361857536",
+          "projectNo": "P1793457777832",
+          "projectName": "王芳（造数1100） · 望江府1栋102",
+          "defaultViewMode": {
+            "name": "阶段",
+            "value": "PHASE",
+            "key": "PHASE"
+          },
+          "asOf": "2026-11-01 14:37:36",
+          "nodes": [
+            {
+              "nodeId": "Customer-Customer-242297294915895296",
+              "nodeKey": "Customer:Customer:242297294915895296:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "客户",
+                "value": "Customer",
+                "key": "Customer"
+              },
+              "objectType": "Customer",
+              "objectId": "242297294915895296",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "businessTime": "2026-10-31 22:42:56",
+              "recordedAt": "2026-11-01 14:37:36",
+              "title": "王芳（造数1100）",
+              "summary": "客户经营对象",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "customer:242297294915895296",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Property-Property-242297295016558592",
+              "nodeKey": "Property:Property:242297295016558592:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "房屋",
+                "value": "Property",
+                "key": "Property"
+              },
+              "objectType": "Property",
+              "objectId": "242297295016558592",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Serving",
+              "statusName": "施工中",
+              "businessTime": "2026-10-31 22:42:56",
+              "recordedAt": "2026-11-01 14:37:36",
+              "title": "望江府",
+              "summary": "望江府1栋102",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "property:242297295016558592",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "ProjectOrigin-Project-242297299361857536",
+              "nodeKey": "ProjectOrigin:Project:242297299361857536:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "项目来源",
+                "value": "ProjectOrigin",
+                "key": "ProjectOrigin"
+              },
+              "objectType": "Project",
+              "objectId": "242297299361857536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "New",
+              "statusName": "正常业务",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "项目来源",
+              "summary": "正常业务",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project:242297299361857536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Design-Design-242297296664920064",
+              "nodeKey": "Design:Design:property:242297295016558592",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "设计方案",
+                "value": "Design",
+                "key": "Design"
+              },
+              "objectType": "Design",
+              "objectId": "242297296664920064",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Selected",
+              "statusName": "客户选中",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-10-31 22:42:57",
+              "actorName": "审计设计",
+              "title": "造数方案 1100",
+              "summary": "设计方案 V1",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "design:242297296664920064",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Quote-Quote-242297297788993536",
+              "nodeKey": "Quote:Quote:design:242297296664920064",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "报价",
+                "value": "Quote",
+                "key": "Quote"
+              },
+              "objectType": "Quote",
+              "objectId": "242297297788993536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Converted",
+              "statusName": "已转项目",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-10-31 22:42:57",
+              "actorName": "审计负责人",
+              "title": "Q1793457777457",
+              "summary": "报价 V1",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "quote:242297297788993536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Measure-Measure-242297295264022528",
+              "nodeKey": "Measure:Measure:242297295264022528:1",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "量房",
+                "value": "Measure",
+                "key": "Measure"
+              },
+              "objectType": "Measure",
+              "objectId": "242297295264022528",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Completed",
+              "statusName": "已完成",
+              "businessTime": "2026-11-04 00:42:56",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计设计",
+              "title": "量房记录",
+              "summary": "区域 0 · 实测 0 · 待补 0",
+              "sourceLabel": "项目关联事实",
+              "quantity": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "measure:242297295264022528",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "QuoteAcceptance-Quote-242297297788993536",
+              "nodeKey": "QuoteAcceptance:Quote:242297297788993536:1",
+              "stage": {
+                "name": "签约",
+                "value": "Signing",
+                "key": "Signing"
+              },
+              "factType": {
+                "name": "报价接受",
+                "value": "QuoteAcceptance",
+                "key": "QuoteAcceptance"
+              },
+              "objectType": "Quote",
+              "objectId": "242297297788993536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Accepted",
+              "statusName": "已接受",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "报价接受登记",
+              "summary": "客户报价已登记接受",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "quote:242297297788993536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Contract-Contract-242297298732711936",
+              "nodeKey": "Contract:Contract:242297298732711936:1",
+              "stage": {
+                "name": "签约",
+                "value": "Signing",
+                "key": "Signing"
+              },
+              "factType": {
+                "name": "合同",
+                "value": "Contract",
+                "key": "Contract"
+              },
+              "objectType": "Contract",
+              "objectId": "242297298732711936",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Effective",
+              "statusName": "已生效",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "C1793457777676",
+              "summary": "合同当前金额",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "contract:242297298732711936",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Purchase-PurchaseOrder-1793457865759361119",
+              "nodeKey": "Purchase:PurchaseOrder:project:242297299361857536",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "采购",
+                "value": "Purchase",
+                "key": "Purchase"
+              },
+              "objectType": "PurchaseOrder",
+              "objectId": "1793457865759361119",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Received",
+              "statusName": "已到场",
+              "businessTime": "2026-10-31 00:00:00",
+              "recordedAt": "2026-10-31 22:44:25",
+              "actorName": "审计负责人",
+              "title": "采购单",
+              "summary": "1 张采购单",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "内部",
+                "value": "Internal",
+                "key": "Internal"
+              },
+              "navigationPath": "purchase:1793457865759361119",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "GoodsReceipt-GoodsReceipt-1793457865828615979",
+              "nodeKey": "GoodsReceipt:GoodsReceipt:1793457865828615979:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "到货",
+                "value": "GoodsReceipt",
+                "key": "GoodsReceipt"
+              },
+              "objectType": "GoodsReceipt",
+              "objectId": "1793457865828615979",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "businessTime": "2026-10-31 16:00:00",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "材料到场",
+              "summary": "1 次到场",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "goods-receipt:1793457865828615979",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Project-Project-242297299361857536",
+              "nodeKey": "Project:Project:242297299361857536:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "项目",
+                "value": "Project",
+                "key": "Project"
+              },
+              "objectType": "Project",
+              "objectId": "242297299361857536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Preparing",
+              "statusName": "待开工",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计项目经理",
+              "title": "王芳（造数1100） · 望江府1栋102",
+              "summary": "项目当前进度",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project:242297299361857536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829056",
+              "nodeKey": "Stage:ProjectStage:242297299382829056:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829056",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "开工交底",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829056",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829057",
+              "nodeKey": "Stage:ProjectStage:242297299382829057:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829057",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "拆除改造",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829057",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829058",
+              "nodeKey": "Stage:ProjectStage:242297299382829058:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829058",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "水电施工",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829058",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829059",
+              "nodeKey": "Stage:ProjectStage:242297299382829059:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829059",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "泥瓦防水",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829059",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829060",
+              "nodeKey": "Stage:ProjectStage:242297299382829060:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829060",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "木作吊顶",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829060",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829061",
+              "nodeKey": "Stage:ProjectStage:242297299382829061:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829061",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "油漆墙面",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829061",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829062",
+              "nodeKey": "Stage:ProjectStage:242297299382829062:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829062",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "安装收尾",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829062",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829063",
+              "nodeKey": "Stage:ProjectStage:242297299382829063:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829063",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "竣工保洁验收",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829063",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Task-ProjectTask-242297299395411968",
+              "nodeKey": "Task:ProjectTask:242297299395411968:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工任务",
+                "value": "Task",
+                "key": "Task"
+              },
+              "objectType": "ProjectTask",
+              "objectId": "242297299395411968",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "拆除--墙顶面白灰/腻子粉铲除",
+              "summary": "施工任务",
+              "sourceLabel": "项目关联事实",
+              "quantity": 10.0,
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-task:242297299395411968",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Task-ProjectTask-242297299403800576",
+              "nodeKey": "Task:ProjectTask:242297299403800576:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工任务",
+                "value": "Task",
+                "key": "Task"
+              },
+              "objectType": "ProjectTask",
+              "objectId": "242297299403800576",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "水电--强电布线（含开槽）",
+              "summary": "施工任务",
+              "sourceLabel": "项目关联事实",
+              "quantity": 11.0,
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-task:242297299403800576",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialPlan-MaterialPlan-242297299428966400",
+              "nodeKey": "MaterialPlan:MaterialPlan:242297299428966400:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "材料计划",
+                "value": "MaterialPlan",
+                "key": "MaterialPlan"
+              },
+              "objectType": "MaterialPlan",
+              "objectId": "242297299428966400",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Arrived",
+              "statusName": "已到场",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "材料计划",
+              "summary": "1 项材料计划",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-plan:242297299428966400",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297301672919040",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297301672919040",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:42:58",
+              "recordedAt": "2026-10-31 22:42:58",
+              "actorName": "审计设计",
+              "title": "造数主材选材",
+              "summary": "主材选材 V1",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297301672919040",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297607643201536",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297607643201536",
+              "projectId": "242297299361857536",
+              "version": 2,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:11",
+              "recordedAt": "2026-10-31 22:44:11",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V2",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297607643201536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297637313708032",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297637313708032",
+              "projectId": "242297299361857536",
+              "version": 3,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:18",
+              "recordedAt": "2026-10-31 22:44:18",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V3",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297637313708032",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297655781228544",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297655781228544",
+              "projectId": "242297299361857536",
+              "version": 4,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:22",
+              "recordedAt": "2026-10-31 22:44:22",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V4",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297655781228544",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297667927932928",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297667927932928",
+              "projectId": "242297299361857536",
+              "version": 5,
+              "current": true,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:25",
+              "recordedAt": "2026-10-31 22:44:25",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V5",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297667927932928",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "SiteReport-ProjectReport-242298063459188736",
+              "nodeKey": "SiteReport:ProjectReport:242298063459188736:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "现场日报",
+                "value": "SiteReport",
+                "key": "SiteReport"
+              },
+              "objectType": "ProjectReport",
+              "objectId": "242298063459188736",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Notice",
+              "statusName": "项目通知",
+              "businessTime": "2026-10-31 22:46:00",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "项目成员调整",
+              "summary": "项目经理：未指定 → 审计项目经理；履约负责人：未指定 → 审计财务（操作人：审计负责人，时间：2026-10-31T22:46:00.009913，立即生效）",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-report:242298063459188736",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Receipt-Receipt-242297300829863936",
+              "nodeKey": "Receipt:Receipt:project:242297299361857536",
+              "stage": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              },
+              "factType": {
+                "name": "收款",
+                "value": "Receipt",
+                "key": "Receipt"
+              },
+              "objectType": "Receipt",
+              "objectId": "242297300829863936",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Active",
+              "statusName": "有效",
+              "businessTime": "2026-10-31 00:00:00",
+              "recordedAt": "2026-10-31 22:42:58",
+              "actorName": "审计财务",
+              "title": "收款",
+              "summary": "累计 1148.05",
+              "sourceLabel": "项目关联事实",
+              "amount": 1148.05,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "receipt:242297300829863936",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Receivable-Receivable-242297299894534146",
+              "nodeKey": "Receivable:Receivable:242297299894534146:1",
+              "stage": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              },
+              "factType": {
+                "name": "应收",
+                "value": "Receivable",
+                "key": "Receivable"
+              },
+              "objectType": "Receivable",
+              "objectId": "242297299894534146",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Pending",
+              "statusName": "待收",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "title": "应收计划",
+              "summary": "4 个节点 · 待收 6347.70",
+              "sourceLabel": "项目关联事实",
+              "amount": 7495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "receivable:242297299894534146",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            }
+          ],
+          "sourceGaps": []
+        },
+        "receivedAmount": 1148.05,
+        "receivableAmount": 7495.75
+      },
+      "success": true
+    }
+  },
+  "pmProjectInfo": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-10-31 22:42:57"
+        },
+        "projectId": "242297299361857536",
+        "businessOrigin": {
+          "name": "正常业务",
+          "value": "New",
+          "key": "New"
+        },
+        "no": "P1793457777832",
+        "name": "王芳（造数1100） · 望江府1栋102",
+        "customer": {
+          "custId": "242297294915895296",
+          "name": "王芳（造数1100）",
+          "telNo": "13700001100",
+          "community": "望江府",
+          "addr": "望江府1栋102",
+          "area": 100.0,
+          "budget": 30.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          },
+          "owner": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "telNo": "13910002005",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          }
+        },
+        "property": {
+          "propertyId": "242297295016558592",
+          "customer": {
+            "custId": "242297294915895296",
+            "name": "王芳（造数1100）",
+            "telNo": "13700001100",
+            "community": "望江府",
+            "addr": "望江府1栋102",
+            "area": 100.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            }
+          },
+          "propertyNo": "H1793457776798",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "望江府1栋102",
+          "area": 100.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          },
+          "salesman": {
+            "empId": "199500000000000106",
+            "name": "审计业务",
+            "telNo": "13910002005",
+            "role": {
+              "name": "业务员",
+              "value": "Marketer",
+              "key": "Marketer"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "telNo": "13910002004",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "latestMeasureAt": "2026-11-04 00:42:56"
+        },
+        "quote": {
+          "quoteId": "242297297788993536",
+          "no": "Q1793457777457",
+          "property": {
+            "propertyId": "242297295016558592",
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100",
+              "community": "望江府",
+              "addr": "望江府1栋102",
+              "area": 100.0,
+              "budget": 30.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "propertyNo": "H1793457776798",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "望江府1栋102",
+            "area": 100.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "telNo": "13910002004",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "latestMeasureAt": "2026-11-04 00:42:56"
+          },
+          "createdBy": {
+            "empId": "199500000000000105",
+            "name": "审计设计",
+            "telNo": "13910002004",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "discount": 0.95,
+          "amount": 2495.75,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        "designer": {
+          "empId": "199500000000000105",
+          "name": "审计设计",
+          "telNo": "13910002004",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "manager": {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "telNo": "13910002006",
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          }
+        },
+        "siteAddr": "望江府1栋102",
+        "area": 100.0,
+        "contractAmount": 2495.75,
+        "status": {
+          "name": "待开工",
+          "key": "Preparing"
+        },
+        "progress": 0,
+        "startDate": "2026-11-05",
+        "planEndDate": "2027-02-08",
+        "currentStageName": "开工交底",
+        "businessStateView": {
+          "objectKey": "project",
+          "objectId": "242297299361857536",
+          "status": "Preparing",
+          "statusLabel": "待开工",
+          "statusTone": "info",
+          "derivedLabels": [
+            {
+              "key": "currentStage",
+              "label": "开工交底",
+              "tone": "info"
+            },
+            {
+              "key": "progress",
+              "label": "0%",
+              "tone": "progress"
+            },
+            {
+              "key": "risk",
+              "label": "正常",
+              "tone": "alert"
+            }
+          ],
+          "nextAction": {
+            "key": "project/start-preparation",
+            "label": "开工准备",
+            "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+            "ownerRole": "项目经理 / 店长",
+            "fromStatus": "Preparing",
+            "toStatus": "Ongoing",
+            "enabled": true,
+            "blockedReasons": [],
+            "missingFields": [],
+            "reloadScopes": [
+              "project",
+              "projectStage",
+              "projectTask",
+              "contract"
+            ],
+            "businessRefs": [
+              "BR-008",
+              "BR-010",
+              "SCN-003"
+            ]
+          },
+          "blockedReasons": [],
+          "nextOwner": "项目经理",
+          "updatedAt": "2026-10-31 22:46:00",
+          "businessRefs": [
+            "BR-008",
+            "BR-010",
+            "SCN-003"
+          ]
+        },
+        "factTrace": {
+          "projectId": "242297299361857536",
+          "projectNo": "P1793457777832",
+          "projectName": "王芳（造数1100） · 望江府1栋102",
+          "defaultViewMode": {
+            "name": "阶段",
+            "value": "PHASE",
+            "key": "PHASE"
+          },
+          "asOf": "2026-11-01 14:37:36",
+          "nodes": [
+            {
+              "nodeId": "Customer-Customer-242297294915895296",
+              "nodeKey": "Customer:Customer:242297294915895296:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "客户",
+                "value": "Customer",
+                "key": "Customer"
+              },
+              "objectType": "Customer",
+              "objectId": "242297294915895296",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "businessTime": "2026-10-31 22:42:56",
+              "recordedAt": "2026-11-01 14:37:36",
+              "title": "王芳（造数1100）",
+              "summary": "客户经营对象",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "customer:242297294915895296",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Property-Property-242297295016558592",
+              "nodeKey": "Property:Property:242297295016558592:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "房屋",
+                "value": "Property",
+                "key": "Property"
+              },
+              "objectType": "Property",
+              "objectId": "242297295016558592",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Serving",
+              "statusName": "施工中",
+              "businessTime": "2026-10-31 22:42:56",
+              "recordedAt": "2026-11-01 14:37:36",
+              "title": "望江府",
+              "summary": "望江府1栋102",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "property:242297295016558592",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "ProjectOrigin-Project-242297299361857536",
+              "nodeKey": "ProjectOrigin:Project:242297299361857536:1",
+              "stage": {
+                "name": "来源",
+                "value": "Source",
+                "key": "Source"
+              },
+              "factType": {
+                "name": "项目来源",
+                "value": "ProjectOrigin",
+                "key": "ProjectOrigin"
+              },
+              "objectType": "Project",
+              "objectId": "242297299361857536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "New",
+              "statusName": "正常业务",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "项目来源",
+              "summary": "正常业务",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project:242297299361857536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Design-Design-242297296664920064",
+              "nodeKey": "Design:Design:property:242297295016558592",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "设计方案",
+                "value": "Design",
+                "key": "Design"
+              },
+              "objectType": "Design",
+              "objectId": "242297296664920064",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Selected",
+              "statusName": "客户选中",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-10-31 22:42:57",
+              "actorName": "审计设计",
+              "title": "造数方案 1100",
+              "summary": "设计方案 V1",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "design:242297296664920064",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Quote-Quote-242297297788993536",
+              "nodeKey": "Quote:Quote:design:242297296664920064",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "报价",
+                "value": "Quote",
+                "key": "Quote"
+              },
+              "objectType": "Quote",
+              "objectId": "242297297788993536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Converted",
+              "statusName": "已转项目",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-10-31 22:42:57",
+              "actorName": "审计负责人",
+              "title": "Q1793457777457",
+              "summary": "报价 V1",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "quote:242297297788993536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Measure-Measure-242297295264022528",
+              "nodeKey": "Measure:Measure:242297295264022528:1",
+              "stage": {
+                "name": "售前",
+                "value": "PreSale",
+                "key": "PreSale"
+              },
+              "factType": {
+                "name": "量房",
+                "value": "Measure",
+                "key": "Measure"
+              },
+              "objectType": "Measure",
+              "objectId": "242297295264022528",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Completed",
+              "statusName": "已完成",
+              "businessTime": "2026-11-04 00:42:56",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计设计",
+              "title": "量房记录",
+              "summary": "区域 0 · 实测 0 · 待补 0",
+              "sourceLabel": "项目关联事实",
+              "quantity": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "measure:242297295264022528",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "QuoteAcceptance-Quote-242297297788993536",
+              "nodeKey": "QuoteAcceptance:Quote:242297297788993536:1",
+              "stage": {
+                "name": "签约",
+                "value": "Signing",
+                "key": "Signing"
+              },
+              "factType": {
+                "name": "报价接受",
+                "value": "QuoteAcceptance",
+                "key": "QuoteAcceptance"
+              },
+              "objectType": "Quote",
+              "objectId": "242297297788993536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Accepted",
+              "statusName": "已接受",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "报价接受登记",
+              "summary": "客户报价已登记接受",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "quote:242297297788993536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Contract-Contract-242297298732711936",
+              "nodeKey": "Contract:Contract:242297298732711936:1",
+              "stage": {
+                "name": "签约",
+                "value": "Signing",
+                "key": "Signing"
+              },
+              "factType": {
+                "name": "合同",
+                "value": "Contract",
+                "key": "Contract"
+              },
+              "objectType": "Contract",
+              "objectId": "242297298732711936",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Effective",
+              "statusName": "已生效",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "C1793457777676",
+              "summary": "合同当前金额",
+              "sourceLabel": "项目关联事实",
+              "amount": 2495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "contract:242297298732711936",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Purchase-PurchaseOrder-1793457865759361119",
+              "nodeKey": "Purchase:PurchaseOrder:project:242297299361857536",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "采购",
+                "value": "Purchase",
+                "key": "Purchase"
+              },
+              "objectType": "PurchaseOrder",
+              "objectId": "1793457865759361119",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Received",
+              "statusName": "已到场",
+              "businessTime": "2026-10-31 00:00:00",
+              "recordedAt": "2026-10-31 22:44:25",
+              "actorName": "审计负责人",
+              "title": "采购单",
+              "summary": "1 张采购单",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "内部",
+                "value": "Internal",
+                "key": "Internal"
+              },
+              "navigationPath": "purchase:1793457865759361119",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "GoodsReceipt-GoodsReceipt-1793457865828615979",
+              "nodeKey": "GoodsReceipt:GoodsReceipt:1793457865828615979:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "到货",
+                "value": "GoodsReceipt",
+                "key": "GoodsReceipt"
+              },
+              "objectType": "GoodsReceipt",
+              "objectId": "1793457865828615979",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "businessTime": "2026-10-31 16:00:00",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "材料到场",
+              "summary": "1 次到场",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "goods-receipt:1793457865828615979",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Project-Project-242297299361857536",
+              "nodeKey": "Project:Project:242297299361857536:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "项目",
+                "value": "Project",
+                "key": "Project"
+              },
+              "objectType": "Project",
+              "objectId": "242297299361857536",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Preparing",
+              "statusName": "待开工",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计项目经理",
+              "title": "王芳（造数1100） · 望江府1栋102",
+              "summary": "项目当前进度",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project:242297299361857536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829056",
+              "nodeKey": "Stage:ProjectStage:242297299382829056:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829056",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "开工交底",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829056",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829057",
+              "nodeKey": "Stage:ProjectStage:242297299382829057:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829057",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "拆除改造",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829057",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829058",
+              "nodeKey": "Stage:ProjectStage:242297299382829058:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829058",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "水电施工",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829058",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829059",
+              "nodeKey": "Stage:ProjectStage:242297299382829059:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829059",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "泥瓦防水",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829059",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829060",
+              "nodeKey": "Stage:ProjectStage:242297299382829060:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829060",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "木作吊顶",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829060",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829061",
+              "nodeKey": "Stage:ProjectStage:242297299382829061:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829061",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "油漆墙面",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829061",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829062",
+              "nodeKey": "Stage:ProjectStage:242297299382829062:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829062",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "安装收尾",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829062",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Stage-ProjectStage-242297299382829063",
+              "nodeKey": "Stage:ProjectStage:242297299382829063:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工阶段",
+                "value": "Stage",
+                "key": "Stage"
+              },
+              "objectType": "ProjectStage",
+              "objectId": "242297299382829063",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "NotApplicable",
+              "statusName": "本项不涉及",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "竣工保洁验收",
+              "summary": "施工阶段",
+              "sourceLabel": "项目关联事实",
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-stage:242297299382829063",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Task-ProjectTask-242297299395411968",
+              "nodeKey": "Task:ProjectTask:242297299395411968:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工任务",
+                "value": "Task",
+                "key": "Task"
+              },
+              "objectType": "ProjectTask",
+              "objectId": "242297299395411968",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "拆除--墙顶面白灰/腻子粉铲除",
+              "summary": "施工任务",
+              "sourceLabel": "项目关联事实",
+              "quantity": 10.0,
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-task:242297299395411968",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Task-ProjectTask-242297299403800576",
+              "nodeKey": "Task:ProjectTask:242297299403800576:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "施工任务",
+                "value": "Task",
+                "key": "Task"
+              },
+              "objectType": "ProjectTask",
+              "objectId": "242297299403800576",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Todo",
+              "statusName": "未开始",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "水电--强电布线（含开槽）",
+              "summary": "施工任务",
+              "sourceLabel": "项目关联事实",
+              "quantity": 11.0,
+              "progress": 0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-task:242297299403800576",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialPlan-MaterialPlan-242297299428966400",
+              "nodeKey": "MaterialPlan:MaterialPlan:242297299428966400:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "材料计划",
+                "value": "MaterialPlan",
+                "key": "MaterialPlan"
+              },
+              "objectType": "MaterialPlan",
+              "objectId": "242297299428966400",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Arrived",
+              "statusName": "已到场",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计业务",
+              "title": "材料计划",
+              "summary": "1 项材料计划",
+              "sourceLabel": "项目关联事实",
+              "quantity": 12.0,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-plan:242297299428966400",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297301672919040",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297301672919040",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:42:58",
+              "recordedAt": "2026-10-31 22:42:58",
+              "actorName": "审计设计",
+              "title": "造数主材选材",
+              "summary": "主材选材 V1",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297301672919040",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297607643201536",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297607643201536",
+              "projectId": "242297299361857536",
+              "version": 2,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:11",
+              "recordedAt": "2026-10-31 22:44:11",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V2",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297607643201536",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297637313708032",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297637313708032",
+              "projectId": "242297299361857536",
+              "version": 3,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:18",
+              "recordedAt": "2026-10-31 22:44:18",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V3",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297637313708032",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297655781228544",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297655781228544",
+              "projectId": "242297299361857536",
+              "version": 4,
+              "current": false,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:22",
+              "recordedAt": "2026-10-31 22:44:22",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V4",
+              "sourceLabel": "项目关联事实",
+              "uncertainty": "历史选材版本",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297655781228544",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "MaterialSelection-MaterialSelection-242297667927932928",
+              "nodeKey": "MaterialSelection:MaterialSelection:line:242297298762072066",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "主材选材",
+                "value": "MaterialSelection",
+                "key": "MaterialSelection"
+              },
+              "objectType": "MaterialSelection",
+              "objectId": "242297667927932928",
+              "projectId": "242297299361857536",
+              "version": 5,
+              "current": true,
+              "status": "Selected",
+              "statusName": "已选材",
+              "businessTime": "2026-10-31 22:44:25",
+              "recordedAt": "2026-10-31 22:44:25",
+              "actorName": "审计设计",
+              "title": "全链路验收主材选材",
+              "summary": "主材选材 V5",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "material-selection:242297667927932928",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "SiteReport-ProjectReport-242298063459188736",
+              "nodeKey": "SiteReport:ProjectReport:242298063459188736:1",
+              "stage": {
+                "name": "履约",
+                "value": "Fulfillment",
+                "key": "Fulfillment"
+              },
+              "factType": {
+                "name": "现场日报",
+                "value": "SiteReport",
+                "key": "SiteReport"
+              },
+              "objectType": "ProjectReport",
+              "objectId": "242298063459188736",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Notice",
+              "statusName": "项目通知",
+              "businessTime": "2026-10-31 22:46:00",
+              "recordedAt": "2026-11-01 14:37:36",
+              "actorName": "审计负责人",
+              "title": "项目成员调整",
+              "summary": "项目经理：未指定 → 审计项目经理；履约负责人：未指定 → 审计财务（操作人：审计负责人，时间：2026-10-31T22:46:00.009913，立即生效）",
+              "sourceLabel": "项目关联事实",
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "project-report:242298063459188736",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Receipt-Receipt-242297300829863936",
+              "nodeKey": "Receipt:Receipt:project:242297299361857536",
+              "stage": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              },
+              "factType": {
+                "name": "收款",
+                "value": "Receipt",
+                "key": "Receipt"
+              },
+              "objectType": "Receipt",
+              "objectId": "242297300829863936",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Active",
+              "statusName": "有效",
+              "businessTime": "2026-10-31 00:00:00",
+              "recordedAt": "2026-10-31 22:42:58",
+              "actorName": "审计财务",
+              "title": "收款",
+              "summary": "累计 1148.05",
+              "sourceLabel": "项目关联事实",
+              "amount": 1148.05,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "receipt:242297300829863936",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            },
+            {
+              "nodeId": "Receivable-Receivable-242297299894534146",
+              "nodeKey": "Receivable:Receivable:242297299894534146:1",
+              "stage": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              },
+              "factType": {
+                "name": "应收",
+                "value": "Receivable",
+                "key": "Receivable"
+              },
+              "objectType": "Receivable",
+              "objectId": "242297299894534146",
+              "projectId": "242297299361857536",
+              "version": 1,
+              "current": true,
+              "status": "Pending",
+              "statusName": "待收",
+              "businessTime": "2026-10-31 22:42:57",
+              "recordedAt": "2026-11-01 14:37:36",
+              "title": "应收计划",
+              "summary": "4 个节点 · 待收 6347.70",
+              "sourceLabel": "项目关联事实",
+              "amount": 7495.75,
+              "relations": [],
+              "visibility": {
+                "name": "业主可见",
+                "value": "OwnerVisible",
+                "key": "OwnerVisible"
+              },
+              "navigationPath": "receivable:242297299894534146",
+              "returnPath": "project:242297299361857536",
+              "returnAnchor": "project-facts"
+            }
+          ],
+          "sourceGaps": []
+        },
+        "receivedAmount": 1148.05,
+        "receivableAmount": 7495.75
+      },
+      "success": true
+    }
+  },
+  "pmProjectPage": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "projectId": "242297299361857536",
+            "businessOrigin": {
+              "name": "正常业务",
+              "value": "New",
+              "key": "New"
+            },
+            "no": "P1793457777832",
+            "name": "王芳（造数1100） · 望江府1栋102",
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100",
+              "community": "望江府",
+              "addr": "望江府1栋102",
+              "area": 100.0,
+              "budget": 30.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100",
+                "community": "望江府",
+                "addr": "望江府1栋102",
+                "area": 100.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "199500000000000105",
+                "name": "审计设计",
+                "telNo": "13910002004",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "latestMeasureAt": "2026-11-04 00:42:56"
+            },
+            "quote": {
+              "quoteId": "242297297788993536",
+              "no": "Q1793457777457",
+              "property": {
+                "propertyId": "242297295016558592",
+                "customer": {
+                  "custId": "242297294915895296",
+                  "name": "王芳（造数1100）",
+                  "telNo": "13700001100",
+                  "community": "望江府",
+                  "addr": "望江府1栋102",
+                  "area": 100.0,
+                  "budget": 30.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "199500000000000106",
+                    "name": "审计业务",
+                    "telNo": "13910002005",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "199500000000000105",
+                  "name": "审计设计",
+                  "telNo": "13910002004",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-11-04 00:42:56"
+              },
+              "createdBy": {
+                "empId": "199500000000000105",
+                "name": "审计设计",
+                "telNo": "13910002004",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "discount": 0.95,
+              "amount": 2495.75,
+              "cost": 1760.0,
+              "status": {
+                "name": "已转项目",
+                "key": "Converted"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "telNo": "13910002004",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "manager": {
+              "empId": "199500000000000107",
+              "name": "审计项目经理",
+              "telNo": "13910002006",
+              "role": {
+                "name": "项目经理",
+                "value": "Pm",
+                "key": "Pm"
+              }
+            },
+            "support": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "telNo": "13910002003",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "siteAddr": "望江府1栋102",
+            "area": 100.0,
+            "contractAmount": 2495.75,
+            "cost": 1760.0,
+            "status": {
+              "name": "待开工",
+              "key": "Preparing"
+            },
+            "progress": 0,
+            "startDate": "2026-11-05",
+            "planEndDate": "2027-02-08",
+            "currentStageName": "开工交底",
+            "businessStateView": {
+              "objectKey": "project",
+              "objectId": "242297299361857536",
+              "status": "Preparing",
+              "statusLabel": "待开工",
+              "statusTone": "info",
+              "derivedLabels": [
+                {
+                  "key": "currentStage",
+                  "label": "开工交底",
+                  "tone": "info"
+                },
+                {
+                  "key": "progress",
+                  "label": "0%",
+                  "tone": "progress"
+                },
+                {
+                  "key": "risk",
+                  "label": "正常",
+                  "tone": "alert"
+                }
+              ],
+              "nextAction": {
+                "key": "project/start-preparation",
+                "label": "开工准备",
+                "hint": "确认项目成员、排期和开工条件，推进阶段开工。",
+                "ownerRole": "项目经理 / 店长",
+                "fromStatus": "Preparing",
+                "toStatus": "Ongoing",
+                "enabled": true,
+                "blockedReasons": [],
+                "missingFields": [],
+                "reloadScopes": [
+                  "project",
+                  "projectStage",
+                  "projectTask",
+                  "contract"
+                ],
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              },
+              "blockedReasons": [],
+              "nextOwner": "项目经理",
+              "updatedAt": "2026-10-31 22:46:00",
+              "businessRefs": [
+                "BR-008",
+                "BR-010",
+                "SCN-003"
+              ]
+            },
+            "receivedAmount": 1148.05,
+            "receivableAmount": 7495.75
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "projectId": "242297231061811200",
+            "businessOrigin": {
+              "name": "正常业务",
+              "value": "New",
+              "key": "New"
+            },
+            "no": "P1793457761546",
+            "name": "麦鸿演示项目 13",
+            "customer": {
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013",
+              "community": "万象公馆",
+              "addr": "万象公馆4栋1402（主房）",
+              "area": 100.0,
+              "budget": 33.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "property": {
+              "propertyId": "242297227697979392",
+              "customer": {
+                "custId": "242297227509235712",
+                "name": "胡斌（演示13）",
+                "telNo": "13910000013",
+                "community": "万象公馆",
+                "addr": "万象公馆4栋1402（主房）",
+                "area": 100.0,
+                "budget": 33.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "propertyNo": "H1793457760748",
+              "community": "万象公馆",
+              "building": "4栋",
+              "roomNo": "1402",
+              "address": "万象公馆4栋1402（主房）",
+              "area": 150.0,
+              "layout": "三室两厅一厨一卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "199500000000000105",
+                "name": "审计设计",
+                "telNo": "13910002004",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "latestMeasureAt": "2026-10-31 22:42:42"
+            },
+            "quote": {
+              "quoteId": "242297229723828224",
+              "no": "Q1793457761226",
+              "property": {
+                "propertyId": "242297227697979392",
+                "customer": {
+                  "custId": "242297227509235712",
+                  "name": "胡斌（演示13）",
+                  "telNo": "13910000013",
+                  "community": "万象公馆",
+                  "addr": "万象公馆4栋1402（主房）",
+                  "area": 100.0,
+                  "budget": 33.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "199500000000000106",
+                    "name": "审计业务",
+                    "telNo": "13910002005",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1793457760748",
+                "community": "万象公馆",
+                "building": "4栋",
+                "roomNo": "1402",
+                "address": "万象公馆4栋1402（主房）",
+                "area": 150.0,
+                "layout": "三室两厅一厨一卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "199500000000000105",
+                  "name": "审计设计",
+                  "telNo": "13910002004",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-10-31 22:42:42"
+              },
+              "createdBy": {
+                "empId": "199500000000000105",
+                "name": "审计设计",
+                "telNo": "13910002004",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "discount": 0.94,
+              "amount": 15437.47,
+              "cost": 10402.0,
+              "status": {
+                "name": "已转项目",
+                "key": "Converted"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "telNo": "13910002004",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "manager": {
+              "empId": "199500000000000107",
+              "name": "审计项目经理",
+              "telNo": "13910002006",
+              "role": {
+                "name": "项目经理",
+                "value": "Pm",
+                "key": "Pm"
+              }
+            },
+            "support": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "telNo": "13910002003",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "siteAddr": "演示项目工地 13",
+            "area": 150.0,
+            "contractAmount": 15437.47,
+            "cost": 10402.0,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 5,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26",
+            "currentStageName": "拆除改造",
+            "businessStateView": {
+              "objectKey": "project",
+              "objectId": "242297231061811200",
+              "status": "Accepting",
+              "statusLabel": "待验收",
+              "statusTone": "pending",
+              "derivedLabels": [
+                {
+                  "key": "currentStage",
+                  "label": "拆除改造",
+                  "tone": "info"
+                },
+                {
+                  "key": "progress",
+                  "label": "5%",
+                  "tone": "progress"
+                },
+                {
+                  "key": "risk",
+                  "label": "正常",
+                  "tone": "alert"
+                }
+              ],
+              "nextAction": {
+                "key": "project/handle-acceptance",
+                "label": "处理阶段验收",
+                "hint": "提交验收或等待业主确认，驳回后回到施工整改。",
+                "ownerRole": "项目经理 / 业主",
+                "fromStatus": "Accepting",
+                "toStatus": "Finished",
+                "enabled": true,
+                "blockedReasons": [],
+                "missingFields": [],
+                "reloadScopes": [
+                  "acceptance",
+                  "acceptanceRound",
+                  "projectStage",
+                  "projectTask",
+                  "project"
+                ],
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              },
+              "blockedReasons": [],
+              "nextOwner": "项目经理",
+              "updatedAt": "2026-10-31 22:45:56",
+              "businessRefs": [
+                "BR-008",
+                "BR-010",
+                "SCN-003"
+              ]
+            },
+            "receivedAmount": 1389.37,
+            "receivableAmount": 15437.47
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "projectId": "242297226024452096",
+            "businessOrigin": {
+              "name": "正常业务",
+              "value": "New",
+              "key": "New"
+            },
+            "no": "P1793457760346",
+            "name": "麦鸿演示项目 12",
+            "customer": {
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012",
+              "community": "翡翠湖畔",
+              "addr": "翡翠湖畔3栋1301（主房）",
+              "area": 88.0,
+              "budget": 30.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "property": {
+              "propertyId": "242297222408962048",
+              "customer": {
+                "custId": "242297222228606976",
+                "name": "孙悦（演示12）",
+                "telNo": "13910000012",
+                "community": "翡翠湖畔",
+                "addr": "翡翠湖畔3栋1301（主房）",
+                "area": 88.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "propertyNo": "H1793457759487",
+              "community": "翡翠湖畔",
+              "building": "3栋",
+              "roomNo": "1301",
+              "address": "翡翠湖畔3栋1301（主房）",
+              "area": 140.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "199500000000000111",
+                "name": "审计设计二",
+                "telNo": "13910002009",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "latestMeasureAt": "2026-10-31 22:42:41"
+            },
+            "quote": {
+              "quoteId": "242297224262844416",
+              "no": "Q1793457759928",
+              "property": {
+                "propertyId": "242297222408962048",
+                "customer": {
+                  "custId": "242297222228606976",
+                  "name": "孙悦（演示12）",
+                  "telNo": "13910000012",
+                  "community": "翡翠湖畔",
+                  "addr": "翡翠湖畔3栋1301（主房）",
+                  "area": 88.0,
+                  "budget": 30.0,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  },
+                  "owner": {
+                    "empId": "199500000000000106",
+                    "name": "审计业务",
+                    "telNo": "13910002005",
+                    "role": {
+                      "name": "业务员",
+                      "value": "Marketer",
+                      "key": "Marketer"
+                    }
+                  }
+                },
+                "propertyNo": "H1793457759487",
+                "community": "翡翠湖畔",
+                "building": "3栋",
+                "roomNo": "1301",
+                "address": "翡翠湖畔3栋1301（主房）",
+                "area": 140.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                },
+                "salesman": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                },
+                "designer": {
+                  "empId": "199500000000000111",
+                  "name": "审计设计二",
+                  "telNo": "13910002009",
+                  "role": {
+                    "name": "设计师",
+                    "value": "Designer",
+                    "key": "Designer"
+                  }
+                },
+                "latestMeasureAt": "2026-10-31 22:42:41"
+              },
+              "createdBy": {
+                "empId": "199500000000000111",
+                "name": "审计设计二",
+                "telNo": "13910002009",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "discount": 0.94,
+              "amount": 12575.96,
+              "cost": 8369.0,
+              "status": {
+                "name": "已转项目",
+                "key": "Converted"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000111",
+              "name": "审计设计二",
+              "telNo": "13910002009",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "manager": {
+              "empId": "199500000000000107",
+              "name": "审计项目经理",
+              "telNo": "13910002006",
+              "role": {
+                "name": "项目经理",
+                "value": "Pm",
+                "key": "Pm"
+              }
+            },
+            "support": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "telNo": "13910002003",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "siteAddr": "演示项目工地 12",
+            "area": 140.0,
+            "contractAmount": 12575.96,
+            "cost": 8369.0,
+            "status": {
+              "name": "施工中",
+              "key": "Ongoing"
+            },
+            "progress": 1,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26",
+            "currentStageName": "拆除改造",
+            "businessStateView": {
+              "objectKey": "project",
+              "objectId": "242297226024452096",
+              "status": "Ongoing",
+              "statusLabel": "施工中",
+              "statusTone": "alert",
+              "derivedLabels": [
+                {
+                  "key": "currentStage",
+                  "label": "拆除改造",
+                  "tone": "info"
+                },
+                {
+                  "key": "progress",
+                  "label": "1%",
+                  "tone": "progress"
+                },
+                {
+                  "key": "risk",
+                  "label": "正常",
+                  "tone": "alert"
+                }
+              ],
+              "nextAction": {
+                "key": "project/advance-tasks",
+                "label": "推进施工任务",
+                "hint": "按阶段推进任务、材料和现场汇报。",
+                "ownerRole": "项目经理",
+                "fromStatus": "Ongoing",
+                "toStatus": "Accepting",
+                "enabled": true,
+                "blockedReasons": [],
+                "missingFields": [],
+                "reloadScopes": [
+                  "project",
+                  "projectStage",
+                  "projectTask",
+                  "materials"
+                ],
+                "businessRefs": [
+                  "BR-008",
+                  "BR-010",
+                  "SCN-003"
+                ]
+              },
+              "blockedReasons": [],
+              "nextOwner": "项目经理",
+              "updatedAt": "2026-10-31 22:47:22",
+              "businessRefs": [
+                "BR-008",
+                "BR-010",
+                "SCN-003"
+              ]
+            },
+            "receivedAmount": 0.0,
+            "receivableAmount": 12575.96
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "3",
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  },
+  "stages": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829056",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "开工交底",
+            "stageCode": "PREPARE",
+            "sort": 1,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "无需验收",
+              "key": "None"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-05",
+            "plannedEnd": "2026-11-16",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-10-31 22:42:57"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829057",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "拆除改造",
+            "stageCode": "DEMOLITION",
+            "sort": 2,
+            "weight": 14.06,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "未开始",
+              "key": "Todo"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-17",
+            "plannedEnd": "2026-11-29"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829058",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "水电施工",
+            "stageCode": "WATER_ELECTRIC",
+            "sort": 3,
+            "weight": 85.94,
+            "acceptanceMode": {
+              "name": "验收完成",
+              "key": "AcceptanceDone"
+            },
+            "status": {
+              "name": "未开始",
+              "key": "Todo"
+            },
+            "progress": 0,
+            "plannedStart": "2026-11-30",
+            "plannedEnd": "2027-02-03"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829059",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "泥瓦防水",
+            "stageCode": "MASONRY",
+            "sort": 4,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-04",
+            "plannedEnd": "2027-02-04",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-10-31 22:42:57"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829060",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "木作吊顶",
+            "stageCode": "CARPENTRY",
+            "sort": 5,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-05",
+            "plannedEnd": "2027-02-05",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-10-31 22:42:57"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829061",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "油漆墙面",
+            "stageCode": "PAINTING",
+            "sort": 6,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-06",
+            "plannedEnd": "2027-02-06",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-10-31 22:42:57"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829062",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "安装收尾",
+            "stageCode": "INSTALL",
+            "sort": 7,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "施工完成",
+              "key": "ConstructionDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-07",
+            "plannedEnd": "2027-02-07",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-10-31 22:42:57"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "stageId": "242297299382829063",
+            "project": {
+              "projectId": "242297299361857536",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "name": "竣工保洁验收",
+            "stageCode": "COMPLETION",
+            "sort": 8,
+            "weight": 0.0,
+            "acceptanceMode": {
+              "name": "验收完成",
+              "key": "AcceptanceDone"
+            },
+            "status": {
+              "name": "本项不涉及",
+              "key": "NotApplicable"
+            },
+            "progress": 0,
+            "plannedStart": "2027-02-08",
+            "plannedEnd": "2027-02-08",
+            "notApplicableReason": "系统自动判定：该阶段无合同施工行（本项不涉及）",
+            "notApplicableAt": "2026-10-31 22:42:57"
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "8",
+        "first": true,
+        "size": 8
+      },
+      "success": true
+    }
+  },
+  "materialPlans": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "planId": "242297299428966400",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "siteAddr": "望江府1栋102"
+            },
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              }
+            },
+            "quantity": 12.0,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "unitPrice": 120.0,
+            "cost": 1440.0,
+            "status": {
+              "name": "已到场",
+              "key": "Arrived"
+            },
+            "requiredAt": "2026-11-05",
+            "arrivedAt": "2026-10-31",
+            "materialKey": "ci:242296910222721024|unit:Area",
+            "netQuantity": 12.0,
+            "lossRate": 0.0,
+            "lossQuantity": 0.0
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "1",
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  },
+  "receivables": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "receivableId": "242297299894534144",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "triggerType": {
+              "name": "合同签约",
+              "key": "ContractSigned"
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "合同签约款",
+            "type": {
+              "name": "首期款",
+              "key": "First"
+            },
+            "amount": 748.73,
+            "receivedAmount": 748.73,
+            "dueDate": "2026-10-31",
+            "status": {
+              "name": "已收清",
+              "key": "Received"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "receivableId": "242297299894534145",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "stageCode": "PREPARE",
+            "triggerType": {
+              "name": "阶段开工",
+              "key": "StageStarted"
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "项目开工款",
+            "stageName": "开工交底",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 998.3,
+            "receivedAmount": 399.32,
+            "dueDate": "2026-11-05",
+            "status": {
+              "name": "部分收款",
+              "key": "Partial"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / START_40",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:58"
+            },
+            "receivableId": "242297300565622784",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "手工补充应收",
+            "stageName": "补充款",
+            "type": {
+              "name": "其他应收",
+              "key": "Other"
+            },
+            "amount": 5000.0,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-30",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "receivableId": "242297299894534146",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "stageCode": "COMPLETION",
+            "triggerType": {
+              "name": "项目竣工",
+              "key": "ProjectFinished"
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工保洁验收",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 748.72,
+            "receivedAmount": 0.0,
+            "dueDate": "2027-02-08",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "4",
+        "first": true,
+        "size": 50
+      },
+      "success": true
+    }
+  },
+  "db": {
+    "contractId": "242297298732711936",
+    "contractStatus": "Effective",
+    "quoteId": "242297297788993536",
+    "contractCustomerId": "242297294915895296",
+    "contractPropertyId": "242297295016558592",
+    "projectId": "242297299361857536",
+    "projectStatus": "Preparing",
+    "projectCustomerId": "242297294915895296",
+    "projectPropertyId": "242297295016558592",
+    "stageCount": "8",
+    "materialPlanCount": "1",
+    "receivableCount": "4"
+  }
+}

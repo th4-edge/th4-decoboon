@@ -1,0 +1,1070 @@
+{
+  "schemaVersion": "0.1",
+  "domain": "finance",
+  "title": "财务角色业务域与能力体系",
+  "status": "draft_scenarios_ready_biz_alignment_required",
+  "updated": "2026-10-29",
+  "northStar": "以财务角色为经营控制面，统一项目资金、成本利润、往来核校与业务协同，形成可复用、可追溯、可交接的财务工作台体系",
+  "roleModel": {
+    "employeeRole": "Finance",
+    "derivedRoles": [
+      {
+        "name": "总部财务",
+        "condition": "Finance + Store.defaultStore=true",
+        "dataScope": "Company"
+      },
+      {
+        "name": "门店财务",
+        "condition": "Finance + 非默认门店",
+        "dataScope": "Store"
+      }
+    ],
+    "supersetRoles": [
+      "Boss"
+    ],
+    "participatingRoles": [
+      "StoreManager"
+    ],
+    "nonFinanceRoles": [
+      "Designer",
+      "Marketer",
+      "Pm"
+    ],
+    "boundaries": [
+      "不新增企业财务/门店财务独立枚举角色",
+      "财务高危动作不因财务岗位自动获得",
+      "薪酬最终确认/作废/退回仅 BOSS",
+      "不与法定会计、税务、发票管理、完整 HR 混用"
+    ]
+  },
+  "businessDomains": [
+    {
+      "id": "D0",
+      "name": "企业组织与权限",
+      "financeRelation": "consume",
+      "ownership": "组织域"
+    },
+    {
+      "id": "D1",
+      "name": "客户与房屋",
+      "financeRelation": "co_manage",
+      "ownership": "客户域"
+    },
+    {
+      "id": "D2",
+      "name": "设计",
+      "financeRelation": "observe",
+      "ownership": "设计域"
+    },
+    {
+      "id": "D3",
+      "name": "报价与标准成本",
+      "financeRelation": "co_manage",
+      "ownership": "报价域"
+    },
+    {
+      "id": "D4",
+      "name": "合同与变更",
+      "financeRelation": "control",
+      "ownership": "合同域"
+    },
+    {
+      "id": "D5",
+      "name": "项目履约",
+      "financeRelation": "observe_control",
+      "ownership": "项目域"
+    },
+    {
+      "id": "D6",
+      "name": "材料与供应链",
+      "financeRelation": "operate",
+      "ownership": "材料域"
+    },
+    {
+      "id": "D7",
+      "name": "财务经营",
+      "financeRelation": "own",
+      "ownership": "财务域"
+    },
+    {
+      "id": "D8",
+      "name": "薪酬与提成",
+      "financeRelation": "review_pay",
+      "ownership": "薪酬域"
+    },
+    {
+      "id": "D9",
+      "name": "经营分析与目标",
+      "financeRelation": "own_partial_observe",
+      "ownership": "经营分析域"
+    }
+  ],
+  "capabilityDomains": [
+    {
+      "id": "F0",
+      "name": "经营编排",
+      "capabilities": [
+        {
+          "id": "F0-01",
+          "name": "财务经营结论",
+          "level": "V/M",
+          "objects": [
+            "FinanceSummary",
+            "Risk",
+            "Project",
+            "Ledger"
+          ],
+          "page": "PF-01",
+          "status": "current_partial"
+        },
+        {
+          "id": "F0-02",
+          "name": "待办与风险队列",
+          "level": "M",
+          "objects": [
+            "Risk",
+            "Receivable",
+            "Payable",
+            "Expense",
+            "CostIssue"
+          ],
+          "page": "PF-01/PF-02/PF-03/PF-04/PF-07",
+          "status": "current_partial"
+        },
+        {
+          "id": "F0-03",
+          "name": "对象/期间/门店上下文",
+          "level": "M",
+          "objects": [
+            "Store",
+            "Project",
+            "Period"
+          ],
+          "page": "all_finance",
+          "status": "provider_partial"
+        }
+      ]
+    },
+    {
+      "id": "F1",
+      "name": "应收与回款",
+      "capabilities": [
+        {
+          "id": "F1-01",
+          "name": "合同付款计划与应收来源",
+          "level": "O/C",
+          "objects": [
+            "ProjectContract",
+            "ContractPaymentPlan",
+            "Receivable"
+          ],
+          "page": "PF-02/shared_contract",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F1-02",
+          "name": "应收生命周期、账龄与逾期",
+          "level": "M",
+          "objects": [
+            "Receivable",
+            "AgingBucket"
+          ],
+          "page": "PF-02",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F1-03",
+          "name": "收款登记与核销",
+          "level": "M",
+          "objects": [
+            "Receivable",
+            "Receipt",
+            "Ledger"
+          ],
+          "page": "PF-02/transaction",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F1-04",
+          "name": "收款冲正与客户退款",
+          "level": "C/M_restricted",
+          "objects": [
+            "ReceiptReversal",
+            "ReceiptRefund",
+            "Receipt",
+            "Ledger"
+          ],
+          "page": "PF-02/safety_gate",
+          "status": "partial"
+        },
+        {
+          "id": "F1-05",
+          "name": "客户回款风险与催收",
+          "level": "C/V",
+          "objects": [
+            "Customer",
+            "Project",
+            "Receivable",
+            "Risk"
+          ],
+          "page": "PF-02/shared_customer",
+          "status": "partial"
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "name": "应付与付款",
+      "capabilities": [
+        {
+          "id": "F2-01",
+          "name": "来源应付生成",
+          "level": "O",
+          "objects": [
+            "PurchaseOrder",
+            "PayrollItem",
+            "Expense",
+            "Payable"
+          ],
+          "page": "PF-03/source_object",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F2-02",
+          "name": "应付计划、账龄与逾期",
+          "level": "M",
+          "objects": [
+            "Payable",
+            "AgingBucket"
+          ],
+          "page": "PF-03",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F2-03",
+          "name": "付款登记与核销",
+          "level": "M",
+          "objects": [
+            "Payable",
+            "Payment",
+            "Ledger"
+          ],
+          "page": "PF-03/transaction",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F2-04",
+          "name": "供应商/合作方往来",
+          "level": "M/V",
+          "objects": [
+            "Partner",
+            "PartnerLedger",
+            "Payable",
+            "Payment"
+          ],
+          "page": "PF-03/shared_partner",
+          "status": "partial"
+        },
+        {
+          "id": "F2-05",
+          "name": "工人工资与劳务付款",
+          "level": "M/O",
+          "objects": [
+            "Payable.Salary",
+            "Worker",
+            "Payment"
+          ],
+          "page": "PF-03",
+          "status": "implemented_pending_reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "F3",
+      "name": "费用与报销",
+      "capabilities": [
+        {
+          "id": "F3-01",
+          "name": "费用分类与归属",
+          "level": "M",
+          "objects": [
+            "ExpenseCategory",
+            "Expense"
+          ],
+          "page": "PF-04/PF-10",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F3-02",
+          "name": "费用/报销提交与证据",
+          "level": "O",
+          "objects": [
+            "Expense",
+            "ExpenseAttachment"
+          ],
+          "page": "PF-04/transaction",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F3-03",
+          "name": "费用审批/退回/拒绝",
+          "level": "C",
+          "objects": [
+            "Expense",
+            "ExpenseRevision"
+          ],
+          "page": "PF-04/approval",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F3-04",
+          "name": "费用付款与凭证",
+          "level": "M",
+          "objects": [
+            "Expense",
+            "Payable.Expense",
+            "Payment",
+            "Voucher"
+          ],
+          "page": "PF-04/PF-09",
+          "status": "partial"
+        },
+        {
+          "id": "F3-05",
+          "name": "项目/企业成本归集",
+          "level": "M",
+          "objects": [
+            "Expense",
+            "ProjectCostContext",
+            "FinanceReport"
+          ],
+          "page": "PF-07",
+          "status": "blocked_by_cost_formula"
+        }
+      ]
+    },
+    {
+      "id": "F4",
+      "name": "薪酬与提成",
+      "capabilities": [
+        {
+          "id": "F4-01",
+          "name": "薪酬方案",
+          "level": "O/C",
+          "objects": [
+            "CompensationScheme"
+          ],
+          "page": "PF-05",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F4-02",
+          "name": "考勤汇总",
+          "level": "O/C",
+          "objects": [
+            "AttendanceSummary"
+          ],
+          "page": "PF-05",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F4-03",
+          "name": "工资单复核与最终确认",
+          "level": "C",
+          "objects": [
+            "PayrollSheet",
+            "PayrollItem"
+          ],
+          "page": "PF-05/approval",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F4-04",
+          "name": "提成与负向调整",
+          "level": "C/O",
+          "objects": [
+            "CommissionItem",
+            "CommissionAdjustment"
+          ],
+          "page": "PF-05",
+          "status": "partial"
+        },
+        {
+          "id": "F4-05",
+          "name": "工资/提成发放与工资条",
+          "level": "M",
+          "objects": [
+            "Payable.EmployeeSalary",
+            "Payment",
+            "Payslip"
+          ],
+          "page": "PF-05",
+          "status": "implemented_pending_reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "F5",
+      "name": "资金与对账",
+      "capabilities": [
+        {
+          "id": "F5-01",
+          "name": "资金账户与期初",
+          "level": "M",
+          "objects": [
+            "FundAccount",
+            "OpeningBalance"
+          ],
+          "page": "PF-06",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F5-02",
+          "name": "资金台账",
+          "level": "M",
+          "objects": [
+            "Ledger"
+          ],
+          "page": "PF-06",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F5-03",
+          "name": "手工记账边界",
+          "level": "M_restricted",
+          "objects": [
+            "Ledger.Manual",
+            "LedgerCategory"
+          ],
+          "page": "PF-06/transaction",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F5-04",
+          "name": "作废/更正/冲正重记",
+          "level": "C/M_boss_storemanager_only",
+          "objects": [
+            "LedgerRevision",
+            "Ledger"
+          ],
+          "page": "PF-06/safety_gate",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F5-05",
+          "name": "现金、收支与异常流水分析",
+          "level": "V",
+          "objects": [
+            "Ledger",
+            "FinanceSummary"
+          ],
+          "page": "PF-01/PF-06/PF-08",
+          "status": "partial"
+        }
+      ]
+    },
+    {
+      "id": "F6",
+      "name": "成本、利润与结算",
+      "capabilities": [
+        {
+          "id": "F6-01",
+          "name": "预计成本",
+          "level": "C",
+          "objects": [
+            "ProjectContract",
+            "ContractLine",
+            "ProjectCostContext"
+          ],
+          "page": "PF-07",
+          "status": "partial"
+        },
+        {
+          "id": "F6-02",
+          "name": "动态成本",
+          "level": "M/C",
+          "objects": [
+            "Purchase",
+            "GoodsReceipt",
+            "Payable",
+            "Payroll",
+            "Expense"
+          ],
+          "page": "PF-07",
+          "status": "partial"
+        },
+        {
+          "id": "F6-03",
+          "name": "最终成本",
+          "level": "M",
+          "objects": [
+            "MaterialSettlement",
+            "Settlement"
+          ],
+          "page": "PF-07",
+          "status": "partial"
+        },
+        {
+          "id": "F6-04",
+          "name": "成本完整性与项目毛利",
+          "level": "C",
+          "objects": [
+            "ProjectCostContext",
+            "CostIssue"
+          ],
+          "page": "PF-07/PF-08",
+          "status": "partial_blocked_by_gap_071"
+        },
+        {
+          "id": "F6-05",
+          "name": "项目结算与质保释放",
+          "level": "M",
+          "objects": [
+            "Settlement",
+            "Retention"
+          ],
+          "page": "PF-07",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F6-06",
+          "name": "公司/门店经营利润参考",
+          "level": "V",
+          "objects": [
+            "MET-007",
+            "MET-011",
+            "GAP-070"
+          ],
+          "page": "PF-08",
+          "status": "blocked_by_gap_070"
+        }
+      ]
+    },
+    {
+      "id": "F7",
+      "name": "单据与档案",
+      "capabilities": [
+        {
+          "id": "F7-01",
+          "name": "业务凭证生成",
+          "level": "M",
+          "objects": [
+            "Ledger",
+            "Voucher",
+            "VoucherItem"
+          ],
+          "page": "PF-09",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F7-02",
+          "name": "凭证模板与版本",
+          "level": "M",
+          "objects": [
+            "VoucherTemplate",
+            "VoucherTemplateVersion"
+          ],
+          "page": "PF-09/PF-10",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F7-03",
+          "name": "打印与重打",
+          "level": "M",
+          "objects": [
+            "Voucher",
+            "DocumentFile"
+          ],
+          "page": "PF-09",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F7-04",
+          "name": "合并凭证",
+          "level": "M_restricted",
+          "objects": [
+            "Voucher",
+            "Ledger"
+          ],
+          "page": "PF-09",
+          "status": "partial"
+        }
+      ]
+    },
+    {
+      "id": "F8",
+      "name": "财务基础治理",
+      "capabilities": [
+        {
+          "id": "F8-01",
+          "name": "台账分类",
+          "level": "M",
+          "objects": [
+            "LedgerCategory"
+          ],
+          "page": "PF-10",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F8-02",
+          "name": "资金账户",
+          "level": "M",
+          "objects": [
+            "FundAccount"
+          ],
+          "page": "PF-10",
+          "status": "partial"
+        },
+        {
+          "id": "F8-03",
+          "name": "供应商/合作方主数据",
+          "level": "O",
+          "objects": [
+            "Partner",
+            "MaterialSupplier"
+          ],
+          "page": "shared_partner",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F8-04",
+          "name": "报价项目库标准成本",
+          "level": "O",
+          "objects": [
+            "CatalogItem.costPrice"
+          ],
+          "page": "shared_catalog",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F8-05",
+          "name": "期初承接",
+          "level": "M",
+          "objects": [
+            "OpeningBalance",
+            "Carryover"
+          ],
+          "page": "PF-06",
+          "status": "implemented_pending_reconciliation"
+        }
+      ]
+    },
+    {
+      "id": "F9",
+      "name": "经营协同",
+      "capabilities": [
+        {
+          "id": "F9-01",
+          "name": "客户经营与回款风险",
+          "level": "O/C",
+          "objects": [
+            "Customer",
+            "Receivable"
+          ],
+          "page": "shared_customer",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F9-02",
+          "name": "报价成本与合同付款计划",
+          "level": "O/C",
+          "objects": [
+            "Quote",
+            "CatalogItem",
+            "ProjectContract",
+            "ContractPaymentPlan"
+          ],
+          "page": "shared_quote/shared_contract",
+          "status": "partial"
+        },
+        {
+          "id": "F9-03",
+          "name": "材料下单与结算",
+          "level": "M",
+          "objects": [
+            "MaterialPlan",
+            "MaterialOrderSheet",
+            "MaterialSettlement"
+          ],
+          "page": "shared_material",
+          "status": "implemented_pending_reconciliation"
+        },
+        {
+          "id": "F9-04",
+          "name": "项目履约与成本风险",
+          "level": "C",
+          "objects": [
+            "Project",
+            "Risk",
+            "ProjectCostContext"
+          ],
+          "page": "shared_project",
+          "status": "partial"
+        },
+        {
+          "id": "F9-05",
+          "name": "门店/企业经营管理",
+          "level": "V/C",
+          "objects": [
+            "Store",
+            "BusinessTarget",
+            "Metrics"
+          ],
+          "page": "PF-08",
+          "status": "partial_blocked_by_gap_070"
+        }
+      ]
+    }
+  ],
+  "pageFamilies": [
+    {
+      "id": "A",
+      "name": "驾驶舱",
+      "purpose": "三秒经营判断、风险、下一步"
+    },
+    {
+      "id": "B",
+      "name": "行动队列",
+      "purpose": "批量选择、筛选、逐笔处理"
+    },
+    {
+      "id": "C",
+      "name": "对象工作面",
+      "purpose": "单对象上下文连续处置"
+    },
+    {
+      "id": "D",
+      "name": "账本/对账台",
+      "purpose": "多列核对、分组、筛选、批量动作"
+    },
+    {
+      "id": "E",
+      "name": "事务单据",
+      "purpose": "收付款、费用、结算、期初、发放"
+    },
+    {
+      "id": "F",
+      "name": "审批/安全门",
+      "purpose": "高风险动作的影响评估与确认"
+    },
+    {
+      "id": "G",
+      "name": "档案/输出",
+      "purpose": "凭证、模板、打印、重打、导出"
+    },
+    {
+      "id": "H",
+      "name": "设置/治理",
+      "purpose": "分类、账户、模板、主数据"
+    }
+  ],
+  "pages": [
+    {
+      "id": "PF-01",
+      "name": "财务经营台",
+      "family": "A+B",
+      "domain": "finance",
+      "question": "今天钱和经营哪里有问题",
+      "primaryAction": "处理最高风险事项",
+      "status": "target"
+    },
+    {
+      "id": "PF-02",
+      "name": "应收与回款工作台",
+      "family": "B+D+E+F",
+      "domain": "finance",
+      "question": "哪些应收逾期、哪些客户需要今天催",
+      "primaryAction": "登记收款或处理回款异常",
+      "status": "target"
+    },
+    {
+      "id": "PF-03",
+      "name": "应付与付款工作台",
+      "family": "B+D+E",
+      "domain": "finance",
+      "question": "哪些应付款到期、付款是否阻断成本",
+      "primaryAction": "安排付款或核对来源",
+      "status": "target"
+    },
+    {
+      "id": "PF-04",
+      "name": "费用与报销工作台",
+      "family": "B+C+E+F",
+      "domain": "finance",
+      "question": "哪些费用待审批、缺证据或归属不明",
+      "primaryAction": "审批、退回或付款",
+      "status": "target"
+    },
+    {
+      "id": "PF-05",
+      "name": "薪酬发放工作台",
+      "family": "B+C+E+F",
+      "domain": "payroll",
+      "question": "本月薪酬走到哪一步、哪些不能发",
+      "primaryAction": "复核、发放或调整",
+      "status": "target"
+    },
+    {
+      "id": "PF-06",
+      "name": "资金与对账台",
+      "family": "D+E+F",
+      "domain": "finance",
+      "question": "现金账实是否一致、哪些流水异常",
+      "primaryAction": "处理异常流水",
+      "status": "target"
+    },
+    {
+      "id": "PF-07",
+      "name": "项目核算工作面",
+      "family": "C+D+E+F",
+      "domain": "project+finance",
+      "question": "这个项目收入、成本、利润是否可确认",
+      "primaryAction": "补齐成本缺口或确认结算",
+      "status": "target"
+    },
+    {
+      "id": "PF-08",
+      "name": "经营分析",
+      "family": "A+D",
+      "domain": "analytics",
+      "question": "哪个项目/门店/客户在拖累经营",
+      "primaryAction": "进入异常对象",
+      "status": "target"
+    },
+    {
+      "id": "PF-09",
+      "name": "单据与档案",
+      "family": "G",
+      "domain": "finance+document",
+      "question": "哪些收付款还没有合规凭证",
+      "primaryAction": "生成、打印或重打凭证",
+      "status": "target"
+    },
+    {
+      "id": "PF-10",
+      "name": "财务设置",
+      "family": "H",
+      "domain": "finance",
+      "question": "分类、账户、供应商、成本库是否可支撑业务",
+      "primaryAction": "维护当前配置",
+      "status": "target"
+    }
+  ],
+  "sharedSurfaces": [
+    {
+      "id": "SH-01",
+      "name": "客户对象工作面",
+      "domain": "customer",
+      "financeProjection": [
+        "回款风险",
+        "应收摘要",
+        "合同/项目摘要"
+      ],
+      "forbiddenFinanceCopy": "/finance/customers"
+    },
+    {
+      "id": "SH-02",
+      "name": "报价项目库",
+      "domain": "quote",
+      "financeProjection": [
+        "标准成本",
+        "成本完整度",
+        "批量导入/停用"
+      ],
+      "forbiddenFinanceCopy": "/finance/catalog"
+    },
+    {
+      "id": "SH-03",
+      "name": "报价与合同对象",
+      "domain": "quote+contract",
+      "financeProjection": [
+        "成本",
+        "付款计划",
+        "变更财务影响",
+        "应收基线"
+      ],
+      "forbiddenFinanceCopy": "/finance/quotes"
+    },
+    {
+      "id": "SH-04",
+      "name": "项目对象工作面",
+      "domain": "project",
+      "financeProjection": [
+        "成本完整性",
+        "收付款",
+        "结算",
+        "材料/供应摘要"
+      ],
+      "forbiddenFinanceCopy": "/finance/projects/:id"
+    },
+    {
+      "id": "SH-05",
+      "name": "材料下单与结算",
+      "domain": "material",
+      "financeProjection": [
+        "供应商",
+        "价格",
+        "应付",
+        "实际成本"
+      ],
+      "forbiddenFinanceCopy": "/finance/material-ordering"
+    },
+    {
+      "id": "SH-06",
+      "name": "薪酬对象工作面",
+      "domain": "payroll",
+      "financeProjection": [
+        "工资构成",
+        "复核/发放",
+        "工资条状态"
+      ],
+      "forbiddenFinanceCopy": "/finance/employee-salaries"
+    }
+  ],
+  "sharedComponents": [
+    "FinanceScopeBar",
+    "FinanceConclusionBar",
+    "FinanceObjectIdentity",
+    "MoneyStateCell",
+    "DueRiskCell",
+    "SourceTrace",
+    "FinanceEventTimeline",
+    "ReconciliationTable",
+    "TransactionDocumentShell",
+    "ActionSafetyGate",
+    "DataQualityBanner",
+    "HandoffPanel",
+    "EmptyErrorPanel",
+    "VoucherPreview",
+    "AccountingRuleHint"
+  ],
+  "invariants": [
+    "角色不等于业务域",
+    "一笔业务只写一次事实",
+    "应收不等于收入",
+    "应付不等于成本",
+    "付款不等于成本",
+    "资金事实不可物理删除",
+    "成本不完整时利润为 null",
+    "历史快照不回写",
+    "权限和数据范围由服务端裁决",
+    "App/Web 同 Provider、同状态、同金额、同权限、同错误、同恢复",
+    "接口失败和字段缺失不得用 0 或空数组伪装",
+    "页面以对象和任务为中心，不从实体生成 CRUD"
+  ],
+  "openQuestions": [
+    {
+      "id": "FIN-Q01",
+      "topic": "财务完整职责边界",
+      "status": "OPEN"
+    },
+    {
+      "id": "FIN-Q02",
+      "topic": "财务一级导航",
+      "status": "OPEN"
+    },
+    {
+      "id": "FIN-Q03",
+      "topic": "跨域页面复用",
+      "status": "OPEN"
+    },
+    {
+      "id": "FIN-Q04",
+      "topic": "财务经营首屏判断",
+      "status": "OPEN"
+    },
+    {
+      "id": "FIN-Q05",
+      "topic": "公司/门店经营利润口径",
+      "status": "BLOCKED_BY_GAP_070"
+    },
+    {
+      "id": "FIN-Q06",
+      "topic": "发票字段边界",
+      "status": "GAP"
+    },
+    {
+      "id": "FIN-Q07",
+      "topic": "高危动作页面归属",
+      "status": "OPEN"
+    },
+    {
+      "id": "FIN-Q08",
+      "topic": "财务与薪酬职责分离",
+      "status": "OPEN"
+    }
+  ],
+  "sourceRefs": {
+    "OBJ": [
+      "OBJ-001",
+      "OBJ-002",
+      "OBJ-004",
+      "OBJ-008",
+      "OBJ-010"
+    ],
+    "SCN": [
+      "SCN-005",
+      "SCN-008",
+      "SCN-015"
+    ],
+    "BR": [
+      "BR-003",
+      "BR-006",
+      "BR-009",
+      "BR-010",
+      "BR-015",
+      "BR-018",
+      "BR-045",
+      "BR-050",
+      "BR-052",
+      "BR-054",
+      "BR-055",
+      "BR-057",
+      "BR-058",
+      "BR-059"
+    ],
+    "DEC": [
+      "DEC-016",
+      "DEC-065",
+      "DEC-073",
+      "DEC-074",
+      "DEC-075",
+      "DEC-077",
+      "DEC-079",
+      "DEC-080",
+      "DEC-081",
+      "DEC-084",
+      "DEC-086",
+      "DEC-089",
+      "DEC-091",
+      "DEC-092",
+      "DEC-093"
+    ],
+    "MET": [
+      "MET-002",
+      "MET-006",
+      "MET-007",
+      "MET-011"
+    ],
+    "GAP": [
+      "GAP-003",
+      "GAP-070",
+      "GAP-071"
+    ]
+  },
+  "implementationConstraint": {
+    "decision": "USER-DEC-20261029-007",
+    "mode": "upgrade_optimize_complete_not_rebuild",
+    "preserve": [
+      "现有整体布局",
+      "现有财务菜单",
+      "现有页面职责",
+      "现有路由",
+      "现有深链",
+      "App Tab"
+    ],
+    "nextPhase": "逐项验收现有 24 个 Finance 菜单功能",
+    "backendChangesAllowed": false,
+    "pageIdMeaning": "PF-xx 是能力/页面母型标识，不是要求新建的路由；验收和目标优化必须映射到现有页面。"
+  }
+}

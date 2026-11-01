@@ -58,7 +58,13 @@ public class Page implements com.th4.edge.decoboon.design.service.schemes.page.P
     private Long customerId;
 
     @AutoInject
+    private Long propertyId;
+
+    @AutoInject
     private DesignStatus status;
+
+    @AutoInject
+    private List<DesignStatus> statuses;
 
     @AutoInject
     private Long ownerId;
@@ -92,8 +98,14 @@ public class Page implements com.th4.edge.decoboon.design.service.schemes.page.P
             if (customerId != null) {
                 predicates.add(builder.equal(root.get("customer").get("custId"), customerId));
             }
+            if (propertyId != null) {
+                predicates.add(builder.equal(root.get("property").get("propertyId"), propertyId));
+            }
             if (status != null) {
                 predicates.add(builder.equal(root.get("status"), status));
+            }
+            if (statuses != null && !statuses.isEmpty()) {
+                predicates.add(root.get("status").in(statuses));
             }
             if (ownerId != null) {
                 predicates.add(builder.equal(root.get("owner").get("empId"), ownerId));
@@ -113,7 +125,7 @@ public class Page implements com.th4.edge.decoboon.design.service.schemes.page.P
             return builder.and(predicates.toArray(Predicate[]::new));
         };
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 100 : Math.min(size, 200);
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
         org.springframework.data.domain.Page<Design> result = designRepository.findAll(
                 condition.and(designContext.visibleReadableDesign(employee)),
                 PageRequest.of(page, pageSize));

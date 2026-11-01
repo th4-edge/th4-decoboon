@@ -177,3 +177,62 @@ App 不新增页面、不新增能力键，只做 B1 同能力回归和锁定状
 - B3B1 已完成黑盒验证，等待用户验收；B3B2 需 DDL 设计确认；B4 批量/部分发放仍待裁决；
 - 每批完成后必须更新 `state.json`、`06-implementation.md` 和 `10-reconciliation.md`；
 - 独立验收前不得标记 CLOSED。
+
+## 2026-10-30 PAY-SELF-ATTENDANCE
+
+| 项 | 内容 |
+| --- | --- |
+| 垂直切片 | 员工本人月度考勤跨端查看 |
+| 前置 | 前三批开发验证已完成；真实页面证据仍待补 |
+| 后端 | `attendance/summary/page|info` 支持管理/本人双视角；非管理员工强制 Self；`selfOnly` 只返回登录人 |
+| App | 新增 `my-attendance` 页面和“我的工资”入口；只读、月份切换、错误恢复 |
+| Web | 新增 `/account/attendance` 页面和账户菜单入口；只读、月份切换、详情回读 |
+| 验证 | 后端定向 + Java22 全量；App payroll contract/type-check/UI/小程序构建；Web type-check/production build |
+| 回滚 | 回退三端本批文件；无 DDL |
+| 退出条件 | 同 Provider、Self 强制、管理范围不退化、两端构建通过；真实页面待验收 |
+
+## 2026-10-30 PAY-SELF-COMMISSION
+
+| 项 | 内容 |
+| --- | --- |
+| 垂直切片 | 员工本人提成跨端查看 |
+| 前置 | 员工本人考勤已完成开发验证；真实页面验收继续待补 |
+| 后端 | `payroll/commission/page|info` 支持管理/本人双视角；非管理员工强制 Self；`selfOnly` 只返回登录人 |
+| App | 新增 `my-commission` 页面和“我的工资”入口；只读、分页、详情、错误恢复 |
+| Web | 新增 `/account/commissions` 页面和账户菜单入口；只读、分页、详情回读 |
+| 验证 | 后端定向 + Java22 全量；App payroll contract/type-check/UI/小程序构建；Web type-check/production build |
+| 回滚 | 回退三端本批文件；无 DDL |
+| 退出条件 | 同 Provider、Self 强制、管理范围不退化、两端构建通过；真实页面待验收 |
+
+## 2026-10-30 PAY-MANAGER-SENSITIVE-FIELDS
+
+| 项 | 内容 |
+| --- | --- |
+| 垂直切片 | 店长工资构成字段级可见性 |
+| 当前门禁 | `BIZ_ALIGNED` 已取得；`DEC-096` 冻结本店全部现有字段可见 |
+| 裁决结果 | 店长本店可读全部现有薪酬详情字段；跨店拒绝；`DEC-093` 动作权限不变 |
+| 当前范围 | 不新增字段、不裁剪本店详情字段；补字段白名单回归、跨店负向和真实店长页面验收 |
+| 当前不做 | 不改工资公式、不放开店长写权限、不新增 DDL |
+
+## 2026-10-30 PAY-MANAGER-ACTIONS-B8A
+
+| 项 | 内容 |
+| --- | --- |
+| 垂直切片 | 店长本店薪酬动作权限 |
+| 前置 | DEC-097 已批准；B8B 作废/DDL 仍阻塞 |
+| 后端 | BOSS/StoreManager 确认、退回、删除；BOSS/Finance/StoreManager 发放；混合门店整单拒绝 |
+| App/Web | 同一能力键和动作入口；店长不获得制单/计提/生成 |
+| 退出条件 | 定向、全量/隔离构建、两端构建和受控店长本店/跨店验收 |
+
+
+## 2026-10-31 PAY-OPS-01 薪酬工作台聚合性能切片
+
+| 项 | 内容 |
+| --- | --- |
+| 垂直切片 | 薪酬工作台聚合 SQL 化 |
+| 业务依据 | `ANS-BIZ-20261031-001`、`BR-015`、`BR-025`、`BR-031`、`DEC-036`、`DEC-037` |
+| 后端范围 | `payroll/workbench/report` 的值来源、查询链、旧/新对账和 10× 数据验证 |
+| 非范围 | 工资公式、应付生成、发放、成本、权限、工资条状态机、DDL、发布 |
+| 查询链 | 考勤 1 + 工资单状态 1 + 最近工资单 1 + 应付 1 + 提成 1 + 工资条 1 = 6 条固定查询 |
+| 退出条件 | 旧/新同数据对账、10× SQL/实体加载不增长、全量测试、Provider 审计 |
+| 状态 | `DEV_VERIFIED / PENDING_REAL_UI_AND_INDEPENDENT_ACCEPTANCE` |

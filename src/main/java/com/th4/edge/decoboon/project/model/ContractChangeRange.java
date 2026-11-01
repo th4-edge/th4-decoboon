@@ -19,6 +19,30 @@ public class ContractChangeRange {
     @Note("合同")
     private ProjectContract contract;
 
+    @Note("当前页（从1开始）")
+    private Integer current = 1;
+
+    @Note("页大小")
+    private Integer size = 20;
+
+    @Note("筛选后来源总数")
+    private Long total = 0L;
+
+    @Note("是否还有下一页")
+    private Boolean hasMore = false;
+
+    @Note("筛选前原合同行来源总数")
+    private Long contractTotal = 0L;
+
+    @Note("筛选前已生效变更目标来源总数")
+    private Long effectiveTotal = 0L;
+
+    @Note("分项类型筛选项")
+    private List<Facet> itemTypes = new ArrayList<>();
+
+    @Note("区域筛选项")
+    private List<Facet> spaces = new ArrayList<>();
+
     @Note("可变更来源清单")
     private List<Source> sources = new ArrayList<>();
 
@@ -31,6 +55,30 @@ public class ContractChangeRange {
     public ProjectContract getContract() { return contract; }
     public void setContract(ProjectContract contract) { this.contract = contract; }
 
+    public Integer getCurrent() { return current; }
+    public void setCurrent(Integer current) { this.current = current; }
+
+    public Integer getSize() { return size; }
+    public void setSize(Integer size) { this.size = size; }
+
+    public Long getTotal() { return total; }
+    public void setTotal(Long total) { this.total = total; }
+
+    public Boolean getHasMore() { return hasMore; }
+    public void setHasMore(Boolean hasMore) { this.hasMore = hasMore; }
+
+    public Long getContractTotal() { return contractTotal; }
+    public void setContractTotal(Long contractTotal) { this.contractTotal = contractTotal; }
+
+    public Long getEffectiveTotal() { return effectiveTotal; }
+    public void setEffectiveTotal(Long effectiveTotal) { this.effectiveTotal = effectiveTotal; }
+
+    public List<Facet> getItemTypes() { return itemTypes; }
+    public void setItemTypes(List<Facet> itemTypes) { this.itemTypes = itemTypes; }
+
+    public List<Facet> getSpaces() { return spaces; }
+    public void setSpaces(List<Facet> spaces) { this.spaces = spaces; }
+
     public List<Source> getSources() { return sources; }
     public void setSources(List<Source> sources) { this.sources = sources; }
 
@@ -39,6 +87,34 @@ public class ContractChangeRange {
 
     public Boolean getConfirmable() { return confirmable; }
     public void setConfirmable(Boolean confirmable) { this.confirmable = confirmable; }
+
+    /** 选择器筛选项；数量来自服务端全量来源的有限分组聚合。 */
+    @Note("可变更来源筛选项")
+    public static class Facet {
+        @Note("筛选键")
+        private String key;
+        @Note("展示名称")
+        private String label;
+        @Note("数量")
+        private Long count = 0L;
+
+        public Facet() { }
+
+        public Facet(String key, String label, Long count) {
+            this.key = key;
+            this.label = label;
+            this.count = count;
+        }
+
+        public String getKey() { return key; }
+        public void setKey(String key) { this.key = key; }
+
+        public String getLabel() { return label; }
+        public void setLabel(String label) { this.label = label; }
+
+        public Long getCount() { return count; }
+        public void setCount(Long count) { this.count = count; }
+    }
 
     /** 单条可变更来源（原合同行或已生效变更目标）+ 服务端范围投影。 */
     @Note("可变更来源")

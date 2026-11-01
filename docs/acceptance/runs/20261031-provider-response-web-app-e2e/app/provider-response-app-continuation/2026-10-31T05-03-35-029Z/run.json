@@ -1,0 +1,219 @@
+{
+  "scenario": "provider-response-app-continuation",
+  "title": "Provider 响应契约与小程序主链回归（续）",
+  "recordedAt": "2026-10-31T05:05:22.965Z",
+  "projectPath": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app/dist/dev/mp-weixin",
+  "window": null,
+  "estimatedSeconds": 77,
+  "mode": "none",
+  "frameVideo": null,
+  "subtitles": null,
+  "windowVideo": null,
+  "steps": [
+    {
+      "status": "PASS",
+      "id": "A08-follow-readback",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:03:41.818Z",
+      "endedAt": "2026-10-31T05:03:48.743Z",
+      "path": "subpackages/customer/pages/detail",
+      "query": {
+        "id": "241926285943635968"
+      },
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A08-follow-readback.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A08-follow-readback.txt",
+      "durationMs": 1800
+    },
+    {
+      "status": "PASS",
+      "id": "A09-projects",
+      "action": "reLaunch",
+      "caption": "",
+      "startedAt": "2026-10-31T05:03:48.745Z",
+      "endedAt": "2026-10-31T05:03:55.683Z",
+      "path": "pages/project/list",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A09-projects.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A09-projects.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A10-project-detail",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:03:55.689Z",
+      "endedAt": "2026-10-31T05:04:03.211Z",
+      "path": "subpackages/project/pages/detail",
+      "query": {
+        "id": "241926651905048576"
+      },
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A10-project-detail.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A10-project-detail.txt",
+      "durationMs": 1800
+    },
+    {
+      "status": "PASS",
+      "id": "A11-selection-board",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:03.212Z",
+      "endedAt": "2026-10-31T05:04:09.384Z",
+      "path": "subpackages/project/pages/selection-board",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A11-selection-board.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A11-selection-board.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A12-rectify-board",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:09.386Z",
+      "endedAt": "2026-10-31T05:04:15.483Z",
+      "path": "subpackages/project/pages/rectify-board",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A12-rectify-board.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A12-rectify-board.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A13-journey",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:15.484Z",
+      "endedAt": "2026-10-31T05:04:21.859Z",
+      "path": "subpackages/project/pages/journey",
+      "query": {
+        "projectId": "241926651905048576"
+      },
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A13-journey.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A13-journey.txt",
+      "durationMs": 1800
+    },
+    {
+      "status": "PASS",
+      "id": "A14-quotes",
+      "action": "reLaunch",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:21.860Z",
+      "endedAt": "2026-10-31T05:04:28.578Z",
+      "path": "subpackages/quote/pages/list",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A14-quotes.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A14-quotes.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A15-quote-detail",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:28.578Z",
+      "endedAt": "2026-10-31T05:04:35.262Z",
+      "path": "subpackages/quote/pages/detail",
+      "query": {
+        "id": "241926289680760832"
+      },
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A15-quote-detail.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A15-quote-detail.txt",
+      "durationMs": 1800
+    },
+    {
+      "status": "PASS",
+      "id": "A16-finance",
+      "action": "reLaunch",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:35.263Z",
+      "endedAt": "2026-10-31T05:04:42.263Z",
+      "path": "pages/finance/index",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A16-finance.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A16-finance.txt",
+      "durationMs": 2000
+    },
+    {
+      "status": "PASS",
+      "id": "A17-receivables",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:42.264Z",
+      "endedAt": "2026-10-31T05:04:49.131Z",
+      "path": "subpackages/finance/pages/receivables",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A17-receivables.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A17-receivables.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A18-payables",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:49.133Z",
+      "endedAt": "2026-10-31T05:04:55.377Z",
+      "path": "subpackages/finance/pages/payables",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A18-payables.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A18-payables.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A19-ledger",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:04:55.377Z",
+      "endedAt": "2026-10-31T05:05:02.084Z",
+      "path": "subpackages/finance/pages/ledger",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A19-ledger.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A19-ledger.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A20-finance-project",
+      "action": "navigateTo",
+      "caption": "",
+      "startedAt": "2026-10-31T05:05:02.085Z",
+      "endedAt": "2026-10-31T05:05:08.522Z",
+      "path": "subpackages/finance/pages/project",
+      "query": {
+        "projectId": "241926651905048576"
+      },
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A20-finance-project.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A20-finance-project.txt",
+      "durationMs": 1800
+    },
+    {
+      "status": "PASS",
+      "id": "A21-mine",
+      "action": "reLaunch",
+      "caption": "",
+      "startedAt": "2026-10-31T05:05:08.523Z",
+      "endedAt": "2026-10-31T05:05:15.111Z",
+      "path": "pages/mine/index",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A21-mine.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A21-mine.txt",
+      "durationMs": 1600
+    },
+    {
+      "status": "PASS",
+      "id": "A22-home-recheck",
+      "action": "reLaunch",
+      "caption": "",
+      "startedAt": "2026-10-31T05:05:15.113Z",
+      "endedAt": "2026-10-31T05:05:22.964Z",
+      "path": "pages/index/index",
+      "query": {},
+      "frame": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/frames/A22-home-recheck.png",
+      "text": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261031-provider-response-web-app-e2e/app/provider-response-app-continuation/2026-10-31T05-03-35-029Z/page-text/A22-home-recheck.txt",
+      "durationMs": 2600
+    }
+  ]
+}

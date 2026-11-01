@@ -1,0 +1,35 @@
+{
+  "caseId": "TC-FIN-FINANCE-COST-004",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "ae6a731d1b7ec8b876643e027a2c62be40fb1f102d36a2e325edac250f8542be",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "MET-002",
+    "DEC-092"
+  ],
+  "pageTargets": [
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "finance/project/report",
+    "finance/project/page",
+    "finance/settlement/page"
+  ]
+}

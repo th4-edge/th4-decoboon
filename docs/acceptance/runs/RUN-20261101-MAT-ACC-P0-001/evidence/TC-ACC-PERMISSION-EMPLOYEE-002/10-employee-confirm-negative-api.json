@@ -1,0 +1,57 @@
+{
+  "attempts": {
+    "Boss": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    "StoreManager": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    "Finance": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    "Pm": {
+      "httpStatus": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    }
+  },
+  "dbAfterAttempts": {
+    "acceptanceId": "242297272967102464",
+    "status": "Pending",
+    "confirmedAt": "NULL",
+    "confirmedBy": "NULL",
+    "empId": "199500000000000102",
+    "projectId": "242297231061811200",
+    "stageId": "242297231078588417"
+  }
+}

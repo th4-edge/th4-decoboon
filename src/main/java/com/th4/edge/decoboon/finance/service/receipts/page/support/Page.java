@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.finance.service.receipts.page.support;
 
 import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.customer.model.Customer;
+import com.th4.edge.decoboon.finance.configure.ReceiptStatus;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
@@ -62,6 +63,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.receipts.page
     /** 门店维度（DEC-065）：为空表示不限门店（企业范围）或本店（门店范围）。 */
     @AutoInject
     private Long storeId;
+    /** Active / Reversed；不传时保持全状态兼容。 */
+    @AutoInject
+    private String status;
 
     private final ReceiptRepository receiptRepository;
     private final FinanceAccessContext accessContext;
@@ -77,7 +81,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.receipts.page
         Employee currentEmployee = accessContext.requireReader(employee);
         Long storeFilter = accessContext.resolveStoreFilter(currentEmployee, storeId);
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by(
                 Sort.Order.desc("receivedAt"),
                 Sort.Order.desc("receiptId")));
@@ -109,6 +113,10 @@ public class Page implements com.th4.edge.decoboon.finance.service.receipts.page
             if (!StoreScope.isAllStores(storeFilter)) {
                 predicates.add(cb.equal(root.get("store").get("storeId"), storeFilter));
             }
+            ReceiptStatus statusFilter = receiptStatus(status);
+            if (statusFilter != null) {
+                predicates.add(cb.equal(root.get("status"), statusFilter));
+            }
             if (!kw.isBlank()) {
                 String pattern = "%" + kw + "%";
                 predicates.add(cb.or(
@@ -119,5 +127,13 @@ public class Page implements com.th4.edge.decoboon.finance.service.receipts.page
             }
             return cb.and(predicates.toArray(Predicate[]::new));
         });
+    }
+
+    private ReceiptStatus receiptStatus(String value) {
+        if (value == null || value.isBlank()) return null;
+        for (ReceiptStatus candidate : ReceiptStatus.values()) {
+            if (candidate.name().equalsIgnoreCase(value.trim())) return candidate;
+        }
+        return null;
     }
 }

@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-11-01T10:58:11.764Z",
+  "fixture": {
+    "contentTemplates": 205,
+    "expenseCategories": 205
+  },
+  "checks": [
+    {
+      "page": "template-picker-fixture205",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/template-picker-fixture205-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "text": "选择内容模板\n按画幅和时长比较模板结构，再用于内容任务\n搜索模板名称\n画幅\n全部画幅\n竖屏 9:16\n横屏 16:9\n方形 1:1\n内容模板\n205 个\n内容模板 001\n内部可用\n9:16 · 建议 31 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n31 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 002\n内部可用\n9:16 · 建议 32 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n32 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 003\n内部可用\n9:16 · 建议 33 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n33 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 004\n内部可用\n9:16 · 建议 34 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n34 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 005\n内部可用\n9:16 · 建议 35 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n35 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 006\n内部可用\n9:16 · 建议 36 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n36 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 007\n内部可用\n9:16 · 建议 37 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n37 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 008\n内部可用\n9:16 · 建议 38 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n38 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 009\n内部可用\n9:16 · 建议 39 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n39 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 010\n内部可用\n9:16 · 建议 40 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n40 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 011\n内部可用\n9:16 · 建议 41 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n41 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 012\n内部可用\n9:16 · 建议 42 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n42 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 013\n内部可用\n9:16 · 建议 43 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n43 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 014\n内部可用\n9:16 · 建议 44 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n44 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 015\n内部可用\n9:16 · 建议 45 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n45 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 016\n内部可用\n9:16 · 建议 46 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n46 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 017\n内部可用\n9:16 · 建议 47 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n47 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 018\n内部可用\n9:16 · 建议 48 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n48 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 019\n内部可用\n9:16 · 建议 49 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n49 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 020\n内部可用\n9:16 · 建议 50 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n50 秒\n片段范围\n3-8 个\n版本\n第 1 版\n加载更多"
+      }
+    },
+    {
+      "page": "template-picker-fixture205",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/template-picker-fixture205-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "text": "选择内容模板\n按画幅和时长比较模板结构，再用于内容任务\n搜索模板名称\n画幅\n全部画幅\n竖屏 9:16\n横屏 16:9\n方形 1:1\n内容模板\n205 个\n内容模板 001\n内部可用\n9:16 · 建议 31 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n31 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 002\n内部可用\n9:16 · 建议 32 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n32 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 003\n内部可用\n9:16 · 建议 33 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n33 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 004\n内部可用\n9:16 · 建议 34 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n34 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 005\n内部可用\n9:16 · 建议 35 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n35 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 006\n内部可用\n9:16 · 建议 36 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n36 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 007\n内部可用\n9:16 · 建议 37 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n37 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 008\n内部可用\n9:16 · 建议 38 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n38 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 009\n内部可用\n9:16 · 建议 39 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n39 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 010\n内部可用\n9:16 · 建议 40 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n40 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 011\n内部可用\n9:16 · 建议 41 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n41 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 012\n内部可用\n9:16 · 建议 42 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n42 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 013\n内部可用\n9:16 · 建议 43 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n43 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 014\n内部可用\n9:16 · 建议 44 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n44 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 015\n内部可用\n9:16 · 建议 45 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n45 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 016\n内部可用\n9:16 · 建议 46 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n46 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 017\n内部可用\n9:16 · 建议 47 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n47 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 018\n内部可用\n9:16 · 建议 48 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n48 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 019\n内部可用\n9:16 · 建议 49 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n49 秒\n片段范围\n3-8 个\n版本\n第 1 版\n内容模板 020\n内部可用\n9:16 · 建议 50 秒 · 3-8 个片段\n画幅\n9:16\n建议时长\n50 秒\n片段范围\n3-8 个\n版本\n第 1 版\n加载更多"
+      }
+    },
+    {
+      "page": "expense-category-picker-fixture205",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/expense-category-picker-fixture205-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "text": "选择费用分类\n按名称、说明和基础分类定位费用归属\n搜索分类名称 / 编码 / 说明\n启用中的费用分类\n205 类\n费用分类 001\n基础分类\n第 1 个费用归属分类\n分类编码\nCAT_001\n状态\n启用\n费用分类 002\n基础分类\n第 2 个费用归属分类\n分类编码\nCAT_002\n状态\n启用\n费用分类 003\n基础分类\n第 3 个费用归属分类\n分类编码\nCAT_003\n状态\n启用\n费用分类 004\n基础分类\n第 4 个费用归属分类\n分类编码\nCAT_004\n状态\n启用\n费用分类 005\n基础分类\n第 5 个费用归属分类\n分类编码\nCAT_005\n状态\n启用\n费用分类 006\n企业分类\n第 6 个费用归属分类\n分类编码\nCAT_006\n状态\n启用\n费用分类 007\n企业分类\n第 7 个费用归属分类\n分类编码\nCAT_007\n状态\n启用\n费用分类 008\n企业分类\n第 8 个费用归属分类\n分类编码\nCAT_008\n状态\n启用\n费用分类 009\n企业分类\n第 9 个费用归属分类\n分类编码\nCAT_009\n状态\n启用\n费用分类 010\n企业分类\n第 10 个费用归属分类\n分类编码\nCAT_010\n状态\n启用\n费用分类 011\n企业分类\n第 11 个费用归属分类\n分类编码\nCAT_011\n状态\n启用\n费用分类 012\n企业分类\n第 12 个费用归属分类\n分类编码\nCAT_012\n状态\n启用\n费用分类 013\n企业分类\n第 13 个费用归属分类\n分类编码\nCAT_013\n状态\n启用\n费用分类 014\n企业分类\n第 14 个费用归属分类\n分类编码\nCAT_014\n状态\n启用\n费用分类 015\n企业分类\n第 15 个费用归属分类\n分类编码\nCAT_015\n状态\n启用\n费用分类 016\n企业分类\n第 16 个费用归属分类\n分类编码\nCAT_016\n状态\n启用\n费用分类 017\n企业分类\n第 17 个费用归属分类\n分类编码\nCAT_017\n状态\n启用\n费用分类 018\n企业分类\n第 18 个费用归属分类\n分类编码\nCAT_018\n状态\n启用\n费用分类 019\n企业分类\n第 19 个费用归属分类\n分类编码\nCAT_019\n状态\n启用\n费用分类 020\n企业分类\n第 20 个费用归属分类\n分类编码\nCAT_020\n状态\n启用\n加载更多"
+      }
+    },
+    {
+      "page": "expense-category-picker-fixture205",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/expense-category-picker-fixture205-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "text": "选择费用分类\n按名称、说明和基础分类定位费用归属\n搜索分类名称 / 编码 / 说明\n启用中的费用分类\n205 类\n费用分类 001\n基础分类\n第 1 个费用归属分类\n分类编码\nCAT_001\n状态\n启用\n费用分类 002\n基础分类\n第 2 个费用归属分类\n分类编码\nCAT_002\n状态\n启用\n费用分类 003\n基础分类\n第 3 个费用归属分类\n分类编码\nCAT_003\n状态\n启用\n费用分类 004\n基础分类\n第 4 个费用归属分类\n分类编码\nCAT_004\n状态\n启用\n费用分类 005\n基础分类\n第 5 个费用归属分类\n分类编码\nCAT_005\n状态\n启用\n费用分类 006\n企业分类\n第 6 个费用归属分类\n分类编码\nCAT_006\n状态\n启用\n费用分类 007\n企业分类\n第 7 个费用归属分类\n分类编码\nCAT_007\n状态\n启用\n费用分类 008\n企业分类\n第 8 个费用归属分类\n分类编码\nCAT_008\n状态\n启用\n费用分类 009\n企业分类\n第 9 个费用归属分类\n分类编码\nCAT_009\n状态\n启用\n费用分类 010\n企业分类\n第 10 个费用归属分类\n分类编码\nCAT_010\n状态\n启用\n费用分类 011\n企业分类\n第 11 个费用归属分类\n分类编码\nCAT_011\n状态\n启用\n费用分类 012\n企业分类\n第 12 个费用归属分类\n分类编码\nCAT_012\n状态\n启用\n费用分类 013\n企业分类\n第 13 个费用归属分类\n分类编码\nCAT_013\n状态\n启用\n费用分类 014\n企业分类\n第 14 个费用归属分类\n分类编码\nCAT_014\n状态\n启用\n费用分类 015\n企业分类\n第 15 个费用归属分类\n分类编码\nCAT_015\n状态\n启用\n费用分类 016\n企业分类\n第 16 个费用归属分类\n分类编码\nCAT_016\n状态\n启用\n费用分类 017\n企业分类\n第 17 个费用归属分类\n分类编码\nCAT_017\n状态\n启用\n费用分类 018\n企业分类\n第 18 个费用归属分类\n分类编码\nCAT_018\n状态\n启用\n费用分类 019\n企业分类\n第 19 个费用归属分类\n分类编码\nCAT_019\n状态\n启用\n费用分类 020\n企业分类\n第 20 个费用归属分类\n分类编码\nCAT_020\n状态\n启用\n加载更多"
+      }
+    },
+    {
+      "page": "report-project-picker-real",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/report-project-picker-real-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "text": "选择汇报项目\n按状态、来源和设计师定位本次现场汇报\n搜索项目 / 客户 / 地址\n状态\n全部\n在跑\n停工\n已完工\n来源\n全部来源\n正常项目\n接管项目\n设计师\n选择设计师\n项目\n4 个\n在跑项目\n王芳（造数5100） · 滨湖世纪城1栋102\n待验收\n王芳（造数5100） · 滨湖世纪城1栋102 · 拆除改造\n项目经理\n审计项目经理\n设计师\n审计设计\n项目来源\n正常项目\n当前进度\n14%\n王芳（造数1100） · 望江府1栋102\n待开工\n王芳（造数1100） · 望江府1栋102 · 开工交底\n项目经理\n审计项目经理\n设计师\n审计设计\n项目来源\n正常项目\n当前进度\n0%\n麦鸿演示项目 13\n待验收\n胡斌（演示13） · 演示项目工地 13 · 拆除改造\n项目经理\n审计项目经理\n设计师\n审计设计\n项目来源\n正常项目\n当前进度\n5%\n麦鸿演示项目 12\n施工中\n孙悦（演示12） · 演示项目工地 12 · 拆除改造\n项目经理\n审计项目经理\n设计师\n审计设计二\n项目来源\n正常项目\n当前进度\n1%\n停工项目\n已完工项目\n已显示全部 4 个项目"
+      }
+    },
+    {
+      "page": "report-project-picker-real",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/report-project-picker-real-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "text": "选择汇报项目\n按状态、来源和设计师定位本次现场汇报\n搜索项目 / 客户 / 地址\n状态\n全部\n在跑\n停工\n已完工\n来源\n全部来源\n正常项目\n接管项目\n设计师\n选择设计师\n项目\n4 个\n在跑项目\n王芳（造数5100） · 滨湖世纪城1栋102\n待验收\n王芳（造数5100） · 滨湖世纪城1栋102 · 拆除改造\n项目经理\n审计项目经理\n设计师\n审计设计\n项目来源\n正常项目\n当前进度\n14%\n王芳（造数1100） · 望江府1栋102\n待开工\n王芳（造数1100） · 望江府1栋102 · 开工交底\n项目经理\n审计项目经理\n设计师\n审计设计\n项目来源\n正常项目\n当前进度\n0%\n麦鸿演示项目 13\n待验收\n胡斌（演示13） · 演示项目工地 13 · 拆除改造\n项目经理\n审计项目经理\n设计师\n审计设计\n项目来源\n正常项目\n当前进度\n5%\n麦鸿演示项目 12\n施工中\n孙悦（演示12） · 演示项目工地 12 · 拆除改造\n项目经理\n审计项目经理\n设计师\n审计设计二\n项目来源\n正常项目\n当前进度\n1%\n停工项目\n已完工项目\n已显示全部 4 个项目"
+      }
+    },
+    {
+      "page": "measure-property-result",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/measure-property-result-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "text": "约定量房时间\n约定客户量房时间\n确认客户已同意量房后录入时间，客户将进入\"待量房\"，由团队负责人或店长指定设计师。\n量房房屋\n更换房屋\n房号 202\n香樟花园2栋202\n140㎡ · 三室两厅一厨一卫\n该房屋已有量房记录（2026-11-03），再次约定将覆盖原约定时间\n李娜（造数5101）\n13700005101 · 香樟花园\n量房日期\n2026-11-03\n量房时间\n14:55\n保存后客户阶段将变为\"待量房\"，流程状态不再允许从客户资料编辑中直接修改。\n确认量房约定"
+      }
+    },
+    {
+      "page": "measure-property-result",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-audit/evidence/screenshots/measure-property-result-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "text": "约定量房时间\n约定客户量房时间\n确认客户已同意量房后录入时间，客户将进入\"待量房\"，由团队负责人或店长指定设计师。\n量房房屋\n更换房屋\n房号 202\n香樟花园2栋202\n140㎡ · 三室两厅一厨一卫\n该房屋已有量房记录（2026-11-03），再次约定将覆盖原约定时间\n李娜（造数5101）\n13700005101 · 香樟花园\n量房日期\n2026-11-03\n量房时间\n14:55\n保存后客户阶段将变为\"待量房\"，流程状态不再允许从客户资料编辑中直接修改。\n确认量房约定"
+      }
+    }
+  ],
+  "notes": [
+    "H5 uses a local CORS proxy with 205-item fixtures for template/category list behaviour; other routes use the real dev backend.",
+    "Visual review unavailable because this model cannot inspect images."
+  ]
+}

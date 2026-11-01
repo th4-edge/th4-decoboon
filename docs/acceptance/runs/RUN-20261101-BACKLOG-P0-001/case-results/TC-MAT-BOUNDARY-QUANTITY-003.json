@@ -1,0 +1,35 @@
+{
+  "caseId": "TC-MAT-BOUNDARY-QUANTITY-003",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "6632e535f6804719b70268179dc770ecb2060b8b7b799abdf0baa15ac49e6f6e",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-009",
+    "BR-044",
+    "DEC-072"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/sheet/save",
+    "material/sheet/update",
+    "material/sheet/submit",
+    "project/material-plan/page"
+  ]
+}

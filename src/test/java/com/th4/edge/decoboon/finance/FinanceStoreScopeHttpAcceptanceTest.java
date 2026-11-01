@@ -29,15 +29,21 @@ import com.th4.edge.decoboon.finance.repository.ReceiptRefundRepository;
 import com.th4.edge.decoboon.finance.repository.ReceiptRepository;
 import com.th4.edge.decoboon.finance.repository.ReceivableRepository;
 import com.th4.edge.decoboon.finance.repository.SettlementRepository;
+import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.CommissionStatus;
+import com.th4.edge.decoboon.payroll.configure.PayslipStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.CommissionReportContext;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.CommissionItem;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
+import com.th4.edge.decoboon.payroll.model.Payslip;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
+import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
 import com.th4.edge.decoboon.finance.context.FinanceProjectLedgerContext;
 import com.th4.edge.decoboon.finance.context.PartnerLedgerAggregateContext;
 import com.th4.edge.decoboon.supply.model.Partner;
@@ -137,9 +143,11 @@ class FinanceStoreScopeHttpAcceptanceTest {
     @Autowired private PaymentRepository paymentRepository;
     @Autowired private LedgerRepository ledgerRepository;
     @Autowired private ReceiptRefundRepository receiptRefundRepository;
+    @Autowired private AttendanceSummaryRepository attendanceSummaryRepository;
     @Autowired private PayrollSheetRepository payrollSheetRepository;
     @Autowired private PayrollItemRepository payrollItemRepository;
     @Autowired private CommissionItemRepository commissionItemRepository;
+    @Autowired private PayslipRepository payslipRepository;
     @Autowired private CommissionReportContext commissionReportContext;
     @Autowired private PartnerLedgerAggregateContext partnerLedgerAggregateContext;
     @Autowired private FinanceProjectLedgerContext financeProjectLedgerContext;
@@ -201,6 +209,190 @@ class FinanceStoreScopeHttpAcceptanceTest {
                 "{\"period\":\"2026-10\",\"storeId\":%d}".formatted(scope.storeBId()), login(scope.bossPhone()));
         assertThat(workbench.path("success").asBoolean()).as(workbench.toString()).isTrue();
         assertThat(workbench.path("data").path("latestSheetId").asLong()).isEqualTo(sheet.getSheetId());
+    }
+
+    @Test
+    void payrollWorkbenchAggregatesCurrentPeriodOverHttp() throws Exception {
+        Employee boss = employeeRepository.findByTelNo(scope.bossPhone());
+        Company company = boss.getCompany();
+        Store store = storeRepository.findByStoreId(scope.storeAId());
+
+        Employee headFinance = employeeRepository.findByTelNo(scope.headFinancePhone());
+        Employee designer = employeeRepository.findByTelNo(scope.designerPhone());
+        attendanceSummaryRepository.save(attendance(company, store, boss, "2026-10", AttendanceStatus.Pending));
+        attendanceSummaryRepository.save(attendance(company, store, headFinance, "2026-10", AttendanceStatus.Disputed));
+        attendanceSummaryRepository.save(attendance(company, store, designer, "2026-10", AttendanceStatus.Confirmed));
+
+        PayrollSheet draft = payrollSheetRepository.save(
+                payrollSheet(company, store, boss, "2026-10", PayrollSheetStatus.Draft, "100.00"));
+        PayrollSheet latest = payrollSheetRepository.save(
+                payrollSheet(company, store, boss, "2027-01", PayrollSheetStatus.Pending, "130.00"));
+
+        payableRepository.save(payable(company, store, boss, PayableType.EmployeeSalary, "2026-10", "100.00", "20.00"));
+        payableRepository.save(payable(company, store, boss, PayableType.EmployeeSalary, "2027-01", "50.00", "0.00"));
+        payableRepository.save(payable(company, store, boss, PayableType.EmployeeCommission, null, "80.00", "100.00"));
+        payableRepository.save(payable(company, store, boss, PayableType.Material, "2026-10", "999.00", "0.00"));
+
+        commissionItemRepository.save(commission(company, store, boss, CommissionStatus.Released, "50.00", "10.00"));
+        commissionItemRepository.save(commission(company, store, boss, CommissionStatus.InPayment, "20.00", "20.00"));
+        commissionItemRepository.save(commission(company, store, boss, CommissionStatus.Paid, "100.00", "100.00"));
+        // 负余额不得冲减其他提成项：10 已释放、30 已付，按 0 计。
+        commissionItemRepository.save(commission(company, store, boss, CommissionStatus.Released, "10.00", "30.00"));
+
+        payslipRepository.save(payslip(company, store, headFinance, draft, "2026-10", PayslipStatus.PendingPayment, null));
+        payslipRepository.save(payslip(company, store, designer, draft, "2026-10", PayslipStatus.Published, LocalDateTime.now()));
+        entityManager.flush();
+
+        String token = login(scope.bossPhone());
+        Statistics statistics = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+        entityManager.clear();
+        statistics.clear();
+        JsonNode workbench = api("payroll/workbench/report",
+                "{\"period\":\"2026-10\",\"storeId\":%d}".formatted(scope.storeAId()), token);
+        long sqlCount = statistics.getPrepareStatementCount();
+        long entityLoadCount = statistics.getEntityLoadCount();
+        int responseBytes = workbench.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8).length;
+        System.out.printf("PAY_OPS_01_DATA_SQL=%d ENTITY_LOADS=%d RESPONSE_BYTES=%d%n",
+                sqlCount, entityLoadCount, responseBytes);
+
+        JsonNode data = workbench.path("data");
+        assertThat(workbench.path("success").asBoolean()).as(workbench.toString()).isTrue();
+        assertThat(data.path("pendingAttendanceCount").asInt()).isEqualTo(2);
+        assertThat(data.path("currentPeriodHasSheet").asBoolean()).isTrue();
+        assertThat(data.path("draftSheetCount").asInt()).isEqualTo(1);
+        assertThat(data.path("confirmedSheetCount").asInt()).isZero();
+        assertThat(data.path("pendingEmployeePayableAmount").decimalValue()).isEqualByComparingTo("80.00");
+        assertThat(data.path("releasedUnpaidCommissionAmount").decimalValue()).isEqualByComparingTo("60.00");
+        assertThat(data.path("pendingPayslipCount").asInt()).isEqualTo(1);
+        assertThat(data.path("publishedPayslipCount").asInt()).isEqualTo(1);
+        assertThat(data.path("latestSheetId").asLong()).isEqualTo(latest.getSheetId());
+        assertThat(data.path("latestSheetPeriod").asText()).isEqualTo("2027-01");
+        assertThat(sqlCount).as("薪酬工作台 SQL 防劣化上限").isLessThanOrEqualTo(30);
+
+        for (int i = 0; i < 50; i++) {
+            payableRepository.save(payable(company, store, boss, PayableType.EmployeeSalary,
+                    "2026-10", "1.00", "0.00"));
+            commissionItemRepository.save(commission(company, store, boss,
+                    CommissionStatus.Released, "1.00", "0.00"));
+        }
+        entityManager.flush();
+        entityManager.clear();
+        statistics.clear();
+        JsonNode tenTimes = api("payroll/workbench/report",
+                "{\"period\":\"2026-10\",\"storeId\":%d}".formatted(scope.storeAId()), token);
+        long tenTimesSql = statistics.getPrepareStatementCount();
+        long tenTimesEntityLoads = statistics.getEntityLoadCount();
+        System.out.printf("PAY_OPS_01_10X_SQL=%d ENTITY_LOADS=%d%n", tenTimesSql, tenTimesEntityLoads);
+        assertThat(tenTimes.path("success").asBoolean()).as(tenTimes.toString()).isTrue();
+        assertThat(tenTimesSql).as("10× 数据量下 SQL 条数不增长").isEqualTo(sqlCount);
+        assertThat(tenTimesEntityLoads).as("10× 数据量下不加载工资项/应付/提成/工资条实体")
+                .isEqualTo(entityLoadCount);
+
+        String storeFinanceToken = login(scope.storeFinancePhone());
+        JsonNode ownStore = api("payroll/workbench/report",
+                "{\"period\":\"2026-10\"}", storeFinanceToken);
+        assertThat(ownStore.path("success").asBoolean()).as(ownStore.toString()).isTrue();
+        JsonNode crossStore = api("payroll/workbench/report",
+                "{\"period\":\"2026-10\",\"storeId\":%d}".formatted(scope.storeAId()), storeFinanceToken);
+        assertThat(crossStore.path("success").asBoolean()).as(crossStore.toString()).isFalse();
+        assertThat(crossStore.path("errorCode").path("code").asText()).isEqualTo("403");
+    }
+
+    private AttendanceSummary attendance(Company company, Store store, Employee employee,
+                                          String period, AttendanceStatus status) {
+        AttendanceSummary item = new AttendanceSummary();
+        item.setCompany(company);
+        item.setStore(store);
+        item.setEmployee(employee);
+        item.setPayrollMonth(period);
+        item.setStatus(status);
+        item.setCreatedBy(employee);
+        return item;
+    }
+
+    private PayrollSheet payrollSheet(Company company, Store store, Employee owner,
+                                      String period, PayrollSheetStatus status, String netAmount) {
+        PayrollSheet item = new PayrollSheet();
+        item.setCompany(company);
+        item.setStore(store);
+        item.setOwner(owner);
+        item.setPeriod(period);
+        item.setStatus(status);
+        item.setAttendanceComplete(true);
+        item.setCommissionComplete(false);
+        item.setTotalGrossAmount(new BigDecimal(netAmount));
+        item.setTotalDeductionAmount(BigDecimal.ZERO);
+        item.setTotalNetAmount(new BigDecimal(netAmount));
+        item.setCreatedBy(owner);
+        return item;
+    }
+
+    private Payable payable(Company company, Store store, Employee owner, PayableType type,
+                            String period, String amount, String paidAmount) {
+        Payable item = new Payable();
+        item.setCompany(company);
+        item.setStore(store);
+        item.setOwner(owner);
+        item.setName("PAY-OPS-01-" + type.name());
+        item.setType(type);
+        item.setPeriod(period);
+        item.setAmount(new BigDecimal(amount));
+        item.setPaidAmount(new BigDecimal(paidAmount));
+        item.setDueDate(LocalDate.now());
+        item.setStatus(PayableStatus.Pending);
+        item.setUrgent(false);
+        item.setCreatedBy(owner);
+        return item;
+    }
+
+    private CommissionItem commission(Company company, Store store, Employee employee,
+                                      CommissionStatus status, String released, String paid) {
+        CommissionItem item = new CommissionItem();
+        item.setCompany(company);
+        item.setStore(store);
+        item.setEmployee(employee);
+        item.setContractAmount(new BigDecimal("1000.00"));
+        item.setManualRate(new BigDecimal("0.1000"));
+        item.setCommissionAmount(new BigDecimal("100.00"));
+        item.setAccruedAmount(new BigDecimal("100.00"));
+        item.setReleasedAmount(new BigDecimal(released));
+        item.setPaidAmount(new BigDecimal(paid));
+        item.setStatus(status);
+        item.setCreatedBy(employee);
+        return item;
+    }
+
+    private Payslip payslip(Company company, Store store, Employee employee, PayrollSheet sheet,
+                            String period, PayslipStatus status, LocalDateTime publishedAt) {
+        Payslip item = new Payslip();
+        item.setCompany(company);
+        item.setStore(store);
+        item.setEmployee(employee);
+        item.setSheet(sheet);
+        item.setPeriod(period);
+        item.setGrossAmount(new BigDecimal("100.00"));
+        item.setDeductionAmount(BigDecimal.ZERO);
+        item.setNetAmount(new BigDecimal("100.00"));
+        item.setStatus(status);
+        item.setPublishedAt(publishedAt);
+        item.setCreatedBy(employee);
+        return item;
+    }
+
+    @Test
+    void payrollWorkbenchQueryChainStaysWithinBudgetOverHttp() throws Exception {
+        String token = login(scope.bossPhone());
+        Statistics statistics = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+        statistics.clear();
+
+        JsonNode workbench = api("payroll/workbench/report",
+                "{\"period\":\"2026-10\"}", token);
+
+        long sqlCount = statistics.getPrepareStatementCount();
+        int responseBytes = workbench.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8).length;
+        System.out.printf("PAY_OPS_01_SQL=%d RESPONSE_BYTES=%d%n", sqlCount, responseBytes);
+        assertThat(workbench.path("success").asBoolean()).as(workbench.toString()).isTrue();
+        assertThat(sqlCount).as("薪酬工作台 SQL 防劣化上限").isLessThanOrEqualTo(30);
     }
 
     @Test
@@ -327,7 +519,16 @@ class FinanceStoreScopeHttpAcceptanceTest {
         JsonNode handedOff = api("customer/customer/handoff", """
                 {"customerId":%s,"designerId":%s,"propertyId":%s}
                 """.formatted(customerId, storeManager.getEmpId(), propertyId), storeFinanceToken);
-        assertThat(handedOff.path("success").asBoolean()).as(handedOff.toString()).isTrue();
+        assertThat(handedOff.path("success").asBoolean()).as(handedOff.toString()).isFalse();
+        assertThat(handedOff.path("errorCode").path("code").asText()).isEqualTo("403");
+        assertThat(handedOff.path("errorCode").path("message").asText())
+                .isEqualTo("仅团队负责人、店长或企业负责人可以指定设计师");
+
+        JsonNode storeOverview = api("customer/customer/overview",
+                "{\"current\":1,\"size\":20}", storeFinanceToken);
+        assertThat(storeOverview.path("success").asBoolean()).as(storeOverview.toString()).isTrue();
+        assertThat(storeOverview.path("data").path("ownerGroups").size()).isGreaterThanOrEqualTo(1);
+        assertThat(storeOverview.path("data").path("customers").size()).isEqualTo(1);
 
         String headFinanceToken = login(scope.headFinancePhone());
         JsonNode headPage = api("customer/customer/page", "{\"current\":1,\"size\":50}", headFinanceToken);
@@ -704,7 +905,7 @@ class FinanceStoreScopeHttpAcceptanceTest {
     void storeManagerCanBookkeepAndRecordLandsInOwnStoreOverHttp() throws Exception {
         String token = login(scope.storeManagerPhone());
         JsonNode created = api("finance/receivable/save", """
-                {"projectId":%s,"name":"店长记账验收","stageName":"首期款","type":"First","amount":88.00,"dueDate":"2026-11-30"}
+                {"projectId":%s,"name":"店长记账验收","stageName":"补充款","type":"Other","amount":88.00,"dueDate":"2026-11-30"}
                 """.formatted(scope.projectBId()), token);
 
         assertThat(created.path("success").asBoolean()).as(created.toString()).isTrue();
@@ -776,7 +977,7 @@ class FinanceStoreScopeHttpAcceptanceTest {
     void storeManagerCannotTouchAnotherStoreProjectOverHttp() throws Exception {
         String token = login(scope.storeManagerPhone());
         JsonNode rejected = api("finance/receivable/save", """
-                {"projectId":%s,"name":"越权记账","stageName":"首期款","type":"First","amount":66.00,"dueDate":"2026-11-30"}
+                {"projectId":%s,"name":"越权记账","stageName":"补充款","type":"Other","amount":66.00,"dueDate":"2026-11-30"}
                 """.formatted(scope.projectAId()), token);
 
         assertThat(rejected.path("success").asBoolean()).isFalse();

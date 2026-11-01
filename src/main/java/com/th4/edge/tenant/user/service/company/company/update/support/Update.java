@@ -4,6 +4,9 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
+import com.th4.edge.framework.provider.io.annotation.AutoFile;
+import com.th4.edge.framework.io.StreamFile;
+import com.th4.edge.tenant.user.context.CompanyBrandContext;
 import com.th4.edge.tenant.user.model.Setting;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.Length;
@@ -26,20 +29,37 @@ public class Update implements com.th4.edge.tenant.user.service.company.company.
     @AutoInject @Length(max = 128) private String title;
     @AutoInject @Length(max = 12) private String name;
     @AutoInject @Length(max = 256) private String logo;
+    /** Logo 文件只能通过该字段上传；服务端负责保存并回填长期地址。 */
+    @AutoFile private StreamFile logoFile;
     @AutoInject @Length(max = 12) private String color;
     @AutoInject @Length(max = 256) private String addr;
     /** 品牌与署名配置（字段级合并，不整体覆盖既有 enableStore / gradeConfig）。 */
     @AutoInject private Setting setting;
     private final TenantContext tenantContext;
     private final CompanyRepository companyRepository;
-    public Update(TenantContext tenantContext, CompanyRepository companyRepository) { this.tenantContext = tenantContext; this.companyRepository = companyRepository; }
+    private final CompanyBrandContext companyBrandContext;
+    public Update(TenantContext tenantContext, CompanyRepository companyRepository,
+                  CompanyBrandContext companyBrandContext) {
+        this.tenantContext = tenantContext;
+        this.companyRepository = companyRepository;
+        this.companyBrandContext = companyBrandContext;
+    }
     @Override @Transactional
     public Company call(Employee request) {
         Employee boss = tenantContext.requireBoss(employee);
         Company company = boss.getCompany();
         if (title != null && !title.isBlank()) company.setTitle(title.trim());
         if (name != null && !name.isBlank()) company.setName(name.trim());
-        if (logo != null) company.setLogo(logo);
+        if (logoFile != null && !logoFile.isEmpty()) {
+            CompanyBrandContext.StoredLogo stored = companyBrandContext.save(company.getComId(), logoFile);
+            company.setLogo(stored.url());
+        } else if (logo != null) {
+            if (!logo.isBlank()) {
+                throw new com.th4.edge.framework.exception.DefinedException(
+                        new com.th4.edge.framework.exception.DefaultErrorCode("400", "企业Logo请通过文件上传"));
+            }
+            company.setLogo(null);
+        }
         if (color != null) company.setColor(color);
         if (addr != null) company.setAddr(addr);
         if (setting != null) {

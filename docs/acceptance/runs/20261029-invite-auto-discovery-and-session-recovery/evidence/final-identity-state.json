@@ -1,0 +1,23 @@
+{
+  "boss": {
+    "name": "张伟",
+    "phone": "19900009918",
+    "role": "Boss",
+    "status": "Active",
+    "store": "总店"
+  },
+  "finance": {
+    "name": "张伟",
+    "phone": "18660219918",
+    "role": "Finance",
+    "status": "Active",
+    "store": "总店"
+  },
+  "employeeInvite": {
+    "inviteId": "1793271807543993360",
+    "phone": "18660219918",
+    "role": "Finance",
+    "status": "Accepted"
+  },
+  "observedAt": "2026-10-29T19:15:27+08:00"
+}

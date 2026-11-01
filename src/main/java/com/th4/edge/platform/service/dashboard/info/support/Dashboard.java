@@ -1,7 +1,8 @@
 package com.th4.edge.platform.service.dashboard.info.support;
 
-import com.th4.edge.framework.data.jackson.annotation.Properties;
+
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.security.annotation.User;

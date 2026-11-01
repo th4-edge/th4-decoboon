@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-30T20:20:00+08:00",
+  "outcome": "PASS",
+  "employee": {
+    "accountLabel": "提成验收甲 / Designer / 仅本人",
+    "menuEntry": "PASS",
+    "url": "/account/commissions",
+    "row": "企业提成 ¥100,000.00 2.5% ¥2,500.00 ¥1,500.00 ¥500.00 待发放",
+    "detail": "提成金额 ¥2,500.00；已计提 ¥2,500.00；已释放 ¥1,500.00；已发放 ¥500.00；备注 本人提成验收记录",
+    "actionButtons": [],
+    "responsive": [
+      {"viewport":"1440x900","scrollWidth":1440,"horizontalOverflow":false},
+      {"viewport":"1280x800","scrollWidth":1280,"horizontalOverflow":false},
+      {"viewport":"1024x768","scrollWidth":1024,"horizontalOverflow":false}
+    ]
+  },
+  "finance": {
+    "accountLabel": "张伟 / Finance / 全公司",
+    "selfUrl": "/account/commissions",
+    "selfRow": "企业提成 ¥60,000.00 1% ¥600.00 ¥600.00 ¥600.00 已发放",
+    "selfRowCount": 1,
+    "managementUrl": "/finance/employee-commissions",
+    "managementRows": [
+      "张伟 未关联项目 ¥60,000.00 1% ¥600.00 ¥600.00 ¥600.00 已发放",
+      "提成验收乙 未关联项目 ¥80,000.00 2% ¥1,600.00 ¥800.00 ¥0.00 待发放",
+      "提成验收甲 未关联项目 ¥100,000.00 2.5% ¥2,500.00 ¥1,500.00 ¥500.00 待发放"
+    ],
+    "managementRowCount": 3
+  },
+  "console": {
+    "runtimeExceptions": 0,
+    "errors": 0,
+    "warnings": 2,
+    "warningDetail": "Vite 开发模式直接硬加载受保护路由时，Vue Router 在角色路由装载前提示 /account/commissions 未匹配；页面随后正常装载，无业务错误。"
+  },
+  "screenshots": [
+    "payroll-web-self-commission-console-1440.png",
+    "payroll-web-self-commission-desktop.png",
+    "payroll-web-self-commission-detail-desktop.png",
+    "payroll-web-self-commission-1280.png",
+    "payroll-web-self-commission-1024.png",
+    "payroll-web-finance-self-commission-desktop.png",
+    "payroll-web-finance-management-commission-desktop.png",
+    "payroll-web-employee-account-menu-desktop.png"
+  ]
+}

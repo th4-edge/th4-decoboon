@@ -1,0 +1,391 @@
+{
+  "schemaVersion": "0.1",
+  "date": "2026-10-29",
+  "scope": "Customer, Property, CustomerFollow, Measure, Portrait, Tag as primary concepts",
+  "excluded": [
+    "Quote",
+    "Contract",
+    "Project",
+    "Design",
+    "Acceptance",
+    "CustomerFeedback as adjacent"
+  ],
+  "web": {
+    "activeCoreRoutes": 9,
+    "uniqueCoreComponents": 8,
+    "adjacentRoutes": [
+      {
+        "id": "WEB-C10",
+        "path": "/workbench/customer-feedback",
+        "component": "DesignerCustomerFeedbackView.vue",
+        "concept": "客户意见投诉",
+        "roles": [
+          "Designer",
+          "Pm",
+          "Boss",
+          "StoreManager",
+          "Marketer",
+          "Finance"
+        ]
+      }
+    ],
+    "unmountedComponents": [
+      "TeamCustomerView.vue"
+    ],
+    "routes": [
+      {
+        "id": "WEB-C01",
+        "path": "/workbench/my-customers",
+        "component": "MarketerCustomerView.vue",
+        "concept": "我的客户",
+        "roles": [
+          "Marketer",
+          "Boss"
+        ],
+        "pageType": "list+drawer"
+      },
+      {
+        "id": "WEB-C02",
+        "path": "/workbench/measure",
+        "component": "MarketerMeasureView.vue",
+        "concept": "我的预约量房",
+        "roles": [
+          "Marketer"
+        ],
+        "pageType": "queue"
+      },
+      {
+        "id": "WEB-C03",
+        "path": "/workbench/customers",
+        "component": "StoreCustomerView.vue",
+        "concept": "本店客户/全部客户",
+        "roles": [
+          "Boss",
+          "StoreManager",
+          "Finance"
+        ],
+        "pageType": "table+dialog"
+      },
+      {
+        "id": "WEB-C04",
+        "path": "/designer/my-customers",
+        "component": "DesignerMyCustomersView.vue",
+        "concept": "我的客户",
+        "roles": [
+          "Designer",
+          "Boss",
+          "StoreManager"
+        ],
+        "pageType": "business-list"
+      },
+      {
+        "id": "WEB-C05",
+        "path": "/designer/my-customers/:customerId",
+        "component": "DesignerCustomer360View.vue",
+        "concept": "客户360",
+        "roles": [
+          "Designer",
+          "Boss",
+          "StoreManager"
+        ],
+        "pageType": "object-workspace"
+      },
+      {
+        "id": "WEB-C06",
+        "path": "/designer/followup",
+        "component": "DesignerFollowUpTasksView.vue",
+        "concept": "待我跟进",
+        "roles": [
+          "Designer",
+          "Boss",
+          "StoreManager"
+        ],
+        "pageType": "action-queue+workspace"
+      },
+      {
+        "id": "WEB-C07",
+        "path": "/designer/measure",
+        "component": "DesignerMeasureTasksView.vue",
+        "concept": "待我量房",
+        "roles": [
+          "Designer",
+          "Boss",
+          "StoreManager"
+        ],
+        "pageType": "queue+form"
+      },
+      {
+        "id": "WEB-C08",
+        "path": "/designer/customers",
+        "component": "DesignerCustomersView.vue",
+        "concept": "客户与设计",
+        "roles": [
+          "Designer",
+          "Boss",
+          "StoreManager"
+        ],
+        "pageType": "three-pane-workspace"
+      },
+      {
+        "id": "WEB-C09",
+        "path": "/designer/design",
+        "component": "DesignerCustomersView.vue",
+        "concept": "待我设计",
+        "roles": [
+          "Designer",
+          "Boss",
+          "StoreManager"
+        ],
+        "pageType": "three-pane-workspace"
+      }
+    ],
+    "embeddedCapabilities": [
+      "CustomerCreateSheet",
+      "CustomerEditSheet",
+      "CustomerFollowFormDrawer",
+      "PropertyFormDrawer",
+      "CustomerLossDrawer",
+      "recordWechat",
+      "recordVisit",
+      "savePortrait",
+      "tags display"
+    ],
+    "missingOrIncomplete": [
+      "customer tag maintenance entry",
+      "customer batch entry"
+    ]
+  },
+  "app": {
+    "declaredPageCount": 17,
+    "businessPageCount": 15,
+    "selectorPageCount": 2,
+    "pages": [
+      {
+        "id": "APP-C01",
+        "path": "/pages/customer/list",
+        "title": "客户",
+        "concept": "客户列表/客户Tab",
+        "pageType": "list/business-home"
+      },
+      {
+        "id": "APP-C02",
+        "path": "/subpackages/customer/pages/detail",
+        "title": "客户详情",
+        "concept": "客户360/对象工作面",
+        "pageType": "object-workspace"
+      },
+      {
+        "id": "APP-C03",
+        "path": "/subpackages/customer/pages/edit",
+        "title": "新建客户/编辑客户资料",
+        "concept": "客户新增/编辑",
+        "pageType": "form"
+      },
+      {
+        "id": "APP-C04",
+        "path": "/subpackages/customer/pages/follow",
+        "title": "跟进客户",
+        "concept": "写跟进",
+        "pageType": "form"
+      },
+      {
+        "id": "APP-C05",
+        "path": "/subpackages/customer/pages/flow",
+        "title": "签约后业务流转",
+        "concept": "客户关联全链",
+        "pageType": "relation-overview"
+      },
+      {
+        "id": "APP-C06",
+        "path": "/subpackages/customer/pages/portrait-edit",
+        "title": "客户画像",
+        "concept": "客户画像",
+        "pageType": "form"
+      },
+      {
+        "id": "APP-C07",
+        "path": "/subpackages/customer/pages/tag-manage",
+        "title": "客户标签",
+        "concept": "客户标签",
+        "pageType": "object-subpage"
+      },
+      {
+        "id": "APP-C08",
+        "path": "/subpackages/customer/pages/batch",
+        "title": "批量录入客户",
+        "concept": "客户批量导入",
+        "pageType": "batch-form"
+      },
+      {
+        "id": "APP-C09",
+        "path": "/subpackages/customer/pages/designer-followup-workbench",
+        "title": "待我跟进",
+        "concept": "跟进队列",
+        "pageType": "action-queue"
+      },
+      {
+        "id": "APP-C10",
+        "path": "/subpackages/customer/pages/measure-workbench",
+        "title": "量房经营工作台",
+        "concept": "量房队列",
+        "pageType": "workbench"
+      },
+      {
+        "id": "APP-C11",
+        "path": "/subpackages/customer/pages/designer-measure-workbench",
+        "title": "待我量房",
+        "concept": "设计师量房队列",
+        "pageType": "queue"
+      },
+      {
+        "id": "APP-C12",
+        "path": "/subpackages/customer/pages/measure",
+        "title": "约定量房时间",
+        "concept": "量房预约",
+        "pageType": "form"
+      },
+      {
+        "id": "APP-C13",
+        "path": "/subpackages/customer/pages/measure-record",
+        "title": "录入量房数据",
+        "concept": "量房记录",
+        "pageType": "professional-form"
+      },
+      {
+        "id": "APP-C14",
+        "path": "/subpackages/customer/pages/property-edit",
+        "title": "新增房屋/编辑房屋",
+        "concept": "房屋新增/编辑",
+        "pageType": "form"
+      },
+      {
+        "id": "APP-C15",
+        "path": "/subpackages/customer/pages/wechat-record",
+        "title": "记录客户微信/更新客户微信",
+        "concept": "微信事实",
+        "pageType": "form"
+      },
+      {
+        "id": "APP-C16",
+        "path": "/subpackages/customer/pages/customer-picker",
+        "title": "客户选择器",
+        "concept": "选择客户",
+        "pageType": "selector"
+      },
+      {
+        "id": "APP-C17",
+        "path": "/subpackages/customer/pages/property-picker",
+        "title": "房屋选择器",
+        "concept": "选择房屋",
+        "pageType": "selector"
+      }
+    ]
+  },
+  "conceptCoverage": [
+    {
+      "concept": "客户列表/客户池",
+      "web": "4 role-specific pages",
+      "app": "1 role-aware list",
+      "status": "divergent"
+    },
+    {
+      "concept": "客户详情/360",
+      "web": "Customer360 + embedded detail",
+      "app": "dedicated detail",
+      "status": "partial"
+    },
+    {
+      "concept": "客户新增",
+      "web": "embedded sheet",
+      "app": "dedicated page",
+      "status": "divergent"
+    },
+    {
+      "concept": "客户编辑",
+      "web": "embedded sheet/360",
+      "app": "dedicated page",
+      "status": "divergent"
+    },
+    {
+      "concept": "写跟进",
+      "web": "queue+drawer",
+      "app": "dedicated page+queue",
+      "status": "divergent"
+    },
+    {
+      "concept": "量房预约",
+      "web": "dialogs/embedded",
+      "app": "dedicated page",
+      "status": "divergent"
+    },
+    {
+      "concept": "量房记录",
+      "web": "workspace embedded",
+      "app": "dedicated page",
+      "status": "divergent"
+    },
+    {
+      "concept": "房屋新增/编辑",
+      "web": "drawer",
+      "app": "dedicated page",
+      "status": "divergent"
+    },
+    {
+      "concept": "客户画像",
+      "web": "drawer/display",
+      "app": "dedicated page",
+      "status": "partial"
+    },
+    {
+      "concept": "客户标签",
+      "web": "display mostly",
+      "app": "dedicated page",
+      "status": "web_gap"
+    },
+    {
+      "concept": "微信记录",
+      "web": "drawer",
+      "app": "dedicated page",
+      "status": "divergent"
+    },
+    {
+      "concept": "客户批量录入",
+      "web": "not found",
+      "app": "dedicated page",
+      "status": "web_gap"
+    },
+    {
+      "concept": "客户流失/恢复",
+      "web": "drawer",
+      "app": "embedded action",
+      "status": "partial"
+    },
+    {
+      "concept": "签约后业务流转",
+      "web": "Customer360 tabs",
+      "app": "dedicated flow page",
+      "status": "divergent"
+    },
+    {
+      "concept": "客户选择器",
+      "web": "component",
+      "app": "selector page",
+      "status": "implementation_diff"
+    },
+    {
+      "concept": "房屋选择器",
+      "web": "component",
+      "app": "selector page",
+      "status": "implementation_diff"
+    }
+  ],
+  "knownIssues": [
+    "Web has four customer list implementations.",
+    "Finance customer entry uses StoreCustomerView and does not share DesignerCustomersView.",
+    "Finance view-design action navigates to /designer/customers and lands on /forbidden.",
+    "Finance header mixes 本店客户 and 全部客户 semantics.",
+    "Web customer tag maintenance and batch entry are incomplete/missing.",
+    "App customer concept is split into 17 pages, including two selectors.",
+    "Several App customer pages have no explicit page-level guard rule entry."
+  ]
+}

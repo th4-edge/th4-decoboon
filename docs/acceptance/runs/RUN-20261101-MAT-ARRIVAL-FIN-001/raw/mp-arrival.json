@@ -1,0 +1,8 @@
+{
+  "beforePath": "subpackages/supply/pages/receipt-edit",
+  "beforeText": "确认材料到货确认数量后形成项目实际成本，并回填应付账期主材--实木复合地板直送工地王芳（造数5100） · 滨湖世纪城1栋102 · POb69125551f7cc1f275a014315ea0b202 · 已到 0 / 2 ㎡本次最多可确认 2 ㎡本次到场数量到场日期到货说明确认到货",
+  "afterPath": "subpackages/supply/pages/receipt-edit",
+  "afterText": "确认材料到货确认数量后形成项目实际成本，并回填应付账期主材--实木复合地板直送工地王芳（造数5100） · 滨湖世纪城1栋102 · POb69125551f7cc1f275a014315ea0b202 · 已到 0 / 2 ㎡本次最多可确认 2 ㎡本次到场数量到场日期到货说明确认到货",
+  "beforeShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/evidence/TC-MAT-PM-ARRIVAL-005/01-arrival-before-app.png",
+  "afterShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/evidence/TC-MAT-PM-ARRIVAL-005/02-arrival-after-app.png"
+}

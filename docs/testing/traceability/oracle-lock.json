@@ -1,0 +1,310 @@
+{
+  "schemaVersion": "1.0.0",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "businessRepo": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清业务智能体",
+  "gitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "knowledgeIndex": "06-状态/知识索引.md",
+  "knowledgeIndexSha256": "26082bd79e877a370fcb552ccba8a28926bb016de6a2f4e5aeed156dd7c82bba",
+  "evidenceRegistry": "04-证据来源/registry.json",
+  "evidenceRegistrySha256": "e9e3dc8d7594f05255f67b0010070437de4932100b6e901618f17b69ca2b8c90",
+  "obj010Path": "01-知识库/01-业务对象/OBJ-010-业务信息项主源归属图谱.md",
+  "obj010Sha256": "ec152e5835761f9680e4684dc6ac97a4693d4586ceeabf7552f9c66557a34a22",
+  "rules": {
+    "BR-001": {
+      "title": "客户—房屋—报价—项目主链规则",
+      "status": "approved"
+    },
+    "BR-002": {
+      "title": "报价确认与项目立项规则",
+      "status": "approved"
+    },
+    "BR-003": {
+      "title": "采购执行价、成本价与应付事实边界规则",
+      "status": "approved"
+    },
+    "BR-004": {
+      "title": "签约后主材选材文本化规则",
+      "status": "approved"
+    },
+    "BR-005": {
+      "title": "设计师工作台数据聚合与风险预警规则",
+      "status": "implemented"
+    },
+    "BR-008": {
+      "title": "阶段验收整改循环与结论追加规则",
+      "status": "approved"
+    },
+    "BR-009": {
+      "title": "材料计划选材门禁规则",
+      "status": "approved"
+    },
+    "BR-029": {
+      "title": "沉浸式对象工作空间与操作连续性规则",
+      "status": "approved"
+    },
+    "BR-030": {
+      "title": "场景驱动工作台与多起点导航规则",
+      "status": "approved"
+    },
+    "BR-031": {
+      "title": "统计汇总实现逻辑与检查规则",
+      "status": "approved"
+    },
+    "BR-035": {
+      "title": "增减项发起与客户同频规则",
+      "status": "approved"
+    },
+    "BR-041": {
+      "title": "增减项三类动作与当前有效剩余规则",
+      "status": "approved"
+    },
+    "BR-043": {
+      "title": "全链确认主体矩阵",
+      "status": "approved"
+    },
+    "BR-044": {
+      "title": "主材下单作业单与行业标准基线规则",
+      "status": "approved"
+    },
+    "BR-045": {
+      "title": "采购价、无价下单与结算价成本口径规则",
+      "status": "approved"
+    },
+    "BR-059": {
+      "title": "业务信息项主源与应用闭环规则",
+      "status": "approved"
+    },
+    "BR-060": {
+      "title": "业务界面内部编号隐藏规则",
+      "status": "approved"
+    },
+    "OBJ-001": {
+      "title": "核心业务对象与归属链",
+      "status": "approved"
+    },
+    "OBJ-007": {
+      "title": "量房原始区域",
+      "status": "approved"
+    },
+    "OBJ-008": {
+      "title": "主材下单作业单与单据模板",
+      "status": "approved"
+    },
+    "OBJ-010": {
+      "title": "业务信息项主源归属图谱",
+      "status": "approved"
+    },
+    "MET-002": {
+      "title": "项目毛利",
+      "status": "approved"
+    },
+    "MET-005": {
+      "title": "回款额与本月回款",
+      "status": "verified"
+    },
+    "MET-006": {
+      "title": "财务工作台核心金额口径",
+      "status": "approved"
+    },
+    "SCN-001": {
+      "title": "获客跟进到量房",
+      "status": "approved"
+    },
+    "SCN-002": {
+      "title": "报价确认到项目立项",
+      "status": "approved"
+    },
+    "SCN-003": {
+      "title": "施工排期到节点留证",
+      "status": "implemented"
+    },
+    "SCN-004": {
+      "title": "合同变更到履约重算",
+      "status": "approved"
+    },
+    "SCN-005": {
+      "title": "项目采购到供应商应付闭环",
+      "status": "verified"
+    },
+    "SCN-006": {
+      "title": "签约后主材选材确认",
+      "status": "approved"
+    },
+    "SCN-010": {
+      "title": "阶段验收驳回后的整改与复验闭环",
+      "status": "approved"
+    },
+    "SCN-015": {
+      "title": "财务项目账本沉浸式核对",
+      "status": "approved"
+    },
+    "SCN-018": {
+      "title": "项目经理多起点工作台导航",
+      "status": "approved"
+    },
+    "SCN-021": {
+      "title": "主材下单作业单成单、到货与结算",
+      "status": "approved"
+    },
+    "DEC-002": {
+      "title": "Web 信息架构与规则投影",
+      "status": "verified"
+    },
+    "DEC-008": {
+      "title": "材料计划选材门禁与换材路径",
+      "status": "approved"
+    },
+    "DEC-009": {
+      "title": "小程序跨角色只读可见性与阶段验收语义",
+      "status": "verified"
+    },
+    "DEC-015": {
+      "title": "业主确认主体分对象边界",
+      "status": "approved"
+    },
+    "DEC-016": {
+      "title": "财务边界分层与红线",
+      "status": "approved"
+    },
+    "DEC-029": {
+      "title": "API效率例外与分布式锁规范",
+      "status": "approved"
+    },
+    "DEC-036": {
+      "title": "统计汇总类接口实现逻辑规范",
+      "status": "approved"
+    },
+    "DEC-037": {
+      "title": "性能问题定位与优化顺序规范",
+      "status": "approved"
+    },
+    "DEC-040": {
+      "title": "合同发起与企业确认角色分离",
+      "status": "approved"
+    },
+    "DEC-048": {
+      "title": "合同工期与完工日锁定语义",
+      "status": "approved"
+    },
+    "DEC-049": {
+      "title": "施工任务来源与合同外施工规则",
+      "status": "approved"
+    },
+    "DEC-052": {
+      "title": "量房完成状态分层与预约事实一致性",
+      "status": "approved"
+    },
+    "DEC-055": {
+      "title": "增减项三类动作与当前有效剩余口径",
+      "status": "approved"
+    },
+    "DEC-056": {
+      "title": "App主材选材现场代录与采购门禁重定义",
+      "status": "approved"
+    },
+    "DEC-057": {
+      "title": "空阶段本项不涉及口径与项目进度分母",
+      "status": "approved"
+    },
+    "DEC-062": {
+      "title": "区域面积与周长实测录入、长宽降级为量房快照",
+      "status": "approved"
+    },
+    "DEC-066": {
+      "title": "新客户（待首联）允许直接指定设计师",
+      "status": "approved"
+    },
+    "DEC-068": {
+      "title": "增减项不将业主确认建模为系统事实",
+      "status": "approved"
+    },
+    "DEC-070": {
+      "title": "门店归属统一规则",
+      "status": "approved"
+    },
+    "DEC-071": {
+      "title": "报价接受登记口径与客户归属简化",
+      "status": "approved"
+    },
+    "DEC-072": {
+      "title": "主材下单作业单与采购价口径裁决",
+      "status": "approved"
+    },
+    "DEC-073": {
+      "title": "主材下单单据边界与结算优先级裁决",
+      "status": "approved"
+    },
+    "DEC-077": {
+      "title": "收款冲正规则",
+      "status": "approved"
+    },
+    "DEC-087": {
+      "title": "阶段验收模式与项目停工/复工生命周期冻结",
+      "status": "approved"
+    },
+    "DEC-088": {
+      "title": "项目履约跨端完整与主材异常闭环裁决",
+      "status": "approved"
+    },
+    "DEC-089": {
+      "title": "财务写路径来源与门店高危动作边界",
+      "status": "approved"
+    },
+    "DEC-092": {
+      "title": "项目成本三态、实际毛利与应计口径冻结",
+      "status": "approved"
+    },
+    "DEC-094": {
+      "title": "业务信息主源与签约承诺快照冻结",
+      "status": "approved"
+    },
+    "DEC-095": {
+      "title": "业务界面不展示系统内部编号",
+      "status": "approved"
+    },
+    "BR-025": {
+      "title": "API与页面性能验收规则",
+      "status": "approved"
+    },
+    "DEC-007": {
+      "title": "整改只做质量事实",
+      "status": "approved"
+    },
+    "DEC-033": {
+      "title": "沉浸式对象工作空间与操作连续性",
+      "status": "approved"
+    },
+    "DEC-034": {
+      "title": "场景驱动工作台与多起点导航",
+      "status": "approved"
+    },
+    "DEC-050": {
+      "title": "设计模版（方案库）规范",
+      "status": "approved"
+    },
+    "DEC-065": {
+      "title": "财务门店数据范围与总部财务及店长记账权限",
+      "status": "approved"
+    },
+    "DEC-069": {
+      "title": "原始区域挂量房单与方案继承不联动",
+      "status": "approved"
+    },
+    "SCN-016": {
+      "title": "负责人风险队列沉浸式处置",
+      "status": "approved"
+    },
+    "USER-DEC-20261029-009": {
+      "title": "财务客户页负责人分组与非设计派单边界",
+      "status": "approved"
+    },
+    "BR-057": {
+      "title": "企业费用与员工报销执行规则",
+      "status": "approved"
+    },
+    "DEC-091": {
+      "title": "企业费用与员工报销独立闭环",
+      "status": "approved"
+    }
+  }
+}

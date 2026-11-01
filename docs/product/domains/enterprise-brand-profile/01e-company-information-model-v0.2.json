@@ -1,0 +1,801 @@
+{
+  "schemaVersion": 1,
+  "domain": "enterprise-brand-profile",
+  "status": "candidate_pending_biz_alignment",
+  "updatedAt": "2026-10-29T14:40:00+08:00",
+  "root": "Company",
+  "trustStages": [
+    {
+      "id": "L0",
+      "name": "快速开通",
+      "goal": "先进入系统并开展内部业务",
+      "minimumFields": [
+        "displayName",
+        "ownerEmployee",
+        "defaultStore"
+      ]
+    },
+    {
+      "id": "L1",
+      "name": "基础经营",
+      "goal": "客户、量房、设计、报价草稿和项目准备",
+      "minimumFields": [
+        "displayName"
+      ]
+    },
+    {
+      "id": "L2",
+      "name": "服务可见",
+      "goal": "业主可识别服务主体",
+      "minimumFields": [
+        "displayName",
+        "serviceContact",
+        "serviceArea"
+      ]
+    },
+    {
+      "id": "L3",
+      "name": "交易可用",
+      "goal": "生成正式合同、报价文件、凭证、打印和导出",
+      "minimumFields": [
+        "legalName",
+        "unifiedSocialCreditCode",
+        "documentAddress",
+        "serviceHotline"
+      ]
+    },
+    {
+      "id": "L4",
+      "name": "信任完善",
+      "goal": "品牌、地图、资质和服务资料持续完善",
+      "minimumFields": []
+    }
+  ],
+  "groups": [
+    {
+      "id": "foundation",
+      "name": "企业基础身份",
+      "fields": [
+        {
+          "key": "companyId",
+          "name": "企业索引",
+          "type": "system",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "all"
+          ],
+          "snapshot": false
+        },
+        {
+          "key": "displayName",
+          "name": "企业展示名称",
+          "type": "text",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "owner",
+            "invitation",
+            "document"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "block_if_no_registered_name"
+        },
+        {
+          "key": "shortName",
+          "name": "企业简称",
+          "type": "text",
+          "stage": "L1",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "brand-placeholder"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "derive_or_placeholder"
+        },
+        {
+          "key": "companyStatus",
+          "name": "企业状态",
+          "type": "enum",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "all"
+          ],
+          "snapshot": false
+        },
+        {
+          "key": "ownerEmployee",
+          "name": "企业负责人",
+          "type": "reference",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "audit"
+          ],
+          "snapshot": false
+        },
+        {
+          "key": "defaultStore",
+          "name": "默认总店",
+          "type": "reference",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "organization",
+            "scope"
+          ],
+          "snapshot": false
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "name": "法定主体身份",
+      "fields": [
+        {
+          "key": "legalName",
+          "name": "企业法定全称",
+          "type": "text",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "contract",
+            "voucher",
+            "tax",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "block_legal_surface"
+        },
+        {
+          "key": "unifiedSocialCreditCode",
+          "name": "统一社会信用代码",
+          "type": "code",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "contract",
+            "voucher",
+            "tax"
+          ],
+          "snapshot": true,
+          "missing": "block_legal_surface"
+        },
+        {
+          "key": "legalRepresentative",
+          "name": "法定代表人",
+          "type": "text",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "contract",
+            "tax"
+          ],
+          "snapshot": true,
+          "missing": "block_where_required"
+        },
+        {
+          "key": "registeredAddress",
+          "name": "法定注册地址",
+          "type": "address",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "contract",
+            "tax"
+          ],
+          "snapshot": true,
+          "missing": "block_where_required"
+        },
+        {
+          "key": "businessLicenseEvidence",
+          "name": "营业执照/主体证明",
+          "type": "file",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "trust",
+            "audit"
+          ],
+          "snapshot": false,
+          "missing": "trust_incomplete"
+        }
+      ]
+    },
+    {
+      "id": "brand",
+      "name": "企业品牌身份",
+      "fields": [
+        {
+          "key": "brandName",
+          "name": "对客品牌名",
+          "type": "text",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "invitation",
+            "marketing",
+            "document"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "fallback_display_name_or_placeholder"
+        },
+        {
+          "key": "logoAsset",
+          "name": "企业Logo资产",
+          "type": "asset",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "invitation",
+            "document",
+            "print",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "brand_placeholder_not_platform_logo",
+          "defaultDisplay": "short_name_initial",
+          "defaultPersistedAsFact": false,
+          "fallbackOrder": [
+            "logoAsset",
+            "shortName.firstCharacter",
+            "displayName.firstCharacter",
+            "neutralPlaceholder"
+          ],
+          "platformLogoFallback": false
+        },
+        {
+          "key": "brandColor",
+          "name": "品牌色",
+          "type": "color",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "invitation",
+            "document"
+          ],
+          "snapshot": true,
+          "missing": "neutral_default",
+          "defaultDisplay": "zhuangdeqing_brand_primary_semantic_token",
+          "defaultPersistedAsFact": false,
+          "customOverride": "pending_business_approval"
+        },
+        {
+          "key": "brandIntro",
+          "name": "企业简介",
+          "type": "longtext",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "hidden_or_placeholder"
+        },
+        {
+          "key": "brandPrimary",
+          "name": "叙事主品牌策略",
+          "type": "enum",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "share",
+            "marketing"
+          ],
+          "snapshot": true,
+          "missing": "system_default"
+        },
+        {
+          "key": "custodianCredit",
+          "name": "平台存证署名",
+          "type": "boolean",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "share"
+          ],
+          "snapshot": true,
+          "missing": "false"
+        }
+      ]
+    },
+    {
+      "id": "service",
+      "name": "对外服务身份",
+      "fields": [
+        {
+          "key": "serviceArea",
+          "name": "服务区域",
+          "type": "text_or_region",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing",
+            "invitation"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "placeholder_or_hide"
+        },
+        {
+          "key": "serviceScope",
+          "name": "服务范围/主营业务",
+          "type": "text",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "placeholder_or_hide"
+        },
+        {
+          "key": "serviceTel",
+          "name": "企业统一客服",
+          "type": "phone",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "invitation",
+            "document"
+          ],
+          "snapshot": true,
+          "missing": "recovery_path_not_personal_phone"
+        },
+        {
+          "key": "afterSaleTel",
+          "name": "售后专线",
+          "type": "phone",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "share"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "hide_or_placeholder"
+        },
+        {
+          "key": "serviceHours",
+          "name": "服务时间",
+          "type": "text",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "hide"
+        },
+        {
+          "key": "servicePromise",
+          "name": "服务承诺",
+          "type": "longtext",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": true,
+          "missing": "hide"
+        }
+      ]
+    },
+    {
+      "id": "location",
+      "name": "地址与地图位置",
+      "fields": [
+        {
+          "key": "officeAddress",
+          "name": "企业办公/通讯地址",
+          "type": "address",
+          "stage": "L1",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "document",
+            "owner"
+          ],
+          "snapshot": true,
+          "missing": "placeholder"
+        },
+        {
+          "key": "officeMapPoint",
+          "name": "企业办公地图点位",
+          "type": "geo",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "navigation"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "text_only_or_hide_map"
+        },
+        {
+          "key": "storeName",
+          "name": "服务门店名称",
+          "type": "text",
+          "stage": "L1",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "owner",
+            "invitation"
+          ],
+          "snapshot": true,
+          "missing": "company_level_display"
+        },
+        {
+          "key": "storeAddress",
+          "name": "门店经营地址",
+          "type": "address",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "navigation",
+            "invitation"
+          ],
+          "snapshot": true,
+          "missing": "no_borrow_default"
+        },
+        {
+          "key": "storeMapPoint",
+          "name": "门店地图点位",
+          "type": "geo",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "navigation"
+          ],
+          "snapshot": "current_or_snapshot",
+          "missing": "text_only_or_hide_map"
+        }
+      ]
+    },
+    {
+      "id": "qualification",
+      "name": "资质与信任证据",
+      "fields": [
+        {
+          "key": "qualificationName",
+          "name": "资质名称",
+          "type": "text",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": true,
+          "missing": "trust_incomplete"
+        },
+        {
+          "key": "qualificationScope",
+          "name": "资质等级/范围",
+          "type": "text",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": true,
+          "missing": "trust_incomplete"
+        },
+        {
+          "key": "certificateNo",
+          "name": "证书编号",
+          "type": "text",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "audit"
+          ],
+          "snapshot": true,
+          "missing": "hide_or_placeholder"
+        },
+        {
+          "key": "qualificationValidity",
+          "name": "资质有效期",
+          "type": "date-range",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "owner",
+            "marketing"
+          ],
+          "snapshot": true,
+          "missing": "expiry_unknown"
+        },
+        {
+          "key": "qualificationEvidence",
+          "name": "资质证据文件",
+          "type": "file",
+          "stage": "L4",
+          "primary": true,
+          "consumer": [
+            "trust",
+            "audit"
+          ],
+          "snapshot": false,
+          "missing": "trust_incomplete"
+        }
+      ]
+    },
+    {
+      "id": "document",
+      "name": "单据身份",
+      "fields": [
+        {
+          "key": "documentLegalName",
+          "name": "单据法定名称",
+          "type": "derived",
+          "stage": "L3",
+          "primary": false,
+          "source": "legalName",
+          "consumer": [
+            "contract",
+            "quote",
+            "voucher",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "block_document"
+        },
+        {
+          "key": "documentCreditCode",
+          "name": "单据信用代码",
+          "type": "derived",
+          "stage": "L3",
+          "primary": false,
+          "source": "unifiedSocialCreditCode",
+          "consumer": [
+            "contract",
+            "voucher",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "block_where_required"
+        },
+        {
+          "key": "documentAddress",
+          "name": "单据地址",
+          "type": "derived/select",
+          "stage": "L3",
+          "primary": false,
+          "source": "registeredAddress_or_officeAddress",
+          "consumer": [
+            "contract",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "block_where_required"
+        },
+        {
+          "key": "documentHotline",
+          "name": "单据服务热线",
+          "type": "derived",
+          "stage": "L3",
+          "primary": false,
+          "source": "serviceTel",
+          "consumer": [
+            "contract",
+            "quote",
+            "voucher",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "allow_blank_only_if_template"
+        },
+        {
+          "key": "bankName",
+          "name": "开户行",
+          "type": "text",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "voucher",
+            "payment"
+          ],
+          "snapshot": true,
+          "missing": "block_payment_surface"
+        },
+        {
+          "key": "bankAccount",
+          "name": "银行账号",
+          "type": "sensitive",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "voucher",
+            "payment"
+          ],
+          "snapshot": true,
+          "missing": "block_payment_surface"
+        },
+        {
+          "key": "documentLogoSnapshot",
+          "name": "Logo快照",
+          "type": "derived_asset",
+          "stage": "L3",
+          "primary": false,
+          "source": "logoAsset",
+          "consumer": [
+            "quote",
+            "contract",
+            "voucher",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "template_rule"
+        }
+      ]
+    },
+    {
+      "id": "projection_policy",
+      "name": "展示与受众策略",
+      "fields": [
+        {
+          "key": "ownerVisibleFields",
+          "name": "业主可见字段",
+          "type": "policy",
+          "stage": "L2",
+          "primary": true,
+          "consumer": [
+            "owner"
+          ],
+          "snapshot": true,
+          "missing": "default_visibility_rule"
+        },
+        {
+          "key": "marketingVisibleFields",
+          "name": "营销可见字段",
+          "type": "policy",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "marketing"
+          ],
+          "snapshot": true,
+          "missing": "default_hidden"
+        },
+        {
+          "key": "documentFieldWhitelist",
+          "name": "单据字段白名单",
+          "type": "policy",
+          "stage": "L3",
+          "primary": true,
+          "consumer": [
+            "document",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "template_default"
+        },
+        {
+          "key": "storeAttribution",
+          "name": "门店归属与展示",
+          "type": "reference",
+          "stage": "L1",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "owner",
+            "export"
+          ],
+          "snapshot": true,
+          "missing": "no_default_borrow"
+        }
+      ]
+    },
+    {
+      "id": "lifecycle",
+      "name": "版本、完整度与快照",
+      "fields": [
+        {
+          "key": "updatedBy",
+          "name": "最后更新人",
+          "type": "audit",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "audit"
+          ],
+          "snapshot": false
+        },
+        {
+          "key": "updatedAt",
+          "name": "最后更新时间",
+          "type": "audit",
+          "stage": "L0",
+          "primary": true,
+          "consumer": [
+            "internal",
+            "audit"
+          ],
+          "snapshot": true
+        },
+        {
+          "key": "profileCompleteness",
+          "name": "资料完整度与可用阶段",
+          "type": "derived",
+          "stage": "L0",
+          "primary": false,
+          "consumer": [
+            "internal",
+            "task-guidance"
+          ],
+          "snapshot": true
+        },
+        {
+          "key": "sourceState",
+          "name": "字段来源与确认状态",
+          "type": "derived",
+          "stage": "L0",
+          "primary": false,
+          "consumer": [
+            "internal",
+            "audit"
+          ],
+          "snapshot": true
+        },
+        {
+          "key": "brandSnapshot",
+          "name": "企业品牌快照",
+          "type": "snapshot",
+          "stage": "L3",
+          "primary": false,
+          "consumer": [
+            "document",
+            "history",
+            "audit"
+          ],
+          "snapshot": true
+        }
+      ]
+    }
+  ],
+  "placeholderPolicy": {
+    "notPersistedAsFact": true,
+    "returnMetadata": [
+      "value",
+      "source",
+      "status",
+      "missingReason",
+      "nextAction"
+    ],
+    "types": [
+      "TEXT_PLACEHOLDER",
+      "BRAND_PLACEHOLDER",
+      "HIDDEN_UNTIL_PROVIDED",
+      "BLOCK_WITH_ACTION",
+      "NOT_APPLICABLE"
+    ],
+    "forbidden": [
+      "use_platform_logo_as_tenant_logo",
+      "use_employee_phone_as_company_phone",
+      "invent_address_or_coordinates",
+      "invent_legal_name_or_tax_code",
+      "show_placeholder_as_fact_in_contract_or_voucher"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "caseId": "TC-WB-PM-GUIDANCE-002",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:39:46+08:00",
+  "finishedAt": "2026-11-01T14:39:46+08:00",
+  "executor": "codex",
+  "role": "Pm",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-RUN20261101COREB1001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "审计项目经理",
+      "role": "Pm",
+      "surface": "Web",
+      "page_path": "/pm/workbench",
+      "control": "履约驾驶舱",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "PM负责3个项目",
+      "business_state_after": "显示项目推进、待验收、施工中和待开工项目，未默认选择第一条",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-pm-workbench-web.png",
+        "10-pm-report-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "审计项目经理",
+      "role": "Pm",
+      "surface": "App",
+      "page_path": "/subpackages/team/pages/workbench",
+      "control": "PM履约驾驶舱",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "PM负责3个项目",
+      "business_state_after": "显示在管3、待验收1、任务和验收计数",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-pm-workbench-app.png",
+        "11-app-pm-workbench.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Web PM工作台显示3个项目，覆盖施工中、待验收、待开工",
+    "App PM工作台显示在管履约项目3、待验收1、待推进任务0、待确认验收1",
+    "两个端都不默认打开第一条项目，要求用户选择上下文"
+  ],
+  "actualState": [
+    "statistic/pm/report projectCount=3",
+    "待验收项目1",
+    "PM本人负责项目范围生效"
+  ],
+  "evidence": [
+    "evidence/TC-WB-PM-GUIDANCE-002/01-pm-workbench-web.png",
+    "evidence/TC-WB-PM-GUIDANCE-002/02-pm-workbench-app.png",
+    "evidence/TC-WB-PM-GUIDANCE-002/10-pm-report-api.json",
+    "evidence/TC-WB-PM-GUIDANCE-002/11-app-pm-workbench.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "只读验证工作台引导与真实项目事实。"
+}

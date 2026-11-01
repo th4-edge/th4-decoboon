@@ -88,6 +88,20 @@ class SuccessProgramContextTest {
     }
 
     @Test
+    void missingCompanyCreateTimeFallsBackToTodayWithoutCrashing() {
+        Company company = companyWithMissingCreateTime();
+        Employee boss = employee(EmployeeRole.Boss, company);
+        mockLookup(boss);
+        mockCompanyResources(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
+        when(employeeRepository.findByCompany_ComId(100L)).thenReturn(List.of(boss));
+
+        SuccessProgramReport report = context.report(boss);
+
+        assertThat(report.getStartDate()).isEqualTo(LocalDate.now());
+        assertThat(report.getDaysSinceCreated()).isZero();
+    }
+
+    @Test
     void completeCoreBusinessFactsProduceActivatedLowRisk() {
         Company company = company();
         Employee boss = employee(EmployeeRole.Boss, company);
@@ -174,6 +188,16 @@ class SuccessProgramContextTest {
         employee.setStatus(EmployeeStatus.Active);
         employee.setCompany(company);
         return employee;
+    }
+
+    private Company companyWithMissingCreateTime() {
+        Company company = mock(Company.class);
+        when(company.getComId()).thenReturn(100L);
+        when(company.getTitle()).thenReturn("测试装企");
+        DateTime createTime = mock(DateTime.class);
+        when(createTime.toLocalDate()).thenReturn(null);
+        when(company.getCreateTime()).thenReturn(createTime);
+        return company;
     }
 
     private Company company() {

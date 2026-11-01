@@ -1,0 +1,24 @@
+{
+  "projectId": "241926651905048576",
+  "receivableId": "241926652806823936",
+  "manualPayableId": "241926853625905152",
+  "receiptAmount": 748.73,
+  "manualPayableAmount": 2000.0,
+  "paymentAmount": 500.0,
+  "manualProjectExpense": 800.0,
+  "manualCompanyExpense": 300.0,
+  "executedAt": "2026-10-30",
+  "finalVerification": {
+    "receivableAmount": 3495.75,
+    "receivedAmount": 748.73,
+    "outstandingAmount": 2747.02,
+    "payableAmount": 2000.0,
+    "paidAmount": 500.0,
+    "unpaidAmount": 1500.0,
+    "ledgerCount": 4,
+    "ledgerNet": -851.27,
+    "costComplete": false,
+    "profitAmount": null,
+    "coreBalanced": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "caseId": "TC-MAT-FINANCE-ORDER-004",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "d43a436271a7815f0411306aa05a6dff8bb946163dbc1262c702f3f78968cfef",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-044",
+    "BR-045",
+    "SCN-005",
+    "SCN-021",
+    "DEC-072",
+    "DEC-073"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-order",
+    "app:/subpackages/finance/pages/payables"
+  ],
+  "providerRoutes": [
+    "partner/page",
+    "material/sheet/page",
+    "material/sheet/order",
+    "project/purchase/page",
+    "finance/payable/page",
+    "material/sheet/info"
+  ]
+}

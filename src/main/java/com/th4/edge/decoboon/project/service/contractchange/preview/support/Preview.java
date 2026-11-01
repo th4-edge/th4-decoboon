@@ -1,6 +1,5 @@
 package com.th4.edge.decoboon.project.service.contractchange.preview.support;
 
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.project.configure.ContractChangeType;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.ContractChange;
@@ -8,6 +7,7 @@ import com.th4.edge.decoboon.project.model.ContractChangeItem;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.project.service.contractchange.batchsave.support.BatchSave;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;

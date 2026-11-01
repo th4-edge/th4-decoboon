@@ -53,6 +53,8 @@ class SummaryImplementationRulesTest {
             "finance/context/FinanceProjectLedgerContext.java",
             "payroll/context/CommissionReportContext.java",
             "payroll/context/PayrollWorkbenchContext.java",
+            // PAY-OPS-01：薪酬工作台固定聚合查询，禁止回退为全量实体统计
+            "payroll/context/PayrollWorkbenchAggregateContext.java",
             "project/context/ContractWorkbenchContext.java",
             // 2026-10-10 内容经营 P0-4：内容线索与已发布内容的经营聚合。
             "content/context/ContentDashboardContext.java",
@@ -61,7 +63,9 @@ class SummaryImplementationRulesTest {
             // 2026-10-17 材料蓝图业务体检：项目级材料健康计数/成本完整性聚合
             "material/context/MaterialHealthContext.java",
             // 财务报价设计师聚合：服务端聚合报表
-            "quote/service/quotes/financereport/");
+            "quote/service/quotes/financereport/",
+            // 2026-10-31 财务报价单行汇总（DQ-X6）：同谓词聚合 SQL，不再由前端求和
+            "quote/context/QuoteFinanceAggregateContext.java");
 
     /**
      * 存量违规基线（GAP-027 整改完成后必须逐条删除）。
@@ -76,7 +80,6 @@ class SummaryImplementationRulesTest {
             java.util.Map.entry("carryover/context/CarryoverReconciliationContext.java", Set.of("A7")),
             java.util.Map.entry("ai/brief/context/AiBossBriefContext.java", Set.of("A7")),
             java.util.Map.entry("finance/context/FinanceReportContext.java", Set.of("A1")),
-            java.util.Map.entry("payroll/context/PayrollWorkbenchContext.java", Set.of("A1")),
             java.util.Map.entry("statistic/context/SiteWorkbenchContext.java", Set.of("A1", "A2b")),
             java.util.Map.entry("statistic/context/BossContractChangeContext.java", Set.of("A1")),
             java.util.Map.entry("customer/repository/CustomerAccessRepository.java", Set.of("A4")),

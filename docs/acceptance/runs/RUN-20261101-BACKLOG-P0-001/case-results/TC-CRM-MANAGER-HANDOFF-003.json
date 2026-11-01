@@ -1,0 +1,36 @@
+{
+  "caseId": "TC-CRM-MANAGER-HANDOFF-003",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "5f26abd595d8ad9508ae3722f1334e847733e1ac36ce09b561f5f66ea7d12822",
+  "priority": "P0",
+  "area": "CRM",
+  "businessRuleIds": [
+    "BR-001",
+    "DEC-066",
+    "OBJ-001"
+  ],
+  "pageTargets": [
+    "web:/workbench/customers/:customerId",
+    "app:/subpackages/customer/pages/detail",
+    "app:/subpackages/customer/pages/designer-followup-workbench"
+  ],
+  "providerRoutes": [
+    "customer/customer/handoff",
+    "customer/customer/info",
+    "customer/customer/page",
+    "user/designer/list"
+  ]
+}

@@ -31,6 +31,16 @@ public interface PayableRepository extends JpaRepository<Payable, Long>,
 
     List<Payable> findByCompany_ComIdAndPayeePartner_PartnerIdOrderByDueDateAsc(Long comId, Long partnerId);
 
+    /** 合作方选择器摘要：当前页一次性聚合，替代逐合作方查询应付。 */
+    @Query("""
+            select p.payeePartner.partnerId, coalesce(sum(p.amount), 0), coalesce(sum(p.paidAmount), 0)
+            from Payable p
+            where p.company.comId = :comId and p.payeePartner.partnerId in :partnerIds
+            group by p.payeePartner.partnerId
+            """)
+    List<Object[]> summarizePartnerPayables(@Param("comId") Long comId,
+                                            @Param("partnerIds") Collection<Long> partnerIds);
+
     /** 下单即形成应付（DEC-MP-01）：按采购单幂等查询，避免重复生成。 */
     java.util.Optional<Payable> findFirstByCompany_ComIdAndPurchaseOrder_PurchaseId(Long comId, Long purchaseOrderId);
 

@@ -1,0 +1,74 @@
+{
+  "caseId": "TC-MAT-BOUNDARY-QUANTITY-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T02:03:10+08:00",
+  "finishedAt": "2026-11-02T02:06:26+08:00",
+  "executor": "codex",
+  "role": "Designer",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261102-MATX2001-",
+  "steps": [
+    {
+      "step": 1,
+      "action": "编辑作业单并保存当前可下单上限10㎡",
+      "result": "PASS",
+      "actual": "页面提示“作业单草稿已保存”，数量保持10㎡"
+    },
+    {
+      "step": 2,
+      "action": "将数量改为10.01㎡并保存",
+      "result": "PASS_REJECTED",
+      "actual": "页面显示“本次下单量超过可下单数量 10；如需多备料，请先调整主材分类损耗率或损耗量”"
+    },
+    {
+      "step": 3,
+      "action": "关闭对话框、刷新并回读 Provider/DB",
+      "result": "PASS",
+      "actual": "Provider quantity=10.00；DB quantity=10.00；该作业单仍仅1条材料行，无部分写入"
+    },
+    {
+      "step": 4,
+      "action": "App 页面执行等上限和超上限保存",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/workbench/material-sheets"
+  ],
+  "actualState": [
+    "可下单上限按服务端计算为10㎡",
+    "10㎡保存成功；10.01㎡被明确超量提示阻断",
+    "失败后 Provider/DB 数量仍为10.00，材料行数为1",
+    "App 分支无授权微信身份"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-at-limit-before-save.png",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-at-limit-after-save.png",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/03-over-limit-before-save.png",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/04-over-limit-after-save.png",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/05-provider-info-after-over-limit.json",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/06-page-after-refresh-still-10.png",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/07-db-after-over-limit.txt"
+  ],
+  "defectIds": [],
+  "blockedReason": "App 授权微信身份不可用；Web/Provider/DB 的数量边界与无部分写入分支已通过，跨端用例不能判定为 PASS。",
+  "notes": "可下单上限10㎡保存成功；10.01㎡被明确超量提示阻断；刷新和数据库回读均保持10.00且仅1条材料行。",
+  "caseDefinitionHash": "6632e535f6804719b70268179dc770ecb2060b8b7b799abdf0baa15ac49e6f6e",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-009",
+    "BR-044",
+    "DEC-072"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/sheet/save",
+    "material/sheet/update",
+    "material/sheet/submit",
+    "project/material-plan/page"
+  ]
+}

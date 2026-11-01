@@ -19,6 +19,7 @@ import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
+import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
 import com.th4.edge.decoboon.property.configure.MeasureStatus;
@@ -65,6 +66,8 @@ class ContractFactTraceTest {
         assertThat(workbench.getDownstreamFacts()).extracting(node -> node.getFactType())
                 .contains(FactType.Project, FactType.MaterialPlan, FactType.Acceptance, FactType.Cost);
         assertThat(workbench.getContract().getCurrentAmount()).isEqualByComparingTo("286400.00");
+        assertThat(workbench.getLineCount()).isEqualTo(3);
+        assertThat(workbench.getLineAmount()).isEqualByComparingTo("286400.00");
     }
 
     @Test
@@ -160,6 +163,11 @@ class ContractFactTraceTest {
         when(receivableRepository.findByProjectOrderByDueDateAsc(project)).thenReturn(List.of());
         when(stageRepository.findByProjectOrderBySort(project)).thenReturn(List.of());
         when(changeRepository.findByContractOrderByChangeIdDesc(contract)).thenReturn(List.of());
+        ContractLineRepository lineRepository = mock(ContractLineRepository.class);
+        when(lineRepository.summarizeByContract(contract)).thenReturn(List.<Object[]>of(
+                new Object[]{3L, new BigDecimal("286400.00")}));
+        when(lineRepository.summarizeCostByContract(contract.getContractId())).thenReturn(List.<Object[]>of(
+                new Object[]{3L, new BigDecimal("180000.00"), 0L}));
         when(selectionRepository.findByCompany_ComIdAndProperty_PropertyIdOrderByVersionDesc(companyFixture.company.getComId(), 20L))
                 .thenReturn(List.of());
         when(costContext.summarize(project)).thenReturn(new ProjectCostContext.CostSummary(
@@ -193,7 +201,7 @@ class ContractFactTraceTest {
         }
 
         ContractWorkbenchContext context = new ContractWorkbenchContext(paymentNodeRepository, contractContext,
-                receivableRepository, costContext, stageRepository, changeRepository, selectionRepository,
+                receivableRepository, costContext, stageRepository, changeRepository, lineRepository, selectionRepository,
                 measureRepository, measureRegionRepository, materialPlanRepository, acceptanceRepository);
         return new Fixture(context, contract);
     }

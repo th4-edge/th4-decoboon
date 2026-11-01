@@ -1,0 +1,114 @@
+{
+  "caseId": "TC-CRM-PERMISSION-STORE-005",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:39:46+08:00",
+  "finishedAt": "2026-11-01T14:39:46+08:00",
+  "executor": "codex",
+  "role": "StoreManager",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-RUN20261101COREB1001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "总店店长",
+      "role": "StoreManager",
+      "surface": "Web",
+      "page_path": "/workbench/customers",
+      "control": "客户列表",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "本店客户存在",
+      "business_state_after": "客户总数20且按负责人分组",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-store-manager-customers-web.png",
+        "10-web-store-scope.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "滨湖店长",
+      "role": "StoreManager",
+      "surface": "Web",
+      "page_path": "/workbench/customers",
+      "control": "客户列表",
+      "control_state": "EMPTY",
+      "business_state_before": "指定客户属于总店",
+      "business_state_after": "滨湖店客户0",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-bank-manager-customers-web.png"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "滨湖店长",
+      "role": "StoreManager",
+      "surface": "Web",
+      "page_path": "/workbench/customers/242297007736094720",
+      "control": "直接对象访问",
+      "control_state": "FORBIDDEN",
+      "business_state_before": "客户属于总店",
+      "business_state_after": "跳转无权访问页",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "03-bank-manager-direct-customer-web.png"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "滨湖店长",
+      "role": "StoreManager",
+      "surface": "App",
+      "page_path": "/pages/customer/list",
+      "control": "客户列表/直接详情",
+      "control_state": "EMPTY",
+      "business_state_before": "指定客户属于总店",
+      "business_state_after": "列表0；直接详情显示客户不存在或无权访问",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "04-bank-manager-customers-app.png",
+        "05-bank-manager-direct-customer-app.png",
+        "06-bank-manager-direct-customer-app-data.json"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "customer/customer/page|info|update",
+      "control": "越权负向",
+      "control_state": "N/A",
+      "business_state_before": "总店客户20、滨湖店客户0",
+      "business_state_after": "滨湖店长page=0，info/update均404",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-store-scope-api.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "总店店长看到20名客户",
+    "滨湖店长客户列表0，直接访问总店客户进入无权访问页",
+    "App列表0，直接详情显示客户不存在或无权访问"
+  ],
+  "actualState": [
+    "DB总店客户20、滨湖店客户0",
+    "滨湖店长customer/info与customer/update均返回404",
+    "未发生跨店读取或写入"
+  ],
+  "evidence": [
+    "evidence/TC-CRM-PERMISSION-STORE-005/01-store-manager-customers-web.png",
+    "evidence/TC-CRM-PERMISSION-STORE-005/02-bank-manager-customers-web.png",
+    "evidence/TC-CRM-PERMISSION-STORE-005/03-bank-manager-direct-customer-web.png",
+    "evidence/TC-CRM-PERMISSION-STORE-005/04-bank-manager-customers-app.png",
+    "evidence/TC-CRM-PERMISSION-STORE-005/04-bank-manager-customers-app.json",
+    "evidence/TC-CRM-PERMISSION-STORE-005/05-bank-manager-direct-customer-app.png",
+    "evidence/TC-CRM-PERMISSION-STORE-005/06-bank-manager-direct-customer-app-data.json",
+    "evidence/TC-CRM-PERMISSION-STORE-005/10-web-store-scope.json",
+    "evidence/TC-CRM-PERMISSION-STORE-005/10-store-scope-api.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "测试过程中对总店客户做过一次同店授权改名并已即时恢复为原值，恢复结果由API和DB回读确认。"
+}

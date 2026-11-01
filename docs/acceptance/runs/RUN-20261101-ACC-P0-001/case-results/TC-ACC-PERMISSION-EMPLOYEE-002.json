@@ -1,0 +1,159 @@
+{
+  "caseId": "TC-ACC-PERMISSION-EMPLOYEE-002",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-01T16:12:00+08:00",
+  "finishedAt": "2026-11-01T16:17:00+08:00",
+  "executor": "codex",
+  "role": "Boss+StoreManager+Pm+Finance",
+  "surface": "Web+App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101ACCP0-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "Web+App",
+      "page_path": "/pm/projects/242297231061811200/acceptance",
+      "control": "验收单查看",
+      "control_state": "READ_ONLY",
+      "business_state_before": "fixture acceptance Pending",
+      "business_state_after": "显示待业主确认；无确认/驳回按钮",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-Boss-acceptance.web.png",
+        "01-Boss-acceptance.web.json",
+        "02-Boss-acceptance.app.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "StoreManager",
+      "role": "StoreManager",
+      "surface": "Web+App",
+      "page_path": "/designer/projects/242297231061811200/acceptance",
+      "control": "验收单查看",
+      "control_state": "READ_ONLY",
+      "business_state_before": "fixture acceptance Pending",
+      "business_state_after": "显示待业主确认；无确认/驳回按钮",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-StoreManager-acceptance.web.png",
+        "01-StoreManager-acceptance.web.json",
+        "02-StoreManager-acceptance.app.png"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Web+App",
+      "page_path": "/pm/projects/242297231061811200/acceptance",
+      "control": "验收单查看",
+      "control_state": "READ_ONLY",
+      "business_state_before": "fixture acceptance Pending",
+      "business_state_after": "显示待业主确认；无确认/驳回按钮",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-Pm-acceptance.web.png",
+        "01-Pm-acceptance.web.json",
+        "02-Pm-acceptance.app.png"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App+API",
+      "page_path": "/subpackages/project/pages/accept/edit",
+      "control": "验收单查看",
+      "control_state": "READ_ONLY",
+      "business_state_before": "fixture acceptance Pending",
+      "business_state_after": "仅只读；无确认/驳回按钮",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-Finance-acceptance.app.png",
+        "02-app-role-acceptance.json"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "Boss+StoreManager+Pm+Finance",
+      "role": "Employee",
+      "surface": "API+DB",
+      "page_path": "project/acceptance/update; customer/acceptance/update",
+      "control": "确认/驳回越权",
+      "control_state": "N/A",
+      "business_state_before": "Pending; round=1",
+      "business_state_after": "8次project endpoint调用和8次customer endpoint调用均403；状态仍Pending、确认人/时间仍为空、轮次不变",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-employee-confirm-denied-api.json",
+        "12-permission-provider-db-corrected.json",
+        "13-customer-endpoint-employee-denied-api.json"
+      ]
+    },
+    {
+      "step_id": "S06",
+      "actor": "Owner",
+      "role": "Owner",
+      "surface": "App",
+      "page_path": "/subpackages/project/pages/owner-acceptance",
+      "control": "合法确认或驳回",
+      "control_state": "NOT_AVAILABLE",
+      "business_state_before": "fixture acceptance Pending",
+      "business_state_after": "当前环境没有可用业主手机号授权，无法执行真实业主确认",
+      "feedback": "BLOCKED",
+      "evidence_ids": [
+        "05-owner-identity-provider-blocked.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Boss/StoreManager/Pm Web验收工作区均显示待业主确认，确认/驳回按钮不存在",
+    "Boss/StoreManager/Pm/Finance App验收详情均只读且无确认/驳回按钮"
+  ],
+  "actualState": [
+    "fixture acceptance 242297272967102464保持Pending",
+    "confirmedAt=null",
+    "confirmedBy=null",
+    "round=1 Pending",
+    "project/acceptance/update 8/8 employee calls 403",
+    "customer/acceptance/update 4/4 employee calls 403"
+  ],
+  "evidence": [
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-Boss-acceptance.web.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-Boss-acceptance.web.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-StoreManager-acceptance.web.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-StoreManager-acceptance.web.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-Pm-acceptance.web.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-Pm-acceptance.web.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-Boss-acceptance.app.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-StoreManager-acceptance.app.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-Pm-acceptance.app.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-Finance-acceptance.app.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-app-role-acceptance.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/10-employee-confirm-denied-api.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/12-permission-provider-db-corrected.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/13-customer-endpoint-employee-denied-api.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "员工越权负向已全部通过；用例尾段要求Owner使用匹配身份完成合法确认，但当前环境没有可用的真实业主手机号授权，不能由员工或模拟token代替。",
+  "notes": "员工负向权限可判PASS；因Owner合法确认步骤不可执行，整个用例按BLOCKED处理，不将其计为PASS。",
+  "caseDefinitionHash": "7ddb93ea1d0314f5f707075aac27f8cdeb2f14728cd5e07dfe994c1074458402",
+  "priority": "P0",
+  "area": "ACCEPTANCE",
+  "businessRuleIds": [
+    "BR-043",
+    "DEC-015",
+    "DEC-009"
+  ],
+  "pageTargets": [
+    "web:/pm/projects/:projectId/acceptance",
+    "app:/subpackages/project/pages/owner-acceptance"
+  ],
+  "providerRoutes": [
+    "project/acceptance/update",
+    "project/acceptance/info",
+    "customer/acceptance/update"
+  ]
+}

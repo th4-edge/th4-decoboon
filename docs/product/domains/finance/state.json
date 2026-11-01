@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "domain": "finance",
+  "title": "财务经营与项目核算",
+  "northStar": "以财务角色为经营控制面，统一项目资金、成本利润、往来核校与业务协同，形成可复用、可追溯、可交接的财务工作台体系",
+  "owner": "codex",
+  "phase": "DEV_VERIFIED",
+  "batch": "B6",
+  "nextAction": "成本专项有效 Remove/Quantity 分母修复已完成全量验证；下一步独立成本验收，并补齐真实人工成本与业主验收后继续结算关闭",
+  "openDecisions": [
+    {
+      "id": "FIN-Q01",
+      "question": "财务角色在客户、报价、合同、项目、材料、薪酬和企业组织中的完整职责边界",
+      "status": "pending_business_alignment",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "FIN-Q02",
+      "question": "保留现有财务菜单与整体布局；不再以新导航作为默认改造方案",
+      "status": "user_confirmed_existing_navigation_retained",
+      "owner": "product/user"
+    },
+    {
+      "id": "FIN-Q03",
+      "question": "跨域页面复用方式：财务投影还是复制页面",
+      "status": "user_confirmed_direction_incremental_only",
+      "owner": "zhuangdeqing-business/product"
+    },
+    {
+      "id": "FIN-Q04",
+      "question": "财务经营首屏必须回答的问题及其优先级",
+      "status": "pending_product_user_review",
+      "owner": "product/user"
+    },
+    {
+      "id": "FIN-Q05",
+      "question": "公司/门店经营利润展示口径",
+      "status": "blocked_by_gap_070",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "FIN-Q06",
+      "question": "发票字段/开票跟踪边界",
+      "status": "conflict_pending_business_alignment",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "FIN-Q07",
+      "question": "收款冲正、流水作废/更正、退款、结算关闭、质保释放的页面归属与安全门",
+      "status": "pending_product_ui_business",
+      "owner": "product/ui/business"
+    },
+    {
+      "id": "FIN-Q08",
+      "question": "财务与薪酬域职责分离和页面归属",
+      "status": "pending_business_alignment",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "CUST-Q01",
+      "question": "客户唯一主工作面选择：客户360、客户与设计，还是二者分工",
+      "status": "pending",
+      "owner": "product/ui/business"
+    },
+    {
+      "id": "CUST-Q02",
+      "question": "Web多角色客户列表是否收敛为一个客户池组件",
+      "status": "pending",
+      "owner": "product/ui"
+    },
+    {
+      "id": "CUST-Q03",
+      "question": "Web单动作能力使用路由还是Sheet/Drawer，App多页面是否收敛",
+      "status": "pending",
+      "owner": "product/ui"
+    },
+    {
+      "id": "CUST-Q04",
+      "question": "量房属于客户概念、房屋概念还是独立任务概念",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/product"
+    },
+    {
+      "id": "CUST-Q05",
+      "question": "Web客户标签维护与批量录入是否补齐，小程序batch是否开放Finance",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/product"
+    },
+    {
+      "id": "CUST-Q06",
+      "question": "全员客户查询入口放在客户Tab、全局搜索、对象选择器还是多处共用",
+      "status": "pending",
+      "owner": "product/ui"
+    },
+    {
+      "id": "CUST-Q07",
+      "question": "客户关联业务按房屋分组还是按设计/报价/合同/项目对象分组",
+      "status": "pending",
+      "owner": "product/business/ui"
+    },
+    {
+      "id": "CUST-Q08",
+      "question": "当前用户可用动作是否全部由服务端能力投影返回，前端只负责展示与回读",
+      "status": "pending",
+      "owner": "product/backend/business"
+    },
+    {
+      "id": "CUST-Q09",
+      "question": "只读协同角色是否默认看到客户业务链摘要与责任人，不显示不可执行动作",
+      "status": "pending",
+      "owner": "product/ui/business"
+    },
+    {
+      "id": "CUST-Q10",
+      "question": "店长客户Tab是否补齐本店客户经营统计与本店负责人分组",
+      "status": "user_direction_confirmed_pending_spec",
+      "owner": "product/business"
+    },
+    {
+      "id": "CUST-Q11",
+      "question": "客户页面Web端是否完全采用客户卡片场景而非三栏对象工作面",
+      "status": "user_direction_confirmed_pending_spec",
+      "owner": "product/ui"
+    },
+    {
+      "id": "CUST-Q12",
+      "question": "财务客户卡片首层统计与业务链摘要的字段和Provider来源",
+      "status": "pending",
+      "owner": "product/business/backend"
+    }
+  ],
+  "blockers": [
+    "decoboon-test 历史台账双记/缺记数据尚未修复；fresh local decoboon 已 coreBalanced=true",
+    "App verify:mp-weixin 被既有邀请流程契约阻断，与财务修复无关",
+    "财务 P0 修复尚未独立验收、未发布",
+    "店长台账更正/删除等高危动作仍待 FIN-Q07 / PI-20261022-016 统一安全门"
+  ],
+  "artifacts": {
+    "runEnvelope": "run-envelope.md",
+    "charter": "00-charter.md",
+    "scenarios": "01-scenarios.md",
+    "businessSync": "02-business-sync.md",
+    "blueprint": "03-blueprint.json",
+    "requirements": "04-requirements.md",
+    "plan": "05-plan.md",
+    "implementation": "06-implementation.md",
+    "uiReview": "07-ui-review.md",
+    "acceptance": "08-acceptance.md",
+    "release": "09-release.md",
+    "reconciliation": "10-reconciliation.md",
+    "capabilityBlueprint": "01a-business-capability-blueprint-v0.1.md",
+    "capabilityMap": "01b-capability-map-v0.1.json",
+    "businessRequest": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清业务智能体/02-采集与咨询/REQ-BIZ-20261029-002-财务角色经营域与页面复用体系.md",
+    "uiBaselineEvidence": "evidence/ui-baseline-20261029/",
+    "menuAcceptance": "11-menu-acceptance.md",
+    "appFinanceAcceptance": "12-app-finance-entry-acceptance.md",
+    "fm02Acceptance": "12-FM-02-customer-acceptance.md",
+    "customerPageInventory": "13-customer-page-inventory-web-app-v0.1.md",
+    "customerPageInventoryJson": "13a-customer-page-inventory-v0.1.json",
+    "customerCapabilityList": "14-customer-page-business-capability-list-v0.1.md",
+    "customerCapabilityListJson": "14a-customer-page-business-capabilities-v0.1.json",
+    "customerReferenceEvidence": "evidence/customer-capability-reference/",
+    "customerRuleFreezeCandidate": "15-customer-page-rule-freeze-candidate-v1.md",
+    "customerRuleFreezeV2": "15-customer-page-rule-freeze-candidate-v2.md",
+    "customerWorkspacePrototype": "../../prototypes/customer-workspace/index.html",
+    "customerWorkspacePrototypeReadme": "../../prototypes/customer-workspace/README.md",
+    "customerWorkspacePrototypeAcceptance": "../../acceptance/runs/20261029-customer-workspace-prototype/README.md",
+    "customerWebRolePageDesign": "16-customer-web-role-page-design-v1.md",
+    "customerWebRolePageAcceptance": "../../acceptance/runs/20261029-customer-web-page/README.md",
+    "customerWebRolePageSource": "../../前端代码/th4-decoboon-web/src/views/workbench/StoreCustomerView.vue",
+    "customerWebPageSource": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/src/views/workbench/StoreCustomerView.vue",
+    "customerWebPageAcceptance": "../../acceptance/runs/20261029-customer-web-page/README.md",
+    "customerWebPageDesign": "16-customer-web-role-page-design-v1.md",
+    "financeCrossRoleAudit": "../../../acceptance/runs/20261030-finance-cross-role-cross-surface-audit/07-final-report.md",
+    "p0FixRun": "../../../acceptance/runs/20261030-finance-p0-fix/README.md",
+    "freshEnterpriseAudit": "docs/acceptance/runs/20261030-fresh-enterprise-business-audit/07-final-report.md",
+    "freshEnterpriseAccounting": "docs/acceptance/runs/20261030-fresh-enterprise-business-audit/raw/sql/accounting-invariants-final.json",
+    "providerWhitelistFix": "docs/operations/change-records/CHG-20261030-036-provider关联白名单与经营报告序列化修复.md",
+    "financeLabelFix": "docs/operations/change-records/CHG-20261030-037-项目付款进度与关注应收应付文案纠正.md"
+  },
+  "createdAt": "2026-10-29T19:25:58+08:00",
+  "updatedAt": "2026-10-31T00:12:13+08:00",
+  "history": [
+    {
+      "at": "2026-10-29T19:25:58+08:00",
+      "phase": "INTAKE",
+      "batch": "B0",
+      "note": "domain initialized by domain-delivery-orchestrator"
+    },
+    {
+      "at": "2026-10-29T19:31:41+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B0",
+      "note": "完成六个真实财务场景、企业业务域与财务能力地图、页面母型与复用框架、当前实现/UI 对账和业务咨询单；停在业务对齐门禁，不进入编码"
+    },
+    {
+      "at": "2026-10-29T19:50:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "用户确认 USER-DEC-20261029-007：现有布局和菜单为升级基线，下一步不改后端逻辑，先逐项验收 24 个 Finance 菜单；建立菜单验收台账"
+    },
+    {
+      "at": "2026-10-29T20:05:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "用户明确小程序端同原则：保留现有底部 Tab、财务首页、快捷入口和分包页面；建立 App 入口与任务链验收台账，不新增页面、不改后端"
+    },
+    {
+      "at": "2026-10-29T20:00:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成 FM-02 客户菜单首轮真实验收：确认财务/设计师为两套客户页面，财务“查看方案”死路；结论 BUG/OPTIMIZE，未改后端或页面代码"
+    },
+    {
+      "at": "2026-10-29T20:20:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成Web/小程序客户概念页面清单：Web 9个核心路由/8个组件，App 17个客户包页面（15业务+2选择器）；识别多列表实现、Web标签/批量缺口、App多页拆分和FM-02财务客户死链；下一步统一客户页面规则"
+    },
+    {
+      "at": "2026-10-29T20:35:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成客户页面业务能力清单：8个能力域、65项能力；明确全员客户查询、客户主档、多房屋、业务链、角色动作投影、协同交接与七态；参考App Boss客户Tab、Web设计师客户页和客户360，未进入布局/视觉/编码"
+    },
+    {
+      "at": "2026-10-29T20:45:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "形成客户页面规则冻结候选v1：全员查询+客户主档+多房屋+业务链+角色动作投影+只读协同；给出财务客户页三栏结构与7个待用户验证判断；未进入设计/编码"
+    },
+    {
+      "at": "2026-10-29T21:00:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "用户纠偏三栏布局误解：冻结候选v2改为客户卡片场景；明确Boss统计/负责人分组、店长本店同口径统计与分组、Web桌面增强同一信息架构；未进入设计/编码"
+    },
+    {
+      "at": "2026-10-29T21:10:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "生成Web客户概念交互原型：企业负责人/店长/财务角色投影，客户卡片场景，负责人分组，财务合同/项目/应收/量房/设计/报价业务链，客户详情抽屉与七态；完成三档渲染和交互烟测，未改生产页面/后端"
+    },
+    {
+      "at": "2026-10-29T21:20:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成Web客户角色卡片页面升级：复用现有 /workbench/customers，支持Boss全企业统计+门店筛选+负责人分组、店长本店统计+分组、财务合同/项目/应收+量房/设计/报价业务链；真实Provider路径与?preview=1预览路径并存；构建和门禁通过，等待用户登录体验"
+    },
+    {
+      "at": "2026-10-29T21:25:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成生产Web客户页面升级：角色化客户卡片、门店筛选、负责人分组、财务业务链、真实/预览双模式、三档渲染和构建门禁通过；未改后端，等待用户登录体验"
+    },
+    {
+      "at": "2026-10-30T21:30:00+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "note": "完成 Boss/Finance/StoreManager × Web/小程序只读混合审计；应收应付主金额及店长范围部分通过，发现 App 伪 0、台账来源不守恒、手工类型违反 BR-055 三个 P0 阻断；未执行写闭环，未发布"
+    },
+    {
+      "at": "2026-10-30T21:58:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B5",
+      "note": "修复 App 财务汇总伪0、手工应收应付类型越界、自动台账同来源重复；后端全量1153/0/0/0、Web build、App release build、真实Web/微信开发者工具页面通过；历史数据修复未执行，未发布"
+    },
+    {
+      "at": "2026-10-30T22:40:00+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B5",
+      "note": "完成本地 decoboon 清库重建、昭青科技核心业务链和 Boss/Finance/StoreManager 双端页面审计；修复财务及角色报告 Property 白名单截断、App 付款进度与 Web 关注笔数文案；83 项定向测试、Web/App 构建和真实页面通过，coreBalanced=true；材料/验收/独立验收仍未完成"
+    },
+    {
+      "at": "2026-10-31T00:12:13+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "B6",
+      "note": "B6 成本专项：有效 Remove/Quantity 从材料完整性分母剔除，专项6/6、后端全量1169/0/0/0、页面回读成本缺失2→1、coreBalanced=true；利润仍NULL，待真实人工成本与独立验收"
+    }
+  ],
+  "constraints": [
+    {
+      "id": "FIN-C01",
+      "text": "财务角色本次为升级、优化、完善，不新建财务系统或第二套页面体系",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-007"
+    },
+    {
+      "id": "FIN-C02",
+      "text": "保留现有整体布局、菜单、页面职责、路由、深链和 App Tab",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-007"
+    },
+    {
+      "id": "FIN-C03",
+      "text": "下一步不做后端业务逻辑调整；Provider/状态/权限/金额/成本/利润缺口只登记并另行确认",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-007"
+    },
+    {
+      "id": "FIN-C04",
+      "text": "先按财务角色逐项验收现有菜单功能，再做原位最小优化",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-007"
+    },
+    {
+      "id": "FIN-C05",
+      "text": "不得把跨域对象复制成新的 /finance 页面",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-007"
+    }
+  ]
+}

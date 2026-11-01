@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "program": "ZHUANGDEQING-DOMAIN-DELIVERY",
-  "updatedAt": "2026-10-17T22:59:35+08:00",
+  "updatedAt": "2026-10-29T20:05:00+08:00",
   "currentProgramStage": "MATERIAL_RELEASE_PREP",
   "activeLease": {
     "domain": "material",
@@ -62,11 +62,21 @@
       ]
     },
     {
-      "domain": "finance-profit",
-      "status": "QUEUED",
+      "domain": "finance",
+      "status": "SCENARIOS_READY",
       "remainingBatches": [
-        "B0",
-        "B1"
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "B9",
+        "B10",
+        "B11",
+        "B12"
       ]
     },
     {
@@ -157,6 +167,11 @@
       "phase": "SCENARIOS_READY",
       "batch": "B1",
       "nextAction": "请用户裁决 GAP-034 五项（推荐 1A/2A/3A/4A/5A），裁决后完成 BIZ_ALIGNED"
+    },
+    "finance": {
+      "phase": "SCENARIOS_READY",
+      "batch": "B1",
+      "nextAction": "按 USER-DEC-20261029-007 验收 Web 现有 24 个 Finance 菜单与小程序 6 个财务角色 Tab、财务首页、19 个快捷入口及任务链；保留现有路径，不改后端逻辑，只登记问题"
     }
   },
   "rules": {
@@ -186,7 +201,8 @@
   "blockers": [
     "material B9 体验版上传与发布准备未完成；正式提审/发布仍需用户本人完成",
     "project-delivery B1 等待 GAP-034 五项业务裁决（推荐 1A/2A/3A/4A/5A）；裁决前不得进入 BIZ_ALIGNED 或 B2",
-    "后端 src/main/src/test、App src/pages.json、Web src 仍有其它任务未提交代码改动，contract-change B2/project-delivery B2 暂不可启动"
+    "后端 src/main/src/test、App src/pages.json、Web src 仍有其它任务未提交代码改动，contract-change B2/project-delivery B2 暂不可启动",
+    "finance B1-W/B1-A 双端现有入口验收待执行；本轮不改后端逻辑，BUG/BACKEND_GAP/APP_GAP 另行裁决"
   ],
   "nextProgramAction": "保持 material 租约 ACTIVE；由材料域完成 B9 体验版上传与发布准备，之后写 handoff 并释放租约",
   "notificationPolicy": "仅在工作区租约变化、域门禁变化、独立验收失败、需要用户裁决、连续无进展或全域收口时通知",

@@ -1,0 +1,32 @@
+{
+  "runId": "RUN-20261101-PKG-CLOSE-001",
+  "createdAt": "2026-11-01T18:01:25+08:00",
+  "status": "BLOCKED",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "7b7dc5f0ed3795fbd6d13640f5dfb7f51b8c3dd8",
+  "webCommit": "e40ca8baf6203d71f5d0375cc043d424a0aa5873",
+  "appCommit": "e3c95d4b549f59ff69bc5cb11aa03a6721b60c43",
+  "artifactHashes": {
+    "localMpWeixinTreeSha256": "59a02a8af72c3e3d7c8e450c202b7eabdee61e242e8aabfb5f7eac19ad215a28",
+    "appUploadInfoSha256": "60a9da293faa67b9b6412bc5f8801e744fa9b0ebcbc35e87171a396f450ee138",
+    "databaseBackupSha256": "3f4d380bf815f42d2e322ee8f85d27ae2ef1e8888be378bb49504f696ea0c56f"
+  },
+  "environment": "local-fixture; app 1.0.74 local 8090 build; backend dev 8090; production package data read-only comparison",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261101-PKGCLOSE-001-",
+  "caseIds": [
+    "TC-DQ-DESIGNER-QUOTE-003"
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 0,
+    "fail": 0,
+    "blocked": 1,
+    "notRun": 0
+  },
+  "backendWorktreeDirty": true,
+  "notes": "V0.1 no package-specific frozen cases; package flow executed as exploratory only."
+}

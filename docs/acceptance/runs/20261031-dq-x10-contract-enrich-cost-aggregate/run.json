@@ -1,0 +1,17 @@
+{
+  "runId": "20261031-dq-x10-contract-enrich-cost-aggregate",
+  "batch": "DQ-X10",
+  "change": "CHG-20261031-047",
+  "environment": "local dev",
+  "result": "DEV_VERIFIED",
+  "checks": {
+    "targetedTests": "14/14 PASS",
+    "fullBackendTests": "1184/1184 PASS",
+    "providerResponseAudit": "PASS",
+    "frontendProviderAudit": "PASS",
+    "realApiRoles": "PASS",
+    "dbReadOnlyChecksum": "PASS",
+    "explainAnalyze": "PASS"
+  },
+  "limits": ["未做真实页面回归：响应字段未变化", "未独立验收", "未发布"]
+}

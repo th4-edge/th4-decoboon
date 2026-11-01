@@ -58,7 +58,7 @@
 | H1-01 工资与提成解耦 | BR-039、DEC-047、EV-149、GAP-072 | `payroll/sheet/update` | 已按非阻断提示实现 | 已按非阻断提示实现 | 生产制品无阻断；源码已恢复；定向 1/1、H1 隔离 JDK22 全量 931/0/0/0、API 黑盒 PASS | MAPPED_PENDING_INDEPENDENT |
 | H1-02 Web 薪酬能力键 | BR-038、DEC-046、DEC-065、GAP-073 | 薪酬 Provider 不变 | 已改用薪酬能力键；员工发放保持待裁决 | 能力键基本正确 | Web type-check/build/权限/门店/工作台门禁 PASS；三角色真实页面 PASS | MAPPED_PENDING_INDEPENDENT |
 | H1-03 考勤详情门店范围 | BR-038、DEC-065、GAP-073 | `attendance/summary/info` | 未接详情 | 已接详情 | 已改为 DataScope Specification；单测 2/2；真实跨店/跨企业 HTTP PASS | MAPPED_PENDING_INDEPENDENT |
-| B2-01 应出勤方案联动 | BR-015、BR-038、DEC-045、GAP-073 | `payroll/compensation/info` | 已只读联动并显示 27 | 已联动 | API + 真实 Web PASS；用户 2026-10-23 承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+| B2-01 应出勤方案联动与月度调整 | BR-015、BR-038、DEC-045、USER-DEC-20261029-006、GAP-073 | `payroll/compensation/info`、`attendance/summary/save|update` | 方案值作为默认值，允许调整并保存考勤快照 | 已对齐可调整并提交快照 | API + Web PASS；App 契约/类型检查/小程序构建 PASS；1129 全量后端测试 PASS；真实页面待验收 | MAPPED_PENDING_UI_EVIDENCE |
 | B2-02 考勤编辑/删除/字段 | BR-038、GAP-073 | `attendance/summary/info|delete|update` | 已支持编辑、删除和完整字段 | 已实现 | API + 真实 Web PASS；用户 2026-10-23 承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
 | B2-03 店长本店考勤权限 | BR-038、DEC-065 | `attendance/summary/save|delete|update` | 店长本店入口可用 | 同源 | 本店成功、跨店 404、已生成工资项 409；用户承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
 | B3A-01 工资单详情与金额构成 | BR-038、DEC-046 | `payroll/sheet/info`、`payroll/item/page` | 已接详情并展示全部金额构成 | 完整展示 | API 20/20；真实三角色 Web；JDK22 全量 932/0/0/0；用户 2026-10-23 承接 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
@@ -67,6 +67,8 @@
 | B3B1 可选复核与发放权限 | DEC-093、BR-038、T12-BIZ-20261023-002 | `payroll/sheet/update|delete`、`finance/payment/employee/*` | 复核/退回/原因回读/发放入口 | 复核/退回/发放入口 | 定向 9/9；API 14/14；JDK22 全量 938/0/0/0；Web/App H5 PASS | MAPPED_PENDING_USER |
 | B3B2 作废与反向事实 | DEC-093、DEC-043 | `payroll/sheet/*`、应付/成本/工资条反向 | 未开始 | 未开始 | 需 DDL/版本设计 | BLOCKED |
 | B4 批量/部分发放与剩余体验 | BR-038、DEC-017 | 待设计 | 未开始 | 未开始 | 批量/部分发放未裁决 | BLOCKED |
+| PAY-EMP-PAY-01 员工发放上下文与幂等 | BR-015、DEC-093、REQ-BIZ-20261006-004 | `finance/payment/employee/page|save` | 按当前工资单和门店加载，不自动选中 | 日期、备注和幂等键对齐 | 定向 2/2；Java22 全量 1130/0/0/0；App/Web 构建 PASS | MAPPED_PENDING_UI_EVIDENCE |
+| PAY-PERM-STORE-01 薪酬入口权限与门店范围 | BR-038、DEC-093、GAP-073 | `attendance/summary/page`、`payroll/employee/page` | 考勤和提成员工候选继承当前门店 | 提成计提入口按 `edit:payroll` 门控 | 范围定向 6/6；App/Web 构建 PASS；真实角色待验收 | MAPPED_PENDING_UI_EVIDENCE |
 
 本表状态在批次完成并取得证据前全部保持 `UNMAPPED` 或 `BLOCKED`，不得宣称整域已对账通过。
 
@@ -78,3 +80,84 @@
 - H1/B2/B3A 状态均为 `MAPPED_USER_ACCEPTED_NON_INDEPENDENT`；独立评审仍需另行执行。
 - 业务裁决已完成：`DEC-093` / `T12-BIZ-20261023-002`。
 - B3B1 已完成并黑盒 PASS，等待用户验收；B3B2 因 DDL/版本设计阻塞；B4 批量/部分发放仍待业务裁决。
+
+
+## 2026-10-30 员工本人月度考勤对账
+
+| 需求 | 蓝图/规则 | Provider/API | Web | App | 测试/证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| PAY-SELF-ATT-01 员工本人月度考勤只读 | BR-038、DEC-017、REQ-PAY-SELF-ATT-01；`B5-payroll-self-attendance-blueprint.json` | `attendance/summary/page|info`；`selfOnly` 固定本人，服务端强制 Self | `/account/attendance`，账户菜单入口；月份切换、详情回读、错误恢复 | `my-attendance`，个人中心入口；月份切换、列表/详情、错误恢复 | 后端定向 8/8；Java22 全量 1136/0/0/0；App/Web 构建与门禁 PASS；真实页面待补 | MAPPED_PENDING_UI_EVIDENCE |
+
+- 本批无 `UNMAPPED`/`STALE` 行；因缺少真实员工/管理角色跨端回读，不进入 `ACCEPTED`。
+- 前序 `PAY-ATTENDANCE-APP-ALIGN`、`PAY-EMPLOYEE-PAYMENT-ALIGN`、`PAY-PERMISSION-STORE-SCOPE` 仍为 `PENDING_REAL_UI_ACCEPTANCE`，不因本批开发完成而自动关闭。
+
+
+## 2026-10-30 员工本人提成对账
+
+| 需求 | 蓝图/规则 | Provider/API | Web | App | 测试/证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| PAY-SELF-COMMISSION-01 员工本人提成只读 | BR-015、BR-038、DEC-016、DEC-017；`B6-payroll-self-commission-blueprint.json` | `payroll/commission/page|info`；`selfOnly` 固定本人，服务端强制 Self | `/account/commissions`，账户菜单入口；分页、详情回读、错误恢复 | `my-commission`，个人中心入口；详情、错误恢复 | 后端定向 8/8；Java22 全量 1144/0/0/0；真实微信小程序 8/8；真实 Web/API PASS；1440/1280/1024 无横向溢出；用户 2026-10-30 确认 | MAPPED_USER_ACCEPTED_NON_INDEPENDENT |
+
+- 本批无 `UNMAPPED`/`STALE` 行；真实员工/管理角色跨端回读已 PASS，用户已确认，记 `MAPPED_USER_ACCEPTED_NON_INDEPENDENT`，不代表独立验收或生产发布。
+- 员工本人工资条、考勤和提成现均有开发验证，但前序真实页面验收仍未完成，不能宣称薪酬域完整闭环。
+
+
+## 2026-10-30 B7 店长敏感字段业务门禁
+
+| 需求 | 业务规则/缺口 | Provider/API 事实 | App/Web 事实 | 当前状态 | 下一步 |
+| --- | --- | --- | --- | --- | --- |
+| REQ-PAY-MGR-SENS-01 店长工资构成敏感字段边界 | `DEC-096`、`ANS-BIZ-20261030-001`、`B7-manager-sensitive-fields-blueprint.json`、`GAP-074` 已关闭 | `store-payroll/info` 与 `payroll/item/page` 返回全部现有详情字段；`store-payroll/page` 保持摘要字段 | 两端详情展示社保/个税等字段 | 定向 7/7 PASS；生产代码无需变更；真实店长 UI 待验收 | `MAPPED_PENDING_UI_EVIDENCE` |
+
+
+## 2026-10-30 店长本店薪酬动作对账
+
+| 需求 | 业务规则 | Provider/API | Web | App | 测试/证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| REQ-PAY-MGR-ACT-01 店长本店确认/退回/删除/发放 | DEC-097、ANS-BIZ-20261030-002；`B8-manager-actions-blueprint.json` | `payroll/sheet/update|delete`、`finance/payment/employee/page|save` | `payrollAccess` 店长确认/退回/删除/发放入口已接线 | `confirm:payroll/pay:payroll` 与 Draft 删除能力已接线 | 定向 16/16；App/Web 构建门禁 PASS；真实店长页面待补 | MAPPED_PENDING_UI_EVIDENCE |
+
+
+## 2026-10-31 PAY-OPS-01 薪酬工作台聚合对账
+
+| 需求 | 业务规则/蓝图 | Provider/API | App/Web | 测试/证据 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| REQ-PAY-OPS-01-01 工作台状态与最近工资单 | `ANS-BIZ-20261031-001`、`B9-payroll-workbench-aggregate-blueprint.json` | `payroll/workbench/report` 返回相同字段；6 组有界查询 | Web/App 真实渲染 PASS；视觉质量待独立评审 | 定向/全量 PASS；旧新对账 PASS | MAPPED_RENDER_PASS_VISUAL_REVIEW_UNAVAILABLE |
+| REQ-PAY-OPS-01-02 待付工资与提成 | `BR-015`、`ANS-BIZ-20261031-001` | 工资取目标期间、提成跨期间；逐条负余额钳制 | 金额展示口径不变 | `pendingEmployeePayableAmount` 60.00→80.00；提成负余额不冲减 | MAPPED |
+| REQ-PAY-OPS-01-03 查询结构有界 | `BR-025`、`BR-031`、`DEC-036/037` | 6 组聚合/投影，无全量实体 | 响应体 493B 不变 | 22→2 entity loads；10× SQL/实体加载不增长 | MAPPED |
+| REQ-PAY-OPS-01-04 错误与权限 | `BR-025`、数据范围规则 | 门店解析在聚合前；本店成功、跨店 403；错误不伪 0 | Web/App 正常态 PASS；异常态视觉待独立评审 | 定向/全量 PASS | MAPPED_RENDER_PASS_VISUAL_REVIEW_UNAVAILABLE |
+
+- 本批无 `UNMAPPED`/`STALE` 行；
+- 无 DDL、无生产发布；
+- Web/App 真实渲染与本地 MySQL 10× 并发压测已 PASS，但图片视觉评审、生产候选环境复测和独立业务验收未完成，不进入 `ACCEPTED`。
+
+
+## 2026-10-31 PAY-OPS-01 Web/App 回读补充
+
+| 对账项 | Web | App | API/DB | 状态 |
+| --- | --- | --- | --- | --- |
+| 待发员工薪酬 | ¥1,600.00 | ¥1,600 | 1,600.00 | PASS |
+| 待确认考勤 | 2 | 2 | 2 | PASS |
+| 工资单草稿 | 1 | 1 | 1 | PASS |
+| 门店范围 | BOSS 全部门店 | BOSS 全部门店 | 公司范围 | PASS |
+| Console/DOM 错误 | 0 | 页面 5/5 PASS | HTTP 200 / 491B | PASS |
+| 横向溢出 | 1440/1280/1024 无 | 原生页面已渲染 | N/A | PASS |
+| 视觉质量 | 截图已留存 | 截图已留存 | N/A | VISUAL_REVIEW_UNAVAILABLE |
+| 测试数据清理 | — | — | 0 残留 | PASS |
+
+本补充不替代独立验收，也不把真实渲染功能 PASS 表述为视觉验收 PASS。
+
+
+## 2026-10-31 PAY-OPS-01 10× 性能补充
+
+| 指标 | 基线 | 10× | 门禁 | 状态 |
+| --- | ---: | ---: | --- | --- |
+| 员工 | 8 | 80 | 数据量10× | PASS |
+| 工资项/工资条/提成 | 96 | 960 | 查询结构不增长 | PASS |
+| 应付 | 104 | 1,040 | 查询结构不增长 | PASS |
+| MySQL Questions/请求 | 22 | 22 | 不随明细增长 | PASS |
+| 顺序 P95/P99 | — | 21.87/22.43ms | ≤500/1000ms | PASS |
+| 20并发 P95/P99 | — | 28.19/29.75ms | ≤500/1000ms | PASS |
+| 错误率 | — | 0 | 0 | PASS |
+| 响应体 | — | 503B | 页面字段白名单 | PASS |
+| 测试数据清理 | — | 0 残留 | 无污染 | PASS |
+
+本结果为本机 MySQL 生产等价数据与并发压测，不替代生产候选环境复测和独立验收。

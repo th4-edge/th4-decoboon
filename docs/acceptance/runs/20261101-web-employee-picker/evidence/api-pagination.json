@@ -1,0 +1,169 @@
+[
+  {
+    "name": "boss_multi_role_page_1",
+    "role": "Boss",
+    "route": "user/employee/page",
+    "request": {
+      "current": 1,
+      "size": 2,
+      "status": "Active",
+      "role": "Boss,Pm,Designer"
+    },
+    "httpStatus": 200,
+    "success": true,
+    "businessError": null,
+    "totalElements": "4",
+    "size": 2,
+    "firstPageCount": 2,
+    "firstPageNames": [
+      "审计设计",
+      "审计设计二"
+    ],
+    "firstPageRoles": [
+      "Designer",
+      "Designer"
+    ],
+    "firstPageStores": [
+      "总店",
+      "总店"
+    ]
+  },
+  {
+    "name": "boss_multi_role_page_2",
+    "role": "Boss",
+    "route": "user/employee/page",
+    "request": {
+      "current": 2,
+      "size": 2,
+      "status": "Active",
+      "role": "Boss,Pm,Designer"
+    },
+    "httpStatus": 200,
+    "success": true,
+    "businessError": null,
+    "totalElements": "4",
+    "size": 2,
+    "firstPageCount": 2,
+    "firstPageNames": [
+      "审计负责人",
+      "审计项目经理"
+    ],
+    "firstPageRoles": [
+      "Boss",
+      "Pm"
+    ],
+    "firstPageStores": [
+      "总店",
+      "总店"
+    ]
+  },
+  {
+    "name": "boss_resolve_selected_employee",
+    "role": "Boss",
+    "route": "user/employee/page",
+    "request": {
+      "current": 1,
+      "size": 1,
+      "status": "all",
+      "empId": "199500000000000105"
+    },
+    "httpStatus": 200,
+    "success": true,
+    "businessError": null,
+    "totalElements": "1",
+    "size": 1,
+    "firstPageCount": 1,
+    "firstPageNames": [
+      "审计设计"
+    ],
+    "firstPageRoles": [
+      "Designer"
+    ],
+    "firstPageStores": [
+      "总店"
+    ]
+  },
+  {
+    "name": "store_manager_scope",
+    "role": "StoreManager",
+    "route": "user/employee/page",
+    "request": {
+      "current": 1,
+      "size": 20,
+      "status": "Active"
+    },
+    "httpStatus": 200,
+    "success": true,
+    "businessError": null,
+    "totalElements": "8",
+    "size": 20,
+    "firstPageCount": 8,
+    "firstPageNames": [
+      "审计业务",
+      "审计团队长",
+      "审计店长"
+    ],
+    "firstPageRoles": [
+      "Marketer",
+      "TeamLeader",
+      "StoreManager"
+    ],
+    "firstPageStores": [
+      "总店",
+      "总店",
+      "总店"
+    ]
+  },
+  {
+    "name": "designer_directory_read",
+    "role": "Designer",
+    "route": "user/employee/page",
+    "request": {
+      "current": 1,
+      "size": 20,
+      "status": "Active",
+      "role": "Designer"
+    },
+    "httpStatus": 200,
+    "success": true,
+    "businessError": null,
+    "totalElements": "2",
+    "size": 20,
+    "firstPageCount": 2,
+    "firstPageNames": [
+      "审计设计",
+      "审计设计二"
+    ],
+    "firstPageRoles": [
+      "Designer",
+      "Designer"
+    ],
+    "firstPageStores": [
+      "总店",
+      "总店"
+    ]
+  },
+  {
+    "name": "designer_payroll_denied",
+    "role": "Designer",
+    "route": "payroll/employee/page",
+    "request": {
+      "current": 1,
+      "size": 20,
+      "status": "Active"
+    },
+    "httpStatus": 200,
+    "success": false,
+    "businessError": {
+      "code": "403",
+      "message": "当前账号无权执行该操作",
+      "system": false
+    },
+    "totalElements": null,
+    "size": null,
+    "firstPageCount": 0,
+    "firstPageNames": [],
+    "firstPageRoles": [],
+    "firstPageStores": []
+  }
+]

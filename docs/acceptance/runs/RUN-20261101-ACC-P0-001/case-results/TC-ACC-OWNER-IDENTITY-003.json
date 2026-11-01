@@ -1,0 +1,99 @@
+{
+  "caseId": "TC-ACC-OWNER-IDENTITY-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-01T16:17:00+08:00",
+  "finishedAt": "2026-11-01T16:20:00+08:00",
+  "executor": "codex",
+  "role": "Owner",
+  "surface": "App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101ACCP0-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Pm",
+      "role": "Pm",
+      "surface": "Provider",
+      "page_path": "project/owner-qrcode/build",
+      "control": "项目码有效性",
+      "control_state": "N/A",
+      "business_state_before": "fixture project P1793457761546",
+      "business_state_after": "项目码构建成功；scene=P1793457761546；未创建OwnerAccess",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "06-owner-qrcode-build.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Owner",
+      "role": "Owner",
+      "surface": "App",
+      "page_path": "/pages/owner/enter?scene=P1793457761546",
+      "control": "手机号快捷登录",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "无员工/业主会话",
+      "business_state_after": "页面停留在业主入口，未取得会话",
+      "feedback": "BLOCKED",
+      "evidence_ids": [
+        "03-owner-enter-cleared-app.png",
+        "04-owner-identity-rejected-app.png",
+        "04-owner-identity-rejected-app.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "auth/session/login",
+      "control": "微信会话检查",
+      "control_state": "N/A",
+      "business_state_before": "wx.login返回code",
+      "business_state_after": "PHONE_REQUIRED；无任何手机号会话；fixture access_count=0；acceptance保持Pending",
+      "feedback": "BLOCKED",
+      "evidence_ids": [
+        "05-owner-identity-provider-blocked.json",
+        "12-permission-provider-db-corrected.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "项目码入口显示“进入我的家”和手机号快捷登录按钮",
+    "点击手机号登录后停留在入口页；当前开发者身份未取得手机号授权"
+  ],
+  "actualState": [
+    "ownerQrcodeScene=P1793457761546",
+    "auth/session/login => PHONE_REQUIRED",
+    "fixture cust_customer_access count=0",
+    "fixture acceptance=Pending",
+    "confirmedAt/confirmedBy为空"
+  ],
+  "evidence": [
+    "evidence/TC-ACC-OWNER-IDENTITY-003/01-owner-enter-before-app.png",
+    "evidence/TC-ACC-OWNER-IDENTITY-003/03-owner-enter-cleared-app.png",
+    "evidence/TC-ACC-OWNER-IDENTITY-003/04-owner-identity-rejected-app.png",
+    "evidence/TC-ACC-OWNER-IDENTITY-003/04-owner-identity-rejected-app.json",
+    "evidence/TC-ACC-OWNER-IDENTITY-003/05-owner-identity-provider-blocked.json",
+    "evidence/TC-ACC-OWNER-IDENTITY-003/06-owner-qrcode-build.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "当前微信开发者身份无可用手机号授权，auth/session/login返回PHONE_REQUIRED；无法构造非业主手机号会话，也无法切换为客户预留手机号13910000013的匹配业主身份。",
+  "notes": "项目码有效；未创建OwnerAccess。不得用员工token或dev token代替业主身份。",
+  "caseDefinitionHash": "dd8aaaff9c516263e4c7e68391486049388c658c6e335cc5832cf7ca6c86170d",
+  "priority": "P0",
+  "area": "ACCEPTANCE",
+  "businessRuleIds": [
+    "BR-043",
+    "DEC-015",
+    "DEC-009"
+  ],
+  "pageTargets": [
+    "owner:/subpackages/project/pages/owner-acceptance",
+    "app:/pages/owner/enter"
+  ],
+  "providerRoutes": [
+    "project/owner-qrcode/build",
+    "project/owner-preview/info",
+    "customer/shareview/info"
+  ]
+}

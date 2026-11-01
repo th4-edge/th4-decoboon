@@ -1,0 +1,96 @@
+{
+  "run_id": "FRESH-BIZ-AUDIT-20261030",
+  "created_at": "2026-10-30T22:11:51.527046+08:00",
+  "surface": "both",
+  "mode": "full-role",
+  "form": "controlled-loop",
+  "lane": "local-fixture",
+  "data_mode": "no-real-data",
+  "tenant": "昭青科技",
+  "target_tenant": "麦鸿装饰（只读形态参照，未访问）",
+  "app_repo": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app",
+  "web_repo": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web",
+  "commits": {
+    "backend": "7b7dc5f0ed3795fbd6d13640f5dfb7f51b8c3dd8",
+    "web": "e40ca8baf6203d71f5d0375cc043d424a0aa5873",
+    "app": "f2fb91e0785bf953940257ce97e3ea84fc2ae808"
+  },
+  "rule_lock": {
+    "knowledge_commit": null,
+    "registry_sha256": null
+  },
+  "authorization": {
+    "owner": "user",
+    "authorized_at": "2026-10-30T22:00:00+08:00",
+    "time_window": "2026-10-30 local audit session",
+    "write_scope": [
+      "local decoboon schema",
+      "synthetic AUDIT-20261030 enterprise and business chain"
+    ],
+    "forbidden_actions": [
+      "production access",
+      "external notification/payment/e-sign",
+      "real personal data upload",
+      "formal miniapp release"
+    ],
+    "side_effect_fence": true,
+    "rollback_owner": "codex",
+    "rollback_method": "restore decoboon-before-rebuild.sql.gz"
+  },
+  "actors": {
+    "default": "AI_ROLE_SIMULATION",
+    "human_operated_roles": [],
+    "owner_confirmed": false
+  },
+  "status": "PARTIAL",
+  "coverage": {
+    "增减项": "NOT_TESTED",
+    "材料选材": "NOT_TESTED",
+    "材料计划": "PARTIAL",
+    "施工进度": "PARTIAL",
+    "设计方案": "PARTIAL",
+    "方案报价": "PARTIAL",
+    "客户状态": "PARTIAL",
+    "正确引导": "PARTIAL"
+  },
+  "notes": "Fresh local enterprise rebuilt after explicit local data reset. Core Provider chain and real Web/App read surfaces verified. Nested Property whitelist P0 and misleading financial labels fixed locally; material/acceptance/independent acceptance remain incomplete.",
+  "environment": {
+    "backend_url": "http://127.0.0.1:8090",
+    "web_url": "http://127.0.0.1:8080",
+    "database": "decoboon",
+    "test_tenant_id": "199500000000000001",
+    "miniapp_build_dir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app/dist/dev/mp-weixin"
+  },
+  "baseline": {
+    "customers": 1,
+    "properties": 1,
+    "measures": 1,
+    "designs": 1,
+    "quotes": 1,
+    "contracts": 1,
+    "projects": 1,
+    "stages": 8,
+    "tasks": 2,
+    "receivables": 5,
+    "receipts": 1,
+    "payables": 1,
+    "payments": 1,
+    "ledgers": 4,
+    "customerArea": 100,
+    "propertyArea": 100,
+    "employees": 8,
+    "stores": 2,
+    "roles": 7
+  },
+  "result": {
+    "coveredCount": 0,
+    "partialCount": 6,
+    "notTestedCount": 2,
+    "coreReadChain": "PASS",
+    "accounting": "coreBalanced=true",
+    "crossStoreEnvelope403": "PASS",
+    "materialAndAcceptance": "BLOCKED_OR_NOT_TESTED",
+    "independentAcceptance": "NOT_STARTED",
+    "release": "NOT_RELEASED"
+  }
+}

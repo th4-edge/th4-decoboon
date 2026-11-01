@@ -210,7 +210,8 @@ def create_follow(ctx: SeedContext, spec: dict[str, Any], case: dict[str, Any]) 
 
 
 def schedule_measure(ctx: SeedContext, spec: dict[str, Any], case: dict[str, Any]) -> str:
-    measure_at = datetime.now() + timedelta(days=2 + spec["index"] % 8, hours=spec["index"] % 5)
+    # 预约接口不接受过去时间；完成时间必须晚于预约时间。夹具用近未来时间后立即完成。
+    measure_at = datetime.now() + timedelta(seconds=1)
     ctx.post("marketer", "customer/customer/measure", {
         "customerId": case["steps"]["customerId"],
         "propertyId": case["steps"]["propertyId"],
@@ -232,9 +233,11 @@ def handoff(ctx: SeedContext, case: dict[str, Any], property_id: str) -> str:
 
 def complete_measure(ctx: SeedContext, spec: dict[str, Any], case: dict[str, Any], property_id: str) -> str:
     design_role = case["designerRole"]
+    scheduled_at = datetime.fromisoformat(case["steps"]["measureScheduledAt"])
+    completed_at = max(datetime.now(), scheduled_at + timedelta(seconds=1))
     result = ctx.post(design_role, "property/measure/save", {
         "propertyId": property_id,
-        "measureTime": (datetime.now() - timedelta(days=18 - spec["index"] % 6)).replace(microsecond=0).isoformat(),
+        "measureTime": completed_at.replace(microsecond=0).isoformat(),
         "status": "Completed",
         "sitePhotos": [f"/demo/{case['key']}/measure/site.jpg"],
         "structureImages": [f"/demo/{case['key']}/measure/structure.jpg"],
@@ -355,14 +358,19 @@ def create_contract(ctx: SeedContext, spec: dict[str, Any], case: dict[str, Any]
     end = start + timedelta(days=95)
     result = ctx.post("boss", "project/contract/save", {
         "quoteId": str(quote["quoteId"]),
-        "signedAt": (date.today() - timedelta(days=2)).isoformat(),
-        "signedAmount": amount,
         "startDate": start.isoformat(),
         "planEndDate": end.isoformat(),
         "paymentTerms": "签约30%，水电验收30%，泥木验收30%，竣工10%",
         "remark": f"{case['key']} 演示合同",
     })
-    return str(result["contractId"])
+    contract_id = str(result["contractId"])
+    ctx.post("boss", "project/contract/update", {
+        "contractId": contract_id,
+        "status": "Signed",
+        "signedAt": (date.today() - timedelta(days=2)).isoformat(),
+        "signedAmount": amount,
+    })
+    return contract_id
 
 
 def activate_project(ctx: SeedContext, case: dict[str, Any], contract_id: str, spec: dict[str, Any]) -> str:
@@ -417,6 +425,13 @@ def task_status_of(task: dict[str, Any]) -> str:
     return str(status or "")
 
 
+def acceptance_mode_of(stage: dict[str, Any]) -> str:
+    mode = stage.get("acceptanceMode")
+    if isinstance(mode, dict):
+        return str(mode.get("key") or mode.get("value") or mode.get("name") or "")
+    return str(mode or "")
+
+
 def start_project(ctx: SeedContext, project_id: str) -> dict[str, Any]:
     stages = get_stages(ctx, project_id)
     if not stages:
@@ -452,8 +467,20 @@ def submit_first_acceptance(ctx: SeedContext, project_id: str) -> dict[str, Any]
     stages = get_stages(ctx, project_id)
     if not stages:
         return {}
-    first = sorted(stages, key=lambda x: int(x.get("sort") or 0))[0]
+    candidates = [
+        stage for stage in sorted(stages, key=lambda x: int(x.get("sort") or 0))
+        if stage_status_of(stage) != "NotApplicable" and acceptance_mode_of(stage) != "None"
+    ]
+    if not candidates:
+        raise RuntimeError(f"project {project_id} has no acceptance-enabled stage")
+    first = candidates[0]
     stage_id = stage_id_of(first)
+    if stage_status_of(first) == "Todo":
+        ctx.post("boss", "project/stage/update", {
+            "stageId": stage_id,
+            "status": "Doing",
+            "content": f"{first.get('name') or '施工阶段'}正式开工，准备提交阶段验收。",
+        })
     tasks = get_tasks(ctx, project_id, stage_id)
     for task in tasks:
         if task_status_of(task) == "Done":

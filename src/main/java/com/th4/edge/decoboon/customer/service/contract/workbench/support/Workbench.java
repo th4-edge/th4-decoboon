@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("业主合同履约档案")
 @Properties(allow = {
         @AllowProperties(model = ContractWorkbench.class,
-                properties = {"contract", "receivable", "paymentNodes", "progress", "change", "selection"}),
+                properties = {"contract", "lineCount", "lineAmount", "receivable", "paymentNodes", "progress", "change", "selection"}),
         @AllowProperties(model = ContractWorkbench.Receivable.class,
                 properties = {"receivableTotal", "receivedTotal", "outstandingTotal", "overdueTotal",
                         "overdueCount", "totalCount"}),

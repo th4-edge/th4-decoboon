@@ -4,9 +4,9 @@
   "title": "员工薪酬与薪资经营",
   "northStar": "财务按方案A完成员工薪酬日常操作，BOSS保留最终确认与高风险动作，薪酬方案、考勤、提成、工资单、应付、发放和工资条形成可追溯闭环",
   "owner": "codex",
-  "phase": "RELEASED",
-  "batch": "B2-HOTFIX",
-  "nextAction": "财务刷新生产 Web「员工工资 → 月度考勤」确认麦鸿员工应出勤显示 27；B3B1 等待用户验收，B3B2/B4 阻塞",
+  "phase": "DEV_VERIFIED",
+  "batch": "PAY-OPS-01",
+  "nextAction": "完成具备图片输入能力的独立视觉评审、独立业务验收与生产候选环境复测",
   "openDecisions": [
     "B4 批量/部分发放、提成释放 UI 与人工调整仍待业务裁决",
     "B3B2 DDL/版本与唯一约束设计、反向应付/成本迁移和回滚方案待确认"
@@ -14,7 +14,13 @@
   "blockers": [
     "B2 Web 热修已发布，等待财务在生产页面确认应出勤显示 27",
     "B3B1 已黑盒 PASS，等待用户验收",
-    "B3B2/B4 继续阻塞"
+    "B3B2/B4 继续阻塞",
+    "PAY-SELF-ATTENDANCE 员工本人考勤真实页面验收待执行",
+    "PAY-MANAGER-SENSITIVE-FIELDS 真实店长本店/跨店/动作403页面验收待执行",
+    "共享工作区 target 并发清理导致本轮全量测试环境失败；需隔离构建复跑",
+    "PAY-MANAGER-ACTIONS-B8A 受控店长本店/跨店/动作403真实页面验收待执行",
+    "B8B 店长作废已获业务授权，但反向应付/成本、版本/唯一约束和DDL仍未设计",
+    "PAY-OPS-01 具备图片输入能力的独立视觉评审、独立业务验收与生产候选环境复测待补"
   ],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
@@ -41,10 +47,28 @@
     "b3bHandoff": "T12-BIZ-20261023-002",
     "b3b1Task": "B3B1-payroll-review-payment-permission-task.md",
     "b3b2Task": "B3B2-payroll-void-reversal-task.md",
-    "webHotfixRelease": "th4-decoboon-web/docs/operations/releases/2026-10-23-Web月度考勤应出勤联动薪酬方案生产热修.md"
+    "webHotfixRelease": "th4-decoboon-web/docs/operations/releases/2026-10-23-Web月度考勤应出勤联动薪酬方案生产热修.md",
+    "selfAttendanceTask": "B5-payroll-self-attendance-task.md",
+    "selfAttendanceEvidence": "docs/acceptance/runs/20261030-payroll-self-attendance/",
+    "selfAttendanceBlueprint": "B5-payroll-self-attendance-blueprint.json",
+    "selfCommissionTask": "B6-payroll-self-commission-task.md",
+    "selfCommissionBlueprint": "B6-payroll-self-commission-blueprint.json",
+    "selfCommissionEvidence": "docs/acceptance/runs/20261030-payroll-self-commission/",
+    "managerSensitiveDecisionPackage": "B7-manager-sensitive-fields-decision-package.md",
+    "managerSensitiveRequest": "REQ-BIZ-20261030-001",
+    "managerSensitiveGap": "GAP-074",
+    "managerSensitiveDecision": "DEC-096",
+    "managerSensitiveAnswer": "ANS-BIZ-20261030-001",
+    "managerSensitiveEvidence": "docs/acceptance/runs/20261030-payroll-manager-field-visibility/",
+    "managerSensitiveBlueprint": "B7-manager-sensitive-fields-blueprint.json",
+    "managerActionsTask": "B8-manager-payroll-actions-task.md",
+    "managerActionsBlueprint": "B8-manager-actions-blueprint.json",
+    "managerActionsEvidence": "docs/acceptance/runs/20261030-payroll-manager-actions/",
+    "workbenchAggregateBlueprint": "B9-payroll-workbench-aggregate-blueprint.json",
+    "workbenchAggregateEvidence": "docs/acceptance/runs/20261031-pay-ops-01/"
   },
   "createdAt": "2026-10-21T12:15:00+08:00",
-  "updatedAt": "2026-10-23T19:33:23+08:00",
+  "updatedAt": "2026-10-31T16:32:26+08:00",
   "history": [
     {
       "at": "2026-10-21T12:15:00+08:00",
@@ -219,6 +243,132 @@
       "phase": "RELEASED",
       "batch": "B2-HOTFIX",
       "note": "B2 原始线上问题最小 Web 热修生产发布完成：release 20261023-193138，commit 59072ab，tag v2026.10.23.1；仅 Web，无 DDL；待财务生产页面确认。"
+    },
+    {
+      "at": "2026-10-30T18:33:56+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-ATTENDANCE-APP-ALIGN",
+      "note": "2026-10-30 用户确认应出勤派生允许月度调整；App考勤编辑已与Web对齐，定向17/17、后端全量1129/0/0/0、App type-check/契约/小程序构建通过，真实页面待验收"
+    },
+    {
+      "at": "2026-10-30T19:03:58+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-EMPLOYEE-PAYMENT-ALIGN",
+      "note": "2026-10-30 员工发放切片完成：后端分页支持sheetId来源过滤，Web绑定工资单/门店且不自动选中，App补齐日期/备注和可复用幂等键；定向2/2、Java22全量1130/0/0/0、App/Web type-check与构建通过，真实发放待验收"
+    },
+    {
+      "at": "2026-10-30T19:12:04+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-PERMISSION-STORE-SCOPE",
+      "note": "2026-10-30 权限/门店切片完成：App提成入口按edit:payroll门控，Web考勤和提成抽屉继承storeId；范围定向6/6、App契约/type-check/UI/小程序构建、Web type-check/生产构建通过，真实角色待验收"
+    },
+    {
+      "at": "2026-10-30T19:15:02+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PAY-SELF-ATTENDANCE",
+      "note": "用户2026-10-30授权下一步；启动员工本人月度考勤闭环，依据BR-038/DEC-017，不触碰店长敏感字段、发放、作废和DDL"
+    },
+    {
+      "at": "2026-10-30T19:23:53+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-SELF-ATTENDANCE",
+      "note": "员工本人考勤切片完成：同源attendance/summary/page|info、selfOnly固定本人、非管理员工强制Self；后端定向8/8、Java22全量1136/0/0/0、App/Web构建与门禁PASS；真实页面待验收"
+    },
+    {
+      "at": "2026-10-30T19:44:41+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PAY-SELF-COMMISSION",
+      "note": "用户2026-10-30继续下一步；依据BR-038/DEC-017启动员工本人提成只读，不进入提成释放/发放/调整、店长敏感字段和DDL"
+    },
+    {
+      "at": "2026-10-30T19:51:59+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-SELF-COMMISSION",
+      "note": "员工本人提成切片完成：同源payroll/commission/page|info、selfOnly固定本人、非管理员工强制Self；后端定向8/8、Java22全量1144/0/0/0、App构建与Web生产构建PASS；真实页面待验收"
+    },
+    {
+      "at": "2026-10-30T20:20:29+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "PAY-SELF-COMMISSION",
+      "note": "真实页面验收PASS，不等于独立验收"
+    },
+    {
+      "at": "2026-10-30T20:30:05+08:00",
+      "phase": "ACCEPTED",
+      "batch": "PAY-SELF-COMMISSION",
+      "note": "用户2026-10-30回复确认；记USER_ACCEPTED_NON_INDEPENDENT，不冒充独立验收，未发布"
+    },
+    {
+      "at": "2026-10-30T20:35:59+08:00",
+      "phase": "SCENARIOS_READY",
+      "batch": "PAY-MANAGER-SENSITIVE-FIELDS",
+      "note": "店长薪酬敏感字段边界已形成GAP-074与B7决策包，进入业务裁决门禁"
+    },
+    {
+      "at": "2026-10-30T20:46:14+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PAY-MANAGER-SENSITIVE-FIELDS",
+      "note": "用户2026-10-30裁决店长本店可看全部现有薪酬信息；按DEC-096实现回归固定"
+    },
+    {
+      "at": "2026-10-30T20:57:27+08:00",
+      "phase": "BIZ_ALIGNED",
+      "batch": "PAY-MANAGER-SENSITIVE-FIELDS",
+      "note": "REQ-BIZ-20261030-001答复完成；DEC-096批准店长本店全部现有薪酬详情的读字段，跨店拒绝，DEC-093动作权限不变；GAP-074关闭"
+    },
+    {
+      "at": "2026-10-30T20:57:27+08:00",
+      "phase": "PLAN_READY",
+      "batch": "PAY-MANAGER-SENSITIVE-FIELDS",
+      "note": "本批无生产代码行为变更，计划为字段白名单回归、跨店负向与真实店长页面验收"
+    },
+    {
+      "at": "2026-10-30T20:57:27+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-MANAGER-SENSITIVE-FIELDS",
+      "note": "DEC-096已批准；字段白名单回归通过，生产代码无需变更；全量受共享target并发清理影响另记"
+    },
+    {
+      "at": "2026-10-30T21:07:45+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PAY-MANAGER-ACTIONS-B8A",
+      "note": "用户2026-10-30裁决扩大店长动作权限；按无DDL切片B8A实现"
+    },
+    {
+      "at": "2026-10-30T21:09:26+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-MANAGER-ACTIONS-B8A",
+      "note": "DEC-097动作权限B8A完成；定向16/16、App/Web构建门禁PASS；B8B作废仍DDL阻塞"
+    },
+    {
+      "at": "2026-10-31T15:44:23+08:00",
+      "phase": "PLAN_READY",
+      "batch": "PAY-OPS-01",
+      "note": "用户确认按建议继续；首个统计性能切片冻结为薪酬工作台聚合 SQL 化"
+    },
+    {
+      "at": "2026-10-31T15:44:23+08:00",
+      "phase": "DEV_IN_PROGRESS",
+      "batch": "PAY-OPS-01",
+      "note": "基线 H2 HTTP 观测 PAY_OPS_01_SQL=13、RESPONSE_BYTES=485；开始实现"
+    },
+    {
+      "at": "2026-10-31T15:57:32+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-OPS-01",
+      "note": "PAY-OPS-01 聚合查询完成；旧新同数据对账、10×、定向33/0、全量1188/0、Provider审计543/0；实体加载22→2"
+    },
+    {
+      "at": "2026-10-31T16:08:24+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-OPS-01",
+      "note": "Web/App真实回读PASS：¥1600、考勤2、草稿1，Web P95 66.1ms/491B/error0，三档无溢出；视觉审查VISUAL_REVIEW_UNAVAILABLE；合成数据已清理0残留"
+    },
+    {
+      "at": "2026-10-31T16:32:26+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "PAY-OPS-01",
+      "note": "10× MySQL三轮压测PASS：顺序P95/P99 21.87/22.43ms，20并发P95/P99 28.19/29.75ms，错误0，974.26RPS，SQL增量22不增长，合成数据0残留"
     }
   ]
 }

@@ -1,0 +1,36 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SHEET-002",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "69c4d263f518ecc2a0055289853b8c34da566daaceade5c7d2c7d6bd3dbd0200",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-044",
+    "BR-045",
+    "OBJ-008",
+    "DEC-072"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/sheet/save",
+    "material/sheet/submit",
+    "material/sheet/enums",
+    "material/sheet/page"
+  ]
+}

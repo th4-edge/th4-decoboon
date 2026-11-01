@@ -1,6 +1,8 @@
 # App/Web 同一业务能力 Provider 对账矩阵
 
 > 每个跨端业务能力必须单独填写。缺失本矩阵不得进入编码或发布。
+>
+> 填写前先运行 `python3 scripts/audit-frontend-provider-contract.py --check`，确认路由级事实无漂移；自动基线见 `docs/design/app-web-provider-contract.json`，Web-only 写能力状态见 `docs/design/app-web-provider-reviews.json`。路由存在不等于业务已对齐，本模板仍须逐项填写。
 
 ## 1. 能力定义
 

@@ -159,4 +159,63 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     /** 未归属门店客户数（`DEC-067` BOSS-STORE-03：全部门店口径需显式标注）。 */
     long countByCompany_ComIdAndStoreIsNull(Long comId);
+
+    /** 经营角色客户工作区：按门店范围聚合客户阶段，返回行数等于阶段数。 */
+    @Query("""
+            select c.status, count(c)
+            from Customer c left join c.store store
+            where c.company.comId = :comId
+              and (:allStores = true or store.storeId = :storeId)
+            group by c.status
+            """)
+    List<Object[]> countStatusByStoreScope(@Param("comId") Long comId,
+                                          @Param("allStores") boolean allStores,
+                                          @Param("storeId") Long storeId);
+
+    /** 经营角色客户工作区：按负责人聚合，不在 Java 中回捞全部客户。 */
+    @Query("""
+            select owner.empId, owner.name, count(c),
+                   sum(case when c.status = com.th4.edge.decoboon.customer.configure.CustStatus.PendingMeasure then 1 else 0 end),
+                   sum(case when c.status in (com.th4.edge.decoboon.customer.configure.CustStatus.Signed,
+                                              com.th4.edge.decoboon.customer.configure.CustStatus.Serving,
+                                              com.th4.edge.decoboon.customer.configure.CustStatus.Finished)
+                            then 1 else 0 end)
+            from Customer c left join c.store store left join c.owner owner
+            where c.company.comId = :comId
+              and (:allStores = true or store.storeId = :storeId)
+            group by owner.empId, owner.name
+            """)
+    List<Object[]> countOwnerGroupsByStoreScope(@Param("comId") Long comId,
+                                               @Param("allStores") boolean allStores,
+                                               @Param("storeId") Long storeId);
+
+    /** 经营角色客户工作区：待跟进数由数据库按范围直接计数。 */
+    @Query("""
+            select count(c)
+            from Customer c left join c.store store
+            where c.company.comId = :comId
+              and (:allStores = true or store.storeId = :storeId)
+              and c.status in (com.th4.edge.decoboon.customer.configure.CustStatus.New,
+                               com.th4.edge.decoboon.customer.configure.CustStatus.Following)
+              and c.nextFollowAt is not null
+              and c.nextFollowAt < :tomorrow
+            """)
+    long countFollowDueByStoreScope(@Param("comId") Long comId,
+                                    @Param("allStores") boolean allStores,
+                                    @Param("storeId") Long storeId,
+                                    @Param("tomorrow") LocalDateTime tomorrow);
+
+    /** 经营角色客户工作区：待指派设计师数量。 */
+    @Query("""
+            select count(c)
+            from Customer c left join c.store store
+            where c.company.comId = :comId
+              and (:allStores = true or store.storeId = :storeId)
+              and c.status = com.th4.edge.decoboon.customer.configure.CustStatus.PendingMeasure
+              and c.measureAt is not null
+              and c.designer is null
+            """)
+    long countPendingAssignByStoreScope(@Param("comId") Long comId,
+                                        @Param("allStores") boolean allStores,
+                                        @Param("storeId") Long storeId);
 }

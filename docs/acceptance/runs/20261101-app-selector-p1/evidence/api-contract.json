@@ -1,0 +1,76 @@
+{
+  "api": "http://127.0.0.1:8090/api",
+  "testedAt": "2026-11-01T18:40:40+0800",
+  "owner": "13910002001",
+  "cases": {
+    "acceptedQuotePagination": {
+      "requestedSize": 200,
+      "returnedSize": 50,
+      "totalElements": "3",
+      "contentCount": 3,
+      "p95Ms": 60.58,
+      "rawSamplesMs": [
+        51.4,
+        38.28,
+        29.07,
+        29.21,
+        15.57
+      ],
+      "sample": {
+        "quoteId": "242542004477624320",
+        "customerName": "李娜（造数5101）",
+        "propertyAddress": "香樟花园2栋202",
+        "amount": 2495.75,
+        "status": {
+          "name": "客户接受",
+          "key": "Accepted"
+        },
+        "version": 1
+      }
+    },
+    "acceptedQuoteContextAndKeyword": {
+      "totalElements": "1",
+      "contentCount": 1
+    },
+    "supplierPaginationAndKeyword": {
+      "requestedSize": 200,
+      "returnedSize": 50,
+      "totalElements": "1",
+      "contentCount": 1,
+      "elapsedMs": 27.64,
+      "sample": {
+        "partnerId": "1793457851296966369",
+        "name": "全链路验收材料供应商",
+        "status": {
+          "name": "合作中",
+          "key": "Active"
+        },
+        "settlementMode": {
+          "name": "收货日加账期天数",
+          "value": "ReceiptDays",
+          "key": "ReceiptDays"
+        },
+        "settlementDays": 30,
+        "brands": [],
+        "payableAmount": 1680.0,
+        "paidAmount": 1680.0,
+        "outstandingAmount": 0.0
+      }
+    },
+    "catalogItemExactLookup": {
+      "itemId": "242296910222721024",
+      "listElapsedMs": 20.75,
+      "exactElapsedMs": 18.84,
+      "exactTotalElements": "1",
+      "exactContentCount": 1,
+      "name": "主材--实木复合地板"
+    },
+    "partnerPricePagination": {
+      "requestedSize": 200,
+      "returnedSize": 50,
+      "totalElements": "0",
+      "contentCount": 0,
+      "elapsedMs": 17.98
+    }
+  }
+}

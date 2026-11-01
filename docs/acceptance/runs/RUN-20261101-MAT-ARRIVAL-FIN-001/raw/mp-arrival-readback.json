@@ -1,0 +1,12 @@
+{
+  "pagePath": "subpackages/supply/pages/receipt-edit",
+  "pageText": "确认材料到货确认数量后形成项目实际成本，并回填应付账期主材--实木复合地板直送工地王芳（造数5100） · 滨湖世纪城1栋102 · POb69125551f7cc1f275a014315ea0b202 · 已到 2 / 2 ㎡本次最多可确认 0 ㎡本次到场数量到场日期到货说明确认到货",
+  "buttons": [
+    {
+      "text": "确认到货",
+      "disabled": "false"
+    }
+  ],
+  "shot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/evidence/TC-MAT-PM-ARRIVAL-005/03-arrival-refreshed-app.png",
+  "readAt": "2026-11-01T07:53:17.289Z"
+}

@@ -14,11 +14,11 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.User;
 import com.th4.edge.tenant.user.model.Credentials;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 /** 业主合同范围只读分页实现。 */
 @Note("业主合同范围")
@@ -44,6 +44,12 @@ public class Page implements com.th4.edge.decoboon.customer.service.contractline
     @AutoInject
     private Long contractId;
 
+    @AutoInject
+    private Integer current;
+
+    @AutoInject
+    private Integer size;
+
     private final CustomerAccessContext accessContext;
     private final CustomerContractContext contractContext;
     private final ContractLineRepository lineRepository;
@@ -61,7 +67,10 @@ public class Page implements com.th4.edge.decoboon.customer.service.contractline
     public org.springframework.data.domain.Page<ContractLine> call(ContractLine request) {
         Credentials credential = accessContext.requireCredential(principal);
         ProjectContract contract = contractContext.requireContract(credential, projectId, contractId);
-        List<ContractLine> lines = lineRepository.findByContractOrderBySortAsc(contract);
-        return new PageImpl<>(lines);
+        int pageIndex = current == null || current < 1 ? 0 : current - 1;
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
+        return lineRepository.findByContractOrderBySortAsc(contract, PageRequest.of(
+                pageIndex, pageSize,
+                Sort.by(Sort.Order.asc("sort"), Sort.Order.asc("lineId"))));
     }
 }

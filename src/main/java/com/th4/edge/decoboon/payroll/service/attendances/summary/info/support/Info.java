@@ -40,7 +40,7 @@ public class Info implements com.th4.edge.decoboon.payroll.service.attendances.s
     }
     @Override
     public AttendanceSummary call(AttendanceSummary request) {
-        Employee current = accessContext.requireManager(employee);
+        Employee current = accessContext.requireAttendanceViewer(employee);
         Specification<AttendanceSummary> byId =
                 (root, query, builder) -> builder.equal(root.get("summaryId"), summaryId);
         return repository.findOne(byId.and(accessContext.visible(current, AttendanceSummary.class)))

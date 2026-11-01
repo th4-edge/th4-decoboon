@@ -4,9 +4,9 @@
   "title": "设计方案与设计报价审视",
   "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
   "owner": "codex",
-  "phase": "RELEASED",
-  "batch": "DQ-X2",
-  "nextAction": "等待用户设置并验证 App 1.0.67 体验版；正式审核与发布由用户本人完成。",
+  "phase": "DEV_VERIFIED",
+  "batch": "UI-QF-01",
+  "nextAction": "用户确认后继续设计工作台总览或进入独立验收",
   "openDecisions": [
     "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
   ],
@@ -26,7 +26,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T22:14:57+08:00",
-  "updatedAt": "2026-10-24T14:40:00+08:00",
+  "updatedAt": "2026-11-01T17:48:38+08:00",
   "history": [
     {
       "at": "2026-10-21T22:14:57+08:00",
@@ -171,6 +171,120 @@
       "phase": "RELEASED",
       "batch": "DQ-X2",
       "note": "发布后纠正：生产 e627bbb 依赖 cust_customer_loss，已补执行迁移 131 并登记账本；备份校验和已留痕；124–130 未执行"
+    },
+    {
+      "at": "2026-10-30T19:30:07+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X3",
+      "note": "DQ-X3 完成 App design/template/page|info|instantiate 共享；type-check、分包门禁、release 构建和后端模板定向测试通过；真实渲染待补"
+    },
+    {
+      "at": "2026-10-30T19:48:05+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X4",
+      "note": "DQ-X4 完成 App design/template/save|publish|room/save|room/delete|items/batchsave 共享；App/Web type-check/build、App 分包门禁、后端模板测试通过；真实编辑/发布页面待复核"
+    },
+    {
+      "at": "2026-10-30T20:14:09+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X5",
+      "note": "DQ-X5 完成 App design/template/copy|disable|version/build 共享；App type-check、模板契约/导航/UI/文案/分页门禁与 release 构建通过；设计模板 Provider 路由级双端共享完成，真实 UI 待补"
+    },
+    {
+      "at": "2026-10-30T21:01:35+08:00",
+      "phase": "UI_REVIEWED",
+      "batch": "DQ-X5",
+      "note": "DQ-X3/X4/X5 已在微信开发者工具 iPhone 16 模拟器完成真实页面闭环；修复 7 个缺陷并清理全部临时数据。物理真机未连接，qwen2.5vl:7b 仅完成视觉预检，保持 UI_REVIEWED，不进入 ACCEPTED。"
+    },
+    {
+      "at": "2026-10-31T13:39:19+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X6",
+      "note": "DQ-X6 财务报价服务端汇总完成；定向测试、Provider 审计、Web 构建和真实财务页面对账通过；视觉与独立验收待执行"
+    },
+    {
+      "at": "2026-10-31T13:39:19+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X6",
+      "note": "DQ-X6 服务端报价汇总与 Web 页面替换完成"
+    },
+    {
+      "at": "2026-10-31T13:49:34+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X7",
+      "note": "DQ-X7 项目合同档案服务端汇总完成；行数/金额、变更数/生效金额与列表对账一致，Boss/Designer/StoreManager 权限通过，真实页面修复枚举显示问题；合同行分页与独立验收待后续"
+    },
+    {
+      "at": "2026-10-31T13:49:34+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X7",
+      "note": "DQ-X7 合同档案服务端汇总与页面替换完成"
+    },
+    {
+      "at": "2026-10-31T14:00:19+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X8",
+      "note": "合同基线行改为数据库 Pageable 分页（默认20/上限50/稳定排序），合同档案按页消费且头部使用 workbench 汇总；合同变更来源删除合同行大页和前端拼接，只消费 range。7/7定向测试、Provider门禁、Web build、三角色 API、真实页面三档通过，待独立验收。"
+    },
+    {
+      "at": "2026-10-31T14:00:19+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X8",
+      "note": "DQ-X8 开发自测与真实页面功能验证通过；未独立验收、未视觉签字、未发布。"
+    },
+    {
+      "at": "2026-10-31T14:10:22+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X9",
+      "note": "业主合同行改为数据库分页并补齐 workbench 全量行摘要；App 显式 current/size、按页加载并消费服务端汇总，新增带负向自测的跨端分页门禁。真实业主 API、微信开发者工具原生页面、构建与门禁通过，待独立验收。"
+    },
+    {
+      "at": "2026-10-31T14:10:22+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X9",
+      "note": "DQ-X9 开发自测、真实业主 API 和小程序原生页面通过；未独立验收、未视觉签字、未发布。"
+    },
+    {
+      "at": "2026-10-31T14:31:35+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X10",
+      "note": "ProjectContractContext.enrich 改为单条合同成本聚合，保持成本完整性口径；完成剩余合同行读取分类，修复 DQ-X6 summary Provider 门禁登记；L2 全量 1184/1184、三角色 API、DB checksum 一致。"
+    },
+    {
+      "at": "2026-10-31T14:31:35+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X10",
+      "note": "DQ-X10 开发自测、L2 全量回归和真实 API 验证通过；未做页面回归因响应契约不变，未独立验收、未发布。"
+    },
+    {
+      "at": "2026-10-31T14:53:48+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X11",
+      "note": "增减项来源选择器改为 PICKER_PAGE：服务端 current/size、关键词/类型/区域/分组筛选、facets；原合同行数据库分页，变更明细单次加载并批量快照。Web/小程序真实链路、两端负向门禁、L2 全量1186/1186通过。"
+    },
+    {
+      "at": "2026-10-31T14:53:48+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "DQ-X11",
+      "note": "DQ-X11 开发自测、L2 全量、Web 和微信开发者工具原生页面通过；未独立验收、未视觉签字、未发布。"
+    },
+    {
+      "at": "2026-10-31T15:21:45+08:00",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X8+DQ-X9+DQ-X10+DQ-X11",
+      "note": "独立初验140项139 PASS/1 P1，range连续分页缺陷已修复；独立复验55/55 PASS，P1关闭，当前P0/P1/P2=0。合同分页、汇总、来源选择器、Web/小程序真实页面与全量证据通过；业主直接黑盒和视觉签字未执行。"
+    },
+    {
+      "at": "2026-10-31T15:21:45+08:00",
+      "phase": "ACCEPTED",
+      "batch": "DQ-X8+DQ-X9+DQ-X10+DQ-X11",
+      "note": "DQ-X8～X11 合同链路独立验收通过，历史P1关闭；未发布。"
+    },
+    {
+      "at": "2026-11-01T17:48:38+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "UI-QF-01",
+      "note": "三页设计队列完成同族降噪；DOM重复节点、三档渲染、type-check和build通过；未独立验收"
     }
   ]
 }

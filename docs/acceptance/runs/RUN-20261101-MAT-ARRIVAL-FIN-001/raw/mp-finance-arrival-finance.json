@@ -1,0 +1,32 @@
+{
+  "pagePath": "subpackages/finance/pages/payments",
+  "project": {
+    "text": "王芳（造数5100） · 滨湖世纪城1栋102P1793516028568 · 滨湖世纪城1栋102 待开工合同收入¥2,495.75回款 0%付款进度 100%待收 ¥2,495.75总览应收回款应付付款项目流水结算已收工程款¥0.00待收工程款¥2,495.75项目总成本¥240.00项目毛利利润核算总成本 ¥240.00材料成本¥240.00 · 100%人工成本¥0.00 · 0%项目款¥0.00 · 0%费用分摊¥0.00 · 0%结算条件应收已全部收清未满足应付已全部付清满足项目结算已生成待生成应收节点应付成本",
+    "report": {
+      "contractAmount": 2495.75,
+      "payableAmount": 240,
+      "paidAmount": 240,
+      "unpaidAmount": 0,
+      "actualCost": 240,
+      "totalCost": 240,
+      "costComplete": false,
+      "costIncompleteCount": 2
+    },
+    "buttons": [
+      {
+        "text": "生成结算",
+        "disabled": null,
+        "ariaDisabled": null
+      }
+    ],
+    "settlementText": "王芳（造数5100） · 滨湖世纪城1栋102P1793516028568 · 滨湖世纪城1栋102 待开工合同收入¥2,495.75回款 0%付款进度 100%待收 ¥2,495.75总览应收回款应付付款项目流水结算尚未生成结算系统将按合同、应收、应付和实收实付自动归集项目利润。生成结算",
+    "shot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/evidence/TC-FIN-FINANCE-COST-004/03-project-cost-after-payment-app.png",
+    "settlementShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/evidence/TC-FIN-FINANCE-COST-004/04-project-settlement-after-payment-app.png"
+  },
+  "payments": {
+    "path": "subpackages/finance/pages/payments",
+    "text": "付款记录付款自动核销应付并生成资金流水；成本按应付/到货口径归集登记付款门店全部门店累计业务付款¥1,680付款笔数2付款明细查看应付材料采购 · 全链路验收材料供应商王芳（造数5100） · 滨湖世纪城1栋102 · 2026-11-01-¥240全链路验收材料供应商企业对公材料款AUDIT-20261101-RUN20261101MATAR-PAY-001经办 审计财务无凭证材料采购 · 全链路验收材料供应商王芳（造数1100） · 望江府1栋102 · 2026-10-31-¥1,440全链路验收材料供应商企业对公材料款经办 审计财务无凭证没有更多了",
+    "shot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/evidence/TC-FIN-FINANCE-PAYABLE-003/07-payments-after-app.png"
+  },
+  "readAt": "2026-11-01T07:55:59.800Z"
+}

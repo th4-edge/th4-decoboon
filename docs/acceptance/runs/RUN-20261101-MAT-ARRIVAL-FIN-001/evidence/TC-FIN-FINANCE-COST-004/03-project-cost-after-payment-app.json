@@ -1,0 +1,17 @@
+{
+  "role": "Finance",
+  "surface": "App",
+  "pagePath": "/subpackages/finance/pages/project",
+  "report": {
+    "contractAmount": 2495.75,
+    "payableAmount": 240,
+    "paidAmount": 240,
+    "unpaidAmount": 0,
+    "actualCost": 240,
+    "totalCost": 240,
+    "costComplete": false,
+    "costIncompleteCount": 2
+  },
+  "pageText": "王芳（造数5100） · 滨湖世纪城1栋102P1793516028568 · 滨湖世纪城1栋102 待开工合同收入¥2,495.75回款 0%付款进度 100%待收 ¥2,495.75总览应收回款应付付款项目流水结算已收工程款¥0.00待收工程款¥2,495.75项目总成本¥240.00项目毛利利润核算总成本 ¥240.00材料成本¥240.00 · 100%人工成本¥0.00 · 0%项目款¥0.00 · 0%费用分摊¥0.00 · 0%结算条件应收已全部收清未满足应付已全部付清满足项目结算已生成待生成应收节点应付成本",
+  "readAt": "2026-11-01T07:55:59.800Z"
+}

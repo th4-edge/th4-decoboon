@@ -1,0 +1,128 @@
+{
+  "caseId": "TC-MAT-PM-ARRIVAL-005",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T02:25:37+08:00",
+  "finishedAt": "2026-11-02T02:35:00+08:00",
+  "executor": "codex",
+  "role": "Finance+Pm",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261102-MATX2F001-",
+  "steps": [
+    {
+      "step": 1,
+      "action": "迁移134仅在隔离库执行并完成回滚演练",
+      "result": "PASS",
+      "actual": "db_purchase_order_item.sheet_item_id 可空、索引和FK存在；回滚后列/索引为0"
+    },
+    {
+      "step": 2,
+      "action": "Finance 通过 /finance/material-ordering 为 TILE-20261102-002 下单10㎡，单价88",
+      "result": "PASS",
+      "actual": "新采购明细已关联作业单行 1793557537923163647；采购金额880，形成唯一应付880"
+    },
+    {
+      "step": 3,
+      "action": "Pm 在 /workbench/material-sheets 首批确认到场4㎡",
+      "result": "PASS",
+      "actual": "作业单 PartiallyArrived，采购 PartiallyReceived(4/10)，页面仍保留确认到场按钮；计划成本累计2112（历史20㎡+本次4㎡）"
+    },
+    {
+      "step": 4,
+      "action": "尝试超量到场7㎡",
+      "result": "PASS_REJECTED",
+      "actual": "页面提示“本次到场数量应在 1 到 6 ㎡ 之间”，DB仍1条4㎡，无部分写入"
+    },
+    {
+      "step": 5,
+      "action": "尾量确认到场6㎡并刷新",
+      "result": "PASS",
+      "actual": "作业单/采购/计划均为Arrived；2条到场合计10㎡；应付仍唯一880；计划累计实际成本2640"
+    },
+    {
+      "step": 6,
+      "action": "重复提交已全部到场采购的6㎡到场请求",
+      "result": "PASS_REJECTED",
+      "actual": "返回400“采购单下单后才能验收入库”，到场仍2条10㎡，成本仍2640"
+    },
+    {
+      "step": 7,
+      "action": "Finance 回读项目账本、应付与页面",
+      "result": "PASS",
+      "actual": "项目 actualCost=2640、materialCost=2640；新应付sourceNo=PO17b140f0c8af844b4cb36aa58b4bc7c7、金额880、dueDate=2026-12-02"
+    },
+    {
+      "step": 8,
+      "action": "App 到场详情与财务应付回读",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "无授权微信身份，未用员工账号/devToken/数据库登录态冒充"
+    }
+  ],
+  "actualPage": [
+    "/finance/material-ordering",
+    "/workbench/material-sheets",
+    "/finance/projects/242297226024452096",
+    "/finance/payables"
+  ],
+  "actualState": [
+    "sheetId=1793557537893517289，sheetNo=TILE-20261102-002",
+    "下单采购 purchaseId=1793557575566519950，purchaseItemId=1793557575569359946，sheet_item_id=1793557537923163647",
+    "首批4㎡后作业单=PartiallyArrived，采购=PartiallyReceived(4/10)",
+    "尾量6㎡后作业单/采购/计划=Arrived，到场2条合计10㎡",
+    "应付唯一：amount=880，dueDate=2026-12-02；未新增到场应付",
+    "项目actualCost=2640，MaterialPlan.cost=2640（历史20㎡+本次10㎡，单价88）",
+    "重复到场请求被400拒绝，未新增receipt或成本"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-PM-ARRIVAL-005/01-migration-134-applied.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/02-migration-134-rollback-drill.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/03-finance-order-before-submit.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/40-final-first-arrival-4-before.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/41-final-first-arrival-4-result.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/42-final-provider-sheet-after-first-arrival.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/43-final-provider-purchases-after-first-arrival.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/44-final-db-after-first-arrival.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/45-final-over-limit-7-before.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/46-final-over-limit-7-rejected.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/47-final-db-after-over-limit.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/48-final-tail-arrival-6-before.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/49-final-tail-arrival-6-result.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/50-final-db-after-tail-arrival.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/51-final-finance-project-report.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/52-final-payables.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/53-final-finance-project-ledger.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/54-final-finance-payables.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/55-final-repeat-arrival-response.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/56-final-db-after-repeat-arrival.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/57-clean-patch-artifact-sha256.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/33-targeted-tests.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/34-full-test-main-unrelated-failures.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/35-full-test-clean-patch-failures.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/36-provider-contract-audit.txt",
+    "evidence/TC-MAT-PM-ARRIVAL-005/37-package-skip-tests.txt"
+  ],
+  "defectIds": [
+    "DEF-20261102-005"
+  ],
+  "blockedReason": "Web/API/DB修复复验已通过；App授权微信身份不可用，整条跨端用例仍不能判定PASS。",
+  "notes": "DEF-20261102-005 的 Web/Provider/DB 分支已验证关闭。全量测试在当前脏工作区有4 failures+1 error，在 baseline 256cc587+本补丁的干净 worktree 仍有2个既有 statistic 测试失败；因此全量门禁和发布仍为BLOCKED，不得声称可发布。App分支未伪造。",
+  "caseDefinitionHash": "e962461a2363a5dfae79c6663b24141ae352bd927bbd43a679c347dba77018cd",
+  "priority": "P1",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "DEC-072",
+    "DEC-092"
+  ],
+  "pageTargets": [
+    "web:/pm/workbench",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/project/pages/material-sheet-detail"
+  ],
+  "providerRoutes": [
+    "project/goods-receipt/save",
+    "project/goods-receipt/page",
+    "finance/payable/page",
+    "finance/project/report"
+  ]
+}

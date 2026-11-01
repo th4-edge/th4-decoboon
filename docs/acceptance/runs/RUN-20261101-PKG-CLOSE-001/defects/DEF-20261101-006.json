@@ -1,0 +1,29 @@
+{
+  "defectId": "DEF-20261101-006",
+  "caseIds": [],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "小程序缺少套餐发布、下一版和停用动作，且允许打开已发布套餐编辑页",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/package-manage",
+  "businessState": "Draft → Published 生命周期",
+  "expected": "草稿可发布；已发布版本只读并可创建下一版、停用，不能进入原地编辑",
+  "actual": "列表只有“生成报价、编辑配置”，没有发布/下一版/停用；已发布套餐仍可进入编辑页，提交后服务端返回409",
+  "minimumReproduction": [
+    "Boss创建并发布套餐（发布通过受控夹具完成）",
+    "回到套餐列表检查动作",
+    "点编辑配置并尝试保存"
+  ],
+  "impact": "用户无法从App完成套餐生命周期闭环，且会进入必然失败的编辑路径",
+  "evidence": [
+    "evidence/EXP-PKG-007/before-package-manage.png",
+    "evidence/EXP-PKG-007/20-published-edit-blocked.png",
+    "raw/quote-and-update-readback.json",
+    "raw/publish-fixture.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "App补齐生命周期动作与状态模型，或在1.0.72基线明确阻止进入编辑并给出下一版入口",
+  "retestCondition": "App页面可完成发布、创建下一版、停用；已发布数据不可原地编辑",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

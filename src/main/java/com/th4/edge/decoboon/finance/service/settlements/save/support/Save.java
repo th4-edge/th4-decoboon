@@ -1,5 +1,4 @@
 package com.th4.edge.decoboon.finance.service.settlements.save.support;
-import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.customer.model.Customer;
 
 import com.th4.edge.decoboon.finance.configure.SettlementStatus;
@@ -10,6 +9,7 @@ import com.th4.edge.decoboon.finance.repository.SettlementRepository;
 import com.th4.edge.decoboon.project.configure.ProjectArchivePolicy;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectContract;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.project.repository.ProjectContractRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;

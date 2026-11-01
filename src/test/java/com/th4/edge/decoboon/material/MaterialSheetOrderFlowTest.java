@@ -349,6 +349,9 @@ class MaterialSheetOrderFlowTest {
 
         assertThat(ordered.getPriceState()).isEqualTo(SheetPriceState.Priced);
         assertThat(savedItems.get(0).getPurchasePrice()).isEqualByComparingTo("68");
+        assertThat(savedPurchaseItems).singleElement()
+                .extracting(PurchaseOrderItem::getSheetItem)
+                .isSameAs(savedItems.get(0));
         org.mockito.Mockito.verify(payableRepository).save(payables.capture());
         assertThat(payables.getValue().getEstimated()).isFalse();
         assertThat(payables.getValue().getAmount()).isEqualByComparingTo("680");

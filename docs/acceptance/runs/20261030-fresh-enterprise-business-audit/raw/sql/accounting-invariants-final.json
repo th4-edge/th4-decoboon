@@ -1,0 +1,65 @@
+{
+  "ledger": {
+    "net": -851.27,
+    "count": 4,
+    "income": 748.73,
+    "expense": 1600.00,
+    "manualIncome": 0,
+    "manualExpense": 1100.00
+  },
+  "payable": {
+    "paid": 500.00,
+    "count": 1,
+    "amount": 2000.00,
+    "overPaid": 0,
+    "outstanding": 1500.00,
+    "missingProject": 0,
+    "storelessCount": 0,
+    "storelessAmount": 0
+  },
+  "payment": {
+    "count": 1,
+    "amount": 500.00,
+    "ledgerAmount": 500.00,
+    "missingLedger": 0,
+    "duplicateLedgerSources": 0
+  },
+  "project": {
+    "count": 1,
+    "storelessCount": 0,
+    "settlementCount": 0,
+    "incompleteWithProfit": 0,
+    "costIncompleteSettlements": 0
+  },
+  "receipt": {
+    "activeCount": 1,
+    "activeAmount": 748.73,
+    "ledgerAmount": 748.73,
+    "missingLedger": 0,
+    "duplicateLedgerSources": 0
+  },
+  "database": "decoboon",
+  "companyId": 199500000000000001,
+  "capturedAt": "2026-10-30 22:35:07",
+  "receivable": {
+    "count": 5,
+    "amount": 3495.75,
+    "received": 748.73,
+    "outstanding": 2747.02,
+    "overReceived": 0,
+    "missingProject": 0,
+    "storelessCount": 0,
+    "storelessAmount": 0
+  },
+  "expectedLedgerNet": -851.27,
+  "invariants": {
+    "receiptLedgerDelta": 0,
+    "paymentLedgerDelta": 0,
+    "payablePaymentDelta": 0,
+    "ledgerNetDelta": 0,
+    "receiptSourceDuplicates": 0,
+    "paymentLedgerMissing": 0,
+    "storelessFinancialObjects": 0,
+    "coreBalanced": true
+  }
+}

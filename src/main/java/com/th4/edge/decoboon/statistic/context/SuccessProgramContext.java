@@ -102,8 +102,9 @@ public class SuccessProgramContext {
             throw new DefinedException(new DefaultErrorCode("400", "当前员工未归属企业"));
         }
         Long companyId = company.getComId();
-        LocalDate startDate = company.getCreateTime() == null
-                ? LocalDate.now() : company.getCreateTime().toLocalDate();
+        var createTime = company.getCreateTime();
+        LocalDate companyCreatedOn = createTime == null ? null : createTime.toLocalDate();
+        LocalDate startDate = companyCreatedOn == null ? LocalDate.now() : companyCreatedOn;
         long days = Math.max(0, ChronoUnit.DAYS.between(startDate, LocalDate.now()));
 
         List<CatalogItem> catalogItems = catalogItems(companyId);

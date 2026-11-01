@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("新增合作方")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "brands", "createTime"}))
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "brands", "paymentCodeImages", "createTime"}))
 @Service("partner/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.supply.service.partner.save.Save {
@@ -47,6 +47,7 @@ public class Save implements com.th4.edge.decoboon.supply.service.partner.save.S
     @AutoInject @Length(max = 64) private String bankAccount;
     @AutoInject @Length(max = 500) private String remark;
     @AutoInject private java.util.Set<String> brands;
+    @AutoInject private java.util.List<String> paymentCodeImages;
 
     private final TenantContext tenantContext;
     private final PartnerRepository partnerRepository;
@@ -83,6 +84,7 @@ public class Save implements com.th4.edge.decoboon.supply.service.partner.save.S
         request.setStatus(PartnerStatus.Active);
         request.setRemark(remark);
         request.setBrands(normalizeBrands(brands));
+        request.setPaymentCodeImages(normalizeImages(paymentCodeImages));
         request.setCreatedBy(current);
         return partnerRepository.save(modelIdentityContext.prepare(request));
     }
@@ -93,6 +95,18 @@ public class Save implements com.th4.edge.decoboon.supply.service.partner.save.S
             values.stream()
                     .filter(value -> value != null && !value.isBlank())
                     .map(String::trim)
+                    .forEach(result::add);
+        }
+        return result;
+    }
+
+    private java.util.List<String> normalizeImages(java.util.List<String> values) {
+        java.util.List<String> result = new java.util.ArrayList<>();
+        if (values != null) {
+            values.stream()
+                    .filter(value -> value != null && !value.isBlank())
+                    .map(String::trim)
+                    .distinct()
                     .forEach(result::add);
         }
         return result;

@@ -3,6 +3,7 @@ package com.th4.edge.decoboon.project.model;
 import com.th4.edge.components.data.listener.SnowflakeEntityListener;
 import com.th4.edge.decoboon.bim.configure.Unit;
 import com.th4.edge.decoboon.material.configure.SheetPriceState;
+import com.th4.edge.decoboon.material.model.MaterialOrderSheetItem;
 import com.th4.edge.decoboon.common.model.AuditModel;
 import com.th4.edge.decoboon.project.configure.PurchaseStatus;
 import com.th4.edge.decoboon.property.model.Property;
@@ -33,6 +34,7 @@ import java.math.BigDecimal;
         @Index(name = "idx_purchase_item_company", columnList = "com_id, purchase_item_id"),
         @Index(name = "idx_purchase_item_company_order", columnList = "com_id, purchase_order_id, purchase_item_id"),
         @Index(name = "idx_purchase_item_company_plan", columnList = "com_id, material_plan_id, purchase_item_id"),
+        @Index(name = "idx_purchase_item_company_sheet_item", columnList = "com_id, sheet_item_id, purchase_item_id"),
         @Index(name = "idx_purchase_item_company_store", columnList = "com_id, store_id, purchase_item_id"),
         @Index(name = "idx_purchase_item_company_team", columnList = "com_id, team_id, purchase_item_id"),
         @Index(name = "idx_purchase_item_company_owner", columnList = "com_id, owner_id, purchase_item_id")
@@ -88,6 +90,11 @@ public class PurchaseOrderItem extends AuditModel implements ProjectOwned {
     @JoinColumn(name = "material_plan_id", nullable = false)
     @Note("来源材料计划")
     private MaterialPlan materialPlan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sheet_item_id")
+    @Note("来源主材作业单行")
+    private MaterialOrderSheetItem sheetItem;
 
     @Column(precision = 12, scale = 3, nullable = false)
     @Note("采购数量")
@@ -154,6 +161,8 @@ public class PurchaseOrderItem extends AuditModel implements ProjectOwned {
     public void setPurchaseOrder(PurchaseOrder purchaseOrder) { this.purchaseOrder = purchaseOrder; }
     public MaterialPlan getMaterialPlan() { return materialPlan; }
     public void setMaterialPlan(MaterialPlan materialPlan) { this.materialPlan = materialPlan; }
+    public MaterialOrderSheetItem getSheetItem() { return sheetItem; }
+    public void setSheetItem(MaterialOrderSheetItem sheetItem) { this.sheetItem = sheetItem; }
     public BigDecimal getQuantity() { return quantity; }
     public void setQuantity(BigDecimal quantity) { this.quantity = quantity; }
     public Unit getUnit() { return unit; }

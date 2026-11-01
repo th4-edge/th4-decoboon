@@ -1,0 +1,52 @@
+{
+  "pagePath": "subpackages/quote/pages/detail",
+  "beforeText": "Q1793516120078 · V1自定义报价 · 待客户确认¥2,496造数方案 5101设计报价李娜（造数5101）审140㎡ · 审计设计造数方案 5101V1 · 奶油风查看方案分项报价1 组 · 默认收起区域1类型3综合项目3 项¥2,502分项合计¥2,502折扣率95%税金¥119创建时间2026-11-01 14:55谈单 PPT 方案把客户诉求、量房问题、区域设计与装修投入串成一套讲解顺序报价打印稿生成客户版 PDF，仅含销售价，不含成本；用于线下打印和盖章查看方案谈单 PPT打印稿驳回客户已接受",
+  "beforeButtons": [
+    {
+      "text": "查看方案",
+      "disabled": null
+    },
+    {
+      "text": "谈单 PPT",
+      "disabled": null
+    },
+    {
+      "text": "打印稿",
+      "disabled": "false"
+    },
+    {
+      "text": "驳回",
+      "disabled": null
+    },
+    {
+      "text": "客户已接受",
+      "disabled": null
+    }
+  ],
+  "dialogTexts": [],
+  "afterText": "Q1793516120078 · V1自定义报价 · 待客户确认¥2,496造数方案 5101设计报价李娜（造数5101）审140㎡ · 审计设计造数方案 5101V1 · 奶油风查看方案分项报价1 组 · 默认收起区域1类型3综合项目3 项¥2,502分项合计¥2,502折扣率95%税金¥119创建时间2026-11-01 14:55谈单 PPT 方案把客户诉求、量房问题、区域设计与装修投入串成一套讲解顺序报价打印稿生成客户版 PDF，仅含销售价，不含成本；用于线下打印和盖章查看方案谈单 PPT打印稿驳回客户已接受",
+  "afterButtons": [
+    {
+      "text": "查看方案",
+      "disabled": null
+    },
+    {
+      "text": "谈单 PPT",
+      "disabled": null
+    },
+    {
+      "text": "打印稿",
+      "disabled": "false"
+    },
+    {
+      "text": "驳回",
+      "disabled": null
+    },
+    {
+      "text": "客户已接受",
+      "disabled": null
+    }
+  ],
+  "beforeShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-DQ-ACCEPT-RETEST-001/evidence/TC-DQ-PERMISSION-QUOTE-005/03-designer-quote-app-before.png",
+  "afterShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-DQ-ACCEPT-RETEST-001/evidence/TC-DQ-PERMISSION-QUOTE-005/04-designer-quote-app-after.png"
+}

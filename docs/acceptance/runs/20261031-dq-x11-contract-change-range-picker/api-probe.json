@@ -1,0 +1,458 @@
+{
+  "probes": {
+    "default": {
+      "http": {
+        "status": 200,
+        "bytes": 3038,
+        "elapsedMs": 112.19
+      },
+      "success": true,
+      "current": 1,
+      "size": 20,
+      "total": "7",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": false,
+      "rows": 7,
+      "sourceIds": [
+        "241939522063958016",
+        "241939522063958017",
+        "241939522063958018",
+        "241939522063958019",
+        "241939522063958020",
+        "241939522063958021",
+        "1793373550452425989"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "page1_size2": {
+      "http": {
+        "status": 200,
+        "bytes": 1285,
+        "elapsedMs": 43.35
+      },
+      "success": true,
+      "current": 1,
+      "size": 2,
+      "total": "7",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": true,
+      "rows": 2,
+      "sourceIds": [
+        "241939522063958016",
+        "241939522063958017"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "page2_size2": {
+      "http": {
+        "status": 200,
+        "bytes": 1252,
+        "elapsedMs": 44.0
+      },
+      "success": true,
+      "current": 2,
+      "size": 2,
+      "total": "7",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": true,
+      "rows": 2,
+      "sourceIds": [
+        "241939522063958020",
+        "241939522063958021"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "page4_size2": {
+      "http": {
+        "status": 200,
+        "bytes": 988,
+        "elapsedMs": 42.31
+      },
+      "success": true,
+      "current": 4,
+      "size": 2,
+      "total": "7",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": false,
+      "rows": 1,
+      "sourceIds": [
+        "1793373550452425989"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "effective_only": {
+      "http": {
+        "status": 200,
+        "bytes": 989,
+        "elapsedMs": 48.82
+      },
+      "success": true,
+      "current": 1,
+      "size": 20,
+      "total": "1",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": false,
+      "rows": 1,
+      "sourceIds": [
+        "1793373550452425989"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "keyword": {
+      "http": {
+        "status": 200,
+        "bytes": 920,
+        "elapsedMs": 43.27
+      },
+      "success": true,
+      "current": 1,
+      "size": 20,
+      "total": "1",
+      "contractTotal": "1",
+      "effectiveTotal": "0",
+      "hasMore": false,
+      "rows": 1,
+      "sourceIds": [
+        "241939522063958021"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "material": {
+      "http": {
+        "status": 200,
+        "bytes": 1658,
+        "elapsedMs": 44.18
+      },
+      "success": true,
+      "current": 1,
+      "size": 20,
+      "total": "3",
+      "contractTotal": "2",
+      "effectiveTotal": "1",
+      "hasMore": false,
+      "rows": 3,
+      "sourceIds": [
+        "241939522063958019",
+        "241939522063958020",
+        "1793373550452425989"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "none_space": {
+      "http": {
+        "status": 200,
+        "bytes": 3038,
+        "elapsedMs": 41.97
+      },
+      "success": true,
+      "current": 1,
+      "size": 20,
+      "total": "7",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": false,
+      "rows": 7,
+      "sourceIds": [
+        "241939522063958016",
+        "241939522063958017",
+        "241939522063958018",
+        "241939522063958019",
+        "241939522063958020",
+        "241939522063958021",
+        "1793373550452425989"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "capped": {
+      "http": {
+        "status": 200,
+        "bytes": 3038,
+        "elapsedMs": 38.61
+      },
+      "success": true,
+      "current": 1,
+      "size": 50,
+      "total": "7",
+      "contractTotal": "6",
+      "effectiveTotal": "1",
+      "hasMore": false,
+      "rows": 7,
+      "sourceIds": [
+        "241939522063958016",
+        "241939522063958017",
+        "241939522063958018",
+        "241939522063958019",
+        "241939522063958020",
+        "241939522063958021",
+        "1793373550452425989"
+      ],
+      "itemTypes": [
+        {
+          "key": "Construction",
+          "label": "施工",
+          "count": "3"
+        },
+        {
+          "key": "General",
+          "label": "综合其他",
+          "count": "1"
+        },
+        {
+          "key": "Material",
+          "label": "主材",
+          "count": "3"
+        }
+      ],
+      "spaces": [
+        {
+          "key": "__none__",
+          "label": "综合项目",
+          "count": "7"
+        }
+      ],
+      "error": null
+    },
+    "invalid_group": {
+      "http": {
+        "status": 200,
+        "bytes": 93,
+        "elapsedMs": 33.41
+      },
+      "success": false,
+      "error": {
+        "code": "400",
+        "message": "来源分组不合法",
+        "system": false
+      }
+    },
+    "invalid_type": {
+      "http": {
+        "status": 200,
+        "bytes": 93,
+        "elapsedMs": 32.25
+      },
+      "success": false,
+      "error": {
+        "code": "400",
+        "message": "分项类型不合法",
+        "system": false
+      }
+    }
+  },
+  "failures": [],
+  "latency": {
+    "samples": 10,
+    "p50Ms": 39.98,
+    "p95Ms": 43.49,
+    "maxMs": 46.89,
+    "bytes": [
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038
+    ]
+  }
+}

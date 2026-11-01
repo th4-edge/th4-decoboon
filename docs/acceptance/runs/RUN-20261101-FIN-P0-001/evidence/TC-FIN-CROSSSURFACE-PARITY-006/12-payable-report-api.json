@@ -1,0 +1,14 @@
+{
+  "httpStatus": 200,
+  "body": {
+    "data": {
+      "count": 2,
+      "totalAmount": 3440.0,
+      "paidAmount": 1440.0,
+      "outstandingAmount": 2000.0,
+      "urgentAmount": 0.0,
+      "asOf": "2026-11-01 14:25:54"
+    },
+    "success": true
+  }
+}

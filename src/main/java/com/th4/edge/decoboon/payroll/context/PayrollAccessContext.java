@@ -54,13 +54,91 @@ public class PayrollAccessContext {
                 EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
     }
 
-    /** 薪酬制单与发放：BOSS、财务；工资单确认另走 requireBoss。 */
+    /** 是否为薪酬管理读取角色；员工本人自助视角不是管理视角。 */
+    public boolean isPayrollManager(Employee employee) {
+        return employee != null && (employee.getRole() == EmployeeRole.Boss
+                || employee.getRole() == EmployeeRole.Finance
+                || employee.getRole() == EmployeeRole.StoreManager);
+    }
+
+    /**
+     * 月度考勤查看：管理角色保持企业/门店范围，其他员工只能进入本人视角。
+     * 非管理员工的 DataScope 必须解析为 Self，禁止借由客户端参数扩大范围。
+     */
+    public Employee requireAttendanceViewer(Employee principal) {
+        Employee current = tenantContext.requireEmployee(principal);
+        if (isPayrollManager(current)) {
+            return current;
+        }
+        DataScope scope = dataScopeContext.resolve(current);
+        if (scope.type() != DataScopeType.Self) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号未配置有效考勤数据范围"));
+        }
+        return current;
+    }
+
+    /** 提成查看：管理角色保持企业/门店范围，其他员工只能进入本人视角。 */
+    public Employee requireCommissionViewer(Employee principal) {
+        Employee current = tenantContext.requireEmployee(principal);
+        if (isPayrollManager(current)) {
+            return current;
+        }
+        DataScope scope = dataScopeContext.resolve(current);
+        if (scope.type() != DataScopeType.Self) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号未配置有效提成数据范围"));
+        }
+        return current;
+    }
+
+    /** 薪酬制单与复核：BOSS、财务；店长不获得方案、考勤、提成和工资单生成权限。 */
     public Employee requireEditor(Employee principal) {
         return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance);
     }
-    /** 工资单草稿删除：仅 BOSS。 */
+
+    /** 工资单确认：BOSS 或本店店长；门店边界由 visibleSheets/requireStoreItems 强制。 */
+    public Employee requireConfirmActor(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
+    }
+
+    /** 工资单退回：BOSS 或本店店长。 */
+    public Employee requireReturnActor(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
+    }
+
+    /** 工资单草稿删除：BOSS、总部财务或门店财务/店长；门店边界由数据范围强制。 */
+    public Employee requireDeleteActor(Employee principal) {
+        return tenantContext.requireRole(principal,
+                EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
+    }
+
+    /** 员工工资/提成发放：BOSS、财务或本店店长。 */
+    public Employee requirePaymentActor(Employee principal) {
+        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
+    }
+
+    /** BOSS 专属能力保留；店长动作不得复用此方法。 */
     public Employee requireBoss(Employee principal) {
         return tenantContext.requireRole(principal, EmployeeRole.Boss);
+    }
+
+    /**
+     * 公司级工资单的整单动作：企业范围可操作全部工资项；门店范围必须保证
+     * 整张工资单的工资项均属于本店。门店财务与店长均不得操作混合门店工资单。
+     */
+    public void requireStoreItemsInStore(Employee current, List<PayrollItem> items) {
+        DataScope scope = dataScopeContext.resolve(current);
+        if (scope.type() == DataScopeType.Company) {
+            return;
+        }
+        if (scope.type() != DataScopeType.Store || scope.storeId() == null) {
+            throw new DefinedException(new DefaultErrorCode("403", "当前账号未配置有效门店数据范围"));
+        }
+        Long storeId = scope.storeId();
+        boolean mixedStore = items != null && items.stream().anyMatch(item ->
+                item.getStore() == null || !storeId.equals(item.getStore().getStoreId()));
+        if (mixedStore) {
+            throw new DefinedException(new DefaultErrorCode("403", "工资单包含其他门店工资项，不能由当前门店账号整单操作"));
+        }
     }
 
 

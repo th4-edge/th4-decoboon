@@ -41,3 +41,10 @@
 - `dig-v1.html`：使用 dig catalog 的负责人 Web/App UI 重构概念，含 dark/light、中/EN、经营总览、业务推进和项目对象。
 - 审查与设计：`../../domains/owner-operating-system/15-dig-ui-review-and-redesign.md`
 - 证据：`../../../acceptance/runs/20261028-owner-dig-ui-review/README.md`
+
+## Unified V1 · 负责人统一经营台
+
+- `unified-v1.html`：基于 `BOS-R0` 现状对账生成的最新高保真预览，覆盖经营总览、风险对象抽屉、亲自处理、Web/App、七态和研发安排。
+- 角色基线：`../../domains/owner-operating-system/16-boss-role-product-baseline-v1.md`
+- 渲染与交互证据：`../../../acceptance/runs/20261029-boss-unified-prototype/README.md`
+- 状态：可评审原型，不是生产页面或独立验收。

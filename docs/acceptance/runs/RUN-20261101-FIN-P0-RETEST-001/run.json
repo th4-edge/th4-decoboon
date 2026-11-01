@@ -1,0 +1,28 @@
+{
+  "runId": "RUN-20261101-FIN-P0-RETEST-001",
+  "createdAt": "2026-11-01T14:33:27+08:00",
+  "status": "COMPLETED",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "7b7dc5f0ed3795fbd6d13640f5dfb7f51b8c3dd8",
+  "webCommit": "e40ca8baf6203d71f5d0375cc043d424a0aa5873",
+  "appCommit": "f2fb91e0785bf953940257ce97e3ea84fc2ae808",
+  "artifactHashes": {},
+  "environment": "local-fixture",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261101-RUN20261101FINP0-",
+  "caseIds": [
+    "TC-FIN-FINANCE-COST-004",
+    "TC-FIN-CROSSSURFACE-PARITY-006"
+  ],
+  "summary": {
+    "total": 2,
+    "pass": 2,
+    "fail": 0,
+    "blocked": 0,
+    "notRun": 0
+  },
+  "finishedAt": "2026-11-01T14:34:59+08:00"
+}

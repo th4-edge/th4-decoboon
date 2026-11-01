@@ -210,9 +210,11 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-21 退款与提成汇总新增 2 条 protected：finance/refund/report、payroll/commission/report。
         // 2026-10-21 供应商往来分页新增 1 条 protected：finance/partner-ledger/page。
         // 2026-10-21 项目账本汇总新增 1 条 protected：finance/project-ledger/report。
-        // 合并当前集成分支后 Provider 面板为 541（public 16 + protected 525）。
-        assertThat(routes).hasSize(541);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(525);
+        // 邀请主动发现新增 1 条 protected：invite/invitation/pending。
+        // 2026-10-31 财务报价单行汇总（DQ-X6）新增 1 条 protected：quote/finance/summary。
+        // 当前 Provider 面板为 543（public 16 + protected 527）。
+        assertThat(routes).hasSize(543);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(527);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -220,6 +222,7 @@ class ProviderSecurityAcceptanceTest {
     void protectedRepresentativeRoutesMustReturnUnauthorizedWithoutToken() throws Exception {
         assertUnauthorized("design/items/reorder");
         assertUnauthorized("project/contract-change/preview");
+        assertUnauthorized("quote/finance/summary");
         assertUnauthorized("content/template/list");
         assertUnauthorized("content/lead-touch/save");
         assertUnauthorized("content/lead-touch/list");

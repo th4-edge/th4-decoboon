@@ -1,0 +1,91 @@
+{
+  "caseId": "TC-FIN-FINANCE-COST-004",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:27:50+08:00",
+  "finishedAt": "2026-11-01T14:27:50+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-RUN20261101FINP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/projects/242297299361857536",
+      "control": "进入结算",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "settlement=Draft; costComplete=false",
+      "business_state_after": "settlement tab opened; profit empty; confirm disabled",
+      "feedback": "成本未完整，确认按钮禁用",
+      "evidence_ids": [
+        "02-finance-project-web.png",
+        "03-finance-settlement-blocked-web.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/finance/pages/project",
+      "control": "总览/结算",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "settlement=Draft; costComplete=false",
+      "business_state_after": "项目毛利无数值；页面数据profitAmount=null",
+      "feedback": "项目毛利仅显示标签，无伪数字",
+      "evidence_ids": [
+        "04-finance-project-app.png",
+        "05-finance-settlement-app.png",
+        "06-finance-overview-app.png",
+        "20-app-report-data.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "finance/project/report",
+      "control": "只读对账",
+      "control_state": "N/A",
+      "business_state_before": "costComplete=false",
+      "business_state_after": "DB profit_amount=NULL; gross_margin=NULL; settlement Draft",
+      "feedback": "页面、API、DB一致",
+      "evidence_ids": [
+        "10-finance-project-report-api.json",
+        "11-receivable-report-api.json",
+        "12-payable-report-api.json",
+        "13-project-finance-db.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Web项目核算显示实际成本¥2,240.00、项目毛利“成本未完整”、结算利润“成本未完整”、毛利率“暂不可确认”",
+    "App项目财务不显示毛利数值，页面数据profitAmount=null、grossMargin=null",
+    "Web确认结算按钮disabled=true并提示补齐成本后才能确认"
+  ],
+  "actualState": [
+    "costComplete=false",
+    "costIncompleteCount=1",
+    "profitAmount=null",
+    "grossMargin=null",
+    "settlement.status=Draft"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-COST-004/02-finance-project-web.png",
+    "evidence/TC-FIN-FINANCE-COST-004/03-finance-settlement-blocked-web.png",
+    "evidence/TC-FIN-FINANCE-COST-004/04-finance-project-app.png",
+    "evidence/TC-FIN-FINANCE-COST-004/05-finance-settlement-app.png",
+    "evidence/TC-FIN-FINANCE-COST-004/06-finance-overview-app.png",
+    "evidence/TC-FIN-FINANCE-COST-004/10-finance-project-report-api.json",
+    "evidence/TC-FIN-FINANCE-COST-004/11-receivable-report-api.json",
+    "evidence/TC-FIN-FINANCE-COST-004/12-payable-report-api.json",
+    "evidence/TC-FIN-FINANCE-COST-004/13-project-finance-db.json",
+    "evidence/TC-FIN-FINANCE-COST-004/20-app-report-data.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "App端金额展示精度和确认按钮门禁差异在同run的跨端对账用例中登记为DEF-20261101-001/002；本用例只判断成本缺失时利润是否为空。"
+}

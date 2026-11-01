@@ -1,0 +1,45 @@
+{
+  "defectId": "DEF-20261101-002",
+  "caseIds": [
+    "TC-FIN-CROSSSURFACE-PARITY-006"
+  ],
+  "priority": "P2",
+  "status": "VERIFIED",
+  "title": "小程序项目财务金额取整到元，与Web精确到分不一致",
+  "role": "Finance",
+  "surface": "App",
+  "pagePath": "/subpackages/finance/pages/project",
+  "businessState": "contractAmount=2495.75; receivedAmount=1148.05; outstandingAmount=6347.70",
+  "expected": "同一项目在App与Web以一致金额口径展示；若产品明确允许取整，应有冻结的展示规则和必要精度提示。",
+  "actual": "Web显示¥2,495.75/¥1,148.05/¥6,347.70；App文字显示¥2,496/¥1,148/¥6,348，页面数据仍为精确值。",
+  "minimumReproduction": [
+    "财务账号分别进入Web与小程序同一项目财务页",
+    "对比合同金额、累计回款和待收金额"
+  ],
+  "impact": "跨端用户看到的金额精度不同，可能影响财务核对信任和一致性判断。",
+  "evidence": [
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/21-web-role-parity.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/app-cost.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/app-cost-detail.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/app-report-data.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/24-cross-surface-comparison.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "App 财务金额展示规范",
+  "retestCondition": "Web/App金额展示规则一致；若允许取整，页面明确精度策略且关键对账场景可查看精确值。",
+  "createdAt": "2026-11-01T14:27:50+08:00",
+  "fixedAt": "2026-11-01T14:33:27+08:00",
+  "changedFiles": [
+    "th4-decoboon-app/src/subpackages/finance/pages/project.vue",
+    "th4-decoboon-app/src/core/format.ts",
+    "th4-decoboon-app/scripts/verify-money-format.mjs"
+  ],
+  "devVerification": {
+    "moneyFormat": "11/11 PASS",
+    "typeCheck": "PASS",
+    "buildMpWeixin": "PASS"
+  },
+  "verifiedAt": "2026-11-01T14:34:59+08:00",
+  "retestRun": "docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001",
+  "retestEvidence": "docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001/evidence/TC-FIN-CROSSSURFACE-PARITY-006/24-cross-surface-comparison-retest.json"
+}

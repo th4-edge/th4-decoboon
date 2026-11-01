@@ -1,61 +1,46 @@
 package com.th4.edge.decoboon.payroll;
 
-import com.th4.edge.decoboon.finance.configure.PayableStatus;
-import com.th4.edge.decoboon.finance.configure.PayableType;
-import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.common.context.StoreFilterContext;
-import com.th4.edge.decoboon.finance.repository.PayableRepository;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollWorkbenchAggregateContext;
 import com.th4.edge.decoboon.payroll.context.PayrollWorkbenchContext;
-import com.th4.edge.decoboon.payroll.model.CommissionItem;
-import com.th4.edge.decoboon.payroll.model.PayrollSheet;
-import com.th4.edge.decoboon.payroll.model.Payslip;
-import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
-import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
-import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
-import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
-import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
-import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/** 薪酬工作台必须明确当前周期，并给出最近一次工资单事实。 */
+/** 薪酬工作台只负责范围解析、聚合结果组装和响应投影。 */
 class PayrollWorkbenchContextTest {
 
     @Test
     void shouldProjectLatestSheetWhenSelectedPeriodHasNoSheet() {
         Employee boss = boss();
         PayrollAccessContext access = access(boss);
-        AttendanceSummaryRepository attendance = mock(AttendanceSummaryRepository.class);
-        PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
-        CommissionItemRepository commissions = mock(CommissionItemRepository.class);
-        PayslipRepository payslips = mock(PayslipRepository.class);
-        PayableRepository payables = mock(PayableRepository.class);
+        PayrollWorkbenchAggregateContext aggregate = mock(PayrollWorkbenchAggregateContext.class);
+        StoreFilterContext scope = mock(StoreFilterContext.class);
+        when(scope.resolve(boss, null)).thenReturn(0L);
+        when(aggregate.attendance(boss, "2026-10", 0L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.AttendanceAggregate(0));
+        when(aggregate.sheets(boss, "2026-10", 0L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.SheetAggregate(0, 0, 0, 0, 0, false));
+        when(aggregate.payables(boss, "2026-10", 0L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.PayableAggregate(BigDecimal.ZERO));
+        when(aggregate.commissions(boss, 0L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.CommissionAggregate(BigDecimal.ZERO));
+        when(aggregate.payslips(boss, "2026-10", 0L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.PayslipAggregate(0, 0));
+        when(aggregate.latestSheet(boss, 0L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.LatestSheet(
+                        9001L, "2027-01", PayrollSheetStatus.Paid, new BigDecimal("5727.27")));
 
-        PayrollSheet latest = new PayrollSheet();
-        latest.setSheetId(9001L);
-        latest.setPeriod("2027-01");
-        latest.setStatus(PayrollSheetStatus.Paid);
-        latest.setTotalNetAmount(new BigDecimal("5727.27"));
-
-        when(attendance.findAll(any(Specification.class))).thenReturn(List.of());
-        when(sheets.findAll(any(Specification.class))).thenReturn(List.of(latest));
-        when(commissions.findAll(any(Specification.class))).thenReturn(List.of());
-        when(payslips.findAll(any(Specification.class))).thenReturn(List.of());
-        when(payables.findAll(any(Specification.class))).thenReturn(List.of());
-
-        var context = new PayrollWorkbenchContext(access, attendance, sheets, commissions, payslips, payables, mock(StoreFilterContext.class));
+        var context = new PayrollWorkbenchContext(access, aggregate, scope);
         var report = context.report(boss, "2026-10");
 
         assertThat(report.getCurrentPeriodHasSheet()).isFalse();
@@ -66,81 +51,48 @@ class PayrollWorkbenchContextTest {
     }
 
     @Test
-    void shouldFilterSalaryPayableBySelectedPeriodButKeepCommissionPayable() {
+    void shouldMapAggregateResultsWithoutLoadingEntities() {
         Employee boss = boss();
         PayrollAccessContext access = access(boss);
-        AttendanceSummaryRepository attendance = mock(AttendanceSummaryRepository.class);
-        PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
-        CommissionItemRepository commissions = mock(CommissionItemRepository.class);
-        PayslipRepository payslips = mock(PayslipRepository.class);
-        PayableRepository payables = mock(PayableRepository.class);
-
-        when(attendance.findAll(any(Specification.class))).thenReturn(List.of());
-        when(sheets.findAll(any(Specification.class))).thenReturn(List.of());
-        when(commissions.findAll(any(Specification.class))).thenReturn(List.of());
-        when(payslips.findAll(any(Specification.class))).thenReturn(List.of());
-        when(payables.findAll(any(Specification.class))).thenReturn(List.of(
-                payable(PayableType.EmployeeSalary, "2027-01", "100.00"),
-                payable(PayableType.EmployeeSalary, "2026-10", "50.00"),
-                payable(PayableType.EmployeeCommission, null, "80.00")));
-
-        var context = new PayrollWorkbenchContext(access, attendance, sheets, commissions, payslips, payables, mock(StoreFilterContext.class));
-        var report = context.report(boss, "2026-10");
-
-        assertThat(report.getPendingEmployeePayableAmount()).isEqualByComparingTo("130.00");
-    }
-
-
-    @Test
-    void shouldFilterPayrollWorkbenchBySelectedStore() {
-        Employee boss = boss();
-        PayrollAccessContext access = access(boss);
-        AttendanceSummaryRepository attendance = mock(AttendanceSummaryRepository.class);
-        PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
-        CommissionItemRepository commissions = mock(CommissionItemRepository.class);
-        PayslipRepository payslips = mock(PayslipRepository.class);
-        PayableRepository payables = mock(PayableRepository.class);
+        PayrollWorkbenchAggregateContext aggregate = mock(PayrollWorkbenchAggregateContext.class);
         StoreFilterContext scope = mock(StoreFilterContext.class);
         when(scope.resolve(boss, 10L)).thenReturn(10L);
+        when(aggregate.attendance(boss, "2026-10", 10L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.AttendanceAggregate(2));
+        when(aggregate.sheets(boss, "2026-10", 10L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.SheetAggregate(1, 2, 3, 4, 5, true));
+        when(aggregate.payables(boss, "2026-10", 10L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.PayableAggregate(new BigDecimal("130.00")));
+        when(aggregate.commissions(boss, 10L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.CommissionAggregate(new BigDecimal("80.00")));
+        when(aggregate.payslips(boss, "2026-10", 10L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.PayslipAggregate(6, 7));
+        when(aggregate.latestSheet(boss, 10L))
+                .thenReturn(new PayrollWorkbenchAggregateContext.LatestSheet(
+                        11L, "2027-01", PayrollSheetStatus.Pending, new BigDecimal("130.00")));
 
-        Payable own = payable(PayableType.EmployeeSalary, "2026-10", "50.00");
-        own.setStore(store(10L));
-        Payable other = payable(PayableType.EmployeeSalary, "2026-10", "60.00");
-        other.setStore(store(20L));
-        when(attendance.findAll(any(Specification.class))).thenReturn(List.of());
-        when(sheets.findAll(any(Specification.class))).thenReturn(List.of());
-        when(commissions.findAll(any(Specification.class))).thenReturn(List.of());
-        when(payslips.findAll(any(Specification.class))).thenReturn(List.of());
-        when(payables.findAll(any(Specification.class))).thenReturn(List.of(own, other));
-
-        var context = new PayrollWorkbenchContext(access, attendance, sheets, commissions, payslips, payables, scope);
+        var context = new PayrollWorkbenchContext(access, aggregate, scope);
         var report = context.report(boss, "2026-10", 10L);
 
-        assertThat(report.getPendingEmployeePayableAmount()).isEqualByComparingTo("50.00");
+        assertThat(report.getPendingAttendanceCount()).isEqualTo(2);
+        assertThat(report.getCurrentPeriodHasSheet()).isTrue();
+        assertThat(report.getDraftSheetCount()).isEqualTo(1);
+        assertThat(report.getPendingSheetCount()).isEqualTo(2);
+        assertThat(report.getConfirmedSheetCount()).isEqualTo(3);
+        assertThat(report.getPartialPaidSheetCount()).isEqualTo(4);
+        assertThat(report.getPaidSheetCount()).isEqualTo(5);
+        assertThat(report.getPendingEmployeePayableAmount()).isEqualByComparingTo("130.00");
+        assertThat(report.getReleasedUnpaidCommissionAmount()).isEqualByComparingTo("80.00");
+        assertThat(report.getPendingPayslipCount()).isEqualTo(6);
+        assertThat(report.getPublishedPayslipCount()).isEqualTo(7);
+        assertThat(report.getLatestSheetId()).isEqualTo(11L);
+        verify(scope).resolve(boss, 10L);
     }
 
     private PayrollAccessContext access(Employee boss) {
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         when(access.requireManager(boss)).thenReturn(boss);
-        when(access.visible(any(Employee.class), any(Class.class))).thenReturn(mock(Specification.class));
-        when(access.visibleSheets(any(Employee.class), any())).thenReturn(mock(Specification.class));
         return access;
-    }
-
-    private Payable payable(PayableType type, String period, String amount) {
-        Payable payable = new Payable();
-        payable.setType(type);
-        payable.setPeriod(period);
-        payable.setAmount(new BigDecimal(amount));
-        payable.setPaidAmount(BigDecimal.ZERO);
-        payable.setStatus(PayableStatus.Pending);
-        return payable;
-    }
-
-    private Store store(Long storeId) {
-        Store store = new Store();
-        store.setStoreId(storeId);
-        return store;
     }
 
     private Employee boss() {

@@ -128,8 +128,9 @@ class StatisticStoreAggregateContextTest {
         signedContract(company, storeB, cB, boss, new BigDecimal("300000.00"), MONTH, BusinessOrigin.New,
                 ProjectStatus.Ongoing, seq, 26);
 
-        receipt(company, storeA, cA, boss, new BigDecimal("40000.00"), LocalDate.now().minusDays(1), seq, 41);
-        receipt(company, storeB, cB, boss, new BigDecimal("25000.00"), LocalDate.now().minusDays(2), seq, 42);
+        // 月口径测试不能使用 now()-N 天：月初执行会跨到上月，导致门店B收款和合同报价被月份条件排除。
+        receipt(company, storeA, cA, boss, new BigDecimal("40000.00"), MONTH, seq, 41);
+        receipt(company, storeB, cB, boss, new BigDecimal("25000.00"), MONTH.plusDays(1), seq, 42);
 
         quote(company, storeA, cA, boss, QuoteStatus.Submitted, seq, 51);
         quote(company, storeA, cA, boss, QuoteStatus.Accepted, seq, 52);
@@ -275,7 +276,7 @@ class StatisticStoreAggregateContextTest {
         quote.setDesignFee(BigDecimal.ZERO);
         quote.setManagementFee(BigDecimal.ZERO);
         quote.setStatus(QuoteStatus.Accepted);
-        quote.setSubmittedAt(LocalDateTime.now().minusDays(2));
+        quote.setSubmittedAt(MONTH.atTime(12, 0));
         quote = quoteRepository.save(quote);
 
         Project project = new Project();
@@ -392,7 +393,7 @@ class StatisticStoreAggregateContextTest {
         quote.setDesignFee(BigDecimal.ZERO);
         quote.setManagementFee(BigDecimal.ZERO);
         quote.setStatus(status);
-        quote.setSubmittedAt(LocalDateTime.now().minusDays(1));
+        quote.setSubmittedAt(MONTH.atTime(12, 0));
         quoteRepository.save(quote);
     }
 }

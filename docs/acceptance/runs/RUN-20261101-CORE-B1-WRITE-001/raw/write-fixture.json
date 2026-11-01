@@ -1,0 +1,90 @@
+{
+  "key": "B1-WRITE-20261101-001",
+  "store": {
+    "storeId": "199500000000000011",
+    "name": "总店",
+    "default": true,
+    "status": "Active",
+    "sort": 0
+  },
+  "record": {
+    "customerId": "242541216321765376",
+    "propertyId": "242541216497926144",
+    "storeId": "199500000000000011",
+    "designId": "242541218263728128",
+    "quoteId": "242541219522019328",
+    "amount": 2495.75
+  },
+  "quoteAfterSubmit": {
+    "updateTime": {
+      "dateTime": "2026-11-01 14:52:13"
+    },
+    "quoteId": "242541219522019328",
+    "no": "Q1793515932929",
+    "title": "造数方案 5100设计报价",
+    "property": {
+      "propertyId": "242541216497926144",
+      "customer": {
+        "custId": "242541216321765376",
+        "name": "王芳（造数5100）",
+        "telNo": "13700005100",
+        "community": "滨湖世纪城",
+        "addr": "滨湖世纪城1栋102",
+        "area": 130.0,
+        "budget": 30.0,
+        "status": {
+          "name": "已报价",
+          "key": "Quoted"
+        }
+      },
+      "propertyNo": "H1793515932211",
+      "community": "滨湖世纪城",
+      "building": "1栋",
+      "roomNo": "102",
+      "address": "滨湖世纪城1栋102",
+      "area": 130.0,
+      "layout": "三室两厅一厨两卫",
+      "status": {
+        "name": "已报价",
+        "key": "Quoted"
+      },
+      "salesman": {
+        "empId": "199500000000000106",
+        "name": "审计业务",
+        "role": {
+          "name": "业务员",
+          "value": "Marketer",
+          "key": "Marketer"
+        }
+      },
+      "designer": {
+        "empId": "199500000000000105",
+        "name": "审计设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      }
+    },
+    "version": 1,
+    "mode": {
+      "name": "自定义报价",
+      "value": "Custom",
+      "key": "Custom"
+    },
+    "area": 130.0,
+    "subtotal": 2502.0,
+    "discount": 0.95,
+    "taxAmount": 118.85,
+    "taxRate": 0.05,
+    "amount": 2495.75,
+    "designFee": 0.0,
+    "managementFee": 0.0,
+    "status": {
+      "name": "已提交",
+      "key": "Submitted"
+    },
+    "submittedAt": "2026-11-01 14:52:13"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "initial": {
+    "rows": 7,
+    "chips": [
+      {
+        "text": "全部7",
+        "cls": "source-picker__chip is-on"
+      },
+      {
+        "text": "施工3",
+        "cls": "source-picker__chip"
+      },
+      {
+        "text": "综合其他1",
+        "cls": "source-picker__chip"
+      },
+      {
+        "text": "主材3",
+        "cls": "source-picker__chip"
+      }
+    ]
+  },
+  "material": {
+    "rows": 3,
+    "names": [
+      "主材--实木复合地板",
+      "主材--抛釉砖 800x800",
+      "主材--实木复合地板"
+    ]
+  },
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "docScrollWidth": 1440,
+      "docClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyClientWidth": 1440,
+      "docHorizontalOverflow": false,
+      "pageOverflow": []
+    },
+    {
+      "width": 1280,
+      "height": 900,
+      "docScrollWidth": 1280,
+      "docClientWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "bodyClientWidth": 1280,
+      "docHorizontalOverflow": false,
+      "pageOverflow": []
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "docScrollWidth": 1024,
+      "docClientWidth": 1024,
+      "bodyScrollWidth": 1024,
+      "bodyClientWidth": 1024,
+      "docHorizontalOverflow": false,
+      "pageOverflow": []
+    }
+  ],
+  "rangeRequests": [
+    {
+      "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+      "method": "POST",
+      "postData": "{\"contractId\":\"241939522005237760\",\"current\":1,\"size\":20}"
+    },
+    {
+      "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+      "method": "POST",
+      "postData": "{\"contractId\":\"241939522005237760\",\"current\":1,\"size\":20,\"itemType\":\"Material\"}"
+    }
+  ],
+  "rangeResponses": [
+    {
+      "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+      "status": 200,
+      "mimeType": "application/json"
+    },
+    {
+      "url": "http://127.0.0.1:8081/api/project/contract-change/range",
+      "status": 200,
+      "mimeType": "application/json"
+    }
+  ],
+  "consoleErrors": [],
+  "exceptions": []
+}

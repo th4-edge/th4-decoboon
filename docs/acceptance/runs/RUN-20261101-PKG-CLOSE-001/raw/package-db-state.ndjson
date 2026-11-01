@@ -1,0 +1,8 @@
+{"area": 100.00, "code": "PACK-E35F0F92C6DF", "cost": 9.00, "name": "AUDIT-20261101-PKGCLOSE-001-套餐A", "price": 10000.00, "status": "Published", "version": 1, "discount": 0.90, "templateId": 242591657478848512, "currentPublished": "base64:type16:AQ=="}
+{"name": "AUDIT-20261101-PKGCLOSE-001-区域A", "groupId": 242591904078757888, "priority": 0}
+{"name": "AUDIT-20261101-PKGCLOSE-001-区域B", "groupId": 242591941760385024, "priority": 1}
+{"name": "拆除--墙顶面白灰/腻子粉铲除", "itemId": 242592177438326784, "sectionId": 242591904078757888, "catalogItemId": 242296909367083008}
+{"name": "拆除--墙顶面白灰/腻子粉铲除", "itemId": 242592219171651584, "sectionId": 242591904078757888, "catalogItemId": 242296909367083008}
+{"no": "Q1793528265484", "area": 130.00, "cost": 11.70, "mode": "Package", "amount": 12285.00, "status": "Draft", "quoteId": 242592946019368960, "version": 1, "discount": 0.9000, "subtotal": 13000.00, "taxAmount": 585.00, "costComplete": "base64:type16:AQ==", "packageSnapshotHash": "1fc3447dc50c793680f9e06107f00a5827b776941519ba68f5068701071276e3", "packageTemplateCode": "PACK-E35F0F92C6DF", "packageTemplateVersion": 1}
+{"cost": 5.85, "name": "拆除--墙顶面白灰/腻子粉铲除", "price": 5000.00, "amount": 6500.00, "itemId": 242592946023563264, "category": "拆除", "quantity": 1.300, "packageLineId": 242592177438326784, "packageSectionNameSnapshot": "AUDIT-20261101-PKGCLOSE-001-区域A"}
+{"cost": 5.85, "name": "拆除--墙顶面白灰/腻子粉铲除", "price": 5000.00, "amount": 6500.00, "itemId": 242592946027757568, "category": "拆除", "quantity": 1.300, "packageLineId": 242592219171651584, "packageSectionNameSnapshot": "AUDIT-20261101-PKGCLOSE-001-区域A"}

@@ -30,11 +30,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/** DEC-093：店长不得发放员工工资或提成。 */
+/** DEC-097：本店店长可进入员工发放动作，后续仍按应付事实校验。 */
 class PayrollEmployeePaymentAccessTest {
 
     @Test
-    void storeManagerCannotPayEmployeePayables() {
+    void storeManagerUsesPaymentActorAndStillRequiresPayableFacts() {
         Company company = new Company();
         company.setComId(100L);
         Employee manager = new Employee();
@@ -43,8 +43,7 @@ class PayrollEmployeePaymentAccessTest {
         manager.setCompany(company);
 
         PayrollAccessContext payrollAccess = mock(PayrollAccessContext.class);
-        when(payrollAccess.requireEditor(manager)).thenThrow(
-                new DefinedException(new DefaultErrorCode("403", "无权执行该操作")));
+        when(payrollAccess.requirePaymentActor(manager)).thenReturn(manager);
         PaymentRepository payments = mock(PaymentRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
         EmployeePaymentContext context = new EmployeePaymentContext(
@@ -59,12 +58,12 @@ class PayrollEmployeePaymentAccessTest {
                 mock(PayrollSheetRepository.class),
                 mock(PayslipRepository.class));
 
-        assertThatThrownBy(() -> context.pay(manager, List.of(1L), new BigDecimal("1.00"),
+        assertThatThrownBy(() -> context.pay(manager, List.of(), new BigDecimal("1.00"),
                 FundAccount.Cash, LocalDate.of(2026, 10, 23), null, "b3b1-role", null))
                 .isInstanceOf(DefinedException.class)
-                .hasMessageContaining("无权");
+                .hasMessageContaining("员工应付单");
 
-        verify(payrollAccess).requireEditor(manager);
+        verify(payrollAccess).requirePaymentActor(manager);
         verify(payments, never()).save(any());
         verify(payables, never()).save(any());
     }

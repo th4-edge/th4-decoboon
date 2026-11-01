@@ -14,6 +14,15 @@
 | --- | --- | --- | --- | --- |
 | B1 | 三端看到同一方案当前价格并完成只读运营查看 | 后端读模型和测试、Web/App 页面、构建和静态门禁 | 三端构建通过、成本裁剪有测试、范围门禁通过 | DEV_VERIFIED |
 | B2 | UI/验收与性能 | 真实角色渲染、跨店跨企业 HTTP、10倍数据验证 | UI_REVIEWED / ACCEPTED | PENDING |
+| DQ-X3 | App 方案模版库浏览与实例化 | 复用 `design/template/page|info|instantiate`；App 列表/详情/实例化页面；类型检查与构建 | 3 个路由 App/Web 共享；模板不含价格；实例化后回读；真实页面复核 | UI_REVIEWED |
+| DQ-X4 | App 方案模版创建、区域/分项维护与发布 | 复用 `design/template/save|publish|room/save|room/delete|items/batchsave`；App 编辑页与构建 | 5 个路由 App/Web 共享；发布后只读；模板不含价格；真实页面复核 | UI_REVIEWED |
+| DQ-X5 | App 已发布模版后续生命周期 | 复用 `design/template/copy|disable|version/build`；App 动作面板与构建 | 3 个路由 App/Web 共享；历史报价不受影响；真实页面复核 | UI_REVIEWED |
+| DQ-X6 | 财务报价服务端汇总 | 复用报价数据范围；新增单行聚合 Provider；Web 删除前端求和 | summary 与分组/列表对账；页面真实渲染 | DEV_VERIFIED |
+| DQ-X7 | 项目合同档案服务端汇总 | workbench 增加合同行汇总；Web 消费服务端摘要 | 行数与金额对账；三角色成本边界；真实页面 | DEV_VERIFIED |
+| DQ-X8 | 合同基线行数据库分页 | `project/contract-line/page` 使用 Pageable；Web 按页消费；变更来源只用 range | 默认/上限/稳定排序/角色成本测试；真实 API 和 Web 页面 | DEV_VERIFIED |
+| DQ-X9 | 业主与小程序合同行分页同源 | `customer/contract-line/page` Pageable；App 显式 current/size；workbench 行摘要 | 业主 API 双页、App 门禁负向自测、小程序原生页面 | DEV_VERIFIED |
+| DQ-X10 | 合同读模型成本聚合 | `ProjectContractContext.enrich` 单条成本聚合；补齐 DQ-X6 Provider 门禁登记 | L2 全量 1184/1184；三角色 API 与 DB checksum | DEV_VERIFIED |
+| DQ-X11 | 增减项来源选择器分页 | Range PICKER_PAGE、服务端筛选/facets、批量快照 | API size=2、Web/小程序真实页面、独立复验 55/55 | ACCEPTED |
 
 ## 3. 自主决策权限
 
@@ -40,7 +49,7 @@
 
 - 业务裁决已引用：`DEC-078`、`ANS-BIZ-20261021-003`；
 - 定向测试与构建通过；
-- 真实页面/真机 UI 证据：待执行；
+- 微信开发者工具原生页面证据：已完成；物理真机：待执行；
 - 无 UNMAPPED/STALE；
 - 独立验证 PASS：待执行；
 - 回滚路径明确：三端回退到各自上一稳定提交/版本。

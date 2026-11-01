@@ -1,0 +1,1753 @@
+{
+  "storeManagerPage": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 13:57:01"
+            },
+            "custId": "242527331598467072",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "QA-M1-黄金客户",
+            "telNo": "13900009876",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "其他",
+              "key": "Other"
+            },
+            "addr": "合肥市蜀山区QA小区1栋1单元101",
+            "area": 128.5,
+            "budget": 260000.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            },
+            "owner": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "designer": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "lastFollowAt": "2026-11-01 13:58:31",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-11-01 13:59:09",
+            "measureAt": "2026-11-03 10:00:00",
+            "measureRequestedAt": "2026-11-01 13:59:09",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "其他",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Other"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "B级",
+                "key": "B"
+              },
+              "score": 53,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 13:56:55"
+            },
+            "custId": "242527304486486016",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "QA-V05-1010",
+            "telNo": "10100001234",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "其他",
+              "key": "Other"
+            },
+            "status": {
+              "name": "新客户",
+              "key": "New"
+            },
+            "owner": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "其他",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Other"
+              },
+              {
+                "tagId": "-2",
+                "name": "黄金期未首联",
+                "category": {
+                  "name": "风险",
+                  "key": "Risk"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "risk:goldenNoContact"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 0,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 13:56:49"
+            },
+            "custId": "242527281061298176",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "QA-V04-重复",
+            "telNo": "13910000005",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "其他",
+              "key": "Other"
+            },
+            "status": {
+              "name": "新客户",
+              "key": "New"
+            },
+            "owner": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "其他",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Other"
+              },
+              {
+                "tagId": "-2",
+                "name": "黄金期未首联",
+                "category": {
+                  "name": "风险",
+                  "key": "Risk"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "risk:goldenNoContact"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 0,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 13:56:44"
+            },
+            "custId": "242527258038763520",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "QA-V03-负数",
+            "telNo": "13900001234",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "其他",
+              "key": "Other"
+            },
+            "area": -20.0,
+            "budget": -50000.0,
+            "status": {
+              "name": "新客户",
+              "key": "New"
+            },
+            "owner": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "其他",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Other"
+              },
+              {
+                "tagId": "-2",
+                "name": "黄金期未首联",
+                "category": {
+                  "name": "风险",
+                  "key": "Risk"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "risk:goldenNoContact"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 10,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 13:56:32"
+            },
+            "custId": "242527207828750336",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "QA-V01-12位",
+            "telNo": "139000012345",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "其他",
+              "key": "Other"
+            },
+            "status": {
+              "name": "新客户",
+              "key": "New"
+            },
+            "owner": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "其他",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Other"
+              },
+              {
+                "tagId": "-2",
+                "name": "黄金期未首联",
+                "category": {
+                  "name": "风险",
+                  "key": "Risk"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "risk:goldenNoContact"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 0,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 13:55:59"
+            },
+            "custId": "242527069337026560",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "QA校验-12位",
+            "telNo": "139000012345",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "其他",
+              "key": "Other"
+            },
+            "status": {
+              "name": "新客户",
+              "key": "New"
+            },
+            "owner": {
+              "empId": "199500000000000102",
+              "name": "审计负责人"
+            },
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "其他",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Other"
+              },
+              {
+                "tagId": "-2",
+                "name": "黄金期未首联",
+                "category": {
+                  "name": "风险",
+                  "key": "Risk"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "risk:goldenNoContact"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 0,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:56"
+            },
+            "custId": "242297294915895296",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "王芳（造数1100）",
+            "telNo": "13700001100",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "短视频线索",
+              "key": "Lead"
+            },
+            "community": "望江府",
+            "addr": "望江府1栋102",
+            "area": 100.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:56",
+            "nextFollowAt": "2026-11-02 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:56",
+            "measureAt": "2026-11-03 22:42:56",
+            "measureRequestedAt": "2026-10-31 22:42:56",
+            "handedOffAt": "2026-10-31 22:42:56",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "短视频线索",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Lead"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "custId": "242297227509235712",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "胡斌（演示13）",
+            "telNo": "13910000013",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "转介绍",
+              "key": "Referral"
+            },
+            "community": "万象公馆",
+            "addr": "万象公馆4栋1402（主房）",
+            "area": 100.0,
+            "budget": 33.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:40",
+            "nextFollowAt": "2026-11-05 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:40",
+            "measureAt": "2026-10-31 22:42:41",
+            "measureRequestedAt": "2026-10-31 22:42:40",
+            "handedOffAt": "2026-10-31 22:42:40",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "转介绍",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Referral"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:39"
+            },
+            "custId": "242297222228606976",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "孙悦（演示12）",
+            "telNo": "13910000012",
+            "gender": {
+              "name": "女",
+              "key": "F"
+            },
+            "source": {
+              "name": "短视频线索",
+              "key": "Lead"
+            },
+            "community": "翡翠湖畔",
+            "addr": "翡翠湖畔3栋1301（主房）",
+            "area": 88.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000111",
+              "name": "审计设计二"
+            },
+            "lastFollowAt": "2026-10-31 22:42:39",
+            "nextFollowAt": "2026-11-04 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:39",
+            "measureAt": "2026-10-31 22:42:40",
+            "measureRequestedAt": "2026-10-31 22:42:39",
+            "handedOffAt": "2026-10-31 22:42:39",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "短视频线索",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Lead"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:05"
+            },
+            "custId": "242297081690062848",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "徐蕾（演示11）",
+            "telNo": "13910000011",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "视频咨询",
+              "key": "Video"
+            },
+            "community": "锦绣园",
+            "addr": "锦绣园2栋1206（主房）",
+            "area": 148.0,
+            "budget": 27.0,
+            "status": {
+              "name": "已签约",
+              "key": "Signed"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:05",
+            "nextFollowAt": "2026-11-03 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:05",
+            "measureAt": "2026-10-31 22:42:06",
+            "measureRequestedAt": "2026-10-31 22:42:05",
+            "handedOffAt": "2026-10-31 22:42:06",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "视频咨询",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Video"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:05"
+            },
+            "custId": "242297078963765248",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "吴桐（演示10）",
+            "telNo": "13910000010",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "望江府",
+            "addr": "望江府1栋1105（主房）",
+            "area": 136.0,
+            "budget": 24.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000111",
+              "name": "审计设计二"
+            },
+            "lastFollowAt": "2026-10-31 22:42:05",
+            "nextFollowAt": "2026-11-02 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:05",
+            "measureAt": "2026-10-31 22:42:06",
+            "measureRequestedAt": "2026-10-31 22:42:05",
+            "handedOffAt": "2026-10-31 22:42:05",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "自然到店",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:WalkIn"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:04"
+            },
+            "custId": "242297075847397376",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "周涛（演示09）",
+            "telNo": "13910000009",
+            "gender": {
+              "name": "女",
+              "key": "F"
+            },
+            "source": {
+              "name": "转介绍",
+              "key": "Referral"
+            },
+            "community": "香樟花园",
+            "addr": "香樟花园10栋1004（主房）",
+            "area": 124.0,
+            "budget": 21.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:04",
+            "nextFollowAt": "2026-11-06 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:04",
+            "measureAt": "2026-10-31 22:42:05",
+            "measureRequestedAt": "2026-10-31 22:42:04",
+            "handedOffAt": "2026-10-31 22:42:04",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "转介绍",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Referral"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:04"
+            },
+            "custId": "242297073758633984",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "黄静（演示08）",
+            "telNo": "13910000008",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "短视频线索",
+              "key": "Lead"
+            },
+            "community": "滨湖世纪城",
+            "addr": "滨湖世纪城9栋903（主房）",
+            "area": 112.0,
+            "budget": 18.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000111",
+              "name": "审计设计二"
+            },
+            "lastFollowAt": "2026-10-31 22:42:04",
+            "nextFollowAt": "2026-11-05 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:04",
+            "measureAt": "2026-10-31 22:42:05",
+            "measureRequestedAt": "2026-10-31 22:42:04",
+            "handedOffAt": "2026-10-31 22:42:04",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "短视频线索",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Lead"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:02"
+            },
+            "custId": "242297067865636864",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "赵磊（演示07）",
+            "telNo": "13910000007",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "视频咨询",
+              "key": "Video"
+            },
+            "community": "蜀山名邸",
+            "addr": "蜀山名邸8栋802（主房）",
+            "area": 100.0,
+            "budget": 39.0,
+            "status": {
+              "name": "已报价",
+              "key": "Quoted"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:02",
+            "nextFollowAt": "2026-11-04 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:02",
+            "measureAt": "2026-10-31 22:42:03",
+            "measureRequestedAt": "2026-10-31 22:42:02",
+            "handedOffAt": "2026-10-31 22:42:02",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "视频咨询",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Video"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:02"
+            },
+            "custId": "242297065852370944",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "杨帆（演示06）",
+            "telNo": "13910000006",
+            "gender": {
+              "name": "女",
+              "key": "F"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "高新云谷",
+            "addr": "高新云谷7栋701（主房）",
+            "area": 88.0,
+            "budget": 36.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000111",
+              "name": "审计设计二"
+            },
+            "lastFollowAt": "2026-10-31 22:42:02",
+            "nextFollowAt": "2026-11-03 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:02",
+            "measureAt": "2026-10-31 22:42:03",
+            "measureRequestedAt": "2026-10-31 22:42:02",
+            "handedOffAt": "2026-10-31 22:42:02",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "自然到店",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:WalkIn"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:01"
+            },
+            "custId": "242297063709081600",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "陈晨（演示05）",
+            "telNo": "13910000005",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "转介绍",
+              "key": "Referral"
+            },
+            "community": "万象公馆",
+            "addr": "万象公馆6栋606（主房）",
+            "area": 148.0,
+            "budget": 33.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:01",
+            "nextFollowAt": "2026-11-02 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:01",
+            "measureAt": "2026-10-31 22:42:02",
+            "measureRequestedAt": "2026-10-31 22:42:01",
+            "handedOffAt": "2026-10-31 22:42:01",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "转介绍",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Referral"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:01"
+            },
+            "custId": "242297063012827136",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "刘洋（演示04）",
+            "telNo": "13910000004",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "短视频线索",
+              "key": "Lead"
+            },
+            "community": "翡翠湖畔",
+            "addr": "翡翠湖畔5栋505（主房）",
+            "area": 136.0,
+            "budget": 30.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "designer": {
+              "empId": "199500000000000105",
+              "name": "审计设计"
+            },
+            "lastFollowAt": "2026-10-31 22:42:01",
+            "nextFollowAt": "2026-11-06 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:01",
+            "measureAt": "2026-10-31 22:42:02",
+            "measureRequestedAt": "2026-10-31 22:42:01",
+            "handedOffAt": "2026-10-31 22:42:01",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "短视频线索",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Lead"
+              },
+              {
+                "tagId": "-2",
+                "name": "已量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measured"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 38,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:41:48"
+            },
+            "custId": "242297007991947264",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "张敏（演示03）",
+            "telNo": "13910000003",
+            "gender": {
+              "name": "女",
+              "key": "F"
+            },
+            "source": {
+              "name": "视频咨询",
+              "key": "Video"
+            },
+            "community": "锦绣园",
+            "addr": "锦绣园4栋404（主房）",
+            "area": 124.0,
+            "budget": 27.0,
+            "status": {
+              "name": "待量房",
+              "key": "PendingMeasure"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "lastFollowAt": "2026-10-31 22:41:48",
+            "nextFollowAt": "2026-11-05 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "pendingMeasureAt": "2026-10-31 22:42:01",
+            "measureAt": "2026-10-31 22:42:02",
+            "measureRequestedAt": "2026-10-31 22:42:01",
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "视频咨询",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Video"
+              },
+              {
+                "tagId": "-2",
+                "name": "已预约量房",
+                "category": {
+                  "name": "行为",
+                  "key": "Behavior"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "measure:scheduled"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 20,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:41:48"
+            },
+            "custId": "242297007819980800",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "李娜（演示02）",
+            "telNo": "13910000002",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "自然到店",
+              "key": "WalkIn"
+            },
+            "community": "望江府",
+            "addr": "望江府3栋303",
+            "area": 112.0,
+            "budget": 24.0,
+            "status": {
+              "name": "跟进中",
+              "key": "Following"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "lastFollowAt": "2026-10-31 22:41:48",
+            "nextFollowAt": "2026-11-04 00:00:00",
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "自然到店",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:WalkIn"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 20,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:41:48"
+            },
+            "custId": "242297007736094720",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "name": "王芳（演示01）",
+            "telNo": "13910000001",
+            "gender": {
+              "name": "男",
+              "key": "M"
+            },
+            "source": {
+              "name": "转介绍",
+              "key": "Referral"
+            },
+            "community": "香樟花园",
+            "addr": "香樟花园2栋202",
+            "area": 100.0,
+            "budget": 21.0,
+            "status": {
+              "name": "新客户",
+              "key": "New"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务"
+            },
+            "wechatAdded": false,
+            "visitCount": 0,
+            "tags": [
+              {
+                "tagId": "-1",
+                "name": "转介绍",
+                "category": {
+                  "name": "来源",
+                  "key": "Source"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "source:Referral"
+              },
+              {
+                "tagId": "-2",
+                "name": "黄金期未首联",
+                "category": {
+                  "name": "风险",
+                  "key": "Risk"
+                },
+                "scope": {
+                  "name": "系统",
+                  "key": "System"
+                },
+                "status": {
+                  "name": "启用",
+                  "key": "Enabled"
+                },
+                "sort": 0,
+                "key": "risk:goldenNoContact"
+              }
+            ],
+            "grade": {
+              "level": {
+                "name": "C级",
+                "key": "C"
+              },
+              "score": 10,
+              "computedAt": "2026-11-01 14:37:26"
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "20",
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  },
+  "bankManagerPage": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [],
+        "totalPages": 0,
+        "last": true,
+        "totalElements": "0",
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  },
+  "bankManagerDirectInfo": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "客户不存在或无权访问",
+        "system": false
+      }
+    }
+  },
+  "bankManagerDirectUpdate": {
+    "httpStatus": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "客户不存在或无权访问",
+        "system": false
+      }
+    }
+  },
+  "dbStoreCustomerCounts": [
+    {
+      "storeId": "199500000000000011",
+      "storeName": "总店",
+      "customerCount": 20
+    },
+    {
+      "storeId": "199500000000000012",
+      "storeName": "滨湖店",
+      "customerCount": 0
+    }
+  ]
+}

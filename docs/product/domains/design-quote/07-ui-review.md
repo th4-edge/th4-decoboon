@@ -81,3 +81,99 @@
 - `DesignerMeasureTasksView.vue` 将 `number | null` 直接绑定到字符串房屋 ID，改为显式转换。
 
 本记录为开发侧 UI 证据，不替代独立验收。
+
+## DQ-X3 / DQ-X4 / DQ-X5 · App 方案模版真实页面复核（2026-10-30）
+
+- 当前状态：`UI_REVIEWED`（微信开发者工具原生小程序）；物理真机未执行。
+- 环境：iPhone 16 模拟器，393×754，DPR 3，SDK 3.17.5；`dist/dev/mp-weixin`；本地 8090 后端。
+- 证据：`th4-decoboon-app/docs/acceptance/runs/20261030-dq-x3-x5-app-template-acceptance/`。
+- 覆盖：
+  - 模板库空态、筛选、新建入口；
+  - 新建草稿、区域、分项/公式、发布确认与发布后只读；
+  - 模板详情、无价格展示、实例化并回读方案；
+  - 新建 V2/V3 草稿版本、幂等复用、复制为个人草稿；
+  - 停用确认、全部状态可见、已停用筛选与停用后阻断；
+  - 缺房屋上下文、空公式、错误单位、引用区域删除、非维护者动作。
+- 最终列表/详情/方案页 console error：0。
+- 视觉：`qwen2.5vl:7b` 完成两轮机器预检；7B 多图评审存在状态误判，只作为预检，最终视觉签字待人工或更强视觉模型。
+
+### 真实页面修复
+
+| ID | 页面 | 现象 | 级别 | 状态 |
+| --- | --- | --- | --- | --- |
+| UI-DQ-TPL-001 | App 模板编辑器 | 全局确认弹窗宿主缺失，发布/删除无反馈 | P1 | 已修复 |
+| UI-DQ-TPL-002 | App 模板详情 | 区域类型显示内部枚举 `Bedroom` | P1 | 已修复 |
+| UI-DQ-TPL-003 | 模板新版本/复制 | 区域参考面积、周长丢失 | P1 | 已修复并补定向测试 |
+| UI-DQ-TPL-004 | App 模板编辑/详情 | 模板主档状态压过当前版本状态 | P1 | 已修复 |
+| UI-DQ-TPL-005 | 模板列表 | “全部状态”排除已停用，已停用筛选失效 | P1 | 已修复 |
+| UI-DQ-TPL-006 | 模板 Provider | 响应泄漏 `materialPrice/manualPrice/fixedTotalPrice` | P1 | 已修复并补白名单契约测试 |
+| UI-DQ-TPL-007 | App 模板详情 | 英文 eyebrow `DESIGN TEMPLATE` | P2 | 已修复 |
+
+### 未覆盖与边界
+
+- 未连接物理 iPhone/Android，不声明物理真机通过。
+- 独立验收尚未签署；开发侧真实页面证据不能替代 `ACCEPTED`。
+- 房屋删除 `GAP-WEB-025` 保持独立待裁决，不在本批扩展。
+
+## DQ-X6 财务报价页功能复核（2026-10-31）
+
+- 角色：财务 `审计财务`，本地数据范围。
+- 页面：`/finance/quotes`。
+- 结果：KPI 显示报价总数 2、报价总额 ¥3,522.44、成本未完整 0、预计毛利 ¥895.94；summary 请求实际发生 1 次；console error 0，失败请求 0。
+- 1440/1280/1024 三档截图已保存，1280/1024 无横向溢出。
+- 当前主模型不支持图片输入，因此不声明视觉评审通过；本记录仅证明功能、数据和响应式结构。
+- 证据：`docs/acceptance/runs/20261031-dq-x6-quote-finance-summary/`。
+
+## DQ-X7 项目合同档案功能复核（2026-10-31）
+
+- 页面：`/designer/projects/241940507872198656/contract`，Boss 真实账号。
+- 合同范围显示 6 项 / ¥977.80；合同变更显示 1 项 / ¥-168.00，均与服务端聚合一致。
+- 修复施工计划验收方式 `[object Object]`，重新渲染显示中文枚举文案。
+- 1440/1280/1024 三档截图已保存；1440 console/network error 0，1280/1024 无横向溢出，无 `NaN/undefined/null/[object Object]`。
+- 当前主模型不支持图片输入，不声明视觉评审通过。
+- 证据：`docs/acceptance/runs/20261031-dq-x7-contract-archive-summary/`。
+
+## DQ-X8 合同行分页功能复核（2026-10-31）
+
+- 页面：`/designer/projects/241940507872198656/contract`，Boss 真实账号。
+- 网络请求为 `current:1,size:20`，不再出现固定 `size:500`；页面显示 6 项 / ¥977.80，6 条合同行全部可读。
+- 合同变更页面发起减项并打开来源选择：显示 7 个服务端 range 来源，网络只请求 `contract-change/page` 与 `contract-change/range`，没有合同行大页请求。
+- 1440/1280/1024 均无横向溢出；console 0 error，网络无 4xx/5xx。
+- 当前真实合同只有 6 行，翻页按钮未出现；真实 API 以 `size:2` 验证相邻页 ID 无交集，Provider 单测验证默认/上限/窗口。
+- 当前主模型不支持图片输入，不声明视觉评审通过。
+- 证据：`docs/acceptance/runs/20261031-dq-x8-contract-line-pagination/`。
+
+## DQ-X9 小程序合同范围功能复核（2026-10-31）
+
+- 页面：微信开发者工具原生 `subpackages/project/pages/contract`，Boss 真实账号，真实项目合同。
+- 合同范围显示“共 6 项 · 合计 ¥978”，并明确“合同明细已全部加载”；4/4 页面检查 PASS。
+- H5 实际请求 `current:1,size:20`，不再使用无界合同行调用；H5 DOM 393px 无横向溢出。
+- 原生小程序截图 `app-contract-native.png` 已保存。
+- H5 开发运行器存在 uni-h5 `clientWidth` 既有运行时错误，不作为小程序原生通过依据。
+- 当前主模型不支持图片输入，不声明视觉评审通过。
+- 证据：`docs/acceptance/runs/20261031-dq-x9-owner-contract-line-pagination/`。
+
+## DQ-X10 后端成本聚合（2026-10-31）
+
+- 本批不改变 Provider 响应字段、页面交互或视觉样式，未重复执行 Web/App 页面回归。
+- 合同 workbench 的真实 API 响应已对 Boss、Designer、StoreManager 三种角色验证，数据与 DQ-X9 一致。
+- 页面证据继续引用 `20261031-dq-x8-contract-line-pagination` 与 `20261031-dq-x9-owner-contract-line-pagination`；不新增视觉结论。
+
+## DQ-X11 增减项来源选择器功能复核（2026-10-31）
+
+- Web：发起减项 → 打开来源选择 → 主材筛选，显示 3 项；请求体包含 `current:1,size:20,itemType:"Material"`，console 0 error。
+- 小程序原生：同一链路初始显示 7 项，主材筛选后 3 项，2/2 检查 PASS。
+- 真实合同只有 7 个来源，Web 分页器未在真实数据下出现；分页窗口由 API size=2 三页验证。
+- H5 开发运行器仍有既有 uni-h5 控制台错误，不作为原生页面通过依据。
+- 当前主模型不支持图片输入，不声明视觉评审通过。
+- 证据：`docs/acceptance/runs/20261031-dq-x11-contract-change-range-picker/`。
+
+## UI-QF-01 设计队列同族降噪（2026-11-01）
+
+- 页面：`/designer/followup`、`/designer/measure`、`/designer/contract`。
+- 删除重复眉题、动作二次说明、泛化完成提示、量房重复下一动作及签约重复刷新。
+- 保留待跟进下一步、量房真实阻断、签约下一责任人和三页全部既有合法动作。
+- 精确 DOM 结果：三页重复眉题节点均为 0；量房重复下一步节点为 0；泛化完成说明为 0；签约“下一责任人”仍存在。
+- 三页 1440/1280/1024 均无横向溢出；Web type-check 与完整 build PASS。
+- 本地视觉模型出现明显结构误判，不据此扩改；人工视觉签字和独立验收未执行。
+- 证据：`th4-decoboon-web/output/playwright/designer-queue-family-ia-20261101/`，变更 `CHG-20261101-020`。

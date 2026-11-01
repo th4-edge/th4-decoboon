@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0",
   "batch": "INFO-D1",
-  "updated": "2026-10-28",
+  "updated": "2026-11-01",
   "registry": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清业务智能体/00-治理/业务信息项注册表-v0.1.json",
   "summary": {
-    "items": 70,
+    "items": 71,
     "statusCounts": {
-      "ALIGNED": 20,
+      "ALIGNED": 21,
       "DUPLICATE_SOURCE": 1,
       "NO_OPERATIONAL_CONSUMER": 1,
       "PARTIAL": 44,
@@ -2053,6 +2053,33 @@
       ],
       "findingIds": [],
       "nextAction": "保持同源，补充真实页面与独立验收证据。"
+    },
+    {
+      "id": "INFO-MATERIAL-009",
+      "domain": "材料供应链",
+      "name": "供应商付款码",
+      "concept": "Partner",
+      "semantic": "Evidence",
+      "status": "ALIGNED",
+      "backend": {
+        "fields": "Partner.paymentCodeImages",
+        "providerRoutes": "supply/partner/page|save|update; file/private/grant"
+      },
+      "app": [
+        "subpackages/supply/pages/partner-edit"
+      ],
+      "web": [
+        "SupplierDetailView"
+      ],
+      "owner": [
+        "供应商档案"
+      ],
+      "tests": [
+        "PartnerPaymentCodeImageTest",
+        "SupplierLegacyPriceHttpAcceptanceTest"
+      ],
+      "findingIds": [],
+      "nextAction": "保持付款码私有授权与供应商同源；独立验收补齐真机微信选图与人工视觉复核。"
     },
     {
       "id": "INFO-FINANCE-001",

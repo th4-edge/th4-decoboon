@@ -1,0 +1,18 @@
+{
+  "batch": "DQ-X10",
+  "change": "CHG-20261031-047",
+  "risk": "L2",
+  "contractId": "241939522005237760",
+  "costFormula": "SUM(COALESCE(cost,0)); incomplete when required type cost <= 0",
+  "sqlCostSummary": { "lineCount": 6, "signedCost": 866.50, "incompleteCount": 0 },
+  "workbench": { "lineCount": 6, "lineAmount": 977.80, "changeCount": 1, "changeAmount": -168.00, "currentAmount": 858.69 },
+  "designerCostReturned": false,
+  "fullTests": "1184/1184 PASS",
+  "providerPanel": 543,
+  "dbChecksumBeforeAfter": "2999847383",
+  "dbSummaryBeforeAfter": "6 / 866.50",
+  "latency": { "samples": 10, "p50Ms": 92.19, "p95Ms": 99.84, "bytes": 17501 },
+  "performanceClaim": "NONE",
+  "independentAcceptance": "PENDING",
+  "release": "NOT_RELEASED"
+}

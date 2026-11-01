@@ -1,0 +1,13 @@
+{
+  "session": {
+    "token": true,
+    "role": "storeManager",
+    "name": "滨湖店长"
+  },
+  "listPath": "pages/customer/list",
+  "listText": "客户经营门店客户经营与跟进批量录入客户总数0当前负责人分组范围待跟进0含今日到期与逾期客户待量房0待指派设计 0 户已签约0含施工中与已完工客户全部客户0客户暂无分组调整筛选条件全部客户0客户 · 可按负责人下钻放大客户区待指派设计全部待首联跟进中待量房报价签约施工完工流失休眠排序风险优先停留最长金额最高最新录入当前分组没有匹配客户调整分组、筛选或搜索条件后重试工作台客户设计项目我的",
+  "detailPath": "subpackages/customer/pages/detail",
+  "detailText": "",
+  "listShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-CORE-B1-001/evidence/TC-CRM-PERMISSION-STORE-005/04-bank-manager-customers-app.png",
+  "detailShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-CORE-B1-001/evidence/TC-CRM-PERMISSION-STORE-005/05-bank-manager-direct-customer-app.png"
+}

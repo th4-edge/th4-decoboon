@@ -31,6 +31,7 @@ import com.th4.edge.decoboon.project.model.ProjectContract;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.decoboon.project.repository.AcceptanceRepository;
 import com.th4.edge.decoboon.project.repository.ContractChangeRepository;
+import com.th4.edge.decoboon.project.repository.ContractLineRepository;
 import com.th4.edge.decoboon.project.repository.MaterialPlanRepository;
 import com.th4.edge.decoboon.project.repository.ProjectStageRepository;
 import org.springframework.stereotype.Component;
@@ -63,6 +64,7 @@ public class ContractWorkbenchContext {
     private final ProjectCostContext costContext;
     private final ProjectStageRepository stageRepository;
     private final ContractChangeRepository changeRepository;
+    private final ContractLineRepository lineRepository;
     private final MaterialSelectionRepository selectionRepository;
     private final MeasureRepository measureRepository;
     private final MeasureRegionRepository measureRegionRepository;
@@ -78,6 +80,7 @@ public class ContractWorkbenchContext {
                                     ProjectCostContext costContext,
                                     ProjectStageRepository stageRepository,
                                     ContractChangeRepository changeRepository,
+                                    ContractLineRepository lineRepository,
                                     MaterialSelectionRepository selectionRepository,
                                     MeasureRepository measureRepository,
                                     MeasureRegionRepository measureRegionRepository,
@@ -89,6 +92,7 @@ public class ContractWorkbenchContext {
         this.costContext = costContext;
         this.stageRepository = stageRepository;
         this.changeRepository = changeRepository;
+        this.lineRepository = lineRepository;
         this.selectionRepository = selectionRepository;
         this.measureRepository = measureRepository;
         this.measureRegionRepository = measureRegionRepository;
@@ -106,6 +110,7 @@ public class ContractWorkbenchContext {
         ProjectContract enriched = contractContext.enrich(contract);
         ContractWorkbench workbench = new ContractWorkbench();
         workbench.setContract(enriched);
+        lineSummary(workbench, enriched);
 
         Project project = enriched.getProject();
         List<Receivable> receivables = project == null
@@ -123,6 +128,18 @@ public class ContractWorkbenchContext {
         workbench.setDownstreamFacts(facts.downstream());
         workbench.setSourceGaps(facts.gaps());
         return workbench;
+    }
+
+    private void lineSummary(ContractWorkbench workbench, ProjectContract contract) {
+        if (contract == null || contract.getContractId() == null) {
+            return;
+        }
+        Object[] row = lineRepository.summarizeByContract(contract).stream().findFirst().orElse(null);
+        if (row == null) {
+            return;
+        }
+        workbench.setLineCount(row[0] == null ? 0 : ((Number) row[0]).intValue());
+        workbench.setLineAmount(row[1] == null ? BigDecimal.ZERO : money((BigDecimal) row[1]));
     }
 
     private ContractFacts facts(ProjectContract contract, ContractWorkbench workbench, boolean includeInternalCost) {

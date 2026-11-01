@@ -41,6 +41,9 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
     private ItemType type;
 
     @AutoInject
+    private Long itemId;
+
+    @AutoInject
     private String category;
 
     @AutoInject
@@ -84,6 +87,9 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(builder.equal(root.get("company").get("comId"), currentEmployee.getCompany().getComId()));
             predicates.add(builder.equal(root.get("type"), type));
+            if (itemId != null) {
+                predicates.add(builder.equal(root.get("itemId"), itemId));
+            }
             if (!Boolean.TRUE.equals(includeInactive)) {
                 predicates.add(builder.isTrue(root.get("active")));
             }

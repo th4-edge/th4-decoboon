@@ -21,7 +21,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/** DEC-046 APP-PAY-03：工资单确认动作人仅 BOSS，财务不得确认。 */
+/** DEC-097：工资单确认仅 BOSS/本店店长，财务不得确认。 */
 class PayrollConfirmRoleTest {
 
     @Test
@@ -31,7 +31,7 @@ class PayrollConfirmRoleTest {
         Employee finance = employee(9L, EmployeeRole.Finance, company);
 
         PayrollAccessContext access = mock(PayrollAccessContext.class);
-        when(access.requireBoss(finance)).thenThrow(
+        when(access.requireConfirmActor(finance)).thenThrow(
                 new DefinedException(new DefaultErrorCode("403", "无权执行该操作")));
         PayrollSettlementContext context = new PayrollSettlementContext(
                 access,
@@ -44,7 +44,7 @@ class PayrollConfirmRoleTest {
         assertThatThrownBy(() -> context.confirm(finance, 1L))
                 .isInstanceOf(DefinedException.class);
 
-        verify(access).requireBoss(finance);
+        verify(access).requireConfirmActor(finance);
         verify(access, never()).requireEditor(any());
     }
 

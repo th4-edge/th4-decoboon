@@ -1,0 +1,81 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SELECTION-001",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:18:16+08:00",
+  "finishedAt": "2026-11-01T15:18:16+08:00",
+  "executor": "codex",
+  "role": "Designer",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATACCP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API",
+      "page_path": "material/sheet/save",
+      "control": "未选材直接建单负向",
+      "control_state": "N/A",
+      "business_state_before": "materialPlan=Planned",
+      "business_state_after": "400 该材料尚未完成主材选材；Plan仍Planned；无作业单",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-selection-gate-api-before.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Designer",
+      "role": "Designer",
+      "surface": "Web",
+      "page_path": "/workbench/materials/242541620656865280",
+      "control": "选择主材并保存交付",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "待选材1",
+      "business_state_after": "已选材1并交付财务下单",
+      "feedback": "选材已保存并交付财务下单",
+      "evidence_ids": [
+        "01-material-selection-before-web.png",
+        "02-material-selected-delivered-web.png",
+        "12-web-selection-before.json",
+        "13-web-selection-after.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "material/sheet/save",
+      "control": "选材后门禁复核",
+      "control_state": "N/A",
+      "business_state_before": "selection存在",
+      "business_state_after": "materialPlan=ReadyToOrder；作业单创建成功Draft",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "11-selection-gate-api-after.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "选材前页面显示待选材1、无选材结果",
+    "保存并交付后页面显示已选材1，材料项状态更新"
+  ],
+  "actualState": [
+    "Plan: Planned→ReadyToOrder",
+    "selectionId=242547067795275776",
+    "sheetCount=1",
+    "作业单1793517336944847641状态Draft"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/01-material-selection-before-web.png",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/02-material-selected-delivered-web.png",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/10-selection-gate-api-before.json",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/11-selection-gate-api-after.json",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/12-web-selection-before.json",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/13-web-selection-after.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "Web和API完成；App选材页未另行执行，本RUN结论限定在已验证端面。"
+}

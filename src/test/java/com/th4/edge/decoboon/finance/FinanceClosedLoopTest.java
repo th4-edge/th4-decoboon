@@ -90,6 +90,10 @@ class FinanceClosedLoopTest {
     @Autowired
     private LedgerRepository ledgerRepository;
     @Autowired
+    private com.th4.edge.decoboon.finance.repository.PayableRepository payableRepository;
+    @Autowired
+    private com.th4.edge.decoboon.finance.context.FinanceAccessContext financeAccessContext;
+    @Autowired
     private WorkerRepository workerRepository;
     @Autowired
     private VoucherContext voucherContext;
@@ -174,6 +178,93 @@ class FinanceClosedLoopTest {
                         && item.getProject().getProjectId().equals(project.getProjectId()))
                 .toList();
         assertThat(ledgers).hasSizeGreaterThanOrEqualTo(2);
+    }
+
+    @Test
+    void shouldRejectManualReceivableTypesOtherThanOther() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+        com.th4.edge.decoboon.finance.service.receivables.save.support.Save save =
+                AopTestUtils.getTargetObject(receivableSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        set(save, "name", "手工应收类型门禁");
+        set(save, "stageName", "补充款");
+        set(save, "type", ReceivableType.First);
+        set(save, "amount", new BigDecimal("10.00"));
+        set(save, "dueDate", LocalDate.now());
+
+        assertThatThrownBy(() -> save.call(new Receivable()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("手工应收仅支持其他应收");
+
+        set(save, "type", ReceivableType.Other);
+        Receivable created = save.call(new Receivable());
+        assertThat(created.getType()).isEqualTo(ReceivableType.Other);
+    }
+
+    @Test
+    void shouldRejectManualPayableTypesOtherThanOtherAndExpense() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+        com.th4.edge.decoboon.finance.service.payables.save.support.Save save =
+                AopTestUtils.getTargetObject(payableSave);
+        set(save, "employee", boss);
+        set(save, "projectId", project.getProjectId());
+        set(save, "name", "手工应付类型门禁");
+        set(save, "type", PayableType.Material);
+        set(save, "payeeName", "测试供应商");
+        set(save, "amount", new BigDecimal("10.00"));
+        set(save, "dueDate", LocalDate.now());
+
+        assertThatThrownBy(() -> save.call(new Payable()))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("手工应付仅支持其他应付或费用支出");
+
+        set(save, "type", PayableType.Expense);
+        Payable created = save.call(new Payable());
+        assertThat(created.getType()).isEqualTo(PayableType.Expense);
+    }
+
+    @Test
+    void shouldReuseExistingAutomaticLedgerForSameSource() {
+        Fixture fixture = createFixture();
+        Employee boss = fixture.boss();
+        Project project = fixture.project();
+        Receivable receivable = createReceivable(boss, project);
+        Receipt receipt = createReceipt(boss, project, receivable);
+        Ledger original = ledgerRepository
+                .findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+                        boss.getCompany().getComId(),
+                        com.th4.edge.decoboon.finance.configure.LedgerSource.Receipt,
+                        receipt.getReceiptId())
+                .orElseThrow();
+
+        Ledger repeated = financeAccessContext.recordLedger(
+                boss, project,
+                com.th4.edge.decoboon.finance.configure.LedgerDirection.Income,
+                receivable.getType().getName(),
+                com.th4.edge.decoboon.finance.configure.LedgerSource.Receipt,
+                receipt.getReceiptId(), receipt.getAmount(), receipt.getAccount(), receipt.getReceivedAt(),
+                receipt.getPayerName(), "重复来源", "幂等核对");
+
+        assertThat(repeated.getLedgerId()).isEqualTo(original.getLedgerId());
+        assertThat(ledgerRepository.findAll().stream()
+                .filter(item -> item.getCompany().getComId().equals(boss.getCompany().getComId()))
+                .filter(item -> item.getSource() == com.th4.edge.decoboon.finance.configure.LedgerSource.Receipt)
+                .filter(item -> receipt.getReceiptId().equals(item.getSourceId()))
+                .count()).isEqualTo(1);
+        assertThatThrownBy(() -> financeAccessContext.recordLedger(
+                boss, project,
+                com.th4.edge.decoboon.finance.configure.LedgerDirection.Income,
+                receivable.getType().getName(),
+                com.th4.edge.decoboon.finance.configure.LedgerSource.Receipt,
+                receipt.getReceiptId(), new BigDecimal("1.00"), receipt.getAccount(), receipt.getReceivedAt(),
+                receipt.getPayerName(), "冲突来源", "金额不一致"))
+                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
+                .hasMessageContaining("该来源已存在不同资金流水");
     }
 
     @Test
@@ -316,6 +407,8 @@ class FinanceClosedLoopTest {
         var summaryResult = summary.call(new Project());
         assertThat(summaryResult.getReceiptCount()).isEqualTo(1);
         assertThat(summaryResult.getPaymentCount()).isEqualTo(1);
+        assertThat(summaryResult.getMonthReceiptCount()).isEqualTo(1);
+        assertThat(summaryResult.getMonthPaymentCount()).isEqualTo(1);
         assertThat(summaryResult.getReceiptAmount()).isEqualByComparingTo("3000.00");
         assertThat(summaryResult.getPaymentAmount()).isEqualByComparingTo("800.00");
         assertThat(summaryResult.getMonthReceiptAmount()).isEqualByComparingTo("3000.00");
@@ -822,9 +915,9 @@ class FinanceClosedLoopTest {
                 AopTestUtils.getTargetObject(receivableSave);
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
-        set(save, "name", "自动化测试首期款");
-        set(save, "stageName", "签订合同");
-        set(save, "type", ReceivableType.First);
+        set(save, "name", "自动化测试其他应收");
+        set(save, "stageName", "补充款");
+        set(save, "type", ReceivableType.Other);
         set(save, "amount", new BigDecimal("3000.00"));
         set(save, "dueDate", LocalDate.now());
         set(save, "invoiceRequired", false);
@@ -853,8 +946,8 @@ class FinanceClosedLoopTest {
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
         set(save, "materialPlanId", null);
-        set(save, "name", "自动化测试材料款");
-        set(save, "type", PayableType.Material);
+        set(save, "name", "自动化测试费用支出");
+        set(save, "type", PayableType.Expense);
         set(save, "payeeEmployeeId", null);
         set(save, "payeeName", "自动化测试供应商");
         set(save, "period", null);
@@ -867,22 +960,24 @@ class FinanceClosedLoopTest {
     }
 
     private Payable createSalaryPayable(Employee boss, Project project) {
-        com.th4.edge.decoboon.finance.service.payables.save.support.Save save =
-                AopTestUtils.getTargetObject(payableSave);
-        set(save, "employee", boss);
-        set(save, "projectId", project.getProjectId());
-        set(save, "materialPlanId", null);
-        set(save, "name", "木工张伟工资");
-        set(save, "type", PayableType.Salary);
-        set(save, "payeeEmployeeId", null);
-        set(save, "payeeName", "木工班组");
-        set(save, "period", null);
-        set(save, "amount", new BigDecimal("40.00"));
-        set(save, "dueDate", LocalDate.now());
-        set(save, "urgent", false);
-        set(save, "sourceNo", null);
-        set(save, "remark", "工资待发");
-        return save.call(new Payable());
+        Payable payable = new Payable();
+        payable.setCompany(boss.getCompany());
+        payable.setProject(project);
+        payable.setProperty(project.getProperty());
+        payable.setStore(project.getStore());
+        payable.setTeam(project.getTeam());
+        payable.setOwner(boss);
+        payable.setName("木工张伟工资");
+        payable.setType(PayableType.Salary);
+        payable.setPayeeName("木工班组");
+        payable.setAmount(new BigDecimal("40.00"));
+        payable.setPaidAmount(BigDecimal.ZERO);
+        payable.setDueDate(LocalDate.now());
+        payable.setStatus(com.th4.edge.decoboon.finance.configure.PayableStatus.Pending);
+        payable.setUrgent(false);
+        payable.setRemark("工资待发");
+        payable.setCreatedBy(boss);
+        return payableRepository.save(payable);
     }
 
     private void createPayment(Employee boss, Payable payable) {

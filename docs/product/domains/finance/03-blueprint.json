@@ -1,0 +1,18 @@
+{
+  "id": "finance.end-to-end",
+  "title": "财务经营与项目核算",
+  "version": "0.1.0",
+  "status": "draft",
+  "sourceRefs": [],
+  "audience": [],
+  "layers": ["standard", "tenant", "project"],
+  "objects": [],
+  "stages": [],
+  "fields": [],
+  "rules": [],
+  "checks": [],
+  "exceptions": [],
+  "metrics": [],
+  "uiBindings": [],
+  "agentTools": []
+}

@@ -1,0 +1,34 @@
+{
+  "caseId": "TC-FIN-FINANCE-SETTLEMENT-005",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "4a808bbbe0526b96aff8d6dbc86438b60711987f2dc8e93d8021f2de499438e9",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-045",
+    "MET-002",
+    "DEC-092"
+  ],
+  "pageTargets": [
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "finance/settlement/save",
+    "finance/settlement/page",
+    "finance/settlement/update"
+  ]
+}

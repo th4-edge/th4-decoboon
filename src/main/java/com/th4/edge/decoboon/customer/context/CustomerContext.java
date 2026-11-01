@@ -79,8 +79,9 @@ public class CustomerContext {
     /**
      * 解析客户负责人。
      *
-     * <p>企业负责人和店长可以明确转交客户；店长只能转交给本门店在职人员。
-     * 候选人不限制岗位，其他角色沿用业务回退负责人，不能通过 ownerId 转交客户。</p>
+     * <p>企业负责人、店长和财务可以明确转交客户；店长与门店财务只能转交给本门店在职人员，
+     * 总部财务可按企业范围转交。候选人不限制岗位，其他角色沿用业务回退负责人，
+     * 不能通过 ownerId 转交客户。</p>
      */
     public Employee resolveOwner(Employee current, Long ownerId, Employee fallback) {
         Long comId = requireCompanyId(current);

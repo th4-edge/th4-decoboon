@@ -78,7 +78,7 @@ public class PayrollSettlementContext {
     /** BOSS 退回复核工资单：仅 Pending → Draft，原因必填并留痕。 */
     @Transactional
     public PayrollSheet returnToDraft(Employee principal, Long sheetId, String reason) {
-        Employee current = accessContext.requireBoss(principal);
+        Employee current = accessContext.requireReturnActor(principal);
         PayrollSheet sheet = requireVisibleSheet(current, sheetId);
         String normalizedReason = reason == null ? "" : reason.trim();
         if (normalizedReason.isEmpty()) {
@@ -90,6 +90,10 @@ public class PayrollSettlementContext {
         if (sheet.getStatus() != PayrollSheetStatus.Pending) {
             throw new DefinedException(new DefaultErrorCode("400", "当前工资单状态不允许退回"));
         }
+        Long comId = current.getCompany().getComId();
+        List<PayrollItem> items = itemRepository
+                .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());
+        accessContext.requireStoreItemsInStore(current, items);
         PayrollSheetStatus before = sheet.getStatus();
         sheet.setStatus(PayrollSheetStatus.Draft);
         sheet.setRemark("退回原因：" + normalizedReason);
@@ -120,8 +124,8 @@ public class PayrollSettlementContext {
 
     @Transactional
     public PayrollSheet confirm(Employee principal, Long sheetId) {
-        // DEC-046 APP-PAY-03：工资单确认动作人为 BOSS，财务只负责制单/复核与发放。
-        Employee current = accessContext.requireBoss(principal);
+        // DEC-097：BOSS 和本店店长可确认；财务仍只负责制单/复核与发放。
+        Employee current = accessContext.requireConfirmActor(principal);
         Long comId = current.getCompany().getComId();
         PayrollSheet sheet = requireVisibleSheet(current, sheetId);
         if (sheet.getStatus() != PayrollSheetStatus.Draft && sheet.getStatus() != PayrollSheetStatus.Pending) {
@@ -134,6 +138,7 @@ public class PayrollSettlementContext {
         // commissionComplete 仅作管理侧提示，不再作为阻断条件。
         List<PayrollItem> items = itemRepository
                 .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());
+        accessContext.requireStoreItemsInStore(current, items);
         validateConfirmable(sheet, items);
         PayrollSheetStatus before = sheet.getStatus();
         for (PayrollItem item : items) {

@@ -1,0 +1,34 @@
+{
+  "outcome": "PASS",
+  "checks": [
+    {
+      "id": "page-path",
+      "pass": true,
+      "detail": "subpackages/payroll/pages/workbench"
+    },
+    {
+      "id": "current-period",
+      "pass": true
+    },
+    {
+      "id": "pending-payable",
+      "pass": true,
+      "detail": "¥1,600"
+    },
+    {
+      "id": "pending-attendance",
+      "pass": true
+    },
+    {
+      "id": "draft-sheet",
+      "pass": true
+    }
+  ],
+  "pageText": "员工薪酬工资、提成、考勤与发放统一处理门店全部门店2026-10 待发员工薪酬¥1,600切换周期已释放未发提成 ¥0待发布工资条 02待确认考勤1工资单草稿0待发放工资单0已发布工资条薪酬入口按角色开放工资单生成、确认与查看员工实发工资月度考勤申报异常、确认后进入工资单员工发放核销工资/提成应付并写资金台账薪酬方案固定工资与生效期负向调整退款、离职、跨期调整进入下期工资",
+  "statValues": [
+    "2",
+    "1",
+    "0",
+    "0"
+  ]
+}

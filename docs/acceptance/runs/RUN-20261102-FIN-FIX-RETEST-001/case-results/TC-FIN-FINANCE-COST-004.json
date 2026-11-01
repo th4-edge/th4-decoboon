@@ -1,0 +1,49 @@
+{
+  "caseId": "TC-FIN-FINANCE-COST-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:21:30+08:00",
+  "finishedAt": "2026-11-02T00:23:52+08:00",
+  "executor": "codex",
+  "role": "Finance+StoreManager",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261102-FINFIXRETEST001-",
+  "steps": [
+    {
+      "action": "核对项目报告和结算列表成本完整性",
+      "result": "PASS_RETEST",
+      "actual": "两边均成本不完整、利润空、成本2240、预计1760",
+      "evidence": "evidence/TC-FIN-FINANCE-COST-004/01-settlement-parity.json"
+    },
+    {
+      "action": "项目结算页面回读",
+      "result": "PASS_RETEST",
+      "actual": "页面显示成本未完整、利润不展示、确认结算禁用",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-COST-004/02-settlement-page-retest.png",
+        "evidence/TC-FIN-FINANCE-COST-004/03-settlement-page-retest.json"
+      ]
+    },
+    {
+      "action": "App端回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/finance/projects/242297299361857536"
+  ],
+  "actualState": [
+    "项目报告/结算列表成本字段一致",
+    "页面无伪利润",
+    "App未执行"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-COST-004/01-settlement-parity.json",
+    "evidence/TC-FIN-FINANCE-COST-004/02-settlement-page-retest.png",
+    "evidence/TC-FIN-FINANCE-COST-004/03-settlement-page-retest.json"
+  ],
+  "defectIds": [
+    "DEF-20261102-002"
+  ],
+  "blockedReason": "App授权微信身份不可用；Web/API成本完整性修复已复验。",
+  "notes": "缺陷本身已验证修复；跨端用例仍需App证据。"
+}

@@ -1,0 +1,19 @@
+{
+  "batch": "DQ-X9",
+  "change": "CHG-20261031-046",
+  "provider": "customer/contract-line/page",
+  "workbench": "customer/contract/workbench",
+  "defaults": { "current": 1, "size": 20 },
+  "serverCap": 50,
+  "sort": ["sort", "lineId"],
+  "customerWorkbench": { "lineCount": 6, "lineAmount": 977.80, "costPresent": false },
+  "customerPage20": { "rows": 6, "totalElements": 6, "costFields": 0 },
+  "adjacentPages": { "size": 2, "page1": ["241939522063958016", "241939522063958017"], "page2": ["241939522063958018", "241939522063958019"], "disjoint": true },
+  "appRequest": { "contractId": "241939522005237760", "current": 1, "size": 20 },
+  "appNative": { "outcome": "PASS", "checks": "4/4", "lineCount": 6, "lineAmountLabel": 978, "allLoaded": true },
+  "appGateSelfTest": "5/5 negative samples intercepted",
+  "gates": { "backendTests": "7/7 PASS", "typeCheck": "PASS", "ui": "PASS", "subpackages": "PASS", "mpWeixinBuild": "PASS", "providerAudits": "PASS" },
+  "temporaryDataCleanup": { "credentials": 0, "customerAccess": 0 },
+  "independentAcceptance": "PENDING",
+  "visualSignoff": "PENDING"
+}

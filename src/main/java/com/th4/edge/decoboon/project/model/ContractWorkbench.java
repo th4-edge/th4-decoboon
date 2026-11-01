@@ -25,6 +25,13 @@ public class ContractWorkbench {
     @Note("合同基线（含付款计划与施工计划快照）")
     private ProjectContract contract;
 
+    @Note("基线合同行数")
+    private Integer lineCount = 0;
+
+    @Unit("元")
+    @Note("基线合同行金额合计")
+    private BigDecimal lineAmount = BigDecimal.ZERO;
+
     @Note("回款结论")
     private Receivable receivable = new Receivable();
 
@@ -54,6 +61,10 @@ public class ContractWorkbench {
 
     public ProjectContract getContract() { return contract; }
     public void setContract(ProjectContract contract) { this.contract = contract; }
+    public Integer getLineCount() { return lineCount; }
+    public void setLineCount(Integer lineCount) { this.lineCount = lineCount; }
+    public BigDecimal getLineAmount() { return lineAmount; }
+    public void setLineAmount(BigDecimal lineAmount) { this.lineAmount = lineAmount; }
     public Receivable getReceivable() { return receivable; }
     public void setReceivable(Receivable receivable) { this.receivable = receivable; }
     public List<PaymentNode> getPaymentNodes() { return paymentNodes; }

@@ -17,12 +17,11 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 合同基线行查询实现。
@@ -51,6 +50,12 @@ public class Page implements com.th4.edge.decoboon.project.service.contractlines
     @AutoInject
     private Long contractId;
 
+    @AutoInject
+    private Integer current;
+
+    @AutoInject
+    private Integer size;
+
     @User
     private Employee employee;
 
@@ -72,16 +77,20 @@ public class Page implements com.th4.edge.decoboon.project.service.contractlines
     @Override
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<ContractLine> call(ContractLine request) {
-        Employee current = accessContext.requireEmployee(employee);
-        ProjectContract contract = resolveContract(current);
+        Employee currentEmployee = accessContext.requireEmployee(employee);
+        ProjectContract contract = resolveContract(currentEmployee);
         if (contract == null) {
-            return new PageImpl<>(List.of());
+            return org.springframework.data.domain.Page.empty();
         }
-        List<ContractLine> lines = lineRepository.findByContractOrderBySortAsc(contract);
-        if (!costContext.canViewCost(current)) {
-            lines.forEach(line -> line.setCost(null));
+        int pageIndex = current == null || current < 1 ? 0 : current - 1;
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
+        var page = lineRepository.findByContractOrderBySortAsc(contract, PageRequest.of(
+                pageIndex, pageSize,
+                Sort.by(Sort.Order.asc("sort"), Sort.Order.asc("lineId"))));
+        if (!costContext.canViewCost(currentEmployee)) {
+            page.getContent().forEach(line -> line.setCost(null));
         }
-        return new PageImpl<>(lines);
+        return page;
     }
 
     private ProjectContract resolveContract(Employee current) {

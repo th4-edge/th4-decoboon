@@ -1,0 +1,11 @@
+# 预检
+
+- RUN：`RUN-20261101-MAT-ACC-P0-001`
+- Plan：`TP-20261101-V0.1`
+- Suite：`SUITE-CORE-CHAIN-V0.1`
+- Oracle：`ZDQ-BIZ-20261101-V0.1` / `11995b9a88852dddb32315a07ecf15f8d515cb40`
+- 用例数：2
+- P0/P1：2/0
+- 数据前缀：`AUDIT-20261101-RUN20261101MATAC-`
+- 资产校验：PASS
+- 状态：`PLANNED`，尚未执行任何业务用例

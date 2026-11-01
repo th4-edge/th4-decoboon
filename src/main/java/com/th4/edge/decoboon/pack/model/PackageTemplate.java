@@ -139,6 +139,9 @@ public class PackageTemplate extends AbstractModel {
     @Column(length = 256)
     private java.util.List<String> criterions;
 
+    @Transient @Note("选择器摘要：分项数") private Integer itemCount;
+    @Transient @Note("选择器摘要：分区数") private Integer sectionCount;
+
 
 
     public PackageTemplate() {
@@ -253,4 +256,9 @@ public class PackageTemplate extends AbstractModel {
     public void setCompany(Company company) {
         this.company = company;
     }
+
+    public Integer getItemCount() { return itemCount; }
+    public void setItemCount(Integer itemCount) { this.itemCount = itemCount; }
+    public Integer getSectionCount() { return sectionCount; }
+    public void setSectionCount(Integer sectionCount) { this.sectionCount = sectionCount; }
 }

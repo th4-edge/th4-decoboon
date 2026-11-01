@@ -23,7 +23,8 @@ public enum FileScope implements Enumerable<String> {
     CustomerFollow("客户跟进图片"),
     Document("单据归档"),
     Content("内容素材"),
-    Expense("费用报销证据");
+    Expense("费用报销证据"),
+    Partner("供应商付款码");
 
     private final String name;
 

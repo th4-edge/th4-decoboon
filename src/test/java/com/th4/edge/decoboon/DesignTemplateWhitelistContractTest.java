@@ -46,6 +46,25 @@ class DesignTemplateWhitelistContractTest {
     }
 
     @Test
+    void templateProvidersNeverExposePriceOrCost() {
+        for (Class<?> provider : List.of(
+                com.th4.edge.decoboon.designtemplate.service.templates.info.support.Info.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.copy.support.Copy.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.version.build.support.Build.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.items.batchsave.support.BatchSave.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.item.save.support.Save.class,
+                com.th4.edge.decoboon.designtemplate.service.templates.item.delete.support.Delete.class)) {
+            List<String> catalog = propertiesOf(provider, CatalogItem.class);
+            assertThat(catalog).as(provider.getSimpleName() + " 的 catalogItem 白名单").isNotEmpty();
+            assertThat(catalog).doesNotContain(
+                    "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "purchasePrice");
+            List<String> item = propertiesOf(provider, DesignTemplateItem.class);
+            assertThat(item).as(provider.getSimpleName() + " 的模版分项白名单")
+                    .doesNotContain("materialPrice", "manualPrice", "fixedTotalPrice", "costPrice");
+        }
+    }
+
+    @Test
     void instantiateMustNotExposeDesignItemCost() {
         List<String> designItem = propertiesOf(
                 com.th4.edge.decoboon.designtemplate.service.templates.instantiate.support.Instantiate.class,

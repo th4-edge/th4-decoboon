@@ -1,0 +1,28 @@
+{
+  "defectId": "DEF-20261101-008",
+  "caseIds": [],
+  "priority": "P2",
+  "status": "OPEN",
+  "title": "从套餐生成报价时选择客户会清空已选套餐模板",
+  "role": "Boss",
+  "surface": "App",
+  "pagePath": "/subpackages/quote/pages/edit",
+  "businessState": "从套餐列表点击生成报价并已带 templateId",
+  "expected": "选择客户和房屋后保留当前套餐模板，用户只需完成计价",
+  "actual": "选择客户后套餐模板被清空，页面提示“请选择套餐模板”，必须重新选择",
+  "minimumReproduction": [
+    "套餐列表点击生成报价",
+    "选择客户",
+    "选择房屋",
+    "观察套餐模板区域"
+  ],
+  "impact": "破坏套餐快捷报价入口，增加重复操作和误选风险",
+  "evidence": [
+    "evidence/EXP-PKG-006/16-quote-created.txt",
+    "evidence/EXP-PKG-006/12-quote-edit-package.txt"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "客户/房屋选择只刷新依赖上下文，不应清空入口已带且仍有效的 templateId",
+  "retestCondition": "从套餐入口选择客户和房屋后，套餐模板、标准面积和折扣保持不变",
+  "createdAt": "2026-11-01T18:25:10+08:00"
+}

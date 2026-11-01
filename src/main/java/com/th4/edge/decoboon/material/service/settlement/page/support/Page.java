@@ -31,7 +31,7 @@ import java.util.List;
         @AllowProperties(model = MaterialSettlementItem.class,
                 properties = {"settlementItemId", "quantity", "settlementPrice", "amount", "remark", "createTime"}),
         @AllowProperties(model = SettlementPreviewRow.class,
-                properties = {"purchaseItemId", "purchaseOrderId", "purchaseNo", "supplierName", "materialName",
+                properties = {"purchaseItemId", "purchaseOrderId", "purchaseNo", "supplierId", "supplierName", "materialName",
                         "quantity", "receivedQuantity", "purchasePrice", "suggestedSettlementPrice", "unpriced"}),
         @AllowProperties(model = Partner.class, properties = {"partnerId", "type", "name", "contactName", "telNo", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})

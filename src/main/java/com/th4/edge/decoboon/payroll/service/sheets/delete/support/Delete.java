@@ -19,6 +19,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,10 +55,10 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.sheets.dele
     @Override
     @Transactional
     public PayrollSheet call(PayrollSheet request) {
-        Employee current = accessContext.requireBoss(employee);
+        Employee current = accessContext.requireDeleteActor(employee);
         Long comId = current.getCompany().getComId();
-        PayrollSheet sheet = sheetRepository.findById(sheetId)
-                .filter(item -> item.getCompany() != null && comId.equals(item.getCompany().getComId()))
+        Specification<PayrollSheet> byId = (root, query, builder) -> builder.equal(root.get("sheetId"), sheetId);
+        PayrollSheet sheet = sheetRepository.findOne(byId.and(accessContext.visibleSheets(current)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "工资单不存在或无权访问")));
         if (sheet.getStatus() != PayrollSheetStatus.Draft) {
             throw new DefinedException(new DefaultErrorCode("409", "仅草稿状态工资单可以删除"));
@@ -67,6 +68,7 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.sheets.dele
         }
         List<PayrollItem> items = itemRepository
                 .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());
+        accessContext.requireStoreItemsInStore(current, items);
         for (PayrollItem item : items) {
             if (item.getStatus() != PayrollItemStatus.Draft) {
                 throw new DefinedException(new DefaultErrorCode("409", "工资项已形成正式事实，不能删除草稿"));

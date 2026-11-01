@@ -1,0 +1,65 @@
+{
+  "batch": "DQ-X11",
+  "change": "CHG-20261031-048",
+  "provider": "project/contract-change/range",
+  "default": {
+    "current": 1,
+    "size": 20,
+    "total": 7,
+    "contractTotal": 6,
+    "effectiveTotal": 1
+  },
+  "serverCap": 50,
+  "pageWindows": "2/2/1 with unique IDs",
+  "filters": {
+    "material": 3,
+    "keyword": 1,
+    "effectiveOnly": 1
+  },
+  "invalidFilters": "business 400",
+  "batchSnapshotQueries": "1 contract change item load per request",
+  "web": {
+    "filterRequest": {
+      "current": 1,
+      "size": 20,
+      "itemType": "Material"
+    },
+    "rows": 3,
+    "consoleErrors": 0
+  },
+  "appNative": {
+    "outcome": "PASS",
+    "checks": "2/2",
+    "initialRows": 7,
+    "materialRows": 3
+  },
+  "gates": {
+    "fullTests": "1186/1186 PASS",
+    "webBuild": "PASS",
+    "appBuild": "PASS",
+    "webRangeGate": "4/4 negative",
+    "appRangeGate": "4/4 negative",
+    "providerAudit": "PASS"
+  },
+  "latency": {
+    "samples": 10,
+    "p50Ms": 39.98,
+    "p95Ms": 43.49,
+    "maxMs": 46.89,
+    "bytes": [
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038,
+      3038
+    ]
+  },
+  "independentAcceptance": "PENDING",
+  "visualSignoff": "PENDING",
+  "release": "NOT_RELEASED"
+}

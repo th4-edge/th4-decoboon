@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.context.QuoteFinanceAggregateContext;
 import com.th4.edge.decoboon.quote.model.Quote;
 import com.th4.edge.decoboon.quote.model.QuoteDesignerAggregate;
+import com.th4.edge.decoboon.quote.model.QuoteFinanceSummary;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
 import com.th4.edge.tenant.user.access.DataScope;
 import com.th4.edge.tenant.user.access.context.DataScopeContext;
@@ -104,6 +105,60 @@ class FinanceQuoteAggregateTest {
         assertThat(designerB.getQuoteAmount()).isEqualByComparingTo("200.00");
         assertThat(designerB.getProfitAmount()).isEqualByComparingTo("50.00");
         assertThat(designerB.getCostIncompleteCount()).isEqualTo(0);
+    }
+
+    @Test
+    void summaryMatchesDesignerAggregatesAndCostRules() {
+        DataScope head = dataScopeContext.resolve(fixture.headFinance());
+        List<QuoteDesignerAggregate> rows = aggregateContext.aggregate(head, null);
+        QuoteFinanceSummary summary = aggregateContext.summary(head, null);
+
+        assertThat(summary.getAsOf()).isNotNull();
+        assertThat(summary.getQuoteCount()).isEqualTo(rows.stream().mapToLong(QuoteDesignerAggregate::getQuoteCount).sum());
+        assertThat(summary.getQuoteAmount()).isEqualByComparingTo(rows.stream()
+                .map(QuoteDesignerAggregate::getQuoteAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+        assertThat(summary.getProfitAmount()).isEqualByComparingTo(rows.stream()
+                .map(QuoteDesignerAggregate::getProfitAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+        assertThat(summary.getCostIncompleteCount()).isEqualTo(rows.stream()
+                .mapToLong(QuoteDesignerAggregate::getCostIncompleteCount).sum());
+        assertThat(summary.getQuoteCount()).isEqualTo(3);
+        assertThat(summary.getQuoteAmount()).isEqualByComparingTo("350.00");
+        assertThat(summary.getProfitAmount()).isEqualByComparingTo("70.00");
+        assertThat(summary.getCostIncompleteCount()).isEqualTo(1);
+    }
+
+    @Test
+    void summaryRemainsOneAggregateRowAtTenTimesQuoteVolume() {
+        for (int i = 0; i < 30; i++) {
+            quote(fixture.company(), fixture.storeA(), fixture.designerA(), fixture.designerA(),
+                    System.nanoTime() + i, 100 + i, "1.00", "1.00", true, QuoteStatus.Draft);
+        }
+        entityManager.flush();
+
+        DataScope head = dataScopeContext.resolve(fixture.headFinance());
+        QuoteFinanceSummary summary = aggregateContext.summary(head, null);
+
+        assertThat(summary.getQuoteCount()).isEqualTo(33);
+        assertThat(summary.getQuoteAmount()).isEqualByComparingTo("380.00");
+        assertThat(summary.getProfitAmount()).isEqualByComparingTo("70.00");
+        assertThat(summary.getCostIncompleteCount()).isEqualTo(1);
+        assertThat(aggregateContext.aggregate(head, null)).hasSize(2);
+    }
+
+    @Test
+    void summaryAppliesStoreScopeAndStatusFilter() {
+        DataScope store = dataScopeContext.resolve(fixture.storeFinance());
+        QuoteFinanceSummary storeSummary = aggregateContext.summary(store, null);
+        assertThat(storeSummary.getQuoteCount()).isEqualTo(1);
+        assertThat(storeSummary.getQuoteAmount()).isEqualByComparingTo("200.00");
+        assertThat(storeSummary.getProfitAmount()).isEqualByComparingTo("50.00");
+
+        DataScope head = dataScopeContext.resolve(fixture.headFinance());
+        QuoteFinanceSummary accepted = aggregateContext.summary(head, QuoteStatus.Accepted);
+        assertThat(accepted.getQuoteCount()).isEqualTo(2);
+        assertThat(accepted.getQuoteAmount()).isEqualByComparingTo("300.00");
+        assertThat(accepted.getProfitAmount()).isEqualByComparingTo("70.00");
+        assertThat(accepted.getCostIncompleteCount()).isZero();
     }
 
     @Test

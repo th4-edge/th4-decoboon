@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-29T00:00:00+08:00",
+  "members": [
+    {
+      "id": "zhuangdeqing-business",
+      "role": "business_fact_source",
+      "path": "/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md",
+      "knowledgeBase": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清业务智能体",
+      "status": "active"
+    },
+    {
+      "id": "zhuangdeqing-marketing-content",
+      "role": "marketing_content",
+      "path": ".agents/skills/zhuangdeqing-marketing-content/SKILL.md",
+      "knowledgeBase": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清营销内容智能体",
+      "status": "active"
+    },
+    {
+      "id": "zhuangdeqing-usage-content",
+      "role": "usage_content",
+      "path": ".agents/skills/zhuangdeqing-usage-content/SKILL.md",
+      "knowledgeBase": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清使用内容智能体",
+      "status": "active"
+    },
+    {
+      "id": "zhuangdeqing-marketing",
+      "role": "channel_execution",
+      "path": "/Users/zhangwei/.agents/skills/zhuangdeqing-marketing/SKILL.md",
+      "knowledgeBase": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/推广营销/装得清营销智能体",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "request": {
+    "route": "project/contract-line/page",
+    "body": {
+      "contractId": "241939522005237760",
+      "current": 4,
+      "size": 2
+    }
+  },
+  "response": {
+    "status": 200,
+    "elapsedMs": 21.24,
+    "bytes": 108,
+    "json": {
+      "data": {
+        "content": [],
+        "totalPages": 3,
+        "last": true,
+        "totalElements": "6",
+        "first": false,
+        "size": 2
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "capturedAt": "2026-11-01T16:06:25+08:00",
+  "acceptanceId": "242297272967102464",
+  "attempts": [
+    {
+      "role": "Boss",
+      "confirmed": true,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Boss",
+      "confirmed": false,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "StoreManager",
+      "confirmed": true,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "StoreManager",
+      "confirmed": false,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Finance",
+      "confirmed": true,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Finance",
+      "confirmed": false,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Pm",
+      "confirmed": true,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    {
+      "role": "Pm",
+      "confirmed": false,
+      "httpStatus": 200,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    }
+  ],
+  "expected": "all employee attempts 403 and acceptance remains Pending"
+}

@@ -1,7 +1,8 @@
 package com.th4.edge.decoboon.statistic.service.workbench.site.report.support;
 
-import com.th4.edge.framework.data.jackson.annotation.Properties;
+
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.decoboon.statistic.context.SiteWorkbenchContext;
 import com.th4.edge.decoboon.statistic.model.SiteWorkbench;
 import com.th4.edge.framework.core.ScopeTypes;

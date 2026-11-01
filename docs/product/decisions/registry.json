@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-22T01:35:00+08:00",
+  "updatedAt": "2026-10-29T20:20:00+08:00",
   "decisions": [
     {
       "id": "USER-DEC-20261022-001",
@@ -97,6 +97,174 @@
         "app",
         "web",
         "owner"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-001",
+      "title": "线上产品渐进迭代与 App/Web 定位",
+      "status": "APPROVED",
+      "syncStatus": "PRODUCT_ONLY",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-001-线上产品渐进迭代与AppWeb定位.md",
+      "affected": [
+        "owner-operating-system",
+        "product-system-baseline",
+        "App",
+        "Web",
+        "all-role-refinement"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-002",
+      "title": "装得清内容团队职责边界",
+      "status": "APPROVED",
+      "syncStatus": "PRODUCT_ONLY",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-002-装得清内容团队职责边界.md",
+      "affected": [
+        "marketing-content-agent",
+        "usage-content-agent",
+        "content-intelligence",
+        "marketing",
+        "product-adoption"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-003",
+      "title": "Company信息单一主源与渐进信任模型",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_BIZ_SYNC",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-003-Company信息单一主源与渐进信任模型.md",
+      "affected": [
+        "enterprise-brand-profile",
+        "company",
+        "owner-portal",
+        "documents",
+        "exports",
+        "onboarding"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-004",
+      "title": "企业Logo与品牌色默认规则",
+      "status": "APPROVED",
+      "syncStatus": "PRODUCT_ONLY",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-004-企业Logo与品牌色默认规则.md",
+      "affected": [
+        "enterprise-brand-profile",
+        "company",
+        "owner-portal",
+        "mini-program",
+        "web",
+        "document"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-005",
+      "title": "创建企业快速入驻与资料后置",
+      "status": "APPROVED",
+      "syncStatus": "PENDING_BIZ_SYNC",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-005-创建企业快速入驻与资料后置.md",
+      "affected": [
+        "company-registration",
+        "onboarding",
+        "enterprise-brand-profile",
+        "app"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-006",
+      "title": "装企品牌色即应用主题色",
+      "status": "APPROVED",
+      "syncStatus": "PRODUCT_ONLY",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-006-装企品牌色即应用主题色.md",
+      "affected": [
+        "enterprise-brand-profile",
+        "company",
+        "app",
+        "mini-program",
+        "web",
+        "owner-portal",
+        "theme-system"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-007",
+      "title": "财务角色渐进优化与双端入口验收",
+      "status": "APPROVED",
+      "syncStatus": "PRODUCT_ONLY",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-007-财务角色渐进优化与菜单验收.md",
+      "affected": [
+        "finance",
+        "web",
+        "app",
+        "menu-acceptance",
+        "iterative-upgrade",
+        "mini-program"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-008",
+      "title": "业务界面不展示内部编号",
+      "status": "APPROVED",
+      "syncStatus": "SYNCED",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-008-业务界面不展示内部编号.md",
+      "affected": [
+        "App",
+        "Web",
+        "Admin",
+        "employee",
+        "company",
+        "customer",
+        "property",
+        "project",
+        "design",
+        "quote",
+        "contract",
+        "expense",
+        "voucher"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-009",
+      "title": "财务客户页负责人分组与非设计派单边界",
+      "status": "APPROVED",
+      "syncStatus": "SYNCED",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-009-财务客户页负责人分组与非设计派单边界.md",
+      "affected": [
+        "finance",
+        "customer",
+        "owner-grouping",
+        "design-assignment",
+        "permissions",
+        "app",
+        "web",
+        "provider"
+      ]
+    },
+    {
+      "id": "USER-DEC-20261029-010",
+      "title": "统一客户工作面与角色数据范围",
+      "status": "APPROVED",
+      "syncStatus": "SYNCED",
+      "decidedAt": "2026-10-29",
+      "file": "docs/product/decisions/USER-DEC-20261029-010-统一客户工作面与角色数据范围.md",
+      "affected": [
+        "customer",
+        "customer-workspace",
+        "owner-grouping",
+        "role-scope",
+        "app",
+        "web",
+        "provider",
+        "database-index"
       ]
     }
   ]

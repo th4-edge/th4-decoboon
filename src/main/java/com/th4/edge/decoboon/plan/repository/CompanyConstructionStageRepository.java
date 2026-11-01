@@ -9,6 +9,7 @@ import java.util.List;
 public interface CompanyConstructionStageRepository extends JpaRepository<CompanyConstructionStage, Long> {
 
     List<CompanyConstructionStage> findByPlan_TemplateIdOrderBySortAscStageIdAsc(Long templateId);
+    List<CompanyConstructionStage> findByPlan_TemplateIdInOrderByPlanTemplateIdAscSortAscStageIdAsc(java.util.Collection<Long> templateIds);
 
     void deleteByPlan_TemplateId(Long templateId);
 }

@@ -51,6 +51,25 @@
 - AI Prompt、Excel 导出、详情展示和搜索索引不等于业务使用；只有改变对象、状态、责任人、任务、确认、金额、成本或对账事实，才算形成业务闭环。
 - 没有下游消费者、没有闭合动作、或无法处理缺失/失败/权限/历史快照的新增信息项，不得进入正式表单和研发。
 
+## 业务对象选择器与选择结果展示（强制，2026-11-01）
+
+- 跨端唯一执行规范：`docs/design/35-业务对象选择器与选择结果展示规范.md`；App、Web、Admin 新增或改版业务对象选择器、表单结果区和相关门禁必须遵循。
+- 员工、项目、客户、房屋、报价、合同、工人、供应商、应收、应付、材料计划、模板、报价分项、账务分类等业务对象，禁止用原生 `<picker>`、`el-select`、可筛选下拉或 `JzSelectField` 承载选择；固定短枚举和有界子集合例外必须按规范判定并在 T15 声明。
+- 专用选择器必须打开即展示业务数据，提供业务责任/状态/类别导航、服务端搜索分页、加载/空/失败/无权限/失效状态、选择/清除/取消、一次性回传和服务端复核；禁止固定 `size: 200`、`findAll` 或全量拉取后客户端过滤。
+- 来源页面不得只显示名称或“已选择某某”；表单中的业务对象必须使用全宽已选业务卡，展示名称、状态、关键业务事实、更换和清除。列表筛选可使用紧凑摘要，但必须明确当前筛选。
+- 新增或改版前必须走 `T15`；涉及表单补 `T16`；稳定单据补 `T17` 并取得 T06/T12 裁决。选择、清除、依赖失效和回显必须进入验收。
+- Web 检查命令：`npm run check:forms`、`npm run check:concepts`；App 检查命令：`npm run check:selectors`、`npm run check:finance-pickers`。静态通过不等于全量合规，必须包含真实页面/真机证据和负向样本。
+- 当前基线结论与存量问题见规范第 10 节；在 P1 问题闭环前，不得宣称 App/Web 业务对象选择器已全量统一。
+
+## 业务界面内部编号隐藏（强制）
+
+- 业务事实源：`DEC-095`、`BR-060`。
+- 员工编号、企业编号、客户编号，以及系统生成的报价编号、合同编号、项目编号、方案编号、费用编号、凭证编号、邀请编号，默认不得出现在 App、Web、Admin 的页面、列表副标题、详情字段、表单提示和搜索提示中。
+- 用户应通过名称、地址、角色、状态、金额、日期和责任人识别对象；界面不得要求用户记忆内部编号。
+- 编号保留在数据库主键、Provider、权限校验、审计、日志、二维码、文件命名和要求凭证号的法定打印模板中，不得因隐藏展示而删除字段或改变接口契约。
+- 统一社会信用代码、法定证照编号、发票法定号码等不属于系统内部编号，按对应业务场景和权限保留。
+- Web 构建必须执行 `npm run check:identifier-exposure`，负向自测为 `npm run check:identifier-exposure:self-test`。App/Admin 后续涉及同类页面时必须使用同一业务规则并补对应门禁。
+
 ## 一后端多客户端同源（最高优先级）
 
 - 装得清只有一个业务后端；App、Web、Admin 只是不同客户端，不得拥有独立后端、独立业务库或同义业务接口。
@@ -97,6 +116,25 @@ lane、完整 worklog、shared 和 rules 大段只在事故、大功能、权限
 - 多 Agent 之间以统一 `CHG-*` 记录交接，不以聊天记忆作为状态源；开发自测、独立测试和发布结论分别留证据。
 - 业务对象、状态、权限、金额、成本、支付和对外口径仍必须先查业务事实源。
 - 工作记录按 `工作约定.md` 一行追加，不为小任务写交接包。
+
+
+## 装得清内容团队智能体（2026-10-29）
+
+- `zhuangdeqing-marketing-content`：负责将已核验装企场景转化为对外营销内容资产、价值主张、内容矩阵、短视频/图文简报和证据边界，向现有营销执行智能体移交。它不定义产品事实、不直接发布。
+- `zhuangdeqing-usage-content`：负责入驻路径、角色教程、页面理解、App/Web 对比、FAQ、异常恢复和企业实际业务与产品模型的兼容台账。它不定义产品事实、不修改产品、不制作营销主张。
+- 两个智能体均以 `zhuangdeqing-business` 为唯一业务事实源，并共同遵守 `docs/product/decisions/USER-DEC-20261029-001-线上产品渐进迭代与AppWeb定位.md` 与 `USER-DEC-20261029-002-装得清内容团队职责边界.md`。
+- 内容团队协作入口：`docs/product/content-intelligence/00-装得清内容团队协作章程.md`。
+- 知识库：`推广营销/装得清营销内容智能体/`、`推广营销/装得清使用内容智能体/`。
+
+## 装得清独立验收执行智能体（2026-11-01，强制）
+
+- 独立验收执行只使用 `.agents/skills/zhuangdeqing-acceptance-agent/`，不得再建第二套验收执行智能体。
+- 执行前必须读取 `docs/testing/` 的测试计划、冻结用例、Oracle Lock、追溯矩阵和未映射台账；预期结果只来自业务事实源，不得从当前代码或页面行为反推。
+- 页面按钮是业务动作第一入口；Provider、数据库、日志只用于核验和受控夹具，不能用 API 通过替代页面可用。
+- 执行智能体不得修改业务规则、测试用例、Oracle、产品代码、权限、金额或数据终态；发现问题只登记 `DEF-*` 并交研发修复。
+- 每次执行必须创建唯一 `RUN-*`，保留角色、租户、端面、页面路径、代码版本、数据前缀、截图/网络/接口/对账证据和缺陷关联。
+- 无证据不得 `PASS`；开发自测、单测和代码变更不能替代独立复验；最终发布和高风险业务结论仍由用户授权主体决定。
+- 标准命令：`python3 .agents/skills/zhuangdeqing-acceptance-agent/scripts/create_run.py ...`；关门前运行 `validate_run.py <run-dir> --final`。
 
 ## 生产后端监控
 
@@ -186,13 +224,29 @@ lane、完整 worklog、shared 和 rules 大段只在事故、大功能、权限
 
 **统计汇总实现逻辑（强制，2026-10-07 新增）**：统计/汇总/看板/报表/排行类接口的返回结果是数字，必须用**聚合/投影 SQL** 直接算出（标量返回 O(1) 行、列表 `ORDER BY ... LIMIT N` 且字段投影）；**禁止**「全量实体 + Java 循环求和」「循环体内查库」「全量后取前 N」「用重 JOIN 换 SQL 条数」「用方法内部读数充当接口验收数」「逾期/未收判定放在 Java 循环」；业务公式类允许内存计算但循环体内零查询，金额口径不得变。验收：端到端 SQL ≤30 条、并发 P95 ≤500ms、10× 数据量下 SQL 条数不增长，未达标即阻断。详见 `rules.md` §0.4 与 `DEC-036`/`BR-031`/`GAP-027`。
 
+**分页与聚合接口（强制，2026-10-31 新增）**：所有读取接口先分类为 `PAGE_LIST / PICKER_PAGE / BOUNDED_LIST / REPORT_SUMMARY`。增长型列表必须数据库分页，默认 `size=20`、普通列表和选择器硬上限 `50`；禁止固定 `size=200/500`、`findAll` 后 `subList` 分页、`PageRequest.of(0,500)` 再 Java 过滤。金额、计数、比例、排行、趋势必须调用独立 `report/summary/overview` Provider，前端不得对业务列表做 `reduce/filter().length/groupBy` 生成正式指标。同筛选下必须验证列表 `totalElements == report.count`，并完成 10× 数据量、响应行数和 P95 验证。详见 `rules.md` §0.4.5 与 `docs/design/33-后端分页与聚合接口强制规范.md`。
+
+## 后端接口查询与业务编排（强制，2026-10-31 新增）
+
+- 一个 Provider 只服务一个真实用户目标。编码前必须写清使用人、触发时点、最短动作、下游消费者、数据增长、异常路径和验收；禁止按表或页面字段直接堆“万能接口”。
+- 每个接口先分类为 `READ_DETAIL / PAGE_LIST / PICKER_PAGE / BOUNDED_LIST / REPORT_SUMMARY / EXPORT_JOB / WRITE_ACTION / BATCH_ACTION`，并声明返回规模、查询链、最大行数和 SQL 是否随数据量增长。
+- 禁止 N+1：循环体、`forEach`、`stream.map/flatMap` 内不得调用 Repository 或触发 LAZY 查询；当前页关联必须批量 `IN` 或投影装配。
+- 禁止全量 JPA 实体加载后 Java `filter/sum/count/groupBy/reduce` 生成业务指标；金额、计数、比例、排行、趋势、逾期/未收必须聚合/投影 SQL 下推。
+- 详情只返回根对象和有限摘要；增长型历史必须独立分页。批量写入必须一次批量加载/校验后批量写入，禁止循环查库。
+- 查询接口不得有业务副作用；写接口不得顺带重算整页工作台。业务并发用 Redisson，只读事务禁止悲观锁。
+- 新增/修改接口必须保留场景卡、查询链、权限负向、同筛选对账、10× 数据量和 P95/响应体证据。完整规范见 `docs/design/34-后端接口查询与业务编排强制规范.md`，关联 `rules.md` §0.7、31–33 号设计规范与 `CHG-20261031-049`。
+
 ## 序列化控制
 
-具体 Provider 用 `@Properties` 按 `page/list/info/save/update` 裁剪响应，通用 `{model}-{service}` 路由才用 `@ServiceProperties`（只管返回，不管权限）。
+具体 Provider 用 `@Properties(allow=...)` 按 `page/list/info/save/update` 裁剪响应，通用 `{model}-{service}` 路由才用 `@ServiceProperties`（只管返回，不管权限）。
+每个新增或修改的 Provider 必须先分类为 `ENTITY_GRAPH / READ_MODEL / SCALAR_BINARY / FRAMEWORK_MODEL_ROUTE`；实体图必须在具体 `support` 实现类上声明 `@Properties(allow=...)`，根模型和所有实际输出的关联模型都要各自白名单。
+框架没有 Provider 级白名单时默认全放行，且白名单不会自动级联；`@Properties` 只负责输出裁剪，不负责关联预取。禁止用 `@JsonIgnore`、`EAGER`、双向关系注解或前端字段过滤绕过。
 关联对象用 `@AllowProperties` 最小白名单：列表给摘要、详情给页面实际使用字段，避免 `Property -> Store -> Team -> Employee` 循环。
 **对外可见投影必须显式组装（强制）**：读取投影不得直接返回实体，`status`、`currentStageName`、计数、金额汇总等派生字段必须按领域事实现场推导；
 业主详情 `customer/project/info` 与 `customer/project/page`、`journey/info`、员工侧 `project/project/page|overview` 必须同源同口径，禁止用前端兜底掩盖后端未组装。
-详见 `rules.md` §5、§5.6 与 `ECD-011`。
+涉及实体图的 Provider 必须有真实 JSON 契约测试，并在 `spring.jpa.open-in-view=false` 且测试方法不加 `@Transactional` 的条件下通过。
+后端 Provider 响应改动必须运行 `python3 scripts/audit-provider-response-contract.py --check`，发布构建已强制执行；门禁规则自测使用 `--self-test`。
+详见 `rules.md` §5、§5.6、§8、`docs/design/32-Provider接口响应序列化与懒加载安全规范.md` 与 `ECD-011`。
 
 ## 租户订阅约定
 

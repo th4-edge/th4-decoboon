@@ -1,0 +1,53 @@
+{
+  "id": "payroll-labor.manager-sensitive-fields-b7",
+  "title": "PAY-MANAGER-SENSITIVE-FIELDS 店长本店薪酬字段",
+  "version": "1.0.0",
+  "status": "dev-verified-pending-real-ui",
+  "batch": "PAY-MANAGER-SENSITIVE-FIELDS",
+  "sourceRefs": ["DEC-096", "ANS-BIZ-20261030-001", "EV-428", "DEC-093", "DEC-097", "BR-038", "REQ-PAY-MGR-SENS-01"],
+  "audience": ["StoreManager", "Boss", "Finance"],
+  "objects": [
+    {
+      "id": "PayrollItem",
+      "meaning": "员工工资项及其当前全部薪酬详情字段。",
+      "keyFields": ["itemId", "employee", "sheet", "project", "baseSalaryAmount", "attendanceDeduction", "commissionAmount", "bonusAmount", "allowanceAmount", "socialInsuranceAmount", "taxAmount", "otherDeduction", "grossAmount", "deductionAmount", "netAmount", "status"],
+      "sources": ["DEC-096", "BR-038"]
+    },
+    {
+      "id": "PayrollAccessContext",
+      "meaning": "店长仅按本店数据范围读取薪酬详情；动作权限由 DEC-097 / B8A 单独治理。",
+      "keyFields": ["role", "dataScope", "storeId", "empId"],
+      "sources": ["DEC-096", "DEC-097"]
+    }
+  ],
+  "views": [
+    {
+      "id": "store-manager-detail",
+      "audience": ["StoreManager"],
+      "system": "本店范围内返回 PayrollItem 全部现有薪酬详情字段；跨店和跨企业拒绝。",
+      "sources": ["DEC-096"]
+    },
+    {
+      "id": "store-manager-actions",
+      "audience": ["StoreManager"],
+      "system": "字段读取由 DEC-096 决定；动作权限由 DEC-097 / B8A 单独决定。",
+      "sources": ["DEC-096", "DEC-097"]
+    }
+  ],
+  "fieldVisibility": [
+    {"field": "socialInsuranceAmount", "storeManager": "visible-in-own-store", "source": "DEC-096"},
+    {"field": "taxAmount", "storeManager": "visible-in-own-store", "source": "DEC-096"},
+    {"field": "grossAmount/deductionAmount/netAmount", "storeManager": "visible-in-own-store", "source": "DEC-096"},
+    {"field": "bankAccount/idCard/taxDetail", "storeManager": "not-present-in-current-model", "source": "DEC-096"}
+  ],
+  "checks": [
+    {"id": "detail-fields", "rule": "store-payroll/info and payroll/item/page retain all current detail fields for StoreManager."},
+    {"id": "cross-store", "rule": "StoreManager cannot access target item outside own store."},
+    {"id": "actions", "rule": "StoreManager cannot confirm, void, return, delete, or pay."},
+    {"id": "no-new-fields", "rule": "This batch does not add bank/ID/tax-detail fields."}
+  ],
+  "uiBindings": [
+    {"surface": "App", "path": "subpackages/payroll/pages/sheet-detail.vue", "provider": "payroll/item/page"},
+    {"surface": "Web", "path": "FinanceEmployeeSalariesView.vue", "provider": "payroll/item/page"}
+  ]
+}

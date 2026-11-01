@@ -4,6 +4,7 @@ import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.context.PayrollCompensationAuditContext;
 import com.th4.edge.decoboon.payroll.context.PayrollCompensationContext;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
+import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
 import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
@@ -98,11 +99,21 @@ class PayrollCompensationGuardTest {
         assertThat(storePayrollInfo).isNotNull();
         assertThat(Arrays.asList(allowFor(storePayrollInfo, Employee.class).properties()))
                 .containsExactly("empId", "name", "role");
+        assertThat(Arrays.asList(allowFor(storePayrollInfo, PayrollItem.class).properties()))
+                .contains("baseSalaryAmount", "attendanceDeduction", "commissionAmount", "bonusAmount", "allowanceAmount",
+                        "socialInsuranceAmount", "taxAmount", "otherDeduction", "grossAmount", "deductionAmount", "netAmount",
+                        "status", "remark", "createTime");
         assertThat(Arrays.asList(allowFor(
                 storePayrollInfo, com.th4.edge.decoboon.payroll.model.PayrollSheet.class).properties()))
                 .containsExactly("sheetId", "period", "status");
         assertThat(Arrays.asList(allowFor(storePayrollInfo, com.th4.edge.decoboon.project.model.Project.class).properties()))
                 .containsExactly("projectId", "name", "no", "status");
+
+        Properties itemPage = com.th4.edge.decoboon.payroll.service.items.page.support.Page.class
+                .getAnnotation(Properties.class);
+        assertThat(itemPage).isNotNull();
+        assertThat(Arrays.asList(allowFor(itemPage, PayrollItem.class).properties()))
+                .contains("socialInsuranceAmount", "taxAmount", "grossAmount", "deductionAmount", "netAmount");
     }
 
     @Test

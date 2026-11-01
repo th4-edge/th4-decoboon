@@ -1,0 +1,36 @@
+{
+  "runId": "RUN-20261102-MAT-X2F-RETEST-001",
+  "createdAt": "2026-11-02T02:22:57+08:00",
+  "status": "COMPLETED",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "256cc587dfea26d63fc4ec918caf66d671fe592b",
+  "webCommit": "ec3da3bc8c7db34ddc2996e345e5c8cd495e09ad",
+  "appCommit": "f2fb91e0785bf953940257ce97e3ea84fc2ae808",
+  "artifactHashes": {
+    "sourcePatchSha256": "501163359a5e26e171af87e7ca36e297252aee247a4e428de9413b613b1370f4",
+    "migration134Sha256": "c5a148aac9c365c3fb696d3869cbd64cb2835f752acf78ed3394e6c90bd29ab4",
+    "rollback134Sha256": "998af1b7e483082b8151676c2d800232635891a127acdcc2be088a6b77b7809a",
+    "bootJarSha256": "132a4cbca03fa6512990923fab2ba47ca0c9f0e400c35ea4c0d1bb1b4bd3140b",
+    "buildTarSha256": "08a4b30a59df6200c4e35a201206a6174d89b5b94c41186ec1f26bc5c027fd65",
+    "buildZipSha256": "17b9faf6240f14876731dc72db062849b249c6cf2b3993009b569f7d14659f1e"
+  },
+  "environment": "local-fixture-8093",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261102-MATX2F001-",
+  "caseIds": [
+    "TC-MAT-PM-ARRIVAL-005"
+  ],
+  "summary": {
+    "total": 1,
+    "pass": 0,
+    "fail": 0,
+    "blocked": 1,
+    "notRun": 0
+  },
+  "result": "BLOCKED",
+  "completedAt": "2026-11-02T02:35:00+08:00",
+  "sourceTree": "clean HEAD 256cc587 + MAT-X2F source patch (not committed; preceding migrations 132/133 remain unrelated uncommitted changes)"
+}

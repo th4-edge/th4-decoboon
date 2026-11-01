@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
                         "catalogItem"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
-                        "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
+                        "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"})
 })
 @Service("design/template/item/delete")

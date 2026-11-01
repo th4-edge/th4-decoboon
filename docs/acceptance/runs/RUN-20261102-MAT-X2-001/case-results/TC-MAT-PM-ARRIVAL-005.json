@@ -1,0 +1,87 @@
+{
+  "caseId": "TC-MAT-PM-ARRIVAL-005",
+  "status": "FAIL",
+  "startedAt": "2026-11-02T02:05:00+08:00",
+  "finishedAt": "2026-11-02T02:06:26+08:00",
+  "executor": "codex",
+  "role": "Pm+Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261102-MATX2001-",
+  "steps": [
+    {
+      "step": 1,
+      "action": "Pm 打开 TILE-20261102-002 的确认材料到场对话框",
+      "result": "PASS",
+      "actual": "显示采购 POb83ef97308c2a4502626f463d2fa36b6、已到0/10㎡、待收10㎡"
+    },
+    {
+      "step": 2,
+      "action": "登记首批到场4㎡并确认",
+      "result": "FAIL_STATE_CONFLICT",
+      "actual": "页面提示部分到场，但刷新后作业单显示“已到场”，确认到场按钮消失；采购仍为4/10㎡部分到场"
+    },
+    {
+      "step": 3,
+      "action": "Provider 与 DB 对账",
+      "result": "FAIL",
+      "actual": "purchase.receivedQuantity=4.000、status=PartiallyReceived；sheet.status=Arrived；事实冲突"
+    },
+    {
+      "step": 4,
+      "action": "继续通过页面登记尾量6㎡并达到全部到场",
+      "result": "BLOCKED_BY_DEFECT",
+      "actual": "页面已无可用的确认到场入口，无法通过页面完成尾量"
+    },
+    {
+      "step": 5,
+      "action": "App 到场与财务回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/workbench/material-sheets",
+    "/pm/workbench"
+  ],
+  "actualState": [
+    "TILE-20261102-002：首批到场4㎡后 sheet.status=Arrived，status 文案“已到场”",
+    "采购 POb83ef97308c2a4502626f463d2fa36b6：receivedQuantity=4.000，status=PartiallyReceived",
+    "MaterialPlan：部分到场；goods receipt 仅1条4㎡",
+    "应付仍为1条¥880，dueDate已回填2026-12-02",
+    "作业单状态与采购/到场事实冲突，尾量6㎡页面动作消失"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-PM-ARRIVAL-005/01-pm-sheet-ordered-before-arrival.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/02-first-arrival-4-before-submit.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/03-after-first-arrival-4.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/04-provider-sheet-after-first-arrival.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/05-provider-purchases-after-first-arrival.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/06-provider-receipts-after-first-arrival.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/07-page-after-refresh-no-tail-action.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/08-db-after-first-arrival.txt"
+  ],
+  "defectIds": [
+    "DEF-20261102-005"
+  ],
+  "blockedReason": null,
+  "notes": "Web 主链在首批部分到场后发生状态事实冲突，尾量无法通过页面继续；App 微信身份未提供，App 分支亦为 BLOCKED_IDENTITY，但 Web FAIL 优先。",
+  "caseDefinitionHash": "e962461a2363a5dfae79c6663b24141ae352bd927bbd43a679c347dba77018cd",
+  "priority": "P1",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "DEC-072",
+    "DEC-092"
+  ],
+  "pageTargets": [
+    "web:/pm/workbench",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/project/pages/material-sheet-detail"
+  ],
+  "providerRoutes": [
+    "project/goods-receipt/save",
+    "project/goods-receipt/page",
+    "finance/payable/page",
+    "finance/project/report"
+  ]
+}

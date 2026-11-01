@@ -29,7 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/** DEC-093：财务可选复核，BOSS 可退回并填写原因。 */
+/** DEC-093 / DEC-097：财务可选复核，BOSS/本店店长可退回，驳回原因必填。 */
 class PayrollSheetReviewFlowTest {
 
     @Test
@@ -52,7 +52,7 @@ class PayrollSheetReviewFlowTest {
     @Test
     void bossCanReturnPendingWithReason() {
         Fixture f = fixture(PayrollSheetStatus.Pending);
-        when(f.access.requireBoss(f.boss)).thenReturn(f.boss);
+        when(f.access.requireReturnActor(f.boss)).thenReturn(f.boss);
         when(f.access.visibleSheets(f.boss)).thenReturn(mock(Specification.class));
         when(f.sheets.findOne(any(Specification.class))).thenReturn(Optional.of(f.sheet));
         when(f.sheets.save(any(PayrollSheet.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -68,7 +68,7 @@ class PayrollSheetReviewFlowTest {
     @Test
     void returnRequiresReason() {
         Fixture f = fixture(PayrollSheetStatus.Pending);
-        when(f.access.requireBoss(f.boss)).thenReturn(f.boss);
+        when(f.access.requireReturnActor(f.boss)).thenReturn(f.boss);
         when(f.access.visibleSheets(f.boss)).thenReturn(mock(Specification.class));
         when(f.sheets.findOne(any(Specification.class))).thenReturn(Optional.of(f.sheet));
 

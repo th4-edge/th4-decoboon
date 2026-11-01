@@ -2,7 +2,7 @@
 
 > 状态：`draft`，用于全域盘点与交付调度，不是功能验收清单，也不是对外能力承诺。
 > 事实源：`zhuangdeqing-business / CAP-006`、`CAP-001`、`OBJ-001`、`GAP-058`，并结合当前后端领域包与 App/Web 页面入口做覆盖对账。
-> 最近盘点：2026-10-17。
+> 最近盘点：2026-10-29（新增 `finance` 财务经营与项目核算 domain packet；业务域主表其余行仍沿用历史盘点）。
 > 角色冻结（2026-10-22）：TeamLeader 已冻结，后续产品域与应用规划不再以 TeamLeader 为目标角色；文档中相关角色引用仅保留历史兼容。存量处置见 `docs/product/issue-governance/issues/PI-20261022-002-TeamLeader冻结后的存量角色与技术收口.md`。
 
 ## 1. 结论
@@ -12,7 +12,7 @@
 - 16 段业务主链；
 - 4 条横向主轴；
 - 公开入口、SaaS/运营端等平台底座；
-- 当前只有 `material` 建立了完整的 `docs/product/domains/material/` 可恢复交付包。
+- `material` 等域已建立可恢复交付包；2026-10-29 新增 `finance`，先完成财务角色业务域/能力/页面投影框架，当前停在 `SCENARIOS_READY`。
 
 因此，正确的全域推进方式不是把 24 个后端包分别重写成 24 套产品，而是：
 
@@ -36,11 +36,11 @@
 | A6 | 签约与合同 | Contract、ContractItem、签约事实 | 设计师、店长、Boss、财务、客户 | `project`/`quote` 相关合同能力；App/Web 签约工作台 | 中 | 已实现；`contract-change` domain packet 已建立，停在 BLUEPRINT_READY | 合同生效、合同版本、下游交接 |
 | A7 | 项目立项与计划 | Project、Stage、Plan、开工日 | Boss、店长、设计师、PM | `project`、`plan`；App/Web 项目工作台 | 中 | 已实现；`project-delivery` domain packet 已建立至 SCENARIOS_READY | 立项、计划、开工日、空阶段验收 |
 | A8 | 施工/进度/工地 | Task、TaskNode、Report、Site、Risk | PM、设计师、业主 | `project`、`plan`、`risk`；App/Web 工地页 | 中 | 已实现；project-delivery B1 正在裁决 GAP-034 | 施工计划/节点留证/偏差域验收 |
-| A9 | 材料与供应链 | MaterialPlan、Selection、Sheet、Purchase、Receipt、Return、Supplier、Inventory、Settlement | 设计师、PM、财务、材料员 | `material`、`supply`；App/Web 材料工作台 | 深 | 当前唯一完整 domain packet；B6/B7 继续收口 | 独立验收 + 助手上下文入口 + 发布边界 |
+| A9 | 材料与供应链 | MaterialPlan、Selection、Sheet、Purchase、Receipt、Return、Supplier、Inventory、Settlement | 设计师、PM、财务、材料员 | `material`、`supply`；App/Web 材料工作台 | 深 | 材料样板 domain packet；B6/B7 继续收口 | 独立验收 + 助手上下文入口 + 发布边界 |
 | A10 | 增减项与变更履约 | ContractChange、ChangeItem、生效事实 | 设计师、店长、财务、PM | `project` 变更能力；App/Web 增减项工作台 | 深 | `contract-change` domain packet 已建立至 BLUEPRINT_READY；双入口与历史状态待收敛 | 三类动作和跨域事件契约验收 |
 | A11 | 阶段验收与整改复验 | Acceptance、Rectification、复验结论 | PM、业主、店长、设计师 | `project` 验收/整改；App/Web 验收页 | 中 | 已实现；迁移和真实多轮验收待确认 | 验收状态机、整改轮次、业主确认验收 |
-| A12 | 账务 | Receivable、Receipt、Payable、Payment、Refund、Ledger、Voucher | 财务、Boss、店长 | `finance`、`document`；App/Web 财务工作台 | 深 | 已实现；凭证套打成熟度口径待对账 | 收付/台账/凭证/退款域验收 |
-| A13 | 成本与利润 | 成本快照、预计成本、实际成本、ProjectCostContext | 财务、Boss、店长 | `finance`、`project`、`statistic`；App/Web 项目核算 | 中 | 实现存在；成本完整性冲突未闭合 | 应计项范围、costComplete、profit=null 门禁 |
+| A12 | 账务 | Receivable、Receipt、Payable、Payment、Refund、Ledger、Voucher | 财务、Boss、店长 | `finance`、`document`；App/Web 财务工作台 | 深 | `finance` domain packet 已建立至 `SCENARIOS_READY`；凭证套打与跨域页面归属待对账 | 业务对齐、页面归属、收付/台账/凭证/退款验收 |
+| A13 | 成本与利润 | 成本快照、预计成本、实际成本、ProjectCostContext | 财务、Boss、店长 | `finance`、`project`、`statistic`；App/Web 项目核算 | 中 | `finance` 能力地图已纳入；成本完整性 `GAP-071` 与经营利润 `GAP-070` 未闭合 | 应计项范围、costComplete、profit=null 门禁 |
 | A14 | 员工、工人与薪酬 | Employee、Worker、Compensation、Attendance、PayrollSheet、Commission | Boss、店长、财务、员工 | `payroll`、`labor`；App/Web 薪酬工作台 | 深 | 已实现；工资/提成/工人档案需统一边界 | 薪酬方案、工资单确认、发放和凭证验收 |
 | A15 | 业主交付与售后/复购 | OwnerPortal、Warranty、ServiceTicket、Repurchase | 业主、PM、店长 | App owner 页面；售后对象缺失 | 浅 | 业主项目可见已有实现；售后/质保/复购基本空白 | 建对象卡与最小售后闭环 |
 | A16 | 经营复盘与统计指标 | Boss/Store/Team/Designer/PM 报表、MET 指标 | Boss、店长、团队负责人 | `statistic`；App/Web 工作台 | 浅 | 报表有实现，指标分母和责任角色未成体系 | 指标字典 + 角色看板口径验收 |
@@ -54,6 +54,7 @@
 | `project-delivery` | `docs/product/domains/project-delivery/` | 多批次：业主 UI `DEV_VERIFIED`；`PI-20261022-014/015` 已 `BIZ_DECIDED`，未授权编码 | 合同施工行→阶段→任务→排期→节点留证→日报→进度/偏差；跨端写能力按 `DEC-088/BR-054` |
 | `enterprise-management` | `docs/product/domains/enterprise-management/` | `EMG-V2 ACCEPTED`，问题 `DEV_IN_PROGRESS` | 企业、门店、员工生命周期与审计跨端闭环；Team/TeamLeader 冻结，EMG-V2 独立验收 PASS |
 | `enterprise-operations-standards` | `docs/product/domains/enterprise-operations-standards/` | `EOP-V4 DEV_IN_PROGRESS` | 五类企业运营标准资产的生命周期、版本/修订、平台基线、历史快照与 App/Web 一致性；V1–V3 已验收 |
+| `finance` | `docs/product/domains/finance/` | `SCENARIOS_READY / B1 菜单验收` | 按 `USER-DEC-20261029-007` 在现有 Web 布局、24 个 Finance 菜单、小程序 6 个财务角色 Tab/财务首页/19 个快捷入口和后端逻辑不变的前提下逐项验收；能力地图覆盖应收应付、费用、资金、成本利润、结算、薪酬、凭证和经营分析，只做原位最小优化 |
 
 ## 3. 横向主轴
 
@@ -116,7 +117,7 @@
 1. `contract-change`：合同生效、合同版本、增减项三类动作；
 2. `project-delivery`：立项、阶段、计划、施工节点；
 3. `acceptance-rectify`：验收、整改、复验与业主确认；
-4. `finance-profit`：应收应付、成本完整性、利润 null、结算与凭证。
+4. `finance`：财务角色经营控制、应收应付、费用、资金、成本完整性、利润 null、结算、薪酬协同与凭证；先完成跨域页面归属。
 
 ### Wave 2：获客到签约的转化链
 

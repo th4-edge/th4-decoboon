@@ -1,0 +1,5 @@
+interface:
+  display_name: "装得清使用内容智能体"
+  short_description: "把真实装企场景转化为入驻路径、角色教程、使用理解、App/Web对比与业务适配内容"
+  brand_color: "#2F7D5A"
+  default_prompt: "Use $zhuangdeqing-usage-content to turn verified ZHUANGDEQING scenarios and current product behavior into onboarding paths, role-based usage guides, comparisons, FAQs, recovery guidance, and business-fit compatibility records without inventing product facts."

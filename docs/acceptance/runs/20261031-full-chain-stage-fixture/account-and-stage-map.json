@@ -1,0 +1,262 @@
+{
+  "accounts": {
+    "companyId": "199500000000000001",
+    "companyName": "昭青科技",
+    "password": "Audit2026!",
+    "employees": [
+      {
+        "empId": "199500000000000102",
+        "creId": "199500000000000202",
+        "name": "审计负责人",
+        "role": "Boss",
+        "tel": "13910002001",
+        "storeId": "199500000000000011",
+        "teamId": null
+      },
+      {
+        "empId": "199500000000000103",
+        "creId": "199500000000000203",
+        "name": "审计店长",
+        "role": "StoreManager",
+        "tel": "13910002002",
+        "storeId": "199500000000000011",
+        "teamId": null
+      },
+      {
+        "empId": "199500000000000104",
+        "creId": "199500000000000204",
+        "name": "审计财务",
+        "role": "Finance",
+        "tel": "13910002003",
+        "storeId": "199500000000000011",
+        "teamId": null
+      },
+      {
+        "empId": "199500000000000105",
+        "creId": "199500000000000205",
+        "name": "审计设计",
+        "role": "Designer",
+        "tel": "13910002004",
+        "storeId": "199500000000000011",
+        "teamId": "NULL"
+      },
+      {
+        "empId": "199500000000000106",
+        "creId": "199500000000000206",
+        "name": "审计业务",
+        "role": "Marketer",
+        "tel": "13910002005",
+        "storeId": "199500000000000011",
+        "teamId": "NULL"
+      },
+      {
+        "empId": "199500000000000107",
+        "creId": "199500000000000207",
+        "name": "审计项目经理",
+        "role": "Pm",
+        "tel": "13910002006",
+        "storeId": "199500000000000011",
+        "teamId": "NULL"
+      },
+      {
+        "empId": "199500000000000108",
+        "creId": "199500000000000208",
+        "name": "审计团队长",
+        "role": "TeamLeader",
+        "tel": "13910002007",
+        "storeId": "199500000000000011",
+        "teamId": null
+      },
+      {
+        "empId": "199500000000000109",
+        "creId": "199500000000000209",
+        "name": "滨湖店长",
+        "role": "StoreManager",
+        "tel": "13910002008",
+        "storeId": "199500000000000012",
+        "teamId": null
+      },
+      {
+        "empId": "199500000000000111",
+        "creId": "199500000000000211",
+        "name": "审计设计二",
+        "role": "Designer",
+        "tel": "13910002009",
+        "storeId": "199500000000000011",
+        "teamId": "NULL"
+      }
+    ]
+  },
+  "stages": [
+    {
+      "caseKey": "FC-20261031-01-new",
+      "stage": "new",
+      "customerName": "王芳（演示01）",
+      "customerId": "242297007736094720",
+      "propertyId": null,
+      "designId": null,
+      "quoteId": null,
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-02-following",
+      "stage": "following",
+      "customerName": "李娜（演示02）",
+      "customerId": "242297007819980800",
+      "propertyId": null,
+      "designId": null,
+      "quoteId": null,
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-03-pending_measure",
+      "stage": "pending_measure",
+      "customerName": "张敏（演示03）",
+      "customerId": "242297007991947264",
+      "propertyId": "242297008205856768",
+      "designId": null,
+      "quoteId": null,
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-04-measured",
+      "stage": "measured",
+      "customerName": "刘洋（演示04）",
+      "customerId": "242297063012827136",
+      "propertyId": "242297063209959424",
+      "designId": null,
+      "quoteId": null,
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-05-designing",
+      "stage": "designing",
+      "customerName": "陈晨（演示05）",
+      "customerId": "242297063709081600",
+      "propertyId": "242297063897825280",
+      "designId": "242297064623439872",
+      "quoteId": null,
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-06-scheme_ready",
+      "stage": "scheme_ready",
+      "customerName": "杨帆（演示06）",
+      "customerId": "242297065852370944",
+      "propertyId": "242297066041114624",
+      "designId": "242297066645094400",
+      "quoteId": null,
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-07-quote_draft",
+      "stage": "quote_draft",
+      "customerName": "赵磊（演示07）",
+      "customerId": "242297067865636864",
+      "propertyId": "242297068025020416",
+      "designId": "242297068540919808",
+      "quoteId": "242297069677576192",
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-08-quote_rejected",
+      "stage": "quote_rejected",
+      "customerName": "黄静（演示08）",
+      "customerId": "242297073758633984",
+      "propertyId": "242297073938989056",
+      "designId": "242297074526191616",
+      "quoteId": "242297075474104320",
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-09-quote_submitted",
+      "stage": "quote_submitted",
+      "customerName": "周涛（演示09）",
+      "customerId": "242297075847397376",
+      "propertyId": "242297076052918272",
+      "designId": "242297076598177792",
+      "quoteId": "242297077730639872",
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-10-quote_accepted",
+      "stage": "quote_accepted",
+      "customerName": "吴桐（演示10）",
+      "customerId": "242297078963765248",
+      "propertyId": "242297079097982976",
+      "designId": "242297079550967808",
+      "quoteId": "242297080817647616",
+      "contractId": null,
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-11-contract_signed",
+      "stage": "contract_signed",
+      "customerName": "徐蕾（演示11）",
+      "customerId": "242297081690062848",
+      "propertyId": "242297081828474880",
+      "designId": "242297082252099584",
+      "quoteId": "242297083774631936",
+      "contractId": "242297221515575296",
+      "projectId": null,
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-12-project_started",
+      "stage": "project_started",
+      "customerName": "孙悦（演示12）",
+      "customerId": "242297222228606976",
+      "propertyId": "242297222408962048",
+      "designId": "242297222937444352",
+      "quoteId": "242297224262844416",
+      "contractId": "242297225462415360",
+      "projectId": "242297226024452096",
+      "acceptanceId": null,
+      "completedAt": "2026-10-31T22:42:51"
+    },
+    {
+      "caseKey": "FC-20261031-13-acceptance_pending",
+      "stage": "acceptance_pending",
+      "customerName": "胡斌（演示13）",
+      "customerId": "242297227509235712",
+      "propertyId": "242297227697979392",
+      "designId": "242297228243238912",
+      "quoteId": "242297229723828224",
+      "contractId": "242297230571077632",
+      "projectId": "242297231061811200",
+      "acceptanceId": "242297272967102464",
+      "completedAt": "2026-10-31T22:42:51"
+    }
+  ],
+  "manifest": "stage-seed-state.json"
+}

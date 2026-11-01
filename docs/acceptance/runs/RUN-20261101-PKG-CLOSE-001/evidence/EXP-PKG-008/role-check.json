@@ -1,0 +1,54 @@
+[
+  {
+    "role": "Designer",
+    "manage": {
+      "path": "subpackages/quote/pages/package-manage",
+      "hasNew": false,
+      "hasEdit": false,
+      "hasCost": false,
+      "hasGenerate": true
+    },
+    "direct": {
+      "path": "subpackages/quote/pages/package-edit"
+    }
+  },
+  {
+    "role": "Finance",
+    "manage": {
+      "path": "subpackages/quote/pages/package-manage",
+      "hasNew": false,
+      "hasEdit": false,
+      "hasCost": true,
+      "hasGenerate": true
+    },
+    "direct": {
+      "path": "subpackages/quote/pages/package-edit"
+    }
+  },
+  {
+    "role": "Pm",
+    "manage": {
+      "path": "subpackages/quote/pages/package-manage",
+      "hasNew": false,
+      "hasEdit": false,
+      "hasCost": false,
+      "hasGenerate": true
+    },
+    "direct": {
+      "path": "subpackages/quote/pages/package-edit"
+    }
+  },
+  {
+    "role": "Marketer",
+    "manage": {
+      "path": "subpackages/quote/pages/package-manage",
+      "hasNew": false,
+      "hasEdit": false,
+      "hasCost": false,
+      "hasGenerate": true
+    },
+    "direct": {
+      "path": "subpackages/quote/pages/package-edit"
+    }
+  }
+]

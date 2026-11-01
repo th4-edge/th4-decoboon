@@ -1,0 +1,156 @@
+{
+  "caseId": "TC-FIN-FINANCE-PAYABLE-003",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:53:00+08:00",
+  "finishedAt": "2026-11-01T16:05:00+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATAR-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/payables",
+      "control": "安排付款",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "目标材料应付 ¥240，待付 ¥240，到期日 2026-12-01",
+      "business_state_after": "打开付款抽屉并选择同一采购来源应付",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-payables-before-web.png",
+        "02-payment-ready-web.png"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/payables",
+      "control": "确认付款并核销",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "本次付款 ¥240，企业对公，付款日 2026-11-01",
+      "business_state_after": "提示付款已登记并完成核销；目标行转已付清，未付金额 ¥0",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "03-payables-after-web.png",
+        "08-payables-web-state.json",
+        "10-payable-provider-db-final.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/payments",
+      "control": "付款记录回读",
+      "control_state": "READ_ONLY",
+      "business_state_before": "付款成功",
+      "business_state_after": "显示1笔本批付款 ¥240、材料款、企业对公、交易号与本批一致",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "04-payments-after-web.png"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/finance/pages/payments",
+      "control": "付款记录跨端回读",
+      "control_state": "READ_ONLY",
+      "business_state_before": "Web付款成功",
+      "business_state_after": "App显示同一笔 ¥240 付款、项目、供应商、账户和交易号",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "07-payments-after-app.png",
+        "07-payments-after-app.json"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "finance/payment/save",
+      "control": "同幂等键重复提交",
+      "control_state": "N/A",
+      "business_state_before": "payment count=1",
+      "business_state_after": "返回同一 paymentId；payment/settlement/ledger均仍为1条",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "05-payment-idempotency-api.json",
+        "10-payable-provider-db-final.json"
+      ]
+    },
+    {
+      "step_id": "S06",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "finance/payment/save",
+      "control": "已付清后再付款",
+      "control_state": "N/A",
+      "business_state_before": "outstanding=0",
+      "business_state_after": "400 付款金额不能超过应付余额；payment count仍为1",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "06-payment-overpay-api.json",
+        "10-payable-provider-db-final.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Web应付列表目标应付显示待付款、到期日2026-12-01、未付¥240",
+    "付款后Web目标行显示已付清、未付¥0，付款记录显示本批¥240",
+    "App付款记录显示同一笔¥240材料付款及交易号"
+  ],
+  "actualState": [
+    "Payable status=Paid; amount=240; paidAmount=240; outstanding=0",
+    "Payment count=1; amount=240",
+    "PayableSettlement count=1; amount=240",
+    "Ledger count=1; Expense=240; sourceId=paymentId",
+    "同一个幂等键重复请求返回 paymentId=242556961927725056",
+    "新幂等键超额付款被400拒绝且无新增记录"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/01-payables-before-web.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/02-payment-ready-web.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/03-payables-after-web.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/04-payments-after-web.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/05-payment-idempotency-api.json",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/06-payment-overpay-api.json",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/07-payments-after-app.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/07-payments-after-app.json",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/08-payables-web-state.json",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/10-payable-provider-db-final.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "自动应付与付款、核销、资金台账、供应商台账和跨端付款记录保持同一来源与金额；同幂等键重复提交不新增副作用。",
+  "caseDefinitionHash": "950ebc8c6cc7e540afbac45a01cbb5ce8e69b45f305cbba938e4fae519bf4cd5",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "DEC-072",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/finance/payables",
+    "web:/finance/payments",
+    "app:/subpackages/finance/pages/payments"
+  ],
+  "providerRoutes": [
+    "finance/payable/page",
+    "finance/payment/save",
+    "finance/payment/page",
+    "finance/partner-ledger/report"
+  ]
+}

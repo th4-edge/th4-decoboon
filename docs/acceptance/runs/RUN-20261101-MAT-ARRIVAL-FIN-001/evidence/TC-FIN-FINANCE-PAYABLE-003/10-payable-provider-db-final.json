@@ -1,0 +1,411 @@
+{
+  "capturedAt": "2026-11-01T15:57:42+08:00",
+  "role": "Finance",
+  "surface": "Web+App+Provider+DB",
+  "payable": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 15:33:36"
+            },
+            "payableId": "1793518416093711825",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100",
+                "community": "滨湖世纪城",
+                "addr": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                }
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "materialPlan": {
+              "quantity": 12.0,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "cost": 240.0,
+              "status": {
+                "name": "部分到场",
+                "key": "PartiallyArrived"
+              },
+              "requiredAt": "2026-11-05"
+            },
+            "name": "材料采购 · 全链路验收材料供应商",
+            "type": {
+              "name": "材料款",
+              "key": "Material"
+            },
+            "payeeName": "全链路验收材料供应商",
+            "payeePartner": {
+              "partnerId": "1793457851296966369",
+              "type": {
+                "name": "材料供应商",
+                "key": "Supplier"
+              },
+              "name": "全链路验收材料供应商",
+              "telNo": "13910002991",
+              "settlementMode": {
+                "name": "收货日加账期天数",
+                "value": "ReceiptDays",
+                "key": "ReceiptDays"
+              },
+              "settlementDays": 30,
+              "cutoffDay": 25
+            },
+            "amount": 240.0,
+            "paidAmount": 240.0,
+            "estimated": false,
+            "dueDate": "2026-12-01",
+            "status": {
+              "name": "已付清",
+              "key": "Paid"
+            },
+            "urgent": false,
+            "sourceNo": "POb69125551f7cc1f275a014315ea0b202",
+            "remark": "确认下单自动形成应付",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "1",
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  },
+  "payment": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 15:54:46"
+            },
+            "paymentId": "242556961927725056",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100",
+                "community": "滨湖世纪城",
+                "addr": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                }
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "payable": {
+              "payableId": "1793518416093711825",
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "name": "材料采购 · 全链路验收材料供应商",
+              "type": {
+                "name": "材料款",
+                "key": "Material"
+              },
+              "payeeName": "全链路验收材料供应商",
+              "amount": 240.0,
+              "paidAmount": 240.0,
+              "dueDate": "2026-12-01",
+              "status": {
+                "name": "已付清",
+                "key": "Paid"
+              }
+            },
+            "amount": 240.0,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "paidAt": "2026-11-01",
+            "payeeName": "全链路验收材料供应商",
+            "transactionNo": "AUDIT-20261101-RUN20261101MATAR-PAY-001",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "1",
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  },
+  "partnerLedger": {
+    "httpStatus": 200,
+    "body": {
+      "data": {
+        "rows": [
+          {
+            "partner": {
+              "partnerId": "1793457851296966369",
+              "type": {
+                "name": "材料供应商",
+                "key": "Supplier"
+              },
+              "name": "全链路验收材料供应商",
+              "contactName": "材料联系人",
+              "telNo": "13910002991",
+              "settlementMode": {
+                "name": "收货日加账期天数",
+                "value": "ReceiptDays",
+                "key": "ReceiptDays"
+              },
+              "settlementDays": 30,
+              "cutoffDay": 25,
+              "status": {
+                "name": "合作中",
+                "key": "Active"
+              }
+            },
+            "payableAmount": 1680.0,
+            "paidAmount": 1680.0,
+            "outstanding": 0.0,
+            "overdueAmount": 0.0,
+            "pendingCount": 0
+          }
+        ],
+        "partnerCount": 1,
+        "payableAmount": 1680.0,
+        "paidAmount": 1680.0,
+        "outstandingAmount": 0.0,
+        "overdueAmount": 0.0,
+        "asOf": "2026-11-01 15:57:42"
+      },
+      "success": true
+    }
+  },
+  "db": {
+    "project": [
+      {
+        "project_id": "242541620656865280",
+        "manager_id": "199500000000000107",
+        "support_id": "199500000000000104",
+        "status": "Preparing",
+        "contract_amount": "2495.75",
+        "cost": "1760.00"
+      }
+    ],
+    "purchase": [
+      {
+        "purchase_id": "1793518416069167759",
+        "status": "Received",
+        "quantity": "2.000",
+        "received_quantity": "2.000",
+        "unit_price": "0.00",
+        "amount": "240.00",
+        "material_plan_id": "242541620837220352"
+      }
+    ],
+    "purchase_item": [
+      {
+        "purchase_item_id": "1793518416071493403",
+        "status": "Received",
+        "quantity": "2.000",
+        "received_quantity": "2.000",
+        "unit_price": "120.00",
+        "amount": "240.00",
+        "material_plan_id": "242541620837220352"
+      }
+    ],
+    "receipts": [
+      {
+        "receipt_id": "1793519545279290139",
+        "quantity": "2.000",
+        "arrived_at": "2026-11-01 00:00:00.000000",
+        "inspector_id": "199500000000000107",
+        "remark": "NULL"
+      }
+    ],
+    "receipt_images": [],
+    "material_plan": [
+      {
+        "plan_id": "242541620837220352",
+        "status": "PartiallyArrived",
+        "quantity": "12.00",
+        "cost": "240.00",
+        "arrived_at": "2026-11-01"
+      }
+    ],
+    "material_sheet": [
+      {
+        "sheet_id": "1793517336944847641",
+        "status": "Arrived"
+      }
+    ],
+    "payables": [
+      {
+        "payable_id": "1793518416093711825",
+        "status": "Paid",
+        "amount": "240.00",
+        "paid_amount": "240.00",
+        "receipt_date": "2026-11-01",
+        "due_date": "2026-12-01",
+        "source_no": "POb69125551f7cc1f275a014315ea0b202"
+      }
+    ],
+    "payments": [
+      {
+        "payment_id": "242556961927725056",
+        "payable_id": "1793518416093711825",
+        "amount": "240.00",
+        "paid_at": "2026-11-01",
+        "account": "CompanyBank",
+        "payee_name": "全链路验收材料供应商",
+        "transaction_no": "AUDIT-20261101-RUN20261101MATAR-PAY-001",
+        "idempotency_key": "6a4a068d-3f3e-4894-bcfd-a0a9bed0c858"
+      }
+    ],
+    "settlements": [
+      {
+        "settlement_id": "242556961952890880",
+        "payment_id": "242556961927725056",
+        "payable_id": "1793518416093711825",
+        "amount": "240.00"
+      }
+    ],
+    "ledgers": [
+      {
+        "ledger_id": "242556961965473792",
+        "source": "Payment",
+        "source_id": "242556961927725056",
+        "direction": "Expense",
+        "amount": "240.00",
+        "project_id": "242541620656865280",
+        "store_id": "199500000000000011",
+        "counterparty": "全链路验收材料供应商",
+        "summary": "付款 · 材料采购 · 全链路验收材料供应商",
+        "voided": "\u0000"
+      }
+    ]
+  },
+  "checks": {
+    "payablePaid": true,
+    "onePayment": true,
+    "oneSettlement": true,
+    "oneExpenseLedger": true
+  }
+}

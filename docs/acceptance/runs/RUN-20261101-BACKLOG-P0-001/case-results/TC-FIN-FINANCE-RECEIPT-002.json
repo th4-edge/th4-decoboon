@@ -1,0 +1,36 @@
+{
+  "caseId": "TC-FIN-FINANCE-RECEIPT-002",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "71e78a15aef897852177f0c350e345fbcf8cbeded2658fed1210361cde880bb2",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-003",
+    "DEC-077",
+    "MET-005"
+  ],
+  "pageTargets": [
+    "web:/finance/receipts",
+    "web:/finance/receivables",
+    "app:/subpackages/finance/pages/receipts"
+  ],
+  "providerRoutes": [
+    "finance/receipt/save",
+    "finance/receipt/reverse",
+    "finance/receivable/page",
+    "finance/ledger/report"
+  ]
+}

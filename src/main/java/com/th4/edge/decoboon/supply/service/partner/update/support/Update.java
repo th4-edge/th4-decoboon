@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("更新合作方")
 @Properties(allow = @AllowProperties(model = Partner.class,
         properties = {"partnerId", "type", "name", "contactName", "telNo", "taxNo", "addr",
-                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "brands", "createTime"}))
+                "settlementTerms", "settlementMode", "settlementDays", "cutoffDay", "bankName", "bankAccount", "status", "remark", "brands", "paymentCodeImages", "createTime"}))
 @Service("partner/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.decoboon.supply.service.partner.update.Update {
@@ -43,6 +43,7 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
     @AutoInject private PartnerStatus status;
     @AutoInject private String remark;
     @AutoInject private java.util.Set<String> brands;
+    @AutoInject private java.util.List<String> paymentCodeImages;
     private final TenantContext tenantContext;
     private final PartnerRepository partnerRepository;
 
@@ -72,6 +73,7 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
         if (status != null) partner.setStatus(status);
         if (remark != null) partner.setRemark(remark);
         if (brands != null) partner.setBrands(normalizeBrands(brands));
+        if (paymentCodeImages != null) partner.setPaymentCodeImages(normalizeImages(paymentCodeImages));
         return partnerRepository.save(partner);
     }
 
@@ -80,6 +82,16 @@ public class Update implements com.th4.edge.decoboon.supply.service.partner.upda
         values.stream()
                 .filter(value -> value != null && !value.isBlank())
                 .map(String::trim)
+                .forEach(result::add);
+        return result;
+    }
+
+    private java.util.List<String> normalizeImages(java.util.List<String> values) {
+        java.util.List<String> result = new java.util.ArrayList<>();
+        values.stream()
+                .filter(value -> value != null && !value.isBlank())
+                .map(String::trim)
+                .distinct()
                 .forEach(result::add);
         return result;
     }

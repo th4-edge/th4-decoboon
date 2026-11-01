@@ -1,0 +1,52 @@
+{
+  "projectId": "242297299361857536",
+  "web": {
+    "roles": [
+      "Boss",
+      "StoreManager",
+      "Finance"
+    ],
+    "contractAmountDisplay": "¥2,495.75",
+    "receivedAmountDisplay": "¥1,148.05",
+    "outstandingAmountDisplay": "¥6,347.70",
+    "payableAmountDisplay": "¥3,440.00",
+    "paidAmountDisplay": "¥1,440.00",
+    "totalCostDisplay": "¥2,240.00",
+    "profitDisplay": "成本未完整",
+    "settlementStatus": "待确认",
+    "confirmSettlementDisabled": true
+  },
+  "app": {
+    "contractAmountDisplay": "¥2,495.75",
+    "receivedAmountDisplay": "¥1,148.05",
+    "outstandingAmountDisplay": "¥6,347.70",
+    "payableAmountDisplay": "¥3,440.00",
+    "paidAmountDisplay": "¥1,440.00",
+    "totalCostDisplay": "¥2,240.00",
+    "profitNumericDisplay": null,
+    "settlementStatus": "待确认",
+    "confirmSettlementDisabled": true,
+    "report": {
+      "contractAmount": 2495.75,
+      "receivedAmount": 1148.05,
+      "outstandingAmount": 6347.7,
+      "payableAmount": 3440,
+      "paidAmount": 1440,
+      "totalCost": 2240,
+      "costComplete": false,
+      "costIncompleteCount": 1,
+      "settlementStatus": "draft"
+    }
+  },
+  "defects": [
+    {
+      "id": "DEF-20261101-001",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "DEF-20261101-002",
+      "status": "VERIFIED"
+    }
+  ],
+  "conclusion": "PASS"
+}

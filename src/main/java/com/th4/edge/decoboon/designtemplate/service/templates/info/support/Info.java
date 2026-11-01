@@ -43,10 +43,10 @@ import java.util.List;
         @AllowProperties(model = DesignTemplateItem.class,
                 properties = {"itemId", "roomKey", "quantityFormula", "defaultQuantity", "sortNo", "remark",
                         "catalogItem"}),
-        // 名称/单位/计价方式/价格来自项目库；必须显式白名单且不含 costPrice（BR-003 / BR-037）
+        // 模板只返回名称/单位/计价方式和公式元数据，不返回价格或成本（BR-040 / DEC-084）
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
-                        "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
+                        "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"})

@@ -1,57 +1,26 @@
 package com.th4.edge.decoboon.payroll.context;
 
 import com.th4.edge.decoboon.common.context.StoreFilterContext;
-import com.th4.edge.decoboon.common.context.StoreScope;
-import com.th4.edge.decoboon.finance.configure.PayableType;
-import com.th4.edge.decoboon.finance.model.Payable;
-import com.th4.edge.decoboon.finance.repository.PayableRepository;
-import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
-import com.th4.edge.decoboon.payroll.configure.CommissionStatus;
-import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
-import com.th4.edge.decoboon.payroll.configure.PayslipStatus;
-import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
-import com.th4.edge.decoboon.payroll.model.CommissionItem;
-import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.model.PayrollWorkbenchReport;
-import com.th4.edge.decoboon.payroll.model.Payslip;
-import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
-import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
-import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
-import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.YearMonth;
-import java.util.Comparator;
-import java.util.List;
 
 /** 薪酬工作台聚合。 */
 @Component
 public class PayrollWorkbenchContext {
 
     private final PayrollAccessContext accessContext;
-    private final AttendanceSummaryRepository attendanceRepository;
-    private final PayrollSheetRepository sheetRepository;
-    private final CommissionItemRepository commissionRepository;
-    private final PayslipRepository payslipRepository;
-    private final PayableRepository payableRepository;
+    private final PayrollWorkbenchAggregateContext aggregateContext;
     private final StoreFilterContext storeFilterContext;
 
     public PayrollWorkbenchContext(PayrollAccessContext accessContext,
-                                   AttendanceSummaryRepository attendanceRepository,
-                                   PayrollSheetRepository sheetRepository,
-                                   CommissionItemRepository commissionRepository,
-                                   PayslipRepository payslipRepository,
-                                   PayableRepository payableRepository,
+                                   PayrollWorkbenchAggregateContext aggregateContext,
                                    StoreFilterContext storeFilterContext) {
         this.accessContext = accessContext;
-        this.attendanceRepository = attendanceRepository;
-        this.sheetRepository = sheetRepository;
-        this.commissionRepository = commissionRepository;
-        this.payslipRepository = payslipRepository;
-        this.payableRepository = payableRepository;
+        this.aggregateContext = aggregateContext;
         this.storeFilterContext = storeFilterContext;
     }
 
@@ -60,6 +29,7 @@ public class PayrollWorkbenchContext {
         return report(principal, period, null);
     }
 
+    @Transactional(readOnly = true)
     public PayrollWorkbenchReport report(Employee principal, String period, Long requestedStoreId) {
         Employee current = accessContext.requireManager(principal);
         Long storeFilter = storeFilterContext.resolve(current, requestedStoreId);
@@ -67,57 +37,34 @@ public class PayrollWorkbenchContext {
         PayrollWorkbenchReport report = new PayrollWorkbenchReport();
         report.setPeriod(targetPeriod);
 
-        report.setPendingAttendanceCount((int) attendanceRepository
-                .findAll(accessContext.visible(current, AttendanceSummary.class)).stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> targetPeriod.equals(item.getPayrollMonth()))
-                .filter(item -> item.getStatus() == AttendanceStatus.Pending
-                        || item.getStatus() == AttendanceStatus.Disputed)
-                .count());
+        PayrollWorkbenchAggregateContext.AttendanceAggregate attendance =
+                aggregateContext.attendance(current, targetPeriod, storeFilter);
+        PayrollWorkbenchAggregateContext.SheetAggregate sheets =
+                aggregateContext.sheets(current, targetPeriod, storeFilter);
+        PayrollWorkbenchAggregateContext.PayableAggregate payables =
+                aggregateContext.payables(current, targetPeriod, storeFilter);
+        PayrollWorkbenchAggregateContext.CommissionAggregate commissions =
+                aggregateContext.commissions(current, storeFilter);
+        PayrollWorkbenchAggregateContext.PayslipAggregate payslips =
+                aggregateContext.payslips(current, targetPeriod, storeFilter);
+        PayrollWorkbenchAggregateContext.LatestSheet latest =
+                aggregateContext.latestSheet(current, storeFilter);
 
-        List<PayrollSheet> visibleSheets = sheetRepository.findAll(accessContext.visibleSheets(current, storeFilter));
-        var sheets = visibleSheets.stream()
-                .filter(item -> targetPeriod.equals(item.getPeriod()))
-                .toList();
-        report.setCurrentPeriodHasSheet(!sheets.isEmpty());
-        visibleSheets.stream()
-                .filter(item -> item.getPeriod() != null && !item.getPeriod().isBlank())
-                .max(Comparator.comparing(PayrollSheet::getPeriod))
-                .ifPresent(latest -> {
-                    report.setLatestSheetId(latest.getSheetId());
-                    report.setLatestSheetPeriod(latest.getPeriod());
-                    report.setLatestSheetStatus(latest.getStatus());
-                    report.setLatestSheetTotalNetAmount(latest.getTotalNetAmount());
-                });
-        report.setDraftSheetCount((int) sheets.stream().filter(item -> item.getStatus() == PayrollSheetStatus.Draft).count());
-        report.setPendingSheetCount((int) sheets.stream().filter(item -> item.getStatus() == PayrollSheetStatus.Pending).count());
-        report.setConfirmedSheetCount((int) sheets.stream().filter(item -> item.getStatus() == PayrollSheetStatus.Confirmed).count());
-        report.setPartialPaidSheetCount((int) sheets.stream().filter(item -> item.getStatus() == PayrollSheetStatus.PartialPaid).count());
-        report.setPaidSheetCount((int) sheets.stream().filter(item -> item.getStatus() == PayrollSheetStatus.Paid).count());
-
-        BigDecimal payableAmount = payableRepository.findAll(accessContext.visible(current, Payable.class)).stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> item.getType() == PayableType.EmployeeCommission
-                        || (item.getType() == PayableType.EmployeeSalary && targetPeriod.equals(item.getPeriod())))
-                .map(item -> item.getAmount().subtract(item.getPaidAmount() == null ? BigDecimal.ZERO : item.getPaidAmount()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        report.setPendingEmployeePayableAmount(payableAmount);
-
-        BigDecimal releasedUnpaid = commissionRepository
-                .findAll(accessContext.visible(current, CommissionItem.class)).stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> item.getStatus() == CommissionStatus.Released
-                        || item.getStatus() == CommissionStatus.InPayment)
-                .map(item -> item.getReleasedAmount().subtract(item.getPaidAmount() == null ? BigDecimal.ZERO : item.getPaidAmount()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        report.setReleasedUnpaidCommissionAmount(releasedUnpaid);
-
-        var payslips = payslipRepository.findAll(accessContext.visible(current, Payslip.class)).stream()
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> targetPeriod.equals(item.getPeriod()))
-                .toList();
-        report.setPendingPayslipCount((int) payslips.stream().filter(item -> item.getStatus() == PayslipStatus.PendingPayment).count());
-        report.setPublishedPayslipCount((int) payslips.stream().filter(item -> item.getStatus() == PayslipStatus.Published).count());
+        report.setPendingAttendanceCount(attendance.pendingCount());
+        report.setCurrentPeriodHasSheet(sheets.currentPeriodHasSheet());
+        report.setDraftSheetCount(sheets.draftCount());
+        report.setPendingSheetCount(sheets.pendingCount());
+        report.setConfirmedSheetCount(sheets.confirmedCount());
+        report.setPartialPaidSheetCount(sheets.partialPaidCount());
+        report.setPaidSheetCount(sheets.paidCount());
+        report.setPendingEmployeePayableAmount(payables.pendingEmployeePayableAmount());
+        report.setReleasedUnpaidCommissionAmount(commissions.releasedUnpaidCommissionAmount());
+        report.setPendingPayslipCount(payslips.pendingCount());
+        report.setPublishedPayslipCount(payslips.publishedCount());
+        report.setLatestSheetId(latest.sheetId());
+        report.setLatestSheetPeriod(latest.period());
+        report.setLatestSheetStatus(latest.status());
+        report.setLatestSheetTotalNetAmount(latest.totalNetAmount());
         return report;
     }
 }

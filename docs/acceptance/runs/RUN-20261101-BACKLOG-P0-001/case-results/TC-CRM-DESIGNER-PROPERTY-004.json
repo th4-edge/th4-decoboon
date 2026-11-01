@@ -1,0 +1,38 @@
+{
+  "caseId": "TC-CRM-DESIGNER-PROPERTY-004",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "6e89a78b9563bf338387be4297682b30800780680d631f5279d2c5961e249143",
+  "priority": "P0",
+  "area": "CRM",
+  "businessRuleIds": [
+    "BR-001",
+    "OBJ-007",
+    "DEC-052",
+    "DEC-062",
+    "DEC-069"
+  ],
+  "pageTargets": [
+    "web:/designer/measure",
+    "app:/subpackages/customer/pages/measure-record",
+    "app:/subpackages/design/pages/scheme"
+  ],
+  "providerRoutes": [
+    "property/measure/save",
+    "property/measure/page",
+    "property/measure/region/save",
+    "property/measure/region/list"
+  ]
+}

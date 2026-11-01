@@ -1,0 +1,23 @@
+{
+  "cleanup": "PASS",
+  "counts": {
+    "customers": 22,
+    "properties": 15,
+    "designs": 12,
+    "quotes": 21,
+    "projects": 4,
+    "employees": 9,
+    "workers": 0,
+    "partners": 1,
+    "catalog": 8,
+    "templates": 0,
+    "expenseCategories": 0,
+    "ledgerCategories": 6,
+    "receivables": 13,
+    "payables": 3,
+    "packages": 3,
+    "paymentPlans": 1,
+    "constructionPlans": 1,
+    "quoteLines": 111
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-11-01T10:40:48.624Z",
+  "viewportChecks": [
+    {
+      "page": "partner-price-both-selected",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/partner-price-both-selected-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "bodyText": "供应商采购价\n新增供应商采购价\n采购价与销售价分开维护，用于项目实际成本核算\n采购对象\n供应商和报价项目必须同时明确，保存时服务端会再次校验企业归属与有效性。\n供应商\n必选\n全链路验收材料供应商\n材料供应商 · 收货 + 30 天 · 材料联系人\n合作中\n合作类型\n材料供应商\n结算账期\n收货 + 30 天\n联系人\n材料联系人\n更换供应商\n清除\n报价项目分类\n主材\n全屋定制\n软装家具\n电器设备\n施工\n综合其他\n报价库项目\n必选\n主材--实木复合地板\n主材 · 地板\n可报价\n分类\n地板\n品牌与规格\n未标注\n单位\n㎡\n更换项目\n清除\n价格与履约条件\n这里维护的是成本侧采购条件，不覆盖报价项目对客销售价。\n采购价(元)\n供应商实际采购价\n人工/班组价(元)\n施工/劳务成本\n最小起订量\n交货天数\n账期天数\n生效日期\nYYYY-MM-DD\n失效日期\nYYYY-MM-DD\n启用\n备注\n供应商报价说明、特殊约定\n保存采购价"
+      }
+    },
+    {
+      "page": "partner-price-both-selected",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/partner-price-both-selected-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "bodyText": "供应商采购价\n新增供应商采购价\n采购价与销售价分开维护，用于项目实际成本核算\n采购对象\n供应商和报价项目必须同时明确，保存时服务端会再次校验企业归属与有效性。\n供应商\n必选\n全链路验收材料供应商\n材料供应商 · 收货 + 30 天 · 材料联系人\n合作中\n合作类型\n材料供应商\n结算账期\n收货 + 30 天\n联系人\n材料联系人\n更换供应商\n清除\n报价项目分类\n主材\n全屋定制\n软装家具\n电器设备\n施工\n综合其他\n报价库项目\n必选\n主材--实木复合地板\n主材 · 地板\n可报价\n分类\n地板\n品牌与规格\n未标注\n单位\n㎡\n更换项目\n清除\n价格与履约条件\n这里维护的是成本侧采购条件，不覆盖报价项目对客销售价。\n采购价(元)\n供应商实际采购价\n人工/班组价(元)\n施工/劳务成本\n最小起订量\n交货天数\n账期天数\n生效日期\nYYYY-MM-DD\n失效日期\nYYYY-MM-DD\n启用\n备注\n供应商报价说明、特殊约定\n保存采购价"
+      }
+    },
+    {
+      "page": "quote-picker-confirmed",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/quote-picker-confirmed-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "bodyText": "选择客户已确认报价\n按客户、房屋和金额确认合同来源，打开即可比较\n搜索客户 / 房屋地址 / 报价名称\n范围\n当前客户/房屋\n全部已确认\n客户已确认报价\n1 份\n李娜（造数5101） · 造数方案 5101设计报价\n客户已确认\n香樟花园2栋202\n报价金额\n¥2,496\n房屋面积\n140㎡\n设计师\n审计设计\n版本\n第 1 版 · 定制报价\n已显示全部 1 份"
+      }
+    },
+    {
+      "page": "quote-picker-confirmed",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/quote-picker-confirmed-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "bodyText": "选择客户已确认报价\n按客户、房屋和金额确认合同来源，打开即可比较\n搜索客户 / 房屋地址 / 报价名称\n范围\n当前客户/房屋\n全部已确认\n客户已确认报价\n1 份\n李娜（造数5101） · 造数方案 5101设计报价\n客户已确认\n香樟花园2栋202\n报价金额\n¥2,496\n房屋面积\n140㎡\n设计师\n审计设计\n版本\n第 1 版 · 定制报价\n已显示全部 1 份"
+      }
+    },
+    {
+      "page": "supplier-picker",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/supplier-picker-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "bodyText": "选择供应商\n按合作类型、状态和账期比较，搜索只用于精细查找\n搜索名称 / 联系人 / 电话 / 品牌\n类型\n全部\n材料供应商\n厂家\n劳务班组\n安装班组\n物流\n服务商\n状态\n合作中\n已停用\n全部\n供应商与合作方\n1 家\n全链路验收材料供应商\n合作中\n材料供应商 · 材料联系人 · 13910002991 · 收货 + 30 天\n合作类型\n材料供应商\n结算账期\n收货 + 30 天\n供应品牌\n未标注\n待付金额\n¥0\n已显示全部 1 家"
+      }
+    },
+    {
+      "page": "supplier-picker",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/supplier-picker-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "bodyText": "选择供应商\n按合作类型、状态和账期比较，搜索只用于精细查找\n搜索名称 / 联系人 / 电话 / 品牌\n类型\n全部\n材料供应商\n厂家\n劳务班组\n安装班组\n物流\n服务商\n状态\n合作中\n已停用\n全部\n供应商与合作方\n1 家\n全链路验收材料供应商\n合作中\n材料供应商 · 材料联系人 · 13910002991 · 收货 + 30 天\n合作类型\n材料供应商\n结算账期\n收货 + 30 天\n供应品牌\n未标注\n待付金额\n¥0\n已显示全部 1 家"
+      }
+    },
+    {
+      "page": "project-create-selected-quote",
+      "width": 320,
+      "height": 700,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/project-create-selected-quote-320.png",
+      "metrics": {
+        "innerWidth": 320,
+        "innerHeight": 700,
+        "clientWidth": 320,
+        "scrollWidth": 320,
+        "bodyScrollWidth": 320,
+        "bodyText": "合同签约与立项\n设计师发起 · 负责人确认 · 合同生效立项\n设计师可发起并登记客户签约，企业负责人或店长复核调整后确认签约；合同生效才生成唯一项目。\n01\n确认报价\n02\n确认签约\n03\n生成项目\n一、客户确认报价\n必选\n李娜（造数5101）\n造数方案 5101设计报价\n客户已确认\n香樟花园2栋202\n报价金额\n¥2,496\n房屋面积\n140㎡\n版本\n第 1 版\n设计师\n审\n审计设计\n更换报价\n清除\n二、合同与计划\n最终签约价\n签约日期\n2026-11-01\n计划开工\n2026-11-01\n计划完工\n2027-03-01\n付款计划\n选择付款计划模板\n按节点名称、比例、触发方式和默认模板选择\n施工计划\n选择施工计划模板\n按总工期、阶段顺序和验收方式选择\n付款说明（补充）\n默认使用付款计划节点，可补充特殊约定\n合同生效后，系统自动锁定报价与合同明细，并生成施工阶段、任务、材料计划和应收计划。后续金额调整必须通过合同变更单完成。\n提交合同签约"
+      }
+    },
+    {
+      "page": "project-create-selected-quote",
+      "width": 390,
+      "height": 844,
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/20261101-app-selector-p1/evidence/screenshots/project-create-selected-quote-390.png",
+      "metrics": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "bodyScrollWidth": 390,
+        "bodyText": "合同签约与立项\n设计师发起 · 负责人确认 · 合同生效立项\n设计师可发起并登记客户签约，企业负责人或店长复核调整后确认签约；合同生效才生成唯一项目。\n01\n确认报价\n02\n确认签约\n03\n生成项目\n一、客户确认报价\n必选\n李娜（造数5101）\n造数方案 5101设计报价\n客户已确认\n香樟花园2栋202\n报价金额\n¥2,496\n房屋面积\n140㎡\n版本\n第 1 版\n设计师\n审\n审计设计\n更换报价\n清除\n二、合同与计划\n最终签约价\n签约日期\n2026-11-01\n计划开工\n2026-11-01\n计划完工\n2027-03-01\n付款计划\n选择付款计划模板\n按节点名称、比例、触发方式和默认模板选择\n施工计划\n选择施工计划模板\n按总工期、阶段顺序和验收方式选择\n付款说明（补充）\n默认使用付款计划节点，可补充特殊约定\n合同生效后，系统自动锁定报价与合同明细，并生成施工阶段、任务、材料计划和应收计划。后续金额调整必须通过合同变更单完成。\n提交合同签约"
+      }
+    }
+  ],
+  "notes": [
+    "H5 render uses a local CORS proxy to the real dev backend.",
+    "Visual review unavailable because this model cannot inspect images."
+  ]
+}

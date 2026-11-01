@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-28T06:05:00+08:00",
+  "updatedAt": "2026-11-01T16:45:00+08:00",
   "issues": [
     {
       "id": "PI-20261022-001",
@@ -2149,6 +2149,558 @@
       },
       "standardDraft": "docs/product/02-业务信息架构与字段闭环标准.md",
       "nextAction": "启动 INFO-D2：优先修复设计工艺/验收标准 → 报价 → 合同 → 项目任务 → 验收的快照链"
+    },
+    {
+      "id": "PI-20261029-001",
+      "title": "负责人工作台角色错位与经营首屏分裂",
+      "status": "PLAN_READY",
+      "priority": "P1",
+      "domain": "owner-operating-system",
+      "source": "从负责人开始的装得清 App/Web 业务功能改造专项梳理",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-001-负责人工作台角色错位与经营首屏分裂.md",
+      "analysisFile": "docs/product/domains/owner-operating-system/16-boss-role-product-baseline-v1.md",
+      "businessSync": {
+        "status": "USER_DECISION_PENDING",
+        "facts": [
+          "BR-028",
+          "BR-030",
+          "CAP-004",
+          "CAP-005",
+          "SCN-016"
+        ],
+        "openQuestions": [
+          "BOS-D01",
+          "BOS-D02",
+          "BOS-D03",
+          "BOS-D04",
+          "GAP-BOS-001",
+          "GAP-BOS-002",
+          "GAP-070"
+        ]
+      },
+      "developmentTask": {
+        "id": "BOS-C2",
+        "status": "PLAN_READY",
+        "scope": "负责人现有产品场景细化与功能核验"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "本次只完成负责人角色现状对账和问题登记，未改代码"
+      },
+      "dedicatedThreadId": null,
+      "nextAction": "按 17-boss-scenario-refinement-plan-v0.1.md 核验移动端高频场景和 Web 深度场景，先登记问题，不先改 UI",
+      "prototype": {
+        "file": "docs/product/prototypes/owner-operating-system/unified-v1.html",
+        "evidence": "docs/acceptance/runs/20261029-boss-unified-prototype/README.md",
+        "status": "REVIEW_READY"
+      },
+      "compatibilityConstraint": [
+        "BOS-C01",
+        "BOS-C02"
+      ]
+    },
+    {
+      "id": "PI-20261029-002",
+      "title": "装企信息与品牌投影主源未闭环",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "enterprise-brand-profile",
+      "source": "用户要求梳理装企Logo、地图地址、合同、导出、打印和业主展示的信息应用闭环",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-002-装企信息与品牌投影主源未闭环.md",
+      "analysisFile": "docs/product/domains/enterprise-brand-profile/01a-company-information-concept-map-v0.1.md",
+      "analysisFiles": [
+        "docs/product/domains/enterprise-brand-profile/01a-company-information-concept-map-v0.1.md",
+        "docs/product/domains/enterprise-brand-profile/01b-current-state-and-gap-matrix-v0.1.md",
+        "docs/product/domains/enterprise-brand-profile/01d-company-information-complete-design-v0.2.md"
+      ],
+      "businessSync": {
+        "requestId": "REQ-BIZ-20261029-001",
+        "status": "BIZ_TRIAGE_PENDING",
+        "requestFile": "docs/product/consultations/REQ-BIZ-20261029-001-装企信息与品牌投影业务咨询.md"
+      },
+      "developmentTask": {
+        "id": "BRAND-D1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "现有 Company Logo/品牌色维护、App/Web 企业信息可读性、小程序品牌表面投影、Company.color 驱动的 App/小程序/Web 全局主题"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": "docs/acceptance/runs/20261029-company-brand-acceptance/README.md",
+        "note": "开发与真实渲染验证完成，等待用户感受验收"
+      },
+      "nextAction": "用户验收预设/自定义品牌色在 App、小程序、Web 的真实全局主题效果；之后再设计合同/PDF/历史快照",
+      "latestChange": "CHG-20261029-016-zcool-brand-palette-refresh.md"
+    },
+    {
+      "id": "PI-20261029-003",
+      "title": "App首页业主场景与邀请入口角色门禁",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "app-onboarding-identity",
+      "source": "用户对小程序首页、登录授权、未加入企业页和邀请分流的体验反馈",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-003-App首页业主场景与邀请入口角色门禁.md",
+      "developmentTask": {
+        "id": "APP-INVITE-GATE-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "业主首页场景、单主行动登录、邀请上下文持久化和邀请身份直达"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "等待真实微信小程序邀请链路与用户确认"
+      },
+      "nextAction": "用户在微信开发者工具中验证员工邀请、业主邀请和未加入企业页视觉"
+    },
+    {
+      "id": "PI-20261029-004",
+      "title": "创建企业首屏阻断快速入驻",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "company-registration",
+      "source": "用户创建企业真实体验反馈",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-004-创建企业首屏阻断快速入驻.md",
+      "developmentTask": {
+        "id": "APP-COMPANY-QUICK-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "创建企业短表单、微信昵称预填、企业资料后置、在建项目后置"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "等待用户在微信开发者工具完成真实企业创建"
+      },
+      "nextAction": "用户从小程序创建第一个企业并确认首页与默认总店生成"
+    },
+    {
+      "id": "PI-20261029-005",
+      "title": "业主入口被未登录守卫拦截且缺少产品引导",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "owner-entry-public-guide",
+      "source": "用户点击“我是业主，进入我的家”无反馈",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-005-业主入口被未登录守卫拦截且缺少产品引导.md",
+      "developmentTask": {
+        "id": "APP-OWNER-ENTRY-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "公共路由白名单、业主产品说明、邀请验证入口"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "等待微信真机点击和邀请链路验证"
+      },
+      "nextAction": "用户在小程序中点击“我是业主”并验证无邀请说明与有邀请手机号入口"
+    },
+    {
+      "id": "PI-20261029-006",
+      "title": "已绑定微信重复请求手机号授权",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "app-authentication",
+      "source": "用户反馈已经授权微信信息，但每次登录仍要求授权手机号",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-006-已绑定微信重复请求手机号授权.md",
+      "developmentTask": {
+        "id": "APP-LOGIN-PHONE-ONCE-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "先按微信 openid 恢复既有凭证，仅在 PHONE_REQUIRED 时请求手机号授权"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "开发工具已复验员工负责人重复登录不再请求手机号；待用户确认并覆盖业主账号"
+      },
+      "nextAction": "用户确认已绑定微信的重新登录体验，并验证首次未绑定用户仍能完成手机号绑定"
+    },
+    {
+      "id": "PI-20261029-007",
+      "title": "小程序企业编辑TabBar报错与Logo首字颜色错误",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "app-brand-runtime",
+      "source": "用户点击企业编辑出现 setTabBarStyle:fail not TabBar page，且默认/青绿色Logo首字为黑色",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-007-小程序企业编辑TabBar报错与Logo首字颜色错误.md",
+      "developmentTask": {
+        "id": "BRAND-RUNTIME-FIX-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "移除原生TabBar调用，Logo首字按大字号3:1阈值选择文字色"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null,
+        "note": "开发者工具已验证企业编辑和换色无TabBar报错"
+      },
+      "nextAction": "用户确认企业信息编辑页和Logo首字显示"
+    },
+    {
+      "id": "PI-20261029-008",
+      "title": "App品牌主题视觉覆盖不完整",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "app-brand-runtime",
+      "source": "用户反馈Hero Logo融合、我的Hero不变、头像/图标/统计/TabBar/财务Hero仍为平台默认色",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-008-App品牌主题视觉覆盖不完整.md",
+      "developmentTask": {
+        "id": "APP-BRAND-COVERAGE-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "Hero Logo承载面、我的Hero、默认头像、图标底、统计点/环比、TabBar、财务Hero"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": "docs/acceptance/runs/20261029-company-brand-acceptance/README.md",
+        "note": "开发工具四页主题值与双端构建通过"
+      },
+      "nextAction": "用户在小程序查看首页、我的、项目/客户统计、财务工作台和企业信息Hero"
+    },
+    {
+      "id": "PI-20261029-009",
+      "title": "Web登录品牌记忆与官方Logo",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "web-brand-login",
+      "source": "用户要求Web登录页记住上次装企Logo/品牌色，并指出Web仍使用文字生成Logo",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261029-009-Web登录品牌记忆与官方Logo.md",
+      "developmentTask": {
+        "id": "WEB-BRAND-MEMORY-1",
+        "status": "DEV_VERIFIED_PENDING_USER",
+        "scope": "last-login本地品牌缓存、登录页企业Logo/主题恢复、官方装得清Logo资产替换"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": "docs/acceptance/runs/20261029-web-company-brand-memory/README.md",
+        "note": "真实浏览器登录、退出和缓存恢复已通过，待用户确认"
+      },
+      "nextAction": "用户登录并退出Web端，确认登录页恢复企业品牌且平台Logo为官方Mark"
+    },
+    {
+      "id": "PI-20261030-001",
+      "title": "财务跨端汇总伪零与台账来源失衡",
+      "status": "DEV_VERIFIED_DATA_REPAIR_PENDING",
+      "priority": "P0",
+      "domain": "finance-cross-surface-accounting",
+      "source": "Boss/Finance/StoreManager × Web/小程序财务混合审计",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261030-001-财务跨端汇总伪零与台账来源失衡.md",
+      "auditFile": "docs/acceptance/runs/20261030-finance-cross-role-cross-surface-audit/07-final-report.md",
+      "businessSync": {
+        "status": "EXISTING_RULES_USED",
+        "ruleIds": [
+          "BR-055",
+          "MET-002",
+          "MET-005",
+          "MET-006"
+        ]
+      },
+      "developmentTask": {
+        "id": "FIN-AUDIT-20261030-FIX",
+        "status": "DEV_VERIFIED",
+        "scope": "跨端汇总同源、台账来源唯一、手工类型白名单、失败态禁止伪0"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null
+      },
+      "nextAction": "确认 decoboon-test 历史账务修复方案并完成备份；修复后 coreBalanced=true，再进入独立验收与发布门禁",
+      "verification": {
+        "backendFull": {
+          "tests": 1153,
+          "failures": 0,
+          "errors": 0
+        },
+        "webBuild": "PASS",
+        "appReleaseBuild": "PASS",
+        "realUi": "PASS",
+        "changeId": "CHG-20261030-034"
+      },
+      "analysisFile": "docs/acceptance/runs/20261030-finance-p0-fix/README.md"
+    },
+    {
+      "id": "PI-20261030-002",
+      "title": "关联白名单缺失导致财务与角色经营响应截断",
+      "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "priority": "P0",
+      "domain": "provider-serialization-finance-statistic",
+      "source": "昭青科技全新装企业务驱动审计",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261030-002-关联白名单缺失导致财务与角色经营响应截断.md",
+      "auditFile": "docs/acceptance/runs/20261030-fresh-enterprise-business-audit/07-final-report.md",
+      "businessSync": {
+        "status": "EXISTING_RULES_USED",
+        "ruleIds": [
+          "BR-055",
+          "MET-002",
+          "MET-005",
+          "MET-006"
+        ]
+      },
+      "developmentTask": {
+        "id": "PROVIDER-NESTED-WHITELIST-FIX-20261030",
+        "status": "DEV_VERIFIED",
+        "scope": "财务与角色经营 Provider 的 Property 关联白名单、报价 Customer 白名单与静态契约回归"
+      },
+      "verification": {
+        "backendTargetedTests": 83,
+        "failures": 0,
+        "errors": 0,
+        "webBuild": "PASS",
+        "appBuild": "PASS",
+        "realUi": "PASS",
+        "accountingInvariant": "coreBalanced=true",
+        "changeId": "CHG-20261030-036"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null
+      },
+      "nextAction": "执行独立验收，补充非法 JSON 负向用例、双端金额对账与发布前冒烟"
+    },
+    {
+      "id": "PI-20261030-003",
+      "title": "App项目财务付款进度误标为成本",
+      "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "priority": "P1",
+      "domain": "finance-project-label",
+      "source": "昭青科技全新装企业务驱动审计 · App财务项目页",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261030-003-App项目财务付款进度误标为成本.md",
+      "auditFile": "docs/acceptance/runs/20261030-fresh-enterprise-business-audit/07-final-report.md",
+      "businessSync": {
+        "status": "EXISTING_RULES_USED",
+        "ruleIds": [
+          "MET-002",
+          "MET-006",
+          "BR-055"
+        ]
+      },
+      "developmentTask": {
+        "id": "FIN-PROJECT-LABEL-20261030",
+        "status": "DEV_VERIFIED",
+        "scope": "App付款进度文案、Web需关注应收应付文案"
+      },
+      "verification": {
+        "appTypeCheck": "PASS",
+        "appBuild": "PASS",
+        "webBuild": "PASS",
+        "realUi": "PASS",
+        "changeId": "CHG-20261030-037"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null
+      },
+      "nextAction": "完成财务角色独立页面验收，确认付款进度、成本完整性与关注笔数标签"
+    },
+    {
+      "id": "PI-20261030-004",
+      "title": "有效材料减项仍计入成本完整性缺失",
+      "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "priority": "P1",
+      "domain": "finance-project-cost-change-effective-remaining",
+      "source": "PAGE-20261030 真正页面级完整闭环",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261030-004-有效材料减项仍计入成本完整性缺失.md",
+      "auditFile": "docs/acceptance/runs/20261030-true-page-level-closed-loop/07-final-report.md",
+      "businessSync": {
+        "status": "EXISTING_RULES_USED",
+        "ruleIds": [
+          "BR-058",
+          "DEC-055",
+          "BR-035",
+          "DEC-092",
+          "BR-045"
+        ]
+      },
+      "developmentTask": {
+        "id": "PROJECT-COST-EFFECTIVE-REMAINING-20261030",
+        "status": "DEV_VERIFIED",
+        "scope": "成本完整性分母按当前有效剩余应用 Remove/Quantity/Replace，不改历史合同与采购事实"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": null
+      },
+      "nextAction": "执行成本专项独立验收；补 Replace 目标需求完整模型、已到场退货和跨页面成本回归",
+      "verification": {
+        "costTargetedTests": 6,
+        "targetedSuite": "PASS",
+        "backendFull": {
+          "tests": 1169,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "realPage": "PASS",
+        "accountingInvariant": "coreBalanced=true",
+        "costIncompleteBefore": 2,
+        "costIncompleteAfter": 1,
+        "profitAfter": null,
+        "changeId": "CHG-20261031-039"
+      },
+      "analysisFile": "docs/acceptance/runs/20261030-true-page-level-closed-loop/07-final-report.md"
+    },
+    {
+      "id": "PI-20261101-001",
+      "title": "App财务结算门禁与金额展示跨端不一致",
+      "status": "CLOSED",
+      "priority": "P1",
+      "domain": "finance-cross-surface",
+      "source": "独立验收 RUN-20261101-FIN-P0-001",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261101-001-App财务结算门禁与金额展示跨端不一致.md",
+      "analysisFile": null,
+      "businessSync": {
+        "status": "RULE_REFERENCED",
+        "ruleIds": [
+          "BR-003",
+          "BR-045",
+          "MET-002",
+          "DEC-089",
+          "DEC-092"
+        ]
+      },
+      "acceptance": {
+        "status": "PASS",
+        "conclusion": "PASS",
+        "run": "docs/acceptance/runs/RUN-20261101-FIN-P0-001/reports/final.md",
+        "caseIds": [
+          "TC-FIN-CROSSSURFACE-PARITY-006"
+        ],
+        "defectIds": [
+          "DEF-20261101-001",
+          "DEF-20261101-002"
+        ],
+        "evidence": "docs/acceptance/runs/RUN-20261101-FIN-P0-001/evidence/TC-FIN-CROSSSURFACE-PARITY-006/24-cross-surface-comparison.json",
+        "retestRun": "docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001/reports/final.md",
+        "retestEvidence": "docs/acceptance/runs/RUN-20261101-FIN-P0-RETEST-001/evidence/TC-FIN-CROSSSURFACE-PARITY-006/24-cross-surface-comparison-retest.json",
+        "verifiedDefects": [
+          "DEF-20261101-001",
+          "DEF-20261101-002"
+        ]
+      },
+      "nextAction": "本缺陷已通过独立复验；后续随App批次构建/发布，并纳入财务跨端回归。",
+      "developmentTask": {
+        "id": "CHG-20261101-004",
+        "status": "DEV_VERIFIED",
+        "changedFiles": [
+          "th4-decoboon-app/src/subpackages/finance/pages/project.vue",
+          "th4-decoboon-app/src/core/format.ts",
+          "th4-decoboon-app/scripts/verify-money-format.mjs"
+        ]
+      },
+      "closedAt": "2026-11-01T14:35:15+08:00"
+    },
+    {
+      "id": "PI-20261101-002",
+      "title": "App材料到场缺少现场证据上传与展示",
+      "status": "OPEN",
+      "priority": "P2",
+      "domain": "material-arrival-evidence",
+      "source": "独立验收 RUN-20261101-MAT-ARRIVAL-FIN-001",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261101-002-App材料到场缺少现场证据上传与展示.md",
+      "analysisFile": null,
+      "businessSync": {
+        "status": "RULE_REFERENCED",
+        "ruleIds": [
+          "BR-003",
+          "BR-045",
+          "DEC-072",
+          "DEC-092"
+        ]
+      },
+      "acceptance": {
+        "status": "FAIL",
+        "conclusion": "CONDITIONAL_PASS_RECOMMENDED",
+        "run": "docs/acceptance/runs/RUN-20261101-MAT-ARRIVAL-FIN-001/reports/final.md",
+        "caseIds": [
+          "TC-MAT-PM-ARRIVAL-005"
+        ],
+        "defectIds": [
+          "DEF-20261101-003"
+        ]
+      },
+      "nextAction": "研发补App到场证据上传与展示后，创建新RUN复验；复验前不得宣称材料到场证据链完整。"
+    },
+    {
+      "id": "PI-20261101-003",
+      "title": "财务客户详情点击负责人报无权限",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "crm-finance-owner-directory",
+      "source": "用户实际操作反馈",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261101-003-财务客户详情点击负责人报无权限.md",
+      "businessSync": {
+        "status": "RULE_REFERENCED",
+        "ruleIds": [
+          "BR-001",
+          "DEC-065",
+          "DEC-070"
+        ],
+        "decision": "USER-DEC-20261029-009"
+      },
+      "developmentTask": {
+        "id": "CHG-20261101-012",
+        "status": "DEV_VERIFIED",
+        "scope": "user/employee/page 财务候选目录权限与数据范围",
+        "changedFiles": [
+          "th4-decoboon/src/main/java/com/th4/edge/tenant/user/service/user/employee/page/support/Page.java",
+          "th4-decoboon/src/main/java/com/th4/edge/decoboon/customer/context/CustomerContext.java",
+          "th4-decoboon/src/test/java/com/th4/edge/tenant/user/service/user/employee/page/support/EmployeePageAccessTest.java",
+          "th4-decoboon-app/src/subpackages/customer/pages/detail.vue"
+        ]
+      },
+      "verification": {
+        "targetedTests": "PASS",
+        "build": "PASS",
+        "providerContract": "PASS",
+        "realUi": "PASS",
+        "appProvider": "PASS",
+        "appUi": "PENDING_MANUAL",
+        "appBuild": "PASS",
+        "appDevArtifact": "UPDATED"
+      },
+      "acceptance": {
+        "status": "BLOCKED",
+        "record": "docs/acceptance/runs/RUN-20261101-CRM-FIN-OWNER-001/reports/final.md",
+        "caseIds": [
+          "TC-CRM-FINANCE-OWNER-006"
+        ],
+        "evidence": "docs/acceptance/runs/RUN-20261101-CRM-FIN-OWNER-001/evidence/TC-CRM-FINANCE-OWNER-006/",
+        "blockedReason": "Web/API/数据范围/动作矩阵通过；App负责人弹层受miniprogram-automator连接异常阻断。"
+      },
+      "nextAction": "用户在App客户详情手工点击客户负责人并确认候选非空、无权限错误；通过后执行App复验并关闭PI。"
+    },
+    {
+      "id": "PI-20261101-004",
+      "title": "店长费用代填员工选择器无权限",
+      "status": "DEV_VERIFIED_PENDING_USER",
+      "priority": "P1",
+      "domain": "finance-expense-proxy-employee-picker",
+      "source": "角色动作依赖矩阵动态烟测",
+      "issueFile": "docs/product/issue-governance/issues/PI-20261101-004-店长费用代填员工选择器无权限.md",
+      "businessSync": {
+        "status": "RULE_REFERENCED",
+        "ruleIds": [
+          "BR-057",
+          "DEC-091"
+        ]
+      },
+      "developmentTask": {
+        "id": "CHG-20261101-014",
+        "status": "DEV_VERIFIED",
+        "changedFiles": [
+          "th4-decoboon/src/main/java/com/th4/edge/decoboon/payroll/service/employees/page/support/Page.java",
+          "th4-decoboon/src/test/java/com/th4/edge/decoboon/payroll/PayrollEmployeePickerAccessTest.java",
+          "th4-decoboon/docs/testing/traceability/role-action-provider-matrix.json",
+          "th4-decoboon/docs/testing/scripts/action_provider_smoke.py"
+        ]
+      },
+      "verification": {
+        "runtimeActionSmokeBefore": "17/18",
+        "runtimeActionSmokeAfter": "32/32",
+        "targetedTests": "PASS",
+        "build": "PASS",
+        "providerContract": "PASS"
+      },
+      "acceptance": {
+        "status": "NOT_STARTED",
+        "record": "docs/acceptance/runs/20261101-action-provider-matrix-v0.2/"
+      },
+      "nextAction": "用户真机复验店长费用员工选择器，并完成一次受控代填保存与跨店拒绝验证。"
     }
   ]
 }

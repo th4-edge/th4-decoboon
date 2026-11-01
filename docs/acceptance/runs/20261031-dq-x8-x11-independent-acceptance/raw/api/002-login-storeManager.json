@@ -1,0 +1,20 @@
+{
+  "request": {
+    "route": "auth/session/password-login",
+    "body": {
+      "phone": "13910002002",
+      "password": "[REDACTED]"
+    }
+  },
+  "response": {
+    "status": 200,
+    "elapsedMs": 85.4,
+    "bytes": 203,
+    "json": {
+      "data": {
+        "token": "[REDACTED]"
+      },
+      "success": true
+    }
+  }
+}

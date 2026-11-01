@@ -33,6 +33,7 @@ public interface ContractChangeItemRepository extends JpaRepository<ContractChan
             select item from ContractChangeItem item
             join fetch item.change change
             join fetch change.project project
+            left join fetch item.sourceLine sourceLine
             where project.projectId in :projectIds and change.status = :status
             order by item.changeItemId
             """)

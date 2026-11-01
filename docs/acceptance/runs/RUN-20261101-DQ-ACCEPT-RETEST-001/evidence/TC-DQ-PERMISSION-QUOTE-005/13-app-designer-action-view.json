@@ -1,0 +1,130 @@
+{
+  "beforeButtons": [
+    {
+      "text": "查看方案",
+      "disabled": null,
+      "offset": {
+        "left": 14,
+        "top": 610
+      },
+      "size": {
+        "width": 117.6640625,
+        "height": 48
+      }
+    },
+    {
+      "text": "谈单 PPT",
+      "disabled": null,
+      "offset": {
+        "left": 137.6640625,
+        "top": 610
+      },
+      "size": {
+        "width": 117.6640625,
+        "height": 48
+      }
+    },
+    {
+      "text": "打印稿",
+      "disabled": "false",
+      "offset": {
+        "left": 261.328125,
+        "top": 610
+      },
+      "size": {
+        "width": 117.6640625,
+        "height": 48
+      }
+    },
+    {
+      "text": "驳回",
+      "disabled": null,
+      "offset": {
+        "left": 14,
+        "top": 664
+      },
+      "size": {
+        "width": 159.3046875,
+        "height": 48
+      }
+    },
+    {
+      "text": "客户已接受",
+      "disabled": null,
+      "offset": {
+        "left": 179.3046875,
+        "top": 664
+      },
+      "size": {
+        "width": 199.6953125,
+        "height": 48
+      }
+    }
+  ],
+  "dialogTexts": [],
+  "afterTapButtons": [
+    {
+      "text": "查看方案",
+      "disabled": null,
+      "offset": {
+        "left": 14,
+        "top": 610
+      },
+      "size": {
+        "width": 117.6640625,
+        "height": 48
+      }
+    },
+    {
+      "text": "谈单 PPT",
+      "disabled": null,
+      "offset": {
+        "left": 137.6640625,
+        "top": 610
+      },
+      "size": {
+        "width": 117.6640625,
+        "height": 48
+      }
+    },
+    {
+      "text": "打印稿",
+      "disabled": "false",
+      "offset": {
+        "left": 261.328125,
+        "top": 610
+      },
+      "size": {
+        "width": 117.6640625,
+        "height": 48
+      }
+    },
+    {
+      "text": "驳回",
+      "disabled": null,
+      "offset": {
+        "left": 14,
+        "top": 664
+      },
+      "size": {
+        "width": 159.3046875,
+        "height": 48
+      }
+    },
+    {
+      "text": "客户已接受",
+      "disabled": null,
+      "offset": {
+        "left": 179.3046875,
+        "top": 664
+      },
+      "size": {
+        "width": 199.6953125,
+        "height": 48
+      }
+    }
+  ],
+  "afterText": "",
+  "afterButtons": [],
+  "shot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-DQ-ACCEPT-RETEST-001/evidence/TC-DQ-PERMISSION-QUOTE-005/05-designer-quote-app-confirm.png"
+}

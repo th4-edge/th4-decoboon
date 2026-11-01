@@ -1,0 +1,8 @@
+{
+  "path": "subpackages/customer/pages/detail",
+  "messages": {
+    "bk": "客户不存在或无权访问",
+    "bm": "客户不存在或无权访问"
+  },
+  "screenshot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-CORE-B1-001/evidence/TC-CRM-PERMISSION-STORE-005/05-bank-manager-direct-customer-app.png"
+}

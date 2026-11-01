@@ -1,0 +1,82 @@
+{
+  "record": {
+    "customerId": "242542001533222912",
+    "propertyId": "242542001642274816",
+    "storeId": "199500000000000011",
+    "designId": "242542003357745152",
+    "quoteId": "242542004477624320",
+    "amount": 2495.75
+  },
+  "quoteAfterSubmit": {
+    "updateTime": {
+      "dateTime": "2026-11-01 14:55:20"
+    },
+    "quoteId": "242542004477624320",
+    "no": "Q1793516120078",
+    "title": "造数方案 5101设计报价",
+    "property": {
+      "propertyId": "242542001642274816",
+      "customer": {
+        "custId": "242542001533222912",
+        "name": "李娜（造数5101）",
+        "telNo": "13700005101",
+        "community": "香樟花园",
+        "addr": "香樟花园2栋202",
+        "area": 140.0,
+        "budget": 33.0,
+        "status": {
+          "name": "已报价",
+          "key": "Quoted"
+        }
+      },
+      "propertyNo": "H1793516119404",
+      "community": "香樟花园",
+      "building": "2栋",
+      "roomNo": "202",
+      "address": "香樟花园2栋202",
+      "area": 140.0,
+      "layout": "三室两厅一厨一卫",
+      "status": {
+        "name": "已报价",
+        "key": "Quoted"
+      },
+      "salesman": {
+        "empId": "199500000000000106",
+        "name": "审计业务",
+        "role": {
+          "name": "业务员",
+          "value": "Marketer",
+          "key": "Marketer"
+        }
+      },
+      "designer": {
+        "empId": "199500000000000105",
+        "name": "审计设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      }
+    },
+    "version": 1,
+    "mode": {
+      "name": "自定义报价",
+      "value": "Custom",
+      "key": "Custom"
+    },
+    "area": 140.0,
+    "subtotal": 2502.0,
+    "discount": 0.95,
+    "taxAmount": 118.85,
+    "taxRate": 0.05,
+    "amount": 2495.75,
+    "designFee": 0.0,
+    "managementFee": 0.0,
+    "status": {
+      "name": "已提交",
+      "key": "Submitted"
+    },
+    "submittedAt": "2026-11-01 14:55:20"
+  }
+}

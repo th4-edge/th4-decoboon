@@ -1,0 +1,34 @@
+{
+  "caseId": "TC-ACC-PERMISSION-EMPLOYEE-002",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "7ddb93ea1d0314f5f707075aac27f8cdeb2f14728cd5e07dfe994c1074458402",
+  "priority": "P0",
+  "area": "ACCEPTANCE",
+  "businessRuleIds": [
+    "BR-043",
+    "DEC-015",
+    "DEC-009"
+  ],
+  "pageTargets": [
+    "web:/pm/projects/:projectId/acceptance",
+    "app:/subpackages/project/pages/owner-acceptance"
+  ],
+  "providerRoutes": [
+    "project/acceptance/update",
+    "project/acceptance/info",
+    "customer/acceptance/update"
+  ]
+}

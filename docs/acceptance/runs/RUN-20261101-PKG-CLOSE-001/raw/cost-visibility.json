@@ -1,0 +1,52 @@
+{
+  "Boss": {
+    "success": true,
+    "cost": 9,
+    "firstLineCost": 4.5,
+    "status": {
+      "name": "已发布",
+      "value": "Published",
+      "key": "Published"
+    }
+  },
+  "Designer": {
+    "success": true,
+    "cost": null,
+    "firstLineCost": null,
+    "status": {
+      "name": "已发布",
+      "value": "Published",
+      "key": "Published"
+    }
+  },
+  "Finance": {
+    "success": true,
+    "cost": 9,
+    "firstLineCost": 4.5,
+    "status": {
+      "name": "已发布",
+      "value": "Published",
+      "key": "Published"
+    }
+  },
+  "Pm": {
+    "success": true,
+    "cost": null,
+    "firstLineCost": null,
+    "status": {
+      "name": "已发布",
+      "value": "Published",
+      "key": "Published"
+    }
+  },
+  "Marketer": {
+    "success": true,
+    "cost": null,
+    "firstLineCost": null,
+    "status": {
+      "name": "已发布",
+      "value": "Published",
+      "key": "Published"
+    }
+  }
+}

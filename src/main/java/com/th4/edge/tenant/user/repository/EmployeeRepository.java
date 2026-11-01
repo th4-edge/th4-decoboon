@@ -42,6 +42,30 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @EntityGraph(attributePaths = {"store", "team"})
     List<Employee> findByCompany_ComIdOrderByNameAsc(Long comId);
 
+    /** 员工选择器数据库分页：权限范围和门店条件由调用 Provider 先解析，再把最终范围下推 SQL。 */
+    @EntityGraph(attributePaths = {"store", "team"})
+    @Query(value = "select e from Employee e where e.company.comId = :comId "
+            + "and e.role in :roles and e.status in :statuses "
+            + "and (:storeId is null or e.store.storeId = :storeId) "
+            + "and (:empId is null or e.empId = :empId) "
+            + "and (:excludeEmpId is null or e.empId <> :excludeEmpId) "
+            + "and (:keywordPattern is null or lower(e.name) like :keywordPattern or e.telNo like :keywordPattern) "
+            + "order by e.name asc, e.empId asc",
+            countQuery = "select count(e) from Employee e where e.company.comId = :comId "
+            + "and e.role in :roles and e.status in :statuses "
+            + "and (:storeId is null or e.store.storeId = :storeId) "
+            + "and (:empId is null or e.empId = :empId) "
+            + "and (:excludeEmpId is null or e.empId <> :excludeEmpId) "
+            + "and (:keywordPattern is null or lower(e.name) like :keywordPattern or e.telNo like :keywordPattern)")
+    Page<Employee> findPickerPage(@Param("comId") Long comId,
+                                  @Param("storeId") Long storeId,
+                                  @Param("roles") Collection<EmployeeRole> roles,
+                                  @Param("statuses") Collection<EmployeeStatus> statuses,
+                                  @Param("empId") Long empId,
+                                  @Param("excludeEmpId") Long excludeEmpId,
+                                  @Param("keywordPattern") String keywordPattern,
+                                  Pageable pageable);
+
     @EntityGraph(attributePaths = {"store", "team"})
     List<Employee> findByCompany_ComIdAndStatusOrderByNameAsc(Long comId, EmployeeStatus status);
 

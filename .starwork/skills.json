@@ -1,6 +1,6 @@
 {
   "schema": "starwork.project_skills.v0.1",
-  "updated_at": "2026-10-28T05:10:00+08:00",
+  "updated_at": "2026-11-01T12:00:00+08:00",
   "skills": [
     {
       "id": "neat-freak",
@@ -103,6 +103,63 @@
       "reason": "装得清 Web UI 唯一启用智能体：按角色职责、任务链、产品真实性和专业 UI 评审设计页面；通过 Token、七态、可访问性与真实渲染门禁，并接入 Ollama qwen2.5vl:7b 本地视觉评审桥，对 2.5D/3D 做业务价值证明。",
       "installed_by": "user-request",
       "installed_at": "2026-10-28T03:10:00+08:00"
+    },
+    {
+      "id": "zhuangdeqing-marketing-content",
+      "name": "装得清营销内容智能体",
+      "type": "project-local",
+      "source": {
+        "kind": "project",
+        "path": ".agents/skills/zhuangdeqing-marketing-content"
+      },
+      "mounts": [
+        {
+          "agent": "codex",
+          "path": ".agents/skills/zhuangdeqing-marketing-content",
+          "mode": "local"
+        }
+      ],
+      "reason": "把已核验装企场景转化为证据可追溯的营销内容资产、价值主张、选题、短视频图文简报和边界，向渠道执行移交；不定义事实、不发布。",
+      "installed_by": "user-request",
+      "installed_at": "2026-10-29T14:00:00+08:00"
+    },
+    {
+      "id": "zhuangdeqing-usage-content",
+      "name": "装得清使用内容智能体",
+      "type": "project-local",
+      "source": {
+        "kind": "project",
+        "path": ".agents/skills/zhuangdeqing-usage-content"
+      },
+      "mounts": [
+        {
+          "agent": "codex",
+          "path": ".agents/skills/zhuangdeqing-usage-content",
+          "mode": "local"
+        }
+      ],
+      "reason": "把真实场景和当前产品行为转化为入驻、角色教程、使用理解、App/Web对比、FAQ、异常恢复和业务适配兼容台账；不定义事实、不改产品、不做营销主张。",
+      "installed_by": "user-request",
+      "installed_at": "2026-10-29T14:00:00+08:00"
+    },
+    {
+      "id": "zhuangdeqing-acceptance-agent",
+      "name": "装得清独立验收执行智能体",
+      "type": "project-local",
+      "source": {
+        "kind": "project",
+        "path": ".agents/skills/zhuangdeqing-acceptance-agent"
+      },
+      "mounts": [
+        {
+          "agent": "codex",
+          "path": ".agents/skills/zhuangdeqing-acceptance-agent",
+          "mode": "local"
+        }
+      ],
+      "reason": "读取冻结测试资产和Oracle，执行页面级全角色验收、采证、缺陷登记、复验与关门建议；不修改业务事实或产品代码。",
+      "installed_by": "user-request",
+      "installed_at": "2026-11-01T12:00:00+08:00"
     }
   ]
 }

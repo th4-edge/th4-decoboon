@@ -80,8 +80,8 @@ public class EmployeePaymentContext {
     public Payment pay(Employee principal, List<Long> payableIds, BigDecimal amount,
                        FundAccount account, LocalDate paidAt, String batchNo,
                        String idempotencyKey, String remark) {
-        // DEC-093：员工工资/提成发放仅 BOSS、财务；店长即使具备通用财务写权限也不得发放。
-        Employee current = payrollAccessContext.requireEditor(principal);
+        // DEC-097：BOSS/财务和本店店长可发放；门店范围由 FinanceAccessContext 继续强制。
+        Employee current = payrollAccessContext.requirePaymentActor(principal);
         if (amount == null || amount.signum() <= 0) {
             throw new DefinedException(new DefaultErrorCode("400", "发放金额必须大于 0"));
         }

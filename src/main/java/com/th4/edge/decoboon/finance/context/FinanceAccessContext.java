@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /** 财务权限、归属快照、余额状态和流水归集上下文。 */
 @Component
@@ -279,6 +280,24 @@ public class FinanceAccessContext {
                                 BigDecimal amount, FundAccount account, LocalDate occurredAt,
                                 String counterparty, String summary, String remark,
                                 boolean sourceOwned, Store sourceStore, Team sourceTeam, Employee sourceOwner) {
+        FundAccount targetAccount = account == null ? FundAccount.CompanyBank : account;
+        if (sourceId != null) {
+            Ledger existing = ledgerRepository
+                    .findFirstByCompany_ComIdAndSourceAndSourceIdOrderByLedgerIdAsc(
+                            current.getCompany().getComId(), source, sourceId)
+                    .orElse(null);
+            if (existing != null) {
+                boolean sameFact = !Boolean.TRUE.equals(existing.getVoided())
+                        && existing.getDirection() == direction
+                        && value(existing.getAmount()).compareTo(value(amount)) == 0
+                        && Objects.equals(projectId(existing.getProject()), projectId(project))
+                        && existing.getAccount() == targetAccount;
+                if (sameFact) {
+                    return existing;
+                }
+                throw new DefinedException(new DefaultErrorCode("409", "该来源已存在不同资金流水，禁止重复记账"));
+            }
+        }
         Ledger ledger = new Ledger();
         ledger.setProject(project);
         applyOwnership(ledger, current, project);
@@ -292,13 +311,17 @@ public class FinanceAccessContext {
         ledger.setSource(source);
         ledger.setSourceId(sourceId);
         ledger.setAmount(amount);
-        ledger.setAccount(account == null ? FundAccount.CompanyBank : account);
+        ledger.setAccount(targetAccount);
         ledger.setOccurredAt(occurredAt == null ? LocalDate.now() : occurredAt);
         ledger.setCounterparty(counterparty);
         ledger.setSummary(summary);
         ledger.setRemark(remark);
         ledger.setCreatedBy(current);
         return ledgerRepository.save(ledger);
+    }
+
+    private Long projectId(Project project) {
+        return project == null ? null : project.getProjectId();
     }
 
     public BigDecimal value(BigDecimal amount) {

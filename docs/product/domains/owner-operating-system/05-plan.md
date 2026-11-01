@@ -42,3 +42,19 @@
   - 选择首个真实数据场景（建议负责人风险队列）；
   - 形成 App/Web/微信小程序 Provider 对账矩阵；
   - 不在 `GAP-070` 关闭前展示确定经营利润。
+
+## BOS-R0 负责人角色与 App/Web 现状对账（2026-10-29）
+
+| 项 | 内容 |
+| --- | --- |
+| 批次 | `BOS-R0` |
+| 目标 | 以本地集成版 1.0.73 为基线，确认负责人角色边界、真实场景、当前 IA、跨端事实与首个改造切片 |
+| 影响角色 | BOSS |
+| 影响对象 | 客户、设计、报价、合同、项目、材料、财务、组织、经营分析 |
+| 后端 | 只读核对 `statistic/boss/workbench`、`statistic/boss/business/report`、财务与项目成本口径 |
+| App/Web | 只读核对 BOSS 首页、菜单、经营总览、风险队列与组织页 |
+| 产出 | `16-boss-role-product-baseline-v1.md`、`PI-20261029-001` |
+| 退出条件 | `BOS-D01～D04` 获得用户确认；形成 BOSS Provider 字段对账矩阵；不把本地集成当成上线 |
+| 状态 | `CURRENT_STATE_AUDITED / PROTOTYPE_READY_FOR_REVIEW / USER_DECISION_PENDING` |
+
+当前推荐首个真实切片为 `BOS-R1 负责人统一经营总览`。在 `BOS-D01～D04` 确认前，不进入生产编码。

@@ -167,6 +167,8 @@ public class Copy implements com.th4.edge.decoboon.designtemplate.service.templa
             copy.setDoorAreaTotal(room.getDoorAreaTotal());
             copy.setWindowAreaTotal(room.getWindowAreaTotal());
             copy.setWallRise(room.getWallRise());
+            copy.setReferenceArea(room.getReferenceArea());
+            copy.setReferencePerimeter(room.getReferencePerimeter());
             copy.setCount(room.getCount());
             copy.setRemark(room.getRemark());
             roomRepository.save(copy);

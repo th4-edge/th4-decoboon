@@ -1,0 +1,32 @@
+{
+  "defectId": "DEF-20261101-003",
+  "caseIds": [
+    "TC-MAT-PM-ARRIVAL-005"
+  ],
+  "priority": "P2",
+  "status": "OPEN",
+  "title": "App材料到场页无现场证据上传入口，到场记录无法展示证据",
+  "role": "Pm",
+  "surface": "App",
+  "pagePath": "/subpackages/supply/pages/receipt-edit",
+  "businessState": "purchaseId=1793518416069167759; purchaseItemId=1793518416071493403; quantity=2; purchase=Received; cost=240; costComplete=false",
+  "expected": "项目经理登记到场数量时能提交现场证据；到场记录刷新、重进和跨端回读后显示数量、时间、证据和采购来源。",
+  "actual": "App到场页只提供本次到场数量、到场日期和到货说明，没有照片/附件上传入口；保存后GoodsReceipt.images为空，页面和Provider回读均无现场证据。",
+  "minimumReproduction": [
+    "项目经理登录App并打开 /subpackages/supply/pages/receipt-edit?purchaseId=1793518416069167759",
+    "检查页面仅有数量、日期和到货说明控件，无证据上传入口",
+    "确认到货后刷新并重进页面",
+    "查询 project/goods-receipt/page 和 db_goods_receipt_images，images为空"
+  ],
+  "impact": "材料到场缺少可追溯现场证据，发生破损、少发、色差或数量争议时无法通过系统还原到场事实。",
+  "evidence": [
+    "evidence/TC-MAT-PM-ARRIVAL-005/01-arrival-before-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/03-arrival-refreshed-app.png",
+    "evidence/TC-MAT-PM-ARRIVAL-005/03-arrival-refreshed-app.json",
+    "evidence/TC-MAT-PM-ARRIVAL-005/11-arrival-provider-db-final.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "App材料到场页 / GoodsReceipt证据字段",
+  "retestCondition": "App到场页允许上传合成测试图片；保存后Provider、DB和刷新重进页面均显示同一证据。",
+  "createdAt": "2026-11-01T16:05:00+08:00"
+}

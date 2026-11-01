@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.labor.service.worker.page.support;
 
+import com.th4.edge.decoboon.labor.configure.WorkerStatus;
 import com.th4.edge.decoboon.labor.context.WorkerPrivacyContext;
 import com.th4.edge.decoboon.labor.model.Worker;
 import com.th4.edge.decoboon.labor.repository.WorkerRepository;
@@ -11,14 +12,14 @@ import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 
-/** 工人档案分页实现。 */
+/** 工人档案分页实现：服务端搜索、状态过滤和数据库分页。 */
 @Note("工人档案分页")
 @Properties(allow = @AllowProperties(model = Worker.class,
         properties = {"workerId", "name", "idCardNo", "trade", "phone", "bankName", "bankAccount",
@@ -47,30 +48,30 @@ public class Page implements com.th4.edge.decoboon.labor.service.worker.page.Pag
     }
 
     @Override
+    @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Worker> call(Worker request) {
         Employee viewer = privacyContext.requireViewer(employee);
         Long comId = viewer.getCompany().getComId();
         String kw = keyword == null ? "" : keyword.trim().toLowerCase();
-        List<Worker> items = workerRepository.findByCompany_ComIdOrderByWorkerIdDesc(comId).stream()
-                .filter(item -> status == null || status.isBlank()
-                        || item.getStatus().name().equalsIgnoreCase(status))
-                .filter(item -> kw.isBlank()
-                        || contains(item.getName(), kw)
-                        || contains(item.getPhone(), kw)
-                        || contains(item.getTrade(), kw)
-                        || contains(item.getIdCardNo(), kw))
-                .sorted(Comparator.comparing(Worker::getStatus, Comparator.nullsLast(Comparator.naturalOrder()))
-                        .thenComparing(Worker::getWorkerId, Comparator.nullsLast(Comparator.naturalOrder())))
-                .map(item -> privacyContext.mask(item, viewer))
-                .toList();
+        String keywordPattern = kw.isBlank() ? null : "%" + kw + "%";
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, items.size());
-        int to = Math.min(from + pageSize, items.size());
-        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
+        return workerRepository.findPickerPage(
+                        comId,
+                        statusFilter(status),
+                        keywordPattern,
+                        PageRequest.of(page, pageSize))
+                .map(item -> privacyContext.mask(item, viewer));
     }
 
-    private boolean contains(String value, String kw) {
-        return value != null && value.toLowerCase().contains(kw);
+    private List<WorkerStatus> statusFilter(String value) {
+        if (value == null || value.isBlank() || "all".equalsIgnoreCase(value.trim())) {
+            return Arrays.asList(WorkerStatus.values());
+        }
+        try {
+            return List.of(WorkerStatus.valueOf(value.trim()));
+        } catch (IllegalArgumentException ignored) {
+            return List.of();
+        }
     }
 }

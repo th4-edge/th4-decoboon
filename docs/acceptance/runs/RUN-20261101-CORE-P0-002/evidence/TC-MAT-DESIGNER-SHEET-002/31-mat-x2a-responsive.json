@@ -1,0 +1,29 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "innerWidth": 1440,
+    "innerHeight": 900,
+    "scrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "hasHorizontalOverflow": false
+  },
+  {
+    "width": 1280,
+    "height": 800,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "scrollWidth": 1280,
+    "bodyScrollWidth": 1280,
+    "hasHorizontalOverflow": false
+  },
+  {
+    "width": 1024,
+    "height": 768,
+    "innerWidth": 1024,
+    "innerHeight": 768,
+    "scrollWidth": 1024,
+    "bodyScrollWidth": 1024,
+    "hasHorizontalOverflow": false
+  }
+]

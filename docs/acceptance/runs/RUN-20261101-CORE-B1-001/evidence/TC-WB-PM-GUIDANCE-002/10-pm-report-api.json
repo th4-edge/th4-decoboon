@@ -1,0 +1,819 @@
+{
+  "httpStatus": 200,
+  "body": {
+    "data": {
+      "projectCount": 3,
+      "preparingProjectCount": 1,
+      "ongoingProjectCount": 1,
+      "acceptingProjectCount": 1,
+      "suspendedProjectCount": 0,
+      "finishedProjectCount": 0,
+      "overdueProjectCount": 0,
+      "dueSoonProjectCount": 0,
+      "taskTodoCount": 6,
+      "taskDoingCount": 1,
+      "taskAcceptingCount": 0,
+      "taskOverdueCount": 0,
+      "reportTodayCount": 0,
+      "reportWeekCount": 7,
+      "pendingAcceptanceCount": 1,
+      "rejectedAcceptanceCount": 0,
+      "materialRiskCount": 0,
+      "materialDelayedCount": 0,
+      "customerCount": 3,
+      "quoteCount": 3,
+      "contractAmount": 30509.18,
+      "completedAmount": 0,
+      "averageProgress": 2.0,
+      "onTimeDeliveryRate": 0,
+      "acceptancePassRate": 0,
+      "noticeUnreadCount": "3",
+      "focusProjects": [
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:41"
+          },
+          "projectId": "242297231061811200",
+          "no": "P1793457761546",
+          "name": "麦鸿演示项目 13",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "custId": "242297227509235712",
+            "name": "胡斌（演示13）",
+            "telNo": "13910000013",
+            "community": "万象公馆",
+            "addr": "万象公馆4栋1402（主房）",
+            "area": 100.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "siteAddr": "演示项目工地 13",
+          "area": 150.0,
+          "contractAmount": 15437.47,
+          "status": {
+            "name": "待验收",
+            "key": "Accepting"
+          },
+          "progress": 5,
+          "startDate": "2026-10-23",
+          "planEndDate": "2027-01-26"
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:40"
+          },
+          "projectId": "242297226024452096",
+          "no": "P1793457760346",
+          "name": "麦鸿演示项目 12",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:39"
+            },
+            "custId": "242297222228606976",
+            "name": "孙悦（演示12）",
+            "telNo": "13910000012",
+            "community": "翡翠湖畔",
+            "addr": "翡翠湖畔3栋1301（主房）",
+            "area": 88.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "siteAddr": "演示项目工地 12",
+          "area": 140.0,
+          "contractAmount": 12575.96,
+          "status": {
+            "name": "施工中",
+            "key": "Ongoing"
+          },
+          "progress": 1,
+          "startDate": "2026-10-23",
+          "planEndDate": "2027-01-26"
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:57"
+          },
+          "projectId": "242297299361857536",
+          "no": "P1793457777832",
+          "name": "王芳（造数1100） · 望江府1栋102",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:56"
+            },
+            "custId": "242297294915895296",
+            "name": "王芳（造数1100）",
+            "telNo": "13700001100",
+            "community": "望江府",
+            "addr": "望江府1栋102",
+            "area": 100.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "siteAddr": "望江府1栋102",
+          "area": 100.0,
+          "contractAmount": 2495.75,
+          "status": {
+            "name": "待开工",
+            "key": "Preparing"
+          },
+          "progress": 0,
+          "startDate": "2026-11-05",
+          "planEndDate": "2027-02-08"
+        }
+      ],
+      "urgentTasks": [],
+      "pendingAcceptances": [
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:51"
+          },
+          "acceptanceId": "242297272967102464",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "projectId": "242297231061811200",
+            "no": "P1793457761546",
+            "name": "麦鸿演示项目 13",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:40"
+              },
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013",
+              "community": "万象公馆",
+              "addr": "万象公馆4栋1402（主房）",
+              "area": 100.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 13",
+            "area": 150.0,
+            "contractAmount": 15437.47,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 5,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "stage": {
+            "stageId": "242297231078588417",
+            "name": "拆除改造",
+            "sort": 2,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 100
+          },
+          "submittedBy": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "status": {
+            "name": "待确认",
+            "key": "Pending"
+          },
+          "conclusion": "拆除改造施工完成，提交业主确认。"
+        }
+      ],
+      "materialRisks": [],
+      "recentReports": [
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:47:22"
+          },
+          "reportId": "242298410248437760",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "projectId": "242297226024452096",
+            "no": "P1793457760346",
+            "name": "麦鸿演示项目 12",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:39"
+              },
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012",
+              "community": "翡翠湖畔",
+              "addr": "翡翠湖畔3栋1301（主房）",
+              "area": 88.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 12",
+            "area": 140.0,
+            "contractAmount": 12575.96,
+            "status": {
+              "name": "施工中",
+              "key": "Ongoing"
+            },
+            "progress": 1,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "stage": {
+            "stageId": "242297226041229313",
+            "name": "拆除改造",
+            "sort": 2,
+            "status": {
+              "name": "施工中",
+              "key": "Doing"
+            },
+            "progress": 10
+          },
+          "type": {
+            "name": "阶段开工",
+            "key": "StageOpen"
+          },
+          "title": "阶段开工 · 拆除改造",
+          "content": "全链路验收：拆除改造正式开工。",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:46:00"
+          },
+          "reportId": "242298063459188736",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "projectId": "242297299361857536",
+            "no": "P1793457777832",
+            "name": "王芳（造数1100） · 望江府1栋102",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:56"
+              },
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100",
+              "community": "望江府",
+              "addr": "望江府1栋102",
+              "area": 100.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "望江府1栋102",
+            "area": 100.0,
+            "contractAmount": 2495.75,
+            "status": {
+              "name": "待开工",
+              "key": "Preparing"
+            },
+            "progress": 0,
+            "startDate": "2026-11-05",
+            "planEndDate": "2027-02-08"
+          },
+          "type": {
+            "name": "项目通知",
+            "key": "Notice"
+          },
+          "title": "项目成员调整",
+          "content": "项目经理：未指定 → 审计项目经理；履约负责人：未指定 → 审计财务（操作人：审计负责人，时间：2026-10-31T22:46:00.009913，立即生效）",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:45:56"
+          },
+          "reportId": "242298050075164672",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "projectId": "242297226024452096",
+            "no": "P1793457760346",
+            "name": "麦鸿演示项目 12",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:39"
+              },
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012",
+              "community": "翡翠湖畔",
+              "addr": "翡翠湖畔3栋1301（主房）",
+              "area": 88.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 12",
+            "area": 140.0,
+            "contractAmount": 12575.96,
+            "status": {
+              "name": "施工中",
+              "key": "Ongoing"
+            },
+            "progress": 1,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "type": {
+            "name": "项目通知",
+            "key": "Notice"
+          },
+          "title": "项目成员调整",
+          "content": "项目经理：审计负责人 → 审计项目经理；履约负责人：审计负责人 → 审计财务（操作人：审计负责人，时间：2026-10-31T22:45:56.817996，立即生效）",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:45:56"
+          },
+          "reportId": "242298050318434304",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "projectId": "242297231061811200",
+            "no": "P1793457761546",
+            "name": "麦鸿演示项目 13",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:40"
+              },
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013",
+              "community": "万象公馆",
+              "addr": "万象公馆4栋1402（主房）",
+              "area": 100.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 13",
+            "area": 150.0,
+            "contractAmount": 15437.47,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 5,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "type": {
+            "name": "项目通知",
+            "key": "Notice"
+          },
+          "title": "项目成员调整",
+          "content": "项目经理：审计负责人 → 审计项目经理；履约负责人：审计负责人 → 审计财务（操作人：审计负责人，时间：2026-10-31T22:45:56.876778，立即生效）",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:51"
+          },
+          "reportId": "242297272186961920",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "projectId": "242297231061811200",
+            "no": "P1793457761546",
+            "name": "麦鸿演示项目 13",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:40"
+              },
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013",
+              "community": "万象公馆",
+              "addr": "万象公馆4栋1402（主房）",
+              "area": 100.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 13",
+            "area": 150.0,
+            "contractAmount": 15437.47,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 5,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "stage": {
+            "stageId": "242297231078588417",
+            "name": "拆除改造",
+            "sort": 2,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 100
+          },
+          "type": {
+            "name": "阶段开工",
+            "key": "StageOpen"
+          },
+          "title": "阶段开工 · 拆除改造",
+          "content": "拆除改造正式开工，准备提交阶段验收。",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:41"
+          },
+          "reportId": "242297231665790976",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "projectId": "242297231061811200",
+            "no": "P1793457761546",
+            "name": "麦鸿演示项目 13",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:40"
+              },
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013",
+              "community": "万象公馆",
+              "addr": "万象公馆4栋1402（主房）",
+              "area": 100.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 13",
+            "area": 150.0,
+            "contractAmount": 15437.47,
+            "status": {
+              "name": "待验收",
+              "key": "Accepting"
+            },
+            "progress": 5,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "type": {
+            "name": "项目通知",
+            "key": "Notice"
+          },
+          "title": "项目成员调整",
+          "content": "项目经理：未指定 → 审计负责人；履约负责人：未指定 → 审计负责人（操作人：审计负责人，时间：2026-10-31T22:42:41.694230，立即生效）",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:40"
+          },
+          "reportId": "242297226905255936",
+          "project": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "projectId": "242297226024452096",
+            "no": "P1793457760346",
+            "name": "麦鸿演示项目 12",
+            "customer": {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:39"
+              },
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012",
+              "community": "翡翠湖畔",
+              "addr": "翡翠湖畔3栋1301（主房）",
+              "area": 88.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              }
+            },
+            "siteAddr": "演示项目工地 12",
+            "area": 140.0,
+            "contractAmount": 12575.96,
+            "status": {
+              "name": "施工中",
+              "key": "Ongoing"
+            },
+            "progress": 1,
+            "startDate": "2026-10-23",
+            "planEndDate": "2027-01-26"
+          },
+          "type": {
+            "name": "项目通知",
+            "key": "Notice"
+          },
+          "title": "项目成员调整",
+          "content": "项目经理：未指定 → 审计负责人；履约负责人：未指定 → 审计负责人（操作人：审计负责人，时间：2026-10-31T22:42:40.558637，立即生效）",
+          "images": [],
+          "author": {
+            "empId": "199500000000000102",
+            "name": "审计负责人",
+            "role": {
+              "name": "企业负责人",
+              "value": "Boss",
+              "key": "Boss"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "authorRole": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          },
+          "visibleToCustomer": true
+        }
+      ],
+      "recentCustomers": [
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:56"
+          },
+          "custId": "242297294915895296",
+          "name": "王芳（造数1100）",
+          "telNo": "13700001100",
+          "community": "望江府",
+          "addr": "望江府1栋102",
+          "area": 100.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          }
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:40"
+          },
+          "custId": "242297227509235712",
+          "name": "胡斌（演示13）",
+          "telNo": "13910000013",
+          "community": "万象公馆",
+          "addr": "万象公馆4栋1402（主房）",
+          "area": 100.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          }
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:39"
+          },
+          "custId": "242297222228606976",
+          "name": "孙悦（演示12）",
+          "telNo": "13910000012",
+          "community": "翡翠湖畔",
+          "addr": "翡翠湖畔3栋1301（主房）",
+          "area": 88.0,
+          "status": {
+            "name": "履约中",
+            "key": "Serving"
+          }
+        }
+      ],
+      "recentQuotes": [
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:57"
+          },
+          "quoteId": "242297297788993536",
+          "no": "Q1793457777457",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:56"
+            },
+            "custId": "242297294915895296",
+            "name": "王芳（造数1100）",
+            "telNo": "13700001100",
+            "community": "望江府",
+            "addr": "望江府1栋102",
+            "area": 100.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "area": 100.0,
+          "discount": 0.95,
+          "amount": 2495.75,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:41"
+          },
+          "quoteId": "242297229723828224",
+          "no": "Q1793457761226",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "custId": "242297227509235712",
+            "name": "胡斌（演示13）",
+            "telNo": "13910000013",
+            "community": "万象公馆",
+            "addr": "万象公馆4栋1402（主房）",
+            "area": 100.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "area": 0.0,
+          "discount": 0.94,
+          "amount": 15437.47,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:39"
+          },
+          "quoteId": "242297224262844416",
+          "no": "Q1793457759928",
+          "customer": {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:39"
+            },
+            "custId": "242297222228606976",
+            "name": "孙悦（演示12）",
+            "telNo": "13910000012",
+            "community": "翡翠湖畔",
+            "addr": "翡翠湖畔3栋1301（主房）",
+            "area": 88.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            }
+          },
+          "area": 0.0,
+          "discount": 0.94,
+          "amount": 12575.96,
+          "status": {
+            "name": "已转项目",
+            "key": "Converted"
+          }
+        }
+      ]
+    },
+    "success": true
+  }
+}

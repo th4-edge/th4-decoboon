@@ -37,11 +37,25 @@ public class ContractChangeRangeContext {
 
     /** 原合同行的当前有效剩余。 */
     public RangeSnapshot snapshot(ProjectContract contract, ContractLine sourceLine) {
-        return snapshot(contract, sourceLine, null);
+        return snapshot(contract, sourceLine, (Long) null);
     }
 
     /** 原合同行的当前有效剩余；审批复核时可排除当前变更单自身。 */
     public RangeSnapshot snapshot(ProjectContract contract, ContractLine sourceLine, Long excludeChangeId) {
+        return snapshot(contract, sourceLine,
+                itemRepository.findByChange_Contract_ContractIdOrderByChangeItemIdAsc(contract.getContractId()),
+                excludeChangeId);
+    }
+
+    /** 选择器批量投影：复用同一批已加载变更明细，避免每个来源重复查库。 */
+    public RangeSnapshot snapshot(ProjectContract contract, ContractLine sourceLine,
+                                  List<ContractChangeItem> items) {
+        return snapshot(contract, sourceLine, items, null);
+    }
+
+    /** 选择器批量投影：复用同一批已加载变更明细，允许审批复核排除当前变更单。 */
+    public RangeSnapshot snapshot(ProjectContract contract, ContractLine sourceLine,
+                                  List<ContractChangeItem> items, Long excludeChangeId) {
         if (contract == null || sourceLine == null) {
             throw new DefinedException(new DefaultErrorCode("400", "增减项来源不能为空"));
         }
@@ -51,16 +65,30 @@ public class ContractChangeRangeContext {
             throw new DefinedException(new DefaultErrorCode("404", "原合同行不属于当前合同"));
         }
         return snapshot(contract, SourceKey.contractLine(sourceLine.getLineId()),
-                value(sourceLine.getQuantity()), value(sourceLine.getAmount()), excludeChangeId);
+                value(sourceLine.getQuantity()), value(sourceLine.getAmount()), items, excludeChangeId);
     }
 
     /** 已生效新增/替换目标范围的当前有效剩余。 */
     public RangeSnapshot snapshot(ProjectContract contract, ContractChangeItem sourceChangeItem) {
-        return snapshot(contract, sourceChangeItem, null);
+        return snapshot(contract, sourceChangeItem, (Long) null);
     }
 
     /** 已生效新增/替换目标范围的当前有效剩余；审批复核时可排除当前变更单自身。 */
     public RangeSnapshot snapshot(ProjectContract contract, ContractChangeItem sourceChangeItem, Long excludeChangeId) {
+        return snapshot(contract, sourceChangeItem,
+                itemRepository.findByChange_Contract_ContractIdOrderByChangeItemIdAsc(contract.getContractId()),
+                excludeChangeId);
+    }
+
+    /** 选择器批量投影：复用同一批已加载变更明细，避免每个来源重复查库。 */
+    public RangeSnapshot snapshot(ProjectContract contract, ContractChangeItem sourceChangeItem,
+                                  List<ContractChangeItem> items) {
+        return snapshot(contract, sourceChangeItem, items, null);
+    }
+
+    /** 选择器批量投影：复用同一批已加载变更明细，允许审批复核排除当前变更单。 */
+    public RangeSnapshot snapshot(ProjectContract contract, ContractChangeItem sourceChangeItem,
+                                  List<ContractChangeItem> items, Long excludeChangeId) {
         if (contract == null || sourceChangeItem == null) {
             throw new DefinedException(new DefaultErrorCode("400", "增减项来源不能为空"));
         }
@@ -75,13 +103,13 @@ public class ContractChangeRangeContext {
         }
         BigDecimal quantity = firstNotNull(sourceChangeItem.getTargetQuantity(), sourceChangeItem.getNewQuantity());
         BigDecimal amount = firstNotNull(sourceChangeItem.getTargetAmount(), amountOf(sourceChangeItem));
-        return snapshot(contract, SourceKey.changeItem(sourceChangeItem.getChangeItemId()), quantity, amount, excludeChangeId);
+        return snapshot(contract, SourceKey.changeItem(sourceChangeItem.getChangeItemId()), quantity, amount, items, excludeChangeId);
     }
 
     private RangeSnapshot snapshot(ProjectContract contract, SourceKey sourceKey,
-                                   BigDecimal initialQuantity, BigDecimal initialAmount, Long excludeChangeId) {
-        List<ContractChangeItem> items = itemRepository
-                .findByChange_Contract_ContractIdOrderByChangeItemIdAsc(contract.getContractId());
+                                   BigDecimal initialQuantity, BigDecimal initialAmount,
+                                   List<ContractChangeItem> items, Long excludeChangeId) {
+        items = items == null ? List.of() : items;
         BigDecimal effectiveClosedQuantity = ZERO;
         BigDecimal effectiveClosedAmount = ZERO;
         BigDecimal pendingClosedQuantity = ZERO;
@@ -134,6 +162,46 @@ public class ContractChangeRangeContext {
                 availableQuantity, effectiveRemainingAmount, currentUnitPrice, confirmable, blockReason);
     }
 
+    /**
+     * 成本完整性使用的材料需求剩余量。
+     *
+     * <p>只应用已生效的 Remove / Quantity 减少，不改变历史合同行、采购、结算或实际成本。
+     * 待审批、驳回、取消以及不涉及数量的 Price / Add 不减少当前需求；Replace 需连同目标需求
+     * 一并进入完整性模型，不能在此处只关闭来源。</p>
+     */
+    public static BigDecimal effectiveRemainingQuantityForCost(ContractLine sourceLine,
+                                                               List<ContractChangeItem> confirmedChanges) {
+        if (sourceLine == null) {
+            return ZERO;
+        }
+        BigDecimal closed = ZERO;
+        for (ContractChangeItem item : confirmedChanges == null ? List.<ContractChangeItem>of() : confirmedChanges) {
+            if (!sameContractLine(item == null ? null : item.getSourceLine(), sourceLine)) {
+                continue;
+            }
+            ContractChange change = item.getChange();
+            if (change == null || change.getStatus() != ContractChangeStatus.CustomerConfirmed) {
+                continue;
+            }
+            ContractChangeType type = item.getChangeType();
+            if (type != ContractChangeType.Remove && type != ContractChangeType.Quantity) {
+                continue;
+            }
+            closed = closed.add(closedQuantity(item));
+        }
+        return maxZero(value(sourceLine.getQuantity()).subtract(closed));
+    }
+
+    private static boolean sameContractLine(ContractLine left, ContractLine right) {
+        if (left == null || right == null) {
+            return false;
+        }
+        if (left.getLineId() != null && right.getLineId() != null) {
+            return Objects.equals(left.getLineId(), right.getLineId());
+        }
+        return left == right;
+    }
+
     private boolean matches(ContractChangeItem item, SourceKey sourceKey) {
         if (sourceKey.contractLineId() != null) {
             return item.getSourceLine() != null
@@ -143,7 +211,7 @@ public class ContractChangeRangeContext {
                 && Objects.equals(sourceKey.changeItemId(), item.getSourceChangeItem().getChangeItemId());
     }
 
-    private BigDecimal closedQuantity(ContractChangeItem item) {
+    private static BigDecimal closedQuantity(ContractChangeItem item) {
         if (item.getChangeType() == ContractChangeType.Add) {
             return ZERO;
         }
@@ -185,15 +253,15 @@ public class ContractChangeRangeContext {
         return money(item.getNewPrice().multiply(item.getNewQuantity()));
     }
 
-    private BigDecimal firstNotNull(BigDecimal first, BigDecimal second) {
+    private static BigDecimal firstNotNull(BigDecimal first, BigDecimal second) {
         return first == null ? value(second) : first;
     }
 
-    private BigDecimal maxZero(BigDecimal value) {
+    private static BigDecimal maxZero(BigDecimal value) {
         return value.signum() < 0 ? ZERO : value;
     }
 
-    private BigDecimal value(BigDecimal value) {
+    private static BigDecimal value(BigDecimal value) {
         return value == null ? ZERO : value;
     }
 

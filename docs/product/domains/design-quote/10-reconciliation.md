@@ -107,3 +107,137 @@
 | 后端代码与数据库依赖 | `e627bbb` 待谈单 SQL 引用 `cust_customer_loss` | 已补迁移 131 |
 | 发布记录 | 原记录误写“无迁移、排除 124–131” | 已纠正 |
 | 剩余迁移 | 124–130 未执行 | 明确排除 |
+
+## DQ-X3：App 方案模版库浏览与实例化（UI_REVIEWED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | App 实现 | Web 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 模板列表 | DEC-084/BR-040：浏览与筛选 | `design/template/page` | `templates.vue` 搜索/范围/状态筛选/分页 | 既有模板库 | App 真实页面、type-check/build；Provider shared | ALIGNED |
+| 模板详情 | 区域、分项、公式；不含价格/成本 | `design/template/info` | `template-detail.vue` | 既有模板编辑器/详情 | 真实页面、无价格 API、白名单测试 | ALIGNED |
+| 实例化 | 仅已发布版本；当前房屋；幂等快照 | `design/template/instantiate` | 详情页唯一主行动并回读方案 | 既有实例化 | 真实页面、DB 回读、继承测试 | ALIGNED |
+| 真实渲染 | 七态与开发者工具证据 | - | PASS | 既有证据不替代本批 | `20261030-dq-x3-x5-app-template-acceptance` | PASS（物理真机未执行） |
+| 完整双端 | 编辑/发布/停用/复制/区域分项维护 | 其余 `design/template/*` | 已实现 | 已实现 | Provider review `PARITY_REQUIRED=0` | ALIGNED |
+
+- X3 初始只覆盖读取/实例化；X4/X5 完成后设计模板读写与版本 Provider 已全部共享。
+- 对账结论：`UI_REVIEWED`；物理真机、独立验收仍待执行。
+
+
+## DQ-X4：App 方案模版创建、区域/分项维护与发布（UI_REVIEWED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | App 实现 | Web 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 模版创建 | Draft 草稿，归属范围受角色限制 | `design/template/save` | `template-edit.vue` 基础信息表单 | 既有创建抽屉 | App type-check/build；Provider shared | ALIGNED |
+| 区域维护 | 草稿区域增删改；不承载房屋实测事实 | `design/template/room/save|delete` | 区域 sheet | 既有区域编辑 | App build；Provider shared | ALIGNED |
+| 分项公式 | 引用报价项目库；公式/固定数量二选一 | `design/template/items/batchsave` | 目录选择 + 公式/数量配置 | 既有分项表 | App build；Provider shared | ALIGNED |
+| 发布 | 至少一区域；公式/单位/引用校验 | `design/template/publish` | 唯一发布主行动 | 既有发布 | App build；Provider shared | ALIGNED |
+| 复制/停用/版本 | App/Web 完整 | 对应 Provider | 已实现 | 已实现 | Provider review `PARITY_REQUIRED=0`；X5 真实页面 | ALIGNED |
+| 真实渲染 | 七态、开发者工具证据 | - | PASS | 既有证据不替代本批 | `20261030-dq-x3-x5-app-template-acceptance` | PASS（物理真机未执行） |
+
+
+## DQ-X5：App 已发布模版后续生命周期（UI_REVIEWED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | App 实现 | Web 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 复制模板 | 复制为个人 Draft，源模板不变 | `design/template/copy` | 模板卡动作 | 既有复制 | App build；Provider shared | ALIGNED |
+| 新建草稿版本 | 已发布版本不可变；草稿版本幂等 | `design/template/version/build` | 模板卡动作 | 既有版本入口 | App build；Provider shared | ALIGNED |
+| 停用模板 | Disabled 停止新增实例化和编辑；历史报价不变 | `design/template/disable` | 二次确认动作 | 既有停用 | App build；Provider shared | ALIGNED |
+| 真实渲染 | 动作面板与三条链路开发者工具证据 | - | PASS | 既有证据不替代本批 | `20261030-dq-x3-x5-app-template-acceptance` | PASS（物理真机未执行） |
+| 房屋删除 | 独立高风险数据删除 | `property/property/delete` | 未实现 | 已实现 | GAP-WEB-025 OPEN | OUT_OF_SCOPE（不阻塞 DQ-X5） |
+
+## DQ-X3 / DQ-X4 / DQ-X5 真实页面复核结论
+
+- 微信开发者工具原生小程序：列表、详情、编辑、发布、实例化、复制、停用、新版本、错误态与权限态均 PASS。
+- 修复 7 个真实页面/契约缺陷；最终列表/详情/方案页 console error=0。
+- 证据：`th4-decoboon-app/docs/acceptance/runs/20261030-dq-x3-x5-app-template-acceptance/`。
+- 临时数据清理完成，30 张相关表与备份基线计数一致，0 mismatch。
+- 边界：物理真机未连接；`qwen2.5vl:7b` 只完成视觉机器预检，独立验收和最终视觉签字未执行。
+
+## DQ-X6：财务报价服务端汇总（DEV_VERIFIED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | Web 实现 | App 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 汇总来源 | DEC-036：聚合 SQL，不前端求和 | `quote/finance/summary` 单行 Criteria 聚合 | KPI 消费 summary | 不涉及 | H2 测试、API 对账 | ALIGNED |
+| 金额口径 | 报价总额、成本完整部分预计毛利、成本未完整数 | 与 `quote/finance/report` 同谓词和公式 | 删除 3 个 `reduce` | 不涉及 | 分组汇总 = summary | ALIGNED |
+| 数据范围 | DEC-065 财务与门店范围 | 复用 `DataScopeSpecification.visible` | 财务页面真实数据 | 不涉及 | 总部/门店 H2 用例 | ALIGNED |
+| 状态过滤 | 与财务报价列表一致 | 复用 `status` | 页面当前默认全部 | 不涉及 | Accepted 定向用例 | ALIGNED |
+| 分页一致性 | 列表 total 与汇总 count 可对账 | summary 不接收分页参数 | 表格分页使用 page total，KPI 使用 summary | 不涉及 | 本地 2=2 | ALIGNED |
+| 页面功能 | 不改变布局，只替换数据源 | - | 1440/1280/1024、console 0 | - | `20261031-dq-x6-quote-finance-summary` | PASS（视觉未签） |
+
+DQ-X6 无 `UNMAPPED`/`STALE`。独立验收未执行。
+
+## DQ-X7：项目合同档案服务端汇总（DEV_VERIFIED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | Web 实现 | App 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 合同行摘要 | DEC-036：聚合 SQL | `ContractWorkbench.lineCount/lineAmount` | 合同范围消费 workbench | 不涉及 | 6=6、¥977.80=¥977.80 | ALIGNED |
+| 变更摘要 | BR-041/DEC-055 | `change.totalCount/confirmedAmount` | 合同变更消费 workbench | 不涉及 | 1=1、¥-168.00=¥-168.00 | ALIGNED |
+| 角色范围 | 合同项目可见性 | `ProjectAccessContext` | Boss/Designer/StoreManager | 不涉及 | 三角色 API 对账 | ALIGNED |
+| 成本边界 | BR-003 | workbench 按角色裁剪 | 页面沿用服务端字段 | 不涉及 | Designer cost=null | ALIGNED |
+| 页面功能 | 只读合同档案 | - | 1440/1280/1024 | - | `20261031-dq-x7-contract-archive-summary` | PASS（视觉未签） |
+
+DQ-X7 无 `UNMAPPED`/`STALE`。合同行详情分页仍作为独立后续切片。
+
+## DQ-X8：合同基线行数据库分页（DEV_VERIFIED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | Web 实现 | App 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 真实分页 | DEC-036：数据库切页 | `Pageable`，默认 20、上限 50 | 请求 current/size，消费 Page total | 不涉及 | 单测 + size=2 双页 | ALIGNED |
+| 稳定顺序 | 同一合同排序确定 | `sort ASC, lineId ASC` | 当前页不重排 | 不涉及 | 单测 + API IDs | ALIGNED |
+| 汇总口径 | 行数为全量事实，不按当前页求 | workbench `lineCount/lineAmount` | 头部消费 workbench | 不涉及 | 6 / ¥977.80 | ALIGNED |
+| 成本边界 | BR-003 | 当前页按角色裁剪 | 页面不展示成本 | 不涉及 | Designer cost 字段 0 | ALIGNED |
+| 变更来源 | DEC-055 当前有效剩余 | `contract-change/range` | 删除合同行回退 | 不涉及 | 7 来源；无 line/page | ALIGNED |
+| 页面功能 | 只读合同档案 + 增减项来源 | - | 1440/1280/1024、console 0 | - | `20261031-dq-x8-contract-line-pagination` | PASS（视觉未签） |
+
+DQ-X8 无 `UNMAPPED`/`STALE`。真实数据不足 20 行，页面翻页交互未在真实数据下触发；独立验收未执行。
+
+## DQ-X9：业主与小程序合同行分页同源（DEV_VERIFIED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | App 实现 | Web 实现 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 业主分页 | DEC-036：数据库切页 | 默认 20、上限 50、稳定排序 | 显式 current/size，滚动加载下一页 | 不涉及 | 单测 + 业主 API 双页 | ALIGNED |
+| 全量摘要 | 分页行不等于合同全量事实 | workbench `lineCount/lineAmount` | 头部消费 workbench | 不涉及 | 6 项 / ¥977.80 | ALIGNED |
+| 成本边界 | BR-003 | 业主合同行/workbench 不返回 cost | 页面无成本字段 | 不涉及 | 业主 API cost=0 | ALIGNED |
+| 失败恢复 | 不用空数组伪装 | Provider 正常返回 | 首屏错误可重试 | 不涉及 | 源码 + 门禁 | ALIGNED |
+| 分页回归门禁 | 跨端契约重复发生 | - | 5/5 负向样本被拦截 | - | `app-contract-line-gate-self-test.log` | ALIGNED |
+| 原生页面 | 合同范围真实回读 | - | 微信开发者工具 4/4 PASS | - | `app-contract-native.png` | PASS（视觉未签） |
+
+DQ-X9 无 `UNMAPPED`/`STALE`。真实合同不足 20 行，原生页面下一页交互未触发；独立验收未执行。
+
+## DQ-X10：合同读模型成本聚合（DEV_VERIFIED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | Web/App | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 成本合计 | BR-003：必备成本缺失即不完整 | 单条 aggregate 返回 count/sum/incomplete | 响应字段不变 | SQL + 单测 | ALIGNED |
+| 读模型 | DEC-036：禁止全量实体循环求和 | enrich 不调用全量合同行查询 | 不涉及 | 3 条定向用例 | ALIGNED |
+| 空合同 | 不得伪装成本完整 | count=0 时 false | 不涉及 | 定向用例 | ALIGNED |
+| 业务响应 | 合同金额和汇总不变 | 6 行/¥977.80、1 变更/¥-168.00 | 不涉及 | 三角色 API | ALIGNED |
+| 角色边界 | Designer 不返回成本对象 | 保持既有白名单 | 不涉及 | API | ALIGNED |
+| 全量门禁 | DQ-X6 新 Provider 必须纳管 | summary context 已登记，面板 543 | 不涉及 | 1184/1184 | ALIGNED |
+| 数据安全 | 只读改造不得写合同行 | checksum 前后一致 | 不涉及 | `db-baseline/after.txt` | ALIGNED |
+
+DQ-X10 无 `UNMAPPED`/`STALE`。未取得端到端延迟改善，不声明性能收益；独立验收未执行。
+
+## DQ-X11：增减项来源选择器分页与批量快照（ACCEPTED）
+
+| 检查项 | 设计/业务规则 | 后端契约 | Web/App | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| Picker 分页 | DEC-036：服务端 current/size | 默认 20、上限 50、total/hasMore | Web 分页器；App 滚动加载 | API + 单测 | ALIGNED |
+| 服务端筛选 | 关键词/类型/区域/分组 | keyword/itemType/spaceName/group | 两端发送筛选参数 | 真实页面 | ALIGNED |
+| 批量快照 | 来源剩余/占用/可变更口径不变 | 变更明细每请求只加载一次 | 展示服务端结果 | 单测 + API | ALIGNED |
+| Facets | 不用当前页伪造全局类型/区域计数 | group by + 单批投影 | 两端消费服务端 facets | API + 页面 | ALIGNED |
+| 错误边界 | 非法筛选不泄露数据 | 业务 400 | 页面可重试 | API | ALIGNED |
+| 跨端门禁 | 防止退回全量来源 | - | Web/App 各 4/4 负向 | 门禁日志 | ALIGNED |
+| 原生页面 | 真实来源选择链 | - | 2/2 PASS | 小程序截图/JSON | PASS（视觉未签） |
+
+DQ-X11 无 `UNMAPPED`/`STALE`。独立验收初验发现连续翻页 P1，修复后复验 55/55 PASS，P1 已关闭。已生效变更目标仍基于一次批量加载结果切页；视觉签字和业主直接黑盒未执行。
+
+## UI-QF-01：设计队列同族降噪（DEV_VERIFIED）
+
+| 检查项 | 设计/业务规则 | Web 实现 | Provider/状态 | 证据 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| 待我跟进 | 保留客户、跟进时机、风险、下一步、写跟进 | 删除页头/引导重复眉题和完成说明 | 未修改 | 精确 DOM + 1170/1684/2116px 三档 | ALIGNED |
+| 待我量房 | 保留房屋、风险、主行动、真实阻断 | 删除重复眉题、下一步二次展示和泛化完成提示 | 未修改 | eyebrow=0、inlineNext=0、三档无溢出 | ALIGNED |
+| 待我签约 | 保留报价、合同状态、主行动、下一责任人 | 删除重复眉题、完成说明和重复刷新 | 未修改 | eyebrow=0、nextOwner=true、三档无溢出 | ALIGNED |
+| 动作完整性 | 三页既有合法动作不得缺失 | 写跟进、量房主/次动作、签约主行动及辅助入口保留 | 未修改 | DOM/页面证据 | ALIGNED |
+
+UI-QF-01 无 `UNMAPPED`/`STALE`。未独立验收；机器视觉误报不作为通过或失败依据。

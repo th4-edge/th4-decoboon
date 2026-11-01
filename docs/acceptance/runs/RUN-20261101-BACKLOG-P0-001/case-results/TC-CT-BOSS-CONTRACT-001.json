@@ -1,0 +1,35 @@
+{
+  "caseId": "TC-CT-BOSS-CONTRACT-001",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "381c800471d545f0b81549f7964eb76660bfddc1c1ac2225e5497ae40feeab75",
+  "priority": "P0",
+  "area": "CONTRACT",
+  "businessRuleIds": [
+    "BR-002",
+    "DEC-040",
+    "DEC-048"
+  ],
+  "pageTargets": [
+    "web:/designer/contract",
+    "web:/designer/projects/:projectId/contract",
+    "app:/subpackages/project/pages/contract"
+  ],
+  "providerRoutes": [
+    "project/contract/save",
+    "project/contract/update",
+    "project/contract/info"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "caseId": "TC-FIN-FINANCE-RECEIPT-002",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:20:00+08:00",
+  "finishedAt": "2026-11-02T00:23:52+08:00",
+  "executor": "codex",
+  "role": "Finance+StoreManager",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261102-FINFIXRETEST001-",
+  "steps": [
+    {
+      "action": "确认 Finance 页面无冲正入口且 API 403",
+      "result": "PASS_ROLE_GUARD",
+      "evidence": "evidence/TC-FIN-FINANCE-RECEIPT-002/07-finance-reverse-denied.json"
+    },
+    {
+      "action": "店长打开 Web 收款记录，找到活动收款冲正入口",
+      "result": "PASS",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/01-store-manager-reversal-entry.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/02-store-manager-reversal-entry.json"
+      ]
+    },
+    {
+      "action": "填写原因、日期和确认项并执行冲正",
+      "result": "PASS_RETEST",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/03-reversal-form.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/04-reversal-result.png"
+      ]
+    },
+    {
+      "action": "DB/API回读原收款、反向台账、应收余额",
+      "result": "PASS_RETEST",
+      "actual": "原收款Reversed；冲正支出¥100；应收已收由200降至100、待收648.73；有效收款减少、已冲正金额100",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/05-reversal-db.txt",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/06-reversal-api.json"
+      ]
+    },
+    {
+      "action": "App端完成同一动作",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/finance/receipts"
+  ],
+  "actualState": [
+    "StoreManager冲正入口和页面流程通过",
+    "Finance冲正返回403",
+    "原收款保留且状态Reversed",
+    "反向台账金额100",
+    "应收余额恢复至648.73"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/01-store-manager-reversal-entry.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/02-store-manager-reversal-entry.json",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/03-reversal-form.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/04-reversal-result.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/05-reversal-db.txt",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/06-reversal-api.json",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/07-finance-reverse-denied.json",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/08-frozen-case-role-conflict.md"
+  ],
+  "defectIds": [
+    "DEF-20261102-001"
+  ],
+  "blockedReason": "冻结用例声明Finance执行冲正，与DEC-075/DEC-076冲突；且App授权微信身份不可用。缺陷本身已在StoreManager Web端修复并复验，但整条用例不能按现状PASS。",
+  "notes": "代码缺陷已验证修复；测试资产角色拆分需测试资产责任方处理。"
+}

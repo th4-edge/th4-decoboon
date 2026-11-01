@@ -1,0 +1,53 @@
+{
+  "prefix": "BENCH-SELECTOR-10X",
+  "base": 8700000000000000000,
+  "baseline": {
+    "customers": 22,
+    "properties": 15,
+    "designs": 12,
+    "quotes": 21,
+    "projects": 4,
+    "employees": 9,
+    "workers": 0,
+    "partners": 1,
+    "catalog": 33,
+    "templates": 0,
+    "expenseCategories": 0,
+    "ledgerCategories": 0,
+    "receivables": 13,
+    "payables": 3,
+    "packages": 3,
+    "paymentPlans": 1,
+    "constructionPlans": 1,
+    "quoteLines": 111
+  },
+  "after": {
+    "customers": 242,
+    "properties": 215,
+    "designs": 212,
+    "quotes": 231,
+    "projects": 204,
+    "employees": 209,
+    "workers": 200,
+    "partners": 201,
+    "catalog": 233,
+    "templates": 200,
+    "expenseCategories": 200,
+    "ledgerCategories": 200,
+    "receivables": 213,
+    "payables": 203,
+    "packages": 203,
+    "paymentPlans": 201,
+    "constructionPlans": 201,
+    "quoteLines": 311
+  },
+  "context": {
+    "customerId": 8700000000000001000,
+    "propertyId": 8700000000000003000,
+    "designId": 8700000000000005000,
+    "quoteId": 8700000000000007000,
+    "projectId": 8700000000000009000,
+    "partnerId": 8700000000000015000,
+    "catalogItemId": 8700000000000017000
+  }
+}

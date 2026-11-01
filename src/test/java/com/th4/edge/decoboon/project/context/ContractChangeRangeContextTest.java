@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /** 当前有效剩余与待审批占用的权威投影测试。 */
@@ -39,6 +40,22 @@ class ContractChangeRangeContextTest {
         assertThat(snapshot.availableQuantity()).isEqualByComparingTo("6");
         assertThat(snapshot.effectiveRemainingAmount()).isEqualByComparingTo("700.00");
         assertThat(snapshot.currentUnitPrice()).isEqualByComparingTo("100.00");
+    }
+
+    @Test
+    void batchProjectionMustReuseProvidedItemsWithoutRepositoryQuery() {
+        ProjectContract contract = contract(7L);
+        ContractLine line = line(11L, contract, "10", "1000");
+        ContractChangeItem reduction = changeItem(21L, contract, ContractChangeStatus.CustomerConfirmed,
+                ContractChangeType.Quantity, line, "10", "7", new BigDecimal("-300"));
+        ContractChangeItemRepository repository = mock(ContractChangeItemRepository.class);
+
+        var snapshot = new ContractChangeRangeContext(repository)
+                .snapshot(contract, line, List.of(reduction));
+
+        assertThat(snapshot.effectiveRemainingQuantity()).isEqualByComparingTo("7");
+        assertThat(snapshot.availableQuantity()).isEqualByComparingTo("7");
+        verifyNoInteractions(repository);
     }
 
     @Test

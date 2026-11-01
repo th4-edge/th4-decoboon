@@ -1,0 +1,119 @@
+{
+  "caseId": "TC-DQ-PERMISSION-QUOTE-005",
+  "status": "PASS",
+  "startedAt": "2026-11-01T14:58:18+08:00",
+  "finishedAt": "2026-11-01T14:58:18+08:00",
+  "executor": "codex",
+  "role": "Marketer/Designer",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261101-RUN20261101DQACCEPTRETEST001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Marketer",
+      "role": "Marketer",
+      "surface": "API",
+      "page_path": "quote/info|quote/update",
+      "control": "读取与接受尝试",
+      "control_state": "N/A",
+      "business_state_before": "quote=Submitted",
+      "business_state_after": "Marketer可读取事实，但Accepted请求403，状态保持Submitted",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-marketer-negative-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Marketer",
+      "role": "Marketer",
+      "surface": "Web",
+      "page_path": "/workbench/customers/242542001533222912",
+      "control": "客户360报价区",
+      "control_state": "READ_ONLY",
+      "business_state_before": "quote=Submitted",
+      "business_state_after": "页面无报价接受动作",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-marketer-customer-web.png",
+        "11-web-role-views.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Designer",
+      "role": "Designer",
+      "surface": "Web",
+      "page_path": "/designer/quotes/242542004477624320",
+      "control": "登记客户已接受",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "quote=Submitted",
+      "business_state_after": "二次确认后quote=Accepted",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "02-designer-quote-web.png",
+        "06-designer-accept-confirm-dialog.png",
+        "07-designer-accepted-web.png",
+        "12-web-designer-accepted.json"
+      ]
+    },
+    {
+      "step_id": "S04",
+      "actor": "Designer",
+      "role": "Designer",
+      "surface": "App",
+      "page_path": "/subpackages/quote/pages/detail?id=242542004477624320",
+      "control": "客户已接受",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "quote=Submitted",
+      "business_state_after": "App展示与Web相同的设计师接受入口",
+      "feedback": "PASS（可见性）；实际操作由Web完成",
+      "evidence_ids": [
+        "03-designer-quote-app-before.png",
+        "13-app-designer-action-view.json"
+      ]
+    },
+    {
+      "step_id": "S05",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "quote/update|quote/designer/info",
+      "control": "重复Accepted与留痕",
+      "control_state": "N/A",
+      "business_state_before": "quote=Accepted",
+      "business_state_after": "重复Accepted按状态机400拒绝，状态和acceptedBy/acceptedAt不变",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-accept-api-and-db.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Marketer页面无报价接受动作且API 403",
+    "Designer Web显示登记客户已接受并成功执行",
+    "App Designer报价详情显示客户已接受动作，与Web角色投影一致"
+  ],
+  "actualState": [
+    "quote=Accepted",
+    "acceptedBy=199500000000000105",
+    "acceptedAt=2026-11-01 14:57:19.813983",
+    "重复Accepted返回400但原acceptedBy/acceptedAt不变"
+  ],
+  "evidence": [
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/01-marketer-customer-web.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/02-designer-quote-web.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/03-designer-quote-app-before.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/06-designer-accept-confirm-dialog.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/07-designer-accepted-web.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/10-marketer-negative-api.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/10-accept-api-and-db.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/11-web-role-views.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/12-web-designer-accepted.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/13-app-designer-action-view.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/20-quote-fixture.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "App端验证到与Web一致的设计师接受入口；由于miniprogram-automator未触发确认弹窗，实际接受动作由Web页面完成。该自动化限制不作为产品缺陷。"
+}

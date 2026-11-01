@@ -1,0 +1,33 @@
+{
+  "caseId": "TC-DQ-PERMISSION-QUOTE-005",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "001f894c7053e6b0a9c584cfbbbc617eded2507342d829c79a8dd3f0a28ef3c0",
+  "priority": "P0",
+  "area": "DESIGN_QUOTE",
+  "businessRuleIds": [
+    "BR-002",
+    "DEC-071"
+  ],
+  "pageTargets": [
+    "web:/workbench/customers",
+    "web:/designer/quotes/:quoteId",
+    "app:/subpackages/quote/pages/detail"
+  ],
+  "providerRoutes": [
+    "quote/info",
+    "quote/update"
+  ]
+}

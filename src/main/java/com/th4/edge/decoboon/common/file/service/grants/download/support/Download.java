@@ -21,6 +21,9 @@ public class Download implements com.th4.edge.decoboon.common.file.service.grant
     /** 只放行服务端生成的员工头像对象键，防止绕过私有文件签名读取其他 OSS 对象。 */
     private static final Pattern PUBLIC_AVATAR_PATH =
             Pattern.compile("^avatar/\\d+/\\d+-[0-9a-fA-F]{32}\\.(jpg|jpeg|png|webp)$");
+    /** 企业品牌 Logo 是邀请页、业主页可匿名读取的公开品牌资产，只放行服务端生成的固定对象键。 */
+    private static final Pattern PUBLIC_COMPANY_BRAND_PATH =
+            Pattern.compile("^company-brand/\\d+/logo-[0-9a-fA-F]{32}\\.(jpg|jpeg|png|webp)$");
 
     @AutoInject
     private String path;
@@ -43,10 +46,11 @@ public class Download implements com.th4.edge.decoboon.common.file.service.grant
 
     @Override
     public java.io.File call(FileGrant request) {
-        boolean publicAvatar = path != null && PUBLIC_AVATAR_PATH.matcher(path).matches();
-        if (!publicAvatar && !signatureContext.verify(path, expires, signature)) {
+        boolean publicAsset = path != null
+                && (PUBLIC_AVATAR_PATH.matcher(path).matches() || PUBLIC_COMPANY_BRAND_PATH.matcher(path).matches());
+        if (!publicAsset && !signatureContext.verify(path, expires, signature)) {
             throw new DefinedException(new DefaultErrorCode("404", "文件不存在或无权访问"));
         }
-        return signatureContext.materialize(path, publicAvatar ? null : name);
+        return signatureContext.materialize(path, publicAsset ? null : name);
     }
 }

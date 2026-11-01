@@ -1,0 +1,66 @@
+{
+  "id": "payroll-labor.self-attendance-b5",
+  "title": "PAY-SELF-ATTENDANCE 员工本人月度考勤",
+  "version": "1.0.0",
+  "status": "dev-verified-pending-ui",
+  "batch": "PAY-SELF-ATTENDANCE",
+  "sourceRefs": ["BR-038", "DEC-017", "REQ-PAY-SELF-ATT-01"],
+  "audience": ["Boss", "Finance", "StoreManager", "Designer", "Marketer", "Pm"],
+  "objects": [
+    {
+      "id": "AttendanceSummary",
+      "meaning": "员工某工资月份的考勤快照，由企业薪酬负责人维护和确认。",
+      "keyFields": ["summaryId", "employee", "payrollMonth", "scheduledDays", "normalDays", "personalLeaveDays", "sickLeaveDays", "absenceDays", "externalDays", "annualLeaveDays", "compLeaveDays", "status", "confirmedBy", "confirmedAt", "remark"],
+      "sources": ["BR-038", "DEC-017"]
+    },
+    {
+      "id": "Employee",
+      "meaning": "考勤归属员工；本人视角只使用登录员工，不接受客户端 empId。",
+      "keyFields": ["empId", "name", "role", "store", "team"],
+      "sources": ["BR-038", "DEC-017"]
+    },
+    {
+      "id": "PayrollAccessContext",
+      "meaning": "统一解析管理范围与 Self 范围；非管理员工不得获得管理视角。",
+      "keyFields": ["role", "dataScope", "empId", "storeId"],
+      "sources": ["BR-038", "DEC-017"]
+    }
+  ],
+  "views": [
+    {
+      "id": "manager-attendance",
+      "audience": ["Boss", "Finance", "StoreManager"],
+      "system": "调用同一 attendance/summary/page|info；企业/门店范围与既有权限保持不变。"
+    },
+    {
+      "id": "self-attendance",
+      "audience": ["Boss", "Finance", "StoreManager", "Designer", "Marketer", "Pm"],
+      "system": "调用同一 Provider，列表传 selfOnly=true；服务端固定登录员工本人，客户端不得指定他人或可信门店归属。"
+    }
+  ],
+  "stages": [
+    {"id": "enter-self", "name": "进入本人考勤", "system": "App 个人中心或 Web 账户菜单进入本人考勤只读页。", "sources": ["BR-038"]},
+    {"id": "select-month", "name": "选择月份", "system": "按工资月份读取本人考勤并回读服务端事实。", "sources": ["BR-038"]},
+    {"id": "review", "name": "查看考勤构成", "system": "展示应出勤、正常出勤、各类请假/旷工/外勤/年假/调休、状态、确认人和时间。", "sources": ["BR-038", "DEC-017"]},
+    {"id": "detail", "name": "查看明细", "system": "App 展示完整字段浮层，Web 展示详情弹窗；两端字段口径一致。", "sources": ["BR-038"]},
+    {"id": "recover", "name": "失败恢复", "system": "接口失败显示暂不可确认并保留重试；空记录说明待企业确认后出现，不用 0/空数组伪装事实。", "sources": ["BR-038"]}
+  ],
+  "checks": [
+    {"id": "self-only", "rule": "非管理员工调用 page/info 时 DataScope 必须为 Self。"},
+    {"id": "self-flag", "rule": "管理角色 selfOnly=true 时只返回登录员工记录，忽略 storeId。"},
+    {"id": "other-denied", "rule": "普通员工读取他人 summaryId 返回不存在或无权访问。"},
+    {"id": "manager-regression", "rule": "管理角色不传 selfOnly 时维持企业/门店原范围。"},
+    {"id": "no-write", "rule": "本人考勤页不提供编辑、确认或删除动作。"}
+  ],
+  "uiBindings": [
+    {"surface": "App", "path": "/subpackages/payroll/pages/my-attendance", "provider": "attendance/summary/page|info"},
+    {"surface": "Web", "path": "/account/attendance", "provider": "attendance/summary/page|info"}
+  ],
+  "states": ["draft", "pending", "confirmed", "inPayroll", "disputed", "rejected"],
+  "exceptions": [
+    "未登录或离职停用：拒绝并要求重新登录或联系企业负责人。",
+    "接口失败：显示暂不可确认和重试，不保留伪数据。",
+    "无本人记录：空态说明待企业录入并确认。",
+    "跨员工/跨企业访问：不泄露记录是否存在。"
+  ]
+}

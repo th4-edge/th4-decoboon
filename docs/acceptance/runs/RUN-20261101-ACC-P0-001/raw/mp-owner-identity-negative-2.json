@@ -1,0 +1,13 @@
+{
+  "beforePath": "pages/owner/enter",
+  "before": "进入我的家验证装修公司预留手机号后查看本人项目项目邀请已收到授权装修公司预留的手机号后，即可进入本人项目。1验证微信手机号2核对项目授权3进入我的家手机号快捷登录，进入我的家",
+  "beforeShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-ACC-P0-001/evidence/TC-ACC-OWNER-IDENTITY-003/03-owner-enter-cleared-app.png",
+  "afterPath": "pages/owner/enter",
+  "after": "进入我的家验证装修公司预留手机号后查看本人项目项目邀请已收到授权装修公司预留的手机号后，即可进入本人项目。1验证微信手机号2核对项目授权3进入我的家手机号快捷登录，进入我的家",
+  "afterShot": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/docs/acceptance/runs/RUN-20261101-ACC-P0-001/evidence/TC-ACC-OWNER-IDENTITY-003/04-owner-identity-rejected-app.png",
+  "session": {
+    "hasToken": false,
+    "accessCount": null
+  },
+  "readAt": "2026-11-01T08:08:44.453Z"
+}

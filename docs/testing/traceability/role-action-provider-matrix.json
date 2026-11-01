@@ -1,0 +1,429 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-01",
+  "purpose": "把已确认业务决策落实到角色、页面动作、主Provider和依赖Provider，防止可见动作因辅助权限缺失而点击报错。",
+  "actions": [
+    {
+      "id": "ACT-CRM-FIN-TRANSFER-OWNER",
+      "caseIds": [
+        "TC-CRM-FINANCE-OWNER-006"
+      ],
+      "decisionIds": [
+        "USER-DEC-20261029-009"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers/:customerId",
+        "app:/subpackages/customer/pages/detail"
+      ],
+      "control": "客户负责人",
+      "primaryProvider": "customer/customer/update",
+      "dependencyProviders": [
+        "user/employee/page"
+      ],
+      "roles": [
+        {
+          "role": "Finance",
+          "allowed": true,
+          "dataScopes": [
+            "Company",
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Boss",
+          "allowed": true,
+          "dataScopes": [
+            "Company"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "StoreManager",
+          "allowed": true,
+          "dataScopes": [
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Marketer",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 403,
+          "expectedPrimaryStatus": 403
+        }
+      ],
+      "expectedBehavior": {
+        "clickMustNotShowPermissionErrorForAllowedRoles": true,
+        "allowedRoleCandidatesMustBeNonEmpty": true,
+        "deniedRoleMustNotSeeEnabledAction": true,
+        "failedTransferMustNotChangeOwner": true
+      },
+      "dependencyProbePayloads": {
+        "user/employee/page": {
+          "current": 1,
+          "size": 10
+        }
+      }
+    },
+    {
+      "id": "ACT-CRM-ASSIGN-DESIGNER",
+      "caseIds": [
+        "TC-CRM-MANAGER-HANDOFF-003"
+      ],
+      "decisionIds": [
+        "DEC-066"
+      ],
+      "pageTargets": [
+        "web:/workbench/customers/:customerId",
+        "app:/subpackages/customer/pages/detail"
+      ],
+      "control": "负责设计师",
+      "primaryProvider": "customer/customer/handoff",
+      "dependencyProviders": [
+        "user/designer/list"
+      ],
+      "roles": [
+        {
+          "role": "Boss",
+          "allowed": true,
+          "dataScopes": [
+            "Company"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "StoreManager",
+          "allowed": true,
+          "dataScopes": [
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Finance",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        },
+        {
+          "role": "Pm",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        },
+        {
+          "role": "Designer",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        }
+      ],
+      "expectedBehavior": {
+        "clickMustNotShowPermissionErrorForAllowedRoles": true,
+        "allowedRoleCandidatesMustBeNonEmpty": true,
+        "deniedRoleMustNotSeeEnabledAction": true,
+        "failedAssignmentMustNotChangeDesigner": true
+      },
+      "dependencyProbePayloads": {
+        "user/designer/list": {}
+      }
+    },
+    {
+      "id": "ACT-PROJECT-ADJUST-MEMBERS",
+      "caseIds": [
+        "TC-PJ-PERMISSION-003"
+      ],
+      "decisionIds": [
+        "BR-043",
+        "DEC-016"
+      ],
+      "pageTargets": [
+        "web:/designer/projects",
+        "app:/subpackages/project/pages/detail"
+      ],
+      "control": "调整项目成员",
+      "primaryProvider": "project/project/update",
+      "dependencyProviders": [
+        "user/employee/page"
+      ],
+      "roles": [
+        {
+          "role": "Boss",
+          "allowed": true,
+          "dataScopes": [
+            "Company"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "StoreManager",
+          "allowed": true,
+          "dataScopes": [
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Finance",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        },
+        {
+          "role": "Pm",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        }
+      ],
+      "expectedBehavior": {
+        "clickMustNotShowPermissionErrorForAllowedRoles": true,
+        "allowedRoleCandidatesMustBeNonEmpty": true,
+        "deniedRoleMustNotSeeEnabledAction": true,
+        "failedAdjustmentMustNotChangeMembers": true
+      },
+      "dependencyProbePayloads": {
+        "user/employee/page": {
+          "current": 1,
+          "size": 10
+        }
+      }
+    },
+    {
+      "id": "ACT-FIN-ARRANGE-PAYMENT",
+      "caseIds": [
+        "TC-FIN-FINANCE-PAYABLE-003"
+      ],
+      "decisionIds": [
+        "BR-003",
+        "DEC-089"
+      ],
+      "pageTargets": [
+        "web:/finance/payables",
+        "app:/subpackages/finance/pages/payables"
+      ],
+      "control": "安排付款",
+      "primaryProvider": "finance/payment/save",
+      "dependencyProviders": [
+        "finance/payable/page"
+      ],
+      "roles": [
+        {
+          "role": "Boss",
+          "allowed": true,
+          "dataScopes": [
+            "Company"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "StoreManager",
+          "allowed": true,
+          "dataScopes": [
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Finance",
+          "allowed": true,
+          "dataScopes": [
+            "Company",
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Pm",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 403,
+          "expectedPrimaryStatus": 403
+        },
+        {
+          "role": "Designer",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 403,
+          "expectedPrimaryStatus": 403
+        }
+      ],
+      "expectedBehavior": {
+        "clickMustNotShowPermissionErrorForAllowedRoles": true,
+        "allowedRoleCandidatesMustBeNonEmpty": true,
+        "deniedRoleMustNotSeeEnabledAction": true,
+        "failedPaymentMustNotCreatePaymentOrSettlement": true
+      },
+      "dependencyProbePayloads": {
+        "finance/payable/page": {
+          "current": 1,
+          "size": 10
+        }
+      }
+    },
+    {
+      "id": "ACT-MAT-FINANCE-ORDER",
+      "caseIds": [
+        "TC-MAT-FINANCE-ORDER-004"
+      ],
+      "decisionIds": [
+        "BR-044",
+        "BR-045",
+        "DEC-072"
+      ],
+      "pageTargets": [
+        "web:/finance/material-ordering",
+        "app:/subpackages/project/pages/material-sheet-order"
+      ],
+      "control": "确认下单",
+      "primaryProvider": "material/sheet/order",
+      "dependencyProviders": [
+        "material/sheet/page",
+        "partner/page"
+      ],
+      "roles": [
+        {
+          "role": "Boss",
+          "allowed": true,
+          "dataScopes": [
+            "Company"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "StoreManager",
+          "allowed": true,
+          "dataScopes": [
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Finance",
+          "allowed": true,
+          "dataScopes": [
+            "Company",
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Pm",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        },
+        {
+          "role": "Designer",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        }
+      ],
+      "expectedBehavior": {
+        "clickMustNotShowPermissionErrorForAllowedRoles": true,
+        "allowedRoleCandidatesMustBeNonEmpty": true,
+        "deniedRoleMustNotSeeEnabledAction": true,
+        "failedOrderMustNotCreatePurchaseOrPayable": true
+      },
+      "dependencyProbePayloads": {
+        "material/sheet/page": {
+          "current": 1,
+          "size": 10
+        },
+        "partner/page": {
+          "type": "Supplier",
+          "current": 1,
+          "size": 10
+        }
+      }
+    },
+    {
+      "id": "ACT-FIN-EXPENSE-PROXY",
+      "caseIds": [
+        "TC-FIN-EXPENSE-PROXY-007"
+      ],
+      "decisionIds": [
+        "BR-057",
+        "DEC-091"
+      ],
+      "pageTargets": [
+        "app:/subpackages/finance/pages/expense-edit",
+        "app:/subpackages/payroll/pages/employee-picker"
+      ],
+      "control": "费用归属员工",
+      "primaryProvider": "expense/expenses/save",
+      "dependencyProviders": [
+        "payroll/employee/page"
+      ],
+      "roles": [
+        {
+          "role": "Boss",
+          "allowed": true,
+          "dataScopes": [
+            "Company"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "StoreManager",
+          "allowed": true,
+          "dataScopes": [
+            "Store"
+          ],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 200
+        },
+        {
+          "role": "Finance",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 200,
+          "expectedPrimaryStatus": 403
+        },
+        {
+          "role": "Pm",
+          "allowed": false,
+          "dataScopes": [],
+          "expectedDependencyStatus": 403,
+          "expectedPrimaryStatus": 403
+        }
+      ],
+      "expectedBehavior": {
+        "clickMustNotShowPermissionErrorForAllowedRoles": true,
+        "allowedRoleCandidatesMustBeNonEmpty": true,
+        "deniedRoleMustNotSeeEnabledAction": true,
+        "failedProxyMustNotCreateExpense": true
+      },
+      "dependencyProbePayloads": {
+        "payroll/employee/page": {
+          "current": 1,
+          "size": 10
+        }
+      }
+    }
+  ]
+}

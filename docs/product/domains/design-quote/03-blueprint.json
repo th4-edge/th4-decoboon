@@ -106,6 +106,24 @@
       "sourceRefs": [
         "DEC-078"
       ]
+    },
+    {
+      "key": "designTemplate",
+      "label": "设计模版（方案库）",
+      "fields": [
+        "templateId",
+        "scope",
+        "status",
+        "currentVersion",
+        "rooms",
+        "items",
+        "usageCount"
+      ],
+      "sourceRefs": [
+        "OBJ-005",
+        "BR-040",
+        "DEC-084"
+      ]
     }
   ],
   "stages": [
@@ -147,6 +165,19 @@
       "newState": false,
       "sourceRefs": [
         "DEC-078"
+      ]
+    },
+    {
+      "key": "templateStatus",
+      "values": [
+        "Draft",
+        "Published",
+        "Disabled"
+      ],
+      "newState": false,
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
       ]
     }
   ],
@@ -227,6 +258,70 @@
         "BR-003",
         "DEC-065"
       ]
+    },
+    {
+      "key": "template-no-price",
+      "rule": "模版只承载区域、分项引用和工程量公式，不承载价格、成本、供应商历史价或毛利",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-published-only",
+      "rule": "只有已发布且当前版本为已发布的模版可以实例化；实例化即快照",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-property-context",
+      "rule": "App 实例化必须带当前房屋 propertyId，生成后回读设计方案事实",
+      "sourceRefs": [
+        "DEC-084",
+        "OBJ-005"
+      ]
+    },
+    {
+      "key": "template-draft-write",
+      "rule": "App 仅编辑 Draft 版本；发布后不可直接修改，复制/停用/版本管理后续批次",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-publish-gate",
+      "rule": "发布前必须至少有一个区域，分项公式/固定数量可解析且单位维度一致",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-copy-personal",
+      "rule": "复制可见模板只生成当前员工个人级 Draft，不修改源模板",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-version-api",
+      "rule": "已发布模板的新增修改通过新建 Draft 版本；已有 Draft 幂等复用",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-disable-history-safe",
+      "rule": "停用模板停止后续实例化和编辑，但不影响历史报价快照",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
     }
   ],
   "checks": [
@@ -259,6 +354,38 @@
       "rule": "查看前后对象状态不变",
       "sourceRefs": [
         "DEC-078"
+      ]
+    },
+    {
+      "key": "template-scope",
+      "rule": "跨企业/门店/个人范围拒绝查看、读取和实例化",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-invalid-version",
+      "rule": "草稿/停用/不可用模板阻断实例化并给恢复路径",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-write-scope",
+      "rule": "App 模板写操作必须由服务端按归属范围和维护权限校验",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
+      ]
+    },
+    {
+      "key": "template-no-price-write",
+      "rule": "App 模板编辑器不提交或展示价格/成本字段",
+      "sourceRefs": [
+        "BR-040",
+        "DEC-084"
       ]
     }
   ],
@@ -315,7 +442,9 @@
         "design/workbench",
         "design/list",
         "design/review",
-        "design/review-detail"
+        "design/review-detail",
+        "design/templates",
+        "design/template-detail"
       ],
       "sourceRefs": [
         "DEC-078",
@@ -340,7 +469,10 @@
       "routes": [
         "design/scheme/page",
         "design/scheme/info",
-        "statistic/workbench/design/page"
+        "statistic/workbench/design/page",
+        "design/template/page",
+        "design/template/info",
+        "design/template/instantiate"
       ],
       "sourceRefs": [
         "DEC-078"

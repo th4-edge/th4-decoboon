@@ -1,12 +1,13 @@
 package com.th4.edge.decoboon.payroll.service.employees.page.support;
 
 import com.th4.edge.decoboon.common.context.StoreFilterContext;
-import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
@@ -14,12 +15,14 @@ import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** 薪酬域员工选择器：BOSS、财务可按企业范围选择发薪员工。 */
+import java.util.Arrays;
+import java.util.List;
+
+/** 薪酬域员工选择器：BOSS、财务可按企业范围选择发薪员工，店长限本店。 */
 @Note("薪酬员工选择器")
 @Properties(allow = {
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "avatarUrl", "role", "status", "store", "team"}),
@@ -32,11 +35,16 @@ public class Page implements com.th4.edge.decoboon.payroll.service.employees.pag
 
     @User private Employee employee;
     @AutoInject private String keyword;
+    /** 支持单角色或逗号分隔多角色，如 Boss,Pm。 */
     @AutoInject private String role;
     @AutoInject private Long storeId;
     @AutoInject private String status;
     @AutoInject private Integer current;
     @AutoInject private Integer size;
+    /** 已选员工按 ID 回读，仍受薪酬权限与门店范围约束。 */
+    @AutoInject private Long empId;
+    /** 离职交接等场景排除当前对象本人。 */
+    @AutoInject private Long excludeEmpId;
     private final EmployeeRepository repository;
     private final PayrollAccessContext accessContext;
     @org.springframework.beans.factory.annotation.Autowired
@@ -50,46 +58,50 @@ public class Page implements com.th4.edge.decoboon.payroll.service.employees.pag
     @Override
     @Transactional(readOnly = true)
     public org.springframework.data.domain.Page<Employee> call(Employee request) {
-        Employee currentEmployee = accessContext.requireEditor(employee);
+        Employee currentEmployee = accessContext.requireManager(employee);
         Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
-        String kw = keyword == null ? "" : keyword.trim().toLowerCase();
-        EmployeeRole roleFilter = roleFilter(role);
-        EmployeeStatus statusFilter = statusFilter(status);
-        var source = statusFilter == null
-                ? repository.findByCompany_ComIdOrderByNameAsc(currentEmployee.getCompany().getComId())
-                : repository.findByCompany_ComIdAndStatusOrderByNameAsc(currentEmployee.getCompany().getComId(), statusFilter);
-        var items = source.stream()
-                .filter(item -> roleFilter == null || item.getRole() == roleFilter)
-                .filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter))
-                .filter(item -> kw.isBlank()
-                        || (item.getName() != null && item.getName().toLowerCase().contains(kw))
-                        || (item.getTelNo() != null && item.getTelNo().contains(kw)))
-                .toList();
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 50 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, items.size());
-        int to = Math.min(from + pageSize, items.size());
-        return new PageImpl<>(items.subList(from, to), PageRequest.of(page, pageSize), items.size());
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 50);
+        String normalizedKeyword = keyword == null ? "" : keyword.trim().toLowerCase();
+        String keywordPattern = normalizedKeyword.isBlank() ? null : "%" + normalizedKeyword + "%";
+        return repository.findPickerPage(
+                currentEmployee.getCompany().getComId(),
+                storeFilter == null || storeFilter == 0L ? null : storeFilter,
+                roleFilter(role),
+                statusFilter(status),
+                empId,
+                excludeEmpId,
+                keywordPattern,
+                PageRequest.of(page, pageSize));
     }
 
-    private EmployeeRole roleFilter(String value) {
-        if (value == null || value.isBlank() || "all".equalsIgnoreCase(value)) return null;
+    private List<EmployeeRole> roleFilter(String value) {
+        if (value == null || value.isBlank() || "all".equalsIgnoreCase(value.trim())) {
+            return Arrays.asList(EmployeeRole.values());
+        }
         try {
-            return EmployeeRole.valueOf(value);
+            return Arrays.stream(value.split(","))
+                    .map(String::trim)
+                    .filter(item -> !item.isBlank())
+                    .map(EmployeeRole::valueOf)
+                    .distinct()
+                    .toList();
         } catch (IllegalArgumentException ignored) {
-            throw new com.th4.edge.framework.exception.DefinedException(
-                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "员工岗位筛选值无效"));
+            throw new DefinedException(new DefaultErrorCode("400", "员工岗位筛选值无效"));
         }
     }
 
-    private EmployeeStatus statusFilter(String value) {
-        if (value == null || value.isBlank()) return EmployeeStatus.Active;
-        if ("all".equalsIgnoreCase(value)) return null;
+    private List<EmployeeStatus> statusFilter(String value) {
+        if (value == null || value.isBlank()) {
+            return List.of(EmployeeStatus.Active);
+        }
+        if ("all".equalsIgnoreCase(value.trim())) {
+            return Arrays.asList(EmployeeStatus.values());
+        }
         try {
-            return EmployeeStatus.valueOf(value);
+            return List.of(EmployeeStatus.valueOf(value.trim()));
         } catch (IllegalArgumentException ignored) {
-            throw new com.th4.edge.framework.exception.DefinedException(
-                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "员工状态筛选值无效"));
+            throw new DefinedException(new DefaultErrorCode("400", "员工状态筛选值无效"));
         }
     }
 }

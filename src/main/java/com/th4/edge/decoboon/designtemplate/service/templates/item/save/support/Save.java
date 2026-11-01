@@ -40,10 +40,10 @@ import java.math.BigDecimal;
         @AllowProperties(model = DesignTemplateItem.class,
                 properties = {"itemId", "roomKey", "quantityFormula", "defaultQuantity", "sortNo", "remark",
                         "catalogItem"}),
-        // 返回给前端只允许销售侧字段，绝不返回 costPrice（BR-003 / BR-037）
+        // 模板分项不返回价格或成本，只保留渲染和公式所需元数据（BR-040 / DEC-084）
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
-                        "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
+                        "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"})
 })
 @Service("design/template/item/save")

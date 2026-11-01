@@ -9,6 +9,7 @@ import java.util.List;
 public interface CompanyPaymentNodeRepository extends JpaRepository<CompanyPaymentNode, Long> {
 
     List<CompanyPaymentNode> findByPlan_TemplateIdOrderBySortAscNodeIdAsc(Long templateId);
+    List<CompanyPaymentNode> findByPlan_TemplateIdInOrderByPlanTemplateIdAscSortAscNodeIdAsc(java.util.Collection<Long> templateIds);
 
     void deleteByPlan_TemplateId(Long templateId);
 }

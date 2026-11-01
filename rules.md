@@ -197,6 +197,29 @@ th4 是一套区别于传统 MVC 的**领域模型驱动设计**架构，任何�
 
 存量接口整改见 `GAP-027`；改前/改后必须留「端到端 SQL 条数 + 单请求耗时 + 返回行数 + 10× 结论」证据。
 
+#### 0.4.5 分页与聚合接口契约（强制，2026-10-31 新增）
+
+所有读取接口必须先归类为 `PAGE_LIST / PICKER_PAGE / BOUNDED_LIST / REPORT_SUMMARY`：
+
+- `PAGE_LIST`：增长型列表必须服务端 `current + size + filters + sort`；默认 `size=20`，普通列表硬上限 `50`；返回实际 `size` 与全量 `total`。
+- `PICKER_PAGE`：选择器必须服务端关键词搜索和分页，默认 `20`、硬上限 `50`；已选项按 ID 批量回显，禁止先拉 200 条再本地过滤。
+- `BOUNDED_LIST`：只有业务上限不可增长、由服务端强制且不承担历史检索时才允许返回 `List<T>`；不得用“当前数据不多”作为理由。
+- `REPORT_SUMMARY`：金额、计数、比例、分组、趋势、Top-N 必须走独立 `report/summary/overview` Provider；不接收 `current/size`，使用聚合 SQL，返回 `asOf`、`scope`、`count` 和指标。
+
+硬性禁则：
+
+- ❌ `PageRequest.of(0, 200/500)` 先取固定大页再 Java 过滤或 `subList` 分页；
+- ❌ `findAll()` 后 `stream().filter/sum/count/groupBy` 生成业务汇总；
+- ❌ 前端固定 `size: 100/200/500` 冒充全量；
+- ❌ 前端对接口返回业务列表做 `reduce`、`filter().length`、`groupBy`、排序截取 Top-N 生成正式指标；
+- ❌ 用 `page.total` 充当统计卡片；它只用于分页导航；
+- ❌ 汇总接口失败时用 0、空数组或当前页列表兜底；
+- ✅ 同一筛选条件下必须验证 `列表 totalElements == 汇总 count`；
+- ✅ 分页、选择器、汇总均保留租户与数据权限条件；10× 数据量下查询条数和汇总返回行数不得随明细线性增长。
+
+Web/App 现有 `npm run check:pagination` 是存量棘轮门禁；`--write` 只能在完成服务端分页评审后使用。完整规范：
+`docs/design/33-后端分页与聚合接口强制规范.md`（`CHG-20261031-042`）。
+
 ### 0.5 性能问题定位与优化顺序（强制，2026-10-07 新增）
 
 > 依据：`DEC-037`、`BR-032`、`EV-108`、`EV-109`、`EV-110`；与 §0.4（实现逻辑规范）、`DEC-027`（性能预算）配套。
@@ -266,6 +289,37 @@ L4 指标改善而 L1 指标未改善 → 判**劣化**，必须回滚。
 
 跨端能力开发前必须建立 App/Web Provider 对账矩阵。线上问题先在生产受影响端闭环，再扩展相邻批次。完整规范见
 `docs/design/31-一后端多端同源架构规范.md`。
+
+
+### 0.7 后端接口查询与业务编排（强制，2026-10-31 新增）
+
+> 依据：`DEC-027`、`DEC-036`、`DEC-037`、`BR-025`、`BR-031`、`BR-032`；完整规范见
+> `docs/design/34-后端接口查询与业务编排强制规范.md`（`CHG-20261031-049`）。
+
+**一句话**：一个 Provider 只服务一个真实用户目标；先写业务场景卡、接口类别、数据增长模型和查询链，再编码。读取必须有界、批量装配、聚合取数；写入必须是一个原子业务动作。
+
+硬性要求：
+
+1. 新增或实质修改 Provider 前必须写清：使用人、触发时点、当前线下动作、系统最短动作、下游消费者、数据增长、异常路径和验收；禁止只按数据表或页面字段堆接口。
+2. 每个接口必须分类为 `READ_DETAIL / PAGE_LIST / PICKER_PAGE / BOUNDED_LIST / REPORT_SUMMARY / EXPORT_JOB / WRITE_ACTION / BATCH_ACTION`，并声明返回规模、最大行数、查询链和 SQL 是否随数据量增长。
+3. 禁止 N+1：`for/while`、`forEach`、`stream.map/flatMap` 内不得调用 Repository 或触发 LAZY 查询；当前页关联必须批量 `IN`/投影装配。
+4. 禁止 JPA 全量加载后 Java `filter/sum/count/groupBy/reduce` 生成正式业务数字；汇总、计数、比例、排行、趋势、逾期/未收判定必须下推聚合/投影 SQL。
+5. 禁止固定大页冒充全量：`PageRequest.of(0, 200/500)`、`findAll + subList`、先全量再 Java 分页均不得新增；普通列表和选择器默认 20、硬上限 50。
+6. 详情只返回根对象和有限摘要；持续增长的历史明细、附件、日志必须使用独立 `PAGE_LIST`，不得塞进 `/info`。
+7. 批量写入必须先一次批量加载目标、校验、组装，再批量保存/删除；禁止循环内 `findById/exists/save/delete`。
+8. 一个接口不得同时承担浏览、统计、详情、导出和多个可空参数分支；同屏需要多类事实时使用专用读模型和共享聚合层，禁止顺序嵌套调用多个重型汇总接口。
+9. 查询 Provider 不得有业务副作用；写 Provider 不得顺带重算整页工作台。业务并发统一使用 Redisson，只读事务禁止悲观锁。
+10. 新增/修改接口必须保留场景卡、查询链、定向测试、权限负向、同筛选对账、10× 数据量以及 P95/响应体/SQL 结构证据；SQL 条数下降而 L1 未改善不得作为完成依据。
+
+审查入口：
+
+```bash
+mvn -q -Dtest=SummaryImplementationRulesTest test
+python3 scripts/audit-provider-response-contract.py --check
+rg -n 'findAll\(|subList\(|PageRequest\.of\(0,\s*(100|200|500)|Math\.min\(size,\s*(100|200|500)' src/main/java
+```
+
+静态命中必须逐项分类，不能机械等同违规；无场景卡、查询链和验收证据的新命中一律阻断。
 
 ## 1. 架构定位：与传统 MVC 的本质差异
 
@@ -851,23 +905,54 @@ save   -> custId/name/telNo/community/addr/area/status/owner(empId,name)/remark
 update -> 与 save 相同
 ```
 
+### 5.1.2 响应覆盖分类与递归白名单（强制，2026-10-31 新增）
+
+每个新增或修改的 Provider 必须先分类响应类型：
+
+| 分类 | 判定 | 强制动作 |
+| --- | --- | --- |
+| `ENTITY_GRAPH` | 返回 JPA 实体、实体集合、`Page<Entity>`，或含实体引用的对象图 | 具体 Provider 实现类必须声明 `@Properties(allow = {...})`，根模型和所有实际输出的关联模型都要各自白名单 |
+| `READ_MODEL` | 服务端显式组装、不得持有 JPA 实体引用 | 默认也声明 `@Properties(allow=...)`；确需豁免时必须证明只有标量/枚举/时间和同类读模型 |
+| `SCALAR_BINARY` | 布尔、数字、字符串、枚举、文件流、明确命令回执 | 不需要 `@Properties`，但结果对象不得夹带实体图 |
+| `FRAMEWORK_MODEL_ROUTE` | 无自定义 Provider，由框架通用 `{model}-{service}` 响应 | 在通用服务声明处使用 `@ServiceProperties(uris=..., properties=@Properties(allow=...))` |
+
+硬性要求：
+
+- `@Properties` 必须标注在 `*.service.*.support.*` 的具体实现类上；只标接口无效，框架也不会自动继承。
+- 框架白名单不会自动级联：`Project.owner` 的运行时类型是 `Employee` 时，`Employee` 必须另有一条 `@AllowProperties`；`Store/Team` 同理。
+- 规则按运行时模型类匹配；父类、接口、泛型声明不能替代子类规则。
+- 新 Provider 和修改中的 Provider 统一使用 `allow` 白名单；`ignore` 仅允许作为有书面理由的兼容例外。
+- 同一模型不得同时依赖 `allow` 和 `ignore`；框架实际以 `allow` 优先，混用会产生误判。
+- 仅有注解反射测试不充分；涉及实体图的 Provider 必须有真实 JSON 序列化测试，并在 `spring.jpa.open-in-view=false` 且测试方法不加 `@Transactional` 的条件下通过。
+- 白名单拼写错误可能表现为字段静默缺失；必须断言页面关键字段实际存在、敏感字段递归缺失。
+
+完整判定树、禁止模式、测试模板与存量巡检方法见
+`docs/design/32-Provider接口响应序列化与懒加载安全规范.md`（`CHG-20261031-040`）。
+
+静态门禁：
+
+```bash
+python3 scripts/audit-provider-response-contract.py --check
+python3 scripts/audit-provider-response-contract.py --self-test
+```
+
+`--check` 已纳入 `scripts/build-release.sh`；发布构建前必须为 0 缺口。
+
 ### 5.2 具体 Provider：直接使用 `@Properties`
 
 只要当前响应由**明确的自定义 Provider**处理，就直接在 Provider 类上标注 `@Properties`。`@Properties` 不需要写 `uris`，其作用域就是当前 Provider 自身的响应。
 
 ```java
 import com.th4.edge.framework.data.jackson.annotation.Properties;
-import com.th4.edge.framework.data.jackson.annotation.IgnoreProperties;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 
-@Properties(
-        // 对 Employee 模型，隐藏敏感字段
-        ignore = @IgnoreProperties(model = Employee.class,
-                                   properties = {"password", "phone", "salt"}),
-        // 对 Asset 模型，只放行业务字段（可选）
-        allow = @AllowProperties(model = Asset.class,
-                                 properties = {"assetId", "emp", "type", "url", "size", "createTime"})
-)
+@Properties(allow = {
+        @AllowProperties(model = Asset.class,
+                         properties = {"assetId", "emp", "type", "url", "size", "createTime"}),
+        // 关联模型必须单独白名单；仅配置 Asset 不会约束 Employee
+        @AllowProperties(model = Employee.class,
+                         properties = {"empId", "name"})
+})
 @Service("asset/page")
 public class Page extends AbstractPage<Asset> implements Page { /* ... */ }
 ```
@@ -879,10 +964,10 @@ public class Page extends AbstractPage<Asset> implements Page { /* ... */ }
 ```java
 @ServiceProperties(
         uris = {"user-save", "user-update"},
-        properties = @Properties(
-                ignore = @IgnoreProperties(model = User.class,
-                                           properties = {"password", "salt"})
-        )
+        properties = @Properties(allow = {
+                @AllowProperties(model = User.class,
+                                 properties = {"userId", "name", "status"})
+        })
 )
 @Model
 @Entity
@@ -898,7 +983,7 @@ public class User extends AbstractModel { /* ... */ }
 - **无具体 Provider、由框架通用 `{model}-{service}` 响应：使用 `@ServiceProperties(uris=..., properties=@Properties(...))`。**
 - `@ServiceProperties.uris` 必须与框架通用服务路由一致，不得用于自定义 Provider 路由。
 - 同一个 Provider 不得同时使用 `@Properties` 与 `@ServiceProperties`。
-- 关联对象 `Employee` 内部的嵌套关联也可继续用 `IgnoreProperties` 逐层裁剪。
+- 关联对象 `Employee` 内部的嵌套关联也必须逐层使用 `@AllowProperties`；不要只给根模型或只给一层关联配置白名单。
 
 ### 5.5 与数据权限的边界（强制）
 
@@ -1054,10 +1139,12 @@ public interface Page extends ModelService<Asset, org.springframework.data.domai
 // 实现：asset/service/assets/page/support/Page.java
 @Note("素材分页")
 @Description("按通用查询语法分页查询素材")
-@Properties(
-        ignore = @IgnoreProperties(model = Employee.class,
-                                   properties = {"password", "phone"})
-)
+@Properties(allow = {
+        @AllowProperties(model = Asset.class,
+                         properties = {"assetId", "emp", "type", "url", "size", "createTime"}),
+        @AllowProperties(model = Employee.class,
+                         properties = {"empId", "name"})
+})
 @Service("asset/page")
 @ServiceName("page")
 @Scope("prototype")
@@ -1186,7 +1273,7 @@ public class DashboardQuery {
 | 请求类型 | 实体类型；统计域用语义化 `XxxQuery`（禁止 DTO） |
 | 登录保护 | 需要 token 的 Provider 接口继承 `Security`；公开能力不继承 |
 | 当前登录员工 | Request 为 Employee：`call(@User Employee employee)`；其他 Request：`@User private Employee employee` |
-| 序列化 | 具体 Provider：`@Properties(ignore/allow)`；框架通用 `{model}-{service}`：`@ServiceProperties(uris, properties=@Properties(...))` |
+| 序列化 | 具体 Provider：`@Properties(allow=...)`；框架通用 `{model}-{service}`：`@ServiceProperties(uris, properties=@Properties(allow=...))` |
 | context 类 | `context` 包下的横切/领域上下文统一以 `Context` 结尾（如 `TenantContext`、`SubscriptionContext`），不命名为 `XxxService` |
 
 ---
@@ -1213,9 +1300,12 @@ public class DashboardQuery {
 - [ ] 是否明确员工调店、调团队、业务转交时的数据归属快照规则？
 - [ ] 实体序列化是否用了 `@JsonIgnore`？→ 必须改为：具体 Provider 用 `@Properties`，框架通用 ModelService 用 `@ServiceProperties`。
 - [ ] 具体 Provider 是否误用了 `@ServiceProperties`？→ 必须改为直接使用 `@Properties`。
+- [ ] 是否先完成 `ENTITY_GRAPH / READ_MODEL / SCALAR_BINARY / FRAMEWORK_MODEL_ROUTE` 响应分类？实体图是否在具体实现类上声明 `@Properties(allow=...)`？
 - [ ] `page/list/info/save/update` 是否按前端场景分别设计字段白名单，而不是复用完整实体图谱？
+- [ ] 根模型和每一个实际输出的嵌套模型是否都有独立白名单？是否错误地认为白名单会自动级联？
 - [ ] 关联对象是否只返回页面实际使用的最小字段？是否避免序列化 Company/Store/Team 等完整归属树？
 - [ ] 是否存在未使用的懒加载关联或大文本字段被默认序列化，导致额外 SQL 或响应膨胀？
+- [ ] 涉及实体图的 Provider 是否通过关闭 OSIV 的真实 JSON 测试，并断言关键字段存在、敏感字段递归缺失？
 - [ ] Provider 是否放在 `service.{业务对象}.{能力}` 结构下（接口 + `support` 实现）？
 - [ ] 是否写了 `@Note/@Description`（类）与字段 `@Note`？时间字段是否按用途选择：统计维度用 `DateTime`，纯日期时间标记用 `LocalDateTime`/`LocalDate`，审计时间用 `@CreateTime`/`@UpdateTime + DateTime`？
 - [ ] 路由 `@Service` value 是否符合 `{域}/{对象}/{能力}` 约定（框架 `AbstractHttpProcessor` 按 `@Service` 扫描注册路由，勿用 `@Component`）？

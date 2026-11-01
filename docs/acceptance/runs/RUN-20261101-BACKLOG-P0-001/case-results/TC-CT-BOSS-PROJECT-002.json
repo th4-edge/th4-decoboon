@@ -1,0 +1,40 @@
+{
+  "caseId": "TC-CT-BOSS-PROJECT-002",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-BACKLOGP0001-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "1743942229b590fa9fb8ec86fb86bb147810ebb19646bceb9e08520f0579577c",
+  "priority": "P0",
+  "area": "CONTRACT",
+  "businessRuleIds": [
+    "BR-002",
+    "BR-001",
+    "DEC-048",
+    "OBJ-001",
+    "SCN-002"
+  ],
+  "pageTargets": [
+    "web:/workbench/customers/:customerId",
+    "web:/pm/workbench",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/project/pages/detail"
+  ],
+  "providerRoutes": [
+    "project/contract/update",
+    "project/project/page",
+    "project/project/info",
+    "project/stage/page",
+    "finance/receivable/page"
+  ]
+}

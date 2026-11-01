@@ -30,7 +30,7 @@ class PayrollAttendanceInfoScopeTest {
         summary.setSummaryId(9L);
         @SuppressWarnings("unchecked")
         Specification<AttendanceSummary> visible = mock(Specification.class);
-        when(access.requireManager(current)).thenReturn(current);
+        when(access.requireAttendanceViewer(current)).thenReturn(current);
         when(access.visible(current, AttendanceSummary.class)).thenReturn(visible);
         when(repository.findOne(any(Specification.class))).thenReturn(Optional.of(summary));
 
@@ -51,7 +51,7 @@ class PayrollAttendanceInfoScopeTest {
         Employee current = employee(1L);
         @SuppressWarnings("unchecked")
         Specification<AttendanceSummary> visible = mock(Specification.class);
-        when(access.requireManager(current)).thenReturn(current);
+        when(access.requireAttendanceViewer(current)).thenReturn(current);
         when(access.visible(current, AttendanceSummary.class)).thenReturn(visible);
         when(repository.findOne(any(Specification.class))).thenReturn(Optional.empty());
 

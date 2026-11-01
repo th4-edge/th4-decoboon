@@ -1,0 +1,104 @@
+{
+  "caseId": "TC-FIN-FINANCE-COST-004",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:54:00+08:00",
+  "finishedAt": "2026-11-01T16:05:00+08:00",
+  "executor": "codex",
+  "role": "Finance+Boss",
+  "surface": "Web+App+API+DB",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATAR-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/projects/242541620656865280",
+      "control": "项目核算总览",
+      "control_state": "READ_ONLY",
+      "business_state_before": "到货成本已形成，仍有2项成本未完整",
+      "business_state_after": "实际成本¥240.00；预计成本¥1,760.00；页面显示成本未完整且项目毛利无数值",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-project-cost-after-arrival-payment-web.png",
+        "05-project-cost-web-state.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "App",
+      "page_path": "/subpackages/finance/pages/project",
+      "control": "项目成本跨端回读",
+      "control_state": "READ_ONLY",
+      "business_state_before": "same project",
+      "business_state_after": "App金额精确到分；总成本¥240.00；成本未完整时无项目毛利数值",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "03-project-cost-after-payment-app.png",
+        "03-project-cost-after-payment-app.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API+DB",
+      "page_path": "finance/project/report",
+      "control": "只读对账",
+      "control_state": "N/A",
+      "business_state_before": "materialCost=240; expectedCost=1760",
+      "business_state_after": "actualCost=240; totalCost=240; costComplete=false; costIncompleteCount=2; profitAmount/grossMargin为空",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-project-cost-provider-db-final.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Web项目核算显示实际成本¥240.00、预计成本¥1,760.00、项目毛利“成本未完整”",
+    "Web材料成本¥240.00，人工/项目款/费用分摊均为¥0但成本完整状态仍为未完整",
+    "App项目页显示合同收入¥2,495.75、项目总成本¥240.00，利润位置无数字",
+    "App付款进度100%，应付已结清"
+  ],
+  "actualState": [
+    "costComplete=false",
+    "costIncompleteCount=2",
+    "actualCost=240",
+    "totalCost=240",
+    "profitAmount=null",
+    "grossMargin=null",
+    "payableCleared=true"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-COST-004/01-project-cost-after-arrival-payment-web.png",
+    "evidence/TC-FIN-FINANCE-COST-004/02-project-settlement-gate-web.png",
+    "evidence/TC-FIN-FINANCE-COST-004/03-project-cost-after-payment-app.png",
+    "evidence/TC-FIN-FINANCE-COST-004/03-project-cost-after-payment-app.json",
+    "evidence/TC-FIN-FINANCE-COST-004/04-project-settlement-after-payment-app.png",
+    "evidence/TC-FIN-FINANCE-COST-004/05-project-cost-web-state.json",
+    "evidence/TC-FIN-FINANCE-COST-004/10-project-cost-provider-db-final.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "同一项目在Web/App/Provider/DB均保持实际成本¥240与成本未完整状态；利润和毛利率为空，没有以0或预计成本伪造利润。",
+  "caseDefinitionHash": "ae6a731d1b7ec8b876643e027a2c62be40fb1f102d36a2e325edac250f8542be",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "MET-002",
+    "DEC-092"
+  ],
+  "pageTargets": [
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "finance/project/report",
+    "finance/project/page",
+    "finance/settlement/page"
+  ]
+}

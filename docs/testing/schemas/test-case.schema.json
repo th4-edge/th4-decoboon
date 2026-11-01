@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zhuangdeqing.local/schemas/test-case.schema.json",
+  "title": "装得清测试用例",
+  "type": "object",
+  "required": [
+    "id", "title", "priority", "area", "roles", "surfaces", "scenarioTypes",
+    "businessRuleIds", "objectTypes", "fixture", "preconditions", "steps",
+    "expectedPage", "expectedState", "expectedInvariants", "forbiddenOutcomes",
+    "providerRoutes", "pageTargets", "evidenceRequired", "executionMode", "status"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^TC-[A-Z0-9-]+$"},
+    "title": {"type": "string", "minLength": 4},
+    "priority": {"enum": ["P0", "P1", "P2", "P3"]},
+    "area": {
+      "enum": ["CRM", "DESIGN_QUOTE", "CONTRACT", "CHANGE", "PROJECT", "MATERIAL", "ACCEPTANCE", "FINANCE", "WORKBENCH", "CROSS_CUTTING"]
+    },
+    "roles": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "surfaces": {"type": "array", "minItems": 1, "items": {"enum": ["Web", "App", "Owner", "API"]}},
+    "scenarioTypes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "businessRuleIds": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(BR|DEC|SCN|OBJ|MET)-\\d{3}$"}},
+    "objectTypes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "fixture": {"type": "string", "minLength": 1},
+    "preconditions": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "steps": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "expectedPage": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "expectedState": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "expectedInvariants": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "forbiddenOutcomes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "providerRoutes": {"type": "array", "items": {"type": "string"}},
+    "pageTargets": {"type": "array", "items": {"type": "string"}},
+    "evidenceRequired": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "executionMode": {"enum": ["manual", "e2e", "contract", "probe", "hybrid", "review"]},
+    "status": {"enum": ["READY", "BLOCKED", "STALE", "UNMAPPED"]}
+  },
+  "additionalProperties": false
+}

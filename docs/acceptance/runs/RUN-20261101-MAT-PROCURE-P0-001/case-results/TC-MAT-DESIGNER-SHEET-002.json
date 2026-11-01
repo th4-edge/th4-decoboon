@@ -1,0 +1,75 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SHEET-002",
+  "status": "PASS",
+  "startedAt": "2026-11-01T15:35:01+08:00",
+  "finishedAt": "2026-11-01T15:35:01+08:00",
+  "executor": "codex",
+  "role": "Boss/Designer/Finance",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261101-RUN20261101MATPROCUREP0001-",
+  "steps": [
+    {
+      "step_id": "S01",
+      "actor": "codex",
+      "role": "Verifier",
+      "surface": "API",
+      "page_path": "material/sheet/info",
+      "control": "作业单来源检查",
+      "control_state": "N/A",
+      "business_state_before": "sheet Draft",
+      "business_state_after": "行sourceKind=Plan，materialPlan=242541620837220352",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-sheet-source-api.json"
+      ]
+    },
+    {
+      "step_id": "S02",
+      "actor": "Boss",
+      "role": "Boss",
+      "surface": "API",
+      "page_path": "material/sheet/measure|submit",
+      "control": "测量与提交请购",
+      "control_state": "N/A",
+      "business_state_before": "Draft",
+      "business_state_after": "Submitted",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "10-sheet-source-api.json"
+      ]
+    },
+    {
+      "step_id": "S03",
+      "actor": "Finance",
+      "role": "Finance",
+      "surface": "Web",
+      "page_path": "/finance/material-ordering",
+      "control": "作业单列表回读",
+      "control_state": "VISIBLE_ENABLED",
+      "business_state_before": "已提交",
+      "business_state_after": "显示瓷砖作业单和已下单状态",
+      "feedback": "PASS",
+      "evidence_ids": [
+        "01-finance-material-ordering-web.png",
+        "11-web-material-ordering.json"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Finance主材下单显示王芳（造数5100）作业单，1行已定价，已下单"
+  ],
+  "actualState": [
+    "作业单行sourceKind=Plan",
+    "materialPlanId=242541620837220352",
+    "sheet.status=Ordered"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-DESIGNER-SHEET-002/10-sheet-source-api.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/20-material-procurement-db.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/01-finance-material-ordering-web.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/11-web-material-ordering.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "作业单来源固定为合同材料计划，不存在自由文本合同外行。"
+}

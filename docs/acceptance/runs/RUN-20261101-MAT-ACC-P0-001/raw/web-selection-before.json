@@ -1,0 +1,85 @@
+{
+  "url": "http://127.0.0.1:8080/workbench/materials/242541620656865280",
+  "title": "主材选材工作区 | 昭青科技 · 业务闭环审计",
+  "text": "昭\n昭青科技 · 业务闭环审计\n设计师工作台\n业务工作台\n我的客户\n客户经营\n方案报价\n项目交付\n经营与工具\n设计师工作台\n/\n主材选材工作区\n15\n计\n审计设计\n设计师 · 仅本人\n← 返回项目工地\n\n主材选材\n\n主材选材工作区\n\n王芳（造数5100） · 滨湖世纪城1栋102 · 滨湖世纪城\n\n按合同主材分项维护颜色、规格、品牌和工艺，保存后可交付财务下单；选材文本不改变报价、合同、成本或材料数量。当前维护角色：Designer / Boss / StoreManager / Finance。\n\n刷新选材项\n主材分项\n1 项\n全部 1\n待选材 1\n已选材 0\n已锁定 0\n主材--实木复合地板\n待选样\n综合项目 · 地板\n品牌规格待补充\n未下单\n—\n\n请选择一项主材\n\n主材分项来自合同与项目主链，设计师只维护选材文本。\n\n选材边界\n选材文本不改变报价、合同、成本和材料数量\n已进入采购后不能直接改选材文本\n需要换材必须发起增减项，由正式流程承担金额和履约影响\n现场/逐项沟通后代录即视为客户已确认，采购门禁以\"已选材\"为准\n当前下一步\n\n选择主材后查看下一步。\n\n© 2026 昭青科技 · 业务闭环审计\n版本 3.0.73\n\n登录成功",
+  "buttons": [
+    {
+      "i": 0,
+      "text": "客户经营",
+      "disabled": false,
+      "cls": "role-nav__group-toggle"
+    },
+    {
+      "i": 1,
+      "text": "方案报价",
+      "disabled": false,
+      "cls": "role-nav__group-toggle"
+    },
+    {
+      "i": 2,
+      "text": "项目交付",
+      "disabled": false,
+      "cls": "role-nav__group-toggle"
+    },
+    {
+      "i": 3,
+      "text": "经营与工具",
+      "disabled": false,
+      "cls": "role-nav__group-toggle"
+    },
+    {
+      "i": 5,
+      "text": "15",
+      "disabled": false,
+      "cls": "role-frame__icon-btn"
+    },
+    {
+      "i": 6,
+      "text": "计\n审计设计\n设计师 · 仅本人",
+      "disabled": false,
+      "cls": "role-frame__user el-tooltip__trigger el-tooltip__trigger"
+    },
+    {
+      "i": 7,
+      "text": "← 返回项目工地",
+      "disabled": false,
+      "cls": "el-button is-link"
+    },
+    {
+      "i": 8,
+      "text": "刷新选材项",
+      "disabled": false,
+      "cls": "el-button"
+    },
+    {
+      "i": 9,
+      "text": "全部 1",
+      "disabled": false,
+      "cls": "active"
+    },
+    {
+      "i": 10,
+      "text": "待选材 1",
+      "disabled": false,
+      "cls": ""
+    },
+    {
+      "i": 11,
+      "text": "已选材 0",
+      "disabled": false,
+      "cls": ""
+    },
+    {
+      "i": 12,
+      "text": "已锁定 0",
+      "disabled": false,
+      "cls": ""
+    },
+    {
+      "i": 13,
+      "text": "主材--实木复合地板\n待选样\n综合项目 · 地板\n品牌规格待补充\n未下单",
+      "disabled": false,
+      "cls": "ms__item"
+    }
+  ]
+}

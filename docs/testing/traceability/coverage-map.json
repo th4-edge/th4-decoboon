@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2026-11-01",
+  "domains": [
+    {
+      "domain": "CRM",
+      "title": "客户与房屋",
+      "v01": "IN_SCOPE",
+      "cases": 6,
+      "status": "READY",
+      "note": "客户、房屋、跟进、量房、负责人转交、财务权限与门店范围"
+    },
+    {
+      "domain": "DESIGN_QUOTE",
+      "title": "设计方案与报价",
+      "v01": "IN_SCOPE",
+      "cases": 5,
+      "status": "READY",
+      "note": "需求、方案、设计分项、报价版本和角色决策"
+    },
+    {
+      "domain": "CONTRACT",
+      "title": "合同与项目立项",
+      "v01": "IN_SCOPE",
+      "cases": 3,
+      "status": "READY",
+      "note": "合同签约、生效、项目、阶段、材料和应收派生"
+    },
+    {
+      "domain": "CHANGE",
+      "title": "合同变更",
+      "v01": "IN_SCOPE",
+      "cases": 2,
+      "status": "READY",
+      "note": "Add/Remove/Replace、当前有效剩余和成本完整性"
+    },
+    {
+      "domain": "PROJECT",
+      "title": "项目阶段与施工",
+      "v01": "IN_SCOPE",
+      "cases": 4,
+      "status": "READY",
+      "note": "适用阶段、任务、留证、权限与幂等"
+    },
+    {
+      "domain": "MATERIAL",
+      "title": "材料选材与采购",
+      "v01": "IN_SCOPE",
+      "cases": 5,
+      "status": "READY",
+      "note": "选材门禁、作业单、采购、到场、应付与成本"
+    },
+    {
+      "domain": "ACCEPTANCE",
+      "title": "阶段验收与整改",
+      "v01": "IN_SCOPE",
+      "cases": 5,
+      "status": "READY",
+      "note": "提交、业主确认、身份、驳回整改和历史轮次"
+    },
+    {
+      "domain": "FINANCE",
+      "title": "财务与经营结果",
+      "v01": "IN_SCOPE",
+      "cases": 7,
+      "status": "READY",
+      "note": "应收、收款、应付、付款、费用报销、成本、利润和结算"
+    },
+    {
+      "domain": "WORKBENCH",
+      "title": "工作台与正确引导",
+      "v01": "IN_SCOPE",
+      "cases": 3,
+      "status": "READY",
+      "note": "真实待办、对象锚点、空态和失败恢复"
+    },
+    {
+      "domain": "CROSS_CUTTING",
+      "title": "权限、分页、编号和跨端",
+      "v01": "IN_SCOPE",
+      "cases": 4,
+      "status": "READY",
+      "note": "跨租户、分页、内部编号隐藏和敏感字段"
+    },
+    {
+      "domain": "PAYROLL_LABOR",
+      "title": "薪酬与人工",
+      "v01": "DEFERRED",
+      "cases": 0,
+      "status": "NOT_TESTED",
+      "note": "下一批次建立"
+    },
+    {
+      "domain": "ENTERPRISE_MANAGEMENT",
+      "title": "企业、组织与订阅",
+      "v01": "DEFERRED",
+      "cases": 0,
+      "status": "NOT_TESTED",
+      "note": "下一批次建立"
+    },
+    {
+      "domain": "BRAND_CONTENT",
+      "title": "品牌、内容获客与运营标准",
+      "v01": "DEFERRED",
+      "cases": 0,
+      "status": "NOT_TESTED",
+      "note": "后续批次建立"
+    }
+  ]
+}

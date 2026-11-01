@@ -106,3 +106,7 @@ docs/product/**/evidence/**/*.png
 
 # Local StarWork backups
 .starwork/backups/
+
+# Local acceptance auth token dumps and process files (never commit)
+docs/acceptance/**/raw/role-tokens.json
+*.pid

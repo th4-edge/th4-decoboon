@@ -1,0 +1,327 @@
+{
+  "request": {
+    "route": "project/contract-line/page",
+    "body": {
+      "contractId": "241939522005237760",
+      "current": 1,
+      "size": 20
+    }
+  },
+  "response": {
+    "status": 200,
+    "elapsedMs": 16.74,
+    "bytes": 5096,
+    "json": {
+      "data": {
+        "content": [
+          {
+            "lineId": "241939522063958016",
+            "property": {
+              "propertyId": "241937540825743360",
+              "community": "页面闭环花园",
+              "building": "2栋",
+              "roomNo": "201",
+              "address": "合肥市页面闭环花园2栋201",
+              "area": 95
+            },
+            "contract": {
+              "contractId": "241939522005237760",
+              "no": "C1793372477050",
+              "baselineAmount": 1026.69,
+              "signedAmount": 1026.69,
+              "currentAmount": 858.69,
+              "status": {
+                "name": "已变更",
+                "key": "Changed"
+              }
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "拆除",
+            "name": "拆除--墙顶面白灰/腻子粉铲除",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 1,
+            "materialPrice": 0,
+            "manualPrice": 6.8,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 6.8,
+            "formula": "(人工单价) × 工程量",
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "sort": 0
+          },
+          {
+            "lineId": "241939522063958017",
+            "property": {
+              "propertyId": "241937540825743360",
+              "community": "页面闭环花园",
+              "building": "2栋",
+              "roomNo": "201",
+              "address": "合肥市页面闭环花园2栋201",
+              "area": 95
+            },
+            "contract": {
+              "contractId": "241939522005237760",
+              "no": "C1793372477050",
+              "baselineAmount": 1026.69,
+              "signedAmount": 1026.69,
+              "currentAmount": 858.69,
+              "status": {
+                "name": "已变更",
+                "key": "Changed"
+              }
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "水电",
+            "name": "水电--强电布线（含开槽）",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 1,
+            "materialPrice": 0,
+            "manualPrice": 38,
+            "pricingMode": {
+              "name": "仅人工",
+              "value": "ManualOnly",
+              "key": "ManualOnly"
+            },
+            "amount": 38,
+            "formula": "(人工单价) × 工程量",
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "sort": 1
+          },
+          {
+            "lineId": "241939522063958018",
+            "property": {
+              "propertyId": "241937540825743360",
+              "community": "页面闭环花园",
+              "building": "2栋",
+              "roomNo": "201",
+              "address": "合肥市页面闭环花园2栋201",
+              "area": 95
+            },
+            "contract": {
+              "contractId": "241939522005237760",
+              "no": "C1793372477050",
+              "baselineAmount": 1026.69,
+              "signedAmount": 1026.69,
+              "currentAmount": 858.69,
+              "status": {
+                "name": "已变更",
+                "key": "Changed"
+              }
+            },
+            "type": {
+              "name": "施工",
+              "value": "Construction",
+              "key": "Construction"
+            },
+            "category": "泥木",
+            "name": "泥木--墙地砖铺贴（含辅料）",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 1,
+            "materialPrice": 45,
+            "manualPrice": 32,
+            "pricingMode": {
+              "name": "材料+人工",
+              "value": "MaterialAndManual",
+              "key": "MaterialAndManual"
+            },
+            "amount": 77,
+            "formula": "(材料单价 + 人工单价) × 工程量",
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "sort": 2
+          },
+          {
+            "lineId": "241939522063958019",
+            "property": {
+              "propertyId": "241937540825743360",
+              "community": "页面闭环花园",
+              "building": "2栋",
+              "roomNo": "201",
+              "address": "合肥市页面闭环花园2栋201",
+              "area": 95
+            },
+            "contract": {
+              "contractId": "241939522005237760",
+              "no": "C1793372477050",
+              "baselineAmount": 1026.69,
+              "signedAmount": 1026.69,
+              "currentAmount": 858.69,
+              "status": {
+                "name": "已变更",
+                "key": "Changed"
+              }
+            },
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "地板",
+            "name": "主材--实木复合地板",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 1,
+            "materialPrice": 168,
+            "manualPrice": 0,
+            "pricingMode": {
+              "name": "仅材料",
+              "value": "MaterialOnly",
+              "key": "MaterialOnly"
+            },
+            "amount": 168,
+            "formula": "(材料单价) × 工程量",
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "sort": 3
+          },
+          {
+            "lineId": "241939522063958020",
+            "property": {
+              "propertyId": "241937540825743360",
+              "community": "页面闭环花园",
+              "building": "2栋",
+              "roomNo": "201",
+              "address": "合肥市页面闭环花园2栋201",
+              "area": 95
+            },
+            "contract": {
+              "contractId": "241939522005237760",
+              "no": "C1793372477050",
+              "baselineAmount": 1026.69,
+              "signedAmount": 1026.69,
+              "currentAmount": 858.69,
+              "status": {
+                "name": "已变更",
+                "key": "Changed"
+              }
+            },
+            "type": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "category": "瓷砖",
+            "name": "主材--抛釉砖 800x800",
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "quantity": 1,
+            "materialPrice": 88,
+            "manualPrice": 0,
+            "pricingMode": {
+              "name": "仅材料",
+              "value": "MaterialOnly",
+              "key": "MaterialOnly"
+            },
+            "amount": 88,
+            "formula": "(材料单价) × 工程量",
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "sort": 4
+          },
+          {
+            "lineId": "241939522063958021",
+            "property": {
+              "propertyId": "241937540825743360",
+              "community": "页面闭环花园",
+              "building": "2栋",
+              "roomNo": "201",
+              "address": "合肥市页面闭环花园2栋201",
+              "area": 95
+            },
+            "contract": {
+              "contractId": "241939522005237760",
+              "no": "C1793372477050",
+              "baselineAmount": 1026.69,
+              "signedAmount": 1026.69,
+              "currentAmount": 858.69,
+              "status": {
+                "name": "已变更",
+                "key": "Changed"
+              }
+            },
+            "type": {
+              "name": "综合其他",
+              "value": "General",
+              "key": "General"
+            },
+            "category": "综合",
+            "name": "综合--全屋保洁",
+            "unit": {
+              "name": "户",
+              "value": "House",
+              "key": "House"
+            },
+            "quantity": 1,
+            "materialPrice": 0,
+            "manualPrice": 0,
+            "pricingMode": {
+              "name": "固定总价",
+              "value": "FixedTotal",
+              "key": "FixedTotal"
+            },
+            "amount": 600,
+            "formula": "固定总价，不乘工程量",
+            "role": {
+              "name": "基础项目",
+              "value": "Base",
+              "key": "Base"
+            },
+            "sort": 5
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "6",
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  }
+}

@@ -119,3 +119,54 @@
 - App H5 StoreManager：薪酬工作台不出现“员工发放”。
 - Web/App console error：0。
 - 截图证据：`docs/acceptance/runs/20261023-payroll-b3b1/screenshots/`。
+
+
+## PAY-SELF-ATTENDANCE 员工本人月度考勤（2026-10-30）
+
+- 当前状态：`PENDING_REAL_UI_ACCEPTANCE`
+- 已完成：App/Web type-check、页面契约、UI/文案/导航门禁与生产构建。
+- 未执行：真实员工/管理角色登录态页面；Playwright 截图、Console 错误、1024/1280/1440 与 App 多机型证据待补。
+- 禁止：以构建通过替代真实 UI 通过，不得将本批标记为 `UI_REVIEWED` 或 `ACCEPTED`。
+
+
+## PAY-SELF-COMMISSION 员工本人提成（2026-10-30）
+
+- 当前状态：`ACCEPTED / USER_ACCEPTED_NON_INDEPENDENT`
+- Web：普通员工本人页、详情、账户菜单入口、Finance 本人视角、Finance 管理页均在真实登录态通过；1440/1280/1024 无横向溢出；无 Runtime exception 和 console error。
+- Web 直接硬加载受保护路由时出现 2 条 Vue Router 初始装载 warning（路由随后正常装载），记录为非阻断开发态告警。
+- App：微信开发者工具 390 宽真实小程序通过本人列表、详情、个人中心入口、他人详情拒绝、Finance 本人视角和管理范围 8/8 检查；截图见 `docs/acceptance/runs/20261030-payroll-self-commission/mini/`。
+- App H5 辅助回归通过；H5 深链刷新存在 UniApp 导航栏 API 平台告警，不计作小程序正式体验证据。
+- 用户 2026-10-30 已确认真实页面验收结果，记 `MAPPED_USER_ACCEPTED_NON_INDEPENDENT`；不冒充独立验收。
+
+
+## PAY-MANAGER-ACTIONS-B8A 店长本店薪酬动作（2026-10-30）
+
+- 当前状态：`PENDING_REAL_STORE_MANAGER_UI`
+- App/Web 类型检查、契约、权限/门店门禁和小程序/生产构建已通过。
+- 未执行受控店长真实页面：本店确认、退回、Draft 删除、发放，以及混合门店/跨店拒绝。
+- 不得将能力键通过或构建通过标记为 UI 通过。
+
+
+## 2026-10-31 PAY-OPS-01 真实渲染复核
+
+### Web
+
+- 环境：本地本次代码 `8091`、Vite `8080`、MySQL 8.4、Ego Lite Chromium；
+- 路由：`/finance/payroll?period=2026-10`；
+- 数值：待发员工薪酬 ¥1,600.00、待确认考勤 2、工资单草稿 1；
+- Console/unhandled error：0；
+- 视口：1440/1280/1024 均无页面级横向溢出；
+- API：20 次浏览器采样 P50 41.9ms、P95 66.1ms、max 71.2ms，HTTP 200，491B。
+
+### App
+
+- 环境：微信开发者工具 + `miniprogram-automator`；
+- 页面：`subpackages/payroll/pages/workbench`；
+- 数值：2026-10、¥1,600、待确认考勤 2、工资单草稿 1；
+- 功能检查：5/5 PASS。
+
+### 视觉边界
+
+`VISUAL_REVIEW_UNAVAILABLE`：当前执行模型不支持图片输入，无法对截图进行视觉质量判断。截图仅作为真实渲染与几何证据，不得把本批复述为视觉验收通过。
+
+证据：`docs/acceptance/runs/20261031-pay-ops-01/raw/`。

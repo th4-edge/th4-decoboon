@@ -1,0 +1,30 @@
+{
+  "request": {
+    "payableId": "1793518416093711825",
+    "amount": 240,
+    "account": "CompanyBank",
+    "paidAt": "2026-11-01",
+    "payeeName": "全链路验收材料供应商",
+    "transactionNo": "AUDIT-20261101-RUN20261101MATAR-PAY-001",
+    "idempotencyKey": "6a4a068d-3f3e-4894-bcfd-a0a9bed0c858"
+  },
+  "httpStatus": 200,
+  "response": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-01 15:54:46"
+      },
+      "paymentId": "242556961927725056",
+      "amount": 240.0,
+      "account": {
+        "name": "企业对公",
+        "key": "CompanyBank"
+      },
+      "paidAt": "2026-11-01",
+      "payeeName": "全链路验收材料供应商",
+      "transactionNo": "AUDIT-20261101-RUN20261101MATAR-PAY-001"
+    },
+    "success": true
+  },
+  "expected": "same paymentId 242556961927725056; no second payment"
+}

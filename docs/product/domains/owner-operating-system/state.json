@@ -5,8 +5,8 @@
   "northStar": "以负责人视角统一多端能力，沿客户经营主链看清业务推进、经营结果、运营标准和组织效能，并能从观测点直接进入处置",
   "owner": "codex",
   "phase": "PLAN_READY",
-  "batch": "BOS-P8",
-  "nextAction": "评审 Dig UI 重构方向，确定后把三页拆成生产级组件与页面模板",
+  "batch": "BOS-C2",
+  "nextAction": "执行负责人现有产品场景细化与功能核验：App 高频场景 + Web 深度场景，先登记问题再决定最小增量修复",
   "openDecisions": [
     {
       "id": "GAP-BOS-001",
@@ -25,13 +25,20 @@
       "question": "运营工具是否作为正式一级产品名称",
       "status": "pending",
       "owner": "user/product"
+    },
+    {
+      "id": "BOS-D01",
+      "question": "负责人默认一级空间是否继续沿用现有产品结构，仅做兼容式增量改造",
+      "status": "needs_revision_after_habit_review",
+      "owner": "user/product"
     }
   ],
   "blockers": [
     "GAP-070：公司/门店经营利润与费用分摊口径未冻结",
     "真实 Provider、账号、租户和写操作尚未进入本批原型",
     "微信小程序独立产品边界未确认",
-    "当前能力清单尚未用真实生产账号逐项复核"
+    "当前能力清单尚未用真实生产账号逐项复核",
+    "负责人目标信息架构与 BOS-R1 首个切片待用户确认"
   ],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
@@ -59,10 +66,16 @@
     "uiBaselineEvidence": "../../../acceptance/runs/20261028-owner-operating-system-ui-baseline-v1/README.md",
     "digUiPrototype": "../../prototypes/owner-operating-system/dig-v1.html",
     "digUiReview": "15-dig-ui-review-and-redesign.md",
-    "digUiEvidence": "../../../acceptance/runs/20261028-owner-dig-ui-review/README.md"
+    "digUiEvidence": "../../../acceptance/runs/20261028-owner-dig-ui-review/README.md",
+    "bossRoleBaseline": "16-boss-role-product-baseline-v1.md",
+    "bossIssue": "../../issue-governance/issues/PI-20261029-001-负责人工作台角色错位与经营首屏分裂.md",
+    "bossUnifiedPrototype": "../../prototypes/owner-operating-system/unified-v1.html",
+    "bossUnifiedPrototypeEvidence": "../../../acceptance/runs/20261029-boss-unified-prototype/README.md",
+    "bossScenarioRefinementPlan": "17-boss-scenario-refinement-plan-v0.1.md",
+    "productDecision": "../../decisions/USER-DEC-20261029-001-线上产品渐进迭代与AppWeb定位.md"
   },
   "createdAt": "2026-10-28T00:34:10+08:00",
-  "updatedAt": "2026-10-28T02:21:35+08:00",
+  "updatedAt": "2026-10-29T13:38:32+08:00",
   "history": [
     {
       "at": "2026-10-28T00:34:10+08:00",
@@ -129,6 +142,44 @@
       "phase": "PLAN_READY",
       "batch": "BOS-P8",
       "note": "完成 Dig UI 现状审查与高保真重构原型，覆盖 Web/App、深浅主题、关键控件双语与三页样板"
+    },
+    {
+      "at": "2026-10-29T13:11:11+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-R0",
+      "note": "完成负责人角色与1.0.73 App/Web现状对账；登记PI-20261029-001，推荐BOS-R1统一经营总览；未改代码、未验收、未发布"
+    },
+    {
+      "at": "2026-10-29T13:23:10+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-R0",
+      "note": "完成 unified-v1 高保真 HTML：经营总览、风险对象抽屉、亲自处理、Web/App、七态和研发安排；1440/1280/1024/390 渲染与DOM门禁PASS；非生产、非独立验收"
+    },
+    {
+      "at": "2026-10-29T13:29:19+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-C1",
+      "note": "根据用户反馈纠偏：unified-v1 降级为方向探索，不作为默认生产方案；记录现有客户使用习惯约束 BOS-C01"
+    },
+    {
+      "at": "2026-10-29T13:38:32+08:00",
+      "phase": "PLAN_READY",
+      "batch": "BOS-C2",
+      "note": "按 USER-DEC-20261029-001 固化产品定位：App高频快捷、Web低频完整；现有五Tab和工作台为基线；unified-v1仅探索；本轮做细化、核验和增量补强"
+    }
+  ],
+  "constraints": [
+    {
+      "id": "BOS-C01",
+      "text": "保留现有 Web 菜单、工作台入口、专业页面、深链和 App 底部 Tab；大改五域 IA 仅作探索，不作为默认生产方案。",
+      "status": "user_confirmed",
+      "source": "2026-10-29 用户要求考虑现有客户使用习惯"
+    },
+    {
+      "id": "BOS-C02",
+      "text": "保留现有 App 五 Tab 与 Web 菜单/专业页面；本轮只做负责人真实场景细化、功能核验和最小增量补强，不做交互视角换皮或信息架构重构。",
+      "status": "user_confirmed",
+      "source": "USER-DEC-20261029-001"
     }
   ]
 }
