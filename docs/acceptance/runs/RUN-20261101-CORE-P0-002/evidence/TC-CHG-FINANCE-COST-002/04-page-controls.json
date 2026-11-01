@@ -1,0 +1,186 @@
+{
+  "url": "http://127.0.0.1:5175/finance/projects/242297299361857536",
+  "text": "昭\n昭青科技 · 业务闭环审计\n财务工作台\n业务工作台\n客户\n资金收付\n往来与账本\n凭证与归档\n报价与成本\n供应商档案\n薪酬\n项目核算\n项目账本\n设计方案与报价\n材料业务说明\n财务工作台\n/\n项目核算\n门店维度\n全部门店\n总店 · 总店\n滨湖店\n务\n审计财务\n财务 · 全公司\n← 返回项目账本\n项目核算工作区\n王芳（造数1100） · 望江府1栋102\n\n望江府1栋102 · 待开工\n\n刷新\n进入结算\n合同金额\n¥2,159.75\n合同收入基线\n累计回款\n¥1,148.05\n回款率 16%\n实际成本\n¥2,000.00\n预计成本 1520.00\n项目毛利\n成本未完整\n不显示伪利润\n应收账款\n¥7,159.75\n应付账款\n¥3,440.00\n待收金额\n¥6,011.70\n未付金额\n¥1,800.00\n总览与成本\n应收与收款\n应付与付款\n资金台账\n项目结算\n结算金额与状态\n\n确认后冻结结算金额；关闭前需应收应付全部结清。\n\n结算状态\n待确认\n最终金额\n¥2,495.75\n质保金\n¥74.87\n结算成本\n¥2,240.00\n结算利润\n成本未完整\n毛利率\n暂不可确认\n结算动作\n\n状态与金额按当前业务规则自动确定。\n\n重算结算\n确认结算\n\n项目最终成本未完整，补齐成本后才能确认结算；当前结算利润保持为空。\n\n应收应付未结清、成本未完整或状态不允许时，暂不能完成结算，页面会说明原因。\n\n问\n问材料\n© 2026 昭青科技 · 业务闭环审计\n版本 3.0.73",
+  "buttons": [
+    {
+      "text": "资金收付",
+      "disabled": false
+    },
+    {
+      "text": "往来与账本",
+      "disabled": false
+    },
+    {
+      "text": "凭证与归档",
+      "disabled": false
+    },
+    {
+      "text": "报价与成本",
+      "disabled": false
+    },
+    {
+      "text": "薪酬",
+      "disabled": false
+    },
+    {
+      "text": "项目核算",
+      "disabled": false
+    },
+    {
+      "text": "务\n审计财务\n财务 · 全公司",
+      "disabled": false
+    },
+    {
+      "text": "← 返回项目账本",
+      "disabled": false
+    },
+    {
+      "text": "刷新",
+      "disabled": false
+    },
+    {
+      "text": "进入结算",
+      "disabled": false
+    },
+    {
+      "text": "刷新体检",
+      "disabled": false
+    },
+    {
+      "text": "查看材料说明",
+      "disabled": false
+    },
+    {
+      "text": "查看采购进度",
+      "disabled": false
+    },
+    {
+      "text": "去主材结算",
+      "disabled": false
+    },
+    {
+      "text": "新增其他应收",
+      "disabled": false
+    },
+    {
+      "text": "登记项目收款",
+      "disabled": false
+    },
+    {
+      "text": "编辑",
+      "disabled": false
+    },
+    {
+      "text": "收款",
+      "disabled": true
+    },
+    {
+      "text": "编辑",
+      "disabled": false
+    },
+    {
+      "text": "收款",
+      "disabled": false
+    },
+    {
+      "text": "编辑",
+      "disabled": false
+    },
+    {
+      "text": "收款",
+      "disabled": false
+    },
+    {
+      "text": "编辑",
+      "disabled": false
+    },
+    {
+      "text": "收款",
+      "disabled": false
+    },
+    {
+      "text": "新增手工应付",
+      "disabled": false
+    },
+    {
+      "text": "安排项目付款",
+      "disabled": false
+    },
+    {
+      "text": "编辑",
+      "disabled": false
+    },
+    {
+      "text": "付款",
+      "disabled": false
+    },
+    {
+      "text": "编辑",
+      "disabled": false
+    },
+    {
+      "text": "付款",
+      "disabled": true
+    },
+    {
+      "text": "手工记账",
+      "disabled": false
+    },
+    {
+      "text": "打开资金台账",
+      "disabled": false
+    },
+    {
+      "text": "重算结算",
+      "disabled": false
+    },
+    {
+      "text": "确认结算",
+      "disabled": true
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "创建应收节点",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "确认收款并核销",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "保存应付单",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "确认付款并核销",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "保存手工流水",
+      "disabled": false
+    },
+    {
+      "text": "问\n问材料",
+      "disabled": false
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "caseId": "TC-FIN-FINANCE-RECEIPT-002",
+  "status": "FAIL",
+  "startedAt": "2026-11-02T00:00:00+08:00",
+  "finishedAt": "2026-11-02T00:02:56+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "step": 1,
+      "action": "Finance 页面登录",
+      "result": "PASS",
+      "evidence": "evidence/TC-FIN-FINANCE-RECEIPT-002/01-finance-login.png"
+    },
+    {
+      "step": 2,
+      "action": "选择王芳（造数5100）应收并登记部分收款 ¥100",
+      "result": "PASS",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/02-partial-receipt-form.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/03-partial-receipt-result.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/04-partial-receipt-api.json",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/05-partial-receipt-db.txt"
+      ]
+    },
+    {
+      "step": 3,
+      "action": "尝试超余额收款 ¥700",
+      "result": "PASS_BLOCKED",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/06-overbalance-form.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/07-overbalance-result.png"
+      ]
+    },
+    {
+      "step": 4,
+      "action": "双击重复提交同一 ¥100 意图",
+      "result": "PASS_IDEMPOTENT_PAGE_ACTION",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/08-double-submit-result.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/09-duplicate-db.txt"
+      ]
+    },
+    {
+      "step": 5,
+      "action": "打开 Web 收款记录并执行冲正",
+      "result": "FAIL_NO_CONTROL",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/10-web-receipts.png",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/10-web-receipts-controls.json"
+      ]
+    },
+    {
+      "step": 6,
+      "action": "App 页面冲正",
+      "result": "BLOCKED_IDENTITY",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+      ]
+    }
+  ],
+  "actualPage": [
+    "/finance/workbench",
+    "/finance/receipts",
+    "pages/auth/login"
+  ],
+  "actualState": [
+    "receivable 242541621277622272: amount=748.73, receivedAmount=200.00, outstanding=548.73, status=Partial",
+    "active receipts=2, sum=200.00, ledger count=2, ledger sum=200.00",
+    "overbalance ¥700 rejected with 收款金额不能超过应收余额",
+    "double submit created only one additional receipt",
+    "Web receipt page has no reverse button or row action"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/01-finance-login.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/02-partial-receipt-form.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/03-partial-receipt-result.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/04-partial-receipt-api.json",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/05-partial-receipt-db.txt",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/06-overbalance-form.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/07-overbalance-result.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/08-double-submit-result.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/09-duplicate-db.txt",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/10-web-receipts.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/10-web-receipts-controls.json",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+  ],
+  "defectIds": [
+    "DEF-20261102-001"
+  ],
+  "blockedReason": null,
+  "notes": "部分收款、超余额拒绝和双击幂等通过；因 Web 缺少冲正入口，完整 P0 用例失败。App 微信身份未提供，App 分支标记 BLOCKED，不以 devToken 绕过。"
+}

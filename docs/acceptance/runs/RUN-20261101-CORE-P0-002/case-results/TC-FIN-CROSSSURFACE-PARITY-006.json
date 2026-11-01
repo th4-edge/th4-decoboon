@@ -1,0 +1,45 @@
+{
+  "caseId": "TC-FIN-CROSSSURFACE-PARITY-006",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:08:00+08:00",
+  "finishedAt": "2026-11-02T00:07:35+08:00",
+  "executor": "codex",
+  "role": "Boss+StoreManager+Finance",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Finance、Boss、总店店长分别查看同一项目核算",
+      "result": "PASS_WEB_API",
+      "actual": "三角色合同/回款/待收/应付/已付/总成本/成本完整性/利润空值完全一致",
+      "evidence": [
+        "evidence/TC-FIN-CROSSSURFACE-PARITY-006/01-web-role-api-parity.json",
+        "evidence/TC-FIN-CROSSSURFACE-PARITY-006/02-store-manager-project.png",
+        "evidence/TC-FIN-CROSSSURFACE-PARITY-006/03-store-manager-project.json",
+        "evidence/TC-FIN-FINANCE-COST-004/05-boss-project-cost.png"
+      ]
+    },
+    {
+      "action": "App 财务首页和项目页回读",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "缺少授权微信身份，不能用 devToken 绕过"
+    }
+  ],
+  "actualPage": [
+    "/finance/projects/242297299361857536"
+  ],
+  "actualState": [
+    "Web/API三角色：contract=2495.75 received=1148.05 outstanding=6347.70 payable=3440.00 paid=1640.00 totalCost=2240.00 costComplete=false profit=null grossMargin=null",
+    "App端未执行"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/01-web-role-api-parity.json",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/02-store-manager-project.png",
+    "evidence/TC-FIN-CROSSSURFACE-PARITY-006/03-store-manager-project.json"
+  ],
+  "defectIds": [
+    "DEF-20261102-002"
+  ],
+  "blockedReason": "App 微信身份不可用，无法完成声明的跨端回读；同时结算列表同源缺陷仍未关闭。",
+  "notes": "Web/API 三角色金额一致，不等于跨端用例通过。"
+}

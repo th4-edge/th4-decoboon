@@ -1,0 +1,149 @@
+{
+  "url": "http://127.0.0.1:5175/designer/projects/242690664519696384/materials",
+  "title": "主材选材工作区 | 昭青科技 · 业务闭环审计",
+  "bodyText": "昭\n昭青科技 · 业务闭环审计\n设计师工作台\n业务工作台\n我的客户\n客户经营\n方案报价\n项目交付\n项目工地\n施工排期与现场留证\n主材选材\n增减项\n客户意见投诉\n整改跟进\n经营与工具\n设计师工作台\n/\n主材选材工作区\n6\n二\n审计设计二\n设计师 · 仅本人\n← 返回项目工地\n\n主材选材\n\n主材选材工作区\n\n吴桐（演示10） · 望江府1栋1105（主房） · 望江府\n\n按合同主材分项维护颜色、规格、品牌和工艺，保存后可交付财务下单；选材文本不改变报价、合同、成本或材料数量。当前维护角色：Designer / Boss / StoreManager / Finance。\n\n刷新选材项\n主材分项\n1 项\n全部 1\n待选材 0\n已选材 1\n已锁定 0\n主材--抛釉砖 800x800\n已选材\n客餐厅 · 瓷砖\n品牌规格待补充\n未下单\n\n已选主材\n\n主材--抛釉砖 800x800\n\n客餐厅 · 瓷砖 · 30 m²\n\n已选材\n合同品牌 / 规格\n暂不可确认\n采购状态\n未下单\n选材状态\n已选材\n颜色 / 花色\n规格 / 型号\n品牌\n工艺 / 材质\n选材说明\n备注\n保存\n保存并交付财务下单\n选材边界\n选材文本不改变报价、合同、成本和材料数量\n已进入采购后不能直接改选材文本\n需要换材必须发起增减项，由正式流程承担金额和履约影响\n现场/逐项沟通后代录即视为客户已确认，采购门禁以\"已选材\"为准\n当前下一步\n\n开始选材\n\n© 2026 昭青科技 · 业务闭环审计\n版本 3.0.73",
+  "inputs": [
+    {
+      "placeholder": "例如：拉丝香槟金",
+      "value": "暖灰米白"
+    },
+    {
+      "placeholder": "例如：300×600mm",
+      "value": "800×800mm"
+    },
+    {
+      "placeholder": "例如：奥普",
+      "value": "马可波罗"
+    },
+    {
+      "placeholder": "例如：同色收边",
+      "value": "柔光釉面"
+    },
+    {
+      "placeholder": "留空时会根据上方字段自动汇总；也可以直接填写客户沟通确认的选材内容。",
+      "value": ""
+    },
+    {
+      "placeholder": "客户偏好、到货要求或需要现场确认的事项",
+      "value": "客户现场确认，交付财务下单"
+    }
+  ],
+  "api": {
+    "plans": {
+      "route": "project/material-plan/page",
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:46:03"
+              },
+              "planId": "242690664628748288",
+              "project": {
+                "projectId": "242690664519696384",
+                "no": "P1793551563393",
+                "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+                "siteAddr": "望江府1栋1105（主房）"
+              },
+              "catalogItem": {
+                "itemId": "242296910046560256",
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "name": "主材--抛釉砖 800x800",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                }
+              },
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "unitPrice": 88,
+              "cost": 1860,
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              },
+              "requiredAt": "2026-11-05",
+              "materialKey": "ci:242296910046560256|unit:Area",
+              "netQuantity": 30,
+              "lossRate": 0,
+              "lossQuantity": 0
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 1
+        },
+        "success": true
+      }
+    },
+    "selections": {
+      "route": "material/selection/item/page",
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "content": [
+            {
+              "itemId": "242690395832582146",
+              "projectId": "242690664519696384",
+              "projectNo": "P1793551563393",
+              "projectName": "吴桐（演示10） · 望江府1栋1105（主房）",
+              "propertyId": "242297079097982976",
+              "propertyAddress": "望江府1栋1105（主房）",
+              "customerName": "吴桐（演示10）",
+              "designerName": "审计设计二",
+              "contractId": "242690395773861888",
+              "contractNo": "C1793551499319",
+              "spaceName": "客餐厅",
+              "category": "瓷砖",
+              "materialName": "主材--抛釉砖 800x800",
+              "unit": "m²",
+              "quantity": 30,
+              "sort": 3,
+              "required": true,
+              "selectionId": "242691380671938560",
+              "version": 1,
+              "status": "Selected",
+              "statusName": "已选材",
+              "selectionText": "颜色/花色：暖灰米白；规格/型号：800×800mm；品牌：马可波罗；工艺：柔光釉面；备注：客户现场确认，交付财务下单",
+              "selectionJson": "{\"color\":\"暖灰米白\",\"spec\":\"800×800mm\",\"brand\":\"马可波罗\",\"process\":\"柔光釉面\",\"remark\":\"客户现场确认，交付财务下单\"}",
+              "attachments": [],
+              "updatedAt": "20261102004854",
+              "orderStatus": "ready",
+              "orderStatusName": "待财务下单",
+              "nextAction": "等待财务下单"
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 1
+        },
+        "success": true
+      }
+    },
+    "sheets": {
+      "route": "material/sheet/page",
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": [],
+        "success": true
+      }
+    }
+  }
+}

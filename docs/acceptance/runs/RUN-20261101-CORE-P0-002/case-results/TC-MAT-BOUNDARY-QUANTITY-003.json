@@ -1,0 +1,92 @@
+{
+  "caseId": "TC-MAT-BOUNDARY-QUANTITY-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:51:00+08:00",
+  "finishedAt": "2026-11-02T00:54:04+08:00",
+  "executor": "codex",
+  "role": "Designer+Finance",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "建立30㎡、损耗0的草稿边界夹具",
+      "result": "PASS",
+      "actual": "计划净用量30、损耗率0、损耗量0，草稿初始数量29.5",
+      "evidence": [
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json"
+      ]
+    },
+    {
+      "action": "输入等于上限30并保存",
+      "result": "PASS",
+      "actual": "update返回success=true，回读作业单行数量30.00",
+      "evidence": [
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json",
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-boundary-db.txt"
+      ]
+    },
+    {
+      "action": "输入超过上限30.01并保存",
+      "result": "PASS",
+      "actual": "业务错误400：本次下单量超过可下单数量30；原行仍为30.00，未发生部分写入",
+      "evidence": [
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json",
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-boundary-db.txt"
+      ]
+    },
+    {
+      "action": "刷新作业单",
+      "result": "PASS",
+      "actual": "Provider回读数量30.00、orderedQuantity=0、计划ReadyToOrder；无采购/应付",
+      "evidence": [
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json"
+      ]
+    },
+    {
+      "action": "App 页面输入等于/超过上限并检查提示",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "无授权微信身份，无法在 App material-sheet-create 页面执行并观察明确超量提示",
+      "evidence": [
+        "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+      ]
+    }
+  ],
+  "actualPage": [
+    "Provider/DB 边界夹具（App页面入口阻断）"
+  ],
+  "actualState": [
+    "上限30可保存",
+    "30.01被服务端拒绝",
+    "失败后数据库仍为30",
+    "失败未生成部分写入",
+    "App页面未验证"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-boundary-db.txt",
+    "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+  ],
+  "defectIds": [],
+  "blockedReason": "Provider/DB 的数量边界与无部分写入已验证；App 页面步骤因无授权微信身份不可执行，页面超量提示无法形成E3证据。",
+  "notes": "case要求的页面级“明确超量提示”仍需在 App 授权身份可用后复验；当前不得将接口通过计为跨端PASS。",
+  "caseDefinitionHash": "6632e535f6804719b70268179dc770ecb2060b8b7b799abdf0baa15ac49e6f6e",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-009",
+    "BR-044",
+    "DEC-072"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/sheet/save",
+    "material/sheet/update",
+    "material/sheet/submit",
+    "project/material-plan/page"
+  ]
+}

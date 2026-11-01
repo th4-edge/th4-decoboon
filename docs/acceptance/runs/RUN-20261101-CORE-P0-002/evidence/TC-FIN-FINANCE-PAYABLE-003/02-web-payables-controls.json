@@ -1,0 +1,86 @@
+{
+  "url": "http://127.0.0.1:5175/finance/payables",
+  "text": "昭\n昭青科技 · 业务闭环审计\n财务工作台\n业务工作台\n客户\n资金收付\n待我收款\n收款记录\n待我付款\n费用与报销\n付款记录\n工人工资\n往来与账本\n凭证与归档\n报价与成本\n供应商档案\n薪酬\n项目核算\n材料业务说明\n财务工作台\n/\n应付账款\n门店维度\n全部门店\n总店 · 总店\n滨湖店\n务\n审计财务\n财务 · 全公司\n应付账款\n应付账款\n\n材料款、项目款、供应商款、费用和工人工资形成统一付款义务。\n\n刷新\n新增手工应付\n应付总额\n¥3,680.00\n3 笔应付\n已付金额\n¥1,680.00\n付款核销结果\n待付金额\n¥2,000.00\n需要安排资金\n紧急金额\n¥0.00\n数据截止 2026-11-02 00:04\n全部类型\n全部状态\n仅看紧急\n应用筛选\n共 3 笔\n应付事项\n\t\n类型\n\t\n状态\n\t\n到期日\n\t\n收款方\n\t\n未付金额\n\t\n操作\n手工应付\n王芳（造数1100） · 望江府1栋102 · 无来源说明\n\t\n费用支出\n\t\n待付款\n\t\n2026-11-20\n\t\n造数供应商\n\t\n¥2000.00\n\t\n安排付款\n项目账本\n\n\n材料采购 · 全链路验收材料供应商\n王芳（造数1100） · 望江府1栋102 · POe3736895166b7c51eb7f571a52c6bec3\n\t\n材料款\n\t\n已付清\n\t\n2026-11-30\n\t\n全链路验收材料供应商\n\t\n¥0.00\n\t\n安排付款\n项目账本\n\n\n材料采购 · 全链路验收材料供应商\n王芳（造数5100） · 滨湖世纪城1栋102 · POb69125551f7cc1f275a014315ea0b202\n\t\n材料款\n\t\n已付清\n\t\n2026-12-01\n\t\n全链路验收材料供应商\n\t\n¥0.00\n\t\n安排付款\n项目账本\n© 2026 昭青科技 · 业务闭环审计\n版本 3.0.73",
+  "buttons": [
+    {
+      "text": "资金收付",
+      "disabled": false
+    },
+    {
+      "text": "往来与账本",
+      "disabled": false
+    },
+    {
+      "text": "凭证与归档",
+      "disabled": false
+    },
+    {
+      "text": "报价与成本",
+      "disabled": false
+    },
+    {
+      "text": "薪酬",
+      "disabled": false
+    },
+    {
+      "text": "项目核算",
+      "disabled": false
+    },
+    {
+      "text": "务\n审计财务\n财务 · 全公司",
+      "disabled": false
+    },
+    {
+      "text": "刷新",
+      "disabled": false
+    },
+    {
+      "text": "新增手工应付",
+      "disabled": false
+    },
+    {
+      "text": "应用筛选",
+      "disabled": false
+    },
+    {
+      "text": "安排付款",
+      "disabled": false
+    },
+    {
+      "text": "项目账本",
+      "disabled": false
+    },
+    {
+      "text": "安排付款",
+      "disabled": true
+    },
+    {
+      "text": "项目账本",
+      "disabled": false
+    },
+    {
+      "text": "安排付款",
+      "disabled": true
+    },
+    {
+      "text": "项目账本",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "保存应付单",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "确认付款并核销",
+      "disabled": false
+    }
+  ]
+}

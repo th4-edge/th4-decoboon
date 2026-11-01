@@ -1,0 +1,51 @@
+{
+  "caseId": "TC-XC-SECURITY-TENANT-001",
+  "status": "PASS",
+  "startedAt": "2026-11-02T00:06:00+08:00",
+  "finishedAt": "2026-11-02T00:06:39+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "API security boundary",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "使用本企业 token 附带其他企业 comId 读取不存在客户",
+      "result": "PASS_REJECTED",
+      "actual": "success=false/404 客户不存在或无权访问"
+    },
+    {
+      "action": "读取不存在项目",
+      "result": "PASS_REJECTED",
+      "actual": "success=false/404 项目不存在或无权访问"
+    },
+    {
+      "action": "读取他企业财务项目",
+      "result": "PASS_REJECTED",
+      "actual": "success=false/404 项目不存在或无权访问"
+    },
+    {
+      "action": "尝试按其他企业写客户",
+      "result": "PASS_REJECTED",
+      "actual": "success=false/404，DB无越权记录"
+    },
+    {
+      "action": "本企业自有对象读取",
+      "result": "PASS_SCOPED",
+      "actual": "仅返回 token 所属企业对象，客户端comId未扩大权限"
+    }
+  ],
+  "actualPage": [
+    "API cross-tenant boundary"
+  ],
+  "actualState": [
+    "其他企业客户/项目/财务读取均404",
+    "越权写客户被拒绝",
+    "DB sentinel rows=0"
+  ],
+  "evidence": [
+    "evidence/TC-XC-SECURITY-TENANT-001/01-cross-tenant-api.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "该用例没有页面可输入租户ID；以服务端安全边界作负向验证，自有对象仍按 token 企业返回。"
+}

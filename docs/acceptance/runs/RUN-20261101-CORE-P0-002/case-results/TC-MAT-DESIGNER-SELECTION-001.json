@@ -1,0 +1,111 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SELECTION-001",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:46:03+08:00",
+  "finishedAt": "2026-11-02T00:54:04+08:00",
+  "executor": "codex",
+  "role": "Designer+Finance+Boss",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Designer 在 Web 打开项目主材选材工作区",
+      "result": "PASS",
+      "actual": "主材 1 项，颜色/规格/品牌/工艺可维护，初始状态待选样/未下单",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/01-material-selection-before.png"
+      ]
+    },
+    {
+      "action": "未选材时尝试建立作业单行",
+      "result": "PASS",
+      "actual": "Provider 返回业务 400：该材料尚未完成主材选材，完成后方可下单；数据库无作业单/行副作用",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/07-unselected-gate.json",
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/08-unselected-gate-db.txt"
+      ]
+    },
+    {
+      "action": "Designer 保存选材并交付财务下单",
+      "result": "PASS",
+      "actual": "页面提示保存并交付成功；选择内容为暖灰米白/800×800mm/马可波罗/柔光釉面",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/02-material-selection-after-deliver.png"
+      ]
+    },
+    {
+      "action": "刷新并从 Provider/DB 回读",
+      "result": "PASS",
+      "actual": "MaterialPlan=ReadyToOrder；selection.orderStatus=ready、nextAction=等待财务下单；selection version=1，designer=审计设计二；数量30、损耗0、成本1860不变",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/03-selection-readback.json",
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/05-material-selection-ready-after-refresh.png",
+        "evidence/TC-MAT-DESIGNER-SELECTION-001/06-selection-db.txt"
+      ]
+    },
+    {
+      "action": "Finance 回读可下单状态",
+      "result": "PASS",
+      "actual": "财务主材下单页出现该已提交作业单，1 行可下单",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SHEET-002/05-finance-submitted-sheet.png"
+      ]
+    },
+    {
+      "action": "App 端设计与财务回读",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "无授权微信身份，无法进入 App 执行 selection-board/material-sheet-create",
+      "evidence": [
+        "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+      ]
+    }
+  ],
+  "actualPage": [
+    "/designer/projects/242690664519696384/materials",
+    "/finance/material-ordering"
+  ],
+  "actualState": [
+    "未选材时作业单被服务端阻断",
+    "选材后计划ReadyToOrder",
+    "选材版本1且确认人/内容可回读",
+    "计划数量30、损耗0、选材前后成本1860不变",
+    "App页面未验证"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/01-material-selection-before.png",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/02-material-selection-after-deliver.png",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/03-selection-readback.json",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/04-material-selection-refreshed.png",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/05-material-selection-ready-after-refresh.png",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/06-selection-db.txt",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/07-unselected-gate.json",
+    "evidence/TC-MAT-DESIGNER-SELECTION-001/08-unselected-gate-db.txt",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/05-finance-submitted-sheet.png",
+    "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+  ],
+  "defectIds": [],
+  "blockedReason": "Web/Provider/DB 正向与未选材负向均已验证；App 授权微信身份不可用，无法完成 Designer/Finance App 页面分支。",
+  "notes": "未选材阻断由同一个 material/sheet/save 门禁完成，失败事务未留下作业单或行。App 分支不得用员工账号或数据库登录态替代。",
+  "caseDefinitionHash": "fa9e9b95dc88e92949e0ca7cc7ab0b27b9ad58f8b624e6d82c19250be1614e61",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-004",
+    "BR-009",
+    "DEC-008",
+    "DEC-056",
+    "SCN-006"
+  ],
+  "pageTargets": [
+    "web:/designer/projects/:projectId/materials",
+    "app:/subpackages/project/pages/selection-board",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/selection/save",
+    "project/material-plan/page",
+    "material/sheet/save"
+  ]
+}

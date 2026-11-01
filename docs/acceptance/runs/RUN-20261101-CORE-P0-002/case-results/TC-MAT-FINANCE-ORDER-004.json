@@ -1,0 +1,119 @@
+{
+  "caseId": "TC-MAT-FINANCE-ORDER-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:51:37+08:00",
+  "finishedAt": "2026-11-02T00:54:04+08:00",
+  "executor": "codex",
+  "role": "Finance+Boss",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Finance 在 Web 打开已提交作业单并填写供应商/数量/单价",
+      "result": "PASS",
+      "actual": "页面显示可下单量和本次数量；选择有效供应商，输入20㎡、单价88并可确认下单",
+      "evidence": [
+        "evidence/TC-MAT-FINANCE-ORDER-004/01-order-form-before.png",
+        "evidence/TC-MAT-FINANCE-ORDER-004/07-clean-order-form-filled.png"
+      ]
+    },
+    {
+      "action": "页面确认下单",
+      "result": "PASS",
+      "actual": "页面提示已下单并形成应付；待下单变为0，该作业单进入已进入采购，状态已下单",
+      "evidence": [
+        "evidence/TC-MAT-FINANCE-ORDER-004/10-clean-order-final-page.png"
+      ]
+    },
+    {
+      "action": "对账Post-Web下单的采购、应付、作业单和计划",
+      "result": "PASS",
+      "actual": "采购1张；采购数量20、单价88、金额1760；应付1条、金额1760、sourceNo与采购单号一致；作业单Ordered且orderedQuantity=20；计划PartiallyOrdered",
+      "evidence": [
+        "evidence/TC-MAT-FINANCE-ORDER-004/09-clean-order-api-and-idempotency.json",
+        "evidence/TC-MAT-FINANCE-ORDER-004/11-clean-order-db.txt"
+      ]
+    },
+    {
+      "action": "重复提交同一下单请求",
+      "result": "PASS",
+      "actual": "重复请求success=true并返回同一Ordered作业单；采购和应付仍各1条，金额与单号未变化",
+      "evidence": [
+        "evidence/TC-MAT-FINANCE-ORDER-004/09-clean-order-api-and-idempotency.json",
+        "evidence/TC-MAT-FINANCE-ORDER-004/11-clean-order-db.txt"
+      ]
+    },
+    {
+      "action": "验证供应商往来余额抵扣边界",
+      "result": "PASS_WITH_BUSINESS_OFFSET",
+      "actual": "首轮采购金额2640，既有供应商往来余额抵扣240后应付2400，remark与credit台账均留痕，sourceNo一致；余额清零后用清洁夹具复验采购=应付=1760",
+      "evidence": [
+        "evidence/TC-MAT-FINANCE-ORDER-004/05-order-db.txt",
+        "evidence/TC-MAT-FINANCE-ORDER-004/11-clean-order-db.txt"
+      ]
+    },
+    {
+      "action": "App财务回读作业单和应付",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "无授权微信身份，未执行 App material-sheet-order/payables 页面",
+      "evidence": [
+        "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+      ]
+    }
+  ],
+  "actualPage": [
+    "/finance/material-ordering"
+  ],
+  "actualState": [
+    "财务Web下单成功",
+    "作业单Ordered",
+    "1采购单+1应付",
+    "采购金额1760=应付金额1760",
+    "重复请求不重复",
+    "App未验证"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-FINANCE-ORDER-004/01-order-form-before.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/02-order-form-filled.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/03-order-success.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/04-order-api-and-idempotency.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/05-order-db.txt",
+    "evidence/TC-MAT-FINANCE-ORDER-004/06-clean-fixture-setup.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/07-clean-order-form-filled.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/08-clean-order-success.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/09-clean-order-api-and-idempotency.json",
+    "evidence/TC-MAT-FINANCE-ORDER-004/10-clean-order-final-page.png",
+    "evidence/TC-MAT-FINANCE-ORDER-004/11-clean-order-db.txt",
+    "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+  ],
+  "defectIds": [],
+  "blockedReason": "Finance Web 下单、应付联动和幂等已通过；App 财务页面无授权微信身份，跨端用例仍不能PASS。",
+  "notes": "首轮供应商往来余额抵扣属于既存真实业务事实并已留痕；另用余额清零后的清洁夹具验证采购金额与应付金额严格相等。",
+  "caseDefinitionHash": "d43a436271a7815f0411306aa05a6dff8bb946163dbc1262c702f3f78968cfef",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-044",
+    "BR-045",
+    "SCN-005",
+    "SCN-021",
+    "DEC-072",
+    "DEC-073"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-order",
+    "app:/subpackages/finance/pages/payables"
+  ],
+  "providerRoutes": [
+    "partner/page",
+    "material/sheet/page",
+    "material/sheet/order",
+    "project/purchase/page",
+    "finance/payable/page",
+    "material/sheet/info"
+  ]
+}

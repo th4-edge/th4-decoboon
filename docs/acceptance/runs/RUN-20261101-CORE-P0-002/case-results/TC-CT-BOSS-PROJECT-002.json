@@ -1,0 +1,59 @@
+{
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:44:00+08:00",
+  "finishedAt": "2026-11-02T00:47:03+08:00",
+  "executor": "codex",
+  "role": "Boss+Finance+Pm",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；合同Web/API/DB部分已通过。",
+  "caseId": "TC-CT-BOSS-PROJECT-002",
+  "steps": [
+    {
+      "action": "Boss在Web确认合同生效",
+      "result": "PASS",
+      "actual": "合同Effective，projectId=242690664519696384",
+      "evidence": [
+        "evidence/TC-CT-BOSS-PROJECT-002/01-contract-effective-page.png",
+        "evidence/TC-CT-BOSS-PROJECT-002/02-contract-effective-page.json"
+      ]
+    },
+    {
+      "action": "回读项目、阶段、材料计划、应收",
+      "result": "PASS",
+      "actual": "1项目、8阶段、1材料计划、3应收；应收合计13068.67，与合同金额一致",
+      "evidence": [
+        "evidence/TC-CT-BOSS-PROJECT-002/03-derivation-api-db.json",
+        "evidence/TC-CT-BOSS-PROJECT-002/04-db-counts.txt"
+      ]
+    },
+    {
+      "action": "重复生效幂等",
+      "result": "PASS",
+      "actual": "返回同一projectId，派生数量不增加"
+    },
+    {
+      "action": "App端验证",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/designer/contract"
+  ],
+  "actualState": [
+    "合同Effective",
+    "唯一项目Preparing",
+    "8阶段",
+    "1材料计划",
+    "3应收合计13068.67",
+    "重复生效不重复派生"
+  ],
+  "evidence": [
+    "evidence/TC-CT-BOSS-PROJECT-002/01-contract-effective-page.png",
+    "evidence/TC-CT-BOSS-PROJECT-002/02-contract-effective-page.json",
+    "evidence/TC-CT-BOSS-PROJECT-002/03-derivation-api-db.json",
+    "evidence/TC-CT-BOSS-PROJECT-002/04-db-counts.txt"
+  ],
+  "notes": "项目、阶段、材料计划和应收同源生成，金额与合同一致。"
+}

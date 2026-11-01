@@ -1,0 +1,997 @@
+{
+  "before": {
+    "sheet": {
+      "route": "material/sheet/info",
+      "request": {
+        "sheetId": "1793551823709721775"
+      },
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "createTime": {
+            "dateTime": "2026-11-02 00:50:23"
+          },
+          "updateTime": {
+            "dateTime": "2026-11-02 00:51:37"
+          },
+          "sheetId": "1793551823709721775",
+          "property": {
+            "propertyId": "242297079097982976",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "1105",
+            "address": "望江府1栋1105（主房）"
+          },
+          "project": {
+            "projectId": "242690664519696384",
+            "no": "P1793551563393",
+            "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+            "siteAddr": "望江府1栋1105（主房）"
+          },
+          "sheetNo": "瓷砖（地砖/墙砖）-20261102-001",
+          "sheetType": "瓷砖（地砖/墙砖）",
+          "manufacturerName": "马可波罗瓷砖",
+          "groupChatAt": "2026-11-03",
+          "installAt": "2026-11-10",
+          "status": {
+            "name": "已下单",
+            "key": "Ordered"
+          },
+          "priceState": {
+            "name": "已定价",
+            "key": "Priced"
+          },
+          "remark": "P0材料验收夹具：受控夹具仅用于打通财务Web下单，不代替App建单页面验收",
+          "attachments": [],
+          "items": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:50:23"
+              },
+              "itemId": "1793551823722860772",
+              "sourceKind": {
+                "name": "材料计划行（合同选材确认 / 增减项新增）",
+                "key": "Plan"
+              },
+              "materialPlan": {
+                "planId": "242690664628748288",
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "status": {
+                  "name": "已下单",
+                  "key": "Ordered"
+                }
+              },
+              "standardIncluded": true,
+              "spaceName": "客餐厅",
+              "locationName": "客厅地面",
+              "materialName": "主材--抛釉砖 800x800",
+              "brand": "马可波罗",
+              "model": "抛釉砖 800x800",
+              "spec": "800×800mm",
+              "color": "暖灰米白",
+              "size": "800×800",
+              "craft": "柔光釉面",
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "lossRate": 0,
+              "lossQuantity": 0,
+              "quoteCostPrice": 62,
+              "purchasePrice": 88,
+              "orderedQuantity": 30,
+              "priceState": {
+                "name": "已定价",
+                "key": "Priced"
+              },
+              "sort": 0,
+              "remark": "P0材料验收夹具",
+              "attachments": []
+            }
+          ]
+        },
+        "success": true
+      }
+    },
+    "purchases": {
+      "route": "project/purchase/page",
+      "request": {
+        "projectId": "242690664519696384"
+      },
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:51:37"
+              },
+              "purchaseId": "1793551897446502646",
+              "property": {
+                "propertyId": "242297079097982976",
+                "propertyNo": "H1793457725319",
+                "address": "望江府1栋1105（主房）",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "project": {
+                "projectId": "242690664519696384",
+                "no": "P1793551563393",
+                "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+                "status": {
+                  "name": "待开工",
+                  "key": "Preparing"
+                }
+              },
+              "contract": {
+                "contractId": "242690395773861888",
+                "no": "C1793551499319",
+                "currentAmount": 13068.67,
+                "status": {
+                  "name": "已生效",
+                  "key": "Effective"
+                }
+              },
+              "materialPlan": {
+                "planId": "242690664628748288",
+                "catalogItem": {
+                  "itemId": "242296910046560256",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "name": "主材--抛釉砖 800x800",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  }
+                },
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "unitPrice": 88,
+                "cost": 1860,
+                "status": {
+                  "name": "已下单",
+                  "key": "Ordered"
+                }
+              },
+              "no": "POeedb999be396aa11c8b1b68ab0d2635b",
+              "supplierName": "全链路验收材料供应商",
+              "supplier": {
+                "partnerId": "1793457851296966369",
+                "type": {
+                  "name": "材料供应商",
+                  "key": "Supplier"
+                },
+                "name": "全链路验收材料供应商",
+                "contactName": "材料联系人",
+                "telNo": "13910002991",
+                "status": {
+                  "name": "合作中",
+                  "key": "Active"
+                }
+              },
+              "quoteLine": {
+                "itemId": "242297080821841923",
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "瓷砖",
+                "name": "主材--抛釉砖 800x800",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 30,
+                "price": 88,
+                "amount": 2640
+              },
+              "deliveryMode": {
+                "name": "供应商直送工地",
+                "key": "Direct"
+              },
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "unitPrice": 0,
+              "amount": 2640,
+              "receivedQuantity": 0,
+              "status": {
+                "name": "已下单",
+                "key": "Ordered"
+              },
+              "orderedAt": "2026-11-02",
+              "createdBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "remark": "P0材料下单验收：30㎡，单价88",
+              "approvedBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "approvedAt": "2026-11-02 00:51:37",
+              "approvalRemark": "按作业单下单",
+              "items": [
+                {
+                  "purchaseItemId": "1793551897451004739",
+                  "materialPlan": {
+                    "planId": "242690664628748288",
+                    "catalogItem": {
+                      "itemId": "242296910046560256",
+                      "type": {
+                        "name": "主材",
+                        "value": "Material",
+                        "key": "Material"
+                      },
+                      "name": "主材--抛釉砖 800x800",
+                      "unit": {
+                        "name": "m²",
+                        "value": "Area",
+                        "key": "Area"
+                      }
+                    },
+                    "quantity": 30,
+                    "unit": {
+                      "name": "m²",
+                      "value": "Area",
+                      "key": "Area"
+                    },
+                    "unitPrice": 88,
+                    "cost": 1860,
+                    "status": {
+                      "name": "已下单",
+                      "key": "Ordered"
+                    }
+                  },
+                  "quantity": 30,
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "unitPrice": 88,
+                  "amount": 2640,
+                  "receivedQuantity": 0,
+                  "status": {
+                    "name": "已下单",
+                    "key": "Ordered"
+                  },
+                  "priceSource": "手工录入",
+                  "remark": "P0材料验收夹具"
+                }
+              ]
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 1
+        },
+        "success": true
+      }
+    },
+    "payables": {
+      "route": "finance/payable/page",
+      "request": {
+        "projectId": "242690664519696384",
+        "current": 1,
+        "size": 20
+      },
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:51:37"
+              },
+              "payableId": "1793551897490832476",
+              "project": {
+                "projectId": "242690664519696384",
+                "no": "P1793551563393",
+                "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+                "customer": {
+                  "custId": "242297078963765248",
+                  "name": "吴桐（演示10）",
+                  "telNo": "13910000010",
+                  "community": "望江府",
+                  "addr": "望江府1栋1105（主房）",
+                  "area": 136,
+                  "budget": 24,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  }
+                },
+                "property": {
+                  "propertyId": "242297079097982976",
+                  "propertyNo": "H1793457725319",
+                  "community": "望江府",
+                  "building": "1栋",
+                  "roomNo": "1105",
+                  "address": "望江府1栋1105（主房）",
+                  "area": 120,
+                  "layout": "四室两厅两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  }
+                },
+                "siteAddr": "望江府1栋1105（主房）",
+                "contractAmount": 13068.67,
+                "status": {
+                  "name": "待开工",
+                  "key": "Preparing"
+                }
+              },
+              "property": {
+                "propertyId": "242297079097982976",
+                "propertyNo": "H1793457725319",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "1105",
+                "address": "望江府1栋1105（主房）",
+                "area": 120,
+                "layout": "四室两厅两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "materialPlan": {
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "cost": 1860,
+                "status": {
+                  "name": "已下单",
+                  "key": "Ordered"
+                },
+                "requiredAt": "2026-11-05"
+              },
+              "name": "材料采购 · 全链路验收材料供应商",
+              "type": {
+                "name": "材料款",
+                "key": "Material"
+              },
+              "payeeName": "全链路验收材料供应商",
+              "payeePartner": {
+                "partnerId": "1793457851296966369",
+                "type": {
+                  "name": "材料供应商",
+                  "key": "Supplier"
+                },
+                "name": "全链路验收材料供应商",
+                "telNo": "13910002991",
+                "settlementMode": {
+                  "name": "收货日加账期天数",
+                  "value": "ReceiptDays",
+                  "key": "ReceiptDays"
+                },
+                "settlementDays": 30,
+                "cutoffDay": 25
+              },
+              "amount": 2400,
+              "paidAmount": 0,
+              "estimated": false,
+              "status": {
+                "name": "待付款",
+                "key": "Pending"
+              },
+              "urgent": false,
+              "sourceNo": "POeedb999be396aa11c8b1b68ab0d2635b",
+              "remark": "确认下单自动形成应付；供应商往来余额抵扣 ¥240.00",
+              "createdBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              }
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 20
+        },
+        "success": true
+      }
+    }
+  },
+  "repeat": {
+    "route": "material/sheet/order",
+    "request": {
+      "sheetId": "1793551823709721775",
+      "supplierId": "1793457851296966369",
+      "supplierName": "全链路验收材料供应商",
+      "remark": "P0材料下单验收：30㎡，单价88",
+      "items": [
+        {
+          "itemId": "1793551823722860772",
+          "quantity": 30,
+          "purchasePrice": 88
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:50:23"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:51:37"
+        },
+        "sheetId": "1793551823709721775",
+        "property": {
+          "propertyId": "242297079097982976",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "1105",
+          "address": "望江府1栋1105（主房）"
+        },
+        "project": {
+          "projectId": "242690664519696384",
+          "no": "P1793551563393",
+          "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+          "siteAddr": "望江府1栋1105（主房）"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-001",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "已下单",
+          "key": "Ordered"
+        },
+        "priceState": {
+          "name": "已定价",
+          "key": "Priced"
+        },
+        "remark": "P0材料验收夹具：受控夹具仅用于打通财务Web下单，不代替App建单页面验收",
+        "attachments": [],
+        "items": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:50:23"
+            },
+            "itemId": "1793551823722860772",
+            "sourceKind": {
+              "name": "材料计划行（合同选材确认 / 增减项新增）",
+              "key": "Plan"
+            },
+            "materialPlan": {
+              "planId": "242690664628748288",
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "已下单",
+                "key": "Ordered"
+              }
+            },
+            "standardIncluded": true,
+            "spaceName": "客餐厅",
+            "locationName": "客厅地面",
+            "materialName": "主材--抛釉砖 800x800",
+            "brand": "马可波罗",
+            "model": "抛釉砖 800x800",
+            "spec": "800×800mm",
+            "color": "暖灰米白",
+            "size": "800×800",
+            "craft": "柔光釉面",
+            "quantity": 30,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "lossRate": 0,
+            "lossQuantity": 0,
+            "quoteCostPrice": 62,
+            "purchasePrice": 88,
+            "orderedQuantity": 30,
+            "priceState": {
+              "name": "已定价",
+              "key": "Priced"
+            },
+            "sort": 0,
+            "remark": "P0材料验收夹具",
+            "attachments": []
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "after": {
+    "sheet": {
+      "route": "material/sheet/info",
+      "request": {
+        "sheetId": "1793551823709721775"
+      },
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "createTime": {
+            "dateTime": "2026-11-02 00:50:23"
+          },
+          "updateTime": {
+            "dateTime": "2026-11-02 00:51:37"
+          },
+          "sheetId": "1793551823709721775",
+          "property": {
+            "propertyId": "242297079097982976",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "1105",
+            "address": "望江府1栋1105（主房）"
+          },
+          "project": {
+            "projectId": "242690664519696384",
+            "no": "P1793551563393",
+            "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+            "siteAddr": "望江府1栋1105（主房）"
+          },
+          "sheetNo": "瓷砖（地砖/墙砖）-20261102-001",
+          "sheetType": "瓷砖（地砖/墙砖）",
+          "manufacturerName": "马可波罗瓷砖",
+          "groupChatAt": "2026-11-03",
+          "installAt": "2026-11-10",
+          "status": {
+            "name": "已下单",
+            "key": "Ordered"
+          },
+          "priceState": {
+            "name": "已定价",
+            "key": "Priced"
+          },
+          "remark": "P0材料验收夹具：受控夹具仅用于打通财务Web下单，不代替App建单页面验收",
+          "attachments": [],
+          "items": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:50:23"
+              },
+              "itemId": "1793551823722860772",
+              "sourceKind": {
+                "name": "材料计划行（合同选材确认 / 增减项新增）",
+                "key": "Plan"
+              },
+              "materialPlan": {
+                "planId": "242690664628748288",
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "status": {
+                  "name": "已下单",
+                  "key": "Ordered"
+                }
+              },
+              "standardIncluded": true,
+              "spaceName": "客餐厅",
+              "locationName": "客厅地面",
+              "materialName": "主材--抛釉砖 800x800",
+              "brand": "马可波罗",
+              "model": "抛釉砖 800x800",
+              "spec": "800×800mm",
+              "color": "暖灰米白",
+              "size": "800×800",
+              "craft": "柔光釉面",
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "lossRate": 0,
+              "lossQuantity": 0,
+              "quoteCostPrice": 62,
+              "purchasePrice": 88,
+              "orderedQuantity": 30,
+              "priceState": {
+                "name": "已定价",
+                "key": "Priced"
+              },
+              "sort": 0,
+              "remark": "P0材料验收夹具",
+              "attachments": []
+            }
+          ]
+        },
+        "success": true
+      }
+    },
+    "purchases": {
+      "route": "project/purchase/page",
+      "request": {
+        "projectId": "242690664519696384"
+      },
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:51:37"
+              },
+              "purchaseId": "1793551897446502646",
+              "property": {
+                "propertyId": "242297079097982976",
+                "propertyNo": "H1793457725319",
+                "address": "望江府1栋1105（主房）",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "project": {
+                "projectId": "242690664519696384",
+                "no": "P1793551563393",
+                "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+                "status": {
+                  "name": "待开工",
+                  "key": "Preparing"
+                }
+              },
+              "contract": {
+                "contractId": "242690395773861888",
+                "no": "C1793551499319",
+                "currentAmount": 13068.67,
+                "status": {
+                  "name": "已生效",
+                  "key": "Effective"
+                }
+              },
+              "materialPlan": {
+                "planId": "242690664628748288",
+                "catalogItem": {
+                  "itemId": "242296910046560256",
+                  "type": {
+                    "name": "主材",
+                    "value": "Material",
+                    "key": "Material"
+                  },
+                  "name": "主材--抛釉砖 800x800",
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  }
+                },
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "unitPrice": 88,
+                "cost": 1860,
+                "status": {
+                  "name": "已下单",
+                  "key": "Ordered"
+                }
+              },
+              "no": "POeedb999be396aa11c8b1b68ab0d2635b",
+              "supplierName": "全链路验收材料供应商",
+              "supplier": {
+                "partnerId": "1793457851296966369",
+                "type": {
+                  "name": "材料供应商",
+                  "key": "Supplier"
+                },
+                "name": "全链路验收材料供应商",
+                "contactName": "材料联系人",
+                "telNo": "13910002991",
+                "status": {
+                  "name": "合作中",
+                  "key": "Active"
+                }
+              },
+              "quoteLine": {
+                "itemId": "242297080821841923",
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "category": "瓷砖",
+                "name": "主材--抛釉砖 800x800",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "quantity": 30,
+                "price": 88,
+                "amount": 2640
+              },
+              "deliveryMode": {
+                "name": "供应商直送工地",
+                "key": "Direct"
+              },
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "unitPrice": 0,
+              "amount": 2640,
+              "receivedQuantity": 0,
+              "status": {
+                "name": "已下单",
+                "key": "Ordered"
+              },
+              "orderedAt": "2026-11-02",
+              "createdBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "remark": "P0材料下单验收：30㎡，单价88",
+              "approvedBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              },
+              "approvedAt": "2026-11-02 00:51:37",
+              "approvalRemark": "按作业单下单",
+              "items": [
+                {
+                  "purchaseItemId": "1793551897451004739",
+                  "materialPlan": {
+                    "planId": "242690664628748288",
+                    "catalogItem": {
+                      "itemId": "242296910046560256",
+                      "type": {
+                        "name": "主材",
+                        "value": "Material",
+                        "key": "Material"
+                      },
+                      "name": "主材--抛釉砖 800x800",
+                      "unit": {
+                        "name": "m²",
+                        "value": "Area",
+                        "key": "Area"
+                      }
+                    },
+                    "quantity": 30,
+                    "unit": {
+                      "name": "m²",
+                      "value": "Area",
+                      "key": "Area"
+                    },
+                    "unitPrice": 88,
+                    "cost": 1860,
+                    "status": {
+                      "name": "已下单",
+                      "key": "Ordered"
+                    }
+                  },
+                  "quantity": 30,
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "unitPrice": 88,
+                  "amount": 2640,
+                  "receivedQuantity": 0,
+                  "status": {
+                    "name": "已下单",
+                    "key": "Ordered"
+                  },
+                  "priceSource": "手工录入",
+                  "remark": "P0材料验收夹具"
+                }
+              ]
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 1
+        },
+        "success": true
+      }
+    },
+    "payables": {
+      "route": "finance/payable/page",
+      "request": {
+        "projectId": "242690664519696384",
+        "current": 1,
+        "size": 20
+      },
+      "status": 200,
+      "ok": true,
+      "payload": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:51:37"
+              },
+              "payableId": "1793551897490832476",
+              "project": {
+                "projectId": "242690664519696384",
+                "no": "P1793551563393",
+                "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+                "customer": {
+                  "custId": "242297078963765248",
+                  "name": "吴桐（演示10）",
+                  "telNo": "13910000010",
+                  "community": "望江府",
+                  "addr": "望江府1栋1105（主房）",
+                  "area": 136,
+                  "budget": 24,
+                  "status": {
+                    "name": "履约中",
+                    "key": "Serving"
+                  }
+                },
+                "property": {
+                  "propertyId": "242297079097982976",
+                  "propertyNo": "H1793457725319",
+                  "community": "望江府",
+                  "building": "1栋",
+                  "roomNo": "1105",
+                  "address": "望江府1栋1105（主房）",
+                  "area": 120,
+                  "layout": "四室两厅两卫",
+                  "status": {
+                    "name": "施工中",
+                    "key": "Serving"
+                  }
+                },
+                "siteAddr": "望江府1栋1105（主房）",
+                "contractAmount": 13068.67,
+                "status": {
+                  "name": "待开工",
+                  "key": "Preparing"
+                }
+              },
+              "property": {
+                "propertyId": "242297079097982976",
+                "propertyNo": "H1793457725319",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "1105",
+                "address": "望江府1栋1105（主房）",
+                "area": 120,
+                "layout": "四室两厅两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "materialPlan": {
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "cost": 1860,
+                "status": {
+                  "name": "已下单",
+                  "key": "Ordered"
+                },
+                "requiredAt": "2026-11-05"
+              },
+              "name": "材料采购 · 全链路验收材料供应商",
+              "type": {
+                "name": "材料款",
+                "key": "Material"
+              },
+              "payeeName": "全链路验收材料供应商",
+              "payeePartner": {
+                "partnerId": "1793457851296966369",
+                "type": {
+                  "name": "材料供应商",
+                  "key": "Supplier"
+                },
+                "name": "全链路验收材料供应商",
+                "telNo": "13910002991",
+                "settlementMode": {
+                  "name": "收货日加账期天数",
+                  "value": "ReceiptDays",
+                  "key": "ReceiptDays"
+                },
+                "settlementDays": 30,
+                "cutoffDay": 25
+              },
+              "amount": 2400,
+              "paidAmount": 0,
+              "estimated": false,
+              "status": {
+                "name": "待付款",
+                "key": "Pending"
+              },
+              "urgent": false,
+              "sourceNo": "POeedb999be396aa11c8b1b68ab0d2635b",
+              "remark": "确认下单自动形成应付；供应商往来余额抵扣 ¥240.00",
+              "createdBy": {
+                "empId": "199500000000000104",
+                "name": "审计财务",
+                "role": {
+                  "name": "财务",
+                  "value": "Finance",
+                  "key": "Finance"
+                }
+              }
+            }
+          ],
+          "last": true,
+          "totalElements": "1",
+          "totalPages": 1,
+          "first": true,
+          "size": 20
+        },
+        "success": true
+      }
+    }
+  }
+}

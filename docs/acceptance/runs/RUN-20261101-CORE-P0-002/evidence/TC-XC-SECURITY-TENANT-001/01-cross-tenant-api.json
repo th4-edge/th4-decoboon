@@ -1,0 +1,179 @@
+{
+  "runId": "RUN-20261101-CORE-P0-002",
+  "caseId": "TC-XC-SECURITY-TENANT-001",
+  "tenant": "199500000000000001",
+  "otherTenant": "999500000000000001",
+  "responses": {
+    "own_customer_with_other_company": {
+      "http": 200,
+      "body": {
+        "data": {
+          "createTime": {
+            "dateTime": "2026-10-31 22:41:48"
+          },
+          "custId": "242297007736094720",
+          "name": "王芳（演示01）",
+          "telNo": "13910000001",
+          "gender": {
+            "name": "男",
+            "key": "M"
+          },
+          "source": {
+            "name": "转介绍",
+            "key": "Referral"
+          },
+          "community": "香樟花园",
+          "addr": "香樟花园2栋202",
+          "area": 100.0,
+          "budget": 21.0,
+          "status": {
+            "name": "新客户",
+            "key": "New"
+          },
+          "owner": {
+            "empId": "199500000000000106",
+            "name": "审计业务"
+          },
+          "wechatAdded": false,
+          "visitCount": 0,
+          "tags": [
+            {
+              "tagId": "-1",
+              "name": "转介绍",
+              "category": {
+                "name": "来源",
+                "key": "Source"
+              },
+              "scope": {
+                "name": "系统",
+                "key": "System"
+              },
+              "status": {
+                "name": "启用",
+                "key": "Enabled"
+              },
+              "sort": 0,
+              "key": "source:Referral"
+            },
+            {
+              "tagId": "-2",
+              "name": "黄金期未首联",
+              "category": {
+                "name": "风险",
+                "key": "Risk"
+              },
+              "scope": {
+                "name": "系统",
+                "key": "System"
+              },
+              "status": {
+                "name": "启用",
+                "key": "Enabled"
+              },
+              "sort": 0,
+              "key": "risk:goldenNoContact"
+            }
+          ],
+          "grade": {
+            "level": {
+              "name": "C级",
+              "key": "C"
+            },
+            "score": 10,
+            "computedAt": "2026-11-02 00:06:21",
+            "breakdown": [
+              {
+                "dimension": "demand",
+                "label": "需求明确",
+                "weight": 30,
+                "score": 0,
+                "reason": "画像完成 0/5 项"
+              },
+              {
+                "dimension": "budget",
+                "label": "预算匹配",
+                "weight": 25,
+                "score": 10,
+                "reason": "预算 21，低于达标区间"
+              },
+              {
+                "dimension": "urgency",
+                "label": "时间紧迫",
+                "weight": 20,
+                "score": 0,
+                "reason": "未填写计划开工时间"
+              },
+              {
+                "dimension": "engagement",
+                "label": "互动深度",
+                "weight": 15,
+                "score": 0,
+                "reason": "到店 0 次；未加微信；未量房"
+              },
+              {
+                "dimension": "recency",
+                "label": "跟进时效",
+                "weight": 10,
+                "score": 0,
+                "reason": "尚无跟进记录"
+              }
+            ]
+          }
+        },
+        "success": true
+      }
+    },
+    "other_customer_read": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "客户不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "other_project_read": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "other_finance_read": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "项目不存在或无权访问",
+          "system": false
+        }
+      }
+    },
+    "other_customer_update": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "客户不存在或无权访问",
+          "system": false
+        }
+      }
+    }
+  },
+  "dbCheck": "0\n0\n",
+  "httpCodes": {
+    "own_customer_with_other_company": 200,
+    "other_customer_read": 200,
+    "other_project_read": 200,
+    "other_finance_read": 200,
+    "other_customer_update": 200
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "http": 200,
+  "body": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-02 00:33:43"
+      },
+      "propertyId": "242687563217764352",
+      "customer": {
+        "custId": "242297007991947264",
+        "name": "张敏（演示03）",
+        "telNo": "13910000003"
+      },
+      "propertyNo": "H1793550823988",
+      "community": "锦绣园",
+      "building": "4栋",
+      "roomNo": "405",
+      "address": "锦绣园4栋405（备用房）",
+      "area": 96,
+      "layout": "两室两厅一厨一卫",
+      "status": {
+        "name": "待量房",
+        "key": "PendingMeasure"
+      },
+      "salesman": {
+        "empId": "199500000000000106",
+        "name": "审计业务",
+        "role": {
+          "name": "业务员",
+          "value": "Marketer",
+          "key": "Marketer"
+        }
+      },
+      "designer": {
+        "empId": "199500000000000105",
+        "name": "审计设计",
+        "role": {
+          "name": "设计师",
+          "value": "Designer",
+          "key": "Designer"
+        }
+      },
+      "remark": "P0验收夹具：同客户第二套房屋"
+    },
+    "success": true
+  }
+}

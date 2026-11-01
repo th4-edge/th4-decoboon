@@ -1,0 +1,692 @@
+{
+  "pid": "242297226024452096",
+  "contractId": "242297225462415360",
+  "before": "242297226024452096\t199500000000000107\t199500000000000111\t12575.96\t8369.00\n242297225462415360\t12575.96\t12575.96\tEffective",
+  "attempts": {
+    "project_update_manager": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "只有企业负责人或本门店店长可以切换项目成员",
+          "system": false
+        }
+      }
+    },
+    "project_update_contract_amount_ignored": {
+      "http": 200,
+      "body": {
+        "data": {
+          "createTime": {
+            "dateTime": "2026-10-31 22:42:40"
+          },
+          "projectId": "242297226024452096",
+          "no": "P1793457760346",
+          "name": "麦鸿演示项目 12",
+          "customer": {
+            "custId": "242297222228606976",
+            "name": "孙悦（演示12）",
+            "telNo": "13910000012",
+            "community": "翡翠湖畔",
+            "addr": "翡翠湖畔3栋1301（主房）",
+            "area": 88.0,
+            "budget": 30.0,
+            "status": {
+              "name": "履约中",
+              "key": "Serving"
+            },
+            "owner": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            }
+          },
+          "property": {
+            "propertyId": "242297222408962048",
+            "customer": {
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012",
+              "community": "翡翠湖畔",
+              "addr": "翡翠湖畔3栋1301（主房）",
+              "area": 88.0,
+              "budget": 30.0,
+              "status": {
+                "name": "履约中",
+                "key": "Serving"
+              },
+              "owner": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              }
+            },
+            "propertyNo": "H1793457759487",
+            "community": "翡翠湖畔",
+            "building": "3栋",
+            "roomNo": "1301",
+            "address": "翡翠湖畔3栋1301（主房）",
+            "area": 140.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            },
+            "salesman": {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              }
+            },
+            "designer": {
+              "empId": "199500000000000111",
+              "name": "审计设计二",
+              "telNo": "13910002009",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            }
+          },
+          "quote": {
+            "quoteId": "242297224262844416",
+            "no": "Q1793457759928",
+            "property": {
+              "propertyId": "242297222408962048",
+              "customer": {
+                "custId": "242297222228606976",
+                "name": "孙悦（演示12）",
+                "telNo": "13910000012",
+                "community": "翡翠湖畔",
+                "addr": "翡翠湖畔3栋1301（主房）",
+                "area": 88.0,
+                "budget": 30.0,
+                "status": {
+                  "name": "履约中",
+                  "key": "Serving"
+                },
+                "owner": {
+                  "empId": "199500000000000106",
+                  "name": "审计业务",
+                  "telNo": "13910002005",
+                  "role": {
+                    "name": "业务员",
+                    "value": "Marketer",
+                    "key": "Marketer"
+                  }
+                }
+              },
+              "propertyNo": "H1793457759487",
+              "community": "翡翠湖畔",
+              "building": "3栋",
+              "roomNo": "1301",
+              "address": "翡翠湖畔3栋1301（主房）",
+              "area": 140.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              },
+              "salesman": {
+                "empId": "199500000000000106",
+                "name": "审计业务",
+                "telNo": "13910002005",
+                "role": {
+                  "name": "业务员",
+                  "value": "Marketer",
+                  "key": "Marketer"
+                }
+              },
+              "designer": {
+                "empId": "199500000000000111",
+                "name": "审计设计二",
+                "telNo": "13910002009",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              }
+            },
+            "createdBy": {
+              "empId": "199500000000000111",
+              "name": "审计设计二",
+              "telNo": "13910002009",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "discount": 0.94,
+            "amount": 12575.96,
+            "cost": 8369.0,
+            "status": {
+              "name": "已转项目",
+              "key": "Converted"
+            }
+          },
+          "designer": {
+            "empId": "199500000000000111",
+            "name": "审计设计二",
+            "telNo": "13910002009",
+            "role": {
+              "name": "设计师",
+              "value": "Designer",
+              "key": "Designer"
+            }
+          },
+          "manager": {
+            "empId": "199500000000000107",
+            "name": "审计项目经理",
+            "telNo": "13910002006",
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            }
+          },
+          "support": {
+            "empId": "199500000000000104",
+            "name": "审计财务",
+            "telNo": "13910002003",
+            "role": {
+              "name": "财务",
+              "value": "Finance",
+              "key": "Finance"
+            }
+          },
+          "siteAddr": "演示项目工地 12",
+          "area": 140.0,
+          "contractAmount": 12575.96,
+          "cost": 8369.0,
+          "progress": 1,
+          "startDate": "2026-10-23",
+          "planEndDate": "2027-01-26"
+        },
+        "success": true
+      }
+    },
+    "contract_update_signed_amount": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "只有企业负责人或店长可以确认合同签约",
+          "system": false
+        }
+      }
+    },
+    "finance_project_report": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "当前账号无权执行该操作",
+          "system": false
+        }
+      }
+    },
+    "employee_page": {
+      "http": 200,
+      "body": {
+        "data": {
+          "content": [
+            {
+              "empId": "199500000000000106",
+              "name": "审计业务",
+              "telNo": "13910002005",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "team": {
+                "teamId": "199500000000000401",
+                "name": "审计交付一组",
+                "color": "#128276",
+                "store": {
+                  "storeId": "199500000000000011",
+                  "company": {
+                    "comId": "199500000000000001",
+                    "title": "昭青科技 · 业务闭环审计",
+                    "name": "昭青科技",
+                    "color": "#128276"
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "color": "#128276",
+                  "addr": "合肥市审计测试地址"
+                },
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                }
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "业务员",
+                "value": "Marketer",
+                "key": "Marketer"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000108",
+              "name": "审计团队长",
+              "telNo": "13910002007",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "team": {
+                "teamId": "199500000000000401",
+                "name": "审计交付一组",
+                "color": "#128276",
+                "store": {
+                  "storeId": "199500000000000011",
+                  "company": {
+                    "comId": "199500000000000001",
+                    "title": "昭青科技 · 业务闭环审计",
+                    "name": "昭青科技",
+                    "color": "#128276"
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "color": "#128276",
+                  "addr": "合肥市审计测试地址"
+                },
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                }
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "团队负责人",
+                "value": "TeamLeader",
+                "key": "TeamLeader"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000103",
+              "name": "审计店长",
+              "telNo": "13910002002",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "店长",
+                "value": "StoreManager",
+                "key": "StoreManager"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "telNo": "13910002004",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "team": {
+                "teamId": "199500000000000401",
+                "name": "审计交付一组",
+                "color": "#128276",
+                "store": {
+                  "storeId": "199500000000000011",
+                  "company": {
+                    "comId": "199500000000000001",
+                    "title": "昭青科技 · 业务闭环审计",
+                    "name": "昭青科技",
+                    "color": "#128276"
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "color": "#128276",
+                  "addr": "合肥市审计测试地址"
+                },
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                }
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000111",
+              "name": "审计设计二",
+              "telNo": "13910002009",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "team": {
+                "teamId": "199500000000000401",
+                "name": "审计交付一组",
+                "color": "#128276",
+                "store": {
+                  "storeId": "199500000000000011",
+                  "company": {
+                    "comId": "199500000000000001",
+                    "title": "昭青科技 · 业务闭环审计",
+                    "name": "昭青科技",
+                    "color": "#128276"
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "color": "#128276",
+                  "addr": "合肥市审计测试地址"
+                },
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                }
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "telNo": "13910002001",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "telNo": "13910002003",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000107",
+              "name": "审计项目经理",
+              "telNo": "13910002006",
+              "store": {
+                "storeId": "199500000000000011",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "总店",
+                "defaultStore": true,
+                "color": "#128276",
+                "addr": "合肥市审计测试地址"
+              },
+              "team": {
+                "teamId": "199500000000000401",
+                "name": "审计交付一组",
+                "color": "#128276",
+                "store": {
+                  "storeId": "199500000000000011",
+                  "company": {
+                    "comId": "199500000000000001",
+                    "title": "昭青科技 · 业务闭环审计",
+                    "name": "昭青科技",
+                    "color": "#128276"
+                  },
+                  "name": "总店",
+                  "defaultStore": true,
+                  "color": "#128276",
+                  "addr": "合肥市审计测试地址"
+                },
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                }
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "项目经理",
+                "value": "Pm",
+                "key": "Pm"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            },
+            {
+              "empId": "199500000000000109",
+              "name": "滨湖店长",
+              "telNo": "13910002008",
+              "store": {
+                "storeId": "199500000000000012",
+                "company": {
+                  "comId": "199500000000000001",
+                  "title": "昭青科技 · 业务闭环审计",
+                  "name": "昭青科技",
+                  "color": "#128276"
+                },
+                "name": "滨湖店",
+                "defaultStore": false,
+                "color": "#128276",
+                "addr": "合肥市滨湖新区"
+              },
+              "company": {
+                "comId": "199500000000000001",
+                "title": "昭青科技 · 业务闭环审计",
+                "name": "昭青科技",
+                "color": "#128276"
+              },
+              "role": {
+                "name": "店长",
+                "value": "StoreManager",
+                "key": "StoreManager"
+              },
+              "status": {
+                "name": "在职",
+                "key": "Active"
+              },
+              "joinedAt": "2026-10-31 22:41:21"
+            }
+          ],
+          "totalPages": 1,
+          "last": true,
+          "totalElements": "9",
+          "first": true,
+          "size": 20
+        },
+        "success": true
+      }
+    }
+  },
+  "after": "242297226024452096\t199500000000000107\t199500000000000111\t12575.96\t8369.00\n242297225462415360\t12575.96\t12575.96\tEffective",
+  "unchanged": true
+}

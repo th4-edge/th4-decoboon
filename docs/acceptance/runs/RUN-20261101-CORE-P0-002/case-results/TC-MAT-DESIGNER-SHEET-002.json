@@ -1,0 +1,109 @@
+{
+  "caseId": "TC-MAT-DESIGNER-SHEET-002",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:50:23+08:00",
+  "finishedAt": "2026-11-02T00:54:04+08:00",
+  "executor": "codex",
+  "role": "Designer+Finance",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "App Designer 建 Tile 作业单并添加计划行",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "App 无授权身份；使用已登记为夹具的 Provider 创建/提交结果仅用于打通后续财务 Web 验证，不计页面通过",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SHEET-002/01-sheet-enums-and-fixture-save.json",
+        "evidence/TC-MAT-DESIGNER-SHEET-002/02-sheet-submit-fixture.json",
+        "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md"
+      ]
+    },
+    {
+      "action": "回读作业单来源与数量",
+      "result": "PASS",
+      "actual": "sourceKind=Plan；materialPlan=242690664628748288；quantity=30；loss=0；status=Submitted",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SHEET-002/03-sheet-source-readback.json",
+        "evidence/TC-MAT-DESIGNER-SHEET-002/04-sheet-db.txt"
+      ]
+    },
+    {
+      "action": "Finance 在 Web 查看已提交请购",
+      "result": "PASS",
+      "actual": "待下单 1 张、1 行可下单，页面显示项目/厂家/未定价状态和去下单入口",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SHEET-002/05-finance-submitted-sheet.png"
+      ]
+    },
+    {
+      "action": "提交后核对作业单不直接写成本或应付",
+      "result": "PASS",
+      "actual": "提交后采购单0、应付0；作业单priceState=Unpriced，未生成任何价格/应付事实",
+      "evidence": [
+        "evidence/TC-MAT-DESIGNER-SHEET-002/04-sheet-db.txt"
+      ]
+    },
+    {
+      "action": "加入自由文本合同外材料",
+      "result": "PASS",
+      "actual": "Provider 返回业务400：作业单行必须来源材料计划；合同外主材请先发起增减项；数据库无作业单/行残留",
+      "evidence": [
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json",
+        "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-boundary-db.txt"
+      ]
+    },
+    {
+      "action": "App 回读同一作业单",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "无授权微信身份，未执行 App 页面回读",
+      "evidence": [
+        "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+      ]
+    }
+  ],
+  "actualPage": [
+    "/finance/material-ordering"
+  ],
+  "actualState": [
+    "作业单来源Plan",
+    "提交后Submitted",
+    "提交不生成采购/应付",
+    "合同外自由文本材料被服务端拒绝",
+    "财务Web可回读",
+    "App未验证"
+  ],
+  "evidence": [
+    "evidence/TC-MAT-DESIGNER-SHEET-002/01-sheet-enums-and-fixture-save.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/02-sheet-submit-fixture.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/03-sheet-source-readback.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/04-sheet-db.txt",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/05-finance-submitted-sheet.png",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json",
+    "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-boundary-db.txt",
+    "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+  ],
+  "defectIds": [],
+  "blockedReason": "作业单来源、提交门禁、财务Web回读和合同外材料拒绝均通过；App Designer 建单/回读无授权微信身份；同时 Web 作业单新建/编辑/测量/提交/取消仍未实现，由 PI-20261022-015 MAT-X2 跟踪。",
+  "notes": "受控Provider夹具仅补前置条件，不代替 App 页面动作。Web 当前只有财务下单/结算侧，不具备同一作业单全生命周期强制动作集合；即使补齐 App 身份，也必须完成 MAT-X2 后才能声明跨端一致。",
+  "caseDefinitionHash": "69c4d263f518ecc2a0055289853b8c34da566daaceade5c7d2c7d6bd3dbd0200",
+  "priority": "P0",
+  "area": "MATERIAL",
+  "businessRuleIds": [
+    "BR-044",
+    "BR-045",
+    "OBJ-008",
+    "DEC-072"
+  ],
+  "pageTargets": [
+    "web:/finance/material-ordering",
+    "app:/subpackages/project/pages/material-sheet-create"
+  ],
+  "providerRoutes": [
+    "material/sheet/save",
+    "material/sheet/submit",
+    "material/sheet/enums",
+    "material/sheet/page"
+  ]
+}

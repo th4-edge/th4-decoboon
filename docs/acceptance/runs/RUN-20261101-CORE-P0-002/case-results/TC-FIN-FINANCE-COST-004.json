@@ -1,0 +1,59 @@
+{
+  "caseId": "TC-FIN-FINANCE-COST-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:01:00+08:00",
+  "finishedAt": "2026-11-02T00:04:42+08:00",
+  "executor": "codex",
+  "role": "Finance+Boss",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Finance Web 打开项目核算",
+      "result": "PASS",
+      "evidence": "evidence/TC-FIN-FINANCE-COST-004/01-finance-project-cost.png"
+    },
+    {
+      "action": "Finance 核对预计成本/实际成本/完整性",
+      "result": "PASS",
+      "actual": "预计1760，实际2240，成本未完整1项，利润不展示"
+    },
+    {
+      "action": "Boss Web 回读同一项目",
+      "result": "PASS",
+      "evidence": "evidence/TC-FIN-FINANCE-COST-004/05-boss-project-cost.png"
+    },
+    {
+      "action": "API/DB 同源核对",
+      "result": "PASS_WITH_SETTLEMENT_LIST_DEFECT",
+      "actual": "project/report costComplete=false/profit=null；settlement/page却costComplete=true/成本0",
+      "evidence": "evidence/TC-FIN-FINANCE-COST-004/03-finance-api.json; evidence/TC-FIN-FINANCE-SETTLEMENT-005/03-settlement-db.txt"
+    },
+    {
+      "action": "App 回读",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "缺少授权微信身份，且不得使用 devToken 绕过"
+    }
+  ],
+  "actualPage": [
+    "/finance/projects/242297299361857536"
+  ],
+  "actualState": [
+    "project/report: totalCost=2240, costComplete=false, costIncompleteCount=1, profitAmount=null, grossMargin=null",
+    "Boss/Finance 页面一致显示成本未完整且不显示伪利润"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-COST-004/01-finance-project-cost.png",
+    "evidence/TC-FIN-FINANCE-COST-004/02-finance-project-cost-controls.json",
+    "evidence/TC-FIN-FINANCE-COST-004/03-finance-api.json",
+    "evidence/TC-FIN-FINANCE-COST-004/04-finance-db.txt",
+    "evidence/TC-FIN-FINANCE-COST-004/05-boss-project-cost.png",
+    "evidence/TC-FIN-FINANCE-COST-004/06-boss-project-cost.json",
+    "evidence/TC-FIN-FINANCE-COST-004/07-boss-api.json"
+  ],
+  "defectIds": [
+    "DEF-20261102-002"
+  ],
+  "blockedReason": "App 微信身份不可用，无法完成声明的 App 端回读；另结算列表 Provider 与项目报告不一致。",
+  "notes": "Web/Finance/Boss/API/DB 对成本不完整和利润为空一致；不能因局部通过把整条跨端用例标 PASS。"
+}

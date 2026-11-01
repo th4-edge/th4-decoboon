@@ -1,0 +1,52 @@
+{
+  "caseId": "TC-CHG-FINANCE-COST-002",
+  "status": "PASS",
+  "startedAt": "2026-11-02T00:28:00+08:00",
+  "finishedAt": "2026-11-02T00:29:59+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "通过Provider创建并审批有效Quantity变更：地板12减为10",
+      "result": "PASS_FIXTURE",
+      "actual": "change 1793550559797532826，CustomerConfirmed，金额-336，成本-240"
+    },
+    {
+      "action": "Finance打开项目账本核对合同额、预计/实际成本和缺失项",
+      "result": "PASS",
+      "actual": "合同额2159.75；预计1520；实际2000；成本未完整2项"
+    },
+    {
+      "action": "打开结算草稿核对利润与确认门禁",
+      "result": "PASS",
+      "actual": "结算利润成本未完整、毛利率暂不可确认、确认结算disabled=true"
+    },
+    {
+      "action": "API/DB同源回读",
+      "result": "PASS",
+      "actual": "costComplete=false、profit=null、grossMargin=null；DB settlement profit/gross_margin均为NULL；历史结算总额未回写变更"
+    }
+  ],
+  "actualPage": [
+    "/finance/projects/242297299361857536"
+  ],
+  "actualState": [
+    "Quantity 12→10 生效，amountDelta=-336，costDelta=-240",
+    "project/report: estimated=1520, actual=2000, costComplete=false, incomplete=2, profit=null, grossMargin=null",
+    "settlement/page: estimated=1520, actual=2000, costComplete=false, incomplete=2, profit=null, grossMargin=null",
+    "Web确认结算禁用并展示成本未完整原因"
+  ],
+  "evidence": [
+    "evidence/TC-CHG-FINANCE-COST-002/01-change-fixture-api.json",
+    "evidence/TC-CHG-FINANCE-COST-002/02-finance-after-quantity-change.png",
+    "evidence/TC-CHG-FINANCE-COST-002/03-settlement-after-quantity-change.png",
+    "evidence/TC-CHG-FINANCE-COST-002/04-page-controls.json",
+    "evidence/TC-CHG-FINANCE-COST-002/05-project-settlement-api.json",
+    "evidence/TC-CHG-FINANCE-COST-002/06-change-db.txt"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "有效Quantity变更未制造伪成本完整性或伪利润；结算草稿历史金额保持快照，不随变更回写。"
+}

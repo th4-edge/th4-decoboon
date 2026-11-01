@@ -1,0 +1,225 @@
+{
+  "runId": "RUN-20261101-CORE-P0-002",
+  "create": {
+    "http": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:29:19"
+        },
+        "changeId": "1793550559797532826",
+        "contract": {
+          "contractId": "242297298732711936",
+          "no": "C1793457777676",
+          "baselineAmount": 2495.75,
+          "signedAmount": 2495.75,
+          "currentAmount": 2495.75,
+          "status": {
+            "name": "已生效",
+            "key": "Effective"
+          },
+          "signedAt": "2026-10-29"
+        },
+        "project": {
+          "projectId": "242297299361857536",
+          "no": "P1793457777832",
+          "name": "王芳（造数1100） · 望江府1栋102",
+          "property": {
+            "propertyId": "242297295016558592",
+            "propertyNo": "H1793457776798",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "望江府1栋102",
+            "area": 100.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "contractAmount": 2495.75,
+          "status": {
+            "name": "待开工",
+            "key": "Preparing"
+          }
+        },
+        "no": "BC1793550559796",
+        "reason": "P0验收夹具：主材--实木复合地板数量由12减为10，验证有效Quantity变更不制造伪成本完整性或伪利润",
+        "amount": -336.0,
+        "status": {
+          "name": "待审批",
+          "key": "Pending"
+        },
+        "requestedBy": {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "type": {
+          "name": "数量变更",
+          "key": "Quantity"
+        },
+        "sourceLine": {
+          "lineId": "242297298762072066",
+          "type": {
+            "name": "主材",
+            "value": "Material",
+            "key": "Material"
+          },
+          "name": "主材--实木复合地板",
+          "quantity": 12.0,
+          "materialPrice": 168.0,
+          "manualPrice": 0.0,
+          "amount": 2016.0,
+          "cost": 1440.0
+        },
+        "costDelta": -240.0,
+        "customerConfirmed": false,
+        "items": [
+          {
+            "changeItemId": "1793550559800985907",
+            "sourceLine": {
+              "lineId": "242297298762072066",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--实木复合地板",
+              "quantity": 12.0,
+              "materialPrice": 168.0,
+              "manualPrice": 0.0,
+              "amount": 2016.0,
+              "cost": 1440.0
+            },
+            "changeType": {
+              "name": "数量变更",
+              "key": "Quantity"
+            },
+            "itemType": {
+              "name": "主材",
+              "value": "Material",
+              "key": "Material"
+            },
+            "name": "主材--实木复合地板",
+            "oldQuantity": 12.0,
+            "newQuantity": 10,
+            "oldPrice": 168.0,
+            "newPrice": 168.0,
+            "amountDelta": -336.0,
+            "costDelta": -240.0,
+            "remark": "P0验收夹具：主材--实木复合地板数量由12减为10，验证有效Quantity变更不制造伪成本完整性或伪利润"
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "changeId": "1793550559797532826",
+  "approve": {
+    "http": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:29:19"
+        },
+        "changeId": "1793550559797532826",
+        "contract": {
+          "contractId": "242297298732711936",
+          "no": "C1793457777676",
+          "baselineAmount": 2495.75,
+          "signedAmount": 2495.75,
+          "currentAmount": 2159.75,
+          "status": {
+            "name": "已变更",
+            "key": "Changed"
+          },
+          "signedAt": "2026-10-29"
+        },
+        "project": {
+          "projectId": "242297299361857536",
+          "no": "P1793457777832",
+          "name": "王芳（造数1100） · 望江府1栋102",
+          "property": {
+            "propertyId": "242297295016558592",
+            "propertyNo": "H1793457776798",
+            "community": "望江府",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "望江府1栋102",
+            "area": 100.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "contractAmount": 2159.75,
+          "status": {
+            "name": "待开工",
+            "key": "Preparing"
+          }
+        },
+        "no": "BC1793550559796",
+        "reason": "P0验收夹具：主材--实木复合地板数量由12减为10，验证有效Quantity变更不制造伪成本完整性或伪利润",
+        "amount": -336.0,
+        "status": {
+          "name": "已生效",
+          "key": "CustomerConfirmed"
+        },
+        "requestedBy": {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "type": {
+          "name": "数量变更",
+          "key": "Quantity"
+        },
+        "sourceLine": {
+          "lineId": "242297298762072066",
+          "type": {
+            "name": "主材",
+            "value": "Material",
+            "key": "Material"
+          },
+          "category": "地板",
+          "name": "主材--实木复合地板",
+          "unit": {
+            "name": "m²",
+            "value": "Area",
+            "key": "Area"
+          },
+          "quantity": 12.0,
+          "materialPrice": 168.0,
+          "manualPrice": 0.0,
+          "amount": 2016.0
+        },
+        "costDelta": -240.0,
+        "customerConfirmed": true,
+        "evidenceImages": [],
+        "approvedBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          }
+        },
+        "conclusion": "P0验收夹具：确认数量由12减为10",
+        "approvedAt": "2026-11-02 00:29:19"
+      },
+      "success": true
+    }
+  }
+}

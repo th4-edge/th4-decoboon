@@ -1,0 +1,40 @@
+{
+  "defectId": "DEF-20261102-002",
+  "caseIds": [
+    "TC-FIN-FINANCE-SETTLEMENT-005",
+    "TC-FIN-FINANCE-COST-004",
+    "TC-FIN-CROSSSURFACE-PARITY-006"
+  ],
+  "priority": "P0",
+  "status": "VERIFIED",
+  "title": "项目结算列表 Provider 将成本不完整错误投影为成本完整且成本为 0",
+  "role": "Finance",
+  "surface": "API/Web/App consumer",
+  "pagePath": "finance/settlement/page",
+  "businessState": "项目 242297299361857536：project/report 返回 totalCost=2240、costComplete=false、costIncompleteCount=1、profitAmount=null；DB 结算 profit_amount=NULL、gross_margin=NULL、total_cost=2240。",
+  "expected": "结算列表和项目报告必须使用同一成本完整性投影，costComplete=false、利润为空，缺失成本不得显示为 0。",
+  "actual": "finance/settlement/page 的同一结算项返回 estimatedCost=0、actualCost=0、costComplete=true、costIncompleteCount=0；与项目报告和 DB 冲突。",
+  "minimumReproduction": [
+    "Finance 登录",
+    "打开项目核算项目 242297299361857536",
+    "对比 finance/project/report 与 finance/settlement/page",
+    "观察到 costComplete 和成本字段相反"
+  ],
+  "impact": "任何消费结算列表的页面、导出或动作门禁可能误判成本完整，存在伪利润和错误确认风险，违反 MET-002/DEC-092 与同源要求。",
+  "evidence": [
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-COST-004/03-finance-api.json",
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-finance-api.json",
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-SETTLEMENT-005/03-settlement-db.txt",
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-web-settlement-tab.png"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "统一 finance/settlement/page 使用 ProjectCostContext/FinanceProjectLedgerContext 的同一投影，返回真实 totalCost、costComplete 和缺失项；禁止默认 true/0。",
+  "retestCondition": "同一项目 project/report 与 settlement/page 的 totalCost、costComplete、costIncompleteCount、profitAmount、grossMargin完全一致，页面与 App 回读一致。",
+  "createdAt": "2026-11-02T00:04:42+08:00",
+  "verifiedAt": "2026-11-02T00:23:52+08:00",
+  "retestRunId": "RUN-20261102-FIN-FIX-RETEST-001",
+  "retestEvidence": [
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-settlement-parity.json",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/02-settlement-page-retest.png"
+  ]
+}

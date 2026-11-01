@@ -1,0 +1,46 @@
+{
+  "caseId": "TC-XC-FINANCE-VISIBILITY-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:31:00+08:00",
+  "finishedAt": "2026-11-02T00:30:36+08:00",
+  "executor": "codex",
+  "role": "Boss+StoreManager+Finance+Designer+Marketer+Pm",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "授权角色读取finance/project/report",
+      "result": "PASS",
+      "actual": "Boss/店长/财务均200"
+    },
+    {
+      "action": "非授权角色读取finance/project/report",
+      "result": "PASS_REJECTED",
+      "actual": "Designer/Marketer/Pm均403"
+    },
+    {
+      "action": "扫描project/project/info敏感字段",
+      "result": "PASS_SERVER_TRIMMED",
+      "actual": "所有角色响应均无cost/profitAmount/grossMargin/totalCost/laborCost/materialCost字段"
+    },
+    {
+      "action": "App端页面与响应回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "API finance/project/report",
+    "API project/project/info"
+  ],
+  "actualState": [
+    "敏感成本利润字段仅经授权报告返回",
+    "项目通用详情不携带成本利润字段",
+    "非授权角色财务报告403"
+  ],
+  "evidence": [
+    "evidence/TC-XC-FINANCE-VISIBILITY-004/01-role-visibility-api.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；Web/API字段裁剪部分已通过。",
+  "notes": "服务端裁剪和角色负向通过，但声明包含App，整条用例暂不能PASS。"
+}

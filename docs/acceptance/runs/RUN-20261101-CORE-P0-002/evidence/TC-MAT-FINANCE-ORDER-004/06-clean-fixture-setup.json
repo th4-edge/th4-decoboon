@@ -1,0 +1,362 @@
+{
+  "selection": {
+    "route": "material/selection/save",
+    "request": {
+      "propertyId": "242297222408962048",
+      "projectId": "242297226024452096",
+      "contractId": "242297225462415360",
+      "contractLineId": "242297225483386883",
+      "title": "主材--抛釉砖 800x800",
+      "content": "颜色/花色：暖灰米白；规格/型号：800×800mm；品牌：马可波罗；工艺：柔光釉面",
+      "selectionJson": "{\"color\":\"暖灰米白\",\"spec\":\"800×800mm\",\"brand\":\"马可波罗\",\"process\":\"柔光釉面\",\"remark\":\"清洁下单夹具\"}",
+      "remark": "清洁下单夹具",
+      "deliver": true
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "selectionId": "242692304601612288",
+        "owner": {
+          "empId": "199500000000000106",
+          "name": "审计业务",
+          "role": {
+            "name": "业务员",
+            "value": "Marketer",
+            "key": "Marketer"
+          }
+        },
+        "customer": {
+          "custId": "242297222228606976",
+          "name": "孙悦（演示12）",
+          "telNo": "13910000012"
+        },
+        "property": {
+          "propertyId": "242297222408962048",
+          "propertyNo": "H1793457759487",
+          "community": "翡翠湖畔",
+          "building": "3栋",
+          "roomNo": "1301",
+          "address": "翡翠湖畔3栋1301（主房）",
+          "area": 140,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "contract": {
+          "contractId": "242297225462415360",
+          "no": "C1793457760212",
+          "baselineAmount": 12575.96,
+          "signedAmount": 12575.96
+        },
+        "project": {
+          "projectId": "242297226024452096",
+          "no": "P1793457760346",
+          "name": "麦鸿演示项目 12"
+        },
+        "version": 1,
+        "status": {
+          "name": "已选材",
+          "key": "Selected"
+        },
+        "title": "主材--抛釉砖 800x800",
+        "content": "颜色/花色：暖灰米白；规格/型号：800×800mm；品牌：马可波罗；工艺：柔光釉面",
+        "selectionJson": "{\"color\":\"暖灰米白\",\"spec\":\"800×800mm\",\"brand\":\"马可波罗\",\"process\":\"柔光釉面\",\"remark\":\"清洁下单夹具\"}",
+        "designer": {
+          "empId": "199500000000000111",
+          "name": "审计设计二",
+          "role": {
+            "name": "设计师",
+            "value": "Designer",
+            "key": "Designer"
+          }
+        },
+        "remark": "清洁下单夹具"
+      },
+      "success": true
+    }
+  },
+  "plans": {
+    "route": "project/material-plan/page",
+    "request": {
+      "projectId": "242297226024452096"
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "planId": "242297226095755264",
+            "project": {
+              "projectId": "242297226024452096",
+              "no": "P1793457760346",
+              "name": "麦鸿演示项目 12",
+              "siteAddr": "演示项目工地 12"
+            },
+            "catalogItem": {
+              "itemId": "242296910046560256",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--抛釉砖 800x800",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              }
+            },
+            "quantity": 30,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "unitPrice": 88,
+            "cost": 1860,
+            "status": {
+              "name": "可下单",
+              "key": "ReadyToOrder"
+            },
+            "requiredAt": "2026-11-07",
+            "materialKey": "ci:242296910046560256|unit:Area",
+            "netQuantity": 30,
+            "lossRate": 0,
+            "lossQuantity": 0
+          }
+        ],
+        "last": true,
+        "totalElements": "1",
+        "totalPages": 1,
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  },
+  "sheet": {
+    "route": "material/sheet/save",
+    "request": {
+      "projectId": "242297226024452096",
+      "sheetType": "瓷砖（地砖/墙砖）",
+      "manufacturerName": "马可波罗瓷砖",
+      "groupChatAt": "2026-11-03",
+      "installAt": "2026-11-10",
+      "remark": "P0清洁下单夹具：20㎡，单价88；不代替App建单页面验收",
+      "items": [
+        {
+          "materialPlan": {
+            "planId": "242297226095755264"
+          },
+          "locationName": "客厅地面",
+          "spaceName": "客餐厅",
+          "materialName": "主材--抛釉砖 800x800",
+          "brand": "马可波罗",
+          "model": "抛釉砖 800x800",
+          "spec": "800×800mm",
+          "color": "暖灰米白",
+          "size": "800×800",
+          "craft": "柔光釉面",
+          "quantity": 20,
+          "unit": "Area",
+          "standardIncluded": true,
+          "remark": "P0清洁下单夹具"
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "sheetId": "1793551954468329817",
+        "property": {
+          "propertyId": "242297222408962048",
+          "community": "翡翠湖畔",
+          "building": "3栋",
+          "roomNo": "1301",
+          "address": "翡翠湖畔3栋1301（主房）"
+        },
+        "project": {
+          "projectId": "242297226024452096",
+          "no": "P1793457760346",
+          "name": "麦鸿演示项目 12",
+          "siteAddr": "演示项目工地 12"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-003",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "P0清洁下单夹具：20㎡，单价88；不代替App建单页面验收"
+      },
+      "success": true
+    }
+  },
+  "submit": {
+    "route": "material/sheet/submit",
+    "request": {
+      "sheetId": "1793551954468329817"
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "sheetId": "1793551954468329817",
+        "property": {
+          "propertyId": "242297222408962048",
+          "community": "翡翠湖畔",
+          "building": "3栋",
+          "roomNo": "1301",
+          "address": "翡翠湖畔3栋1301（主房）"
+        },
+        "project": {
+          "projectId": "242297226024452096",
+          "no": "P1793457760346",
+          "name": "麦鸿演示项目 12",
+          "siteAddr": "演示项目工地 12"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-003",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "已提交请购",
+          "key": "Submitted"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "P0清洁下单夹具：20㎡，单价88；不代替App建单页面验收",
+        "attachments": []
+      },
+      "success": true
+    }
+  },
+  "info": {
+    "route": "material/sheet/info",
+    "request": {
+      "sheetId": "1793551954468329817"
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:52:34"
+        },
+        "sheetId": "1793551954468329817",
+        "property": {
+          "propertyId": "242297222408962048",
+          "community": "翡翠湖畔",
+          "building": "3栋",
+          "roomNo": "1301",
+          "address": "翡翠湖畔3栋1301（主房）"
+        },
+        "project": {
+          "projectId": "242297226024452096",
+          "no": "P1793457760346",
+          "name": "麦鸿演示项目 12",
+          "siteAddr": "演示项目工地 12"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-003",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "已提交请购",
+          "key": "Submitted"
+        },
+        "remark": "P0清洁下单夹具：20㎡，单价88；不代替App建单页面验收",
+        "attachments": [],
+        "items": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:52:34"
+            },
+            "itemId": "1793551954474117684",
+            "sourceKind": {
+              "name": "材料计划行（合同选材确认 / 增减项新增）",
+              "key": "Plan"
+            },
+            "materialPlan": {
+              "planId": "242297226095755264",
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              }
+            },
+            "standardIncluded": true,
+            "spaceName": "客餐厅",
+            "locationName": "客厅地面",
+            "materialName": "主材--抛釉砖 800x800",
+            "brand": "马可波罗",
+            "model": "抛釉砖 800x800",
+            "spec": "800×800mm",
+            "color": "暖灰米白",
+            "size": "800×800",
+            "craft": "柔光釉面",
+            "quantity": 20,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "lossRate": 0,
+            "lossQuantity": 0,
+            "orderedQuantity": 0,
+            "sort": 0,
+            "remark": "P0清洁下单夹具",
+            "attachments": []
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "sheetId": "1793551954468329817"
+}

@@ -1,0 +1,97 @@
+{
+  "plans": {
+    "route": "project/material-plan/page",
+    "request": {
+      "projectId": "242297231061811200"
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "planId": "242297231116337152",
+            "project": {
+              "projectId": "242297231061811200",
+              "no": "P1793457761546",
+              "name": "麦鸿演示项目 13",
+              "siteAddr": "演示项目工地 13"
+            },
+            "catalogItem": {
+              "itemId": "242296910222721024",
+              "type": {
+                "name": "主材",
+                "value": "Material",
+                "key": "Material"
+              },
+              "name": "主材--实木复合地板",
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              }
+            },
+            "quantity": 30,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "unitPrice": 168,
+            "cost": 3600,
+            "status": {
+              "name": "待选材",
+              "key": "Planned"
+            },
+            "requiredAt": "2026-11-08",
+            "materialKey": "ci:242296910222721024|unit:Area",
+            "netQuantity": 30,
+            "lossRate": 0,
+            "lossQuantity": 0
+          }
+        ],
+        "last": true,
+        "totalElements": "1",
+        "totalPages": 1,
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  },
+  "save": {
+    "route": "material/sheet/save",
+    "request": {
+      "projectId": "242297231061811200",
+      "sheetType": "瓷砖（地砖/墙砖）",
+      "manufacturerName": "未选材负向测试",
+      "groupChatAt": "2026-11-03",
+      "installAt": "2026-11-10",
+      "remark": "未选材不得进入作业单",
+      "items": [
+        {
+          "materialPlan": {
+            "planId": "242297231116337152"
+          },
+          "locationName": "客厅地面",
+          "materialName": "主材--实木复合地板",
+          "quantity": 1,
+          "unit": "Area"
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "该材料尚未完成主材选材，完成后方可下单",
+        "system": false
+      }
+    }
+  }
+}

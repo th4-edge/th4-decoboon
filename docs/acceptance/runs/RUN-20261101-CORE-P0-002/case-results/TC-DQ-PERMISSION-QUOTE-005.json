@@ -1,0 +1,62 @@
+{
+  "caseId": "TC-DQ-PERMISSION-QUOTE-005",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:37:00+08:00",
+  "finishedAt": "2026-11-02T00:41:26+08:00",
+  "executor": "codex",
+  "role": "Marketer+Designer",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Marketer读取报价并尝试接受",
+      "result": "PASS_REJECTED",
+      "actual": "只读可读；置Accepted返回403，报价保持Submitted"
+    },
+    {
+      "action": "Designer登记客户接受",
+      "result": "PASS",
+      "actual": "Accepted，acceptedBy=审计设计，acceptedAt=2026-11-02 00:38:27，金额15,103.75和成本快照未变"
+    },
+    {
+      "action": "重复接受",
+      "result": "PASS_REJECTED",
+      "actual": "400 只有已提交报价可以接受，acceptedBy/acceptedAt不覆盖"
+    },
+    {
+      "action": "设计师页面回读登记人/时间",
+      "result": "PASS_AFTER_FIX",
+      "actual": "页面显示客户接受登记、审计设计、接受时间与员工登记边界说明",
+      "evidence": [
+        "evidence/TC-DQ-PERMISSION-QUOTE-005/04-designer-quote-accepted-with-registrar.png",
+        "evidence/TC-DQ-PERMISSION-QUOTE-005/05-designer-quote-accepted-with-registrar.txt"
+      ]
+    },
+    {
+      "action": "App端回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/designer/quotes/242297077898412032",
+    "quote/update",
+    "quote/designer/info"
+  ],
+  "actualState": [
+    "DB quote status=Accepted amount=15103.75 cost=10109.00 accepted_by=199500000000000105 accepted_at=2026-11-02 00:38:27",
+    "设计师详情返回acceptedBy与acceptedAt",
+    "页面显示登记人与员工登记边界"
+  ],
+  "evidence": [
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/01-quote-accept-api.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/02-designer-quote-accepted.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/03-designer-quote-accepted.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/04-designer-quote-accepted-with-registrar.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/05-designer-quote-accepted-with-registrar.txt"
+  ],
+  "defectIds": [
+    "DEF-20261102-004"
+  ],
+  "blockedReason": "App授权微信身份不可用；Web/API/DB接受登记与留痕已通过。",
+  "notes": "发现并修复设计师详情缺少acceptedBy投影；重复接受不覆盖首次登记。"
+}

@@ -1,0 +1,52 @@
+{
+  "caseId": "TC-FIN-FINANCE-SETTLEMENT-005",
+  "status": "FAIL",
+  "startedAt": "2026-11-02T00:02:00+08:00",
+  "finishedAt": "2026-11-02T00:04:42+08:00",
+  "executor": "codex",
+  "role": "Finance+Boss",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Finance 打开项目结算页",
+      "result": "PASS",
+      "evidence": "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-web-settlement-tab.png"
+    },
+    {
+      "action": "核对最终金额/质保/成本/利润与门禁",
+      "result": "PASS_PAGE",
+      "actual": "最终2495.75，质保74.87，结算成本2240，利润成本未完整，确认结算disabled=true"
+    },
+    {
+      "action": "核对 settlement/page Provider",
+      "result": "FAIL",
+      "actual": "costComplete=true、estimatedCost=0、actualCost=0，与页面/项目报告/DB冲突",
+      "evidence": "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-finance-api.json"
+    },
+    {
+      "action": "App 回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/finance/projects/242297299361857536"
+  ],
+  "actualState": [
+    "页面确认结算按钮 disabled=true 且有成本未完整原因",
+    "settlement/page costComplete=true/成本0 与 project/report false/2240 冲突",
+    "DB settlement profit_amount=NULL gross_margin=NULL total_cost=2240 status=Draft"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-web-settlement-tab.png",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-web-settlement-controls.json",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/01-finance-api.json",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/02-finance-db.txt",
+    "evidence/TC-FIN-FINANCE-SETTLEMENT-005/03-settlement-db.txt"
+  ],
+  "defectIds": [
+    "DEF-20261102-002"
+  ],
+  "blockedReason": null,
+  "notes": "页面门禁正确，但结算列表 Provider 投影错误，违反同一对象同源与成本完整性，整条 P0 用例不能 PASS。"
+}

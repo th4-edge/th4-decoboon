@@ -1,0 +1,299 @@
+{
+  "sheetId": "1793551860233642479",
+  "create": {
+    "route": "material/sheet/save",
+    "request": {
+      "projectId": "242690664519696384",
+      "sheetType": "瓷砖（地砖/墙砖）",
+      "manufacturerName": "马可波罗瓷砖",
+      "groupChatAt": "2026-11-03",
+      "installAt": "2026-11-10",
+      "remark": "P0数量边界验收夹具",
+      "items": [
+        {
+          "materialPlan": {
+            "planId": "242690664628748288"
+          },
+          "locationName": "客厅地面",
+          "spaceName": "客餐厅",
+          "materialName": "主材--抛釉砖 800x800",
+          "brand": "马可波罗",
+          "model": "抛釉砖 800x800",
+          "spec": "800×800mm",
+          "color": "暖灰米白",
+          "size": "800×800",
+          "craft": "柔光釉面",
+          "quantity": 29.5,
+          "unit": "Area",
+          "standardIncluded": true,
+          "remark": "P0数量边界验收夹具"
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:51:00"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:51:00"
+        },
+        "sheetId": "1793551860233642479",
+        "property": {
+          "propertyId": "242297079097982976",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "1105",
+          "address": "望江府1栋1105（主房）"
+        },
+        "project": {
+          "projectId": "242690664519696384",
+          "no": "P1793551563393",
+          "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+          "siteAddr": "望江府1栋1105（主房）"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-002",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "P0数量边界验收夹具"
+      },
+      "success": true
+    }
+  },
+  "exact": {
+    "route": "material/sheet/update",
+    "request": {
+      "sheetId": "1793551860233642479",
+      "items": [
+        {
+          "materialPlan": {
+            "planId": "242690664628748288"
+          },
+          "locationName": "客厅地面",
+          "spaceName": "客餐厅",
+          "materialName": "主材--抛釉砖 800x800",
+          "brand": "马可波罗",
+          "model": "抛釉砖 800x800",
+          "spec": "800×800mm",
+          "color": "暖灰米白",
+          "size": "800×800",
+          "craft": "柔光釉面",
+          "quantity": 30,
+          "unit": "Area",
+          "standardIncluded": true,
+          "remark": "P0数量边界验收夹具"
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:51:00"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:51:00"
+        },
+        "sheetId": "1793551860233642479",
+        "property": {
+          "propertyId": "242297079097982976",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "1105",
+          "address": "望江府1栋1105（主房）"
+        },
+        "project": {
+          "projectId": "242690664519696384",
+          "no": "P1793551563393",
+          "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+          "siteAddr": "望江府1栋1105（主房）"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-002",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "priceState": {
+          "name": "未定价（待结算）",
+          "key": "Unpriced"
+        },
+        "remark": "P0数量边界验收夹具",
+        "attachments": []
+      },
+      "success": true
+    }
+  },
+  "over": {
+    "route": "material/sheet/update",
+    "request": {
+      "sheetId": "1793551860233642479",
+      "items": [
+        {
+          "materialPlan": {
+            "planId": "242690664628748288"
+          },
+          "locationName": "客厅地面",
+          "spaceName": "客餐厅",
+          "materialName": "主材--抛釉砖 800x800",
+          "brand": "马可波罗",
+          "model": "抛釉砖 800x800",
+          "spec": "800×800mm",
+          "color": "暖灰米白",
+          "size": "800×800",
+          "craft": "柔光釉面",
+          "quantity": 30.01,
+          "unit": "Area",
+          "standardIncluded": true,
+          "remark": "P0数量边界验收夹具"
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "本次下单量超过可下单数量 30；如需多备料，请先调整主材分类损耗率或损耗量",
+        "system": false
+      }
+    }
+  },
+  "readback": {
+    "route": "material/sheet/info",
+    "request": {
+      "sheetId": "1793551860233642479"
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:51:00"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-02 00:51:00"
+        },
+        "sheetId": "1793551860233642479",
+        "property": {
+          "propertyId": "242297079097982976",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "1105",
+          "address": "望江府1栋1105（主房）"
+        },
+        "project": {
+          "projectId": "242690664519696384",
+          "no": "P1793551563393",
+          "name": "吴桐（演示10） · 望江府1栋1105（主房）",
+          "siteAddr": "望江府1栋1105（主房）"
+        },
+        "sheetNo": "瓷砖（地砖/墙砖）-20261102-002",
+        "sheetType": "瓷砖（地砖/墙砖）",
+        "manufacturerName": "马可波罗瓷砖",
+        "groupChatAt": "2026-11-03",
+        "installAt": "2026-11-10",
+        "status": {
+          "name": "填单中",
+          "key": "Draft"
+        },
+        "remark": "P0数量边界验收夹具",
+        "attachments": [],
+        "items": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:51:00"
+            },
+            "itemId": "1793551860296833377",
+            "sourceKind": {
+              "name": "材料计划行（合同选材确认 / 增减项新增）",
+              "key": "Plan"
+            },
+            "materialPlan": {
+              "planId": "242690664628748288",
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "可下单",
+                "key": "ReadyToOrder"
+              }
+            },
+            "standardIncluded": true,
+            "spaceName": "客餐厅",
+            "locationName": "客厅地面",
+            "materialName": "主材--抛釉砖 800x800",
+            "brand": "马可波罗",
+            "model": "抛釉砖 800x800",
+            "spec": "800×800mm",
+            "color": "暖灰米白",
+            "size": "800×800",
+            "craft": "柔光釉面",
+            "quantity": 30,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "lossRate": 0,
+            "lossQuantity": 0,
+            "orderedQuantity": 0,
+            "sort": 0,
+            "remark": "P0数量边界验收夹具",
+            "attachments": []
+          }
+        ]
+      },
+      "success": true
+    }
+  },
+  "outside": {
+    "route": "material/sheet/save",
+    "request": {
+      "projectId": "242690664519696384",
+      "sheetType": "瓷砖（地砖/墙砖）",
+      "manufacturerName": "合同外材料测试",
+      "groupChatAt": "2026-11-03",
+      "installAt": "2026-11-10",
+      "remark": "P0合同外材料拒绝",
+      "items": [
+        {
+          "locationName": "客厅",
+          "materialName": "合同外自由文本材料",
+          "quantity": 1,
+          "unit": "Area"
+        }
+      ]
+    },
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "作业单行必须来源材料计划；合同外主材请先发起增减项",
+        "system": false
+      }
+    }
+  }
+}

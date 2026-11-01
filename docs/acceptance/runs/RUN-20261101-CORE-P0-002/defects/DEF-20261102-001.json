@@ -1,0 +1,39 @@
+{
+  "defectId": "DEF-20261102-001",
+  "caseIds": [
+    "TC-FIN-FINANCE-RECEIPT-002"
+  ],
+  "priority": "P0",
+  "status": "VERIFIED",
+  "title": "Web 收款记录缺少 Boss/店长可用的收款冲正入口",
+  "role": "Finance",
+  "surface": "Web",
+  "pagePath": "/finance/receipts",
+  "businessState": "存在两笔有效收款：收款 ID 242679258122551296、242679403098669056，均为 ¥100.00；对应应收已变为 Partial，待收 ¥548.73。",
+  "expected": "BR-055 要求收款冲正双端完整。有效收款应提供冲正入口，填写原因后保留原收款并生成冲正及反向台账，刷新后应收余额恢复。",
+  "actual": "收款记录页面仅显示表格与“刷新/登记客户收款/应用筛选”，详情区没有行操作或冲正按钮；页面按钮清单中不存在“冲正”。App 端因缺少授权微信身份无法合法进入，不能替代验证。",
+  "minimumReproduction": [
+    "Finance 登录 Web /finance/receipts",
+    "找到本次新增的王芳（造数5100）两笔 ¥100 有效收款",
+    "检查表格行、详情和页面按钮",
+    "页面不存在收款冲正入口"
+  ],
+  "impact": "财务无法在 Web 纠正误收款；只能遗留错误收款或依赖未授权后端调用，违反 BR-055 跨端完整和可恢复要求。",
+  "evidence": [
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-RECEIPT-002/10-web-receipts.png",
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-RECEIPT-002/10-web-receipts-controls.json",
+    "docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-FIN-FINANCE-RECEIPT-002/09-duplicate-db.txt"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "Web 财务收款记录/详情增加受控冲正动作，复用 finance/receipt/reverse，展示原因、影响预览和回读结果。",
+  "retestCondition": "Web 页面可对有效收款发起冲正；原收款状态 Reversed、冲正记录/反向台账唯一、应收余额恢复，App/Web 回读一致。",
+  "createdAt": "2026-11-02T00:02:56+08:00",
+  "verifiedAt": "2026-11-02T00:23:52+08:00",
+  "retestRunId": "RUN-20261102-FIN-FIX-RETEST-001",
+  "retestEvidence": [
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/03-reversal-form.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/04-reversal-result.png",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/05-reversal-db.txt"
+  ],
+  "assetConflict": "冻结用例TC-FIN-FINANCE-RECEIPT-002声明Finance执行冲正，与DEC-075/DEC-076冲突；修复只向Boss/StoreManager开放，Finance保持403。"
+}

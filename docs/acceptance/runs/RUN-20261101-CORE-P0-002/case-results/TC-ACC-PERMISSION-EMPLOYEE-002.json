@@ -1,0 +1,55 @@
+{
+  "caseId": "TC-ACC-PERMISSION-EMPLOYEE-002",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:07:00+08:00",
+  "finishedAt": "2026-11-02T00:07:14+08:00",
+  "executor": "codex",
+  "role": "Boss+StoreManager+Pm+Finance+Owner",
+  "surface": "Web+API+App/Owner",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Pm Web 查看待验收项目",
+      "result": "PASS",
+      "actual": "页面明确“确认或驳回仅业主本人执行”，无员工确认/驳回动作",
+      "evidence": [
+        "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-pm-acceptance-page.png",
+        "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/03-pm-acceptance-page.json"
+      ]
+    },
+    {
+      "action": "Boss/店长/Pm/财务分别尝试 project/acceptance/update confirmed=true",
+      "result": "PASS_REJECTED",
+      "actual": "四角色均403“业主确认必须由业主本人通过小程序授权会话完成”",
+      "evidence": "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-employee-confirm-rejection-api.json"
+    },
+    {
+      "action": "确认验收状态保持Pending",
+      "result": "PASS",
+      "actual": "before/after均 Pending，confirmed_at=NULL"
+    },
+    {
+      "action": "Owner 使用匹配身份完成合法确认",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "没有可用的测试业主授权微信身份"
+    }
+  ],
+  "actualPage": [
+    "/pm/projects/242297231061811200/acceptance",
+    "project/acceptance/update"
+  ],
+  "actualState": [
+    "员工代确认全部403",
+    "acceptance 242297272967102464 status保持Pending",
+    "员工页面无确认/驳回按钮",
+    "Owner合法确认未执行"
+  ],
+  "evidence": [
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/01-employee-confirm-rejection-api.json",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/02-pm-acceptance-page.png",
+    "evidence/TC-ACC-PERMISSION-EMPLOYEE-002/03-pm-acceptance-page.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "缺少与测试业主匹配的授权微信身份，无法执行 Owner 合法确认分支。",
+  "notes": "员工越权负向和状态不变量已通过；因 Owner 正向分支未执行，不能把整条 P0 标 PASS。"
+}

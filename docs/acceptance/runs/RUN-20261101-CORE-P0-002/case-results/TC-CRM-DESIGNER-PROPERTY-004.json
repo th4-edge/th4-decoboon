@@ -1,0 +1,68 @@
+{
+  "caseId": "TC-CRM-DESIGNER-PROPERTY-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:34:00+08:00",
+  "finishedAt": "2026-11-02T00:35:16+08:00",
+  "executor": "codex",
+  "role": "Designer",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "通过合法Provider为同客户增加第二套房屋",
+      "result": "PASS_FIXTURE",
+      "actual": "新增锦绣园4栋405，96㎡，自动继承客户设计师",
+      "evidence": "evidence/TC-CRM-DESIGNER-PROPERTY-004/01-second-property-api.json"
+    },
+    {
+      "action": "设计师Web打开4栋404录入主卧实测20㎡/18m并完成量房",
+      "result": "PASS",
+      "actual": "measure completed 2026-11-02 22:42；原始区域1条，areaSource=Measured",
+      "evidence": [
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/02-designer-measure-queue.png",
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/03-measure-form.png",
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/04-measure-result.png",
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/05-measure-result.json"
+      ]
+    },
+    {
+      "action": "切换4栋405并回读",
+      "result": "PASS_NO_CROSS_CONTAMINATION",
+      "actual": "405仍为PendingMeasure；measure=0、region=0；404保留唯一完成量房和1条区域",
+      "evidence": [
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/06-measure-api.json",
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/07-measure-db.txt",
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/08-second-property-readback.png",
+        "evidence/TC-CRM-DESIGNER-PROPERTY-004/09-second-property-readback.txt"
+      ]
+    },
+    {
+      "action": "App端同一量房链回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/designer/measure?activePropertyId=242297008205856768",
+    "/designer/measure?activePropertyId=242687563217764352"
+  ],
+  "actualState": [
+    "404 Completed，唯一区域主卧20㎡/18m",
+    "405 PendingMeasure，无measure/region",
+    "量房时间不早于预约时间",
+    "切换房屋未串数据"
+  ],
+  "evidence": [
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/01-second-property-api.json",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/02-designer-measure-queue.png",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/03-measure-form.png",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/04-measure-result.png",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/05-measure-result.json",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/06-measure-api.json",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/07-measure-db.txt",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/08-second-property-readback.png",
+    "evidence/TC-CRM-DESIGNER-PROPERTY-004/09-second-property-readback.txt"
+  ],
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；Web/API/DB多房屋量房已通过。",
+  "notes": "多房屋夹具由合法Provider创建；完成时间与预约同源，405无串房证据。"
+}

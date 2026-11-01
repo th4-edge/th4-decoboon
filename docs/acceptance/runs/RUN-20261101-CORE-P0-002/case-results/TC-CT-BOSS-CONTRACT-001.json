@@ -1,0 +1,48 @@
+{
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:44:00+08:00",
+  "finishedAt": "2026-11-02T00:47:03+08:00",
+  "executor": "codex",
+  "role": "Boss+Finance+Pm",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；合同Web/API/DB部分已通过。",
+  "caseId": "TC-CT-BOSS-CONTRACT-001",
+  "steps": [
+    {
+      "action": "Boss在Web填写签约金额、签署日期和计划开工日并确认签约",
+      "result": "PASS",
+      "actual": "Signed，signedAmount=13068.67，signedAt=2026-11-02，计划工期2026-11-05至2027-03-04",
+      "evidence": [
+        "evidence/TC-CT-BOSS-CONTRACT-001/04-sign-contract-filled.png",
+        "evidence/TC-CT-BOSS-CONTRACT-001/05-contract-signed-page.png",
+        "evidence/TC-CT-BOSS-CONTRACT-001/06-contract-signed-page.json"
+      ]
+    },
+    {
+      "action": "确认签约后检查项目",
+      "result": "PASS",
+      "actual": "合同Signed，尚未生成项目；页面下一步为确认生效并生成项目"
+    },
+    {
+      "action": "App端验证",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/designer/contract"
+  ],
+  "actualState": [
+    "PendingSign→Signed",
+    "金额13068.67",
+    "计划开工2026-11-05",
+    "签约前/后未提前生成项目"
+  ],
+  "evidence": [
+    "evidence/TC-CT-BOSS-CONTRACT-001/04-sign-contract-filled.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/05-contract-signed-page.png",
+    "evidence/TC-CT-BOSS-CONTRACT-001/06-contract-signed-page.json"
+  ],
+  "notes": "页面顺序与后端状态机一致。"
+}

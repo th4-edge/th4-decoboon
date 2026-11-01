@@ -1,0 +1,56 @@
+{
+  "caseId": "TC-ACC-OWNER-IDENTITY-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:54:04+08:00",
+  "finishedAt": "2026-11-02T00:54:04+08:00",
+  "executor": "codex",
+  "role": "Owner",
+  "surface": "Owner+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "业主身份进入与本人验收对象识别页面执行",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "用户确认无法提供匹配且经授权的微信业主身份；不得以员工账号、数据库登录态或devToken代替",
+      "evidence": [
+        "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+        "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+      ]
+    },
+    {
+      "action": "页面目标",
+      "result": "NOT_EXECUTED",
+      "actual": "owner:/subpackages/project/pages/owner-acceptance + app:/pages/owner/enter"
+    }
+  ],
+  "actualPage": [],
+  "actualState": [
+    "无真实业主登录会话",
+    "无业主本人确认证据",
+    "未伪造业主身份"
+  ],
+  "evidence": [
+    "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+  ],
+  "defectIds": [],
+  "blockedReason": "缺少经授权的真实业主微信身份和真人见证；系统内员工账号、数据库造登录态和devToken均不能替代业主本人。",
+  "notes": "恢复条件：提供匹配昭青测试企业/房屋/验收对象的业主微信授权身份，并在同一RUN中重新执行页面确认与拒绝/整改分支。",
+  "caseDefinitionHash": "dd8aaaff9c516263e4c7e68391486049388c658c6e335cc5832cf7ca6c86170d",
+  "priority": "P0",
+  "area": "ACCEPTANCE",
+  "businessRuleIds": [
+    "BR-043",
+    "DEC-015",
+    "DEC-009"
+  ],
+  "pageTargets": [
+    "owner:/subpackages/project/pages/owner-acceptance",
+    "app:/pages/owner/enter"
+  ],
+  "providerRoutes": [
+    "project/owner-qrcode/build",
+    "project/owner-preview/info",
+    "customer/shareview/info"
+  ]
+}

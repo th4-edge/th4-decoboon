@@ -1,0 +1,97 @@
+{
+  "runId": "RUN-20261101-CORE-P0-002",
+  "createdAt": "2026-11-01T23:59:11+08:00",
+  "status": "BLOCKED",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "7b7dc5f0ed3795fbd6d13640f5dfb7f51b8c3dd8",
+  "webCommit": "e40ca8baf6203d71f5d0375cc043d424a0aa5873",
+  "appCommit": "f2fb91e0785bf953940257ce97e3ea84fc2ae808",
+  "artifactHashes": {
+    "candidateManifestSha256": "4a82dc24c92f885cbe5c1a298d1cc68a98ea981f38a50893ccdd9cbeb519059a",
+    "sourceWorkspaceFingerprints": {
+      "backend": "0c6651af92ad1032d1f1df1f9fcb4281a6e7aa1b6da89e1616bc69df07354d69",
+      "web": "881ec9eb9cbd9ff8ac997f2c40fb7e3398516c5980d9fdcb336e409e87732bf7",
+      "app": "6e3b7676aecc7bcc48432fdde2aa6726e494d25126a4add885ed34f5610eea88"
+    },
+    "databaseCloneValidationSha256": "4f62e02178fe1f5ba6fd214d3c186e08d5067cbfeca5bffff21fe04ca61c103c"
+  },
+  "environment": "local-fixture-8092",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "caseIds": [
+    "TC-CRM-MANAGER-HANDOFF-003",
+    "TC-CRM-DESIGNER-PROPERTY-004",
+    "TC-CRM-PERMISSION-STORE-005",
+    "TC-DQ-PERMISSION-QUOTE-005",
+    "TC-CT-BOSS-CONTRACT-001",
+    "TC-CT-BOSS-PROJECT-002",
+    "TC-CT-ORDER-CONTRACT-003",
+    "TC-CHG-FINANCE-COST-002",
+    "TC-PJ-PERMISSION-003",
+    "TC-MAT-DESIGNER-SELECTION-001",
+    "TC-MAT-DESIGNER-SHEET-002",
+    "TC-MAT-BOUNDARY-QUANTITY-003",
+    "TC-MAT-FINANCE-ORDER-004",
+    "TC-ACC-PERMISSION-EMPLOYEE-002",
+    "TC-ACC-OWNER-IDENTITY-003",
+    "TC-ACC-OWNER-CONFIRM-004",
+    "TC-FIN-FINANCE-RECEIPT-002",
+    "TC-FIN-FINANCE-PAYABLE-003",
+    "TC-FIN-FINANCE-COST-004",
+    "TC-FIN-FINANCE-SETTLEMENT-005",
+    "TC-FIN-CROSSSURFACE-PARITY-006",
+    "TC-XC-SECURITY-TENANT-001",
+    "TC-XC-FINANCE-VISIBILITY-004"
+  ],
+  "summary": {
+    "total": 23,
+    "pass": 2,
+    "fail": 2,
+    "blocked": 19,
+    "notRun": 0
+  },
+  "candidateId": "ACC-20261101-01",
+  "environmentDetails": {
+    "backend": "http://127.0.0.1:8092/api",
+    "web": "http://127.0.0.1:5175",
+    "appBuild": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-app/dist/dev/mp-weixin-accept-8092",
+    "database": "decoboon_accept_20261101",
+    "databaseSource": "decoboon",
+    "cloneValidation": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/data/backups/acceptance/20261101-235706/clone-validation.json",
+    "migrationApplied": "133-供应商付款码图片",
+    "externalIntegrationsDisabled": [
+      "WECHAT_MINI_ENABLED",
+      "WECHAT_PAY_ENABLED",
+      "ARK_API_KEY"
+    ]
+  },
+  "preflight": {
+    "assetsValidation": "PASS",
+    "accountMatrix": "PASS",
+    "fixture": {
+      "company": "昭青科技",
+      "employees": 9,
+      "customers": 14,
+      "properties": 12,
+      "quotes": 17,
+      "contracts": 4,
+      "projects": 3,
+      "acceptances": 1,
+      "receivables": 10,
+      "payables": 2,
+      "settlements": 1
+    },
+    "databaseSchema": "PASS after migration 133 with ddl-auto=validate",
+    "conclusion": "READY_FOR_EXECUTION"
+  },
+  "finishedAt": "2026-11-02T00:56:00+08:00",
+  "conclusion": "BLOCKED：全部用例已处理；19条因App/业主授权身份或已知跨端能力缺口无法完成跨端判定。",
+  "workspaceState": {
+    "dirtyFileCountAtFinalize": 600,
+    "releaseCandidateClean": false,
+    "published": false
+  }
+}

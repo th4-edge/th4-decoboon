@@ -1,0 +1,138 @@
+{
+  "property404": {
+    "measures": {
+      "http": 200,
+      "body": {
+        "data": {
+          "content": [
+            {
+              "createTime": {
+                "dateTime": "2026-10-31 22:42:01"
+              },
+              "measureId": "242297062899580928",
+              "customer": {
+                "custId": "242297007991947264",
+                "name": "张敏（演示03）",
+                "telNo": "13910000003"
+              },
+              "property": {
+                "propertyId": "242297008205856768",
+                "propertyNo": "H1793457708417",
+                "community": "锦绣园",
+                "building": "4栋",
+                "roomNo": "404",
+                "address": "锦绣园4栋404（主房）",
+                "area": 120.0,
+                "layout": "两室两厅一厨一卫",
+                "status": {
+                  "name": "已量房",
+                  "key": "Measured"
+                }
+              },
+              "designer": {
+                "empId": "199500000000000105",
+                "name": "审计设计",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "executor": {
+                "empId": "199500000000000105",
+                "name": "审计设计",
+                "role": {
+                  "name": "设计师",
+                  "value": "Designer",
+                  "key": "Designer"
+                }
+              },
+              "scheduledAt": "2026-11-02 22:42:00",
+              "completedAt": "2026-11-02 22:42:00",
+              "measureTime": "2026-11-02 22:42:00",
+              "status": {
+                "name": "已完成",
+                "key": "Completed"
+              },
+              "sitePhotos": [],
+              "structureImages": [],
+              "attachments": [],
+              "originalStructure": "原结构为砖混，承重墙位置已确认。",
+              "dimensions": "客餐厅6.2×4.3m，主卧4.0×3.5m，厨房3.8×2.6m。",
+              "customerRequirements": "客户要求主卧增加收纳，保留采光，现场尺寸已复测。",
+              "designerConclusion": "现场条件满足设计推进，按原始区域冻结，后续方案仅继承快照。"
+            }
+          ],
+          "totalPages": 1,
+          "last": true,
+          "totalElements": "1",
+          "first": true,
+          "size": 1
+        },
+        "success": true
+      }
+    },
+    "regions": {
+      "http": 200,
+      "body": {
+        "data": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:34:55"
+            },
+            "updateTime": {
+              "dateTime": "2026-11-02 00:34:55"
+            },
+            "regionId": "242687864649809920",
+            "roomType": {
+              "name": "卧室",
+              "value": "Bedroom",
+              "key": "Bedroom"
+            },
+            "name": "主卧",
+            "area": 20.0,
+            "perimeter": 18.0,
+            "areaSource": {
+              "name": "实测",
+              "value": "Measured",
+              "key": "Measured"
+            },
+            "measuredBy": {
+              "empId": "199500000000000105",
+              "name": "审计设计",
+              "role": {
+                "name": "设计师",
+                "value": "Designer",
+                "key": "Designer"
+              }
+            },
+            "measuredAt": "2026-11-02 00:34:55",
+            "sort": 0
+          }
+        ],
+        "success": true
+      }
+    }
+  },
+  "property405": {
+    "measures": {
+      "http": 200,
+      "body": {
+        "data": {
+          "content": [],
+          "totalPages": 1,
+          "last": true,
+          "totalElements": "0",
+          "first": true,
+          "size": 0
+        },
+        "success": true
+      }
+    },
+    "regions": {
+      "body": {
+        "data": []
+      }
+    }
+  }
+}

@@ -1,0 +1,1703 @@
+{
+  "receipts": {
+    "http": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:01:18"
+            },
+            "receiptId": "242679403098669056",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "receivable": {
+              "receivableId": "242541621277622272",
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "name": "合同签约款",
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "amount": 748.73,
+              "receivedAmount": 100.0,
+              "dueDate": "2026-11-01",
+              "status": {
+                "name": "部分收款",
+                "key": "Partial"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "amount": 100.0,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "receivedAt": "2026-11-02",
+            "payerName": "王芳（造数5100）",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "status": {
+              "name": "有效",
+              "value": "Active",
+              "key": "Active"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:00:43"
+            },
+            "receiptId": "242679258122551296",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "receivable": {
+              "receivableId": "242541621277622272",
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "name": "合同签约款",
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "amount": 748.73,
+              "receivedAmount": 100.0,
+              "dueDate": "2026-11-01",
+              "status": {
+                "name": "部分收款",
+                "key": "Partial"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "amount": 100.0,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "receivedAt": "2026-11-02",
+            "payerName": "验收付款方",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "status": {
+              "name": "已冲正",
+              "value": "Reversed",
+              "key": "Reversed"
+            },
+            "reversedAt": "2026-11-02 00:22:06",
+            "reversedBy": {
+              "empId": "199500000000000103",
+              "name": "审计店长",
+              "role": {
+                "name": "店长",
+                "value": "StoreManager",
+                "key": "StoreManager"
+              }
+            },
+            "reversalReason": "P0复验：原收款用于验证冲正，现确认款项未实际到账"
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:44:25"
+            },
+            "receiptId": "242297669001674752",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "receivable": {
+              "receivableId": "242297299894534145",
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "name": "项目开工款",
+              "type": {
+                "name": "进度款",
+                "key": "Progress"
+              },
+              "amount": 998.3,
+              "receivedAmount": 399.32,
+              "dueDate": "2026-11-05",
+              "status": {
+                "name": "部分收款",
+                "key": "Partial"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "amount": 399.32,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "receivedAt": "2026-10-31",
+            "payerName": "王芳（造数1100）",
+            "remark": "全链路验收阶段收款",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "status": {
+              "name": "有效",
+              "value": "Active",
+              "key": "Active"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:58"
+            },
+            "receiptId": "242297300829863936",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "receivable": {
+              "receivableId": "242297299894534144",
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "name": "合同签约款",
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "amount": 748.73,
+              "receivedAmount": 748.73,
+              "dueDate": "2026-10-31",
+              "status": {
+                "name": "已收清",
+                "key": "Received"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "amount": 748.73,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "receivedAt": "2026-10-31",
+            "payerName": "造数业主",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "status": {
+              "name": "有效",
+              "value": "Active",
+              "key": "Active"
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:51"
+            },
+            "receiptId": "242297273285869568",
+            "project": {
+              "projectId": "242297231061811200",
+              "no": "P1793457761546",
+              "name": "麦鸿演示项目 13",
+              "customer": {
+                "custId": "242297227509235712",
+                "name": "胡斌（演示13）",
+                "telNo": "13910000013"
+              },
+              "property": {
+                "propertyId": "242297227697979392",
+                "propertyNo": "H1793457760748",
+                "community": "万象公馆",
+                "building": "4栋",
+                "roomNo": "1402",
+                "address": "万象公馆4栋1402（主房）",
+                "area": 150.0,
+                "layout": "三室两厅一厨一卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "contractAmount": 15437.47,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "receivable": {
+              "receivableId": "242297231477047296",
+              "property": {
+                "propertyId": "242297227697979392",
+                "propertyNo": "H1793457760748",
+                "community": "万象公馆",
+                "building": "4栋",
+                "roomNo": "1402",
+                "address": "万象公馆4栋1402（主房）",
+                "area": 150.0,
+                "layout": "三室两厅一厨一卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "name": "合同签约款",
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "amount": 4631.24,
+              "receivedAmount": 1389.37,
+              "dueDate": "2026-10-31",
+              "status": {
+                "name": "部分收款",
+                "key": "Partial"
+              }
+            },
+            "customer": {
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013"
+            },
+            "amount": 1389.37,
+            "account": {
+              "name": "企业对公",
+              "key": "CompanyBank"
+            },
+            "receivedAt": "2026-10-30",
+            "payerName": "胡斌（演示13）",
+            "remark": "演示数据：客户签约款到账",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "status": {
+              "name": "有效",
+              "value": "Active",
+              "key": "Active"
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "5",
+        "first": true,
+        "size": 50
+      },
+      "success": true
+    }
+  },
+  "report": {
+    "http": 200,
+    "body": {
+      "data": {
+        "receiptCount": 5,
+        "grossReceiptAmount": 2737.42,
+        "reversalAmount": 100.0,
+        "receiptAmount": 2637.42,
+        "asOf": "2026-11-02 00:22:16"
+      },
+      "success": true
+    }
+  },
+  "receivables": {
+    "http": 200,
+    "body": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "receivableId": "242297299894534144",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "triggerType": {
+              "name": "合同签约",
+              "key": "ContractSigned"
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "合同签约款",
+            "type": {
+              "name": "首期款",
+              "key": "First"
+            },
+            "amount": 748.73,
+            "receivedAmount": 748.73,
+            "dueDate": "2026-10-31",
+            "status": {
+              "name": "已收清",
+              "key": "Received"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "receivableId": "242297231477047296",
+            "project": {
+              "projectId": "242297231061811200",
+              "no": "P1793457761546",
+              "name": "麦鸿演示项目 13",
+              "customer": {
+                "custId": "242297227509235712",
+                "name": "胡斌（演示13）",
+                "telNo": "13910000013"
+              },
+              "property": {
+                "propertyId": "242297227697979392",
+                "propertyNo": "H1793457760748",
+                "community": "万象公馆",
+                "building": "4栋",
+                "roomNo": "1402",
+                "address": "万象公馆4栋1402（主房）",
+                "area": 150.0,
+                "layout": "三室两厅一厨一卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "演示项目工地 13",
+              "contractAmount": 15437.47,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "triggerType": {
+              "name": "合同签约",
+              "key": "ContractSigned"
+            },
+            "property": {
+              "propertyId": "242297227697979392",
+              "propertyNo": "H1793457760748",
+              "community": "万象公馆",
+              "building": "4栋",
+              "roomNo": "1402",
+              "address": "万象公馆4栋1402（主房）",
+              "area": 150.0,
+              "layout": "三室两厅一厨一卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013"
+            },
+            "name": "合同签约款",
+            "type": {
+              "name": "首期款",
+              "key": "First"
+            },
+            "amount": 4631.24,
+            "receivedAmount": 1389.37,
+            "dueDate": "2026-10-31",
+            "status": {
+              "name": "部分收款",
+              "key": "Partial"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "receivableId": "242297226674569216",
+            "project": {
+              "projectId": "242297226024452096",
+              "no": "P1793457760346",
+              "name": "麦鸿演示项目 12",
+              "customer": {
+                "custId": "242297222228606976",
+                "name": "孙悦（演示12）",
+                "telNo": "13910000012"
+              },
+              "property": {
+                "propertyId": "242297222408962048",
+                "propertyNo": "H1793457759487",
+                "community": "翡翠湖畔",
+                "building": "3栋",
+                "roomNo": "1301",
+                "address": "翡翠湖畔3栋1301（主房）",
+                "area": 140.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "演示项目工地 12",
+              "contractAmount": 12575.96,
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              }
+            },
+            "triggerType": {
+              "name": "合同签约",
+              "key": "ContractSigned"
+            },
+            "property": {
+              "propertyId": "242297222408962048",
+              "propertyNo": "H1793457759487",
+              "community": "翡翠湖畔",
+              "building": "3栋",
+              "roomNo": "1301",
+              "address": "翡翠湖畔3栋1301（主房）",
+              "area": 140.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012"
+            },
+            "name": "合同签约款",
+            "type": {
+              "name": "首期款",
+              "key": "First"
+            },
+            "amount": 3772.79,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-10-31",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "receivableId": "242541621281816576",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "stageCode": "PREPARE",
+            "triggerType": {
+              "name": "阶段开工",
+              "key": "StageStarted"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "name": "项目开工款",
+            "stageName": "开工交底",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 998.3,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-01",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / START_40",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "receivableId": "242541621277622272",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "triggerType": {
+              "name": "合同签约",
+              "key": "ContractSigned"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "name": "合同签约款",
+            "type": {
+              "name": "首期款",
+              "key": "First"
+            },
+            "amount": 748.73,
+            "receivedAmount": 100.0,
+            "dueDate": "2026-11-01",
+            "status": {
+              "name": "部分收款",
+              "key": "Partial"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "receivableId": "242297299894534145",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "stageCode": "PREPARE",
+            "triggerType": {
+              "name": "阶段开工",
+              "key": "StageStarted"
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "项目开工款",
+            "stageName": "开工交底",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 998.3,
+            "receivedAmount": 399.32,
+            "dueDate": "2026-11-05",
+            "status": {
+              "name": "部分收款",
+              "key": "Partial"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / START_40",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "receivableId": "242297226674569217",
+            "project": {
+              "projectId": "242297226024452096",
+              "no": "P1793457760346",
+              "name": "麦鸿演示项目 12",
+              "customer": {
+                "custId": "242297222228606976",
+                "name": "孙悦（演示12）",
+                "telNo": "13910000012"
+              },
+              "property": {
+                "propertyId": "242297222408962048",
+                "propertyNo": "H1793457759487",
+                "community": "翡翠湖畔",
+                "building": "3栋",
+                "roomNo": "1301",
+                "address": "翡翠湖畔3栋1301（主房）",
+                "area": 140.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "演示项目工地 12",
+              "contractAmount": 12575.96,
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              }
+            },
+            "stageCode": "PREPARE",
+            "triggerType": {
+              "name": "阶段开工",
+              "key": "StageStarted"
+            },
+            "property": {
+              "propertyId": "242297222408962048",
+              "propertyNo": "H1793457759487",
+              "community": "翡翠湖畔",
+              "building": "3栋",
+              "roomNo": "1301",
+              "address": "翡翠湖畔3栋1301（主房）",
+              "area": 140.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012"
+            },
+            "name": "项目开工款",
+            "stageName": "开工交底",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 5030.38,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-07",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / START_40",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "receivableId": "242297231477047297",
+            "project": {
+              "projectId": "242297231061811200",
+              "no": "P1793457761546",
+              "name": "麦鸿演示项目 13",
+              "customer": {
+                "custId": "242297227509235712",
+                "name": "胡斌（演示13）",
+                "telNo": "13910000013"
+              },
+              "property": {
+                "propertyId": "242297227697979392",
+                "propertyNo": "H1793457760748",
+                "community": "万象公馆",
+                "building": "4栋",
+                "roomNo": "1402",
+                "address": "万象公馆4栋1402（主房）",
+                "area": 150.0,
+                "layout": "三室两厅一厨一卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "演示项目工地 13",
+              "contractAmount": 15437.47,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "stageCode": "PREPARE",
+            "triggerType": {
+              "name": "阶段开工",
+              "key": "StageStarted"
+            },
+            "property": {
+              "propertyId": "242297227697979392",
+              "propertyNo": "H1793457760748",
+              "community": "万象公馆",
+              "building": "4栋",
+              "roomNo": "1402",
+              "address": "万象公馆4栋1402（主房）",
+              "area": 150.0,
+              "layout": "三室两厅一厨一卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013"
+            },
+            "name": "项目开工款",
+            "stageName": "开工交底",
+            "type": {
+              "name": "进度款",
+              "key": "Progress"
+            },
+            "amount": 6174.99,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-08",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / START_40",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:58"
+            },
+            "receivableId": "242297300565622784",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "手工补充应收",
+            "stageName": "补充款",
+            "type": {
+              "name": "其他应收",
+              "key": "Other"
+            },
+            "amount": 5000.0,
+            "receivedAmount": 0.0,
+            "dueDate": "2026-11-30",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-11-01 14:53:48"
+            },
+            "receivableId": "242541621281816577",
+            "project": {
+              "projectId": "242541620656865280",
+              "no": "P1793516028568",
+              "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+              "customer": {
+                "custId": "242541216321765376",
+                "name": "王芳（造数5100）",
+                "telNo": "13700005100"
+              },
+              "property": {
+                "propertyId": "242541216497926144",
+                "propertyNo": "H1793515932211",
+                "community": "滨湖世纪城",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "滨湖世纪城1栋102",
+                "area": 130.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "滨湖世纪城1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "stageCode": "COMPLETION",
+            "triggerType": {
+              "name": "项目竣工",
+              "key": "ProjectFinished"
+            },
+            "property": {
+              "propertyId": "242541216497926144",
+              "propertyNo": "H1793515932211",
+              "community": "滨湖世纪城",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "滨湖世纪城1栋102",
+              "area": 130.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242541216321765376",
+              "name": "王芳（造数5100）",
+              "telNo": "13700005100"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工保洁验收",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 748.72,
+            "receivedAmount": 0.0,
+            "dueDate": "2027-01-30",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:57"
+            },
+            "receivableId": "242297299894534146",
+            "project": {
+              "projectId": "242297299361857536",
+              "no": "P1793457777832",
+              "name": "王芳（造数1100） · 望江府1栋102",
+              "customer": {
+                "custId": "242297294915895296",
+                "name": "王芳（造数1100）",
+                "telNo": "13700001100"
+              },
+              "property": {
+                "propertyId": "242297295016558592",
+                "propertyNo": "H1793457776798",
+                "community": "望江府",
+                "building": "1栋",
+                "roomNo": "102",
+                "address": "望江府1栋102",
+                "area": 100.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "望江府1栋102",
+              "contractAmount": 2495.75,
+              "status": {
+                "name": "待开工",
+                "key": "Preparing"
+              }
+            },
+            "stageCode": "COMPLETION",
+            "triggerType": {
+              "name": "项目竣工",
+              "key": "ProjectFinished"
+            },
+            "property": {
+              "propertyId": "242297295016558592",
+              "propertyNo": "H1793457776798",
+              "community": "望江府",
+              "building": "1栋",
+              "roomNo": "102",
+              "address": "望江府1栋102",
+              "area": 100.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297294915895296",
+              "name": "王芳（造数1100）",
+              "telNo": "13700001100"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工保洁验收",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 748.72,
+            "receivedAmount": 0.0,
+            "dueDate": "2027-02-08",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:40"
+            },
+            "receivableId": "242297226674569218",
+            "project": {
+              "projectId": "242297226024452096",
+              "no": "P1793457760346",
+              "name": "麦鸿演示项目 12",
+              "customer": {
+                "custId": "242297222228606976",
+                "name": "孙悦（演示12）",
+                "telNo": "13910000012"
+              },
+              "property": {
+                "propertyId": "242297222408962048",
+                "propertyNo": "H1793457759487",
+                "community": "翡翠湖畔",
+                "building": "3栋",
+                "roomNo": "1301",
+                "address": "翡翠湖畔3栋1301（主房）",
+                "area": 140.0,
+                "layout": "三室两厅一厨两卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "演示项目工地 12",
+              "contractAmount": 12575.96,
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              }
+            },
+            "stageCode": "COMPLETION",
+            "triggerType": {
+              "name": "项目竣工",
+              "key": "ProjectFinished"
+            },
+            "property": {
+              "propertyId": "242297222408962048",
+              "propertyNo": "H1793457759487",
+              "community": "翡翠湖畔",
+              "building": "3栋",
+              "roomNo": "1301",
+              "address": "翡翠湖畔3栋1301（主房）",
+              "area": 140.0,
+              "layout": "三室两厅一厨两卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297222228606976",
+              "name": "孙悦（演示12）",
+              "telNo": "13910000012"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工保洁验收",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 3772.79,
+            "receivedAmount": 0.0,
+            "dueDate": "2027-02-10",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          },
+          {
+            "createTime": {
+              "dateTime": "2026-10-31 22:42:41"
+            },
+            "receivableId": "242297231477047298",
+            "project": {
+              "projectId": "242297231061811200",
+              "no": "P1793457761546",
+              "name": "麦鸿演示项目 13",
+              "customer": {
+                "custId": "242297227509235712",
+                "name": "胡斌（演示13）",
+                "telNo": "13910000013"
+              },
+              "property": {
+                "propertyId": "242297227697979392",
+                "propertyNo": "H1793457760748",
+                "community": "万象公馆",
+                "building": "4栋",
+                "roomNo": "1402",
+                "address": "万象公馆4栋1402（主房）",
+                "area": 150.0,
+                "layout": "三室两厅一厨一卫",
+                "status": {
+                  "name": "施工中",
+                  "key": "Serving"
+                }
+              },
+              "manager": {
+                "empId": "199500000000000107",
+                "name": "审计项目经理",
+                "role": {
+                  "name": "项目经理",
+                  "value": "Pm",
+                  "key": "Pm"
+                }
+              },
+              "siteAddr": "演示项目工地 13",
+              "contractAmount": 15437.47,
+              "status": {
+                "name": "待验收",
+                "key": "Accepting"
+              }
+            },
+            "stageCode": "COMPLETION",
+            "triggerType": {
+              "name": "项目竣工",
+              "key": "ProjectFinished"
+            },
+            "property": {
+              "propertyId": "242297227697979392",
+              "propertyNo": "H1793457760748",
+              "community": "万象公馆",
+              "building": "4栋",
+              "roomNo": "1402",
+              "address": "万象公馆4栋1402（主房）",
+              "area": 150.0,
+              "layout": "三室两厅一厨一卫",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "customer": {
+              "custId": "242297227509235712",
+              "name": "胡斌（演示13）",
+              "telNo": "13910000013"
+            },
+            "name": "竣工尾款",
+            "stageName": "竣工保洁验收",
+            "type": {
+              "name": "尾款",
+              "key": "Final"
+            },
+            "amount": 4631.24,
+            "receivedAmount": 0.0,
+            "dueDate": "2027-02-11",
+            "status": {
+              "name": "待收",
+              "key": "Pending"
+            },
+            "invoiceRequired": false,
+            "remark": "合同付款计划快照：全链路验收付款计划 / FINAL_30",
+            "createdBy": {
+              "empId": "199500000000000102",
+              "name": "审计负责人",
+              "role": {
+                "name": "企业负责人",
+                "value": "Boss",
+                "key": "Boss"
+              }
+            }
+          }
+        ],
+        "totalPages": 1,
+        "last": true,
+        "totalElements": "13",
+        "first": true,
+        "size": 50
+      },
+      "success": true
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "runId": "RUN-20261101-CORE-P0-002",
+  "checkedAt": "2026-11-01T23:59:40+08:00",
+  "accounts": [
+    {
+      "phone": "13910002001",
+      "expectedRole": "Boss",
+      "expectedEmpId": "199500000000000102",
+      "actualEmpId": "199500000000000102",
+      "actualName": "审计负责人",
+      "actualRole": "Boss",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    },
+    {
+      "phone": "13910002002",
+      "expectedRole": "StoreManager",
+      "expectedEmpId": "199500000000000103",
+      "actualEmpId": "199500000000000103",
+      "actualName": "审计店长",
+      "actualRole": "StoreManager",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    },
+    {
+      "phone": "13910002003",
+      "expectedRole": "Finance",
+      "expectedEmpId": "199500000000000104",
+      "actualEmpId": "199500000000000104",
+      "actualName": "审计财务",
+      "actualRole": "Finance",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    },
+    {
+      "phone": "13910002004",
+      "expectedRole": "Designer",
+      "expectedEmpId": "199500000000000105",
+      "actualEmpId": "199500000000000105",
+      "actualName": "审计设计",
+      "actualRole": "Designer",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    },
+    {
+      "phone": "13910002005",
+      "expectedRole": "Marketer",
+      "expectedEmpId": "199500000000000106",
+      "actualEmpId": "199500000000000106",
+      "actualName": "审计业务",
+      "actualRole": "Marketer",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    },
+    {
+      "phone": "13910002006",
+      "expectedRole": "Pm",
+      "expectedEmpId": "199500000000000107",
+      "actualEmpId": "199500000000000107",
+      "actualName": "审计项目经理",
+      "actualRole": "Pm",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    },
+    {
+      "phone": "13910002008",
+      "expectedRole": "StoreManager",
+      "expectedEmpId": "199500000000000109",
+      "actualEmpId": "199500000000000109",
+      "actualName": "滨湖店长",
+      "actualRole": "StoreManager",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000012",
+      "login": true
+    },
+    {
+      "phone": "13910002009",
+      "expectedRole": "Designer",
+      "expectedEmpId": "199500000000000111",
+      "actualEmpId": "199500000000000111",
+      "actualName": "审计设计二",
+      "actualRole": "Designer",
+      "companyId": "199500000000000001",
+      "storeId": "199500000000000011",
+      "login": true
+    }
+  ],
+  "allPassed": true
+}

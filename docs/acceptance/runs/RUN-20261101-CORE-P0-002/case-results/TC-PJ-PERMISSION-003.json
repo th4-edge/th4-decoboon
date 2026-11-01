@@ -1,0 +1,52 @@
+{
+  "caseId": "TC-PJ-PERMISSION-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:30:00+08:00",
+  "finishedAt": "2026-11-02T00:30:36+08:00",
+  "executor": "codex",
+  "role": "Pm",
+  "surface": "Web+API+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Pm尝试修改项目成员",
+      "result": "PASS_REJECTED",
+      "actual": "403 只有企业负责人或本门店店长可以切换项目成员"
+    },
+    {
+      "action": "Pm尝试提交合同金额/成本字段",
+      "result": "PASS_IGNORED_UNCHANGED",
+      "actual": "provider忽略合同额和成本入参，DB合同额12575.96、成本8369.00不变"
+    },
+    {
+      "action": "Pm尝试合同签约金额变更",
+      "result": "PASS_REJECTED",
+      "actual": "403 只有企业负责人或店长可以确认合同签约"
+    },
+    {
+      "action": "Pm读取财务项目报告",
+      "result": "PASS_REJECTED",
+      "actual": "403 当前账号无权执行该操作"
+    },
+    {
+      "action": "App端同样验证",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "API project/project/update",
+    "API project/contract/update",
+    "API finance/project/report"
+  ],
+  "actualState": [
+    "DB项目负责人、设计师、合同额、成本前后完全一致",
+    "合同仍Effective、金额12575.96",
+    "Pm财务报告403"
+  ],
+  "evidence": [
+    "evidence/TC-PJ-PERMISSION-003/01-pm-negative-api.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；Web/API负向部分已通过。",
+  "notes": "不要将App未执行误报为整条PASS。"
+}

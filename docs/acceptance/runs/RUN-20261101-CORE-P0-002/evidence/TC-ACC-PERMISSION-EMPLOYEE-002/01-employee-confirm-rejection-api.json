@@ -1,0 +1,55 @@
+{
+  "runId": "RUN-20261101-CORE-P0-002",
+  "caseId": "TC-ACC-PERMISSION-EMPLOYEE-002",
+  "acceptanceId": "242297272967102464",
+  "before": "242297272967102464\tPending\t拆除改造施工完成，提交业主确认。\tNULL",
+  "attempts": {
+    "Boss": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    "StoreManager": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    "Pm": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    },
+    "Finance": {
+      "http": 200,
+      "body": {
+        "success": false,
+        "errorCode": {
+          "code": "403",
+          "message": "业主确认必须由业主本人通过小程序授权会话完成，员工不能代录",
+          "system": false
+        }
+      }
+    }
+  },
+  "after": "242297272967102464\tPending\t拆除改造施工完成，提交业主确认。\tNULL",
+  "allRejected": true,
+  "stateUnchanged": true
+}

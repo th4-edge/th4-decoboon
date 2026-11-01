@@ -1,0 +1,263 @@
+{
+  "createDraft": {
+    "http": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:44:59"
+        },
+        "contractId": "242690395773861888",
+        "quote": {
+          "quoteId": "242297080817647616",
+          "no": "Q1793457725727",
+          "title": "麦鸿演示方案 10设计报价",
+          "amount": 13068.67,
+          "status": {
+            "name": "客户接受",
+            "key": "Accepted"
+          }
+        },
+        "customer": {
+          "custId": "242297078963765248",
+          "name": "吴桐（演示10）",
+          "telNo": "13910000010"
+        },
+        "property": {
+          "propertyId": "242297079097982976",
+          "propertyNo": "H1793457725319",
+          "community": "望江府",
+          "building": "1栋",
+          "roomNo": "1105",
+          "address": "望江府1栋1105（主房）",
+          "area": 120.0,
+          "layout": "四室两厅两卫",
+          "status": {
+            "name": "已报价",
+            "key": "Quoted"
+          }
+        },
+        "no": "C1793551499319",
+        "baselineAmount": 13068.67,
+        "currentAmount": 13068.67,
+        "status": {
+          "name": "待签约",
+          "key": "PendingSign"
+        },
+        "paymentTerms": "合同签约款30% / 项目开工款40% / 竣工尾款30%",
+        "createdBy": {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        },
+        "remark": "P0合同顺序验收夹具",
+        "receivableCount": 0,
+        "receivableAmount": 0,
+        "receivedAmount": 0,
+        "pendingChangeCount": 0,
+        "paymentPlan": {
+          "planId": "242690396080046080",
+          "sourceCode": "PAY_CUSTOM_0A7B2CDC728A",
+          "sourceVersion": 1,
+          "name": "全链路验收付款计划",
+          "totalAmount": 13068.67,
+          "status": {
+            "name": "已确认",
+            "key": "Confirmed"
+          },
+          "nodes": [
+            {
+              "nodeId": "242690396289761280",
+              "code": "SIGN_30",
+              "name": "合同签约款",
+              "ratio": 0.3,
+              "amount": 3920.6,
+              "type": {
+                "name": "首期款",
+                "key": "First"
+              },
+              "triggerType": {
+                "name": "合同签约",
+                "key": "ContractSigned"
+              },
+              "offsetDays": 0,
+              "dueDate": "2026-11-02",
+              "sort": 1
+            },
+            {
+              "nodeId": "242690396293955584",
+              "code": "START_40",
+              "name": "项目开工款",
+              "ratio": 0.4,
+              "amount": 5227.47,
+              "type": {
+                "name": "进度款",
+                "key": "Progress"
+              },
+              "triggerType": {
+                "name": "阶段开工",
+                "key": "StageStarted"
+              },
+              "triggerStageCode": "PREPARE",
+              "triggerStageName": "开工交底",
+              "offsetDays": 0,
+              "dueDate": "2026-11-02",
+              "sort": 2
+            },
+            {
+              "nodeId": "242690396293955585",
+              "code": "FINAL_30",
+              "name": "竣工尾款",
+              "ratio": 0.3,
+              "amount": 3920.6,
+              "type": {
+                "name": "尾款",
+                "key": "Final"
+              },
+              "triggerType": {
+                "name": "项目竣工",
+                "key": "ProjectFinished"
+              },
+              "triggerStageCode": "COMPLETION",
+              "triggerStageName": "竣工保洁验收",
+              "offsetDays": 0,
+              "dueDate": "2027-01-31",
+              "sort": 3
+            }
+          ]
+        },
+        "constructionPlan": {
+          "planId": "242690395983577088",
+          "sourceCode": "CON_CUSTOM_FB6B8C9B0265",
+          "sourceVersion": 1,
+          "sourceTotalDays": 120,
+          "name": "全链路验收施工计划",
+          "startDate": "2026-11-02",
+          "endDate": "2027-03-01",
+          "status": {
+            "name": "已确认",
+            "key": "Confirmed"
+          },
+          "stages": [
+            {
+              "stageId": "242690395996160000",
+              "code": "PREPARE",
+              "name": "开工交底",
+              "sort": 1,
+              "defaultDays": 5,
+              "plannedStart": "2026-11-02",
+              "plannedEnd": "2026-11-07",
+              "acceptanceMode": {
+                "name": "无需验收",
+                "key": "None"
+              },
+              "description": "现场交底、保护、放线和开工准备"
+            },
+            {
+              "stageId": "242690396000354304",
+              "code": "DEMOLITION",
+              "name": "拆除改造",
+              "sort": 2,
+              "defaultDays": 5,
+              "plannedStart": "2026-11-08",
+              "plannedEnd": "2026-11-13",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "拆除、清运和结构条件确认"
+            },
+            {
+              "stageId": "242690396000354305",
+              "code": "WATER_ELECTRIC",
+              "name": "水电施工",
+              "sort": 3,
+              "defaultDays": 12,
+              "plannedStart": "2026-11-14",
+              "plannedEnd": "2026-11-27",
+              "acceptanceMode": {
+                "name": "验收完成",
+                "key": "AcceptanceDone"
+              },
+              "description": "水电定位、布管布线和隐蔽验收"
+            },
+            {
+              "stageId": "242690396000354306",
+              "code": "MASONRY",
+              "name": "泥瓦防水",
+              "sort": 4,
+              "defaultDays": 20,
+              "plannedStart": "2026-11-28",
+              "plannedEnd": "2026-12-21",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "防水、找平、贴砖和泥瓦施工"
+            },
+            {
+              "stageId": "242690396000354307",
+              "code": "CARPENTRY",
+              "name": "木作吊顶",
+              "sort": 5,
+              "defaultDays": 18,
+              "plannedStart": "2026-12-22",
+              "plannedEnd": "2027-01-12",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "吊顶、木作基层和定制复尺"
+            },
+            {
+              "stageId": "242690396004548608",
+              "code": "PAINTING",
+              "name": "油漆墙面",
+              "sort": 6,
+              "defaultDays": 18,
+              "plannedStart": "2027-01-13",
+              "plannedEnd": "2027-02-03",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "腻子、乳胶漆和墙面收口"
+            },
+            {
+              "stageId": "242690396004548609",
+              "code": "INSTALL",
+              "name": "安装收尾",
+              "sort": 7,
+              "defaultDays": 12,
+              "plannedStart": "2027-02-04",
+              "plannedEnd": "2027-02-17",
+              "acceptanceMode": {
+                "name": "施工完成",
+                "key": "ConstructionDone"
+              },
+              "description": "灯具、洁具、主材和设备安装"
+            },
+            {
+              "stageId": "242690396004548610",
+              "code": "COMPLETION",
+              "name": "竣工保洁验收",
+              "sort": 8,
+              "defaultDays": 10,
+              "plannedStart": "2027-02-18",
+              "plannedEnd": "2027-03-01",
+              "acceptanceMode": {
+                "name": "验收完成",
+                "key": "AcceptanceDone"
+              },
+              "description": "开荒保洁、竣工自检和客户验收"
+            }
+          ]
+        }
+      },
+      "success": true
+    }
+  }
+}

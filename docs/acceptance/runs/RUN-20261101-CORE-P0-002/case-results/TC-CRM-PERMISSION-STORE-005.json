@@ -1,0 +1,59 @@
+{
+  "caseId": "TC-CRM-PERMISSION-STORE-005",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:35:00+08:00",
+  "finishedAt": "2026-11-02T00:38:05+08:00",
+  "executor": "codex",
+  "role": "StoreManager",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "滨湖店长通过Provider创建本店合成客户",
+      "result": "PASS_FIXTURE",
+      "actual": "客户242688601664520192归属滨湖店store=199500000000000012"
+    },
+    {
+      "action": "总店店长客户列表查询",
+      "result": "PASS_SCOPE",
+      "actual": "列表不包含滨湖店客户"
+    },
+    {
+      "action": "总店店长用已知ID读取",
+      "result": "PASS_REJECTED",
+      "actual": "404 客户不存在或无权访问"
+    },
+    {
+      "action": "总店店长尝试修改滨湖店客户",
+      "result": "PASS_REJECTED",
+      "actual": "404，无写副作用"
+    },
+    {
+      "action": "总店店长直接打开客户360",
+      "result": "PASS_PAGE_DENIED",
+      "actual": "页面显示客户360暂不可确认/客户不存在或无权访问"
+    },
+    {
+      "action": "App端跨店验证",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/workbench/customers",
+    "/workbench/customers/242688601664520192"
+  ],
+  "actualState": [
+    "滨湖客户store=199500000000000012",
+    "总店列表不出现",
+    "info/update均404",
+    "DB值未被越权修改"
+  ],
+  "evidence": [
+    "evidence/TC-CRM-PERMISSION-STORE-005/01-cross-store-api-db.json",
+    "evidence/TC-CRM-PERMISSION-STORE-005/02-cross-store-forbidden.png",
+    "evidence/TC-CRM-PERMISSION-STORE-005/03-cross-store-forbidden.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；Web/API/DB跨店权限已通过。",
+  "notes": "未泄露其他门店客户详情，无越权写副作用。"
+}

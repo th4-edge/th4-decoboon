@@ -1,0 +1,71 @@
+{
+  "caseId": "TC-FIN-FINANCE-PAYABLE-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:03:00+08:00",
+  "finishedAt": "2026-11-02T00:06:39+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "steps": [
+    {
+      "action": "Finance Web 打开应付列表并核对自动/手工来源",
+      "result": "PASS",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/01-web-payables.png",
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/02-web-payables-controls.json",
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/09-payment-api.json"
+      ]
+    },
+    {
+      "action": "登记手工应付部分付款 ¥100",
+      "result": "PASS",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/03-payment-form.png",
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/04-payment-result.png"
+      ]
+    },
+    {
+      "action": "双击重复提交同一 ¥100 意图",
+      "result": "PASS_IDEMPOTENT_PAGE_ACTION",
+      "actual": "应付由1800降至1700仅一次，实际最终为1800因先有一次100再双击一次；付款记录/台账各仅新增一笔",
+      "evidence": "evidence/TC-FIN-FINANCE-PAYABLE-003/05-payment-double-submit.png"
+    },
+    {
+      "action": "尝试超余额付款 ¥1801",
+      "result": "PASS_BLOCKED",
+      "actual": "页面提示付款金额不能超过应付余额",
+      "evidence": [
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/06-overbalance-form.png",
+        "evidence/TC-FIN-FINANCE-PAYABLE-003/07-overbalance-result.png"
+      ]
+    },
+    {
+      "action": "App 回读",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/finance/payables"
+  ],
+  "actualState": [
+    "payable 242297301010219008 amount=2000 paid=200 outstanding=1800 status=Partial",
+    "payment count=2 sum=200 idempotency keys differ",
+    "ledger count=2 sum=200 expense",
+    "auto material payables remain Paid with sourceNo"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/01-web-payables.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/02-web-payables-controls.json",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/03-payment-form.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/04-payment-result.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/05-payment-double-submit.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/06-overbalance-form.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/07-overbalance-result.png",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/08-payment-db.txt",
+    "evidence/TC-FIN-FINANCE-PAYABLE-003/09-payment-api.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "App 微信身份不可用，无法完成声明的 App 端回读。",
+  "notes": "Web/API/DB 的应付、付款、台账和幂等行为通过；因声明包含 App，整条 P0 暂不能 PASS。"
+}

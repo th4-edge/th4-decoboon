@@ -1,0 +1,63 @@
+{
+  "created": {
+    "http": 200,
+    "body": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-02 00:37:51"
+        },
+        "custId": "242688601664520192",
+        "name": "跨店权限验收客户",
+        "telNo": "13910002988",
+        "gender": {
+          "name": "男",
+          "key": "M"
+        },
+        "source": {
+          "name": "自然到店",
+          "key": "WalkIn"
+        },
+        "community": "滨湖新区",
+        "addr": "滨湖新区测试1栋101",
+        "area": 90,
+        "budget": 20,
+        "status": {
+          "name": "新客户",
+          "key": "New"
+        },
+        "owner": {
+          "empId": "199500000000000109",
+          "name": "滨湖店长"
+        },
+        "wechatAdded": false,
+        "visitCount": 0
+      },
+      "success": true
+    }
+  },
+  "customerId": "242688601664520192",
+  "storeAInfo": {
+    "http": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "客户不存在或无权访问",
+        "system": false
+      }
+    }
+  },
+  "storeAUpdate": {
+    "http": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "客户不存在或无权访问",
+        "system": false
+      }
+    }
+  },
+  "storeAPageContains": null,
+  "db": "242688601664520192\t跨店权限验收客户\t199500000000000012\n"
+}

@@ -1,0 +1,35 @@
+{
+  "defectId": "DEF-20261102-004",
+  "caseIds": [
+    "TC-DQ-PERMISSION-QUOTE-005"
+  ],
+  "priority": "P1",
+  "status": "VERIFIED",
+  "title": "设计师报价详情缺少客户接受登记人投影，页面无法显示完整留痕",
+  "role": "Designer",
+  "surface": "Web/API",
+  "pagePath": "/designer/quotes/:quoteId",
+  "businessState": "报价Accepted，DB accepted_by=199500000000000105、accepted_at=2026-11-02 00:38:27",
+  "expected": "设计师详情返回acceptedBy并在Accepted后显示登记人和时间，明确员工登记不代表客户系统自助确认",
+  "actual": "修复前quote/designer/info仅返回acceptedAt，不返回acceptedBy；页面只显示“已由设计师登记”",
+  "minimumReproduction": [
+    "Designer调用quote/designer/info读取Accepted报价",
+    "检查acceptedBy字段",
+    "页面查看客户接受登记人"
+  ],
+  "impact": "客户接受审计留痕在页面不可核验，违反DEC-071可追溯要求",
+  "evidence": [
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/01-quote-accept-api.json",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/04-designer-quote-accepted-with-registrar.png"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "设计师详情白名单加入acceptedBy，前端Quote模型和页面显式展示",
+  "retestCondition": "设计师详情返回acceptedBy；页面显示登记人、接受时间和员工登记边界；重复接受仍不覆盖",
+  "createdAt": "2026-11-02T00:41:26+08:00",
+  "verifiedAt": "2026-11-02T00:41:32+08:00",
+  "retestRunId": "RUN-20261102-QUOTE-TRACE-RETEST-001",
+  "retestEvidence": [
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/04-designer-quote-accepted-with-registrar.png",
+    "evidence/TC-DQ-PERMISSION-QUOTE-005/05-designer-quote-accepted-with-registrar.txt"
+  ]
+}

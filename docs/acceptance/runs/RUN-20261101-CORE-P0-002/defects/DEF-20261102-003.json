@@ -1,0 +1,38 @@
+{
+  "defectId": "DEF-20261102-003",
+  "caseIds": [
+    "TC-CRM-MANAGER-HANDOFF-003"
+  ],
+  "priority": "P0",
+  "status": "VERIFIED",
+  "title": "店长客户列表“查看客户”落入无权访问，阻断客户360转交与指派",
+  "role": "StoreManager",
+  "surface": "Web",
+  "pagePath": "/workbench/customers/:customerId",
+  "businessState": "客户张敏（演示03）在总店，房屋未绑定设计师",
+  "expected": "店长应可打开本店客户360并完成设计师指派",
+  "actual": "修复前路由落到/forbidden；StoreManager路由表缺wbCustomer360",
+  "minimumReproduction": [
+    "店长登录",
+    "打开/workbench/customers",
+    "点击张敏（演示03）的查看客户",
+    "修复前进入forbidden"
+  ],
+  "impact": "店长无法从本店客户列表完成转交/指派，阻断CRM P0主链",
+  "evidence": [
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/01-before-handoff.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/02-store-customers-list.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/04-after-handoff.png"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "StoreManager路由加入wbCustomer360，后端数据范围仍限制本店",
+  "retestCondition": "店长可打开本店客户360并指派设计师；客户/房屋设计师同源；非本店客户仍404/403",
+  "createdAt": "2026-11-02T00:34:02+08:00",
+  "verifiedAt": "2026-11-02T00:34:08+08:00",
+  "retestRunId": "RUN-20261102-CRM-HANDOFF-RETEST-001",
+  "retestEvidence": [
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/04-after-handoff.png",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/05-after-handoff.json",
+    "evidence/TC-CRM-MANAGER-HANDOFF-003/06-handoff-api-db.json"
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "runId": "RUN-20261101-CORE-P0-002",
+  "caseId": "TC-FIN-FINANCE-RECEIPT-002",
+  "step": "partial_receipt",
+  "receivableId": "242541621277622272",
+  "api": {
+    "receivablePage": [
+      {
+        "createTime": {
+          "dateTime": "2026-11-01 14:53:48"
+        },
+        "receivableId": "242541621277622272",
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100"
+          },
+          "property": {
+            "propertyId": "242541216497926144",
+            "propertyNo": "H1793515932211",
+            "community": "滨湖世纪城",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "manager": {
+            "empId": "199500000000000107",
+            "name": "审计项目经理",
+            "role": {
+              "name": "项目经理",
+              "value": "Pm",
+              "key": "Pm"
+            }
+          },
+          "siteAddr": "滨湖世纪城1栋102",
+          "contractAmount": 2495.75,
+          "status": {
+            "name": "待验收",
+            "key": "Accepting"
+          }
+        },
+        "triggerType": {
+          "name": "合同签约",
+          "key": "ContractSigned"
+        },
+        "property": {
+          "propertyId": "242541216497926144",
+          "propertyNo": "H1793515932211",
+          "community": "滨湖世纪城",
+          "building": "1栋",
+          "roomNo": "102",
+          "address": "滨湖世纪城1栋102",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100"
+        },
+        "name": "合同签约款",
+        "type": {
+          "name": "首期款",
+          "key": "First"
+        },
+        "amount": 748.73,
+        "receivedAmount": 100.0,
+        "dueDate": "2026-11-01",
+        "status": {
+          "name": "部分收款",
+          "key": "Partial"
+        },
+        "invoiceRequired": false,
+        "remark": "合同付款计划快照：全链路验收付款计划 / SIGN_30",
+        "createdBy": {
+          "empId": "199500000000000102",
+          "name": "审计负责人",
+          "role": {
+            "name": "企业负责人",
+            "value": "Boss",
+            "key": "Boss"
+          }
+        }
+      }
+    ],
+    "newReceipts": [
+      {
+        "createTime": {
+          "dateTime": "2026-11-02 00:00:43"
+        },
+        "receiptId": "242679258122551296",
+        "project": {
+          "projectId": "242541620656865280",
+          "no": "P1793516028568",
+          "name": "王芳（造数5100） · 滨湖世纪城1栋102",
+          "customer": {
+            "custId": "242541216321765376",
+            "name": "王芳（造数5100）",
+            "telNo": "13700005100"
+          },
+          "property": {
+            "propertyId": "242541216497926144",
+            "propertyNo": "H1793515932211",
+            "community": "滨湖世纪城",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "contractAmount": 2495.75,
+          "status": {
+            "name": "待验收",
+            "key": "Accepting"
+          }
+        },
+        "receivable": {
+          "receivableId": "242541621277622272",
+          "property": {
+            "propertyId": "242541216497926144",
+            "propertyNo": "H1793515932211",
+            "community": "滨湖世纪城",
+            "building": "1栋",
+            "roomNo": "102",
+            "address": "滨湖世纪城1栋102",
+            "area": 130.0,
+            "layout": "三室两厅一厨两卫",
+            "status": {
+              "name": "施工中",
+              "key": "Serving"
+            }
+          },
+          "name": "合同签约款",
+          "type": {
+            "name": "首期款",
+            "key": "First"
+          },
+          "amount": 748.73,
+          "receivedAmount": 100.0,
+          "dueDate": "2026-11-01",
+          "status": {
+            "name": "部分收款",
+            "key": "Partial"
+          }
+        },
+        "customer": {
+          "custId": "242541216321765376",
+          "name": "王芳（造数5100）",
+          "telNo": "13700005100"
+        },
+        "amount": 100.0,
+        "account": {
+          "name": "企业对公",
+          "key": "CompanyBank"
+        },
+        "receivedAt": "2026-11-02",
+        "payerName": "验收付款方",
+        "createdBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          }
+        },
+        "status": {
+          "name": "有效",
+          "value": "Active",
+          "key": "Active"
+        }
+      }
+    ],
+    "ledgerReport": {
+      "http": 200,
+      "body": {
+        "data": {
+          "count": 8,
+          "totalAmount": 5417.42,
+          "incomeAmount": 2637.42,
+          "expenseAmount": 2780.0,
+          "netCashFlowAmount": -142.58,
+          "asOf": "2026-11-02 00:00:55"
+        },
+        "success": true
+      }
+    }
+  },
+  "login": {
+    "http": 200,
+    "success": true
+  }
+}

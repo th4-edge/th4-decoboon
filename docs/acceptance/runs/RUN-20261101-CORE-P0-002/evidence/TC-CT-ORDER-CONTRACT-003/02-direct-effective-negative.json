@@ -1,0 +1,16 @@
+{
+  "contractId": "242690395773861888",
+  "before": "242690395773861888\tPendingSign\tNULL\tNULL\tNULL",
+  "directEffective": {
+    "http": 200,
+    "body": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "合同签约后才能生效",
+        "system": false
+      }
+    }
+  },
+  "after": "242690395773861888\tPendingSign\tNULL\tNULL\tNULL"
+}

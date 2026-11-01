@@ -1,0 +1,55 @@
+{
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T00:44:00+08:00",
+  "finishedAt": "2026-11-02T00:47:03+08:00",
+  "executor": "codex",
+  "role": "Boss+Finance+Pm",
+  "surface": "Web+API+DB+App",
+  "dataPrefix": "AUDIT-20261101-COREP0002-",
+  "defectIds": [],
+  "blockedReason": "App授权微信身份不可用；合同Web/API/DB部分已通过。",
+  "caseId": "TC-CT-ORDER-CONTRACT-003",
+  "steps": [
+    {
+      "action": "从Accepted报价创建合同，不带signedAt/signedAmount",
+      "result": "PASS",
+      "actual": "contract 242690395773861888 status=PendingSign，未生成项目",
+      "evidence": "evidence/TC-CT-ORDER-CONTRACT-003/01-create-contract-api.json"
+    },
+    {
+      "action": "Boss直接执行Effective",
+      "result": "PASS_REJECTED",
+      "actual": "400 合同签约后才能生效；DB仍PendingSign，项目/应收为0",
+      "evidence": "evidence/TC-CT-ORDER-CONTRACT-003/02-direct-effective-negative.json"
+    },
+    {
+      "action": "Web页面核对待签约状态与唯一主行动",
+      "result": "PASS",
+      "actual": "页面显示待企业确认签约，仅提供确认签约",
+      "evidence": [
+        "evidence/TC-CT-ORDER-CONTRACT-003/03-pending-sign-page.png",
+        "evidence/TC-CT-ORDER-CONTRACT-003/04-pending-sign-page.json"
+      ]
+    },
+    {
+      "action": "App端验证",
+      "result": "BLOCKED_IDENTITY"
+    }
+  ],
+  "actualPage": [
+    "/designer/contract"
+  ],
+  "actualState": [
+    "PendingSign",
+    "无项目",
+    "无应收",
+    "直接Effective 400"
+  ],
+  "evidence": [
+    "evidence/TC-CT-ORDER-CONTRACT-003/01-create-contract-api.json",
+    "evidence/TC-CT-ORDER-CONTRACT-003/02-direct-effective-negative.json",
+    "evidence/TC-CT-ORDER-CONTRACT-003/03-pending-sign-page.png",
+    "evidence/TC-CT-ORDER-CONTRACT-003/04-pending-sign-page.json"
+  ],
+  "notes": "创建接口不能偷完成签约，直接生效由服务端阻断。"
+}
