@@ -1,0 +1,36 @@
+{
+  "runAt": "2026-11-01T12:13:14.488Z",
+  "checks": [
+    {
+      "flow": "quote-copy",
+      "path": "subpackages/quote/pages/adjust",
+      "before": 4,
+      "after": 5,
+      "newLines": [
+        {
+          "id": "242621936696295424",
+          "name": "拆除--墙顶面白灰/腻子粉铲除",
+          "role": "Add",
+          "amount": 606.74
+        }
+      ]
+    },
+    {
+      "flow": "package-copy",
+      "path": "subpackages/quote/pages/package-edit",
+      "before": 4,
+      "after": 5,
+      "newPackages": [
+        {
+          "id": "242621991121584128",
+          "name": "AUDIT-20261101-PKGCLOSE-001-套餐A（副本）",
+          "code": "PACK-F98325E17DEF",
+          "version": 1,
+          "status": "Draft",
+          "current": false
+        }
+      ],
+      "newPackLines": 4
+    }
+  ]
+}

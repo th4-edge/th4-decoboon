@@ -55,7 +55,7 @@ class DesignerQuoteStoreManagerScopeTest {
         ArgumentCaptor<Pageable> pageable = ArgumentCaptor.forClass(Pageable.class);
         verify(quotes).findAll(any(Specification.class), pageable.capture());
         assertThat(pageable.getValue().getPageNumber()).isEqualTo(1);
-        assertThat(pageable.getValue().getPageSize()).isEqualTo(100);
+        assertThat(pageable.getValue().getPageSize()).isEqualTo(50);
         assertThat(pageable.getValue().getSort().getOrderFor("quoteId")).isNotNull();
     }
 

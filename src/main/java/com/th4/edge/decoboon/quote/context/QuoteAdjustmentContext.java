@@ -9,6 +9,7 @@ import com.th4.edge.decoboon.quote.configure.QuoteStatus;
 import com.th4.edge.decoboon.quote.configure.QuoteDifferenceStatus;
 import com.th4.edge.decoboon.quote.configure.QuoteDifferenceType;
 import com.th4.edge.decoboon.quote.model.Quote;
+import com.th4.edge.decoboon.quote.model.QuoteComponent;
 import com.th4.edge.decoboon.quote.model.QuoteLine;
 import com.th4.edge.decoboon.quote.repository.QuoteLineRepository;
 import com.th4.edge.decoboon.quote.repository.QuoteRepository;
@@ -144,6 +145,56 @@ public class QuoteAdjustmentContext {
     }
 
     @Transactional
+    public QuoteLine copy(Quote quote, Long lineId) {
+        requireDraft(quote);
+        QuoteLine source = requireLine(quote, lineId);
+        if (Boolean.FALSE.equals(source.getIncluded()) || source.getRole() == QuoteLineRole.Deduct) {
+            throw new DefinedException(new DefaultErrorCode("400", "已扣减或未包含的项目不能复制"));
+        }
+        QuoteLine target = new QuoteLine();
+        target.setCompany(quote.getCompany());
+        target.setStore(quote.getStore());
+        target.setTeam(quote.getTeam());
+        target.setOwner(quote.getCreatedBy());
+        target.setQuote(quote);
+        target.setProperty(quote.getProperty());
+        target.setSpace(source.getSpace());
+        target.setCatalogItem(source.getCatalogItem());
+        target.setRole(QuoteLineRole.Add);
+        target.setDifferenceType(QuoteDifferenceType.DesignOnly);
+        target.setDifferenceStatus(QuoteDifferenceStatus.Confirmed);
+        target.setIncluded(Boolean.TRUE);
+        target.setDiscountAmount(BigDecimal.ZERO);
+        target.setType(source.getType());
+        target.setCategory(source.getCategory());
+        target.setPackageSectionNameSnapshot(source.getPackageSectionNameSnapshot());
+        target.setName(source.getName());
+        target.setBrand(source.getBrand());
+        target.setSpec(source.getSpec());
+        target.setUnit(source.getUnit());
+        target.setQuantity(source.getQuantity());
+        target.setMaterialPrice(zero(source.getMaterialPrice()));
+        target.setManualPrice(zero(source.getManualPrice()));
+        target.setFixedTotalPrice(source.getFixedTotalPrice());
+        target.setPricingMode(source.getPricingMode());
+        target.setPrice(zero(source.getPrice()));
+        target.setAmount(zero(source.getAmount()));
+        target.setCost(zero(source.getCost()));
+        target.setActualMaterialCost(zero(source.getActualMaterialCost()));
+        target.setActualLaborCost(zero(source.getActualLaborCost()));
+        target.setActualOtherCost(zero(source.getActualOtherCost()));
+        target.setActualCost(zero(source.getActualCost()));
+        target.setFormula(source.getFormula());
+        target.setQuantityFormula(source.getQuantityFormula());
+        target.setCraft(source.getCraft());
+        target.setComponents(copyComponents(source.getComponents()));
+        target.setSort(nextSort(quote));
+        QuoteLine saved = lineRepository.save(target);
+        recalculate(quote);
+        return saved;
+    }
+
+    @Transactional
     public QuoteLine updateDifference(Quote quote, Long lineId, QuoteDifferenceStatus status) {
         requireDraft(quote);
         if (status == null || status == QuoteDifferenceStatus.None || status == QuoteDifferenceStatus.Pending) {
@@ -186,6 +237,22 @@ public class QuoteAdjustmentContext {
         if (!QuoteStatus.Draft.equals(quote.getStatus())) {
             throw new DefinedException(new DefaultErrorCode("400", "只有草稿报价可以调整项目"));
         }
+    }
+
+    private List<QuoteComponent> copyComponents(List<QuoteComponent> source) {
+        if (source == null || source.isEmpty()) return List.of();
+        List<QuoteComponent> result = new java.util.ArrayList<>();
+        for (QuoteComponent item : source) {
+            QuoteComponent copy = new QuoteComponent();
+            copy.setType(item.getType());
+            copy.setName(item.getName());
+            copy.setSaleAmount(zero(item.getSaleAmount()));
+            copy.setCostAmount(zero(item.getCostAmount()));
+            copy.setFormula(item.getFormula());
+            copy.setSort(item.getSort());
+            result.add(copy);
+        }
+        return result;
     }
 
     public void recalculate(Quote quote) {

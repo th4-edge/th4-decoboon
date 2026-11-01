@@ -1,0 +1,32 @@
+{
+  "quote": {
+    "before": {
+      "before": 4,
+      "after": 5,
+      "copiedId": "242621085860757504",
+      "copiedRole": {
+        "name": "新增项目",
+        "value": "Add",
+        "key": "Add"
+      },
+      "copiedName": "拆除--墙顶面白灰/腻子粉铲除",
+      "copiedAmount": 606.74
+    },
+    "restoredItems": 4
+  },
+  "package": {
+    "sourceId": "242604641710243840",
+    "sourceCode": "PACK-E35F0F92C6DF",
+    "sourceVersion": 3,
+    "sourceLines": 4,
+    "copyId": "242621086926110720",
+    "copyName": "AUDIT-20261101-PKGCLOSE-001-套餐A（副本）",
+    "copyCode": "PACK-EE8FBD8D9FC7",
+    "copyVersion": 1,
+    "copyStatus": "Draft",
+    "copyLines": 4,
+    "copyCurrent": false
+  },
+  "designerCopyStatus": 200,
+  "designerCopyError": "403"
+}

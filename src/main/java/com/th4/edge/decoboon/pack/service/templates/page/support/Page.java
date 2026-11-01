@@ -15,7 +15,6 @@ import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,8 +33,8 @@ import java.util.Map;
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
                 properties = {"templateId", "code", "version", "status", "currentPublished", "publishedAt", "snapshotHash",
-                        "name", "area", "price", "discount", "cost", "itemCount", "sectionCount",
-                        "createTime", "updateTime"}),
+                        "name", "area", "price", "discount", "cost", "itemCount", "sectionCount", "lineCount", "ready",
+                        "criterions", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("pack/template/page")
@@ -98,8 +97,12 @@ public class Page implements com.th4.edge.decoboon.pack.service.templates.page.P
         }
         for (PackageTemplate template : templates) {
             long[] count = counts.getOrDefault(template.getTemplateId(), new long[]{0, 0});
-            template.setItemCount((int) count[0]);
-            template.setSectionCount((int) count[1]);
+            int sectionCount = (int) count[1];
+            int lineCount = (int) count[0];
+            template.setItemCount(lineCount);
+            template.setSectionCount(sectionCount);
+            template.setLineCount(lineCount);
+            template.setReady(sectionCount > 0 && lineCount > 0);
         }
     }
 }

@@ -15,7 +15,7 @@
 ## 2. 目标与范围
 
 - 目标：供应商实体支持最多 9 张私有付款码图片；App/Web 支持多图上传、删除、保存和预览；Web 改为独立供应商对象详情工作台。
-- 范围内：Partner 实体、迁移 133、私有文件 Scope `Partner`、Provider 响应字段、App 供应商编辑、Web 供应商详情、权限负向和 UI Craft 渲染门禁。
+- 范围内：Partner 实体、迁移 134、私有文件 Scope `Partner`、Provider 响应字段、App 供应商编辑、Web 供应商详情、权限负向和 UI Craft 渲染门禁。
 - 非范围：不把付款码当作支付凭证或资金流水；不自动识别二维码内容；不发起付款；不新增 Web 专用 API；不生产发布。
 - 受影响端：后端、App、Web。
 
@@ -56,8 +56,8 @@
 
 ## 6. 数据库与回滚
 
-- 迁移：`docs/design/migrations/133-供应商付款码图片.sql`
-- 回滚：`docs/design/migrations/rollback/133-供应商付款码图片-rollback.sql`
+- 迁移：`docs/design/migrations/134-供应商付款码图片.sql`
+- 回滚：`docs/design/migrations/rollback/134-供应商付款码图片-rollback.sql`
 - 本地应用前备份：`data/backups/prod-import/20261101-213046/local-account-mapping/decoboon_prod_20261101-before-payment-codes.sql.gz`
 - SHA-256：`71bfacee91eaa1a14422a85242469cca82b17947a85d02c1a99fe85a396b2316`
 - 回滚演练：隔离库执行 133 后付款码行数 1；执行 rollback 后付款码表数量 0；临时库已删除。

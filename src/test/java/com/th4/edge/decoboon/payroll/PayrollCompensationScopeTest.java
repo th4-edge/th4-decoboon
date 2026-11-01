@@ -16,6 +16,8 @@ import com.th4.edge.tenant.user.repository.EmployeeRepository;
 import com.th4.edge.decoboon.project.repository.ProjectRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -25,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PayrollCompensationScopeTest {
@@ -54,8 +57,8 @@ class PayrollCompensationScopeTest {
         CompensationSchemeRepository schemes = mock(CompensationSchemeRepository.class);
         StoreFilterContext storeFilter = mock(StoreFilterContext.class);
         when(storeFilter.resolve(fixture.finance, null)).thenReturn(10L);
-        when(fixture.employees.findByCompany_ComIdAndStatusOrderByNameAsc(100L, EmployeeStatus.Active))
-                .thenReturn(List.of(fixture.otherStore, fixture.ownStore));
+        when(fixture.employees.findPickerPage(eq(100L), eq(10L), any(), any(), any(), any(), any(), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(fixture.ownStore)));
 
         var page = new com.th4.edge.decoboon.payroll.service.employees.page.support.Page(
                 fixture.employees, fixture.access);
@@ -65,6 +68,7 @@ class PayrollCompensationScopeTest {
         Page<Employee> result = page.call(new Employee());
 
         assertThat(result.getContent()).extracting(Employee::getEmpId).containsExactly(3L);
+        verify(fixture.employees).findPickerPage(eq(100L), eq(10L), any(), any(), any(), any(), any(), any(Pageable.class));
     }
 
     private Fixture fixture(DataScopeType type, Long scopeStoreId, Long comId) {

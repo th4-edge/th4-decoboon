@@ -4,6 +4,8 @@ import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.framework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +28,12 @@ public interface PackageTemplateRepository extends JpaRepository<PackageTemplate
 
     List<PackageTemplate> findByCompany_ComIdAndStatusAndCurrentPublishedTrueOrderByCodeAsc(
             Long comId, com.th4.edge.decoboon.pack.configure.PackageTemplateStatus status);
+
+    @Query(value = """
+            select l.template_id, count(distinct l.section_id), count(*)
+              from pack_line l
+             where l.com_id = :comId
+             group by l.template_id
+            """, nativeQuery = true)
+    List<Object[]> summarizeLinesByCompany(@Param("comId") Long comId);
 }

@@ -135,6 +135,44 @@ class PackageLifecycleContextTest {
     }
 
     @Test
+    void copiesLatestTemplateIntoIndependentDraftWithAllLines() {
+        PackageTemplate source = template(1L, 2, PackageTemplateStatus.Published);
+        source.setCurrentPublished(true);
+        source.setSnapshotJson("{\"published\":true}");
+        source.setSnapshotHash("old-hash");
+        PackageTemplate copiedTemplate = template(9L, 1, PackageTemplateStatus.Draft);
+        PackageLine sourceLine = line(source);
+        PackageTemplate[] savedHolder = new PackageTemplate[1];
+
+        when(templates.findByTemplateIdAndCompany_ComId(1L, 100L)).thenReturn(Optional.of(source));
+        when(templates.findFirstByCompany_ComIdAndCodeOrderByVersionDesc(100L, source.getCode()))
+                .thenReturn(Optional.of(source));
+        when(templates.save(any(PackageTemplate.class))).thenAnswer(invocation -> {
+            PackageTemplate saved = invocation.getArgument(0);
+            saved.setTemplateId(9L);
+            savedHolder[0] = saved;
+            return saved;
+        });
+        when(lines.findByTemplate_TemplateIdAndCompany_ComIdOrderBySortAscItemIdAsc(1L, 100L))
+                .thenReturn(List.of(sourceLine));
+        when(lines.saveAll(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(templates.findByTemplateIdAndCompany_ComId(9L, 100L))
+                .thenAnswer(invocation -> Optional.of(savedHolder[0]));
+
+        PackageTemplate result = context.copyTemplate(1L, boss);
+
+        assertThat(result.getTemplateId()).isEqualTo(9L);
+        assertThat(result.getCode()).startsWith("PACK-").isNotEqualTo(source.getCode());
+        assertThat(result.getVersion()).isEqualTo(1);
+        assertThat(result.getStatus()).isEqualTo(PackageTemplateStatus.Draft);
+        assertThat(result.getCurrentPublished()).isFalse();
+        assertThat(result.getName()).isEqualTo("品质整装（副本）");
+        assertThat(result.getSnapshotJson()).isNull();
+        assertThat(result.getSnapshotHash()).isNull();
+        org.mockito.Mockito.verify(lines).saveAll(any());
+    }
+
+    @Test
     void publishFreezesSnapshotAndSwitchesCurrentPublishedVersion() {
         PackageTemplate draft = template(2L, 2, PackageTemplateStatus.Draft);
         PackageTemplate previous = template(1L, 1, PackageTemplateStatus.Published);

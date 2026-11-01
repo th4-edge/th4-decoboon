@@ -86,6 +86,15 @@ public class PackageTemplate extends AbstractModel {
     @Column(name = "snapshot_hash", length = 64)
     private String snapshotHash;
 
+    @Transient
+    private Integer sectionCount;
+
+    @Transient
+    private Integer lineCount;
+
+    @Transient
+    private Boolean ready;
+
 
     @Note("套餐名称")
     @Name
@@ -140,7 +149,6 @@ public class PackageTemplate extends AbstractModel {
     private java.util.List<String> criterions;
 
     @Transient @Note("选择器摘要：分项数") private Integer itemCount;
-    @Transient @Note("选择器摘要：分区数") private Integer sectionCount;
 
 
 
@@ -183,6 +191,12 @@ public class PackageTemplate extends AbstractModel {
     public void setSnapshotJson(String snapshotJson) { this.snapshotJson = snapshotJson; }
     public String getSnapshotHash() { return snapshotHash; }
     public void setSnapshotHash(String snapshotHash) { this.snapshotHash = snapshotHash; }
+    public Integer getSectionCount() { return sectionCount; }
+    public void setSectionCount(Integer sectionCount) { this.sectionCount = sectionCount; }
+    public Integer getLineCount() { return lineCount; }
+    public void setLineCount(Integer lineCount) { this.lineCount = lineCount; }
+    public Boolean getReady() { return ready; }
+    public void setReady(Boolean ready) { this.ready = ready; }
 
     public String getName() {
         return name;
@@ -259,6 +273,4 @@ public class PackageTemplate extends AbstractModel {
 
     public Integer getItemCount() { return itemCount; }
     public void setItemCount(Integer itemCount) { this.itemCount = itemCount; }
-    public Integer getSectionCount() { return sectionCount; }
-    public void setSectionCount(Integer sectionCount) { this.sectionCount = sectionCount; }
 }

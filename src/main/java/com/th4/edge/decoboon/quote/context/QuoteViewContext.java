@@ -72,12 +72,21 @@ public class QuoteViewContext {
         Map<String, QuoteGroup> groups = new LinkedHashMap<>();
         for (QuoteLine item : items.stream().sorted(REGION_LINE_ORDER).toList()) {
             Space space = item.getSpace();
-            String key = regionKey(space);
-            String name = regionName(space);
+            String packageSectionName = item.getPackageSectionNameSnapshot();
+            String key;
+            String name;
+            if (packageSectionName != null && !packageSectionName.isBlank()) {
+                name = packageSectionName.trim();
+                key = "package-section-" + name.toLowerCase();
+            } else {
+                key = regionKey(space);
+                name = regionName(space);
+            }
+            String groupName = name;
             QuoteGroup group = groups.computeIfAbsent(key, ignored -> {
                 QuoteGroup value = new QuoteGroup();
                 value.setKey(key);
-                value.setName(name);
+                value.setName(groupName);
                 value.setGroupMode(QuoteViewMode.REGION);
                 return value;
             });
