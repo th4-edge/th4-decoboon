@@ -192,8 +192,13 @@ public class Save implements
         java.time.LocalDate actualArrivalDate = saved.getArrivedAt() == null
                 ? LocalDate.now() : saved.getArrivedAt().toLocalDate();
         plan.setArrivedAt(actualArrivalDate);
-        BigDecimal actualReceivedCost = receiptRepository.findByPurchaseOrderByReceiptIdDesc(purchase).stream()
-                .map(row -> value(row.getQuantity()).multiply(unitPrice))
+        BigDecimal actualReceivedCost = purchaseItemRepository
+                .findByMaterialPlanOrderByPurchaseItemIdAsc(plan).stream()
+                .map(row -> {
+                    BigDecimal price = row.getSettlementPrice() == null
+                            ? value(row.getUnitPrice()) : value(row.getSettlementPrice());
+                    return value(row.getReceivedQuantity()).multiply(price);
+                })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         // BR-045 / DEC-072：无价（未定价）采购到场时价格未知，**不得把 0 当作真实单价/成本**写回计划行；
         // 实际成本待结算价回填后收敛，期间由 ProjectCostContext 判定"成本不完整"→ 利润为 null。
@@ -206,7 +211,7 @@ public class Save implements
 
         backfillPayableDueDate(purchase, actualArrivalDate);
         if (materialSheetContext != null) {
-            materialSheetContext.applyReceipt(plan);
+            materialSheetContext.applyReceipt(item);
         }
         projectContext.refreshProject(purchase.getProject());
         return saved;

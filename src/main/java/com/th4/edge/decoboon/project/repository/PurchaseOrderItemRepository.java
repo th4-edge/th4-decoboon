@@ -22,6 +22,8 @@ public interface PurchaseOrderItemRepository extends JpaRepository<PurchaseOrder
 
     List<PurchaseOrderItem> findByMaterialPlanOrderByPurchaseItemIdAsc(MaterialPlan materialPlan);
 
+    List<PurchaseOrderItem> findBySheetItem_ItemIdOrderByPurchaseItemIdAsc(Long itemId);
+
     /** 材料计划工作台：一次取多计划的采购明细，替代逐计划查询。 */
     @org.springframework.data.jpa.repository.EntityGraph(attributePaths = {"purchaseOrder"})
     List<PurchaseOrderItem> findByMaterialPlan_PlanIdIn(java.util.Collection<Long> planIds);

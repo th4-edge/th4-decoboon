@@ -161,6 +161,7 @@ class MaterialGoodsReceiptFlowTest {
         sheetLine.setQuantity(new BigDecimal("10"));
         sheetLine.setOrderedQuantity(new BigDecimal("10"));
         sheetLine.setUnit(Unit.Sheet);
+        item.setSheetItem(sheetLine);
 
         sheetContext = new MaterialSheetContext(sheetRepository, sheetItemRepository, materialPlanRepository,
                 mock(ProjectContractRepository.class), purchaseRepository, purchaseItemRepository,
@@ -206,7 +207,10 @@ class MaterialGoodsReceiptFlowTest {
                 .thenReturn(Optional.empty());
         // 作业单回写链路
         when(purchaseRepository.findByMaterialPlanOrderByPurchaseIdAsc(any())).thenReturn(List.of(purchase));
-        when(purchaseItemRepository.findByMaterialPlanOrderByPurchaseItemIdAsc(any())).thenReturn(List.of(item));
+        when(purchaseItemRepository.findByMaterialPlanOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(item));
+        when(purchaseItemRepository.findBySheetItem_ItemIdOrderByPurchaseItemIdAsc(500L))
+                .thenReturn(List.of(item));
         when(sheetItemRepository.findByMaterialPlan_PlanId(any())).thenReturn(List.of(sheetLine));
         when(sheetRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
     }
@@ -248,6 +252,27 @@ class MaterialGoodsReceiptFlowTest {
     }
 
     @Test
+    void historicalPlanPurchaseMustNotAdvanceCurrentSheetOrDropItsCost() {
+        plan.setQuantity(new BigDecimal("30"));
+        PurchaseOrderItem historicalItem = new PurchaseOrderItem();
+        historicalItem.setPurchaseItemId(20L);
+        historicalItem.setMaterialPlan(plan);
+        historicalItem.setQuantity(new BigDecimal("20"));
+        historicalItem.setReceivedQuantity(new BigDecimal("20"));
+        historicalItem.setUnit(Unit.Sheet);
+        historicalItem.setUnitPrice(new BigDecimal("68"));
+        when(purchaseItemRepository.findByMaterialPlanOrderByPurchaseItemIdAsc(any()))
+                .thenReturn(List.of(historicalItem, item));
+
+        receiptOf("4");
+
+        assertThat(sheet.getStatus()).isEqualTo(MaterialSheetStatus.PartiallyArrived);
+        assertThat(plan.getCost())
+                .as("同一 MaterialPlan 的实际到场成本必须累计历史20㎡与本次4㎡")
+                .isEqualByComparingTo("1632");
+    }
+
+    @Test
     void partialArrivalShouldAdvanceToPartiallyArrivedThenArrived() {
         receiptOf("4");
         assertThat(purchase.getStatus()).isEqualTo(PurchaseStatus.PartiallyReceived);
@@ -256,6 +281,18 @@ class MaterialGoodsReceiptFlowTest {
         receiptOf("6");
         assertThat(purchase.getStatus()).isEqualTo(PurchaseStatus.Received);
         assertThat(sheet.getStatus()).isEqualTo(MaterialSheetStatus.Arrived);
+    }
+
+    @Test
+    void unlinkedLegacyPurchaseItemMustNotGuessAWorkSheet() {
+        item.setSheetItem(null);
+
+        receiptOf("4");
+
+        assertThat(purchase.getStatus()).isEqualTo(PurchaseStatus.PartiallyReceived);
+        assertThat(sheet.getStatus())
+                .as("历史采购无法唯一追溯作业单行时不得按 MaterialPlan 历史累计猜配")
+                .isEqualTo(MaterialSheetStatus.Ordered);
     }
 
     @Test

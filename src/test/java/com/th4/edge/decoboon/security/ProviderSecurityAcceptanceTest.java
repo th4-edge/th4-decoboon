@@ -211,9 +211,9 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-21 供应商往来分页新增 1 条 protected：finance/partner-ledger/page。
         // 2026-10-21 项目账本汇总新增 1 条 protected：finance/project-ledger/report。
         // DQ-X2 新增 1 条 protected：statistic/designer/measure/page。
-        // => 当前 Provider 面板为 519（public 16 + protected 503）。
-        assertThat(routes).hasSize(519);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(503);
+        // => 当前 Provider 面板为 525（public 16 + protected 509）；套餐模板/复制发布能力新增 6 条。
+        assertThat(routes).hasSize(525);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(509);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
