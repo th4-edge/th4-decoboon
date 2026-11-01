@@ -208,6 +208,18 @@ class QuoteViewContractTest {
     }
 
     @Test
+    void designerInfoMustExposeAcceptanceRegistrarAndTime() {
+        com.th4.edge.framework.data.jackson.annotation.Properties properties =
+                com.th4.edge.decoboon.quote.service.quotes.designerinfo.support.Info.class
+                        .getAnnotation(com.th4.edge.framework.data.jackson.annotation.Properties.class);
+        assertThat(properties).isNotNull();
+        assertThat(properties.allow()).anySatisfy(item -> {
+            assertThat(item.model()).isEqualTo(com.th4.edge.decoboon.quote.model.Quote.class);
+            assertThat(java.util.Arrays.asList(item.properties())).contains("acceptedAt", "acceptedBy");
+        });
+    }
+
+    @Test
     void stableIdShouldRejectIncompleteIdentity() {
         QuoteLine line = line("客厅", "木地板", "A");
         assertThatThrownBy(() -> QuoteViewContract.typeRowId(null, 1, line))

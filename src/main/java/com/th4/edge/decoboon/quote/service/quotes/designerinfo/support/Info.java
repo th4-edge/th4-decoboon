@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Quote.class,
                 properties = {"quoteId", "no", "title", "customer", "design", "packageTemplate", "packageTemplateCode", "packageTemplateVersion", "packageTemplateSnapshotHash", "createdBy", "version", "mode",
                         "area", "subtotal", "amount", "designFee", "managementFee", "discount", "taxRate", "taxAmount", "status",
-                        "submittedAt", "rejectedAt", "acceptedAt", "convertedAt", "items", "regionGroups", "typeGroups", "constructionGroups",
+                        "submittedAt", "rejectedAt", "acceptedAt", "acceptedBy", "convertedAt", "items", "regionGroups", "typeGroups", "constructionGroups",
                         "materialGroups", "otherGroups", "createTime", "updateTime", "property", "revision", "businessStateView"}),
         @AllowProperties(model = QuoteGroup.class,
                 properties = {"key", "name", "groupMode", "type", "category", "unit", "quantity", "amount", "items"}),
