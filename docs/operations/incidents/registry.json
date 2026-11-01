@@ -4075,7 +4075,7 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 296,
+      "count": 302,
       "firstSeen": "2026-09-18 13:05:07.158",
       "lastSeen": "2026-11-02 03:35:55.570",
       "samples": [
@@ -4086,7 +4086,6 @@
         "[2026-09-18 13:06:42.060] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-190730",
         "2026-10-05/20261005-192227",
         "2026-10-06/20261006-022935",
         "2026-10-06/20261006-025710",
@@ -4105,7 +4104,8 @@
         "2026-10-07/20261007-012037",
         "2026-10-07/20261007-165437",
         "2026-10-07/20261007-215347",
-        "2026-11-02/20261102-034830"
+        "2026-11-02/20261102-034830",
+        "2026-11-02/20261102-035209"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -5549,7 +5549,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 6,
+      "count": 12,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -5560,11 +5560,12 @@
         "Caused by: jakarta.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [revision] in table [catalog_item]\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:431)\n\tat org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1849)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)\n\t... 15 common frames omitted"
       ],
       "reportPaths": [
-        "2026-11-02/20261102-034830"
+        "2026-11-02/20261102-034830",
+        "2026-11-02/20261102-035209"
       ],
-      "fixedAt": "2026-11-02 03:51:22",
+      "fixedAt": "2026-11-02 03:52:15",
       "fixedRelease": "/opt/decoboon/releases/20261102-034600",
-      "fixSummary": "已执行125-130迁移并以f85865b6代码基线对应的20261102-034600制品启动通过；生产schema validate与登录会话验证通过"
+      "fixSummary": "已执行125-130迁移并以20261102-034600 release启动通过；生产schema validate、登录会话、首页与Web冒烟均通过"
     },
     {
       "incidentId": "INC-20261102-819be1469a",
@@ -5574,7 +5575,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 6,
+      "count": 12,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -5585,11 +5586,12 @@
         "Caused by: org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [revision] in table [catalog_item]\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.validateTable(AbstractSchemaValidator.java:149)\n\tat org.hibernate.tool.schema.internal.GroupedSchemaValidatorImpl.validateTables(GroupedSchemaValidatorImpl.java:46)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.performValidation(AbstractSchemaValidator.java:99)\n\tat org.hibernate.tool.schema.internal.AbstractSchemaValidator.doValidation(AbstractSchemaValidator.java:77)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:289)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144)\n\tat java.base/java.util.HashMap.forEach(HashMap.java:1429)\n\tat org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141)\n\tat org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)\n\tat org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)\n\tat org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324)\n\tat org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463)\n\tat org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1506)\n\tat org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66)\n\tat org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
       ],
       "reportPaths": [
-        "2026-11-02/20261102-034830"
+        "2026-11-02/20261102-034830",
+        "2026-11-02/20261102-035209"
       ],
-      "fixedAt": "2026-11-02 03:51:22",
+      "fixedAt": "2026-11-02 03:52:15",
       "fixedRelease": "/opt/decoboon/releases/20261102-034600",
-      "fixSummary": "已执行125-130迁移并以f85865b6代码基线对应的20261102-034600制品启动通过；生产schema validate与登录会话验证通过"
+      "fixSummary": "已执行125-130迁移并以20261102-034600 release启动通过；生产schema validate、登录会话、首页与Web冒烟均通过"
     },
     {
       "incidentId": "INC-20261102-405801b702",
@@ -5599,7 +5601,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 7,
+      "count": 14,
       "firstSeen": "2026-11-02 03:33:07.683",
       "lastSeen": "2026-11-02 03:36:27.485",
       "samples": [
@@ -5610,12 +5612,13 @@
         "[2026-11-02 03:35:21.832] [ERROR] [main] [o.s.orm.jpa.LocalContainerEntityManagerFactoryBean] [?] [?] - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [revision] in table [catalog_item]"
       ],
       "reportPaths": [
-        "2026-11-02/20261102-034830"
+        "2026-11-02/20261102-034830",
+        "2026-11-02/20261102-035209"
       ],
-      "fixedAt": "2026-11-02 03:51:22",
+      "fixedAt": "2026-11-02 03:52:15",
       "fixedRelease": "/opt/decoboon/releases/20261102-034600",
-      "fixSummary": "已执行125-130迁移并以f85865b6代码基线对应的20261102-034600制品启动通过；生产schema validate与登录会话验证通过"
+      "fixSummary": "已执行125-130迁移并以20261102-034600 release启动通过；生产schema validate、登录会话、首页与Web冒烟均通过"
     }
   ],
-  "updatedAt": "2026-11-02T03:51:22+08:00"
+  "updatedAt": "2026-11-02T03:52:15+08:00"
 }
