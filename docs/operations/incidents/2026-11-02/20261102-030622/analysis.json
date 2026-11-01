@@ -1,0 +1,28 @@
+{
+  "collectedAt": "2026-11-01T19:06:23.960010+00:00",
+  "reportDir": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon-hotfix-20261102/docs/operations/incidents/2026-11-02/20261102-030622",
+  "counts": {
+    "expected": 4
+  },
+  "incidents": [
+    {
+      "incidentId": "INC-20261102-01794458d1",
+      "signature": "访问受限，缺少授权标识，请先登录后再访问。",
+      "signatureHash": "01794458d1",
+      "classification": "expected",
+      "severity": "info",
+      "status": "observed",
+      "actionable": false,
+      "count": 4,
+      "firstSeen": "2026-11-02 03:06:17.660",
+      "lastSeen": "2026-11-02T03:06:23.805+08:00",
+      "samples": [
+        "[2026-11-02 03:06:17.660] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "[2026-11-02 03:06:23.805] [ERROR] [XNIO-1 task-2] [c.t.e.framework.web.mvc.processor.ApiHttpProcessor] [?] [?] - auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "848:2026-11-02T03:06:17.660+08:00 ERROR 384891 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。",
+        "950:2026-11-02T03:06:23.805+08:00 ERROR 384891 --- [  XNIO-1 task-2] c.t.e.f.w.m.processor.ApiHttpProcessor   : auth/session/info处理失败:访问受限，缺少授权标识，请先登录后再访问。"
+      ],
+      "reportPaths": []
+    }
+  ]
+}
