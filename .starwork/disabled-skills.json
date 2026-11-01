@@ -46,7 +46,43 @@
       "disabled_method": "removed from active skill registry by user request; archived for recovery only",
       "active_registry_entry_removed": true,
       "deleted_by_user": true
+    },
+    {
+      "id": "domain-delivery-orchestrator",
+      "name": "Domain Delivery Orchestrator",
+      "path": "_系统/归档/20261102/技能/归档/domain-delivery-orchestrator",
+      "scope": "project",
+      "disabled_method": "archived by user request; active skill entry removed",
+      "active_registry_entry_removed": true,
+      "archived_by_user": true
+    },
+    {
+      "id": "zhuangdeqing-product-app-development",
+      "name": "Zhuangdeqing Product App Development Agent",
+      "path": "_系统/归档/20261102/技能/归档/zhuangdeqing-product-app-development",
+      "scope": "project",
+      "disabled_method": "archived by user request; active skill entry removed",
+      "active_registry_entry_removed": true,
+      "archived_by_user": true
+    },
+    {
+      "id": "zhuangdeqing-acceptance-agent",
+      "name": "装得清独立验收执行智能体",
+      "path": "_系统/归档/20261102/技能/归档/zhuangdeqing-acceptance-agent",
+      "scope": "project",
+      "disabled_method": "archived by user request; active skill entry removed",
+      "active_registry_entry_removed": true,
+      "archived_by_user": true
+    },
+    {
+      "id": "backend-prod-sentinel",
+      "name": "Backend Production Sentinel",
+      "path": "_系统/归档/20261102/技能/归档/backend-prod-sentinel",
+      "scope": "project",
+      "disabled_method": "archived by user request; active skill entry removed",
+      "active_registry_entry_removed": true,
+      "archived_by_user": true
     }
   ],
-  "updated_at": "2026-11-02T05:45:00+08:00"
+  "updated_at": "2026-11-02T06:10:00+08:00"
 }

@@ -657,7 +657,7 @@
 后端与领域：
 
 - `AGENTS.md`、`rules.md` §0.1/§0.2/§0.6/§4/§5/§5.6/§13
-- `.agents/skills/domain-delivery-orchestrator/SKILL.md`、`references/protocol.md`
+- `docs/product/domains/PROGRAM-PROTOCOL.md`
 - `docs/operations/试运营单人轻量协作与发版规范.md`
 - `/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md`
 - 业务事实源：`OBJ-001`、`OBJ-005`、`OBJ-007`、`BR-001`、`BR-002`、`BR-005`、`BR-008`、`BR-040`、`BR-052`、`BR-054`、`SCN-001`、`SCN-002`、`SCN-003`、`SCN-007`、`DEC-040`、`DEC-041`、`DEC-052`、`DEC-053`、`DEC-062`、`DEC-069`、`DEC-071`、`DEC-078`、`DEC-084`、`DEC-086`、`DEC-087`、`DEC-088`

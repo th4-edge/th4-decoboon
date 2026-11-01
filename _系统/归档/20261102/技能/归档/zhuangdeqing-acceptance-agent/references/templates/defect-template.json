@@ -1,0 +1,20 @@
+{
+  "defectId": "DEF-YYYYMMDD-NNN",
+  "caseIds": [],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "",
+  "role": "",
+  "surface": "",
+  "pagePath": "",
+  "businessState": "",
+  "expected": "",
+  "actual": "",
+  "minimumReproduction": [],
+  "impact": "",
+  "evidence": [],
+  "confidence": "high",
+  "ownerSuggestion": "",
+  "retestCondition": "",
+  "createdAt": "ISO-8601"
+}

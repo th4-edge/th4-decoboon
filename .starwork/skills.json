@@ -1,6 +1,6 @@
 {
   "schema": "starwork.project_skills.v0.1",
-  "updated_at": "2026-11-02T05:45:00+08:00",
+  "updated_at": "2026-11-02T06:10:00+08:00",
   "skills": [
     {
       "id": "neat-freak",
@@ -29,25 +29,6 @@
       "installed_at": "2026-09-15T12:49:30.082Z"
     },
     {
-      "id": "backend-prod-sentinel",
-      "name": "Backend Production Sentinel",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/backend-prod-sentinel"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/backend-prod-sentinel",
-          "mode": "local"
-        }
-      ],
-      "reason": "监控 th4-decoboon 生产后端，归档错误并对安全的高置信代码缺陷执行受控修复和发版。",
-      "installed_by": "user-request",
-      "installed_at": "2026-09-16T05:35:00+08:00"
-    },
-    {
       "id": "zhuangdeqing-smb-reviewer",
       "name": "Zhuangdeqing SMB Business Reviewer",
       "type": "project-local",
@@ -65,63 +46,6 @@
       "reason": "以 10-30 人、1-3 店的成长型中小家装企业视角，独立审查数据权限、金额与成本口径、业务强闭环、角色工作流和交互，并通过业务智能体 T05/T06 协议协作。",
       "installed_by": "user-request",
       "installed_at": "2026-09-18T02:38:03+08:00"
-    },
-    {
-      "id": "zhuangdeqing-product-app-development",
-      "name": "Zhuangdeqing Product App Development Agent",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/zhuangdeqing-product-app-development"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/zhuangdeqing-product-app-development",
-          "mode": "local"
-        }
-      ],
-      "reason": "以真实中小装企角色和多租户场景驱动装得清 App 应用推演、主链与账务体验迭代，并通过冻结包和分批验证降低跨智能体 token 消耗。",
-      "installed_by": "user-request",
-      "installed_at": "2026-09-18T03:20:00+08:00"
-    },
-    {
-      "id": "zhuangdeqing-acceptance-agent",
-      "name": "装得清独立验收执行智能体",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/zhuangdeqing-acceptance-agent"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/zhuangdeqing-acceptance-agent",
-          "mode": "local"
-        }
-      ],
-      "reason": "读取冻结测试资产和Oracle，执行页面级全角色验收、采证、缺陷登记、复验与关门建议；不修改业务事实或产品代码。",
-      "installed_by": "user-request",
-      "installed_at": "2026-11-01T12:00:00+08:00"
-    },
-    {
-      "id": "domain-delivery-orchestrator",
-      "name": "Domain Delivery Orchestrator",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/domain-delivery-orchestrator"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/domain-delivery-orchestrator",
-          "mode": "local"
-        }
-      ],
-      "reason": "复杂业务域的可恢复多批次交付协议；一次只推进一个垂直切片并保留门禁状态。",
-      "installed_by": "user-request",
-      "installed_at": "2026-10-19T13:27:24+08:00"
     }
   ]
 }

@@ -27,5 +27,5 @@
 
 - 推广前关门标准：`docs/product/01-推广前最低业务闭环与跨端质量门禁.md`
 - 业务信息架构：`docs/product/02-业务信息架构与字段闭环标准.md`
-- 复杂业务域：`domain-delivery-orchestrator`，读取领域 `state.json`、`00-charter.md`、`10-reconciliation.md`。
+- 复杂业务域：直接读取领域 `state.json`、`00-charter.md`、`10-reconciliation.md`，状态工具使用 `scripts/domain_state.py`。
 - 营销内容和使用内容 Skill 当前已归档暂停；恢复前必须经用户明确确认并更新 Skill Registry。两者不定义产品事实、不改页面、不直接发布。

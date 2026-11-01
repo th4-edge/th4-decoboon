@@ -3,7 +3,7 @@
 继续 material 域。先恢复外部状态，不要依赖聊天记忆：
 
 1. 读取 `AGENTS.md`、`docs/operations/试运营单人轻量协作与发版规范.md`；
-2. 读取 `.agents/skills/domain-delivery-orchestrator/SKILL.md`、`run-envelope.md`、`state.json`；
+2. 读取 `docs/product/domains/PROGRAM-PROTOCOL.md`、`run-envelope.md`、`state.json`；
 3. 读取 `00-charter.md`、`03-blueprint.json`、`04-requirements.md`、`05-plan.md`、`06-implementation.md`、`07-ui-review.md`、`08-acceptance.md`、`09-release.md`、`10-reconciliation.md`；
 4. 读取 B6.6、B7、B8 的 summary、environment、verification-results、ui-metrics、screenshots；
 5. 涉及发布、权限、金额/成本时读取 `/Users/zhangwei/.agents/skills/zhuangdeqing-business/SKILL.md` 与相关 BR/DEC。

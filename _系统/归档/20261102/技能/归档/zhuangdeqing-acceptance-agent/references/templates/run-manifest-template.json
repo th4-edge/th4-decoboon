@@ -1,0 +1,24 @@
+{
+  "runId": "RUN-YYYYMMDD-NNN",
+  "createdAt": "ISO-8601",
+  "status": "PLANNED",
+  "planId": "TP-YYYYMMDD-Vx",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-YYYYMMDD-Vx",
+  "oracleGitCommit": "40-hex",
+  "backendCommit": "40-hex",
+  "webCommit": "40-hex",
+  "appCommit": "40-hex",
+  "artifactHashes": {},
+  "environment": "local-fixture",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-YYYYMMDD-RUNNNN-",
+  "caseIds": [],
+  "summary": {
+    "total": 0,
+    "pass": 0,
+    "fail": 0,
+    "blocked": 0,
+    "notRun": 0
+  }
+}

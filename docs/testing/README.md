@@ -67,6 +67,8 @@ python3 docs/testing/scripts/test_assets.py validate
 python3 docs/testing/scripts/test_assets.py trace
 python3 docs/testing/scripts/test_assets.py catalog
 python3 docs/testing/scripts/test_assets.py self-test
+python3 docs/testing/scripts/create_run.py --help
+python3 docs/testing/scripts/validate_run.py --help
 # self-test 同时负向验证动作依赖 Provider 破损会被识别
 TH4_TEST_PASSWORD="本地测试密码" python3 docs/testing/scripts/action_provider_smoke.py --output /tmp/action-smoke.json
 # 对矩阵中所有角色的依赖 Provider 做实机探测：允许角色要求200且候选非空，拒绝角色要求约定错误码

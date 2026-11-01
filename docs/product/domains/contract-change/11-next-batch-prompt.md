@@ -4,7 +4,7 @@
 
 1. `AGENTS.md`
 2. `docs/operations/试运营单人轻量协作与发版规范.md`
-3. `.agents/skills/domain-delivery-orchestrator/SKILL.md`
+3. `docs/product/domains/PROGRAM-PROTOCOL.md`
 4. `docs/product/domains/contract-change/state.json`
 5. `run-envelope.md`、`00-charter.md`、`03-blueprint.json`、`10-reconciliation.md`
 6. 业务事实：`BR-035`、`BR-041`、`BR-045`、`DEC-055`、`DEC-068`、`DEC-072`、`DEC-073`、`GAP-038`、`GAP-049`

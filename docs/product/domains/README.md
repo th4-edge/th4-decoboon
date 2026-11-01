@@ -12,7 +12,7 @@
 ## 初始化
 
 ```bash
-python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py init \
+python3 scripts/domain_state.py init \
   --domain material \
   --title "材料履约" \
   --north-star "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环" \
@@ -22,9 +22,9 @@ python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py init
 ## 查看与校验
 
 ```bash
-python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py show --domain material
-python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py validate --domain material
-python3 .agents/skills/domain-delivery-orchestrator/scripts/domain_state.py next-prompt --domain material
+python3 scripts/domain_state.py show --domain material
+python3 scripts/domain_state.py validate --domain material
+python3 scripts/domain_state.py next-prompt --domain material
 ```
 
 ## 规则

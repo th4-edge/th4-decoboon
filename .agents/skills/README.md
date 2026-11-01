@@ -4,11 +4,7 @@
 
 ## 当前启用
 
-- `backend-prod-sentinel`：生产后端巡检、事故归档与受控修复。
-- `domain-delivery-orchestrator`：复杂业务域的可恢复交付协议。
-- `zhuangdeqing-product-app-development`：装得清 App 产品推演、迭代与验证。
 - `zhuangdeqing-smb-reviewer`：中小装企视角的独立业务审查。
-- `zhuangdeqing-acceptance-agent`：独立黑盒验收、证据、缺陷和复验。
 - `neat-freak`：阶段性清理、收尾和归档。
 
 ## 已归档停用
@@ -17,6 +13,17 @@
 - `zhuangdeqing-product-web-development`：`_系统/归档/20261102/技能/禁用/`
 - `zhuangdeqing-web-immersion-audit`：全局 `_archive/20261031/`
 - `zhuangdeqing-ui-craft`：`_系统/归档/20261102/技能/删除/`（用户要求删除，不再作为活跃 Skill）
+- `domain-delivery-orchestrator`：`_系统/归档/20261102/技能/归档/`
+- `zhuangdeqing-product-app-development`：`_系统/归档/20261102/技能/归档/`
+- `zhuangdeqing-acceptance-agent`：`_系统/归档/20261102/技能/归档/`
+- `backend-prod-sentinel`：`_系统/归档/20261102/技能/归档/`
+
+## 归档后的替代路径
+
+- 复杂业务域：直接读取 `docs/product/domains/<domain>/state.json`、`00-charter.md`、`10-reconciliation.md`，状态脚本使用 `scripts/domain_state.py`。
+- App 产品推演：使用 `docs/product/**`、App 仓库 `AGENTS.md` 和相关业务事实源。
+- 独立验收：使用 `docs/testing/**`、`docs/testing/scripts/create_run.py`、`validate_run.py` 和冻结用例。
+- 生产事故：使用 `docs/operations/incident-playbook.md`、`scripts/prod-monitor.sh` 和现有发布/回滚脚本。
 
 ## 暂停使用
 

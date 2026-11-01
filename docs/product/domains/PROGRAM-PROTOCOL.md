@@ -124,7 +124,7 @@ SCENARIOS_READY
 全域总控每 10 分钟先运行：
 
 ```bash
-python3 .agents/skills/domain-delivery-orchestrator/scripts/program_watch.py --json
+python3 scripts/program_watch.py --json
 ```
 
 脚本只读检查：

@@ -1,10 +1,10 @@
-# 独立验收执行智能体
+# 独立验收执行流程
 
-实现位置：`.agents/skills/zhuangdeqing-acceptance-agent/`
+执行资产：`docs/testing/**`
 
 ## 定位
 
-它是测试资产执行器，不是业务事实源，也不是产品开发或缺陷修复者。
+它是测试资产执行流程，不是业务事实源，也不是产品开发或缺陷修复者。原专用验收 Skill 已归档，运行能力保留在 `docs/testing/scripts/`。
 
 ```text
 测试计划 + 冻结用例 + Oracle Lock
@@ -18,13 +18,13 @@
 ## 使用方式
 
 ```text
-使用 $zhuangdeqing-acceptance-agent，按 TP-20261101-V0.1 执行指定用例。
+按 `docs/testing/plans/` 中当前计划和冻结用例执行指定 RUN。
 ```
 
 创建运行：
 
 ```bash
-python3 .agents/skills/zhuangdeqing-acceptance-agent/scripts/create_run.py \
+python3 docs/testing/scripts/create_run.py \
   --run-id RUN-20261101-001 \
   --plan TP-20261101-V0.1 \
   --case-id TC-CRM-BOSS-CUSTOMER-001
@@ -33,7 +33,7 @@ python3 .agents/skills/zhuangdeqing-acceptance-agent/scripts/create_run.py \
 最终校验：
 
 ```bash
-python3 .agents/skills/zhuangdeqing-acceptance-agent/scripts/validate_run.py \
+python3 docs/testing/scripts/validate_run.py \
   docs/acceptance/runs/RUN-20261101-001 --final
 ```
 
@@ -55,4 +55,4 @@ python3 .agents/skills/zhuangdeqing-acceptance-agent/scripts/validate_run.py \
 
 ## 当前状态
 
-`DEV_VERIFIED`：技能已创建、注册并通过结构校验和运行脚手架自测；尚未执行真实业务验收批次。
+专用 Skill 已按用户要求归档；测试资产、RUN 创建/校验脚本和模板继续有效。是否执行独立验收仍由用户和高风险门禁决定。

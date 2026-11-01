@@ -214,8 +214,8 @@
     "heartbeatRule": "FREQ=MINUTELY;INTERVAL=10;BYSECOND=0",
     "lastObservationAt": "2026-10-17T22:35:19+08:00",
     "monitoringMode": "10m-fast-watch+event-deep-check",
-    "fastCheckScript": ".agents/skills/domain-delivery-orchestrator/scripts/program_watch.py",
-    "fastCheckCommand": "python3 .agents/skills/domain-delivery-orchestrator/scripts/program_watch.py --json",
+    "fastCheckScript": "scripts/program_watch.py",
+    "fastCheckCommand": "python3 scripts/program_watch.py --json",
     "lastFingerprint": null
   }
 }

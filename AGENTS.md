@@ -53,9 +53,9 @@
 ### 3.5 智能体边界
 
 - 当前没有项目级 Web UI 执行 Skill。Web UI 按 Web 仓库 `src/AGENTS.md` 和 `docs/standards/**` 执行；`zhuangdeqing-ui-craft` 已按用户要求于 2026-11-02 从活跃 Skill 删除并归档。旧 Web UI 技能和历史规范仅作人工参考，恢复必须经用户明确授权并同步 Registry。
-- 独立验收只使用 `zhuangdeqing-acceptance-agent`；执行前读取冻结用例、Oracle Lock、追溯矩阵，不修改业务事实或产品代码。
-- 生产巡检与后端事故处理只使用 `backend-prod-sentinel`；只读巡检命令为 `bash scripts/prod-monitor.sh collect "30 minutes ago"`。
-- 复杂业务域使用 `domain-delivery-orchestrator`，必须读取领域 `state.json`、章程和对账矩阵；一次只推进一个垂直切片。
+- 独立验收不再使用专用 Skill：读取 `docs/testing/**` 冻结测试资产，用 `docs/testing/scripts/create_run.py` 创建 RUN、`validate_run.py` 校验；不得修改业务事实或产品代码。
+- 生产巡检与后端事故处理不再使用专用 Skill：按 `docs/operations/incident-playbook.md`、`scripts/prod-monitor.sh`、`scripts/deploy-prod.sh` 和 `scripts/rollback-prod.sh` 执行。
+- 复杂业务域不再使用专用 Skill：直接读取领域 `state.json`、`00-charter.md`、`10-reconciliation.md`，状态工具使用 `scripts/domain_state.py`；一次只推进一个垂直切片。
 - `zhuangdeqing-marketing-content` 与 `zhuangdeqing-usage-content` 当前已归档暂停；恢复营销或使用内容工作前，必须经用户明确确认并更新 `.starwork/skills.json` 与 `.agents/skills/README.md`。两者不得定义产品事实或直接发布。
 
 ### 3.6 发版边界
@@ -91,8 +91,8 @@
 | 跨端/接口/选择器设计 | `docs/design/AGENTS.md` | `docs/design/31`–`35`、相关 App/Web 页面和 Provider |
 | Web 页面实现 | Web 仓库 `AGENTS.md`、`src/AGENTS.md` | Web 标准、后端对应 Provider、真实渲染证据 |
 | App 页面实现 | App 仓库 `AGENTS.md` | App 专项规范、后端对应 Provider、真机证据要求 |
-| 独立验收 | `zhuangdeqing-acceptance-agent` | 冻结测试资产、Oracle、当前 `RUN-*` 目录 |
-| 生产事件 | `backend-prod-sentinel` | 事故记录、最近发布、相关日志和回滚点 |
+| 独立验收 | `docs/testing/README.md`、`docs/testing/scripts/create_run.py` | 冻结测试资产、Oracle、当前 `RUN-*` 目录 |
+| 生产事件 | `docs/operations/incident-playbook.md` | 事故记录、最近发布、相关日志和回滚点 |
 | 发布/热修 | `docs/operations/试运营单人轻量协作与发版规范.md` | 研发章程、发布脚本、契约门禁和最近发布记录 |
 
 通用要求：
