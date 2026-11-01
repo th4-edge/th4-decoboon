@@ -7,7 +7,7 @@
 | 变更 ID | CHG-20261102-010 |
 | 类型 | 缺陷 / 测试稳定性 |
 | 风险级别 | L1 |
-| 状态 | 待验证 |
+| 状态 | 已发布 |
 | 负责人 | codex |
 | 日期 | 2026-11-02 |
 | 关联需求/事故/业务裁决 | 全量测试阻断；`DEC-036`、`BR-031`、`StatisticStoreAggregateContextTest` |
@@ -42,8 +42,8 @@
 
 | 检查 | 命令/页面 | 结果 | 证据位置 |
 | --- | --- | --- | --- |
-| 定向测试 | `mvn -Dtest=StatisticStoreAggregateContextTest test` | 待执行 | 待补 |
-| 全量测试 | `mvn test` | 待执行 | 待补 |
+| 定向测试 | `mvn -Dtest=StatisticStoreAggregateContextTest test` | PASS 5/5 | `docs/acceptance/runs/20261102-mat-x2-arrival-hotfix/README.md` |
+| 全量测试 | `mvn test` | PASS 971/0/0/0 | `docs/acceptance/runs/20261102-mat-x2-arrival-hotfix/full-test.log` |
 
 - 未执行项及原因：全量测试待测试夹具修复稳定后执行。
 - 已知失败及是否与本次相关：原失败为月初运行 `now()-2天` 跨到上月，测试夹具造成，不是SQL实现错误。
@@ -75,7 +75,7 @@
 - 人工耗时：未采集。
 - 一次通过：待验证。
 - 返工原因：月初日期漂移导致既有全量测试失败。
-- 最终结论：待验证。
+- 最终结论：已随生产 release `20261102-030440` 发布。
 
 ## 10. 复盘与沉淀
 

@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @Properties(allow = {
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role", "store", "team", "company", "status", "avatarUrl", "joinedAt", "createTime"}),
         @AllowProperties(model = Credentials.class, properties = {"creId", "openId", "unionId", "phone", "status", "lastTime"}),
-        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "size", "addr", "setting", "createTime"}),
+        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "size", "addr", "setting"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore", "color", "addr", "company", "createTime"}),
         @AllowProperties(model = Team.class, properties = {"teamId", "name", "color", "store", "company", "createTime"})
 })

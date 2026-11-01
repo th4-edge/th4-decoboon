@@ -258,10 +258,18 @@ class StoreDimensionBindingHttpAcceptanceTest {
      */
     private JsonNode stable(JsonNode data) {
         JsonNode copy = data.deepCopy();
-        if (copy.isObject()) {
-            ((com.fasterxml.jackson.databind.node.ObjectNode) copy).remove(java.util.List.of("asOf", "generatedAt", "now"));
-        }
+        removeVolatile(copy);
         return copy;
+    }
+
+    private void removeVolatile(JsonNode node) {
+        if (node.isObject()) {
+            com.fasterxml.jackson.databind.node.ObjectNode object = (com.fasterxml.jackson.databind.node.ObjectNode) node;
+            object.remove(java.util.List.of("asOf", "generatedAt", "now", "computedAt"));
+            object.elements().forEachRemaining(this::removeVolatile);
+        } else if (node.isArray()) {
+            node.elements().forEachRemaining(this::removeVolatile);
+        }
     }
 
     /** 分页 Provider 的条数：兼容 {@code list}/{@code content} 与 {@code total}/{@code totalElements}。 */

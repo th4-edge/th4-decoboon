@@ -5,7 +5,18 @@ APP_HOME="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="${DECOBOON_ENV_FILE:-/etc/decoboon/th4-decoboon.env}"
 JAVA_HOME="${JAVA_HOME:-/opt/java/jdk-22.0.2+9}"
 JAVA_BIN="$JAVA_HOME/bin/java"
-BOOT_JAR="$APP_HOME/boot/th4-decoboon-1.0.0.jar"
+if [ -z "${BOOT_JAR:-}" ]; then
+  boot_count=0
+  for candidate in "$APP_HOME"/boot/th4-decoboon-*.jar; do
+    [ -f "$candidate" ] || continue
+    boot_count=$((boot_count + 1))
+    BOOT_JAR="$candidate"
+  done
+  if [ "$boot_count" -ne 1 ] || [ ! -r "$BOOT_JAR" ]; then
+    echo "Expected exactly one readable boot JAR under $APP_HOME/boot" >&2
+    exit 2
+  fi
+fi
 LOADER_PATH="$APP_HOME/lib,$APP_HOME/config"
 PID_DIR="$APP_HOME/run"
 PID_FILE="$PID_DIR/decoboon.pid"

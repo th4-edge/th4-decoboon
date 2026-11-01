@@ -100,6 +100,12 @@ public class PackageConfigContext {
         if (!Boolean.TRUE.equals(catalog.getActive())) {
             throw new DefinedException(new DefaultErrorCode("400", "报价项目已停用"));
         }
+        lineRepository.findByTemplate_TemplateIdAndSection_GroupIdAndItem_ItemId(
+                        templateId, sectionId, catalogItemId)
+                .filter(existing -> source.getItemId() == null || !source.getItemId().equals(existing.getItemId()))
+                .ifPresent(existing -> {
+                    throw new DefinedException(new DefaultErrorCode("409", "该项目已存在于当前套餐分区"));
+                });
         PackageLine target = source.getItemId() == null ? new PackageLine()
                 : lineRepository.findByItemIdAndCompany_ComId(source.getItemId(), comId)
                 .filter(item -> item.getTemplate() != null && templateId.equals(item.getTemplate().getTemplateId()))

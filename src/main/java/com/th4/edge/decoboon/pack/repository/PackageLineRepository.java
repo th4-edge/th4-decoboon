@@ -13,6 +13,9 @@ public interface PackageLineRepository extends JpaRepository<PackageLine, Long> 
 
     java.util.List<PackageLine> findByTemplate_TemplateIdAndCompany_ComIdOrderBySortAscItemIdAsc(Long templateId, Long comId);
 
+    java.util.Optional<PackageLine> findByTemplate_TemplateIdAndSection_GroupIdAndItem_ItemId(
+            Long templateId, Long groupId, Long itemId);
+
     long countBySection_GroupId(Long groupId);
 
     @Query("""

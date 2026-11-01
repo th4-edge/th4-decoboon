@@ -7,7 +7,7 @@
 | 变更 ID | CHG-20261102-009 |
 | 类型 | 缺陷 / 数据模型修复 |
 | 风险级别 | L3 |
-| 状态 | 待验证 |
+| 状态 | 已发布 |
 | 负责人 | codex |
 | 日期 | 2026-11-02 |
 | 关联需求/事故/业务裁决 | `DEF-20261102-005`、`OBJ-008`、`BR-045`、`DEC-072`、`DEC-073`、`RUN-20261102-MAT-X2-001` |
@@ -42,7 +42,7 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | dev（本地） | 未提交；baseline `256cc587` + patch `5011633...` | `PurchaseOrderItem`、`MaterialSheetContext`、goods receipt、migration 134 |
+| th4-decoboon | dev（本地） | 未提交；baseline `256cc587` + patch `hotfix-source-patch` | `PurchaseOrderItem`、`MaterialSheetContext`、goods receipt、migration 132 |
 | th4-decoboon-web | 不修改 | `ec3da3b` | 仅页面复验 |
 | th4-decoboon-app | 不修改 | `f2fb91e` | 身份可用后回读 |
 
@@ -50,10 +50,10 @@
 
 | 检查 | 命令/页面 | 结果 | 证据位置 |
 | --- | --- | --- | --- |
-| 定向单测 | `MaterialSheetOrderFlowTest`、`MaterialGoodsReceiptFlowTest`、`MigrationNumberingTest` | PASS 24/24 | `RUN-20261102-MAT-X2F-RETEST-001/evidence/.../33-targeted-tests.txt` |
-| 全量测试 | Maven test（主工作区 1206；干净 baseline+补丁 1121） | BLOCKED：主工作区4 failures+1 error；干净基线仍有2个既有statistic failures | `34-full-test-main-unrelated-failures.txt`、`35-full-test-clean-patch-failures.txt` |
+| 定向单测 | `MaterialSheetOrderFlowTest`、`MaterialGoodsReceiptFlowTest`、`MigrationNumberingTest` | PASS 24/24 | `docs/acceptance/runs/20261102-mat-x2-arrival-hotfix/README.md` |
+| 全量测试 | `mvn test`（origin/prod 449f086c + hotfix） | PASS 971/0/0/0 | `docs/acceptance/runs/20261102-mat-x2-arrival-hotfix/full-test.log` |
 | 迁移编号 | `MigrationNumberingTest` | PASS | `33-targeted-tests.txt` |
-| 隔离库迁移 | 备份 + `134` + 回滚演练 | PASS；回滚后列/索引为0 | `01-migration-134-applied.txt`、`02-migration-134-rollback-drill.txt` |
+| 隔离库迁移 | 备份 + `132` + 回滚演练 | PASS；回滚后列/索引为0 | `01-migration-132-applied.txt`、`02-migration-132-rollback-drill.txt` |
 | 页面复验 | 首批4㎡→超量7㎡拒绝→尾量6㎡→刷新 | Web/Provider/DB PASS；App BLOCKED_IDENTITY | `RUN-20261102-MAT-X2F-RETEST-001` |
 
 ## 7. 发布
@@ -67,13 +67,13 @@
 | 健康检查 | 不适用 |
 | 发布后观察 | 不适用 |
 
-- 数据库迁移：`134-主材采购明细关联作业单行.sql`；生产执行前必须备份、隔离演练并取得用户确认。
+- 数据库迁移：`132-主材采购明细关联作业单行.sql`；生产执行前必须备份、隔离演练并取得用户确认。
 - 配置/密钥变化：无。
 
 ## 8. 回滚
 
 - 回滚条件：迁移或代码导致启动失败、采购/到场主链异常、历史数据不可读。
-- 回滚命令/步骤：执行 `docs/design/migrations/rollback/134-主材采购明细关联作业单行-rollback.sql`，同步回退代码。
+- 回滚命令/步骤：执行 `docs/design/migrations/rollback/132-主材采购明细关联作业单行-rollback.sql`，同步回退代码。
 - 回滚验证：应用启动、采购/到场读取、作业单状态与应付回读。
 - 实际是否回滚：隔离克隆库完成迁移→回滚演练；生产未执行。
 
@@ -83,7 +83,7 @@
 - 人工耗时：未采集。
 - 一次通过：否；首次修正确认后追加同一MaterialPlan累计成本修复，复验通过。
 - 返工原因：`DEF-20261102-005` 暴露采购明细缺少作业单行来源。
-- 最终结论：Web/Provider/DB 已修复并验证；App身份和既有全量测试失败导致整体待验证，生产未发布。
+- 最终结论：已发布；生产 release `20261102-030440`，发布后监控 0 个可处理异常。
 
 ## 10. 复盘与沉淀
 

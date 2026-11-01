@@ -212,9 +212,9 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-21 项目账本汇总新增 1 条 protected：finance/project-ledger/report。
         // 邀请主动发现新增 1 条 protected：invite/invitation/pending。
         // 2026-10-31 财务报价单行汇总（DQ-X6）新增 1 条 protected：quote/finance/summary。
-        // 当前 Provider 面板为 543（public 16 + protected 527）。
-        assertThat(routes).hasSize(543);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(527);
+        // 合并本地能力与生产套餐复制能力后，实测 Provider 面板为549（public 16 + protected 533）。
+        assertThat(routes).hasSize(549);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(533);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 

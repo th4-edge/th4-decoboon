@@ -124,6 +124,32 @@ public class PackageLifecycleContext {
         }
     }
 
+    @Transactional
+    public PackageTemplate copyTemplate(Long templateId, Employee principal) {
+        Employee current = requireMaintainer(principal);
+        Long comId = current.getCompany().getComId();
+        PackageTemplate source = requireTemplate(templateId, comId);
+        PackageTemplate latest = templateRepository
+                .findFirstByCompany_ComIdAndCodeOrderByVersionDesc(comId, source.getCode())
+                .orElse(source);
+        if (!latest.getTemplateId().equals(source.getTemplateId())) {
+            throw new DefinedException(new DefaultErrorCode("409", "只能复制套餐最新版本"));
+        }
+        PackageTemplate copy = copyHead(source);
+        copy.setCode("PACK-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase());
+        copy.setVersion(1);
+        copy.setStatus(PackageTemplateStatus.Draft);
+        copy.setCurrentPublished(Boolean.FALSE);
+        copy.setName(copyName(source.getName()));
+        copy.setPublishedAt(null);
+        copy.setPublishedBy(null);
+        copy.setSnapshotJson(null);
+        copy.setSnapshotHash(null);
+        PackageTemplate saved = templateRepository.save(copy);
+        copyLines(source, saved);
+        return templateRepository.findByTemplateIdAndCompany_ComId(saved.getTemplateId(), comId).orElse(saved);
+    }
+
     public PackageTemplate publish(Long templateId, Employee principal) {
         Employee current = requireMaintainer(principal);
         Long comId = current.getCompany().getComId();
@@ -249,6 +275,13 @@ public class PackageLifecycleContext {
             template.getItems().clear();
             template.getItems().addAll(lines);
         }
+    }
+
+    private String copyName(String sourceName) {
+        String base = sourceName == null || sourceName.isBlank() ? "套餐" : sourceName.trim();
+        String suffix = "（副本）";
+        int maxBaseLength = Math.max(0, 128 - suffix.length());
+        return (base.length() > maxBaseLength ? base.substring(0, maxBaseLength) : base) + suffix;
     }
 
     private PackageTemplate copyHead(PackageTemplate source) {
