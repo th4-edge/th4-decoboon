@@ -1,8 +1,0 @@
-{
-  "taskName": "全角色审计任务-UI-897298",
-  "projectId": "231848057782665216",
-  "stageId": "231848057812025344",
-  "afterPath": "subpackages/project/pages/task/edit",
-  "afterSample": "任务名称 *施工工艺规格要求所属阶段1. 开工交底施工区域选择区域（客厅/厨房…）施工总量负责人徐勇徐勇优先级低中高紧急开始日期选择日期截止日期选择日期备注保存任务",
-  "exceptions": []
-}

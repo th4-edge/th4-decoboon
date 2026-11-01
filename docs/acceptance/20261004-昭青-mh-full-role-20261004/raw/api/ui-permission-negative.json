@@ -1,9 +1,0 @@
-{
-  "role": "Marketer",
-  "attempted": "/subpackages/finance/pages/ledger",
-  "before": "pages/index/index",
-  "after": "subpackages/finance/pages/ledger",
-  "blocked": false,
-  "navError": null,
-  "afterSample": "资金台账每一笔收支可追溯至项目与业务来源台账净现金流¥0累计收入¥0累计支出¥0流水笔数0全部收入支出资金台账加载失败当前账号无权执行该操作重新加载暂无资金流水收款、付款和手工记账会自动归集到这里"
-}

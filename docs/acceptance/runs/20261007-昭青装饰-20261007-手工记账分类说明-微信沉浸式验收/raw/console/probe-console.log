@@ -1,8 +1,0 @@
-{"type":"info","args":["Lazy code loading is enabled. Only injecting required components."]}
-{"type":"warn","args":["无效的 app.json [\"versionName\"]、app.json [\"versionCode\"]"]}
-{"type":"warn","args":["wx.getSystemInfoSync is deprecated.Please use wx.getSystemSetting/wx.getAppAuthorizeSetting/wx.getDeviceInfo/wx.getWindowInfo/wx.getAppBaseInfo instead."]}
-{"type":"info","args":["preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"]}
-{"type":"info","args":["preloadSubpackages: success"]}
-{"type":"log","args":["[装得清] App Launch",{"role":"boss"}]}
-{"type":"info","args":["preloadSubpackages: subpackages/customer, subpackages/project, subpackages/design, subpackages/quote"]}
-{"type":"info","args":["preloadSubpackages: success"]}

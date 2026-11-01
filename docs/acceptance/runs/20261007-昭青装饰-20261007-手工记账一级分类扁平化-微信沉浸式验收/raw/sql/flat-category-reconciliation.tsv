@@ -1,3 +1,0 @@
-mysql: [Warning] Using a password on the command line interface can be insecure.
-233481261526548480	1790000000000000001	NULL	本地一级验收分类	Finance 已维护：用于本地一级分类验收，仅登记其他支出，不包含应收应付闭环项。	Expense	0	1
-233481414635421696	1790000000000000001	Expense	Manual	本地一级验收分类	233481261526548480	5.67	一级分类说明验收-UI	本地验收	2026-10-07	\0

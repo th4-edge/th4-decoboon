@@ -56,7 +56,7 @@
 - 独立验收只使用 `zhuangdeqing-acceptance-agent`；执行前读取冻结用例、Oracle Lock、追溯矩阵，不修改业务事实或产品代码。
 - 生产巡检与后端事故处理只使用 `backend-prod-sentinel`；只读巡检命令为 `bash scripts/prod-monitor.sh collect "30 minutes ago"`。
 - 复杂业务域使用 `domain-delivery-orchestrator`，必须读取领域 `state.json`、章程和对账矩阵；一次只推进一个垂直切片。
-- 内容团队使用 `zhuangdeqing-marketing-content` 与 `zhuangdeqing-usage-content`，两者不得定义产品事实或直接发布。
+- `zhuangdeqing-marketing-content` 与 `zhuangdeqing-usage-content` 当前已归档暂停；恢复营销或使用内容工作前，必须经用户明确确认并更新 `.starwork/skills.json` 与 `.agents/skills/README.md`。两者不得定义产品事实或直接发布。
 
 ### 3.6 发版边界
 
@@ -94,8 +94,8 @@
 
 - 需求和规格：`docs/product/**`、`docs/plan/**`；实现：`src/main/**`；测试：`src/test/**`；验收：`docs/acceptance/**`。
 - 营销素材、选题、脚本、设计和分析分别进入 `docs/marketing/{material,topics,scripts,design,analytics}/**`。
-- 项目状态写 `_系统/上下文/当前项目.md`；执行记录写 `_系统/任务/当前工作.md`；草稿放 `workspace/**`。
-- 每次变更使用一份 `CHG-*` 记录；同一话题只在 `_系统/协作/工作约定.md` 追加一行，不写重复交接包。
+- 项目状态写 `_系统/上下文/当前项目.md`；当前任务写 `_系统/任务/当前工作.md`；历史按月或阶段归档，草稿放 `workspace/**`。
+- 每次变更使用一份 `CHG-*` 记录；`_系统/协作/工作约定.md` 只保留长期规则，不再追加历史。归档目录默认不读。
 - 多 Agent 以 `CHG-*`、领域状态和代码提交交接，不以聊天记忆作为状态源。
 
 ## 6. 交付口径

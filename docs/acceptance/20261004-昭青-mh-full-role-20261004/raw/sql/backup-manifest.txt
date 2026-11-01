@@ -1,3 +1,0 @@
-backup=/private/tmp/decoboon-audit-backups/decoboon-before-mh-full-role-20261004.sql
-sha256=521057f0abac813209ed3c91702052a924cce5418f3c77f5d1a98c59e15bc568
-size=3104466

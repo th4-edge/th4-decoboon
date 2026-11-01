@@ -1,6 +1,6 @@
 {
   "schema": "starwork.project_skills.v0.1",
-  "updated_at": "2026-11-01T12:00:00+08:00",
+  "updated_at": "2026-11-02T04:30:00+08:00",
   "skills": [
     {
       "id": "neat-freak",
@@ -105,44 +105,6 @@
       "installed_at": "2026-10-28T03:10:00+08:00"
     },
     {
-      "id": "zhuangdeqing-marketing-content",
-      "name": "装得清营销内容智能体",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/zhuangdeqing-marketing-content"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/zhuangdeqing-marketing-content",
-          "mode": "local"
-        }
-      ],
-      "reason": "把已核验装企场景转化为证据可追溯的营销内容资产、价值主张、选题、短视频图文简报和边界，向渠道执行移交；不定义事实、不发布。",
-      "installed_by": "user-request",
-      "installed_at": "2026-10-29T14:00:00+08:00"
-    },
-    {
-      "id": "zhuangdeqing-usage-content",
-      "name": "装得清使用内容智能体",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/zhuangdeqing-usage-content"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/zhuangdeqing-usage-content",
-          "mode": "local"
-        }
-      ],
-      "reason": "把真实场景和当前产品行为转化为入驻、角色教程、使用理解、App/Web对比、FAQ、异常恢复和业务适配兼容台账；不定义事实、不改产品、不做营销主张。",
-      "installed_by": "user-request",
-      "installed_at": "2026-10-29T14:00:00+08:00"
-    },
-    {
       "id": "zhuangdeqing-acceptance-agent",
       "name": "装得清独立验收执行智能体",
       "type": "project-local",
@@ -160,6 +122,25 @@
       "reason": "读取冻结测试资产和Oracle，执行页面级全角色验收、采证、缺陷登记、复验与关门建议；不修改业务事实或产品代码。",
       "installed_by": "user-request",
       "installed_at": "2026-11-01T12:00:00+08:00"
+    },
+    {
+      "id": "domain-delivery-orchestrator",
+      "name": "Domain Delivery Orchestrator",
+      "type": "project-local",
+      "source": {
+        "kind": "project",
+        "path": ".agents/skills/domain-delivery-orchestrator"
+      },
+      "mounts": [
+        {
+          "agent": "codex",
+          "path": ".agents/skills/domain-delivery-orchestrator",
+          "mode": "local"
+        }
+      ],
+      "reason": "复杂业务域的可恢复多批次交付协议；一次只推进一个垂直切片并保留门禁状态。",
+      "installed_by": "user-request",
+      "installed_at": "2026-10-19T13:27:24+08:00"
     }
   ]
 }

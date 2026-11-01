@@ -8,36 +8,36 @@
     {
       "id": "zhuangdeqing-web-ui-interaction",
       "name": "装得清 Web UI 与交互设计智能体",
-      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/.agents/skills/zhuangdeqing-web-ui-interaction",
+      "path": "_系统/归档/20261102/技能/禁用/zhuangdeqing-web-ui-interaction",
       "scope": "project",
-      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "disabled_method": "archived to _系统/归档/20261102/技能/禁用",
       "active_registry_entry_removed": true
     },
     {
       "id": "zhuangdeqing-product-web-development",
       "name": "装得清 Product Web Development Agent",
-      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/后端代码/th4-decoboon/.agents/skills/zhuangdeqing-product-web-development",
+      "path": "_系统/归档/20261102/技能/禁用/zhuangdeqing-product-web-development",
       "scope": "project",
-      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "disabled_method": "archived to _系统/归档/20261102/技能/禁用",
       "active_registry_entry_removed": true
     },
     {
       "id": "zhuangdeqing-web-immersion-audit",
       "name": "装得清 Web 沉浸审计智能体",
-      "path": "/Users/zhangwei/.codex/skills/zhuangdeqing-web-immersion-audit",
+      "path": "/Users/zhangwei/.codex/skills/_archive/20261031/zhuangdeqing-web-immersion-audit",
       "scope": "global",
-      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "disabled_method": "archived to global _archive/20261031",
       "active_registry_entry_removed": false
     },
     {
       "id": "decoboon-web-frame",
       "name": "装得清 Web 框架与交互设计智能体",
-      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/.agents/skills/decoboon-web-frame",
+      "path": "/Users/zhangwei/FutureFiles/安徽昭青/家装装修/装客宝/前端代码/th4-decoboon-web/_系统/归档/20261102/skills/decoboon-web-frame",
       "scope": "web-project",
-      "disabled_method": "SKILL.md renamed to SKILL.md.disabled-20261028",
+      "disabled_method": "archived to web _系统/归档/20261102/skills",
       "active_registry_entry_removed": true,
       "replaced_by": "zhuangdeqing-ui-craft"
     }
   ],
-  "updated_at": "2026-10-28T03:15:00+08:00"
+  "updated_at": "2026-11-02T04:45:00+08:00"
 }

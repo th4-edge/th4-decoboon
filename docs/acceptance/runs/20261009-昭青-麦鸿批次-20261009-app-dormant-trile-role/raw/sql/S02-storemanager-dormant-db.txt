@@ -1,5 +1,0 @@
-== 店长设休眠 李娜 cust 228668918477094912 ==
-cust_id	name	status	status_before_dormant	dormant_reason	dormant_at	dormant_by	next_follow_at
-228668918477094912	李娜（演示02）	Dormant	New	BudgetUndecided	2026-10-09 22:21:28.812828	1790000000000000103	NULL
-from_status	to_status	change_type	reason_code	operator_role	changed_at
-New	Dormant	Dormant	BudgetUndecided	StoreManager	2026-10-09 22:21:28.812828

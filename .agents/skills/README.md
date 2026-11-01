@@ -9,12 +9,18 @@
 - `domain-delivery-orchestrator`：复杂业务域的可恢复交付协议。
 - `zhuangdeqing-product-app-development`：装得清 App 产品推演、迭代与验证。
 - `zhuangdeqing-smb-reviewer`：中小装企视角的独立业务审查。
+- `zhuangdeqing-acceptance-agent`：独立黑盒验收、证据、缺陷和复验。
 - `neat-freak`：阶段性清理、收尾和归档。
 
-## 已禁用
+## 已归档停用
 
-- `zhuangdeqing-web-ui-interaction`
-- `zhuangdeqing-product-web-development`
-- `zhuangdeqing-web-immersion-audit`
+- `zhuangdeqing-web-ui-interaction`：`_系统/归档/20261102/技能/禁用/`
+- `zhuangdeqing-product-web-development`：`_系统/归档/20261102/技能/禁用/`
+- `zhuangdeqing-web-immersion-audit`：全局 `_archive/20261031/`
 
-禁用详情见 `.starwork/disabled-skills.json`。历史规范和 references 仅作人工参考。
+## 暂停使用
+
+- `zhuangdeqing-marketing-content`：`_系统/归档/20261102/技能/暂停/`
+- `zhuangdeqing-usage-content`：`_系统/归档/20261102/技能/暂停/`
+
+历史规范和 references 仅作人工参考；恢复前必须经用户明确确认并更新 Registry。

@@ -1,9 +1,0 @@
-{
-  "branch": "dev/test/prod",
-  "commit": "0078593",
-  "title": "fix(app): 修复全角色审计发现的导航与任务缺陷",
-  "files": 15,
-  "staticGuard": "scripts/verify-navigation-contract.mjs",
-  "verifyCommand": "npm run verify:mp-weixin",
-  "verifyResult": "PASS"
-}

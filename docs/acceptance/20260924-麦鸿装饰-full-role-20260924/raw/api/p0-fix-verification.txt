@@ -1,5 +1,0 @@
-P0 设计新增权限复验
-- 修复前：黄贤杰 token 调 design/scheme/save 成功并创建 Draft 设计。
-- 修复后：登录黄贤杰新会话，调 design/scheme/save。
-- 返回：success=false, code=403, message=当前账号无权新增或复制设计方案
-- 数据库计数：before=0, after=0

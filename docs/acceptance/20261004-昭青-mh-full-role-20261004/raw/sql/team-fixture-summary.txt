@@ -1,5 +1,0 @@
-team=1790000000000000999
-leaderEmpId=1790000000000000199
-chain=customer:229343918221688832,property:229343918225883136,quote:229343918251048960,contract:229343918259437568,project:229343918263631872
-backup=/private/tmp/decoboon-audit-backups/team-fixture-before.tsv
-rollback=/private/tmp/decoboon-audit-backups/team-fixture-rollback.sql

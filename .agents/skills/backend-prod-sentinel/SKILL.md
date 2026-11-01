@@ -12,7 +12,7 @@ description: Monitor the th4-decoboon production backend, archive actionable log
 1. `AGENTS.md`
 2. `rules.md`
 3. `docs/deploy/PRODUCTION.md`
-4. `_系统/协作/lanes/development/workspace/production-release-config-handoff.md`
+4. `_系统/归档/20261102/协作/lanes/development/workspace/production-release-config-handoff.md`（仅在生产发布或回滚追溯时读取）
 5. `references/incident-playbook.md`
 6. `docs/operations/prod-monitor/README.md`
 

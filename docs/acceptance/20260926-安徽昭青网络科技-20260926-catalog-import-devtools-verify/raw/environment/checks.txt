@@ -1,7 +1,0 @@
-DevTools project: dist/dev/mp-weixin
-Login: 张伟 / 企业负责人 / 18660219918
-Backend port: 8090
-COMMAND   PID     USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
-java    98630 zhangwei  379u  IPv6 0x85370093670cbc38      0t0  TCP *:8090 (LISTEN)
-Template downloaded by DevTools:
-0791273625f65cf6f021089d58284d17aefaab654ddadea50a67766e0f3638a9  /Users/zhangwei/Library/Application Support/微信开发者工具/d1e8765721a6c23d43b14c95b1843e6b/WeappSimulator/WeappFileSystem/o6zAJs5aCiHcMcaeLJFFEn8iu5cA/wxe5cc5fec9e50a9a9/tmp/aeoGRNl7jQeIcf3dd5f4c27380e778429f6e1c491bc2.xlsx
