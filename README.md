@@ -42,3 +42,12 @@
 `_系统/上下文/当前项目.md` 是项目状态事实源。不要同时维护另一份 `_系统/上下文/项目状态.md`。
 
 注意：`.starwork/`、`.obsidian/` 是隐藏路径，很多文件管理器默认看不到。独立项目用户日常先关注 `AGENTS.md`、`_系统/` 和已安装 Pack 创建的业务目录。
+
+## AI 协作上下文
+
+- 根 `AGENTS.md`：跨任务硬边界和按任务路由。
+- `src/main/AGENTS.md`：后端实现规则。
+- `src/test/AGENTS.md`：测试和证据规则。
+- `docs/product/AGENTS.md`：业务裁决、场景、信息项和闭环门禁。
+- `docs/design/AGENTS.md`：跨端、接口、分页和选择器设计。
+- 规则放置和阅读预算见 `docs/operations/智能体上下文分层与阅读纪律.md`。
