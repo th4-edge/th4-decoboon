@@ -4075,7 +4075,7 @@
       "severity": "medium",
       "status": "reopened",
       "actionable": true,
-      "count": 302,
+      "count": 308,
       "firstSeen": "2026-09-18 13:05:07.158",
       "lastSeen": "2026-11-02 03:35:55.570",
       "samples": [
@@ -4086,7 +4086,6 @@
         "[2026-09-18 13:06:42.060] [ERROR] [main] [org.springframework.boot.SpringApplication] [?] [?] - Application run failed\norg.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is org.hibernate.tool.schema.spi.SchemaManagementException: Schema-validation: missing column [delivery_mode] in table [db_purchase_order]\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1802)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)\n\tat org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)\n\tat org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:288)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)\n\tat org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:204)\n\tat org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970)\n\tat org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)\n\tat org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServ"
       ],
       "reportPaths": [
-        "2026-10-05/20261005-192227",
         "2026-10-06/20261006-022935",
         "2026-10-06/20261006-025710",
         "2026-10-06/20261006-030850",
@@ -4105,7 +4104,8 @@
         "2026-10-07/20261007-165437",
         "2026-10-07/20261007-215347",
         "2026-11-02/20261102-034830",
-        "2026-11-02/20261102-035209"
+        "2026-11-02/20261102-035209",
+        "2026-11-02/20261102-042853"
       ],
       "fixedAt": "2026-09-18 13:11:46",
       "fixedRelease": "/opt/decoboon/releases/20260918-130915",
@@ -5547,9 +5547,9 @@
       "signatureHash": "0006095129",
       "classification": "unknown",
       "severity": "medium",
-      "status": "fixed",
-      "actionable": false,
-      "count": 12,
+      "status": "reopened",
+      "actionable": true,
+      "count": 18,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -5561,7 +5561,8 @@
       ],
       "reportPaths": [
         "2026-11-02/20261102-034830",
-        "2026-11-02/20261102-035209"
+        "2026-11-02/20261102-035209",
+        "2026-11-02/20261102-042853"
       ],
       "fixedAt": "2026-11-02 03:52:15",
       "fixedRelease": "/opt/decoboon/releases/20261102-034600",
@@ -5573,9 +5574,9 @@
       "signatureHash": "819be1469a",
       "classification": "unknown",
       "severity": "medium",
-      "status": "fixed",
-      "actionable": false,
-      "count": 12,
+      "status": "reopened",
+      "actionable": true,
+      "count": 18,
       "firstSeen": null,
       "lastSeen": null,
       "samples": [
@@ -5587,7 +5588,8 @@
       ],
       "reportPaths": [
         "2026-11-02/20261102-034830",
-        "2026-11-02/20261102-035209"
+        "2026-11-02/20261102-035209",
+        "2026-11-02/20261102-042853"
       ],
       "fixedAt": "2026-11-02 03:52:15",
       "fixedRelease": "/opt/decoboon/releases/20261102-034600",
@@ -5601,7 +5603,7 @@
       "severity": "medium",
       "status": "fixed",
       "actionable": false,
-      "count": 14,
+      "count": 21,
       "firstSeen": "2026-11-02 03:33:07.683",
       "lastSeen": "2026-11-02 03:36:27.485",
       "samples": [
@@ -5613,12 +5615,13 @@
       ],
       "reportPaths": [
         "2026-11-02/20261102-034830",
-        "2026-11-02/20261102-035209"
+        "2026-11-02/20261102-035209",
+        "2026-11-02/20261102-042853"
       ],
       "fixedAt": "2026-11-02 03:52:15",
       "fixedRelease": "/opt/decoboon/releases/20261102-034600",
       "fixSummary": "已执行125-130迁移并以20261102-034600 release启动通过；生产schema validate、登录会话、首页与Web冒烟均通过"
     }
   ],
-  "updatedAt": "2026-11-02T03:52:15+08:00"
+  "updatedAt": "2026-11-01T20:28:54.677413+00:00"
 }
