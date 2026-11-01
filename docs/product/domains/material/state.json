@@ -5,8 +5,8 @@
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
   "phase": "DEV_VERIFIED",
-  "batch": "MAT-X2A",
-  "nextAction": "MAT-X2B：Web 到场确认与独立验收",
+  "batch": "MAT-X2B",
+  "nextAction": "MAT-X2 独立验收与App真机；随后 MAT-X3 材料异常处置",
   "openDecisions": [
     "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
   ],
@@ -27,7 +27,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-11-02T01:31:36+08:00",
+  "updatedAt": "2026-11-02T01:50:13+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -292,6 +292,12 @@
       "phase": "DEV_VERIFIED",
       "batch": "MAT-X2A",
       "note": "MAT-X2A Web 作业单新建/编辑/测量/提交/取消/导出完成，Web commit 489948c；独立验收和 App 真机待执行"
+    },
+    {
+      "at": "2026-11-02T01:50:13+08:00",
+      "phase": "DEV_VERIFIED",
+      "batch": "MAT-X2B",
+      "note": "MAT-X2B Web 到场确认完成：部分到场、超量拒绝、尾量到场、应付账期与成本对账通过；Web commit ec3da3b；独立验收待执行"
     }
   ]
 }

@@ -1,0 +1,168 @@
+{
+  "list": {
+    "route": "project/purchase/page",
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-02 00:52:52"
+            },
+            "purchaseId": "1793551972423336637",
+            "property": {
+              "propertyId": "242297222408962048",
+              "propertyNo": "H1793457759487",
+              "address": "翡翠湖畔3栋1301（主房）",
+              "status": {
+                "name": "施工中",
+                "key": "Serving"
+              }
+            },
+            "project": {
+              "projectId": "242297226024452096",
+              "no": "P1793457760346",
+              "name": "麦鸿演示项目 12",
+              "status": {
+                "name": "施工中",
+                "key": "Ongoing"
+              }
+            },
+            "materialPlan": {
+              "planId": "242297226095755264",
+              "catalogItem": {
+                "itemId": "242296910046560256",
+                "type": {
+                  "name": "主材",
+                  "value": "Material",
+                  "key": "Material"
+                },
+                "name": "主材--抛釉砖 800x800",
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                }
+              },
+              "quantity": 30,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "status": {
+                "name": "部分到场",
+                "key": "PartiallyArrived"
+              }
+            },
+            "no": "POac5b316d7d933836b061bb3a1e94a72b",
+            "deliveryMode": {
+              "name": "供应商直送工地",
+              "key": "Direct"
+            },
+            "quantity": 20,
+            "unit": {
+              "name": "m²",
+              "value": "Area",
+              "key": "Area"
+            },
+            "receivedQuantity": 8,
+            "status": {
+              "name": "部分到场",
+              "key": "PartiallyReceived"
+            },
+            "orderedAt": "2026-11-02",
+            "createdBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "remark": "P0清洁下单：20㎡，单价88",
+            "approvedBy": {
+              "empId": "199500000000000104",
+              "name": "审计财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "approvedAt": "2026-11-02 00:52:52",
+            "items": [
+              {
+                "purchaseItemId": "1793551972424202327",
+                "materialPlan": {
+                  "planId": "242297226095755264",
+                  "catalogItem": {
+                    "itemId": "242296910046560256",
+                    "type": {
+                      "name": "主材",
+                      "value": "Material",
+                      "key": "Material"
+                    },
+                    "name": "主材--抛釉砖 800x800",
+                    "unit": {
+                      "name": "m²",
+                      "value": "Area",
+                      "key": "Area"
+                    }
+                  },
+                  "quantity": 30,
+                  "unit": {
+                    "name": "m²",
+                    "value": "Area",
+                    "key": "Area"
+                  },
+                  "status": {
+                    "name": "部分到场",
+                    "key": "PartiallyArrived"
+                  }
+                },
+                "quantity": 20,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "receivedQuantity": 8,
+                "status": {
+                  "name": "部分到场",
+                  "key": "PartiallyReceived"
+                },
+                "remark": "P0清洁下单夹具"
+              }
+            ]
+          }
+        ],
+        "last": true,
+        "totalElements": "1",
+        "totalPages": 1,
+        "first": true,
+        "size": 1
+      },
+      "success": true
+    }
+  },
+  "purchaseId": "1793551972423336637",
+  "itemId": "1793551972424202327",
+  "receivedQuantity": 8,
+  "orderedQuantity": 20,
+  "over": {
+    "route": "project/goods-receipt/save",
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "到场数量无效或超过采购数量",
+        "system": false
+      }
+    }
+  }
+}

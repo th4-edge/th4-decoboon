@@ -324,3 +324,10 @@
 - 数据：复用 `project/material-plan/page` 与 `material/sheet/*`，不新增 Provider、DDL 或业务规则。
 - 验证：真实 Designer 完整动作链、Pm/Finance 权限负向、API/DB 回读、1440/1280/1024 无横向溢出。
 - 下一片：MAT-X2B Web 到场确认；独立验收和 App 真机另行执行。
+
+## MAT-X2B Web 到场确认（2026-11-02）
+
+- 状态：`DEV_VERIFIED`
+- 范围：Web `/workbench/material-sheets` 作业单详情的到场弹窗；复用 `project/purchase/page`、`project/goods-receipt/save|page`。
+- 验证：部分到场8㎡、超量13㎡拒绝、尾量12㎡全部到场；应付仍1条1760，账期回填；实际成本1760；三档无横向溢出。
+- 边界：App 真机、独立验收和异常退换未完成。

@@ -191,11 +191,21 @@
 - 边界：视觉人工评审因当前会话无图像输入标 `VISUAL_REVIEW_UNAVAILABLE`；App 真机、到场确认、独立验收和发布未完成。
 - 下一片：`MAT-X2B` Web 到场确认，再进入独立验收。
 
+## MAT-X2B Web 到场确认（2026-11-02，DEV_VERIFIED）
+
+- 精确提交：Web `ec3da3b`；后端 Provider 无新增。
+- 范围：Designer/Pm/Boss/StoreManager/Finance 在 Web 作业单详情确认到场；支持部分到场和尾量续收。
+- 数据源：`project/purchase/page`、`project/goods-receipt/save|page`；复用既有到场、计划、采购、应付和成本联动。
+- 真实验证：8㎡部分到场、13㎡超量拒绝、12㎡尾量到场；作业单最终 `Arrived`、采购/明细 `Received`；应付仍1条1760，receiptDate/dueDate回填；实际成本1760。
+- 证据：`docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-MAT-FINANCE-ORDER-004/40-*` 至 `53-*`。
+- 边界：App 真机、独立验收和异常退换未完成；视觉人工评审因当前会话无图像输入标 `VISUAL_REVIEW_UNAVAILABLE`。
+- 下一步：MAT-X2 独立验收与 App 真机；之后再进入 MAT-X3。
+
 ## PI-20261022-015 跨端与异常闭环（BIZ_DECIDED / 未实现）
 
 | REQ | 业务规则 | 蓝图/对象 | 字段/API | 页面 | 测试 | 验收 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | MAT-X2A Web 维护链已自测；到场待建 | 独立验收待执行 | PARTIAL |
+| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | MAT-X2A + MAT-X2B Web 自测通过 | 独立验收待执行 | DEV_VERIFIED |
 | REQ-MAT-018 | `DEC-088/BR-054` | Sheet/Purchase/Receipt/Adjustment/Settlement | 服务端状态推导 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |
 | REQ-MAT-019 | `DEC-088/BR-054` | MaterialAdjustmentOrder 及下层事实 | adjustment/* | App/Web 异常处置 | 待建 | 独立验收待执行 | UNMAPPED |
 | REQ-MAT-020 | `DEC-088/BR-045` | P1/P2/P3 只读投影 | 服务端聚合 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |
