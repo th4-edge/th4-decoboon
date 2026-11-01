@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 @Properties(allow = {
         @AllowProperties(model = CompanyJoinLimit.class, properties = {"limitId", "user", "phone", "lastJoinAt", "lastResignAt", "joinCount180d", "lastInviteAcceptAt", "blacklistUntil"}),
         @AllowProperties(model = com.th4.edge.tenant.user.model.Credentials.class,
-                properties = {"creId", "openId", "unionId", "phone", "status", "employee"})
+                properties = {"creId", "openId", "unionId", "phone", "status", "employee"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
 })
 @Service("security/security/limit/info")
 @Scope(ScopeTypes.PROTOTYPE)

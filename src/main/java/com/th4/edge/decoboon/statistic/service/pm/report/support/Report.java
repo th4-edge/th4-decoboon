@@ -73,7 +73,8 @@ import java.util.Objects;
         @AllowProperties(model = ProjectReport.class,
                 properties = {"reportId", "project", "stage", "task", "type", "title", "content", "images",
                         "author", "authorRole", "visibleToCustomer", "createTime"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role", "avatarUrl", "status"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role", "avatarUrl", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.PmReport.class, properties = {"projectCount", "preparingProjectCount", "ongoingProjectCount", "acceptingProjectCount", "suspendedProjectCount", "finishedProjectCount", "overdueProjectCount", "dueSoonProjectCount", "taskTodoCount", "taskDoingCount", "taskAcceptingCount", "taskOverdueCount", "reportTodayCount", "reportWeekCount", "pendingAcceptanceCount", "rejectedAcceptanceCount", "materialRiskCount", "materialDelayedCount", "customerCount", "quoteCount", "contractAmount", "completedAmount", "averageProgress", "onTimeDeliveryRate", "acceptancePassRate", "noticeUnreadCount", "focusProjects", "urgentTasks", "pendingAcceptances", "materialRisks", "recentReports", "recentCustomers", "recentQuotes"})
 })
 @Service("statistic/pm/report")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -54,7 +54,8 @@ import java.util.stream.Collectors;
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "address", "area", "designer"}),
         @AllowProperties(model = Employee.class,
-                properties = {"empId", "name", "store"})
+                properties = {"empId", "name", "store"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SignWorkbenchItem.class, properties = {"custId", "propertyId", "customerName", "telNo", "community", "addr", "area", "customerStatus", "customerStatusName", "designerId", "designerName", "designerStoreName", "quoteId", "quoteNo", "version", "acceptedAmount", "acceptedAt", "converted", "contractId", "contractNo", "contractStatus", "contractStatusName", "signedAt", "projectId", "projectName", "projectStatus", "projectStatusName", "currentAmount", "pendingChangeCount", "stayDays", "riskLevel", "riskReason", "nextActionKey", "nextActionLabel"})
 })
 @Service("statistic/workbench/sign/page")
 @Scope(ScopeTypes.PROTOTYPE)

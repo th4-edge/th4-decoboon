@@ -1,4 +1,5 @@
 package com.th4.edge.decoboon.project.service.tasks.delete.support;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
@@ -31,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
                         "priority", "conceal", "remark", "plannedStart", "plannedEnd", "actualStart", "actualEnd",
                         "evidenceUrls", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status"}),
         @AllowProperties(model = CatalogItem.class, properties = {"itemId", "type", "name", "unit"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})

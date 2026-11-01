@@ -34,7 +34,8 @@ import org.springframework.stereotype.Service;
                 properties = {"projectId", "no", "name", "siteAddr", "area", "status", "progress", "property", "customer"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
-        @AllowProperties(model = Customer.class, properties = {"custId", "name", "community", "addr"})
+        @AllowProperties(model = Customer.class, properties = {"custId", "name", "community", "addr"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Setting.class, properties = {"enableStore", "gradeConfig", "brandPrimary", "custodianCredit", "serviceArea", "serviceTel", "afterSaleTel", "uscc", "qualification", "intro"})
 })
 @Service("auth/session/info")
 @Scope(ScopeTypes.PROTOTYPE)

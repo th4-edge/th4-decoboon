@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.project.service.tasks.save.support;
 
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.bim.configure.SpaceType;
@@ -41,6 +42,8 @@ import java.util.ArrayList;
                         "zone", "craft", "spec", "quantity", "unit", "status", "progress", "priority",
                         "remark", "plannedStart", "plannedEnd", "actualStart", "actualEnd", "evidenceUrls", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "name", "siteAddr", "property" }),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = CatalogItem.class, properties = {"itemId", "code", "name", "unit", "craft", "spec"})

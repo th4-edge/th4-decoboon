@@ -1,5 +1,7 @@
 package com.th4.edge.tenant.billing.service.order.prepay.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.components.wechat.service.WechatJsapiPayParams;
 import com.th4.edge.components.wechat.service.WechatPayClient;
 import com.th4.edge.components.wechat.service.WechatPayOrder;
@@ -28,6 +30,10 @@ import org.springframework.stereotype.Service;
  */
 @Note("微信支付预下单")
 @Description("服务端校验企业订单归属、金额和登录微信身份后返回 requestPayment 参数")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.components.wechat.service.WechatJsapiPayParams.class,
+                properties = {"appId", "timeStamp", "nonceStr", "package", "signType", "paySign"})
+})
 @Service("order/prepay")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Prepay implements com.th4.edge.tenant.billing.service.order.prepay.Prepay {

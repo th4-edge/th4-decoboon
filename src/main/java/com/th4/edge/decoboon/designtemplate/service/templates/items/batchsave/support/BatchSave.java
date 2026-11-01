@@ -55,9 +55,10 @@ import java.util.Set;
                         "catalogItem"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
-                        "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
+                        "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.designtemplate.model.DesignTemplateRoom.class, properties = {"roomId", "roomKey", "name", "roomType", "sortNo", "length", "width", "height", "doorWidthTotal", "doorAreaTotal", "windowAreaTotal", "wallRise", "referenceArea", "referencePerimeter", "count", "remark"})
 })
 @Service("design/template/items/batchsave")
 @Scope(ScopeTypes.PROTOTYPE)

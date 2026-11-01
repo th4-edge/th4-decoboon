@@ -22,8 +22,11 @@ import java.time.LocalDate;
 
 /** 期初资金余额保存实现。 */
 @Note("保存期初资金余额")
-@Properties(allow = @AllowProperties(model = OpeningBalance.class,
-        properties = {"openingId", "account", "amount", "asOfDate", "remark", "createdBy"}))
+@Properties(allow = {
+        @AllowProperties(model = OpeningBalance.class,
+        properties = {"openingId", "account", "amount", "asOfDate", "remark", "createdBy"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("finance/opening-balance/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.finance.service.openingbalances.save.Save {

@@ -41,7 +41,10 @@ import java.math.BigDecimal;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status"}),
         @AllowProperties(model = Worker.class, properties = {"workerId", "name", "trade", "phone"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.Customer.class, properties = {"custId", "name", "telNo", "community", "addr", "area", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.finance.model.Payable.class, properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class, properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"})
 })
 @Service("finance/payment/update")
 @Scope(ScopeTypes.PROTOTYPE)

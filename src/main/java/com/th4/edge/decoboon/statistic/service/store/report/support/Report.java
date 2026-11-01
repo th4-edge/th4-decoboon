@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.store.report.support;
 
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
@@ -57,12 +58,16 @@ import java.util.List;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "property", "customer", "designer", "manager", "siteAddr",
                         "area", "contractAmount", "cost", "status", "progress", "startDate", "planEndDate", "createTime" }),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Employee.class,
                 properties = {"empId", "name", "telNo", "role", "store"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
         // 门店维度范围标注（DEC-067 BOSS-STORE-03 / P0B-04 同构）
         @AllowProperties(model = StoreScopeInfo.class,
-                properties = {"scopeType", "storeId", "storeName", "unassignedCount"})
+                properties = {"scopeType", "storeId", "storeName", "unassignedCount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.StoreManagerReport.class, properties = {"storeScope", "storeName", "memberCount", "designerCount", "marketerCount", "projectManagerCount", "customerCount", "dormantCustomerCount", "newCustomerCount", "followingCustomerCount", "pendingMeasureCount", "unassignedDesignerCount", "quoteCount", "pendingQuoteCount", "acceptedQuoteCount", "quoteAmount", "signedAmount", "conversionRate", "submittedQuoteCount", "pendingDecisionQuoteCount", "decidedOpportunityCount", "acceptedOpportunityCount", "finalQuoteAcceptanceRate", "firstQuoteAcceptanceRate", "projectCount", "preparingProjectCount", "ongoingProjectCount", "acceptingProjectCount", "suspendedProjectCount", "finishedProjectCount", "taskTodoCount", "taskOverdueCount", "reportCount", "noticeUnreadCount", "designerPerformances", "recentCustomers", "recentQuotes", "recentProjects"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.DesignerPerformance.class, properties = {"designer", "customerCount", "pendingMeasureCount", "quoteCount", "pendingQuoteCount", "acceptedQuoteCount", "quoteAmount", "signedAmount", "projectCount", "ongoingProjectCount", "taskTodoCount", "taskOverdueCount", "reportCount", "conversionRate", "submittedQuoteCount", "pendingDecisionQuoteCount", "decidedOpportunityCount", "acceptedOpportunityCount", "finalQuoteAcceptanceRate", "firstQuoteAcceptanceRate"})
 })
 @Note("门店经营报告（BOSS / 总部财务 / 店长 / 门店财务）")
 @Service("statistic/store/report")

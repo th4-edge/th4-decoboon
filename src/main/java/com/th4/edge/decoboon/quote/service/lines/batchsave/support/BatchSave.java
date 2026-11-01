@@ -60,7 +60,8 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.pack.model.PackageTemplate.class, properties = {"templateId", "code", "name", "version", "status", "area", "price", "discount", "currentPublished"})
 })
 @Service("quote/lines/save")
 @Scope(ScopeTypes.PROTOTYPE)

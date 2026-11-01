@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.designer.report.support;
 
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.model.Customer;
@@ -44,7 +45,10 @@ import java.util.List;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "property", "customer", "designer", "siteAddr", "area",
                         "contractAmount", "status", "progress", "planEndDate", "createTime" }),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.DesignerReport.class, properties = {"customerCount", "dormantCustomerCount", "followingCustomerCount", "signedCustomerCount", "quoteCount", "pendingQuoteCount", "acceptedQuoteCount", "quoteAmount", "signedAmount", "conversionRate", "submittedQuoteCount", "pendingDecisionQuoteCount", "decidedOpportunityCount", "acceptedOpportunityCount", "finalQuoteAcceptanceRate", "firstQuoteAcceptanceRate", "projectCount", "ongoingProjectCount", "finishedProjectCount", "taskTodoCount", "taskDoneCount", "taskOverdueCount", "reportCount", "noticeUnreadCount", "recentCustomers", "recentQuotes", "recentProjects"})
 })
 @Service("statistic/designer/report")
 @Scope(ScopeTypes.PROTOTYPE)

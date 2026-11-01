@@ -40,7 +40,8 @@ import java.util.List;
                 properties = {"custId", "area", "budget", "status"}),
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "community", "area", "layout", "status"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.design.model.DesignRenderVersion.class, properties = {"renderId", "sequence", "status", "imageUrl", "modelName", "requestId", "inputImageCount", "outputImageCount", "costAmount", "costCurrency", "startedAt", "completedAt", "deliverable", "confirmedAt"})
 })
 @Service("design/generation/page")
 @Scope(ScopeTypes.PROTOTYPE)

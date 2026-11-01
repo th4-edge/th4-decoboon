@@ -17,7 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("注销员工")
 @Properties(allow = {
         @AllowProperties(model = MemberHandover.class, properties = {"employee", "customerCount", "propertyCount", "quoteCount", "projectCount", "taskCount", "receivableCount"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role", "status", "company", "store", "team"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role", "status", "company", "store", "team"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "setting"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status", "defaultStore", "sort", "color", "addr"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Team.class, properties = {"teamId", "name", "color"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Setting.class, properties = {"enableStore", "gradeConfig", "brandPrimary", "custodianCredit", "serviceArea", "serviceTel", "afterSaleTel", "uscc", "qualification", "intro"})
 })
 @Service("company/member/resign")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -71,7 +71,14 @@ import org.springframework.transaction.annotation.Transactional;
                 "sourceLabel", "amount", "quantity", "progress", "costComplete", "uncertainty", "parentNodeId",
                 "relations", "visibility", "navigationPath", "returnPath", "returnAnchor"}),
         @AllowProperties(model = BusinessFactNode.FactRelation.class, properties = {
-                "relationType", "objectType", "objectId", "version"})
+                "relationType", "objectType", "objectId", "version"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.class, properties = {"contract", "lineCount", "lineAmount", "receivable", "paymentNodes", "cost", "progress", "change", "selection", "upstreamFacts", "downstreamFacts", "sourceGaps", "receivableTotal", "receivedTotal", "outstandingTotal", "overdueTotal", "overdueCount", "totalCount", "nodeId", "code", "name", "ratio", "amount", "receivedAmount", "outstandingAmount", "triggerType", "triggerStageName", "dueDate", "status", "statusName", "receivableId", "estimatedCost", "actualCost", "costComplete", "incompleteItemCount", "grossProfit", "grossMargin", "projectId", "projectNo", "projectName", "percent", "currentStageName", "stageTotal", "stageDone", "pendingAcceptanceCount", "startDate", "planEndDate", "expectedEndDate", "pendingCount", "approvedCount", "confirmedCount", "closedCount", "confirmedAmount", "selectionId", "version", "title", "summary", "designerName", "confirmerName", "confirmedAt"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.Receivable.class, properties = {"receivableTotal", "receivedTotal", "outstandingTotal", "overdueTotal", "overdueCount", "totalCount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.PaymentNode.class, properties = {"nodeId", "code", "name", "ratio", "amount", "receivedAmount", "outstandingAmount", "triggerType", "triggerStageName", "dueDate", "status", "statusName", "receivableId"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.Cost.class, properties = {"estimatedCost", "actualCost", "costComplete", "incompleteItemCount", "grossProfit", "grossMargin"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.Progress.class, properties = {"projectId", "projectNo", "projectName", "status", "statusName", "percent", "currentStageName", "stageTotal", "stageDone", "pendingAcceptanceCount", "startDate", "planEndDate", "expectedEndDate"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.Change.class, properties = {"totalCount", "pendingCount", "approvedCount", "confirmedCount", "closedCount", "confirmedAmount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractWorkbench.Selection.class, properties = {"selectionId", "version", "status", "statusName", "title", "summary", "designerName", "confirmerName", "confirmedAt", "totalCount"})
 })
 @Service("project/contract/workbench")
 @Scope(ScopeTypes.PROTOTYPE)

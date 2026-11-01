@@ -24,7 +24,8 @@ import java.util.List;
                 properties = {"stockId", "store", "item", "batchNo", "quantity", "lockedQuantity",
                         "availableQuantity", "unitCost", "safetyStock", "expiryDate", "lastInAt", "lastOutAt"}),
         @AllowProperties(model = CatalogItem.class,
-                properties = {"itemId", "type", "code", "name", "brand", "series", "spec", "unit"})
+                properties = {"itemId", "type", "code", "name", "brand", "series", "spec", "unit"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"})
 })
 @Service("inventory/stock/warning")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -16,10 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Note("单据模板继承与保存")
-@Properties(allow = @AllowProperties(model = DocumentTemplate.class,
+@Properties(allow = {
+        @AllowProperties(model = DocumentTemplate.class,
         properties = {"templateId", "company", "type", "scope", "name", "version", "baselineVersion",
                 "fieldConfig", "styleConfig", "layoutConfig", "designerConfig", "status", "presetCode", "presetNote",
-                "publishedVersion", "publishedBy", "publishedAt", "createTime", "updateTime"}))
+                "publishedVersion", "publishedBy", "publishedAt", "createTime", "updateTime"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Company.class, properties = {"comId", "title", "name", "logo", "color", "addr"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("document/template/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.document.service.template.save.Save {

@@ -36,7 +36,8 @@ import java.util.List;
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "community", "addr"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.quote.model.Quote.class, properties = {"quoteId", "no", "title", "status", "area", "amount"})
 })
 @Service("design/talk/page")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -31,7 +31,8 @@ import org.springframework.stereotype.Service;
                 properties = {"stageId", "name"}),
         @AllowProperties(model = com.th4.edge.decoboon.project.model.ProjectTask.class,
                 properties = {"taskId", "name"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractChange.class, properties = {"changeId", "no", "type", "status", "amount", "costDelta", "reason"})
 })
 @Service("project/report/page")
 @Scope(ScopeTypes.PROTOTYPE)

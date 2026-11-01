@@ -25,7 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = Credentials.class, properties = {"creId", "openId", "unionId", "phone", "status", "employee"}),
         @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "setting"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore"}),
-        @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"})
+        @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Setting.class, properties = {"enableStore", "gradeConfig", "brandPrimary", "custodianCredit", "serviceArea", "serviceTel", "afterSaleTel", "uscc", "qualification", "intro"})
 })
 @Service("invite/invitation/accept")
 @Scope(ScopeTypes.PROTOTYPE)

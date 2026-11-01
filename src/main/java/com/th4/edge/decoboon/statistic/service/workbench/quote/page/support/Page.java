@@ -41,7 +41,8 @@ import java.util.Map;
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "area", "status"}),
         @AllowProperties(model = Property.class,
-                properties = {"propertyId", "propertyNo", "community", "address", "area"})
+                properties = {"propertyId", "propertyNo", "community", "address", "area"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.QuoteWorkbenchItem.class, properties = {"custId", "propertyId", "customerName", "telNo", "community", "area", "customerStatus", "customerStatusName", "quoteId", "quoteNo", "version", "amount", "quoteStatus", "quoteStatusName", "submittedAt", "lastFeedbackAt", "adjustmentCount", "stayDays", "riskLevel", "riskReason", "nextActionKey", "nextActionLabel"})
 })
 @Service("statistic/workbench/quote/page")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -42,7 +42,12 @@ import java.math.BigDecimal;
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",
                         "pricingMode", "materialPrice", "manualPrice", "formula"}),
-        @AllowProperties(model = Space.class, properties = {"spaceId", "name", "type"})
+        @AllowProperties(model = Space.class, properties = {"spaceId", "name", "type"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.Customer.class, properties = {"custId", "name", "telNo", "community", "addr", "area", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.design.model.Design.class, properties = {"designId", "no", "name", "status", "area"}),
+        @AllowProperties(model = com.th4.edge.decoboon.pack.model.PackageTemplate.class, properties = {"templateId", "code", "name", "version", "status", "area", "price", "discount", "currentPublished"}),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class, properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteComponent.class, properties = {"type", "name", "saleAmount", "costAmount", "formula", "sort"})
 })
 @Service("quote/line/save")
 @Scope(ScopeTypes.PROTOTYPE)

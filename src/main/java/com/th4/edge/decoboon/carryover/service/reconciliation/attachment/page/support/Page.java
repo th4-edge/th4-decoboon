@@ -20,8 +20,11 @@ import java.util.List;
 
 /** 双轨对账附件分页实现。 */
 @Note("双轨对账附件分页")
-@Properties(allow = @AllowProperties(model = CarryoverReconciliationAttachment.class,
-        properties = {"attachmentId", "category", "fileUrl", "originalName", "uploadedBy", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = CarryoverReconciliationAttachment.class,
+        properties = {"attachmentId", "category", "fileUrl", "originalName", "uploadedBy", "createTime"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("carryover/reconciliation/attachment/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.carryover.service.reconciliation.attachment.page.Page {

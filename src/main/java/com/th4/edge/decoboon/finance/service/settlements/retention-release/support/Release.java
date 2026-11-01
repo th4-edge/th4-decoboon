@@ -23,9 +23,12 @@ import java.time.LocalDate;
 
 /** 质保到期释放。 */
 @Note("质保金释放")
-@Properties(allow = @AllowProperties(model = Settlement.class,
+@Properties(allow = {
+        @AllowProperties(model = Settlement.class,
         properties = {"settlementId", "project", "finalAmount", "retentionRate", "retentionAmount",
-                "retentionReleaseAt", "retentionReleasedAt", "status"}))
+                "retentionReleaseAt", "retentionReleasedAt", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class, properties = {"projectId", "no", "name", "siteAddr", "status", "contractAmount"})
+})
 @Service("finance/settlement/retention-release")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Release implements com.th4.edge.decoboon.finance.service.settlements.retentionrelease.Release {

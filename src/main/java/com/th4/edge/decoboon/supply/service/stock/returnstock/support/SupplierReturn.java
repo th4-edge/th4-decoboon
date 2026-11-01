@@ -27,10 +27,18 @@ import java.util.List;
 
 /** 向供应商退换材料。 */
 @Note("供应商退换")
-@Properties(allow = @AllowProperties(model = StockMovement.class,
+@Properties(allow = {
+        @AllowProperties(model = StockMovement.class,
         properties = {"movementId", "stock", "item", "project", "quoteLine", "materialPlan", "type",
                 "quantity", "unitCost", "amount", "beforeQuantity", "afterQuantity", "sourceNo",
-                "occurredAt", "operator", "images", "remark", "createTime"}))
+                "occurredAt", "operator", "images", "remark", "createTime"}),
+        @AllowProperties(model = com.th4.edge.decoboon.catalog.model.CatalogItem.class, properties = {"itemId", "name", "type", "category", "brand", "series", "spec", "unit", "pricingMode", "materialPrice", "manualPrice"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.MaterialPlan.class, properties = {"planId", "unit", "quantity", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class, properties = {"projectId", "no", "name", "siteAddr", "status", "contractAmount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteLine.class, properties = {"itemId", "name", "type", "category", "brand", "spec", "unit", "quantity", "price", "amount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.supply.model.InventoryStock.class, properties = {"stockId", "quantity", "availableQuantity", "lockedQuantity", "safetyStock", "unitCost", "batchNo"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("stock/supplier-return")
 @Scope(ScopeTypes.PROTOTYPE)
 public class SupplierReturn implements com.th4.edge.decoboon.supply.service.stock.returnstock.SupplierReturn {

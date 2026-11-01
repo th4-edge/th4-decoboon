@@ -20,8 +20,11 @@ import java.util.List;
 
 /** 期初资金余额分页实现。 */
 @Note("期初资金余额分页")
-@Properties(allow = @AllowProperties(model = OpeningBalance.class,
-        properties = {"openingId", "account", "amount", "asOfDate", "remark", "createdBy", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = OpeningBalance.class,
+        properties = {"openingId", "account", "amount", "asOfDate", "remark", "createdBy", "createTime"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("finance/opening-balance/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.finance.service.openingbalances.page.Page {

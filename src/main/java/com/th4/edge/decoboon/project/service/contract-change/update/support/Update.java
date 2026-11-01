@@ -42,7 +42,8 @@ import java.util.List;
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "contractAmount", "status", "property" }),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ContractLine.class, properties = {"lineId", "name", "type", "category", "brand", "spec", "unit", "quantity", "materialPrice", "manualPrice", "amount"})
 })
 @Service("project/contract-change/update")
 @Scope(ScopeTypes.PROTOTYPE)

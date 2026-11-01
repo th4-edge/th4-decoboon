@@ -44,7 +44,10 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = com.th4.edge.decoboon.customer.model.CustomerPortrait.class,
                 properties = {"portraitId", "decisionRole", "purpose", "houseCondition", "startWindow",
                         "style", "eco", "household", "payment", "concerns", "competitor"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.CustomerGrade.class, properties = {"level", "score", "computedAt", "breakdown"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.CustomerTag.class, properties = {"tagId", "name", "category", "scope", "color", "status", "sort", "key"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.CustomerGrade.Item.class, properties = {"dimension", "label", "weight", "score", "reason"})
 })
 @Service("customer/my-customer/overview")
 @Scope(ScopeTypes.PROTOTYPE)

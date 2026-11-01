@@ -1,5 +1,7 @@
 package com.th4.edge.platform.service.auth.logout.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.security.annotation.User;
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 /** 平台独立登出实现。 */
 @Note("平台登出")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.platform.model.PlatformUser.class,
+                properties = {"userId", "name", "role", "status", "permissions"})
+})
 @Service("platform/auth/logout")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Logout implements com.th4.edge.platform.service.auth.logout.Logout {

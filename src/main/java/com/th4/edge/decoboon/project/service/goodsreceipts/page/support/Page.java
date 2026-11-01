@@ -1,4 +1,6 @@
 package com.th4.edge.decoboon.project.service.goodsreceipts.page.support;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.*;
@@ -23,7 +25,9 @@ import org.springframework.stereotype.Service;
  @AllowProperties(model=CatalogItem.class,properties={"itemId","name","unit","brand","spec","type"}),
  @AllowProperties(model=Property.class,properties={"propertyId","propertyNo","address","status"}),
  @AllowProperties(model=Project.class,properties={"projectId","no","name","status"}),
- @AllowProperties(model=Employee.class,properties={"empId","name","role"})})
+ @AllowProperties(model=Employee.class,properties={"empId","name","role"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"})
+})
 @Service("project/goods-receipt/page") @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.project.service.goodsreceipts.page.Page{
  @AutoInject private Long purchaseId; @User private Employee employee;

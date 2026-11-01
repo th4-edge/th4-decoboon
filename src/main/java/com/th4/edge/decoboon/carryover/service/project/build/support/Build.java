@@ -16,8 +16,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Note("承接项目落地")
-@Properties(allow = @AllowProperties(model = CarryoverProject.class,
-        properties = {"itemId", "status", "quote", "contract", "project", "receivable", "payable", "appliedAt", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = CarryoverProject.class,
+        properties = {"itemId", "status", "quote", "contract", "project", "receivable", "payable", "appliedAt", "createTime"}),
+        @AllowProperties(model = com.th4.edge.decoboon.finance.model.Payable.class, properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.finance.model.Receivable.class, properties = {"receivableId", "name", "type", "amount", "receivedAmount", "dueDate", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.Project.class, properties = {"projectId", "no", "name", "siteAddr", "status", "contractAmount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ProjectContract.class, properties = {"contractId", "no", "status", "signedAmount", "currentAmount", "startDate", "planEndDate"}),
+        @AllowProperties(model = com.th4.edge.decoboon.quote.model.Quote.class, properties = {"quoteId", "no", "title", "status", "area", "amount"})
+})
 @Service("carryover/project/build")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Build implements com.th4.edge.decoboon.carryover.service.project.build.Build {

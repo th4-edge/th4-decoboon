@@ -18,8 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 /** 双轨对账附件保存实现。 */
 @Note("保存双轨对账附件")
-@Properties(allow = @AllowProperties(model = CarryoverReconciliationAttachment.class,
-        properties = {"attachmentId", "category", "fileUrl", "originalName", "uploadedBy", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = CarryoverReconciliationAttachment.class,
+        properties = {"attachmentId", "category", "fileUrl", "originalName", "uploadedBy", "createTime"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("carryover/reconciliation/attachment/save")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Save implements com.th4.edge.decoboon.carryover.service.reconciliation.attachment.save.Save {

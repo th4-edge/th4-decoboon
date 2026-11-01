@@ -35,7 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = DesignTemplateVersion.class,
                 properties = {"versionId", "version", "status", "name", "houseType", "areaMin", "areaMax",
                         "tags", "publishedAt"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"})
 })
 @Service("design/template/disable")
 @Scope(ScopeTypes.PROTOTYPE)

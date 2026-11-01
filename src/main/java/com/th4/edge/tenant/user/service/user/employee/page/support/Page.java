@@ -28,13 +28,13 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = com.th4.edge.tenant.user.model.Credentials.class,
                 properties = {"creId", "openId", "unionId", "phone", "status", "employee"}),
         @AllowProperties(model = Employee.class,
-                properties = {"empId", "name", "telNo", "role", "store", "team", "company", "status", "avatarUrl", "joinedAt", "createTime"}),
+                properties = {"empId", "name", "telNo", "role", "store", "team", "company", "status", "avatarUrl", "joinedAt"}),
         @AllowProperties(model = Company.class,
-                properties = {"comId", "title", "name", "logo", "color", "size", "addr", "setting", "createTime"}),
+                properties = {"comId", "title", "name", "logo", "color"}),
         @AllowProperties(model = Store.class,
-                properties = {"storeId", "name", "defaultStore", "color", "addr", "company", "createTime"}),
+                properties = {"storeId", "name", "defaultStore", "color", "addr", "company"}),
         @AllowProperties(model = Team.class,
-                properties = {"teamId", "name", "color", "store", "company", "createTime"})
+                properties = {"teamId", "name", "color", "store", "company"})
 })
 @Service("user/employee/page")
 @ServiceName("page")

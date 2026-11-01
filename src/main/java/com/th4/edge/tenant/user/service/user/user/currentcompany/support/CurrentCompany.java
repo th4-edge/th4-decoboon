@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role", "store", "team", "company", "status", "avatarUrl", "joinedAt", "createTime"}),
         @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "addr", "setting"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name", "defaultStore"}),
-        @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"})
+        @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Setting.class, properties = {"enableStore", "gradeConfig", "brandPrimary", "custodianCredit", "serviceArea", "serviceTel", "afterSaleTel", "uscc", "qualification", "intro"})
 })
 @Service("user/user/current-company")
 @Scope(ScopeTypes.PROTOTYPE)

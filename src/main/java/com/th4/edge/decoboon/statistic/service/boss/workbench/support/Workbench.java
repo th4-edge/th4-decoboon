@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.boss.workbench.support;
 
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.statistic.context.BossDashboardContext;
 import com.th4.edge.decoboon.statistic.context.BossWorkbenchContext;
 import com.th4.edge.decoboon.statistic.context.BusinessAlertContext;
@@ -42,6 +43,8 @@ import java.util.List;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager",
                         "siteAddr", "status", "progress", "planEndDate", "actualEndDate"}),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = WorkbenchIndicator.class,
                 properties = {"key", "label", "value", "valueType", "status", "statusText", "detail"}),
@@ -51,7 +54,8 @@ import java.util.List;
         @AllowProperties(model = BusinessEvent.class,
                 properties = {"eventId", "category", "type", "level", "title", "content", "occurredAt", "amount",
                         "businessType", "businessId", "businessNo", "projectId", "projectName", "customerId",
-                        "customerName", "ownerName"})
+                        "customerName", "ownerName"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.Customer.class, properties = {"custId", "name", "telNo", "community", "addr", "area", "status"})
 })
 @Service("statistic/boss/workbench")
 @Scope(ScopeTypes.PROTOTYPE)

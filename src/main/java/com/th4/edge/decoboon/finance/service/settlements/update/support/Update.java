@@ -1,4 +1,5 @@
 package com.th4.edge.decoboon.finance.service.settlements.update.support;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.customer.model.Customer;
 
 import com.th4.edge.decoboon.finance.configure.SettlementStatus;
@@ -37,6 +38,8 @@ import java.time.LocalDate;
                         "estimatedCost", "actualCost", "manualIncomeAmount", "manualCostAmount", "profitAmount", "costComplete", "costIncompleteCount", "grossMargin", "status", "confirmedBy", "confirmedAt", "closedAt", "remark", "createdBy", "createTime"}),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status" }),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})

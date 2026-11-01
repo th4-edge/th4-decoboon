@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = RiskItem.class,
                 properties = {"riskId", "alertKey", "alertType", "status", "owner", "store", "team",
                         "assignedAt", "dueAt", "roundNo", "recurrenceCount"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Team.class, properties = {"teamId", "name", "color"})
 })
 @Service("risk/item/assign")
 @Scope(ScopeTypes.PROTOTYPE)

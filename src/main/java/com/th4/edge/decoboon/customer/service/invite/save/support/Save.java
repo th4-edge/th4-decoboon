@@ -33,7 +33,8 @@ import java.util.UUID;
         @AllowProperties(model = Property.class,
                 properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout"}),
         @AllowProperties(model = com.th4.edge.decoboon.customer.model.Customer.class,
-                properties = {"custId", "name", "telNo", "community", "addr"})
+                properties = {"custId", "name", "telNo", "community", "addr"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
 })
 @Service("identity/customer-invite/save")
 @Scope(ScopeTypes.PROTOTYPE)

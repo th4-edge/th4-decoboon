@@ -1,4 +1,6 @@
 package com.th4.edge.decoboon.project.service.purchases.page.support;
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.catalog.model.CatalogItem;
 import com.th4.edge.decoboon.material.context.MaterialCommercialPrivacyContext;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
@@ -30,7 +32,10 @@ import java.util.List;
  @AllowProperties(model=MaterialPlan.class,properties={"planId","catalogItem","quantity","unit","unitPrice","cost","status"}),
  @AllowProperties(model=CatalogItem.class,properties={"itemId","name","unit","brand","spec","type"}),
  @AllowProperties(model=Partner.class,properties={"partnerId","type","name","contactName","telNo","status"}),
- @AllowProperties(model=Employee.class,properties={"empId","name","role"})})
+ @AllowProperties(model=Employee.class,properties={"empId","name","role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteLine.class, properties = {"itemId", "name", "type", "category", "brand", "spec", "unit", "quantity", "price", "amount"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"})
+})
 @Service("project/purchase/page") @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.project.service.purchases.page.Page{
  @AutoInject private Long projectId; @User private Employee employee;

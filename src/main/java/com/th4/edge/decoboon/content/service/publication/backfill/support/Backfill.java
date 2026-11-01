@@ -26,8 +26,13 @@ import java.time.LocalDateTime;
 
 /** 回填员工发布记录实现。 */
 @Note("回填员工发布记录")
-@Properties(allow = @AllowProperties(model = PublicationRecord.class,
-        properties = {"publicationId", "platform", "postUrl", "platformPostId", "publishedAt", "backfillEvidencePath", "status", "createTime", "updateTime", "employeeContent", "task", "employee"}))
+@Properties(allow = {
+        @AllowProperties(model = PublicationRecord.class,
+        properties = {"publicationId", "platform", "postUrl", "platformPostId", "publishedAt", "backfillEvidencePath", "status", "createTime", "updateTime", "employeeContent", "task", "employee"}),
+        @AllowProperties(model = com.th4.edge.decoboon.content.model.ContentTask.class, properties = {"taskId", "title", "goal", "targetAudience", "platform", "deadline", "assigneeScope", "status", "publishedAt", "closedAt", "claimedByMe", "myContentStatus", "myContentId"}),
+        @AllowProperties(model = com.th4.edge.decoboon.content.model.EmployeeContent.class, properties = {"contentId", "status", "startedAt", "submittedAt", "reviewStatus", "publishStatus", "rejectionReason", "selectedAssetIds", "caption", "renderedFilePath", "coverFilePath", "renderJobId", "renderError", "reviewedAt", "renderedUrl", "coverUrl"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("content/publication/backfill")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Backfill implements com.th4.edge.decoboon.content.service.publication.backfill.Backfill {

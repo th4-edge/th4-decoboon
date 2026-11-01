@@ -31,7 +31,8 @@ import java.time.LocalDate;
                 properties = {"itemId", "theme", "originalAmount", "originalSource", "originalConfirmed",
                         "systemAmount", "difference", "differenceType", "differenceStatus", "reason", "action",
                         "owner", "dueDate"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.carryover.model.CarryoverChecklistItem.class, properties = {"key", "label", "required", "completed", "exception"})
 })
 @Service("carryover/reconciliation/item/save")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -45,7 +45,8 @@ import java.util.stream.Collectors;
         @AllowProperties(model = Design.class,
                 properties = {"designId", "no", "name", "version", "status", "updateTime"}),
         @AllowProperties(model = Property.class,
-                properties = {"propertyId", "propertyNo", "community", "address", "area"})
+                properties = {"propertyId", "propertyNo", "community", "address", "area"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.DesignWorkbenchItem.class, properties = {"custId", "propertyId", "customerName", "telNo", "community", "addr", "area", "customerStatus", "customerStatusName", "measureAt", "pendingMeasureAt", "designStatus", "designStatusName", "schemeCount", "hasRequirement", "lastDesignAt", "latestDesignId", "latestDesignName", "latestDesignStatusName", "calculatedAmount", "currentQuoteAmount", "currentQuoteNo", "currentQuoteStatusName", "priceSource", "stayDays"})
 })
 @Service("statistic/workbench/design/page")
 @Scope(ScopeTypes.PROTOTYPE)

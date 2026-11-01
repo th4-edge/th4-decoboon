@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.catalog.service.items.importer.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +33,12 @@ import java.util.List;
 
 /** 报价项目库批量导入实现。 */
 @Note("报价项目库批量导入")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.decoboon.catalog.service.items.importer.ImportResult.class,
+                properties = {"total", "success", "failed", "failures"}),
+        @AllowProperties(model = com.th4.edge.decoboon.catalog.service.items.importer.ImportResult.Failure.class,
+                properties = {"index", "name", "reason"})
+})
 @Service("catalog/item/import")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Import implements com.th4.edge.decoboon.catalog.service.items.importer.Import {

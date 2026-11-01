@@ -1,5 +1,7 @@
 package com.th4.edge.tenant.billing.service.order.callback.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.components.wechat.service.WechatPayClient;
 import com.th4.edge.components.wechat.service.WechatPayNotification;
 import com.th4.edge.components.wechat.service.WechatPayNotifyBody;
@@ -24,6 +26,10 @@ import java.util.Map;
  */
 @Note("微信支付回调")
 @Description("仅接受微信支付 API v3 加密通知；交易状态和金额以微信支付查询结果为准")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.tenant.billing.model.Order.class,
+                properties = {"orderNo", "status", "amount", "paidTime"})
+})
 @Service("order/callback")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Callback implements com.th4.edge.tenant.billing.service.order.callback.Callback {

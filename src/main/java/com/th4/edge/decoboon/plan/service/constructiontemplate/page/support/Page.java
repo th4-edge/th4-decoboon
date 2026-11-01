@@ -26,7 +26,8 @@ import com.th4.edge.decoboon.plan.model.ConstructionStageTemplate;
         @AllowProperties(model = ConstructionPlanTemplate.class,
                 properties = {"templateId", "code", "version", "name", "description", "totalDays", "sort", "source", "sourceBaselineCode", "sourceBaselineVersion", "status", "defaultPlan", "currentEnabled", "stages"}),
         @AllowProperties(model = ConstructionStageTemplate.class,
-                properties = {"code", "name", "defaultDays", "acceptanceMode", "sort", "description"})
+                properties = {"code", "name", "defaultDays", "acceptanceMode", "sort", "description"}),
+        @AllowProperties(model = com.th4.edge.decoboon.plan.model.PlanTemplateCatalog.class, properties = {"paymentPlanBaselineVersion", "constructionPlanBaselineVersion", "paymentPlans", "constructionPlans"})
 })
 @Service("plan/construction-template/page")
 @Scope(ScopeTypes.PROTOTYPE)

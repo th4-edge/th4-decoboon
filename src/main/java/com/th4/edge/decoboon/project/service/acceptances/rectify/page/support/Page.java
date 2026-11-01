@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.project.service.acceptances.rectify.page.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.project.configure.AcceptStatus;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
 import com.th4.edge.decoboon.project.model.Acceptance;
@@ -30,6 +32,10 @@ import java.util.List;
  */
 @Note("整改中阶段清单")
 @Description("按数据范围列出当前处于整改中的阶段验收，含轮次、整改责任人与逾期天数")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.AcceptanceRectifyItem.class,
+                properties = {"acceptanceId", "projectId", "projectNo", "projectName", "stageId", "stageName", "roundNo", "conclusion", "issues", "rectificationOwnerName", "rectificationType", "rectificationTypeName", "rectificationIssueImageCount", "rectificationDueDate", "overdueDays", "confirmedAt", "nextAction"})
+})
 @Service("project/acceptance/rectify/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.project.service.acceptances.rectify.page.Page {

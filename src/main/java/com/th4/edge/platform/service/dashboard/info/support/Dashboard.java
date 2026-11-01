@@ -1,5 +1,7 @@
 package com.th4.edge.platform.service.dashboard.info.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.security.annotation.User;
@@ -13,6 +15,14 @@ import org.springframework.stereotype.Service;
 
 /** 平台运营总览实现。 */
 @Note("平台运营总览")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.platform.model.PlatformMetrics.class,
+                properties = {"totalCompanies", "activeSubscriptions", "trialSubscriptions", "riskCompanies", "expiringSoon", "newCompaniesThisMonth", "paidAmountLast30Days", "mrr", "seatUsageRate", "storeUsageRate", "subscriptionStatus", "planDistribution", "funnel", "revenueTrend"}),
+        @AllowProperties(model = com.th4.edge.platform.model.FunnelMetric.class,
+                properties = {"name", "value", "conversionRate"}),
+        @AllowProperties(model = com.th4.edge.platform.model.RevenueTrend.class,
+                properties = {"month", "orderAmount", "newCompanies", "renewals"})
+})
 @Service("platform/dashboard/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Dashboard implements com.th4.edge.platform.service.dashboard.info.Dashboard {

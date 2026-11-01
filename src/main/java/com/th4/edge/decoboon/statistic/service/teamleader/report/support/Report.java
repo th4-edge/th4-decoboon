@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.statistic.service.teamleader.report.support;
 
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.collab.repository.NoticeRepository;
 import com.th4.edge.decoboon.customer.configure.CustStatus;
 import com.th4.edge.decoboon.customer.context.CustomerInsightContext;
@@ -55,10 +56,14 @@ import java.util.List;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "property", "customer", "designer", "manager", "siteAddr",
                         "area", "contractAmount", "status", "progress", "startDate", "planEndDate", "createTime" }),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Employee.class,
                 properties = {"empId", "name", "telNo", "role", "store", "team"}),
         @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
-        @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"})
+        @AllowProperties(model = Team.class, properties = {"teamId", "name", "color"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.TeamLeaderReport.class, properties = {"teamName", "memberCount", "marketerCount", "designerCount", "projectManagerCount", "customerCount", "dormantCustomerCount", "followingCustomerCount", "pendingMeasureCount", "unassignedDesignerCount", "followDueCount", "followOverdueCount", "quoteCount", "pendingQuoteCount", "acceptedQuoteCount", "quoteAmount", "acceptedQuoteAmount", "signedAmount", "conversionRate", "submittedQuoteCount", "pendingDecisionQuoteCount", "decidedOpportunityCount", "acceptedOpportunityCount", "finalQuoteAcceptanceRate", "firstQuoteAcceptanceRate", "projectCount", "preparingProjectCount", "ongoingProjectCount", "acceptingProjectCount", "suspendedProjectCount", "finishedProjectCount", "taskTodoCount", "taskOverdueCount", "reportCount", "noticeUnreadCount", "memberPerformances", "recentCustomers", "recentQuotes", "recentProjects"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.TeamMemberPerformance.class, properties = {"employee", "customerCount", "followDueCount", "followOverdueCount", "quoteCount", "pendingQuoteCount", "acceptedQuoteCount", "quoteAmount", "signedAmount", "projectCount", "ongoingProjectCount", "taskTodoCount", "taskOverdueCount", "reportCount", "conversionRate", "submittedQuoteCount", "pendingDecisionQuoteCount", "decidedOpportunityCount", "acceptedOpportunityCount", "finalQuoteAcceptanceRate", "firstQuoteAcceptanceRate"})
 })
 @Service("statistic/team-leader/report")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -22,8 +22,11 @@ import java.time.LocalDateTime;
 
 /** 审核员工成片实现。 */
 @Note("审核员工成片")
-@Properties(allow = @AllowProperties(model = EmployeeContent.class,
-        properties = {"contentId", "status", "reviewStatus", "rejectionReason", "reviewedBy", "reviewedAt", "renderedUrl", "coverUrl"}))
+@Properties(allow = {
+        @AllowProperties(model = EmployeeContent.class,
+        properties = {"contentId", "status", "reviewStatus", "rejectionReason", "reviewedBy", "reviewedAt", "renderedUrl", "coverUrl"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
+})
 @Service("content/employee-content/review")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Review implements com.th4.edge.decoboon.content.service.employeecontent.review.Review {

@@ -45,7 +45,8 @@ import java.time.LocalDateTime;
                         "confirmedBy", "confirmedAt", "newBaseEndDate", "receivableRecalculated",
                         "visibleToCustomer", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.ProjectContract.class, properties = {"contractId", "no", "status", "signedAmount", "currentAmount", "startDate", "planEndDate"})
 })
 @Service("project/plan-deviation/update")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -28,7 +28,12 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "code", "name", "brand", "spec", "unit"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.MaterialPlan.class, properties = {"planId", "unit", "quantity", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.project.model.PurchaseOrder.class, properties = {"purchaseId", "no", "status", "supplierName", "quantity", "receivedQuantity", "unitPrice", "amount", "expectedAt"}),
+        @AllowProperties(model = com.th4.edge.decoboon.quote.model.QuoteLine.class, properties = {"itemId", "name", "type", "category", "brand", "spec", "unit", "quantity", "price", "amount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.supply.model.InventoryStock.class, properties = {"stockId", "quantity", "availableQuantity", "lockedQuantity", "safetyStock", "unitCost", "batchNo"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"})
 })
 @Service("stock/movement/page")
 @Scope(ScopeTypes.PROTOTYPE)

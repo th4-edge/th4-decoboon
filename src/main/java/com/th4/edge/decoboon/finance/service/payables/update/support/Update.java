@@ -37,7 +37,8 @@ import java.time.LocalDate;
                 properties = {"planId", "quantity", "unit", "unitPrice", "cost", "status", "requiredAt", "arrivedAt", "property" }),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class, properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"})
 })
 @Service("finance/payable/update")
 @Scope(ScopeTypes.PROTOTYPE)

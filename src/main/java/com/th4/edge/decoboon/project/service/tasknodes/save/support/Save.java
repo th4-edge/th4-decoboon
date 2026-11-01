@@ -39,7 +39,8 @@ import java.util.Map;
         @AllowProperties(model = TaskNode.class,
                 properties = {"nodeId", "task", "nodeKey", "note", "medias", "confirmedBy", "createTime"}),
         @AllowProperties(model = ProjectTask.class,
-                properties = {"taskId", "name", "status", "progress", "evidenceUrls", "actualStart", "actualEnd"})
+                properties = {"taskId", "name", "status", "progress", "evidenceUrls", "actualStart", "actualEnd"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
 })
 @Service("project/task-node/save")
 @Scope(ScopeTypes.PROTOTYPE)

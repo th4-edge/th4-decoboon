@@ -63,7 +63,10 @@ import java.util.stream.Collectors;
                 properties = {"itemId", "catalogSourceId", "catalogSourceCode", "catalogSourceRevision", "space", "type", "category", "packageSectionNameSnapshot", "name", "brand", "spec", "unit", "quantity",
                         "quantityFormula", "materialPrice", "manualPrice", "fixedTotalPrice", "pricingMode",
                         "price", "amount", "role", "included", "discountAmount", "sort", "typeRowId", "sourceLineIds", "sourceRegionIds", "sourceRegionNames", "sourceCount"}),
-        @AllowProperties(model = Space.class, properties = {"spaceId", "name", "type"})
+        @AllowProperties(model = Space.class, properties = {"spaceId", "name", "type"}),
+        @AllowProperties(model = com.th4.edge.decoboon.customer.model.Customer.class, properties = {"custId", "name", "telNo", "community", "addr", "area", "status"}),
+        @AllowProperties(model = com.th4.edge.decoboon.design.model.Design.class, properties = {"designId", "no", "name", "status", "area"}),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class, properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"})
 })
 @Service("quote/workbook/apply")
 @Scope(ScopeTypes.PROTOTYPE)

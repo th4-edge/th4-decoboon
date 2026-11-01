@@ -1,5 +1,6 @@
 package com.th4.edge.decoboon.finance.service.payables.page.support;
 
+import com.th4.edge.decoboon.supply.model.Partner;
 import com.th4.edge.decoboon.common.context.StoreScope;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.finance.configure.PayableStatus;
@@ -41,11 +42,15 @@ import java.util.Map;
                         "createdBy", "createTime", "property" }),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "siteAddr", "status" }),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = com.th4.edge.decoboon.project.model.MaterialPlan.class,
                 properties = {"materialPlanId", "name", "quantity", "unit", "cost", "status", "requiredAt"}),
         @AllowProperties(model = Customer.class,
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = Partner.class,
+                properties = {"partnerId", "name", "type", "telNo", "settlementMode", "settlementDays", "cutoffDay"})
 })
 @Service("finance/payable/page")
 @Scope(ScopeTypes.PROTOTYPE)

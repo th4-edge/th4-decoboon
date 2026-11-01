@@ -51,7 +51,8 @@ import java.util.UUID;
                 properties = {"custId", "name", "telNo", "community", "addr", "area", "budget", "status"}),
         @AllowProperties(model = LedgerCategory.class,
                 properties = {"categoryId", "name", "description", "direction", "code", "builtIn", "sort", "active"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class, properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"})
 })
 @Service("finance/ledger/correct")
 @Scope(ScopeTypes.PROTOTYPE)

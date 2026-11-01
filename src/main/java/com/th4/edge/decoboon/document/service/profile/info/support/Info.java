@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Note("企业单据资料")
-@Properties(allow = @AllowProperties(model = DocumentProfile.class,
+@Properties(allow = {
+        @AllowProperties(model = DocumentProfile.class,
         properties = {"profileId", "company", "legalName", "creditCode", "legalRepresentative", "address",
-                "serviceHotline", "bankName", "bankAccount", "logo", "createTime", "updateTime"}))
+                "serviceHotline", "bankName", "bankAccount", "logo", "createTime", "updateTime"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Company.class, properties = {"comId", "title", "name", "logo", "color", "addr"})
+})
 @Service("document/profile/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Info implements com.th4.edge.decoboon.document.service.profile.info.Info {

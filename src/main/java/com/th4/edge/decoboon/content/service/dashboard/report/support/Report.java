@@ -25,7 +25,8 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = EmployeeContent.class, properties = {"contentId", "status", "caption"}),
         @AllowProperties(model = PublicationRecord.class, properties = {"publicationId", "platform", "postUrl", "publishedAt", "status"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "status", "measureAt"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.content.model.ContentDashboardReport.Metric.class, properties = {"key", "label", "value", "subText"})
 })
 @Service("content/dashboard/report")
 @Scope(ScopeTypes.PROTOTYPE)

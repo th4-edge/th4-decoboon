@@ -40,6 +40,8 @@ import java.util.Map;
                 properties = {"receivableId", "name", "type", "amount", "receivedAmount", "dueDate", "status", "property" }),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "status" }),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })

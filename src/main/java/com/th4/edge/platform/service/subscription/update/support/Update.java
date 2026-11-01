@@ -1,5 +1,7 @@
 package com.th4.edge.platform.service.subscription.update.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
@@ -19,6 +21,10 @@ import org.springframework.stereotype.Service;
 
 /** 平台人工调整订阅实现。 */
 @Note("平台人工调整订阅")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.platform.model.PlatformSubscription.class,
+                properties = {"subId", "comId", "companyTitle", "planCode", "planName", "status", "serviceEndTime", "remainingDays", "extraSeats", "extraStores", "usedSeats", "effectiveMaxSeats", "usedStores", "effectiveMaxStores", "writable", "expired"})
+})
 @Service("platform/subscription/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.platform.service.subscription.update.Update {

@@ -26,7 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
                 "targetCompanyTitle", "targetSubId", "summary", "beforeValue", "afterValue", "reason", "createTime"
         }),
         @AllowProperties(model = PlatformUser.class, properties = {"userId", "name", "phone", "role", "department"}),
-        @AllowProperties(model = PlatformDepartment.class, properties = {"deptId", "code", "name"})
+        @AllowProperties(model = PlatformDepartment.class, properties = {"deptId", "code", "name"}),
+        @AllowProperties(model = com.th4.edge.platform.model.PlatformOrg.class, properties = {"orgId", "name", "code", "status"})
 })
 @Service("platform/operation/page")
 @Scope(ScopeTypes.PROTOTYPE)

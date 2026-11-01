@@ -1,5 +1,7 @@
 package com.th4.edge.platform.service.tenant.info.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
@@ -15,6 +17,10 @@ import org.springframework.stereotype.Service;
 
 /** 平台企业详情实现。 */
 @Note("平台企业详情")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.platform.model.PlatformTenant.class,
+                properties = {"comId", "title", "name", "logo", "color", "size", "addr", "createTime", "subId", "planName", "subscriptionStatus", "serviceEndTime", "remainingDays", "usedSeats", "effectiveMaxSeats", "usedStores", "effectiveMaxStores", "enableStore"})
+})
 @Service("platform/tenant/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Info implements com.th4.edge.platform.service.tenant.info.Info {

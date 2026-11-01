@@ -54,7 +54,10 @@ import org.springframework.transaction.annotation.Transactional;
                 properties = {"propertyId", "propertyNo", "customer", "community", "building", "roomNo", "address",
                         "area", "layout", "status", "salesman", "designer", "latestMeasureAt"}),
         @AllowProperties(model = Employee.class,
-                properties = {"empId", "name", "telNo", "role"})
+                properties = {"empId", "name", "telNo", "role"}),
+        @AllowProperties(model = com.th4.edge.decoboon.common.model.BusinessStateView.class, properties = {"objectKey", "objectId", "status", "statusLabel", "statusTone", "derivedLabels", "nextAction", "blockedReasons", "nextOwner", "updatedAt", "businessRefs"}),
+        @AllowProperties(model = com.th4.edge.decoboon.common.model.BusinessDerivedLabel.class, properties = {"key", "label", "tone"}),
+        @AllowProperties(model = com.th4.edge.decoboon.common.model.BusinessNextAction.class, properties = {"key", "label", "hint", "ownerRole", "fromStatus", "toStatus", "enabled", "blockedReasons", "missingFields", "reloadScopes", "businessRefs"})
 })
 @Service("project/project/info")
 @Scope(ScopeTypes.PROTOTYPE)

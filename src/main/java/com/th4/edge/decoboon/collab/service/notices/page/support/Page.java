@@ -26,7 +26,8 @@ import org.springframework.stereotype.Service;
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "property" }),
         @AllowProperties(model = Customer.class, properties = {"custId", "name", "telNo", "community", "addr", "status"}),
         @AllowProperties(model = Quote.class, properties = {"quoteId", "no", "status", "amount", "area", "customer"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name"}),
+        @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class, properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"})
 })
 @Service("collab/notice/page")
 @Scope(ScopeTypes.PROTOTYPE)

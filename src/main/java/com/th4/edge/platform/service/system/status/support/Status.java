@@ -1,5 +1,7 @@
 package com.th4.edge.platform.service.system.status.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.provider.security.annotation.User;
@@ -13,6 +15,14 @@ import org.springframework.stereotype.Service;
 
 /** 平台服务器运行状态实现。 */
 @Note("平台服务器运行状态")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.platform.model.SystemStatus.class,
+                properties = {"hostName", "osName", "javaVersion", "appVersion", "cpuCores", "cpuUsage", "totalMemory", "usedMemory", "maxMemory", "diskTotal", "diskUsed", "uptimeSeconds", "systemLoad", "history", "services", "alerts"}),
+        @AllowProperties(model = com.th4.edge.platform.model.SystemMetricPoint.class,
+                properties = {"sampleTime", "cpuUsage", "memoryUsage", "diskUsage", "networkRecv", "networkSent"}),
+        @AllowProperties(model = com.th4.edge.platform.model.ServiceHealth.class,
+                properties = {"name", "status", "latencyMs", "detail"})
+})
 @Service("platform/system/status")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Status implements com.th4.edge.platform.service.system.status.Status {

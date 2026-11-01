@@ -63,7 +63,13 @@ import java.util.Set;
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "property", "customer", "status", "progress",
                         "siteAddr", "area", "contractAmount", "startDate", "planEndDate" }),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name"})
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
+        @AllowProperties(model = Employee.class, properties = {"empId", "name"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.MarketerReport.class, properties = {"customerCount", "dormantCustomerCount", "newCustomerCount", "followingCustomerCount", "signedCustomerCount", "pendingMeasureCount", "quotedCustomerCount", "followDueCount", "followOverdueCount", "draftQuoteCount", "submittedQuoteCount", "lostCustomerCount", "projectCount", "ongoingProjectCount", "finishedProjectCount", "taskTodoCount", "taskOverdueCount", "quoteAmount", "acceptedQuoteAmount", "signedAmount", "wechatAddedCount", "convertedCustomerCount", "conversionRate", "averageConversionDays", "goldenHotCount", "goldenWarmCount", "goldenCoolingCount", "goldenRiskCount", "customerInputDay", "customerInputWeek", "customerInputMonth", "followDay", "followWeek", "followMonth", "measureRateDay", "measureRateWeek", "measureRateMonth", "marketerRankings", "storeRankings", "myMarketerRank", "myStoreRank", "companyMarketerCount", "companyStoreCount", "recentCustomers", "recentProjects"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.MarketerPeriodMetric.class, properties = {"current", "previous", "growthRate"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.MarketerRankingItem.class, properties = {"id", "name", "rank", "customerCount", "measureCount", "followCount", "measureRate"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.MarketerRateMetric.class, properties = {"currentRate", "previousRate", "change"})
 })
 @Service("statistic/marketer/report")
 @Scope(ScopeTypes.PROTOTYPE)

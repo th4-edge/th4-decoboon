@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.material.service.selections.board.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.customer.model.Customer;
 import com.th4.edge.decoboon.material.configure.SelectionStatus;
 import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
@@ -37,6 +39,10 @@ import java.util.Set;
  */
 @Note("主材选材跟进台")
 @Description("按数据范围列出尚未客户确认主材选材的在跑项目，含当前状态、责任设计师与下一步")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.decoboon.material.model.SelectionBoardItem.class,
+                properties = {"projectId", "projectNo", "projectName", "projectStatus", "projectStatusName", "propertyId", "propertyAddress", "community", "area", "customerName", "designerName", "selectionId", "selectionStatus", "selectionStatusName", "totalItems", "selectedItems", "deliveredItems", "notSelectedItems", "orderedItems", "progress", "version", "updatedAt", "nextAction"})
+})
 @Service("material/selection/board")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Board implements com.th4.edge.decoboon.material.service.selections.board.Board {

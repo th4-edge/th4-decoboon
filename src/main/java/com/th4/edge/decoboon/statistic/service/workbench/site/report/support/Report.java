@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.statistic.service.workbench.site.report.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.statistic.context.SiteWorkbenchContext;
 import com.th4.edge.decoboon.statistic.model.SiteWorkbench;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -24,6 +26,22 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Note("项目工地工作台")
 @Description("按当前员工数据范围聚合计划、任务、材料、验收与回款风险，输出需要处理/推进中/风险三栏工作项")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkbench.class,
+                properties = {"asOf", "metrics", "bucketCounts", "items", "ownerGroups", "planningStart", "planningEnd", "planningDays"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkbench.Metric.class,
+                properties = {"key", "label", "count", "hint", "tone"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkbench.BucketCount.class,
+                properties = {"bucket", "label", "count"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkItem.class,
+                properties = {"itemKey", "domain", "stage", "stageName", "subjectType", "subjectId", "projectId", "title", "subtitle", "ownerName", "derivedState", "riskLevel", "stayDays", "reason", "nextActionLabel", "nextActionType", "nextActionTarget", "dueAt", "amount", "bucket", "metrics"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkbench.OwnerGroup.class,
+                properties = {"ownerId", "ownerName", "count", "needActionCount", "riskCount"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkbench.PlanningDay.class,
+                properties = {"date", "weekday", "today", "count", "dense", "denseHint", "items"}),
+        @AllowProperties(model = com.th4.edge.decoboon.statistic.model.SiteWorkbench.PlanningItem.class,
+                properties = {"subjectType", "subjectId", "projectId", "projectName", "kind", "title", "ownerName", "plannedDate", "overdue", "reschedulable", "nextActionLabel"})
+})
 @Service("statistic/workbench/site/report")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Report implements com.th4.edge.decoboon.statistic.service.workbench.site.report.Report {

@@ -27,7 +27,8 @@ import java.util.List;
         @AllowProperties(model = Invite.class, properties = {"inviteId", "company", "store", "team", "inviter", "inviteName", "telNo", "role", "status", "expireTime", "acceptedAt", "cancelledAt", "rejectedAt", "createTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
         @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo"}),
-        @AllowProperties(model = Store.class, properties = {"storeId", "name"})
+        @AllowProperties(model = Store.class, properties = {"storeId", "name"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Team.class, properties = {"teamId", "name", "color"})
 })
 @Service("invite/invitation/page")
 @Scope(ScopeTypes.PROTOTYPE)

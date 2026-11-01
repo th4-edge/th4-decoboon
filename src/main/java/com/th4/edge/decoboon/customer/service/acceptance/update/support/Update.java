@@ -38,7 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
                         "rectificationIssueImages", "confirmedAt", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr"}),
         @AllowProperties(model = Property.class, properties = {"propertyId", "propertyNo", "community", "roomNo", "address"}),
-        @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status", "progress"})
+        @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status", "progress"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Employee.class, properties = {"empId", "name", "role", "status"})
 })
 @Service("customer/acceptance/update")
 @Scope(ScopeTypes.PROTOTYPE)

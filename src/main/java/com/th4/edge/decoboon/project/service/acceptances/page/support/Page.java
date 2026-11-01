@@ -1,4 +1,5 @@
 package com.th4.edge.decoboon.project.service.acceptances.page.support;
+import com.th4.edge.decoboon.property.model.Property;
 import com.th4.edge.decoboon.project.model.Project;
 import com.th4.edge.decoboon.project.model.ProjectStage;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
                         "issues", "evidenceUrls", "rectificationOwner", "rectificationDueDate", "rectificationType",
                         "rectificationIssueImages", "confirmedAt", "createTime"}),
         @AllowProperties(model = Project.class, properties = {"projectId", "no", "name", "siteAddr", "property" }),
+        @AllowProperties(model = Property.class,
+                properties = {"propertyId", "propertyNo", "community", "building", "roomNo", "address", "area", "layout", "status"}),
         @AllowProperties(model = ProjectStage.class, properties = {"stageId", "name", "status"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "telNo", "role"})
 })

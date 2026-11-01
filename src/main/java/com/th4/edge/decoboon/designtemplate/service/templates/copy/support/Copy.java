@@ -49,9 +49,10 @@ import org.springframework.transaction.annotation.Transactional;
                         "catalogItem"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "name", "unit", "pricingMode", "category", "brand", "spec",
-                        "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft", "criterion"}),
+                        "formula", "craft", "criterion"}),
         @AllowProperties(model = Unit.class, properties = {"name", "value"}),
-        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
+        @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Store.class, properties = {"storeId", "name", "status"})
 })
 @Service("design/template/copy")
 @Scope(ScopeTypes.PROTOTYPE)

@@ -1,5 +1,7 @@
 package com.th4.edge.decoboon.material.service.selections.item.info.support;
 
+import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.decoboon.material.context.MaterialSelectionContext;
 import com.th4.edge.decoboon.material.model.MaterialSelectionItem;
 import com.th4.edge.decoboon.project.context.ProjectAccessContext;
@@ -16,6 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 /** 单个主材分项详情实现。 */
 @Note("主材分项详情")
+@Properties(allow = {
+        @AllowProperties(model = com.th4.edge.decoboon.material.model.MaterialSelectionItem.class,
+                properties = {"itemId", "projectId", "projectNo", "projectName", "propertyId", "propertyAddress", "customerName", "designerName", "contractId", "contractNo", "spaceName", "category", "materialName", "brand", "spec", "unit", "quantity", "sort", "required", "selectionId", "version", "status", "statusName", "selectionText", "selectionJson", "attachments", "updatedAt", "orderStatus", "orderStatusName", "nextAction"})
+})
 @Service("material/selection/item/info")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Info implements com.th4.edge.decoboon.material.service.selections.item.info.Info {

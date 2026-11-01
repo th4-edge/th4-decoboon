@@ -5,6 +5,7 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
 bash scripts/verify-release-baseline.sh --build
+python3 scripts/audit-provider-response-contract.py --check
 SOURCE_COMMIT="$(git rev-parse HEAD)"
 
 VERSION="$(sed -n 's/.*<version>\([^<]*\)<\/version>.*/\1/p' pom.xml | head -1)"

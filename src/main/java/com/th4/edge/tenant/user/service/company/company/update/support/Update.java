@@ -15,7 +15,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Note("企业信息更新")
-@Properties(allow = @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "size", "addr", "setting", "createTime"}))
+@Properties(allow = {
+        @AllowProperties(model = Company.class, properties = {"comId", "title", "name", "logo", "color", "size", "addr", "setting", "createTime"}),
+        @AllowProperties(model = com.th4.edge.tenant.user.model.Setting.class, properties = {"enableStore", "gradeConfig", "brandPrimary", "custodianCredit", "serviceArea", "serviceTel", "afterSaleTel", "uscc", "qualification", "intro"})
+})
 @Service("company/company/update")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Update implements com.th4.edge.tenant.user.service.company.company.update.Update {
