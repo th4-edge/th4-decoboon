@@ -37,6 +37,7 @@
 - Web `npm run build`：PASS。
 - App `npm run verify:mp-weixin`：PASS。
 - 后端生产服务：active，`NRestarts=0`，HTTP 200。
+- 生产真实账号登录后的业务会话冒烟：未执行，当前无授权的生产账号凭据。
 - Web 生产：HTTP 200，current 指向新 release。
 - App 微信开发版上传：PASS。
 
@@ -49,5 +50,5 @@
 
 ## 6. 结论
 
-后端与 Web 已上线，App 开发版已上传。正式小程序提审与发布未执行，等待用户本人操作。
+后端与 Web 已上线，App 开发版已上传。正式小程序提审与发布未执行，等待用户本人操作。登录后真实业务冒烟待授权生产账号后补做。
 
