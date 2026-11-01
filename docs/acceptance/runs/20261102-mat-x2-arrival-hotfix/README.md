@@ -18,8 +18,12 @@
   - ProviderSecurityAcceptanceTest 3
 - 全量测试：971 tests / 0 failures / 0 errors / 0 skipped
 - 迁移132：隔离克隆库迁移通过，回滚后列/索引数量均为0
-- 构建/发布：待提交后构建
+- 构建：BUILD SUCCESS
+- 制品 SHA-256：
+  - boot.jar `eb9707c1dd8f8c373c9030c7917cf9ba0039314de71821a2faf0d3e53e651cd7`
+  - build.tar.gz `683dd01ba9aea86c17f9036c6c5218ed1351541d819325d6ca554e6dca250028`
+  - build.zip `fc33f1bd7480c365b822a6ae8367b33d67770eafe59670e4ecd7849d78021f4a`
 
 ## 结论
 
-代码与全量测试已通过；尚未推送、尚未生产迁移、尚未部署。生产执行需用户最终确认。
+代码提交、全量测试和本机构建已通过；尚未推送、尚未生产迁移、尚未部署。生产执行需用户最终确认。

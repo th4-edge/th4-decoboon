@@ -1,0 +1,235 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.th4.edge:th4-decoboon >----------------------
+[INFO] Building th4-decoboon 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] Parameter 'propertiesEncoding' is unknown for plugin 'maven-resources-plugin:3.1.0:resources (default-resources)'
+[WARNING] Parameter 'propertiesEncoding' is unknown for plugin 'maven-resources-plugin:3.1.0:testResources (default-testResources)'
+[INFO] 
+[INFO] --- resources:3.1.0:resources (default-resources) @ th4-decoboon ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 10 resources
+[INFO] Copying 3 resources
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ th4-decoboon ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 2023 source files with javac [debug parameters release 17] to target/classes
+[INFO] /private/tmp/th4-hotfix-mat-x2-20261102-a/src/main/java/com/th4/edge/components/lock/configure/RedissonLockConfigure.java: /private/tmp/th4-hotfix-mat-x2-20261102-a/src/main/java/com/th4/edge/components/lock/configure/RedissonLockConfigure.java使用或覆盖了已过时的 API。
+[INFO] /private/tmp/th4-hotfix-mat-x2-20261102-a/src/main/java/com/th4/edge/components/lock/configure/RedissonLockConfigure.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.1.0:testResources (default-testResources) @ th4-decoboon ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ th4-decoboon ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 251 source files with javac [debug parameters release 17] to target/test-classes
+[INFO] /private/tmp/th4-hotfix-mat-x2-20261102-a/src/test/java/com/th4/edge/decoboon/ai/AiUsageBriefJointAcceptanceTest.java: 某些输入文件使用了未经检查或不安全的操作。
+[INFO] /private/tmp/th4-hotfix-mat-x2-20261102-a/src/test/java/com/th4/edge/decoboon/ai/AiUsageBriefJointAcceptanceTest.java: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ th4-decoboon ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- dependency:3.1.0:copy-dependencies (default) @ th4-decoboon ---
+[INFO] Copying spring-data-redis-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-data-redis-3.4.0.jar
+[INFO] Copying undertow-servlet-2.3.18.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/undertow-servlet-2.3.18.Final.jar
+[INFO] Copying spring-boot-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-3.4.0.jar
+[INFO] Copying SparseBitSet-1.3.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/SparseBitSet-1.3.jar
+[INFO] Copying netty-buffer-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-buffer-4.1.115.Final.jar
+[INFO] Copying tree-sitter-bash-0.23.3.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/tree-sitter-bash-0.23.3.jar
+[INFO] Copying spring-data-keyvalue-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-data-keyvalue-3.4.0.jar
+[INFO] Copying commons-io-2.21.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-io-2.21.0.jar
+[INFO] Copying jul-to-slf4j-2.0.16.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jul-to-slf4j-2.0.16.jar
+[INFO] Copying jaxb-api-2.3.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jaxb-api-2.3.1.jar
+[INFO] Copying mysql-connector-j-9.1.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/mysql-connector-j-9.1.0.jar
+[INFO] Copying rxjava-3.1.9.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/rxjava-3.1.9.jar
+[INFO] Copying istack-commons-runtime-4.1.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/istack-commons-runtime-4.1.2.jar
+[INFO] Copying xnio-api-3.8.16.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/xnio-api-3.8.16.Final.jar
+[INFO] Copying jboss-threads-3.5.0.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jboss-threads-3.5.0.Final.jar
+[INFO] Copying mcp-json-jackson2-0.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/mcp-json-jackson2-0.17.0.jar
+[INFO] Copying spring-data-commons-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-data-commons-3.4.0.jar
+[INFO] Copying classmate-1.7.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/classmate-1.7.0.jar
+[INFO] Copying spring-beans-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-beans-6.2.0.jar
+[INFO] Copying gson-2.11.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/gson-2.11.0.jar
+[INFO] Copying commons-math3-3.6.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-math3-3.6.1.jar
+[INFO] Copying json-schema-validator-2.0.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/json-schema-validator-2.0.0.jar
+[INFO] Copying spring-expression-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-expression-6.2.0.jar
+[INFO] Copying jsonschema-generator-4.38.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jsonschema-generator-4.38.0.jar
+[INFO] Copying opentelemetry-instrumentation-api-incubator-2.27.0-alpha.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-instrumentation-api-incubator-2.27.0-alpha.jar
+[INFO] Copying spring-webmvc-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-webmvc-6.2.0.jar
+[INFO] Copying jodd-util-6.3.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jodd-util-6.3.0.jar
+[INFO] Copying mcp-json-0.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/mcp-json-0.17.0.jar
+[INFO] Copying netty-codec-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-codec-4.1.115.Final.jar
+[INFO] Copying spring-boot-starter-web-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-web-3.4.0.jar
+[INFO] Copying cache-api-1.1.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/cache-api-1.1.1.jar
+[INFO] Copying byte-buddy-1.15.10.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/byte-buddy-1.15.10.jar
+[INFO] Copying undertow-core-2.3.18.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/undertow-core-2.3.18.Final.jar
+[INFO] Copying javax.activation-api-1.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/javax.activation-api-1.2.0.jar
+[INFO] Copying stax2-api-4.2.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/stax2-api-4.2.2.jar
+[INFO] Copying commons-logging-1.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-logging-1.2.jar
+[INFO] Copying jandex-3.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jandex-3.2.0.jar
+[INFO] Copying spring-boot-autoconfigure-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-autoconfigure-3.4.0.jar
+[INFO] Copying spring-aop-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-aop-6.2.0.jar
+[INFO] Copying mcp-core-0.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/mcp-core-0.17.0.jar
+[INFO] Copying jboss-logging-3.6.1.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jboss-logging-3.6.1.Final.jar
+[INFO] Copying poi-ooxml-lite-5.5.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/poi-ooxml-lite-5.5.1.jar
+[INFO] Copying commons-pool2-2.12.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-pool2-2.12.0.jar
+[INFO] Copying jakarta.transaction-api-2.0.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.transaction-api-2.0.1.jar
+[INFO] Copying jjwt-impl-0.10.7.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jjwt-impl-0.10.7.jar
+[INFO] Copying spring-retry-2.0.10.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-retry-2.0.10.jar
+[INFO] Copying jaxb-runtime-4.0.5.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jaxb-runtime-4.0.5.jar
+[INFO] Copying spring-web-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-web-6.2.0.jar
+[INFO] Copying log4j-to-slf4j-2.24.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/log4j-to-slf4j-2.24.1.jar
+[INFO] Copying spring-boot-starter-data-redis-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-data-redis-3.4.0.jar
+[INFO] Copying org.eclipse.paho.client.mqttv3-1.2.5.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/org.eclipse.paho.client.mqttv3-1.2.5.jar
+[INFO] Copying jakarta.websocket-client-api-2.1.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.websocket-client-api-2.1.1.jar
+[INFO] Copying httpclient-4.5.13.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/httpclient-4.5.13.jar
+[INFO] Copying reflectasm-1.11.9.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/reflectasm-1.11.9.jar
+[INFO] Copying jsonschema-module-jackson-4.38.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jsonschema-module-jackson-4.38.0.jar
+[INFO] Copying spring-boot-starter-integration-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-integration-3.4.0.jar
+[INFO] Copying okhttp-jvm-5.3.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/okhttp-jvm-5.3.2.jar
+[INFO] Copying java-trace-api-0.2.11-beta.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/java-trace-api-0.2.11-beta.jar
+[INFO] Copying th4-framework-1.0.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/th4-framework-1.0.0.jar
+[INFO] Copying oshi-core-6.8.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/oshi-core-6.8.0.jar
+[INFO] Copying mcp-0.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/mcp-0.17.0.jar
+[INFO] Copying opentelemetry-context-1.43.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-context-1.43.0.jar
+[INFO] Copying jackson-datatype-jdk8-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-datatype-jdk8-2.18.1.jar
+[INFO] Copying spring-integration-mqtt-6.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-integration-mqtt-6.4.0.jar
+[INFO] Copying minlog-1.3.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/minlog-1.3.1.jar
+[INFO] Copying spring-boot-starter-logging-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-logging-3.4.0.jar
+[INFO] Copying kryo-5.6.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/kryo-5.6.2.jar
+[INFO] Copying jackson-annotations-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-annotations-2.18.1.jar
+[INFO] Copying spring-jcl-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-jcl-6.2.0.jar
+[INFO] Copying xmlbeans-5.3.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/xmlbeans-5.3.0.jar
+[INFO] Copying commons-codec-1.17.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-codec-1.17.1.jar
+[INFO] Copying agentscope-harness-2.0.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/agentscope-harness-2.0.1.jar
+[INFO] Copying jackson-databind-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-databind-2.18.1.jar
+[INFO] Copying poi-ooxml-5.5.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/poi-ooxml-5.5.1.jar
+[INFO] Copying agentscope-extensions-model-openai-2.0.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/agentscope-extensions-model-openai-2.0.1.jar
+[INFO] Copying curvesapi-1.08.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/curvesapi-1.08.jar
+[INFO] Copying error_prone_annotations-2.27.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/error_prone_annotations-2.27.0.jar
+[INFO] Copying opentelemetry-semconv-incubating-1.40.0-alpha.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-semconv-incubating-1.40.0-alpha.jar
+[INFO] Copying itu-1.14.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/itu-1.14.0.jar
+[INFO] Copying jackson-datatype-hibernate5-jakarta-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-datatype-hibernate5-jakarta-2.18.1.jar
+[INFO] Copying tree-sitter-0.24.4.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/tree-sitter-0.24.4.jar
+[INFO] Copying spring-jdbc-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-jdbc-6.2.0.jar
+[INFO] Copying spring-context-support-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-context-support-6.2.0.jar
+[INFO] Copying micrometer-observation-1.14.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/micrometer-observation-1.14.1.jar
+[INFO] Copying jakarta.servlet-api-6.0.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.servlet-api-6.0.0.jar
+[INFO] Copying jackson-module-parameter-names-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-module-parameter-names-2.18.1.jar
+[INFO] Copying netty-transport-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-transport-4.1.115.Final.jar
+[INFO] Copying redisson-4.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/redisson-4.2.0.jar
+[INFO] Copying annotations-13.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/annotations-13.0.jar
+[INFO] Copying sqlite-jdbc-3.47.0.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/sqlite-jdbc-3.47.0.0.jar
+[INFO] Copying logback-core-1.5.12.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/logback-core-1.5.12.jar
+[INFO] Copying netty-common-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-common-4.1.115.Final.jar
+[INFO] Copying spring-boot-starter-json-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-json-3.4.0.jar
+[INFO] Copying commons-lang3-3.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-lang3-3.17.0.jar
+[INFO] Copying spring-data-jpa-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-data-jpa-3.4.0.jar
+[INFO] Copying HikariCP-5.1.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/HikariCP-5.1.0.jar
+[INFO] Copying jaxb-core-4.0.5.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jaxb-core-4.0.5.jar
+[INFO] Copying spring-websocket-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-websocket-6.2.0.jar
+[INFO] Copying aliyun-java-core-0.2.11-beta.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/aliyun-java-core-0.2.11-beta.jar
+[INFO] Copying aspectjweaver-1.9.22.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/aspectjweaver-1.9.22.1.jar
+[INFO] Copying jackson-dataformat-xml-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-dataformat-xml-2.18.1.jar
+[INFO] Copying opentelemetry-api-1.43.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-api-1.43.0.jar
+[INFO] Copying objenesis-3.3.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/objenesis-3.3.jar
+[INFO] Copying okhttp-5.3.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/okhttp-5.3.2.jar
+[INFO] Copying antlr4-runtime-4.13.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/antlr4-runtime-4.13.0.jar
+[INFO] Copying jackson-datatype-jsr310-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-datatype-jsr310-2.18.1.jar
+[INFO] Copying okio-jvm-3.16.4.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/okio-jvm-3.16.4.jar
+[INFO] Copying spring-tx-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-tx-6.2.0.jar
+[INFO] Copying logstash-logback-encoder-8.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/logstash-logback-encoder-8.1.jar
+[INFO] Copying commons-collections4-4.5.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-collections4-4.5.0.jar
+[INFO] Copying angus-activation-2.0.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/angus-activation-2.0.2.jar
+[INFO] Copying reactor-core-3.7.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/reactor-core-3.7.0.jar
+[INFO] Copying bcprov-jdk18on-1.79.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/bcprov-jdk18on-1.79.jar
+[INFO] Copying agentscope-core-2.0.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/agentscope-core-2.0.1.jar
+[INFO] Copying poi-5.5.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/poi-5.5.1.jar
+[INFO] Copying wildfly-client-config-1.0.1.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/wildfly-client-config-1.0.1.Final.jar
+[INFO] Copying snakeyaml-2.3.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/snakeyaml-2.3.jar
+[INFO] Copying jackson-dataformat-yaml-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-dataformat-yaml-2.18.1.jar
+[INFO] Copying opentelemetry-semconv-1.40.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-semconv-1.40.0.jar
+[INFO] Copying dom4j-2.1.3.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/dom4j-2.1.3.jar
+[INFO] Copying httpcore-4.4.16.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/httpcore-4.4.16.jar
+[INFO] Copying opentelemetry-instrumentation-annotations-support-2.27.0-alpha.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-instrumentation-annotations-support-2.27.0-alpha.jar
+[INFO] Copying spring-boot-starter-undertow-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-undertow-3.4.0.jar
+[INFO] Copying spring-security-crypto-6.4.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-security-crypto-6.4.1.jar
+[INFO] Copying jdom2-2.0.6.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jdom2-2.0.6.1.jar
+[INFO] Copying jakarta.persistence-api-3.1.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.persistence-api-3.1.0.jar
+[INFO] Copying netty-handler-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-handler-4.1.115.Final.jar
+[INFO] Copying aliyun-java-sdk-ram-3.1.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/aliyun-java-sdk-ram-3.1.0.jar
+[INFO] Copying jjwt-api-0.10.7.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jjwt-api-0.10.7.jar
+[INFO] Copying hibernate-core-6.6.2.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/hibernate-core-6.6.2.Final.jar
+[INFO] Copying wildfly-common-1.5.4.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/wildfly-common-1.5.4.Final.jar
+[INFO] Copying jakarta.activation-api-2.1.3.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.activation-api-2.1.3.jar
+[INFO] Copying okio-3.16.4.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/okio-3.16.4.jar
+[INFO] Copying opentelemetry-api-incubator-1.61.0-alpha.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-api-incubator-1.61.0-alpha.jar
+[INFO] Copying aliyun-sdk-oss-3.18.5.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/aliyun-sdk-oss-3.18.5.jar
+[INFO] Copying kotlin-stdlib-1.9.25.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/kotlin-stdlib-1.9.25.jar
+[INFO] Copying opentracing-api-0.33.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentracing-api-0.33.0.jar
+[INFO] Copying lettuce-core-6.4.1.RELEASE.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/lettuce-core-6.4.1.RELEASE.jar
+[INFO] Copying jsr305-3.0.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jsr305-3.0.2.jar
+[INFO] Copying jjwt-jackson-0.10.7.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jjwt-jackson-0.10.7.jar
+[INFO] Copying log4j-api-2.24.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/log4j-api-2.24.1.jar
+[INFO] Copying opentracing-noop-0.33.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentracing-noop-0.33.0.jar
+[INFO] Copying jakarta.xml.bind-api-4.0.2.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.xml.bind-api-4.0.2.jar
+[INFO] Copying netty-resolver-dns-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-resolver-dns-4.1.115.Final.jar
+[INFO] Copying micrometer-commons-1.14.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/micrometer-commons-1.14.1.jar
+[INFO] Copying jettison-1.5.4.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jettison-1.5.4.jar
+[INFO] Copying opentelemetry-reactor-3.1-2.27.0-alpha.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-reactor-3.1-2.27.0-alpha.jar
+[INFO] Copying jakarta.annotation-api-2.1.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.annotation-api-2.1.1.jar
+[INFO] Copying slf4j-api-2.0.16.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/slf4j-api-2.0.16.jar
+[INFO] Copying jackson-core-2.18.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jackson-core-2.18.1.jar
+[INFO] Copying logback-classic-1.5.12.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/logback-classic-1.5.12.jar
+[INFO] Copying openpdf-1.3.27.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/openpdf-1.3.27.jar
+[INFO] Copying spring-core-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-core-6.2.0.jar
+[INFO] Copying opentracing-util-0.33.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentracing-util-0.33.0.jar
+[INFO] Copying jakarta.inject-api-2.0.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.inject-api-2.0.1.jar
+[INFO] Copying spring-boot-starter-data-jpa-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-data-jpa-3.4.0.jar
+[INFO] Copying netty-resolver-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-resolver-4.1.115.Final.jar
+[INFO] Copying spring-orm-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-orm-6.2.0.jar
+[INFO] Copying pinyin4j-2.5.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/pinyin4j-2.5.1.jar
+[INFO] Copying spring-messaging-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-messaging-6.2.0.jar
+[INFO] Copying jna-platform-5.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jna-platform-5.17.0.jar
+[INFO] Copying tomcat-embed-el-10.1.33.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/tomcat-embed-el-10.1.33.jar
+[INFO] Copying jna-5.17.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jna-5.17.0.jar
+[INFO] Copying spring-integration-core-6.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-integration-core-6.4.0.jar
+[INFO] Copying hibernate-commons-annotations-7.0.3.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/hibernate-commons-annotations-7.0.3.Final.jar
+[INFO] Copying spring-boot-starter-jdbc-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-jdbc-3.4.0.jar
+[INFO] Copying txw2-4.0.5.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/txw2-4.0.5.jar
+[INFO] Copying netty-codec-dns-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-codec-dns-4.1.115.Final.jar
+[INFO] Copying woodstox-core-7.0.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/woodstox-core-7.0.0.jar
+[INFO] Copying spring-context-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-context-6.2.0.jar
+[INFO] Copying spring-aspects-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-aspects-6.2.0.jar
+[INFO] Copying netty-transport-native-unix-common-4.1.115.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/netty-transport-native-unix-common-4.1.115.Final.jar
+[INFO] Copying jakarta.websocket-api-2.1.1.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/jakarta.websocket-api-2.1.1.jar
+[INFO] Copying aliyun-java-sdk-core-4.7.8.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/aliyun-java-sdk-core-4.7.8.jar
+[INFO] Copying opentelemetry-instrumentation-api-2.27.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/opentelemetry-instrumentation-api-2.27.0.jar
+[INFO] Copying xnio-nio-3.8.16.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/xnio-nio-3.8.16.Final.jar
+[INFO] Copying spring-boot-starter-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-3.4.0.jar
+[INFO] Copying spring-oxm-6.2.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-oxm-6.2.0.jar
+[INFO] Copying spring-boot-starter-websocket-3.4.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/spring-boot-starter-websocket-3.4.0.jar
+[INFO] Copying reactive-streams-1.0.4.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/reactive-streams-1.0.4.jar
+[INFO] Copying undertow-websockets-jsr-2.3.18.Final.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/undertow-websockets-jsr-2.3.18.Final.jar
+[INFO] Copying commons-compress-1.28.0.jar to /private/tmp/th4-hotfix-mat-x2-20261102-a/target/lib/commons-compress-1.28.0.jar
+[INFO] 
+[INFO] --- jar:3.1.0:jar (default-jar) @ th4-decoboon ---
+[INFO] Building jar: /private/tmp/th4-hotfix-mat-x2-20261102-a/target/th4-decoboon-1.0.0.jar
+[INFO] 
+[INFO] --- assembly:3.1.0:single (make-assembly) @ th4-decoboon ---
+[INFO] Reading assembly descriptor: /src/assembly/assembly.xml
+[INFO] Building tar: /private/tmp/th4-hotfix-mat-x2-20261102-a/target/th4-decoboon-1.0.0-build.tar.gz
+[INFO] Building zip: /private/tmp/th4-hotfix-mat-x2-20261102-a/target/th4-decoboon-1.0.0-build.zip
+[INFO] 
+[INFO] --- spring-boot:3.4.0:repackage (repackage) @ th4-decoboon ---
+[INFO] Layout: ZIP
+[INFO] Attaching repackaged archive /private/tmp/th4-hotfix-mat-x2-20261102-a/target/th4-decoboon-1.0.0-boot.jar with classifier boot
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  17.145 s
+[INFO] Finished at: 2026-11-02T03:01:32+08:00
+[INFO] ------------------------------------------------------------------------

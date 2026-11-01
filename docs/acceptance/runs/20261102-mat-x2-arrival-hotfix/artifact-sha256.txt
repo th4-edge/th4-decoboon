@@ -1,0 +1,3 @@
+eb9707c1dd8f8c373c9030c7917cf9ba0039314de71821a2faf0d3e53e651cd7  target/th4-decoboon-1.0.0-boot.jar
+683dd01ba9aea86c17f9036c6c5218ed1351541d819325d6ca554e6dca250028  target/th4-decoboon-1.0.0-build.tar.gz
+fc33f1bd7480c365b822a6ae8367b33d67770eafe59670e4ecd7849d78021f4a  target/th4-decoboon-1.0.0-build.zip
