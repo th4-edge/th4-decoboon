@@ -1,9 +1,0 @@
-backend_release=/opt/decoboon/releases/20261027-161846
-backend_source_commit=da01a13acfa66fb303e5bb8b037283af4af830c0
-backend_jar_sha256=1fbddcf7d3b77f942a227f65df9bf40132473da685295977122a3e28fdfb0edd
-backend_service=active
-health_http=200
-health_ttfb=0.059152s
-web_release=/opt/decoboon-web/releases/20261027-162200
-web_http=200
-web_chunk_contract=待接受邀请/邀请员工/取消邀请/请在App重新分享

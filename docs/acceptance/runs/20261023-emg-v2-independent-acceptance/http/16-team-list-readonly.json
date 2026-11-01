@@ -1,8 +1,0 @@
-{
-  "route": "user/team/list",
-  "http": 200,
-  "response": {
-    "data": [],
-    "success": true
-  }
-}

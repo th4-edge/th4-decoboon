@@ -1,6 +1,6 @@
 {
   "schema": "starwork.project_skills.v0.1",
-  "updated_at": "2026-11-02T06:10:00+08:00",
+  "updated_at": "2026-11-02T07:10:00+08:00",
   "skills": [
     {
       "id": "neat-freak",
@@ -27,25 +27,6 @@
       "reason": "项目工作台自带：用于阶段性清理、收尾和归档。",
       "installed_by": "starwork init",
       "installed_at": "2026-09-15T12:49:30.082Z"
-    },
-    {
-      "id": "zhuangdeqing-smb-reviewer",
-      "name": "Zhuangdeqing SMB Business Reviewer",
-      "type": "project-local",
-      "source": {
-        "kind": "project",
-        "path": ".agents/skills/zhuangdeqing-smb-reviewer"
-      },
-      "mounts": [
-        {
-          "agent": "codex",
-          "path": ".agents/skills/zhuangdeqing-smb-reviewer",
-          "mode": "local"
-        }
-      ],
-      "reason": "以 10-30 人、1-3 店的成长型中小家装企业视角，独立审查数据权限、金额与成本口径、业务强闭环、角色工作流和交互，并通过业务智能体 T05/T06 协议协作。",
-      "installed_by": "user-request",
-      "installed_at": "2026-09-18T02:38:03+08:00"
     }
   ]
 }

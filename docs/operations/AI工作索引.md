@@ -83,17 +83,16 @@ python3 docs/testing/scripts/validate_run.py --help
 
 ## 5. 当前活跃 Skill 策略
 
-项目级活跃 Skill 只有：
+项目级默认活跃 Skill 只有：
 
 ```text
 neat-freak
-zhuangdeqing-smb-reviewer
 ```
 
-两者都不是默认执行入口：
+它不是默认执行入口：
 
 - `neat-freak` 只在明确清理/收尾时使用；
-- `zhuangdeqing-smb-reviewer` 只在明确要求中小装企独立审查时使用；
+- `zhuangdeqing-smb-reviewer` 已按需归档；只有用户明确要求中小装企独立审查时才恢复；
 - 普通开发、BUG、需求变更不加载任何项目级 Skill；
 - `zhuangdeqing-business` 是业务事实源，不计作执行 Skill。
 

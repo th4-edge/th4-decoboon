@@ -1,9 +1,0 @@
-page: /workbench/organization
-title: 成员与组织 | 装得清 · 企业工作台
-visible:
-  - 成员与组织
-  - 邀请员工
-  - 姓名/岗位/所属门店/手机号/范围身份
-team_management_entries: []
-console_errors: 0
-screenshot: screenshots/web-boss-invite-roles.png

@@ -1,9 +1,0 @@
-dimension,maihong_reference_masked,zhaoqing_test_value,transform_rule,verification,owner,note
-enterprise,not_accessed,昭青科技 / 199500000000000001,仅使用本地合成企业，不复制线上真实数据,DB+runtime,codex,目标企业未访问
-organization,not_accessed,2门店/7类角色/8员工,合成账号与本地门店,DB+runtime,codex,TeamLeader按规则禁止登录
-customer,not_accessed,1客户/100㎡/预算30万,合成客户,页面/API/DB,codex,客户与房屋面积已对齐
-project_chain,not_accessed,1报价/1合同/1项目/8阶段/2任务,Provider 顺序造数,页面/API/DB,codex,非全页面创建
-finance,not_accessed,应收3495.75/已收748.73/待收2747.02;应付2000/已付500/待付1500,Provider 合成并核账,页面/API/DB/invariants,codex,coreBalanced=true
-cost,not_accessed,预计1760/实际800/costComplete=false/利润null,不完整成本夹具,页面/API/DB,codex,不显示伪利润
-material,not_accessed,1材料计划/无采购到场,仅计划事实,页面/API,codex,下游未闭环
-acceptance,not_accessed,未执行,未创建验收终态,NOT_TESTED,codex,不得冒充闭环

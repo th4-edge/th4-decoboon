@@ -4,7 +4,6 @@
 
 ## 当前启用
 
-- `zhuangdeqing-smb-reviewer`：中小装企视角的独立业务审查。
 - `neat-freak`：阶段性清理、收尾和归档。
 
 ## 已归档停用
@@ -17,6 +16,7 @@
 - `zhuangdeqing-product-app-development`：`_系统/归档/20261102/技能/归档/`
 - `zhuangdeqing-acceptance-agent`：`_系统/归档/20261102/技能/归档/`
 - `backend-prod-sentinel`：`_系统/归档/20261102/技能/归档/`
+- `zhuangdeqing-smb-reviewer`：`_系统/归档/20261102/技能/按需归档/`（仅在明确要求独立业务审查时恢复）
 
 ## 归档后的替代路径
 

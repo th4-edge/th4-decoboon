@@ -1,7 +1,0 @@
-invite_id=1793006971920754377
-role=Marketer
-status=Pending
-expire_time=2026-11-02 17:29:31.920782
-credential_id=1793008035225486494
-credential_status=Active
-employee_id=NULL

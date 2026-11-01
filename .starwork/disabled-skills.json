@@ -82,7 +82,17 @@
       "disabled_method": "archived by user request; active skill entry removed",
       "active_registry_entry_removed": true,
       "archived_by_user": true
+    },
+    {
+      "id": "zhuangdeqing-smb-reviewer",
+      "name": "Zhuangdeqing SMB Business Reviewer",
+      "path": "_系统/归档/20261102/技能/按需归档/zhuangdeqing-smb-reviewer",
+      "scope": "project",
+      "disabled_method": "on-demand archive; active entry removed",
+      "active_registry_entry_removed": true,
+      "archived_by_user": true,
+      "restore_when": "用户明确要求中小装企独立审查"
     }
   ],
-  "updated_at": "2026-11-02T06:10:00+08:00"
+  "updated_at": "2026-11-02T07:10:00+08:00"
 }
