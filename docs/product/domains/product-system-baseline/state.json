@@ -4,29 +4,11 @@
   "title": "装得清产品体系基线",
   "northStar": "以角色、业务域、功能、对象概念和跨端展示的同源基线，支撑产品持续扩展、变更影响识别与规则一致性",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "INFO-D1",
-  "nextAction": "启动 INFO-D2：优先修复设计工艺/验收标准→报价→合同→项目任务→验收的快照链",
-  "openDecisions": [
-    {
-      "id": "RQ-04",
-      "question": "合同、财务高危、工资单、验收确认等高风险动作完整主体矩阵",
-      "status": "pending",
-      "owner": "zhuangdeqing-business"
-    },
-    {
-      "id": "RQ-05",
-      "question": "业主、工人、供应商自助身份及业主 Web 入口",
-      "status": "pending",
-      "owner": "zhuangdeqing-business"
-    }
-  ],
-  "blockers": [
-    "高风险动作完整主体矩阵待业务裁决",
-    "外部主体身份边界待业务裁决",
-    "三仓工作区未完成分域提交，不能整体打包为发布候选",
-    "EXPENSE-D5 受 GAP-070 阻塞"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -94,7 +76,7 @@
     "infoRegistryBuilder": "scripts/build-info-item-code-mapping.py"
   },
   "createdAt": "2026-10-22T20:52:09+08:00",
-  "updatedAt": "2026-10-28T04:28:42+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-22T20:52:09+08:00",
@@ -617,9 +599,40 @@
       "phase": "DEV_VERIFIED",
       "batch": "INFO-D1",
       "note": "70个信息项完成代码映射：ALIGNED20/PARTIAL44/SNAPSHOT_MISSING3/DUPLICATE_SOURCE1/NO_OPERATIONAL_CONSUMER1/UNMAPPED1；39个审计问题全部关联；映射仅DEV_VERIFIED，未改业务代码、未验收"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
   ],
   "frozenRoles": [
     "TeamLeader"
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "INFO-D1",
+  "previousNextAction": "启动 INFO-D2：优先修复设计工艺/验收标准→报价→合同→项目任务→验收的快照链",
+  "archivedOpenDecisions": [
+    {
+      "id": "RQ-04",
+      "question": "合同、财务高危、工资单、验收确认等高风险动作完整主体矩阵",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "RQ-05",
+      "question": "业主、工人、供应商自助身份及业主 Web 入口",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    }
+  ],
+  "archivedBlockers": [
+    "高风险动作完整主体矩阵待业务裁决",
+    "外部主体身份边界待业务裁决",
+    "三仓工作区未完成分域提交，不能整体打包为发布候选",
+    "EXPENSE-D5 受 GAP-070 阻塞"
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

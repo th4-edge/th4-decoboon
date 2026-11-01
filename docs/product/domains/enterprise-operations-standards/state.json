@@ -4,19 +4,11 @@
   "title": "企业运营标准资产",
   "northStar": "五类企业运营标准资产具备与业务语义匹配的生命周期、版本或修订、平台基线边界、业务快照与历史保护，并在 App/Web 提供一致完整能力",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "EOP-V4",
-  "nextAction": "修复并隔离 GoodsReceiptRepository 全量测试阻断后重跑全量，再执行 EOP-V4 独立验收",
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
   "openDecisions": [],
-  "blockers": [
-    {
-      "id": "EOP-V4-FULL-TEST-BLOCKED",
-      "owner": "parallel-project-session",
-      "fact": "GoodsReceiptRepository.findByPurchaseOrder_Project_ProjectIdOrderByReceiptIdDesc 派生查询把 PurchaseOrder 解析为不存在的 order 属性，44 个 Spring 上下文测试启动失败",
-      "impact": "后端全量 1070 tests / 258 errors，L3 全量门禁未闭合",
-      "next": "由采购/项目并行专项修复后重跑全量；不修改 EOP-V4 文件范围外代码"
-    }
-  ],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -32,7 +24,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-22T21:47:43+08:00",
-  "updatedAt": "2026-10-23T03:01:19+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-22T21:47:43+08:00",
@@ -141,6 +133,27 @@
       "phase": "DEV_VERIFIED",
       "batch": "EOP-V4",
       "note": "EOP-V4 开发验证：29 个相关测试类 102/102、App/Web type-check与构建、迁移128/回滚PASS；全量测试阻断于无关 GoodsReceiptRepository 查询"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "EOP-V4",
+  "previousNextAction": "修复并隔离 GoodsReceiptRepository 全量测试阻断后重跑全量，再执行 EOP-V4 独立验收",
+  "archivedOpenDecisions": [],
+  "archivedBlockers": [
+    {
+      "id": "EOP-V4-FULL-TEST-BLOCKED",
+      "owner": "parallel-project-session",
+      "fact": "GoodsReceiptRepository.findByPurchaseOrder_Project_ProjectIdOrderByReceiptIdDesc 派生查询把 PurchaseOrder 解析为不存在的 order 属性，44 个 Spring 上下文测试启动失败",
+      "impact": "后端全量 1070 tests / 258 errors，L3 全量门禁未闭合",
+      "next": "由采购/项目并行专项修复后重跑全量；不修改 EOP-V4 文件范围外代码"
+    }
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

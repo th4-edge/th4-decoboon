@@ -100,7 +100,10 @@ SCENARIOS_READY
 → ACCEPTED
 → RELEASED
 → LEARNED
+→ CYCLE_CLOSED
 ```
+
+`CYCLE_CLOSED` 表示当前研发周期已行政结束，不表示系统能力达到最终验收。重新立项必须建立新 `CHG-*`，并复用原领域目录。
 
 不得跳过：
 

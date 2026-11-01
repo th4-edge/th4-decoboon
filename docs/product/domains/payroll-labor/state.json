@@ -4,24 +4,11 @@
   "title": "员工薪酬与薪资经营",
   "northStar": "财务按方案A完成员工薪酬日常操作，BOSS保留最终确认与高风险动作，薪酬方案、考勤、提成、工资单、应付、发放和工资条形成可追溯闭环",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "PAY-OPS-01",
-  "nextAction": "完成具备图片输入能力的独立视觉评审、独立业务验收与生产候选环境复测",
-  "openDecisions": [
-    "B4 批量/部分发放、提成释放 UI 与人工调整仍待业务裁决",
-    "B3B2 DDL/版本与唯一约束设计、反向应付/成本迁移和回滚方案待确认"
-  ],
-  "blockers": [
-    "B2 Web 热修已发布，等待财务在生产页面确认应出勤显示 27",
-    "B3B1 已黑盒 PASS，等待用户验收",
-    "B3B2/B4 继续阻塞",
-    "PAY-SELF-ATTENDANCE 员工本人考勤真实页面验收待执行",
-    "PAY-MANAGER-SENSITIVE-FIELDS 真实店长本店/跨店/动作403页面验收待执行",
-    "共享工作区 target 并发清理导致本轮全量测试环境失败；需隔离构建复跑",
-    "PAY-MANAGER-ACTIONS-B8A 受控店长本店/跨店/动作403真实页面验收待执行",
-    "B8B 店长作废已获业务授权，但反向应付/成本、版本/唯一约束和DDL仍未设计",
-    "PAY-OPS-01 具备图片输入能力的独立视觉评审、独立业务验收与生产候选环境复测待补"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -68,7 +55,7 @@
     "workbenchAggregateEvidence": "docs/acceptance/runs/20261031-pay-ops-01/"
   },
   "createdAt": "2026-10-21T12:15:00+08:00",
-  "updatedAt": "2026-10-31T16:32:26+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-21T12:15:00+08:00",
@@ -369,6 +356,32 @@
       "phase": "DEV_VERIFIED",
       "batch": "PAY-OPS-01",
       "note": "10× MySQL三轮压测PASS：顺序P95/P99 21.87/22.43ms，20并发P95/P99 28.19/29.75ms，错误0，974.26RPS，SQL增量22不增长，合成数据0残留"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "PAY-OPS-01",
+  "previousNextAction": "完成具备图片输入能力的独立视觉评审、独立业务验收与生产候选环境复测",
+  "archivedOpenDecisions": [
+    "B4 批量/部分发放、提成释放 UI 与人工调整仍待业务裁决",
+    "B3B2 DDL/版本与唯一约束设计、反向应付/成本迁移和回滚方案待确认"
+  ],
+  "archivedBlockers": [
+    "B2 Web 热修已发布，等待财务在生产页面确认应出勤显示 27",
+    "B3B1 已黑盒 PASS，等待用户验收",
+    "B3B2/B4 继续阻塞",
+    "PAY-SELF-ATTENDANCE 员工本人考勤真实页面验收待执行",
+    "PAY-MANAGER-SENSITIVE-FIELDS 真实店长本店/跨店/动作403页面验收待执行",
+    "共享工作区 target 并发清理导致本轮全量测试环境失败；需隔离构建复跑",
+    "PAY-MANAGER-ACTIONS-B8A 受控店长本店/跨店/动作403真实页面验收待执行",
+    "B8B 店长作废已获业务授权，但反向应付/成本、版本/唯一约束和DDL仍未设计",
+    "PAY-OPS-01 具备图片输入能力的独立视觉评审、独立业务验收与生产候选环境复测待补"
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

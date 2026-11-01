@@ -4,17 +4,11 @@
   "title": "项目施工履约与进度",
   "northStar": "合同施工范围通过阶段、任务、排期、节点留证和进度投影形成可追溯的履约闭环，不脱离合同或已生效变更独立造任务",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "PD-X1",
-  "nextAction": "PD-X1 交独立验收：真实角色写入/回滚、真实 Provider 页面、跨端和越权证据；通过后进入 MAT-X1 授权评审",
-  "openDecisions": [
-    "GAP-034：阶段计划两套算法如何统一",
-    "GAP-034 G-02/G-06：工艺库与阶段/区域绑定形态"
-  ],
-  "blockers": [
-    "B1 业务对齐仍待 GAP-034 其他子项裁决；PI-20261022-015 已业务裁决，新增 PD-X1 切片但未授权编码",
-    "PROJ-STATE-D1 待独立验收与 App 真机；125 在完整 dev/test 库的账本登记未完成"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -32,7 +26,7 @@
     "ownerUiInteractionSpec": "14-owner-ui-v2-technical-interaction-spec.md"
   },
   "createdAt": "2026-10-17T22:33:38+08:00",
-  "updatedAt": "2026-10-23T00:29:00+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-17T22:33:38+08:00",
@@ -147,6 +141,25 @@
       "phase": "DEV_VERIFIED",
       "batch": "PD-X1",
       "note": "PD-X1 开发自测收口：Web type-check/build/治理、App type-check/build/分包、后端定向与干净基线全量（930 项，0 failures，1 个既有并发用例瞬时错误且单独重跑 PASS）、Playwright 夹具渲染均完成；独立验收待执行"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "PD-X1",
+  "previousNextAction": "PD-X1 交独立验收：真实角色写入/回滚、真实 Provider 页面、跨端和越权证据；通过后进入 MAT-X1 授权评审",
+  "archivedOpenDecisions": [
+    "GAP-034：阶段计划两套算法如何统一",
+    "GAP-034 G-02/G-06：工艺库与阶段/区域绑定形态"
+  ],
+  "archivedBlockers": [
+    "B1 业务对齐仍待 GAP-034 其他子项裁决；PI-20261022-015 已业务裁决，新增 PD-X1 切片但未授权编码",
+    "PROJ-STATE-D1 待独立验收与 App 真机；125 在完整 dev/test 库的账本登记未完成"
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

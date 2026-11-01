@@ -24,6 +24,7 @@ PHASES = [
     "ACCEPTED",
     "RELEASED",
     "LEARNED",
+    "CYCLE_CLOSED",
 ]
 PHASE_INDEX = {phase: index for index, phase in enumerate(PHASES)}
 ARTIFACT_KEYS = [

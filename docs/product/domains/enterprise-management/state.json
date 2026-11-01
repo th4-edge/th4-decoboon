@@ -4,10 +4,10 @@
   "title": "企业管理组织操作与审计跨端闭环",
   "northStar": "企业、门店、员工与审计事实在 App/Web/后端同源闭环，组织调整不破坏历史归属和数据权限",
   "owner": "codex",
-  "phase": "RELEASED",
-  "batch": "EMG-V2.3",
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
   "currentSliceStatus": "PASS",
-  "nextAction": "麦鸿立即重新创建钱亮业务员邀请并分享微信邀请卡片；钱亮完成手机号授权接受",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
   "openDecisions": [],
   "blockers": [],
   "artifacts": {
@@ -34,7 +34,7 @@
     "taskV2_2": "EMG-V2.2-邀请生产闭环研发任务.md"
   },
   "createdAt": "2026-10-23T00:09:26+08:00",
-  "updatedAt": "2026-10-27T17:21:38+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-22T21:53:00+08:00",
@@ -119,6 +119,19 @@
       "phase": "RELEASED",
       "batch": "EMG-V2.3",
       "note": "取消邀请不再占频控额度已发布 20261027-172000；全量950/0/0；生产新口径计数0"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "RELEASED",
+  "previousBatch": "EMG-V2.3",
+  "previousNextAction": "麦鸿立即重新创建钱亮业务员邀请并分享微信邀请卡片；钱亮完成手机号授权接受",
+  "archivedOpenDecisions": [],
+  "archivedBlockers": [],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

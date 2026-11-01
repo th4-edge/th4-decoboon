@@ -4,65 +4,11 @@
   "title": "装企信息与品牌投影",
   "northStar": "装企主体、品牌、地址、联系方式和资质在App、Web、合同、单据导出打印及业主端保持单一主源、清晰语义、冻结快照和可追溯投影",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "BRAND-D1",
-  "nextAction": "用户在本地 Web/小程序感受验收企业信息页、Logo 上传、品牌色选择与小程序品牌投影；合同/PDF/历史快照仍待后续批次",
-  "openDecisions": [
-    {
-      "id": "BRAND-Q01",
-      "question": "企业展示名、法定名、品牌名、简称的正式层级",
-      "status": "pending",
-      "owner": "zhuangdeqing-business/user"
-    },
-    {
-      "id": "BRAND-Q02",
-      "question": "Company作为唯一企业根对象的字段级投影规则（DocumentProfile降为单据投影/快照后的字段映射）",
-      "status": "user_direction_confirmed_field_mapping_pending",
-      "owner": "zhuangdeqing-business"
-    },
-    {
-      "id": "BRAND-Q03",
-      "question": "品牌快照冻结时点和历史文件重生成边界",
-      "status": "pending",
-      "owner": "zhuangdeqing-business/user"
-    },
-    {
-      "id": "BRAND-Q04",
-      "question": "法定地址、办公地址、门店地址、施工地址、房屋地址的语义和地图点位",
-      "status": "pending",
-      "owner": "zhuangdeqing-business/user"
-    },
-    {
-      "id": "BRAND-Q05",
-      "question": "Logo资产、品牌色、门店覆盖、占位图形和正式文件规则",
-      "status": "user_confirmed_custom_theme; store_override_and_history_pending",
-      "owner": "zhuangdeqing-business"
-    },
-    {
-      "id": "BRAND-Q06",
-      "question": "客服/售后/税号/法人/开户信息/资质的受众和脱敏",
-      "status": "pending",
-      "owner": "zhuangdeqing-business"
-    },
-    {
-      "id": "BRAND-Q07",
-      "question": "合同/报价/凭证/PDF/Excel/打印/邀请/业主端的字段白名单",
-      "status": "mini_program_app_web_theme_scope_user_confirmed; pdf_export_snapshot_pending",
-      "owner": "zhuangdeqing-business/user"
-    },
-    {
-      "id": "BRAND-Q08",
-      "question": "各字段在快速入驻、服务可见、合同/财务可用和信任完善的占位/阻断策略",
-      "status": "pending",
-      "owner": "zhuangdeqing-business/user"
-    }
-  ],
-  "blockers": [
-    "REQ-BIZ-20261029-001 尚未答复",
-    "Company 与 DocumentProfile 存在重复主源",
-    "地址/地图点位和品牌快照未冻结",
-    "合同/PDF/Excel/打印与数据级品牌快照仍未闭环"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -85,7 +31,7 @@
     "acceptanceRun": "../../acceptance/runs/20261029-company-brand-acceptance/README.md"
   },
   "createdAt": "2026-10-29T13:58:32+08:00",
-  "updatedAt": "2026-10-29T16:35:00+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-29T13:58:32+08:00",
@@ -140,6 +86,12 @@
       "phase": "DEV_VERIFIED",
       "batch": "BRAND-D1",
       "note": "依据站酷高赞B端研究新增装企可选主题色板（青瓷/松石墨绿/岩蓝/赤陶/胡桃/黛紫/墨灰）；装得清自身产品默认色保持不变（App #16A394 / Web 原产品绿）；App/Web岩蓝即时切换与取消恢复通过。"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
   ],
   "constraints": [
@@ -149,5 +101,66 @@
       "status": "user_confirmed",
       "source": "USER-DEC-20261029-004"
     }
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "BRAND-D1",
+  "previousNextAction": "用户在本地 Web/小程序感受验收企业信息页、Logo 上传、品牌色选择与小程序品牌投影；合同/PDF/历史快照仍待后续批次",
+  "archivedOpenDecisions": [
+    {
+      "id": "BRAND-Q01",
+      "question": "企业展示名、法定名、品牌名、简称的正式层级",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q02",
+      "question": "Company作为唯一企业根对象的字段级投影规则（DocumentProfile降为单据投影/快照后的字段映射）",
+      "status": "user_direction_confirmed_field_mapping_pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "BRAND-Q03",
+      "question": "品牌快照冻结时点和历史文件重生成边界",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q04",
+      "question": "法定地址、办公地址、门店地址、施工地址、房屋地址的语义和地图点位",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q05",
+      "question": "Logo资产、品牌色、门店覆盖、占位图形和正式文件规则",
+      "status": "user_confirmed_custom_theme; store_override_and_history_pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "BRAND-Q06",
+      "question": "客服/售后/税号/法人/开户信息/资质的受众和脱敏",
+      "status": "pending",
+      "owner": "zhuangdeqing-business"
+    },
+    {
+      "id": "BRAND-Q07",
+      "question": "合同/报价/凭证/PDF/Excel/打印/邀请/业主端的字段白名单",
+      "status": "mini_program_app_web_theme_scope_user_confirmed; pdf_export_snapshot_pending",
+      "owner": "zhuangdeqing-business/user"
+    },
+    {
+      "id": "BRAND-Q08",
+      "question": "各字段在快速入驻、服务可见、合同/财务可用和信任完善的占位/阻断策略",
+      "status": "pending",
+      "owner": "zhuangdeqing-business/user"
+    }
+  ],
+  "archivedBlockers": [
+    "REQ-BIZ-20261029-001 尚未答复",
+    "Company 与 DocumentProfile 存在重复主源",
+    "地址/地图点位和品牌快照未冻结",
+    "合同/PDF/Excel/打印与数据级品牌快照仍未闭环"
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

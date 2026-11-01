@@ -4,17 +4,11 @@
   "title": "材料履约与材料业务助手",
   "northStar": "材料计划、选材、作业单、采购、到场与结算形成可追溯闭环，并提供可解释、可校核的业务助手",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "MAT-X2F",
-  "nextAction": "提交已通过 Web/DB 复验的 MAT-X2F 补丁；先收口132/133等前置未提交迁移，处理2个既有statistic全量测试失败；App身份可用后补跨端回读",
-  "openDecisions": [
-    "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
-  ],
-  "blockers": [
-    "App 授权微信身份不可用：MAT-X2 的 App 分支均为 BLOCKED_IDENTITY，不能声称跨端验收完成",
-    "全量测试仍被既有 StatisticStoreAggregateContextTest 2 个 statistic 断言失败阻断，与 MAT-X2F 改动无关",
-    "MAT-X2F 补丁尚未提交：132/133 等前置迁移和大量其他工作仍为未提交状态，当前工作区不能作为单一发布候选"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -31,7 +25,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T11:40:38+08:00",
-  "updatedAt": "2026-11-02T02:36:17+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-17T11:40:38+08:00",
@@ -320,6 +314,25 @@
       "phase": "DEV_VERIFIED",
       "batch": "MAT-X2F",
       "note": "MAT-X2F DEV_VERIFIED：新增采购明细sheet_item_id并按作业单行累计到场，Pm 4㎡→超量7㎡拒绝→尾量6㎡复验通过；作业单/采购/计划终态一致，应付唯一880，计划累计成本2640；DEF-20261102-005 Web/Backend/DB VERIFIED；定向24/24 PASS、制品构建PASS；App BLOCKED_IDENTITY，全量测试被2个既有statistic失败阻断；仅隔离库迁移，生产未发布"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "MAT-X2F",
+  "previousNextAction": "提交已通过 Web/DB 复验的 MAT-X2F 补丁；先收口132/133等前置未提交迁移，处理2个既有statistic全量测试失败；App身份可用后补跨端回读",
+  "archivedOpenDecisions": [
+    "GAP-MAT-TIME-SEMANTICS：是否新增“请购时间/采购下单时间”独立字段；当前保持 createTime=建单、orderedAt=采购下单"
+  ],
+  "archivedBlockers": [
+    "App 授权微信身份不可用：MAT-X2 的 App 分支均为 BLOCKED_IDENTITY，不能声称跨端验收完成",
+    "全量测试仍被既有 StatisticStoreAggregateContextTest 2 个 statistic 断言失败阻断，与 MAT-X2F 改动无关",
+    "MAT-X2F 补丁尚未提交：132/133 等前置迁移和大量其他工作仍为未提交状态，当前工作区不能作为单一发布候选"
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

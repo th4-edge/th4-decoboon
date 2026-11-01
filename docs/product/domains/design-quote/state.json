@@ -4,12 +4,10 @@
   "title": "设计方案与设计报价审视",
   "northStar": "设计方案成为客户房屋下可持续编辑、可计算当前报价、可被负责人/店长/财务按数据范围审视的唯一设计事实；设计师负责推进，经营角色不靠列表猜测价格与风险。",
   "owner": "codex",
-  "phase": "DEV_VERIFIED",
-  "batch": "UI-QF-01",
-  "nextAction": "用户确认后继续设计工作台总览或进入独立验收",
-  "openDecisions": [
-    "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
   "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
@@ -26,7 +24,7 @@
     "reconciliation": "10-reconciliation.md"
   },
   "createdAt": "2026-10-21T22:14:57+08:00",
-  "updatedAt": "2026-11-01T17:48:38+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-21T22:14:57+08:00",
@@ -285,6 +283,21 @@
       "phase": "DEV_VERIFIED",
       "batch": "UI-QF-01",
       "note": "三页设计队列完成同族降噪；DOM重复节点、三档渲染、type-check和build通过；未独立验收"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "DEV_VERIFIED",
+  "previousBatch": "UI-QF-01",
+  "previousNextAction": "用户确认后继续设计工作台总览或进入独立验收",
+  "archivedOpenDecisions": [
+    "GAP-061：设计内容修订令牌与正式报价过期判断；不阻塞B1价格展示和只读运营查看"
+  ],
+  "archivedBlockers": [],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

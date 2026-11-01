@@ -47,6 +47,8 @@
 
 ## AI 协作上下文
 
+- `docs/operations/AI工作索引.md`：新需求、变更、BUG、实现、验收和发布的唯一任务索引。
+
 - 根 `AGENTS.md`：跨任务硬边界和按任务路由。
 - `src/main/AGENTS.md`：后端实现规则。
 - `src/test/AGENTS.md`：测试和证据规则。

@@ -101,7 +101,10 @@ def build_result() -> dict:
     stale = bool(lease.get("status") == "ACTIVE" and age is not None and age >= stale_after)
     code_clean = not (backend_dirty or app_dirty or web_dirty)
     leased_released = leased_state.get("phase") in {"RELEASED", "LEARNED"}
-    if not lease or lease.get("status") not in {"ACTIVE", "STALE"}:
+    if board.get("currentProgramStage") == "IDLE":
+        action = "IDLE"
+        reason = "program cycle closed; no active domain"
+    elif not lease or lease.get("status") not in {"ACTIVE", "STALE"}:
         action = "DEEP_CHECK"
         reason = "no active domain lease"
     elif stale:

@@ -4,17 +4,11 @@
   "title": "合同与增减项履约",
   "northStar": "合同生效、增减项审批与合同、任务、材料、应收和成本的同源联动形成可追溯闭环",
   "owner": "codex",
-  "phase": "BLUEPRINT_READY",
-  "batch": "B2",
-  "nextAction": "等待材料域释放代码租约且代码工作区干净后，由全域总控启动 B2：收敛旧 save 与 batch-save，核对 range/目标快照/审批联动并跑定向测试",
-  "openDecisions": [
-    "GAP-CC-DUAL-ENTRY：旧 project/contract-change/save 与 batch-save 双入口需收敛",
-    "GAP-CC-CUSTOMER-CONFIRM-LEGACY：历史 customer-confirm 与存量状态展示待独立验收",
-    "GAP-CC-WEB-RANGE：Web 已接 range API，真实页面证据待 B3"
-  ],
-  "blockers": [
-    "当前工作区被其他未完成改动污染，合同变更定向测试需在干净基线重跑"
-  ],
+  "phase": "CYCLE_CLOSED",
+  "batch": "CLOSED",
+  "nextAction": "当前周期已关闭；等待用户明确新需求后重新立项。",
+  "openDecisions": [],
+  "blockers": [],
   "artifacts": {
     "runEnvelope": "run-envelope.md",
     "charter": "00-charter.md",
@@ -31,7 +25,7 @@
     "nextBatchPrompt": "11-next-batch-prompt.md"
   },
   "createdAt": "2026-10-17T15:23:57+08:00",
-  "updatedAt": "2026-10-17T15:25:30+08:00",
+  "updatedAt": "2026-11-02T06:30:00+08:00",
   "history": [
     {
       "at": "2026-10-17T15:23:57+08:00",
@@ -56,6 +50,25 @@
       "phase": "BLUEPRINT_READY",
       "batch": "B2",
       "note": "contract-change blueprint v1.0.0 ready: 8 objects, 7 stages, 16 fields, 6 rules, 6 checks; implementation mapping and gaps recorded"
+    },
+    {
+      "at": "2026-11-02T06:30:00+08:00",
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "note": "用户要求结束当前周期，行政关闭领域状态"
     }
-  ]
+  ],
+  "previousPhase": "BLUEPRINT_READY",
+  "previousBatch": "B2",
+  "previousNextAction": "等待材料域释放代码租约且代码工作区干净后，由全域总控启动 B2：收敛旧 save 与 batch-save，核对 range/目标快照/审批联动并跑定向测试",
+  "archivedOpenDecisions": [
+    "GAP-CC-DUAL-ENTRY：旧 project/contract-change/save 与 batch-save 双入口需收敛",
+    "GAP-CC-CUSTOMER-CONFIRM-LEGACY：历史 customer-confirm 与存量状态展示待独立验收",
+    "GAP-CC-WEB-RANGE：Web 已接 range API，真实页面证据待 B3"
+  ],
+  "archivedBlockers": [
+    "当前工作区被其他未完成改动污染，合同变更定向测试需在干净基线重跑"
+  ],
+  "cycleStatus": "CLOSED_ADMIN",
+  "closedAt": "2026-11-02"
 }

@@ -1,177 +1,30 @@
 {
   "schemaVersion": 1,
   "program": "ZHUANGDEQING-DOMAIN-DELIVERY",
-  "updatedAt": "2026-10-29T20:05:00+08:00",
-  "currentProgramStage": "MATERIAL_RELEASE_PREP",
-  "activeLease": {
-    "domain": "material",
-    "ownerThreadId": "01a147f6-a3c4-7623-acd7-7490d6eac79a",
-    "status": "ACTIVE",
-    "codeWriteAllowed": true,
-    "reason": "材料域 B8 已 ACCEPTED，B9 体验版与发布准备",
-    "exclusivePaths": [
-      "src/main/**",
-      "src/test/**",
-      "../../前端代码/th4-decoboon-app/**",
-      "../../前端代码/th4-decoboon-web/**"
-    ],
-    "releaseCondition": "material.phase in [RELEASED, LEARNED] AND material handoff recorded AND no uncommitted code changes under src/main, src/test, App or Web",
-    "staleReviewAfterHours": 3,
-    "lastOwnerActivityAt": "2026-10-17T22:27:51+08:00",
-    "lastDomainStateUpdatedAt": "2026-10-17T22:59:35+08:00",
-    "lastObservedAt": "2026-10-17T22:59:35+08:00",
-    "staleBasis": "domain state.updatedAt unchanged for staleReviewAfterHours; owner thread idle alone is not stale"
-  },
-  "queue": [
-    {
-      "domain": "material",
-      "status": "ACTIVE",
-      "remainingBatches": [
-        "B8",
-        "B9"
-      ]
-    },
-    {
-      "domain": "contract-change",
-      "status": "READY_AT_BLUEPRINT",
-      "remainingBatches": [
-        "B2",
-        "B3",
-        "B4",
-        "B5",
-        "B6"
-      ]
-    },
-    {
-      "domain": "project-delivery",
-      "status": "SCENARIOS_READY",
-      "remainingBatches": [
-        "B1",
-        "B2",
-        "B3",
-        "B4",
-        "B5"
-      ]
-    },
-    {
-      "domain": "acceptance-rectify",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "finance",
-      "status": "SCENARIOS_READY",
-      "remainingBatches": [
-        "B1",
-        "B2",
-        "B3",
-        "B4",
-        "B5",
-        "B6",
-        "B7",
-        "B8",
-        "B9",
-        "B10",
-        "B11",
-        "B12"
-      ]
-    },
-    {
-      "domain": "lead-content",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "customer-property",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "measure",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "design",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "quote",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "payroll-labor",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "owner-delivery-after-sales",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "analytics",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    },
-    {
-      "domain": "saas-platform",
-      "status": "QUEUED",
-      "remainingBatches": [
-        "B0",
-        "B1"
-      ]
-    }
-  ],
+  "updatedAt": "2026-11-02T06:30:00+08:00",
+  "currentProgramStage": "IDLE",
+  "activeLease": null,
+  "queue": [],
   "domainStates": {
     "material": {
-      "phase": "ACCEPTED",
-      "batch": "B8",
-      "nextAction": "B9 体验版与发布准备：精确提交构建、体验版上传和真实冒烟；不正式提审/发布"
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "nextAction": "当前周期已关闭；等待新立项。"
     },
     "contract-change": {
-      "phase": "BLUEPRINT_READY",
-      "batch": "B2",
-      "nextAction": "材料租约释放且代码工作区干净后，由全域总控启动 B2；B2 不得新增规则/DDL/金额语义变化"
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "nextAction": "当前周期已关闭；等待新立项。"
     },
     "project-delivery": {
-      "phase": "SCENARIOS_READY",
-      "batch": "B1",
-      "nextAction": "请用户裁决 GAP-034 五项（推荐 1A/2A/3A/4A/5A），裁决后完成 BIZ_ALIGNED"
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "nextAction": "当前周期已关闭；等待新立项。"
     },
     "finance": {
-      "phase": "SCENARIOS_READY",
-      "batch": "B1",
-      "nextAction": "按 USER-DEC-20261029-007 验收 Web 现有 24 个 Finance 菜单与小程序 6 个财务角色 Tab、财务首页、19 个快捷入口及任务链；保留现有路径，不改后端逻辑，只登记问题"
+      "phase": "CYCLE_CLOSED",
+      "batch": "CLOSED",
+      "nextAction": "当前周期已关闭；等待新立项。"
     }
   },
   "rules": {
@@ -198,14 +51,9 @@
     ],
     "requireNoUncommittedCodeChangesBeforeNewDomain": true
   },
-  "blockers": [
-    "material B9 体验版上传与发布准备未完成；正式提审/发布仍需用户本人完成",
-    "project-delivery B1 等待 GAP-034 五项业务裁决（推荐 1A/2A/3A/4A/5A）；裁决前不得进入 BIZ_ALIGNED 或 B2",
-    "后端 src/main/src/test、App src/pages.json、Web src 仍有其它任务未提交代码改动，contract-change B2/project-delivery B2 暂不可启动",
-    "finance B1-W/B1-A 双端现有入口验收待执行；本轮不改后端逻辑，BUG/BACKEND_GAP/APP_GAP 另行裁决"
-  ],
-  "nextProgramAction": "保持 material 租约 ACTIVE；由材料域完成 B9 体验版上传与发布准备，之后写 handoff 并释放租约",
-  "notificationPolicy": "仅在工作区租约变化、域门禁变化、独立验收失败、需要用户裁决、连续无进展或全域收口时通知",
+  "blockers": [],
+  "nextProgramAction": "当前周期已关闭；等待用户明确新需求后建立新 CHG 和新领域批次。",
+  "notificationPolicy": "idle_no_notification",
   "programSupervisor": {
     "threadId": "01a148c3-89b6-7ea0-874e-b128397fc4ed",
     "automationId": "automation-4",
