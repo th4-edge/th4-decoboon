@@ -1,0 +1,26 @@
+{
+  "Pm": {
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有设计师、企业负责人或店长可以维护主材下单作业单",
+        "system": false
+      }
+    }
+  },
+  "Finance": {
+    "status": 200,
+    "ok": true,
+    "payload": {
+      "success": false,
+      "errorCode": {
+        "code": "403",
+        "message": "只有设计师、企业负责人或店长可以维护主材下单作业单",
+        "system": false
+      }
+    }
+  }
+}

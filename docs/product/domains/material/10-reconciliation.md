@@ -181,11 +181,21 @@
 - 角色/分辨率：Finance/Designer；Web 1440×900/1024×768、App 390×844/375×667；无横向溢出，业务 Console Errors 0。
 - 未闭环：U4 真实用户可用性走查；助手单轮、固定建议题库、无自动执行。
 
+## MAT-X2A Web 主材作业单维护生命周期（2026-11-02，DEV_VERIFIED）
+
+- 精确提交：Web `489948c`；后端 Provider 无新增。
+- 范围：Designer/Boss/StoreManager 新建、编辑、测量、提交、取消、导出；Pm 测量；Finance 查看与取消；财务下单继续复用既有 `/finance/material-ordering`。
+- 数据源：`project/material-plan/page`、`material/sheet/save|update|measure|submit|cancel|export|page|info`；无第二套接口。
+- 真实验证：Designer 完成新建→编辑→测量→提交→导出→取消；Pm/Finance 越权建单业务 403；Web 1440/1280/1024 无横向溢出；内部编号与技术文案未出现。
+- 证据：`docs/acceptance/runs/RUN-20261101-CORE-P0-002/evidence/TC-MAT-DESIGNER-SHEET-002/20-*` 至 `34-*`。
+- 边界：视觉人工评审因当前会话无图像输入标 `VISUAL_REVIEW_UNAVAILABLE`；App 真机、到场确认、独立验收和发布未完成。
+- 下一片：`MAT-X2B` Web 到场确认，再进入独立验收。
+
 ## PI-20261022-015 跨端与异常闭环（BIZ_DECIDED / 未实现）
 
 | REQ | 业务规则 | 蓝图/对象 | 字段/API | 页面 | 测试 | 验收 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | 待建 | 独立验收待执行 | UNMAPPED |
+| REQ-MAT-017 | `DEC-088/BR-054` | Sheet/Purchase/Receipt | sheet/*、goods-receipt/save | App/Web 作业单与到场 | MAT-X2A Web 维护链已自测；到场待建 | 独立验收待执行 | PARTIAL |
 | REQ-MAT-018 | `DEC-088/BR-054` | Sheet/Purchase/Receipt/Adjustment/Settlement | 服务端状态推导 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |
 | REQ-MAT-019 | `DEC-088/BR-054` | MaterialAdjustmentOrder 及下层事实 | adjustment/* | App/Web 异常处置 | 待建 | 独立验收待执行 | UNMAPPED |
 | REQ-MAT-020 | `DEC-088/BR-045` | P1/P2/P3 只读投影 | 服务端聚合 | App/Web 作业单详情 | 待建 | 独立验收待执行 | UNMAPPED |

@@ -60,6 +60,36 @@
         "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
         "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
       ]
+    },
+    {
+      "action": "Web Designer 新建并保存作业单草稿",
+      "result": "PASS",
+      "actual": "项目12计划加入成功；填写位置/型号/颜色/尺寸/数量10㎡后保存，作业单回读为已测量"
+    },
+    {
+      "action": "Web Designer 编辑作业单",
+      "result": "PASS",
+      "actual": "备注更新后刷新回读为已编辑"
+    },
+    {
+      "action": "Web Designer 确认测量时间",
+      "result": "PASS",
+      "actual": "测量2026-11-05、配送2026-11-08、安装2026-11-10已保存"
+    },
+    {
+      "action": "Web Designer 提交请购",
+      "result": "PASS",
+      "actual": "状态变为待下单，页面提示等待财务下单"
+    },
+    {
+      "action": "Web 导出、取消和角色权限",
+      "result": "PASS",
+      "actual": "导出成功；取消后原单保留并回读取消原因；Pm/Finance越权建单业务403"
+    },
+    {
+      "action": "App 建单与回读",
+      "result": "BLOCKED_IDENTITY",
+      "actual": "无授权微信身份"
     }
   ],
   "actualPage": [
@@ -82,11 +112,26 @@
     "evidence/TC-MAT-BOUNDARY-QUANTITY-003/01-boundary-and-free-material-api.json",
     "evidence/TC-MAT-BOUNDARY-QUANTITY-003/02-boundary-db.txt",
     "evidence/ENV-IDENTITY-BLOCKER/01-auth-boundary.md",
-    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png"
+    "evidence/TC-FIN-FINANCE-RECEIPT-002/12-app-login.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/20-mat-x2a-designer-list.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/21-mat-x2a-create-dialog.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/22-mat-x2a-create-filled.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/23-mat-x2a-draft-created.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/24-mat-x2a-draft-created.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/25-mat-x2a-measure-dialog.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/26-mat-x2a-submitted.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/27-mat-x2a-cancelled.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/28-mat-x2a-api-readback.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/29-mat-x2a-db.txt",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/32-mat-x2a-role-negative.json",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/33-mat-x2a-final-1440x900.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/33-mat-x2a-final-1280x800.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/33-mat-x2a-final-1024x768.png",
+    "evidence/TC-MAT-DESIGNER-SHEET-002/34-mat-x2a-final-responsive.json"
   ],
   "defectIds": [],
-  "blockedReason": "作业单来源、提交门禁、财务Web回读和合同外材料拒绝均通过；App Designer 建单/回读无授权微信身份；同时 Web 作业单新建/编辑/测量/提交/取消仍未实现，由 PI-20261022-015 MAT-X2 跟踪。",
-  "notes": "受控Provider夹具仅补前置条件，不代替 App 页面动作。Web 当前只有财务下单/结算侧，不具备同一作业单全生命周期强制动作集合；即使补齐 App 身份，也必须完成 MAT-X2 后才能声明跨端一致。",
+  "blockedReason": "App 授权微信身份不可用，无法完成 App 建单/回读；Web 作业单维护生命周期已通过并以 489948c 提交。",
+  "notes": "Web MAT-X2A 已验证新建、编辑、测量、提交、导出和取消，复用现有 material/sheet/* Provider；App 真机和独立验收仍未完成，整条跨端用例保持 BLOCKED。",
   "caseDefinitionHash": "69c4d263f518ecc2a0055289853b8c34da566daaceade5c7d2c7d6bd3dbd0200",
   "priority": "P0",
   "area": "MATERIAL",

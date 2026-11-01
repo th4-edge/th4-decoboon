@@ -1,0 +1,171 @@
+{
+  "list": {
+    "route": "material/sheet/page",
+    "status": 200,
+    "payload": {
+      "data": [
+        {
+          "createTime": {
+            "dateTime": "2026-11-02 01:27:20"
+          },
+          "updateTime": {
+            "dateTime": "2026-11-02 01:28:04"
+          },
+          "sheetId": "1793554040923604886",
+          "property": {
+            "propertyId": "242297222408962048",
+            "community": "翡翠湖畔",
+            "building": "3栋",
+            "roomNo": "1301",
+            "address": "翡翠湖畔3栋1301（主房）"
+          },
+          "project": {
+            "projectId": "242297226024452096",
+            "no": "P1793457760346",
+            "name": "麦鸿演示项目 12",
+            "siteAddr": "演示项目工地 12"
+          },
+          "sheetNo": "TILE-20261102-001",
+          "sheetType": "Tile",
+          "manufacturerName": "马可波罗瓷砖",
+          "measureAt": "2026-11-05",
+          "groupChatAt": "2026-11-03",
+          "deliverAt": "2026-11-08",
+          "installAt": "2026-11-10",
+          "templateVersion": 1,
+          "status": {
+            "name": "已取消",
+            "key": "Cancelled"
+          },
+          "signatures": "项目经理与设计师已现场确认尺寸",
+          "remark": "取消原因：MAT-X2A 验收完成，取消临时作业单",
+          "attachments": [],
+          "items": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 01:27:27"
+              },
+              "itemId": "1793554047405634427",
+              "sourceKind": {
+                "name": "材料计划行（合同选材确认 / 增减项新增）",
+                "key": "Plan"
+              },
+              "materialPlan": {
+                "planId": "242297226095755264",
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "status": {
+                  "name": "部分下单",
+                  "key": "PartiallyOrdered"
+                }
+              },
+              "standardIncluded": true,
+              "spaceName": "客餐厅",
+              "locationName": "客厅地面",
+              "materialName": "主材--抛釉砖 800x800",
+              "model": "抛釉砖 800x800",
+              "color": "暖灰米白",
+              "size": "800×800",
+              "quantity": 10,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "lossRate": 0,
+              "lossQuantity": 0,
+              "orderedQuantity": 0,
+              "sort": 0,
+              "attachments": []
+            }
+          ]
+        },
+        {
+          "createTime": {
+            "dateTime": "2026-11-02 00:52:34"
+          },
+          "updateTime": {
+            "dateTime": "2026-11-02 00:52:52"
+          },
+          "sheetId": "1793551954468329817",
+          "property": {
+            "propertyId": "242297222408962048",
+            "community": "翡翠湖畔",
+            "building": "3栋",
+            "roomNo": "1301",
+            "address": "翡翠湖畔3栋1301（主房）"
+          },
+          "project": {
+            "projectId": "242297226024452096",
+            "no": "P1793457760346",
+            "name": "麦鸿演示项目 12",
+            "siteAddr": "演示项目工地 12"
+          },
+          "sheetNo": "瓷砖（地砖/墙砖）-20261102-003",
+          "sheetType": "瓷砖（地砖/墙砖）",
+          "manufacturerName": "马可波罗瓷砖",
+          "groupChatAt": "2026-11-03",
+          "installAt": "2026-11-10",
+          "status": {
+            "name": "已下单",
+            "key": "Ordered"
+          },
+          "remark": "P0清洁下单夹具：20㎡，单价88；不代替App建单页面验收",
+          "attachments": [],
+          "items": [
+            {
+              "createTime": {
+                "dateTime": "2026-11-02 00:52:34"
+              },
+              "itemId": "1793551954474117684",
+              "sourceKind": {
+                "name": "材料计划行（合同选材确认 / 增减项新增）",
+                "key": "Plan"
+              },
+              "materialPlan": {
+                "planId": "242297226095755264",
+                "quantity": 30,
+                "unit": {
+                  "name": "m²",
+                  "value": "Area",
+                  "key": "Area"
+                },
+                "status": {
+                  "name": "部分下单",
+                  "key": "PartiallyOrdered"
+                }
+              },
+              "standardIncluded": true,
+              "spaceName": "客餐厅",
+              "locationName": "客厅地面",
+              "materialName": "主材--抛釉砖 800x800",
+              "brand": "马可波罗",
+              "model": "抛釉砖 800x800",
+              "spec": "800×800mm",
+              "color": "暖灰米白",
+              "size": "800×800",
+              "craft": "柔光釉面",
+              "quantity": 20,
+              "unit": {
+                "name": "m²",
+                "value": "Area",
+                "key": "Area"
+              },
+              "lossRate": 0,
+              "lossQuantity": 0,
+              "orderedQuantity": 20,
+              "sort": 0,
+              "remark": "P0清洁下单夹具",
+              "attachments": []
+            }
+          ]
+        }
+      ],
+      "success": true
+    }
+  }
+}

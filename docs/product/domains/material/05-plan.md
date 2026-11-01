@@ -315,3 +315,12 @@
 - 2026-10-17 B5 的“App 单端”是历史实施批次，不再作为 Web 豁免依据。
 - `MAT-X1/MAT-X3` 涉及 DDL、权限、金额/成本/库存，必须用户确认、备份、回滚和全量验证。
 - 一次只做一个切片；研发自测不等于独立验收。
+
+
+## MAT-X2A Web 作业单维护生命周期（2026-11-02）
+
+- 状态：`DEV_VERIFIED`
+- 范围：Web `/workbench/material-sheets`；Designer/Boss/StoreManager 新建/编辑/测量/提交/取消/导出，Pm 测量，Finance 查看/取消。
+- 数据：复用 `project/material-plan/page` 与 `material/sheet/*`，不新增 Provider、DDL 或业务规则。
+- 验证：真实 Designer 完整动作链、Pm/Finance 权限负向、API/DB 回读、1440/1280/1024 无横向溢出。
+- 下一片：MAT-X2B Web 到场确认；独立验收和 App 真机另行执行。
