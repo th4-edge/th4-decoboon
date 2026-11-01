@@ -123,7 +123,7 @@ public class PackageLine extends AbstractModel {
 
     @Note("施工工艺快照")
     @Lob
-    @Column(name = "craft_snapshot")
+    @Column(name = "craft_snapshot", columnDefinition = "longtext")
     private String craftSnapshot;
 
     @Note("标准成本快照")
