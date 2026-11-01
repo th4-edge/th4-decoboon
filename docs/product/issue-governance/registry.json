@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-01T16:45:00+08:00",
+  "updatedAt": "2026-11-02T05:20:00+08:00",
   "issues": [
     {
       "id": "PI-20261022-001",
@@ -96,7 +96,7 @@
     {
       "id": "PI-20261022-003",
       "title": "企业运营标准资产生命周期与跨端一致性",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "enterprise-operations-standards",
       "source": "产品体系基线 B2A-1 企业运营标准资产矩阵",
@@ -175,12 +175,17 @@
         "evidence": "docs/product/domains/enterprise-operations-standards/08-acceptance.md"
       },
       "dedicatedThreadId": "01a163d0-2d0c-7201-872d-75d0cdf6bc2e",
-      "nextAction": "EOP-V4 独立验收：真实并发、跨企业、成本裁剪、删除保护与 App/Web 同错误语义"
+      "nextAction": "EOP-V4 独立验收：真实并发、跨企业、成本裁剪、删除保护与 App/Web 同错误语义",
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-004",
       "title": "企业主数据、经营标准与设计模版边界",
-      "status": "ACCEPTANCE",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "enterprise-master-data-and-standards",
       "source": "产品体系基线 B2A-2 企业主数据与经营标准矩阵",
@@ -246,12 +251,17 @@
         }
       },
       "dedicatedThreadId": "01a163d3-97cd-7102-b8fa-ab42e3734685",
-      "nextAction": "进入发布前最终验证：干净全量基线、MySQL 等价环境、真实运行服务冒烟和页面证据；完成前不得 CLOSED"
+      "nextAction": "进入发布前最终验证：干净全量基线、MySQL 等价环境、真实运行服务冒烟和页面证据；完成前不得 CLOSED",
+      "previousStatus": "ACCEPTANCE",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-005",
       "title": "企业管理组织操作与审计跨端闭环",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "enterprise-management",
       "source": "产品体系基线 B2B 企业管理矩阵",
@@ -382,7 +392,12 @@
           "scope": "EMG-V2 only",
           "result": "18/18 P0 PASS; 2/2 follow-up defects CLOSED"
         }
-      ]
+      ],
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-006",
@@ -451,7 +466,7 @@
     {
       "id": "PI-20261022-010",
       "title": "统一对象视图一期实施",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "unified-object-view-implementation",
       "source": "用户要求按照建议统一处理报价、合同等相关业务概念",
@@ -1196,7 +1211,12 @@
         "u5DGate": "PLAN_READY_IMPLEMENTATION_NOT_STARTED",
         "result": "U5-C accepted: cost root fields removed, App consumes server order without fallback, 8-stage/history/gap/anchor and App build checks pass. U5-D prepare only.",
         "nextAction": "Reconcile U5-D only and prepare; do not implement or accept U5-D/U5-E/U5-F. U6 remains not started."
-      }
+      },
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-011",
@@ -1249,7 +1269,7 @@
     {
       "id": "PI-20261022-014",
       "title": "项目阶段验收模式与停工/复工生命周期",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "project-delivery-state",
       "source": "产品体系基线 B2D 项目履约域盘点",
@@ -1292,12 +1312,17 @@
         "appDevtools": "BLOCKED: current WeChat DevTools session did not persist devToken employee session; real employee device required"
       },
       "dedicatedThreadId": "01a163fe-46c7-7f92-bbd5-d165e3c68fb2",
-      "nextAction": "D1 已完成 MySQL 8.4 隔离迁移、真实业主/员工 Provider、Web 真实渲染和构建；交独立验收并补 App 真机与完整 dev/test 迁移账本，验收通过前不得启动 D2"
+      "nextAction": "D1 已完成 MySQL 8.4 隔离迁移、真实业主/员工 Provider、Web 真实渲染和构建；交独立验收并补 App 真机与完整 dev/test 迁移账本，验收通过前不得启动 D2",
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-015",
       "title": "项目履约与主材作业单 App/Web 闭环",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "project-delivery-cross-surface-material-flow",
       "source": "产品体系基线 B2D 项目履约域盘点",
@@ -1361,12 +1386,17 @@
         "PI-20261022-008",
         "PI-20261022-010"
       ],
-      "nextAction": "PD-X1 交独立验收：真实角色数据写入/回滚、真实 Provider 页面、跨端和越权证据；通过后再确认 MAT-X1"
+      "nextAction": "PD-X1 交独立验收：真实角色数据写入/回滚、真实 Provider 页面、跨端和越权证据；通过后再确认 MAT-X1",
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-016",
       "title": "财务写路径、来源与门店高危动作收口",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "finance-write-governance",
       "source": "产品体系基线 B2E 财务运营矩阵",
@@ -1473,12 +1503,17 @@
         "PI-20261022-004",
         "PI-20261022-018"
       ],
-      "nextAction": "FIN-WRITE-D2、D3 已独立验收 PASS；D1/D4 的来源字段/期初资金 DDL 与历史回填仍需用户单独确认，D5 不得提前关闭；整体保持 DEV_IN_PROGRESS，不发布。"
+      "nextAction": "FIN-WRITE-D2、D3 已独立验收 PASS；D1/D4 的来源字段/期初资金 DDL 与历史回填仍需用户单独确认，D5 不得提前关闭；整体保持 DEV_IN_PROGRESS，不发布。",
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-017",
       "title": "项目成本、实际毛利与应计口径",
-      "status": "D1_PASS / D2_PLAN_READY_AUTHORIZATION_REQUIRED",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "project-cost-profit",
       "source": "产品体系基线 B2E 财务运营矩阵",
@@ -1592,12 +1627,17 @@
         "PI-20261022-004",
         "PI-20261022-010"
       ],
-      "nextAction": "COST-D1 ACCEPTED；COST-D2 任务书和验收矩阵已建立，等待用户明确授权编码；COST-D3~D5 未授权，GAP-071 OPEN，不发布"
+      "nextAction": "COST-D1 ACCEPTED；COST-D2 任务书和验收矩阵已建立，等待用户明确授权编码；COST-D3~D5 未授权，GAP-071 OPEN，不发布",
+      "previousStatus": "D1_PASS / D2_PLAN_READY_AUTHORIZATION_REQUIRED",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261022-018",
       "title": "企业费用与员工报销独立闭环",
-      "status": "D2_PASS / D3_PASS / D4_BLOCKED_PI_017",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "enterprise-expense-reimbursement",
       "source": "产品体系基线 B2E 财务运营矩阵",
@@ -1788,12 +1828,17 @@
         "PI-20261022-003",
         "PI-20261022-017"
       ],
-      "nextAction": "EXPENSE-D3 ACCEPTED；EXPENSE-D4 已形成只读计划但被 PI-017/GAP-071 阻断，未授权编码；D5 继续 BLOCKED，真实 UI/OSS BLOCKED，不发布"
+      "nextAction": "EXPENSE-D3 ACCEPTED；EXPENSE-D4 已形成只读计划但被 PI-017/GAP-071 阻断，未授权编码；D5 继续 BLOCKED，真实 UI/OSS BLOCKED，不发布",
+      "previousStatus": "D2_PASS / D3_PASS / D4_BLOCKED_PI_017",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261023-001",
       "title": "员工薪酬 Web/App 跨端一致性与权限闭环",
-      "status": "B2_WEB_HOTFIX_RELEASED_PENDING_FINANCE_UI_CONFIRMATION",
+      "status": "CLOSED",
       "priority": "P0",
       "domain": "payroll-labor",
       "source": "用户生产问题 + 2026-10-23 员工薪酬跨端只读对账",
@@ -1959,12 +2004,17 @@
         "smoke": "/ /login /finance/employee-salaries 200; /v3/ 301; compensation API protected route present",
         "status": "RELEASED_PENDING_FINANCE_UI_CONFIRMATION",
         "releaseRecord": "th4-decoboon-web/docs/operations/releases/2026-10-23-Web月度考勤应出勤联动薪酬方案生产热修.md"
-      }
+      },
+      "previousStatus": "B2_WEB_HOTFIX_RELEASED_PENDING_FINANCE_UI_CONFIRMATION",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261024-001",
       "title": "设计师 App 信息架构与五阶段队列同源",
-      "status": "PLAN_READY",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "designer-app-cross-surface",
       "source": "设计师 App/Web 全流程对齐专项",
@@ -1997,12 +2047,17 @@
       },
       "dedicatedThreadId": "01a169a9-0ad4-7521-97c8-eaa13c08e1af",
       "sourceThreadId": "01a168b2-f8da-7a23-ae08-cc7c608b5c55",
-      "nextAction": "确认 DESIGNER-D2-1 导航壳层范围；RQ-D2-01~04 在对应编码前完成 T05/T06/T12"
+      "nextAction": "确认 DESIGNER-D2-1 导航壳层范围；RQ-D2-01~04 在对应编码前完成 T05/T06/T12",
+      "previousStatus": "PLAN_READY",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261024-002",
       "title": "客户流失业务与活跃队列排除",
-      "status": "INDEPENDENT_PASS_PENDING_APP_REAL_DEVICE_AND_RELEASE",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "customer-lifecycle",
       "source": "用户 2026-10-24 对签约前客户改选其他公司的业务设计确认",
@@ -2034,12 +2089,17 @@
         "concurrency": "docs/acceptance/runs/20261024-customer-loss-p0/concurrency-smoke.json"
       },
       "dedicatedThreadId": null,
-      "nextAction": "等待用户扫码完成 App 真机走查；确认可发布提交范围后再执行生产迁移、部署和发布"
+      "nextAction": "等待用户扫码完成 App 真机走查；确认可发布提交范围后再执行生产迁移、部署和发布",
+      "previousStatus": "INDEPENDENT_PASS_PENDING_APP_REAL_DEVICE_AND_RELEASE",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261028-001",
       "title": "推广前最低业务闭环与跨端质量总收口",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P0",
       "domain": "promotion-readiness",
       "source": "用户 2026-10-28 反馈：多端不一致、研发缺陷、信息无作用、Web 视觉与 App 细节不足，要求完成基本闭环后进入推广",
@@ -2097,12 +2157,17 @@
         "totalP1": 19,
         "totalP2": 15,
         "totalP3": 5
-      }
+      },
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261028-002",
       "title": "业务信息项主源与闭环规范落地",
-      "status": "DEV_IN_PROGRESS",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "business-information-architecture",
       "source": "用户 2026-10-28 要求从装企业务场景中的信息布局、概念归属和闭环动作出发构建信息规范",
@@ -2148,12 +2213,17 @@
         "note": "映射不是代码修复或独立验收"
       },
       "standardDraft": "docs/product/02-业务信息架构与字段闭环标准.md",
-      "nextAction": "启动 INFO-D2：优先修复设计工艺/验收标准 → 报价 → 合同 → 项目任务 → 验收的快照链"
+      "nextAction": "启动 INFO-D2：优先修复设计工艺/验收标准 → 报价 → 合同 → 项目任务 → 验收的快照链",
+      "previousStatus": "DEV_IN_PROGRESS",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-001",
       "title": "负责人工作台角色错位与经营首屏分裂",
-      "status": "PLAN_READY",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "owner-operating-system",
       "source": "从负责人开始的装得清 App/Web 业务功能改造专项梳理",
@@ -2198,12 +2268,17 @@
       "compatibilityConstraint": [
         "BOS-C01",
         "BOS-C02"
-      ]
+      ],
+      "previousStatus": "PLAN_READY",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-002",
       "title": "装企信息与品牌投影主源未闭环",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "enterprise-brand-profile",
       "source": "用户要求梳理装企Logo、地图地址、合同、导出、打印和业主展示的信息应用闭环",
@@ -2230,12 +2305,17 @@
         "note": "开发与真实渲染验证完成，等待用户感受验收"
       },
       "nextAction": "用户验收预设/自定义品牌色在 App、小程序、Web 的真实全局主题效果；之后再设计合同/PDF/历史快照",
-      "latestChange": "CHG-20261029-016-zcool-brand-palette-refresh.md"
+      "latestChange": "CHG-20261029-016-zcool-brand-palette-refresh.md",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-003",
       "title": "App首页业主场景与邀请入口角色门禁",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "app-onboarding-identity",
       "source": "用户对小程序首页、登录授权、未加入企业页和邀请分流的体验反馈",
@@ -2250,12 +2330,17 @@
         "record": null,
         "note": "等待真实微信小程序邀请链路与用户确认"
       },
-      "nextAction": "用户在微信开发者工具中验证员工邀请、业主邀请和未加入企业页视觉"
+      "nextAction": "用户在微信开发者工具中验证员工邀请、业主邀请和未加入企业页视觉",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-004",
       "title": "创建企业首屏阻断快速入驻",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "company-registration",
       "source": "用户创建企业真实体验反馈",
@@ -2270,12 +2355,17 @@
         "record": null,
         "note": "等待用户在微信开发者工具完成真实企业创建"
       },
-      "nextAction": "用户从小程序创建第一个企业并确认首页与默认总店生成"
+      "nextAction": "用户从小程序创建第一个企业并确认首页与默认总店生成",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-005",
       "title": "业主入口被未登录守卫拦截且缺少产品引导",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "owner-entry-public-guide",
       "source": "用户点击“我是业主，进入我的家”无反馈",
@@ -2290,12 +2380,17 @@
         "record": null,
         "note": "等待微信真机点击和邀请链路验证"
       },
-      "nextAction": "用户在小程序中点击“我是业主”并验证无邀请说明与有邀请手机号入口"
+      "nextAction": "用户在小程序中点击“我是业主”并验证无邀请说明与有邀请手机号入口",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-006",
       "title": "已绑定微信重复请求手机号授权",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "app-authentication",
       "source": "用户反馈已经授权微信信息，但每次登录仍要求授权手机号",
@@ -2310,12 +2405,17 @@
         "record": null,
         "note": "开发工具已复验员工负责人重复登录不再请求手机号；待用户确认并覆盖业主账号"
       },
-      "nextAction": "用户确认已绑定微信的重新登录体验，并验证首次未绑定用户仍能完成手机号绑定"
+      "nextAction": "用户确认已绑定微信的重新登录体验，并验证首次未绑定用户仍能完成手机号绑定",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-007",
       "title": "小程序企业编辑TabBar报错与Logo首字颜色错误",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "app-brand-runtime",
       "source": "用户点击企业编辑出现 setTabBarStyle:fail not TabBar page，且默认/青绿色Logo首字为黑色",
@@ -2330,12 +2430,17 @@
         "record": null,
         "note": "开发者工具已验证企业编辑和换色无TabBar报错"
       },
-      "nextAction": "用户确认企业信息编辑页和Logo首字显示"
+      "nextAction": "用户确认企业信息编辑页和Logo首字显示",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-008",
       "title": "App品牌主题视觉覆盖不完整",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "app-brand-runtime",
       "source": "用户反馈Hero Logo融合、我的Hero不变、头像/图标/统计/TabBar/财务Hero仍为平台默认色",
@@ -2350,12 +2455,17 @@
         "record": "docs/acceptance/runs/20261029-company-brand-acceptance/README.md",
         "note": "开发工具四页主题值与双端构建通过"
       },
-      "nextAction": "用户在小程序查看首页、我的、项目/客户统计、财务工作台和企业信息Hero"
+      "nextAction": "用户在小程序查看首页、我的、项目/客户统计、财务工作台和企业信息Hero",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261029-009",
       "title": "Web登录品牌记忆与官方Logo",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "web-brand-login",
       "source": "用户要求Web登录页记住上次装企Logo/品牌色，并指出Web仍使用文字生成Logo",
@@ -2370,12 +2480,17 @@
         "record": "docs/acceptance/runs/20261029-web-company-brand-memory/README.md",
         "note": "真实浏览器登录、退出和缓存恢复已通过，待用户确认"
       },
-      "nextAction": "用户登录并退出Web端，确认登录页恢复企业品牌且平台Logo为官方Mark"
+      "nextAction": "用户登录并退出Web端，确认登录页恢复企业品牌且平台Logo为官方Mark",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261030-001",
       "title": "财务跨端汇总伪零与台账来源失衡",
-      "status": "DEV_VERIFIED_DATA_REPAIR_PENDING",
+      "status": "CLOSED",
       "priority": "P0",
       "domain": "finance-cross-surface-accounting",
       "source": "Boss/Finance/StoreManager × Web/小程序财务混合审计",
@@ -2411,12 +2526,17 @@
         "realUi": "PASS",
         "changeId": "CHG-20261030-034"
       },
-      "analysisFile": "docs/acceptance/runs/20261030-finance-p0-fix/README.md"
+      "analysisFile": "docs/acceptance/runs/20261030-finance-p0-fix/README.md",
+      "previousStatus": "DEV_VERIFIED_DATA_REPAIR_PENDING",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261030-002",
       "title": "关联白名单缺失导致财务与角色经营响应截断",
-      "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "status": "CLOSED",
       "priority": "P0",
       "domain": "provider-serialization-finance-statistic",
       "source": "昭青科技全新装企业务驱动审计",
@@ -2450,12 +2570,17 @@
         "status": "NOT_STARTED",
         "record": null
       },
-      "nextAction": "执行独立验收，补充非法 JSON 负向用例、双端金额对账与发布前冒烟"
+      "nextAction": "执行独立验收，补充非法 JSON 负向用例、双端金额对账与发布前冒烟",
+      "previousStatus": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261030-003",
       "title": "App项目财务付款进度误标为成本",
-      "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "finance-project-label",
       "source": "昭青科技全新装企业务驱动审计 · App财务项目页",
@@ -2485,12 +2610,17 @@
         "status": "NOT_STARTED",
         "record": null
       },
-      "nextAction": "完成财务角色独立页面验收，确认付款进度、成本完整性与关注笔数标签"
+      "nextAction": "完成财务角色独立页面验收，确认付款进度、成本完整性与关注笔数标签",
+      "previousStatus": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261030-004",
       "title": "有效材料减项仍计入成本完整性缺失",
-      "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "finance-project-cost-change-effective-remaining",
       "source": "PAGE-20261030 真正页面级完整闭环",
@@ -2532,7 +2662,12 @@
         "profitAfter": null,
         "changeId": "CHG-20261031-039"
       },
-      "analysisFile": "docs/acceptance/runs/20261030-true-page-level-closed-loop/07-final-report.md"
+      "analysisFile": "docs/acceptance/runs/20261030-true-page-level-closed-loop/07-final-report.md",
+      "previousStatus": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261101-001",
@@ -2587,7 +2722,7 @@
     {
       "id": "PI-20261101-002",
       "title": "App材料到场缺少现场证据上传与展示",
-      "status": "OPEN",
+      "status": "CLOSED",
       "priority": "P2",
       "domain": "material-arrival-evidence",
       "source": "独立验收 RUN-20261101-MAT-ARRIVAL-FIN-001",
@@ -2613,12 +2748,17 @@
           "DEF-20261101-003"
         ]
       },
-      "nextAction": "研发补App到场证据上传与展示后，创建新RUN复验；复验前不得宣称材料到场证据链完整。"
+      "nextAction": "研发补App到场证据上传与展示后，创建新RUN复验；复验前不得宣称材料到场证据链完整。",
+      "previousStatus": "OPEN",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261101-003",
       "title": "财务客户详情点击负责人报无权限",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "crm-finance-owner-directory",
       "source": "用户实际操作反馈",
@@ -2662,12 +2802,17 @@
         "evidence": "docs/acceptance/runs/RUN-20261101-CRM-FIN-OWNER-001/evidence/TC-CRM-FINANCE-OWNER-006/",
         "blockedReason": "Web/API/数据范围/动作矩阵通过；App负责人弹层受miniprogram-automator连接异常阻断。"
       },
-      "nextAction": "用户在App客户详情手工点击客户负责人并确认候选非空、无权限错误；通过后执行App复验并关闭PI。"
+      "nextAction": "用户在App客户详情手工点击客户负责人并确认候选非空、无权限错误；通过后执行App复验并关闭PI。",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     },
     {
       "id": "PI-20261101-004",
       "title": "店长费用代填员工选择器无权限",
-      "status": "DEV_VERIFIED_PENDING_USER",
+      "status": "CLOSED",
       "priority": "P1",
       "domain": "finance-expense-proxy-employee-picker",
       "source": "角色动作依赖矩阵动态烟测",
@@ -2700,7 +2845,21 @@
         "status": "NOT_STARTED",
         "record": "docs/acceptance/runs/20261101-action-provider-matrix-v0.2/"
       },
-      "nextAction": "用户真机复验店长费用员工选择器，并完成一次受控代填保存与跨店拒绝验证。"
+      "nextAction": "用户真机复验店长费用员工选择器，并完成一次受控代填保存与跨店拒绝验证。",
+      "previousStatus": "DEV_VERIFIED_PENDING_USER",
+      "closedAt": "2026-11-02",
+      "closureType": "ADMIN_CYCLE_RESET",
+      "closureReason": "用户明确要求结束当前装得清研发周期并关闭全部非关闭问题；本关闭不代表已验收或已解决。",
+      "reopenCondition": "用户重新立项，或出现新的失败用例、生产证据、业务裁决时以同一 PI 编号重开。"
     }
-  ]
+  ],
+  "cycleClosure": {
+    "id": "CYCLE-CLOSURE-20261102",
+    "closedAt": "2026-11-02",
+    "closedBy": "user",
+    "type": "ADMIN_CYCLE_RESET",
+    "closedIssueCount": 30,
+    "reason": "用户要求结束当前研发周期并关闭全部非关闭问题",
+    "semantics": "行政关闭，不代表已验收、已解决或已发布"
+  }
 }
