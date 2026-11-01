@@ -11,6 +11,7 @@
 | th4-decoboon-web | `54d4fb2` | 报价模型归一化并展示 acceptedBy/acceptedAt 与员工登记边界 |
 | th4-decoboon | `7dd71442` | `quote/designer/info` 白名单加入 acceptedBy，补合同结构测试 |
 | th4-decoboon-web | `3b2e220` | 店长独立客户360页面、CRM overview 同源投影、内容归因 Provider 与路由 |
+| th4-decoboon | `a810ab82` | Provider 静态响应契约审计脚本、发布构建接线与 137 个 Provider 白名单注解 |
 
 ## 干净提交复验
 
@@ -18,8 +19,8 @@
 
 - 后端：`mvn -q -Dtest=FinanceSettlementPageCostProjectionTest,QuoteViewContractTest test`，PASS。
 - Web：`npm run build`，PASS，包含 type-check、分页门禁和客户端文案门禁。
-- 主工作区 Provider 契约检查：`providers=547 properties=542 allow=540 findings=0`，self-test PASS。
-- 注意：Provider 契约检查脚本当前仍未被版本库跟踪，因此干净提交 worktree 无法执行该命令；这是发布门禁的可复现性问题，需后续单独入库，不能混入本缺陷提交。
+- 干净提交 Provider 契约检查：`providers=541 properties=536 allow=534 findings=0`，self-test PASS。
+- Provider 检查脚本与发布构建接线已随 `a810ab82` 入库，干净 worktree 编译和定向测试 PASS。
 
 ## 已拒绝的错误提交
 
@@ -35,6 +36,6 @@
 
 ## 下一步
 
-1. 处理未被版本库跟踪的 Provider 契约检查脚本，确保发布门禁可从干净提交复现。
-2. 继续 `PI-20261022-015 MAT-X2`：补齐 Web 作业单新建/编辑/测量/提交/取消。
-3. App/Owner 授权身份可用后，新 RUN 复验 CRM 与材料跨端分支。
+1. 继续 `PI-20261022-015 MAT-X2`：补齐 Web 作业单新建/编辑/测量/提交/取消。
+2. App/Owner 授权身份可用后，新 RUN 复验 CRM 与材料跨端分支。
+3. 继续分拆剩余混合工作区，保持不得整目录提交。
