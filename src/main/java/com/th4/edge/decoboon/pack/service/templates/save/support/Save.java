@@ -2,9 +2,8 @@ package com.th4.edge.decoboon.pack.service.templates.save.support;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
-import com.th4.edge.decoboon.pack.context.PackageContext;
+import com.th4.edge.decoboon.pack.context.PackageLifecycleContext;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
-import com.th4.edge.decoboon.pack.repository.PackageTemplateRepository;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Description;
 import com.th4.edge.framework.core.annotation.Note;
@@ -15,8 +14,6 @@ import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import com.th4.edge.tenant.user.configure.EmployeeRole;
-import com.th4.edge.tenant.user.context.TenantContext;
 import com.th4.edge.tenant.user.model.Employee;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Description("创建 BIM 装修套餐并计算成本")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount", "cost", "criterions", "createTime"})
+                properties = {"templateId", "code", "version", "status", "currentPublished", "name", "area", "price",
+                        "discount", "cost", "criterions", "createTime"})
 })
 @Service("pack/template/save")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -53,28 +51,15 @@ public class Save implements com.th4.edge.decoboon.pack.service.templates.save.S
     @User
     private Employee employee;
 
-    private final PackageTemplateRepository giftPackRepository;
-    private final PackageContext giftPackContext;
-    private final TenantContext tenantContext;
+    private final PackageLifecycleContext lifecycleContext;
 
-    public Save(PackageTemplateRepository giftPackRepository,
-                PackageContext giftPackContext,
-                TenantContext tenantContext) {
-        this.giftPackRepository = giftPackRepository;
-        this.giftPackContext = giftPackContext;
-        this.tenantContext = tenantContext;
+    public Save(PackageLifecycleContext lifecycleContext) {
+        this.lifecycleContext = lifecycleContext;
     }
 
     @Override
     @Transactional
     public PackageTemplate call(@ModelSaveInject PackageTemplate request) {
-        Employee current = tenantContext.requireRole(employee, EmployeeRole.Boss, EmployeeRole.StoreManager);
-        request.setCompany(current.getCompany());
-        request.setName(name);
-        request.setArea(area);
-        request.setPrice(price);
-        request.setDiscount(discount == null ? java.math.BigDecimal.ONE : discount);
-        request.setCost(giftPackContext.calculateCost(request));
-        return giftPackRepository.save(request);
+        return lifecycleContext.createDraft(request, name, area, price, discount, employee);
     }
 }

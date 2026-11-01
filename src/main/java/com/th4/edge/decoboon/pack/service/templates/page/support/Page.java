@@ -1,6 +1,7 @@
 package com.th4.edge.decoboon.pack.service.templates.page.support;
 
 import com.th4.edge.decoboon.pack.context.PackageCostContext;
+import com.th4.edge.decoboon.pack.context.PackageSummaryContext;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.pack.repository.PackageTemplateRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Note("装修套餐分页")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
-                properties = {"templateId", "name", "area", "price", "discount", "cost", "criterions", "createTime"}),
+                properties = {"templateId", "code", "version", "status", "currentPublished", "publishedAt", "snapshotHash", "name", "area", "price", "discount", "cost", "sectionCount", "lineCount", "ready", "criterions", "createTime", "updateTime"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("pack/template/page")
@@ -31,18 +32,22 @@ public class Page implements com.th4.edge.decoboon.pack.service.templates.page.P
     private final PackageTemplateRepository giftPackRepository;
     private final TenantContext tenantContext;
     private final PackageCostContext costContext;
+    private final PackageSummaryContext summaryContext;
 
     public Page(PackageTemplateRepository giftPackRepository, TenantContext tenantContext,
-                PackageCostContext costContext) {
+                PackageCostContext costContext, PackageSummaryContext summaryContext) {
         this.giftPackRepository = giftPackRepository;
         this.tenantContext = tenantContext;
         this.costContext = costContext;
+        this.summaryContext = summaryContext;
     }
 
     @Override
     public org.springframework.data.domain.Page<PackageTemplate> call(PackageTemplate request) {
         Employee current = tenantContext.requireEmployee(employee);
-        return costContext.mask(new PageImpl<>(giftPackRepository
-                .findByCompany_ComIdOrderByTemplateIdDesc(current.getCompany().getComId())), current);
+        var templates = giftPackRepository
+                .findByCompany_ComIdOrderByCodeAscVersionDescTemplateIdDesc(current.getCompany().getComId());
+        summaryContext.apply(templates, current.getCompany().getComId());
+        return costContext.mask(new PageImpl<>(templates), current);
     }
 }

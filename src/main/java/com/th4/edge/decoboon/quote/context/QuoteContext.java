@@ -409,6 +409,9 @@ public class QuoteContext {
             item.setCatalogItem(packageLine.getItem());
             item.setCraft(packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
             item.setType(packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
+            item.setPackageSectionNameSnapshot(packageLine.getSectionNameSnapshot() != null
+                    ? packageLine.getSectionNameSnapshot()
+                    : packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
             item.setCategory(packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
             item.setName(packageLine.getItem() == null ? packageLine.getName() : packageLine.getItem().getName());
             item.setBrand(packageLine.getItem() == null ? packageLine.getBrand() : packageLine.getItem().getBrand());

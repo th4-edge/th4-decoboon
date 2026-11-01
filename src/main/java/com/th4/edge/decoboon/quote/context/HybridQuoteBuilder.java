@@ -192,6 +192,9 @@ public class HybridQuoteBuilder {
         line.setProperty(quote.getProperty());
         line.setPackageLine(packageLine);
         line.setCatalogItem(packageLine.getItem());
+        line.setPackageSectionNameSnapshot(packageLine.getSectionNameSnapshot() != null
+                ? packageLine.getSectionNameSnapshot()
+                : packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());
         line.setCraft(packageLine.getItem() == null ? null : packageLine.getItem().getCraft());
         line.setType(packageLine.getItem() == null ? ItemType.General : packageLine.getItem().getType());
         line.setCategory(packageLine.getSection() == null ? "综合项目" : packageLine.getSection().getName());

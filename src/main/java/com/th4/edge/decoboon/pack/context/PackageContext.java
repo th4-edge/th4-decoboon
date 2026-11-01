@@ -23,11 +23,14 @@ public class PackageContext {
     }
 
     public BigDecimal calculateItemCost(PackageLine line) {
-        if (line == null || line.getItem() == null) {
+        if (line == null) {
             return BigDecimal.ZERO;
         }
         BigDecimal factor = line.getQuantityFactor() == null ? BigDecimal.ONE : line.getQuantityFactor();
-        BigDecimal cost = line.getItem().getCostPrice() == null ? BigDecimal.ZERO : line.getItem().getCostPrice();
-        return cost.multiply(factor).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal unitCost = line.getCostPriceSnapshot() != null
+                ? line.getCostPriceSnapshot()
+                : line.getItem() == null || line.getItem().getCostPrice() == null
+                        ? BigDecimal.ZERO : line.getItem().getCostPrice();
+        return unitCost.multiply(factor).setScale(2, RoundingMode.HALF_UP);
     }
 }

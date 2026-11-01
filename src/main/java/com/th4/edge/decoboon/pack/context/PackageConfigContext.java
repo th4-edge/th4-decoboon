@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.catalog.repository.CatalogItemRepository;
 import com.th4.edge.decoboon.pack.model.PackageLine;
 import com.th4.edge.decoboon.pack.model.PackageSection;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
+import com.th4.edge.decoboon.pack.configure.PackageTemplateStatus;
 import com.th4.edge.decoboon.pack.model.PackageTemplateItem;
 import com.th4.edge.decoboon.pack.repository.PackageLineRepository;
 import com.th4.edge.decoboon.pack.repository.PackageSectionRepository;
@@ -89,6 +90,9 @@ public class PackageConfigContext {
         Long comId = current.getCompany().getComId();
         PackageTemplate template = templateRepository.findByTemplateIdAndCompany_ComId(templateId, comId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
+        if (template.getStatus() != PackageTemplateStatus.Draft) {
+            throw new DefinedException(new DefaultErrorCode("409", "已发布或已停用的套餐不能修改项目行"));
+        }
         PackageSection section = sectionRepository.findByGroupIdAndCompany_ComId(sectionId, comId)
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐分区不存在或无权访问")));
         CatalogItem catalog = catalogRepository.findByItemIdAndCompany_ComId(catalogItemId, comId)
@@ -96,8 +100,15 @@ public class PackageConfigContext {
         if (!Boolean.TRUE.equals(catalog.getActive())) {
             throw new DefinedException(new DefaultErrorCode("400", "报价项目已停用"));
         }
+        lineRepository.findByTemplate_TemplateIdAndSection_GroupIdAndItem_ItemId(
+                        templateId, sectionId, catalogItemId)
+                .filter(existing -> source.getItemId() == null || !source.getItemId().equals(existing.getItemId()))
+                .ifPresent(existing -> {
+                    throw new DefinedException(new DefaultErrorCode("409", "该项目已存在于当前套餐分区"));
+                });
         PackageLine target = source.getItemId() == null ? new PackageLine()
                 : lineRepository.findByItemIdAndCompany_ComId(source.getItemId(), comId)
+                .filter(item -> item.getTemplate() != null && templateId.equals(item.getTemplate().getTemplateId()))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐项目行不存在或无权访问")));
         target.setCompany(current.getCompany());
         target.setTemplate(template);
@@ -114,6 +125,11 @@ public class PackageConfigContext {
         target.setDeductible(source.getDeductible() == null || source.getDeductible());
         target.setSort(source.getSort() == null ? 0 : source.getSort());
         target.setCriterions(source.getCriterions());
+        target.setSectionNameSnapshot(section.getName());
+        target.setCatalogTypeSnapshot(catalog.getType());
+        target.setCatalogCategorySnapshot(catalog.getCategory());
+        target.setCraftSnapshot(catalog.getCraft());
+        target.setCostPriceSnapshot(catalog.getCostPrice());
         PackageLine saved = lineRepository.save(target);
         recalculate(template);
         return saved;
@@ -128,6 +144,9 @@ public class PackageConfigContext {
             throw new DefinedException(new DefaultErrorCode("400", "套餐项目行已生成历史报价快照，不能删除"));
         }
         PackageTemplate template = line.getTemplate();
+        if (template == null || template.getStatus() != PackageTemplateStatus.Draft) {
+            throw new DefinedException(new DefaultErrorCode("409", "已发布或已停用的套餐不能删除项目行"));
+        }
         lineRepository.delete(line);
         lineRepository.flush();
         recalculate(template);

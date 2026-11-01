@@ -155,6 +155,10 @@ public class QuoteLine extends AuditModel {
     @Column(length = 64)
     private String category;
 
+    @Note("套餐分区名称快照")
+    @Column(name = "package_section_name_snapshot", length = 64)
+    private String packageSectionNameSnapshot;
+
     @Note("分项名称")
     @Keyword
     @Column(length = 128, nullable = false)
@@ -304,6 +308,8 @@ public class QuoteLine extends AuditModel {
     public void setType(ItemType type) { this.type = type; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+    public String getPackageSectionNameSnapshot() { return packageSectionNameSnapshot; }
+    public void setPackageSectionNameSnapshot(String packageSectionNameSnapshot) { this.packageSectionNameSnapshot = packageSectionNameSnapshot; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getBrand() { return brand; }

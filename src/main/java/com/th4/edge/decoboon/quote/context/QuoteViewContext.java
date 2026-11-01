@@ -45,13 +45,23 @@ public class QuoteViewContext {
         Map<String, QuoteGroup> groups = new LinkedHashMap<>();
         for (QuoteLine item : items) {
             Space space = item.getSpace();
-            String key = space == null || space.getSpaceId() == null
-                    ? "general"
-                    : "space-" + space.getSpaceId();
+            String packageSectionName = item.getPackageSectionNameSnapshot();
+            String key;
+            String name;
+            if (packageSectionName != null && !packageSectionName.isBlank()) {
+                name = packageSectionName.trim();
+                key = "package-section-" + name.toLowerCase();
+            } else {
+                key = space == null || space.getSpaceId() == null
+                        ? "general"
+                        : "space-" + space.getSpaceId();
+                name = space == null ? "综合项目" : space.getName();
+            }
+            String groupName = name;
             QuoteGroup group = groups.computeIfAbsent(key, ignored -> {
                 QuoteGroup value = new QuoteGroup();
                 value.setKey(key);
-                value.setName(space == null ? "综合项目" : space.getName());
+                value.setName(groupName);
                 return value;
             });
             add(group, item);
