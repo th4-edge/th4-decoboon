@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/** 当前企业装修套餐选择器分页。 */
-@Note("装修套餐选择器分页")
+/** 当前企业装修套餐分页；管理列表读取全部状态，报价选择器仅读取当前发布版本。 */
+@Note("装修套餐分页")
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
                 properties = {"templateId", "code", "version", "status", "currentPublished", "publishedAt", "snapshotHash",
@@ -47,6 +47,7 @@ public class Page implements com.th4.edge.decoboon.pack.service.templates.page.P
     @AutoInject private String keyword;
     @AutoInject private BigDecimal minArea;
     @AutoInject private BigDecimal maxArea;
+    @AutoInject private Boolean publishedOnly;
     private final PackageTemplateRepository templateRepository;
     private final PackageLineRepository lineRepository;
     private final TenantContext tenantContext;
@@ -70,8 +71,10 @@ public class Page implements com.th4.edge.decoboon.pack.service.templates.page.P
         Specification<PackageTemplate> specification = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(builder.equal(root.get("company").get("comId"), comId));
-            predicates.add(builder.equal(root.get("status"), PackageTemplateStatus.Published));
-            predicates.add(builder.isTrue(root.get("currentPublished")));
+            if (Boolean.TRUE.equals(publishedOnly)) {
+                predicates.add(builder.equal(root.get("status"), PackageTemplateStatus.Published));
+                predicates.add(builder.isTrue(root.get("currentPublished")));
+            }
             if (keyword != null && !keyword.isBlank()) {
                 String pattern = "%" + keyword.trim().toLowerCase(Locale.ROOT) + "%";
                 predicates.add(builder.like(builder.lower(root.get("name")), pattern));
