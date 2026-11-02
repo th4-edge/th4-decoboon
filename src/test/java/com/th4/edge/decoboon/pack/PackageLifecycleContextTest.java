@@ -34,6 +34,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PackageLifecycleContextTest {
@@ -101,6 +103,59 @@ class PackageLifecycleContextTest {
         assertThatThrownBy(() -> context.requireDraft(1L, boss))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("创建新版本");
+    }
+
+    @Test
+    void deletesUnreferencedLatestDraft() {
+        PackageTemplate draft = template(2L, 2, PackageTemplateStatus.Draft);
+        when(templates.findByTemplateIdAndCompany_ComId(2L, 100L)).thenReturn(Optional.of(draft));
+        when(templates.findFirstByCompany_ComIdAndCodeOrderByVersionDesc(100L, draft.getCode()))
+                .thenReturn(Optional.of(draft));
+        when(templates.countBusinessReferences(2L)).thenReturn(0L);
+
+        PackageTemplate deleted = context.deleteDraft(2L, boss);
+
+        assertThat(deleted).isSameAs(draft);
+        verify(templates).delete(draft);
+    }
+
+    @Test
+    void publishedTemplateCannotBeDeleted() {
+        PackageTemplate published = template(1L, 1, PackageTemplateStatus.Published);
+        published.setCurrentPublished(true);
+        when(templates.findByTemplateIdAndCompany_ComId(1L, 100L)).thenReturn(Optional.of(published));
+
+        assertThatThrownBy(() -> context.deleteDraft(1L, boss))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("已发布或已停用");
+
+        verify(templates, never()).delete(any(PackageTemplate.class));
+    }
+
+    @Test
+    void referencedDraftCannotBeDeleted() {
+        PackageTemplate draft = template(2L, 2, PackageTemplateStatus.Draft);
+        when(templates.findByTemplateIdAndCompany_ComId(2L, 100L)).thenReturn(Optional.of(draft));
+        when(templates.findFirstByCompany_ComIdAndCodeOrderByVersionDesc(100L, draft.getCode()))
+                .thenReturn(Optional.of(draft));
+        when(templates.countBusinessReferences(2L)).thenReturn(1L);
+
+        assertThatThrownBy(() -> context.deleteDraft(2L, boss))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("已被业务引用");
+
+        verify(templates, never()).delete(any(PackageTemplate.class));
+    }
+
+    @Test
+    void crossCompanyDraftCannotBeDeleted() {
+        when(templates.findByTemplateIdAndCompany_ComId(99L, 100L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> context.deleteDraft(99L, boss))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("套餐不存在或无权访问");
+
+        verify(templates, never()).delete(any(PackageTemplate.class));
     }
 
     @Test
@@ -265,7 +320,13 @@ class PackageLifecycleContextTest {
         assertThat(PackageLifecycleContext.class
                 .getMethod("disable", Long.class, Employee.class)
                 .isAnnotationPresent(Transactional.class)).isFalse();
+        assertThat(PackageLifecycleContext.class
+                .getMethod("deleteDraft", Long.class, Employee.class)
+                .isAnnotationPresent(Transactional.class)).isFalse();
         assertThat(com.th4.edge.decoboon.pack.service.templates.build.support.Build.class
+                .getMethod("call", PackageTemplate.class)
+                .isAnnotationPresent(Transactional.class)).isFalse();
+        assertThat(com.th4.edge.decoboon.pack.service.templates.delete.support.Delete.class
                 .getMethod("call", PackageTemplate.class)
                 .isAnnotationPresent(Transactional.class)).isFalse();
     }

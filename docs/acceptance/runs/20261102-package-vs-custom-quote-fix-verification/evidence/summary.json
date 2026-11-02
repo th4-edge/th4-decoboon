@@ -1,0 +1,28 @@
+{
+  "status": "DEV_VERIFIED_PENDING_INDEPENDENT_ACCEPTANCE",
+  "customQuote": {
+    "quoteId": "242926344051097600",
+    "quoteNo": "Q1793607753767",
+    "designAreaBeforeFallback": 0,
+    "propertyArea": 100,
+    "quoteArea": 100,
+    "amount": 14779.36,
+    "cost": 9846.00,
+    "contractId": "242926391358652416",
+    "projectId": "242926392860213248",
+    "projectTasks": 5,
+    "materialPlans": 2
+  },
+  "coveredTypes": {
+    "Construction": ["Task"],
+    "Material": ["MaterialPlan"],
+    "Custom": ["Task", "MaterialPlan"],
+    "General": ["Task"]
+  },
+  "uiCases": 4,
+  "uiPass": 4,
+  "uiFail": 0,
+  "backendTests": 1226,
+  "backendFailures": 0,
+  "providerAuditFindings": 0
+}

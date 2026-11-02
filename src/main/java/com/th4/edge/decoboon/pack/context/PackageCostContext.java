@@ -31,11 +31,12 @@ public class PackageCostContext {
     public PackageTemplate mask(PackageTemplate template, Employee employee) {
         if (template == null || canViewCost(employee)) return template;
         template.setCost(null);
+        template.setReferenceCost(null);
         if (template.getItems() != null) {
             for (PackageLine line : template.getItems()) {
-                if (line != null && line.getItem() != null) {
-                    line.getItem().setCostPrice(null);
-                }
+                if (line == null) continue;
+                line.setCostPriceSnapshot(null);
+                if (line.getItem() != null) line.getItem().setCostPrice(null);
             }
         }
         return template;
@@ -43,5 +44,16 @@ public class PackageCostContext {
 
     public Page<PackageTemplate> mask(Page<PackageTemplate> page, Employee employee) {
         return page == null ? null : page.map(template -> mask(template, employee));
+    }
+
+    public PackageLine mask(PackageLine line, Employee employee) {
+        if (line == null || canViewCost(employee)) return line;
+        line.setCostPriceSnapshot(null);
+        if (line.getItem() != null) line.getItem().setCostPrice(null);
+        return line;
+    }
+
+    public Page<PackageLine> maskLines(Page<PackageLine> page, Employee employee) {
+        return page == null ? null : page.map(line -> mask(line, employee));
     }
 }

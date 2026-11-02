@@ -1,0 +1,56 @@
+{
+  "status": "DEV_AUDIT_FAILED_BUSINESS_CLOSURE",
+  "packageQuote": {
+    "quoteNo": "Q1793529627095",
+    "mode": "Package",
+    "area": 120.00,
+    "subtotal": 12000.00,
+    "discount": 0.90,
+    "taxAmount": 540.00,
+    "amount": 11340.00,
+    "cost": 106.80,
+    "contractLines": 4,
+    "projectTasks": 4,
+    "materialPlans": 0,
+    "receivables": 3,
+    "projectId": "242923438631550976"
+  },
+  "customQuote": {
+    "quoteNo": "Q1793457725030",
+    "mode": "Custom",
+    "area": 0.00,
+    "propertyArea": 110.00,
+    "subtotal": 15141.60,
+    "discount": 0.95,
+    "taxAmount": 719.23,
+    "amount": 15103.75,
+    "cost": 10109.00,
+    "contractLines": 6,
+    "lineTypes": {
+      "Construction": 3,
+      "Material": 1,
+      "Custom": 1,
+      "General": 1
+    },
+    "projectTasks": 3,
+    "materialPlans": 1,
+    "untrackedExecutionCost": 5240.00,
+    "receivables": 3,
+    "projectId": "242923446500065280"
+  },
+  "findings": [
+    "P0 定制/综合等项目未生成履约执行对象",
+    "P1 套餐面积折算被误显示为调整增减",
+    "P1 自定义报价面积为0但房屋/项目面积为110",
+    "P1 合同明细合计与合同金额缺少折前折后勾稽",
+    "P2 合同事实暴露内部报价/合同编号",
+    "P2 套餐无设计方案被表达为来源事实暂不可确认"
+  ],
+  "negativeGates": {
+    "historicalPackageTemplate": "PASS_409",
+    "draftDesignQuote": "PASS_400",
+    "contractFromUnacceptedQuote": "PASS_400",
+    "projectWithoutEffectiveContract": "PASS_400",
+    "duplicateQuoteOnConfirmedProperty": "PASS_400"
+  }
+}

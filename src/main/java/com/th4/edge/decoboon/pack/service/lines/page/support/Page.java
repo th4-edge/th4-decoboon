@@ -6,6 +6,7 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.pack.model.PackageLine;
+import com.th4.edge.decoboon.pack.context.PackageCostContext;
 import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.service.annotation.ServiceName;
@@ -35,7 +36,7 @@ import com.th4.edge.framework.provider.security.annotation.User;
         @AllowProperties(model = PackageSection.class, properties = {"groupId", "name"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "code", "category", "brand", "series", "spec", "name", "unit",
-                        "pricingMode", "materialPrice", "manualPrice", "formula", "craft"})
+                        "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "formula", "craft"})
 })
 @Service("pack/line/page")
 @ServiceName("page")
@@ -45,15 +46,18 @@ public class Page extends AbstractPage<PackageLine> implements com.th4.edge.deco
     @User
     private Employee employee;
     private final TenantContext tenantContext;
+    private final PackageCostContext costContext;
 
     @Override
     public org.springframework.data.domain.Page<PackageLine> call(PackageLine request) {
-        request.setCompany(tenantContext.requireCompany(employee));
-        return super.call(request);
+        Employee current = tenantContext.requireEmployee(employee);
+        request.setCompany(current.getCompany());
+        return costContext.maskLines(super.call(request), current);
     }
 
-    public Page(EntityManager entityManager, TenantContext tenantContext) {
+    public Page(EntityManager entityManager, TenantContext tenantContext, PackageCostContext costContext) {
         super(entityManager);
         this.tenantContext = tenantContext;
+        this.costContext = costContext;
     }
 }

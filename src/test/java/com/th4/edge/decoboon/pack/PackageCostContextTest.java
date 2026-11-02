@@ -22,6 +22,7 @@ class PackageCostContextTest {
         item.setCostPrice(new BigDecimal("60.00"));
         PackageLine line = new PackageLine();
         line.setItem(item);
+        line.setCostPriceSnapshot(new BigDecimal("50.00"));
         PackageTemplate template = new PackageTemplate();
         template.setCost(new BigDecimal("80.00"));
         template.setItems(List.of(line));
@@ -30,6 +31,7 @@ class PackageCostContextTest {
 
         assertThat(template.getCost()).isNull();
         assertThat(item.getCostPrice()).isNull();
+        assertThat(line.getCostPriceSnapshot()).isNull();
     }
 
     @Test

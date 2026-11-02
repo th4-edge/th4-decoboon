@@ -36,4 +36,19 @@ public interface PackageTemplateRepository extends JpaRepository<PackageTemplate
              group by l.template_id
             """, nativeQuery = true)
     List<Object[]> summarizeLinesByCompany(@Param("comId") Long comId);
+
+    @Query(value = """
+            select
+              (select count(*) from quote q where q.package_template_id = :templateId)
+              + (select count(*) from quote_line ql
+                   join pack_line pl on pl.item_id = ql.package_line_id
+                  where pl.template_id = :templateId)
+              + (select count(*) from db_material_plan mp
+                   join pack_line pl on pl.item_id = mp.package_line_id
+                  where pl.template_id = :templateId)
+              + (select count(*) from db_project_task pt
+                   join pack_line pl on pl.item_id = pt.package_line_id
+                  where pl.template_id = :templateId)
+            """, nativeQuery = true)
+    long countBusinessReferences(@Param("templateId") Long templateId);
 }

@@ -110,6 +110,49 @@ class ContractChangeFulfillmentContextTest {
     }
 
     @Test
+    void shouldExpandCustomChangeIntoTaskAndMaterialPlan() {
+        Fixture fixture = fixture();
+        ContractChangeItem custom = item(3L, ContractChangeType.Add, ItemType.Custom,
+                null, new BigDecimal("2"), new BigDecimal("800"), new BigDecimal("1600"), new BigDecimal("1000"));
+        when(itemRepository.findByChange_ChangeIdOrderByChangeItemIdAsc(10L)).thenReturn(List.of(custom));
+        when(stageRepository.findByProjectOrderBySort(fixture.project())).thenReturn(List.of());
+        when(taskRepository.findByProject(fixture.project())).thenReturn(List.of());
+        when(materialPlanRepository.findByProject(fixture.project())).thenReturn(List.of());
+
+        context.apply(fixture.change(), fixture.operator());
+
+        ArgumentCaptor<ProjectTask> task = ArgumentCaptor.forClass(ProjectTask.class);
+        ArgumentCaptor<MaterialPlan> plan = ArgumentCaptor.forClass(MaterialPlan.class);
+        verify(taskRepository).save(task.capture());
+        verify(materialPlanRepository).save(plan.capture());
+        assertThat(task.getValue().getChangeItem()).isSameAs(custom);
+        assertThat(task.getValue().getSalePrice()).isEqualByComparingTo("1600");
+        assertThat(task.getValue().getCost()).isEqualByComparingTo("1000");
+        assertThat(plan.getValue().getChangeItem()).isSameAs(custom);
+        assertThat(plan.getValue().getCost()).isEqualByComparingTo("1000");
+    }
+
+    @Test
+    void shouldExpandGeneralChangeIntoExecutionTaskOnly() {
+        Fixture fixture = fixture();
+        ContractChangeItem general = item(4L, ContractChangeType.Add, ItemType.General,
+                null, BigDecimal.ONE, new BigDecimal("120"), new BigDecimal("120"), new BigDecimal("80"));
+        when(itemRepository.findByChange_ChangeIdOrderByChangeItemIdAsc(10L)).thenReturn(List.of(general));
+        when(stageRepository.findByProjectOrderBySort(fixture.project())).thenReturn(List.of());
+        when(taskRepository.findByProject(fixture.project())).thenReturn(List.of());
+        when(materialPlanRepository.findByProject(fixture.project())).thenReturn(List.of());
+
+        context.apply(fixture.change(), fixture.operator());
+
+        ArgumentCaptor<ProjectTask> task = ArgumentCaptor.forClass(ProjectTask.class);
+        verify(taskRepository).save(task.capture());
+        verify(materialPlanRepository, times(0)).save(any());
+        assertThat(task.getValue().getChangeItem()).isSameAs(general);
+        assertThat(task.getValue().getSalePrice()).isEqualByComparingTo("120");
+        assertThat(task.getValue().getCost()).isEqualByComparingTo("80");
+    }
+
+    @Test
     void shouldCancelUnstartedTaskAndCloseUnpurchasedMaterialOnRemove() {
         Fixture fixture = fixture();
         ContractLine line = line(11L, ItemType.Construction, "墙面");

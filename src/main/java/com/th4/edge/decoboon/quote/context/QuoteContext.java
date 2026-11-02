@@ -100,6 +100,13 @@ public class QuoteContext {
                 ? propertyContext.ensureForCustomer(design.getCustomer(), design.getOwner())
                 : design.getProperty();
         ensurePropertyOpen(designProperty);
+        BigDecimal quoteArea = design.getArea();
+        if (quoteArea == null || quoteArea.signum() <= 0) {
+            quoteArea = designProperty.getArea();
+        }
+        if (quoteArea == null || quoteArea.signum() <= 0) {
+            throw new DefinedException(new DefaultErrorCode("400", "设计方案和房屋均缺少有效面积，不能生成报价"));
+        }
         List<DesignItem> designItems = designItemRepository.findByDesign_DesignIdOrderBySortAsc(design.getDesignId());
         if (designItems.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400", "设计方案尚未配置施工或材料分项"));
@@ -132,7 +139,7 @@ public class QuoteContext {
         quote.setCreatedBy(design.getOwner());
         quote.setVersion((int) quoteRepository.countByDesign_DesignId(design.getDesignId()) + 1);
         quote.setMode(QuoteMode.Custom);
-        quote.setArea(zero(design.getArea()));
+        quote.setArea(quoteArea.setScale(2, RoundingMode.HALF_UP));
         quote.setSubtotal(money(subtotal));
         quote.setDiscount(rate);
         quote.setTaxRate(new BigDecimal("0.05"));

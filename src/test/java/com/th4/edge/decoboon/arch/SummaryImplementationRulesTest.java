@@ -67,7 +67,9 @@ class SummaryImplementationRulesTest {
             // 2026-10-31 财务报价单行汇总（DQ-X6）：同谓词聚合 SQL，不再由前端求和
             "quote/context/QuoteFinanceAggregateContext.java",
             // 2026-11-01 套餐模板经营摘要：纳入汇总/报表实现门禁。
-            "pack/context/PackageSummaryContext.java");
+            "pack/context/PackageSummaryContext.java",
+            // 2026-11-02 套餐详情分项类型统计：SQL 聚合结果回填，禁止回退为前端分组计数。
+            "pack/context/PackageTypeSummaryContext.java");
 
     /**
      * 存量违规基线（GAP-027 整改完成后必须逐条删除）。

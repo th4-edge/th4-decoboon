@@ -212,9 +212,10 @@ class ProviderSecurityAcceptanceTest {
         // 2026-10-21 项目账本汇总新增 1 条 protected：finance/project-ledger/report。
         // 邀请主动发现新增 1 条 protected：invite/invitation/pending。
         // 2026-10-31 财务报价单行汇总（DQ-X6）新增 1 条 protected：quote/finance/summary。
-        // 合并本地能力与生产套餐复制能力后，实测 Provider 面板为549（public 16 + protected 533）。
-        assertThat(routes).hasSize(549);
-        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(533);
+        // 2026-11-02 套餐草稿删除新增 1 条 protected：pack/template/delete。
+        // => 当前 Provider 面板为 550（public 16 + protected 534）。
+        assertThat(routes).hasSize(550);
+        assertThat(routes.keySet()).filteredOn(route -> !EXPECTED_PUBLIC_ROUTES.contains(route)).hasSize(534);
         assertThat(routes.keySet()).filteredOn(EXPECTED_PUBLIC_ROUTES::contains).hasSize(16);
     }
 
@@ -328,6 +329,7 @@ class ProviderSecurityAcceptanceTest {
         assertUnauthorized("pack/section/save");
         assertUnauthorized("pack/line/save");
         assertUnauthorized("pack/template-item/save");
+        assertUnauthorized("pack/template/delete");
         assertUnauthorized("quote/line/save");
         assertUnauthorized("quote/line/delete");
         assertUnauthorized("statistic/onboarding/report");
