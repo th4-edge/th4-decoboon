@@ -638,6 +638,17 @@ class FinanceStoreScopeHttpAcceptanceTest {
                 "{\"current\":1,\"size\":1,\"keyword\":\"HTTP项目12\"}", bossToken);
         assertThat(receivablePage.path("data").path("totalElements").asLong()).isEqualTo(1);
         assertThat(receivablePage.path("data").path("content").size()).isEqualTo(1);
+        String receivableId = receivablePage.path("data").path("content").get(0).path("receivableId").asText();
+        JsonNode receivableById = api("finance/receivable/page",
+                "{\"current\":1,\"size\":1,\"filter\":\"actionable\",\"receivableId\":\"" + receivableId + "\"}", bossToken);
+        assertThat(receivableById.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(receivableById.path("data").path("content").get(0).path("receivableId").asText()).isEqualTo(receivableId);
+        JsonNode actionableReceivables = api("finance/receivable/page",
+                "{\"current\":1,\"size\":20,\"filter\":\"actionable\"}", bossToken);
+        assertThat(actionableReceivables.path("data").path("totalElements").asLong()).isEqualTo(2);
+        JsonNode dueSoonReceivables = api("finance/receivable/page",
+                "{\"current\":1,\"size\":20,\"filter\":\"dueSoon\"}", bossToken);
+        assertThat(dueSoonReceivables.path("data").path("totalElements").asLong()).isEqualTo(0);
 
         JsonNode payableReport = api("finance/payable/report", "{}", bossToken);
         assertThat(payableReport.path("success").asBoolean()).as(payableReport.toString()).isTrue();
@@ -662,6 +673,17 @@ class FinanceStoreScopeHttpAcceptanceTest {
                 "{\"current\":1,\"size\":1,\"urgent\":true}", bossToken);
         assertThat(payablePage.path("data").path("totalElements").asLong()).isEqualTo(1);
         assertThat(payablePage.path("data").path("content").size()).isEqualTo(1);
+        String payableId = payablePage.path("data").path("content").get(0).path("payableId").asText();
+        JsonNode payableById = api("finance/payable/page",
+                "{\"current\":1,\"size\":1,\"filter\":\"urgent\",\"payableId\":\"" + payableId + "\"}", bossToken);
+        assertThat(payableById.path("data").path("totalElements").asLong()).isEqualTo(1);
+        assertThat(payableById.path("data").path("content").get(0).path("payableId").asText()).isEqualTo(payableId);
+        JsonNode actionablePayables = api("finance/payable/page",
+                "{\"current\":1,\"size\":20,\"filter\":\"actionable\"}", bossToken);
+        assertThat(actionablePayables.path("data").path("totalElements").asLong()).isEqualTo(1);
+        JsonNode salaryPayables = api("finance/payable/page",
+                "{\"current\":1,\"size\":20,\"filter\":\"salary\"}", bossToken);
+        assertThat(salaryPayables.path("data").path("totalElements").asLong()).isEqualTo(0);
 
         JsonNode ledgerReport = api("finance/ledger/report", "{}", bossToken);
         assertThat(ledgerReport.path("success").asBoolean()).as(ledgerReport.toString()).isTrue();
