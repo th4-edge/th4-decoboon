@@ -94,9 +94,6 @@ public class Save implements com.th4.edge.decoboon.finance.service.receivables.s
         request.setName(name.trim());
         request.setStageName(stageName);
         ReceivableType receivableType = type == null ? ReceivableType.Other : type;
-        if (receivableType != ReceivableType.Other) {
-            throw new DefinedException(new DefaultErrorCode("400", "手工应收仅支持其他应收"));
-        }
         request.setType(receivableType);
         request.setAmount(total);
         request.setReceivedAmount(BigDecimal.ZERO);

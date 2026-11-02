@@ -181,7 +181,7 @@ class FinanceClosedLoopTest {
     }
 
     @Test
-    void shouldRejectManualReceivableTypesOtherThanOther() {
+    void shouldAllowAllManualReceivableTypes() {
         Fixture fixture = createFixture();
         Employee boss = fixture.boss();
         Project project = fixture.project();
@@ -191,21 +191,18 @@ class FinanceClosedLoopTest {
         set(save, "projectId", project.getProjectId());
         set(save, "name", "手工应收类型门禁");
         set(save, "stageName", "补充款");
-        set(save, "type", ReceivableType.First);
         set(save, "amount", new BigDecimal("10.00"));
         set(save, "dueDate", LocalDate.now());
 
-        assertThatThrownBy(() -> save.call(new Receivable()))
-                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("手工应收仅支持其他应收");
-
-        set(save, "type", ReceivableType.Other);
-        Receivable created = save.call(new Receivable());
-        assertThat(created.getType()).isEqualTo(ReceivableType.Other);
+        for (ReceivableType type : ReceivableType.values()) {
+            set(save, "type", type);
+            Receivable created = save.call(new Receivable());
+            assertThat(created.getType()).isEqualTo(type);
+        }
     }
 
     @Test
-    void shouldRejectManualPayableTypesOtherThanOtherAndExpense() {
+    void shouldAllowAllManualPayableTypes() {
         Fixture fixture = createFixture();
         Employee boss = fixture.boss();
         Project project = fixture.project();
@@ -214,18 +211,15 @@ class FinanceClosedLoopTest {
         set(save, "employee", boss);
         set(save, "projectId", project.getProjectId());
         set(save, "name", "手工应付类型门禁");
-        set(save, "type", PayableType.Material);
         set(save, "payeeName", "测试供应商");
         set(save, "amount", new BigDecimal("10.00"));
         set(save, "dueDate", LocalDate.now());
 
-        assertThatThrownBy(() -> save.call(new Payable()))
-                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("手工应付仅支持其他应付或费用支出");
-
-        set(save, "type", PayableType.Expense);
-        Payable created = save.call(new Payable());
-        assertThat(created.getType()).isEqualTo(PayableType.Expense);
+        for (PayableType type : PayableType.values()) {
+            set(save, "type", type);
+            Payable created = save.call(new Payable());
+            assertThat(created.getType()).isEqualTo(type);
+        }
     }
 
     @Test
