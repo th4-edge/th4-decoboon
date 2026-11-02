@@ -54,7 +54,7 @@
 | 级联删除集成测试 | `PackageDraftDeleteIntegrationTest` | PASS：草稿和项目行、行说明同时删除，无孤儿数据 |
 | 路由鉴权 | `ProviderSecurityAcceptanceTest` | PASS：`pack/template/delete` 未登录必须鉴权 |
 | Provider 响应审计 | `audit-provider-response-contract.py --check` | PASS，findings=0 |
-| 后端全量测试 | `mvn -o -q clean test` | PASS，1227/0/0/0 |
+| 后端全量测试 | `mvn -o -q clean test` | PASS，1222/0/0/0 |
 | App 套餐契约 | `check:package-config -- --self-test` | PASS，10 个负向夹具被拒绝 |
 | App 完整门禁 | `npm run verify:mp-weixin` | PASS |
 | 真实页面 | 麦鸿账号登录后删除测试草稿 | 待发布后执行 |
