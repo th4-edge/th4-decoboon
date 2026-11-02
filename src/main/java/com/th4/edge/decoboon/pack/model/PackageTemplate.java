@@ -29,6 +29,7 @@ import java.util.Map;
 import com.th4.edge.tenant.user.model.Company;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.decoboon.pack.configure.PackageTemplateStatus;
+import com.th4.edge.decoboon.catalog.configure.ItemType;
 
 
 
@@ -149,6 +150,14 @@ public class PackageTemplate extends AbstractModel {
     private java.util.List<String> criterions;
 
     @Transient @Note("选择器摘要：分项数") private Integer itemCount;
+    @Transient @Note("整套餐分项类型统计") private Map<ItemType, Integer> typeCounts;
+    @Transient @Note("分区与分项类型统计") private Map<Long, Map<ItemType, Integer>> sectionTypeCounts;
+    @Transient @Note("分区项目数") private Map<Long, Integer> sectionLineCounts;
+    @Transient @Note("分项标准参考价合计") private BigDecimal referenceAmount = BigDecimal.ZERO;
+    @Transient @Note("分项标准成本合计") private BigDecimal referenceCost = BigDecimal.ZERO;
+    @Transient @Note("分项类型标准参考价") private Map<ItemType, BigDecimal> typeReferenceAmounts;
+    @Transient @Note("分区标准参考价") private Map<Long, BigDecimal> sectionReferenceAmounts;
+    @Transient @Note("分区与分项类型标准参考价") private Map<Long, Map<ItemType, BigDecimal>> sectionTypeReferenceAmounts;
 
 
 
@@ -273,4 +282,32 @@ public class PackageTemplate extends AbstractModel {
 
     public Integer getItemCount() { return itemCount; }
     public void setItemCount(Integer itemCount) { this.itemCount = itemCount; }
+    public Map<ItemType, Integer> getTypeCounts() { return typeCounts; }
+    public void setTypeCounts(Map<ItemType, Integer> typeCounts) { this.typeCounts = typeCounts; }
+    public Map<Long, Map<ItemType, Integer>> getSectionTypeCounts() { return sectionTypeCounts; }
+    public void setSectionTypeCounts(Map<Long, Map<ItemType, Integer>> sectionTypeCounts) {
+        this.sectionTypeCounts = sectionTypeCounts;
+    }
+    public Map<Long, Integer> getSectionLineCounts() { return sectionLineCounts; }
+    public void setSectionLineCounts(Map<Long, Integer> sectionLineCounts) {
+        this.sectionLineCounts = sectionLineCounts;
+    }
+    public BigDecimal getReferenceAmount() { return referenceAmount; }
+    public void setReferenceAmount(BigDecimal referenceAmount) { this.referenceAmount = referenceAmount; }
+    public BigDecimal getReferenceCost() { return referenceCost; }
+    public void setReferenceCost(BigDecimal referenceCost) { this.referenceCost = referenceCost; }
+    public Map<ItemType, BigDecimal> getTypeReferenceAmounts() { return typeReferenceAmounts; }
+    public void setTypeReferenceAmounts(Map<ItemType, BigDecimal> typeReferenceAmounts) {
+        this.typeReferenceAmounts = typeReferenceAmounts;
+    }
+    public Map<Long, BigDecimal> getSectionReferenceAmounts() { return sectionReferenceAmounts; }
+    public void setSectionReferenceAmounts(Map<Long, BigDecimal> sectionReferenceAmounts) {
+        this.sectionReferenceAmounts = sectionReferenceAmounts;
+    }
+    public Map<Long, Map<ItemType, BigDecimal>> getSectionTypeReferenceAmounts() {
+        return sectionTypeReferenceAmounts;
+    }
+    public void setSectionTypeReferenceAmounts(Map<Long, Map<ItemType, BigDecimal>> sectionTypeReferenceAmounts) {
+        this.sectionTypeReferenceAmounts = sectionTypeReferenceAmounts;
+    }
 }

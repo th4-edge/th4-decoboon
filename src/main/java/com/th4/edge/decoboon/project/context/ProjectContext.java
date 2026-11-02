@@ -1033,11 +1033,8 @@ public class ProjectContext {
         Map<String, ProjectStage> stages = new LinkedHashMap<>();
         Map<String, BigDecimal> stageCosts = new LinkedHashMap<>();
         for (ContractLine item : contractLines) {
-            if (item.getType() == ItemType.Construction) {
-                appendConstruction(project, item, stages, stageCosts);
-            } else if (item.getType() == ItemType.Material) {
-                appendMaterial(project, item);
-            }
+            if (requiresMaterialPlan(item.getType())) appendMaterial(project, item);
+            if (requiresExecutionTask(item.getType())) appendExecutionTask(project, item, stages, stageCosts);
         }
         assignDesignStageWeights(stages, stageCosts);
         stageRepository.saveAll(stages.values());
@@ -1068,11 +1065,10 @@ public class ProjectContext {
             stages.put(snapshot.getCode(), stage);
         }
         for (ContractLine item : contractLines) {
-            if (item.getType() == ItemType.Material) {
-                appendMaterial(project, item);
-            } else if (item.getType() == ItemType.Construction) {
+            if (requiresMaterialPlan(item.getType())) appendMaterial(project, item);
+            if (requiresExecutionTask(item.getType())) {
                 ProjectStage stage = stageFor(item, stages);
-                appendConstructionTask(project, item, stage, stageCosts);
+                appendExecutionTaskToStage(project, item, stage, stageCosts);
             }
         }
         assignPlanStageWeights(stages, stageCosts);
@@ -1081,7 +1077,7 @@ public class ProjectContext {
         for (ProjectStage stage : stages.values()) {
             if (StageStatus.Todo.equals(stage.getStatus()) && taskRepository.findByStage(stage).isEmpty()) {
                 stage.setStatus(StageStatus.NotApplicable);
-                stage.setNotApplicableReason("系统自动判定：该阶段无合同施工行（本项不涉及）");
+                stage.setNotApplicableReason("系统自动判定：该阶段无合同履约任务（本项不涉及）");
                 stage.setNotApplicableAt(LocalDateTime.now());
                 stageRepository.save(stage);
             }
@@ -1099,6 +1095,10 @@ public class ProjectContext {
         else if (text.contains("安装") || text.contains("设备")) code = "INSTALL";
         else if (text.contains("拆除")) code = "DEMOLITION";
         else if (text.contains("竣") || text.contains("清洁")) code = "COMPLETION";
+        else if (item.getType() == ItemType.Custom
+                || item.getType() == ItemType.Soft
+                || item.getType() == ItemType.Appliance
+                || item.getType() == ItemType.General) code = "INSTALL";
         else code = "PREPARE";
         ProjectStage exact = stages.get(code);
         if (exact != null) return exact;
@@ -1108,8 +1108,8 @@ public class ProjectContext {
                 () -> new DefinedException(new DefaultErrorCode("400", "施工计划没有可用阶段")));
     }
 
-    private void appendConstructionTask(Project project, ContractLine item, ProjectStage stage,
-                                        Map<String, BigDecimal> stageCosts) {
+    private void appendExecutionTaskToStage(Project project, ContractLine item, ProjectStage stage,
+                                            Map<String, BigDecimal> stageCosts) {
         CatalogItem catalogItem = item.getSourceQuoteLine() == null ? null : item.getSourceQuoteLine().getCatalogItem();
         ProjectTask task = new ProjectTask();
         task.setCompany(project.getCompany());
@@ -1148,9 +1148,9 @@ public class ProjectContext {
         }
     }
 
-    private void appendConstruction(Project project, ContractLine item,
-                                    Map<String, ProjectStage> stages,
-                                    Map<String, BigDecimal> stageCosts) {
+    private void appendExecutionTask(Project project, ContractLine item,
+                                     Map<String, ProjectStage> stages,
+                                     Map<String, BigDecimal> stageCosts) {
         CatalogItem catalogItem = item.getSourceQuoteLine().getCatalogItem();
         String category = item.getCategory() == null || item.getCategory().isBlank()
                 ? "其他施工" : item.getCategory();
@@ -1223,6 +1223,21 @@ public class ProjectContext {
                 materialCategoryContext.lossRate(project.getCompany(), item.getCategory()));
         materialPlanContext.applyDerived(plan);
         materialPlanRepository.save(plan);
+    }
+
+    private boolean requiresMaterialPlan(ItemType type) {
+        return type == ItemType.Material
+                || type == ItemType.Custom
+                || type == ItemType.Soft
+                || type == ItemType.Appliance;
+    }
+
+    private boolean requiresExecutionTask(ItemType type) {
+        return type == ItemType.Construction
+                || type == ItemType.Custom
+                || type == ItemType.Soft
+                || type == ItemType.Appliance
+                || type == ItemType.General;
     }
 
     /**

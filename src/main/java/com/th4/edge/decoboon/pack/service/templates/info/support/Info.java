@@ -3,6 +3,7 @@ import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 
 import com.th4.edge.decoboon.pack.context.PackageCostContext;
+import com.th4.edge.decoboon.pack.context.PackageTypeSummaryContext;
 import com.th4.edge.decoboon.pack.model.PackageTemplate;
 import com.th4.edge.decoboon.pack.model.PackageLine;
 import com.th4.edge.decoboon.pack.model.PackageSection;
@@ -30,7 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = PackageTemplate.class,
                 properties = {"templateId", "code", "version", "status", "currentPublished", "publishedAt", "snapshotHash", "name", "area", "price", "discount", "cost", "items", "measures",
-                        "criterions", "createTime", "updateTime"}),
+                        "criterions", "sectionCount", "lineCount", "itemCount", "typeCounts", "sectionTypeCounts",
+                        "sectionLineCounts", "referenceAmount", "referenceCost", "typeReferenceAmounts",
+                        "sectionReferenceAmounts", "sectionTypeReferenceAmounts", "ready", "createTime", "updateTime"}),
         @AllowProperties(model = PackageLine.class,
                 properties = {"itemId", "section", "sectionNameSnapshot", "item", "catalogTypeSnapshot",
                         "catalogCategorySnapshot", "craftSnapshot", "costPriceSnapshot", "name", "brand", "spec", "unit",
@@ -42,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
         @AllowProperties(model = PackageRule.class, properties = {"price", "standard", "remark"}),
         @AllowProperties(model = CatalogItem.class,
                 properties = {"itemId", "type", "category", "brand", "series", "spec", "name", "unit",
-                        "pricingMode", "materialPrice", "manualPrice", "costPrice", "formula", "craft", "criterion"})
+                        "pricingMode", "materialPrice", "manualPrice", "fixedTotalPrice", "costPrice", "formula", "craft", "criterion"})
 })
 @Service("pack/template/info")
 @Scope(ScopeTypes.PROTOTYPE)
@@ -58,12 +61,14 @@ public class Info implements com.th4.edge.decoboon.pack.service.templates.info.I
     private final PackageTemplateRepository giftPackRepository;
     private final TenantContext tenantContext;
     private final PackageCostContext costContext;
+    private final PackageTypeSummaryContext typeSummaryContext;
 
     public Info(PackageTemplateRepository giftPackRepository, TenantContext tenantContext,
-                PackageCostContext costContext) {
+                PackageCostContext costContext, PackageTypeSummaryContext typeSummaryContext) {
         this.giftPackRepository = giftPackRepository;
         this.tenantContext = tenantContext;
         this.costContext = costContext;
+        this.typeSummaryContext = typeSummaryContext;
     }
 
     @Override
@@ -73,6 +78,7 @@ public class Info implements com.th4.edge.decoboon.pack.service.templates.info.I
         PackageTemplate template = giftPackRepository.findByTemplateIdAndCompany_ComId(
                         templateId, current.getCompany().getComId())
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
+        typeSummaryContext.apply(template);
         return costContext.mask(template, current);
     }
 }

@@ -642,7 +642,8 @@ public class ProjectCostContext {
                 || type == ItemType.Material
                 || type == ItemType.Custom
                 || type == ItemType.Soft
-                || type == ItemType.Appliance;
+                || type == ItemType.Appliance
+                || type == ItemType.General;
     }
 
     private boolean requiresMaterial(ItemType type) {

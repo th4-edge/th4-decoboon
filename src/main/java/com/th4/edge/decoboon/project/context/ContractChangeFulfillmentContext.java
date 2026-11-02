@@ -102,6 +102,13 @@ public class ContractChangeFulfillmentContext {
                 applyConstruction(change, item, project, tasks, stages, operator);
             } else if (itemType == ItemType.Material) {
                 applyMaterial(change, item, project, materials, operator);
+            } else if (itemType == ItemType.Custom
+                    || itemType == ItemType.Soft
+                    || itemType == ItemType.Appliance) {
+                applyConstruction(change, item, project, tasks, stages, operator);
+                applyMaterial(change, item, project, materials, operator);
+            } else if (itemType == ItemType.General) {
+                applyConstruction(change, item, project, tasks, stages, operator);
             }
         }
     }
@@ -113,13 +120,13 @@ public class ContractChangeFulfillmentContext {
         ContractChangeType type = item.getChangeType();
         if (type == ContractChangeType.Remove) {
             if (existing == null) {
-                report(change, project, operator, item, "取消范围未找到原施工任务，已记录差异");
+                report(change, project, operator, item, "取消范围未找到原履约任务，已记录差异");
             } else if (existing.getStatus() == TaskStatus.Todo) {
                 existing.setStatus(TaskStatus.Cancelled);
                 existing.setProgress(0);
                 taskRepository.save(existing);
             } else {
-                report(change, project, operator, item, "任务已执行，保留原施工事实并记录取消差异");
+                report(change, project, operator, item, "任务已执行，保留原履约事实并记录取消差异");
             }
             return;
         }
@@ -129,7 +136,7 @@ public class ContractChangeFulfillmentContext {
                 existing.setStatus(TaskStatus.Cancelled);
                 taskRepository.save(existing);
             } else if (existing != null) {
-                report(change, project, operator, item, "原任务已执行，保留原施工事实并生成替代任务");
+                report(change, project, operator, item, "原任务已执行，保留原履约事实并生成替代任务");
             }
             ProjectTask replacement = newTask(change, item, project, stages, operator);
             replacement.setQuantity(quantityForReplacement(item));
@@ -184,7 +191,7 @@ public class ContractChangeFulfillmentContext {
             stages.put(category, stage);
         }
         if (StageStatus.NotApplicable.equals(stage.getStatus())) {
-            // DEC-057：增减项为「本项不涉及」阶段补回施工内容时，自动恢复为未开始。
+            // DEC-057：增减项为「本项不涉及」阶段补回履约内容时，自动恢复为未开始。
             stage.setStatus(StageStatus.Todo);
             stage.setNotApplicableReason(null);
             stage.setNotApplicableBy(null);
