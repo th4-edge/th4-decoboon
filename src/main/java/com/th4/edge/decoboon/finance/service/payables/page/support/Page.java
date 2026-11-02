@@ -28,6 +28,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -63,6 +65,8 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
     @AutoInject
     private Integer size;
     @AutoInject
+    private Long payableId;
+    @AutoInject
     private Long projectId;
     @AutoInject
     private String type;
@@ -70,6 +74,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
     private String status;
     @AutoInject
     private Boolean urgent;
+    /** 服务端语义筛选：actionable / overdue / dueSoon / urgent / salary。 */
+    @AutoInject
+    private String filter;
 
     /** 按供应商筛选（供应链台账联动）。 */
     @AutoInject
@@ -119,6 +126,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
 
         return specification.and((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            if (payableId != null) {
+                predicates.add(cb.equal(root.get("payableId"), payableId));
+            }
             if (projectId != null) {
                 predicates.add(cb.equal(root.get("project").get("projectId"), projectId));
             }
@@ -139,6 +149,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
             if (urgent != null) {
                 predicates.add(cb.equal(root.get("urgent"), urgent));
             }
+            appendSemanticFilter(predicates, root, cb);
             if (!kw.isBlank()) {
                 Join<Payable, Project> project = root.join("project", JoinType.LEFT);
                 String pattern = "%" + kw + "%";
@@ -150,6 +161,28 @@ public class Page implements com.th4.edge.decoboon.finance.service.payables.page
             }
             return cb.and(predicates.toArray(Predicate[]::new));
         });
+    }
+
+    private void appendSemanticFilter(List<Predicate> predicates,
+                                      jakarta.persistence.criteria.Root<Payable> root,
+                                      jakarta.persistence.criteria.CriteriaBuilder cb) {
+        if (filter == null || filter.isBlank()) return;
+        String value = filter.trim().toLowerCase();
+        LocalDate today = LocalDate.now();
+        Predicate outstanding = cb.lessThan(root.<BigDecimal>get("paidAmount"), root.<BigDecimal>get("amount"));
+        Predicate notClosed = cb.notEqual(root.get("status"), PayableStatus.Closed);
+        switch (value) {
+            case "actionable" -> predicates.add(cb.and(outstanding, notClosed));
+            case "overdue" -> predicates.add(cb.and(outstanding, notClosed,
+                    cb.lessThan(root.<LocalDate>get("dueDate"), today)));
+            case "duesoon" -> predicates.add(cb.and(outstanding, notClosed,
+                    cb.between(root.<LocalDate>get("dueDate"), today, today.plusDays(7))));
+            case "urgent" -> predicates.add(cb.and(outstanding, notClosed,
+                    cb.isTrue(root.get("urgent"))));
+            case "salary" -> predicates.add(cb.and(outstanding, notClosed,
+                    cb.equal(root.get("type"), PayableType.Salary)));
+            default -> predicates.add(cb.disjunction());
+        }
     }
 
     private <E extends Enum<E>> E enumValue(Class<E> enumType, String rawValue) {
