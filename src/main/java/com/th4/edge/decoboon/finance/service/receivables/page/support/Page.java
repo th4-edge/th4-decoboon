@@ -25,6 +25,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,11 +59,16 @@ public class Page implements com.th4.edge.decoboon.finance.service.receivables.p
     @AutoInject
     private Integer size;
     @AutoInject
+    private Long receivableId;
+    @AutoInject
     private Long projectId;
     @AutoInject
     private String type;
     @AutoInject
     private String status;
+    /** 服务端语义筛选：actionable / overdue / dueSoon。 */
+    @AutoInject
+    private String filter;
     @AutoInject
     private String keyword;
     /** 门店维度（DEC-065）：为空表示不限门店（企业范围）或本店（门店范围）。 */
@@ -107,6 +114,9 @@ public class Page implements com.th4.edge.decoboon.finance.service.receivables.p
 
         return specification.and((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+            if (receivableId != null) {
+                predicates.add(cb.equal(root.get("receivableId"), receivableId));
+            }
             if (projectId != null) {
                 predicates.add(cb.equal(root.get("project").get("projectId"), projectId));
             }
@@ -121,6 +131,7 @@ public class Page implements com.th4.edge.decoboon.finance.service.receivables.p
                 ReceivableStatus parsed = enumValue(ReceivableStatus.class, status);
                 predicates.add(parsed == null ? cb.disjunction() : cb.equal(root.get("status"), parsed));
             }
+            appendSemanticFilter(predicates, root, cb);
             if (!kw.isBlank()) {
                 String pattern = "%" + kw + "%";
                 predicates.add(cb.or(
@@ -131,6 +142,24 @@ public class Page implements com.th4.edge.decoboon.finance.service.receivables.p
             }
             return cb.and(predicates.toArray(Predicate[]::new));
         });
+    }
+
+    private void appendSemanticFilter(List<Predicate> predicates,
+                                      jakarta.persistence.criteria.Root<Receivable> root,
+                                      jakarta.persistence.criteria.CriteriaBuilder cb) {
+        if (filter == null || filter.isBlank()) return;
+        String value = filter.trim().toLowerCase();
+        LocalDate today = LocalDate.now();
+        Predicate outstanding = cb.lessThan(root.<BigDecimal>get("receivedAmount"), root.<BigDecimal>get("amount"));
+        Predicate notClosed = cb.notEqual(root.get("status"), ReceivableStatus.Closed);
+        switch (value) {
+            case "actionable" -> predicates.add(cb.and(outstanding, notClosed));
+            case "overdue" -> predicates.add(cb.and(outstanding, notClosed,
+                    cb.lessThan(root.<LocalDate>get("dueDate"), today)));
+            case "duesoon" -> predicates.add(cb.and(outstanding, notClosed,
+                    cb.between(root.<LocalDate>get("dueDate"), today, today.plusDays(7))));
+            default -> predicates.add(cb.disjunction());
+        }
     }
 
     private <E extends Enum<E>> E enumValue(Class<E> enumType, String rawValue) {
