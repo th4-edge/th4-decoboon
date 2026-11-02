@@ -85,31 +85,31 @@ public class FinanceAccessContext {
     }
 
     /**
-     * 财务高危动作（DEC-075/DEC-076）：BOSS 全企业，店长本店；门店财务/总部财务不自动获得。
+     * 财务高危动作（2026-11-02 用户裁决）：BOSS/总部财务全企业，门店财务/店长本店。
+     * Finance 的企业或门店范围由登录员工的数据范围解析，禁止按前端门店参数放宽。
      */
     public Employee requireHighRiskEditor(Employee principal) {
-        return tenantContext.requireRole(principal, EmployeeRole.Boss, EmployeeRole.StoreManager);
+        return tenantContext.requireRole(principal,
+                EmployeeRole.Boss, EmployeeRole.Finance, EmployeeRole.StoreManager);
     }
 
-    /** 店长执行财务高危动作时，目标收款必须属于本人门店。 */
+    /** 门店范围主体执行财务高危动作时，目标收款必须属于本人门店。 */
     public void requireReceiptScope(Employee principal,
                                     com.th4.edge.decoboon.finance.model.Receipt receipt) {
-        if (principal.getRole() != EmployeeRole.StoreManager) {
-            return;
-        }
-        Long currentStoreId = scope(principal).type() == DataScopeType.Store ? scope(principal).storeId() : null;
+        DataScope currentScope = scope(principal);
+        if (currentScope.type() == DataScopeType.Company) return;
+        Long currentStoreId = currentScope.type() == DataScopeType.Store ? currentScope.storeId() : null;
         Long receiptStoreId = receipt == null || receipt.getStore() == null ? null : receipt.getStore().getStoreId();
         if (currentStoreId == null || !currentStoreId.equals(receiptStoreId)) {
             throw new DefinedException(new DefaultErrorCode("404", "收款记录不存在或无权访问"));
         }
     }
 
-    /** 店长执行财务高危动作时，目标流水必须属于本人门店。 */
+    /** 门店范围主体执行财务高危动作时，目标流水必须属于本人门店。 */
     public void requireLedgerScope(Employee principal, Ledger ledger) {
-        if (principal.getRole() != EmployeeRole.StoreManager) {
-            return;
-        }
-        Long currentStoreId = scope(principal).type() == DataScopeType.Store ? scope(principal).storeId() : null;
+        DataScope currentScope = scope(principal);
+        if (currentScope.type() == DataScopeType.Company) return;
+        Long currentStoreId = currentScope.type() == DataScopeType.Store ? currentScope.storeId() : null;
         Long ledgerStoreId = ledger == null || ledger.getStore() == null ? null : ledger.getStore().getStoreId();
         if (currentStoreId == null || !currentStoreId.equals(ledgerStoreId)) {
             throw new DefinedException(new DefaultErrorCode("404", "手工流水不存在或无权访问"));

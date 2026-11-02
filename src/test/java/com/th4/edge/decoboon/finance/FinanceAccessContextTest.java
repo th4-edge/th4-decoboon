@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.finance.configure.ReceivableStatus;
 import com.th4.edge.decoboon.finance.context.FinanceAccessContext;
 import com.th4.edge.decoboon.finance.model.Ledger;
 import com.th4.edge.decoboon.finance.model.Payable;
+import com.th4.edge.decoboon.finance.model.Receipt;
 import com.th4.edge.decoboon.finance.model.Receivable;
 import com.th4.edge.decoboon.finance.repository.LedgerRepository;
 import com.th4.edge.decoboon.project.model.Project;
@@ -115,7 +116,7 @@ class FinanceAccessContextTest {
 
 
     @Test
-    void shouldAllowStoreManagerHighRiskActionOnlyInOwnStore() {
+    void shouldAllowHighRiskActionWithinResolvedCompanyOrStoreScope() {
         Employee manager = employee(EmployeeRole.StoreManager);
         Company company = new Company();
         company.setComId(10L);
@@ -138,10 +139,44 @@ class FinanceAccessContextTest {
         otherLedger.setStore(otherStore);
         assertThatThrownBy(() -> accessContext.requireLedgerScope(manager, otherLedger))
                 .hasMessageContaining("无权访问");
+        Receipt ownReceipt = new Receipt();
+        ownReceipt.setStore(ownStore);
+        accessContext.requireReceiptScope(manager, ownReceipt);
+        Receipt otherReceipt = new Receipt();
+        otherReceipt.setStore(otherStore);
+        assertThatThrownBy(() -> accessContext.requireReceiptScope(manager, otherReceipt))
+                .hasMessageContaining("无权访问");
 
-        Employee finance = employee(EmployeeRole.Finance);
-        when(employeeRepository.findByEmpId(finance.getEmpId())).thenReturn(finance);
-        assertThatThrownBy(() -> accessContext.requireHighRiskEditor(finance))
+        Employee storeFinance = employee(EmployeeRole.Finance);
+        storeFinance.setCompany(company);
+        storeFinance.setStore(ownStore);
+        when(employeeRepository.findByEmpId(storeFinance.getEmpId())).thenReturn(storeFinance);
+        when(dataScopeContext.resolve(storeFinance))
+                .thenReturn(new DataScope(DataScopeType.Store, 10L, 20L, null, storeFinance.getEmpId()));
+
+        assertThat(accessContext.requireHighRiskEditor(storeFinance).getRole()).isEqualTo(EmployeeRole.Finance);
+        accessContext.requireLedgerScope(storeFinance, ownLedger);
+        accessContext.requireReceiptScope(storeFinance, ownReceipt);
+        assertThatThrownBy(() -> accessContext.requireLedgerScope(storeFinance, otherLedger))
+                .hasMessageContaining("无权访问");
+        assertThatThrownBy(() -> accessContext.requireReceiptScope(storeFinance, otherReceipt))
+                .hasMessageContaining("无权访问");
+
+        Employee headFinance = employee(EmployeeRole.Finance);
+        headFinance.setEmpId(998L);
+        headFinance.setCompany(company);
+        headFinance.setStore(ownStore);
+        when(employeeRepository.findByEmpId(headFinance.getEmpId())).thenReturn(headFinance);
+        when(dataScopeContext.resolve(headFinance))
+                .thenReturn(new DataScope(DataScopeType.Company, 10L, null, null, headFinance.getEmpId()));
+
+        assertThat(accessContext.requireHighRiskEditor(headFinance).getRole()).isEqualTo(EmployeeRole.Finance);
+        accessContext.requireLedgerScope(headFinance, otherLedger);
+        accessContext.requireReceiptScope(headFinance, otherReceipt);
+
+        Employee marketer = employee(EmployeeRole.Marketer);
+        when(employeeRepository.findByEmpId(marketer.getEmpId())).thenReturn(marketer);
+        assertThatThrownBy(() -> accessContext.requireHighRiskEditor(marketer))
                 .hasMessageContaining("无权执行");
     }
 

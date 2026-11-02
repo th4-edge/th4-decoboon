@@ -927,6 +927,73 @@ class FinanceStoreScopeHttpAcceptanceTest {
                 assertThat(item.path("amount").decimalValue()).isEqualByComparingTo("100.00"));
     }
 
+    @Test
+    void financeHighRiskLedgerActionsFollowCompanyOrStoreScopeOverHttp() throws Exception {
+        Employee boss = employeeRepository.findByTelNo(scope.bossPhone());
+        Employee headFinance = employeeRepository.findByTelNo(scope.headFinancePhone());
+        Employee storeFinance = employeeRepository.findByTelNo(scope.storeFinancePhone());
+        Company company = boss.getCompany();
+        Store storeA = storeRepository.findByStoreId(scope.storeAId());
+        Store storeB = storeRepository.findByStoreId(scope.storeBId());
+        Project projectA = projectRepository.findById(scope.projectAId()).orElseThrow();
+        Project projectB = projectRepository.findById(scope.projectBId()).orElseThrow();
+
+        Ledger ownCorrection = ledger(company, storeB, storeFinance, projectB,
+                LedgerDirection.Expense, new BigDecimal("12.00"), "门店财务本店更正");
+        Ledger ownDeletion = ledger(company, storeB, storeFinance, projectB,
+                LedgerDirection.Expense, new BigDecimal("13.00"), "门店财务本店作废");
+        Ledger crossCorrection = ledger(company, storeA, headFinance, projectA,
+                LedgerDirection.Expense, new BigDecimal("14.00"), "门店财务跨店更正");
+        Ledger crossDeletion = ledger(company, storeA, headFinance, projectA,
+                LedgerDirection.Expense, new BigDecimal("15.00"), "门店财务跨店作废");
+        entityManager.flush();
+
+        String storeFinanceToken = login(scope.storeFinancePhone());
+        String headFinanceToken = login(scope.headFinancePhone());
+        String occurredAt = LocalDate.now().toString();
+
+        JsonNode correctedOwn = api("finance/ledger/correct", """
+                {"ledgerId":%s,"projectId":%s,"direction":"Expense","purpose":"ProjectIncidentalCost",
+                 "category":"项目支出","amount":16.00,"account":"CompanyBank","occurredAt":"%s",
+                 "counterparty":"门店财务","summary":"门店财务本店更正后","reason":"本店数据纠错"}
+                """.formatted(ownCorrection.getLedgerId(), scope.projectBId(), occurredAt), storeFinanceToken);
+        assertThat(correctedOwn.path("success").asBoolean()).as(correctedOwn.toString()).isTrue();
+        assertThat(correctedOwn.path("data").path("amount").decimalValue()).isEqualByComparingTo("16.00");
+
+        JsonNode correctedCrossStore = api("finance/ledger/correct", """
+                {"ledgerId":%s,"projectId":%s,"direction":"Expense","purpose":"ProjectIncidentalCost",
+                 "category":"项目支出","amount":17.00,"account":"CompanyBank","occurredAt":"%s",
+                 "counterparty":"跨店","summary":"门店财务越权更正","reason":"跨店越权验收"}
+                """.formatted(crossCorrection.getLedgerId(), scope.projectAId(), occurredAt), storeFinanceToken);
+        assertCrossStoreRejected(correctedCrossStore, "门店财务跨店更正");
+
+        JsonNode deletedOwn = api("finance/ledger/delete", """
+                {"ledgerId":%s,"reason":"门店财务本店作废"}
+                """.formatted(ownDeletion.getLedgerId()), storeFinanceToken);
+        assertThat(deletedOwn.path("success").asBoolean()).as(deletedOwn.toString()).isTrue();
+        assertThat(ledgerRepository.findById(ownDeletion.getLedgerId()).orElseThrow().getVoided()).isTrue();
+
+        JsonNode deletedCrossStore = api("finance/ledger/delete", """
+                {"ledgerId":%s,"reason":"门店财务跨店作废"}
+                """.formatted(crossDeletion.getLedgerId()), storeFinanceToken);
+        assertCrossStoreRejected(deletedCrossStore, "门店财务跨店作废");
+
+        JsonNode correctedByHeadFinance = api("finance/ledger/correct", """
+                {"ledgerId":%s,"projectId":%s,"direction":"Expense","purpose":"ProjectIncidentalCost",
+                 "category":"项目支出","amount":18.00,"account":"CompanyBank","occurredAt":"%s",
+                 "counterparty":"总部财务","summary":"总部财务全企业更正","reason":"全企业数据纠错"}
+                """.formatted(crossCorrection.getLedgerId(), scope.projectAId(), occurredAt), headFinanceToken);
+        assertThat(correctedByHeadFinance.path("success").asBoolean())
+                .as(correctedByHeadFinance.toString()).isTrue();
+
+        JsonNode deletedByHeadFinance = api("finance/ledger/delete", """
+                {"ledgerId":%s,"reason":"总部财务全企业作废"}
+                """.formatted(crossDeletion.getLedgerId()), headFinanceToken);
+        assertThat(deletedByHeadFinance.path("success").asBoolean())
+                .as(deletedByHeadFinance.toString()).isTrue();
+        assertThat(ledgerRepository.findById(crossDeletion.getLedgerId()).orElseThrow().getVoided()).isTrue();
+    }
+
     /**
      * P1-a2 · 新补门店入参的 7 个页面（`DESIGN-BIZ-20261013-005` §1）：
      * 全部门店不传参 / 企业范围下钻本店 / 下钻他企业门店 403 / **门店范围角色（店长）传他店 403**。
@@ -1556,8 +1623,8 @@ class FinanceStoreScopeHttpAcceptanceTest {
         return project;
     }
 
-    private void ledger(Company company, Store store, Employee operator, Project project,
-                        LedgerDirection direction, BigDecimal amount, String summary) {
+    private Ledger ledger(Company company, Store store, Employee operator, Project project,
+                          LedgerDirection direction, BigDecimal amount, String summary) {
         Ledger ledger = new Ledger();
         ledger.setCompany(company);
         ledger.setStore(store);
@@ -1575,7 +1642,7 @@ class FinanceStoreScopeHttpAcceptanceTest {
         ledger.setRemark("HTTP台账验收");
         ledger.setCreatedBy(operator);
         ledger.setVoided(false);
-        ledgerRepository.save(ledger);
+        return ledgerRepository.save(ledger);
     }
 
     private record Scope(Long storeAId, Long storeBId, Long foreignStoreId,

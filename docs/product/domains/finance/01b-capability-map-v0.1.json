@@ -442,7 +442,7 @@
         {
           "id": "F5-04",
           "name": "作废/更正/冲正重记",
-          "level": "C/M_boss_storemanager_only",
+          "level": "C/M_boss_finance_storemanager_by_scope",
           "objects": [
             "LedgerRevision",
             "Ledger"

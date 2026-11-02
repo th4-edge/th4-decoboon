@@ -60,7 +60,7 @@ Finance
 | --- | --- | --- |
 | 财务查看 | Boss、Finance、StoreManager | 由 `DataScopeContext` 决定 |
 | 普通记账 / 收款 / 付款 | Boss、Finance、StoreManager | Company 或 Store |
-| 财务高危动作（作废、更正、冲正重记） | Boss、StoreManager | Boss 全企业；店长本店；财务不自动获得 |
+| 财务高危动作（作废、更正、冲正重记、收款冲正） | Boss、Finance、StoreManager | Boss/总部财务全企业；门店财务/店长本店；范围由服务端数据权限裁决 |
 | 收款冲正 | Boss、StoreManager | Boss 全企业；店长本店 |
 | 工资单确认 | Boss | 全企业 |
 | 工资单发放 | Boss、Finance | 按数据范围 |

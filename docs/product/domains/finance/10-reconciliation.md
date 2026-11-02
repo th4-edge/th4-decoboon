@@ -168,3 +168,12 @@
 证据：`docs/acceptance/runs/20261030-true-page-level-closed-loop/raw/api/S70-cost-effective-reduction-fixed.json`、`S71/S72`、`raw/sql/accounting-invariants-cost-effective-reduction.json`。
 
 结论：`DEV_VERIFIED / PENDING_INDEPENDENT_ACCEPTANCE`。真实人工成本与业主验收仍未完成，项目结算不得确认或关闭。
+
+## 12. 2026-11-02 财务角色高危动作数据范围对账
+
+- 业务裁决：`DEC-099`；变更：`CHG-20261102-023`。
+- 现行权限：BOSS/总部财务全企业，门店财务/店长本店；其他角色拒绝。
+- 后端统一入口：`FinanceAccessContext.requireHighRiskEditor`，范围只认登录员工解析出的 `DataScope`。
+- 覆盖资产：手工流水作废、手工流水更正/冲正重记、收款冲正。
+- 自动化：后端财务专项 43 个用例通过；Web 完整构建通过；App `verify:mp-weixin`、类型检查和小程序构建通过。
+- 未执行：生产发布、生产账号真实写入、独立验收。

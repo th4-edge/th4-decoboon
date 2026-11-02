@@ -526,6 +526,8 @@ class FinanceClosedLoopTest {
         set(save, "summary", "展会摊位费");
         set(save, "remark", null);
         Ledger ledger = save.call(new Ledger());
+        set(save, "summary", "总部财务更正测试流水");
+        Ledger financeTarget = save.call(new Ledger());
         assertThat(ledger.getCategoryNode().getCategoryId()).isEqualTo(custom.getCategoryId());
         assertThat(ledger.getProject().getProjectId()).isEqualTo(project.getProjectId());
         com.th4.edge.decoboon.finance.service.projects.report.support.Report projectReport =
@@ -601,10 +603,19 @@ class FinanceClosedLoopTest {
         finance.setTelNo("17" + String.format("%09d", Math.abs(System.nanoTime() % 1_000_000_000L)));
         finance.setJoinedAt(LocalDateTime.now());
         finance = employeeRepository.save(finance);
+
         set(correct, "employee", finance);
-        assertThatThrownBy(() -> correct.call(new Ledger()))
-                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("无权");
+        set(correct, "ledgerId", financeTarget.getLedgerId());
+        set(correct, "summary", "总部财务更正后流水");
+        set(correct, "amount", new BigDecimal("160.00"));
+        set(correct, "reason", "总部财务更正金额");
+        Ledger financeReplacement = correct.call(new Ledger());
+        assertThat(financeReplacement.getAmount()).isEqualByComparingTo("160.00");
+        assertThat(financeReplacement.getOriginalLedger().getLedgerId()).isEqualTo(financeTarget.getLedgerId());
+        assertThat(ledgerRevisionRepository.findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(
+                finance.getCompany().getComId(), financeTarget.getLedgerId()))
+                .extracting(item -> item.getType().name())
+                .contains("ReverseAndRecreate");
     }
 
     @Test
@@ -725,7 +736,7 @@ class FinanceClosedLoopTest {
         set(report, "endDate", LocalDate.now());
         assertThat(report.call(new Ledger()).getCount()).isEqualTo(1);
 
-        // 财务不可作废；仅企业负责人可作废。
+        // 2026-11-02 用户裁决：总部财务与 BOSS 一样可作废全企业手工流水。
         Employee finance = new Employee();
         finance.setCompany(boss.getCompany());
         finance.setStore(boss.getStore());
@@ -736,16 +747,14 @@ class FinanceClosedLoopTest {
         finance.setJoinedAt(LocalDateTime.now());
         finance = employeeRepository.save(finance);
 
+        set(save, "summary", "总部财务作废测试流水");
+        Ledger financeLedger = save.call(new Ledger());
+
         com.th4.edge.decoboon.finance.service.ledgers.delete.support.Delete delete =
                 AopTestUtils.getTargetObject(ledgerDelete);
-        set(delete, "employee", finance);
+        set(delete, "employee", boss);
         set(delete, "ledgerId", manual.getLedgerId());
         set(delete, "reason", "录入错误");
-        assertThatThrownBy(() -> delete.call(new Ledger()))
-                .isInstanceOf(com.th4.edge.framework.exception.DefinedException.class)
-                .hasMessageContaining("无权");
-
-        set(delete, "employee", boss);
         Ledger voided = delete.call(new Ledger());
         assertThat(voided.getVoided()).isTrue();
         assertThat(voided.getVoidReason()).isEqualTo("录入错误");
@@ -755,12 +764,27 @@ class FinanceClosedLoopTest {
         Ledger stored = ledgerRepository.findByCompany_ComIdAndLedgerId(boss.getCompany().getComId(), manual.getLedgerId())
                 .orElseThrow();
         assertThat(stored.getVoided()).isTrue();
-        assertThat(report.call(new Ledger()).getCount()).isZero();
+        assertThat(report.call(new Ledger()).getCount()).isEqualTo(1);
         assertThat(ledgerRevisionRepository
                 .findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(boss.getCompany().getComId(), manual.getLedgerId()))
                 .hasSize(1)
                 .extracting(item -> item.getType().name())
                 .contains("Void");
+
+        set(delete, "employee", finance);
+        set(delete, "ledgerId", financeLedger.getLedgerId());
+        set(delete, "reason", "总部财务录入错误");
+        Ledger financeVoided = delete.call(new Ledger());
+        assertThat(financeVoided.getVoided()).isTrue();
+        assertThat(financeVoided.getVoidedBy().getEmpId()).isEqualTo(finance.getEmpId());
+        assertThat(ledgerRevisionRepository
+                .findByCompany_ComIdAndLedger_LedgerIdOrderByRevisionIdDesc(
+                        finance.getCompany().getComId(), financeLedger.getLedgerId()))
+                .hasSize(1)
+                .extracting(item -> item.getType().name())
+                .contains("Void");
+        set(report, "employee", finance);
+        assertThat(report.call(new Ledger()).getCount()).isZero();
 
         // 自动流水不可作废。
         Receivable receivable = createReceivable(boss, project);
