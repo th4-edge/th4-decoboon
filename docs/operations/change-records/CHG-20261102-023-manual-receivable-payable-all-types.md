@@ -7,7 +7,7 @@
 | 变更 ID | CHG-20261102-023 |
 | 类型 | 线上缺陷修复 |
 | 风险级别 | L3 |
-| 状态 | 开发验证通过，待合并发布 |
+| 状态 | 生产发布完成，待登录后真实页面保存冒烟 |
 | 负责人 | Codex |
 | 日期 | 2026-11-02 |
 | 关联需求/事故/业务裁决 | 用户 2026-11-02 明确指令；覆盖 `DEC-089` / `BR-055` 中手工类型白名单 |
@@ -39,7 +39,7 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | `hotfix/finance-manual-types-20261102` | 本记录提交 | 应收/应付 Save、财务闭环测试 |
+| th4-decoboon | `hotfix/finance-manual-types-20261102` | `aecbdf0a20c79eb0089576ec8ea28c9c0b5e83c0` | 应收/应付 Save、财务闭环测试 |
 | th4-decoboon-web | `hotfix/finance-manual-types-20261102` | `9f24d652731556c40cc84ddda61f061347893fe3` | 财务应收/应付 Drawer、入口文案 |
 | th4-decoboon-app | `hotfix/finance-manual-types-20261102` | `c0d149d5e703c9c1c401deed4bcc3532c2c74f9e` | 财务模型/API 映射、登记页、入口文案、版本 `1.0.79/179` |
 
@@ -51,20 +51,24 @@
 | 后端全量测试 | `mvn test` | PASS 1214/0/0/0 | `/tmp/th4-finance-manual-types-mvn-full.log` |
 | Web 构建 | `npm run build` | PASS；类型检查、表单门禁与生产构建通过 | `/tmp/th4-web-finance-manual-types-build.log` |
 | App 完整校验 | `npm run verify:mp-weixin` | PASS；`1.0.79/179`、类型检查、构建、分包检查通过 | `/tmp/th4-app-finance-manual-types-verify-179.log` |
+| 分支同步 | `origin/dev = origin/test = origin/prod = HEAD` | PASS（三仓库） | 远端 refs |
+| 后端生产健康 | `GET /api/auth/session/info` | HTTP 200；服务 `active` | 生产 release `20261102-104711` |
+| Web 生产静态资源 | 线上 `index` assets 与本地最终构建 | PASS：`assets/index-CXE21dLw.js` | Web release `20261102-104836` |
+| App 开发版上传 | 微信开发者工具 CLI `upload` | PASS：`1.0.79`，总包 4,933,570 B | `dist/release/upload-info-1.0.79.json` |
 
-- 未执行项及原因：真实页面冒烟待生产发布后执行。
+- 未执行项及原因：生产浏览器无可复用登录会话，真实页面创建全类型应收/应付的保存冒烟待用户登录后执行。
 - 已知失败及是否与本次相关：无；App 首次完整校验因隔离工作区跨仓库相对路径缺失而中断，补齐路径映射后全量通过。
 
 ## 7. 发布
 
 | 字段 | 内容 |
 | --- | --- |
-| Release ID | 待执行 |
-| 制品路径/SHA-256 | 待执行 |
-| 生产 release/版本 | 待执行 |
-| 上一版本/回滚点 | 待执行 |
-| 健康检查 | 待执行 |
-| 发布后观察 | 待执行 |
+| Release ID | 后端 `20261102-104711`；Web `20261102-104836`；App 开发版 `1.0.79` |
+| 制品路径/SHA-256 | 后端 `th4-decoboon-1.0.73-build.tar.gz` / `55c1e4537023f93fc84f0b168940fe3f6f646353c688b43328e060312f0c6019` |
+| 生产 release/版本 | 后端 `/opt/decoboon/releases/20261102-104711`；Web `/opt/decoboon-web/releases/20261102-104836`；App `1.0.79/179` 已上传开发版 |
+| 上一版本/回滚点 | 后端 `/opt/decoboon/releases/20261102-042648`；Web `/opt/decoboon-web/releases/20261102-042649` |
+| 健康检查 | HTTPS 200；`tokenIsUndefined`（未登录预期）；systemd `active`；Web 入口与 `/v3/` 守卫通过 |
+| 发布后观察 | 发布层通过；登录后写路径冒烟待执行 |
 
 - 数据库迁移：无 DDL
 - 配置/密钥变化：无
@@ -72,7 +76,7 @@
 ## 8. 回滚
 
 - 回滚条件：新增类型保存失败、既有自动来源或财务汇总异常、生产登录/健康检查失败。
-- 回滚命令/步骤：后端使用 `scripts/deploy-prod.sh` 保留的上一 release；Web 使用 `scripts/deploy-web.sh` 输出的上一版本软链命令。
+- 回滚命令/步骤：后端切回 `/opt/decoboon/releases/20261102-042648` 并重启 `decoboon`；Web 执行 `ln -sfn /opt/decoboon-web/releases/20261102-042649 /opt/decoboon-web/current && nginx -t && systemctl reload nginx`。
 - 回滚验证：恢复后执行登录会话、应收/应付列表和保存冒烟。
 - 实际是否回滚：否
 
@@ -82,7 +86,7 @@
 - 人工耗时：未采集
 - 一次通过：是（功能验证首轮通过；构建环境路径问题不计业务返工）
 - 返工原因：无
-- 最终结论：三端开发验证通过，待合并 `dev/test/prod` 并发布
+- 最终结论：三仓库已同步并推送 `dev/test/prod`；后端与 Web 已生产发布，App 1.0.79 开发版已上传。生产写路径需用户登录后完成最终页面冒烟，正式提审与发布由用户本人执行。
 
 ## 10. 复盘与沉淀
 
