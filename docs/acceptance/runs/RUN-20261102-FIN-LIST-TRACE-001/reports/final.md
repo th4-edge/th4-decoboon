@@ -2,11 +2,11 @@
 
 ## 结论
 
-`CONDITIONAL_PASS`
+`CONDITIONAL_PASS + PRODUCTION_SMOKE_PASS`
 
 - 本次财务列表可追溯性热修的 Web/Provider 定向验收通过。
 - 冻结核心用例要求的 App、Boss 回读和收付款写闭环未在本次只读验收中执行，因此三条冻结用例整体标记 `BLOCKED`，不能宣称完整业务验收通过。
-- 生产发布尚未执行，线上冒烟仍待发布后完成。
+- 后端/Web 已发布生产 `20261102-171937`，生产财务账号登录后只读冒烟通过。
 
 ## 已通过
 
@@ -24,7 +24,7 @@
 - App 端回读；
 - 收款、付款、冲正、删除等写操作；
 - Boss 跨角色回读；
-- 生产环境页面与接口冒烟。
+- 完整冻结核心用例要求的部分写操作和生产 Boss 回读仍未执行；已由生产财务只读冒烟覆盖本次热修目标。
 
 ## 证据
 
@@ -35,3 +35,7 @@
 - `evidence/workbench-truncation-labels.png`
 - `evidence/commission-adjustments-page.png`
 - `evidence/attendance-pagination.png`
+- `evidence/production-smoke.json`
+- `evidence/prod-workbench-truncation-labels.png`
+- `evidence/prod-project-ledger-context.png`
+- `evidence/prod-receivable-picker-overdue.png`

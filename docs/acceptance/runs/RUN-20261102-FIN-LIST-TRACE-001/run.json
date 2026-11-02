@@ -9,7 +9,10 @@
   "backendCommit": "d699147a140260b45b14c9f32c893193663d370e",
   "webCommit": "af746eba3bd87304b4e5e7e09aa5a1bb163cce0d",
   "appCommit": "f82622660f2c58c8eb552749de9b7c9f0e01478a",
-  "artifactHashes": {},
+  "artifactHashes": {
+    "backend": "0733318e4ab0e1b25947bac1812cc2b753acbfd411a4e7443feb72a8ea8ceed5",
+    "web": "c428c2343ef6897c641eb74bfb395be81be5d2166dd88963b1b2fda42b06ace5"
+  },
   "environment": "local-fixture",
   "tenantId": "199500000000000001",
   "dataPrefix": "AUDIT-20261102-RUN20261102FINLI-",
@@ -24,5 +27,6 @@
     "fail": 0,
     "blocked": 3,
     "notRun": 0
-  }
+  },
+  "productionSmoke": "PASS"
 }

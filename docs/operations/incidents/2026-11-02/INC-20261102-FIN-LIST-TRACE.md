@@ -19,19 +19,19 @@
 ## 3. 关联
 
 - 变更：`CHG-20261102-030`
-- 基线：后端 `f1717584`（已吸收并行套餐草稿热修）；Web `e61d404`
+- 基线：后端 `c47fcd97`（已吸收并行套餐/报价热修）；Web `e61d404`
 - 热修分支：`hotfix/finance-list-trace-20261102`
 
 ## 4. 发布与回滚
 
-- 发布状态：待用户确认
-- 回滚点：发布前生产后端/Web release
+- 发布状态：后端/Web `20261102-171937` 已发布
+- 回滚点：后端 `20261102-163542`；Web `20261102-113627`
 - 回滚条件：财务列表总数异常、项目筛选串项目、工资确认门禁异常、接口错误率上升
 
 ## 5. 闭环结果
 
 - 根因修复：后端 `b7d30f48`；Web `af746eb`。
-- 回归测试：后端定向 25/25、全量 1226/1226 通过；Provider findings=0；Web 类型检查和完整构建通过；本地 Finance 角色 Web/Provider 定向验收 `CONDITIONAL_PASS`，RUN `RUN-20261102-FIN-LIST-TRACE-001`。
+- 回归测试：后端定向 25/25、全量 1226/1226 通过；Provider findings=0；Web 类型检查和完整构建通过；本地 Finance 角色 Web/Provider 定向验收 `CONDITIONAL_PASS`，RUN `RUN-20261102-FIN-LIST-TRACE-001`；生产财务账号只读冒烟 PASS。
 - 生产发布：后端/Web release `20261102-171937` 已发布；基础健康检查通过。
-- 冒烟观察：首页/JS/登录页与日志检查通过；登录后财务角色页面冒烟待补验。
-- 事故状态：RELEASED / PENDING_AUTHENTICATED_FINANCE_SMOKE
+- 冒烟观察：首页/JS/登录页与日志检查通过；吴濛濛/Finance 生产登录后，工作台截断语义、提成/工资/考勤分页、项目台账上下文、应收选择器服务端筛选全部通过。
+- 事故状态：RELEASED / VERIFIED

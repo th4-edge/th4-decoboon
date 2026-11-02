@@ -5,7 +5,7 @@
 - 变更 ID：`CHG-20261102-030`
 - 风险级别：L2
 - 负责人：Codex
-- 状态：已发布，登录后财务角色冒烟待补验
+- 状态：已发布并完成生产财务角色冒烟
 - 日期：2026-11-02
 - 关联需求/事故/业务裁决：`INC-20261102-FIN-LIST-TRACE`；用户明确要求按线上热修流程修复；`DEC-099`（财务数据范围规则沿用）
 
@@ -58,10 +58,10 @@
 | --- | --- | --- | --- |
 | 定向测试 | `mvn -o -q -Dtest=FinanceStoreScopeHttpAcceptanceTest test` | PASS（25 用例） | `/tmp/finance-scope-test.log` |
 | 构建/类型检查 | Web `npm run type-check`；`npm run build` | PASS | `/tmp/finance-list-web-build-final.log` |
-| 真实页面/接口冒烟 | 财务角色项目台账、提成调整、工资、考勤、选择器 | 待发布后执行 | 生产发布后补证 |
+| 真实页面/接口冒烟 | 生产财务账号 `/finance/workbench`、`commission-adjustments`、`employee-salaries`、项目资金台账、应收选择器 | PASS | `RUN-20261102-FIN-LIST-TRACE-001/evidence/production-smoke.json` |
 | 负向/越权/边界 | 后端全量测试；Provider 响应审计；Web 分页/表单/客户端文案门禁 | PASS；后端 1226 用例 0 失败；Provider findings=0 | `/tmp/finance-list-backend-full-test-final-alone.log`、`/tmp/finance-list-provider-audit.log` |
 
-- 未执行项及原因：生产页面/接口冒烟和部署待用户最终确认；主材、凭证模板、项目应收应付整包加载为明确非范围。
+- 未执行项及原因：冻结核心用例中的收付款写操作、App 与 Boss 回读未执行；主材、凭证模板、项目应收应付整包加载为明确非范围。
 - 已知失败及是否与本次相关：`check:actions` 的 3 条动作未登记和 `check:workspaces` 的 3 条 `/workbench/material-sheets` 死链在改动前基线已复现，与本次无关。
 - 验收 RUN：`RUN-20261102-FIN-LIST-TRACE-001`，Web/Provider 定向范围通过；冻结核心用例因 App、Boss 回读和写闭环未执行，整体记为 `CONDITIONAL_PASS` / 3 条 BLOCKED。
 
@@ -74,7 +74,7 @@
 | 生产 release/版本 | 后端 `/opt/decoboon/releases/20261102-171937`；Web `/opt/decoboon-web/releases/20261102-171937` |
 | 上一版本/回滚点 | 后端 `20261102-163542`；Web `20261102-113627` |
 | 健康检查 | PASS：systemd active、Nginx PASS、首页/JS/登录页 200、`/v3/` 301、发布后无新增 ERROR/Exception |
-| 发布后观察 | 基础健康通过；登录后财务角色页面冒烟待补验 |
+| 发布后观察 | PASS：吴濛濛/Finance 生产登录；工作台截断语义、提成/工资/考勤分页、项目台账上下文、应收选择器服务端筛选均通过 |
 
 - 数据库迁移：无
 - 配置/密钥变化：无
@@ -92,7 +92,7 @@
 - 人工耗时：待记录
 - 一次通过：否（定向测试首次期望值写错 1 处，按真实夹具修正后通过）
 - 返工原因：测试对 `actionable` 应付夹具数量预期错误；Web 客户端文案门禁拦截“服务端”实现细节，已改为用户语言
-- 最终结论：RELEASED / PENDING_AUTHENTICATED_FINANCE_SMOKE
+- 最终结论：RELEASED / FINANCE_SMOKE_PASS
 
 ## 10. 复盘与沉淀
 

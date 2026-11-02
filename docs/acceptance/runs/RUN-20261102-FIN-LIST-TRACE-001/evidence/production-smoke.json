@@ -1,0 +1,79 @@
+{
+  "capturedAt": "2026-11-02T18:23:08+08:00",
+  "environment": "production",
+  "surface": "Web",
+  "user": "吴濛濛",
+  "role": "Finance",
+  "tenant": "安徽麦鸿装饰设计工程有限公司",
+  "scope": "全公司",
+  "readOnly": true,
+  "checks": {
+    "workbench": {
+      "identityText": true,
+      "labels": [
+        "逾期 ¥13150.21 · 临期明细见下方（最多 8 条）",
+        "紧急 ¥1960.00 · 明细见下方（最多 8 条）",
+        "逾期催收（最多 8 条）",
+        "临期应收（7 天内，最多 8 条）",
+        "优先付款（最多 8 条）",
+        "最近资金台账（最近 5 条）"
+      ],
+      "evidence": "prod-workbench-truncation-labels.png"
+    },
+    "commissionAdjustments": {
+      "requests": [
+        {
+          "current": 1,
+          "size": 20
+        }
+      ],
+      "evidence": "prod-commission-adjustments.png"
+    },
+    "employeeSalaries": {
+      "requests": [
+        {
+          "current": 1,
+          "size": 20
+        }
+      ]
+    },
+    "attendance": {
+      "requests": [
+        {
+          "month": "2026-11",
+          "current": 1,
+          "size": 20
+        }
+      ],
+      "evidence": "prod-attendance-pagination.png"
+    },
+    "projectLedger": {
+      "hint": "当前仅展示最近 12 条项目资金流水；完整历史请打开项目资金台账。",
+      "button": "查看全部项目流水",
+      "url": "https://decoboon.joytsing.com/finance/ledger?projectId=238250397133701120",
+      "scope": "当前仅显示该项目全部历史资金流水",
+      "dateRangeEmpty": true,
+      "requests": [
+        {
+          "projectId": "238250397133701120",
+          "current": 1,
+          "size": 50
+        }
+      ],
+      "evidence": "prod-project-ledger-context.png"
+    },
+    "receivablePicker": {
+      "activeFilter": "已逾期",
+      "dialogSummary": "共 1 个应收节点；柜子到现场 / 待收 / 已逾期 13 天",
+      "requests": [
+        {
+          "current": 1,
+          "size": 20,
+          "projectId": "238250397133701120",
+          "filter": "overdue"
+        }
+      ],
+      "evidence": "prod-receivable-picker-overdue.png"
+    }
+  }
+}
