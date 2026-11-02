@@ -92,6 +92,28 @@ public class PackageLifecycleContext {
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "套餐不存在或无权访问")));
     }
 
+    public PackageTemplate deleteDraft(Long templateId, Employee principal) {
+        Employee current = requireMaintainer(principal);
+        Long comId = current.getCompany().getComId();
+        PackageTemplate base = requireTemplate(templateId, comId);
+        String lockKey = lockKey(comId, base.getCode());
+        lock(lockKey);
+        try {
+            return transactionTemplate.execute(status -> {
+                PackageTemplate template = requireDraft(templateId, current);
+                if (templateRepository.countBusinessReferences(templateId) > 0) {
+                    throw new DefinedException(new DefaultErrorCode("409", "套餐草稿已被业务引用，不能删除"));
+                }
+                templateRepository.delete(template);
+                return template;
+            });
+        } catch (DataIntegrityViolationException ex) {
+            throw new DefinedException(new DefaultErrorCode("409", "套餐草稿仍被业务引用或正在被其他操作更新，请刷新后重试"));
+        } finally {
+            distributedLock.unlock(lockKey);
+        }
+    }
+
     public PackageTemplate buildNextVersion(Long templateId, Employee principal) {
         Employee current = requireMaintainer(principal);
         Long comId = current.getCompany().getComId();
