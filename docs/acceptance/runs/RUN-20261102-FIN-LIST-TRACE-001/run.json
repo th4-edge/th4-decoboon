@@ -1,0 +1,28 @@
+{
+  "runId": "RUN-20261102-FIN-LIST-TRACE-001",
+  "createdAt": "2026-11-02T17:06:40+08:00",
+  "status": "CONDITIONAL_PASS",
+  "planId": "TP-20261101-V0.1",
+  "suiteId": "SUITE-CORE-CHAIN-V0.1",
+  "oracleId": "ZDQ-BIZ-20261101-V0.1",
+  "oracleGitCommit": "11995b9a88852dddb32315a07ecf15f8d515cb40",
+  "backendCommit": "d699147a140260b45b14c9f32c893193663d370e",
+  "webCommit": "af746eba3bd87304b4e5e7e09aa5a1bb163cce0d",
+  "appCommit": "f82622660f2c58c8eb552749de9b7c9f0e01478a",
+  "artifactHashes": {},
+  "environment": "local-fixture",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261102-RUN20261102FINLI-",
+  "caseIds": [
+    "TC-FIN-FINANCE-RECEIVABLE-001",
+    "TC-FIN-FINANCE-PAYABLE-003",
+    "TC-FIN-FINANCE-COST-004"
+  ],
+  "summary": {
+    "total": 3,
+    "pass": 0,
+    "fail": 0,
+    "blocked": 3,
+    "notRun": 0
+  }
+}

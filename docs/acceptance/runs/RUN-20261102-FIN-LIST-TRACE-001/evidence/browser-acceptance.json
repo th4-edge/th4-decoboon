@@ -1,0 +1,65 @@
+{
+  "capturedAt": "2026-11-02T17:11:32+08:00",
+  "environment": "local-fixture",
+  "web": "http://127.0.0.1:8081",
+  "backend": "http://127.0.0.1:8091",
+  "role": "Finance",
+  "surface": "Web",
+  "readOnly": true,
+  "checks": {
+    "workbenchTruncationLabels": {
+      "labels": [
+        "逾期 ¥8761.69 · 临期明细见下方（最多 8 条）",
+        "紧急 ¥0.00 · 明细见下方（最多 8 条）",
+        "逾期催收（最多 8 条）",
+        "临期应收（7 天内，最多 8 条）",
+        "优先付款（最多 8 条）",
+        "最近资金台账（最近 5 条）"
+      ],
+      "evidence": "workbench-truncation-labels.png"
+    },
+    "commissionAdjustmentsPaging": {
+      "request": {
+        "current": 1,
+        "size": 20
+      },
+      "evidence": [
+        "commission-adjustments-page.png",
+        "api-acceptance.json"
+      ]
+    },
+    "attendancePaging": {
+      "request": {
+        "month": "2026-11",
+        "current": 1,
+        "size": 20
+      },
+      "drawerTotalLabel": "共 0 条",
+      "evidence": "attendance-pagination.png"
+    },
+    "projectLedgerContext": {
+      "hint": "当前仅展示最近 12 条项目资金流水；完整历史请打开项目资金台账。",
+      "button": "查看全部项目流水",
+      "route": "/finance/ledger?projectId=242926392860213248",
+      "ledgerPageRequest": {
+        "projectId": "242926392860213248",
+        "current": 1,
+        "size": 50
+      },
+      "scopeBanner": "当前仅显示该项目全部历史资金流水",
+      "dateRangeEmpty": true,
+      "evidence": "project-ledger-context.png"
+    },
+    "receivablePickerServerFilter": {
+      "request": {
+        "current": 1,
+        "size": 20,
+        "projectId": "242297231061811200",
+        "filter": "overdue"
+      },
+      "activeFilter": "已逾期",
+      "result": "合同签约款 / 部分收款 / 已逾期 2 天",
+      "evidence": "receivable-picker-overdue.png"
+    }
+  }
+}

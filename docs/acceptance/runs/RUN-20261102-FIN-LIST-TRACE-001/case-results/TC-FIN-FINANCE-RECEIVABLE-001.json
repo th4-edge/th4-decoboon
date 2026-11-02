@@ -1,0 +1,52 @@
+{
+  "caseId": "TC-FIN-FINANCE-RECEIVABLE-001",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T17:12:58+08:00",
+  "finishedAt": "2026-11-02T17:12:58+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261102-RUN20261102FINLI-",
+  "steps": [
+    "Finance打开应收计划：PASS",
+    "核对自动应收与手工补充应收：PASS",
+    "项目筛选与选择器服务端筛选：PASS",
+    "Boss在项目账本回读与App回读：NOT_RUN"
+  ],
+  "actualPage": [
+    "/finance/receivables",
+    "/finance/projects"
+  ],
+  "actualState": [
+    "应收列表 22 条，前 50 条单页可见",
+    "应收选择器“已逾期”请求发送 filter=overdue",
+    "列表总数与报表在筛选口径下返回成功"
+  ],
+  "evidence": [
+    "evidence/api-acceptance.json",
+    "evidence/browser-acceptance.json",
+    "evidence/receivable-picker-overdue.png"
+  ],
+  "defectIds": [],
+  "blockedReason": "本次热修验收为只读 Web/Provider 范围；该冻结用例还要求 App 与 Boss 项目回读，本轮未执行，不能冒充完整用例通过。",
+  "notes": "Web/Provider 目标通过；冻结用例因 App/Boss 未执行而整体 BLOCKED。",
+  "caseDefinitionHash": "3328d33ae9df28fad0eb1ee6119ea3a185c19b1fc55ea1939ebe51fe4bf1b9f4",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-002",
+    "BR-003",
+    "MET-006",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/finance/receivables",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/finance/pages/receivables"
+  ],
+  "providerRoutes": [
+    "finance/receivable/page",
+    "finance/receivable/report",
+    "finance/project/report"
+  ]
+}

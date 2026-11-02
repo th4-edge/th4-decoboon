@@ -49,7 +49,7 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | `hotfix/finance-list-trace-20261102` | `b7d30f48` | 应收/应付分页筛选、选择器 ID 回显；已变基至生产 `f1717584` |
+| th4-decoboon | `hotfix/finance-list-trace-20261102` | `b7d30f48` | 应收/应付分页筛选、选择器 ID 回显；已变基至生产 `c47fcd97` |
 | th4-decoboon-web | `hotfix/finance-list-trace-20261102` | `af746eb` | 财务页面、选择器、分页状态 |
 
 ## 6. 验证
@@ -59,10 +59,11 @@
 | 定向测试 | `mvn -o -q -Dtest=FinanceStoreScopeHttpAcceptanceTest test` | PASS（25 用例） | `/tmp/finance-scope-test.log` |
 | 构建/类型检查 | Web `npm run type-check`；`npm run build` | PASS | `/tmp/finance-list-web-build-final.log` |
 | 真实页面/接口冒烟 | 财务角色项目台账、提成调整、工资、考勤、选择器 | 待发布后执行 | 生产发布后补证 |
-| 负向/越权/边界 | 后端全量测试；Provider 响应审计；Web 分页/表单/客户端文案门禁 | PASS；后端 1217 用例 0 失败；Provider findings=0 | `/tmp/finance-list-backend-full-test-rebased.log`、`/tmp/finance-list-provider-audit.log` |
+| 负向/越权/边界 | 后端全量测试；Provider 响应审计；Web 分页/表单/客户端文案门禁 | PASS；后端 1226 用例 0 失败；Provider findings=0 | `/tmp/finance-list-backend-full-test-final-alone.log`、`/tmp/finance-list-provider-audit.log` |
 
 - 未执行项及原因：生产页面/接口冒烟和部署待用户最终确认；主材、凭证模板、项目应收应付整包加载为明确非范围。
 - 已知失败及是否与本次相关：`check:actions` 的 3 条动作未登记和 `check:workspaces` 的 3 条 `/workbench/material-sheets` 死链在改动前基线已复现，与本次无关。
+- 验收 RUN：`RUN-20261102-FIN-LIST-TRACE-001`，Web/Provider 定向范围通过；冻结核心用例因 App、Boss 回读和写闭环未执行，整体记为 `CONDITIONAL_PASS` / 3 条 BLOCKED。
 
 ## 7. 发布
 

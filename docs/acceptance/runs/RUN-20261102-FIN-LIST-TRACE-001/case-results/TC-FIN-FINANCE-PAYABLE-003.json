@@ -1,0 +1,51 @@
+{
+  "caseId": "TC-FIN-FINANCE-PAYABLE-003",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-02T17:12:58+08:00",
+  "finishedAt": "2026-11-02T17:12:58+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261102-RUN20261102FINLI-",
+  "steps": [
+    "Finance查看应付列表：PASS",
+    "应付选择器服务端筛选与 ID 回显：PASS",
+    "登记部分付款与幂等：NOT_RUN",
+    "采购来源和手工来源核对：NOT_RUN"
+  ],
+  "actualPage": [
+    "/finance/payables"
+  ],
+  "actualState": [
+    "finance/payable/page 支持 actionable/urgent/dueSoon 服务端筛选",
+    "已选应付按 payableId 精确回显"
+  ],
+  "evidence": [
+    "evidence/api-acceptance.json",
+    "evidence/browser-acceptance.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "本次热修不执行付款写操作；该用例要求部分付款、重复幂等和采购/手工双来源核销，未执行完整闭环。",
+  "notes": "列表/选择器分页筛选目标通过；写操作闭环未运行。",
+  "caseDefinitionHash": "511f5f4f4030b4431a089adfaa3e311378129ca7c3b89dc151d3c63078a26150",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-003",
+    "BR-045",
+    "DEC-072",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/finance/payables",
+    "web:/finance/payments",
+    "app:/subpackages/finance/pages/payables",
+    "app:/subpackages/finance/pages/payments"
+  ],
+  "providerRoutes": [
+    "finance/payable/page",
+    "finance/payment/save",
+    "finance/payment/page",
+    "finance/partner-ledger/report"
+  ]
+}

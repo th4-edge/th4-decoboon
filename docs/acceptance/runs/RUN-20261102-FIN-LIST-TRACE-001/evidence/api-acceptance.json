@@ -1,0 +1,89 @@
+{
+  "capturedAt": "2026-11-02T17:07:41+08:00",
+  "environment": "local-fixture",
+  "api": "http://127.0.0.1:8091/api",
+  "role": "Finance",
+  "readOnly": true,
+  "checks": {
+    "receivableActionable": {
+      "status": 200,
+      "success": true,
+      "total": "21",
+      "rows": 20
+    },
+    "receivableById": {
+      "status": 200,
+      "success": true,
+      "matched": true
+    },
+    "payableActionable": {
+      "status": 200,
+      "success": true,
+      "total": "1",
+      "rows": 1
+    },
+    "payableById": {
+      "status": 200,
+      "success": true,
+      "matched": true
+    },
+    "payableDueSoon": {
+      "status": 200,
+      "success": true,
+      "total": "0"
+    },
+    "payableUrgent": {
+      "status": 200,
+      "success": true,
+      "total": "0"
+    },
+    "receivableDueSoon": {
+      "status": 200,
+      "success": true,
+      "total": "9"
+    },
+    "projectLedgerPaging": {
+      "projectId": "242297231061811200",
+      "pages": {
+        "page1": {
+          "status": 200,
+          "success": true,
+          "total": "1",
+          "rowCount": 1,
+          "projectIds": [
+            "242297231061811200"
+          ]
+        },
+        "page2": {
+          "status": 200,
+          "success": true,
+          "total": "1",
+          "rowCount": 0,
+          "projectIds": []
+        }
+      }
+    },
+    "commissionAdjustmentsPage": {
+      "status": 200,
+      "success": true,
+      "total": "0",
+      "pageSize": 20
+    },
+    "attendancePage": {
+      "status": 200,
+      "success": true,
+      "total": "0",
+      "pageSize": 20
+    },
+    "payrollSheetsPage": {
+      "status": 200,
+      "success": true,
+      "total": "0",
+      "pageSize": 20
+    },
+    "payrollItemsPage": {
+      "status": null,
+      "skipped": "no payroll sheet"
+    }
+  }
+}
