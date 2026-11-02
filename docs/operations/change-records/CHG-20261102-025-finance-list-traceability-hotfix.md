@@ -5,7 +5,7 @@
 - 变更 ID：`CHG-20261102-025`
 - 风险级别：L2
 - 负责人：Codex
-- 状态：开发中
+- 状态：开发已验证，待发布确认
 - 日期：2026-11-02
 - 关联需求/事故/业务裁决：`INC-20261102-FIN-LIST-TRACE`；用户明确要求按线上热修流程修复；`DEC-099`（财务数据范围规则沿用）
 
@@ -49,20 +49,20 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | `hotfix/finance-list-trace-20261102` | 待提交 | 应收/应付分页筛选、选择器 ID 回显 |
-| th4-decoboon-web | `hotfix/finance-list-trace-20261102` | 待提交 | 财务页面、选择器、分页状态 |
+| th4-decoboon | `hotfix/finance-list-trace-20261102` | `3f2c8619` | 应收/应付分页筛选、选择器 ID 回显 |
+| th4-decoboon-web | `hotfix/finance-list-trace-20261102` | `af746eb` | 财务页面、选择器、分页状态 |
 
 ## 6. 验证
 
 | 检查 | 命令/页面 | 结果 | 证据位置 |
 | --- | --- | --- | --- |
-| 定向测试 | 后端财务分页/选择器测试 | 待执行 |  |
-| 构建/类型检查 | Web `npm run type-check`、`npm run build` | 待执行 |  |
-| 真实页面/接口冒烟 | 财务角色项目台账、提成调整、工资、考勤、选择器 | 待执行 |  |
-| 负向/越权/边界 | 分页边界、项目上下文、门店切换、服务端筛选 | 待执行 |  |
+| 定向测试 | `mvn -o -q -Dtest=FinanceStoreScopeHttpAcceptanceTest test` | PASS（25 用例） | `/tmp/finance-scope-test.log` |
+| 构建/类型检查 | Web `npm run type-check`；`npm run build` | PASS | `/tmp/finance-list-web-build-final.log` |
+| 真实页面/接口冒烟 | 财务角色项目台账、提成调整、工资、考勤、选择器 | 待发布后执行 | 生产发布后补证 |
+| 负向/越权/边界 | 后端全量测试；Provider 响应审计；Web 分页/表单/客户端文案门禁 | PASS；后端 1215 用例 0 失败；Provider findings=0 | `/tmp/finance-list-backend-full-test.log`、`/tmp/finance-list-provider-audit.log` |
 
-- 未执行项及原因：生产部署待用户最终确认
-- 已知失败及是否与本次相关：待记录
+- 未执行项及原因：生产页面/接口冒烟和部署待用户最终确认；主材、凭证模板、项目应收应付整包加载为明确非范围。
+- 已知失败及是否与本次相关：`check:actions` 的 3 条动作未登记和 `check:workspaces` 的 3 条 `/workbench/material-sheets` 死链在改动前基线已复现，与本次无关。
 
 ## 7. 发布
 
@@ -89,9 +89,9 @@
 
 - 智能体运行/Token 摘要：未采集
 - 人工耗时：待记录
-- 一次通过：待记录
-- 返工原因：待记录
-- 最终结论：开发中
+- 一次通过：否（定向测试首次期望值写错 1 处，按真实夹具修正后通过）
+- 返工原因：测试对 `actionable` 应付夹具数量预期错误；Web 客户端文案门禁拦截“服务端”实现细节，已改为用户语言
+- 最终结论：DEV_VERIFIED / PENDING_RELEASE
 
 ## 10. 复盘与沉淀
 
