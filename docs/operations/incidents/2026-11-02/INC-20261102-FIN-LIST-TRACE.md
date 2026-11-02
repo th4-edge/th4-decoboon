@@ -32,6 +32,6 @@
 
 - 根因修复：后端 `b7d30f48`；Web `af746eb`。
 - 回归测试：后端定向 25/25、全量 1226/1226 通过；Provider findings=0；Web 类型检查和完整构建通过；本地 Finance 角色 Web/Provider 定向验收 `CONDITIONAL_PASS`，RUN `RUN-20261102-FIN-LIST-TRACE-001`。
-- 生产发布：待用户最终确认。
-- 冒烟观察：待发布后执行。
-- 事故状态：DEV_ACCEPTED_CONDITIONAL / PENDING_RELEASE
+- 生产发布：后端/Web release `20261102-171937` 已发布；基础健康检查通过。
+- 冒烟观察：首页/JS/登录页与日志检查通过；登录后财务角色页面冒烟待补验。
+- 事故状态：RELEASED / PENDING_AUTHENTICATED_FINANCE_SMOKE
