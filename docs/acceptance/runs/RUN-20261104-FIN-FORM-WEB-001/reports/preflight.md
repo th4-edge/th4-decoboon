@@ -4,8 +4,8 @@
 - Plan：`TP-20261104-FIN-ACCOUNTING-GATE`
 - Suite：`SUITE-FIN-ACCOUNTING-GATE-V0.1`
 - Oracle：`ZDQ-FIN-20261104-V0.1` / `ab6d4d8`
-- 用例数：4
-- P0/P1：3/1
+- 用例数：3
+- P0/P1：2/1
 - 数据前缀：`AUDIT-20261104-RUN20261104FINFO-`
 - 资产校验：PASS
-- 状态：`PLANNED`，尚未执行任何业务用例
+- 状态：`EXECUTED`，Web 表单交互结果见 `reports/form-web.md`

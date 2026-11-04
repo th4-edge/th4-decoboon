@@ -1,0 +1,15 @@
+{
+  "endpoint": "payroll/compensation/info",
+  "employeeRace": [
+    {"sequence": 1, "employee": "王宏文", "employeeId": "1790221790492843136", "month": "2026-11", "injectedDelayMs": 4500},
+    {"sequence": 2, "employee": "董夏鹏", "employeeId": "1790221396230505495", "month": "2026-11", "injectedDelayMs": 0}
+  ],
+  "monthRace": [
+    {"sequence": 1, "employee": "董夏鹏", "employeeId": "1790221396230505495", "month": "2026-10", "injectedDelayMs": 4500},
+    {"sequence": 2, "employee": "董夏鹏", "employeeId": "1790221396230505495", "month": "2026-11", "injectedDelayMs": 0}
+  ],
+  "finalEmployee": "董夏鹏",
+  "finalMonth": "2026-11",
+  "finalScheduledDays": "24",
+  "saved": false
+}

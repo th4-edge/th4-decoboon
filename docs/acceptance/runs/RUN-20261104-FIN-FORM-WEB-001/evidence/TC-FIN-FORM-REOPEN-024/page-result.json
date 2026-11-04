@@ -1,0 +1,37 @@
+{
+  "role": "Finance",
+  "environment": "prod-readonly",
+  "saved": false,
+  "forms": [
+    {
+      "form": "费用与报销",
+      "path": "/finance/expenses",
+      "before": {"amount": "123.45", "description": "CODEX 表单重开残留测试，不保存"},
+      "afterReopen": {"amount": "", "description": ""},
+      "result": "PASS"
+    },
+    {
+      "form": "收款",
+      "path": "/finance/receipts",
+      "before": {"amount": "888.88", "payer": "CODEX 测试付款方", "remark": "收款表单重开残留，不保存"},
+      "afterReopen": {"amount": "", "payer": "", "remark": ""},
+      "result": "PASS"
+    },
+    {
+      "form": "付款",
+      "path": "/finance/payments",
+      "before": {"amount": "999.99", "payee": "CODEX 测试收款方", "transactionNo": "TEST-TX-20261104", "remark": "付款表单重开残留，不保存"},
+      "afterReopen": {"amount": "", "payee": "", "transactionNo": "", "remark": ""},
+      "result": "PASS"
+    },
+    {
+      "form": "薪酬方案",
+      "path": "/finance/compensation-schemes",
+      "before": {"employee": "王宏文", "baseSalary": "6000", "scheduledDays": "25", "remark": "薪酬方案切换员工残留测试，不保存"},
+      "afterEmployeeSwitch": {"employee": "董夏鹏", "baseSalary": "6000", "scheduledDays": "25", "remark": "薪酬方案切换员工残留测试，不保存"},
+      "afterReopen": {"employee": null, "baseSalary": "", "scheduledDays": "22", "remark": ""},
+      "result": "FAIL",
+      "defectId": "DEF-FIN-FORM-001"
+    }
+  ]
+}

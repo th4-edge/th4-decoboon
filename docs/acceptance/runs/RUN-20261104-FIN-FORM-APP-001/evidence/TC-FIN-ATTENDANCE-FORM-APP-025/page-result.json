@@ -1,0 +1,82 @@
+{
+  "role": "Finance",
+  "environment": "prod-readonly",
+  "path": "/subpackages/payroll/pages/attendance-list → /subpackages/payroll/pages/attendance-edit",
+  "identity": "安徽麦鸿装饰设计工程有限公司 · 吴濛濛 · 财务",
+  "loginMethod": "同源 auth/session/password-login 获取真实会话后注入小程序自动化运行环境；未将微信快捷登录 UI 判为通过",
+  "automationBoundary": "页面路由、员工选择器搜索和员工点击为真实页面交互；自定义数字输入与月份 change 通过组件事件触发，未直接调用业务 Provider",
+  "saved": false,
+  "observations": [
+    {
+      "scenario": "关闭重开",
+      "before": {
+        "employee": "王宏文",
+        "month": "2026-11",
+        "scheduledDays": "24",
+        "normalDays": "5",
+        "personalLeaveDays": "2",
+        "remark": "App上一次录入残留"
+      },
+      "after": {
+        "employee": null,
+        "month": "2026-11",
+        "scheduledDays": "",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "remark": ""
+      }
+    },
+    {
+      "scenario": "切换员工",
+      "beforeEmployee": "王宏文",
+      "before": {
+        "employee": "王宏文",
+        "month": "2026-11",
+        "scheduledDays": "24",
+        "normalDays": "5",
+        "personalLeaveDays": "2",
+        "remark": "员工切换前残留"
+      },
+      "afterEmployee": "董夏鹏",
+      "after": {
+        "employee": "董夏鹏",
+        "month": "2026-11",
+        "scheduledDays": "24",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "remark": ""
+      }
+    },
+    {
+      "scenario": "切换月份",
+      "beforeMonth": "2026-11",
+      "before": {
+        "employee": "董夏鹏",
+        "month": "2026-11",
+        "scheduledDays": "24",
+        "normalDays": "3",
+        "personalLeaveDays": "1",
+        "remark": "月份切换前残留"
+      },
+      "afterMonth": "2026-10",
+      "after": {
+        "employee": "董夏鹏",
+        "month": "2026-10",
+        "scheduledDays": "27",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "remark": ""
+      }
+    }
+  ],
+  "screenshots": [
+    "03-edit-initial.png",
+    "04-employee-picker.png",
+    "05-wanghongwen-scheme.png",
+    "06-filled-before-reopen.png",
+    "07-reopen-reset.png",
+    "08-before-employee-switch.png",
+    "09-employee-switch-reset.png",
+    "10-month-switch-reset.png"
+  ]
+}

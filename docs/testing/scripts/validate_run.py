@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -18,6 +19,18 @@ def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def non_empty_items(value: object) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [
+        str(item).strip()
+        for item in value
+        if str(item).strip()
+        and "不适用" not in str(item)
+        and "未执行" not in str(item)
+    ]
+
+
 def has_page_evidence(result: dict) -> bool:
     evidence = [str(item).lower() for item in (result.get("evidence") or [])]
     page_file = any(
@@ -26,21 +39,68 @@ def has_page_evidence(result: dict) -> bool:
         or "page_result" in path
         for path in evidence
     )
-    actual_page = result.get("actualPage") or []
-    page_note = any(
-        str(item).strip()
-        and "不适用" not in str(item)
-        and "未执行" not in str(item)
-        for item in actual_page
-    )
-    return page_file and page_note
+    return page_file and bool(non_empty_items(result.get("actualPage")))
+
+
+def has_page_result(result: dict, run_dir: Path) -> tuple[bool, str | None]:
+    for evidence_path in result.get("evidence") or []:
+        name = str(evidence_path).lower()
+        if "page-result" not in name and "page_result" not in name:
+            continue
+        path = run_dir / str(evidence_path)
+        if not path.exists():
+            continue
+        try:
+            payload = load(path)
+        except (OSError, json.JSONDecodeError) as exc:
+            return False, f"页面结果文件无法解析: {evidence_path}: {exc}"
+        if not isinstance(payload, dict) or not payload:
+            return False, f"页面结果文件为空: {evidence_path}"
+        return True, None
+    return False, "声明了页面交互序列，但缺少可解析的 page-result 文件"
+
+
+def self_test() -> int:
+    with tempfile.TemporaryDirectory() as tmp:
+        run_dir = Path(tmp)
+        result_file = run_dir / "page-result.json"
+        result_file.write_text('{"observations":[{"scenario":"reopen","result":"empty"}]}\n', encoding="utf-8")
+        api_only = {"evidence": ["evidence/api.json"], "actualPage": [], "steps": [], "actualState": []}
+        screenshot_only = {
+            "evidence": ["evidence/page.png"], "actualPage": ["页面已打开"],
+            "steps": [], "actualState": [],
+        }
+        page_ok = {
+            "evidence": ["evidence/page.png", "page-result.json"],
+            "actualPage": ["重开后字段为空"],
+            "steps": ["输入后关闭并重新打开", "回读字段"],
+            "actualState": ["未保存，重开后金额为空"],
+        }
+        checks = [
+            ("api_only_not_page_evidence", not has_page_evidence(api_only)),
+            ("screenshot_has_page_evidence", has_page_evidence(screenshot_only)),
+            ("page_result_parse", has_page_result(page_ok, run_dir)[0]),
+            ("page_interaction_complete", has_page_evidence(page_ok) and bool(non_empty_items(page_ok["steps"]))),
+        ]
+        failed = [name for name, passed in checks if not passed]
+        if failed:
+            print("validate-run SELFTEST FAIL: " + ", ".join(failed), file=sys.stderr)
+            return 1
+    print(f"validate-run SELFTEST PASS: {len(checks)} checks")
+    return 0
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("run_dir")
+    parser.add_argument("run_dir", nargs="?")
     parser.add_argument("--final", action="store_true", help="要求所有用例已执行，不能存在 NOT_RUN")
+    parser.add_argument("--self-test", action="store_true", help="运行页面证据与交互回读门禁负向自测")
     args = parser.parse_args()
+
+    if args.self_test:
+        return self_test()
+    if not args.run_dir:
+        parser.error("run_dir 不能为空，除非使用 --self-test")
 
     run_dir = Path(args.run_dir).resolve()
     errors: list[str] = []
@@ -92,6 +152,15 @@ def main() -> int:
         if status == "PASS" and any(surface in {"Web", "App", "Owner"} for surface in case_map[case_id].get("surfaces", [])):
             if not has_page_evidence(result):
                 errors.append(f"{case_id} 声明了页面端，但 PASS 缺少页面截图/页面路径/交互回读证据")
+            if not non_empty_items(result.get("steps")):
+                errors.append(f"{case_id} 页面 PASS 缺少真实交互步骤")
+            evidence_required = set(case_map[case_id].get("evidenceRequired") or [])
+            if "state_readback" in evidence_required and not non_empty_items(result.get("actualState")):
+                errors.append(f"{case_id} 页面 PASS 缺少状态回读 actualState")
+            if "interaction_sequence" in evidence_required:
+                has_result, result_error = has_page_result(result, run_dir)
+                if not has_result:
+                    errors.append(f"{case_id} {result_error}")
         for evidence_path in evidence:
             path = run_dir / str(evidence_path)
             if not path.exists():

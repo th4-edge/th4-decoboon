@@ -32,6 +32,21 @@ REQUIRED_CASE_FAMILIES = {
     "SALARY-PAYABLE", "SALARY-PAYMENT", "PAID-HISTORY", "AR-RECEIPT",
     "AP-MATERIAL", "COST-PROFIT", "CROSS-TENANT", "VOUCHER-AUDIT"
 }
+REQUIRED_FORM_CASE_EVIDENCE = {
+    "TC-FIN-ATTENDANCE-FORM-RESET-008": {
+        "page_path", "before_after_screenshot", "interaction_sequence", "state_readback"
+    },
+    "TC-FIN-ATTENDANCE-FORM-RACE-023": {
+        "page_path", "before_after_screenshot", "interaction_sequence", "network_trace"
+    },
+    "TC-FIN-FORM-REOPEN-024": {
+        "page_path", "before_after_screenshot", "interaction_sequence", "state_readback"
+    },
+    "TC-FIN-ATTENDANCE-FORM-APP-025": {
+        "page_path", "before_after_screenshot", "interaction_sequence", "state_readback"
+    },
+}
+FORM_CASE_IDS = set(REQUIRED_FORM_CASE_EVIDENCE)
 
 def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -103,9 +118,24 @@ def validate_doc(doc: dict, oracle: dict, providers: set[str], web_leaves: set[s
                 errors.append(f"{label}: 页面目标格式不合法 {target}")
         if any(s in {"Web", "App", "Owner"} for s in case.get("surfaces", [])) and not case.get("pageTargets"):
             errors.append(f"{label}: 声明页面端但缺少 pageTargets")
+        surfaces = set(case.get("surfaces", []))
+        targets = [str(target) for target in case.get("pageTargets", [])]
+        for surface, prefix in (("Web", "web:/"), ("App", "app:/"), ("Owner", "owner:/")):
+            if surface in surfaces and not any(target.startswith(prefix) for target in targets):
+                errors.append(f"{label}: 声明 {surface} 端但缺少 {prefix} 页面目标")
+        evidence_required = set(case.get("evidenceRequired", []))
+        required_evidence = REQUIRED_FORM_CASE_EVIDENCE.get(cid)
+        if required_evidence:
+            missing_evidence = sorted(required_evidence - evidence_required)
+            if missing_evidence:
+                errors.append(f"{label}: 表单生命周期证据缺失 {', '.join(missing_evidence)}")
+            if "parity" in case.get("scenarioTypes", []) and "web_app_parity" not in evidence_required:
+                errors.append(f"{label}: 声明 parity 但缺少 web_app_parity 证据")
         if case.get("priority") == "P0" and case.get("status") == "BLOCKED":
             errors.append(f"{label}: P0 不能以 BLOCKED 进入发布门禁")
     names = " ".join(c["id"] for c in cases)
+    for form_case_id in sorted(FORM_CASE_IDS - ids):
+        errors.append(f"缺少强制表单生命周期用例: {form_case_id}")
     for family in sorted(REQUIRED_CASE_FAMILIES):
         if family not in names:
             errors.append(f"缺少强制场景族: {family}")
@@ -176,6 +206,17 @@ def self_test(doc: dict, oracle: dict, providers: set[str], web_leaves: set[str]
     checks.append(("unknown_rule", validate_doc(broken, oracle, providers, web_leaves, app_text)))
     broken = json.loads(json.dumps(base)); broken["cases"][0]["providerRoutes"] = ["finance/not/exist"]
     checks.append(("unknown_provider", validate_doc(broken, oracle, providers, web_leaves, app_text)))
+    broken = json.loads(json.dumps(base))
+    form_case = next(case for case in broken["cases"] if case["id"] == "TC-FIN-FORM-REOPEN-024")
+    form_case["evidenceRequired"].remove("interaction_sequence")
+    checks.append(("missing_form_interaction_evidence", validate_doc(broken, oracle, providers, web_leaves, app_text)))
+    broken = json.loads(json.dumps(base))
+    broken["cases"] = [case for case in broken["cases"] if case["id"] != "TC-FIN-ATTENDANCE-FORM-APP-025"]
+    checks.append(("missing_form_case", validate_doc(broken, oracle, providers, web_leaves, app_text)))
+    broken = json.loads(json.dumps(base))
+    form_case = next(case for case in broken["cases"] if case["id"] == "TC-FIN-FORM-REOPEN-024")
+    form_case["pageTargets"] = [target for target in form_case["pageTargets"] if not target.startswith("app:/")]
+    checks.append(("surface_without_page_target", validate_doc(broken, oracle, providers, web_leaves, app_text)))
     failed = [name for name, errors in checks if not errors]
     if failed:
         print("SELFTEST FAIL: " + ", ".join(failed), file=sys.stderr)

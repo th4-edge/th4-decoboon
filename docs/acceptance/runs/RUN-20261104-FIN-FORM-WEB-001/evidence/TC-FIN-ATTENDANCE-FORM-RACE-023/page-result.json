@@ -1,0 +1,32 @@
+{
+  "role": "Finance",
+  "environment": "prod-readonly",
+  "path": "/finance/employee-salaries → 月度考勤",
+  "saved": false,
+  "interception": {
+    "endpoint": "payroll/compensation/info",
+    "employeeDelayMs": 4500,
+    "monthDelayMs": 4500
+  },
+  "observations": [
+    {
+      "scenario": "员工A旧响应覆盖员工B",
+      "firstEmployee": "王宏文",
+      "secondEmployee": "董夏鹏",
+      "finalEmployee": "董夏鹏",
+      "finalScheduledDays": "24",
+      "result": "PASS"
+    },
+    {
+      "scenario": "旧月份响应覆盖新月份",
+      "delayedMonth": "2026-10",
+      "finalMonth": "2026-11",
+      "finalScheduledDays": "24",
+      "result": "PASS"
+    }
+  ],
+  "screenshots": [
+    "final-employee-b.png",
+    "final-month-2026-11.png"
+  ]
+}

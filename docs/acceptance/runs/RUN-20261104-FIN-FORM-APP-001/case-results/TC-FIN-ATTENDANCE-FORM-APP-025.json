@@ -1,0 +1,58 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-FORM-APP-025",
+  "status": "PASS",
+  "startedAt": "2026-11-04T13:07:00+08:00",
+  "finishedAt": "2026-11-04T13:14:30+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "App",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
+  "steps": [
+    "使用麦鸿真实财务账号通过同源密码登录 Provider 获取会话，并注入小程序自动化运行环境",
+    "构建并打开 App 1.0.86 生产小程序，进入月度考勤列表和新建录入页",
+    "选择王宏文，页面加载应出勤24天，录入正常5天、事假2天和备注",
+    "返回考勤列表后重新进入新建录入，回读员工、天数和备注",
+    "重新选择王宏文并录入数据，切换到董夏鹏，回读旧员工字段和应出勤",
+    "录入数据后切换月份2026-11到2026-10，回读旧月份数据和应出勤"
+  ],
+  "actualPage": [
+    "关闭重开：员工为空、各天数为0、备注为空、应出勤为空",
+    "切换员工：王宏文5/2/备注切换为董夏鹏0/0/空，应出勤重新加载24天",
+    "切换月份：董夏鹏2026-11的3/1/备注切换为2026-10的0/0/空，应出勤重新加载27天",
+    "页面显示员工、月份和提交上下文在切换后保持一致"
+  ],
+  "actualState": [
+    "真实麦鸿财务账号，生产只读，未保存任何考勤或工资数据",
+    "App 构建版本 1.0.86，appCommit e1cd29b；微信快捷登录 UI 未命中该账号，因此采用同源密码登录 Provider 获取真实会话后注入自动化环境",
+    "自定义数字输入和月份 change 通过组件事件触发；员工搜索、选择和页面导航为真实小程序页面交互"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/03-edit-initial.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/04-employee-picker.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/05-wanghongwen-scheme.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/06-filled-before-reopen.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/07-reopen-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/08-before-employee-switch.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/09-employee-switch-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/10-month-switch-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "生产只读；未执行保存，未把密码登录注入写成微信登录 UI 通过。",
+  "caseDefinitionHash": "c1fc1f9d8f402d5e037cb21f3ba13bc71a0baa28f0e88fb12a29c088f13fd108",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038"
+  ],
+  "pageTargets": [
+    "app:/subpackages/payroll/pages/attendance-edit",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "attendance/summary/page",
+    "payroll/compensation/info",
+    "attendance/summary/save"
+  ]
+}

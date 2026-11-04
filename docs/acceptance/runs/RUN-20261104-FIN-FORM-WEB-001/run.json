@@ -1,7 +1,7 @@
 {
   "runId": "RUN-20261104-FIN-FORM-WEB-001",
   "createdAt": "2026-11-04T13:03:34+08:00",
-  "status": "IN_PROGRESS",
+  "status": "FAIL",
   "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
   "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
   "oracleId": "ZDQ-FIN-20261104-V0.1",
@@ -16,14 +16,13 @@
   "caseIds": [
     "TC-FIN-ATTENDANCE-FORM-RESET-008",
     "TC-FIN-ATTENDANCE-FORM-RACE-023",
-    "TC-FIN-FORM-REOPEN-024",
-    "TC-FIN-ATTENDANCE-FORM-APP-025"
+    "TC-FIN-FORM-REOPEN-024"
   ],
   "summary": {
-    "total": 4,
-    "pass": 1,
-    "fail": 0,
-    "blocked": 3,
+    "total": 3,
+    "pass": 2,
+    "fail": 1,
+    "blocked": 0,
     "notRun": 0
   }
 }

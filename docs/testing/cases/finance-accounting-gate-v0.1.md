@@ -222,7 +222,7 @@
 - 规则：`DEC-077`, `BR-050`, `DEC-099`
 - 夹具：`FIX-FIN-MONEY-01`
 - Provider：`finance/receivable/page`, `finance/receipt/save`, `finance/refund/save`, `finance/receipt/reverse`, `finance/ledger/page`
-- 页面：`web:/finance/receivables`, `web:/finance/receipts`, `web:/finance/refunds`
+- 页面：`web:/finance/receivables`, `web:/finance/receipts`, `web:/finance/refunds`, `app:/subpackages/finance/pages/receivables`, `app:/subpackages/finance/pages/receipts`, `app:/subpackages/finance/pages/refunds`
 - 预期页面：流水状态正确；余额/已收/退款/冲正摘要正确
 - 预期状态：余额公式成立；冲正退款各一次；台账同源
 - 不变量：退款不超有效收款；冲正不重复；流水不无痕删除

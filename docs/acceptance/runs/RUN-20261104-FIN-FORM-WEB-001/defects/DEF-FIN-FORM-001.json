@@ -1,0 +1,33 @@
+{
+  "defectId": "DEF-FIN-FORM-001",
+  "caseIds": ["TC-FIN-FORM-REOPEN-024"],
+  "priority": "P1",
+  "status": "OPEN",
+  "title": "薪酬方案新建表单切换员工后保留上一员工工资、应出勤和备注",
+  "role": "Finance",
+  "surface": "Web",
+  "pagePath": "/finance/compensation-schemes",
+  "businessState": "财务账号新建薪酬方案，先选择王宏文并填写月固定工资6000、应出勤25天和备注，再切换到董夏鹏",
+  "expected": "切换员工后，上一员工的金额、应出勤和备注不得进入新员工上下文；页面显示对象必须与最终提交对象一致",
+  "actual": "切换员工后员工名变为董夏鹏，但月固定工资6000、应出勤25天和切换前备注全部保留；关闭重开后表单才恢复为空金额、22天和空备注",
+  "minimumReproduction": [
+    "财务登录 Web /finance/compensation-schemes",
+    "点击新增方案，填写月固定工资6000、月应出勤25天和备注",
+    "选择员工王宏文",
+    "直接切换员工为董夏鹏",
+    "回读员工、月固定工资、应出勤和备注"
+  ],
+  "impact": "页面已显示新员工，但提交内容仍可能属于上一员工；若直接保存，会为新员工生成错误薪酬方案，进而污染考勤应出勤和工资计算",
+  "evidence": [
+    "evidence/TC-FIN-FORM-REOPEN-024/compensation-employee-a.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/compensation-switch-employee-b.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/compensation-after-reopen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/page-result.json"
+  ],
+  "sourceEvidence": "FinanceCompensationDrawer.onEmployeeChange 仅更新 employeeName；当前生产页面实测保留金额、应出勤和备注",
+  "confidence": "high",
+  "ownerSuggestion": "切换员工时重置月固定工资、应出勤和备注等员工相关字段，并增加最终提交员工与页面员工一致性校验",
+  "retestCondition": "王宏文切换到董夏鹏后金额为空、应出勤回到新上下文默认值、备注为空；提交对象仅为董夏鹏且不含王宏文任何输入",
+  "createdAt": "2026-11-04T13:21:16+08:00",
+  "updatedAt": "2026-11-04T13:21:16+08:00"
+}

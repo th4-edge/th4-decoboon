@@ -1162,11 +1162,15 @@
       "pageTargets": [
         "web:/finance/receivables",
         "web:/finance/receipts",
-        "web:/finance/refunds"
+        "web:/finance/refunds",
+        "app:/subpackages/finance/pages/receivables",
+        "app:/subpackages/finance/pages/receipts",
+        "app:/subpackages/finance/pages/refunds"
       ],
       "evidenceRequired": [
         "page_path",
         "before_after_screenshot",
+        "web_app_parity",
         "provider_response",
         "state_readback",
         "db_invariant",

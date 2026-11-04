@@ -1,19 +1,37 @@
 {
   "caseId": "TC-FIN-ATTENDANCE-FORM-RACE-023",
-  "status": "BLOCKED",
-  "startedAt": "2026-11-04T13:03:34+08:00",
-  "finishedAt": "2026-11-04T13:03:34+08:00",
+  "status": "PASS",
+  "startedAt": "2026-11-04T13:17:00+08:00",
+  "finishedAt": "2026-11-04T13:18:40+08:00",
   "executor": "codex",
-  "role": "Boss",
+  "role": "Finance",
   "surface": "Web",
   "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
-  "steps": [],
-  "actualPage": [],
-  "actualState": [],
-  "evidence": [],
+  "steps": [
+    "麦鸿财务账号登录 Web /finance/employee-salaries，打开月度考勤新建抽屉",
+    "拦截 payroll/compensation/info，将王宏文 2026-11 的响应延迟 4500ms",
+    "选择王宏文后立即重新打开员工选择器并选择董夏鹏",
+    "等待王宏文旧响应返回，回读页面员工和应出勤",
+    "将董夏鹏 2026-10 的方案响应延迟 4500ms，切换月份后立即切回 2026-11",
+    "等待 2026-10 旧响应返回，回读最终月份和应出勤"
+  ],
+  "actualPage": [
+    "员工竞态：最终页面员工为董夏鹏，应出勤24天，未被王宏文旧响应覆盖",
+    "月份竞态：最终页面工资月份为2026-11，应出勤24天，未被2026-10旧响应覆盖"
+  ],
+  "actualState": [
+    "真实麦鸿财务账号，生产只读，未保存任何考勤数据",
+    "网络拦截仅延迟补偿方案响应，未修改接口事实或页面提交逻辑"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/final-employee-b.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/final-month-2026-11.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/race-network.json",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/page-result.json"
+  ],
   "defectIds": [],
-  "blockedReason": "旧请求延迟与快速切换尚未执行",
-  "notes": "",
+  "blockedReason": null,
+  "notes": "真实页面选择与切换；用 Playwright route 延迟旧响应，验证前端版本号和对象保护。",
   "caseDefinitionHash": "2294e6c08dbea603899bbfc0e71c171deee0f6dbf62e51f39b7ac1aab8f56df5",
   "priority": "P0",
   "area": "FINANCE",

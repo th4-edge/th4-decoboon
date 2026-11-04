@@ -82,6 +82,7 @@ python3 docs/testing/scripts/test_assets.py self-test
 python3 docs/testing/scripts/finance_gate.py validate
 python3 docs/testing/scripts/finance_gate.py self-test
 python3 docs/testing/scripts/create_run.py --suite finance --run-id RUN-YYYYMMDD-FIN-001
+python3 docs/testing/scripts/validate_run.py --self-test
 python3 docs/testing/scripts/validate_run.py docs/acceptance/runs/RUN-YYYYMMDD-FIN-001 --final
 python3 docs/testing/scripts/create_run.py --help
 python3 docs/testing/scripts/validate_run.py --help

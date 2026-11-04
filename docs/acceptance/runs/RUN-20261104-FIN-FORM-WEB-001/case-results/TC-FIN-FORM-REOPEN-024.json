@@ -1,19 +1,47 @@
 {
   "caseId": "TC-FIN-FORM-REOPEN-024",
-  "status": "BLOCKED",
-  "startedAt": "2026-11-04T13:03:34+08:00",
-  "finishedAt": "2026-11-04T13:03:34+08:00",
+  "status": "FAIL",
+  "startedAt": "2026-11-04T13:19:00+08:00",
+  "finishedAt": "2026-11-04T13:21:16+08:00",
   "executor": "codex",
-  "role": "Boss",
+  "role": "Finance",
   "surface": "Web",
   "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
-  "steps": [],
-  "actualPage": [],
-  "actualState": [],
-  "evidence": [],
-  "defectIds": [],
-  "blockedReason": "其他财务表单通用重开测试尚未执行",
-  "notes": "",
+  "steps": [
+    "费用新建：填写金额和费用说明，取消后重新打开并回读",
+    "收款：填写金额、付款方和备注，取消后重新打开并回读",
+    "付款：填写金额、收款方、交易号和备注，取消后重新打开并回读",
+    "薪酬方案：填写金额、应出勤和备注，选择王宏文后切换董夏鹏，回读对象和字段",
+    "取消薪酬方案并重新打开，回读默认值"
+  ],
+  "actualPage": [
+    "费用重开：金额和费用说明均为空",
+    "收款重开：金额、付款方和备注均为空",
+    "付款重开：金额、收款方、交易号和备注均为空",
+    "薪酬方案重开：员工为空、金额为空、应出勤22天、备注为空",
+    "薪酬方案切员工：员工变为董夏鹏，但金额6000、应出勤25天和备注仍是王宏文输入前的值"
+  ],
+  "actualState": [
+    "全程生产只读，未保存费用、收款、付款或薪酬方案",
+    "薪酬方案对象切换存在旧金额和旧应出勤污染，已登记 DEF-FIN-FORM-001"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FORM-REOPEN-024/expense-before-cancel.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/expense-after-reopen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/receipt-before-cancel.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/receipt-after-reopen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/payment-before-cancel.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/payment-after-reopen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/compensation-employee-a.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/compensation-switch-employee-b.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/compensation-after-reopen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/page-result.json"
+  ],
+  "defectIds": [
+    "DEF-FIN-FORM-001"
+  ],
+  "blockedReason": null,
+  "notes": "Web 四类财务表单已验证；App 通用表单未执行，因薪酬方案切换已出现确定性 P1，当前用例判 FAIL。",
   "caseDefinitionHash": "9c57cbd861dbd82cd49a45837382804bf1cb5ee8485779d4f4e01497fbe1fb97",
   "priority": "P1",
   "area": "FINANCE",
