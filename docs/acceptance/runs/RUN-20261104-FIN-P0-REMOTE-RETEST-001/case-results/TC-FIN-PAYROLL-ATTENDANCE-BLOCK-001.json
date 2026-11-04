@@ -1,0 +1,39 @@
+{
+  "caseId": "TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-04T12:41:51+08:00",
+  "finishedAt": "2026-11-04T12:41:51+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "API+DB",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "页面证据尚未执行"
+  ],
+  "actualState": [
+    "{\"pass\": true, \"response\": {\"success\": false, \"errorCode\": {\"code\": \"400\", \"message\": \"该工资月份有 2 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单\", \"system\": false}}, \"before\": {\"sheets\": \"0\", \"items\": \"0\"}, \"after\": {\"sheets\": \"0\", \"items\": \"0\"}}"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001/api-db-result.json",
+    "raw/p0-payroll-api-results.json"
+  ],
+  "defectIds": null,
+  "blockedReason": "API/DB复验通过；Web/App页面证据未完成。",
+  "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
+  "caseDefinitionHash": "923de5d49d2bdb449d458e19654bf0ee8617460269456d1899b784b2fb9969d5",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/sheet-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/build",
+    "attendance/summary/page"
+  ]
+}

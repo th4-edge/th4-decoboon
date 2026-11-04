@@ -4,7 +4,7 @@
     "TC-FIN-ATTENDANCE-STATE-BYPASS-005"
   ],
   "priority": "P0",
-  "status": "OPEN",
+  "status": "FIXED_PENDING_ACCEPTANCE",
   "title": "普通考勤更新接口可直接把 Pending/Confirmed 写成 InPayroll",
   "role": "Finance",
   "surface": "API",
@@ -24,5 +24,8 @@
   "confidence": "high",
   "ownerSuggestion": "后端将编辑与状态迁移拆分，禁用普通更新直接写 InPayroll，并校验合法迁移",
   "retestCondition": "普通更新写 InPayroll 返回业务拒绝且状态不变",
-  "createdAt": "2026-11-04T12:29:26+08:00"
+  "createdAt": "2026-11-04T12:29:26+08:00",
+  "retestRunId": "RUN-20261104-FIN-P0-REMOTE-RETEST-001",
+  "retestEvidence": "evidence/TC-FIN-ATTENDANCE-STATE-BYPASS-005/api-db-result.json",
+  "updatedAt": "2026-11-04T12:41:51+08:00"
 }

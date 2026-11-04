@@ -1,0 +1,19 @@
+{
+  "pass": true,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "该工资月份有 2 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单",
+      "system": false
+    }
+  },
+  "before": {
+    "sheets": "0",
+    "items": "0"
+  },
+  "after": {
+    "sheets": "0",
+    "items": "0"
+  }
+}

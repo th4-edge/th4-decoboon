@@ -89,7 +89,8 @@
 | App `check:ui` | PASS |
 | App `check:finance-ia` / `check:finance-pickers` | PASS |
 | App 微信小程序构建 | PASS |
-| 真实浏览器复测修复 | 待发布后执行 |
+| 真实浏览器复测修复 | PASS（发布记录 `2026-11-04 考勤体系加固三端发布`） |
+| 财务 P0 运行时复验 | PASS：状态绕过、确认后编辑、跨店更新 3/3；`RUN-20261104-FIN-P0-REMOTE-RETEST-001` |
 | 微信开发者工具 / 真机复测 | 未执行 |
 | 独立验收 / 业务验收 | 未执行 |
 

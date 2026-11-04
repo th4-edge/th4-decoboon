@@ -1,0 +1,41 @@
+{
+  "caseId": "TC-FIN-PAYROLL-DRAFT-RESTORE-004",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-04T12:41:51+08:00",
+  "finishedAt": "2026-11-04T12:41:51+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "API+DB",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "页面证据尚未执行"
+  ],
+  "actualState": [
+    "{\"pass\": true, \"response\": {\"data\": {\"createTime\": {\"dateTime\": \"2026-11-04 12:41:39\"}, \"sheetId\": \"243595529039118336\", \"period\": \"2026-11\", \"status\": {\"name\": \"草稿\", \"key\": \"Draft\"}, \"attendanceComplete\": true, \"commissionComplete\": true, \"totalGrossAmount\": 10000.0, \"totalDeductionAmount\": 0.0, \"totalNetAmount\": 10000.0}, \"success\": true}, \"sheet_exists\": \"0\", \"item_count\": \"0\", \"attendance_after\": [[\"Confirmed\"], [\"Confirmed\"]]}"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/api-db-result.json",
+    "raw/p0-payroll-api-results.json"
+  ],
+  "defectIds": null,
+  "blockedReason": "API/DB复验通过；Web/App页面证据未完成。",
+  "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
+  "caseDefinitionHash": "ac9605275ffe9f664a8818274cf783502cce9c170942822557fa14498a274320",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-043",
+    "DEC-098"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/delete",
+    "payroll/item/page",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}

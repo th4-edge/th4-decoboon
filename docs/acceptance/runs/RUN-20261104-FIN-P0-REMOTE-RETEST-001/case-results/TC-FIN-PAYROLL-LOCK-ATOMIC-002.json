@@ -1,0 +1,39 @@
+{
+  "caseId": "TC-FIN-PAYROLL-LOCK-ATOMIC-002",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-04T12:41:51+08:00",
+  "finishedAt": "2026-11-04T12:41:51+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "API+DB",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "页面证据尚未执行"
+  ],
+  "actualState": [
+    "{\"pass\": true, \"sheet_id\": \"243595529039118336\", \"attendance\": [[\"243595527088766976\", \"InPayroll\"], [\"243595528611299328\", \"InPayroll\"]], \"items\": [[\"243595529240444928\", \"Draft\", \"199500000000000104\"], [\"243595529273999360\", \"Draft\", \"199500000000000107\"]], \"sheet\": [[\"243595529039118336\", \"Draft\"]]}"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-LOCK-ATOMIC-002/api-db-result.json",
+    "raw/p0-payroll-api-results.json"
+  ],
+  "defectIds": null,
+  "blockedReason": "API/DB复验通过；Web/App页面证据未完成。",
+  "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
+  "caseDefinitionHash": "a56a2cba4a80dedc9ee7918f5be538d7fa9716654759450e26d1123ef6047174",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/build",
+    "payroll/item/page",
+    "attendance/summary/page"
+  ]
+}
