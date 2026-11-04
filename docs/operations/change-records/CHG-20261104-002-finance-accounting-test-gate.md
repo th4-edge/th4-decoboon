@@ -10,7 +10,7 @@
 | 状态 | 门禁已扩展至表单生命周期、真实交互证据和旧响应竞态；Web/App 定向执行完成，通用财务表单发现薪酬方案切员工污染，待修复 |
 | 负责人 | Codex |
 | 日期 | 2026-11-04 |
-| 关联缺陷 | `CHG-20261104-001`、`EV-433`、考勤体系审计 `ATT-01~ATT-12`、`DEF-FIN-FORM-001` |
+| 关联缺陷 | `CHG-20261104-001`、`EV-433`、考勤体系审计 `ATT-01~ATT-12`、`DEF-FIN-FORM-001`、`DEF-FIN-COMMISSION-FORM-001` |
 | 业务来源 | `BR-015`、`BR-038`、`BR-050`、`BR-055`、`BR-058`、`DEC-043`、`DEC-065`、`DEC-092`、`DEC-093`、`DEC-098`、`DEC-099` |
 
 ## 2. 目标与范围
@@ -18,7 +18,7 @@
 - 目标：把工资单/考勤锁定缺陷抽象为财务账务域长期测试门禁，约束后续发布必须验证状态机、权限、金额、幂等、跨端和账务对账。
 - 范围内：
   - 财务账务专项门禁规范；
-  - 25 条机器可读 P0/P1 用例（17 条 P0）；
+  - 26 条机器可读 P0/P1 用例（17 条 P0）；
   - 双企业、多门店、工资单状态组合和金额边界夹具；
   - Provider/页面/业务规则校验；
   - 覆盖矩阵和汇总输出；
@@ -49,7 +49,7 @@
 | --- | --- |
 | `docs/testing/05-finance-accounting-test-gate.md` | 长期门禁规范 |
 | `docs/testing/plans/TP-20261104-FIN-ACCOUNTING-GATE.md` | 执行计划 |
-| `docs/testing/cases/finance-accounting-gate-v0.1.json` | 25 条机器可读用例 |
+| `docs/testing/cases/finance-accounting-gate-v0.1.json` | 26 条机器可读用例 |
 | `docs/testing/cases/finance-accounting-gate-v0.1.md` | 人工可读用例目录与明细 |
 | `docs/testing/traceability/finance-accounting-gate-oracle.json` | 财务门禁规则 oracle |
 | `docs/testing/data/finance-accounting-fixtures.md` | 组织、状态、金额和并发夹具 |
@@ -61,9 +61,9 @@
 
 | 检查 | 命令 | 结果 |
 | --- | --- | --- |
-| 财务门禁校验 | `python3 docs/testing/scripts/finance_gate.py validate` | PASS：25 条用例，17 条 P0，550 个 Provider |
+| 财务门禁校验 | `python3 docs/testing/scripts/finance_gate.py validate` | PASS：26 条用例，17 条 P0，550 个 Provider |
 | 门禁负向自测 | `python3 docs/testing/scripts/finance_gate.py self-test` | PASS：6 类负向门禁被识别，含缺少交互证据、缺少强制表单用例和端面目标不一致 |
-| 用例 Schema | `jsonschema.validate` + `test-case.schema.json` | PASS：25/25 |
+| 用例 Schema | `jsonschema.validate` + `test-case.schema.json` | PASS：26/26 |
 | Web RUN 校验 | `validate_run.py docs/acceptance/runs/RUN-20261104-FIN-FORM-WEB-001` | PASS：结构 0 错误；PASS=2 / FAIL=1 |
 | App RUN 校验 | `validate_run.py docs/acceptance/runs/RUN-20261104-FIN-FORM-APP-001` | PASS：结构 0 错误；PASS=1 |
 | RUN 页面门禁负向自测 | `validate_run.py --self-test` | PASS：API-only 不被判页面证据，截图/页面结果和交互回读可解析 |
@@ -79,4 +79,4 @@
 
 ## 7. 结论
 
-开发侧门禁资产已建立并通过结构与负向校验。Web 已验证考勤重开/切员工/切月份、旧响应竞态以及费用/收款/付款重开；App 已验证考勤重开/切员工/切月份。通用财务表单发现 `DEF-FIN-FORM-001` P1：薪酬方案切换员工后保留上一员工金额、应出勤和备注，财务域仍不得标记通过。后续需修复该缺陷并补 App 费用/薪酬方案通用表单复验，再执行全部 P0 最终门禁。
+开发侧门禁资产已建立并通过结构与负向校验。Web 已验证考勤重开/切员工/切月份、旧响应竞态以及费用/收款/付款重开；App 已验证考勤和费用重开、薪酬方案切员工。通用财务表单先后发现 `DEF-FIN-FORM-001` 和 `DEF-FIN-COMMISSION-FORM-001` 两个切换对象污染缺陷，均已修复并完成 Web/App 本地生产构建复验，状态为 `FIXED_PENDING_RELEASE`。生产尚未部署修复，财务域仍不得标记通过；下一步是发布后复验全部 17 条 P0 最终门禁。
