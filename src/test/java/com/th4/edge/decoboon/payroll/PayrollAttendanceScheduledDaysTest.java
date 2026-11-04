@@ -64,6 +64,29 @@ class PayrollAttendanceScheduledDaysTest {
     }
 
     @Test
+    void shouldRejectFractionalScheduledDaysOnSaveBeforePersistence() {
+        SaveFixture fixture = saveFixture(24, null);
+        ReflectionTestUtils.setField(fixture.provider(), "scheduledDays", new BigDecimal("26.5"));
+
+        assertThatThrownBy(() -> fixture.provider().call(new AttendanceSummary()))
+                .isInstanceOfSatisfying(DefinedException.class, error -> {
+                    assertThat(error.getErrorCode().getCode()).isEqualTo("400");
+                    assertThat(error.getMessage()).contains("整数");
+                });
+        verify(fixture.attendances(), never()).saveAndFlush(any(AttendanceSummary.class));
+    }
+
+    @Test
+    void shouldAcceptWholeNumberDecimalScheduledDaysOnSave() {
+        SaveFixture fixture = saveFixture(24, null);
+        ReflectionTestUtils.setField(fixture.provider(), "scheduledDays", new BigDecimal("26.00"));
+
+        AttendanceSummary saved = fixture.provider().call(new AttendanceSummary());
+
+        assertThat(saved.getScheduledDays()).isEqualTo(26);
+    }
+
+    @Test
     void shouldRejectInvalidMonthBeforeDateParsing() {
         SaveFixture fixture = saveFixture(24, null);
         ReflectionTestUtils.setField(fixture.provider(), "month", "2026-13");
@@ -103,6 +126,29 @@ class PayrollAttendanceScheduledDaysTest {
                     assertThat(error.getMessage()).contains("1 至 31");
                 });
         verify(fixture.attendances(), never()).saveAndFlush(any(AttendanceSummary.class));
+    }
+
+    @Test
+    void shouldRejectFractionalScheduledDaysOnUpdateBeforePersistence() {
+        UpdateFixture fixture = updateFixture(AttendanceStatus.Pending, 24, null, null, 24, 0);
+        ReflectionTestUtils.setField(fixture.provider(), "scheduledDays", new BigDecimal("26.5"));
+
+        assertThatThrownBy(() -> fixture.provider().call(new AttendanceSummary()))
+                .isInstanceOfSatisfying(DefinedException.class, error -> {
+                    assertThat(error.getErrorCode().getCode()).isEqualTo("400");
+                    assertThat(error.getMessage()).contains("整数");
+                });
+        verify(fixture.attendances(), never()).saveAndFlush(any(AttendanceSummary.class));
+    }
+
+    @Test
+    void shouldAcceptWholeNumberDecimalScheduledDaysOnUpdate() {
+        UpdateFixture fixture = updateFixture(AttendanceStatus.Pending, 24, null, null, 26, 0);
+        ReflectionTestUtils.setField(fixture.provider(), "scheduledDays", new BigDecimal("26.00"));
+
+        AttendanceSummary saved = fixture.provider().call(new AttendanceSummary());
+
+        assertThat(saved.getScheduledDays()).isEqualTo(26);
     }
 
     @Test
@@ -222,7 +268,8 @@ class PayrollAttendanceScheduledDaysTest {
         ReflectionTestUtils.setField(provider, "employee", manager);
         ReflectionTestUtils.setField(provider, "empId", target.getEmpId());
         ReflectionTestUtils.setField(provider, "month", "2026-10");
-        ReflectionTestUtils.setField(provider, "scheduledDays", submittedScheduledDays);
+        ReflectionTestUtils.setField(provider, "scheduledDays",
+                submittedScheduledDays == null ? null : BigDecimal.valueOf(submittedScheduledDays));
 
         when(access.requireManager(manager)).thenReturn(manager);
         when(access.resolveEmployee(manager, target.getEmpId())).thenReturn(target);
@@ -265,7 +312,8 @@ class PayrollAttendanceScheduledDaysTest {
                 new PayrollAttendanceValidationContext(), new PayrollAttendanceAuditContext());
         ReflectionTestUtils.setField(provider, "employee", boss);
         ReflectionTestUtils.setField(provider, "summaryId", 10L);
-        ReflectionTestUtils.setField(provider, "scheduledDays", submittedScheduledDays);
+        ReflectionTestUtils.setField(provider, "scheduledDays",
+                submittedScheduledDays == null ? null : BigDecimal.valueOf(submittedScheduledDays));
         ReflectionTestUtils.setField(provider, "status", status);
         return new UpdateFixture(provider, attendances, summary, boss, company);
     }

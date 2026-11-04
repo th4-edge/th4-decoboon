@@ -43,7 +43,7 @@ import java.util.Objects;
 public class Update implements com.th4.edge.decoboon.payroll.service.attendances.summary.update.Update {
     @User private Employee employee;
     @AutoInject @NotNull private Long summaryId;
-    @AutoInject private Integer scheduledDays;
+    @AutoInject private BigDecimal scheduledDays;
     @AutoInject private BigDecimal normalDays;
     @AutoInject private BigDecimal personalLeaveDays;
     @AutoInject private BigDecimal sickLeaveDays;
@@ -130,9 +130,12 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
 
     private boolean applyFields(AttendanceSummary summary) {
         boolean changed = false;
-        if (scheduledDays != null && !Objects.equals(scheduledDays, summary.getScheduledDays())) {
-            summary.setScheduledDays(scheduledDays);
-            changed = true;
+        if (scheduledDays != null) {
+            Integer nextScheduledDays = validationContext.integerScheduledDays(scheduledDays);
+            if (!Objects.equals(nextScheduledDays, summary.getScheduledDays())) {
+                summary.setScheduledDays(nextScheduledDays);
+                changed = true;
+            }
         }
         if (normalDays != null && !Objects.equals(normalDays, summary.getNormalDays())) {
             summary.setNormalDays(normalDays);

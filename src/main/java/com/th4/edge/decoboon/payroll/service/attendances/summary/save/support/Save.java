@@ -49,7 +49,7 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     @User private Employee employee;
     @AutoInject @NotNull private Long empId;
     @AutoInject @NotEmpty private String month;
-    @AutoInject private Integer scheduledDays;
+    @AutoInject private BigDecimal scheduledDays;
     @AutoInject private BigDecimal normalDays;
     @AutoInject private BigDecimal personalLeaveDays;
     @AutoInject private BigDecimal sickLeaveDays;
@@ -93,7 +93,9 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
                 .findFirst()
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode(
                         "400", "该工资月份没有生效薪酬方案，请先配置对应生效期的方案")));
-        Integer effectiveScheduledDays = scheduledDays != null ? scheduledDays : scheme.getScheduledDays();
+        Integer effectiveScheduledDays = scheduledDays != null
+                ? validationContext.integerScheduledDays(scheduledDays)
+                : scheme.getScheduledDays();
         accessContext.applyOwnership(request, current, target);
         request.setPayrollMonth(normalizedMonth);
         request.setScheduledDays(effectiveScheduledDays == null ? 0 : effectiveScheduledDays);

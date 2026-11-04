@@ -11,6 +11,21 @@ import java.math.BigDecimal;
 @Component
 public class PayrollAttendanceValidationContext {
 
+    public Integer integerScheduledDays(BigDecimal value) {
+        if (value == null) {
+            throw invalid("月应出勤天数必须为 1 至 31 天的整数");
+        }
+        try {
+            int days = value.intValueExact();
+            if (days < 1 || days > 31) {
+                throw invalid("月应出勤天数必须为 1 至 31 天的整数");
+            }
+            return days;
+        } catch (ArithmeticException exception) {
+            throw invalid("月应出勤天数必须为 1 至 31 天的整数");
+        }
+    }
+
     public void validate(AttendanceSummary summary) {
         if (summary == null) {
             throw invalid("考勤汇总不能为空");
