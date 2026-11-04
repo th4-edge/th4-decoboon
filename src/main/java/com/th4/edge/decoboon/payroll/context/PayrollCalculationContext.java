@@ -35,11 +35,11 @@ public class PayrollCalculationContext {
             throw new DefinedException(new DefaultErrorCode("400", "考勤汇总不能为空"));
         }
         BigDecimal daily = money(dailySalary);
-        return daily.multiply(BigDecimal.valueOf(value(summary.getPersonalLeaveDays())))
+        return daily.multiply(value(summary.getPersonalLeaveDays()))
                 .multiply(factor(personalLeaveFactor, DEFAULT_PERSONAL_LEAVE_FACTOR))
-                .add(daily.multiply(BigDecimal.valueOf(value(summary.getSickLeaveDays())))
+                .add(daily.multiply(value(summary.getSickLeaveDays()))
                         .multiply(factor(sickLeaveFactor, DEFAULT_SICK_LEAVE_FACTOR)))
-                .add(daily.multiply(BigDecimal.valueOf(value(summary.getAbsenceDays())))
+                .add(daily.multiply(value(summary.getAbsenceDays()))
                         .multiply(factor(absenceFactor, DEFAULT_ABSENCE_FACTOR)))
                 .setScale(2, RoundingMode.HALF_UP);
     }
@@ -97,7 +97,7 @@ public class PayrollCalculationContext {
         return value == null ? BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP) : value;
     }
 
-    private int value(Integer value) {
-        return value == null ? 0 : value;
+    private BigDecimal value(BigDecimal value) {
+        return value == null ? BigDecimal.ZERO : value;
     }
 }

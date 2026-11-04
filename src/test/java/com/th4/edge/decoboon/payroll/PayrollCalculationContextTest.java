@@ -18,14 +18,26 @@ class PayrollCalculationContextTest {
     void shouldCalculateDailySalaryAndAttendanceDeduction() {
         BigDecimal daily = context.dailySalary(new BigDecimal("6000.00"), 30);
         AttendanceSummary summary = new AttendanceSummary();
-        summary.setPersonalLeaveDays(1);
-        summary.setSickLeaveDays(2);
-        summary.setAbsenceDays(1);
+        summary.setPersonalLeaveDays(new BigDecimal("1"));
+        summary.setSickLeaveDays(new BigDecimal("2"));
+        summary.setAbsenceDays(new BigDecimal("1"));
 
         BigDecimal deduction = context.attendanceDeduction(daily, summary, null, null, null);
 
         assertThat(daily).isEqualByComparingTo("200.000000");
         assertThat(deduction).isEqualByComparingTo("800.00");
+    }
+
+    @Test
+    void shouldCalculateHalfDayAttendanceDeductionWithoutTruncation() {
+        BigDecimal daily = context.dailySalary(new BigDecimal("6000.00"), 30);
+        AttendanceSummary summary = new AttendanceSummary();
+        summary.setPersonalLeaveDays(new BigDecimal("0.5"));
+        summary.setSickLeaveDays(new BigDecimal("0.5"));
+
+        BigDecimal deduction = context.attendanceDeduction(daily, summary, null, null, null);
+
+        assertThat(deduction).isEqualByComparingTo("150.00");
     }
 
     @Test

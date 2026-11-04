@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 /** 月度考勤结构化审计：不新增数据库表，保留操作人、对象、前后值和动作。 */
 @Component
 public class PayrollAttendanceAuditContext {
@@ -44,7 +46,11 @@ public class PayrollAttendanceAuditContext {
                 + ",remark=" + attendance.getRemark();
     }
 
-    private int value(Integer value) {
-        return value == null ? 0 : value;
+    private BigDecimal value(Integer value) {
+        return BigDecimal.valueOf(value == null ? 0 : value);
+    }
+
+    private BigDecimal value(BigDecimal value) {
+        return value == null ? BigDecimal.ZERO : value;
     }
 }

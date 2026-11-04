@@ -29,6 +29,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
@@ -49,13 +50,13 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     @AutoInject @NotNull private Long empId;
     @AutoInject @NotEmpty private String month;
     @AutoInject private Integer scheduledDays;
-    @AutoInject private Integer normalDays;
-    @AutoInject private Integer personalLeaveDays;
-    @AutoInject private Integer sickLeaveDays;
-    @AutoInject private Integer absenceDays;
-    @AutoInject private Integer externalDays;
-    @AutoInject private Integer annualLeaveDays;
-    @AutoInject private Integer compLeaveDays;
+    @AutoInject private BigDecimal normalDays;
+    @AutoInject private BigDecimal personalLeaveDays;
+    @AutoInject private BigDecimal sickLeaveDays;
+    @AutoInject private BigDecimal absenceDays;
+    @AutoInject private BigDecimal externalDays;
+    @AutoInject private BigDecimal annualLeaveDays;
+    @AutoInject private BigDecimal compLeaveDays;
     @AutoInject @Length(max = 500) private String remark;
     private final AttendanceSummaryRepository repository;
     private final CompensationSchemeRepository compensationRepository;
@@ -131,5 +132,5 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
         }
     }
 
-    private int value(Integer value) { return value == null ? 0 : value; }
+    private BigDecimal value(BigDecimal value) { return value == null ? BigDecimal.ZERO : value; }
 }

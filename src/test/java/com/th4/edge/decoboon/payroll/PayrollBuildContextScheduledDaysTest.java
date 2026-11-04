@@ -59,7 +59,7 @@ class PayrollBuildContextScheduledDaysTest {
         scheme.setStatus(CompensationStatus.Active);
         AttendanceSummary attendance = new AttendanceSummary();
         attendance.setScheduledDays(24);
-        attendance.setPersonalLeaveDays(1);
+        attendance.setPersonalLeaveDays(new BigDecimal("1"));
         attendance.setStatus(AttendanceStatus.Confirmed);
 
         PayrollAccessContext access = mock(PayrollAccessContext.class);
@@ -159,7 +159,7 @@ class PayrollBuildContextScheduledDaysTest {
         attendance.setEmployee(former);
         attendance.setPayrollMonth("2026-10");
         attendance.setScheduledDays(27);
-        attendance.setNormalDays(27);
+        attendance.setNormalDays(new BigDecimal("27"));
         attendance.setStatus(AttendanceStatus.InPayroll);
 
         PayrollAccessContext access = mock(PayrollAccessContext.class);

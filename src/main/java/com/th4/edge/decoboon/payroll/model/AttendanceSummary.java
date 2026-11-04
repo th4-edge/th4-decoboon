@@ -70,33 +70,33 @@ public class AttendanceSummary extends AuditModel {
     @Note("应出勤天数")
     private Integer scheduledDays = 0;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("正常出勤天数")
-    private Integer normalDays = 0;
+    private BigDecimal normalDays = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("事假天数")
-    private Integer personalLeaveDays = 0;
+    private BigDecimal personalLeaveDays = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("病假天数")
-    private Integer sickLeaveDays = 0;
+    private BigDecimal sickLeaveDays = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("旷工天数")
-    private Integer absenceDays = 0;
+    private BigDecimal absenceDays = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("外勤天数")
-    private Integer externalDays = 0;
+    private BigDecimal externalDays = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("年假天数")
-    private Integer annualLeaveDays = 0;
+    private BigDecimal annualLeaveDays = BigDecimal.ZERO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 2)
     @Note("调休天数")
-    private Integer compLeaveDays = 0;
+    private BigDecimal compLeaveDays = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 16, nullable = false)
@@ -130,20 +130,20 @@ public class AttendanceSummary extends AuditModel {
     public void setPayrollMonth(String payrollMonth) { this.payrollMonth = payrollMonth; }
     public Integer getScheduledDays() { return scheduledDays; }
     public void setScheduledDays(Integer scheduledDays) { this.scheduledDays = scheduledDays; }
-    public Integer getNormalDays() { return normalDays; }
-    public void setNormalDays(Integer normalDays) { this.normalDays = normalDays; }
-    public Integer getPersonalLeaveDays() { return personalLeaveDays; }
-    public void setPersonalLeaveDays(Integer personalLeaveDays) { this.personalLeaveDays = personalLeaveDays; }
-    public Integer getSickLeaveDays() { return sickLeaveDays; }
-    public void setSickLeaveDays(Integer sickLeaveDays) { this.sickLeaveDays = sickLeaveDays; }
-    public Integer getAbsenceDays() { return absenceDays; }
-    public void setAbsenceDays(Integer absenceDays) { this.absenceDays = absenceDays; }
-    public Integer getExternalDays() { return externalDays; }
-    public void setExternalDays(Integer externalDays) { this.externalDays = externalDays; }
-    public Integer getAnnualLeaveDays() { return annualLeaveDays; }
-    public void setAnnualLeaveDays(Integer annualLeaveDays) { this.annualLeaveDays = annualLeaveDays; }
-    public Integer getCompLeaveDays() { return compLeaveDays; }
-    public void setCompLeaveDays(Integer compLeaveDays) { this.compLeaveDays = compLeaveDays; }
+    public BigDecimal getNormalDays() { return normalDays; }
+    public void setNormalDays(BigDecimal normalDays) { this.normalDays = normalDays; }
+    public BigDecimal getPersonalLeaveDays() { return personalLeaveDays; }
+    public void setPersonalLeaveDays(BigDecimal personalLeaveDays) { this.personalLeaveDays = personalLeaveDays; }
+    public BigDecimal getSickLeaveDays() { return sickLeaveDays; }
+    public void setSickLeaveDays(BigDecimal sickLeaveDays) { this.sickLeaveDays = sickLeaveDays; }
+    public BigDecimal getAbsenceDays() { return absenceDays; }
+    public void setAbsenceDays(BigDecimal absenceDays) { this.absenceDays = absenceDays; }
+    public BigDecimal getExternalDays() { return externalDays; }
+    public void setExternalDays(BigDecimal externalDays) { this.externalDays = externalDays; }
+    public BigDecimal getAnnualLeaveDays() { return annualLeaveDays; }
+    public void setAnnualLeaveDays(BigDecimal annualLeaveDays) { this.annualLeaveDays = annualLeaveDays; }
+    public BigDecimal getCompLeaveDays() { return compLeaveDays; }
+    public void setCompLeaveDays(BigDecimal compLeaveDays) { this.compLeaveDays = compLeaveDays; }
     public AttendanceStatus getStatus() { return status; }
     public void setStatus(AttendanceStatus status) { this.status = status; }
     public Employee getConfirmedBy() { return confirmedBy; }

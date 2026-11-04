@@ -100,6 +100,19 @@ class MigrationSchemaParityTest {
         assertThat(sql).contains("modify column reason_text varchar(500)");
     }
 
+    @Test
+    void attendanceDayColumnsMustAllowHalfDayDecimalsInBaselineAndIncrementalMigration() throws Exception {
+        String baseline = Files.readString(MIGRATION_DIR.resolve("01-空库基线.sql"), StandardCharsets.UTF_8)
+                .toLowerCase(Locale.ROOT);
+        String incremental = Files.readString(MIGRATION_DIR.resolve("135-考勤天数小数.sql"), StandardCharsets.UTF_8)
+                .toLowerCase(Locale.ROOT);
+        for (String column : List.of("normal_days", "personal_leave_days", "sick_leave_days",
+                "absence_days", "external_days", "annual_leave_days", "comp_leave_days")) {
+            assertThat(baseline).contains(column + " decimal(5,2) not null");
+            assertThat(incremental).contains("modify column " + column + " decimal(5,2) not null");
+        }
+    }
+
     private Map<String, Set<String>> entityColumnsFromH2() throws Exception {
         Map<String, Set<String>> result = new HashMap<>();
         try (Connection connection = dataSource.getConnection();

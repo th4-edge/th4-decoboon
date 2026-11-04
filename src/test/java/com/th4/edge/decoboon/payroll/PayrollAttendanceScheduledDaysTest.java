@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -77,8 +78,8 @@ class PayrollAttendanceScheduledDaysTest {
     @Test
     void shouldRejectDayTotalAboveScheduledDaysOnSave() {
         SaveFixture fixture = saveFixture(24, 24);
-        ReflectionTestUtils.setField(fixture.provider(), "normalDays", 24);
-        ReflectionTestUtils.setField(fixture.provider(), "personalLeaveDays", 1);
+        ReflectionTestUtils.setField(fixture.provider(), "normalDays", new BigDecimal("24"));
+        ReflectionTestUtils.setField(fixture.provider(), "personalLeaveDays", new BigDecimal("1"));
         assertThatThrownBy(() -> fixture.provider().call(new AttendanceSummary()))
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("合计不能超过应出勤天数");
@@ -129,8 +130,8 @@ class PayrollAttendanceScheduledDaysTest {
         LocalDateTime confirmedAt = LocalDateTime.of(2026, 10, 1, 9, 0);
         fixture.summary().setConfirmedBy(confirmer);
         fixture.summary().setConfirmedAt(confirmedAt);
-        ReflectionTestUtils.setField(fixture.provider(), "normalDays", 26);
-        ReflectionTestUtils.setField(fixture.provider(), "personalLeaveDays", 1);
+        ReflectionTestUtils.setField(fixture.provider(), "normalDays", new BigDecimal("26"));
+        ReflectionTestUtils.setField(fixture.provider(), "personalLeaveDays", new BigDecimal("1"));
 
         AttendanceSummary saved = fixture.provider().call(new AttendanceSummary());
 
@@ -154,6 +155,29 @@ class PayrollAttendanceScheduledDaysTest {
         assertThat(saved.getStatus()).isEqualTo(AttendanceStatus.Confirmed);
         assertThat(saved.getConfirmedBy()).isSameAs(fixture.boss());
         assertThat(saved.getConfirmedAt()).isNotNull();
+    }
+
+    @Test
+    void shouldConfirmHalfDayAttendanceAndPreserveDecimalValues() {
+        UpdateFixture fixture = updateFixture(AttendanceStatus.Pending, 22, 22, "Confirmed", 21, 0);
+        ReflectionTestUtils.setField(fixture.provider(), "normalDays", new BigDecimal("21.5"));
+        ReflectionTestUtils.setField(fixture.provider(), "personalLeaveDays", new BigDecimal("0.5"));
+
+        AttendanceSummary saved = fixture.provider().call(new AttendanceSummary());
+
+        assertThat(saved.getStatus()).isEqualTo(AttendanceStatus.Confirmed);
+        assertThat(saved.getNormalDays()).isEqualByComparingTo("21.5");
+        assertThat(saved.getPersonalLeaveDays()).isEqualByComparingTo("0.5");
+    }
+
+    @Test
+    void shouldRejectAttendanceDaysWithMoreThanTwoDecimalPlaces() {
+        UpdateFixture fixture = updateFixture(AttendanceStatus.Pending, 22, 22, null, 21, 0);
+        ReflectionTestUtils.setField(fixture.provider(), "personalLeaveDays", new BigDecimal("0.555"));
+
+        assertThatThrownBy(() -> fixture.provider().call(new AttendanceSummary()))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("最多保留两位小数");
     }
 
     @Test
@@ -224,8 +248,8 @@ class PayrollAttendanceScheduledDaysTest {
         summary.setEmployee(target);
         summary.setPayrollMonth("2026-10");
         summary.setScheduledDays(scheduledDays);
-        summary.setNormalDays(normalDays);
-        summary.setPersonalLeaveDays(personalLeaveDays);
+        summary.setNormalDays(BigDecimal.valueOf(normalDays));
+        summary.setPersonalLeaveDays(BigDecimal.valueOf(personalLeaveDays));
         summary.setStatus(currentStatus);
 
         AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);

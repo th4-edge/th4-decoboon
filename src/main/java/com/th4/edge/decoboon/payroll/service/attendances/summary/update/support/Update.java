@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -43,13 +44,13 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
     @User private Employee employee;
     @AutoInject @NotNull private Long summaryId;
     @AutoInject private Integer scheduledDays;
-    @AutoInject private Integer normalDays;
-    @AutoInject private Integer personalLeaveDays;
-    @AutoInject private Integer sickLeaveDays;
-    @AutoInject private Integer absenceDays;
-    @AutoInject private Integer externalDays;
-    @AutoInject private Integer annualLeaveDays;
-    @AutoInject private Integer compLeaveDays;
+    @AutoInject private BigDecimal normalDays;
+    @AutoInject private BigDecimal personalLeaveDays;
+    @AutoInject private BigDecimal sickLeaveDays;
+    @AutoInject private BigDecimal absenceDays;
+    @AutoInject private BigDecimal externalDays;
+    @AutoInject private BigDecimal annualLeaveDays;
+    @AutoInject private BigDecimal compLeaveDays;
     @AutoInject private String status;
     @AutoInject @Length(max = 500) private String remark;
     private final AttendanceSummaryRepository repository;
