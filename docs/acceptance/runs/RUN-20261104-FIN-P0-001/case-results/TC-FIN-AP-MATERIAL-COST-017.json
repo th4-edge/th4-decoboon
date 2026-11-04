@@ -1,0 +1,36 @@
+{
+  "caseId": "TC-FIN-AP-MATERIAL-COST-017",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "449c477727d66de4d0524bbb0be4437940556ff00e21990d818d3aade91bbdc2",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-058",
+    "DEC-092",
+    "BR-055"
+  ],
+  "pageTargets": [
+    "web:/finance/payables",
+    "web:/finance/projects",
+    "app:/subpackages/finance/pages/material-settlement"
+  ],
+  "providerRoutes": [
+    "material/sheet/order",
+    "finance/payable/page",
+    "finance/payment/save",
+    "finance/project/report"
+  ]
+}

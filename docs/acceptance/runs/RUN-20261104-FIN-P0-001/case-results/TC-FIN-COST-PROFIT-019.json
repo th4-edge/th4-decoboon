@@ -1,0 +1,35 @@
+{
+  "caseId": "TC-FIN-COST-PROFIT-019",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "010e32a3cda86469f8fcc336580e4bad4a9e555cee13655ca2e72578df0fa0f7",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-058",
+    "DEC-092",
+    "MET-007"
+  ],
+  "pageTargets": [
+    "web:/finance/projects",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "finance/project/report",
+    "finance/settlement/update",
+    "finance/summary/report"
+  ]
+}

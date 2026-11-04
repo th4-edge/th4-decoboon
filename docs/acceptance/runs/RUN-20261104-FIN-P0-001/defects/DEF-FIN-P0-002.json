@@ -1,0 +1,29 @@
+{
+  "defectId": "DEF-FIN-P0-002",
+  "caseIds": [
+    "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006"
+  ],
+  "priority": "P0",
+  "status": "OPEN",
+  "title": "已确认考勤可修改且保留原确认责任与确认时间",
+  "role": "Finance",
+  "surface": "API",
+  "pagePath": "attendance/summary/update",
+  "businessState": "考勤 Confirmed，confirmed_by/confirmed_at 已存在",
+  "expected": "修改必须撤销确认并要求重新确认，或直接阻断",
+  "actual": "normalDays 24→23 成功，status 仍 Confirmed，confirmed_by/confirmed_at 保留",
+  "minimumReproduction": [
+    "确认考勤",
+    "记录 confirmed_by/confirmed_at",
+    "修改 normalDays",
+    "回读状态"
+  ],
+  "impact": "工资项可能继续消费旧确认快照或新值冒充旧确认，形成不可追溯工资依据",
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006/api-db-result.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "已确认修改必须重新确认或禁止直接修改，确认痕迹需绑定版本",
+  "retestCondition": "修改后状态退回待确认或请求被拒绝，确认责任不被冒用",
+  "createdAt": "2026-11-04T12:29:26+08:00"
+}

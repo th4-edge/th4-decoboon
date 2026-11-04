@@ -1,0 +1,41 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006",
+  "status": "FAIL",
+  "startedAt": "2026-11-04T12:29:26+08:00",
+  "finishedAt": "2026-11-04T12:29:26+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "API+DB",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "API/DB 已稳定复现，页面端无需继续才能确认失败"
+  ],
+  "actualState": [
+    "{\"pass\": false, \"pre\": [\"199500000000000104\", \"2026-11-04 12:29:03\"], \"response\": {\"data\": {\"updateTime\": {\"dateTime\": \"2026-11-04 12:29:03\"}, \"summaryId\": \"243592347886026752\", \"employee\": {\"empId\": \"199500000000000104\", \"name\": \"审计财务\", \"store\": {\"storeId\": \"199500000000000011\", \"name\": \"总店\"}, \"role\": {\"name\": \"财务\", \"value\": \"Finance\", \"key\": \"Finance\"}, \"status\": {\"name\": \"在职\", \"key\": \"Active\"}}, \"scheduledDays\": 26, \"normalDays\": 23, \"personalLeaveDays\": 0, \"sickLeaveDays\": 0, \"absenceDays\": 0, \"externalDays\": 0, \"annualLeaveDays\": 0, \"compLeaveDays\": 0, \"status\": {\"name\": \"已确认\", \"key\": \"Confirmed\"}, \"confirmedBy\": {\"empId\": \"199500000000000104\", \"name\": \"审计财务\", \"store\": {\"storeId\": \"199500000000000011\", \"name\": \"总店\"}, \"role\": {\"name\": \"财务\", \"value\": \"Finance\", \"key\": \"Finance\"}, \"status\": {\"name\": \"在职\", \"key\": \"Active\"}}, \"confirmedAt\": \"2026-11-04 12:29:03\", \"remark\": \"FIN-P0-001\"}, \"success\": true}, \"post\": [\"23\", \"199500000000000104\", \"2026-11-04 12:29:03\", \"Confirmed\"]}"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006/api-db-result.json",
+    "raw/p0-payroll-api-results.json"
+  ],
+  "defectIds": [
+    "DEF-FIN-P0-002"
+  ],
+  "blockedReason": null,
+  "notes": "本地昭青测试租户；未使用生产数据。",
+  "caseDefinitionHash": "ace1c0244ef45548973305e96c82e7c8ccbb0ecfd64f3faacca0a85c6a1b5ec2",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038",
+    "BR-015"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries"
+  ],
+  "providerRoutes": [
+    "attendance/summary/update",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}

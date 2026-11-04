@@ -1,0 +1,34 @@
+{
+  "caseId": "TC-FIN-SALARY-PAYABLE-ONCE-011",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "4ad87721bd17c46bb4e51ac8356f90b23ef0378b48b91076ec53ec12d64d151b",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-093",
+    "DEC-097"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/sheet-detail"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/update",
+    "payroll/item/page",
+    "finance/payment/employee/page"
+  ]
+}

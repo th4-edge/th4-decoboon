@@ -1,0 +1,34 @@
+{
+  "caseId": "TC-FIN-CROSS-TENANT-021",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "81752ce898a2d69c1d7f878a0cd2da0f68316295903577b85fed85474f328131",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-065",
+    "DEC-099"
+  ],
+  "pageTargets": [
+    "web:/finance/workbench",
+    "app:/subpackages/finance/pages/projects"
+  ],
+  "providerRoutes": [
+    "finance/receivable/page",
+    "finance/payment/page",
+    "payroll/sheet/info",
+    "payroll/item/page"
+  ]
+}

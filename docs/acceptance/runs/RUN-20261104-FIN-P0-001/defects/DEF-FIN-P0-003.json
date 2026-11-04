@@ -1,0 +1,28 @@
+{
+  "defectId": "DEF-FIN-P0-003",
+  "caseIds": [
+    "TC-FIN-FINANCE-STORE-SCOPE-007"
+  ],
+  "priority": "P0",
+  "status": "OPEN",
+  "title": "滨湖店财务可按 summaryId 修改总店考勤",
+  "role": "Finance(Store)",
+  "surface": "API",
+  "pagePath": "attendance/summary/update",
+  "businessState": "门店财务属于滨湖店，目标考勤属于总店",
+  "expected": "跨店请求403/404且目标数据不变",
+  "actual": "请求 success=true，总店考勤 normalDays 24→1",
+  "minimumReproduction": [
+    "滨湖审计财务登录",
+    "按总店summaryId调用 update",
+    "查询目标数据"
+  ],
+  "impact": "门店财务可跨店篡改工资依据，属于跨店越权和高风险账务污染",
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-STORE-SCOPE-007/api-db-result.json"
+  ],
+  "confidence": "high",
+  "ownerSuggestion": "Update 改为 DataScopeContext + DataScopeSpecification，不得仅对 StoreManager 手工比较",
+  "retestCondition": "门店财务跨店读改删均403/404，目标值不变",
+  "createdAt": "2026-11-04T12:29:26+08:00"
+}

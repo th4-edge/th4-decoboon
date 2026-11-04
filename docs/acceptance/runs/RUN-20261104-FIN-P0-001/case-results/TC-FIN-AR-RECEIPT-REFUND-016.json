@@ -1,0 +1,37 @@
+{
+  "caseId": "TC-FIN-AR-RECEIPT-REFUND-016",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "b98292f7ac8bb4d615efd76468751efdead795f8a22fc86d933beafc48507e04",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-077",
+    "BR-050",
+    "DEC-099"
+  ],
+  "pageTargets": [
+    "web:/finance/receivables",
+    "web:/finance/receipts",
+    "web:/finance/refunds"
+  ],
+  "providerRoutes": [
+    "finance/receivable/page",
+    "finance/receipt/save",
+    "finance/refund/save",
+    "finance/receipt/reverse",
+    "finance/ledger/page"
+  ]
+}

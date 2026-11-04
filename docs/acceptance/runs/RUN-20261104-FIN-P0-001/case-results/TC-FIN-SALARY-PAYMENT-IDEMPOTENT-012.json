@@ -1,0 +1,33 @@
+{
+  "caseId": "TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012",
+  "status": "NOT_RUN",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "",
+  "caseDefinitionHash": "2e4c5224e83ee0ca62069e1afb66d95e97c09453c2064a2ba7b6533e9cb3e9f8",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-093"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/payment-create"
+  ],
+  "providerRoutes": [
+    "finance/payment/employee/save",
+    "finance/payment/employee/page",
+    "finance/ledger/page"
+  ]
+}
