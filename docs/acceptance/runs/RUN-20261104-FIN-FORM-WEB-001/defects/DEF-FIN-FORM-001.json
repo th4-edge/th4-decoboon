@@ -1,8 +1,10 @@
 {
   "defectId": "DEF-FIN-FORM-001",
-  "caseIds": ["TC-FIN-FORM-REOPEN-024"],
+  "caseIds": [
+    "TC-FIN-FORM-REOPEN-024"
+  ],
   "priority": "P1",
-  "status": "OPEN",
+  "status": "FIXED_PENDING_RELEASE",
   "title": "薪酬方案新建表单切换员工后保留上一员工工资、应出勤和备注",
   "role": "Finance",
   "surface": "Web",
@@ -29,5 +31,28 @@
   "ownerSuggestion": "切换员工时重置月固定工资、应出勤和备注等员工相关字段，并增加最终提交员工与页面员工一致性校验",
   "retestCondition": "王宏文切换到董夏鹏后金额为空、应出勤回到新上下文默认值、备注为空；提交对象仅为董夏鹏且不含王宏文任何输入",
   "createdAt": "2026-11-04T13:21:16+08:00",
-  "updatedAt": "2026-11-04T13:21:16+08:00"
+  "updatedAt": "2026-11-04T13:34:00+08:00",
+  "retestRunId": "RUN-20261104-FIN-FORM-FIX-RETEST-001",
+  "retestEvidence": [
+    "evidence/TC-FIN-FORM-REOPEN-024/before-switch-wanghongwen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/after-switch-dongxiaopeng.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/app-before-switch.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/app-after-switch.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/successor-hydration.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/page-result.json"
+  ],
+  "committedFix": {
+    "web": {
+      "repository": "th4-decoboon-web",
+      "branch": "codex/finance-form-lifecycle-hotfix-20261104",
+      "commit": "b78a813",
+      "file": "src/components/finance/FinanceCompensationDrawer.vue"
+    },
+    "app": {
+      "repository": "th4-decoboon-app",
+      "branch": "codex/finance-form-lifecycle-hotfix-20261104",
+      "commit": "4da77c8",
+      "file": "src/subpackages/payroll/pages/compensation-edit.vue"
+    }
+  }
 }

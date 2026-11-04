@@ -1,0 +1,58 @@
+{
+  "caseId": "TC-FIN-FORM-REOPEN-024",
+  "status": "PASS",
+  "startedAt": "2026-11-04T13:29:00+08:00",
+  "finishedAt": "2026-11-04T13:34:00+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web/App",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
+  "steps": [
+    "Web 本地生产构建通过 Vite 代理连接生产 API，财务真实账号登录",
+    "薪酬方案新建页填写王宏文金额6000、应出勤25天和备注，切换董夏鹏后回读字段",
+    "打开吴濛濛新增后续方案，确认员工锁定后历史金额5000和应出勤24正常水合",
+    "App 生产构建选择董夏鹏填写金额6000、应出勤25天和备注，切换王宏文后回读字段",
+    "App 费用页填写金额和说明，返回后重新进入并回读字段"
+  ],
+  "actualPage": [
+    "Web 切员工：董夏鹏员工上下文下金额为空、应出勤22天、备注为空",
+    "Web 后续方案：吴濛濛金额5000.00、应出勤24天正常水合，未被新建切换重置逻辑误清",
+    "App 切员工：王宏文员工上下文下金额、应出勤和备注均为空",
+    "App 费用重开：金额和费用说明均为空"
+  ],
+  "actualState": [
+    "全程未保存费用、薪酬方案或任何生产财务事实",
+    "Web 为本地生产构建，App 为 1.0.86 生产构建；两者通过只读生产 API 验证",
+    "App 微信快捷登录未命中该账号，使用同源密码登录 Provider 获取真实会话后注入自动化环境；未判定微信登录 UI 通过"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FORM-REOPEN-024/before-switch-wanghongwen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/after-switch-dongxiaopeng.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/successor-hydration.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/app-before-switch.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/app-after-switch.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/app-expense-before-back.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/app-expense-after-reopen.png",
+    "evidence/TC-FIN-FORM-REOPEN-024/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "DEF-FIN-FORM-001 定向复验通过；本地修复尚未部署生产。",
+  "caseDefinitionHash": "9c57cbd861dbd82cd49a45837382804bf1cb5ee8485779d4f4e01497fbe1fb97",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": ["BR-055", "DEC-089"],
+  "pageTargets": [
+    "web:/finance/expenses",
+    "web:/finance/receipts",
+    "web:/finance/payments",
+    "app:/subpackages/finance/pages/expense-edit",
+    "app:/subpackages/payroll/pages/compensation-edit"
+  ],
+  "providerRoutes": [
+    "expense/expenses/save",
+    "finance/receipt/save",
+    "finance/payment/save",
+    "payroll/compensation/save"
+  ]
+}

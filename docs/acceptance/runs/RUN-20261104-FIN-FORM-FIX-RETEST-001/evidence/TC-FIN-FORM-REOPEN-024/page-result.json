@@ -1,0 +1,60 @@
+{
+  "role": "Finance",
+  "environment": "local-prod-api-readonly",
+  "webCommit": "b78a813",
+  "appCommit": "4da77c8",
+  "saved": false,
+  "web": {
+    "form": "薪酬方案",
+    "beforeSwitch": {
+      "employee": "王宏文",
+      "baseSalary": "6000",
+      "scheduledDays": "25",
+      "remark": "修复回归：切换员工残留测试，不保存"
+    },
+    "afterSwitch": {
+      "employee": "董夏鹏",
+      "baseSalary": "",
+      "scheduledDays": "22",
+      "remark": ""
+    },
+    "successorHydration": {
+      "employee": "吴濛濛",
+      "baseSalary": "5000.00",
+      "scheduledDays": "24",
+      "remark": ""
+    },
+    "result": "PASS"
+  },
+  "app": {
+    "compensation": {
+      "beforeSwitch": {
+        "employee": "董夏鹏",
+        "baseSalary": "6000",
+        "scheduledDays": "25",
+        "remark": "App薪酬切员工残留测试，不保存"
+      },
+      "afterSwitch": {
+        "employee": "王宏文",
+        "baseSalary": "",
+        "scheduledDays": "",
+        "remark": ""
+      },
+      "result": "PASS"
+    },
+    "expenseReopen": {
+      "before": {"amount": "123.45", "description": "App费用表单重开残留测试，不保存"},
+      "afterReopen": {"amount": "", "description": ""},
+      "result": "PASS"
+    }
+  },
+  "screenshots": [
+    "before-switch-wanghongwen.png",
+    "after-switch-dongxiaopeng.png",
+    "successor-hydration.png",
+    "app-before-switch.png",
+    "app-after-switch.png",
+    "app-expense-before-back.png",
+    "app-expense-after-reopen.png"
+  ]
+}
