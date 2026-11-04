@@ -18,6 +18,24 @@ def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def has_page_evidence(result: dict) -> bool:
+    evidence = [str(item).lower() for item in (result.get("evidence") or [])]
+    page_file = any(
+        path.endswith((".png", ".jpg", ".jpeg", ".webp"))
+        or "page-result" in path
+        or "page_result" in path
+        for path in evidence
+    )
+    actual_page = result.get("actualPage") or []
+    page_note = any(
+        str(item).strip()
+        and "不适用" not in str(item)
+        and "未执行" not in str(item)
+        for item in actual_page
+    )
+    return page_file and page_note
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("run_dir")
@@ -71,6 +89,9 @@ def main() -> int:
         defects = result.get("defectIds") or []
         if status in {"PASS", "FAIL"} and not evidence:
             errors.append(f"{case_id} 为 {status} 但没有证据")
+        if status == "PASS" and any(surface in {"Web", "App", "Owner"} for surface in case_map[case_id].get("surfaces", [])):
+            if not has_page_evidence(result):
+                errors.append(f"{case_id} 声明了页面端，但 PASS 缺少页面截图/页面路径/交互回读证据")
         for evidence_path in evidence:
             path = run_dir / str(evidence_path)
             if not path.exists():

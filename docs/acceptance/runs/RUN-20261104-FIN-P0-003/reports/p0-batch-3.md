@@ -2,11 +2,11 @@
 
 ## 结果
 
-`PASS=4 / FAIL=0 / BLOCKED=0 / NOT_RUN=0`
+`PASS=2 / FAIL=0 / BLOCKED=2 / NOT_RUN=0`
 
 | 用例 | 结果 | 关键证据 |
 | --- | --- | --- |
-| 跨租户隔离 | PASS | A企业读取B企业考勤/工资单404；项目项和应付为空；B企业正常读取 |
-| 应收、收款、退款、冲正 | PASS | 收款幂等、退款40、冲正50、收款报告gross150/reversal50/net100 |
+| 跨租户隔离 | BLOCKED | API/DB通过；页面证据待补 |
+| 应收、收款、退款、冲正 | BLOCKED | API/DB通过；页面证据待补 |
 | 材料、应付、付款、成本 | PASS | 材料采购单、应付1440、付款1440、材料成本1440 |
 | 成本不完整与结算阻断 | PASS | costComplete=false，利润为空，确认结算按钮disabled |

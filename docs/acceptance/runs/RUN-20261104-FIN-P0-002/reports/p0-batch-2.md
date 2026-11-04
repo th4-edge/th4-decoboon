@@ -2,7 +2,7 @@
 
 ## 结果
 
-`PASS=7 / FAIL=0 / BLOCKED=0 / NOT_RUN=1`
+`PASS=4 / FAIL=0 / BLOCKED=3 / NOT_RUN=1`
 
 | 用例 | 结果 | 证据 |
 | --- | --- | --- |
@@ -10,9 +10,9 @@
 | 生成后原子进入 InPayroll | PASS | 草稿页面 + 考勤无操作截图 |
 | Pending 禁止财务重建 | PASS | 页面错误 + BOSS 退回 API |
 | 删除 Draft 恢复考勤 | PASS | 二次确认 + 已确认可编辑截图 |
-| 工资单确认只生成一次应付 | PASS | 应付数 2、总额 10000 |
-| 工资付款幂等 | PASS | 同幂等键一条 payment、一条 ledger |
-| 已发工资不可反改 | PASS | Paid 工资单、考勤、重建均被拒绝 |
+| 工资单确认只生成一次应付 | BLOCKED | API/DB通过，页面证据待补 |
+| 工资付款幂等 | BLOCKED | API/DB通过，页面证据待补 |
+| 已发工资不可反改 | BLOCKED | API/DB通过，页面证据待补 |
 | 跨租户隔离 | NOT_RUN | 缺第二企业对象夹具 |
 
 ## 说明

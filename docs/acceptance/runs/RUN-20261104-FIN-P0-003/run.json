@@ -1,7 +1,7 @@
 {
   "runId": "RUN-20261104-FIN-P0-003",
   "createdAt": "2026-11-04T12:49:45+08:00",
-  "status": "COMPLETED",
+  "status": "IN_PROGRESS",
   "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
   "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
   "oracleId": "ZDQ-FIN-20261104-V0.1",
@@ -21,9 +21,9 @@
   ],
   "summary": {
     "total": 4,
-    "pass": 4,
+    "pass": 2,
     "fail": 0,
-    "blocked": 0,
+    "blocked": 2,
     "notRun": 0
   }
 }

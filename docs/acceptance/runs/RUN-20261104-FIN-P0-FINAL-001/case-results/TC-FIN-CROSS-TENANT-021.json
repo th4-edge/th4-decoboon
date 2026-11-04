@@ -1,6 +1,6 @@
 {
   "caseId": "TC-FIN-CROSS-TENANT-021",
-  "status": "PASS",
+  "status": "BLOCKED",
   "startedAt": "2026-11-04T12:53:01+08:00",
   "finishedAt": "2026-11-04T12:53:01+08:00",
   "executor": "codex",
@@ -9,7 +9,7 @@
   "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
   "steps": [],
   "actualPage": [
-    "API/DB证据通过"
+    "页面交互证据待执行"
   ],
   "actualState": [
     "金额、权限和归集不变量通过"
@@ -18,7 +18,7 @@
     "evidence/TC-FIN-CROSS-TENANT-021/api-db-result.json"
   ],
   "defectIds": [],
-  "blockedReason": null,
+  "blockedReason": "API/DB证据已通过，但缺少对应 Web/App 真实页面交互证据，按财务门禁不能判定 PASS。",
   "notes": "远端正式基线 52991afc 的本地受控测试；生产数据未写入。",
   "caseDefinitionHash": "81752ce898a2d69c1d7f878a0cd2da0f68316295903577b85fed85474f328131",
   "priority": "P0",

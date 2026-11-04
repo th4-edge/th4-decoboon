@@ -1,6 +1,6 @@
 {
   "caseId": "TC-FIN-FINANCE-STORE-SCOPE-007",
-  "status": "PASS",
+  "status": "BLOCKED",
   "startedAt": "2026-11-04T12:41:51+08:00",
   "finishedAt": "2026-11-04T12:41:51+08:00",
   "executor": "codex",
@@ -9,7 +9,7 @@
   "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
   "steps": [],
   "actualPage": [
-    "不适用：权限/状态契约由API+DB复验确认"
+    "页面交互证据待执行"
   ],
   "actualState": [
     "{\"pass\": true, \"pre_normal\": \"26\", \"response\": {\"success\": false, \"errorCode\": {\"code\": \"404\", \"message\": \"考勤不存在或无权访问\", \"system\": false}}, \"post_normal\": \"26\"}"
@@ -19,7 +19,7 @@
     "raw/p0-payroll-api-results.json"
   ],
   "defectIds": [],
-  "blockedReason": null,
+  "blockedReason": "API/DB证据已通过，但缺少对应 Web/App 真实页面交互证据，按财务门禁不能判定 PASS。",
   "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
   "caseDefinitionHash": "84057ce2246ed5ab60bfe1b27e52eafd6df71e7b4f5441ff91a00fdc3239bd58",
   "priority": "P0",

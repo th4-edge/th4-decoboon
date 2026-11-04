@@ -1,6 +1,6 @@
 {
   "caseId": "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006",
-  "status": "PASS",
+  "status": "BLOCKED",
   "startedAt": "2026-11-04T12:41:51+08:00",
   "finishedAt": "2026-11-04T12:41:51+08:00",
   "executor": "codex",
@@ -9,7 +9,7 @@
   "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
   "steps": [],
   "actualPage": [
-    "不适用：权限/状态契约由API+DB复验确认"
+    "页面交互证据待执行"
   ],
   "actualState": [
     "{\"pass\": true, \"pre\": [\"199500000000000104\", \"2026-11-04 12:41:39\"], \"response\": {\"data\": {\"updateTime\": {\"dateTime\": \"2026-11-04 12:41:40\"}, \"summaryId\": \"243595527088766976\", \"employee\": {\"empId\": \"199500000000000104\", \"name\": \"审计财务\", \"store\": {\"storeId\": \"199500000000000011\", \"name\": \"总店\"}, \"role\": {\"name\": \"财务\", \"value\": \"Finance\", \"key\": \"Finance\"}, \"status\": {\"name\": \"在职\", \"key\": \"Active\"}}, \"scheduledDays\": 26, \"normalDays\": 25, \"personalLeaveDays\": 0, \"sickLeaveDays\": 0, \"absenceDays\": 0, \"externalDays\": 0, \"annualLeaveDays\": 0, \"compLeaveDays\": 0, \"status\": {\"name\": \"待确认\", \"key\": \"Pending\"}, \"remark\": \"FIN-P0-001\"}, \"success\": true}, \"post\": [\"25\", \"NULL\", \"NULL\", \"Pending\"]}"
@@ -19,7 +19,7 @@
     "raw/p0-payroll-api-results.json"
   ],
   "defectIds": [],
-  "blockedReason": null,
+  "blockedReason": "API/DB证据已通过，但缺少对应 Web/App 真实页面交互证据，按财务门禁不能判定 PASS。",
   "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
   "caseDefinitionHash": "ace1c0244ef45548973305e96c82e7c8ccbb0ecfd64f3faacca0a85c6a1b5ec2",
   "priority": "P0",

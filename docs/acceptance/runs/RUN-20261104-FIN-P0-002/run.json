@@ -25,9 +25,9 @@
   ],
   "summary": {
     "total": 8,
-    "pass": 7,
+    "pass": 4,
     "fail": 0,
-    "blocked": 0,
+    "blocked": 3,
     "notRun": 1
   }
 }

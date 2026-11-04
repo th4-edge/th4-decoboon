@@ -20,8 +20,8 @@
 | TC-FIN-PAYROLL-PENDING-NO-REBUILD-003 | BLOCKED | API/DB通过，页面证据待执行 |
 | TC-FIN-PAYROLL-DRAFT-RESTORE-004 | BLOCKED | API/DB通过，页面证据待执行 |
 
-汇总：`PASS=3 / FAIL=0 / BLOCKED=4 / NOT_RUN=0`。
+汇总：`PASS=0 / FAIL=0 / BLOCKED=7 / NOT_RUN=0`。API/DB复验通过，但均缺页面交互证据，不能判定 PASS。
 
 ## 结论
 
-远端正式加固提交已经通过三个原 P0 缺陷的本地运行时复验；原缺陷标记为 `FIXED_PENDING_ACCEPTANCE`，不自行关闭。主链页面证据仍需补齐，财务最终门禁仍未到 `--final` 条件。
+远端正式加固提交的 API/DB 运行时复验通过；页面交互证据尚未执行，因此 7 条均标记 BLOCKED。原缺陷保持 `FIXED_PENDING_ACCEPTANCE`，财务最终门禁未关闭。

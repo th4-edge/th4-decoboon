@@ -1,6 +1,6 @@
 {
   "caseId": "TC-FIN-ATTENDANCE-STATE-BYPASS-005",
-  "status": "PASS",
+  "status": "BLOCKED",
   "startedAt": "2026-11-04T12:41:51+08:00",
   "finishedAt": "2026-11-04T12:41:51+08:00",
   "executor": "codex",
@@ -9,7 +9,7 @@
   "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
   "steps": [],
   "actualPage": [
-    "不适用：权限/状态契约由API+DB复验确认"
+    "页面交互证据待执行"
   ],
   "actualState": [
     "{\"pass\": true, \"response\": {\"success\": false, \"errorCode\": {\"code\": \"400\", \"message\": \"考勤更新接口仅支持确认动作\", \"system\": false}}, \"status_after\": \"Confirmed\"}"
@@ -19,7 +19,7 @@
     "raw/p0-payroll-api-results.json"
   ],
   "defectIds": [],
-  "blockedReason": null,
+  "blockedReason": "API/DB证据已通过，但缺少对应 Web/App 真实页面交互证据，按财务门禁不能判定 PASS。",
   "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
   "caseDefinitionHash": "b8bb9dde5d4ee21cc39f51cc19a0de3f3cc4381250ded69df532840d8e896d8f",
   "priority": "P0",
