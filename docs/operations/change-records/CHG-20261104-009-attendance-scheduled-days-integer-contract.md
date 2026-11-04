@@ -7,7 +7,7 @@
 | 变更 ID | `CHG-20261104-009` |
 | 类型 | 热修 / Provider 入参契约 |
 | 风险级别 | L3 |
-| 状态 | 修复完成，定向/全量/运行态验证通过，待18条P0复测 |
+| 状态 | 修复已完成并验证；18条P0为17 PASS / 1 FAIL，因独立门店范围P0暂不发布 |
 | 负责人 | Codex |
 | 日期 | 2026-11-04 |
 | 关联缺陷 | `DEF-FIN-ATTENDANCE-SCHEDULED-DECIMAL-001` |
@@ -57,7 +57,7 @@
 | 修复后运行态定向 | Save/Update传26.5 | PASS：均400且无副作用 |
 | 修复后合法整数 | Save传26.0、Update传27.0 | PASS：落库26/27 |
 | 修复后实际小数 | 26.5正常、0.5事假 | PASS：26.50/0.50保持 |
-| 财务18条P0 | 新复测 RUN + `validate_run --final` | 待执行 |
+| 财务18条P0 | `RUN-20261104-FIN-P0-SCHEDULED-INTEGER-RETEST-001` | 应出勤缺陷PASS；新发现独立P0 `DEF-FIN-STORE-PAYROLL-MIXED-SCOPE-001`，最终门禁FAIL |
 
 ## 7. 发布与回滚
 
