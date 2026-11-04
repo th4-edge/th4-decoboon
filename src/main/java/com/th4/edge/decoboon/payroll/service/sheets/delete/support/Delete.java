@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollItemStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceAuditContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
@@ -48,17 +49,20 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.sheets.dele
     private final AttendanceSummaryRepository attendanceRepository;
     private final PayableRepository payableRepository;
     private final PayrollAccessContext accessContext;
+    private final PayrollAttendanceAuditContext attendanceAuditContext;
 
     public Delete(PayrollSheetRepository sheetRepository,
                   PayrollItemRepository itemRepository,
                   AttendanceSummaryRepository attendanceRepository,
                   PayableRepository payableRepository,
-                  PayrollAccessContext accessContext) {
+                  PayrollAccessContext accessContext,
+                  PayrollAttendanceAuditContext attendanceAuditContext) {
         this.sheetRepository = sheetRepository;
         this.itemRepository = itemRepository;
         this.attendanceRepository = attendanceRepository;
         this.payableRepository = payableRepository;
         this.accessContext = accessContext;
+        this.attendanceAuditContext = attendanceAuditContext;
     }
 
     @Override
@@ -97,8 +101,11 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.sheets.dele
             for (AttendanceSummary attendance : attendances) {
                 if (employeeIds.contains(attendance.getEmployee().getEmpId())
                         && attendance.getStatus() == AttendanceStatus.InPayroll) {
+                    String beforeSnapshot = attendanceAuditContext.snapshot(attendance);
                     attendance.setStatus(AttendanceStatus.Confirmed);
                     restoredAttendances.add(attendance);
+                    attendanceAuditContext.record(current, attendance, "RESTORE_TO_CONFIRMED",
+                            beforeSnapshot, "删除工资单草稿后恢复考勤");
                 }
             }
             if (!restoredAttendances.isEmpty()) {

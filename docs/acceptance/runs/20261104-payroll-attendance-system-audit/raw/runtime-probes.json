@@ -1,0 +1,48 @@
+{
+  "scope": "本地当前工作区定向探针；探针用于确认现状行为，不代表期望业务通过",
+  "results": [
+    {
+      "probe": "finance_cross_store_attendance_update",
+      "observed": "同企业不同门店的门店财务可更新考勤",
+      "result": "DEFECT_CONFIRMED"
+    },
+    {
+      "probe": "negative_attendance_days",
+      "observed": "normalDays=-3 被接受并保存",
+      "result": "DEFECT_CONFIRMED"
+    },
+    {
+      "probe": "direct_status_jump",
+      "observed": "Pending 可直接写为 InPayroll",
+      "result": "DEFECT_CONFIRMED"
+    },
+    {
+      "probe": "confirmed_data_edit",
+      "observed": "Confirmed 数据被修改，confirmedBy/confirmedAt 保持原值",
+      "result": "DEFECT_CONFIRMED"
+    },
+    {
+      "probe": "invalid_month",
+      "observed": "month=2026-13 抛 DateTimeParseException，未转为业务错误",
+      "result": "DEFECT_CONFIRMED"
+    },
+    {
+      "probe": "rebuild_stale_item",
+      "observed": "员工退出方案范围后重算，旧工资项未清理且仍计入合计",
+      "result": "DEFECT_CONFIRMED"
+    }
+  ],
+  "testSummary": {
+    "probeTests": 6,
+    "failedTests": 0,
+    "note": "测试名称断言的是当前缺陷行为，因此测试通过表示缺陷被复现"
+  },
+  "baseline": {
+    "targetedBackendTests": "26/0/0/0",
+    "webTypeCheck": "PASS",
+    "appTypeCheck": "PASS",
+    "webPermissionCheck": "PASS",
+    "appFinanceIaCheck": "PASS",
+    "appFinancePickerCheck": "PASS"
+  }
+}

@@ -2,6 +2,8 @@ package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceValidationContext;
 import com.th4.edge.decoboon.payroll.context.PayrollCompensationAuditContext;
 import com.th4.edge.decoboon.payroll.context.PayrollCompensationContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
@@ -72,7 +74,7 @@ class PayrollDeleteGuardTest {
         AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
         PayrollItemRepository payrollItems = mock(PayrollItemRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
-        Delete delete = new Delete(attendances, payrollItems, access);
+        Delete delete = new Delete(attendances, payrollItems, access, new PayrollAttendanceAuditContext());
         ReflectionTestUtils.setField(delete, "employee", manager);
         ReflectionTestUtils.setField(delete, "summaryId", 20L);
 
@@ -106,12 +108,14 @@ class PayrollDeleteGuardTest {
         PayrollItemRepository payrollItems = mock(PayrollItemRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         var update = new com.th4.edge.decoboon.payroll.service.attendances.summary.update.support.Update(
-                attendances, payrollItems, access);
+                attendances, payrollItems, access,
+                new PayrollAttendanceValidationContext(), new PayrollAttendanceAuditContext());
         ReflectionTestUtils.setField(update, "employee", manager);
         ReflectionTestUtils.setField(update, "summaryId", 21L);
 
         when(access.requireManager(manager)).thenReturn(manager);
-        when(attendances.findById(21L)).thenReturn(Optional.of(summary));
+        when(access.visible(manager, AttendanceSummary.class)).thenReturn(mock(org.springframework.data.jpa.domain.Specification.class));
+        when(attendances.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(summary));
         when(payrollItems.existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(
                 company.getComId(), target.getEmpId(), "2026-10")).thenReturn(true);
 

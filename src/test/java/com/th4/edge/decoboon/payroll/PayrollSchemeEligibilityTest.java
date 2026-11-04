@@ -6,6 +6,7 @@ import com.th4.edge.decoboon.payroll.context.CommissionAdjustmentContext;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.context.PayrollBuildContext;
 import com.th4.edge.decoboon.payroll.context.PayrollCalculationContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceAuditContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
@@ -141,7 +142,7 @@ class PayrollSchemeEligibilityTest {
 
         PayrollBuildContext context = new PayrollBuildContext(
                 access, new PayrollCalculationContext(), employees, compensations, commissions,
-                adjustments, adjustmentContext, attendances, sheets, items);
+                adjustments, adjustmentContext, attendances, sheets, items, new PayrollAttendanceAuditContext());
         return new Fixture(context, items, attendances);
     }
 

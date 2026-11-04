@@ -5,6 +5,7 @@ import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollItemStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceAuditContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
@@ -49,7 +50,7 @@ class PayrollSheetDeleteGuardTest {
         when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
         when(items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L)).thenReturn(List.of());
 
-        Delete delete = new Delete(sheets, items, attendances, payables, access);
+        Delete delete = new Delete(sheets, items, attendances, payables, access, new PayrollAttendanceAuditContext());
         ReflectionTestUtils.setField(delete, "employee", boss);
         ReflectionTestUtils.setField(delete, "sheetId", 10L);
 
@@ -73,7 +74,7 @@ class PayrollSheetDeleteGuardTest {
         when(access.visibleSheets(boss)).thenReturn(mock(org.springframework.data.jpa.domain.Specification.class));
         when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
 
-        Delete delete = new Delete(sheets, items, attendances, payables, access);
+        Delete delete = new Delete(sheets, items, attendances, payables, access, new PayrollAttendanceAuditContext());
         ReflectionTestUtils.setField(delete, "employee", boss);
         ReflectionTestUtils.setField(delete, "sheetId", 10L);
 
@@ -114,7 +115,7 @@ class PayrollSheetDeleteGuardTest {
         when(attendances.findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(100L, "2026-08"))
                 .thenReturn(List.of(attendance));
 
-        Delete delete = new Delete(sheets, items, attendances, payables, access);
+        Delete delete = new Delete(sheets, items, attendances, payables, access, new PayrollAttendanceAuditContext());
         ReflectionTestUtils.setField(delete, "employee", boss);
         ReflectionTestUtils.setField(delete, "sheetId", 10L);
 

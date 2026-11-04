@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.payroll.service.attendances.summary.delete.support
 
 import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceAuditContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
@@ -42,13 +43,16 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.attendances
     private final AttendanceSummaryRepository repository;
     private final PayrollItemRepository payrollItemRepository;
     private final PayrollAccessContext accessContext;
+    private final PayrollAttendanceAuditContext auditContext;
 
     public Delete(AttendanceSummaryRepository repository,
                   PayrollItemRepository payrollItemRepository,
-                  PayrollAccessContext accessContext) {
+                  PayrollAccessContext accessContext,
+                  PayrollAttendanceAuditContext auditContext) {
         this.repository = repository;
         this.payrollItemRepository = payrollItemRepository;
         this.accessContext = accessContext;
+        this.auditContext = auditContext;
     }
 
     @Override
@@ -68,7 +72,9 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.attendances
             throw new DefinedException(new DefaultErrorCode(
                     "409", "该员工当月工资项已生成，不能删除考勤；请先在员工工资处理同月工资单，草稿可删除，待确认工资单需由 BOSS/店长退回草稿"));
         }
+        String beforeSnapshot = auditContext.snapshot(summary);
         repository.delete(summary);
+        auditContext.record(current, summary, "DELETE", beforeSnapshot, "删除未进入工资单的月度考勤");
         return summary;
     }
 }

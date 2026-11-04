@@ -9,6 +9,9 @@ import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -16,6 +19,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -27,44 +31,59 @@ class PayrollAttendanceSelfViewTest {
     @Test
     void ordinaryEmployeeIsAlwaysRestrictedToSelfEvenWithoutSelfOnly() {
         Fixture fixture = fixture(false, null);
-        Employee other = employee(2L, EmployeeRole.Designer, 9L);
-        AttendanceSummary own = attendance(101L, fixture.current, 9L, "2026-10");
-        AttendanceSummary coworker = attendance(102L, other, 9L, "2026-10");
-        when(fixture.repository.findAll(fixture.visible)).thenReturn(List.of(own, coworker));
+        AttendanceSummary own = attendance(101L, fixture.current(), 9L, "2026-10");
+        when(fixture.repository().findAll(eq(fixture.visible()), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(own)));
 
-        var result = fixture.provider.call(new AttendanceSummary());
+        var result = fixture.provider().call(new AttendanceSummary());
 
         assertThat(result.getContent()).containsExactly(own);
-        verify(fixture.storeFilter, never()).resolve(any(), any());
+        verify(fixture.storeFilter(), never()).resolve(any(), any());
+        verify(fixture.repository()).findAll(eq(fixture.visible()), any(Pageable.class));
+        verify(fixture.repository(), never()).findAll(any(Specification.class));
     }
 
     @Test
     void managerSelfOnlyIgnoresRequestedStoreAndReturnsOnlySelf() {
         Fixture fixture = fixture(true, 88L);
-        ReflectionTestUtils.setField(fixture.provider, "selfOnly", true);
-        Employee other = employee(2L, EmployeeRole.Designer, 20L);
-        AttendanceSummary own = attendance(101L, fixture.current, 19L, "2026-10");
-        AttendanceSummary coworker = attendance(102L, other, 20L, "2026-10");
-        when(fixture.repository.findAll(fixture.visible)).thenReturn(List.of(own, coworker));
+        ReflectionTestUtils.setField(fixture.provider(), "selfOnly", true);
+        AttendanceSummary own = attendance(101L, fixture.current(), 19L, "2026-10");
+        when(fixture.repository().findAll(eq(fixture.visible()), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(own)));
 
-        var result = fixture.provider.call(new AttendanceSummary());
+        var result = fixture.provider().call(new AttendanceSummary());
 
         assertThat(result.getContent()).containsExactly(own);
-        verify(fixture.storeFilter, never()).resolve(any(), any());
+        verify(fixture.storeFilter(), never()).resolve(any(), any());
     }
 
     @Test
     void managerManagementViewKeepsExistingStoreScope() {
         Fixture fixture = fixture(true, 19L);
         AttendanceSummary sameStore = attendance(101L, employee(2L, EmployeeRole.Designer, 19L), 19L, "2026-10");
-        AttendanceSummary otherStore = attendance(102L, employee(3L, EmployeeRole.Designer, 20L), 20L, "2026-10");
-        when(fixture.repository.findAll(fixture.visible)).thenReturn(List.of(sameStore, otherStore));
-        when(fixture.storeFilter.resolve(fixture.current, 19L)).thenReturn(19L);
+        when(fixture.repository().findAll(eq(fixture.visible()), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(sameStore)));
+        when(fixture.storeFilter().resolve(fixture.current(), 19L)).thenReturn(19L);
 
-        var result = fixture.provider.call(new AttendanceSummary());
+        var result = fixture.provider().call(new AttendanceSummary());
 
         assertThat(result.getContent()).containsExactly(sameStore);
-        verify(fixture.storeFilter).resolve(fixture.current, 19L);
+        verify(fixture.storeFilter()).resolve(fixture.current(), 19L);
+    }
+
+    @Test
+    void pageSizeIsCappedAtFifty() {
+        Fixture fixture = fixture(true, null);
+        ReflectionTestUtils.setField(fixture.provider(), "size", 200);
+        when(fixture.storeFilter().resolve(fixture.current(), null)).thenReturn(0L);
+        when(fixture.repository().findAll(eq(fixture.visible()), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        fixture.provider().call(new AttendanceSummary());
+
+        ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
+        verify(fixture.repository()).findAll(eq(fixture.visible()), captor.capture());
+        assertThat(captor.getValue().getPageSize()).isEqualTo(50);
     }
 
     @SuppressWarnings("unchecked")
@@ -74,6 +93,7 @@ class PayrollAttendanceSelfViewTest {
         StoreFilterContext storeFilter = mock(StoreFilterContext.class);
         Employee current = employee(1L, manager ? EmployeeRole.StoreManager : EmployeeRole.Designer, 19L);
         Specification<AttendanceSummary> visible = mock(Specification.class);
+        when(visible.and(any(Specification.class))).thenReturn(visible);
         when(access.requireAttendanceViewer(current)).thenReturn(current);
         when(access.isPayrollManager(current)).thenReturn(manager);
         when(access.visible(current, AttendanceSummary.class)).thenReturn(visible);

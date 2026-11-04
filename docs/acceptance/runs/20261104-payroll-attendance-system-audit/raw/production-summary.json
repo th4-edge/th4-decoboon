@@ -1,0 +1,86 @@
+{
+  "company": "安徽麦鸿装饰设计工程有限公司",
+  "companyId": "1790066191585976744",
+  "capturedAt": "2026-11-04",
+  "attendanceSummary": {
+    "totalRecords": 14,
+    "companies": 1,
+    "employees": 5,
+    "months": [
+      "2026-08",
+      "2026-09",
+      "2026-10"
+    ],
+    "statusCounts": {
+      "InPayroll": 7,
+      "Pending": 7
+    },
+    "recordsWithTotalRecordedDaysGreaterThanScheduled": 5,
+    "negativeDays": 0,
+    "daysOver31": 0,
+    "inPayrollWithoutPayrollItem": 0,
+    "confirmedWithPayrollItemButNotLocked": 0
+  },
+  "importantAnomaly": {
+    "month": "2026-08",
+    "employees": [
+      "吴濛濛",
+      "王宏文",
+      "董夏鹏",
+      "谢玲玲",
+      "黄贤杰"
+    ],
+    "scheduledDays": 27,
+    "normalDays": 27,
+    "personalLeaveDays": 15,
+    "recordedDays": 42,
+    "payrollStatus": "Paid",
+    "impact": "5人均按15天事假形成考勤扣款，月度工资单已标记已发放"
+  },
+  "crossMonthDuplicate": {
+    "employee": "董夏鹏",
+    "records": [
+      {
+        "month": "2026-09",
+        "normalDays": 22,
+        "personalLeaveDays": 1,
+        "status": "InPayroll",
+        "createdAt": "2026-10-23 14:45:19"
+      },
+      {
+        "month": "2026-10",
+        "normalDays": 22,
+        "personalLeaveDays": 1,
+        "status": "Pending",
+        "createdAt": "2026-10-23 14:44:34"
+      }
+    ]
+  },
+  "payrollAttendanceConsistency": [
+    {
+      "period": "2026-09",
+      "sheetStatus": "Draft",
+      "itemCount": 5,
+      "attendanceMissingForItems": [
+        "吴濛濛"
+      ],
+      "pendingAttendanceItems": [
+        "谢玲玲",
+        "黄贤杰"
+      ]
+    },
+    {
+      "period": "2026-10",
+      "sheetStatus": "Draft",
+      "itemCount": 5,
+      "attendanceMissingForItems": [],
+      "pendingAttendanceItems": [
+        "王宏文",
+        "董夏鹏",
+        "吴濛濛",
+        "谢玲玲",
+        "黄贤杰"
+      ]
+    }
+  ]
+}

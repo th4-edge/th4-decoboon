@@ -1,0 +1,63 @@
+{
+  "environment": {
+    "url": "https://decoboon.joytsing.com/finance/employee-salaries",
+    "release": "20261102-171937",
+    "account": "吴濛濛 / Finance / 全公司",
+    "mode": "真实浏览器操作，未点击保存"
+  },
+  "scenarios": [
+    {
+      "id": "WEB-01",
+      "steps": [
+        "打开月度考勤",
+        "填写正常出勤=5、事假=2",
+        "工资月份从2026-11切换到2026-10"
+      ],
+      "observed": {
+        "month": "2026-10",
+        "normalDays": "5",
+        "personalLeaveDays": "2",
+        "rows": [
+          "董夏鹏",
+          "王宏文",
+          "吴濛濛",
+          "黄贤杰",
+          "谢玲玲"
+        ]
+      },
+      "result": "FAIL",
+      "issue": "切月不清空已填考勤天数，10月界面仍显示11月输入值"
+    },
+    {
+      "id": "WEB-02",
+      "steps": [
+        "保持正常出勤=5、事假=2",
+        "从待选员工切换为王宏文"
+      ],
+      "observed": {
+        "selectedEmployee": "王宏文",
+        "month": "2026-10",
+        "scheduledDays": "27",
+        "normalDays": "5",
+        "personalLeaveDays": "2"
+      },
+      "result": "FAIL",
+      "issue": "切员工不清空考勤天数，上一员工/上一月输入值被带入新员工"
+    },
+    {
+      "id": "WEB-03",
+      "steps": [
+        "关闭月度考勤抽屉",
+        "重新打开"
+      ],
+      "observed": {
+        "month": "2026-11",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "employee": "未选择"
+      },
+      "result": "PASS",
+      "issue": "关闭重开会重置，说明修复只覆盖重开，不覆盖抽屉内切换"
+    }
+  ]
+}

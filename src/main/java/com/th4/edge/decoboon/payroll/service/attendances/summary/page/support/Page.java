@@ -9,14 +9,17 @@ import com.th4.edge.framework.core.ScopeTypes;
 import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Note("月度考勤分页")
@@ -31,6 +34,8 @@ import org.springframework.stereotype.Service;
 @Service("attendance/summary/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.payroll.service.attendances.summary.page.Page {
+    private static final int MAX_PAGE_SIZE = 50;
+
     @User private Employee employee;
     @AutoInject private String month;
     @AutoInject private Integer current;
@@ -48,22 +53,31 @@ public class Page implements com.th4.edge.decoboon.payroll.service.attendances.s
     @Override
     public org.springframework.data.domain.Page<AttendanceSummary> call(AttendanceSummary request) {
         Employee currentEmployee = accessContext.requireAttendanceViewer(employee);
-        var items = repository.findAll(accessContext.visible(currentEmployee, AttendanceSummary.class)).stream();
+        Specification<AttendanceSummary> specification =
+                accessContext.visible(currentEmployee, AttendanceSummary.class);
         if (Boolean.TRUE.equals(selfOnly) || !accessContext.isPayrollManager(currentEmployee)) {
             Long currentEmpId = currentEmployee.getEmpId();
-            items = items.filter(item -> item.getEmployee() != null
-                    && currentEmpId.equals(item.getEmployee().getEmpId()));
+            specification = specification.and((root, query, cb) -> cb.equal(root.get("employee").get("empId"), currentEmpId));
         } else {
             Long storeFilter = storeFilterContext.resolve(currentEmployee, storeId);
-            items = items.filter(item -> StoreScope.inStore(StoreScope.storeIdOf(item.getStore()), storeFilter));
+            if (!StoreScope.isAllStores(storeFilter)) {
+                specification = specification.and((root, query, cb) -> cb.equal(root.get("store").get("storeId"), storeFilter));
+            }
         }
-        var filtered = items
-                .filter(item -> month == null || month.isBlank() || month.equals(item.getPayrollMonth()))
-                .toList();
+        String normalizedMonth = month == null ? "" : month.trim();
+        if (!normalizedMonth.isBlank()) {
+            if (!normalizedMonth.matches("\\d{4}-(0[1-9]|1[0-2])")) {
+                throw new DefinedException(new DefaultErrorCode("400", "工资月份格式必须为 YYYY-MM"));
+            }
+            specification = specification.and(
+                    (root, query, cb) -> cb.equal(root.get("payrollMonth"), normalizedMonth));
+        }
         int page = current == null || current < 1 ? 0 : current - 1;
-        int pageSize = size == null || size < 1 ? 20 : Math.min(size, 200);
-        int from = Math.min(page * pageSize, filtered.size());
-        int to = Math.min(from + pageSize, filtered.size());
-        return new PageImpl<>(filtered.subList(from, to), PageRequest.of(page, pageSize), filtered.size());
+        int pageSize = size == null || size < 1 ? 20 : Math.min(size, MAX_PAGE_SIZE);
+        Sort sort = Sort.by(
+                Sort.Order.asc("employee.name"),
+                Sort.Order.desc("payrollMonth"),
+                Sort.Order.asc("summaryId"));
+        return repository.findAll(specification, PageRequest.of(page, pageSize, sort));
     }
 }

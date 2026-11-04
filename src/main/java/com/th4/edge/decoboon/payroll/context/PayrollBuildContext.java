@@ -31,6 +31,10 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** 根据薪酬方案和已确认考勤生成工资单草稿。 */
 @Component
@@ -46,6 +50,7 @@ public class PayrollBuildContext {
     private final AttendanceSummaryRepository attendanceRepository;
     private final PayrollSheetRepository sheetRepository;
     private final PayrollItemRepository itemRepository;
+    private final PayrollAttendanceAuditContext attendanceAuditContext;
 
     public PayrollBuildContext(PayrollAccessContext accessContext,
                                PayrollCalculationContext calculationContext,
@@ -56,7 +61,8 @@ public class PayrollBuildContext {
                                CommissionAdjustmentContext adjustmentContext,
                                AttendanceSummaryRepository attendanceRepository,
                                PayrollSheetRepository sheetRepository,
-                               PayrollItemRepository itemRepository) {
+                               PayrollItemRepository itemRepository,
+                               PayrollAttendanceAuditContext attendanceAuditContext) {
         this.accessContext = accessContext;
         this.calculationContext = calculationContext;
         this.employeeRepository = employeeRepository;
@@ -67,6 +73,7 @@ public class PayrollBuildContext {
         this.attendanceRepository = attendanceRepository;
         this.sheetRepository = sheetRepository;
         this.itemRepository = itemRepository;
+        this.attendanceAuditContext = attendanceAuditContext;
     }
 
     @Transactional
@@ -117,6 +124,47 @@ public class PayrollBuildContext {
                     "400", "该工资月份有 " + incompleteAttendance
                     + " 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单"));
         }
+        List<PayrollItem> existingItems = itemRepository
+                .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());
+        Set<Long> sourceEmployeeIds = sources.stream()
+                .map(source -> source.employee().getEmpId())
+                .collect(Collectors.toSet());
+        List<PayrollItem> staleItems = existingItems.stream()
+                .filter(item -> item.getEmployee() != null
+                        && !sourceEmployeeIds.contains(item.getEmployee().getEmpId()))
+                .toList();
+        if (!staleItems.isEmpty()) {
+            Map<Long, AttendanceSummary> attendanceByEmployee = attendanceRepository
+                    .findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(comId, period)
+                    .stream()
+                    .collect(Collectors.toMap(item -> item.getEmployee().getEmpId(), Function.identity(), (left, right) -> left));
+            List<AttendanceSummary> restoredAttendances = new ArrayList<>();
+            for (PayrollItem staleItem : staleItems) {
+                if (staleItem.getStatus() != PayrollItemStatus.Draft) {
+                    throw new DefinedException(new DefaultErrorCode("409", "工资单存在非草稿工资项，不能重新生成"));
+                }
+                adjustmentContext.resetForDraftItem(current, staleItem.getItemId());
+                AttendanceSummary staleAttendance = attendanceByEmployee.get(staleItem.getEmployee().getEmpId());
+                if (staleAttendance != null && staleAttendance.getStatus() == AttendanceStatus.InPayroll) {
+                    String beforeSnapshot = attendanceAuditContext.snapshot(staleAttendance);
+                    staleAttendance.setStatus(AttendanceStatus.Confirmed);
+                    restoredAttendances.add(staleAttendance);
+                    attendanceAuditContext.record(current, staleAttendance, "RESTORE_TO_CONFIRMED",
+                            beforeSnapshot, "员工已退出当月薪酬方案，重算移除旧工资项");
+                }
+            }
+            if (!restoredAttendances.isEmpty()) {
+                attendanceRepository.saveAll(restoredAttendances);
+            }
+            itemRepository.deleteAll(staleItems);
+            itemRepository.flush();
+        }
+
+        Map<Long, PayrollItem> existingItemsByEmployee = existingItems.stream()
+                .filter(item -> item.getEmployee() != null
+                        && sourceEmployeeIds.contains(item.getEmployee().getEmpId())
+                        && item.getAttribution() == PayrollItemAttribution.Company)
+                .collect(Collectors.toMap(item -> item.getEmployee().getEmpId(), Function.identity(), (left, right) -> left));
 
         boolean attendanceComplete = true;
         boolean commissionComplete = true;
@@ -131,10 +179,11 @@ public class PayrollBuildContext {
                 commissionComplete = false;
             }
 
-            PayrollItem item = itemRepository
-                    .findByCompany_ComIdAndSheet_SheetIdAndEmployee_EmpIdAndAttributionKey(
-                            comId, sheet.getSheetId(), employee.getEmpId(), "COMPANY")
-                    .orElseGet(PayrollItem::new);
+            PayrollItem item = existingItemsByEmployee.get(employee.getEmpId());
+            if (item == null) item = new PayrollItem();
+            if (item.getItemId() != null && item.getStatus() != PayrollItemStatus.Draft) {
+                throw new DefinedException(new DefaultErrorCode("409", "工资单存在非草稿工资项，不能重新生成"));
+            }
             boolean isNew = item.getItemId() == null;
             if (isNew) {
                 accessContext.applyOwnership(item, current, employee, sheet, null);
@@ -169,12 +218,18 @@ public class PayrollBuildContext {
         }
 
         List<AttendanceSummary> lockedAttendances = new ArrayList<>();
+        List<String> lockBeforeSnapshots = new ArrayList<>();
         for (PayrollBuildSource source : sources) {
+            lockBeforeSnapshots.add(attendanceAuditContext.snapshot(source.attendance()));
             source.attendance().setStatus(AttendanceStatus.InPayroll);
             lockedAttendances.add(source.attendance());
         }
         if (!lockedAttendances.isEmpty()) {
             attendanceRepository.saveAll(lockedAttendances);
+            for (int index = 0; index < lockedAttendances.size(); index++) {
+                attendanceAuditContext.record(current, lockedAttendances.get(index),
+                        "LOCK_IN_PAYROLL", lockBeforeSnapshots.get(index), null);
+            }
         }
 
         List<PayrollItem> items = itemRepository.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());

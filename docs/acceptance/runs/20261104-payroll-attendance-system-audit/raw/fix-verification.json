@@ -1,0 +1,43 @@
+{
+  "changeId": "CHG-20261104-003",
+  "verifiedAt": "2026-11-04",
+  "backend": {
+    "targetedPayrollAttendanceTests": "PASS",
+    "fullSuite": {
+      "testClasses": 315,
+      "tests": 1239,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "providerResponseContract": {
+      "providers": 550,
+      "properties": 544,
+      "allow": 542,
+      "findings": 0
+    },
+    "providerContractSelfTest": "PASS"
+  },
+  "web": {
+    "build": "PASS",
+    "permissionCheck": "PASS",
+    "typeCheck": "PASS"
+  },
+  "app": {
+    "typeCheck": "PASS",
+    "uiCheck": "PASS",
+    "financeIa": "PASS",
+    "financePickers": "PASS",
+    "mpWeixinBuild": "PASS"
+  },
+  "notExecuted": [
+    "生产发布",
+    "修复后线上真实浏览器复测",
+    "微信开发者工具/真机复测",
+    "门店财务跨店真实负向验证",
+    "历史数据修正",
+    "独立验收",
+    "业务验收",
+    "客户签字"
+  ]
+}

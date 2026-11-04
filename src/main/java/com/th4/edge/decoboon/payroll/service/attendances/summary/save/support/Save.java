@@ -3,6 +3,8 @@ package com.th4.edge.decoboon.payroll.service.attendances.summary.save.support;
 import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.CompensationStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceValidationContext;
 import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
@@ -12,19 +14,24 @@ import com.th4.edge.framework.core.annotation.Note;
 import com.th4.edge.framework.data.jackson.annotation.AllowProperties;
 import com.th4.edge.framework.data.jackson.annotation.Properties;
 import com.th4.edge.framework.data.jpa.inject.annotation.ModelSaveInject;
+import com.th4.edge.framework.exception.DefaultErrorCode;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.framework.provider.inject.annotation.AutoInject;
 import com.th4.edge.framework.provider.security.annotation.User;
+import com.th4.edge.framework.provider.validation.annotation.Length;
 import com.th4.edge.framework.provider.validation.annotation.NotEmpty;
 import com.th4.edge.framework.provider.validation.annotation.NotNull;
 import com.th4.edge.tenant.user.model.Employee;
 import com.th4.edge.tenant.user.model.Store;
 import com.th4.edge.tenant.user.model.Team;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
 
 @Note("月度考勤新增")
 @Properties(allow = {
@@ -49,27 +56,33 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
     @AutoInject private Integer externalDays;
     @AutoInject private Integer annualLeaveDays;
     @AutoInject private Integer compLeaveDays;
-    @AutoInject private String remark;
+    @AutoInject @Length(max = 500) private String remark;
     private final AttendanceSummaryRepository repository;
     private final CompensationSchemeRepository compensationRepository;
     private final PayrollAccessContext accessContext;
+    private final PayrollAttendanceValidationContext validationContext;
+    private final PayrollAttendanceAuditContext auditContext;
     public Save(AttendanceSummaryRepository repository,
                 CompensationSchemeRepository compensationRepository,
-                PayrollAccessContext accessContext) {
+                PayrollAccessContext accessContext,
+                PayrollAttendanceValidationContext validationContext,
+                PayrollAttendanceAuditContext auditContext) {
         this.repository = repository;
         this.compensationRepository = compensationRepository;
         this.accessContext = accessContext;
+        this.validationContext = validationContext;
+        this.auditContext = auditContext;
     }
     @Override @Transactional
     public AttendanceSummary call(@ModelSaveInject AttendanceSummary request) {
         Employee current = accessContext.requireManager(employee);
         Employee target = accessContext.resolveEmployee(current, empId);
+        String normalizedMonth = normalizeMonth(month);
         if (repository.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
-                current.getCompany().getComId(), empId, month).isPresent()) {
-            throw new com.th4.edge.framework.exception.DefinedException(
-                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "该员工本月考勤已存在"));
+                current.getCompany().getComId(), empId, normalizedMonth).isPresent()) {
+            throw new DefinedException(new DefaultErrorCode("409", "该员工本月考勤已存在"));
         }
-        YearMonth yearMonth = YearMonth.parse(month);
+        YearMonth yearMonth = parseMonth(normalizedMonth);
         LocalDate periodStart = yearMonth.atDay(1);
         LocalDate periodEnd = yearMonth.atEndOfMonth();
         CompensationScheme scheme = compensationRepository
@@ -77,17 +90,12 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
                         periodStart, periodEnd)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new com.th4.edge.framework.exception.DefinedException(
-                        new com.th4.edge.framework.exception.DefaultErrorCode(
-                                "400", "该工资月份没有生效薪酬方案，请先配置对应生效期的方案")));
+                .orElseThrow(() -> new DefinedException(new DefaultErrorCode(
+                        "400", "该工资月份没有生效薪酬方案，请先配置对应生效期的方案")));
         Integer effectiveScheduledDays = scheduledDays != null ? scheduledDays : scheme.getScheduledDays();
-        if (effectiveScheduledDays == null || effectiveScheduledDays < 1 || effectiveScheduledDays > 31) {
-            throw new com.th4.edge.framework.exception.DefinedException(
-                    new com.th4.edge.framework.exception.DefaultErrorCode("400", "月应出勤天数必须为 1 至 31 天的整数"));
-        }
         accessContext.applyOwnership(request, current, target);
-        request.setPayrollMonth(month);
-        request.setScheduledDays(effectiveScheduledDays);
+        request.setPayrollMonth(normalizedMonth);
+        request.setScheduledDays(effectiveScheduledDays == null ? 0 : effectiveScheduledDays);
         request.setNormalDays(value(normalDays));
         request.setPersonalLeaveDays(value(personalLeaveDays));
         request.setSickLeaveDays(value(sickLeaveDays));
@@ -97,7 +105,31 @@ public class Save implements com.th4.edge.decoboon.payroll.service.attendances.s
         request.setCompLeaveDays(value(compLeaveDays));
         request.setStatus(AttendanceStatus.Pending);
         request.setRemark(remark);
-        return repository.save(request);
+        validationContext.validate(request);
+        try {
+            AttendanceSummary saved = repository.saveAndFlush(request);
+            auditContext.record(current, saved, "CREATE", "-", null);
+            return saved;
+        } catch (DataIntegrityViolationException exception) {
+            throw new DefinedException(new DefaultErrorCode("409", "该员工本月考勤已存在，请刷新后重试"));
+        }
     }
+
+    private String normalizeMonth(String value) {
+        String normalized = value == null ? "" : value.trim();
+        if (!normalized.matches("\\d{4}-(0[1-9]|1[0-2])")) {
+            throw new DefinedException(new DefaultErrorCode("400", "工资月份格式必须为 YYYY-MM"));
+        }
+        return normalized;
+    }
+
+    private YearMonth parseMonth(String value) {
+        try {
+            return YearMonth.parse(value);
+        } catch (DateTimeParseException exception) {
+            throw new DefinedException(new DefaultErrorCode("400", "工资月份格式必须为 YYYY-MM"));
+        }
+    }
+
     private int value(Integer value) { return value == null ? 0 : value; }
 }
