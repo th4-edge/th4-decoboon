@@ -1,0 +1,35 @@
+{
+  "caseId": "TC-FIN-FORM-REOPEN-024",
+  "status": "PASS",
+  "startedAt": "2026-11-04T13:42:00+08:00",
+  "finishedAt": "2026-11-04T13:43:00+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINPROD-",
+  "steps": [
+    "生产Web财务账号打开薪酬方案新增",
+    "填写王宏文金额6000、应出勤25和备注后切换董夏鹏",
+    "回读员工、金额、应出勤和备注"
+  ],
+  "actualPage": [
+    "员工为董夏鹏，金额为空，应出勤22天，备注为空"
+  ],
+  "actualState": [
+    "生产只读，未保存薪酬方案",
+    "Web release 20261104-134154，运行时源码327222d"
+  ],
+  "evidence": [
+    "evidence/compensation-switch-prod.png",
+    "evidence/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "DEF-FIN-FORM-001 Web生产复验通过；App体验版仍待设置。",
+  "caseDefinitionHash": "9c57cbd861dbd82cd49a45837382804bf1cb5ee8485779d4f4e01497fbe1fb97",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": ["BR-055", "DEC-089"],
+  "pageTargets": ["web:/finance/expenses", "web:/finance/receipts", "web:/finance/payments", "app:/subpackages/finance/pages/expense-edit", "app:/subpackages/payroll/pages/compensation-edit"],
+  "providerRoutes": ["expense/expenses/save", "finance/receipt/save", "finance/payment/save", "payroll/compensation/save"]
+}

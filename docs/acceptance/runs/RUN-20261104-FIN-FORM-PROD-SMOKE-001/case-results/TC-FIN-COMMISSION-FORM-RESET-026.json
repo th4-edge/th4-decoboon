@@ -1,0 +1,35 @@
+{
+  "caseId": "TC-FIN-COMMISSION-FORM-RESET-026",
+  "status": "PASS",
+  "startedAt": "2026-11-04T13:43:00+08:00",
+  "finishedAt": "2026-11-04T13:44:00+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINPROD-",
+  "steps": [
+    "生产Web财务账号打开提成计提",
+    "填写谢玲玲签约额52000、比例4、提成金额2000和备注后切换董夏鹏",
+    "回读员工、签约额、比例、提成金额和备注"
+  ],
+  "actualPage": [
+    "员工为董夏鹏，签约额为空，比例2%，提成金额为空，备注为空"
+  ],
+  "actualState": [
+    "生产只读，未保存提成或工资事实",
+    "Web release 20261104-134154，运行时源码327222d"
+  ],
+  "evidence": [
+    "evidence/commission-switch-prod.png",
+    "evidence/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "DEF-FIN-COMMISSION-FORM-001 Web生产复验通过；App体验版仍待设置。",
+  "caseDefinitionHash": "24d382736c1838e100aac24eae971c925ba8604e4758094dbc1350972f407fe3",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": ["BR-055", "DEC-089"],
+  "pageTargets": ["web:/finance/employee-commissions", "app:/subpackages/payroll/pages/commission-edit"],
+  "providerRoutes": ["payroll/commission/page", "payroll/commission/info", "payroll/commission/save"]
+}

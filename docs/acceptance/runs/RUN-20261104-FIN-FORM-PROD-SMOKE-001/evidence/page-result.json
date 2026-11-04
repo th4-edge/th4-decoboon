@@ -1,0 +1,23 @@
+{
+  "role": "Finance",
+  "environment": "prod-readonly",
+  "webCommit": "327222d",
+  "saved": false,
+  "compensation": {
+    "path": "/finance/compensation-schemes",
+    "beforeSwitchEmployee": "王宏文",
+    "beforeSwitch": {"baseSalary": "6000", "scheduledDays": "25", "remark": "生产冒烟：薪酬切员工，不保存"},
+    "afterSwitchEmployee": "董夏鹏",
+    "afterSwitch": {"baseSalary": "", "scheduledDays": "22", "remark": ""},
+    "result": "PASS"
+  },
+  "commission": {
+    "path": "/finance/employee-commissions",
+    "beforeSwitchEmployee": "谢玲玲",
+    "beforeSwitch": {"contractAmount": "52000", "manualRate": "4", "commissionAmount": "2000", "remark": "生产冒烟：提成切员工，不保存"},
+    "afterSwitchEmployee": "董夏鹏",
+    "afterSwitch": {"contractAmount": "", "manualRate": "2", "commissionAmount": "", "remark": ""},
+    "result": "PASS"
+  },
+  "screenshots": ["compensation-switch-prod.png", "commission-switch-prod.png"]
+}

@@ -1,8 +1,10 @@
 {
   "defectId": "DEF-FIN-COMMISSION-FORM-001",
-  "caseIds": ["TC-FIN-COMMISSION-FORM-RESET-026"],
+  "caseIds": [
+    "TC-FIN-COMMISSION-FORM-RESET-026"
+  ],
   "priority": "P1",
-  "status": "FIXED_PENDING_RELEASE",
+  "status": "WEB_VERIFIED_APP_PENDING_EXPERIENCE",
   "title": "员工提成切换员工后保留上一员工金额、比例和备注",
   "role": "Finance",
   "surface": "Web/App",
@@ -27,15 +29,24 @@
   "ownerSuggestion": "员工或项目切换时重置签约额、比例、提成金额和备注，并增加提交对象一致性校验",
   "retestCondition": "Web/App切换员工后金额为空、比例恢复2%、提成金额和备注为空；页面员工与提交empId一致",
   "createdAt": "2026-11-04T13:34:30+08:00",
-  "updatedAt": "2026-11-04T13:35:00+08:00",
-  "retestRunId": "RUN-20261104-FIN-COMMISSION-FORM-FIX-001",
+  "updatedAt": "2026-11-04T13:44:00+08:00",
+  "retestRunId": "RUN-20261104-FIN-FORM-PROD-SMOKE-001",
   "retestEvidence": [
-    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/web-after-switch.png",
-    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/app-after-switch.png",
-    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/page-result.json"
+    "evidence/commission-switch-prod.png",
+    "evidence/page-result.json"
   ],
   "committedFix": {
-    "web": {"repository":"th4-decoboon-web","branch":"codex/finance-form-lifecycle-hotfix-20261104","commit":"327222d","file":"src/components/finance/FinanceCommissionDrawer.vue"},
-    "app": {"repository":"th4-decoboon-app","branch":"codex/finance-form-lifecycle-hotfix-20261104","commit":"e88c6a7","file":"src/subpackages/payroll/pages/commission-edit.vue"}
+    "web": {
+      "repository": "th4-decoboon-web",
+      "branch": "codex/finance-form-lifecycle-hotfix-20261104",
+      "commit": "327222d",
+      "file": "src/components/finance/FinanceCommissionDrawer.vue"
+    },
+    "app": {
+      "repository": "th4-decoboon-app",
+      "branch": "codex/finance-form-lifecycle-hotfix-20261104",
+      "commit": "e88c6a7",
+      "file": "src/subpackages/payroll/pages/commission-edit.vue"
+    }
   }
 }
