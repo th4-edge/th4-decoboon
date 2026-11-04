@@ -1,0 +1,43 @@
+{
+  "caseId": "TC-FIN-COMMISSION-FORM-RESET-026",
+  "status": "PASS",
+  "startedAt": "2026-11-04T13:35:00+08:00",
+  "finishedAt": "2026-11-04T13:38:00+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web/App",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINCOMM-",
+  "steps": [
+    "Web本地生产构建填写谢玲玲签约额52000、比例4、提成金额2000和备注",
+    "切换员工为董夏鹏，回读金额、比例、提成金额和备注",
+    "App生产构建填写谢玲玲相同数据",
+    "切换员工为董夏鹏，回读金额、比例、提成金额和备注"
+  ],
+  "actualPage": [
+    "Web切换后签约额为空、比例恢复2%、提成金额为空、备注为空",
+    "App切换后签约额为空、比例恢复2%、提成金额为空、备注为空"
+  ],
+  "actualState": [
+    "全程未保存提成或工资事实",
+    "Web/App使用本地生产构建连接生产只读API，修复尚未部署生产"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/web-before-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/web-after-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/app-before-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/app-after-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "DEF-FIN-COMMISSION-FORM-001 定向复验通过；生产尚未发布。",
+  "caseDefinitionHash": "24d382736c1838e100aac24eae971c925ba8604e4758094dbc1350972f407fe3",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": ["BR-055", "DEC-089"],
+  "pageTargets": [
+    "web:/finance/employee-commissions",
+    "app:/subpackages/payroll/pages/commission-edit"
+  ],
+  "providerRoutes": ["payroll/commission/page", "payroll/commission/info", "payroll/commission/save"]
+}

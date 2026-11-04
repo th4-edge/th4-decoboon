@@ -1,0 +1,41 @@
+{
+  "defectId": "DEF-FIN-COMMISSION-FORM-001",
+  "caseIds": ["TC-FIN-COMMISSION-FORM-RESET-026"],
+  "priority": "P1",
+  "status": "FIXED_PENDING_RELEASE",
+  "title": "员工提成切换员工后保留上一员工金额、比例和备注",
+  "role": "Finance",
+  "surface": "Web/App",
+  "pagePath": "/finance/employee-commissions",
+  "businessState": "财务新建提成，填写谢玲玲签约额52000、比例4、提成金额2000和备注后切换董夏鹏",
+  "expected": "切换员工后上一员工签约额、比例、提成金额和备注失效，页面对象与最终提交员工一致",
+  "actual": "生产Web切换董夏鹏后四类输入全部保留；App同源实现存在同样状态保留模式",
+  "minimumReproduction": [
+    "财务登录 Web /finance/employee-commissions",
+    "打开提成计提，填写签约额52000、比例4、提成金额2000和备注",
+    "选择员工谢玲玲后切换董夏鹏",
+    "回读员工、金额、比例和备注"
+  ],
+  "impact": "可能为新员工计提上一员工金额，形成错误提成、工资项和企业财务义务",
+  "evidence": [
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/commission-before-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/commission-after-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/page-result.json"
+  ],
+  "sourceEvidence": "FinanceCommissionDrawer.onEmployeeChange仅更新员工名；App commission-edit onShow仅替换员工对象",
+  "confidence": "high",
+  "ownerSuggestion": "员工或项目切换时重置签约额、比例、提成金额和备注，并增加提交对象一致性校验",
+  "retestCondition": "Web/App切换员工后金额为空、比例恢复2%、提成金额和备注为空；页面员工与提交empId一致",
+  "createdAt": "2026-11-04T13:34:30+08:00",
+  "updatedAt": "2026-11-04T13:35:00+08:00",
+  "retestRunId": "RUN-20261104-FIN-COMMISSION-FORM-FIX-001",
+  "retestEvidence": [
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/web-after-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/app-after-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/page-result.json"
+  ],
+  "committedFix": {
+    "web": {"repository":"th4-decoboon-web","branch":"codex/finance-form-lifecycle-hotfix-20261104","commit":"327222d","file":"src/components/finance/FinanceCommissionDrawer.vue"},
+    "app": {"repository":"th4-decoboon-app","branch":"codex/finance-form-lifecycle-hotfix-20261104","commit":"e88c6a7","file":"src/subpackages/payroll/pages/commission-edit.vue"}
+  }
+}

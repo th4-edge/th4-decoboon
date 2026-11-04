@@ -1,0 +1,47 @@
+{
+  "role": "Finance",
+  "environment": "local-prod-api-readonly",
+  "webCommit": "327222d",
+  "appCommit": "e88c6a7",
+  "saved": false,
+  "web": {
+    "beforeSwitch": {
+      "employee": "谢玲玲",
+      "contractAmount": "52000",
+      "manualRate": "4",
+      "commissionAmount": "2000",
+      "remark": "提成切换员工修复回归，不保存"
+    },
+    "afterSwitch": {
+      "employee": "董夏鹏",
+      "contractAmount": "",
+      "manualRate": "2",
+      "commissionAmount": "",
+      "remark": ""
+    },
+    "result": "PASS"
+  },
+  "app": {
+    "beforeSwitch": {
+      "employee": "谢玲玲",
+      "contractAmount": "52000",
+      "manualRate": "4",
+      "commissionAmount": "2000",
+      "remark": "App提成切员工残留测试，不保存"
+    },
+    "afterSwitch": {
+      "employee": "董夏鹏",
+      "contractAmount": "",
+      "manualRate": "2",
+      "commissionAmount": "",
+      "remark": ""
+    },
+    "result": "PASS"
+  },
+  "screenshots": [
+    "web-before-switch.png",
+    "web-after-switch.png",
+    "app-before-switch.png",
+    "app-after-switch.png"
+  ]
+}

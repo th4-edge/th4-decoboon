@@ -1885,6 +1885,86 @@
       ],
       "executionMode": "hybrid",
       "status": "READY"
+    },
+    {
+      "id": "TC-FIN-COMMISSION-FORM-RESET-026",
+      "title": "员工提成切换员工后不得继承上一员工金额和备注",
+      "priority": "P1",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "order",
+        "recovery",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-055",
+        "DEC-089"
+      ],
+      "objectTypes": [
+        "CommissionItem",
+        "Employee",
+        "Project",
+        "Contract"
+      ],
+      "fixture": "FIX-FIN-PAYROLL-01",
+      "preconditions": [
+        "Web和App提成计提新建页可用",
+        "上一员工已填写签约额、比例、提成金额和备注且未保存"
+      ],
+      "steps": [
+        "Web提成计提页填写员工A的签约额、比例、提成金额和备注",
+        "直接切换员工B并回读全部金额和备注",
+        "App提成计提页执行相同员工切换",
+        "关闭或返回后重新进入新建提成页"
+      ],
+      "expectedPage": [
+        "切换员工后员工名更新，签约额、提成金额和备注清空，比例恢复默认值",
+        "页面显示对象、最终提交员工和接口接收empId一致",
+        "重新进入新建页为空状态"
+      ],
+      "expectedState": [
+        "新员工不继承上一员工金额、比例、提成金额和备注",
+        "最终提交empId仅为当前员工",
+        "不产生错误提成或下游工资事实"
+      ],
+      "expectedInvariants": [
+        "页面显示员工、最终提交员工和Provider接收员工一致",
+        "App与Web提成表单生命周期同源",
+        "切换对象后的金额字段不得来自旧上下文"
+      ],
+      "forbiddenOutcomes": [
+        "切换员工后保留旧签约额",
+        "切换员工后保留旧比例或提成金额",
+        "切换员工后保留旧备注",
+        "以新empId提交上一员工输入"
+      ],
+      "providerRoutes": [
+        "payroll/commission/page",
+        "payroll/commission/info",
+        "payroll/commission/save"
+      ],
+      "pageTargets": [
+        "web:/finance/employee-commissions",
+        "app:/subpackages/payroll/pages/commission-edit"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "interaction_sequence",
+        "before_after_screenshot",
+        "state_readback",
+        "web_app_parity"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
     }
   ]
 }

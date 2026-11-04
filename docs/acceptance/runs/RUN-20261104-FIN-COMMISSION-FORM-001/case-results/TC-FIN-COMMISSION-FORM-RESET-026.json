@@ -1,0 +1,40 @@
+{
+  "caseId": "TC-FIN-COMMISSION-FORM-RESET-026",
+  "status": "FAIL",
+  "startedAt": "2026-11-04T13:33:00+08:00",
+  "finishedAt": "2026-11-04T13:34:30+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINCOMM-",
+  "steps": [
+    "麦鸿财务账号登录生产 Web /finance/employee-commissions",
+    "打开提成计提，填写谢玲玲签约额52000、比例4、提成金额2000和备注",
+    "切换员工为董夏鹏，回读员工、金额、比例、提成金额和备注"
+  ],
+  "actualPage": [
+    "员工名切换为董夏鹏",
+    "签约额52000、比例4、提成金额2000和备注仍完整保留"
+  ],
+  "actualState": [
+    "生产只读，未保存提成或工资事实",
+    "页面显示员工与输入内容所属员工不一致，存在为董夏鹏计提谢玲玲金额的风险"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/commission-before-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/commission-after-switch.png",
+    "evidence/TC-FIN-COMMISSION-FORM-RESET-026/page-result.json"
+  ],
+  "defectIds": ["DEF-FIN-COMMISSION-FORM-001"],
+  "blockedReason": null,
+  "notes": "生产页面确定性复现；App端未在未修复版本重复执行，后续与修复一起复验。",
+  "caseDefinitionHash": "24d382736c1838e100aac24eae971c925ba8604e4758094dbc1350972f407fe3",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": ["BR-055", "DEC-089"],
+  "pageTargets": [
+    "web:/finance/employee-commissions",
+    "app:/subpackages/payroll/pages/commission-edit"
+  ],
+  "providerRoutes": ["payroll/commission/page", "payroll/commission/info", "payroll/commission/save"]
+}

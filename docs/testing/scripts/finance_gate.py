@@ -45,6 +45,9 @@ REQUIRED_FORM_CASE_EVIDENCE = {
     "TC-FIN-ATTENDANCE-FORM-APP-025": {
         "page_path", "before_after_screenshot", "interaction_sequence", "state_readback"
     },
+    "TC-FIN-COMMISSION-FORM-RESET-026": {
+        "page_path", "before_after_screenshot", "interaction_sequence", "state_readback"
+    },
 }
 FORM_CASE_IDS = set(REQUIRED_FORM_CASE_EVIDENCE)
 

@@ -1,0 +1,18 @@
+{
+  "runId": "RUN-20261104-FIN-COMMISSION-FORM-FIX-001",
+  "createdAt": "2026-11-04T13:35:00+08:00",
+  "status": "PASS",
+  "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
+  "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
+  "oracleId": "ZDQ-FIN-20261104-V0.1",
+  "oracleGitCommit": "ab6d4d8",
+  "backendCommit": "3bdeccb1",
+  "webCommit": "327222d",
+  "appCommit": "e88c6a7",
+  "artifactHashes": {},
+  "environment": "local-prod-api-readonly",
+  "tenantId": "1790066191585976744",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINCOMM-",
+  "caseIds": ["TC-FIN-COMMISSION-FORM-RESET-026"],
+  "summary": {"total": 1, "pass": 1, "fail": 0, "blocked": 0, "notRun": 0}
+}

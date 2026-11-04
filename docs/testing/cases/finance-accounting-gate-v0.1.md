@@ -2,7 +2,7 @@
 
 - suiteId：`SUITE-FIN-ACCOUNTING-GATE-V0.1`
 - oracleId：`ZDQ-FIN-20261104-V0.1`
-- 用例数：25
+- 用例数：26
 - P0：17
 - 生成命令：`python3 docs/testing/scripts/finance_gate.py validate`
 
@@ -33,6 +33,7 @@
 | TC-FIN-ATTENDANCE-FORM-RACE-023 | P0 | Finance | Web, App, API | negative, order, recovery, parity |
 | TC-FIN-FORM-REOPEN-024 | P1 | Finance, Boss | Web, App | negative, recovery, boundary, parity |
 | TC-FIN-ATTENDANCE-FORM-APP-025 | P0 | Finance, StoreManager | App | negative, recovery, boundary, parity |
+| TC-FIN-COMMISSION-FORM-RESET-026 | P1 | Finance, Boss | Web, App | negative, order, recovery, parity |
 
 ## 用例明细
 
@@ -335,4 +336,16 @@
 - 预期状态：新对象不继承旧上下文；最终提交empId和month与页面当前选择一致
 - 不变量：App表单生命周期与Web同源；页面、最终提交对象与服务端接收对象一致
 - 禁止结果：重开保留上次输入；切员工保留旧天数；切月份保留旧备注；提交旧empId或month
+
+### TC-FIN-COMMISSION-FORM-RESET-026 · 员工提成切换员工后不得继承上一员工金额和备注
+
+- 优先级：`P1`
+- 规则：`BR-055`, `DEC-089`
+- 夹具：`FIX-FIN-PAYROLL-01`
+- Provider：`payroll/commission/page`, `payroll/commission/info`, `payroll/commission/save`
+- 页面：`web:/finance/employee-commissions`, `app:/subpackages/payroll/pages/commission-edit`
+- 预期页面：切换员工后员工名更新，签约额、提成金额和备注清空，比例恢复默认值；页面显示对象、最终提交员工和接口接收empId一致；重新进入新建页为空状态
+- 预期状态：新员工不继承上一员工金额、比例、提成金额和备注；最终提交empId仅为当前员工；不产生错误提成或下游工资事实
+- 不变量：页面显示员工、最终提交员工和Provider接收员工一致；App与Web提成表单生命周期同源；切换对象后的金额字段不得来自旧上下文
+- 禁止结果：切换员工后保留旧签约额；切换员工后保留旧比例或提成金额；切换员工后保留旧备注；以新empId提交上一员工输入
 

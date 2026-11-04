@@ -1,0 +1,22 @@
+{
+  "role": "Finance",
+  "environment": "prod-readonly",
+  "path": "/finance/employee-commissions → 提成计提",
+  "saved": false,
+  "beforeSwitch": {
+    "employee": "谢玲玲",
+    "contractAmount": "52000",
+    "manualRate": "4",
+    "commissionAmount": "2000",
+    "remark": "提成表单切换员工残留测试，不保存"
+  },
+  "afterSwitch": {
+    "employee": "董夏鹏",
+    "contractAmount": "52000",
+    "manualRate": "4",
+    "commissionAmount": "2000",
+    "remark": "提成表单切换员工残留测试，不保存"
+  },
+  "result": "FAIL",
+  "defectId": "DEF-FIN-COMMISSION-FORM-001"
+}
