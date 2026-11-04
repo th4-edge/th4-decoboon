@@ -1,0 +1,11 @@
+{
+  "surface": "Web",
+  "role": "Finance",
+  "month": "2026-11",
+  "observedSheet": "2026-11 草稿，应发10000.00，考勤已完整",
+  "attendanceRows": [
+    {"employee": "审计财务", "status": "已入工资", "buttons": []},
+    {"employee": "审计项目经理", "status": "已入工资", "buttons": []}
+  ],
+  "screenshots": ["draft-created.png", "inpayroll-no-actions.png"]
+}

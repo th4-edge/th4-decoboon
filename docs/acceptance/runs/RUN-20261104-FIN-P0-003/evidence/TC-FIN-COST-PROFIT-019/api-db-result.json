@@ -1,0 +1,33 @@
+{
+  "contractAmount": 2495.75,
+  "materialAmount": 1440.0,
+  "materialCost": 1440.0,
+  "actualCost": 2240.0,
+  "estimatedCost": 1760.0,
+  "costComplete": false,
+  "costIncompleteCount": 1,
+  "settlementActionable": true,
+  "settlement": {
+    "settlementId": "242297669274304512",
+    "contractAmount": 2495.75,
+    "finalAmount": 2495.75,
+    "retentionRate": 3.0,
+    "retentionAmount": 74.87,
+    "receivableAmount": 7495.75,
+    "receivedAmount": 1148.05,
+    "payableAmount": 3440.0,
+    "paidAmount": 1440.0,
+    "materialAmount": 1440.0,
+    "salaryAmount": 0.0,
+    "projectAmount": 800.0,
+    "expenseAmount": 0.0,
+    "totalCost": 2240.0,
+    "costComplete": false,
+    "costIncompleteCount": 1,
+    "status": {
+      "name": "待确认",
+      "key": "Draft"
+    },
+    "remark": "全链路验收结算草稿"
+  }
+}

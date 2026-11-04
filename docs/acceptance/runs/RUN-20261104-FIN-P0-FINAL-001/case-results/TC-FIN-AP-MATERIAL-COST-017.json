@@ -1,0 +1,45 @@
+{
+  "caseId": "TC-FIN-AP-MATERIAL-COST-017",
+  "status": "PASS",
+  "startedAt": "2026-11-04T12:53:01+08:00",
+  "finishedAt": "2026-11-04T12:53:01+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "Web+API+DB",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "页面证据通过"
+  ],
+  "actualState": [
+    "金额、权限和归集不变量通过"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/project-report.json",
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/db-result.json",
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/page-result.json",
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/project-cost-page.png"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "远端正式基线 52991afc 的本地受控测试；生产数据未写入。",
+  "caseDefinitionHash": "449c477727d66de4d0524bbb0be4437940556ff00e21990d818d3aade91bbdc2",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-058",
+    "DEC-092",
+    "BR-055"
+  ],
+  "pageTargets": [
+    "web:/finance/payables",
+    "web:/finance/projects",
+    "app:/subpackages/finance/pages/material-settlement"
+  ],
+  "providerRoutes": [
+    "material/sheet/order",
+    "finance/payable/page",
+    "finance/payment/save",
+    "finance/project/report"
+  ]
+}

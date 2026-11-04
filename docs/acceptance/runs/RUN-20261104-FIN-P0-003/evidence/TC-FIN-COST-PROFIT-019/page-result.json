@@ -1,0 +1,7 @@
+{
+  "surface": "Web",
+  "role": "Finance",
+  "project": "王芳（造数1100） · 望江府1栋102",
+  "observed": "实际成本 ¥2,240.00；项目毛利显示“成本未完整”；结算利润“成本未完整”；“确认结算”按钮 disabled=true",
+  "screenshot": "settlement-blocked.png"
+}

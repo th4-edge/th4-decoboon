@@ -1,0 +1,11 @@
+{
+  "surface": "Web",
+  "role": "Finance",
+  "month": "2026-11",
+  "stateBefore": "待确认",
+  "action": "财务点击生成工资单",
+  "observed": "当前工资单已提交复核或已形成工资事实，不能重新生成",
+  "stateAfter": "待确认",
+  "bossReturnApi": "success=true; status=Draft",
+  "screenshot": "pending-rebuild-blocked.png"
+}

@@ -1,0 +1,41 @@
+{
+  "caseId": "TC-FIN-PAYROLL-DRAFT-RESTORE-004",
+  "status": "PASS",
+  "startedAt": "2026-11-04T12:48:23+08:00",
+  "finishedAt": "2026-11-04T12:48:23+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "页面与截图证据通过"
+  ],
+  "actualState": [
+    "API/DB证据通过"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/after-delete-confirmed-editable.png",
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "远端正式加固提交 52991afc 的本地受控测试；生产数据未写入。",
+  "caseDefinitionHash": "ac9605275ffe9f664a8818274cf783502cce9c170942822557fa14498a274320",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-043",
+    "DEC-098"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/delete",
+    "payroll/item/page",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}

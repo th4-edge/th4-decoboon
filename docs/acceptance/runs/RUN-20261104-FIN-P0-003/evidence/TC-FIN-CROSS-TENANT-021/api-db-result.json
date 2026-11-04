@@ -1,0 +1,195 @@
+{
+  "tenantA": 199500000000000001,
+  "tenantB": 199600000000000001,
+  "sheetId": "243597935860776960",
+  "summaryId": "243597935588147200",
+  "itemId": "243597935923691520",
+  "checks": {
+    "attendance_info_from_a": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "考勤不存在或无权访问",
+        "system": false
+      }
+    },
+    "attendance_update_from_a": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "考勤不存在或无权访问",
+        "system": false
+      }
+    },
+    "sheet_info_from_a": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "工资单不存在或无权访问",
+        "system": false
+      }
+    },
+    "items_from_a": {
+      "data": {
+        "content": [],
+        "totalElements": "0",
+        "last": true,
+        "totalPages": 0,
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    },
+    "payable_from_a": {
+      "data": {
+        "content": [],
+        "totalElements": "0",
+        "last": true,
+        "totalPages": 0,
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    },
+    "attendance_info_from_b": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:51:13"
+        },
+        "summaryId": "243597935588147200",
+        "employee": {
+          "empId": "199600000000000104",
+          "name": "隔离财务",
+          "store": {
+            "storeId": "199600000000000011",
+            "name": "隔离总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "scheduledDays": 26,
+        "normalDays": 26,
+        "personalLeaveDays": 0,
+        "sickLeaveDays": 0,
+        "absenceDays": 0,
+        "externalDays": 0,
+        "annualLeaveDays": 0,
+        "compLeaveDays": 0,
+        "status": {
+          "name": "已入工资单",
+          "key": "InPayroll"
+        },
+        "confirmedBy": {
+          "empId": "199600000000000104",
+          "name": "隔离财务",
+          "store": {
+            "storeId": "199600000000000011",
+            "name": "隔离总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "confirmedAt": "2026-11-04 12:51:13",
+        "remark": "FIN-P0-003 tenant B"
+      },
+      "success": true
+    },
+    "sheet_info_from_b": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:51:13"
+        },
+        "sheetId": "243597935860776960",
+        "period": "2026-11",
+        "status": {
+          "name": "草稿",
+          "key": "Draft"
+        },
+        "attendanceComplete": true,
+        "commissionComplete": true,
+        "totalGrossAmount": 4000.0,
+        "totalDeductionAmount": 0.0,
+        "totalNetAmount": 4000.0,
+        "createdBy": {
+          "empId": "199600000000000104",
+          "name": "隔离财务",
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          }
+        }
+      },
+      "success": true
+    },
+    "items_from_b": {
+      "data": {
+        "content": [
+          {
+            "createTime": {
+              "dateTime": "2026-11-04 12:51:13"
+            },
+            "itemId": "243597935923691520",
+            "employee": {
+              "empId": "199600000000000104",
+              "name": "隔离财务",
+              "role": {
+                "name": "财务",
+                "value": "Finance",
+                "key": "Finance"
+              }
+            },
+            "sheet": {
+              "sheetId": "243597935860776960",
+              "period": "2026-11",
+              "status": {
+                "name": "草稿",
+                "key": "Draft"
+              }
+            },
+            "attribution": {
+              "name": "企业",
+              "key": "Company"
+            },
+            "attributionKey": "COMPANY",
+            "baseSalaryAmount": 4000.0,
+            "attendanceDeduction": 0.0,
+            "commissionAmount": 0.0,
+            "bonusAmount": 0.0,
+            "allowanceAmount": 0.0,
+            "socialInsuranceAmount": 0.0,
+            "taxAmount": 0.0,
+            "otherDeduction": 0.0,
+            "grossAmount": 4000.0,
+            "deductionAmount": 0.0,
+            "netAmount": 4000.0,
+            "status": {
+              "name": "草稿",
+              "key": "Draft"
+            }
+          }
+        ],
+        "totalElements": "1",
+        "last": true,
+        "totalPages": 1,
+        "first": true,
+        "size": 20
+      },
+      "success": true
+    }
+  }
+}

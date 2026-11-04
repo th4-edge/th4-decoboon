@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "response": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "考勤更新接口仅支持确认动作",
+      "system": false
+    }
+  },
+  "status_after": "Confirmed"
+}

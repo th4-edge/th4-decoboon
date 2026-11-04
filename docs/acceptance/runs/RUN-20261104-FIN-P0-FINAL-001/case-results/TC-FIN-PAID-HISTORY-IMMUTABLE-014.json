@@ -1,0 +1,41 @@
+{
+  "caseId": "TC-FIN-PAID-HISTORY-IMMUTABLE-014",
+  "status": "PASS",
+  "startedAt": "2026-11-04T12:48:23+08:00",
+  "finishedAt": "2026-11-04T12:48:23+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "不适用或未执行"
+  ],
+  "actualState": [
+    "API/DB证据通过"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAID-HISTORY-IMMUTABLE-014/api-db-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "远端正式加固提交 52991afc 的本地受控测试；生产数据未写入。",
+  "caseDefinitionHash": "f8cef8619ebc453f4e24e98353b828ba47b4e92544b78c62f0be8f1d8e3158e0",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-043",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/adjustment-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/update",
+    "attendance/summary/update",
+    "payroll/commission/adjustment/save",
+    "finance/ledger/page"
+  ]
+}

@@ -1,0 +1,670 @@
+{
+  "month": "2026-11",
+  "login": {
+    "finance": true,
+    "boss": true,
+    "store_finance": true
+  },
+  "cases": {
+    "TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001": {
+      "pass": true,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "400",
+          "message": "该工资月份有 2 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单",
+          "system": false
+        }
+      },
+      "before": {
+        "sheets": "0",
+        "items": "0"
+      },
+      "after": {
+        "sheets": "0",
+        "items": "0"
+      }
+    },
+    "TC-FIN-PAYROLL-LOCK-ATOMIC-002": {
+      "pass": true,
+      "sheet_id": "243595529039118336",
+      "attendance": [
+        [
+          "243595527088766976",
+          "InPayroll"
+        ],
+        [
+          "243595528611299328",
+          "InPayroll"
+        ]
+      ],
+      "items": [
+        [
+          "243595529240444928",
+          "Draft",
+          "199500000000000104"
+        ],
+        [
+          "243595529273999360",
+          "Draft",
+          "199500000000000107"
+        ]
+      ],
+      "sheet": [
+        [
+          "243595529039118336",
+          "Draft"
+        ]
+      ]
+    },
+    "TC-FIN-PAYROLL-PENDING-NO-REBUILD-003": {
+      "pass": true,
+      "statuses": {
+        "before": "Pending",
+        "after_rebuild_attempt": "Pending",
+        "after_return": "Draft"
+      },
+      "finance_response": {
+        "success": false,
+        "errorCode": {
+          "code": "400",
+          "message": "当前工资单已提交复核或已形成工资事实，不能重新生成",
+          "system": false
+        }
+      },
+      "boss_return": {
+        "data": {
+          "createTime": {
+            "dateTime": "2026-11-04 12:41:39"
+          },
+          "sheetId": "243595529039118336",
+          "period": "2026-11",
+          "status": {
+            "name": "草稿",
+            "key": "Draft"
+          },
+          "attendanceComplete": true,
+          "commissionComplete": true,
+          "totalGrossAmount": 10000.0,
+          "totalDeductionAmount": 0.0,
+          "totalNetAmount": 10000.0,
+          "remark": "退回原因：FIN-P0-001 return"
+        },
+        "success": true
+      }
+    },
+    "TC-FIN-PAYROLL-DRAFT-RESTORE-004": {
+      "pass": true,
+      "response": {
+        "data": {
+          "createTime": {
+            "dateTime": "2026-11-04 12:41:39"
+          },
+          "sheetId": "243595529039118336",
+          "period": "2026-11",
+          "status": {
+            "name": "草稿",
+            "key": "Draft"
+          },
+          "attendanceComplete": true,
+          "commissionComplete": true,
+          "totalGrossAmount": 10000.0,
+          "totalDeductionAmount": 0.0,
+          "totalNetAmount": 10000.0
+        },
+        "success": true
+      },
+      "sheet_exists": "0",
+      "item_count": "0",
+      "attendance_after": [
+        [
+          "Confirmed"
+        ],
+        [
+          "Confirmed"
+        ]
+      ]
+    },
+    "TC-FIN-ATTENDANCE-STATE-BYPASS-005": {
+      "pass": true,
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "400",
+          "message": "考勤更新接口仅支持确认动作",
+          "system": false
+        }
+      },
+      "status_after": "Confirmed"
+    },
+    "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006": {
+      "pass": true,
+      "pre": [
+        "199500000000000104",
+        "2026-11-04 12:41:39"
+      ],
+      "response": {
+        "data": {
+          "updateTime": {
+            "dateTime": "2026-11-04 12:41:40"
+          },
+          "summaryId": "243595527088766976",
+          "employee": {
+            "empId": "199500000000000104",
+            "name": "审计财务",
+            "store": {
+              "storeId": "199500000000000011",
+              "name": "总店"
+            },
+            "role": {
+              "name": "财务",
+              "value": "Finance",
+              "key": "Finance"
+            },
+            "status": {
+              "name": "在职",
+              "key": "Active"
+            }
+          },
+          "scheduledDays": 26,
+          "normalDays": 25,
+          "personalLeaveDays": 0,
+          "sickLeaveDays": 0,
+          "absenceDays": 0,
+          "externalDays": 0,
+          "annualLeaveDays": 0,
+          "compLeaveDays": 0,
+          "status": {
+            "name": "待确认",
+            "key": "Pending"
+          },
+          "remark": "FIN-P0-001"
+        },
+        "success": true
+      },
+      "post": [
+        "25",
+        "NULL",
+        "NULL",
+        "Pending"
+      ]
+    },
+    "TC-FIN-FINANCE-STORE-SCOPE-007": {
+      "pass": true,
+      "pre_normal": "26",
+      "response": {
+        "success": false,
+        "errorCode": {
+          "code": "404",
+          "message": "考勤不存在或无权访问",
+          "system": false
+        }
+      },
+      "post_normal": "26"
+    }
+  },
+  "responses": {
+    "compensation_199500000000000104": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "schemeId": "243595526807748608",
+        "employee": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "baseSalary": 5000.0,
+        "scheduledDays": 26,
+        "effectiveFrom": "2026-01-01",
+        "status": {
+          "name": "生效",
+          "key": "Active"
+        },
+        "remark": "FIN-P0-001 fixture",
+        "createdBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "locked": false
+      },
+      "success": true
+    },
+    "compensation_199500000000000107": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "updateTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "schemeId": "243595526941966336",
+        "employee": {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "team": {
+            "teamId": "199500000000000401",
+            "name": "审计交付一组"
+          },
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "baseSalary": 5000.0,
+        "scheduledDays": 26,
+        "effectiveFrom": "2026-01-01",
+        "status": {
+          "name": "生效",
+          "key": "Active"
+        },
+        "remark": "FIN-P0-001 fixture",
+        "createdBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "locked": false
+      },
+      "success": true
+    },
+    "attendance_save_emp1": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "summaryId": "243595527088766976",
+        "employee": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "scheduledDays": 26,
+        "normalDays": 26,
+        "personalLeaveDays": 0,
+        "sickLeaveDays": 0,
+        "absenceDays": 0,
+        "externalDays": 0,
+        "annualLeaveDays": 0,
+        "compLeaveDays": 0,
+        "status": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "remark": "FIN-P0-001"
+      },
+      "success": true
+    },
+    "case001_build_blocked": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "该工资月份有 2 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单",
+        "system": false
+      }
+    },
+    "attendance_save_emp2": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "summaryId": "243595528611299328",
+        "employee": {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "team": {
+            "teamId": "199500000000000401",
+            "name": "审计交付一组"
+          },
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "scheduledDays": 26,
+        "normalDays": 26,
+        "personalLeaveDays": 0,
+        "sickLeaveDays": 0,
+        "absenceDays": 0,
+        "externalDays": 0,
+        "annualLeaveDays": 0,
+        "compLeaveDays": 0,
+        "status": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "remark": "FIN-P0-001"
+      },
+      "success": true
+    },
+    "confirm_243595527088766976": {
+      "data": {
+        "updateTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "summaryId": "243595527088766976",
+        "employee": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "scheduledDays": 26,
+        "normalDays": 26,
+        "personalLeaveDays": 0,
+        "sickLeaveDays": 0,
+        "absenceDays": 0,
+        "externalDays": 0,
+        "annualLeaveDays": 0,
+        "compLeaveDays": 0,
+        "status": {
+          "name": "已确认",
+          "key": "Confirmed"
+        },
+        "confirmedBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "confirmedAt": "2026-11-04 12:41:39",
+        "remark": "FIN-P0-001"
+      },
+      "success": true
+    },
+    "confirm_243595528611299328": {
+      "data": {
+        "updateTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "summaryId": "243595528611299328",
+        "employee": {
+          "empId": "199500000000000107",
+          "name": "审计项目经理",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "team": {
+            "teamId": "199500000000000401",
+            "name": "审计交付一组"
+          },
+          "role": {
+            "name": "项目经理",
+            "value": "Pm",
+            "key": "Pm"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "scheduledDays": 26,
+        "normalDays": 26,
+        "personalLeaveDays": 0,
+        "sickLeaveDays": 0,
+        "absenceDays": 0,
+        "externalDays": 0,
+        "annualLeaveDays": 0,
+        "compLeaveDays": 0,
+        "status": {
+          "name": "已确认",
+          "key": "Confirmed"
+        },
+        "confirmedBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "confirmedAt": "2026-11-04 12:41:39",
+        "remark": "FIN-P0-001"
+      },
+      "success": true
+    },
+    "case002_build_success": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "sheetId": "243595529039118336",
+        "period": "2026-11",
+        "status": {
+          "name": "草稿",
+          "key": "Draft"
+        },
+        "attendanceComplete": true,
+        "commissionComplete": true,
+        "totalGrossAmount": 10000.0,
+        "totalDeductionAmount": 0.0,
+        "totalNetAmount": 10000.0
+      },
+      "success": true
+    },
+    "case003_submit_pending": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "sheetId": "243595529039118336",
+        "period": "2026-11",
+        "status": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "attendanceComplete": true,
+        "commissionComplete": true,
+        "totalGrossAmount": 10000.0,
+        "totalDeductionAmount": 0.0,
+        "totalNetAmount": 10000.0
+      },
+      "success": true
+    },
+    "case003_finance_rebuild_pending": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "当前工资单已提交复核或已形成工资事实，不能重新生成",
+        "system": false
+      }
+    },
+    "case003_boss_return": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "sheetId": "243595529039118336",
+        "period": "2026-11",
+        "status": {
+          "name": "草稿",
+          "key": "Draft"
+        },
+        "attendanceComplete": true,
+        "commissionComplete": true,
+        "totalGrossAmount": 10000.0,
+        "totalDeductionAmount": 0.0,
+        "totalNetAmount": 10000.0,
+        "remark": "退回原因：FIN-P0-001 return"
+      },
+      "success": true
+    },
+    "case004_delete_draft": {
+      "data": {
+        "createTime": {
+          "dateTime": "2026-11-04 12:41:39"
+        },
+        "sheetId": "243595529039118336",
+        "period": "2026-11",
+        "status": {
+          "name": "草稿",
+          "key": "Draft"
+        },
+        "attendanceComplete": true,
+        "commissionComplete": true,
+        "totalGrossAmount": 10000.0,
+        "totalDeductionAmount": 0.0,
+        "totalNetAmount": 10000.0
+      },
+      "success": true
+    },
+    "case005_direct_inpayroll": {
+      "success": false,
+      "errorCode": {
+        "code": "400",
+        "message": "考勤更新接口仅支持确认动作",
+        "system": false
+      }
+    },
+    "case006_confirmed_edit": {
+      "data": {
+        "updateTime": {
+          "dateTime": "2026-11-04 12:41:40"
+        },
+        "summaryId": "243595527088766976",
+        "employee": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "store": {
+            "storeId": "199500000000000011",
+            "name": "总店"
+          },
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          },
+          "status": {
+            "name": "在职",
+            "key": "Active"
+          }
+        },
+        "scheduledDays": 26,
+        "normalDays": 25,
+        "personalLeaveDays": 0,
+        "sickLeaveDays": 0,
+        "absenceDays": 0,
+        "externalDays": 0,
+        "annualLeaveDays": 0,
+        "compLeaveDays": 0,
+        "status": {
+          "name": "待确认",
+          "key": "Pending"
+        },
+        "remark": "FIN-P0-001"
+      },
+      "success": true
+    },
+    "case007_cross_store_update": {
+      "success": false,
+      "errorCode": {
+        "code": "404",
+        "message": "考勤不存在或无权访问",
+        "system": false
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "surface": "Web",
+  "role": "Finance",
+  "month": "2026-11",
+  "action": "点击生成工资单",
+  "observed": "该工资月份有 2 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单",
+  "pageState": "暂无员工工资单",
+  "screenshot": "page-blocked.png"
+}

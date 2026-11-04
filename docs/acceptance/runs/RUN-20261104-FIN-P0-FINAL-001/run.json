@@ -1,0 +1,40 @@
+{
+  "runId": "RUN-20261104-FIN-P0-FINAL-001",
+  "createdAt": "2026-11-04T12:53:12+08:00",
+  "status": "COMPLETED",
+  "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
+  "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
+  "oracleId": "ZDQ-FIN-20261104-V0.1",
+  "oracleGitCommit": "ab6d4d8",
+  "backendCommit": "52991afc1ba8840ed5feaca87660beeff01ed245",
+  "webCommit": "39a9bc2a0ffae34748b5e0f7d6e9aab9af5376ad",
+  "appCommit": "1c7abeb58ceb57c9218050b401d1b03e283a374d",
+  "artifactHashes": {},
+  "environment": "local-fixture",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "caseIds": [
+    "TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001",
+    "TC-FIN-PAYROLL-LOCK-ATOMIC-002",
+    "TC-FIN-PAYROLL-PENDING-NO-REBUILD-003",
+    "TC-FIN-PAYROLL-DRAFT-RESTORE-004",
+    "TC-FIN-ATTENDANCE-STATE-BYPASS-005",
+    "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006",
+    "TC-FIN-FINANCE-STORE-SCOPE-007",
+    "TC-FIN-SALARY-PAYABLE-ONCE-011",
+    "TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012",
+    "TC-FIN-PAID-HISTORY-IMMUTABLE-014",
+    "TC-FIN-AR-RECEIPT-REFUND-016",
+    "TC-FIN-AP-MATERIAL-COST-017",
+    "TC-FIN-COST-PROFIT-019",
+    "TC-FIN-CROSS-TENANT-021"
+  ],
+  "summary": {
+    "total": 14,
+    "pass": 14,
+    "fail": 0,
+    "blocked": 0,
+    "notRun": 0
+  },
+  "finishedAt": "2026-11-04T12:53:12+08:00"
+}

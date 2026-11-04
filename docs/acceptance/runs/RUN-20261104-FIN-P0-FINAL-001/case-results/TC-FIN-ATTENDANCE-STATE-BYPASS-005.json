@@ -1,0 +1,40 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-STATE-BYPASS-005",
+  "status": "PASS",
+  "startedAt": "2026-11-04T12:41:51+08:00",
+  "finishedAt": "2026-11-04T12:41:51+08:00",
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "API+DB",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "不适用：权限/状态契约由API+DB复验确认"
+  ],
+  "actualState": [
+    "{\"pass\": true, \"response\": {\"success\": false, \"errorCode\": {\"code\": \"400\", \"message\": \"考勤更新接口仅支持确认动作\", \"system\": false}}, \"status_after\": \"Confirmed\"}"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-STATE-BYPASS-005/api-db-result.json",
+    "raw/p0-payroll-api-results.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "远端正式加固提交 52991afc 的本地受控复验；生产数据未写入。",
+  "caseDefinitionHash": "b8bb9dde5d4ee21cc39f51cc19a0de3f3cc4381250ded69df532840d8e896d8f",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "attendance/summary/update",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}
