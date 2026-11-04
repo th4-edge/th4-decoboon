@@ -10,6 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 CASES_FILE = ROOT / "docs/testing/cases/core-chain-v0.1.json"
 ORACLE_FILE = ROOT / "docs/testing/traceability/oracle-lock.json"
+FINANCE_CASES_FILE = ROOT / "docs/testing/cases/finance-accounting-gate-v0.1.json"
+FINANCE_ORACLE_FILE = ROOT / "docs/testing/traceability/finance-accounting-gate-oracle.json"
 
 
 def load(path: Path) -> dict:
@@ -33,15 +35,18 @@ def main() -> int:
         print("ERROR 缺少 run.json", file=sys.stderr)
         return 1
     run = load(run_file)
-    suite = load(CASES_FILE)
-    oracle = load(ORACLE_FILE)
+    finance_suite = load(FINANCE_CASES_FILE)
+    is_finance = run.get("suiteId") == finance_suite.get("suiteId")
+    suite = finance_suite if is_finance else load(CASES_FILE)
+    oracle = load(FINANCE_ORACLE_FILE) if is_finance else load(ORACLE_FILE)
     case_map = {case["id"]: case for case in suite["cases"]}
 
     if run.get("suiteId") != suite.get("suiteId"):
         errors.append(f"suiteId 不一致: {run.get('suiteId')} != {suite.get('suiteId')}")
     if run.get("oracleId") != oracle.get("oracleId"):
         errors.append(f"oracleId 不一致: {run.get('oracleId')} != {oracle.get('oracleId')}")
-    if run.get("oracleGitCommit") != oracle.get("gitCommit"):
+    expected_oracle_commit = oracle.get("gitCommit") or oracle.get("businessCommit")
+    if run.get("oracleGitCommit") != expected_oracle_commit:
         errors.append("oracleGitCommit 与当前 oracle-lock 不一致，用例预期可能已过期")
     case_ids = run.get("caseIds") or []
     if not case_ids:
@@ -92,6 +97,13 @@ def main() -> int:
     expected = {"total": len(case_ids), "pass": counts["PASS"], "fail": counts["FAIL"], "blocked": counts["BLOCKED"], "notRun": counts["NOT_RUN"]}
     if declared and declared != expected:
         warnings.append(f"run.json summary 尚未同步: declared={declared} actual={expected}")
+    if is_finance and args.final:
+        all_p0 = {case["id"] for case in suite["cases"] if case["priority"] == "P0"}
+        missing_p0 = all_p0 - set(case_ids)
+        if missing_p0:
+            errors.append(f"财务最终门禁缺少 P0 用例: {', '.join(sorted(missing_p0))}")
+        if counts["FAIL"] or counts["BLOCKED"]:
+            errors.append(f"财务最终门禁禁止 FAIL/BLOCKED: fail={counts['FAIL']} blocked={counts['BLOCKED']}")
 
     print(json.dumps({"runId": run.get("runId"), "counts": expected, "final": args.final, "errors": len(errors), "warnings": len(warnings)}, ensure_ascii=False))
     for warning in warnings:

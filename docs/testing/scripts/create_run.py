@@ -15,8 +15,11 @@ TESTING = ROOT / "docs/testing"
 CASES_FILE = TESTING / "cases/core-chain-v0.1.json"
 ORACLE_FILE = TESTING / "traceability/oracle-lock.json"
 VALIDATOR = TESTING / "scripts/test_assets.py"
+FINANCE_CASES_FILE = TESTING / "cases/finance-accounting-gate-v0.1.json"
+FINANCE_ORACLE_FILE = TESTING / "traceability/finance-accounting-gate-oracle.json"
+FINANCE_VALIDATOR = TESTING / "scripts/finance_gate.py"
 SKILL = ROOT / "docs/testing"
-CASE_TEMPLATE = SKILL / "references/templates/case-result-template.json"
+CASE_TEMPLATE = SKILL / "templates/case-result-template.json"
 
 
 def load(path: Path) -> dict:
@@ -39,7 +42,8 @@ def case_hash(case: dict) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-id", required=True)
-    parser.add_argument("--plan", default="TP-20261101-V0.1")
+    parser.add_argument("--suite", choices=["core", "finance"], default="core")
+    parser.add_argument("--plan", default=None)
     parser.add_argument("--case-id", action="append", default=[])
     parser.add_argument("--area", action="append", default=[])
     parser.add_argument("--priority", action="append", default=[])
@@ -49,14 +53,20 @@ def main() -> int:
     parser.add_argument("--output-root", default=str(ROOT / "docs/acceptance/runs"))
     args = parser.parse_args()
 
-    validation = subprocess.run([sys.executable, str(VALIDATOR), "validate"], cwd=ROOT, capture_output=True, text=True)
+    if args.suite == "finance":
+        cases_file, oracle_file, validator, default_plan = FINANCE_CASES_FILE, FINANCE_ORACLE_FILE, FINANCE_VALIDATOR, "TP-20261104-FIN-ACCOUNTING-GATE"
+    else:
+        cases_file, oracle_file, validator, default_plan = CASES_FILE, ORACLE_FILE, VALIDATOR, "TP-20261101-V0.1"
+    args.plan = args.plan or default_plan
+
+    validation = subprocess.run([sys.executable, str(validator), "validate"], cwd=ROOT, capture_output=True, text=True)
     if validation.returncode != 0:
         print(validation.stdout, end="")
         print(validation.stderr, end="", file=sys.stderr)
         return 1
 
-    suite = load(CASES_FILE)
-    oracle = load(ORACLE_FILE)
+    suite = load(cases_file)
+    oracle = load(oracle_file)
     cases = suite["cases"]
     selected = cases
     if args.case_id:
@@ -90,7 +100,7 @@ def main() -> int:
         "planId": args.plan,
         "suiteId": suite["suiteId"],
         "oracleId": oracle["oracleId"],
-        "oracleGitCommit": oracle["gitCommit"],
+        "oracleGitCommit": oracle.get("gitCommit") or oracle.get("businessCommit"),
         "backendCommit": git_head(ROOT),
         "webCommit": git_head(ROOT.parent.parent / "前端代码/th4-decoboon-web"),
         "appCommit": git_head(ROOT.parent.parent / "前端代码/th4-decoboon-app"),
@@ -126,7 +136,7 @@ def main() -> int:
         f"- RUN：`{args.run_id}`",
         f"- Plan：`{args.plan}`",
         f"- Suite：`{suite['suiteId']}`",
-        f"- Oracle：`{oracle['oracleId']}` / `{oracle['gitCommit']}`",
+        f"- Oracle：`{oracle['oracleId']}` / `{oracle.get('gitCommit') or oracle.get('businessCommit')}`",
         f"- 用例数：{len(selected)}",
         f"- P0/P1：{sum(c['priority'] == 'P0' for c in selected)}/{sum(c['priority'] == 'P1' for c in selected)}",
         f"- 数据前缀：`{data_prefix}`",

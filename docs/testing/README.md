@@ -60,6 +60,18 @@ docs/testing/
 
 薪酬、企业治理、品牌、内容获客和平台运营先登记为后续批次，不在 V0.1 假装已覆盖。
 
+## 财务账务专项门禁
+
+2026-11-04 起，薪酬与财务账务建立独立专项门禁：
+
+- 规范：`docs/testing/05-finance-accounting-test-gate.md`
+- 计划：`docs/testing/plans/TP-20261104-FIN-ACCOUNTING-GATE.md`
+- 用例：`docs/testing/cases/finance-accounting-gate-v0.1.json`
+- 夹具：`docs/testing/data/finance-accounting-fixtures.md`
+- Oracle：`docs/testing/traceability/finance-accounting-gate-oracle.json`
+
+该门禁覆盖薪酬、应收、应付、收款、付款、退款、冲正、费用、成本、结算、台账、凭证和财务汇总。P0 失败即阻断发布；P1 无未接受阻断；涉及金额、状态和权限的用例必须同时具备页面、Provider、DB/账务不变量证据。
+
 ## 校验命令
 
 ```bash
@@ -67,6 +79,10 @@ python3 docs/testing/scripts/test_assets.py validate
 python3 docs/testing/scripts/test_assets.py trace
 python3 docs/testing/scripts/test_assets.py catalog
 python3 docs/testing/scripts/test_assets.py self-test
+python3 docs/testing/scripts/finance_gate.py validate
+python3 docs/testing/scripts/finance_gate.py self-test
+python3 docs/testing/scripts/create_run.py --suite finance --run-id RUN-YYYYMMDD-FIN-001
+python3 docs/testing/scripts/validate_run.py docs/acceptance/runs/RUN-YYYYMMDD-FIN-001 --final
 python3 docs/testing/scripts/create_run.py --help
 python3 docs/testing/scripts/validate_run.py --help
 # self-test 同时负向验证动作依赖 Provider 破损会被识别
