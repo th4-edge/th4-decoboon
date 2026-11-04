@@ -37,5 +37,5 @@
 - 生产迁移：`135` 已登记 `SUCCESS`；考勤表 14 行迁移前后不变；七列均为 `DECIMAL(5,2)`。
 - 备份：`/opt/backups/th4-decoboon/attendance-decimal-20261104-142809/db_payroll_attendance_summary.sql.gz`，SHA-256 `1cb2057c…`。
 - 发布：后端 `/opt/decoboon/releases/20261104-142823`；Web `/opt/decoboon-web/releases/20261104-142959`；App 1.0.88 开发版已上传。
-- 系统冒烟：API 健康 HTTP 200；Web 入口、主包资产与含考勤小数文案的懒加载资产均 HTTP 200；发布后日志仅出现预期缺 token 检查，无新增考勤异常。
+- 系统冒烟：API 健康 HTTP 200；Web 入口、主包资产与含考勤小数文案的懒加载资产均 HTTP 200；生产表事务内验证 `15.00 → 0.50 → ROLLBACK` 后恢复 `15.00`；发布后日志仅出现预期缺 token 检查，无新增考勤异常。
 - 事故状态：RELEASED / SYSTEM_SMOKE_PASSED；真实登录态半天录入和工资扣款业务验收待用户完成。

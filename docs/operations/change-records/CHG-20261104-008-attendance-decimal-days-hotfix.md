@@ -54,6 +54,7 @@
 | App 构建 | `npm run build:mp-weixin:release` | PASS | `dist/build/mp-weixin` |
 | App 开发版上传 | 微信开发者工具 CLI 1.0.88 | PASS | `upload-info-1.0.88.json` SHA-256 `30e2e2fd…` |
 | MySQL 8 迁移/回滚 | 隔离临时表演练 | PASS | 迁移写入 `21.50 / 0.50`；有小数时回滚 exit=1 |
+| 生产写精度 | 生产表事务内 `15.00 -> 0.50 -> ROLLBACK` | PASS | 回滚后仍为 `15.00`，无持久化修改 |
 
 - 未执行项及原因：真实体验版页面、真机与客户业务验收待生产迁移和客户端体验版完成后执行。
 - 已知失败及是否与本次相关：无。
