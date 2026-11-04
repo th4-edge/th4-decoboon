@@ -70,7 +70,8 @@ public class Update implements com.th4.edge.decoboon.payroll.service.attendances
         }
         if (payrollItemRepository.existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(
                 current.getCompany().getComId(), summary.getEmployee().getEmpId(), summary.getPayrollMonth())) {
-            throw new DefinedException(new DefaultErrorCode("409", "该员工当月工资项已生成，不能修改考勤"));
+            throw new DefinedException(new DefaultErrorCode(
+                    "409", "该员工当月工资项已生成，不能修改考勤；请先在员工工资处理同月工资单，草稿可删除，待确认工资单需由 BOSS/店长退回草稿"));
         }
         if (scheduledDays != null) {
             if (scheduledDays < 1 || scheduledDays > 31) {

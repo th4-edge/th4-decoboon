@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.CompensationStatus;
+import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.CommissionAdjustmentContext;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.context.PayrollBuildContext;
@@ -16,6 +17,7 @@ import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
 import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
@@ -30,12 +32,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -96,6 +100,38 @@ class PayrollBuildContextScheduledDaysTest {
         ArgumentCaptor<PayrollItem> captor = ArgumentCaptor.forClass(PayrollItem.class);
         verify(items).save(captor.capture());
         assertThat(captor.getValue().getAttendanceDeduction()).isEqualByComparingTo("250.00");
+        assertThat(attendance.getStatus()).isEqualTo(AttendanceStatus.InPayroll);
+        verify(attendances).saveAll(List.of(attendance));
+    }
+
+    @Test
+    void shouldRejectRebuildWhenSheetIsPendingReview() {
+        Company company = new Company();
+        company.setComId(100L);
+        Employee boss = employee(1L, EmployeeRole.Boss, company);
+        PayrollSheet pending = new PayrollSheet();
+        pending.setSheetId(10L);
+        pending.setCompany(company);
+        pending.setPeriod("2026-10");
+        pending.setStatus(PayrollSheetStatus.Pending);
+
+        PayrollAccessContext access = mock(PayrollAccessContext.class);
+        EmployeeRepository employees = mock(EmployeeRepository.class);
+        PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
+        when(access.requireEditor(boss)).thenReturn(boss);
+        when(sheets.findByCompany_ComIdAndPeriod(company.getComId(), "2026-10"))
+                .thenReturn(Optional.of(pending));
+
+        PayrollBuildContext context = new PayrollBuildContext(
+                access, mock(PayrollCalculationContext.class), employees,
+                mock(CompensationSchemeRepository.class), mock(CommissionItemRepository.class),
+                mock(CommissionAdjustmentRepository.class), mock(CommissionAdjustmentContext.class),
+                mock(AttendanceSummaryRepository.class), sheets, mock(PayrollItemRepository.class));
+
+        assertThatThrownBy(() -> context.build(boss, "2026-10"))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("已提交复核");
+        verify(employees, never()).findByCompany_ComId(company.getComId());
     }
 
     private Employee employee(Long empId, EmployeeRole role, Company company) {

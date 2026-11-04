@@ -1,10 +1,12 @@
 package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.payroll.configure.CompensationStatus;
+import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.context.CommissionAdjustmentContext;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.context.PayrollBuildContext;
 import com.th4.edge.decoboon.payroll.context.PayrollCalculationContext;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.CompensationScheme;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
@@ -14,6 +16,7 @@ import com.th4.edge.decoboon.payroll.repository.CommissionItemRepository;
 import com.th4.edge.decoboon.payroll.repository.CompensationSchemeRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
+import com.th4.edge.framework.exception.DefinedException;
 import com.th4.edge.tenant.user.configure.EmployeeRole;
 import com.th4.edge.tenant.user.configure.EmployeeStatus;
 import com.th4.edge.tenant.user.model.Company;
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
@@ -80,6 +84,22 @@ class PayrollSchemeEligibilityTest {
         verify(fixture.items, never()).save(any(PayrollItem.class));
     }
 
+    @Test
+    void shouldRejectBuildWhenEligibleEmployeeAttendanceIsMissing() {
+        Company company = company();
+        Employee boss = employee(1L, EmployeeRole.Boss, company);
+        Employee target = employee(2L, EmployeeRole.Designer, company);
+        CompensationScheme scheme = scheme(new BigDecimal("3000.00"), 27);
+        Fixture fixture = fixture(company, boss, target, scheme, true);
+        when(fixture.attendances.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
+                company.getComId(), target.getEmpId(), PERIOD)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> fixture.context.build(boss, PERIOD))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("考勤未确认");
+        verify(fixture.items, never()).save(any(PayrollItem.class));
+    }
+
     private Fixture fixture(Company company, Employee boss, Employee target,
                             CompensationScheme scheme, boolean hasScheme) {
         PayrollAccessContext access = mock(PayrollAccessContext.class);
@@ -101,7 +121,7 @@ class PayrollSchemeEligibilityTest {
             when(compensations.findEffective(company.getComId(), target.getEmpId(),
                     CompensationStatus.Active, PERIOD_START, PERIOD_END)).thenReturn(List.of(scheme));
             when(attendances.findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(
-                    company.getComId(), target.getEmpId(), PERIOD)).thenReturn(Optional.empty());
+                    company.getComId(), target.getEmpId(), PERIOD)).thenReturn(Optional.of(attendance(target)));
             when(commissions.existsByCompany_ComIdAndEmployee_EmpIdAndStatusIn(any(), any(), anyList())).thenReturn(false);
             when(adjustments.findByCompany_ComIdAndEmployee_EmpIdAndStatusOrderByOccurredAtAscAdjustmentIdAsc(
                     any(), any(), any())).thenReturn(List.of());
@@ -122,7 +142,16 @@ class PayrollSchemeEligibilityTest {
         PayrollBuildContext context = new PayrollBuildContext(
                 access, new PayrollCalculationContext(), employees, compensations, commissions,
                 adjustments, adjustmentContext, attendances, sheets, items);
-        return new Fixture(context, items);
+        return new Fixture(context, items, attendances);
+    }
+
+    private AttendanceSummary attendance(Employee employee) {
+        AttendanceSummary attendance = new AttendanceSummary();
+        attendance.setEmployee(employee);
+        attendance.setPayrollMonth(PERIOD);
+        attendance.setScheduledDays(26);
+        attendance.setStatus(AttendanceStatus.Confirmed);
+        return attendance;
     }
 
     private Company company() {
@@ -149,6 +178,7 @@ class PayrollSchemeEligibilityTest {
         return scheme;
     }
 
-    private record Fixture(PayrollBuildContext context, PayrollItemRepository items) {
+    private record Fixture(PayrollBuildContext context, PayrollItemRepository items,
+                           AttendanceSummaryRepository attendances) {
     }
 }

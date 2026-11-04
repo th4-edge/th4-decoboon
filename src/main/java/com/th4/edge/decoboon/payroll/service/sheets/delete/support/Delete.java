@@ -1,11 +1,14 @@
 package com.th4.edge.decoboon.payroll.service.sheets.delete.support;
 
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollItemStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -23,7 +26,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /** 删除尚未形成财务事实的工资单草稿。 */
 @Note("工资单草稿删除")
@@ -39,15 +45,18 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.sheets.dele
 
     private final PayrollSheetRepository sheetRepository;
     private final PayrollItemRepository itemRepository;
+    private final AttendanceSummaryRepository attendanceRepository;
     private final PayableRepository payableRepository;
     private final PayrollAccessContext accessContext;
 
     public Delete(PayrollSheetRepository sheetRepository,
                   PayrollItemRepository itemRepository,
+                  AttendanceSummaryRepository attendanceRepository,
                   PayableRepository payableRepository,
                   PayrollAccessContext accessContext) {
         this.sheetRepository = sheetRepository;
         this.itemRepository = itemRepository;
+        this.attendanceRepository = attendanceRepository;
         this.payableRepository = payableRepository;
         this.accessContext = accessContext;
     }
@@ -79,6 +88,22 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.sheets.dele
             }
         }
         if (!items.isEmpty()) {
+            Set<Long> employeeIds = items.stream()
+                    .map(item -> item.getEmployee().getEmpId())
+                    .collect(Collectors.toSet());
+            List<AttendanceSummary> attendances = attendanceRepository
+                    .findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(comId, sheet.getPeriod());
+            List<AttendanceSummary> restoredAttendances = new ArrayList<>();
+            for (AttendanceSummary attendance : attendances) {
+                if (employeeIds.contains(attendance.getEmployee().getEmpId())
+                        && attendance.getStatus() == AttendanceStatus.InPayroll) {
+                    attendance.setStatus(AttendanceStatus.Confirmed);
+                    restoredAttendances.add(attendance);
+                }
+            }
+            if (!restoredAttendances.isEmpty()) {
+                attendanceRepository.saveAll(restoredAttendances);
+            }
             itemRepository.deleteAll(items);
         }
         sheetRepository.delete(sheet);

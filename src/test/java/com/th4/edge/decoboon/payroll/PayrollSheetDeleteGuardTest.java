@@ -1,9 +1,14 @@
 package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
+import com.th4.edge.decoboon.payroll.configure.PayrollItemStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
+import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.decoboon.payroll.service.sheets.delete.support.Delete;
@@ -36,6 +41,7 @@ class PayrollSheetDeleteGuardTest {
 
         PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
         PayrollItemRepository items = mock(PayrollItemRepository.class);
+        AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         when(access.requireDeleteActor(boss)).thenReturn(boss);
@@ -43,7 +49,7 @@ class PayrollSheetDeleteGuardTest {
         when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
         when(items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L)).thenReturn(List.of());
 
-        Delete delete = new Delete(sheets, items, payables, access);
+        Delete delete = new Delete(sheets, items, attendances, payables, access);
         ReflectionTestUtils.setField(delete, "employee", boss);
         ReflectionTestUtils.setField(delete, "sheetId", 10L);
 
@@ -60,13 +66,14 @@ class PayrollSheetDeleteGuardTest {
 
         PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
         PayrollItemRepository items = mock(PayrollItemRepository.class);
+        AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
         PayableRepository payables = mock(PayableRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         when(access.requireDeleteActor(boss)).thenReturn(boss);
         when(access.visibleSheets(boss)).thenReturn(mock(org.springframework.data.jpa.domain.Specification.class));
         when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
 
-        Delete delete = new Delete(sheets, items, payables, access);
+        Delete delete = new Delete(sheets, items, attendances, payables, access);
         ReflectionTestUtils.setField(delete, "employee", boss);
         ReflectionTestUtils.setField(delete, "sheetId", 10L);
 
@@ -74,6 +81,49 @@ class PayrollSheetDeleteGuardTest {
                 .isInstanceOf(DefinedException.class)
                 .hasMessageContaining("仅草稿");
         verify(sheets, never()).delete(sheet);
+    }
+
+    @Test
+    void shouldRestoreAttendanceToConfirmedWhenDraftIsDeleted() {
+        Company company = new Company();
+        company.setComId(100L);
+        Employee boss = employee(1L, company);
+        Employee staff = employee(2L, company);
+        PayrollSheet sheet = sheet(company, PayrollSheetStatus.Draft);
+        PayrollItem item = new PayrollItem();
+        item.setItemId(20L);
+        item.setCompany(company);
+        item.setEmployee(staff);
+        item.setSheet(sheet);
+        item.setStatus(PayrollItemStatus.Draft);
+        AttendanceSummary attendance = new AttendanceSummary();
+        attendance.setCompany(company);
+        attendance.setEmployee(staff);
+        attendance.setPayrollMonth(sheet.getPeriod());
+        attendance.setStatus(AttendanceStatus.InPayroll);
+
+        PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
+        PayrollItemRepository items = mock(PayrollItemRepository.class);
+        AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
+        PayableRepository payables = mock(PayableRepository.class);
+        PayrollAccessContext access = mock(PayrollAccessContext.class);
+        when(access.requireDeleteActor(boss)).thenReturn(boss);
+        when(access.visibleSheets(boss)).thenReturn(mock(org.springframework.data.jpa.domain.Specification.class));
+        when(sheets.findOne(any(org.springframework.data.jpa.domain.Specification.class))).thenReturn(Optional.of(sheet));
+        when(items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L)).thenReturn(List.of(item));
+        when(attendances.findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(100L, "2026-08"))
+                .thenReturn(List.of(attendance));
+
+        Delete delete = new Delete(sheets, items, attendances, payables, access);
+        ReflectionTestUtils.setField(delete, "employee", boss);
+        ReflectionTestUtils.setField(delete, "sheetId", 10L);
+
+        delete.call(new PayrollSheet());
+
+        assertThat(attendance.getStatus()).isEqualTo(AttendanceStatus.Confirmed);
+        verify(attendances).saveAll(List.of(attendance));
+        verify(items).deleteAll(List.of(item));
+        verify(sheets).delete(sheet);
     }
 
     private PayrollSheet sheet(Company company, PayrollSheetStatus status) {

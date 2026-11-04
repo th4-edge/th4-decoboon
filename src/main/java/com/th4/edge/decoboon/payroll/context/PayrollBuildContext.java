@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 /** 根据薪酬方案和已确认考勤生成工资单草稿。 */
@@ -83,15 +84,13 @@ public class PayrollBuildContext {
             accessContext.applyCompanyOwnership(sheet, current);
             sheet.setPeriod(period);
             sheet = sheetRepository.save(sheet);
-        } else if (sheet.getStatus() == PayrollSheetStatus.Confirmed
-                || sheet.getStatus() == PayrollSheetStatus.PartialPaid
-                || sheet.getStatus() == PayrollSheetStatus.Paid
-                || sheet.getStatus() == PayrollSheetStatus.Closed) {
-            throw new DefinedException(new DefaultErrorCode("400", "已确认或已发放的工资单不能重新生成"));
+        } else if (sheet.getStatus() != PayrollSheetStatus.Draft) {
+            throw new DefinedException(new DefaultErrorCode(
+                    "400", "当前工资单已提交复核或已形成工资事实，不能重新生成"));
         }
 
-        boolean attendanceComplete = true;
-        boolean commissionComplete = true;
+        List<PayrollBuildSource> sources = new ArrayList<>();
+        int incompleteAttendance = 0;
         // 工资归属月份的在职判定以“薪酬方案生效期”为准（下方 findEffective），不以员工入职/离职时间判定。
         List<Employee> employees = employeeRepository.findByCompany_ComId(comId);
         for (Employee employee : employees) {
@@ -107,9 +106,24 @@ public class PayrollBuildContext {
             AttendanceSummary attendance = attendanceRepository
                     .findByCompany_ComIdAndEmployee_EmpIdAndPayrollMonth(comId, employee.getEmpId(), period)
                     .orElse(null);
-            if (attendance == null || attendance.getStatus() != AttendanceStatus.Confirmed) {
-                attendanceComplete = false;
+            if (!attendanceReady(attendance)) {
+                incompleteAttendance++;
+                continue;
             }
+            sources.add(new PayrollBuildSource(employee, scheme, attendance));
+        }
+        if (incompleteAttendance > 0) {
+            throw new DefinedException(new DefaultErrorCode(
+                    "400", "该工资月份有 " + incompleteAttendance
+                    + " 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单"));
+        }
+
+        boolean attendanceComplete = true;
+        boolean commissionComplete = true;
+        for (PayrollBuildSource source : sources) {
+            Employee employee = source.employee();
+            CompensationScheme scheme = source.scheme();
+            AttendanceSummary attendance = source.attendance();
             // commissionComplete 仅作管理侧提示；DEC-047 / BR-039 禁止以此阻断工资确认。
             if (commissionRepository.existsByCompany_ComIdAndEmployee_EmpIdAndStatusIn(
                     comId, employee.getEmpId(),
@@ -154,6 +168,15 @@ public class PayrollBuildContext {
             adjustmentContext.linkToPayrollItem(current, appliedAdjustments, item);
         }
 
+        List<AttendanceSummary> lockedAttendances = new ArrayList<>();
+        for (PayrollBuildSource source : sources) {
+            source.attendance().setStatus(AttendanceStatus.InPayroll);
+            lockedAttendances.add(source.attendance());
+        }
+        if (!lockedAttendances.isEmpty()) {
+            attendanceRepository.saveAll(lockedAttendances);
+        }
+
         List<PayrollItem> items = itemRepository.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());
         sheet.setAttendanceComplete(attendanceComplete);
         sheet.setCommissionComplete(commissionComplete);
@@ -162,6 +185,16 @@ public class PayrollBuildContext {
         sheet.setTotalNetAmount(sum(items, "net"));
         sheet.setStatus(PayrollSheetStatus.Draft);
         return sheetRepository.save(sheet);
+    }
+
+    private boolean attendanceReady(AttendanceSummary attendance) {
+        return attendance != null
+                && (attendance.getStatus() == AttendanceStatus.Confirmed
+                || attendance.getStatus() == AttendanceStatus.InPayroll);
+    }
+
+    private record PayrollBuildSource(Employee employee, CompensationScheme scheme,
+                                      AttendanceSummary attendance) {
     }
 
 

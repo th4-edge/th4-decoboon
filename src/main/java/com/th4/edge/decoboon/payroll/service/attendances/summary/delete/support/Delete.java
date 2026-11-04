@@ -65,7 +65,8 @@ public class Delete implements com.th4.edge.decoboon.payroll.service.attendances
         Long empId = summary.getEmployee().getEmpId();
         if (payrollItemRepository.existsByCompany_ComIdAndEmployee_EmpIdAndSheet_Period(
                 comId, empId, summary.getPayrollMonth())) {
-            throw new DefinedException(new DefaultErrorCode("409", "该员工当月工资项已生成，不能删除考勤"));
+            throw new DefinedException(new DefaultErrorCode(
+                    "409", "该员工当月工资项已生成，不能删除考勤；请先在员工工资处理同月工资单，草稿可删除，待确认工资单需由 BOSS/店长退回草稿"));
         }
         repository.delete(summary);
         return summary;
