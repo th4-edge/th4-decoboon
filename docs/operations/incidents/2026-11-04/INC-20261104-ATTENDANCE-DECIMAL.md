@@ -26,11 +26,16 @@
 
 ## 4. 发布与回滚
 
-- 发布状态：待发布
+- 发布状态：后端/Web 已上线；App 1.0.88 开发版已上传
+- 生产 release：后端 `/opt/decoboon/releases/20261104-142823`；Web `/opt/decoboon-web/releases/20261104-142959`
 - 回滚点：后端 `/opt/decoboon/releases/20261104-123233`；Web `/opt/decoboon-web/releases/20261104-134154`
 - 回滚条件：应用启动失败、考勤接口错误率上升、半天数据无法回读、工资扣款异常
 - 回滚保护：已有小数数据时禁止执行迁移 135 回滚，避免截断
 
 ## 5. 闭环结果
 
-- 待生产迁移、发布、冒烟后回填。
+- 生产迁移：`135` 已登记 `SUCCESS`；考勤表 14 行迁移前后不变；七列均为 `DECIMAL(5,2)`。
+- 备份：`/opt/backups/th4-decoboon/attendance-decimal-20261104-142809/db_payroll_attendance_summary.sql.gz`，SHA-256 `1cb2057c…`。
+- 发布：后端 `/opt/decoboon/releases/20261104-142823`；Web `/opt/decoboon-web/releases/20261104-142959`；App 1.0.88 开发版已上传。
+- 系统冒烟：API 健康 HTTP 200；Web 入口、主包资产与含考勤小数文案的懒加载资产均 HTTP 200；发布后日志仅出现预期缺 token 检查，无新增考勤异常。
+- 事故状态：RELEASED / SYSTEM_SMOKE_PASSED；真实登录态半天录入和工资扣款业务验收待用户完成。
