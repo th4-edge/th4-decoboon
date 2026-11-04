@@ -1,0 +1,12 @@
+{
+  "page": "/finance/employee-salaries → 月度考勤",
+  "before": "审计财务状态已确认",
+  "apiAttempt": "status=InPayroll",
+  "apiResult": "400 考勤更新接口仅支持确认动作",
+  "after": "页面与DB状态仍为已确认",
+  "screenshots": [
+    "confirmed-before-bypass.png",
+    "confirmed-after-bypass.png"
+  ],
+  "result": "PASS"
+}

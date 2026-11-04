@@ -1,0 +1,11 @@
+{
+  "version": "1.0.87 / 187",
+  "uploadInfoSha256": "529cb7475016eec649ef54d6707c278ed3c4aade2f30bfe6bad2779c78e5d1ea",
+  "uploadTool": "wechatide upload",
+  "uploadTaskStatus": "success",
+  "experienceRuntime": "unavailable",
+  "experienceUrlAttempt": "weixin://dl/business/?appid=wxe5cc5fec9e50a9a9&path=pages/index/index&env_version=trial",
+  "experienceUrlResult": "对不起，当前页面无法访问",
+  "realFinanceLoginOnExperience": false,
+  "blockedReason": "1.0.87开发版已上传，但微信开发者工具未提供可连接的体验版运行时；weixin体验版入口返回“当前页面无法访问”，无法用真实财务账号进入1.0.87体验版。"
+}

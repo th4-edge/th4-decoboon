@@ -1,0 +1,46 @@
+{
+  "runId": "RUN-20261104-FIN-P0-CURRENT-FINAL-001",
+  "createdAt": "2026-11-04T13:49:04+08:00",
+  "status": "BLOCKED",
+  "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
+  "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
+  "oracleId": "ZDQ-FIN-20261104-V0.1",
+  "oracleGitCommit": "ab6d4d8",
+  "backendCommit": "7d4c19df",
+  "webCommit": "327222d",
+  "appCommit": "64e6801",
+  "artifactHashes": {
+    "webDistManifestSha256": "f6b460332d313c9b9a6667fc46a8af5215531271f886e6d8a5d320b384742db9",
+    "appUploadInfoSha256": "529cb7475016eec649ef54d6707c278ed3c4aade2f30bfe6bad2779c78e5d1ea"
+  },
+  "environment": "local-fixture",
+  "tenantId": "199500000000000001",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "caseIds": [
+    "TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001",
+    "TC-FIN-PAYROLL-LOCK-ATOMIC-002",
+    "TC-FIN-PAYROLL-PENDING-NO-REBUILD-003",
+    "TC-FIN-PAYROLL-DRAFT-RESTORE-004",
+    "TC-FIN-ATTENDANCE-STATE-BYPASS-005",
+    "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006",
+    "TC-FIN-FINANCE-STORE-SCOPE-007",
+    "TC-FIN-ATTENDANCE-FORM-RESET-008",
+    "TC-FIN-SALARY-PAYABLE-ONCE-011",
+    "TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012",
+    "TC-FIN-PAID-HISTORY-IMMUTABLE-014",
+    "TC-FIN-AR-RECEIPT-REFUND-016",
+    "TC-FIN-AP-MATERIAL-COST-017",
+    "TC-FIN-COST-PROFIT-019",
+    "TC-FIN-CROSS-TENANT-021",
+    "TC-FIN-ATTENDANCE-FORM-RACE-023",
+    "TC-FIN-ATTENDANCE-FORM-APP-025"
+  ],
+  "summary": {
+    "total": 17,
+    "pass": 14,
+    "fail": 0,
+    "blocked": 3,
+    "notRun": 0
+  },
+  "finishedAt": "2026-11-04T14:02:00+08:00"
+}

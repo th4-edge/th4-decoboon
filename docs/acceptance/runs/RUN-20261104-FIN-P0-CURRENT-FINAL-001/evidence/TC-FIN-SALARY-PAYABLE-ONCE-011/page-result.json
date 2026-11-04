@@ -1,0 +1,10 @@
+{
+  "page": "/finance/employee-salaries",
+  "month": "2026-12",
+  "status": "已确认",
+  "payableCountFirst": 2,
+  "payableCountAfterRepeatConfirm": 2,
+  "payablesTotal": 10000.0,
+  "screenshot": "confirmed-sheet-payables.png",
+  "result": "PASS"
+}

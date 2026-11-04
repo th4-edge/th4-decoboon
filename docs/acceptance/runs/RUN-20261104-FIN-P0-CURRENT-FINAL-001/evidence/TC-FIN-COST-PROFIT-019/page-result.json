@@ -1,0 +1,10 @@
+{
+  "page": "/finance/projects/242297299361857536",
+  "actualCost": 2240.0,
+  "costComplete": false,
+  "costIncompleteCount": 1,
+  "profit": "成本未完整",
+  "settlementActionable": true,
+  "screenshot": "settlement-blocked.png",
+  "result": "PASS"
+}

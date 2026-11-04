@@ -1,0 +1,47 @@
+{
+  "caseId": "TC-FIN-FINANCE-STORE-SCOPE-007",
+  "status": "BLOCKED",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "滨湖店财务登录Web",
+    "打开员工工资并回读门店范围",
+    "API尝试修改总店考勤",
+    "查询目标记录"
+  ],
+  "actualPage": [
+    "Web门店维度为滨湖店，仅显示本门店范围，总店工资单不可见"
+  ],
+  "actualState": [
+    "跨店update返回404，目标考勤状态和天数不变"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-FINANCE-STORE-SCOPE-007/store-finance-scope.png",
+    "evidence/TC-FIN-FINANCE-STORE-SCOPE-007/api-db-result.json",
+    "evidence/TC-FIN-FINANCE-STORE-SCOPE-007/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "Web/API/DB已通过，但App门店财务跨店页面证据未完成。",
+  "notes": "禁止用单端通过替代App同源。",
+  "caseDefinitionHash": "84057ce2246ed5ab60bfe1b27e52eafd6df71e7b4f5441ff91a00fdc3239bd58",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-065",
+    "DEC-098",
+    "DEC-099"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "attendance/summary/update",
+    "payroll/sheet/delete",
+    "payroll/item/page"
+  ]
+}

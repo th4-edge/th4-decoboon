@@ -1,0 +1,46 @@
+{
+  "caseId": "TC-FIN-CROSS-TENANT-021",
+  "status": "BLOCKED",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "创建隔离企业B工资事实",
+    "企业A读取B考勤、工资单、项目和应付",
+    "企业B登录Web访问企业A项目"
+  ],
+  "actualPage": [
+    "企业B访问企业A项目显示“项目不存在或无权访问”"
+  ],
+  "actualState": [
+    "A读取B考勤/工资单均404；项目和应付列表为空"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-CROSS-TENANT-021/tenant-b-a-project-denied.png",
+    "evidence/TC-FIN-CROSS-TENANT-021/api-db-result.json",
+    "evidence/TC-FIN-CROSS-TENANT-021/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "Web/API/DB隔离通过，但App跨租户页面证据未完成。",
+  "notes": "禁止单端替代App同源。",
+  "caseDefinitionHash": "81752ce898a2d69c1d7f878a0cd2da0f68316295903577b85fed85474f328131",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-065",
+    "DEC-099"
+  ],
+  "pageTargets": [
+    "web:/finance/workbench",
+    "app:/subpackages/finance/pages/projects"
+  ],
+  "providerRoutes": [
+    "finance/receivable/page",
+    "finance/payment/page",
+    "payroll/sheet/info",
+    "payroll/item/page"
+  ]
+}

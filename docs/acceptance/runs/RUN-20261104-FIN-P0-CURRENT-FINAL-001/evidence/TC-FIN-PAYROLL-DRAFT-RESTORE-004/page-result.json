@@ -1,0 +1,18 @@
+{
+  "page": "/finance/employee-salaries",
+  "month": "2027-01",
+  "webAfterDelete": "工资单0条，考勤状态已确认且可编辑/删除",
+  "appAfterDelete": "App显示审计财务、审计项目经理均为已确认并出现删除动作",
+  "database": {
+    "sheetCount": 0,
+    "attendanceStatuses": [
+      "Confirmed",
+      "Confirmed"
+    ]
+  },
+  "screenshots": [
+    "after-delete-confirmed-editable.png",
+    "app-attendance-editable.png"
+  ],
+  "result": "PASS"
+}

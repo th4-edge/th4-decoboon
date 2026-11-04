@@ -1,0 +1,47 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-STATE-BYPASS-005",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "确认审计财务2026-12考勤",
+    "调用普通update尝试写InPayroll",
+    "刷新Web月度考勤并查询DB"
+  ],
+  "actualPage": [
+    "前后页面均显示已确认",
+    "没有出现InPayroll冒充动作"
+  ],
+  "actualState": [
+    "普通update返回400；状态和确认人/时间保持不变"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-STATE-BYPASS-005/confirmed-before-bypass.png",
+    "evidence/TC-FIN-ATTENDANCE-STATE-BYPASS-005/confirmed-after-bypass.png",
+    "evidence/TC-FIN-ATTENDANCE-STATE-BYPASS-005/api-db-result.json",
+    "evidence/TC-FIN-ATTENDANCE-STATE-BYPASS-005/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "b8bb9dde5d4ee21cc39f51cc19a0de3f3cc4381250ded69df532840d8e896d8f",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "attendance/summary/update",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}

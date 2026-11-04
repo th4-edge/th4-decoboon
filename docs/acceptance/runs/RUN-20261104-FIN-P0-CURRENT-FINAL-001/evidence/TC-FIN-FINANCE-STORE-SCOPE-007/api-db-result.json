@@ -1,0 +1,82 @@
+{
+  "summaryId": "243612653916782592",
+  "pre": [
+    "Confirmed",
+    "199500000000000104",
+    "2026-11-04 13:50:26.675582",
+    "26"
+  ],
+  "bypass": {
+    "success": false,
+    "errorCode": {
+      "code": "400",
+      "message": "考勤更新接口仅支持确认动作",
+      "system": false
+    }
+  },
+  "afterBypass": [
+    "Confirmed",
+    "199500000000000104",
+    "2026-11-04 13:50:26.675582",
+    "26"
+  ],
+  "edit": {
+    "data": {
+      "updateTime": {
+        "dateTime": "2026-11-04 13:51:37"
+      },
+      "summaryId": "243612653916782592",
+      "employee": {
+        "empId": "199500000000000104",
+        "name": "审计财务",
+        "store": {
+          "storeId": "199500000000000011",
+          "name": "总店"
+        },
+        "role": {
+          "name": "财务",
+          "value": "Finance",
+          "key": "Finance"
+        },
+        "status": {
+          "name": "在职",
+          "key": "Active"
+        }
+      },
+      "scheduledDays": 26,
+      "normalDays": 25,
+      "personalLeaveDays": 0,
+      "sickLeaveDays": 0,
+      "absenceDays": 0,
+      "externalDays": 0,
+      "annualLeaveDays": 0,
+      "compLeaveDays": 0,
+      "status": {
+        "name": "待确认",
+        "key": "Pending"
+      },
+      "remark": "FIN-P0-CURRENT"
+    },
+    "success": true
+  },
+  "afterEdit": [
+    "Pending",
+    "NULL",
+    "NULL",
+    "25"
+  ],
+  "storeFinanceCrossStore": {
+    "success": false,
+    "errorCode": {
+      "code": "404",
+      "message": "考勤不存在或无权访问",
+      "system": false
+    }
+  },
+  "afterCross": [
+    "Pending",
+    "NULL",
+    "NULL",
+    "25"
+  ]
+}

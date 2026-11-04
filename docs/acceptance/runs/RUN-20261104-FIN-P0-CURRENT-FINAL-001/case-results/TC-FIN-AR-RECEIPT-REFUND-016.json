@@ -1,0 +1,57 @@
+{
+  "caseId": "TC-FIN-AR-RECEIPT-REFUND-016",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "本地收款100并以同幂等键重复提交",
+    "退款40",
+    "再收款50并冲正",
+    "Web/App回读收款、退款和台账"
+  ],
+  "actualPage": [
+    "Web收款记录显示100有效、50已冲正、退款40",
+    "App收款/退款页显示同一事实"
+  ],
+  "actualState": [
+    "重复收款同一receiptId；付款台账各1条；应收receivedAmount=200"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-AR-RECEIPT-REFUND-016/receipts-readback.png",
+    "evidence/TC-FIN-AR-RECEIPT-REFUND-016/refunds-readback.png",
+    "evidence/TC-FIN-AR-RECEIPT-REFUND-016/app-receipts.png",
+    "evidence/TC-FIN-AR-RECEIPT-REFUND-016/app-refunds.png",
+    "evidence/TC-FIN-AR-RECEIPT-REFUND-016/api-db-result.json",
+    "evidence/TC-FIN-AR-RECEIPT-REFUND-016/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "fb3e51b683b21bb1274a6e9e6502831fc6631c035166c2a45815cd266724fbf0",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-077",
+    "BR-050",
+    "DEC-099"
+  ],
+  "pageTargets": [
+    "web:/finance/receivables",
+    "web:/finance/receipts",
+    "web:/finance/refunds",
+    "app:/subpackages/finance/pages/receivables",
+    "app:/subpackages/finance/pages/receipts",
+    "app:/subpackages/finance/pages/refunds"
+  ],
+  "providerRoutes": [
+    "finance/receivable/page",
+    "finance/receipt/save",
+    "finance/refund/save",
+    "finance/receipt/reverse",
+    "finance/ledger/page"
+  ]
+}

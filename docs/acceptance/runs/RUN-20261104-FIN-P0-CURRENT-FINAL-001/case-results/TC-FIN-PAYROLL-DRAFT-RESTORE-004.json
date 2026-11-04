@@ -1,0 +1,49 @@
+{
+  "caseId": "TC-FIN-PAYROLL-DRAFT-RESTORE-004",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "生成2027-01草稿工资单",
+    "Web删除草稿并确认",
+    "刷新月度考勤回读确认状态",
+    "App打开2027-01月度考勤回读状态和删除动作"
+  ],
+  "actualPage": [
+    "Web删除后工资单0条，考勤状态已确认且可编辑/删除",
+    "App显示两名员工均已确认并出现删除动作"
+  ],
+  "actualState": [
+    "DB工资单0条，工资项0条，两条考勤Confirmed"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/after-delete-confirmed-editable.png",
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/app-attendance-editable.png",
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/db-state.txt",
+    "evidence/TC-FIN-PAYROLL-DRAFT-RESTORE-004/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "ac9605275ffe9f664a8818274cf783502cce9c170942822557fa14498a274320",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-043",
+    "DEC-098"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/delete",
+    "payroll/item/page",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}

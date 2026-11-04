@@ -1,0 +1,81 @@
+{
+  "role": "Finance",
+  "environment": "local-prod-api-readonly (local test API for lifecycle data)",
+  "path": "/subpackages/payroll/pages/attendance-list → /subpackages/payroll/pages/attendance-edit",
+  "identity": "昭青科技 · 审计财务 · Finance",
+  "loginMethod": "同源 auth/session/password-login 获取真实会话后注入小程序自动化运行环境；未将微信快捷登录 UI 判为通过",
+  "automationBoundary": "1.0.87本地API构建；页面路由和员工选择为真实页面交互；数字输入和月份change通过组件事件触发",
+  "saved": false,
+  "observations": [
+    {
+      "scenario": "关闭重开",
+      "before": {
+        "employee": "审计财务",
+        "month": "2027-03",
+        "scheduledDays": "26",
+        "normalDays": "5",
+        "personalLeaveDays": "2",
+        "remark": "1.0.87考勤重开残留，不保存"
+      },
+      "after": {
+        "employee": null,
+        "month": "2027-03",
+        "scheduledDays": "",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "remark": ""
+      }
+    },
+    {
+      "scenario": "切换员工",
+      "beforeEmployee": "审计财务",
+      "before": {
+        "employee": "审计财务",
+        "month": "2027-03",
+        "scheduledDays": "26",
+        "normalDays": "5",
+        "personalLeaveDays": "2",
+        "remark": "切员工残留"
+      },
+      "afterEmployee": "审计项目经理",
+      "after": {
+        "employee": "审计项目经理",
+        "month": "2027-03",
+        "scheduledDays": "26",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "remark": ""
+      }
+    },
+    {
+      "scenario": "切换月份",
+      "beforeMonth": "2027-03",
+      "before": {
+        "employee": "审计项目经理",
+        "month": "2027-03",
+        "scheduledDays": "26",
+        "normalDays": "3",
+        "personalLeaveDays": "1",
+        "remark": "切月份残留"
+      },
+      "afterMonth": "2027-02",
+      "after": {
+        "employee": "审计项目经理",
+        "month": "2027-02",
+        "scheduledDays": "26",
+        "normalDays": "0",
+        "personalLeaveDays": "0",
+        "remark": ""
+      }
+    }
+  ],
+  "screenshots": [
+    "11-v1087-before-reopen.png",
+    "12-v1087-reopen-reset.png",
+    "13-v1087-before-employee-switch.png",
+    "14-v1087-employee-switch-reset.png",
+    "15-v1087-before-month-switch.png",
+    "16-v1087-month-switch-reset.png"
+  ],
+  "implementationVersion": "1.0.87 / 187"
+}

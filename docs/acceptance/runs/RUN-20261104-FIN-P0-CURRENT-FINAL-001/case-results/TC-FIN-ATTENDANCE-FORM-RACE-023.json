@@ -1,0 +1,44 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-FORM-RACE-023",
+  "status": "BLOCKED",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "延迟员工A方案响应并切员工B",
+    "延迟旧月份响应并切回新月份"
+  ],
+  "actualPage": [
+    "Web最终员工B、月份2026-11和应出勤24未被旧响应覆盖"
+  ],
+  "actualState": [
+    "Web竞态保护通过；App竞态尚未注入延迟"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/final-employee-b.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/final-month-2026-11.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/race-network.json",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RACE-023/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "Web旧响应竞态通过，但App端未完成旧响应延迟注入和页面回读。",
+  "notes": "复用当前制品版本Web竞态证据。",
+  "caseDefinitionHash": "2294e6c08dbea603899bbfc0e71c171deee0f6dbf62e51f39b7ac1aab8f56df5",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-edit"
+  ],
+  "providerRoutes": [
+    "attendance/summary/page",
+    "payroll/compensation/info",
+    "attendance/summary/save"
+  ]
+}

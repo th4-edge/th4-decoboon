@@ -1,0 +1,47 @@
+{
+  "caseId": "TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "本地创建2026-12未完整考勤，Web选择月份并点击生成工资单",
+    "确认页面阻断提示且DB未创建工资单",
+    "本地App选择2027-02未完整考勤，触发工资单生成，确认未创建工资单"
+  ],
+  "actualPage": [
+    "Web提示“该工资月份有2名员工考勤未确认，请先完成月度考勤确认后重新生成工资单”",
+    "App工资单页未生成2027-02工资单"
+  ],
+  "actualState": [
+    "2026-12工资单数量0",
+    "2027-02工资单数量0",
+    "生产数据写入0"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001/page-blocked.png",
+    "evidence/TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001/app-blocked.png",
+    "evidence/TC-FIN-PAYROLL-ATTENDANCE-BLOCK-001/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境；App为本地API构建页面证据。",
+  "caseDefinitionHash": "923de5d49d2bdb449d458e19654bf0ee8617460269456d1899b784b2fb9969d5",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/sheet-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/build",
+    "attendance/summary/page"
+  ]
+}

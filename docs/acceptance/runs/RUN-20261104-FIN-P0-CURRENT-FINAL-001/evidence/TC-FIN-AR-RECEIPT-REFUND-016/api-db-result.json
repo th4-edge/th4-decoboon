@@ -1,0 +1,326 @@
+{
+  "initial": [
+    "3402.00",
+    "100.00",
+    "Partial"
+  ],
+  "receipt1": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-04 13:54:28"
+      },
+      "receiptId": "243613850874675200",
+      "amount": 100,
+      "account": {
+        "name": "企业对公",
+        "key": "CompanyBank"
+      },
+      "receivedAt": "2026-11-04",
+      "payerName": "FIN-CURRENT-AR",
+      "remark": "AR idempotency",
+      "idempotencyKey": "FIN-CURRENT-AR-RCPT-001"
+    },
+    "success": true
+  },
+  "receipt1Duplicate": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-04 13:54:28"
+      },
+      "receiptId": "243613850874675200",
+      "amount": 100.0,
+      "account": {
+        "name": "企业对公",
+        "key": "CompanyBank"
+      },
+      "receivedAt": "2026-11-04",
+      "payerName": "FIN-CURRENT-AR",
+      "remark": "AR idempotency",
+      "idempotencyKey": "FIN-CURRENT-AR-RCPT-001"
+    },
+    "success": true
+  },
+  "refund": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-04 13:54:28"
+      },
+      "refundId": "243613851705147392",
+      "project": {
+        "projectId": "242923438631550976",
+        "no": "P1793607061067",
+        "name": "刘洋（演示04） · 翡翠湖畔5栋505（主房）",
+        "status": {
+          "name": "待开工",
+          "key": "Preparing"
+        }
+      },
+      "receipt": {
+        "receiptId": "243613850874675200",
+        "amount": 100.0,
+        "receivedAt": "2026-11-04",
+        "payerName": "FIN-CURRENT-AR"
+      },
+      "customer": {
+        "custId": "242297063012827136",
+        "name": "刘洋（演示04）"
+      },
+      "amount": 40.0,
+      "account": {
+        "name": "企业对公",
+        "key": "CompanyBank"
+      },
+      "refundAt": "2026-11-04",
+      "reason": "FIN-CURRENT-AR refund"
+    },
+    "success": true
+  },
+  "receipt2": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-04 13:54:28"
+      },
+      "receiptId": "243613851969388544",
+      "amount": 50,
+      "account": {
+        "name": "企业对公",
+        "key": "CompanyBank"
+      },
+      "receivedAt": "2026-11-04",
+      "payerName": "FIN-CURRENT-AR",
+      "remark": "AR reversal",
+      "idempotencyKey": "FIN-CURRENT-AR-RCPT-002"
+    },
+    "success": true
+  },
+  "reversal": {
+    "data": {
+      "createTime": {
+        "dateTime": "2026-11-04 13:54:28"
+      },
+      "reversalId": "243613852401401856",
+      "receipt": {
+        "receiptId": "243613851969388544",
+        "amount": 50.0,
+        "account": {
+          "name": "企业对公",
+          "key": "CompanyBank"
+        },
+        "receivedAt": "2026-11-04",
+        "payerName": "FIN-CURRENT-AR",
+        "remark": "AR reversal",
+        "status": {
+          "name": "已冲正",
+          "value": "Reversed",
+          "key": "Reversed"
+        },
+        "reversedAt": "2026-11-04 13:54:28",
+        "reversedBy": {
+          "empId": "199500000000000104",
+          "name": "审计财务",
+          "role": {
+            "name": "财务",
+            "value": "Finance",
+            "key": "Finance"
+          }
+        },
+        "reversalReason": "FIN-CURRENT-AR duplicate reversal"
+      },
+      "project": {
+        "projectId": "242923438631550976",
+        "no": "P1793607061067",
+        "name": "刘洋（演示04） · 翡翠湖畔5栋505（主房）",
+        "customer": {
+          "custId": "242297063012827136",
+          "name": "刘洋（演示04）",
+          "telNo": "13910000004"
+        },
+        "property": {
+          "propertyId": "242297063209959424",
+          "propertyNo": "H1793457721531",
+          "community": "翡翠湖畔",
+          "building": "5栋",
+          "roomNo": "505",
+          "address": "翡翠湖畔5栋505（主房）",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "contractAmount": 11340.0,
+        "status": {
+          "name": "待开工",
+          "key": "Preparing"
+        }
+      },
+      "customer": {
+        "custId": "242297063012827136",
+        "name": "刘洋（演示04）",
+        "telNo": "13910000004"
+      },
+      "receivable": {
+        "receivableId": "242923439214559232",
+        "property": {
+          "propertyId": "242297063209959424",
+          "propertyNo": "H1793457721531",
+          "community": "翡翠湖畔",
+          "building": "5栋",
+          "roomNo": "505",
+          "address": "翡翠湖畔5栋505（主房）",
+          "area": 130.0,
+          "layout": "三室两厅一厨两卫",
+          "status": {
+            "name": "施工中",
+            "key": "Serving"
+          }
+        },
+        "name": "合同签约款",
+        "type": {
+          "name": "首期款",
+          "key": "First"
+        },
+        "amount": 3402.0,
+        "receivedAmount": 200.0,
+        "dueDate": "2026-11-02",
+        "status": {
+          "name": "部分收款",
+          "key": "Partial"
+        }
+      },
+      "amount": 50.0,
+      "reversalAt": "2026-11-04",
+      "reasonType": {
+        "name": "重复登记",
+        "value": "Duplicate",
+        "key": "Duplicate"
+      },
+      "reason": "FIN-CURRENT-AR duplicate reversal",
+      "reversalLedger": {
+        "ledgerId": "243613852434956288",
+        "direction": {
+          "name": "支出",
+          "key": "Expense"
+        },
+        "category": "收款冲正",
+        "originalLedger": {
+          "ledgerId": "243613851990360064",
+          "direction": {
+            "name": "收入",
+            "key": "Income"
+          },
+          "category": "首期款",
+          "correctionGroupId": "receipt-reversal-243613852401401856",
+          "source": {
+            "name": "客户收款",
+            "key": "Receipt"
+          },
+          "sourceId": "243613851969388544",
+          "amount": 50.0,
+          "account": {
+            "name": "企业对公",
+            "key": "CompanyBank"
+          },
+          "occurredAt": "2026-11-04",
+          "counterparty": "FIN-CURRENT-AR",
+          "summary": "收款 · 合同签约款",
+          "remark": "AR reversal"
+        },
+        "correctionGroupId": "receipt-reversal-243613852401401856",
+        "source": {
+          "name": "收款冲正",
+          "key": "ReceiptReversal"
+        },
+        "sourceId": "243613852401401856",
+        "amount": 50.0,
+        "account": {
+          "name": "企业对公",
+          "key": "CompanyBank"
+        },
+        "occurredAt": "2026-11-04",
+        "counterparty": "FIN-CURRENT-AR",
+        "summary": "收款冲正 · 合同签约款",
+        "remark": "FIN-CURRENT-AR duplicate reversal"
+      },
+      "operator": {
+        "empId": "199500000000000104",
+        "name": "审计财务",
+        "role": {
+          "name": "财务",
+          "value": "Finance",
+          "key": "Finance"
+        }
+      }
+    },
+    "success": true
+  },
+  "final": [
+    "3402.00",
+    "200.00",
+    "Partial"
+  ],
+  "receipts": [
+    [
+      "243613850874675200",
+      "100.00",
+      "Active"
+    ],
+    [
+      "243613851969388544",
+      "50.00",
+      "Reversed"
+    ]
+  ],
+  "refunds": [
+    [
+      "243613851705147392",
+      "243613850874675200",
+      "40.00"
+    ]
+  ],
+  "ledgers": [
+    [
+      "243613850937589760",
+      "Receipt",
+      "243613850874675200",
+      "100.00",
+      "Income",
+      "\\0"
+    ],
+    [
+      "243613851721924608",
+      "Refund",
+      "243613851705147392",
+      "40.00",
+      "Expense",
+      "\\0"
+    ],
+    [
+      "243613851990360064",
+      "Receipt",
+      "243613851969388544",
+      "50.00",
+      "Income",
+      "\\0"
+    ]
+  ],
+  "receiptReport": {
+    "data": {
+      "receiptCount": 4,
+      "grossReceiptAmount": 300.0,
+      "reversalAmount": 100.0,
+      "receiptAmount": 200.0,
+      "asOf": "2026-11-04 13:54:28"
+    },
+    "success": true
+  },
+  "refundReport": {
+    "data": {
+      "count": 2,
+      "totalAmount": 80.0,
+      "asOf": "2026-11-04 13:54:28"
+    },
+    "success": true
+  }
+}

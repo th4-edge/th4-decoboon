@@ -1,0 +1,44 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "确认审计财务2026-12考勤",
+    "修改正常出勤26→25",
+    "Web刷新月度考勤回读状态"
+  ],
+  "actualPage": [
+    "审计财务显示待确认、正常25天，并出现确认/编辑/删除动作"
+  ],
+  "actualState": [
+    "DB状态Pending，confirmed_by/confirmed_at为空"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006/pending-after-edit.png",
+    "evidence/TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006/api-db-result.json",
+    "evidence/TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "ace1c0244ef45548973305e96c82e7c8ccbb0ecfd64f3faacca0a85c6a1b5ec2",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038",
+    "BR-015"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries"
+  ],
+  "providerRoutes": [
+    "attendance/summary/update",
+    "attendance/summary/info",
+    "payroll/sheet/build"
+  ]
+}

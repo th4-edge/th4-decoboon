@@ -1,0 +1,42 @@
+{
+  "caseId": "TC-FIN-COMMISSION-FORM-RESET-026",
+  "status": "BLOCKED",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Finance",
+  "surface": "App",
+  "dataPrefix": "AUDIT-20261104-RUNEXPERIENCE-",
+  "steps": [],
+  "actualPage": [
+    "尝试打开体验版入口，微信返回“当前页面无法访问”"
+  ],
+  "actualState": [
+    "开发版上传成功，但体验版运行会话不可用"
+  ],
+  "evidence": [
+    "evidence/upload-info-1.0.87.json",
+    "evidence/wechatide-upload-task.txt",
+    "evidence/wechat-experience-link-error.png",
+    "evidence/experience-blocker.json"
+  ],
+  "defectIds": [],
+  "blockedReason": "1.0.87开发版已上传，但微信开发者工具未提供可连接的体验版运行时；weixin体验版入口返回“当前页面无法访问”，无法用真实财务账号进入1.0.87体验版。",
+  "notes": "没有把本地开发构建冒充体验版通过。",
+  "caseDefinitionHash": "24d382736c1838e100aac24eae971c925ba8604e4758094dbc1350972f407fe3",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-055",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-commissions",
+    "app:/subpackages/payroll/pages/commission-edit"
+  ],
+  "providerRoutes": [
+    "payroll/commission/page",
+    "payroll/commission/info",
+    "payroll/commission/save"
+  ]
+}

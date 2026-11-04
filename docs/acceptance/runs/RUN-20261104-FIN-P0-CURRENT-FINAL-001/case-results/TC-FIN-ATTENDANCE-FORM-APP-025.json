@@ -1,0 +1,52 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-FORM-APP-025",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "App",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "1.0.87本地API构建进入考勤新建",
+    "填写审计财务2027-03后返回重开",
+    "重新填写后切审计项目经理",
+    "切月份2027-03到2027-02"
+  ],
+  "actualPage": [
+    "重开为空",
+    "切员工字段归零且应出勤26",
+    "切月份字段归零且应出勤26"
+  ],
+  "actualState": [
+    "App构建1.0.87/187，本地受控API，未保存考勤",
+    "员工选择器为真实页面点击，数字输入和月份change为组件事件触发"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/11-v1087-before-reopen.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/12-v1087-reopen-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/13-v1087-before-employee-switch.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/14-v1087-employee-switch-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/15-v1087-before-month-switch.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/16-v1087-month-switch-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-APP-025/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "App 1.0.87本地API构建生命周期复验通过；体验版独立运行仍见体验版RUN。",
+  "caseDefinitionHash": "c1fc1f9d8f402d5e037cb21f3ba13bc71a0baa28f0e88fb12a29c088f13fd108",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038"
+  ],
+  "pageTargets": [
+    "app:/subpackages/payroll/pages/attendance-edit",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "attendance/summary/page",
+    "payroll/compensation/info",
+    "attendance/summary/save"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "page": "/finance/employee-salaries → 月度考勤",
+  "before": "审计财务状态已确认",
+  "edit": "normalDays 26→25",
+  "after": "页面状态待确认并出现确认/编辑/删除动作；confirmed_by/confirmed_at为空",
+  "screenshot": "pending-after-edit.png",
+  "result": "PASS"
+}

@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "/finance/receipts",
+    "/finance/refunds",
+    "App receipts",
+    "App refunds"
+  ],
+  "receipt": "100有效，重复幂等返回同一receiptId",
+  "refund": "40独立退款并写反向台账",
+  "reversal": "50收款冲正后原收款Reversed且台账反向",
+  "finalReceivable": "receivedAmount=200.00",
+  "screenshots": [
+    "receipts-readback.png",
+    "refunds-readback.png",
+    "app-receipts.png",
+    "app-refunds.png"
+  ],
+  "result": "PASS"
+}

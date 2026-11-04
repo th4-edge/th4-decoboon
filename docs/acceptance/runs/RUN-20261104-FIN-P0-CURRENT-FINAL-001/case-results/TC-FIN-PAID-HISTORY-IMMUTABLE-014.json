@@ -1,0 +1,48 @@
+{
+  "caseId": "TC-FIN-PAID-HISTORY-IMMUTABLE-014",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "完成两名员工工资发放",
+    "尝试修改已发月份考勤",
+    "尝试删除工资单和重新生成",
+    "Web回读已发放工资单"
+  ],
+  "actualPage": [
+    "2026-12工资单显示已发放、实发10000、已完整"
+  ],
+  "actualState": [
+    "修改考勤409、删除工资单409、重建400；工资单与考勤保持不变"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAID-HISTORY-IMMUTABLE-014/paid-history-readonly.png",
+    "evidence/TC-FIN-PAID-HISTORY-IMMUTABLE-014/api-db-result.json",
+    "evidence/TC-FIN-PAID-HISTORY-IMMUTABLE-014/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "f8cef8619ebc453f4e24e98353b828ba47b4e92544b78c62f0be8f1d8e3158e0",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-043",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/adjustment-list"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/update",
+    "attendance/summary/update",
+    "payroll/commission/adjustment/save",
+    "finance/ledger/page"
+  ]
+}

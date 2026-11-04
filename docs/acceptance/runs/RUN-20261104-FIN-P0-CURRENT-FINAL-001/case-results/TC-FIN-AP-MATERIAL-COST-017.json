@@ -1,0 +1,50 @@
+{
+  "caseId": "TC-FIN-AP-MATERIAL-COST-017",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "读取物料采购、应付、付款和项目成本",
+    "Web打开项目核算回读",
+    "App打开项目财务回读"
+  ],
+  "actualPage": [
+    "Web显示1张有效采购单、采购应付1440、材料成本1440、实际成本2240",
+    "App显示材料成本1440、项目款800、总成本2240"
+  ],
+  "actualState": [
+    "采购应付已付清1440，材料成本1440，成本完整性未完整"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/project-cost-page.png",
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/app-project-cost.png",
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/project-report.json",
+    "evidence/TC-FIN-AP-MATERIAL-COST-017/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "449c477727d66de4d0524bbb0be4437940556ff00e21990d818d3aade91bbdc2",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-058",
+    "DEC-092",
+    "BR-055"
+  ],
+  "pageTargets": [
+    "web:/finance/payables",
+    "web:/finance/projects",
+    "app:/subpackages/finance/pages/material-settlement"
+  ],
+  "providerRoutes": [
+    "material/sheet/order",
+    "finance/payable/page",
+    "finance/payment/save",
+    "finance/project/report"
+  ]
+}

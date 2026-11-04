@@ -1,0 +1,15 @@
+{
+  "page": "/finance/employee-salaries",
+  "month": "2026-12",
+  "draftVisible": true,
+  "status": "草稿",
+  "attendanceStatuses": [
+    "InPayroll",
+    "InPayroll"
+  ],
+  "screenshots": [
+    "draft-created.png",
+    "inpayroll-no-actions.png"
+  ],
+  "result": "PASS"
+}

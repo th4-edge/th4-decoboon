@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "Web tenant B project",
+    "API cross-tenant probes"
+  ],
+  "tenantA": "199500000000000001",
+  "tenantB": "199600000000000001",
+  "web": "隔离企业访问A项目显示“项目不存在或无权访问”",
+  "api": "A读取B考勤/工资单均404，项目项与应付为空",
+  "screenshot": "tenant-b-a-project-denied.png",
+  "result": "BLOCKED_APP_EVIDENCE_PENDING"
+}

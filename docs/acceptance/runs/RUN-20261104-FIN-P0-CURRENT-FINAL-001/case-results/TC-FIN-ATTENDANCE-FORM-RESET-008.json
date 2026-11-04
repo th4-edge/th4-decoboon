@@ -1,0 +1,49 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-FORM-RESET-008",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "生产Web录入正常5天、事假2天和备注",
+    "关闭重开回读",
+    "重新录入后切员工",
+    "重新录入后切月份"
+  ],
+  "actualPage": [
+    "重开字段归零",
+    "切员工字段归零并加载新应出勤",
+    "切月份字段归零并加载新应出勤"
+  ],
+  "actualState": [
+    "页面显示对象与字段上下文一致，未保存生产数据"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-ATTENDANCE-FORM-RESET-008/before-close-with-input.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RESET-008/reopen-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RESET-008/switch-employee-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RESET-008/switch-month-reset.png",
+    "evidence/TC-FIN-ATTENDANCE-FORM-RESET-008/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "复用当前制品版本的Web表单生命周期证据；生产只读。",
+  "caseDefinitionHash": "b287f7caa2f58e1288140df6594283c699cf0f2403fec20431ff787c774c747b",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-edit"
+  ],
+  "providerRoutes": [
+    "attendance/summary/page",
+    "payroll/compensation/info",
+    "attendance/summary/save"
+  ]
+}

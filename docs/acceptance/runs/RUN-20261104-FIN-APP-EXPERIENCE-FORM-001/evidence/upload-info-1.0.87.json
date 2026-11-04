@@ -1,0 +1,83 @@
+{
+  "size": {
+    "total": 5062332,
+    "packages": [
+      {
+        "name": "TOTAL",
+        "size": 5062332
+      },
+      {
+        "name": "main",
+        "size": 1325963
+      },
+      {
+        "name": "/subpackages/account/",
+        "size": 31201
+      },
+      {
+        "name": "/subpackages/carryover/",
+        "size": 158123
+      },
+      {
+        "name": "/subpackages/company/",
+        "size": 105869
+      },
+      {
+        "name": "/subpackages/content/",
+        "size": 168640
+      },
+      {
+        "name": "/subpackages/customer/",
+        "size": 284826
+      },
+      {
+        "name": "/subpackages/design/",
+        "size": 317162
+      },
+      {
+        "name": "/subpackages/finance/",
+        "size": 709392
+      },
+      {
+        "name": "/subpackages/labor/",
+        "size": 49191
+      },
+      {
+        "name": "/subpackages/message/",
+        "size": 9746
+      },
+      {
+        "name": "/subpackages/payroll/",
+        "size": 168856
+      },
+      {
+        "name": "/subpackages/plan/",
+        "size": 85357
+      },
+      {
+        "name": "/subpackages/project/",
+        "size": 862767
+      },
+      {
+        "name": "/subpackages/quote/",
+        "size": 412581
+      },
+      {
+        "name": "/subpackages/statistic/",
+        "size": 151855
+      },
+      {
+        "name": "/subpackages/subscription/",
+        "size": 50309
+      },
+      {
+        "name": "/subpackages/supply/",
+        "size": 80527
+      },
+      {
+        "name": "/subpackages/team/",
+        "size": 89967
+      }
+    ]
+  }
+}

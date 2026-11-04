@@ -1,0 +1,15 @@
+{
+  "page": "/finance/employee-salaries",
+  "month": "2026-12",
+  "status": "已发放",
+  "attendanceStatus": "InPayroll",
+  "updateAttendance": "409已进入工资单不能修改",
+  "deleteSheet": "409仅草稿可删除",
+  "rebuild": "400已形成工资事实不能重新生成",
+  "sheetBeforeAfter": [
+    "Paid/10000.00",
+    "Paid/10000.00"
+  ],
+  "screenshot": "paid-history-readonly.png",
+  "result": "PASS"
+}

@@ -1,0 +1,9 @@
+{
+  "page": "/finance/employee-salaries",
+  "month": "2026-12",
+  "status": "待确认",
+  "message": "当前工资单已提交复核或已形成工资事实，不能重新生成",
+  "sheetRecreated": false,
+  "screenshot": "pending-rebuild-blocked.png",
+  "result": "PASS"
+}

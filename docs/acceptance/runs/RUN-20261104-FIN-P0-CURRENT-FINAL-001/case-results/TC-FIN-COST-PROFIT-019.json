@@ -1,0 +1,48 @@
+{
+  "caseId": "TC-FIN-COST-PROFIT-019",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "打开成本不完整项目",
+    "回读实际成本、利润与结算动作",
+    "确认结算按钮不可执行"
+  ],
+  "actualPage": [
+    "项目毛利显示“成本未完整”",
+    "不显示伪利润；1项成本待补"
+  ],
+  "actualState": [
+    "actualCost=2240，costComplete=false，costIncompleteCount=1"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-COST-PROFIT-019/settlement-blocked.png",
+    "evidence/TC-FIN-COST-PROFIT-019/project-report.json",
+    "evidence/TC-FIN-COST-PROFIT-019/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "010e32a3cda86469f8fcc336580e4bad4a9e555cee13655ca2e72578df0fa0f7",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-058",
+    "DEC-092",
+    "MET-007"
+  ],
+  "pageTargets": [
+    "web:/finance/projects",
+    "web:/finance/projects/:projectId",
+    "app:/subpackages/finance/pages/project"
+  ],
+  "providerRoutes": [
+    "finance/project/report",
+    "finance/settlement/update",
+    "finance/summary/report"
+  ]
+}

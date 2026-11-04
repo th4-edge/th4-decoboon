@@ -1,0 +1,49 @@
+{
+  "caseId": "TC-FIN-SALARY-PAYABLE-ONCE-011",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "BOSS确认2026-12工资单",
+    "查询员工工资应付",
+    "重复确认同一工资单",
+    "再次查询应付"
+  ],
+  "actualPage": [
+    "2026-12工资单显示已确认、确认人审计负责人",
+    "实发合计10000"
+  ],
+  "actualState": [
+    "两次确认前后应付均为2条、合计10000",
+    "无重复应付"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-SALARY-PAYABLE-ONCE-011/confirmed-sheet-payables.png",
+    "evidence/TC-FIN-SALARY-PAYABLE-ONCE-011/api-db-result.json",
+    "evidence/TC-FIN-SALARY-PAYABLE-ONCE-011/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "4ad87721bd17c46bb4e51ac8356f90b23ef0378b48b91076ec53ec12d64d151b",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-093",
+    "DEC-097"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/sheet-detail"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/update",
+    "payroll/item/page",
+    "finance/payment/employee/page"
+  ]
+}

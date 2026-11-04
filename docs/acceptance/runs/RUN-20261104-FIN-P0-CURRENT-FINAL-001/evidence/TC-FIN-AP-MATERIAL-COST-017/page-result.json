@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "/finance/projects/242297299361857536",
+    "App project"
+  ],
+  "project": "王芳（造数1100） · 望江府1栋102",
+  "purchaseOrderCount": 1,
+  "materialPayable": 1440.0,
+  "materialCost": 1440.0,
+  "actualCost": 2240.0,
+  "screenshots": [
+    "project-cost-page.png",
+    "app-project-cost.png"
+  ],
+  "result": "PASS"
+}

@@ -1,0 +1,48 @@
+{
+  "caseId": "TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+App+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "对第一个工资应付使用固定幂等键提交两次",
+    "查询付款、台账和应付",
+    "Web员工发放页回读仅剩一笔待发",
+    "App员工发放页回读最终0条待发"
+  ],
+  "actualPage": [
+    "Web待发应付仅1笔",
+    "App全部发放后待发应付0条"
+  ],
+  "actualState": [
+    "重复提交返回同一paymentId，付款1条、台账1条，未重复核销"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012/one-payable-remains-after-duplicate.png",
+    "evidence/TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012/app-one-payable-remains.png",
+    "evidence/TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012/api-db-result.json",
+    "evidence/TC-FIN-SALARY-PAYMENT-IDEMPOTENT-012/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境；App为本地API构建。",
+  "caseDefinitionHash": "2e4c5224e83ee0ca62069e1afb66d95e97c09453c2064a2ba7b6533e9cb3e9f8",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-093"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/payment-create"
+  ],
+  "providerRoutes": [
+    "finance/payment/employee/save",
+    "finance/payment/employee/page",
+    "finance/ledger/page"
+  ]
+}

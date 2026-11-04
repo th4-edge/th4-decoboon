@@ -1,0 +1,47 @@
+{
+  "caseId": "TC-FIN-PAYROLL-PENDING-NO-REBUILD-003",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "工资单提交Pending",
+    "Web选择2026-12并点击生成工资单",
+    "回读状态仍为Pending且无新工资单"
+  ],
+  "actualPage": [
+    "页面显示工资单待确认",
+    "页面提示“当前工资单已提交复核或已形成工资事实，不能重新生成”"
+  ],
+  "actualState": [
+    "工资单保持Pending，工资项未重建"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-PENDING-NO-REBUILD-003/pending-rebuild-blocked.png",
+    "evidence/TC-FIN-PAYROLL-PENDING-NO-REBUILD-003/db-state.json",
+    "evidence/TC-FIN-PAYROLL-PENDING-NO-REBUILD-003/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "15375c15b4fea0ee127834877359b72dce5f86423bb83deb17f68814d6a96730",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038",
+    "DEC-043",
+    "DEC-093"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/sheet-detail"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/build",
+    "payroll/sheet/update",
+    "payroll/sheet/info"
+  ]
+}

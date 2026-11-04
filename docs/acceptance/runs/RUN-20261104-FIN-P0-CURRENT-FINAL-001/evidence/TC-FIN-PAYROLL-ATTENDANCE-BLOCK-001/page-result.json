@@ -1,0 +1,10 @@
+{
+  "page": "/finance/employee-salaries",
+  "month": "2026-12",
+  "blockedMessage": "该工资月份有 2 名员工考勤未确认，请先完成月度考勤确认后重新生成工资单",
+  "sheetCreated": false,
+  "db": [
+    "0",
+    "199500000000000104\tPending"
+  ]
+}

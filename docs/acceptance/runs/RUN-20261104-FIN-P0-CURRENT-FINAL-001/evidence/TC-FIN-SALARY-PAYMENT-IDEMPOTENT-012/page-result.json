@@ -1,0 +1,13 @@
+{
+  "page": "/finance/employee-salaries → 员工发放",
+  "duplicateSubmission": "同一idempotencyKey提交两次",
+  "paymentRows": 1,
+  "ledgerRows": 1,
+  "remainingPayablesAfterFirstPayment": 1,
+  "appReadback": "全部发放后待发应付0条",
+  "screenshots": [
+    "one-payable-remains-after-duplicate.png",
+    "app-one-payable-remains.png"
+  ],
+  "result": "PASS"
+}

@@ -1,0 +1,11 @@
+{
+  "page": "/finance/employee-salaries",
+  "storeFinanceIdentity": "滨湖店财务 · 本门店",
+  "visibleData": "仅本门店范围；总店工资单不可见",
+  "apiCrossStoreUpdate": "404 考勤不存在或无权访问",
+  "dbAfter": "目标考勤状态和天数不变",
+  "screenshots": [
+    "store-finance-scope.png"
+  ],
+  "result": "BLOCKED_APP_EVIDENCE_PENDING"
+}

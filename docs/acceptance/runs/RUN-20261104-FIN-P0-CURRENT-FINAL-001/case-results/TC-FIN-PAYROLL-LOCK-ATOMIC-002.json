@@ -1,0 +1,46 @@
+{
+  "caseId": "TC-FIN-PAYROLL-LOCK-ATOMIC-002",
+  "status": "PASS",
+  "startedAt": null,
+  "finishedAt": null,
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web+API",
+  "dataPrefix": "AUDIT-20261104-RUNFINP0FINAL001-",
+  "steps": [
+    "确认两名员工考勤后生成2026-12工资单",
+    "Web回读草稿工资单",
+    "打开月度考勤回读InPayroll状态与动作"
+  ],
+  "actualPage": [
+    "2026-12工资单显示草稿、应发10000、实发10000",
+    "月度考勤两条均显示已入工资，操作列为空"
+  ],
+  "actualState": [
+    "DB工资单Draft，两个工资项Draft，两条考勤InPayroll"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-LOCK-ATOMIC-002/draft-created.png",
+    "evidence/TC-FIN-PAYROLL-LOCK-ATOMIC-002/inpayroll-no-actions.png",
+    "evidence/TC-FIN-PAYROLL-LOCK-ATOMIC-002/db-state.json",
+    "evidence/TC-FIN-PAYROLL-LOCK-ATOMIC-002/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "本地受控环境。",
+  "caseDefinitionHash": "a56a2cba4a80dedc9ee7918f5be538d7fa9716654759450e26d1123ef6047174",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-015",
+    "DEC-047"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/build",
+    "payroll/item/page",
+    "attendance/summary/page"
+  ]
+}

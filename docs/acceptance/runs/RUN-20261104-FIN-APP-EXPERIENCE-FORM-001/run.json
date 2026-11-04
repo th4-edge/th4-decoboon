@@ -1,0 +1,30 @@
+{
+  "runId": "RUN-20261104-FIN-APP-EXPERIENCE-FORM-001",
+  "createdAt": "2026-11-04T14:04:45+08:00",
+  "status": "BLOCKED",
+  "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
+  "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
+  "oracleId": "ZDQ-FIN-20261104-V0.1",
+  "oracleGitCommit": "ab6d4d8",
+  "backendCommit": "7d4c19df",
+  "webCommit": "327222d",
+  "appCommit": "64e6801",
+  "artifactHashes": {
+    "appUploadInfoSha256": "529cb7475016eec649ef54d6707c278ed3c4aade2f30bfe6bad2779c78e5d1ea"
+  },
+  "environment": "prod-readonly",
+  "tenantId": "1790066191585976744",
+  "dataPrefix": "AUDIT-20261104-RUNEXPERIENCE-",
+  "caseIds": [
+    "TC-FIN-FORM-REOPEN-024",
+    "TC-FIN-COMMISSION-FORM-RESET-026"
+  ],
+  "summary": {
+    "total": 2,
+    "pass": 0,
+    "fail": 0,
+    "blocked": 2,
+    "notRun": 0
+  },
+  "finishedAt": "2026-11-04T14:03:00+08:00"
+}
