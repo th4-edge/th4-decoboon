@@ -1,0 +1,41 @@
+{
+  "caseId": "TC-FIN-PAYROLL-PENDING-NO-REBUILD-003",
+  "status": "PASS",
+  "startedAt": "2026-11-04T12:48:23+08:00",
+  "finishedAt": "2026-11-04T12:48:23+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "页面与截图证据通过"
+  ],
+  "actualState": [
+    "API/DB证据通过"
+  ],
+  "evidence": [
+    "evidence/TC-FIN-PAYROLL-PENDING-NO-REBUILD-003/pending-rebuild-blocked.png",
+    "evidence/TC-FIN-PAYROLL-PENDING-NO-REBUILD-003/page-result.json"
+  ],
+  "defectIds": [],
+  "blockedReason": null,
+  "notes": "远端正式加固提交 52991afc 的本地受控测试；生产数据未写入。",
+  "caseDefinitionHash": "15375c15b4fea0ee127834877359b72dce5f86423bb83deb17f68814d6a96730",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038",
+    "DEC-043",
+    "DEC-093"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/sheet-detail"
+  ],
+  "providerRoutes": [
+    "payroll/sheet/build",
+    "payroll/sheet/update",
+    "payroll/sheet/info"
+  ]
+}

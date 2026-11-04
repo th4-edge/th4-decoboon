@@ -1,0 +1,11 @@
+{
+  "surface": "Web",
+  "role": "Finance",
+  "month": "2026-11",
+  "action": "删除工资单草稿并二次确认",
+  "observedAttendanceRows": [
+    {"employee": "审计财务", "status": "已确认", "buttons": ["编辑", "删除"]},
+    {"employee": "审计项目经理", "status": "已确认", "buttons": ["编辑", "删除"]}
+  ],
+  "screenshot": "after-delete-confirmed-editable.png"
+}

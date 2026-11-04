@@ -1,0 +1,38 @@
+{
+  "caseId": "TC-FIN-CROSS-TENANT-021",
+  "status": "NOT_RUN",
+  "startedAt": "2026-11-04T12:48:23+08:00",
+  "finishedAt": "2026-11-04T12:48:23+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINP0-",
+  "steps": [],
+  "actualPage": [
+    "不适用或未执行"
+  ],
+  "actualState": [
+    "跨租户夹具未建立"
+  ],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": "本地环境仅有昭青科技一个企业，尚未建立第二企业对象夹具。",
+  "notes": "远端正式加固提交 52991afc 的本地受控测试；生产数据未写入。",
+  "caseDefinitionHash": "81752ce898a2d69c1d7f878a0cd2da0f68316295903577b85fed85474f328131",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "DEC-065",
+    "DEC-099"
+  ],
+  "pageTargets": [
+    "web:/finance/workbench",
+    "app:/subpackages/finance/pages/projects"
+  ],
+  "providerRoutes": [
+    "finance/receivable/page",
+    "finance/payment/page",
+    "payroll/sheet/info",
+    "payroll/item/page"
+  ]
+}
