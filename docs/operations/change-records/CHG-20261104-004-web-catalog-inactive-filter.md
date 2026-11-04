@@ -5,9 +5,9 @@
 | 字段 | 内容 |
 | --- | --- |
 | 变更 ID | CHG-20261104-004 |
-| 类型 | 需求 / 跨端能力补齐 |
+| 类型 | 热修 / 跨端能力补齐 |
 | 风险级别 | L2（Web 管理查询、共享 Provider 可选筛选参数；无 DDL、权限、金额或成本语义变化） |
-| 状态 | 待验证（开发自测完成） |
+| 状态 | 已发布 |
 | 负责人 | Codex |
 | 日期 | 2026-11-04 |
 | 关联需求/事故/业务裁决 | `DEC-083` §2、§8；`BR-051` §5、§7；报价项目库停用项 Web 不可查询问题 |
@@ -39,8 +39,8 @@
 
 | 仓库 | 分支 | 提交 | 主要文件/模块 |
 | --- | --- | --- | --- |
-| th4-decoboon | `codex/finance-role-high-risk-permissions-20261102` | 未提交 | `catalog/item/page`、`catalog/item/tree`、定向测试 |
-| th4-decoboon-web | `codex/finance-role-high-risk-permissions-20261102` | 未提交 | `domains/catalog/api.ts`、`DesignerCatalogView.vue` |
+| th4-decoboon | `hotfix/catalog-inactive-web-20261104` | `c4d5254f` | `catalog/item/page`、`catalog/item/tree`、定向测试 |
+| th4-decoboon-web | `hotfix/catalog-inactive-web-20261104` | `a4ce38f` | `domains/catalog/api.ts`、`DesignerCatalogView.vue` |
 | th4-decoboon-app | 不适用 | 不适用 | 不适用 |
 
 ## 6. 验证
@@ -48,26 +48,29 @@
 | 检查 | 命令/页面 | 结果 | 证据位置 |
 | --- | --- | --- | --- |
 | 后端定向测试 | `mvn -Dtest=CatalogPageStatusFilterTest,CatalogTreeProjectionTest test` | PASS，6/6 | `target/surefire-reports` |
+| 后端全量测试 | `mvn -o -q test` | PASS，316 个测试类 / 1248 用例，0 失败 0 错误 | `target/surefire-reports` |
 | Web 类型检查 | `npm run type-check` | PASS | 本地终端 |
 | Web 构建 | `npm run build` | PASS | 本地终端 |
 | Web 静态门禁 | 概念、状态、权限、页面系统、表单、分页、编号、品牌主题 | PASS | 本地终端 |
 | 真实页面交互 | 1440×960 报价项目库“已停用”查询、启用、切换“启用”和“全部” | PASS（同源响应夹具） | `th4-decoboon-web/output/playwright/catalog-inactive-before.png`、`catalog-enabled-after.png` |
 | 请求契约 | 已停用 `includeInactive=true,active=false`；启用 `includeInactive=true,active=true`；全部 `includeInactive=true` | PASS | Playwright request body |
 | 负向/权限 | Designer 可查看停用项与状态，但不显示“启用当前分项/编辑当前分项” | PASS | Playwright snapshot |
+| 生产登录态 | 吴濛濛 / Finance / 安徽麦鸿装饰设计工程有限公司 | PASS | `/api/auth/session/info` success=true |
+| 生产停用查询 | “主材 / 已停用”返回 49 项，首屏列表显示状态与“启用当前分项”入口 | PASS | `prod-catalog-inactive.png` |
 
-- 未执行项及原因：尚未连接本地/生产真实后端和真实企业数据；真实后端联调、独立验收与发布待补。
+- 未执行项及原因：未对真实停用项执行启用写操作；独立验收与启用后的修订历史复验待补。
 - 已知失败及是否与本次相关：`check:actions` 报 3 条财务收据/员工应付款动作未登记，`check:workspaces` 报 3 条 `pm.materialSheet` 菜单死链；均为现有财务/工作台问题，与本次报价项目库改动无关。
 
 ## 7. 发布
 
 | 字段 | 内容 |
 | --- | --- |
-| Release ID | 未发布 |
-| 制品路径/SHA-256 | 未构建发布制品 |
-| 生产 release/版本 | 未发布 |
-| 上一版本/回滚点 | 当前生产基线 |
-| 健康检查 | 待发布执行 |
-| 发布后观察 | 待发布执行 |
+| Release ID | 后端 `20261104-202455`；Web `20261104-202626` |
+| 制品路径/SHA-256 | 后端 `th4-decoboon-1.0.73-build.tar.gz` / `34cb9650d25b884d8728e71276cf0a824ea6ea2524ba527358a45f96ccf3bf6c`；Web 文件树 / `34ccbccd9634a1bfe6e4d9047ee57a0ceeeec27bb9ad204854137162be85b326` |
+| 生产 release/版本 | 后端 `/opt/decoboon/releases/20261104-202455`；Web `/opt/decoboon-web/releases/20261104-202626` |
+| 上一版本/回滚点 | 后端 `/opt/decoboon/releases/20261104-142823`；Web `/opt/decoboon-web/releases/20261104-201325` |
+| 健康检查 | 后端 API HTTP 200 且返回预期 `tokenIsUndefined`；Web 入口、主资源、登录页与 `/v3/` 301 通过 |
+| 发布后观察 | 10 分钟监控无本次报价项目库相关业务异常；仅已有考勤/薪酬历史噪音和未授权健康探测 |
 
 - 数据库迁移：无
 - 配置/密钥变化：无
@@ -85,7 +88,7 @@
 - 人工耗时：未采集
 - 一次通过：是（本次定向测试、构建和目标页面自测）
 - 返工原因：无
-- 最终结论：待真实后端联调与独立验收
+- 最终结论：已发布并通过生产登录态与真实停用查询冒烟
 
 ## 10. 复盘与沉淀
 
