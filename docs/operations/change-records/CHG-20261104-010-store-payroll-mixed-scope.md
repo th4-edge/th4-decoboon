@@ -7,7 +7,7 @@
 | 变更 ID | `CHG-20261104-010` |
 | 类型 | 热修 / 权限与数据范围 / 跨端契约 |
 | 风险级别 | L3 |
-| 状态 | 修复完成，定向/全量/Web/App运行态验证通过，待18条P0复测 |
+| 状态 | 修复已验证；财务18条P0影响回归重放PASS，待发布审批 |
 | 负责人 | Codex |
 | 日期 | 2026-11-04 |
 | 关联缺陷 | `DEF-FIN-STORE-PAYROLL-MIXED-SCOPE-001` |
@@ -51,4 +51,19 @@
 | 运行态门店API | 列表/详情/工资项/提交复核 | PASS：本店汇总4400/0/4400，mixedStore=true，提交复核403且保持Draft |
 | Web页面 | 滨湖店财务2029-04工资单 | PASS：显示本店4400汇总和总部处理提示，无整单动作 |
 | App页面 | 1.0.88本地受控构建 | PASS：显示本店4400汇总和总部处理提示，无整单动作 |
-| 财务18条P0 | 新复测 RUN + `validate_run --final` | 待执行 |
+| 财务18条P0 | `RUN-20261104-FIN-P0-FINAL-GATE-REPLAY-001` + `validate_run --final` | PASS：18/18；17条沿用同日已执行证据，007使用修复后定向证据 |
+
+## 6. 实现与提交
+
+| 仓库 | 分支 | 提交 | 内容 |
+| --- | --- | --- | --- |
+| th4-decoboon | `hotfix/finance-store-payroll-scope-20261104` | `176c7628` | 门店投影、mixedStore、submitReview统一门店校验 |
+| th4-decoboon-web | `hotfix/finance-store-payroll-scope-20261104` | `4209234` | 门店汇总与整单动作隐藏 |
+| th4-decoboon-app | `hotfix/finance-store-payroll-scope-20261104` | `1e02099` | 门店汇总与整单动作隐藏 |
+
+## 7. 发布与回滚
+
+- 本修复不包含DDL和数据迁移；
+- 发布前需锁定不可变制品和上一release回滚点；
+- 应用回滚使用上一后端/Web/App制品，不回滚已存在的工资业务数据。
+
