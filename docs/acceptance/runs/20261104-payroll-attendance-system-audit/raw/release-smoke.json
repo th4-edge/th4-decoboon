@@ -1,0 +1,82 @@
+{
+  "releasedAt": "2026-11-04T12:33:00+08:00",
+  "backend": {
+    "commit": "52991afc1ba8840ed5feaca87660beeff01ed245",
+    "release": "/opt/decoboon/releases/20261104-123233",
+    "health": "PASS"
+  },
+  "web": {
+    "commit": "39a9bc2a0ffae34748b5e0f7d6e9aab9af5376ad",
+    "release": "/opt/decoboon-web/releases/20261104-123300",
+    "index": "assets/index-CoFItHo9.js",
+    "rootHttp": 200,
+    "loginHttp": 200
+  },
+  "app": {
+    "commit": "1c7abeb58ceb57c9218050b401d1b03e283a374d",
+    "version": "1.0.86",
+    "versionCode": 186,
+    "upload": "PASS",
+    "uploadInfoSha256": "69c7ded06508299e998bfe0d380475ed4c983194b4dc2f2acda1645430c348e2"
+  },
+  "readOnlyUiSmoke": [
+    {
+      "case": "month switch resets attendance fields",
+      "result": "PASS",
+      "observed": {
+        "month": "2026-10",
+        "values": [
+          "",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "case": "employee switch resets attendance fields",
+      "result": "PASS",
+      "observed": {
+        "employee": "王宏文",
+        "scheduledDays": "27",
+        "values": [
+          "27",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "case": "confirm dialog cancel does not write",
+      "result": "PASS"
+    },
+    {
+      "case": "attendance page size cap",
+      "result": "PASS",
+      "requestedSize": 200,
+      "returnedSize": 50
+    },
+    {
+      "case": "invalid month returns business error",
+      "result": "PASS",
+      "code": "400",
+      "message": "工资月份格式必须为 YYYY-MM"
+    }
+  ],
+  "readOnlyDataProof": {
+    "attendance": 14,
+    "payrollSheet": 3,
+    "payrollItem": 15,
+    "pendingAttendance": 7,
+    "unchangedFromPreRelease": true
+  }
+}

@@ -194,6 +194,7 @@ Draft → Pending → Confirmed → InPayroll
 - 后端探针结果：[raw/runtime-probes.json](raw/runtime-probes.json)
 - 生产只读汇总：[raw/production-summary.json](raw/production-summary.json)
 - 修复验证汇总：[raw/fix-verification.json](raw/fix-verification.json)
+- 生产发布只读冒烟：[raw/release-smoke.json](raw/release-smoke.json)
 - 截图：[evidence/web-month-switch-carries-days.png](evidence/web-month-switch-carries-days.png)、[evidence/web-employee-switch-carries-days.png](evidence/web-employee-switch-carries-days.png)
 
 ## 10. 修复执行状态（2026-11-04）
@@ -213,9 +214,15 @@ Draft → Pending → Confirmed → InPayroll
 - 后端全量 315 个测试类、1239 个用例通过；
 - Web 生产构建、App 类型检查与微信小程序构建通过。
 
+已完成发布与只读冒烟：
+
+- 后端 `20261104-123233`、Web `20261104-123300` 已发布；
+- App `1.0.86 / 186` 开发版已上传；
+- 真实财务账号验证切月/切员工归零、确认弹窗取消无写入、分页上限 50、非法月份 400；
+- 生产数据计数保持 14/3/15，Pending 考勤 7 条不变。
+
 仍待完成：
 
-- 发布后真实浏览器复测；
 - 微信开发者工具/真机复测；
 - 门店财务跨店真实负向验证；
 - 2026-08 已发放异常数据确认与历史数据修复；
