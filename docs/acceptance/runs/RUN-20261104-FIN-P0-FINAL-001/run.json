@@ -1,7 +1,7 @@
 {
   "runId": "RUN-20261104-FIN-P0-FINAL-001",
   "createdAt": "2026-11-04T12:53:12+08:00",
-  "status": "IN_PROGRESS",
+  "status": "STALE",
   "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
   "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
   "oracleId": "ZDQ-FIN-20261104-V0.1",
@@ -36,5 +36,6 @@
     "blocked": 8,
     "notRun": 0
   },
-  "finishedAt": "2026-11-04T12:53:12+08:00"
+  "finishedAt": "2026-11-04T12:53:12+08:00",
+  "staleReason": "门禁新增表单重开、异步竞态、通用财务表单和App同源P0，原14条最终RUN不再覆盖当前P0集合"
 }

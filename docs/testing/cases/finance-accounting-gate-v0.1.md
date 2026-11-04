@@ -2,8 +2,8 @@
 
 - suiteId：`SUITE-FIN-ACCOUNTING-GATE-V0.1`
 - oracleId：`ZDQ-FIN-20261104-V0.1`
-- 用例数：22
-- P0：14
+- 用例数：25
+- P0：17
 - 生成命令：`python3 docs/testing/scripts/finance_gate.py validate`
 
 | 用例 | 优先级 | 角色 | 端面 | 场景 |
@@ -15,7 +15,7 @@
 | TC-FIN-ATTENDANCE-STATE-BYPASS-005 | P0 | Finance, Boss, StoreManager | API, Web | negative, order, permission |
 | TC-FIN-ATTENDANCE-CONFIRMED-EDIT-006 | P0 | Finance, StoreManager | Web, API | negative, order |
 | TC-FIN-FINANCE-STORE-SCOPE-007 | P0 | Finance, StoreManager | Web, App, API | permission, negative |
-| TC-FIN-ATTENDANCE-FORM-RESET-008 | P1 | Finance | Web, App | negative, recovery, boundary |
+| TC-FIN-ATTENDANCE-FORM-RESET-008 | P0 | Finance | Web | negative, recovery, boundary, order |
 | TC-FIN-PAYROLL-ENUM-PARITY-009 | P1 | Finance, StoreManager, Employee | Web, App, API | parity, negative |
 | TC-FIN-PAYROLL-REBUILD-CLEAN-010 | P1 | Finance | API | boundary, order |
 | TC-FIN-SALARY-PAYABLE-ONCE-011 | P0 | Boss, StoreManager | API, Web | happy, concurrency |
@@ -30,6 +30,9 @@
 | TC-FIN-LEDGER-REPORT-PARITY-020 | P1 | Finance, Boss | Web, App, API | boundary, parity |
 | TC-FIN-CROSS-TENANT-021 | P0 | Finance, Boss, StoreManager | API, Web, App | permission, negative |
 | TC-FIN-VOUCHER-AUDIT-022 | P1 | Finance, Boss, StoreManager | Web, App, API | happy, negative, audit |
+| TC-FIN-ATTENDANCE-FORM-RACE-023 | P0 | Finance | Web, App, API | negative, order, recovery, parity |
+| TC-FIN-FORM-REOPEN-024 | P1 | Finance, Boss | Web, App | negative, recovery, boundary, parity |
+| TC-FIN-ATTENDANCE-FORM-APP-025 | P0 | Finance, StoreManager | App | negative, recovery, boundary, parity |
 
 ## 用例明细
 
@@ -117,17 +120,17 @@
 - 不变量：范围只从登录员工解析；页面/主接口/依赖接口同权
 - 禁止结果：伪造storeId；列表隐藏但详情成功；他店Draft被删除
 
-### TC-FIN-ATTENDANCE-FORM-RESET-008 · 切月或切员工不得沿用上一对象天数
+### TC-FIN-ATTENDANCE-FORM-RESET-008 · 新建考勤重新打开及切换员工/月份不得继承上次输入
 
-- 优先级：`P1`
+- 优先级：`P0`
 - 规则：`BR-038`
 - 夹具：`FIX-FIN-PAYROLL-01`
 - Provider：`attendance/summary/page`, `payroll/compensation/info`, `attendance/summary/save`
 - 页面：`web:/finance/employee-salaries`, `app:/subpackages/payroll/pages/attendance-edit`
-- 预期页面：新对象字段清空或重载；应出勤匹配目标方案
-- 预期状态：未提交值不进入新对象；旧响应不覆盖新选择
-- 不变量：切月切员工完整重置；请求带版本或取消
-- 禁止结果：事假串给下一员工；上月值覆盖本月；旧响应覆盖
+- 预期页面：重新打开后员工为空、各天数为0、备注为空；切换员工后旧天数、备注、应出勤和员工上下文全部清除或重新水合；切换月份后不得保留上月的正常、请假、旷工、外勤、年假、调休和备注
+- 预期状态：未保存值不得写入任何员工或月份；新员工只加载自己的薪酬方案应出勤天数；新月份重新加载目标月份方案，不沿用旧月份数据
+- 不变量：新建表单生命周期必须从空状态开始；对象或月份身份变化必须清除所有依赖字段并重新加载默认值；旧上下文值不得被提交到新上下文
+- 禁止结果：重新打开后仍显示上次录入；切换员工后仍保留上一员工天数；切换月份后仍保留上月备注或天数；应出勤沿用上一员工/月份
 
 ### TC-FIN-PAYROLL-ENUM-PARITY-009 · Web/App 必须正确识别 CamelCase 薪酬枚举
 
@@ -296,4 +299,40 @@
 - 预期状态：凭证只引用真实流水；高风险动作留痕
 - 不变量：凭据金额不符；无原因作废；删除不可追溯
 - 禁止结果：finance/receipt/info；finance/payment/page；finance/ledger/page
+
+### TC-FIN-ATTENDANCE-FORM-RACE-023 · 切换员工或月份后旧异步响应不得覆盖新表单
+
+- 优先级：`P0`
+- 规则：`BR-038`
+- 夹具：`FIX-FIN-PAYROLL-01`
+- Provider：`attendance/summary/page`, `payroll/compensation/info`, `attendance/summary/save`
+- 页面：`web:/finance/employee-salaries`, `app:/subpackages/payroll/pages/attendance-edit`
+- 预期页面：页面最终显示员工B和B的应出勤；旧响应不得把员工、天数、备注或应出勤恢复成A的数据
+- 预期状态：请求版本或取消机制阻止旧响应写回；提交只使用当前选中的员工和月份
+- 不变量：异步响应必须绑定请求上下文版本；上下文变化后旧响应只能被丢弃；页面显示和最终提交对象必须一致
+- 禁止结果：旧响应覆盖新员工；旧月份方案覆盖新月份；页面显示B但提交A的empId；快速切换后出现混合字段
+
+### TC-FIN-FORM-REOPEN-024 · 财务新建表单关闭重开和对象切换不得继承上次输入
+
+- 优先级：`P1`
+- 规则：`BR-055`, `DEC-089`
+- 夹具：`FIX-FIN-ORG-01`
+- Provider：`expense/expenses/save`, `finance/receipt/save`, `finance/payment/save`, `payroll/compensation/save`
+- 页面：`web:/finance/expenses`, `web:/finance/receipts`, `web:/finance/payments`, `app:/subpackages/finance/pages/expense-edit`, `app:/subpackages/payroll/pages/compensation-edit`
+- 预期页面：重新打开为空白新建状态；切换对象后旧金额、备注、归属和附件状态被清除；编辑既有对象时只水合该对象真实数据
+- 预期状态：未保存数据不进入新对象；切换对象不保留旧对象ID；编辑状态和数据来源可区分
+- 不变量：新建、编辑、取消、保存成功、保存失败必须有明确表单生命周期；对象切换必须清理依赖字段；旧请求不得覆盖新模式
+- 禁止结果：重开后显示上一笔金额；切换员工后保留旧金额；切换项目后保留旧附件；新建提交引用旧对象ID
+
+### TC-FIN-ATTENDANCE-FORM-APP-025 · App新建考勤重开与切换员工/月份不得继承上次输入
+
+- 优先级：`P0`
+- 规则：`BR-038`
+- 夹具：`FIX-FIN-PAYROLL-01`
+- Provider：`attendance/summary/page`, `payroll/compensation/info`, `attendance/summary/save`
+- 页面：`app:/subpackages/payroll/pages/attendance-edit`, `app:/subpackages/payroll/pages/attendance-list`
+- 预期页面：重开后页面为空状态；切换员工后旧天数、备注、应出勤全部重置；切换月份后旧月份数据不保留
+- 预期状态：新对象不继承旧上下文；最终提交empId和month与页面当前选择一致
+- 不变量：App表单生命周期与Web同源；页面、最终提交对象与服务端接收对象一致
+- 禁止结果：重开保留上次输入；切员工保留旧天数；切月份保留旧备注；提交旧empId或month
 

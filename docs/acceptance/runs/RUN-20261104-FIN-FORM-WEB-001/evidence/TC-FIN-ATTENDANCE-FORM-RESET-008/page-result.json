@@ -1,0 +1,12 @@
+{
+  "role": "Finance",
+  "environment": "prod-readonly",
+  "path": "/finance/employee-salaries → 月度考勤",
+  "month": "2026-11/2026-10",
+  "observations": [
+    {"scenario": "关闭重开", "before": {"normalDays": 5, "personalLeaveDays": 2, "remark": "上一次录入残留测试"}, "after": {"employee": "未选择", "normalDays": 0, "personalLeaveDays": 0, "remark": ""}},
+    {"scenario": "切换员工", "beforeEmployee": "徐勇", "before": {"normalDays": 5, "personalLeaveDays": 2, "remark": "员工A残留"}, "afterEmployee": "王宏文", "after": {"scheduledDays": 24, "normalDays": 0, "personalLeaveDays": 0, "remark": ""}},
+    {"scenario": "切换月份", "beforeMonth": "2026-11", "before": {"normalDays": 3, "personalLeaveDays": 1, "remark": "切换月份残留"}, "afterMonth": "2026-10", "after": {"scheduledDays": 27, "normalDays": 0, "personalLeaveDays": 0, "remark": ""}}
+  ],
+  "saved": false
+}

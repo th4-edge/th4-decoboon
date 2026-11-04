@@ -1,0 +1,32 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-FORM-APP-025",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-04T13:03:34+08:00",
+  "finishedAt": "2026-11-04T13:03:34+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": "App真机/开发者工具交互尚未执行",
+  "notes": "",
+  "caseDefinitionHash": "c1fc1f9d8f402d5e037cb21f3ba13bc71a0baa28f0e88fb12a29c088f13fd108",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038"
+  ],
+  "pageTargets": [
+    "app:/subpackages/payroll/pages/attendance-edit",
+    "app:/subpackages/payroll/pages/attendance-list"
+  ],
+  "providerRoutes": [
+    "attendance/summary/page",
+    "payroll/compensation/info",
+    "attendance/summary/save"
+  ]
+}

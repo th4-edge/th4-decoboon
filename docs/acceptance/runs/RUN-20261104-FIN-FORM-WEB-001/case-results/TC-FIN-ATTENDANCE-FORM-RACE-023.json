@@ -1,0 +1,32 @@
+{
+  "caseId": "TC-FIN-ATTENDANCE-FORM-RACE-023",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-04T13:03:34+08:00",
+  "finishedAt": "2026-11-04T13:03:34+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": "旧请求延迟与快速切换尚未执行",
+  "notes": "",
+  "caseDefinitionHash": "2294e6c08dbea603899bbfc0e71c171deee0f6dbf62e51f39b7ac1aab8f56df5",
+  "priority": "P0",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-038"
+  ],
+  "pageTargets": [
+    "web:/finance/employee-salaries",
+    "app:/subpackages/payroll/pages/attendance-edit"
+  ],
+  "providerRoutes": [
+    "attendance/summary/page",
+    "payroll/compensation/info",
+    "attendance/summary/save"
+  ]
+}

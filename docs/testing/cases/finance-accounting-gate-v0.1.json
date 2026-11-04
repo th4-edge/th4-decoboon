@@ -508,20 +508,20 @@
     },
     {
       "id": "TC-FIN-ATTENDANCE-FORM-RESET-008",
-      "title": "切月或切员工不得沿用上一对象天数",
-      "priority": "P1",
+      "title": "新建考勤重新打开及切换员工/月份不得继承上次输入",
+      "priority": "P0",
       "area": "FINANCE",
       "roles": [
         "Finance"
       ],
       "surfaces": [
-        "Web",
-        "App"
+        "Web"
       ],
       "scenarioTypes": [
         "negative",
         "recovery",
-        "boundary"
+        "boundary",
+        "order"
       ],
       "businessRuleIds": [
         "BR-038"
@@ -531,29 +531,37 @@
       ],
       "fixture": "FIX-FIN-PAYROLL-01",
       "preconditions": [
-        "上一对象有非零天数"
+        "考勤录入抽屉已打开",
+        "上一员工或上一月份已输入非零天数、备注并留下未保存数据"
       ],
       "steps": [
-        "切月份",
-        "切员工",
-        "关闭重开"
+        "为员工A录入5天正常、2天事假和备注",
+        "关闭抽屉后再次打开新建录入",
+        "重新选择员工A并录入数据",
+        "直接切换到员工B",
+        "直接切换工资月份",
+        "刷新页面后再次进入新建录入"
       ],
       "expectedPage": [
-        "新对象字段清空或重载",
-        "应出勤匹配目标方案"
+        "重新打开后员工为空、各天数为0、备注为空",
+        "切换员工后旧天数、备注、应出勤和员工上下文全部清除或重新水合",
+        "切换月份后不得保留上月的正常、请假、旷工、外勤、年假、调休和备注"
       ],
       "expectedState": [
-        "未提交值不进入新对象",
-        "旧响应不覆盖新选择"
+        "未保存值不得写入任何员工或月份",
+        "新员工只加载自己的薪酬方案应出勤天数",
+        "新月份重新加载目标月份方案，不沿用旧月份数据"
       ],
       "expectedInvariants": [
-        "切月切员工完整重置",
-        "请求带版本或取消"
+        "新建表单生命周期必须从空状态开始",
+        "对象或月份身份变化必须清除所有依赖字段并重新加载默认值",
+        "旧上下文值不得被提交到新上下文"
       ],
       "forbiddenOutcomes": [
-        "事假串给下一员工",
-        "上月值覆盖本月",
-        "旧响应覆盖"
+        "重新打开后仍显示上次录入",
+        "切换员工后仍保留上一员工天数",
+        "切换月份后仍保留上月备注或天数",
+        "应出勤沿用上一员工/月份"
       ],
       "providerRoutes": [
         "attendance/summary/page",
@@ -567,8 +575,9 @@
       "evidenceRequired": [
         "page_path",
         "before_after_screenshot",
-        "provider_response",
-        "state_readback"
+        "interaction_sequence",
+        "state_readback",
+        "web_app_parity"
       ],
       "executionMode": "hybrid",
       "status": "READY"
@@ -1635,6 +1644,240 @@
         "voucher_snapshot",
         "provider_response",
         "audit_state_readback"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-ATTENDANCE-FORM-RACE-023",
+      "title": "切换员工或月份后旧异步响应不得覆盖新表单",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Finance"
+      ],
+      "surfaces": [
+        "Web",
+        "App",
+        "API"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "order",
+        "recovery",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-038"
+      ],
+      "objectTypes": [
+        "AttendanceSummary",
+        "CompensationScheme",
+        "Employee"
+      ],
+      "fixture": "FIX-FIN-PAYROLL-01",
+      "preconditions": [
+        "员工A薪酬方案请求或考勤加载请求较慢",
+        "用户已切换到员工B或下一月份"
+      ],
+      "steps": [
+        "选择员工A触发应出勤加载",
+        "在A响应返回前切换到员工B",
+        "让A的旧响应后返回",
+        "在月份切换时重复相同操作"
+      ],
+      "expectedPage": [
+        "页面最终显示员工B和B的应出勤",
+        "旧响应不得把员工、天数、备注或应出勤恢复成A的数据"
+      ],
+      "expectedState": [
+        "请求版本或取消机制阻止旧响应写回",
+        "提交只使用当前选中的员工和月份"
+      ],
+      "expectedInvariants": [
+        "异步响应必须绑定请求上下文版本",
+        "上下文变化后旧响应只能被丢弃",
+        "页面显示和最终提交对象必须一致"
+      ],
+      "forbiddenOutcomes": [
+        "旧响应覆盖新员工",
+        "旧月份方案覆盖新月份",
+        "页面显示B但提交A的empId",
+        "快速切换后出现混合字段"
+      ],
+      "providerRoutes": [
+        "attendance/summary/page",
+        "payroll/compensation/info",
+        "attendance/summary/save"
+      ],
+      "pageTargets": [
+        "web:/finance/employee-salaries",
+        "app:/subpackages/payroll/pages/attendance-edit"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "interaction_sequence",
+        "network_trace",
+        "before_after_screenshot",
+        "web_app_parity"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-FORM-REOPEN-024",
+      "title": "财务新建表单关闭重开和对象切换不得继承上次输入",
+      "priority": "P1",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "Boss"
+      ],
+      "surfaces": [
+        "Web",
+        "App"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "recovery",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-055",
+        "DEC-089"
+      ],
+      "objectTypes": [
+        "Expense",
+        "Receipt",
+        "Payment",
+        "CompensationScheme"
+      ],
+      "fixture": "FIX-FIN-ORG-01",
+      "preconditions": [
+        "财务新建表单已输入金额、备注或选择项目/员工",
+        "用户取消或关闭后重新打开"
+      ],
+      "steps": [
+        "在费用、收款、付款、薪酬方案新建表单分别输入数据",
+        "取消或关闭表单后重新打开",
+        "在员工、项目、账户等对象间切换"
+      ],
+      "expectedPage": [
+        "重新打开为空白新建状态",
+        "切换对象后旧金额、备注、归属和附件状态被清除",
+        "编辑既有对象时只水合该对象真实数据"
+      ],
+      "expectedState": [
+        "未保存数据不进入新对象",
+        "切换对象不保留旧对象ID",
+        "编辑状态和数据来源可区分"
+      ],
+      "expectedInvariants": [
+        "新建、编辑、取消、保存成功、保存失败必须有明确表单生命周期",
+        "对象切换必须清理依赖字段",
+        "旧请求不得覆盖新模式"
+      ],
+      "forbiddenOutcomes": [
+        "重开后显示上一笔金额",
+        "切换员工后保留旧金额",
+        "切换项目后保留旧附件",
+        "新建提交引用旧对象ID"
+      ],
+      "providerRoutes": [
+        "expense/expenses/save",
+        "finance/receipt/save",
+        "finance/payment/save",
+        "payroll/compensation/save"
+      ],
+      "pageTargets": [
+        "web:/finance/expenses",
+        "web:/finance/receipts",
+        "web:/finance/payments",
+        "app:/subpackages/finance/pages/expense-edit",
+        "app:/subpackages/payroll/pages/compensation-edit"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "interaction_sequence",
+        "before_after_screenshot",
+        "state_readback",
+        "web_app_parity"
+      ],
+      "executionMode": "hybrid",
+      "status": "READY"
+    },
+    {
+      "id": "TC-FIN-ATTENDANCE-FORM-APP-025",
+      "title": "App新建考勤重开与切换员工/月份不得继承上次输入",
+      "priority": "P0",
+      "area": "FINANCE",
+      "roles": [
+        "Finance",
+        "StoreManager"
+      ],
+      "surfaces": [
+        "App"
+      ],
+      "scenarioTypes": [
+        "negative",
+        "recovery",
+        "boundary",
+        "parity"
+      ],
+      "businessRuleIds": [
+        "BR-038"
+      ],
+      "objectTypes": [
+        "AttendanceSummary",
+        "CompensationScheme",
+        "Employee"
+      ],
+      "fixture": "FIX-FIN-PAYROLL-01",
+      "preconditions": [
+        "App月度考勤新建页可用",
+        "上一员工或月份已输入非零数据且未保存"
+      ],
+      "steps": [
+        "进入录入页选择员工A并输入请假天数和备注",
+        "返回后重新进入新建录入",
+        "选择员工A输入数据后切换员工B",
+        "切换工资月份"
+      ],
+      "expectedPage": [
+        "重开后页面为空状态",
+        "切换员工后旧天数、备注、应出勤全部重置",
+        "切换月份后旧月份数据不保留"
+      ],
+      "expectedState": [
+        "新对象不继承旧上下文",
+        "最终提交empId和month与页面当前选择一致"
+      ],
+      "expectedInvariants": [
+        "App表单生命周期与Web同源",
+        "页面、最终提交对象与服务端接收对象一致"
+      ],
+      "forbiddenOutcomes": [
+        "重开保留上次输入",
+        "切员工保留旧天数",
+        "切月份保留旧备注",
+        "提交旧empId或month"
+      ],
+      "providerRoutes": [
+        "attendance/summary/page",
+        "payroll/compensation/info",
+        "attendance/summary/save"
+      ],
+      "pageTargets": [
+        "app:/subpackages/payroll/pages/attendance-edit",
+        "app:/subpackages/payroll/pages/attendance-list"
+      ],
+      "evidenceRequired": [
+        "page_path",
+        "interaction_sequence",
+        "before_after_screenshot",
+        "state_readback",
+        "web_app_parity"
       ],
       "executionMode": "hybrid",
       "status": "READY"

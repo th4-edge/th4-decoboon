@@ -1,28 +1,28 @@
 {
-  "generatedAt": "2026-11-04T12:53:12+08:00",
+  "generatedAt": "2026-11-04T13:03:43+08:00",
   "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
   "oracleId": "ZDQ-FIN-20261104-V0.1",
   "businessCommit": "ab6d4d8",
-  "totalCases": 22,
+  "totalCases": 25,
   "priority": {
-    "P0": 14,
+    "P0": 17,
     "P1": 8
   },
   "surfaces": {
-    "API": 21,
-    "App": 13,
-    "Web": 20
+    "API": 22,
+    "App": 15,
+    "Web": 22
   },
   "scenarioTypes": {
     "audit": 1,
-    "boundary": 10,
+    "boundary": 12,
     "concurrency": 3,
     "happy": 9,
-    "negative": 11,
-    "order": 7,
-    "parity": 2,
+    "negative": 14,
+    "order": 9,
+    "parity": 5,
     "permission": 6,
-    "recovery": 5
+    "recovery": 8
   },
   "providers": [
     "attendance/summary/info",
@@ -52,6 +52,7 @@
     "payroll/commission/adjustment/save",
     "payroll/commission/page",
     "payroll/compensation/info",
+    "payroll/compensation/save",
     "payroll/item/page",
     "payroll/payslip/info",
     "payroll/payslip/my/page",

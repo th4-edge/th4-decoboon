@@ -1,0 +1,37 @@
+{
+  "caseId": "TC-FIN-FORM-REOPEN-024",
+  "status": "BLOCKED",
+  "startedAt": "2026-11-04T13:03:34+08:00",
+  "finishedAt": "2026-11-04T13:03:34+08:00",
+  "executor": "codex",
+  "role": "Boss",
+  "surface": "Web",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
+  "steps": [],
+  "actualPage": [],
+  "actualState": [],
+  "evidence": [],
+  "defectIds": [],
+  "blockedReason": "其他财务表单通用重开测试尚未执行",
+  "notes": "",
+  "caseDefinitionHash": "9c57cbd861dbd82cd49a45837382804bf1cb5ee8485779d4f4e01497fbe1fb97",
+  "priority": "P1",
+  "area": "FINANCE",
+  "businessRuleIds": [
+    "BR-055",
+    "DEC-089"
+  ],
+  "pageTargets": [
+    "web:/finance/expenses",
+    "web:/finance/receipts",
+    "web:/finance/payments",
+    "app:/subpackages/finance/pages/expense-edit",
+    "app:/subpackages/payroll/pages/compensation-edit"
+  ],
+  "providerRoutes": [
+    "expense/expenses/save",
+    "finance/receipt/save",
+    "finance/payment/save",
+    "payroll/compensation/save"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "runId": "RUN-20261104-FIN-FORM-WEB-001",
+  "createdAt": "2026-11-04T13:03:34+08:00",
+  "status": "IN_PROGRESS",
+  "planId": "TP-20261104-FIN-ACCOUNTING-GATE",
+  "suiteId": "SUITE-FIN-ACCOUNTING-GATE-V0.1",
+  "oracleId": "ZDQ-FIN-20261104-V0.1",
+  "oracleGitCommit": "ab6d4d8",
+  "backendCommit": "5393770c228d3bf0d49fefcd0ac51e1b103ee0de",
+  "webCommit": "e61d404f3dac6c5ead5ee0409f00248ad4396645",
+  "appCommit": "f82622660f2c58c8eb552749de9b7c9f0e01478a",
+  "artifactHashes": {},
+  "environment": "prod-readonly",
+  "tenantId": "1790066191585976744",
+  "dataPrefix": "AUDIT-20261104-RUN20261104FINFO-",
+  "caseIds": [
+    "TC-FIN-ATTENDANCE-FORM-RESET-008",
+    "TC-FIN-ATTENDANCE-FORM-RACE-023",
+    "TC-FIN-FORM-REOPEN-024",
+    "TC-FIN-ATTENDANCE-FORM-APP-025"
+  ],
+  "summary": {
+    "total": 4,
+    "pass": 1,
+    "fail": 0,
+    "blocked": 3,
+    "notRun": 0
+  }
+}
