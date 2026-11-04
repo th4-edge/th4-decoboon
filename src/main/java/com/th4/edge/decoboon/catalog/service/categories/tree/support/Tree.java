@@ -37,6 +37,12 @@ public class Tree implements com.th4.edge.decoboon.catalog.service.categories.tr
     @NotNull
     private ItemType type;
 
+    @AutoInject
+    private Boolean includeInactive;
+
+    @AutoInject
+    private Boolean active;
+
     @User
     private Employee employee;
 
@@ -52,7 +58,9 @@ public class Tree implements com.th4.edge.decoboon.catalog.service.categories.tr
     public CatalogTree call(CatalogItem request) {
         Employee current = context.requireEmployee(employee);
         Long comId = current.getCompany().getComId();
-        List<Object[]> facets = repository.findFacetsByCompanyAndType(comId, type);
+        Boolean activeFilter = active;
+        if (activeFilter == null && !Boolean.TRUE.equals(includeInactive)) activeFilter = true;
+        List<Object[]> facets = repository.findFacetsByCompanyAndTypeAndActive(comId, type, activeFilter);
         Set<String> categories = new LinkedHashSet<>();
         Map<String, List<String>> brands = new LinkedHashMap<>();
         Map<String, List<String>> specs = new LinkedHashMap<>();
@@ -88,7 +96,9 @@ public class Tree implements com.th4.edge.decoboon.catalog.service.categories.tr
         tree.setSpecs(specs);
         tree.setSeriesByBrand(seriesByBrand);
         tree.setSpecsBySeries(specsBySeries);
-        tree.setTotal(repository.countByCompany_ComIdAndTypeAndActiveTrue(comId, type));
+        tree.setTotal(activeFilter == null
+                ? repository.countByCompany_ComIdAndType(comId, type)
+                : repository.countByCompany_ComIdAndTypeAndActive(comId, type, activeFilter));
         return tree;
     }
 

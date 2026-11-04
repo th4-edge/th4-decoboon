@@ -67,6 +67,9 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
     @AutoInject
     private Boolean includeInactive;
 
+    @AutoInject
+    private Boolean active;
+
     @User
     private Employee employee;
 
@@ -90,7 +93,9 @@ public class Page implements com.th4.edge.decoboon.catalog.service.items.page.Pa
             if (itemId != null) {
                 predicates.add(builder.equal(root.get("itemId"), itemId));
             }
-            if (!Boolean.TRUE.equals(includeInactive)) {
+            if (active != null) {
+                predicates.add(builder.equal(root.get("active"), active));
+            } else if (!Boolean.TRUE.equals(includeInactive)) {
                 predicates.add(builder.isTrue(root.get("active")));
             }
             if (category != null && !category.isBlank()) {

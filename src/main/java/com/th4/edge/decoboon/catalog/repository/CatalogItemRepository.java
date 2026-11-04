@@ -18,6 +18,8 @@ public interface CatalogItemRepository extends JpaRepository<CatalogItem, Long>,
 
     long countByCompany_ComIdAndTypeAndActiveTrue(Long comId, ItemType type);
 
+    long countByCompany_ComIdAndTypeAndActive(Long comId, ItemType type, Boolean active);
+
     Optional<CatalogItem> findByItemIdAndCompany_ComId(Long itemId, Long comId);
 
     /** 取该企业该类型下编码最大的一条，用于自动生成下一个编号。 */
@@ -26,10 +28,13 @@ public interface CatalogItemRepository extends JpaRepository<CatalogItem, Long>,
     @Query("""
             select distinct item.category, item.brand, item.series, item.spec
             from CatalogItem item
-            where item.company.comId = :comId and item.type = :type and item.active = true
+            where item.company.comId = :comId and item.type = :type
+              and (:active is null or item.active = :active)
             order by item.category, item.brand, item.series, item.spec
             """)
-    List<Object[]> findFacetsByCompanyAndType(@Param("comId") Long comId, @Param("type") ItemType type);
+    List<Object[]> findFacetsByCompanyAndTypeAndActive(@Param("comId") Long comId,
+                                                       @Param("type") ItemType type,
+                                                       @Param("active") Boolean active);
 
     List<CatalogItem> findByCompany_ComIdAndTypeAndActiveTrueOrderByCategoryAscBrandAscSeriesAscNameAsc(
             Long comId, ItemType type);

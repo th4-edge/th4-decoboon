@@ -27,11 +27,11 @@ class CatalogTreeProjectionTest {
         CatalogContext context = mock(CatalogContext.class);
         Employee employee = employee();
         when(context.requireEmployee(employee)).thenReturn(employee);
-        when(repository.findFacetsByCompanyAndType(1L, ItemType.Material)).thenReturn(List.of(
+        when(repository.findFacetsByCompanyAndTypeAndActive(1L, ItemType.Material, true)).thenReturn(List.of(
                 new Object[]{"瓷砖", null, null, null},
                 new Object[]{"瓷砖", "马可波罗", "800系列", "800*800"}
         ));
-        when(repository.countByCompany_ComIdAndTypeAndActiveTrue(1L, ItemType.Material)).thenReturn(2L);
+        when(repository.countByCompany_ComIdAndTypeAndActive(1L, ItemType.Material, true)).thenReturn(2L);
 
         Tree provider = new Tree(repository, context);
         ReflectionTestUtils.setField(provider, "type", ItemType.Material);
@@ -46,6 +46,29 @@ class CatalogTreeProjectionTest {
 
         AllowProperties allow = Tree.class.getAnnotation(Properties.class).allow()[0];
         assertThat(allow.properties()).contains("seriesByBrand", "specsBySeries");
+    }
+
+    @Test
+    void shouldProjectInactiveFacetsWhenRequested() {
+        CatalogItemRepository repository = mock(CatalogItemRepository.class);
+        CatalogContext context = mock(CatalogContext.class);
+        Employee employee = employee();
+        when(context.requireEmployee(employee)).thenReturn(employee);
+        when(repository.findFacetsByCompanyAndTypeAndActive(1L, ItemType.Material, false))
+                .thenReturn(List.<Object[]>of(new Object[]{"旧瓷砖", "旧品牌", null, "600*600"}));
+        when(repository.countByCompany_ComIdAndTypeAndActive(1L, ItemType.Material, false)).thenReturn(1L);
+
+        Tree provider = new Tree(repository, context);
+        ReflectionTestUtils.setField(provider, "type", ItemType.Material);
+        ReflectionTestUtils.setField(provider, "includeInactive", true);
+        ReflectionTestUtils.setField(provider, "active", false);
+        ReflectionTestUtils.setField(provider, "employee", employee);
+
+        CatalogTree tree = provider.call(new CatalogItem());
+
+        assertThat(tree.getCategories()).containsExactly("旧瓷砖");
+        assertThat(tree.getBrands().get("旧瓷砖")).containsExactly("旧品牌");
+        assertThat(tree.getTotal()).isEqualTo(1L);
     }
 
     private Employee employee() {
