@@ -2,6 +2,7 @@ package com.th4.edge.decoboon.payroll.service.sheets.page.support;
 
 import com.th4.edge.decoboon.common.context.StoreFilterContext;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollSheetScopeContext;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Note("工资单分页")
 @Properties(allow = @AllowProperties(model = PayrollSheet.class,
         properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
-                "totalDeductionAmount", "totalNetAmount", "confirmedAt", "createTime"}))
+                "totalDeductionAmount", "totalNetAmount", "confirmedAt", "createTime", "mixedStore"}))
 @Service("payroll/sheet/page")
 @Scope(ScopeTypes.PROTOTYPE)
 public class Page implements com.th4.edge.decoboon.payroll.service.sheets.page.Page {
@@ -42,10 +43,14 @@ public class Page implements com.th4.edge.decoboon.payroll.service.sheets.page.P
 
     private final PayrollSheetRepository repository;
     private final PayrollAccessContext accessContext;
+    private final PayrollSheetScopeContext scopeContext;
 
-    public Page(PayrollSheetRepository repository, PayrollAccessContext accessContext) {
+    public Page(PayrollSheetRepository repository,
+                PayrollAccessContext accessContext,
+                PayrollSheetScopeContext scopeContext) {
         this.repository = repository;
         this.accessContext = accessContext;
+        this.scopeContext = scopeContext;
     }
 
     @Override
@@ -59,6 +64,7 @@ public class Page implements com.th4.edge.decoboon.payroll.service.sheets.page.P
                 Sort.Order.desc("period"),
                 Sort.Order.desc("sheetId")));
         Specification<PayrollSheet> specification = accessContext.visibleSheets(currentEmployee, storeFilter);
-        return repository.findAll(specification, pageable);
+        var pageResult = repository.findAll(specification, pageable);
+        return scopeContext.scopePage(currentEmployee.getCompany().getComId(), pageResult, storeFilter);
     }
 }

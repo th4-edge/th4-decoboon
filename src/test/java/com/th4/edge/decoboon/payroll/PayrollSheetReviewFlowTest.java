@@ -25,6 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,8 +46,26 @@ class PayrollSheetReviewFlowTest {
         PayrollSheet result = f.context.submitReview(f.finance, 10L);
 
         assertThat(result.getStatus()).isEqualTo(PayrollSheetStatus.Pending);
+        verify(f.access).requireStoreItemsInStore(f.finance, List.of(f.item));
         verify(f.audit).record(f.finance, result, "SUBMIT_REVIEW",
                 PayrollSheetStatus.Draft, PayrollSheetStatus.Pending, null);
+    }
+
+    @Test
+    void shouldRejectSubmitReviewWhenSheetContainsOtherStoreItems() {
+        Fixture f = fixture(PayrollSheetStatus.Draft);
+        when(f.access.requireEditor(f.finance)).thenReturn(f.finance);
+        when(f.access.visibleSheets(f.finance)).thenReturn(mock(Specification.class));
+        when(f.sheets.findOne(any(Specification.class))).thenReturn(Optional.of(f.sheet));
+        when(f.items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L))
+                .thenReturn(List.of(f.item));
+        doThrow(new DefinedException(new com.th4.edge.framework.exception.DefaultErrorCode(
+                "403", "工资单包含其他门店工资项，不能由当前门店账号整单操作")))
+                .when(f.access).requireStoreItemsInStore(f.finance, List.of(f.item));
+
+        assertThatThrownBy(() -> f.context.submitReview(f.finance, 10L))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("其他门店工资项");
     }
 
     @Test

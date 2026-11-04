@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.payroll.service.sheets.info.support;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollSheetScopeContext;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.framework.core.ScopeTypes;
@@ -23,7 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Properties(allow = {
         @AllowProperties(model = PayrollSheet.class,
                 properties = {"sheetId", "period", "status", "attendanceComplete", "commissionComplete", "totalGrossAmount",
-                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "remark", "createdBy", "createTime"}),
+                "totalDeductionAmount", "totalNetAmount", "confirmedBy", "confirmedAt", "remark", "createdBy", "createTime",
+                "mixedStore"}),
         @AllowProperties(model = Employee.class, properties = {"empId", "name", "role"})
 })
 @Service("payroll/sheet/info")
@@ -35,13 +38,22 @@ public class Info implements com.th4.edge.decoboon.payroll.service.sheets.info.I
     @AutoInject
     @NotNull
     private Long sheetId;
+    @AutoInject
+    private Long storeId;
 
     private final PayrollSheetRepository repository;
     private final PayrollAccessContext accessContext;
+    private final StoreFilterContext storeFilterContext;
+    private final PayrollSheetScopeContext scopeContext;
 
-    public Info(PayrollSheetRepository repository, PayrollAccessContext accessContext) {
+    public Info(PayrollSheetRepository repository,
+                PayrollAccessContext accessContext,
+                StoreFilterContext storeFilterContext,
+                PayrollSheetScopeContext scopeContext) {
         this.repository = repository;
         this.accessContext = accessContext;
+        this.storeFilterContext = storeFilterContext;
+        this.scopeContext = scopeContext;
     }
 
     @Override
@@ -49,7 +61,9 @@ public class Info implements com.th4.edge.decoboon.payroll.service.sheets.info.I
     public PayrollSheet call(PayrollSheet request) {
         Employee current = accessContext.requireManager(employee);
         Specification<PayrollSheet> byId = (root, query, cb) -> cb.equal(root.get("sheetId"), sheetId);
-        return repository.findOne(byId.and(accessContext.visibleSheets(current)))
+        PayrollSheet sheet = repository.findOne(byId.and(accessContext.visibleSheets(current)))
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "工资单不存在或无权访问")));
+        Long storeFilter = storeFilterContext.resolve(current, storeId);
+        return scopeContext.scope(current.getCompany().getComId(), sheet, storeFilter);
     }
 }

@@ -98,6 +98,10 @@ public class PayrollSheet extends AuditModel {
     @Column(length = 500)
     private String remark;
 
+    /** 门店范围返回的只读标记：工资单内存在其他门店工资项。 */
+    @Transient
+    private Boolean mixedStore = Boolean.FALSE;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
     private Employee createdBy;
@@ -132,6 +136,8 @@ public class PayrollSheet extends AuditModel {
     public void setConfirmedAt(LocalDateTime confirmedAt) { this.confirmedAt = confirmedAt; }
     public String getRemark() { return remark; }
     public void setRemark(String remark) { this.remark = remark; }
+    public Boolean getMixedStore() { return mixedStore; }
+    public void setMixedStore(Boolean mixedStore) { this.mixedStore = mixedStore; }
     public Employee getCreatedBy() { return createdBy; }
     public void setCreatedBy(Employee createdBy) { this.createdBy = createdBy; }
 }

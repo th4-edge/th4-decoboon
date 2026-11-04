@@ -12,6 +12,7 @@ import java.util.Set;
 
 public interface PayrollItemRepository extends JpaRepository<PayrollItem, Long>, JpaSpecificationExecutor<PayrollItem> {
     List<PayrollItem> findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(Long comId, Long sheetId);
+    List<PayrollItem> findByCompany_ComIdAndSheet_SheetIdInOrderByEmployee_NameAsc(Long comId, Collection<Long> sheetIds);
     List<PayrollItem> findByCompany_ComIdAndEmployee_EmpIdAndSheet_PeriodOrderByItemIdAsc(Long comId, Long empId, String period);
     Optional<PayrollItem> findByCompany_ComIdAndSheet_SheetIdAndEmployee_EmpIdAndAttributionKey(Long comId, Long sheetId, Long empId, String attributionKey);
     boolean existsByCompany_ComIdAndEmployee_EmpId(Long comId, Long empId);

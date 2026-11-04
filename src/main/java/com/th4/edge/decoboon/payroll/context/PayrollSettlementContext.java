@@ -67,6 +67,7 @@ public class PayrollSettlementContext {
         List<PayrollItem> items = itemRepository
                 .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(
                         current.getCompany().getComId(), sheet.getSheetId());
+        accessContext.requireStoreItemsInStore(current, items);
         validateConfirmable(sheet, items);
         PayrollSheetStatus before = sheet.getStatus();
         sheet.setStatus(PayrollSheetStatus.Pending);

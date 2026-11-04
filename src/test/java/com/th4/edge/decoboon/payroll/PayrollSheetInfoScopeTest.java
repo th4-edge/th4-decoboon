@@ -1,6 +1,8 @@
 package com.th4.edge.decoboon.payroll;
 
+import com.th4.edge.decoboon.common.context.StoreFilterContext;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollSheetScopeContext;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.decoboon.payroll.service.sheets.info.support.Info;
@@ -27,12 +29,16 @@ class PayrollSheetInfoScopeTest {
         PayrollSheet sheet = sheet();
         PayrollSheetRepository repository = mock(PayrollSheetRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
+        StoreFilterContext storeFilter = mock(StoreFilterContext.class);
+        PayrollSheetScopeContext scope = mock(PayrollSheetScopeContext.class);
         Employee manager = employee();
         when(access.requireManager(manager)).thenReturn(manager);
         when(access.visibleSheets(manager)).thenReturn(mock(Specification.class));
         when(repository.findOne(any(Specification.class))).thenReturn(Optional.of(sheet));
+        when(storeFilter.resolve(manager, null)).thenReturn(null);
+        when(scope.scope(100L, sheet, null)).thenReturn(sheet);
 
-        Info provider = new Info(repository, access);
+        Info provider = new Info(repository, access, storeFilter, scope);
         ReflectionTestUtils.setField(provider, "employee", manager);
         ReflectionTestUtils.setField(provider, "sheetId", 10L);
 
@@ -43,12 +49,14 @@ class PayrollSheetInfoScopeTest {
     void shouldHideSheetOutsideVisibleScope() {
         PayrollSheetRepository repository = mock(PayrollSheetRepository.class);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
+        StoreFilterContext storeFilter = mock(StoreFilterContext.class);
+        PayrollSheetScopeContext scope = mock(PayrollSheetScopeContext.class);
         Employee manager = employee();
         when(access.requireManager(manager)).thenReturn(manager);
         when(access.visibleSheets(manager)).thenReturn(mock(Specification.class));
         when(repository.findOne(any(Specification.class))).thenReturn(Optional.empty());
 
-        Info provider = new Info(repository, access);
+        Info provider = new Info(repository, access, storeFilter, scope);
         ReflectionTestUtils.setField(provider, "employee", manager);
         ReflectionTestUtils.setField(provider, "sheetId", 10L);
 
