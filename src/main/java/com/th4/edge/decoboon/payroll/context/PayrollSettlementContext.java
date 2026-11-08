@@ -5,12 +5,15 @@ import com.th4.edge.decoboon.finance.configure.PayableStatus;
 import com.th4.edge.decoboon.finance.configure.PayableType;
 import com.th4.edge.decoboon.finance.model.Payable;
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollItemStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.configure.PayslipStatus;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
 import com.th4.edge.decoboon.payroll.model.Payslip;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
@@ -27,6 +30,8 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** 工资单确认、员工工资应付生成和工资条准备。 */
 @Component
@@ -35,6 +40,8 @@ public class PayrollSettlementContext {
     private final PayrollAccessContext accessContext;
     private final PayrollSheetRepository sheetRepository;
     private final PayrollItemRepository itemRepository;
+    private final AttendanceSummaryRepository attendanceRepository;
+    private final PayrollAttendanceValidationContext attendanceValidationContext;
     private final PayslipRepository payslipRepository;
     private final PayableRepository payableRepository;
     private final PayrollSettlementAuditContext auditContext;
@@ -42,12 +49,16 @@ public class PayrollSettlementContext {
     public PayrollSettlementContext(PayrollAccessContext accessContext,
                                     PayrollSheetRepository sheetRepository,
                                     PayrollItemRepository itemRepository,
+                                    AttendanceSummaryRepository attendanceRepository,
+                                    PayrollAttendanceValidationContext attendanceValidationContext,
                                     PayslipRepository payslipRepository,
                                     PayableRepository payableRepository,
                                     PayrollSettlementAuditContext auditContext) {
         this.accessContext = accessContext;
         this.sheetRepository = sheetRepository;
         this.itemRepository = itemRepository;
+        this.attendanceRepository = attendanceRepository;
+        this.attendanceValidationContext = attendanceValidationContext;
         this.payslipRepository = payslipRepository;
         this.payableRepository = payableRepository;
         this.auditContext = auditContext;
@@ -68,7 +79,7 @@ public class PayrollSettlementContext {
                 .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(
                         current.getCompany().getComId(), sheet.getSheetId());
         accessContext.requireStoreItemsInStore(current, items);
-        validateConfirmable(sheet, items);
+        validateConfirmable(current, sheet, items);
         PayrollSheetStatus before = sheet.getStatus();
         sheet.setStatus(PayrollSheetStatus.Pending);
         PayrollSheet saved = sheetRepository.save(sheet);
@@ -109,17 +120,35 @@ public class PayrollSettlementContext {
                 .orElseThrow(() -> new DefinedException(new DefaultErrorCode("404", "工资单不存在或无权访问")));
     }
 
-    private void validateConfirmable(PayrollSheet sheet, List<PayrollItem> items) {
+    private void validateConfirmable(Employee current, PayrollSheet sheet, List<PayrollItem> items) {
         if (!Boolean.TRUE.equals(sheet.getAttendanceComplete())) {
             throw new DefinedException(new DefaultErrorCode("400", "考勤未确认，工资单不可确认"));
         }
         if (items.isEmpty()) {
             throw new DefinedException(new DefaultErrorCode("400", "工资单没有工资项，不可确认"));
         }
+        Map<Long, AttendanceSummary> attendanceByEmployee = attendanceRepository
+                .findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(
+                        current.getCompany().getComId(), sheet.getPeriod())
+                .stream()
+                .collect(Collectors.toMap(
+                        attendance -> attendance.getEmployee().getEmpId(),
+                        Function.identity()));
         for (PayrollItem item : items) {
             if (item.getNetAmount() == null || item.getNetAmount().signum() < 0) {
                 throw new DefinedException(new DefaultErrorCode("400", "实发为负，必须人工处理后才能确认"));
             }
+            Long employeeId = item.getEmployee() == null ? null : item.getEmployee().getEmpId();
+            AttendanceSummary attendance = attendanceByEmployee.get(employeeId);
+            if (attendance == null) {
+                throw new DefinedException(new DefaultErrorCode(
+                        "400", "工资单存在未对应考勤的员工，不可确认；请退回草稿并重新生成"));
+            }
+            if (attendance.getStatus() != AttendanceStatus.InPayroll) {
+                throw new DefinedException(new DefaultErrorCode(
+                        "400", "工资单考勤未进入工资单，不可确认；请退回草稿并重新生成"));
+            }
+            attendanceValidationContext.requireComplete(attendance);
         }
     }
 
@@ -129,18 +158,19 @@ public class PayrollSettlementContext {
         Employee current = accessContext.requireConfirmActor(principal);
         Long comId = current.getCompany().getComId();
         PayrollSheet sheet = requireVisibleSheet(current, sheetId);
-        if (sheet.getStatus() != PayrollSheetStatus.Draft && sheet.getStatus() != PayrollSheetStatus.Pending) {
-            if (sheet.getStatus() == PayrollSheetStatus.Confirmed) {
-                return sheet;
-            }
-            throw new DefinedException(new DefaultErrorCode("400", "当前工资单状态不允许确认"));
+        if (sheet.getStatus() == PayrollSheetStatus.Confirmed) {
+            return sheet;
+        }
+        if (sheet.getStatus() != PayrollSheetStatus.Pending) {
+            throw new DefinedException(new DefaultErrorCode(
+                    "400", "工资单尚未提交复核，不可确认；请先由财务提交复核"));
         }
         // DEC-047 / BR-039：员工工资与员工提成解耦，工资单确认不校验提成是否结清。
         // commissionComplete 仅作管理侧提示，不再作为阻断条件。
         List<PayrollItem> items = itemRepository
                 .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(comId, sheet.getSheetId());
         accessContext.requireStoreItemsInStore(current, items);
-        validateConfirmable(sheet, items);
+        validateConfirmable(current, sheet, items);
         PayrollSheetStatus before = sheet.getStatus();
         for (PayrollItem item : items) {
             createPayableIfAbsent(current, sheet, item);

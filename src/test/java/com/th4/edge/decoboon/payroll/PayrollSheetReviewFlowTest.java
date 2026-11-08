@@ -1,13 +1,17 @@
 package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.finance.repository.PayableRepository;
+import com.th4.edge.decoboon.payroll.configure.AttendanceStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollItemStatus;
 import com.th4.edge.decoboon.payroll.configure.PayrollSheetStatus;
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceValidationContext;
 import com.th4.edge.decoboon.payroll.context.PayrollSettlementAuditContext;
 import com.th4.edge.decoboon.payroll.context.PayrollSettlementContext;
+import com.th4.edge.decoboon.payroll.model.AttendanceSummary;
 import com.th4.edge.decoboon.payroll.model.PayrollItem;
 import com.th4.edge.decoboon.payroll.model.PayrollSheet;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
@@ -42,6 +46,8 @@ class PayrollSheetReviewFlowTest {
         when(f.sheets.save(any(PayrollSheet.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(f.items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L))
                 .thenReturn(List.of(f.item));
+        when(f.attendances.findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(100L, "2026-09"))
+                .thenReturn(List.of(f.attendance));
 
         PayrollSheet result = f.context.submitReview(f.finance, 10L);
 
@@ -85,6 +91,54 @@ class PayrollSheetReviewFlowTest {
     }
 
     @Test
+    void draftCannotBeConfirmedBeforeFinanceSubmitsReview() {
+        Fixture f = fixture(PayrollSheetStatus.Draft);
+        when(f.access.requireConfirmActor(f.boss)).thenReturn(f.boss);
+        when(f.access.visibleSheets(f.boss)).thenReturn(mock(Specification.class));
+        when(f.sheets.findOne(any(Specification.class))).thenReturn(Optional.of(f.sheet));
+
+        assertThatThrownBy(() -> f.context.confirm(f.boss, 10L))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("尚未提交复核");
+        verify(f.items, org.mockito.Mockito.never())
+                .findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(any(), any());
+    }
+
+    @Test
+    void pendingConfirmationRejectsAttendanceOutsidePayroll() {
+        Fixture f = fixture(PayrollSheetStatus.Pending);
+        f.attendance.setStatus(AttendanceStatus.Confirmed);
+        when(f.access.requireConfirmActor(f.boss)).thenReturn(f.boss);
+        when(f.access.visibleSheets(f.boss)).thenReturn(mock(Specification.class));
+        when(f.sheets.findOne(any(Specification.class))).thenReturn(Optional.of(f.sheet));
+        when(f.items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L))
+                .thenReturn(List.of(f.item));
+        when(f.attendances.findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(100L, "2026-09"))
+                .thenReturn(List.of(f.attendance));
+
+        assertThatThrownBy(() -> f.context.confirm(f.boss, 10L))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("考勤未进入工资单");
+    }
+
+    @Test
+    void pendingConfirmationRejectsIncompleteAttendance() {
+        Fixture f = fixture(PayrollSheetStatus.Pending);
+        f.attendance.setNormalDays(new BigDecimal("23.00"));
+        when(f.access.requireConfirmActor(f.boss)).thenReturn(f.boss);
+        when(f.access.visibleSheets(f.boss)).thenReturn(mock(Specification.class));
+        when(f.sheets.findOne(any(Specification.class))).thenReturn(Optional.of(f.sheet));
+        when(f.items.findByCompany_ComIdAndSheet_SheetIdOrderByEmployee_NameAsc(100L, 10L))
+                .thenReturn(List.of(f.item));
+        when(f.attendances.findByCompany_ComIdAndPayrollMonthOrderByEmployee_NameAsc(100L, "2026-09"))
+                .thenReturn(List.of(f.attendance));
+
+        assertThatThrownBy(() -> f.context.confirm(f.boss, 10L))
+                .isInstanceOf(DefinedException.class)
+                .hasMessageContaining("必须等于应出勤天数");
+    }
+
+    @Test
     void returnRequiresReason() {
         Fixture f = fixture(PayrollSheetStatus.Pending);
         when(f.access.requireReturnActor(f.boss)).thenReturn(f.boss);
@@ -117,13 +171,23 @@ class PayrollSheetReviewFlowTest {
         item.setGrossAmount(new BigDecimal("5000.00"));
         item.setDeductionAmount(BigDecimal.ZERO);
         item.setNetAmount(new BigDecimal("5000.00"));
+        AttendanceSummary attendance = new AttendanceSummary();
+        attendance.setCompany(company);
+        attendance.setEmployee(staff);
+        attendance.setPayrollMonth("2026-09");
+        attendance.setScheduledDays(24);
+        attendance.setNormalDays(new BigDecimal("24.00"));
+        attendance.setStatus(AttendanceStatus.InPayroll);
         PayrollAccessContext access = mock(PayrollAccessContext.class);
         PayrollSheetRepository sheets = mock(PayrollSheetRepository.class);
         PayrollItemRepository items = mock(PayrollItemRepository.class);
+        AttendanceSummaryRepository attendances = mock(AttendanceSummaryRepository.class);
         PayrollSettlementAuditContext audit = mock(PayrollSettlementAuditContext.class);
         PayrollSettlementContext context = new PayrollSettlementContext(
-                access, sheets, items, mock(PayslipRepository.class), mock(PayableRepository.class), audit);
-        return new Fixture(boss, finance, sheet, item, access, sheets, items, context, audit);
+                access, sheets, items, attendances, new PayrollAttendanceValidationContext(),
+                mock(PayslipRepository.class), mock(PayableRepository.class), audit);
+        return new Fixture(boss, finance, sheet, item, attendance, access, sheets, items,
+                attendances, context, audit);
     }
 
     private Employee employee(Long empId, EmployeeRole role, Company company) {
@@ -136,7 +200,9 @@ class PayrollSheetReviewFlowTest {
     }
 
     private record Fixture(Employee boss, Employee finance, PayrollSheet sheet, PayrollItem item,
-                           PayrollAccessContext access, PayrollSheetRepository sheets,
-                           PayrollItemRepository items, PayrollSettlementContext context,
+                           AttendanceSummary attendance, PayrollAccessContext access,
+                           PayrollSheetRepository sheets, PayrollItemRepository items,
+                           AttendanceSummaryRepository attendances,
+                           PayrollSettlementContext context,
                            PayrollSettlementAuditContext audit) {}
 }

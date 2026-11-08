@@ -38,7 +38,7 @@ import java.util.Map;
                 properties = {"paymentId", "project", "payable", "amount", "account", "paidAt", "payeeName",
                         "worker", "transactionNo", "voucherUrl", "remark", "createdBy", "createTime"}),
         @AllowProperties(model = Payable.class,
-                properties = {"payableId", "name", "type", "amount", "paidAmount", "dueDate", "status", "payeeName", "property" }),
+                properties = {"payableId", "name", "type", "period", "amount", "paidAmount", "dueDate", "status", "payeeName", "property" }),
         @AllowProperties(model = Project.class,
                 properties = {"projectId", "no", "name", "contractAmount", "property", "customer", "manager", "status" }),
         @AllowProperties(model = com.th4.edge.decoboon.property.model.Property.class,

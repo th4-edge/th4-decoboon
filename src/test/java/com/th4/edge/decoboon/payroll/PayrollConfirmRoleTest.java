@@ -2,7 +2,9 @@ package com.th4.edge.decoboon.payroll;
 
 import com.th4.edge.decoboon.payroll.context.PayrollAccessContext;
 import com.th4.edge.decoboon.payroll.context.PayrollSettlementAuditContext;
+import com.th4.edge.decoboon.payroll.context.PayrollAttendanceValidationContext;
 import com.th4.edge.decoboon.payroll.context.PayrollSettlementContext;
+import com.th4.edge.decoboon.payroll.repository.AttendanceSummaryRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollItemRepository;
 import com.th4.edge.decoboon.payroll.repository.PayrollSheetRepository;
 import com.th4.edge.decoboon.payroll.repository.PayslipRepository;
@@ -37,6 +39,8 @@ class PayrollConfirmRoleTest {
                 access,
                 mock(PayrollSheetRepository.class),
                 mock(PayrollItemRepository.class),
+                mock(AttendanceSummaryRepository.class),
+                new PayrollAttendanceValidationContext(),
                 mock(PayslipRepository.class),
                 mock(PayableRepository.class),
                 mock(PayrollSettlementAuditContext.class));
