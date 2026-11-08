@@ -7,7 +7,7 @@
 | 变更 ID | `CHG-20261108-003` |
 | 类型 | 热修 / 薪酬状态机与跨端展示 |
 | 风险级别 | L3 |
-| 状态 | 开发自测完成，待提交发布 |
+| 状态 | 已发布（后端/Web），App 1.0.90 开发版已上传 |
 | 负责人 | Codex |
 | 日期 | 2026-11-08 |
 | 关联问题 | `CHG-20261108-002`：麦鸿装饰 2026-10 工资单在 `Draft` 被负责人直接确认 |
@@ -68,7 +68,7 @@
 | Provider 响应契约 | `audit-provider-response-contract.py --check/--self-test` | PASS：providers=550 properties=544 findings=0 |
 | Web 类型检查/构建 | `npm run type-check && npm run build` | PASS |
 | App 类型检查/构建 | `npm run type-check && npm run check:ui && npm run build:mp-weixin && npm run check:subpackages` | PASS |
-| 真实页面 | 财务 Draft、负责人 Draft/Pending、付款记录月份 | 待发布后执行 |
+| 真实页面 | 财务 Draft、负责人 Draft/Pending、付款记录月份 | PASS：Draft 无确认入口；付款记录显示 2026-08/2026-09 归属月份 |
 
 ## 6. 风险与回滚
 
@@ -85,5 +85,7 @@
 
 ## 8. 结论
 
-- 当前状态：开发自测完成，待提交与热修发布。
+- 当前状态：后端/Web 已发布；App 1.0.90 开发版已上传；正式版提审与发布由用户本人完成。
 - 开发自测不等于独立验收；真实页面和生产冒烟待发布后补。
+
+- 发布记录：`docs/operations/releases/2026-11-08-payroll-confirm-gate-hotfix.md`
