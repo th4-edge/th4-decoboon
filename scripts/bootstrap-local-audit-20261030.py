@@ -61,23 +61,23 @@ def main() -> int:
     statements = [
         f"""INSERT INTO db_tenant_company
         (com_id,name,title,size,enable_store,addr,color,brand_primary,custodian_credit,create_date_time)
-        VALUES ({COM_ID},{q('昭青科技')},{q('昭青科技 · 业务闭环审计')},'A',1,{q('合肥市审计测试地址')},'#128276','#128276',0,{int(NOW.timestamp()*1000)})""",
+        VALUES ({COM_ID},{q('昭青家装')},{q('昭青家装')},'A',1,{q('合肥市蜀山区示例路 88 号')},'#5B5CE2','#5B5CE2',0,{int(NOW.timestamp()*1000)})""",
         f"""INSERT INTO db_tenant_store
         (store_id,company_com_id,name,addr,color,default_store,sort,status)
-        VALUES ({STORE_A},{COM_ID},{q('总店')},{q('合肥市审计测试地址')},'#128276',1,0,'Active'),
-               ({STORE_B},{COM_ID},{q('滨湖店')},{q('合肥市滨湖新区')},'#128276',0,1,'Active')""",
+        VALUES ({STORE_A},{COM_ID},{q('总店')},{q('合肥市蜀山区示例路 88 号')},'#5B5CE2',1,0,'Active'),
+               ({STORE_B},{COM_ID},{q('滨湖店')},{q('合肥市滨湖新区')},'#5B5CE2',0,1,'Active')""",
     ]
 
     people = [
-        (101, "审计负责人", "Boss", STORE_A, "13910002001", None),
-        (102, "审计店长", "StoreManager", STORE_A, "13910002002", None),
-        (103, "审计财务", "Finance", STORE_A, "13910002003", None),
-        (104, "审计设计", "Designer", STORE_A, "13910002004", TEAM_A),
-        (105, "审计业务", "Marketer", STORE_A, "13910002005", TEAM_A),
-        (106, "审计项目经理", "Pm", STORE_A, "13910002006", TEAM_A),
-        (107, "审计团队长", "TeamLeader", STORE_A, "13910002007", None),
-        (108, "滨湖店长", "StoreManager", STORE_B, "13910002008", None),
-        (110, "审计设计二", "Designer", STORE_A, "13910002009", TEAM_A),
+        (101, "张伟", "Boss", STORE_A, "13910002001", None),
+        (102, "王宏文", "StoreManager", STORE_A, "13910002002", None),
+        (103, "吴濛濛", "Finance", STORE_A, "13910002003", None),
+        (104, "董夏鹏", "Designer", STORE_A, "13910002004", TEAM_A),
+        (105, "黄贤杰", "Marketer", STORE_A, "13910002005", TEAM_A),
+        (106, "徐勇", "Pm", STORE_A, "13910002006", TEAM_A),
+        (107, "李敏", "TeamLeader", STORE_A, "13910002007", None),
+        (108, "陈浩", "StoreManager", STORE_B, "13910002008", None),
+        (110, "周雨", "Designer", STORE_A, "13910002009", TEAM_A),
     ]
     employees = []
     for offset, name, role, store_id, tel, team_id in people:
@@ -99,7 +99,7 @@ def main() -> int:
     leader_emp = COM_ID + 107
     statements.append(
         f"""INSERT INTO db_tenant_team (team_id,name,color,com_id,store_id,leader_emp_id)
-        VALUES ({TEAM_A},{q('审计交付一组')},'#128276',{COM_ID},{STORE_A},{leader_emp})"""
+        VALUES ({TEAM_A},{q('设计交付一组')},'#5B5CE2',{COM_ID},{STORE_A},{leader_emp})"""
     )
     statements.append(
         f"UPDATE db_tenant_employee SET team_id={TEAM_A} WHERE emp_id IN ({COM_ID+104},{COM_ID+105},{COM_ID+106},{COM_ID+107},{COM_ID+110})"
@@ -119,8 +119,8 @@ def main() -> int:
         "companies": {
             str(COM_ID): {
                 "comId": str(COM_ID),
-                "title": "昭青科技 · 业务闭环审计",
-                "name": "昭青科技",
+                "title": "昭青家装",
+                "name": "昭青家装",
                 "plan": "annual-pro",
                 "stores": [
                     {"storeId": str(STORE_A), "name": "总店", "default": True, "status": "Active", "sort": 0},
